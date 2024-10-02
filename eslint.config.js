@@ -1,8 +1,9 @@
-import js from "@eslint/js";
 import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
 import tseslint from "typescript-eslint";
+import js from "@eslint/js";
 
 export default tseslint.config(
   { ignores: ["dist"] },
@@ -16,6 +17,10 @@ export default tseslint.config(
     plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
+      "simple-import-sort": simpleImportSort,
+    },
+    linterOptions: {
+      reportUnusedDisableDirectives: "error",
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -23,6 +28,36 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
+      "@typescript-eslint/no-explicit-any": "error", // Disallow usage of any
+      "no-duplicate-imports": "error", // Imports should be on one line
+      "prefer-destructuring": ["error", { object: true, array: true }],
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error",
+      "simple-import-sort/imports": [
+        "error",
+        {
+          groups: [
+            // Packages `react` related packages come first.
+            ["^react", "^@?\\w"],
+            // Internal packages.
+            ["^(@|components)(/.*|$)"],
+            // Side effect imports.
+            ["^\\u0000"],
+            // Parent imports. Put `..` last.
+            ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+            // Other relative imports. Put same-folder imports and `.` last.
+            ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+            // Style imports.
+            ["^.+\\.?(css)$"],
+          ],
+        },
+      ],
+      // Guards against stupidity
+      "no-self-compare": "error",
+      "no-unreachable-loop": "error",
+      "no-template-curly-in-string": "error", // Catches "${}" template strings
+      "default-case": ["error", { commentPattern: "^skip\\sdefault" }], // require default switch case
+      "default-case-last": "error", // enforce default switch case last
     },
   }
 );

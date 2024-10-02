@@ -16,11 +16,15 @@
     "moduleDetection": "force",
     "noEmit": true,
     /* Linting */
-    "strict": true,
+    "allowUnreachableCode": false,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true
+    "strict": true
   },
   "references": [
     { "path": "./tsconfig.app.json" },
