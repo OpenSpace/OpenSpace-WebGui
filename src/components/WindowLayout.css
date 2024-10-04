@@ -1,0 +1,21 @@
+body {
+  background-color: transparent !important;
+}
+
+/* Override rc-dock windows css */
+.dock-layout > :not(.dock-fbox) {
+  .dock-panel.dock-style-headless {
+    background-color: transparent;
+    user-select: none;
+
+    .dock-bar:hover,
+    .dock-bar:focus-within,
+    &.dock-panel-dropping .dock-bar {
+      opacity: 0;
+    }
+  }
+}
+
+.dock-panel {
+  background-color: rgba(20, 20, 20, 0.8);
+}
