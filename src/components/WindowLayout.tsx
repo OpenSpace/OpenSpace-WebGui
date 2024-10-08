@@ -1,30 +1,22 @@
 import { useRef } from 'react';
-import { Button, Container } from '@mantine/core';
+import { Button, Container, Stack } from '@mantine/core';
 import DockLayout, { BoxData, LayoutData, PanelData, TabData, TabGroup } from 'rc-dock';
 
-import { BottomBar } from '@/components/BottomBar';
+import { TaskBar } from '@/components/TaskBar';
 
-import { SessionRec } from './SessionRec';
+import { TopMenuBar } from './TopMenuBar';
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import './WindowLayout.css';
 
-export interface WindowOptions {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  title: string;
-  position?: 'left' | 'right' | 'float' | 'top';
-}
-
-export function WindowLayout() {
-  const rcDocRef = useRef<DockLayout>(null);
-
-  const defaultLayout: LayoutData = {
+function createDefaultLayout(
+  addWindow: (component: JSX.Element, options: WindowLayoutOptions) => void
+): LayoutData {
+  return {
     dockbox: {
       id: 'base',
       mode: 'horizontal',
+
       children: [
         {
           tabs: [
@@ -36,7 +28,7 @@ export function WindowLayout() {
               content: (
                 <>
                   <div>Hello World</div>
-                  <BottomBar addWindow={addWindow} />
+                  <TaskBar addWindow={addWindow} />
                   <Button
                     onClick={() => {
                       addWindow(
@@ -96,6 +88,19 @@ export function WindowLayout() {
       ]
     }
   };
+}
+
+export interface WindowLayoutOptions {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  title: string;
+  position?: 'left' | 'right' | 'float' | 'top';
+}
+
+export function WindowLayout() {
+  const rcDocRef = useRef<DockLayout>(null);
 
   const headless: TabGroup = {
     floatable: false,
@@ -117,7 +122,7 @@ export function WindowLayout() {
     return obj && Array.isArray(obj.tabs);
   }
 
-  function addWindow(component: JSX.Element, options: WindowOptions) {
+  function addWindow(component: JSX.Element, options: WindowLayoutOptions) {
     if (!rcDocRef.current) {
       return;
     }
@@ -181,13 +186,36 @@ export function WindowLayout() {
         throw Error('Unhandeled window position');
     }
   }
-
   return (
-    <DockLayout
-      ref={rcDocRef}
-      defaultLayout={defaultLayout}
-      groups={groups}
-      style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 }}
-    />
+    <Stack
+      gap={0}
+      style={{
+        height: '100vh'
+      }}
+    >
+      <TopMenuBar />
+
+      <div
+        style={{
+          flexGrow: 1, // DockLayout takes up remaining space
+          position: 'relative'
+        }}
+      >
+        <DockLayout
+          ref={rcDocRef}
+          defaultLayout={createDefaultLayout(addWindow)}
+          groups={groups}
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0
+          }}
+        />
+      </div>
+
+      <TaskBar addWindow={addWindow}></TaskBar>
+    </Stack>
   );
 }
