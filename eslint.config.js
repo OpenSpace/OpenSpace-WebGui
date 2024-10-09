@@ -32,6 +32,7 @@ export default tseslint.config(
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       '@typescript-eslint/no-explicit-any': 'error', // Disallow usage of any
       'no-duplicate-imports': 'error', // Imports should be on one line
+      'no-console': 'warn',
       'prefer-destructuring': ['error', { object: true, array: true }],
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
