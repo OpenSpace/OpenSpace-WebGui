@@ -1,35 +1,40 @@
 import { Button, Group } from '@mantine/core';
 
 import { WindowLayoutOptions } from '@/components/WindowLayout';
-
-import { SessionRec } from './SessionRec';
+import { menuItemsDB } from '@/util/MenuItems';
 
 interface TaskBarProps {
   addWindow: (component: JSX.Element, options: WindowLayoutOptions) => void;
+  visibleMenuItems: string[];
 }
 
-export function TaskBar({ addWindow }: TaskBarProps) {
+export function TaskBar({ addWindow, visibleMenuItems }: TaskBarProps) {
+  const checkedMenuItems = menuItemsDB.filter((item) => {
+    return visibleMenuItems.includes(item.componentID);
+  });
+
   return (
-    <div>
-      <Group
-        style={{
-          backgroundColor: '#00000080',
-          height: 60,
-          width: 'fit-content',
-          paddingRight: 40
-        }}
-      >
-        <Button size={'xl'}>Scene</Button>
-        <Button size={'xl'}>Focus</Button>
+    <Group
+      style={{
+        backgroundColor: '#00000080',
+        height: 60,
+        paddingLeft: 'var(--mantine-spacing-md)'
+      }}
+    >
+      {checkedMenuItems.map((item) => (
         <Button
+          key={item.componentID}
           size={'xl'}
           onClick={() => {
-            addWindow(<SessionRec />, { title: 'Session Recording', position: 'left' });
+            addWindow(item.content, {
+              title: item.title,
+              position: item.preferredPosition
+            });
           }}
         >
-          Open session rec
+          {item.title}
         </Button>
-      </Group>
-    </div>
+      ))}
+    </Group>
   );
 }

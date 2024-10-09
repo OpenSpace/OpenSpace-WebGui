@@ -7,7 +7,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@/components': '/src/components',
-      '@/public': '/public'
+      '@/public': '/public',
+      '@/util': '/src/util'
     }
   },
   server: {

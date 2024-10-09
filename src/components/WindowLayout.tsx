@@ -1,13 +1,24 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, Container, Stack } from '@mantine/core';
 import DockLayout, { BoxData, LayoutData, PanelData, TabData, TabGroup } from 'rc-dock';
 
 import { TaskBar } from '@/components/TaskBar';
+import { menuItemsDB } from '@/util/MenuItems';
 
 import { TopMenuBar } from './TopMenuBar';
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import './WindowLayout.css';
+
+export type WindowLayoutPosition = 'left' | 'right' | 'float' | 'top';
+export interface WindowLayoutOptions {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  title: string;
+  position?: WindowLayoutPosition;
+}
 
 function createDefaultLayout(
   addWindow: (component: JSX.Element, options: WindowLayoutOptions) => void
@@ -28,7 +39,6 @@ function createDefaultLayout(
               content: (
                 <>
                   <div>Hello World</div>
-                  <TaskBar addWindow={addWindow} />
                   <Button
                     onClick={() => {
                       addWindow(
@@ -90,16 +100,8 @@ function createDefaultLayout(
   };
 }
 
-export interface WindowLayoutOptions {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  title: string;
-  position?: 'left' | 'right' | 'float' | 'top';
-}
-
 export function WindowLayout() {
+  const [visibleMenuItems, setVisibleMenuItems] = useState<string[]>([]);
   const rcDocRef = useRef<DockLayout>(null);
 
   const headless: TabGroup = {
@@ -116,6 +118,20 @@ export function WindowLayout() {
     headless,
     regularWindow
   };
+
+  // Populate default visible items for taskbar
+  useEffect(() => {
+    const defaultVisibleMenuItems = menuItemsDB
+      .map((menuItem) => {
+        if (menuItem.defaultVisible) {
+          return menuItem.componentID;
+        }
+        return ''; // We dont want to return undefined so we do empty string instead
+      })
+      .filter((id) => id !== ''); // And then clean up the empty strings...
+
+    setVisibleMenuItems(defaultVisibleMenuItems);
+  }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function isPanelDataInstance(obj: any) {
@@ -135,7 +151,7 @@ export function WindowLayout() {
     }
 
     const position = options.position ?? 'float';
-    // Top BoxData that contains all other Boxes & Panels
+    // Root BoxData that contains all other Boxes & Panels
     const baseID = rcDocRef.current.state.layout.dockbox.id!;
     const base = rcDocRef.current.find(baseID)! as BoxData;
 
@@ -186,6 +202,7 @@ export function WindowLayout() {
         throw Error('Unhandeled window position');
     }
   }
+
   return (
     <Stack
       gap={0}
@@ -193,7 +210,10 @@ export function WindowLayout() {
         height: '100vh'
       }}
     >
-      <TopMenuBar />
+      <TopMenuBar
+        visibleMenuItems={visibleMenuItems}
+        setVisibleMenuItems={setVisibleMenuItems}
+      />
 
       <div
         style={{
@@ -215,7 +235,7 @@ export function WindowLayout() {
         />
       </div>
 
-      <TaskBar addWindow={addWindow}></TaskBar>
+      <TaskBar addWindow={addWindow} visibleMenuItems={visibleMenuItems}></TaskBar>
     </Stack>
   );
 }

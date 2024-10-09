@@ -1,6 +1,14 @@
+import { Dispatch, SetStateAction } from 'react';
 import { Button, Group, Menu } from '@mantine/core';
 
-export function TopMenuBar() {
+import { TaskBarMenuChoices } from './TaskBarMenuChoices';
+
+interface TopMenuBarProps {
+  visibleMenuItems: string[];
+  setVisibleMenuItems: Dispatch<SetStateAction<string[]>>;
+}
+
+export function TopMenuBar({ visibleMenuItems, setVisibleMenuItems }: TopMenuBarProps) {
   return (
     <Group
       style={{
@@ -32,7 +40,10 @@ export function TopMenuBar() {
           </Button>
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Item>BottomBar</Menu.Item>
+          <TaskBarMenuChoices
+            visibleMenuItems={visibleMenuItems}
+            setVisibleMenuItems={setVisibleMenuItems}
+          />
           <Menu.Item>Windows</Menu.Item>
           <Menu.Item>Load/Save Layout</Menu.Item>
         </Menu.Dropdown>
