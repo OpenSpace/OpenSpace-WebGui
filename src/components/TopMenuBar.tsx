@@ -2,13 +2,20 @@ import { Dispatch, SetStateAction } from 'react';
 import { Button, Group, Menu } from '@mantine/core';
 
 import { TaskBarMenuChoices } from './TaskBarMenuChoices';
+import { NewWindowMenu } from './NewWindowMenu';
+import { WindowLayoutOptions } from './WindowLayout';
 
 interface TopMenuBarProps {
   visibleMenuItems: string[];
   setVisibleMenuItems: Dispatch<SetStateAction<string[]>>;
+  addWindow: (component: JSX.Element, options: WindowLayoutOptions) => void;
 }
 
-export function TopMenuBar({ visibleMenuItems, setVisibleMenuItems }: TopMenuBarProps) {
+export function TopMenuBar({
+  visibleMenuItems,
+  setVisibleMenuItems,
+  addWindow
+}: TopMenuBarProps) {
   return (
     <Group
       style={{
@@ -44,7 +51,7 @@ export function TopMenuBar({ visibleMenuItems, setVisibleMenuItems }: TopMenuBar
             visibleMenuItems={visibleMenuItems}
             setVisibleMenuItems={setVisibleMenuItems}
           />
-          <Menu.Item>Windows</Menu.Item>
+          <NewWindowMenu addWindow={addWindow} />
           <Menu.Item>Load/Save Layout</Menu.Item>
         </Menu.Dropdown>
       </Menu>

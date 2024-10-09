@@ -213,6 +213,7 @@ export function WindowLayout() {
       <TopMenuBar
         visibleMenuItems={visibleMenuItems}
         setVisibleMenuItems={setVisibleMenuItems}
+        addWindow={addWindow}
       />
 
       <div
