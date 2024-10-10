@@ -1,13 +1,15 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Button, Container, Stack } from '@mantine/core';
 import DockLayout, { BoxData, LayoutData, PanelData, TabData, TabGroup } from 'rc-dock';
-
+import { startConnection } from '@/redux/connection/connectionSlice';
 import { TaskBar } from '@/components/TaskBar';
-
+import { ConnectionErrorOverlay } from './ConnectionErrorOverlay';
 import { TopMenuBar } from './TopMenuBar';
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import './WindowLayout.css';
+import { SessionRec } from './SessionRec';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 function createDefaultLayout(
   addWindow: (component: JSX.Element, options: WindowLayoutOptions) => void
@@ -76,7 +78,7 @@ function createDefaultLayout(
               id: 'sessionRec',
               title: 'Session Recording',
               closable: true,
-              content: <div>Hello World</div>,
+              content: <SessionRec />,
               group: 'regularWindow'
             }
           ],
@@ -101,6 +103,13 @@ export interface WindowLayoutOptions {
 
 export function WindowLayout() {
   const rcDocRef = useRef<DockLayout>(null);
+  const connectionLost = useAppSelector((state) => state.connection.connectionLost);
+  const dispatch = useAppDispatch();
+  console.log(connectionLost);
+
+  useEffect(() => {
+    dispatch(startConnection());
+  }, []);
 
   const headless: TabGroup = {
     floatable: false,
@@ -187,35 +196,38 @@ export function WindowLayout() {
     }
   }
   return (
-    <Stack
-      gap={0}
-      style={{
-        height: '100vh'
-      }}
-    >
-      <TopMenuBar />
-
-      <div
+    <>
+      <ConnectionErrorOverlay />
+      <Stack
+        gap={0}
         style={{
-          flexGrow: 1, // DockLayout takes up remaining space
-          position: 'relative'
+          height: '100vh'
         }}
       >
-        <DockLayout
-          ref={rcDocRef}
-          defaultLayout={createDefaultLayout(addWindow)}
-          groups={groups}
-          style={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-          }}
-        />
-      </div>
+        <TopMenuBar />
 
-      <TaskBar addWindow={addWindow}></TaskBar>
-    </Stack>
+        <div
+          style={{
+            flexGrow: 1, // DockLayout takes up remaining space
+            position: 'relative'
+          }}
+        >
+          <DockLayout
+            ref={rcDocRef}
+            defaultLayout={createDefaultLayout(addWindow)}
+            groups={groups}
+            style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0
+            }}
+          />
+        </div>
+
+        <TaskBar addWindow={addWindow}></TaskBar>
+      </Stack>
+    </>
   );
 }
