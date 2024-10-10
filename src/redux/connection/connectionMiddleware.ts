@@ -1,5 +1,5 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { startConnection, onCloseConnection, onOpenConnection } from './connectionslice';
+import { startConnection, onCloseConnection, onOpenConnection } from './connectionSlice';
 //import api from '../api';
 import { OpenSpaceApi } from 'openspace-api-js';
 import { Socket } from 'openspace-api-js';
