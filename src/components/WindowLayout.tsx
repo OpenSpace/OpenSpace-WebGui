@@ -5,11 +5,11 @@ import { startConnection } from '@/redux/connection/connectionSlice';
 import { TaskBar } from '@/components/TaskBar';
 import { ConnectionErrorOverlay } from './ConnectionErrorOverlay';
 import { TopMenuBar } from './TopMenuBar';
-
 import 'rc-dock/dist/rc-dock-dark.css';
 import './WindowLayout.css';
 import { SessionRec } from './SessionRec';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { ActionsPanel } from './ActionsPanel';
 
 function createDefaultLayout(
   addWindow: (component: JSX.Element, options: WindowLayoutOptions) => void
@@ -75,10 +75,10 @@ function createDefaultLayout(
         {
           tabs: [
             {
-              id: 'sessionRec',
-              title: 'Session Recording',
+              id: 'actions',
+              title: 'Actions',
               closable: true,
-              content: <SessionRec />,
+              content: <ActionsPanel />,
               group: 'regularWindow'
             }
           ],

@@ -4,12 +4,14 @@ import { sessionRecordingMiddleware } from './sessionrecording/sessionRecordingM
 import { connectionReducer } from './connection/connectionSlice';
 import { connectionMiddleware } from './connection/connectionMiddleware';
 import { luaApiReducer } from './luaApi/luaApiSlice';
+import { actionsReducer } from './actions/actionsSlice';
 
 export const store = configureStore({
   reducer: {
     sessionRecording: sessionRecordingReducer,
     connection: connectionReducer,
-    luaApi: luaApiReducer
+    luaApi: luaApiReducer,
+    actions: actionsReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().prepend([
