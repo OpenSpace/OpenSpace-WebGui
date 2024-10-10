@@ -7,7 +7,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@/components': '/src/components',
-      '@/public': '/public'
+      '@/public': '/public',
+      '@/redux': '/src/redux',
+      '@/api': '/src/api'
     }
   },
   server: {

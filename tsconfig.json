@@ -6,7 +6,9 @@
     "baseUrl": ".",
     "paths": {
       "@/components/*": ["./src/components/*"],
-      "@/public/*": ["./public/*"]
+      "@/public/*": ["./public/*"],
+      "@/redux/*": ["./src/redux/*"],
+      "@/api/*": ["./src/api/*"]
     },
 
     /* Bundler mode */
@@ -24,7 +26,8 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "strict": true
+    "strict": true,
+    "typeRoots": ["./src/types/*.d.ts"]
   },
   "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }
