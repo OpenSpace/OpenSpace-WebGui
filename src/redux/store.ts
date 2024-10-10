@@ -1,10 +1,21 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { sessionRecordingReducer } from './features/sessionRecordingSlice';
+import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
+import { sessionRecordingMiddleware } from './sessionrecording/sessionRecordingMiddleware';
+import { connectionReducer } from './connection/connectionSlice';
+import { connectionMiddleware } from './connection/connectionMiddleware';
+import { luaApiReducer } from './luaApi/luaApiSlice';
 
 export const store = configureStore({
   reducer: {
-    sessionRecording: sessionRecordingReducer
-  }
+    sessionRecording: sessionRecordingReducer,
+    connection: connectionReducer,
+    luaApi: luaApiReducer
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().prepend([
+      sessionRecordingMiddleware.middleware,
+      connectionMiddleware.middleware
+    ])
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
