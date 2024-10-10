@@ -24,8 +24,10 @@ export const sessionRecordingSlice = createSlice({
   reducers: {
     // Use `PayloadAction` to declare the contents of `action.payload`
     updateSessionrecording: (state, action: PayloadAction<SessionRecordingState>) => {
+      console.log('reducer');
       state.files = action.payload.files;
       state.recordingState = action.payload.recordingState;
+      return state;
     }
   }
 });
