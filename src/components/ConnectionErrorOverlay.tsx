@@ -20,14 +20,21 @@ export function ConnectionErrorOverlay() {
 
   return (
     connectionLost && (
-      <Overlay>
-        <Modal opened={true} onClose={() => {}} title={'Oh no'}>
-          <h2>{header}</h2>
-          <p>{line1}</p>
-          <p>{line2}</p>
-          <Button onClick={reloadGui}>{line3}</Button>
-        </Modal>
-      </Overlay>
+      <Modal.Root opened={true} onClose={() => {}} centered>
+        <Modal.Overlay backgroundOpacity={0.55} blur={3} />
+        <Modal.Content>
+          <Modal.Header>
+            <h2>{header}</h2>
+          </Modal.Header>
+          <Modal.Body>
+            <p>{line1}</p>
+            <p>{line2}</p>
+            <Button data-autofocus onClick={reloadGui}>
+              {line3}
+            </Button>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal.Root>
     )
   );
 }
