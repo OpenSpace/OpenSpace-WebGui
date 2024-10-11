@@ -1,15 +1,17 @@
 import { useEffect, useRef } from 'react';
 import { Button, Container, Stack } from '@mantine/core';
 import DockLayout, { BoxData, LayoutData, PanelData, TabData, TabGroup } from 'rc-dock';
-import { startConnection } from '@/redux/connection/connectionSlice';
+
 import { TaskBar } from '@/components/TaskBar';
+import { startConnection } from '@/redux/connection/connectionSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+
+import { ActionsPanel } from './ActionsPanel';
 import { ConnectionErrorOverlay } from './ConnectionErrorOverlay';
 import { TopMenuBar } from './TopMenuBar';
+
 import 'rc-dock/dist/rc-dock-dark.css';
 import './WindowLayout.css';
-import { SessionRec } from './SessionRec';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { ActionsPanel } from './ActionsPanel';
 
 function createDefaultLayout(
   addWindow: (component: JSX.Element, options: WindowLayoutOptions) => void

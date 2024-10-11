@@ -1,6 +1,7 @@
-import { useAppSelector } from '@/redux/hooks';
 //import { useLocation } from 'react-router-dom';
-import { Overlay, Button, Modal } from '@mantine/core';
+import { Button, Modal } from '@mantine/core';
+
+import { useAppSelector } from '@/redux/hooks';
 
 export function ConnectionErrorOverlay() {
   const connectionLost = useAppSelector((state) => state.connection.connectionLost);

@@ -1,10 +1,8 @@
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { Action } from '@/redux/actions/actionsSlice';
-import { setActionsPath } from '@/redux/actions/actionsSlice';
-import { Button } from '@mantine/core';
-import { Flex } from '@mantine/core';
-import { ScrollArea, Grid } from '@mantine/core';
+import { Button, Flex, Grid, ScrollArea } from '@mantine/core';
+
 import { useOpenSpaceApi } from '@/api/hooks';
+import { Action, setActionsPath } from '@/redux/actions/actionsSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 interface FolderContent {
   actions: Action[];

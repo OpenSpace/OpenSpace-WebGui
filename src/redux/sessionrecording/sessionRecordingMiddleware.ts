@@ -1,8 +1,11 @@
 import { createAction, createListenerMiddleware } from '@reduxjs/toolkit';
 
-import { updateSessionrecording, SessionRecordingState } from './sessionRecordingSlice';
+import { useOpenSpaceApi } from '@/api/hooks';
+
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { useOpenSpaceApi } from '@/api/OpenspaceApi';
+
+import { SessionRecordingState, updateSessionrecording } from './sessionRecordingSlice';
+
 // Create the middleware instance and methods
 export const sessionRecordingMiddleware = createListenerMiddleware();
 interface TestState {
@@ -80,7 +83,7 @@ sessionRecordingMiddleware.startListening({
 
 export {
   onOpenConnection,
+  refreshSessionRecording,
   subscribeToSessionRecording,
-  unsubscribeToSessionRecording,
-  refreshSessionRecording
+  unsubscribeToSessionRecording
 };

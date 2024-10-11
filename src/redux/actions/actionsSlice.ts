@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { actionsTestData } from './actionsTestData';
 
 interface Shortcut {

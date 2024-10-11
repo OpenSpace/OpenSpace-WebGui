@@ -1,7 +1,8 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { startConnection, onCloseConnection, onOpenConnection } from './connectionSlice';
 //import api from '../api';
 import OpenSpaceApi from 'openspace-api-js';
+
+import { onCloseConnection, onOpenConnection, startConnection } from './connectionSlice';
 export const connectionMiddleware = createListenerMiddleware();
 import { initializeLuaApi } from '../luaApi/luaApiSlice';
 let openspace: OpenSpace.openspace;
