@@ -1,6 +1,22 @@
+import { Dispatch, SetStateAction } from 'react';
 import { Button, Group, Menu } from '@mantine/core';
 
-export function TopMenuBar() {
+import { TaskBarMenuChoices } from './TaskBarMenuChoices';
+import { NewWindowMenu } from './NewWindowMenu';
+import { WindowLayoutOptions } from './WindowLayout';
+import { HelpMenu } from './HelpMenu';
+
+interface TopMenuBarProps {
+  visibleMenuItems: string[];
+  setVisibleMenuItems: Dispatch<SetStateAction<string[]>>;
+  addWindow: (component: JSX.Element, options: WindowLayoutOptions) => void;
+}
+
+export function TopMenuBar({
+  visibleMenuItems,
+  setVisibleMenuItems,
+  addWindow
+}: TopMenuBarProps) {
   return (
     <Group
       style={{
@@ -12,6 +28,7 @@ export function TopMenuBar() {
       <Button size={'xs'} color="gray">
         Asset
       </Button>
+
       <Menu position={'bottom-start'} offset={4} withArrow arrowPosition={'center'}>
         <Menu.Target>
           <Button size={'xs'} color="gray">
@@ -19,8 +36,6 @@ export function TopMenuBar() {
           </Button>
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Item>Kebab menu</Menu.Item>
-          <Menu.Divider />
           <Menu.Item>Settings</Menu.Item>
         </Menu.Dropdown>
       </Menu>
@@ -32,11 +47,16 @@ export function TopMenuBar() {
           </Button>
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Item>BottomBar</Menu.Item>
-          <Menu.Item>Windows</Menu.Item>
+          <TaskBarMenuChoices
+            visibleMenuItems={visibleMenuItems}
+            setVisibleMenuItems={setVisibleMenuItems}
+          />
+          <NewWindowMenu addWindow={addWindow} />
           <Menu.Item>Load/Save Layout</Menu.Item>
         </Menu.Dropdown>
       </Menu>
+
+      <HelpMenu />
     </Group>
   );
 }

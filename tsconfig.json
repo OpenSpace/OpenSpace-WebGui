@@ -5,10 +5,11 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@/api/*": ["./src/api/*"],
       "@/components/*": ["./src/components/*"],
       "@/public/*": ["./public/*"],
       "@/redux/*": ["./src/redux/*"],
-      "@/api/*": ["./src/api/*"]
+      "@/util/*": ["./src/util/*"]
     },
 
     /* Bundler mode */

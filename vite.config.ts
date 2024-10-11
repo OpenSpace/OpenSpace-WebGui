@@ -6,10 +6,11 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
+      '@/api': '/src/api',
       '@/components': '/src/components',
       '@/public': '/public',
       '@/redux': '/src/redux',
-      '@/api': '/src/api'
+      '@/util': '/src/util'
     }
   },
   server: {
