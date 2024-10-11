@@ -3,7 +3,7 @@ import { Action } from '@/redux/actions/actionsSlice';
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { Button } from '@mantine/core';
 import { Flex } from '@mantine/core';
-import { ScrollArea } from '@mantine/core';
+import { ScrollArea, Grid } from '@mantine/core';
 interface FolderContent {
   actions: Action[];
   folders: Folder;
@@ -204,10 +204,11 @@ export function ActionsPanel() {
         {backButton}
         <p>{`${displayedNavigationPath}`}</p>
       </Flex>
-      <ScrollArea h={250}>
-        {folders}
-        {actions}
-        {getAllActions()}
+      <ScrollArea h={250} w={600}>
+        <Grid>
+          {folders}
+          {actions}
+        </Grid>
       </ScrollArea>
     </>
   );
