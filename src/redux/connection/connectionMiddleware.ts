@@ -11,7 +11,8 @@ connectionMiddleware.startListening({
   actionCreator: startConnection,
   effect: async (action, listenerApi) => {
     console.log('Connect');
-    listenerApi.dispatch(initializeLuaApi({ luaApi: true }));
+    const openspaceApi = true;
+    listenerApi.dispatch(initializeLuaApi(openspaceApi));
 
     /*  const socket = new Socket('localhost', 4680);
     const api = new OpenSpaceApi(socket);

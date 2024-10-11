@@ -1,25 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { PayloadAction } from '@reduxjs/toolkit';
+import { useAppSelector } from '../hooks';
 
-export interface luaApiState {
-  luaApi: boolean;
-}
-
-const initialState: luaApiState = {
-  luaApi: false
-};
+const initialState = false;
 
 export const luaApiSlice = createSlice({
   name: 'luaApi',
   initialState,
   reducers: {
-    initializeLuaApi: (state, action: PayloadAction<luaApiState>) => {
+    initializeLuaApi: (state, action: PayloadAction<boolean>) => {
       console.log('Set lua api');
-      state.luaApi = action.payload.luaApi;
+      state = action.payload;
       return state;
     }
   }
 });
+
+// Hook to make it easier to get the api
+export function useOpenSpaceApi() {
+  const api = useAppSelector((state) => state.luaApi);
+  return api;
+}
 
 // Action creators are generated for each case reducer function, replaces the `Actions/index.js`
 export const { initializeLuaApi } = luaApiSlice.actions;

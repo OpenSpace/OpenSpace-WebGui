@@ -62,7 +62,7 @@ export function OpenSpaceProvider({ children, hej }: PropsWithChildren<Props>) {
   );
 }
 
-export function useOpenSpaceApi() {
+function useOpenSpaceApi() {
   const context = useContext(OpenSpaceContext);
   if (!context) {
     throw new Error('useOpenSpaceApi must be used within a OpenSpaceProviders');

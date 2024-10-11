@@ -4,6 +4,8 @@ import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { Button } from '@mantine/core';
 import { Flex } from '@mantine/core';
 import { ScrollArea, Grid } from '@mantine/core';
+import { useOpenSpaceApi } from '@/redux/luaApi/luaApiSlice';
+
 interface FolderContent {
   actions: Action[];
   folders: Folder;
@@ -118,7 +120,8 @@ export function ActionsPanel() {
   const navigationPath = useAppSelector((state) => state.actions.navigationPath);
   const isInitialized = useAppSelector((state) => state.actions.isInitialized);
   const dispatch = useAppDispatch();
-
+  const openspaceApi = useOpenSpaceApi();
+  console.log(openspaceApi);
   const actionLevel = actionsForLevel(allActions, navigationPath, isInitialized);
   const displayedNavigationPath = truncatePath(navigationPath);
   const displayedActions = getDisplayedActions(allActions, navigationPath);
