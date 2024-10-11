@@ -4,7 +4,7 @@ import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { Button } from '@mantine/core';
 import { Flex } from '@mantine/core';
 import { ScrollArea, Grid } from '@mantine/core';
-import { useOpenSpaceApi } from '@/redux/luaApi/luaApiSlice';
+import { useOpenSpaceApi } from '@/api/hooks';
 
 interface FolderContent {
   actions: Action[];

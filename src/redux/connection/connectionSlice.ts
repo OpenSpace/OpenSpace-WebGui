@@ -15,7 +15,6 @@ export const connectionSlice = createSlice({
   initialState,
   reducers: {
     startConnection: (state) => {
-      console.log('Start connection');
       state.isConnected = false;
       state.connectionLost = false;
       return state;

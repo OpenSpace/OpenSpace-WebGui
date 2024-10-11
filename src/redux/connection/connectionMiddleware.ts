@@ -1,27 +1,20 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { startConnection, onCloseConnection, onOpenConnection } from './connectionSlice';
 //import api from '../api';
-import { OpenSpaceApi } from 'openspace-api-js';
-import { Socket } from 'openspace-api-js';
+import OpenSpaceApi from 'openspace-api-js';
 export const connectionMiddleware = createListenerMiddleware();
 import { initializeLuaApi } from '../luaApi/luaApiSlice';
-let openspace;
+let openspace: OpenSpace.openspace;
 
 connectionMiddleware.startListening({
   actionCreator: startConnection,
   effect: async (action, listenerApi) => {
-    console.log('Connect');
-    const openspaceApi = true;
-    listenerApi.dispatch(initializeLuaApi(openspaceApi));
-
-    /*  const socket = new Socket('localhost', 4680);
-    const api = new OpenSpaceApi(socket);
+    const api = OpenSpaceApi('localhost', 4682);
 
     async function onConnect() {
-      openspace = await api.library();
+      openspace = await api.singleReturnLibrary();
       listenerApi.dispatch(onOpenConnection());
-      const tempApi = true;
-      listenerApi.dispatch(initializeLuaApi({ luaApi: tempApi }));
+      listenerApi.dispatch(initializeLuaApi(openspace));
     }
 
     function onDisconnect() {
@@ -36,6 +29,6 @@ connectionMiddleware.startListening({
 
     api.onConnect(onConnect);
     api.onDisconnect(onDisconnect);
-    api.connect(); */
+    api.connect();
   }
 });

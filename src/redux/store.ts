@@ -14,10 +14,12 @@ export const store = configureStore({
     actions: actionsReducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().prepend([
-      sessionRecordingMiddleware.middleware,
-      connectionMiddleware.middleware
-    ])
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['luaApi/initializeLuaApi'],
+        ignoredPaths: ['luaApi']
+      }
+    }).prepend([sessionRecordingMiddleware.middleware, connectionMiddleware.middleware])
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
