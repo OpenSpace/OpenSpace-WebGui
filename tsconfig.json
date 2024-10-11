@@ -5,8 +5,10 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@/api/*": ["./src/api/*"],
       "@/components/*": ["./src/components/*"],
       "@/public/*": ["./public/*"],
+      "@/redux/*": ["./src/redux/*"],
       "@/util/*": ["./src/util/*"]
     },
 
@@ -25,7 +27,8 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "strict": true
+    "strict": true,
+    "typeRoots": ["./src/types/*.d.ts"]
   },
   "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }

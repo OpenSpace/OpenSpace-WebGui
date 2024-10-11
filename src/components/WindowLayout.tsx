@@ -3,8 +3,12 @@ import { Button, Container, Stack } from '@mantine/core';
 import DockLayout, { BoxData, LayoutData, PanelData, TabData, TabGroup } from 'rc-dock';
 
 import { TaskBar } from '@/components/TaskBar';
+import { startConnection } from '@/redux/connection/connectionSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { menuItemsDB } from '@/util/MenuItems';
 
+import { ActionsPanel } from './ActionsPanel';
+import { ConnectionErrorOverlay } from './ConnectionErrorOverlay';
 import { TopMenuBar } from './TopMenuBar';
 
 import 'rc-dock/dist/rc-dock-dark.css';
@@ -83,10 +87,10 @@ function createDefaultLayout(
         {
           tabs: [
             {
-              id: 'sessionRec',
-              title: 'Session Recording',
+              id: 'actions',
+              title: 'Actions',
               closable: true,
-              content: <div>Hello World</div>,
+              content: <ActionsPanel />,
               group: 'regularWindow'
             }
           ],
@@ -103,6 +107,13 @@ function createDefaultLayout(
 export function WindowLayout() {
   const [visibleMenuItems, setVisibleMenuItems] = useState<string[]>([]);
   const rcDocRef = useRef<DockLayout>(null);
+  const connectionLost = useAppSelector((state) => state.connection.connectionLost);
+  const dispatch = useAppDispatch();
+  console.log(connectionLost);
+
+  useEffect(() => {
+    dispatch(startConnection());
+  }, []);
 
   const headless: TabGroup = {
     floatable: false,
@@ -204,39 +215,41 @@ export function WindowLayout() {
   }
 
   return (
-    <Stack
-      gap={0}
-      style={{
-        height: '100vh'
-      }}
-    >
-      <TopMenuBar
-        visibleMenuItems={visibleMenuItems}
-        setVisibleMenuItems={setVisibleMenuItems}
-        addWindow={addWindow}
-      />
-
-      <div
+    <>
+      <ConnectionErrorOverlay />
+      <Stack
+        gap={0}
         style={{
-          flexGrow: 1, // DockLayout takes up remaining space
-          position: 'relative'
+          height: '100vh'
         }}
       >
-        <DockLayout
-          ref={rcDocRef}
-          defaultLayout={createDefaultLayout(addWindow)}
-          groups={groups}
-          style={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-          }}
+        <TopMenuBar
+          visibleMenuItems={visibleMenuItems}
+          setVisibleMenuItems={setVisibleMenuItems}
+          addWindow={addWindow}
         />
-      </div>
+        <div
+          style={{
+            flexGrow: 1, // DockLayout takes up remaining space
+            position: 'relative'
+          }}
+        >
+          <DockLayout
+            ref={rcDocRef}
+            defaultLayout={createDefaultLayout(addWindow)}
+            groups={groups}
+            style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0
+            }}
+          />
+        </div>
 
-      <TaskBar addWindow={addWindow} visibleMenuItems={visibleMenuItems}></TaskBar>
-    </Stack>
+        <TaskBar addWindow={addWindow} visibleMenuItems={visibleMenuItems}></TaskBar>
+      </Stack>
+    </>
   );
 }

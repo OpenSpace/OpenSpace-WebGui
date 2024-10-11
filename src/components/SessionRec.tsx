@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { IoInformationCircleOutline } from 'react-icons/io5';
 import {
   Button,
@@ -12,7 +13,23 @@ import {
   Tooltip
 } from '@mantine/core';
 
+// import { useOpenSpaceApi } from '@/api/OpenspaceApi';
+import { useAppDispatch } from '@/redux/hooks';
+import {
+  subscribeToSessionRecording,
+  unsubscribeToSessionRecording
+} from '@/redux/sessionrecording/sessionRecordingMiddleware';
+
 export function SessionRec() {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(subscribeToSessionRecording());
+    //dispatch(subscribeToEngineMode()); // TODO: Add this from store
+    return () => {
+      dispatch(unsubscribeToSessionRecording());
+    };
+  }, []);
+
   return (
     <Container>
       <h2>Record Session</h2>
