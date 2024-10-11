@@ -29,7 +29,7 @@ declare module "openspace-api-js" {
      * @param socket An instance of Socket or WebSocket.
      *               The socket should not be connected prior to calling this constructor.
      */
-    constructor(socket: Socket);
+    constructor(socket: SocketWrpper | WebSocketWrapper);
 
     /**
      * Set connect callback.
@@ -162,10 +162,26 @@ declare module "openspace-api-js" {
     multiReturnLibrary(): Promise<OpenSpace.openspace>;
   }
 
-  export class Socket {
-    /** Internal usage only */
-    constructor(host: string, port: number);
-  }
+  export class SocketWrapper {
+   /** Internal usage only */
+   constructor(address: string, port: number);
+   onConnect(cb: () => void): void;
+   onDisconnect(cb: () => void): void;
+   onMessage(cb: (message: string) => void): void;
+   connect(): void;
+   send(message: any): void;
+   disconnect(): void;
+ }
+
+ export class WebSocketWrapper {
+   constructor(address: string, port: number);
+   onConnect(cb: () => void): void;
+   onDisconnect(cb: () => void): void;
+   onMessage(cb: (message: string) => void): void;
+   connect(): void;
+   send(message: any): void;
+   disconnect(): void;
+ }
 
   export class Topic {
     /** Internal usage only */
