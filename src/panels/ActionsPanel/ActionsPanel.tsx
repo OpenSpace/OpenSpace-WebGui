@@ -1,8 +1,10 @@
-import { Button, Flex, Grid, ScrollArea } from '@mantine/core';
+import { Button, Flex, Grid } from '@mantine/core';
 
-import { useOpenSpaceApi } from '@/api/hooks';
-import { Action, setActionsPath } from '@/redux/actions/actionsSlice';
+import { setActionsPath } from '@/redux/actions/actionsSlice';
+import { Action } from 'src/types/types';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { ActionsButton } from './ActionsButton';
+import { MdFolder } from 'react-icons/md';
 
 interface FolderContent {
   actions: Action[];
@@ -114,12 +116,12 @@ function getDisplayedActions(allActions: Action[], navPath: string) {
 }
 
 export function ActionsPanel() {
-  const allActions = useAppSelector((state) => state.actions.data);
+  const allActions = useAppSelector((state) => state.actions.actions);
   const navigationPath = useAppSelector((state) => state.actions.navigationPath);
   const isInitialized = useAppSelector((state) => state.actions.isInitialized);
+
   const dispatch = useAppDispatch();
-  const openspaceApi = useOpenSpaceApi();
-  console.log(openspaceApi);
+
   const actionLevel = actionsForLevel(allActions, navigationPath, isInitialized);
   const displayedNavigationPath = truncatePath(navigationPath);
   const displayedActions = getDisplayedActions(allActions, navigationPath);
@@ -150,7 +152,8 @@ export function ActionsPanel() {
   function folderButton(key: string) {
     return (
       <Button onClick={() => addNavPath(key)} key={key}>
-        <p>{`FolderLogo ${key}`} </p>
+        <MdFolder />
+        <p>{key}</p>
       </Button>
     );
   }
@@ -166,16 +169,14 @@ export function ActionsPanel() {
       return null;
     }
 
-    return level.actions.map((action) => (
-      <Button key={`${action.identifier}Action`}>
-        <p>{`ActionsLogo ${action.name}`} </p>
-      </Button>
+    return level.actions.map((action: Action) => (
+      <ActionsButton key={`${action.identifier}Action`} action={action} />
     ));
   }
 
   function getAllActions() {
-    return displayedActions.map((action) => (
-      <Button key={`${action.identifier}Filtered`}>{action.identifier}</Button>
+    return displayedActions.map((action: Action) => (
+      <ActionsButton key={`${action.identifier}Filtered`} action={action} />
     ));
   }
 
@@ -205,12 +206,10 @@ export function ActionsPanel() {
         {backButton}
         <p>{`${displayedNavigationPath}`}</p>
       </Flex>
-      <ScrollArea h={250} w={600}>
-        <Grid>
-          {folders}
-          {actions}
-        </Grid>
-      </ScrollArea>
+      <Grid>
+        {folders}
+        {actions}
+      </Grid>
     </>
   );
 }
