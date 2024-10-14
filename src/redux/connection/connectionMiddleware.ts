@@ -1,33 +1,34 @@
-import { createListenerMiddleware } from '@reduxjs/toolkit';
-
 import { api } from '@/api/api';
+import type { AppStartListening } from '@/redux/listenerMiddleware';
+import { initializeLuaApi } from '@/redux/luaapi/luaApiSlice';
 
 import { onCloseConnection, onOpenConnection, startConnection } from './connectionSlice';
-export const connectionMiddleware = createListenerMiddleware();
-import { initializeLuaApi } from '../luaapi/luaApiSlice';
+
 let openspace: OpenSpace.openspace;
 
-connectionMiddleware.startListening({
-  actionCreator: startConnection,
-  effect: async (action, listenerApi) => {
-    async function onConnect() {
-      openspace = await api.singleReturnLibrary();
-      listenerApi.dispatch(onOpenConnection());
-      listenerApi.dispatch(initializeLuaApi(openspace));
+export const addConnectionListener = (startListening: AppStartListening) => {
+  startListening({
+    actionCreator: startConnection,
+    effect: async (action, listenerApi) => {
+      async function onConnect() {
+        openspace = await api.singleReturnLibrary();
+        listenerApi.dispatch(onOpenConnection());
+        listenerApi.dispatch(initializeLuaApi(openspace));
+      }
+
+      function onDisconnect() {
+        listenerApi.dispatch(onCloseConnection());
+
+        let reconnectionInterval = 1000;
+        setTimeout(() => {
+          api.connect();
+          reconnectionInterval += 1000;
+        }, reconnectionInterval);
+      }
+
+      api.onConnect(onConnect);
+      api.onDisconnect(onDisconnect);
+      api.connect();
     }
-
-    function onDisconnect() {
-      listenerApi.dispatch(onCloseConnection());
-
-      let reconnectionInterval = 1000;
-      setTimeout(() => {
-        api.connect();
-        reconnectionInterval += 1000;
-      }, reconnectionInterval);
-    }
-
-    api.onConnect(onConnect);
-    api.onDisconnect(onDisconnect);
-    api.connect();
-  }
-});
+  });
+};
