@@ -10,10 +10,11 @@ export default defineConfig({
       '@/components': '/src/components',
       '@/public': '/public',
       '@/redux': '/src/redux',
-      '@/util': '/src/util'
+      '@/util': '/src/util',
+      '@/panels': '/src/panels'
     }
   },
   server: {
-    port: 4690
+    port: 4670
   }
 });

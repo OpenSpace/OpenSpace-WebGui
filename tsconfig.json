@@ -9,7 +9,8 @@
       "@/components/*": ["./src/components/*"],
       "@/public/*": ["./public/*"],
       "@/redux/*": ["./src/redux/*"],
-      "@/util/*": ["./src/util/*"]
+      "@/util/*": ["./src/util/*"],
+      "@/panels/*": ["./src/panels/*"]
     },
 
     /* Bundler mode */
