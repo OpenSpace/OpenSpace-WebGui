@@ -3,7 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { actionsReducer } from './actions/actionsSlice';
 import { connectionMiddleware } from './connection/connectionMiddleware';
 import { connectionReducer } from './connection/connectionSlice';
-import { luaApiReducer } from './luaApi/luaApiSlice';
+import { luaApiReducer } from './temp/luaApiSlice';
 import { sessionRecordingMiddleware } from './sessionrecording/sessionRecordingMiddleware';
 import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
 
