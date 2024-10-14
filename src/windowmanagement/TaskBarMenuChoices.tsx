@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Checkbox, Menu, Stack } from '@mantine/core';
 
-import { menuItemsDB } from '@/util/MenuItems';
+import { menuItemsDB } from './data/MenuItems';
 
 interface TaskBarChoicesProps {
   visibleMenuItems: string[];

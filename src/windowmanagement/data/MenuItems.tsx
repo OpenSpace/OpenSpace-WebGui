@@ -1,6 +1,6 @@
-import { Scene } from '@/components/Scene';
 import { SessionRec } from '@/components/SessionRec';
-import { WindowLayoutPosition } from '@/components/WindowLayout';
+import { WindowLayoutPosition } from 'src/windowmanagement/WindowLayout/WindowLayout';
+import { Scene } from '@/panels/Scene/Scene';
 
 export interface MenuItem {
   title: string;

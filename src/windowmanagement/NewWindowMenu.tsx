@@ -1,6 +1,6 @@
 import { Menu } from '@mantine/core';
-import { WindowLayoutOptions } from './WindowLayout';
-import { menuItemsDB } from '@/util/MenuItems';
+import { WindowLayoutOptions } from './WindowLayout/WindowLayout';
+import { menuItemsDB } from './data/MenuItems';
 
 interface NewWindowMenuProps {
   addWindow: (component: JSX.Element, options: WindowLayoutOptions) => void;

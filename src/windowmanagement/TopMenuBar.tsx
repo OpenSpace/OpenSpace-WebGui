@@ -3,7 +3,7 @@ import { Button, Group, Menu } from '@mantine/core';
 
 import { TaskBarMenuChoices } from './TaskBarMenuChoices';
 import { NewWindowMenu } from './NewWindowMenu';
-import { WindowLayoutOptions } from './WindowLayout';
+import { WindowLayoutOptions } from './WindowLayout/WindowLayout';
 import { HelpMenu } from './HelpMenu';
 
 interface TopMenuBarProps {

@@ -1,7 +1,7 @@
 import { Button, Group } from '@mantine/core';
 
-import { WindowLayoutOptions } from '@/components/WindowLayout';
-import { menuItemsDB } from '@/util/MenuItems';
+import { WindowLayoutOptions } from 'src/windowmanagement/WindowLayout/WindowLayout';
+import { menuItemsDB } from './data/MenuItems';
 
 interface TaskBarProps {
   addWindow: (component: JSX.Element, options: WindowLayoutOptions) => void;
