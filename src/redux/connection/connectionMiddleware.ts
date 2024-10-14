@@ -1,6 +1,6 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-//import api from '../api';
-import OpenSpaceApi from 'openspace-api-js';
+
+import { api } from '@/api/api';
 
 import { onCloseConnection, onOpenConnection, startConnection } from './connectionSlice';
 export const connectionMiddleware = createListenerMiddleware();
@@ -10,8 +10,6 @@ let openspace: OpenSpace.openspace;
 connectionMiddleware.startListening({
   actionCreator: startConnection,
   effect: async (action, listenerApi) => {
-    const api = OpenSpaceApi('localhost', 4682);
-
     async function onConnect() {
       openspace = await api.singleReturnLibrary();
       listenerApi.dispatch(onOpenConnection());
