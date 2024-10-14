@@ -3,7 +3,7 @@ import { Button, Container, Stack } from '@mantine/core';
 import DockLayout, { BoxData, LayoutData, PanelData, TabData, TabGroup } from 'rc-dock';
 
 import { TaskBar } from '../TaskBar';
-import { startConnection } from '@/redux/connection/connectionSlice';
+import { startConnection, onCloseConnection } from '@/redux/connection/connectionSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { menuItemsDB } from '../data/MenuItems';
 
@@ -107,12 +107,13 @@ function createDefaultLayout(
 export function WindowLayout() {
   const [visibleMenuItems, setVisibleMenuItems] = useState<string[]>([]);
   const rcDocRef = useRef<DockLayout>(null);
-  const connectionLost = useAppSelector((state) => state.connection.connectionLost);
   const dispatch = useAppDispatch();
-  console.log(connectionLost);
 
   useEffect(() => {
     dispatch(startConnection());
+    return () => {
+      dispatch(onCloseConnection());
+    };
   }, []);
 
   const headless: TabGroup = {
