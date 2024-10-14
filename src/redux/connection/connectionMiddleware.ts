@@ -4,7 +4,7 @@ import OpenSpaceApi from 'openspace-api-js';
 
 import { onCloseConnection, onOpenConnection, startConnection } from './connectionSlice';
 export const connectionMiddleware = createListenerMiddleware();
-import { initializeLuaApi } from '../temp/luaApiSlice';
+import { initializeLuaApi } from '../luaapi/luaApiSlice';
 let openspace: OpenSpace.openspace;
 
 connectionMiddleware.startListening({
