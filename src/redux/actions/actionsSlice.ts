@@ -1,49 +1,50 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-import { actionsTestData } from './actionsTestData';
-
-interface Shortcut {
-  action: string;
-  key: string;
-  modifiers: {
-    alt: boolean;
-    control: boolean;
-    shift: boolean;
-    super: boolean;
-  };
-}
-
-export interface Action {
-  identifier: string;
-  guiPath: string;
-  name: string;
-  synchronization: boolean;
-  documentation: string;
-}
+import { Action, ActionOrKeybind, Keybind } from 'src/types/types';
 
 export interface ActionsState {
   isInitialized: boolean;
   navigationPath: string;
-  data: Action[];
+  actions: Action[];
+  keybinds: Keybind[];
   showKeybinds: boolean;
 }
 
 const initialState: ActionsState = {
   isInitialized: true,
   navigationPath: '/',
-  data: actionsTestData,
+  actions: [],
+  keybinds: [],
   showKeybinds: false
 };
+
+function instanceOfAction(data: ActionOrKeybind): data is Action {
+  return 'identifier' in data;
+}
+
+function splitActionsAndKeybinds(data: ActionOrKeybind[]): [Action[], Keybind[]] {
+  const actions: Action[] = [];
+  const keybinds: Keybind[] = [];
+  data.forEach((element) => {
+    if (instanceOfAction(element)) {
+      actions.push(element);
+    } else {
+      keybinds.push(element);
+    }
+  });
+  return [actions, keybinds];
+}
 
 export const actionsSlice = createSlice({
   name: 'actions',
   initialState,
   reducers: {
-    initializeShortcuts: (state, action: PayloadAction<Action[]>) => {
+    initializeShortcuts: (state, action: PayloadAction<ActionOrKeybind[]>) => {
+      const [actions, keybinds] = splitActionsAndKeybinds(action.payload);
       return {
         ...state,
         isInitialized: true,
-        data: action.payload
+        keybinds: keybinds,
+        actions: actions
       };
     },
     setActionsPath: (state, action: PayloadAction<string>) => {
@@ -58,14 +59,16 @@ export const actionsSlice = createSlice({
         showKeybinds: !state.showKeybinds
       };
     },
-    addActions: (state, action: PayloadAction<Action[]>) => {
+    addActions: (state, action: PayloadAction<ActionOrKeybind[]>) => {
+      const [actions, keybinds] = splitActionsAndKeybinds(action.payload);
       return {
         ...state,
-        data: [...state.data, ...action.payload]
+        actions: [...state.actions, ...actions],
+        keybinds: [...state.keybinds, ...keybinds]
       };
     },
     removeAction: (state, action: PayloadAction<string>) => {
-      const newData = state.data;
+      const newData = state.actions;
       const index = newData.findIndex((element) => element.identifier === action.payload);
       if (index > -1) {
         // only splice array when item is found

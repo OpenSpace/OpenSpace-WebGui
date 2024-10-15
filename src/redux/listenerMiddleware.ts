@@ -1,5 +1,6 @@
 import { createListenerMiddleware, type TypedStartListening } from '@reduxjs/toolkit';
 
+import { addActionsListener } from './actions/actionsMiddleware';
 import { addConnectionListener } from './connection/connectionMiddleware';
 import { addSessionRecordingListener } from './sessionrecording/sessionRecordingMiddleware';
 import type { AppDispatch, RootState } from './store';
@@ -11,3 +12,4 @@ const startAppListening = listenerMiddleware.startListening as AppStartListening
 
 addConnectionListener(startAppListening);
 addSessionRecordingListener(startAppListening);
+addActionsListener(startAppListening);

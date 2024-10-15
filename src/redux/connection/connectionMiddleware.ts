@@ -9,7 +9,7 @@ let openspace: OpenSpace.openspace;
 export const addConnectionListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: startConnection,
-    effect: async (action, listenerApi) => {
+    effect: async (_, listenerApi) => {
       async function onConnect() {
         openspace = await api.singleReturnLibrary();
         listenerApi.dispatch(onOpenConnection());
@@ -29,6 +29,12 @@ export const addConnectionListener = (startListening: AppStartListening) => {
       api.onConnect(onConnect);
       api.onDisconnect(onDisconnect);
       api.connect();
+    }
+  });
+  startListening({
+    actionCreator: onCloseConnection,
+    effect: () => {
+      api.disconnect();
     }
   });
 };

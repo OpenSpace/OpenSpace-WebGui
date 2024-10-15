@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Button, Container, Stack } from '@mantine/core';
 import DockLayout, { BoxData, LayoutData, PanelData, TabData, TabGroup } from 'rc-dock';
 
-import { startConnection } from '@/redux/connection/connectionSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { onCloseConnection, startConnection } from '@/redux/connection/connectionSlice';
+import { useAppDispatch } from '@/redux/hooks';
 
 import { ActionsPanel } from '../../panels/ActionsPanel/ActionsPanel';
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
@@ -107,12 +107,13 @@ function createDefaultLayout(
 export function WindowLayout() {
   const [visibleMenuItems, setVisibleMenuItems] = useState<string[]>([]);
   const rcDocRef = useRef<DockLayout>(null);
-  const connectionLost = useAppSelector((state) => state.connection.connectionLost);
   const dispatch = useAppDispatch();
-  console.log(connectionLost);
 
   useEffect(() => {
     dispatch(startConnection());
+    return () => {
+      dispatch(onCloseConnection());
+    };
   }, [dispatch]);
 
   const headless: TabGroup = {

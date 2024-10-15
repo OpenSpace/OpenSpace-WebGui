@@ -1,7 +1,7 @@
 import { WindowLayoutPosition } from 'src/windowmanagement/WindowLayout/WindowLayout';
 
-import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { Scene } from '@/panels/Scene/Scene';
+import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
 
 export interface MenuItem {
