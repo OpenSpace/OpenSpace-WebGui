@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { Button, Container, Stack } from '@mantine/core';
 import DockLayout, { BoxData, LayoutData, PanelData, TabData, TabGroup } from 'rc-dock';
 
-import { TaskBar } from '../TaskBar';
 import { startConnection } from '@/redux/connection/connectionSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { menuItemsDB } from '../data/MenuItems';
 
 import { ActionsPanel } from '../../panels/ActionsPanel/ActionsPanel';
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
+import { menuItemsDB } from '../data/MenuItems';
+import { TaskBar } from '../TaskBar';
 import { TopMenuBar } from '../TopMenuBar';
 
 import 'rc-dock/dist/rc-dock-dark.css';
@@ -200,7 +200,6 @@ export function WindowLayout() {
           };
 
           rcDocRef.current.dockMove(panel, base, position);
-          console.log(rcDocRef.current.state.layout);
         }
         break;
       }
