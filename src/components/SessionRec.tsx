@@ -42,7 +42,7 @@ export function SessionRec() {
     return () => {
       dispatch(unsubscribeToSessionRecording());
     };
-  }, []);
+  }, [dispatch]);
 
   function isIdle() {
     return recordingState === RecordingState.idle;

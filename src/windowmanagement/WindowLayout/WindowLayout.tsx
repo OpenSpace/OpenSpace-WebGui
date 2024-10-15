@@ -113,7 +113,7 @@ export function WindowLayout() {
 
   useEffect(() => {
     dispatch(startConnection());
-  }, []);
+  }, [dispatch]);
 
   const headless: TabGroup = {
     floatable: false,
