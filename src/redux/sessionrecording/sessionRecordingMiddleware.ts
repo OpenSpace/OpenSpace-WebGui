@@ -69,7 +69,7 @@ function refresh() {
 export const addSessionRecordingListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onOpenConnection,
-    effect: async (action, listenerApi) => {
+    effect: async (_, listenerApi) => {
       if (nSubscribers === 0) {
         return;
       }
@@ -82,7 +82,7 @@ export const addSessionRecordingListener = (startListening: AppStartListening) =
 
   startListening({
     actionCreator: refreshSessionRecording,
-    effect: async (action, listenerApi) => {
+    effect: async (_, listenerApi) => {
       dataCallback = (data: SessionRecordingState) =>
         listenerApi.dispatch(updateSessionrecording(data));
       refresh();
@@ -91,7 +91,7 @@ export const addSessionRecordingListener = (startListening: AppStartListening) =
 
   startListening({
     actionCreator: subscribeToSessionRecording,
-    effect: async (action, listenerApi) => {
+    effect: async (_, listenerApi) => {
       ++nSubscribers;
       const { isConnected } = listenerApi.getState().connection;
       if (nSubscribers === 1 && isConnected) {
@@ -104,7 +104,7 @@ export const addSessionRecordingListener = (startListening: AppStartListening) =
 
   startListening({
     actionCreator: unsubscribeToSessionRecording,
-    effect: async (_action, _listenerApi) => {
+    effect: async () => {
       --nSubscribers;
       if (nSubscribers === 0) {
         dataCallback = null;
