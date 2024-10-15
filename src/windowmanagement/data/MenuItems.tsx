@@ -1,6 +1,6 @@
 import { WindowLayoutPosition } from 'src/windowmanagement/WindowLayout/WindowLayout';
 
-import { SessionRec } from '@/components/SessionRec';
+import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { Scene } from '@/panels/Scene/Scene';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
 
