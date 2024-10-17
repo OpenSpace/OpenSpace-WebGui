@@ -17,6 +17,10 @@ const initialState: ActionsState = {
   showKeybinds: false
 };
 
+// TODO: (ylvse 2024-10-14) - This splitting of the actions and keybinds could be removed
+// if we didn't merge the arrays in the engine to begin with.
+// Once we ship this new GUI, we should rewrite the topic so that it sends the keybinds
+// and the actions as two separate arrays
 function instanceOfAction(data: ActionOrKeybind): data is Action {
   return 'identifier' in data;
 }
