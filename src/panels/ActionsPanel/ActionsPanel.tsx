@@ -1,10 +1,11 @@
+import { MdFolder } from 'react-icons/md';
 import { Button, Flex, Grid } from '@mantine/core';
+import { Action } from 'src/types/types';
 
 import { setActionsPath } from '@/redux/actions/actionsSlice';
-import { Action } from 'src/types/types';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+
 import { ActionsButton } from './ActionsButton';
-import { MdFolder } from 'react-icons/md';
 
 interface FolderContent {
   actions: Action[];
@@ -173,7 +174,7 @@ export function ActionsPanel() {
       <ActionsButton key={`${action.identifier}Action`} action={action} />
     ));
   }
-
+  // TODO: (@ylvse 2024-10-15): implement this when we have filterlist
   function getAllActions() {
     return displayedActions.map((action: Action) => (
       <ActionsButton key={`${action.identifier}Filtered`} action={action} />

@@ -1,7 +1,8 @@
-import { useOpenSpaceApi } from '@/api/hooks';
-import { Action } from 'src/types/types';
-import { Button, Stack, Group } from '@mantine/core';
 import { MdLaunch } from 'react-icons/md';
+import { Button, Group, Stack } from '@mantine/core';
+import { Action } from 'src/types/types';
+
+import { useOpenSpaceApi } from '@/api/hooks';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 
 interface Props {

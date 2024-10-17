@@ -1,9 +1,12 @@
-import { addActions, initializeShortcuts } from './actionsSlice';
-import { api } from '@/api/api';
 import { createAction } from '@reduxjs/toolkit';
-import { onOpenConnection } from '../connection/connectionSlice';
 import { ActionOrKeybind } from 'src/types/types';
+
+import { api } from '@/api/api';
+
+import { onOpenConnection } from '../connection/connectionSlice';
 import { AppStartListening } from '../listenerMiddleware';
+
+import { addActions, initializeShortcuts } from './actionsSlice';
 
 async function getAllShortcuts(): Promise<ActionOrKeybind[]> {
   const topic = api.startTopic('shortcuts', {

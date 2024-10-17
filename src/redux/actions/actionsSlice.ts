@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ActionOrKeybind, Action, Keybind } from 'src/types/types';
+import { Action, ActionOrKeybind, Keybind } from 'src/types/types';
 
 export interface ActionsState {
   isInitialized: boolean;
@@ -26,8 +26,8 @@ function instanceOfAction(data: ActionOrKeybind): data is Action {
 }
 
 function splitActionsAndKeybinds(data: ActionOrKeybind[]): [Action[], Keybind[]] {
-  let actions: Action[] = [];
-  let keybinds: Keybind[] = [];
+  const actions: Action[] = [];
+  const keybinds: Keybind[] = [];
   data.forEach((element) => {
     if (instanceOfAction(element)) {
       actions.push(element);
