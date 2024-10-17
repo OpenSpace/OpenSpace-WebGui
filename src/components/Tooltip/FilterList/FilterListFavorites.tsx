@@ -1,7 +1,9 @@
+import { PropsWithChildren } from 'react';
+
 export const FilterListFavoritesDisplayName = 'FilterListFavorites';
 
-export function FilterListFavorites() {
-  return <div>favorites</div>;
+export function FilterListFavorites({ children }: PropsWithChildren) {
+  return <div>{children}</div>;
 }
 
 FilterListFavorites.displayName = FilterListFavoritesDisplayName;

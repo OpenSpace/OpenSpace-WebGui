@@ -2,8 +2,11 @@ import { TextInput } from '@mantine/core';
 import { Children, cloneElement, isValidElement, useState } from 'react';
 import { FilterListFavoritesDisplayName } from './FilterListFavorites';
 import { FilterListDataDisplayName, FilterListDataProps } from './FilterListData';
+import {
+  FilterListShowMoreButtonDisplayName,
+  FilterListShowMoreButtonProps
+} from './FilterListShowMoreButton';
 
-const FilterListShowMoreButtonDisplayName = 'FilterListShowMoreButton';
 interface FilterListProps {
   children: React.ReactNode;
   placeHolderSearchText?: string;
@@ -38,9 +41,10 @@ export function FilterList({
   );
 
   const showFavorites = !isSearching && hasFavorites && !showDataInstead;
-  const buttons: React.ReactElement[] = [];
+  const buttons: React.ReactNode[] = [];
   const filteredChildren = Children.map(children, (child) => {
-    // Makes TS happy by removing numbers, strings etc
+    // We have to narrow down the types of child so we can access child.type.
+    // numbers, strings etc are rendered as is.
     if (!isValidElement(child)) {
       return child;
     }
@@ -49,15 +53,20 @@ export function FilterList({
       return child;
     }
     if (!showFavorites && childType.displayName === FilterListDataDisplayName) {
-      return cloneElement(child, { searchString: searchString } as FilterListDataProps); // TODO props here
+      return cloneElement(child, { searchString: searchString } as FilterListDataProps);
     }
     if (childType.displayName === FilterListShowMoreButtonDisplayName) {
       if (hasFavorites && !isSearching) {
-        buttons.push(cloneElement(child, {})); // TODO props here
+        const props: FilterListShowMoreButtonProps = {
+          key: `${FilterListShowMoreButtonDisplayName}-${buttons.length}`,
+          showDataInstead: showDataInstead,
+          toggleShowDataInstead: toggleShowDataInstead
+        };
+        buttons.push(cloneElement(child, props));
       }
     }
 
-    return child;
+    return null;
   });
 
   return (
@@ -66,10 +75,11 @@ export function FilterList({
         value={searchString}
         placeholder={placeHolderSearchText}
         onChange={(event) => setSearchString(event.currentTarget.value)}
-        rightSection={buttons}
         autoFocus={searchAutoFocus}
+        rightSection={buttons}
+        // Some arbitrary width must be set so Mantine Buttons are rendered properly
+        rightSectionWidth={'md'}
       />
-      <div>Has havorites: {hasFavorites ? 'True' : 'False'}</div>
       {filteredChildren}
     </>
   );
