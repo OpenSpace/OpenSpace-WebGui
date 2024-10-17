@@ -18,3 +18,8 @@ export interface Keybind {
 }
 
 type ActionOrKeybind = Action | Keybind;
+
+export interface ExoplanetData {
+  name: string;
+  identifier: string;
+}
