@@ -1,11 +1,14 @@
-import { SessionRec } from '@/components/SessionRec';
 import { WindowLayoutPosition } from 'src/windowmanagement/WindowLayout/WindowLayout';
+
 import { Scene } from '@/panels/Scene/Scene';
+import { SessionRec } from '@/panels/SessionRecording/SessionRec';
+import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
 
 export interface MenuItem {
   title: string;
   componentID: string;
   content: JSX.Element;
+  renderMenuButton?: (key: string, onClick: () => void) => JSX.Element;
   preferredPosition: WindowLayoutPosition;
   defaultVisible: boolean;
   visible?: boolean;
@@ -37,6 +40,9 @@ export const menuItemsDB: MenuItem[] = [
     title: 'Session Recording',
     componentID: 'sessionRecording',
     content: <SessionRec />,
+    renderMenuButton: (key, onClick) => (
+      <SessionRecMenuButton key={key} onClick={onClick} />
+    ),
     preferredPosition: 'right',
     defaultVisible: true
   },

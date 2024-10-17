@@ -34,7 +34,7 @@ export const addConnectionListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onCloseConnection,
     effect: () => {
-      api.disconnect;
+      api.disconnect();
     }
   });
 };

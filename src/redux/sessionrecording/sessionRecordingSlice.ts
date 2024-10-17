@@ -9,12 +9,12 @@ export enum RecordingState {
 
 export interface SessionRecordingState {
   files: string[];
-  recordingState: RecordingState;
+  state: RecordingState;
 }
 
 const initialState: SessionRecordingState = {
   files: [],
-  recordingState: RecordingState.idle
+  state: RecordingState.idle
 };
 
 export const sessionRecordingSlice = createSlice({
@@ -23,9 +23,8 @@ export const sessionRecordingSlice = createSlice({
   reducers: {
     // Use `PayloadAction` to declare the contents of `action.payload`
     updateSessionrecording: (state, action: PayloadAction<SessionRecordingState>) => {
-      console.log('reducer');
       state.files = action.payload.files;
-      state.recordingState = action.payload.recordingState;
+      state.state = action.payload.state;
       return state;
     }
   }

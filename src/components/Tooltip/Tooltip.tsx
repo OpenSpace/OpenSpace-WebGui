@@ -1,6 +1,5 @@
-import { Tooltip as MantineTooltip } from '@mantine/core';
-import { ThemeIcon } from '@mantine/core';
 import { IoInformationCircleOutline } from 'react-icons/io5';
+import { ThemeIcon, Tooltip as MantineTooltip } from '@mantine/core';
 
 interface TooltipProps {
   text: string;
