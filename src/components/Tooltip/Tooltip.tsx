@@ -1,5 +1,5 @@
 import { IoInformationCircleOutline } from 'react-icons/io5';
-import { ThemeIcon,Tooltip as MantineTooltip } from '@mantine/core';
+import { ThemeIcon, Tooltip as MantineTooltip } from '@mantine/core';
 
 interface TooltipProps {
   text: string;

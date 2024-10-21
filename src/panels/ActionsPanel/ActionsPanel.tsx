@@ -174,7 +174,7 @@ export function ActionsPanel() {
       <ActionsButton key={`${action.identifier}Action`} action={action} />
     ));
   }
-
+  // TODO: (@ylvse 2024-10-15): implement this when we have filterlist
   function getAllActions() {
     return displayedActions.map((action: Action) => (
       <ActionsButton key={`${action.identifier}Filtered`} action={action} />

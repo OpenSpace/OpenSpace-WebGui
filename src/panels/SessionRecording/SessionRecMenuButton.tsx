@@ -1,8 +1,13 @@
+import { useEffect } from 'react';
 import { MdPause, MdPlayArrow, MdStop } from 'react-icons/md';
 import { Button, Group } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import {
+  subscribeToSessionRecording,
+  unsubscribeToSessionRecording
+} from '@/redux/sessionrecording/sessionRecordingMiddleware';
 import { RecordingState } from '@/redux/sessionrecording/sessionRecordingSlice';
 
 interface SessionRecMenuButtonProps {
@@ -12,6 +17,14 @@ interface SessionRecMenuButtonProps {
 export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
   const recordingState = useAppSelector((state) => state.sessionRecording.state);
   const openspace = useOpenSpaceApi();
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(subscribeToSessionRecording());
+    //dispatch(subscribeToEngineMode()); // TODO: Add this from store
+    return () => {
+      dispatch(unsubscribeToSessionRecording());
+    };
+  }, [dispatch]);
 
   function togglePlaybackPaused() {
     openspace?.sessionRecording.togglePlaybackPause();
