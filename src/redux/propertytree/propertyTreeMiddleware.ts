@@ -10,6 +10,7 @@ import {
 
 import { api } from '@/api/api';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
+import { rootOwnerKey } from '@/util/keys';
 
 import { onCloseConnection, onOpenConnection } from '../connection/connectionSlice';
 import { RootState } from '../store';
@@ -22,7 +23,6 @@ import {
   updatePropertyValue
 } from './propertyTreeSlice';
 
-const rootOwnerKey = '__rootOwner';
 export const reloadPropertyTree = createAction<void>('reloadPropertyTree');
 export const addUriToPropertyTree = createAction<{ uri: string }>('addUriToPropertyTree');
 export const subscribeToProperty = createAction<{ uri: string }>('subscribeToProperty');
