@@ -47,7 +47,7 @@ export interface Property {
 }
 
 export interface Properties {
-  [key: string]: Property;
+  [key: string]: Property | undefined;
 }
 
 export interface PropertyOwner {
@@ -61,12 +61,12 @@ export interface PropertyOwner {
 }
 
 export interface PropertyOwners {
-  [key: string]: PropertyOwner;
+  [key: string]: PropertyOwner | undefined;
 }
 
 // Event types, these were manually typed from the event.cpp `toParameter`function:
 // https://github.com/OpenSpace/OpenSpace/blob/6dd3dd8ab88653fddee0b2e480934faf53d3c0f8/src/events/event.cpp#L332
-type ParallelConnectionEvent = {
+export type ParallelConnectionEvent = {
   Event: 'ParallelConnection';
   State: 'Established' | 'Lost' | 'HostshipGained' | 'HostshipLost';
 };
