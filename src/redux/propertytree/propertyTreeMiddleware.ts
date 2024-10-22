@@ -174,7 +174,7 @@ function markAllSubscriptionsAsPending() {
 function convertOsPropertyToProperty(prop: OpenSpaceProperty): Property {
   return {
     uri: prop.Description.Identifier,
-    value: prop.value,
+    value: prop.Value,
     // TODO anden88 2024-10-18: when the description data is sent with first letter
     // lowercase we can simplify this to "description: property.description"
     description: {
@@ -266,7 +266,7 @@ type OpenSpaceProperty = {
     Type: string; // TODO: define these as property types? i.e., boolproperty | stringproperty etc
     description: string;
   };
-  value: string | number | number[] | boolean;
+  Value: string | number | number[] | boolean;
 };
 
 export const addPropertyTreeListener = (startListening: AppStartListening) => {

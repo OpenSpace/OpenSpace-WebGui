@@ -148,9 +148,9 @@ export const propertyOwners = createSlice({
         const parentExists = parentUri && state.propertyOwners[parentUri];
         if (
           parentExists &&
-          !state.propertyOwners[parentUri].subowners.includes(owner.uri)
+          !state.propertyOwners[parentUri]!.subowners.includes(owner.uri)
         ) {
-          state.propertyOwners[parentUri].subowners.push(owner.uri);
+          state.propertyOwners[parentUri]!.subowners.push(owner.uri);
         }
       });
       return state;
@@ -171,11 +171,11 @@ export const propertyOwners = createSlice({
         // Delete the parent's link to the property owner
         const periodPos = uri.lastIndexOf('.');
         const parentUri = uri.substring(0, periodPos);
-        const index = state.propertyOwners[parentUri].subowners.indexOf(uri);
+        const index = state.propertyOwners[parentUri]?.subowners.indexOf(uri) ?? -1;
         // If found, remove
         if (index > -1) {
           // 2nd parameter means remove one item only
-          state.propertyOwners[parentUri].subowners.splice(index, 1);
+          state.propertyOwners[parentUri]!.subowners.splice(index, 1);
         }
 
         // Delete subowners that have been flattened
