@@ -1,7 +1,7 @@
-import { MdFolder } from 'react-icons/md';
 import { Button, Flex, Grid } from '@mantine/core';
 import { Action } from 'src/types/types';
 
+import { FolderIcon } from '@/icons/icons';
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
@@ -153,7 +153,7 @@ export function ActionsPanel() {
   function folderButton(key: string) {
     return (
       <Button onClick={() => addNavPath(key)} key={key}>
-        <MdFolder />
+        <FolderIcon />
         <p>{key}</p>
       </Button>
     );
