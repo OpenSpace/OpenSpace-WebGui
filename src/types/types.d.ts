@@ -32,7 +32,7 @@ export interface PropertyMetaData {
   needsConfirmation: boolean;
 }
 
-export type PropertyValue = string | number | number[] | boolean;
+export type PropertyValue = string | number | number[] | boolean | null;
 export interface Property {
   description: {
     additionalData: any;
