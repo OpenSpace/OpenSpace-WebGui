@@ -1,4 +1,6 @@
 import { Children, cloneElement, isValidElement } from 'react';
+import { ScrollArea } from '@mantine/core';
+
 import { ObjectOrStringWordBeginningSubString } from './util';
 
 export const FilterListDataDisplayName = 'FilterListData';
@@ -76,7 +78,18 @@ function internalFilterChildren(
 
 export function FilterListData({ searchString = '', children }: FilterListDataProps) {
   const content = filterChildren(searchString, children);
-  return <>{content}</>;
+  console.log('Render FilterListData');
+  return (
+    <ScrollArea.Autosize
+      scrollbars={'y'}
+      type={'always'}
+      offsetScrollbars
+      mah={'100%'}
+      mb={'var(--mantine-spacing-md)'}
+    >
+      {content}
+    </ScrollArea.Autosize>
+  );
 }
 
 FilterListData.displayName = FilterListDataDisplayName;
