@@ -1,7 +1,7 @@
 import { Children, cloneElement, isValidElement } from 'react';
 import { ScrollArea } from '@mantine/core';
 
-import { ObjectOrStringWordBeginningSubString } from './util';
+import { objectOrStringWordBeginningSubString } from './util';
 
 export const FilterListDataDisplayName = 'FilterListData';
 export interface FilterListDataProps {
@@ -28,7 +28,7 @@ function internalFilterChildren(
   // Recursive to handle filtering on deeply nested children
   const filteredChildren = childArray.filter((child) => {
     // TODO: add matcher prop or default
-    const finalMatcher = ObjectOrStringWordBeginningSubString;
+    const finalMatcher = objectOrStringWordBeginningSubString;
 
     // TODO (anden88 2024-10-16): a little unclear if this is correct, I believe only
     // text and numbers will end up here since objects are not valid React renderables
@@ -78,7 +78,6 @@ function internalFilterChildren(
 
 export function FilterListData({ searchString = '', children }: FilterListDataProps) {
   const content = filterChildren(searchString, children);
-  console.log('Render FilterListData');
   return (
     <ScrollArea.Autosize
       scrollbars={'y'}

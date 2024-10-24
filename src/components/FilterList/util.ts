@@ -1,4 +1,4 @@
-export function WordBeginningSubString(test: string, search: string): boolean {
+export function wordBeginningSubString(test: string, search: string): boolean {
   const searchWords = search.split(' ');
   const testWords = test.split(' ');
 
@@ -8,21 +8,21 @@ export function WordBeginningSubString(test: string, search: string): boolean {
   return searchWords.every((searchWord) => containsWordAsFirst(searchWord));
 }
 
-export function ObjectWordBeginningSubstring(test: Object, search: string): boolean {
+export function objectWordBeginningSubstring(test: object, search: string): boolean {
   const valuesAsStrings = Object.values(test)
     .filter((t) => ['number', 'string'].includes(typeof t))
     .map((t: string | number) => t.toString())
     .map((t: string) => t.toLowerCase());
-  return valuesAsStrings.some((v) => WordBeginningSubString(v, search));
+  return valuesAsStrings.some((v) => wordBeginningSubString(v, search));
 }
 
-export function ObjectOrStringWordBeginningSubString(
-  test: Object | string,
+export function objectOrStringWordBeginningSubString(
+  test: object | string,
   search: string
 ): boolean {
   if (typeof test === 'object') {
-    return ObjectWordBeginningSubstring(test, search);
+    return objectWordBeginningSubstring(test, search);
   } else {
-    return WordBeginningSubString(test, search);
+    return wordBeginningSubString(test, search);
   }
 }

@@ -1,7 +1,8 @@
-import { TextInput } from '@mantine/core';
 import { Children, cloneElement, isValidElement, useState } from 'react';
-import { FilterListFavoritesDisplayName } from './FilterListFavorites';
+import { Divider, TextInput } from '@mantine/core';
+
 import { FilterListDataDisplayName, FilterListDataProps } from './FilterListData';
+import { FilterListFavoritesDisplayName } from './FilterListFavorites';
 import {
   FilterListShowMoreButtonDisplayName,
   FilterListShowMoreButtonProps
@@ -80,6 +81,7 @@ export function FilterList({
         // Some arbitrary width must be set so Mantine Buttons are rendered properly
         rightSectionWidth={'md'}
       />
+      <Divider my={'xs'}></Divider>
       {filteredChildren}
     </>
   );

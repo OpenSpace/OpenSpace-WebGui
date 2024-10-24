@@ -1,7 +1,8 @@
 export { BsThreeDotsVertical as VerticalDotsIcon } from 'react-icons/bs';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
-  IoTelescopeOutline as TelescopeIcon} from 'react-icons/io5';
+  IoTelescopeOutline as TelescopeIcon
+} from 'react-icons/io5';
 export {
   MdOutlineAirplanemodeActive as AirplaneIcon,
   MdAnchor as AnchorIcon,
