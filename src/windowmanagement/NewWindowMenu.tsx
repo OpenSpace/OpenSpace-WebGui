@@ -27,7 +27,8 @@ export function NewWindowMenu({ addWindow }: NewWindowMenuProps) {
             onClick={() => {
               addWindow(item.content, {
                 title: item.title,
-                position: item.preferredPosition
+                position: item.preferredPosition,
+                id: item.componentID
               });
             }}
           >

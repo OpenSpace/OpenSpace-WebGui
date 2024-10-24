@@ -21,6 +21,7 @@ export interface WindowLayoutOptions {
   width?: number;
   height?: number;
   title: string;
+  id: string;
   position?: WindowLayoutPosition;
 }
 
@@ -51,7 +52,8 @@ function createDefaultLayout(
                         </Container>,
                         {
                           position: 'right',
-                          title: 'new window'
+                          title: 'new window',
+                          id: 'newWindow'
                         }
                       );
                     }}
@@ -61,7 +63,8 @@ function createDefaultLayout(
                   <Button
                     onClick={() => {
                       addWindow(<h1>Floating</h1>, {
-                        title: 'new floating'
+                        title: 'new floating',
+                        id: 'newFloating'
                       });
                     }}
                   >
@@ -156,7 +159,7 @@ export function WindowLayout() {
     }
 
     // If the panel is already existing, give it focus
-    const isExistingPanel = rcDocRef.current.find(options.title);
+    const isExistingPanel = rcDocRef.current.find(options.id);
     if (isExistingPanel) {
       rcDocRef.current.updateTab(isExistingPanel.id!, null, true);
       return;
@@ -168,7 +171,7 @@ export function WindowLayout() {
     const base = rcDocRef.current.find(baseID)! as BoxData;
 
     const tab: TabData = {
-      id: options.title,
+      id: options.id,
       title: options.title,
       content: component,
       closable: true,
