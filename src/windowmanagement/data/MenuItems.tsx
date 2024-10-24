@@ -1,5 +1,7 @@
 import { WindowLayoutPosition } from 'src/windowmanagement/WindowLayout/WindowLayout';
 
+import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
+import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { Scene } from '@/panels/Scene/Scene';
 import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
@@ -25,7 +27,10 @@ export const menuItemsDB: MenuItem[] = [
   {
     title: 'Focus',
     componentID: 'focus',
-    content: <div>Focus menu</div>,
+    content: <OriginPanel />,
+    renderMenuButton: (key, onClick) => (
+      <OriginPanelMenuButton key={key} onClick={onClick} />
+    ),
     preferredPosition: 'float',
     defaultVisible: true
   },
