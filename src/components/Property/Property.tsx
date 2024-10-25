@@ -8,8 +8,8 @@ import {
 } from '@/redux/propertytree/propertyTreeMiddleware';
 import { setPropertyValue } from '@/redux/propertytree/propertyTreeSlice';
 
+import { ListProperty } from './/Types/ListProperty';
 import { BoolProperty } from './Types/BoolProperty';
-// import ListProperty from './ListProperty';
 // import MatrixProperty from './MatrixProperty';
 // import NumericProperty from './NumericProperty';
 import { OptionProperty } from './Types/OptionProperty';
@@ -26,9 +26,12 @@ const concreteProperties: { [key: string]: any } = {
   TriggerProperty,
   StringProperty,
 
-  //   DoubleListProperty: ListProperty,
-  //   IntListProperty: ListProperty,
-  //   StringListProperty: ListProperty,
+  // TODO: The numerical lists have to be fixed, still. There is no DoubleListProperty
+  // in use anywhere, and the only IntListProperty I could find did not work in the existing
+  // UI
+  // DoubleListProperty: ListProperty,
+  // IntListProperty: ListProperty,
+  StringListProperty: ListProperty,
 
   SelectionProperty
 
@@ -81,7 +84,7 @@ export function Property({ uri }: Props) {
   useEffect(() => {
     dispatch(subscribeToProperty({ uri }));
     return () => {
-      dispatch(unsubscribeToProperty({ uri })); // TODO: Linting rules for spacing
+      dispatch(unsubscribeToProperty({ uri }));
     };
   });
 

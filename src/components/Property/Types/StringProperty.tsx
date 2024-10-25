@@ -1,4 +1,4 @@
-import { KeyboardEvent, useState } from 'react';
+import { useState } from 'react';
 import { Group, InputLabel, TextInput } from '@mantine/core';
 
 import { Tooltip } from '@/components/Tooltip/Tooltip';
@@ -21,7 +21,7 @@ export function StringProperty({
 }: Props) {
   const [currentValue, setCurrentValue] = useState<string>(value);
 
-  function onKeyUp(event: KeyboardEvent<HTMLInputElement>) {
+  function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
       setPropertyValue(currentValue);
       event.currentTarget.blur();

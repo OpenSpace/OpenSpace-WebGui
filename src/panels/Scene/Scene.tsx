@@ -38,6 +38,9 @@ export function Scene() {
           ></Property>
           <p>Selection (Contellation Lines):</p>
           <Property uri={'Scene.Constellations.Renderable.ConstellationSelection'}></Property>
+          <p>String Lists (Server Module - Deny Adresses):</p>
+          <Property uri={'Modules.Server.Interfaces.DefaultTcpSocketInterface.DenyAddresses'}></Property>
+
         </>
       }
     </div>
