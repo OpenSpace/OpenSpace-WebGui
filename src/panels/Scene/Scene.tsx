@@ -13,6 +13,8 @@ export function Scene() {
     )
   }
 
+  const styleUnfinished = { color: 'red' };
+
   return (
     <div>
       {!hasLoadedScene ?
@@ -38,9 +40,14 @@ export function Scene() {
           ></Property>
           <p>Selection (Contellation Lines):</p>
           <Property uri={'Scene.Constellations.Renderable.ConstellationSelection'}></Property>
-          <p>String Lists (Server Module - Deny Adresses):</p>
+          <p style={styleUnfinished}>String Lists (Server Module - Deny Adresses):</p>
           <Property uri={'Modules.Server.Interfaces.DefaultTcpSocketInterface.DenyAddresses'}></Property>
-
+          <p style={styleUnfinished}>Numeric Property - "Nice" value (Earth opacity):</p>
+          <Property uri={'Scene.Earth.Renderable.Opacity'}></Property>
+          <p style={styleUnfinished}>Numeric Property - Disabled:</p>
+          <Property uri={'Scene.Earth.Renderable.NActiveLayers'}></Property>
+          <p style={styleUnfinished}>Numeric Property - Exponential:</p>
+          <Property uri={'Scene.Earth.Renderable.Opacity'}></Property>
         </>
       }
     </div>

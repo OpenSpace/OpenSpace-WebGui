@@ -1,4 +1,4 @@
-import { Checkbox, Group, Text } from '@mantine/core';
+import { Checkbox, Group } from '@mantine/core';
 
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 

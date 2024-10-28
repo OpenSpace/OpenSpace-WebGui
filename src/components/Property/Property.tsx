@@ -11,7 +11,7 @@ import { setPropertyValue } from '@/redux/propertytree/propertyTreeSlice';
 import { ListProperty } from './/Types/ListProperty';
 import { BoolProperty } from './Types/BoolProperty';
 // import MatrixProperty from './MatrixProperty';
-// import NumericProperty from './NumericProperty';
+import { NumericProperty } from './Types/NumericProperty';
 import { OptionProperty } from './Types/OptionProperty';
 import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';
@@ -33,16 +33,16 @@ const concreteProperties: { [key: string]: any } = {
   // IntListProperty: ListProperty,
   StringListProperty: ListProperty,
 
-  SelectionProperty
+  SelectionProperty,
 
-  //   FloatProperty: NumericProperty,
-  //   DoubleProperty: NumericProperty,
-  //   LongProperty: NumericProperty,
-  //   ULongProperty: NumericProperty,
-  //   IntProperty: NumericProperty,
-  //   UIntProperty: NumericProperty,
-  //   ShortProperty: NumericProperty,
-  //   UShortProperty: NumericProperty,
+  FloatProperty: NumericProperty,
+  DoubleProperty: NumericProperty,
+  LongProperty: NumericProperty,
+  ULongProperty: NumericProperty,
+  IntProperty: NumericProperty,
+  UIntProperty: NumericProperty,
+  ShortProperty: NumericProperty,
+  UShortProperty: NumericProperty,
 
   //   Vec2Property: VecProperty,
   //   Vec3Property: VecProperty,
