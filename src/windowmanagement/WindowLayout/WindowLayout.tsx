@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Button, Container, Stack } from '@mantine/core';
+import { Button, Container, ScrollArea, Stack } from '@mantine/core';
 import DockLayout, { BoxData, LayoutData, PanelData, TabData, TabGroup } from 'rc-dock';
 
 import { onCloseConnection, startConnection } from '@/redux/connection/connectionSlice';
@@ -170,7 +170,7 @@ export function WindowLayout() {
     const tab: TabData = {
       id: options.title,
       title: options.title,
-      content: component,
+      content: <ScrollArea h={'100%'}>{component}</ScrollArea>,
       closable: true,
       group: 'regularWindow'
     };
