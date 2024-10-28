@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { actionsReducer } from './actions/actionsSlice';
 import { connectionReducer } from './connection/connectionSlice';
+import { groupsReducer } from './groups/groupsSlice';
 import { luaApiReducer } from './luaapi/luaApiSlice';
 import { propertyTreeReducer } from './propertytree/propertyTreeSlice';
 import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
@@ -13,7 +14,8 @@ export const store = configureStore({
     connection: connectionReducer,
     luaApi: luaApiReducer,
     actions: actionsReducer,
-    propertyTree: propertyTreeReducer
+    propertyTree: propertyTreeReducer,
+    groups: groupsReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
