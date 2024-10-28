@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import { IoSaveOutline } from 'react-icons/io5';
-import { ActionIcon, ButtonGroup, Card, CloseButton, Grid, Group, InputLabel, List, Space, TextInput } from '@mantine/core';
+import {
+  Group,
+  InputLabel,
+  Pill,
+  PillsInput,
+} from '@mantine/core';
 
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 
@@ -19,110 +23,86 @@ export function ListProperty({
   setPropertyValue,
   value
 }: Props) {
-  const [editing, setEditing] = useState<boolean>(false);
   const [inputString, setInputString] = useState<string>("");
-  const [listValues, setListValues] = useState<string[]>(value);
+  const [editedIndex, setEditedIndex] = useState<number | undefined>(undefined);
 
-  function onAddKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
+  function onInputFieldKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
     const newItem = inputString.trim();
     if (event.key === 'Enter' && newItem.length > 0) {
-      setListValues([newItem, ...listValues]);
-      setInputString("");
+      setPropertyValue([...value, newItem]);
+      stopEditing(event);
     } else if (event.key === 'Escape') {
-      stopEditing();
+      stopEditing(event);
     }
   }
 
-  function onEditKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === 'Enter') {
-      setPropertyValue(listValues);
-      stopEditing();
+  function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'ArrowLeft') {
+      if (editedIndex === undefined) {
+        setEditedIndex(value.length - 1);
+      }
+      else {
+        setEditedIndex(Math.max(editedIndex - 1, 0));
+      }
+    } else if (event.key === 'ArrowRight') {
+      if (editedIndex !== undefined) {
+        setEditedIndex(Math.max(editedIndex + 1, 0));
+      }
+      else if (editedIndex === value.length - 1) {
+        setEditedIndex(undefined);
+      }
     } else if (event.key === 'Escape') {
-      stopEditing();
+      stopEditing(event);
     }
   }
 
-  function onItemDelete(index: number) {
-    const newValues = [...listValues];
-    newValues.splice(index, 1);
-    setListValues(newValues);
-  }
-
-  function stopEditing() {
+  function stopEditing(event?: React.KeyboardEvent<HTMLInputElement>) {
     setInputString("");
-    setEditing(false);
+    setEditedIndex(undefined);
+    event?.currentTarget.blur();
   }
 
-  function savePropertyChange() {
-    setPropertyValue(listValues);
-    stopEditing();
+  function deleteItem(index: number) {
+    const newValues = [...value];
+    newValues.splice(index, 1);
+    setPropertyValue(newValues);
+    setEditedIndex(undefined);
   }
 
-  if (editing) {
-    return (
-      <>
-        <Grid align='center'>
-          <Grid.Col span="auto">
-            <TextInput
-              value={inputString}
-              variant="filled"
-              placeholder='Add new value'
-              onChange={(event) => setInputString(event.currentTarget.value)}
-              onKeyUp={(event) => onAddKeyUp(event)}
-              label={
-                <Group>
-                  <InputLabel>{name}</InputLabel>
-                  <Tooltip text={description} />
-                </Group>
-              }
-
-            />
-          </Grid.Col>
-          <Grid.Col span="content">
-            <ButtonGroup>
-              <ActionIcon onClick={savePropertyChange}><IoSaveOutline /></ActionIcon>
-              <Space w="sm" />
-              <CloseButton onClick={stopEditing} />
-              <Space w="sm" />
-            </ButtonGroup>
-          </Grid.Col>
-        </Grid>
-        <Card>
-          <List>
-            {listValues.length > 0 ?
-              listValues.map((_, i) =>
-                <TextInput
-                  key={i}
-                  value={listValues[i]}
-                  onKeyUp={(event) => onEditKeyUp(event)}
-                  rightSection={<CloseButton onClick={() => onItemDelete(i)} />}
-                  onChange={(event) => {
-                    const newValues = listValues.map((e, index) =>
-                      (index === i) ? event.currentTarget.value : e
-                    );
-                    setListValues(newValues)
-                  }}
-                />)
-              : <>List is empty</>}
-          </List>
-        </Card>
-      </>);
-  }
+  // TODO: This input is not finished. Still need to do some work to make it editable.
+  // That is, edit existing values. And make it editable using only keyboard input...
+  // But first, discuss alternative designs witht he team, before making it too complex
   return (
-    <TextInput
-      value={value}
+    <PillsInput
       disabled={disabled}
-      onFocus={() => {
-        setEditing(true)
-        setListValues(value)
-      }}
-      onChange={() => { }}
+      onKeyUp={onKeyUp}
+      onBlur={() => stopEditing()}
       label={
         <Group>
           <InputLabel>{name}</InputLabel>
           <Tooltip text={description} />
         </Group>
       }
-    />
+    >
+      <Pill.Group>
+        {value.map((value, i) => (
+          <Pill
+            key={i}
+            withRemoveButton={editedIndex === i}
+            onRemove={() => deleteItem(i)}
+            onClick={(event) => {
+              setEditedIndex(i);
+              event.currentTarget.focus();
+            }}>
+            {value}
+          </Pill>
+        ))}
+        <PillsInput.Field
+          value={editedIndex !== undefined ? value[editedIndex] : inputString}
+          onChange={(event) => setInputString(event.currentTarget.value)}
+          onKeyUp={(event) => onInputFieldKeyUp(event)}
+        />
+      </Pill.Group>
+    </PillsInput>
   );
 }
