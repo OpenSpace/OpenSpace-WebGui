@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { MdOutlineEdit } from 'react-icons/md';
-import { ActionIcon, Grid, Group, InputLabel, NumberInput, Slider, Text } from '@mantine/core';
+import { ActionIcon, Grid, NumberInput, Slider } from '@mantine/core';
+import { inRange } from 'lodash';
 
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { PropertyLabel } from '../PropertyLabel';
 
 interface Props {
   name: string;
@@ -36,8 +37,13 @@ export function NumericProperty({
   const marks = [
     { value: min, label: min },
     { value: (max - min) / 2, label: (max - min) / 2 },
-    { value: max, label: max }
-  ]
+    { value: max, label: max },
+  ];
+
+  // Always include zero if it exists in the range
+  if (inRange(0, min, max)) {
+    marks.push({ value: 0, label: 0 });
+  }
 
   function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
@@ -55,12 +61,7 @@ export function NumericProperty({
       <NumberInput
         value={value}
         disabled={disabled}
-        label={
-          <Group>
-            <InputLabel>{name}</InputLabel>
-            <Tooltip text={description} />
-          </Group>
-        }
+        label={<PropertyLabel label={name} tip={description} />}
       />
     )
   }
@@ -68,7 +69,7 @@ export function NumericProperty({
   return (
     <>
       {/* Alternative 1, just a number input */}
-      <NumberInput
+      {/* <NumberInput
         value={currentEditValue}
         min={min}
         max={max}
@@ -82,18 +83,10 @@ export function NumericProperty({
           }
         }}
         disabled={disabled}
-        label={
-          <Group>
-            <InputLabel>{name}</InputLabel>
-            <Tooltip text={description} />
-          </Group>
-        }
-      />
+        label={<PropertyLabel label={name} tip={description} />}
+      /> */}
       {/* Alternaitve 2, just a slider */}
-      <Group>
-        <InputLabel>{name}</InputLabel>
-        <Tooltip text={description} />
-      </Group>
+      <PropertyLabel label={name} tip={description} />
       <Grid>
         <Grid.Col span='auto'>
           <Slider
@@ -112,10 +105,7 @@ export function NumericProperty({
         </Grid.Col>
       </Grid>
       {/* Alternaitve 3, just a slider */}
-      <Group>
-        <InputLabel>{name}</InputLabel>
-        <Tooltip text={description} />
-      </Group>
+      {/* <PropertyLabel label={name} tip={description} />
       <Grid>
         <Grid.Col span='auto'>
           <Slider
@@ -148,7 +138,7 @@ export function NumericProperty({
             error={undefined} // TODO: use to show error messages
           />
         </Grid.Col>
-      </Grid>
+    </Grid >*/}
     </>
 
   );

@@ -1,5 +1,4 @@
-import { BiChevronRight } from 'react-icons/bi';
-import { Box, Card, Collapse, Group, Skeleton, Space, Tabs, Text, Tree, TreeNodeData } from '@mantine/core';
+import { Skeleton, Space, Tabs, Text, Tree, TreeNodeData } from '@mantine/core';
 
 import { CollapsibleHeader } from '@/components/CollapsibleHeader/CollapsibleHeader';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';

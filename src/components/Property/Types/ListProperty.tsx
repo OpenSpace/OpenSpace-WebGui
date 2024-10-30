@@ -1,12 +1,7 @@
 import { useState } from 'react';
-import {
-  Group,
-  InputLabel,
-  Pill,
-  PillsInput,
-} from '@mantine/core';
+import { Pill, PillsInput } from '@mantine/core';
 
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { PropertyLabel } from '../PropertyLabel';
 
 interface Props {
   name: string;
@@ -30,9 +25,10 @@ export function ListProperty({
     const newItem = inputString.trim();
     if (event.key === 'Enter' && newItem.length > 0) {
       setPropertyValue([...value, newItem]);
-      stopEditing(event);
+      stopEditing();
     } else if (event.key === 'Escape') {
-      stopEditing(event);
+      stopEditing();
+      event.currentTarget.blur();
     }
   }
 
@@ -52,14 +48,14 @@ export function ListProperty({
         setEditedIndex(undefined);
       }
     } else if (event.key === 'Escape') {
-      stopEditing(event);
+      stopEditing();
+      event.currentTarget.blur();
     }
   }
 
-  function stopEditing(event?: React.KeyboardEvent<HTMLInputElement>) {
+  function stopEditing() {
     setInputString("");
     setEditedIndex(undefined);
-    event?.currentTarget.blur();
   }
 
   function deleteItem(index: number) {
@@ -77,12 +73,7 @@ export function ListProperty({
       disabled={disabled}
       onKeyUp={onKeyUp}
       onBlur={() => stopEditing()}
-      label={
-        <Group>
-          <InputLabel>{name}</InputLabel>
-          <Tooltip text={description} />
-        </Group>
-      }
+      label={<PropertyLabel label={name} tip={description} />}
     >
       <Pill.Group>
         {value.map((value, i) => (

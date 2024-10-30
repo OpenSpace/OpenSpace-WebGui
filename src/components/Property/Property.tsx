@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Box } from '@mantine/core';
 import { PropertyValue } from 'src/types/types';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -102,17 +103,19 @@ export function Property({ uri }: Props) {
   return (
     // All the property types get all informaiton, and then they may do whatever they
     // want with it (like ignore certain parts)
-    <ConcreteProperty
-      key={property.description.identifier}
-      disabled={property.description.metaData.isReadOnly}
-      name={property.description.name}
-      description={property.description.description}
-      value={property.value}
-      setPropertyValue={(newValue: PropertyValue) => {
-        dispatch(setPropertyValue({ uri, value: newValue }));
-      }}
-      metaData={property.description.metaData}
-      additionalData={property.description.additionalData}
-    />
+    <Box pb="xs">
+      <ConcreteProperty
+        key={property.description.identifier}
+        disabled={property.description.metaData.isReadOnly}
+        name={property.description.name}
+        description={property.description.description}
+        value={property.value}
+        setPropertyValue={(newValue: PropertyValue) => {
+          dispatch(setPropertyValue({ uri, value: newValue }));
+        }}
+        metaData={property.description.metaData}
+        additionalData={property.description.additionalData}
+      />
+    </Box>
   );
 }

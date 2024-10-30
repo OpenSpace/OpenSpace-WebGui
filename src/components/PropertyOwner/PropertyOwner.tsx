@@ -36,7 +36,7 @@ export function PropertyOwner({ uri }: Props) {
       {/* TODO: These componetns looked awful without the added margin and padding (ml and p).
           But we should remove the styling once we've decided how to do for the entire page*/}
       <Collapse in={expanded} ml="lg" transitionDuration={0}>
-        <Paper onClick={(event) => event.stopPropagation()} withBorder p="sm" >
+        <Paper withBorder p="xs" pt="5px" onClick={(event) => event.stopPropagation()}>
           {/* TODO: The rendering of these components are very slow...
               Setting the transition duration to zero helps a bit, but still*/}
           {subPropertyOwners.map(uri => <PropertyOwner key={uri} uri={uri} />)}

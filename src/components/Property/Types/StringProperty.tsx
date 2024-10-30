@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Group, InputLabel, TextInput } from '@mantine/core';
+import { TextInput } from '@mantine/core';
 
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { PropertyLabel } from '../PropertyLabel';
 
 interface Props {
   name: string;
@@ -37,12 +37,7 @@ export function StringProperty({
       onChange={(event) => setCurrentValue(event.currentTarget.value)}
       onKeyUp={(event) => onKeyUp(event)}
       disabled={disabled}
-      label={
-        <Group>
-          <InputLabel>{name}</InputLabel>
-          <Tooltip text={description} />
-        </Group>
-      }
+      label={<PropertyLabel label={name} tip={description} />}
     />
   );
 }

@@ -1,6 +1,6 @@
-import { Group, InputLabel, MultiSelect } from '@mantine/core';
+import { MultiSelect } from '@mantine/core';
 
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { PropertyLabel } from '../PropertyLabel';
 
 interface Props {
   name: string;
@@ -24,12 +24,7 @@ export function SelectionProperty({
   const options = additionalData.Options;
   return (
     <MultiSelect
-      label={
-        <Group>
-          <InputLabel>{name}</InputLabel>
-          <Tooltip text={description} />
-        </Group>
-      }
+      label={<PropertyLabel label={name} tip={description} />}
       disabled={disabled}
       data={options}
       value={value}

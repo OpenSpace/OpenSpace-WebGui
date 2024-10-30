@@ -1,6 +1,6 @@
-import { Group, InputLabel, Select } from '@mantine/core';
+import { Select } from '@mantine/core';
 
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { PropertyLabel } from '../PropertyLabel';
 
 interface Option {
   [key: string]: string // OBS! The key is a number, but will always be converted to a string...
@@ -44,12 +44,7 @@ export function OptionProperty({ name, description, disabled, setPropertyValue, 
 
   return (
     <Select
-      label={
-        <Group>
-          <InputLabel>{name}</InputLabel>
-          <Tooltip text={description} />
-        </Group>
-      }
+      label={<PropertyLabel label={name} tip={description} />}
       placeholder='Choose an option'
       disabled={disabled}
       data={Object.keys(options)}
@@ -57,8 +52,5 @@ export function OptionProperty({ name, description, disabled, setPropertyValue, 
       onChange={(_value) => onChange(_value)}
       allowDeselect={false}
     />
-
-
-    // TODO: Help tooltip icon. Discuss how to include
   );
 }
