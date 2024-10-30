@@ -17,7 +17,7 @@ import { OptionProperty } from './Types/OptionProperty';
 import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';
 import { TriggerProperty } from './Types/TriggerProperty';
-// import VecProperty from './VectorProperty';
+import { VectorProperty } from './Types/VectorProperty';
 
 // (2024-10-21, emmbr) I don't know how to efficiently get rid of "any" in this case
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,21 +45,21 @@ const concreteProperties: { [key: string]: any } = {
   ShortProperty: NumericProperty,
   UShortProperty: NumericProperty,
 
-  //   Vec2Property: VecProperty,
-  //   Vec3Property: VecProperty,
-  //   Vec4Property: VecProperty,
+  Vec2Property: VectorProperty,
+  Vec3Property: VectorProperty,
+  Vec4Property: VectorProperty,
 
-  //   IVec2Property: VecProperty,
-  //   IVec3Property: VecProperty,
-  //   IVec4Property: VecProperty,
+  IVec2Property: VectorProperty,
+  IVec3Property: VectorProperty,
+  IVec4Property: VectorProperty,
 
-  //   UVec2Property: VecProperty,
-  //   UVec3Property: VecProperty,
-  //   UVec4Property: VecProperty,
+  UVec2Property: VectorProperty,
+  UVec3Property: VectorProperty,
+  UVec4Property: VectorProperty,
 
-  //   DVec2Property: VecProperty,
-  //   DVec3Property: VecProperty,
-  //   DVec4Property: VecProperty,
+  DVec2Property: VectorProperty,
+  DVec3Property: VectorProperty,
+  DVec4Property: VectorProperty,
 
   //   Mat2Property: MatrixProperty,
   //   Mat3Property: MatrixProperty,
@@ -94,11 +94,12 @@ export function Property({ uri }: Props) {
   const ConcreteProperty = concreteProperties[property.description.type];
 
   if (!ConcreteProperty) {
-    console.error('Missing property type', property.description.type);
+    // TODO: Bring back once all types are implemented
+    // console.error('Missing property type', property.description.type);
     return null;
   }
 
-  console.log(property);
+  // console.log(property);
 
   return (
     // All the property types get all informaiton, and then they may do whatever they
