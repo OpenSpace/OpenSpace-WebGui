@@ -1,19 +1,33 @@
-import { Skeleton, Space, Tabs, Text, Tree, TreeNodeData } from '@mantine/core';
+import { MdFilterAlt } from 'react-icons/md';
+import { ActionIcon, Checkbox, Group, Menu, Skeleton, Space, Tabs, Text, Tree, TreeNodeData } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 
 import { CollapsibleHeader } from '@/components/CollapsibleHeader/CollapsibleHeader';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { Groups } from '@/redux/groups/groupsSlice';
 import { useAppSelector } from '@/redux/hooks';
-import { hasInterestingTag } from '@/util/propertytreehelper';
+import { hasInterestingTag, shouldShowPropertyOwner } from '@/util/propertytreehelper';
 
 import { TempPropertyTest } from './TempPropertyTest';
 
 export function Scene() {
   const propertyOwners = useAppSelector((state) => state.propertyTree.owners.propertyOwners);
+  const properties = useAppSelector((state) => state.propertyTree.props.properties);
   const hasLoadedScene = Object.keys(propertyOwners).length > 0;
 
   const groups: Groups = useAppSelector((state) => state.groups.groups);
   const customGuiGroupOrdering = useAppSelector((state) => state.groups.customGroupOrdering);
+
+  // TODO: SHould this really be local storage?
+  const [showOnlyEnabled, setShowOnlyEnabled] = useLocalStorage<boolean>({
+    key: 'showOnlyEnabled',
+    defaultValue: false
+  });
+  const [showHiddenNodes, setShowHiddenNodes] = useLocalStorage<boolean>({
+    key: 'showHiddenNodes',
+    defaultValue: false
+  });
 
   const topLevelGroupsPaths = Object.keys(groups).filter((path) => {
     // Get the number of slashes in the path
@@ -56,13 +70,17 @@ export function Scene() {
     )
 
     // Add property owners
-    groupData.propertyOwners.forEach((uri) => {
-      const propertyOwner = propertyOwners[uri];
-      groupItem.children?.push({
-        value: uri, // TODO; what is this used for?
-        label: propertyOwner?.name
-      });
-    })
+    groupData.propertyOwners
+      .filter((uri) =>
+        shouldShowPropertyOwner(uri, properties, showOnlyEnabled, showHiddenNodes)
+      )
+      .forEach((uri) => {
+        const propertyOwner = propertyOwners[uri];
+        groupItem.children?.push({
+          value: uri, // TODO; what is this used for?
+          label: propertyOwner?.name
+        });
+      })
 
     return groupItem;
   }
@@ -74,13 +92,16 @@ export function Scene() {
 
   // Add the nodes without any group to the top level
   const nodesWithoutGroup = groups['/']?.propertyOwners || [];
-  nodesWithoutGroup.forEach((uri) => {
-    const propertyOwner = propertyOwners[uri];
-    treeData.push({
-      value: uri, // TODO; what is this used for?
-      label: propertyOwner?.name
+  nodesWithoutGroup
+    .filter((uri) =>
+      shouldShowPropertyOwner(uri, properties, showOnlyEnabled, showHiddenNodes)
+    )
+    .forEach((uri) => {
+      treeData.push({
+        value: uri, // TODO; what is this used for?
+        label: propertyOwners[uri]?.name
+      });
     });
-  })
 
   function loadingBlocks(n: number) {
     return [...Array(n)].map((_, i) =>
