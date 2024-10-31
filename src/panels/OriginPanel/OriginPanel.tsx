@@ -109,14 +109,14 @@ export function OriginPanel() {
     return () => {
       anchorDispatcher.current.unsubscribe();
     };
-  }, [anchorDispatcher.current]);
+  }, []);
 
   useEffect(() => {
     aimDispatcher.current.subscribe();
     return () => {
       aimDispatcher.current.unsubscribe();
     };
-  }, [aimDispatcher.current]);
+  }, []);
 
   // TODO find a better (?) way to color them depending on state
   function actionIconStyle(state: NavigationActionState) {
