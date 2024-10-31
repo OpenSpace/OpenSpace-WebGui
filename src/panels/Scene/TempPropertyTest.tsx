@@ -36,7 +36,7 @@ export function TempPropertyTest() {
       <h3 style={styleUnfinished}>Numeric Property - Linear, but not nice values:</h3>
       TODO
       <h3 style={styleUnfinished}>Vector Property:</h3>
-      Vec3 (Color)
+      Vec3 (Color) - 1 lightday grid
       <Property uri={'Scene.1ldGrid.Renderable.Color'} />
       IntVec2
       <Property uri={'Scene.1ldGrid.Renderable.Segments'} />

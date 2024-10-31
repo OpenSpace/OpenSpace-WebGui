@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { shallowEqual } from 'react-redux';
 import { Box } from '@mantine/core';
 import { PropertyValue } from 'src/types/types';
 
@@ -77,7 +78,12 @@ interface Props {
 export function Property({ uri }: Props) {
   // TODO: The state here has been changed. Should just be propertyTree.properties. Or
   // maybe even just state.properties?
-  const property = useAppSelector((state) => state.propertyTree.props.properties[uri]);
+  const description = useAppSelector((state) =>
+    state.propertyTree.props.properties[uri]?.description
+  );
+  const value = useAppSelector((state) =>
+    state.propertyTree.props.properties[uri]?.value
+  );
 
   const dispatch = useAppDispatch();
   // TODO: These actions should not have to take an object. The string value is enough
@@ -89,9 +95,11 @@ export function Property({ uri }: Props) {
     };
   });
 
-  if (!property) return null;
+  if (!description || (value === undefined)) {
+    return null;
+  }
 
-  const ConcreteProperty = concreteProperties[property.description.type];
+  const ConcreteProperty = concreteProperties[description.type];
 
   if (!ConcreteProperty) {
     // TODO: Bring back once all types are implemented
@@ -106,16 +114,16 @@ export function Property({ uri }: Props) {
     // want with it (like ignore certain parts)
     <Box pb="xs">
       <ConcreteProperty
-        key={property.description.identifier}
-        disabled={property.description.metaData.isReadOnly}
-        name={property.description.name}
-        description={property.description.description}
-        value={property.value}
+        key={description.identifier}
+        disabled={description.metaData.isReadOnly}
+        name={description.name}
+        description={description.description}
+        value={value}
         setPropertyValue={(newValue: PropertyValue) => {
           dispatch(setPropertyValue({ uri, value: newValue }));
         }}
-        metaData={property.description.metaData}
-        additionalData={property.description.additionalData}
+        metaData={description.metaData}
+        additionalData={description.additionalData}
       />
     </Box>
   );

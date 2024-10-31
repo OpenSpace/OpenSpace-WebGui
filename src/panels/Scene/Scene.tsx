@@ -13,7 +13,12 @@ import { TempPropertyTest } from './TempPropertyTest';
 
 export function Scene() {
   const propertyOwners = useAppSelector((state) => state.propertyTree.owners.propertyOwners);
+
+  // TODO: Remove dependency on entire properties object. This means that the entire menu
+  // is rerendered as soon as a property changes... Each propertyowner could handle its
+  // visiblility instead?
   const properties = useAppSelector((state) => state.propertyTree.props.properties);
+
   const hasLoadedScene = Object.keys(propertyOwners).length > 0;
 
   const groups: Groups = useAppSelector((state) => state.groups.groups);

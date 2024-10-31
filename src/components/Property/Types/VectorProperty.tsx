@@ -1,4 +1,6 @@
-import { Flex, NumberInput } from '@mantine/core';
+import { Flex } from '@mantine/core';
+
+import { NumericInput } from '@/components/Input/NumericInput';
 
 import { PropertyLabel } from '../PropertyLabel';
 
@@ -25,37 +27,29 @@ export function VectorProperty({
   value,
   additionalData
 }: Props) {
-
   const min = additionalData.MinimumValue;
   const max = additionalData.MaximumValue;
   const step = additionalData.SteppingValue;
 
-  function onValueChange(index: number, newValue: number | undefined) {
-    if (newValue !== undefined) {
-      const v = [...value];
-      v[index] = newValue;
-      setPropertyValue(v);
-    }
+  function setValue(index: number, newValue: number) {
+    const v = [...value];
+    v[index] = newValue;
+    setPropertyValue(v);
   }
-
-  // TODO: Only change value on enter when editing using text
 
   return (
     <>
       <PropertyLabel label={name} tip={description} />
       <Flex>
         {value.map((v, i) =>
-          <NumberInput
+          <NumericInput
             key={i}
-            value={v}
+            defaultValue={v}
             min={min[i]}
             max={max[i]}
             step={step[i]}
-            stepHoldDelay={500}
-            stepHoldInterval={100}
-            onValueChange={(newV) => onValueChange(i, newV.floatValue)}
+            onEnter={(newValue) => setValue(i, newValue)}
             disabled={disabled}
-            error={(v < min[i] || v > max[i]) && "Invalid"} // TODO: Better error handling
           />
         )}
       </Flex>

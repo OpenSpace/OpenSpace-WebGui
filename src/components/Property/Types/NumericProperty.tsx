@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { MdOutlineEdit } from 'react-icons/md';
-import { ActionIcon, Grid, NumberInput, Slider } from '@mantine/core';
+import { ActionIcon, Grid, Slider } from '@mantine/core';
 import { inRange } from 'lodash';
+
+import { NumericInput } from '@/components/Input/NumericInput';
 
 import { PropertyLabel } from '../PropertyLabel';
 
@@ -28,7 +30,7 @@ export function NumericProperty({
   value,
   additionalData
 }: Props) {
-  const [currentEditValue, setEditValue] = useState<number>(value);
+  const [currentValue, setCurrentValue] = useState<number>(value);
 
   const min = additionalData.MinimumValue;
   const max = additionalData.MaximumValue;
@@ -45,21 +47,17 @@ export function NumericProperty({
     marks.push({ value: 0, label: 0 });
   }
 
-  function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === 'Enter') {
-      setPropertyValue(currentEditValue);
-      event.currentTarget.blur();
-    } else if (event.key === 'Escape') {
-      setEditValue(value);
-      event.currentTarget.blur();
-    }
+  function onValueChange(newValue: number) {
+    setCurrentValue(newValue);
+    setPropertyValue(newValue);
   }
 
   if (disabled) {
-    // TODO: this is better, but does not show the maximum value...
+    // TODO: this is better than slider for read-only values, but does not show the
+    // min or maximum value...
     return (
-      <NumberInput
-        value={value}
+      <NumericInput
+        defaultValue={currentValue}
         disabled={disabled}
         label={<PropertyLabel label={name} tip={description} />}
       />
@@ -68,35 +66,17 @@ export function NumericProperty({
 
   return (
     <>
-      {/* Alternative 1, just a number input */}
-      {/* <NumberInput
-        value={currentEditValue}
-        min={min}
-        max={max}
-        step={step}
-        onValueChange={(v) => {
-          if (v.floatValue !== undefined) {
-            setEditValue(v.floatValue)
-          }
-          else {
-            // ?
-          }
-        }}
-        disabled={disabled}
-        label={<PropertyLabel label={name} tip={description} />}
-      /> */}
-      {/* Alternaitve 2, just a slider */}
       <PropertyLabel label={name} tip={description} />
       <Grid>
         <Grid.Col span='auto'>
           <Slider
             disabled={disabled}
-            value={value}
+            value={currentValue}
             min={min}
             max={max}
             step={step}
             marks={marks}
-            onChange={(v) => setPropertyValue(v)}
+            onChange={onValueChange}
           />
         </Grid.Col>
         <Grid.Col span='content'>
@@ -104,41 +84,32 @@ export function NumericProperty({
           <ActionIcon><MdOutlineEdit /></ActionIcon>
         </Grid.Col>
       </Grid>
-      {/* Alternaitve 3, just a slider */}
-      {/* <PropertyLabel label={name} tip={description} />
+      {/* Alternaitve - include  */}
+      <PropertyLabel label={name} tip={description} />
       <Grid>
         <Grid.Col span='auto'>
           <Slider
             disabled={disabled}
-            value={value}
+            value={currentValue}
             min={min}
             max={max}
             step={step}
             marks={marks}
-            onChange={(v) => setPropertyValue(v)}
+            onChange={onValueChange}
           />
         </Grid.Col>
         <Grid.Col span={4}>
-          <NumberInput
+          <NumericInput
+            // TODO: this does not update correctly when slider updates
             disabled={disabled}
-            value={value}
+            defaultValue={currentValue}
             min={min}
             max={max}
             step={step}
-            stepHoldDelay={500}
-            onValueChange={(v) => {
-              if (v.floatValue !== undefined) {
-                setPropertyValue(v.floatValue)
-              }
-              else {
-                // ?
-              }
-            }}
-            onKeyUp={onKeyUp}
-            error={undefined} // TODO: use to show error messages
+            onEnter={onValueChange}
           />
         </Grid.Col>
-    </Grid >*/}
+      </Grid >
     </>
 
   );
