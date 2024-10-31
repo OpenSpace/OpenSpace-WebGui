@@ -549,7 +549,7 @@ The URI is interpreted using a wildcard in which '*' is expanded to '(.*)' and b
    * Sets the property identified by the URI in the first argument. The second argument can be any type, but it has to match the type that the property expects. If the third is not present or is '0', the value changes instantly, otherwise the change will take that many seconds and the value is interpolated at each step in between. The fourth parameter is an optional easing function if a 'duration' has been specified. If 'duration' is 0, this parameter value is ignored. Otherwise, it has to be one of the easing functions defined in the list below. This is the same as calling the setValue method and passing 'single' as the fourth argument to setPropertyValue. The fifth argument is another Lua script that will be executed when the interpolation provided in parameter 3 finishes.
  Avaiable easing functions: Linear, QuadraticEaseIn, QuadraticEaseOut, QuadraticEaseInOut, CubicEaseIn, CubicEaseOut, CubicEaseInOut, QuarticEaseIn, QuarticEaseOut, QuarticEaseInOut, QuinticEaseIn, QuinticEaseOut, QuinticEaseInOut, SineEaseIn, SineEaseOut, SineEaseInOut, CircularEaseIn, CircularEaseOut, CircularEaseInOut, ExponentialEaseIn, ExponentialEaseOut, ExponentialEaseInOut, ElasticEaseIn, ElasticEaseOut, ElasticEaseInOut, BounceEaseIn, BounceEaseOut, BounceEaseInOut
    */
-  setPropertyValueSingle: () => Promise<void>
+  setPropertyValueSingle: (uri: string, value: any, duration?: number, easingFunction?: string, script?: string) => Promise<void>
   /**
    * Sets the folder used for storing screenshots or session recording frames
    */

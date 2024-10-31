@@ -9,6 +9,7 @@ export {
   MdFolder as FolderIcon,
   MdFilterCenterFocus as FrameFocusIcon,
   MdLaunch as LaunchIcon,
+  MdFlashOn as LightningFlashIcon,
   MdPause as PauseIcon,
   MdPlayArrow as PlayIcon,
   MdFiberManualRecord as RecordIcon,

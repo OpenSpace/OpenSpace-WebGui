@@ -1,7 +1,10 @@
-import { ActionIcon, Button, Group, Menu } from '@mantine/core';
+import { ActionIcon, Button, Group, Menu, Stack } from '@mantine/core';
 import { PropertyOwner, PropertyValue } from 'src/types/types';
 
-import { AirplaneIcon, FrameFocusIcon, VerticalDotsIcon } from '@/icons/icons';
+import { VerticalDotsIcon } from '@/icons/icons';
+import { NavigationType } from '@/types/enums';
+
+import { NodeNavigationButton } from './NodeNavigationButton';
 
 interface FocusEntryProps {
   entry: PropertyOwner;
@@ -19,47 +22,70 @@ export function FocusEntry({
   onSelect,
   showNavigationButtons
 }: FocusEntryProps) {
+  const buttonVariant = isActive() ? 'filled' : 'light';
+
   function isActive() {
     return entry.identifier === activeNode;
   }
 
-  function select(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  function onSelectEntry(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     onSelect(entry.identifier, event);
   }
 
   return (
     <Group justify={'space-between'} gap={'xs'}>
       <Button
-        onClick={select}
+        onClick={onSelectEntry}
         justify={'left'}
         style={{ flexGrow: 1 }}
-        variant={isActive() ? 'filled' : 'light'}
+        variant={buttonVariant}
       >
         {entry.name}
       </Button>
       {showNavigationButtons && (
         <>
           {isActive() && (
-            <ActionIcon onClick={() => console.log('Focus')} size={'lg'}>
-              <FrameFocusIcon />
-            </ActionIcon>
+            <NodeNavigationButton
+              type={NavigationType.frame}
+              identifier={entry.identifier}
+            />
           )}
-          <ActionIcon size={'lg'} variant={isActive() ? 'filled' : 'light'}>
-            <AirplaneIcon />
-          </ActionIcon>
+          <NodeNavigationButton
+            type={NavigationType.fly}
+            identifier={entry.identifier}
+            variant={buttonVariant}
+          />
 
           <Menu position={'right-start'}>
             <Menu.Target>
-              <ActionIcon size={'lg'} variant={isActive() ? 'filled' : 'light'}>
+              <ActionIcon size={'lg'} variant={buttonVariant}>
                 <VerticalDotsIcon />
               </ActionIcon>
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Label>{entry.name}</Menu.Label>
-              <Menu.Item>Focus</Menu.Item>
-              <Menu.Item>Fly to</Menu.Item>
-              <Menu.Item>Jump to</Menu.Item>
-              <Menu.Item>Zoom to / Frame</Menu.Item>
+              <Stack gap={'xs'}>
+                <NodeNavigationButton
+                  type={NavigationType.focus}
+                  identifier={entry.identifier}
+                  showLabel
+                />
+                <NodeNavigationButton
+                  type={NavigationType.fly}
+                  identifier={entry.identifier}
+                  showLabel
+                />
+                <NodeNavigationButton
+                  type={NavigationType.jump}
+                  identifier={entry.identifier}
+                  showLabel
+                />
+                <NodeNavigationButton
+                  type={NavigationType.frame}
+                  identifier={entry.identifier}
+                  showLabel
+                />
+              </Stack>
             </Menu.Dropdown>
           </Menu>
         </>
