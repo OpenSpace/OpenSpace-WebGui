@@ -106,14 +106,9 @@ export function OriginPanel() {
 
   useEffect(() => {
     anchorDispatcher.current.subscribe();
-    return () => {
-      anchorDispatcher.current.unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
     aimDispatcher.current.subscribe();
     return () => {
+      anchorDispatcher.current.unsubscribe();
       aimDispatcher.current.unsubscribe();
     };
   }, []);

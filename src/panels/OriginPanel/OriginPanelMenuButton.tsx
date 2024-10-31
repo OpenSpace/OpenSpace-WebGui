@@ -7,6 +7,7 @@ import {
   subscribeToProperty,
   unsubscribeToProperty
 } from '@/redux/propertytree/propertyTreeMiddleware';
+import { IconSize } from '@/types/enums';
 import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
 
 interface OriginPanelMenuButtonProps {
@@ -58,14 +59,14 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
       <Button onClick={onClick} size={'xl'}>
         <Group>
           <>
-            <AnchorIcon size={'calc(2.125rem * var(--mantine-scale))'} />
+            <AnchorIcon size={IconSize.lg} />
             <Stack gap={0} align={'flex-start'}>
               {cappedAnchorName}
               <Text>Anchor</Text>
             </Stack>
           </>
           <>
-            <TelescopeIcon size={'calc(2.125rem * var(--mantine-scale))'} />
+            <TelescopeIcon size={IconSize.lg} />
             <Stack gap={0} align={'flex-start'}>
               {cappedAimName}
               <Text>Aim</Text>
@@ -79,9 +80,8 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
   function FocusButton() {
     return (
       <Button
-        // TODO: create xs-xl sizes for icons that are not within an ActionIcons for example
         onClick={onClick}
-        leftSection={<FocusIcon size={'calc(2.125rem * var(--mantine-scale))'} />}
+        leftSection={<FocusIcon size={IconSize.lg} />}
         size={'xl'}
       >
         <Stack gap={0} align={'flex-start'} justify={'center'}>
