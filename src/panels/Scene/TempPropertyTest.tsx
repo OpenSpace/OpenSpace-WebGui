@@ -40,6 +40,10 @@ export function TempPropertyTest() {
       <Property uri={'Scene.1ldGrid.Renderable.Color'} />
       IntVec2
       <Property uri={'Scene.1ldGrid.Renderable.Segments'} />
+      TODO: More variants. E.g. MinMaxRange. Vec3 and Vec4 colors
+      <h3 style={styleUnfinished}>Matrix Property:</h3>
+      Mat4: ISS Model transform
+      <Property uri={'Scene.ISS.Renderable.ModelTransform'} />
     </Box>
   );
 }

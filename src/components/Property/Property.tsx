@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { shallowEqual } from 'react-redux';
 import { Box } from '@mantine/core';
 import { PropertyValue } from 'src/types/types';
 
@@ -12,7 +11,7 @@ import { setPropertyValue } from '@/redux/propertytree/propertyTreeSlice';
 
 import { ListProperty } from './/Types/ListProperty';
 import { BoolProperty } from './Types/BoolProperty';
-// import MatrixProperty from './MatrixProperty';
+import { MatrixProperty } from './Types/MatrixProperty';
 import { NumericProperty } from './Types/NumericProperty';
 import { OptionProperty } from './Types/OptionProperty';
 import { SelectionProperty } from './Types/SelectionProperty';
@@ -62,13 +61,13 @@ const concreteProperties: { [key: string]: any } = {
   DVec3Property: VectorProperty,
   DVec4Property: VectorProperty,
 
-  //   Mat2Property: MatrixProperty,
-  //   Mat3Property: MatrixProperty,
-  //   Mat4Property: MatrixProperty,
+  Mat2Property: MatrixProperty,
+  Mat3Property: MatrixProperty,
+  Mat4Property: MatrixProperty,
 
-  //   DMat2Property: MatrixProperty,
-  //   DMat3Property: MatrixProperty,
-  //   DMat4Property: MatrixProperty
+  DMat2Property: MatrixProperty,
+  DMat3Property: MatrixProperty,
+  DMat4Property: MatrixProperty
 };
 
 interface Props {
