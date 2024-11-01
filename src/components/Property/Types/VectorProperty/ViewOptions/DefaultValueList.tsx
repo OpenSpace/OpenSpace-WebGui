@@ -1,32 +1,20 @@
+
+
 import { Flex } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput';
 
-import { PropertyLabel } from '../PropertyLabel';
+import { PropertyLabel } from '../../../PropertyLabel';
+import { VectorPropertyProps } from '../VectorProperty';
 
-interface Props {
-  name: string;
-  description: string;
-  disabled: boolean;
-  setPropertyValue: (newValue: number[]) => void;
-  value: number[];
-  additionalData: {
-    Exponent: number; // TODO: handle the exponent
-    MaximumValue: number[];
-    MinimumValue: number[];
-    SteppingValue: number[];
-  }
-  // TODO: view options in metadata (Color, MinMaxRange)
-}
-
-export function VectorProperty({
+export function ValueList({
   name,
   description,
   disabled,
   setPropertyValue,
   value,
   additionalData
-}: Props) {
+}: VectorPropertyProps) {
   const min = additionalData.MinimumValue;
   const max = additionalData.MaximumValue;
   const step = additionalData.SteppingValue;
@@ -45,11 +33,11 @@ export function VectorProperty({
           <NumericInput
             key={i}
             defaultValue={v}
+            disabled={disabled}
             min={min[i]}
             max={max[i]}
             step={step[i]}
             onEnter={(newValue) => setValue(i, newValue)}
-            disabled={disabled}
           />
         )}
       </Flex>

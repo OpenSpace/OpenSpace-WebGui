@@ -1,4 +1,4 @@
-import { Box } from '@mantine/core';
+import { Container } from '@mantine/core';
 
 import { Property } from '@/components/Property/Property';
 
@@ -6,7 +6,7 @@ export function TempPropertyTest() {
   const styleUnfinished = { color: 'red' };
 
   return (
-    <Box p="md">
+    <Container>
       <h3>Bool (Earth):</h3>
       <Property uri={'Scene.Earth.Renderable.Enabled'} />
       <h3>String: </h3>
@@ -38,12 +38,14 @@ export function TempPropertyTest() {
       <h3 style={styleUnfinished}>Vector Property:</h3>
       Vec3 (Color) - 1 lightday grid
       <Property uri={'Scene.1ldGrid.Renderable.Color'} />
-      IntVec2
+      IntVec2 - 1 lightday grid
       <Property uri={'Scene.1ldGrid.Renderable.Segments'} />
+      MinMaxRange - SDSS FadeIn distances
+      <Property uri={'Scene.SloanDigitalSkySurvey.Renderable.Fading.FadeInDistances'} />
       TODO: More variants. E.g. MinMaxRange. Vec3 and Vec4 colors
       <h3 style={styleUnfinished}>Matrix Property:</h3>
       Mat4: ISS Model transform
       <Property uri={'Scene.ISS.Renderable.ModelTransform'} />
-    </Box>
+    </Container>
   );
 }

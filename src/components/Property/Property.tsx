@@ -17,7 +17,7 @@ import { OptionProperty } from './Types/OptionProperty';
 import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';
 import { TriggerProperty } from './Types/TriggerProperty';
-import { VectorProperty } from './Types/VectorProperty';
+import { VectorProperty } from './Types/VectorProperty/VectorProperty';
 
 // (2024-10-21, emmbr) I don't know how to efficiently get rid of "any" in this case
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -121,7 +121,7 @@ export function Property({ uri }: Props) {
         setPropertyValue={(newValue: PropertyValue) => {
           dispatch(setPropertyValue({ uri, value: newValue }));
         }}
-        metaData={description.metaData}
+        viewOptions={description.metaData.ViewOptions}
         additionalData={description.additionalData}
       />
     </Box>
