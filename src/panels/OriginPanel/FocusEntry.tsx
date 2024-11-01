@@ -44,12 +44,12 @@ export function FocusEntry({
       </Button>
       {showNavigationButtons && (
         <>
-          {isActive() && (
+          {/* {isActive() && (
             <NodeNavigationButton
               type={NavigationType.frame}
               identifier={entry.identifier}
             />
-          )}
+          )} */}
           <NodeNavigationButton
             type={NavigationType.fly}
             identifier={entry.identifier}
