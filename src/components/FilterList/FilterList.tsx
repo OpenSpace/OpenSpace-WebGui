@@ -29,11 +29,11 @@ export function FilterList({
   searchAutoFocus
 }: FilterListProps) {
   const [searchString, setSearchString] = useState('');
-  const [showDataInstead, setShowdataInstead] = useState(false);
+  const [showDataInstead, setShowDataInstead] = useState(false);
   const isSearching = searchString !== '';
 
   function toggleShowDataInstead() {
-    setShowdataInstead((current) => !current);
+    setShowDataInstead((current) => !current);
   }
 
   // See if favorities is among children
