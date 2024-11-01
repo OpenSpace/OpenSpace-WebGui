@@ -1,6 +1,6 @@
 import { Properties, PropertyOwners } from "src/types/types";
 
-import { InterestingTag } from "./keys";
+import { EnginePropertyVisibilityKey, InterestingTag } from "./keys";
 
 export function hasInterestingTag(uri: string, propertyOwners: PropertyOwners) {
   return propertyOwners[uri]?.tags.some((tag: string) => tag.includes(InterestingTag));
@@ -25,12 +25,33 @@ export function shouldShowPropertyOwner(
   return shouldShow;
 }
 
-function isPropertyOwnerHidden(properties: Properties, uri: string) {
+export function isPropertyOwnerHidden(properties: Properties, uri: string) {
   const prop = properties[`${uri}.GuiHidden`];
   if (prop && prop.value) {
     return true;
   }
   return false;
+}
+
+export function isPropertyVisible(properties: Properties, uri: string) {
+  const visibility = properties[uri]?.description?.metaData?.Visibility;
+  const visibilitySetting = properties[EnginePropertyVisibilityKey]?.value;
+
+  if (!visibility ||
+    typeof visibilitySetting !== 'number' ||
+    typeof visibility !== 'string') {
+    return false;
+  }
+
+  const VisibilityLevelMap: { [key: string]: number } = {
+    Hidden: 5,
+    Developer: 4,
+    AdvancedUser: 3,
+    User: 2,
+    NoviceUser: 1,
+    Always: 0
+  }
+  return visibilitySetting >= (VisibilityLevelMap[visibility] || 0);
 }
 
 export function isRenderable(uri: string) {
