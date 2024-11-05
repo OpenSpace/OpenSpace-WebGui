@@ -87,15 +87,27 @@ function dateStringWithTimeZone(date: string, zone = 'Z') {
     const filledYear = `-${unsignedYear.padStart(6, '0')}`;
     // Build the string to correct format ignoring the time since that information might
     // be broken anyways.
-    result = `${filledYear}-${monthNumber ?? '01'}-${day ?? '01'}T00:00:00:000`;
+    result = `${filledYear}-${monthNumber ?? '01'}-${day ?? '01'}T00:00:00.000`;
   } else {
-    // After year 0
-    const year = whitespaceRemoved.substring(0, whitespaceRemoved.indexOf('-'));
-    const rest = whitespaceRemoved.substring(whitespaceRemoved.indexOf('-'));
-    const filledYear = year.padStart(4, '0');
-    result = filledYear.concat(rest);
+    // After year 0, we will either get it in ISO format or
+    const yearIndex = whitespaceRemoved.indexOf('-');
+    if (yearIndex >= 0) {
+      // Year is in the range (0,9999)
+      const year = whitespaceRemoved.substring(0, yearIndex);
+      const rest = whitespaceRemoved.substring(yearIndex);
+      const filledYear = year.padStart(4, '0');
+      result = filledYear.concat(rest);
+    } else {
+      // Year is above 10.000 and we have yet another format from OpenSpace as follows:
+      // YYYY MMM DD HH:MM:SS.xxx
+      const [year, month, day, time] = date.split(' ');
+      const [hours, minutes, seconds] = time.split(/[:.]/);
+      const monthNumber = monthToNumber(month);
+      // For `Date` to correctly parse we need to append '+' and leading zeros
+      const filledYear = year.padStart(6, '0');
+      result = `+${filledYear}-${monthNumber ?? '01'}-${day ?? '01'}T${hours ?? '00'}:${minutes ?? '00'}:${seconds ?? '00'}.000`;
+    }
   }
-
   return !result.includes(zone) ? result.concat(zone) : result;
 }
 
