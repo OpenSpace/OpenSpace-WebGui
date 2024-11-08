@@ -1,0 +1,272 @@
+import { useEffect, useState } from 'react';
+import { ActionIcon, Button, Group } from '@mantine/core';
+
+import { LockIcon, LockOpenIcon } from '@/icons/icons';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+
+import { InlineInput } from './InlineInput';
+import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
+
+enum TimePart {
+  Milliseconds = 'Milliseconds',
+  Seconds = 'Seconds',
+  Minutes = 'Minutes',
+  Hours = 'Hours',
+  Date = 'Date',
+  Month = 'Month',
+  Year = 'FullYear'
+}
+
+export function TimeInput() {
+  const [useLock, setUseLock] = useState(false);
+  const [pendingTime, setPendingTime] = useState(new Date(''));
+
+  const dispatch = useAppDispatch();
+  const cappedTime = useAppSelector((state) => state.time.timeCapped);
+  const luaApi = useAppSelector((state) => state.luaApi);
+
+  const cappedDate = new Date(cappedTime ?? '');
+  const time = useLock ? pendingTime : cappedDate;
+
+  useEffect(() => {
+    dispatch(subscribeToTime());
+
+    return () => {
+      dispatch(unsubscribeToTime());
+    };
+  }, [dispatch]);
+
+  function toggleLock() {
+    setPendingTime(new Date(time));
+    setUseLock((current) => !current);
+  }
+
+  function interpolateDateRelative(delta: number) {
+    luaApi?.time.interpolateTimeRelative(delta);
+  }
+
+  function interpolateDate(newTime: Date) {
+    const fixedTimeString = newTime.toJSON().replace('Z', '');
+    luaApi?.time.interpolateTime(fixedTimeString);
+  }
+
+  function setDateRelative(delta: number) {
+    const newTime = new Date(time);
+    newTime.setSeconds(newTime.getSeconds() + delta);
+
+    const isValidDate = !Number.isNaN(newTime.valueOf());
+    if (isValidDate) {
+      setDate(newTime);
+    }
+  }
+
+  function setDate(newTime: Date) {
+    // Spice, that is handling the time parsing in OpenSpace does not support
+    // ISO 8601-style time zones (the Z). It does, however, always assume that UTC
+    // is given.
+    // For years > 10 000 the JSON string includes a '+' which mess up the OpenSpace
+    // interpretation of the value so we remove it here. TODO: send milliseconds/seconds pls
+    const fixedTimeString = newTime.toJSON().replace('Z', '').replace('+', '');
+    // TODO: when we have negative years the date string must be formatted correctly for
+    // OpenSpace to understand, haven't found a working string yet (anden88 2024-11-08)
+    luaApi?.time.setTime(fixedTimeString);
+  }
+
+  function changeDate(event: {
+    time: Date;
+    interpolate: boolean;
+    delta: number;
+    relative: boolean;
+  }) {
+    if (useLock) {
+      setPendingTime(event.time);
+      return;
+    }
+
+    if (event.interpolate) {
+      if (event.relative) {
+        interpolateDateRelative(event.delta);
+      } else {
+        interpolateDate(event.time);
+      }
+      return;
+    }
+
+    if (event.relative) {
+      setDateRelative(event.delta);
+    } else {
+      setDate(event.time);
+    }
+  }
+
+  function updateTime(timePart: TimePart, value: number, relative?: boolean) {
+    const newTime = new Date(time);
+    switch (timePart) {
+      case TimePart.Milliseconds:
+        if (relative) {
+          newTime.setUTCMilliseconds(newTime.getUTCMilliseconds() + value);
+        } else {
+          newTime.setUTCMilliseconds(value);
+        }
+        break;
+      case TimePart.Seconds:
+        if (relative) {
+          newTime.setUTCSeconds(newTime.getUTCSeconds() + value);
+        } else {
+          newTime.setUTCMilliseconds(value);
+        }
+        break;
+      case TimePart.Minutes:
+        if (relative) {
+          newTime.setUTCMinutes(newTime.getUTCMinutes() + value);
+        } else {
+          newTime.setUTCMinutes(value);
+        }
+        break;
+      case TimePart.Hours:
+        if (relative) {
+          newTime.setUTCHours(newTime.getUTCHours() + value);
+        } else {
+          newTime.setUTCHours(value);
+        }
+        break;
+      case TimePart.Date:
+        if (relative) {
+          newTime.setUTCDate(newTime.getUTCDate() + value);
+        } else {
+          newTime.setUTCDate(value);
+        }
+        break;
+      case TimePart.Month:
+        if (relative) {
+          newTime.setUTCMonth(newTime.getUTCMonth() + value);
+        } else {
+          newTime.setUTCMonth(value);
+        }
+        break;
+      case TimePart.Year:
+        if (relative) {
+          newTime.setUTCFullYear(newTime.getUTCFullYear() + value);
+        } else {
+          newTime.setUTCFullYear(value);
+        }
+        break;
+      default:
+        console.error("Unhandled 'TimePart' case", timePart);
+        break;
+    }
+    return newTime;
+  }
+
+  function onDiffChange(change: number, shiftKey: boolean, timePart: TimePart) {
+    const newTime = updateTime(timePart, change, true);
+
+    changeDate({
+      time: newTime,
+      interpolate: !shiftKey,
+      delta: (newTime.getTime() - time.getTime()) / 1000,
+      relative: true
+    });
+  }
+
+  function onInputChange(value: number, timePart: TimePart) {
+    const newTime = updateTime(timePart, value);
+
+    changeDate({
+      time: newTime,
+      interpolate: false,
+      delta: (newTime.getTime() - time.getTime()) / 1000,
+      relative: false
+    });
+  }
+
+  function interpolateToPendingTime() {
+    interpolateDate(pendingTime);
+    setUseLock(false);
+  }
+
+  function setToPendingTime() {
+    setDate(pendingTime);
+    setUseLock(false);
+  }
+  function resetPendingTime() {
+    setUseLock(false);
+  }
+
+  return (
+    <>
+      {cappedTime && time.toISOString()}
+      {cappedTime ? (
+        <Group gap={'lg'} mb={'xs'}>
+          <ActionIcon onClick={toggleLock}>
+            {useLock ? <LockIcon /> : <LockOpenIcon />}
+          </ActionIcon>
+          <Group gap={'xs'}>
+            <InlineInput
+              value={time.getUTCFullYear()}
+              onEnter={(value) => onInputChange(value, TimePart.Year)}
+              onDiff={(value, shiftkey) => onDiffChange(value, shiftkey, TimePart.Year)}
+              style={{ maxWidth: 100 }}
+            />
+            <InlineInput
+              value={time.getUTCMonth()}
+              onEnter={(value) => onInputChange(value, TimePart.Month)}
+              onDiff={(value, shiftkey) => onDiffChange(value, shiftkey, TimePart.Month)}
+              style={{ maxWidth: 65 }}
+            />
+            <InlineInput
+              value={time.getUTCDate()}
+              onEnter={(value) => onInputChange(value, TimePart.Date)}
+              onDiff={(value, shiftkey) => onDiffChange(value, shiftkey, TimePart.Date)}
+              min={0}
+              max={31}
+              style={{ maxWidth: 65 }}
+            />
+          </Group>
+          <Group gap={'xs'}>
+            <InlineInput
+              value={time.getUTCHours()}
+              onEnter={(value) => onInputChange(value, TimePart.Hours)}
+              onDiff={(value, shiftkey) => onDiffChange(value, shiftkey, TimePart.Hours)}
+              min={0}
+              max={31}
+              style={{ maxWidth: 65 }}
+            />
+            <InlineInput
+              value={time.getUTCMinutes()}
+              onEnter={(value) => onInputChange(value, TimePart.Minutes)}
+              onDiff={(value, shiftkey) =>
+                onDiffChange(value, shiftkey, TimePart.Minutes)
+              }
+              min={0}
+              max={60}
+              style={{ maxWidth: 65 }}
+            />
+            <InlineInput
+              value={time.getUTCSeconds()}
+              onEnter={(value) => onInputChange(value, TimePart.Seconds)}
+              onDiff={(value, shiftkey) =>
+                onDiffChange(value, shiftkey, TimePart.Seconds)
+              }
+              min={0}
+              max={60}
+              style={{ maxWidth: 65 }}
+            />
+          </Group>
+        </Group>
+      ) : (
+        <h2>Date out of range</h2>
+      )}
+      {useLock && (
+        <Group gap={'xs'} grow>
+          <Button onClick={interpolateToPendingTime}>Interpolate</Button>
+          <Button onClick={setToPendingTime}>Set</Button>
+          <Button onClick={resetPendingTime}>Cancel</Button>
+        </Group>
+      )}
+      <p>TEMPORARY</p>
+      <p>Current time: {cappedDate?.toUTCString()}</p>
+      <p>Pending time: {pendingTime.toUTCString()}</p>
+    </>
+  );
+}
