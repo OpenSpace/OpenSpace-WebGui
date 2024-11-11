@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { OpenSpaceTimeState } from '@/types/types';
-import { dateStringWithTimeZone } from './util';
+
+import { dateStringWithTimeZone, isDateValid } from './util';
 
 export interface TimeState {
   time?: number; // Number of milliseconds for this date since the epoch 01/01/1970 UTC
@@ -50,7 +51,7 @@ export const time = createSlice({
         // We store the number of milliseconds for this date since the Date obj itself is
         // not serializable in redux
         const ztime = new Date(dateStringWithTimeZone(newTime));
-        if (!isNaN(ztime.valueOf())) {
+        if (isDateValid(ztime)) {
           state.time = ztime.valueOf();
           // Make optimized time that only updates every second
           const newCappedMilliSeconds = ztime.setMilliseconds(0);
@@ -69,28 +70,28 @@ export const time = createSlice({
           state.timeCapped = undefined;
         }
       }
-      if (deltaTime) {
+      if (deltaTime !== undefined) {
         state.deltaTime = deltaTime;
       }
-      if (targetDeltaTime) {
+      if (targetDeltaTime !== undefined) {
         state.targetDeltaTime = targetDeltaTime;
       }
-      if (isPaused) {
+      if (isPaused !== undefined) {
         state.isPaused = isPaused;
       }
-      if (hasNextStep) {
+      if (hasNextStep !== undefined) {
         state.hasNextStep = hasNextStep;
       }
-      if (hasPrevStep) {
+      if (hasPrevStep !== undefined) {
         state.hasPrevStep = hasPrevStep;
       }
-      if (nextStep) {
+      if (nextStep !== undefined) {
         state.nextStep = nextStep;
       }
-      if (prevStep) {
+      if (prevStep !== undefined) {
         state.prevStep = prevStep;
       }
-      if (deltaTimeSteps) {
+      if (deltaTimeSteps !== undefined) {
         state.deltaTimeSteps = deltaTimeSteps;
       }
 

@@ -1,21 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ActionIcon, Button, Group } from '@mantine/core';
 
 import { LockIcon, LockOpenIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
+import { isDateValid } from '@/redux/time/util';
+import { TimePart } from '@/types/enums';
 
 import { InlineInput } from './InlineInput';
-import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
-
-enum TimePart {
-  Milliseconds = 'Milliseconds',
-  Seconds = 'Seconds',
-  Minutes = 'Minutes',
-  Hours = 'Hours',
-  Date = 'Date',
-  Month = 'Month',
-  Year = 'FullYear'
-}
 
 export function TimeInput() {
   const [useLock, setUseLock] = useState(false);
@@ -28,6 +20,16 @@ export function TimeInput() {
   const cappedDate = new Date(cappedTime ?? '');
   const time = useLock ? pendingTime : cappedDate;
 
+  // TODO: anden88 2924-11-11: I'm not sure if I've dug myself in a trench here but using
+  // a timeRef gives the correct dates when holding the plus/minus buttons, without it
+  // the callback function used in `HoldableButton` will capture the time when we clicked
+  // and any shift-action will not update beyond +- 1 from that captured value.
+  const timeRef = useRef(time);
+
+  useEffect(() => {
+    timeRef.current = time;
+  }, [time]);
+
   useEffect(() => {
     dispatch(subscribeToTime());
 
@@ -37,7 +39,7 @@ export function TimeInput() {
   }, [dispatch]);
 
   function toggleLock() {
-    setPendingTime(new Date(time));
+    setPendingTime(new Date(timeRef.current));
     setUseLock((current) => !current);
   }
 
@@ -50,16 +52,6 @@ export function TimeInput() {
     luaApi?.time.interpolateTime(fixedTimeString);
   }
 
-  function setDateRelative(delta: number) {
-    const newTime = new Date(time);
-    newTime.setSeconds(newTime.getSeconds() + delta);
-
-    const isValidDate = !Number.isNaN(newTime.valueOf());
-    if (isValidDate) {
-      setDate(newTime);
-    }
-  }
-
   function setDate(newTime: Date) {
     // Spice, that is handling the time parsing in OpenSpace does not support
     // ISO 8601-style time zones (the Z). It does, however, always assume that UTC
@@ -68,7 +60,8 @@ export function TimeInput() {
     // interpretation of the value so we remove it here. TODO: send milliseconds/seconds pls
     const fixedTimeString = newTime.toJSON().replace('Z', '').replace('+', '');
     // TODO: when we have negative years the date string must be formatted correctly for
-    // OpenSpace to understand, haven't found a working string yet (anden88 2024-11-08)
+    // OpenSpace to understand, haven't found a working string yet (anden88 2024-11-08),
+    // its possible we must "reparse" the string back to B.C. YYYY MMM ...
     luaApi?.time.setTime(fixedTimeString);
   }
 
@@ -92,15 +85,11 @@ export function TimeInput() {
       return;
     }
 
-    if (event.relative) {
-      setDateRelative(event.delta);
-    } else {
-      setDate(event.time);
-    }
+    setDate(event.time);
   }
 
-  function updateTime(timePart: TimePart, value: number, relative?: boolean) {
-    const newTime = new Date(time);
+  function updateTime(timePart: TimePart, value: number, relative: boolean) {
+    const newTime = new Date(timeRef.current);
     switch (timePart) {
       case TimePart.Milliseconds:
         if (relative) {
@@ -113,7 +102,7 @@ export function TimeInput() {
         if (relative) {
           newTime.setUTCSeconds(newTime.getUTCSeconds() + value);
         } else {
-          newTime.setUTCMilliseconds(value);
+          newTime.setUTCSeconds(value);
         }
         break;
       case TimePart.Minutes:
@@ -158,25 +147,23 @@ export function TimeInput() {
     return newTime;
   }
 
-  function onDiffChange(change: number, shiftKey: boolean, timePart: TimePart) {
-    const newTime = updateTime(timePart, change, true);
+  function onInputChange(
+    value: number,
+    relative: boolean,
+    interpolate: boolean,
+    timePart: TimePart
+  ) {
+    const newTime = updateTime(timePart, value, relative);
+
+    if (!isDateValid(newTime)) {
+      return;
+    }
 
     changeDate({
       time: newTime,
-      interpolate: !shiftKey,
-      delta: (newTime.getTime() - time.getTime()) / 1000,
-      relative: true
-    });
-  }
-
-  function onInputChange(value: number, timePart: TimePart) {
-    const newTime = updateTime(timePart, value);
-
-    changeDate({
-      time: newTime,
-      interpolate: false,
-      delta: (newTime.getTime() - time.getTime()) / 1000,
-      relative: false
+      interpolate: interpolate,
+      delta: (newTime.getTime() - timeRef.current.getTime()) / 1000,
+      relative: relative
     });
   }
 
@@ -204,20 +191,23 @@ export function TimeInput() {
           <Group gap={'xs'}>
             <InlineInput
               value={time.getUTCFullYear()}
-              onEnter={(value) => onInputChange(value, TimePart.Year)}
-              onDiff={(value, shiftkey) => onDiffChange(value, shiftkey, TimePart.Year)}
+              onInputChange={(value, relative, shiftKey) =>
+                onInputChange(value, relative, shiftKey, TimePart.Year)
+              }
               style={{ maxWidth: 100 }}
             />
             <InlineInput
               value={time.getUTCMonth()}
-              onEnter={(value) => onInputChange(value, TimePart.Month)}
-              onDiff={(value, shiftkey) => onDiffChange(value, shiftkey, TimePart.Month)}
+              onInputChange={(value, relative, shiftKey) =>
+                onInputChange(value, relative, shiftKey, TimePart.Month)
+              }
               style={{ maxWidth: 65 }}
             />
             <InlineInput
               value={time.getUTCDate()}
-              onEnter={(value) => onInputChange(value, TimePart.Date)}
-              onDiff={(value, shiftkey) => onDiffChange(value, shiftkey, TimePart.Date)}
+              onInputChange={(value, relative, shiftKey) =>
+                onInputChange(value, relative, shiftKey, TimePart.Date)
+              }
               min={0}
               max={31}
               style={{ maxWidth: 65 }}
@@ -226,17 +216,17 @@ export function TimeInput() {
           <Group gap={'xs'}>
             <InlineInput
               value={time.getUTCHours()}
-              onEnter={(value) => onInputChange(value, TimePart.Hours)}
-              onDiff={(value, shiftkey) => onDiffChange(value, shiftkey, TimePart.Hours)}
+              onInputChange={(value, relative, shiftKey) =>
+                onInputChange(value, relative, shiftKey, TimePart.Hours)
+              }
               min={0}
               max={31}
               style={{ maxWidth: 65 }}
             />
             <InlineInput
               value={time.getUTCMinutes()}
-              onEnter={(value) => onInputChange(value, TimePart.Minutes)}
-              onDiff={(value, shiftkey) =>
-                onDiffChange(value, shiftkey, TimePart.Minutes)
+              onInputChange={(value, relative, shiftKey) =>
+                onInputChange(value, relative, shiftKey, TimePart.Minutes)
               }
               min={0}
               max={60}
@@ -244,9 +234,8 @@ export function TimeInput() {
             />
             <InlineInput
               value={time.getUTCSeconds()}
-              onEnter={(value) => onInputChange(value, TimePart.Seconds)}
-              onDiff={(value, shiftkey) =>
-                onDiffChange(value, shiftkey, TimePart.Seconds)
+              onInputChange={(value, relative, shiftKey) =>
+                onInputChange(value, relative, shiftKey, TimePart.Seconds)
               }
               min={0}
               max={60}

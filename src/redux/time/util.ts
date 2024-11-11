@@ -94,3 +94,7 @@ export function dateStringWithTimeZone(date: string, zone = 'Z') {
   }
   return !result.includes(zone) ? result.concat(zone) : result;
 }
+
+export function isDateValid(date: Date) {
+  return !Number.isNaN(date.valueOf());
+}
