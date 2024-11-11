@@ -2,10 +2,14 @@ import { Button, Flex, Grid } from '@mantine/core';
 import { Action } from 'src/types/types';
 
 import { FolderIcon } from '@/icons/icons';
+import { FilterList } from '@/components/FilterList/FilterList';
+import { FilterListData } from '@/components/FilterList/FilterListData';
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import { ActionsButton } from './ActionsButton';
+import { FilterListFavorites } from '@/components/FilterList/FilterListFavorites';
+import { objectOrStringWordBeginningSubString } from '@/components/FilterList/util';
 
 interface FolderContent {
   actions: Action[];
@@ -193,7 +197,7 @@ export function ActionsPanel() {
   }
 
   if (actionLevel === undefined) {
-    return <p>Loading...</p>;
+    //return <p>Loading...</p>;
   }
   // TODO (ylvse 2024-10-10) Check what this check is meant to do?
   // In the js it is actionlevel.length === 0. But how can it have a length?
@@ -207,10 +211,21 @@ export function ActionsPanel() {
         {backButton}
         <p>{`${displayedNavigationPath}`}</p>
       </Flex>
-      <Grid>
-        {folders}
-        {actions}
-      </Grid>
+      <FilterList>
+        <FilterListFavorites>
+          <Grid>
+            {folders}
+            {actions}
+          </Grid>
+        </FilterListFavorites>
+        <FilterListData<Action>
+          data={displayedActions}
+          renderElement={(action: Action) => (
+            <ActionsButton key={`${action.identifier}Filtered`} action={action} />
+          )}
+          matcherFunc={objectOrStringWordBeginningSubString}
+        />
+      </FilterList>
     </>
   );
 }

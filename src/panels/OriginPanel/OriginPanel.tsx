@@ -5,7 +5,6 @@ import { FlightControllerData } from 'src/types/types';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { FilterListData } from '@/components/FilterList/FilterListData';
 import { FilterListFavorites } from '@/components/FilterList/FilterListFavorites';
-import { FilterListShowMoreButton } from '@/components/FilterList/FilterListShowMoreButton';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -20,6 +19,8 @@ import { hasInterestingTag } from '@/util/propertyTreeHelpers';
 
 import { FocusEntry } from './FocusEntry';
 import { OriginSettings } from './OriginSettings';
+import { PropertyOwner } from 'src/types/types';
+import { objectOrStringWordBeginningSubString } from '@/components/FilterList/util';
 
 enum NavigationActionState {
   Focus = 'Focus',
@@ -228,8 +229,7 @@ export function OriginPanel() {
           <TelescopeIcon size={'70%'} />
         </ActionIcon>
       </Group>
-      <FilterList placeHolderSearchText={searchPlaceholderText}>
-        <FilterListShowMoreButton />
+      <FilterList placeHolderSearchText={searchPlaceholderText} showMoreButton>
         <FilterListFavorites>
           {sortedDefaultList.map((entry) => (
             <FocusEntry
@@ -241,8 +241,9 @@ export function OriginPanel() {
             />
           ))}
         </FilterListFavorites>
-        <FilterListData>
-          {sortedNodes.map((node) => (
+        <FilterListData<PropertyOwner>
+          data={sortedNodes}
+          renderElement={(node) => (
             <FocusEntry
               key={node.identifier}
               entry={node}
@@ -250,8 +251,9 @@ export function OriginPanel() {
               activeNode={activeNode}
               showNavigationButtons={isInFocusMode}
             />
-          ))}
-        </FilterListData>
+          )}
+          matcherFunc={objectOrStringWordBeginningSubString}
+        />
       </FilterList>
     </Container>
   );
