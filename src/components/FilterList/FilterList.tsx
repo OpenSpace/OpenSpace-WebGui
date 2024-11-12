@@ -8,16 +8,15 @@ interface InputFieldProps {
   searchAutoFocus?: boolean;
   placeHolderSearchText?: string;
   showMoreButton: boolean;
-  toggleShowDataInstead?: () => void;
 }
 
 function InputField({
   searchAutoFocus,
   placeHolderSearchText,
-  toggleShowDataInstead,
   showMoreButton
 }: InputFieldProps) {
-  const { searchString, setSearchString, showDataInstead } = useFilterListProvider();
+  const { searchString, setSearchString, showDataInstead, toggleShowDataInstead } =
+    useFilterListProvider();
 
   return (
     <TextInput
@@ -25,6 +24,8 @@ function InputField({
       placeholder={placeHolderSearchText}
       onChange={(event) => setSearchString(event.currentTarget.value)}
       autoFocus={searchAutoFocus}
+      // Some arbitrary width must be set so that the More button is rendered correctly
+      rightSectionWidth={'md'}
       rightSection={
         showMoreButton && (
           <Button onClick={toggleShowDataInstead}>
