@@ -1,14 +1,12 @@
 import { Button, Flex, Grid } from '@mantine/core';
 import { Action } from 'src/types/types';
 
-import { FolderIcon } from '@/icons/icons';
 import { FilterList } from '@/components/FilterList/FilterList';
-import { FilterListData } from '@/components/FilterList/FilterListData';
+import { FolderIcon } from '@/icons/icons';
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import { ActionsButton } from './ActionsButton';
-import { FilterListFavorites } from '@/components/FilterList/FilterListFavorites';
 import { objectOrStringWordBeginningSubString } from '@/components/FilterList/util';
 
 interface FolderContent {
@@ -212,13 +210,13 @@ export function ActionsPanel() {
         <p>{`${displayedNavigationPath}`}</p>
       </Flex>
       <FilterList>
-        <FilterListFavorites>
+        <FilterList.Favorites>
           <Grid>
             {folders}
             {actions}
           </Grid>
-        </FilterListFavorites>
-        <FilterListData<Action>
+        </FilterList.Favorites>
+        <FilterList.Data<Action>
           data={displayedActions}
           renderElement={(action: Action) => (
             <ActionsButton key={`${action.identifier}Filtered`} action={action} />

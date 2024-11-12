@@ -1,4 +1,5 @@
 import { ScrollArea } from '@mantine/core';
+
 import { useFilterListProvider } from './FilterListProvider';
 
 export const FilterListDataDisplayName = 'FilterListData';

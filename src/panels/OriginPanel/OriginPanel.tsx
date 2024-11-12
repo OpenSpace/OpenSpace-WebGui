@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { ActionIcon, Container, Group } from '@mantine/core';
-import { FlightControllerData } from 'src/types/types';
+import { FlightControllerData, PropertyOwner } from 'src/types/types';
 
 import { FilterList } from '@/components/FilterList/FilterList';
-import { FilterListData } from '@/components/FilterList/FilterListData';
-import { FilterListFavorites } from '@/components/FilterList/FilterListFavorites';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -19,7 +17,6 @@ import { hasInterestingTag } from '@/util/propertyTreeHelpers';
 
 import { FocusEntry } from './FocusEntry';
 import { OriginSettings } from './OriginSettings';
-import { PropertyOwner } from 'src/types/types';
 import { objectOrStringWordBeginningSubString } from '@/components/FilterList/util';
 
 enum NavigationActionState {
@@ -230,7 +227,7 @@ export function OriginPanel() {
         </ActionIcon>
       </Group>
       <FilterList placeHolderSearchText={searchPlaceholderText} showMoreButton>
-        <FilterListFavorites>
+        <FilterList.Favorites>
           {sortedDefaultList.map((entry) => (
             <FocusEntry
               key={entry.identifier}
@@ -240,8 +237,8 @@ export function OriginPanel() {
               showNavigationButtons={isInFocusMode}
             />
           ))}
-        </FilterListFavorites>
-        <FilterListData<PropertyOwner>
+        </FilterList.Favorites>
+        <FilterList.Data<PropertyOwner>
           data={sortedNodes}
           renderElement={(node) => (
             <FocusEntry

@@ -1,5 +1,12 @@
-import { isValidElement, useState, createContext, useContext, Children } from 'react';
-import { Dispatch, SetStateAction } from 'react';
+import {
+  Children,
+  createContext,
+  Dispatch,
+  isValidElement,
+  SetStateAction,
+  useContext,
+  useState
+} from 'react';
 
 import { FilterListFavoritesDisplayName } from './FilterListFavorites';
 

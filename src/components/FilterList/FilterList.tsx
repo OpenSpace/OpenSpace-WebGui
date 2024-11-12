@@ -1,9 +1,8 @@
-import { Divider, TextInput } from '@mantine/core';
+import { Button, Divider, TextInput } from '@mantine/core';
 
 import { FilterListData } from './FilterListData';
 import { FilterListFavorites } from './FilterListFavorites';
-import { useFilterListProvider, FilterListProvider } from './FilterListProvider';
-import { Button } from '@mantine/core';
+import { FilterListProvider, useFilterListProvider } from './FilterListProvider';
 
 interface InputFieldProps {
   searchAutoFocus?: boolean;
@@ -63,7 +62,5 @@ export function FilterList({
   );
 }
 
-export default Object.assign(FilterList, {
-  Data: FilterListData,
-  Favorites: FilterListFavorites
-});
+FilterList.Data = FilterListData;
+FilterList.Favorites = FilterListFavorites;
