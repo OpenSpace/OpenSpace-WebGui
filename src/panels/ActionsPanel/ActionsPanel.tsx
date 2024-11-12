@@ -2,12 +2,12 @@ import { Button, Flex, Grid } from '@mantine/core';
 import { Action } from 'src/types/types';
 
 import { FilterList } from '@/components/FilterList/FilterList';
+import { objectWordBeginningSubstring } from '@/components/FilterList/util';
 import { FolderIcon } from '@/icons/icons';
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import { ActionsButton } from './ActionsButton';
-import { objectOrStringWordBeginningSubString } from '@/components/FilterList/util';
 
 interface FolderContent {
   actions: Action[];
@@ -221,7 +221,7 @@ export function ActionsPanel() {
           renderElement={(action: Action) => (
             <ActionsButton key={`${action.identifier}Filtered`} action={action} />
           )}
-          matcherFunc={objectOrStringWordBeginningSubString}
+          matcherFunc={objectWordBeginningSubstring}
         />
       </FilterList>
     </>

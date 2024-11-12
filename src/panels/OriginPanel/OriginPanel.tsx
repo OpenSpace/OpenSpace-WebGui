@@ -3,6 +3,7 @@ import { ActionIcon, Container, Group } from '@mantine/core';
 import { FlightControllerData, PropertyOwner } from 'src/types/types';
 
 import { FilterList } from '@/components/FilterList/FilterList';
+import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -17,7 +18,6 @@ import { hasInterestingTag } from '@/util/propertyTreeHelpers';
 
 import { FocusEntry } from './FocusEntry';
 import { OriginSettings } from './OriginSettings';
-import { objectOrStringWordBeginningSubString } from '@/components/FilterList/util';
 
 enum NavigationActionState {
   Focus = 'Focus',
@@ -249,7 +249,12 @@ export function OriginPanel() {
               showNavigationButtons={isInFocusMode}
             />
           )}
-          matcherFunc={objectOrStringWordBeginningSubString}
+          matcherFunc={generateMatcherFunctionByKeys([
+            'identifier',
+            'name',
+            'uri',
+            'tags'
+          ])}
         />
       </FilterList>
     </Container>
