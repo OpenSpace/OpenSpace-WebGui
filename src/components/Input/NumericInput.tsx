@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { NumberInput } from '@mantine/core';
 
-
 interface Props {
   label?: React.ReactNode | string;
   disabled?: boolean;
   onEnter?: (newValue: number) => void;
   defaultValue: number;
-  min?: number,
-  max?: number,
-  step?: number
+  min?: number;
+  max?: number;
+  step?: number;
 }
 
 /**
@@ -17,9 +16,9 @@ interface Props {
  * the value on ESCAPE.
  */
 export function NumericInput({
-  label = "",
+  label = '',
   disabled = false,
-  onEnter = () => { },
+  onEnter = () => {},
   defaultValue,
   min,
   max,
@@ -41,7 +40,7 @@ export function NumericInput({
 
   function onBlur() {
     if (!valueWasSet) {
-      setCurrentValue(defaultValue)
+      setCurrentValue(defaultValue);
     }
   }
 
@@ -64,7 +63,7 @@ export function NumericInput({
       step={step}
       stepHoldDelay={500}
       stepHoldInterval={100}
-    // TODO: Provide error on invalid input
+      // TODO: Provide error on invalid input
     />
   );
 }

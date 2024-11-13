@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { TextInput } from '@mantine/core';
 
-
 interface Props {
   label?: React.ReactNode | string;
   disabled?: boolean;
@@ -14,7 +13,7 @@ interface Props {
  * the value on ESCAPE.
  */
 export function StringInput({
-  label = "",
+  label = '',
   disabled = false,
   onEnter,
   defaultValue
@@ -35,7 +34,7 @@ export function StringInput({
 
   function onBlur() {
     if (!valueWasSet) {
-      setCurrentValue(defaultValue)
+      setCurrentValue(defaultValue);
     }
   }
 
@@ -47,7 +46,7 @@ export function StringInput({
       onBlur={onBlur}
       disabled={disabled}
       label={label}
-    // TODO: Provide error on invalid input
+      // TODO: Provide error on invalid input
     />
   );
 }
