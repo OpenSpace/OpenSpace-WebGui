@@ -1,9 +1,6 @@
-import { useEffect } from 'react';
 import { Container } from '@mantine/core';
 
-import { useAppDispatch } from '@/redux/hooks';
-import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
-
+import { SimulationIncrement } from './SimulationIncrement';
 import { TimeInput } from './TimeInput';
 
 export function TimePanel() {
@@ -11,6 +8,8 @@ export function TimePanel() {
     <Container>
       <h2>Select Date</h2>
       <TimeInput />
+      <h2>Simulation Speed</h2>
+      <SimulationIncrement />
     </Container>
   );
 }
