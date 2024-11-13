@@ -10,10 +10,10 @@ export interface TimeState {
   targetDeltaTime?: number;
   deltaTime?: number;
   isPaused?: boolean;
-  hasNextStep?: boolean;
-  hasPrevStep?: boolean;
-  nextStep?: number;
-  prevStep?: number;
+  hasNextDeltaTimeStep?: boolean;
+  hasPrevDeltaTimeStep?: boolean;
+  nextDeltaTimeStep?: number;
+  prevDeltaTimeStep?: number;
   deltaTimeSteps?: number[];
 }
 
@@ -25,10 +25,10 @@ const initialState: TimeState = {
   targetDeltaTime: undefined,
   deltaTime: undefined,
   isPaused: undefined,
-  hasNextStep: undefined,
-  hasPrevStep: undefined,
-  nextStep: undefined,
-  prevStep: undefined,
+  hasNextDeltaTimeStep: undefined,
+  hasPrevDeltaTimeStep: undefined,
+  nextDeltaTimeStep: undefined,
+  prevDeltaTimeStep: undefined,
   deltaTimeSteps: undefined
 };
 
@@ -80,16 +80,16 @@ export const time = createSlice({
         state.isPaused = isPaused;
       }
       if (hasNextStep !== undefined) {
-        state.hasNextStep = hasNextStep;
+        state.hasNextDeltaTimeStep = hasNextStep;
       }
       if (hasPrevStep !== undefined) {
-        state.hasPrevStep = hasPrevStep;
+        state.hasPrevDeltaTimeStep = hasPrevStep;
       }
       if (nextStep !== undefined) {
-        state.nextStep = nextStep;
+        state.nextDeltaTimeStep = nextStep;
       }
       if (prevStep !== undefined) {
-        state.prevStep = prevStep;
+        state.prevDeltaTimeStep = prevStep;
       }
       if (deltaTimeSteps !== undefined) {
         state.deltaTimeSteps = deltaTimeSteps;

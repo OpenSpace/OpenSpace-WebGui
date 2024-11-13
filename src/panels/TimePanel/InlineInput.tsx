@@ -1,18 +1,24 @@
 import { useState } from 'react';
-import { MantineStyleProp, NumberInput } from '@mantine/core';
+import { MantineStyleProp, NumberInput, NumberInputProps } from '@mantine/core';
 
 import { HoldableButton } from './HoldableButton';
 
-interface Props {
+interface Props extends NumberInputProps {
   value: number;
   onInputChange: (value: number, relative: boolean, interpolate: boolean) => void;
-  min?: number;
-  max?: number;
-  step?: number;
-  style?: MantineStyleProp;
 }
 
-export function InlineInput({ value, onInputChange, min, max, step, style }: Props) {
+export function InlineInput({
+  value,
+  onInputChange,
+  min,
+  max,
+  step,
+  label,
+  decimalScale,
+  style
+}: Props) {
+  // console.log('min', min, 'max', max, 'step', step);
   const [storedValue, setStoredValue] = useState(value);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -54,6 +60,7 @@ export function InlineInput({ value, onInputChange, min, max, step, style }: Pro
       stepHoldDelay={500}
       stepHoldInterval={50}
       onChange={(value, shiftKey) => onInputChange(value, true, !shiftKey)}
+      step={step}
     />
   );
 
@@ -71,7 +78,9 @@ export function InlineInput({ value, onInputChange, min, max, step, style }: Pro
       stepHoldDelay={500}
       stepHoldInterval={50}
       clampBehavior={'strict'}
+      label={label}
       style={style}
+      decimalScale={decimalScale}
     />
   );
 }

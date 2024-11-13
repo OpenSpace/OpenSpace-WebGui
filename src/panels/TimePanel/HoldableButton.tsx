@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { ActionIcon, Stack } from '@mantine/core';
 
 import { ExpandLessIcon, ExpandMoreIcon } from '@/icons/icons';
@@ -12,34 +12,36 @@ interface Props {
   stepHoldDelay?: number;
   stepHoldInterval?: number;
   onChange: (change: number, shiftKey: boolean) => void;
+  step?: number;
 }
-export function HoldableButton({ stepHoldDelay, stepHoldInterval, onChange }: Props) {
-  const [shiftKey, setShiftKey] = useState(false);
+export function HoldableButton({
+  stepHoldDelay,
+  stepHoldInterval,
+  onChange,
+  step
+}: Props) {
   // The reference allows us to get the latest state in the `onCallback`, necessary due to
   // how capturing works with the `window.setTimeout` function.
-  const shiftKeyRef = useRef(shiftKey);
+  const shiftKeyRef = useRef(false);
   const onStepTimeoutRef = useRef<number | null>(null);
   const shouldUseStepInterval =
     stepHoldDelay !== undefined && stepHoldInterval !== undefined;
 
-  useEffect(() => {
-    shiftKeyRef.current = shiftKey;
-  }, [shiftKey]);
-
   function downHandler(event: KeyboardEvent) {
     if (event.key === 'Shift') {
-      setShiftKey(true);
+      shiftKeyRef.current = true;
     }
   }
 
   function upHandler(event: KeyboardEvent) {
     if (event.key === 'Shift') {
-      setShiftKey(false);
+      shiftKeyRef.current = false;
     }
   }
 
   function onStepHandleChange(isIncrement: boolean, shiftKey?: boolean) {
-    const change = isIncrement ? 1 : -1;
+    const amount = step ?? 1;
+    const change = isIncrement ? amount : -amount;
     onChange(change, shiftKey !== undefined ? shiftKey : shiftKeyRef.current);
   }
 
