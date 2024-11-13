@@ -8,6 +8,7 @@ import { isDateValid } from '@/redux/time/util';
 import { TimePart } from '@/types/enums';
 
 import { InlineInput } from './InlineInput';
+import { setDate } from './util';
 
 export function TimeInput() {
   const [useLock, setUseLock] = useState(false);
@@ -52,19 +53,6 @@ export function TimeInput() {
     luaApi?.time.interpolateTime(fixedTimeString);
   }
 
-  function setDate(newTime: Date) {
-    // Spice, that is handling the time parsing in OpenSpace does not support
-    // ISO 8601-style time zones (the Z). It does, however, always assume that UTC
-    // is given.
-    // For years > 10 000 the JSON string includes a '+' which mess up the OpenSpace
-    // interpretation of the value so we remove it here. TODO: send milliseconds/seconds pls
-    const fixedTimeString = newTime.toJSON().replace('Z', '').replace('+', '');
-    // TODO: when we have negative years the date string must be formatted correctly for
-    // OpenSpace to understand, haven't found a working string yet (anden88 2024-11-08),
-    // its possible we must "reparse" the string back to B.C. YYYY MMM ...
-    luaApi?.time.setTime(fixedTimeString);
-  }
-
   function changeDate(event: {
     time: Date;
     interpolate: boolean;
@@ -85,7 +73,7 @@ export function TimeInput() {
       return;
     }
 
-    setDate(event.time);
+    setDate(luaApi, event.time);
   }
 
   function updateTime(timePart: TimePart, value: number, relative: boolean) {
@@ -173,7 +161,7 @@ export function TimeInput() {
   }
 
   function setToPendingTime() {
-    setDate(pendingTime);
+    setDate(luaApi, pendingTime);
     setUseLock(false);
   }
   function resetPendingTime() {
