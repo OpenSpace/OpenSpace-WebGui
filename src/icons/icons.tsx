@@ -8,6 +8,8 @@ export {
   MdAnchor as AnchorIcon,
   MdExpandLess as ExpandLessIcon,
   MdExpandMore as ExpandMoreIcon,
+  MdFastForward as FastForwardIcon,
+  MdFastRewind as FastRewindIcon,
   MdFolder as FolderIcon,
   MdFilterCenterFocus as FrameFocusIcon,
   MdLaunch as LaunchIcon,
@@ -19,6 +21,5 @@ export {
   MdFiberManualRecord as RecordIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
-  MdVideocam as VideocamIcon
-} from 'react-icons/md';
+  MdVideocam as VideocamIcon} from 'react-icons/md';
 export { RiFocus3Line as FocusIcon } from 'react-icons/ri';
