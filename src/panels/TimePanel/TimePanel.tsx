@@ -1,4 +1,4 @@
-import { Button, Container, Divider, Group, Text } from '@mantine/core';
+import { Button, Container, Divider, Group } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 
