@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { MdPause, MdPlayArrow, MdStop } from 'react-icons/md';
 import { Button, Group } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { PauseIcon, PlayIcon, StopIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   subscribeToSessionRecording,
@@ -44,7 +44,7 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
         return (
           <Button
             onClick={stopRecording}
-            leftSection={<MdStop />}
+            leftSection={<StopIcon />}
             color={'red'}
             size={'xl'}
           >
@@ -56,7 +56,7 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
           <Group gap={'xs'}>
             <Button
               onClick={togglePlaybackPaused}
-              leftSection={<MdPlayArrow />}
+              leftSection={<PlayIcon />}
               color={'orange'}
               size={'xl'}
             >
@@ -64,7 +64,7 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
             </Button>
             <Button
               onClick={stopPlayback}
-              leftSection={<MdStop />}
+              leftSection={<StopIcon />}
               color={'orange'}
               size={'xl'}
             >
@@ -75,12 +75,16 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
       case RecordingState.playing:
         return (
           <Group gap={'xs'}>
-            <Button onClick={togglePlaybackPaused} leftSection={<MdPause />} size={'xl'}>
+            <Button
+              onClick={togglePlaybackPaused}
+              leftSection={<PauseIcon />}
+              size={'xl'}
+            >
               Pause
             </Button>
             <Button
               onClick={stopPlayback}
-              leftSection={<MdStop />}
+              leftSection={<StopIcon />}
               color={'red'}
               size={'xl'}
             >

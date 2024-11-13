@@ -25,7 +25,8 @@ export function TaskBar({ addWindow, visibleMenuItems }: TaskBarProps) {
         const handleClick = () =>
           addWindow(item.content, {
             title: item.title,
-            position: item.preferredPosition
+            position: item.preferredPosition,
+            id: item.componentID
           });
 
         return item.renderMenuButton ? (

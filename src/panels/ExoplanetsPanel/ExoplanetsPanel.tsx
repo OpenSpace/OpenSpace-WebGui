@@ -1,3 +1,3 @@
-function ExoplanetsPanel() {
+export function ExoplanetsPanel() {
   return <></>;
 }

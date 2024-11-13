@@ -8,10 +8,12 @@ export default defineConfig({
     alias: {
       '@/api': '/src/api',
       '@/components': '/src/components',
+      '@/icons': '/src/icons',
+      '@/panels': '/src/panels',
       '@/public': '/public',
       '@/redux': '/src/redux',
-      '@/util': '/src/util',
-      '@/panels': '/src/panels'
+      '@/types': '/src/types',
+      '@/util': '/src/util'
     }
   },
   server: {

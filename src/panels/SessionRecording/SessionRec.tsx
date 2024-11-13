@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { IoInformationCircleOutline } from 'react-icons/io5';
-import { MdFiberManualRecord, MdPlayArrow, MdStop, MdVideocam } from 'react-icons/md';
 import {
   Button,
   Checkbox,
@@ -15,6 +13,13 @@ import {
 } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import {
+  InformationCircleOutlineIcon,
+  PlayIcon,
+  RecordIcon,
+  StopIcon,
+  VideocamIcon
+} from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   subscribeToSessionRecording,
@@ -116,10 +121,10 @@ export function SessionRec() {
   function recordButtonStateProperties() {
     switch (recordingState) {
       case RecordingState.recording:
-        return { text: 'Stop Recording', color: 'red', icon: <MdVideocam /> };
+        return { text: 'Stop Recording', color: 'red', icon: <VideocamIcon /> };
       default:
         // Use default color
-        return { text: 'Record', color: undefined, icon: <MdFiberManualRecord /> };
+        return { text: 'Record', color: undefined, icon: <RecordIcon /> };
     }
   }
 
@@ -127,10 +132,10 @@ export function SessionRec() {
     switch (recordingState) {
       case RecordingState.playing:
       case RecordingState.paused:
-        return { text: 'Stop Playback', color: 'red', icon: <MdStop /> };
+        return { text: 'Stop Playback', color: 'red', icon: <StopIcon /> };
       default:
         // Use default color
-        return { text: 'Play', color: undefined, icon: <MdPlayArrow /> };
+        return { text: 'Play', color: undefined, icon: <PlayIcon /> };
     }
   }
 
@@ -191,7 +196,7 @@ export function SessionRec() {
             events={{ hover: true, focus: true, touch: true }}
           >
             <ThemeIcon radius={'xl'} size={'sm'}>
-              <IoInformationCircleOutline style={{ width: '80%', height: '80%' }} />
+              <InformationCircleOutlineIcon style={{ width: '80%', height: '80%' }} />
             </ThemeIcon>
           </Tooltip>
           {shouldOutputFrames && (
