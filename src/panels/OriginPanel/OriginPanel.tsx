@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { ActionIcon, Container, Group } from '@mantine/core';
-import { FlightControllerData } from 'src/types/types';
+import { FlightControllerData, PropertyOwner } from 'src/types/types';
 
 import { FilterList } from '@/components/FilterList/FilterList';
-import { FilterListData } from '@/components/FilterList/FilterListData';
-import { FilterListFavorites } from '@/components/FilterList/FilterListFavorites';
-import { FilterListShowMoreButton } from '@/components/FilterList/FilterListShowMoreButton';
+import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -50,6 +48,19 @@ export function OriginPanel() {
     propertyDispatcher(dispatch, RetargetAnchorKey)
   );
   const retargetAimDispatcher = useRef(propertyDispatcher(dispatch, RetargetAimKey));
+
+  useEffect(() => {
+    // We make a copy here of the dispatchers to ensure that in the cleanup function they
+    // will be exactly the same as they were on creation, i.e. not modifided
+    const anchor = anchorDispatcher.current;
+    const aim = aimDispatcher.current;
+    anchor.subscribe();
+    aim.subscribe();
+    return () => {
+      anchor.unsubscribe();
+      aim.unsubscribe();
+    };
+  }, []);
 
   const uris: string[] = propertyOwners.Scene?.subowners ?? [];
   const allNodes = uris
@@ -228,9 +239,8 @@ export function OriginPanel() {
           <TelescopeIcon size={'70%'} />
         </ActionIcon>
       </Group>
-      <FilterList placeHolderSearchText={searchPlaceholderText}>
-        <FilterListShowMoreButton />
-        <FilterListFavorites>
+      <FilterList placeHolderSearchText={searchPlaceholderText} showMoreButton>
+        <FilterList.Favorites>
           {sortedDefaultList.map((entry) => (
             <FocusEntry
               key={entry.identifier}
@@ -240,9 +250,10 @@ export function OriginPanel() {
               showNavigationButtons={isInFocusMode}
             />
           ))}
-        </FilterListFavorites>
-        <FilterListData>
-          {sortedNodes.map((node) => (
+        </FilterList.Favorites>
+        <FilterList.Data<PropertyOwner>
+          data={sortedNodes}
+          renderElement={(node) => (
             <FocusEntry
               key={node.identifier}
               entry={node}
@@ -250,8 +261,14 @@ export function OriginPanel() {
               activeNode={activeNode}
               showNavigationButtons={isInFocusMode}
             />
-          ))}
-        </FilterListData>
+          )}
+          matcherFunc={generateMatcherFunctionByKeys([
+            'identifier',
+            'name',
+            'uri',
+            'tags'
+          ])}
+        />
       </FilterList>
     </Container>
   );

@@ -222,9 +222,7 @@ async function internalAddUriToPropertyTree(
   dispatch: Dispatch<UnknownAction>,
   uri: string
 ) {
-  console.log('getting prop for uri:', uri);
   const prop = (await api.getProperty(uri)) as OpenSpaceProperty | OpenSpacePropertyOwner;
-  console.log(uri, 'got prop from OS', prop);
   if (!prop) {
     console.error(`Error retrieving property with uri: '${uri}'`);
     return;
@@ -310,7 +308,7 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
 
   startListening({
     actionCreator: setPropertyValue,
-    effect: (action, _) => {
+    effect: (action) => {
       api.setProperty(action.payload.uri, action.payload.value);
     }
   });
@@ -335,7 +333,7 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
 
   startListening({
     actionCreator: unsubscribeToProperty,
-    effect: (action, _) => {
+    effect: (action) => {
       const { uri } = action.payload;
       const subscriptionInfo = subscriptionInfos[uri];
       if (subscriptionInfo) {

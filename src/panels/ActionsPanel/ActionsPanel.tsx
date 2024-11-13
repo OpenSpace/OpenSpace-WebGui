@@ -1,6 +1,8 @@
 import { Button, Flex, Grid } from '@mantine/core';
 import { Action } from 'src/types/types';
 
+import { FilterList } from '@/components/FilterList/FilterList';
+import { objectWordBeginningSubstring } from '@/components/FilterList/util';
 import { FolderIcon } from '@/icons/icons';
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -174,12 +176,6 @@ export function ActionsPanel() {
       <ActionsButton key={`${action.identifier}Action`} action={action} />
     ));
   }
-  // TODO: (@ylvse 2024-10-15): implement this when we have filterlist
-  function getAllActions() {
-    return displayedActions.map((action: Action) => (
-      <ActionsButton key={`${action.identifier}Filtered`} action={action} />
-    ));
-  }
 
   function getBackButton() {
     if (navigationPath !== '/') {
@@ -207,10 +203,21 @@ export function ActionsPanel() {
         {backButton}
         <p>{`${displayedNavigationPath}`}</p>
       </Flex>
-      <Grid>
-        {folders}
-        {actions}
-      </Grid>
+      <FilterList>
+        <FilterList.Favorites>
+          <Grid>
+            {folders}
+            {actions}
+          </Grid>
+        </FilterList.Favorites>
+        <FilterList.Data<Action>
+          data={displayedActions}
+          renderElement={(action: Action) => (
+            <ActionsButton key={`${action.identifier}Filtered`} action={action} />
+          )}
+          matcherFunc={objectWordBeginningSubstring}
+        />
+      </FilterList>
     </>
   );
 }

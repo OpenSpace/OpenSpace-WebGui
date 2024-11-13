@@ -18,11 +18,7 @@ export const addExoplanetListener = (startListening: AppStartListening) => {
       if (!planetList) {
         return;
       }
-      const actualList = planetList[1];
-      if (!actualList) {
-        return;
-      }
-      const planets = Object.values(actualList).map((item) => ({
+      const planets = Object.values(planetList).map((item) => ({
         name: item,
         identifier: item
       }));
@@ -31,7 +27,7 @@ export const addExoplanetListener = (startListening: AppStartListening) => {
   });
   startListening({
     actionCreator: removeExoplanets,
-    effect: (action, _) => {
+    effect: (action) => {
       const script = `openspace.exoplanets.removeExoplanetSystem('${action.payload.system}')`;
       // TODO: (ylvse 2024-10-14) - Should the last argument be true here? In the old repo there was nothing in the
       // third argument
