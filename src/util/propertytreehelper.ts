@@ -1,9 +1,9 @@
-import { Properties, PropertyOwners } from "src/types/types";
+import { Properties, PropertyOwners } from 'src/types/types';
 
-import { EnginePropertyVisibilityKey, InterestingTag } from "./keys";
+import { EnginePropertyVisibilityKey, InterestingTagKey } from './keys';
 
 export function hasInterestingTag(uri: string, propertyOwners: PropertyOwners) {
-  return propertyOwners[uri]?.tags.some((tag: string) => tag.includes(InterestingTag));
+  return propertyOwners[uri]?.tags.some((tag: string) => tag.includes(InterestingTagKey));
 }
 
 /**
@@ -37,9 +37,11 @@ export function isPropertyVisible(properties: Properties, uri: string) {
   const visibility = properties[uri]?.description?.metaData?.Visibility;
   const visibilitySetting = properties[EnginePropertyVisibilityKey]?.value;
 
-  if (!visibility ||
+  if (
+    !visibility ||
     typeof visibilitySetting !== 'number' ||
-    typeof visibility !== 'string') {
+    typeof visibility !== 'string'
+  ) {
     return false;
   }
 
@@ -50,13 +52,13 @@ export function isPropertyVisible(properties: Properties, uri: string) {
     User: 2,
     NoviceUser: 1,
     Always: 0
-  }
+  };
   return visibilitySetting >= (VisibilityLevelMap[visibility] || 0);
 }
 
 export function isRenderable(uri: string) {
   const splitUri = uri.split('.');
-  return (splitUri.length > 1 && splitUri[splitUri.length - 1] === 'Renderable'); // TODO: Use pop() ?
+  return splitUri.length > 1 && splitUri[splitUri.length - 1] === 'Renderable'; // TODO: Use pop() ?
 }
 
 /**
@@ -103,7 +105,7 @@ export function isVisible(properties: Properties, ownerUri: string) {
 
   const isEnabled = properties[enabledUri].value;
   if (typeof isEnabled !== 'boolean') {
-    return false
+    return false;
   }
 
   // Make fade == 0 correspond to disabled, according to the checkbox
@@ -116,5 +118,5 @@ export function isVisible(properties: Properties, ownerUri: string) {
     return isEnabled;
   }
 
-  return isEnabled && (fadeValue > 0);
+  return isEnabled && fadeValue > 0;
 }

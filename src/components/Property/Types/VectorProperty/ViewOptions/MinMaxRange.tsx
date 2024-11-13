@@ -12,12 +12,13 @@ export function MinMaxRange({
   value,
   additionalData
 }: VectorPropertyProps) {
-  const [currentValue, setCurrentValue] = useState<[number, number]>(
-    [value[0], value[1]]
-  );
+  const [currentValue, setCurrentValue] = useState<[number, number]>([
+    value[0],
+    value[1]
+  ]);
 
   if (value.length !== 2) {
-    console.error("Invalid use of MinMaxRange view option!");
+    console.error('Invalid use of MinMaxRange view option!');
     return;
   }
 

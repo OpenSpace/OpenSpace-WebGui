@@ -1,5 +1,16 @@
 import { MdFilterAlt } from 'react-icons/md';
-import { ActionIcon, Checkbox, Group, Menu, Skeleton, Space, Tabs, Text, Tree, TreeNodeData } from '@mantine/core';
+import {
+  ActionIcon,
+  Checkbox,
+  Group,
+  Menu,
+  Skeleton,
+  Space,
+  Tabs,
+  Text,
+  Tree,
+  TreeNodeData
+} from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 
 import { CollapsibleHeader } from '@/components/CollapsibleHeader/CollapsibleHeader';
@@ -12,7 +23,9 @@ import { hasInterestingTag, shouldShowPropertyOwner } from '@/util/propertytreeh
 import { TempPropertyTest } from './TempPropertyTest';
 
 export function Scene() {
-  const propertyOwners = useAppSelector((state) => state.propertyTree.owners.propertyOwners);
+  const propertyOwners = useAppSelector(
+    (state) => state.propertyTree.owners.propertyOwners
+  );
 
   // TODO: Remove dependency on entire properties object. This means that the entire menu
   // is rerendered as soon as a property changes... Each propertyowner could handle its
@@ -22,7 +35,9 @@ export function Scene() {
   const hasLoadedScene = Object.keys(propertyOwners).length > 0;
 
   const groups: Groups = useAppSelector((state) => state.groups.groups);
-  const customGuiGroupOrdering = useAppSelector((state) => state.groups.customGroupOrdering);
+  const customGuiGroupOrdering = useAppSelector(
+    (state) => state.groups.customGroupOrdering
+  );
 
   // TODO: SHould this really be local storage?
   const [showOnlyEnabled, setShowOnlyEnabled] = useLocalStorage<boolean>({
@@ -37,7 +52,7 @@ export function Scene() {
   const topLevelGroupsPaths = Object.keys(groups).filter((path) => {
     // Get the number of slashes in the path
     const depth = (path.match(/\//g) || []).length;
-    return (depth === 1) && (path !== '/');
+    return depth === 1 && path !== '/';
   });
 
   // TODO: Filter the nodes and property owners based on visiblity
@@ -59,20 +74,20 @@ export function Scene() {
   // Build the data structure for the tree
   function generateGroupData(path: string) {
     const splitPath = path.split('/');
-    const name = (splitPath.length > 1) ? splitPath.pop() : 'Untitled';
+    const name = splitPath.length > 1 ? splitPath.pop() : 'Untitled';
 
     const groupItem: TreeNodeData = {
       value: path,
       label: name,
       children: []
-    }
+    };
 
     const groupData = groups[path];
 
     // Add subgroups, recursively
     groupData.subgroups.forEach((subGroupPath) =>
       groupItem.children?.push(generateGroupData(subGroupPath))
-    )
+    );
 
     // Add property owners
     groupData.propertyOwners
@@ -85,13 +100,13 @@ export function Scene() {
           value: uri, // TODO; what is this used for?
           label: propertyOwner?.name
         });
-      })
+      });
 
     return groupItem;
   }
 
   const treeData: TreeNodeData[] = [];
-  topLevelGroupsPaths.forEach(path => {
+  topLevelGroupsPaths.forEach((path) => {
     treeData.push(generateGroupData(path));
   });
 
@@ -109,26 +124,20 @@ export function Scene() {
     });
 
   function loadingBlocks(n: number) {
-    return [...Array(n)].map((_, i) =>
+    return [...Array(n)].map((_, i) => (
       <Skeleton key={i} height={8} width={`${Math.random() * 100}%`} radius="xl" />
-    )
+    ));
   }
 
   return (
     <>
-      {!hasLoadedScene ?
-        <>
-          {loadingBlocks(4)}
-        </>
-        :
+      {!hasLoadedScene ? (
+        <>{loadingBlocks(4)}</>
+      ) : (
         <Tabs defaultValue="propertyTest">
           <Tabs.List>
-            <Tabs.Tab value="propertyTest" >
-              Property test
-            </Tabs.Tab>
-            <Tabs.Tab value="sceneMenu">
-              Scene menu
-            </Tabs.Tab>
+            <Tabs.Tab value="propertyTest">Property test</Tabs.Tab>
+            <Tabs.Tab value="sceneMenu">Scene menu</Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="propertyTest">
@@ -150,7 +159,9 @@ export function Scene() {
                     <Checkbox
                       label="Show only visible"
                       checked={showOnlyEnabled}
-                      onChange={(event) => setShowOnlyEnabled(event.currentTarget.checked)}
+                      onChange={(event) =>
+                        setShowOnlyEnabled(event.currentTarget.checked)
+                      }
                     />
                     <Tooltip text="Visible = Enabled and not faded out" />
                   </Group>
@@ -158,12 +169,14 @@ export function Scene() {
                     <Checkbox
                       label="Show objects with GUI hidden flag"
                       checked={showHiddenNodes}
-                      onChange={(event) => setShowHiddenNodes(event.currentTarget.checked)}
+                      onChange={(event) =>
+                        setShowHiddenNodes(event.currentTarget.checked)
+                      }
                     />
                     <Tooltip
                       text={
-                        "Show scene graph nodes that are marked as hidden in the GUI " +
-                        "part of the asset. These are otherwise hidden in the interface"
+                        'Show scene graph nodes that are marked as hidden in the GUI ' +
+                        'part of the asset. These are otherwise hidden in the interface'
                       }
                     />
                   </Group>
@@ -174,7 +187,7 @@ export function Scene() {
               data={treeData}
               renderNode={({ node, expanded, hasChildren, elementProps }) => (
                 <div {...elementProps}>
-                  {hasChildren ?
+                  {hasChildren ? (
                     <CollapsibleHeader
                       expanded={expanded}
                       text={
@@ -184,15 +197,15 @@ export function Scene() {
                         </Text>
                       }
                     />
-                    :
+                  ) : (
                     <PropertyOwner uri={node.value} />
-                  }
+                  )}
                 </div>
               )}
             />
-          </Tabs.Panel >
+          </Tabs.Panel>
         </Tabs>
-      }
+      )}
       <Space h="sm" />
     </>
   );

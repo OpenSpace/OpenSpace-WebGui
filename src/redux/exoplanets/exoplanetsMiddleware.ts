@@ -6,8 +6,8 @@ import { AppStartListening } from '../listenerMiddleware';
 
 import { initializeExoplanets } from './exoplanetsSlice';
 
-const removeExoplanets = createAction<{ system: string }>('removeExoplanets');
-const loadExoplanetsData = createAction<void>('loadExoplanetsData');
+export const removeExoplanets = createAction<{ system: string }>('removeExoplanets');
+export const loadExoplanetsData = createAction<void>('loadExoplanetsData');
 
 export const addExoplanetListener = (startListening: AppStartListening) => {
   startListening({

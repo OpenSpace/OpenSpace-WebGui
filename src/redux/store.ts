@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { actionsReducer } from './actions/actionsSlice';
 import { connectionReducer } from './connection/connectionSlice';
+import { exoplanetsReducer } from './exoplanets/exoplanetsSlice';
 import { groupsReducer } from './groups/groupsSlice';
 import { luaApiReducer } from './luaapi/luaApiSlice';
 import { propertyTreeReducer } from './propertytree/propertyTreeSlice';
@@ -15,7 +16,8 @@ export const store = configureStore({
     luaApi: luaApiReducer,
     actions: actionsReducer,
     propertyTree: propertyTreeReducer,
-    groups: groupsReducer
+    groups: groupsReducer,
+    exoplanets: exoplanetsReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

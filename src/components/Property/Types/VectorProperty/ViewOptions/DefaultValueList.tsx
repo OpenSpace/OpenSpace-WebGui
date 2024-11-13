@@ -1,5 +1,3 @@
-
-
 import { Flex } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput';
@@ -29,7 +27,7 @@ export function ValueList({
     <>
       <PropertyLabel label={name} tip={description} />
       <Flex>
-        {value.map((v, i) =>
+        {value.map((v, i) => (
           <NumericInput
             key={i}
             defaultValue={v}
@@ -39,7 +37,7 @@ export function ValueList({
             step={step[i]}
             onEnter={(newValue) => setValue(i, newValue)}
           />
-        )}
+        ))}
       </Flex>
     </>
   );

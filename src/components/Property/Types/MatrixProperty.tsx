@@ -15,7 +15,7 @@ interface Props {
     MaximumValue: number[];
     MinimumValue: number[];
     SteppingValue: number[];
-  }
+  };
 }
 
 export function MatrixProperty({
@@ -41,7 +41,7 @@ export function MatrixProperty({
     <>
       <PropertyLabel label={name} tip={description} />
       <Grid>
-        {value.map((v, i) =>
+        {value.map((v, i) => (
           <Grid.Col key={i} span={12 / matrixSize}>
             <NumericInput
               defaultValue={v}
@@ -52,7 +52,7 @@ export function MatrixProperty({
               disabled={disabled}
             />
           </Grid.Col>
-        )}
+        ))}
       </Grid>
     </>
   );

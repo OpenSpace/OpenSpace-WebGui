@@ -3,21 +3,28 @@ import { Select } from '@mantine/core';
 import { PropertyLabel } from '../PropertyLabel';
 
 interface Option {
-  [key: string]: string // OBS! The key is a number, but will always be converted to a string...
+  [key: string]: string; // OBS! The key is a number, but will always be converted to a string...
 }
 
 interface Props {
-  name: string,
-  description: string
-  disabled: boolean,
-  setPropertyValue: (newValue: number) => void,
-  value: number,
+  name: string;
+  description: string;
+  disabled: boolean;
+  setPropertyValue: (newValue: number) => void;
+  value: number;
   additionalData: {
-    Options: Option[]
-  }
+    Options: Option[];
+  };
 }
 
-export function OptionProperty({ name, description, disabled, setPropertyValue, value, additionalData }: Props) {
+export function OptionProperty({
+  name,
+  description,
+  disabled,
+  setPropertyValue,
+  value,
+  additionalData
+}: Props) {
   const data = additionalData.Options;
 
   // TODO: This is a bit nasty... Only gets the first value. We should consider simplifying
@@ -33,7 +40,7 @@ export function OptionProperty({ name, description, disabled, setPropertyValue, 
   // Value will be an integer number. We need to find the string version to use in the
   // select component
   function valueToString(value: number): string | undefined {
-    return Object.keys(options).find(key => options[key] === value);
+    return Object.keys(options).find((key) => options[key] === value);
   }
 
   function onChange(option: string | null) {
@@ -45,7 +52,7 @@ export function OptionProperty({ name, description, disabled, setPropertyValue, 
   return (
     <Select
       label={<PropertyLabel label={name} tip={description} />}
-      placeholder='Choose an option'
+      placeholder="Choose an option"
       disabled={disabled}
       data={Object.keys(options)}
       value={valueToString(value)}

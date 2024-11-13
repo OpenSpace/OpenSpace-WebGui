@@ -4,16 +4,16 @@ import { Properties, PropertyOwners } from 'src/types/types';
 export type Group = {
   subgroups: string[]; // group paths
   propertyOwners: string[]; // uris
-}
+};
 
 export type Groups = {
-  [key: string]: Group
-}
+  [key: string]: Group;
+};
 
 const initialState = {
   customGroupOrdering: {},
   groups: {}
-}
+};
 
 const emptyGroup = () => ({
   subgroups: [],
@@ -21,7 +21,7 @@ const emptyGroup = () => ({
 });
 
 const computeGroups = (propertyOwners: PropertyOwners, properties: Properties) => {
-  const groups: Groups = {}
+  const groups: Groups = {};
 
   // Create links to property owners
   Object.keys(propertyOwners).forEach((uri) => {
@@ -63,14 +63,13 @@ const computeGroups = (propertyOwners: PropertyOwners, properties: Properties) =
   return groups;
 };
 
-
 export const groupsSlice = createSlice({
   name: 'groups',
   initialState,
   reducers: {
     refreshGroups: (
       state,
-      action: PayloadAction<{ propertyOwners: PropertyOwners, properties: Properties }>
+      action: PayloadAction<{ propertyOwners: PropertyOwners; properties: Properties }>
     ) => {
       const { propertyOwners, properties } = action.payload;
       state.groups = computeGroups(propertyOwners, properties);
@@ -91,7 +90,6 @@ export const groupsSlice = createSlice({
       //   customGroupOrdering: action.payload
       // }
     }
-
   }
 });
 

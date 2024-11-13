@@ -12,19 +12,19 @@ export interface VectorPropertyProps {
     MaximumValue: number[];
     MinimumValue: number[];
     SteppingValue: number[];
-  },
+  };
   viewOptions: {
     Color?: boolean;
     MinMaxRange?: boolean;
-  }
+  };
 }
 
 export function VectorProperty(props: VectorPropertyProps) {
   const { value, viewOptions } = props;
 
   if (value.length === 2 && viewOptions.MinMaxRange) {
-    return <MinMaxRange {...props} />
+    return <MinMaxRange {...props} />;
   }
 
-  return <ValueList {...props} />
+  return <ValueList {...props} />;
 }

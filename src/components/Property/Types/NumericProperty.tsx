@@ -18,7 +18,7 @@ interface Props {
     MaximumValue: number;
     MinimumValue: number;
     SteppingValue: number;
-  }
+  };
   // TODO: view options in metadata
 }
 
@@ -39,7 +39,7 @@ export function NumericProperty({
   const marks = [
     { value: min, label: min },
     { value: (max - min) / 2, label: (max - min) / 2 },
-    { value: max, label: max },
+    { value: max, label: max }
   ];
 
   // Always include zero if it exists in the range
@@ -61,14 +61,14 @@ export function NumericProperty({
         disabled={disabled}
         label={<PropertyLabel label={name} tip={description} />}
       />
-    )
+    );
   }
 
   return (
     <>
       <PropertyLabel label={name} tip={description} />
       <Grid>
-        <Grid.Col span='auto'>
+        <Grid.Col span="auto">
           <Slider
             disabled={disabled}
             value={currentValue}
@@ -79,15 +79,17 @@ export function NumericProperty({
             onChange={onValueChange}
           />
         </Grid.Col>
-        <Grid.Col span='content'>
+        <Grid.Col span="content">
           {/* TODO: implement text editing */}
-          <ActionIcon><MdOutlineEdit /></ActionIcon>
+          <ActionIcon>
+            <MdOutlineEdit />
+          </ActionIcon>
         </Grid.Col>
       </Grid>
       {/* Alternaitve - include  */}
       <PropertyLabel label={name} tip={description} />
       <Grid>
-        <Grid.Col span='auto'>
+        <Grid.Col span="auto">
           <Slider
             disabled={disabled}
             value={currentValue}
@@ -109,8 +111,7 @@ export function NumericProperty({
             onEnter={onValueChange}
           />
         </Grid.Col>
-      </Grid >
+      </Grid>
     </>
-
   );
 }

@@ -77,11 +77,11 @@ interface Props {
 export function Property({ uri }: Props) {
   // TODO: The state here has been changed. Should just be propertyTree.properties. Or
   // maybe even just state.properties?
-  const description = useAppSelector((state) =>
-    state.propertyTree.props.properties[uri]?.description
+  const description = useAppSelector(
+    (state) => state.propertyTree.props.properties[uri]?.description
   );
-  const value = useAppSelector((state) =>
-    state.propertyTree.props.properties[uri]?.value
+  const value = useAppSelector(
+    (state) => state.propertyTree.props.properties[uri]?.value
   );
 
   const dispatch = useAppDispatch();
@@ -94,7 +94,7 @@ export function Property({ uri }: Props) {
     };
   });
 
-  if (!description || (value === undefined)) {
+  if (!description || value === undefined) {
     return null;
   }
 

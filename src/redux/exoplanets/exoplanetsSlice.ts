@@ -26,4 +26,4 @@ export const exoplanetsSlice = createSlice({
 
 // Action creators are generated for each case reducer function, replaces the `Actions/index.js`
 export const { initializeExoplanets } = exoplanetsSlice.actions;
-export const connectionReducer = exoplanetsSlice.reducer;
+export const exoplanetsReducer = exoplanetsSlice.reducer;

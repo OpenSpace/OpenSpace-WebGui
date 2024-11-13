@@ -18,7 +18,7 @@ export function ListProperty({
   setPropertyValue,
   value
 }: Props) {
-  const [inputString, setInputString] = useState<string>("");
+  const [inputString, setInputString] = useState<string>('');
   const [editedIndex, setEditedIndex] = useState<number | undefined>(undefined);
 
   function onInputFieldKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -36,15 +36,13 @@ export function ListProperty({
     if (event.key === 'ArrowLeft') {
       if (editedIndex === undefined) {
         setEditedIndex(value.length - 1);
-      }
-      else {
+      } else {
         setEditedIndex(Math.max(editedIndex - 1, 0));
       }
     } else if (event.key === 'ArrowRight') {
       if (editedIndex !== undefined) {
         setEditedIndex(Math.max(editedIndex + 1, 0));
-      }
-      else if (editedIndex === value.length - 1) {
+      } else if (editedIndex === value.length - 1) {
         setEditedIndex(undefined);
       }
     } else if (event.key === 'Escape') {
@@ -54,7 +52,7 @@ export function ListProperty({
   }
 
   function stopEditing() {
-    setInputString("");
+    setInputString('');
     setEditedIndex(undefined);
   }
 
@@ -84,7 +82,8 @@ export function ListProperty({
             onClick={(event) => {
               setEditedIndex(i);
               event.currentTarget.focus();
-            }}>
+            }}
+          >
             {value}
           </Pill>
         ))}

@@ -13,9 +13,7 @@ export function TempPropertyTest() {
       <Property uri={'Scene.Earth.Renderable.Type'} />
       <Property uri={'Scene.Earth.Renderable.LightSourceNode'} />
       <h3>Trigger (Earth Blue Marble):</h3>
-      <Property
-        uri={'Scene.Earth.Renderable.Layers.ColorLayers.Blue_Marble.Reset'}
-      />
+      <Property uri={'Scene.Earth.Renderable.Layers.ColorLayers.Blue_Marble.Reset'} />
       <h3>Option (Earth VIIRS):</h3>
       <Property
         uri={'Scene.Earth.Renderable.Layers.ColorLayers.ESRI_VIIRS_Combo.BlendMode'}
@@ -24,12 +22,16 @@ export function TempPropertyTest() {
       <Property uri={'Scene.Constellations.Renderable.ConstellationSelection'} />
       <h3 style={styleUnfinished}>String Lists (Server Module - Deny Adresses):</h3>
       TODO: Make the tags (list items) editable
-      <Property uri={'Modules.Server.Interfaces.DefaultTcpSocketInterface.DenyAddresses'} />
+      <Property
+        uri={'Modules.Server.Interfaces.DefaultTcpSocketInterface.DenyAddresses'}
+      />
       <h3 style={styleUnfinished}>Numeric Property - "Nice" value (Earth opacity):</h3>
-      TODO: Come up with a nice version of the input, that also feels responsive.... Testing:
+      TODO: Come up with a nice version of the input, that also feels responsive....
+      Testing:
       <Property uri={'Scene.Earth.Renderable.Opacity'} />
       <h3 style={styleUnfinished}>Numeric Property - Disabled:</h3>
-      TODO: This should somehow show info on max/min value. This specific property is a good example of why
+      TODO: This should somehow show info on max/min value. This specific property is a
+      good example of why
       <Property uri={'Scene.Earth.Renderable.NActiveLayers'} />
       <h3 style={styleUnfinished}>Numeric Property - Exponential:</h3>
       TODO

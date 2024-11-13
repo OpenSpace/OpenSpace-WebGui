@@ -17,10 +17,12 @@ export function StringProperty({
   setPropertyValue,
   value
 }: Props) {
-  return <StringInput
-    disabled={disabled}
-    onEnter={setPropertyValue}
-    defaultValue={value}
-    label={<PropertyLabel label={name} tip={description} />}
-  />
+  return (
+    <StringInput
+      disabled={disabled}
+      onEnter={setPropertyValue}
+      defaultValue={value}
+      label={<PropertyLabel label={name} tip={description} />}
+    />
+  );
 }

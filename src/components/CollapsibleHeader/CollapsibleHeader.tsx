@@ -1,5 +1,5 @@
-import { BiChevronRight } from "react-icons/bi";
-import { Group } from "@mantine/core";
+import { BiChevronRight } from 'react-icons/bi';
+import { Group } from '@mantine/core';
 
 interface Props {
   expanded: boolean;

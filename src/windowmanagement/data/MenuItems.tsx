@@ -1,5 +1,6 @@
 import { WindowLayoutPosition } from 'src/windowmanagement/WindowLayout/WindowLayout';
 
+import { ExoplanetsPanel } from '@/panels/ExoplanetsPanel/ExoplanetsPanel';
 import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { Scene } from '@/panels/Scene/Scene';
@@ -61,9 +62,9 @@ export const menuItemsDB: MenuItem[] = [
   {
     title: 'Exoplanets',
     componentID: 'exoplanets',
-    content: <div> Exoplanets menu </div>,
+    content: <ExoplanetsPanel />,
     preferredPosition: 'right',
-    defaultVisible: false
+    defaultVisible: true
   },
   {
     title: 'User Control',
