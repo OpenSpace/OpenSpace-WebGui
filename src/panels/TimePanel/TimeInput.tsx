@@ -170,7 +170,6 @@ export function TimeInput() {
 
   return (
     <>
-      {cappedTime && time.toISOString()}
       {cappedTime ? (
         <Group gap={'lg'} mb={'xs'}>
           <ActionIcon onClick={toggleLock}>
@@ -241,9 +240,6 @@ export function TimeInput() {
           <Button onClick={resetPendingTime}>Cancel</Button>
         </Group>
       )}
-      <p>TEMPORARY</p>
-      <p>Current time: {cappedDate?.toUTCString()}</p>
-      <p>Pending time: {pendingTime.toUTCString()}</p>
     </>
   );
 }

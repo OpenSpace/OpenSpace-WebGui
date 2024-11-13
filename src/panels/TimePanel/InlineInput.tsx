@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MantineStyleProp, NumberInput, NumberInputProps } from '@mantine/core';
+import { NumberInput, NumberInputProps } from '@mantine/core';
 
 import { HoldableButton } from './HoldableButton';
 

@@ -86,6 +86,7 @@ export function SimulationIncrement() {
       </Text>
       <Slider
         size={'lg'}
+        mb={'xl'}
         min={-10}
         max={10}
         onChange={setQuickAdjust}
