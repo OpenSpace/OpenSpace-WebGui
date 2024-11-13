@@ -1,12 +1,15 @@
+import { useEffect } from 'react';
 import { Button, Stack, Text } from '@mantine/core';
 
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
 import { isDateValid } from '@/redux/time/util';
 
 interface TimePanelMenuButtonProps {
   onClick: () => void;
 }
 export function TimePanelMenuButton({ onClick }: TimePanelMenuButtonProps) {
+  const dispatch = useAppDispatch();
   const time = useAppSelector((state) => state.time.time);
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime);
   const isPaused = useAppSelector((state) => state.time.isPaused);
@@ -16,6 +19,14 @@ export function TimePanelMenuButton({ onClick }: TimePanelMenuButtonProps) {
 
   const timeLabel = isValiDate ? date.toUTCString() : 'Date out of range';
   const speedLabel = getFormattedSpeedLabel();
+
+  useEffect(() => {
+    dispatch(subscribeToTime());
+
+    return () => {
+      dispatch(unsubscribeToTime());
+    };
+  }, [dispatch]);
 
   function getFormattedSpeedLabel() {
     if (targetDeltaTime === undefined) {
