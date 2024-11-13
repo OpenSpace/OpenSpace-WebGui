@@ -49,6 +49,19 @@ export function OriginPanel() {
   );
   const retargetAimDispatcher = useRef(propertyDispatcher(dispatch, RetargetAimKey));
 
+  useEffect(() => {
+    // We make a copy here of the dispatchers to ensure that in the cleanup function they
+    // will be exactly the same as they were on creation, i.e. not modifided
+    const anchor = anchorDispatcher.current;
+    const aim = aimDispatcher.current;
+    anchor.subscribe();
+    aim.subscribe();
+    return () => {
+      anchor.unsubscribe();
+      aim.unsubscribe();
+    };
+  }, []);
+
   const uris: string[] = propertyOwners.Scene?.subowners ?? [];
   const allNodes = uris
     .map((uri) => propertyOwners[uri])
@@ -101,15 +114,6 @@ export function OriginPanel() {
   const isInFocusMode = navigationAction === NavigationActionState.Focus;
   // We'll highlight the anchor node in both Focus and Anchor state otherwise aim node
   const activeNode = navigationAction === NavigationActionState.Aim ? aim : anchor;
-
-  useEffect(() => {
-    anchorDispatcher.current.subscribe();
-    aimDispatcher.current.subscribe();
-    return () => {
-      anchorDispatcher.current.unsubscribe();
-      aimDispatcher.current.unsubscribe();
-    };
-  }, []);
 
   // TODO find a better (?) way to color them depending on state
   function actionIconStyle(state: NavigationActionState) {

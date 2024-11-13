@@ -176,12 +176,6 @@ export function ActionsPanel() {
       <ActionsButton key={`${action.identifier}Action`} action={action} />
     ));
   }
-  // TODO: (@ylvse 2024-10-15): implement this when we have filterlist
-  function getAllActions() {
-    return displayedActions.map((action: Action) => (
-      <ActionsButton key={`${action.identifier}Filtered`} action={action} />
-    ));
-  }
 
   function getBackButton() {
     if (navigationPath !== '/') {
@@ -195,7 +189,7 @@ export function ActionsPanel() {
   }
 
   if (actionLevel === undefined) {
-    //return <p>Loading...</p>;
+    return <p>Loading...</p>;
   }
   // TODO (ylvse 2024-10-10) Check what this check is meant to do?
   // In the js it is actionlevel.length === 0. But how can it have a length?

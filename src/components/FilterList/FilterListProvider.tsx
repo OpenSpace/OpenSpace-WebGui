@@ -4,7 +4,6 @@ import {
   Dispatch,
   isValidElement,
   SetStateAction,
-  useContext,
   useState
 } from 'react';
 
@@ -19,7 +18,7 @@ function isFilterListFavorites(child: React.ReactNode) {
   );
 }
 
-interface ProviderProps {
+export interface ProviderProps {
   searchString: string;
   setSearchString: Dispatch<SetStateAction<string>>;
   showFavorites: boolean;
@@ -27,7 +26,7 @@ interface ProviderProps {
   showDataInstead: boolean;
 }
 
-const FilterListContext = createContext<ProviderProps | null>(null);
+export const FilterListContext = createContext<ProviderProps | null>(null);
 
 export function FilterListProvider({ children }: { children: React.ReactNode }) {
   const [searchString, setSearchString] = useState('');
@@ -57,12 +56,4 @@ export function FilterListProvider({ children }: { children: React.ReactNode }) 
       {children}
     </FilterListContext.Provider>
   );
-}
-
-export function useFilterListProvider() {
-  const context = useContext(FilterListContext);
-  if (!context) {
-    throw Error('useFilterListProvider must be used within a FilterListProvider');
-  }
-  return context;
 }
