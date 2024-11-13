@@ -6,6 +6,7 @@ import { Scene } from '@/panels/Scene/Scene';
 import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
 import { TimePanel } from '@/panels/TimePanel/TimePanel';
+import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 
 export interface MenuItem {
   title: string; // Title of the rc-dock tab
@@ -39,6 +40,9 @@ export const menuItemsDB: MenuItem[] = [
     title: 'Date Panel',
     componentID: 'datePanel',
     content: <TimePanel />,
+    renderMenuButton: (key, onClick) => (
+      <TimePanelMenuButton key={key} onClick={onClick} />
+    ),
     preferredPosition: 'float',
     defaultVisible: true
   },
