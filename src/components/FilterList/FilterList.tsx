@@ -2,7 +2,8 @@ import { Button, Divider, TextInput } from '@mantine/core';
 
 import { FilterListData } from './FilterListData';
 import { FilterListFavorites } from './FilterListFavorites';
-import { FilterListProvider, useFilterListProvider } from './FilterListProvider';
+import { FilterListProvider } from './FilterListProvider';
+import { useFilterListProvider } from './hooks';
 
 interface InputFieldProps {
   searchAutoFocus?: boolean;

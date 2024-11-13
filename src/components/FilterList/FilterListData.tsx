@@ -1,6 +1,6 @@
 import { ScrollArea } from '@mantine/core';
 
-import { useFilterListProvider } from './FilterListProvider';
+import { useFilterListProvider } from './hooks';
 
 export const FilterListDataDisplayName = 'FilterListData';
 

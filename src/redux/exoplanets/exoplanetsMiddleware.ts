@@ -18,7 +18,7 @@ export const addExoplanetListener = (startListening: AppStartListening) => {
       if (!planetList) {
         return;
       }
-      const planets = Object.values(actualList).map((item) => ({
+      const planets = Object.values(planetList).map((item) => ({
         name: item,
         identifier: item
       }));
