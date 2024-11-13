@@ -13,6 +13,7 @@ import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { rootOwnerKey } from '@/util/keys';
 
 import { onCloseConnection, onOpenConnection } from '../connection/connectionSlice';
+import { refreshGroups } from '../groups/groupsSlice';
 import { RootState } from '../store';
 
 import {
@@ -29,6 +30,7 @@ export const subscribeToProperty = createAction<{ uri: string }>('subscribeToPro
 export const unsubscribeToProperty = createAction<{ uri: string }>(
   'unsubscribeToProperty'
 );
+export const propertyTreeWasChanged = createAction<void>('propertyTreeWasChanged');
 
 // The property tree middleware is designed to populate the react store's
 // copy of the property tree when the frontend is connected to OpenSpace.
@@ -234,12 +236,11 @@ async function internalAddUriToPropertyTree(
     );
     dispatch(addPropertyOwners({ propertyOwners: propertyOwners }));
     dispatch(addProperties({ properties: properties }));
-    // listenerApi.dispatch(refreshGroups())); // TODO add
   } else {
     const property = convertOsPropertyToProperty(prop);
     dispatch(addProperties({ properties: [property] }));
-    // listenerApi.dispatch(refreshGroups())); // TODO add
   }
+  dispatch(propertyTreeWasChanged());
 }
 
 // The property owner data we get from OpenSpace is different from what we want to store
@@ -281,6 +282,14 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
     actionCreator: addUriToPropertyTree,
     effect: (action, listenerApi) => {
       internalAddUriToPropertyTree(listenerApi.dispatch, action.payload.uri);
+
+      const { owners, props } = listenerApi.getState().propertyTree;
+      listenerApi.dispatch(
+        refreshGroups({
+          propertyOwners: owners.propertyOwners,
+          properties: props.properties
+        })
+      );
     }
   });
 
@@ -289,6 +298,19 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
     effect: (_, listenerApi) => {
       listenerApi.dispatch(clearPropertyTree());
       internalAddUriToPropertyTree(listenerApi.dispatch, rootOwnerKey);
+    }
+  });
+
+  startListening({
+    actionCreator: propertyTreeWasChanged,
+    effect: (_, listenerApi) => {
+      const { owners, props } = listenerApi.getState().propertyTree;
+      listenerApi.dispatch(
+        refreshGroups({
+          propertyOwners: owners.propertyOwners,
+          properties: props.properties
+        })
+      );
     }
   });
 
@@ -308,7 +330,7 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
 
   startListening({
     actionCreator: setPropertyValue,
-    effect: (action) => {
+    effect: (action, _) => {
       api.setProperty(action.payload.uri, action.payload.value);
     }
   });
@@ -333,7 +355,7 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
 
   startListening({
     actionCreator: unsubscribeToProperty,
-    effect: (action) => {
+    effect: (action, _) => {
       const { uri } = action.payload;
       const subscriptionInfo = subscriptionInfos[uri];
       if (subscriptionInfo) {

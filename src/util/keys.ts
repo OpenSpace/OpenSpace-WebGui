@@ -6,6 +6,8 @@ export const RetargetAimKey = 'NavigationHandler.OrbitalNavigator.RetargetAim';
 // To get any scene graph node you need ScenePrefix+NodeIdentifier
 export const ScenePrefixKey = 'Scene.';
 
+export const InterestingTagKey = 'GUI.Interesting';
 export const rootOwnerKey = '__rootOwner';
 
-export const InterestingTagKey = 'GUI.Interesting';
+// OpenSpace engine
+export const EnginePropertyVisibilityKey = 'OpenSpaceEngine.PropertyVisibility';
