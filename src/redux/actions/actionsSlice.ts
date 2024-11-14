@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Action, ActionOrKeybind, Keybind } from 'src/types/types';
+
+import { Action, ActionOrKeybind, Keybind } from '@/types/types';
 
 export interface ActionsState {
   isInitialized: boolean;

@@ -3,8 +3,7 @@ import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
-
-import type { AppStartListening } from '../listenerMiddleware';
+import type { AppStartListening } from '@/redux/listenerMiddleware';
 
 import { SessionRecordingState, updateSessionrecording } from './sessionRecordingSlice';
 

@@ -1,19 +1,13 @@
 import { createAction, Dispatch, UnknownAction } from '@reduxjs/toolkit';
 import { throttle } from 'lodash';
 import { Topic } from 'openspace-api-js';
-import {
-  Property,
-  PropertyMetaData,
-  PropertyOwner,
-  PropertyValue
-} from 'src/types/types';
 
 import { api } from '@/api/api';
+import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
+import { RootState } from '@/redux/store';
+import { Property, PropertyMetaData, PropertyOwner, PropertyValue } from '@/types/types';
 import { rootOwnerKey } from '@/util/keys';
-
-import { onCloseConnection, onOpenConnection } from '../connection/connectionSlice';
-import { RootState } from '../store';
 
 import {
   addProperties,

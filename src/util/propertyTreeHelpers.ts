@@ -1,4 +1,4 @@
-import { PropertyOwners } from 'src/types/types';
+import { PropertyOwners } from '@/types/types';
 
 import { InterestingTagKey } from './keys';
 

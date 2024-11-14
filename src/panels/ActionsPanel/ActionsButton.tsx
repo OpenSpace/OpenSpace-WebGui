@@ -1,9 +1,9 @@
 import { Button, Group, Stack } from '@mantine/core';
-import { Action } from 'src/types/types';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { LaunchIcon } from '@/icons/icons';
+import { Action } from '@/types/types';
 
 interface Props {
   action: Action;

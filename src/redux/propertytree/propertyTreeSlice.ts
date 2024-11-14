@@ -1,11 +1,12 @@
 import { combineSlices, createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import {
   Properties,
   Property,
   PropertyOwner,
   PropertyOwners,
   PropertyValue
-} from 'src/types/types';
+} from '@/types/types';
 
 export interface PropertiesState {
   isInitialized: boolean;

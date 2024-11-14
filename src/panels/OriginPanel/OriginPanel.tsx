@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { ActionIcon, Container, Group } from '@mantine/core';
-import { FlightControllerData, PropertyOwner } from 'src/types/types';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { FlightControllerData } from '@/types/flightcontroller-types';
+import { PropertyOwner } from '@/types/types';
 import {
   NavigationAimKey,
   NavigationAnchorKey,

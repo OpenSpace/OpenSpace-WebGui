@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ExoplanetData } from 'src/types/types';
+
+import { ExoplanetData } from '@/types/types';
 
 export interface ExoplanetState {
   isInitialized: boolean;

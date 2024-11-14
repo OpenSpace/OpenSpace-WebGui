@@ -1,13 +1,12 @@
 import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
-import { EventData } from 'src/types/types';
 
 import { api } from '@/api/api';
-
-import { onCloseConnection, onOpenConnection } from '../connection/connectionSlice';
-import { AppStartListening } from '../listenerMiddleware';
-import { addUriToPropertyTree } from '../propertytree/propertyTreeMiddleware';
-import { removePropertyOwners } from '../propertytree/propertyTreeSlice';
+import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
+import { AppStartListening } from '@/redux/listenerMiddleware';
+import { addUriToPropertyTree } from '@/redux/propertytree/propertyTreeMiddleware';
+import { removePropertyOwners } from '@/redux/propertytree/propertyTreeSlice';
+import { EventData } from '@/types/event-types';
 
 let eventTopic: Topic;
 let nSubscribers = 0;

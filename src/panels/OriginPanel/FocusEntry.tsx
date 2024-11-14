@@ -1,8 +1,8 @@
 import { ActionIcon, Button, Group, Menu, Stack } from '@mantine/core';
-import { PropertyOwner, PropertyValue } from 'src/types/types';
 
 import { VerticalDotsIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
+import { PropertyOwner, PropertyValue } from '@/types/types';
 
 import { NodeNavigationButton } from './NodeNavigationButton';
 
