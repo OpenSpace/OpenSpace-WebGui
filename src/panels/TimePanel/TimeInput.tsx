@@ -8,6 +8,7 @@ import { isDateValid } from '@/redux/time/util';
 import { TimePart } from '@/types/enums';
 
 import { InlineInput } from './InlineInput';
+import { MonthInput } from './MonthInput';
 import { setDate } from './util';
 
 export function TimeInput() {
@@ -177,13 +178,14 @@ export function TimeInput() {
               }
               style={{ maxWidth: 100 }}
             />
-            <InlineInput
-              value={time.getUTCMonth()}
+            <MonthInput
+              month={time.getUTCMonth()}
               onInputChange={(value, relative, shiftKey) =>
                 onInputChange(value, relative, shiftKey, TimePart.Months)
               }
-              style={{ maxWidth: 65 }}
+              style={{ maxWidth: 75 }}
             />
+
             <InlineInput
               value={time.getUTCDate()}
               onInputChange={(value, relative, shiftKey) =>
@@ -201,7 +203,7 @@ export function TimeInput() {
                 onInputChange(value, relative, shiftKey, TimePart.Hours)
               }
               min={0}
-              max={31}
+              max={24}
               style={{ maxWidth: 65 }}
             />
             <InlineInput

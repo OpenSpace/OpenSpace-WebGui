@@ -18,7 +18,6 @@ export function InlineInput({
   decimalScale,
   style
 }: Props) {
-  // console.log('min', min, 'max', max, 'step', step);
   const [storedValue, setStoredValue] = useState(value);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -30,7 +29,6 @@ export function InlineInput({
   // Similar to `NumericInput` component
   function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
-      // onEnter(storedValue);
       onInputChange(storedValue, false, false);
       event.currentTarget.blur();
     }
