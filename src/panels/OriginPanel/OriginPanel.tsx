@@ -115,15 +115,6 @@ export function OriginPanel() {
   // We'll highlight the anchor node in both Focus and Anchor state otherwise aim node
   const activeNode = navigationAction === NavigationActionState.Aim ? aim : anchor;
 
-  useEffect(() => {
-    anchorDispatcher.current.subscribe();
-    aimDispatcher.current.subscribe();
-    return () => {
-      anchorDispatcher.current.unsubscribe();
-      aimDispatcher.current.unsubscribe();
-    };
-  }, []);
-
   // TODO find a better (?) way to color them depending on state
   function actionIconStyle(state: NavigationActionState) {
     return {
