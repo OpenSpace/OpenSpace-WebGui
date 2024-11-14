@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ActionIcon, Button, Group } from '@mantine/core';
 
+import { useOpenSpaceApi } from '@/api/hooks';
 import { LockIcon, LockOpenIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
@@ -17,7 +18,7 @@ export function TimeInput() {
 
   const dispatch = useAppDispatch();
   const cappedTime = useAppSelector((state) => state.time.timeCapped);
-  const luaApi = useAppSelector((state) => state.luaApi);
+  const luaApi = useOpenSpaceApi();
 
   const cappedDate = new Date(cappedTime ?? '');
   const time = useLock ? pendingTime : cappedDate;

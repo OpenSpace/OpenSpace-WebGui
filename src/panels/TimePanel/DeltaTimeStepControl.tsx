@@ -51,7 +51,7 @@ export function DeltaTimeStepsControl({ stepSize }: DeltaTimeStepsControlProps) 
 
   return (
     <Stack>
-      <Group grow gap={'xs'} align="flex-start">
+      <Group grow gap={'xs'} align={'flex-start'}>
         <Stack gap={0} maw={'100%'} flex={3}>
           <ActionIcon
             onClick={setPrevDeltaTimeStep}

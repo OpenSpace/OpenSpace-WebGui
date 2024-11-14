@@ -25,13 +25,13 @@ export function TopMenuBar({
         backgroundColor: 'var(--mantine-color-gray-filled)'
       }}
     >
-      <Button size={'xs'} color="gray">
+      <Button size={'xs'} color={'gray'}>
         Asset
       </Button>
 
       <Menu position={'bottom-start'} offset={4} withArrow arrowPosition={'center'}>
         <Menu.Target>
-          <Button size={'xs'} color="gray">
+          <Button size={'xs'} color={'gray'}>
             Settings
           </Button>
         </Menu.Target>
@@ -42,7 +42,7 @@ export function TopMenuBar({
 
       <Menu position={'bottom-start'} offset={4} withArrow arrowPosition={'center'}>
         <Menu.Target>
-          <Button size={'xs'} color="gray">
+          <Button size={'xs'} color={'gray'}>
             View
           </Button>
         </Menu.Target>

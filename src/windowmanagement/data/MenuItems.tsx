@@ -1,5 +1,6 @@
 import { WindowLayoutPosition } from 'src/windowmanagement/WindowLayout/WindowLayout';
 
+import { ActionsPanel } from '@/panels/ActionsPanel/ActionsPanel';
 import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { Scene } from '@/panels/Scene/Scene';
@@ -80,7 +81,7 @@ export const menuItemsDB: MenuItem[] = [
   {
     title: 'Actions',
     componentID: 'actions',
-    content: <div>Actions menu</div>,
+    content: <ActionsPanel />,
     preferredPosition: 'float',
     defaultVisible: true
   },

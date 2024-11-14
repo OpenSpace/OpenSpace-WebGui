@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { Group, Select, Slider, Text } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
 
+import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { TimePart } from '@/types/enums';
 
@@ -15,7 +16,7 @@ export function SimulationIncrement() {
   const [beforeQuickAdjust, setBeforeQuickAdjust] = useState<number>(0);
   const [sliderValue, setSliderValue] = useState(0);
 
-  const luaApi = useAppSelector((state) => state.luaApi);
+  const luaApi = useOpenSpaceApi();
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime) ?? 1;
 
   // We use a ref for the delta time to avoid stale closure in the `setDeltaTime` callback
