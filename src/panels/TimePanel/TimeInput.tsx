@@ -21,15 +21,10 @@ export function TimeInput() {
   const cappedDate = new Date(cappedTime ?? '');
   const time = useLock ? pendingTime : cappedDate;
 
-  // TODO: anden88 2924-11-11: I'm not sure if I've dug myself in a trench here but using
-  // a timeRef gives the correct dates when holding the plus/minus buttons, without it
-  // the callback function used in `HoldableButton` will capture the time when we clicked
-  // and any shift-action will not update beyond +- 1 from that captured value.
+  // To avoid stale state and javascript capture magic, we need to set the time
+  // to a ref so we can use the latest time in the functions in the component
   const timeRef = useRef(time);
-
-  useEffect(() => {
-    timeRef.current = time;
-  }, [time]);
+  timeRef.current = time;
 
   useEffect(() => {
     dispatch(subscribeToTime());
@@ -107,21 +102,21 @@ export function TimeInput() {
           newTime.setUTCHours(value);
         }
         break;
-      case TimePart.Date:
+      case TimePart.Days:
         if (relative) {
           newTime.setUTCDate(newTime.getUTCDate() + value);
         } else {
           newTime.setUTCDate(value);
         }
         break;
-      case TimePart.Month:
+      case TimePart.Months:
         if (relative) {
           newTime.setUTCMonth(newTime.getUTCMonth() + value);
         } else {
           newTime.setUTCMonth(value);
         }
         break;
-      case TimePart.Year:
+      case TimePart.Years:
         if (relative) {
           newTime.setUTCFullYear(newTime.getUTCFullYear() + value);
         } else {
@@ -129,8 +124,7 @@ export function TimeInput() {
         }
         break;
       default:
-        console.error("Unhandled 'TimePart' case", timePart);
-        break;
+        throw Error(`Unhandled 'TimePart' case: ${timePart}`);
     }
     return newTime;
   }
@@ -179,21 +173,21 @@ export function TimeInput() {
             <InlineInput
               value={time.getUTCFullYear()}
               onInputChange={(value, relative, shiftKey) =>
-                onInputChange(value, relative, shiftKey, TimePart.Year)
+                onInputChange(value, relative, shiftKey, TimePart.Years)
               }
               style={{ maxWidth: 100 }}
             />
             <InlineInput
               value={time.getUTCMonth()}
               onInputChange={(value, relative, shiftKey) =>
-                onInputChange(value, relative, shiftKey, TimePart.Month)
+                onInputChange(value, relative, shiftKey, TimePart.Months)
               }
               style={{ maxWidth: 65 }}
             />
             <InlineInput
               value={time.getUTCDate()}
               onInputChange={(value, relative, shiftKey) =>
-                onInputChange(value, relative, shiftKey, TimePart.Date)
+                onInputChange(value, relative, shiftKey, TimePart.Days)
               }
               min={0}
               max={31}

@@ -5,9 +5,9 @@ export const StepSizes = {
   [TimePart.Seconds]: 1,
   [TimePart.Minutes]: 60,
   [TimePart.Hours]: 3600,
-  [TimePart.Date]: 86400,
-  [TimePart.Month]: 2678400,
-  [TimePart.Year]: 31536000
+  [TimePart.Days]: 86400,
+  [TimePart.Months]: 2678400,
+  [TimePart.Years]: 31536000
 };
 
 export const Decimals = {
@@ -15,9 +15,9 @@ export const Decimals = {
   [TimePart.Seconds]: 0,
   [TimePart.Minutes]: 3,
   [TimePart.Hours]: 4,
-  [TimePart.Date]: 5,
-  [TimePart.Month]: 7,
-  [TimePart.Year]: 10
+  [TimePart.Days]: 5,
+  [TimePart.Months]: 7,
+  [TimePart.Years]: 10
 };
 
 export function setDate(luaApi: OpenSpace.openspace | null, newTime: Date) {

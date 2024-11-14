@@ -80,10 +80,10 @@ export function HoldableButton({
   function onStepDone() {
     if (onStepTimeoutRef.current) {
       window.clearTimeout(onStepTimeoutRef.current);
+      window.removeEventListener('keydown', downHandler);
+      window.removeEventListener('keyup', upHandler);
+      onStepTimeoutRef.current = null;
     }
-    onStepTimeoutRef.current = null;
-    window.removeEventListener('keydown', downHandler);
-    window.removeEventListener('keyup', upHandler);
   }
 
   return (
@@ -93,6 +93,7 @@ export function HoldableButton({
         onPointerDown={(event) => {
           onStep(event, true);
         }}
+        onPointerOut={onStepDone}
         onPointerUp={onStepDone}
         size={'xs'}
       >
@@ -103,6 +104,7 @@ export function HoldableButton({
         onPointerDown={(event) => {
           onStep(event, false);
         }}
+        onPointerOut={onStepDone}
         onPointerUp={onStepDone}
         size={'xs'}
       >

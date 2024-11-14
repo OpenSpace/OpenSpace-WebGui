@@ -28,8 +28,7 @@ export function DeltaTimeStepsControl({ stepSize }: DeltaTimeStepsControlProps) 
   function setPrevDeltaTimeStep(event: React.MouseEvent<HTMLElement>) {
     if (event.shiftKey) {
       luaApi?.time.setPreviousDeltaTimeStep();
-    }
-    {
+    } else {
       luaApi?.time.interpolatePreviousDeltaTimeStep();
     }
   }
@@ -37,8 +36,7 @@ export function DeltaTimeStepsControl({ stepSize }: DeltaTimeStepsControlProps) 
   function setNextDeltaTimeStep(event: React.MouseEvent<HTMLElement>) {
     if (event.shiftKey) {
       luaApi?.time.setNextDeltaTimeStep();
-    }
-    {
+    } else {
       luaApi?.time.interpolateNextDeltaTimeStep();
     }
   }

@@ -76,7 +76,6 @@ export function SimulationIncrement() {
           label={`${stepSize} / second`}
           value={targetDeltaTime / StepSizes[stepSize]}
           onInputChange={setDeltaTime}
-          // {...Limits[stepSize]}
           step={1}
           decimalScale={Decimals[stepSize]}
         />

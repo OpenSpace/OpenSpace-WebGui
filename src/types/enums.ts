@@ -20,7 +20,7 @@ export enum TimePart {
   Seconds = 'Seconds',
   Minutes = 'Minutes',
   Hours = 'Hours',
-  Date = 'Days',
-  Month = 'Months',
-  Year = 'Years'
+  Days = 'Days',
+  Months = 'Months',
+  Years = 'Years'
 }

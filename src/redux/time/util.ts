@@ -14,10 +14,12 @@ function monthToNumber(month: string) {
     NOV: '11',
     DEC: '12'
   };
-  // TODO: we should not recieve anything else but if that were to happen, what should
-  // default behaviour be?
-  return monthMapping[month] || '';
+  if (!(month in monthMapping)) {
+    throw Error(`Invalid month key: "${month}" :'(`);
+  }
+  return monthMapping[month];
 }
+
 function parseNegativeYears(date: string) {
   // Remove first dash so we can split it where the year ends
   const unsignedDate = date.substring(1);
@@ -47,9 +49,10 @@ function parseBCYears(date: string) {
   const monthNumber = monthToNumber(month);
   // Create year for the pattern '-00YYYY' for negative years (see link above)
   const filledYear = `-${unsignedYear.padStart(6, '0')}`;
+  const dd = day ?? '01';
   // Build the string to correct format ignoring the time since that information might
   // be broken anyways.
-  return `${filledYear}-${monthNumber ?? '01'}-${day ?? '01'}T00:00:00.000`;
+  return `${filledYear}-${monthNumber}-${dd}T00:00:00.000`;
 }
 
 function parseJ2000Date(date: string, yearIndex: number) {
@@ -59,21 +62,30 @@ function parseJ2000Date(date: string, yearIndex: number) {
   const filledYear = year.padStart(4, '0');
   return filledYear.concat(rest);
 }
+
 function parseLargeADYears(date: string) {
   // Year is above 10.000 A.D. and we have yet another format from OpenSpace as follows:
   // YYYY MMM DD HH:MM:SS.xxx
+  // The string is only 24 characters long. With large years, the end of the string will disappear.
+  // Therefore we cannot guarantee that there is a valid time or day, hence the undefined checks later
   const [year, month, day, time] = date.split(' ');
   const [hours, minutes, seconds] = time.split(/[:.]/);
   const monthNumber = monthToNumber(month);
   // For `Date` to correctly parse we need to append '+' and leading zeros
   const filledYear = year.padStart(6, '0');
+
+  const hh = hours ?? '00';
+  const dd = day ?? '01';
+  const mm = minutes ?? '00';
+  const ss = seconds ?? '00';
+
   // We ignore milliseconds as those are most likely cut anyways
-  return `+${filledYear}-${monthNumber ?? '01'}-${day ?? '01'}T${hours ?? '00'}:${minutes ?? '00'}:${seconds ?? '00'}.000`;
+  return `+${filledYear}-${monthNumber}-${dd}T${hh}:${mm}:${ss}.000`;
 }
 
 // Using this hack to parse times
 // https://scholarslab.lib.virginia.edu/blog/parsing-bc-dates-with-javascript/
-export function dateStringWithTimeZone(date: string, zone = 'Z') {
+export function dateStringUTC(date: string) {
   // Ensure we don't have white spaces
   const whitespaceRemoved = date.replace(/\s/g, '');
   let result: string;
@@ -86,13 +98,15 @@ export function dateStringWithTimeZone(date: string, zone = 'Z') {
   } else {
     // After year 0, we will either get it in ISO format or a whitespaced string format
     const yearIndex = whitespaceRemoved.indexOf('-');
-    if (yearIndex >= 0) {
+    const isISOString = yearIndex >= 0;
+    if (isISOString) {
       result = parseJ2000Date(whitespaceRemoved, yearIndex);
     } else {
       result = parseLargeADYears(date);
     }
   }
-  return !result.includes(zone) ? result.concat(zone) : result;
+  const utcTimeZone = 'Z';
+  return !result.includes(utcTimeZone) ? result.concat(utcTimeZone) : result;
 }
 
 export function isDateValid(date: Date) {
