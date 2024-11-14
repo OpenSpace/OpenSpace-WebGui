@@ -14,3 +14,13 @@ export enum NavigationType {
   focus = 3,
   frame = 4
 }
+
+export enum TimePart {
+  Milliseconds = 'Milliseconds',
+  Seconds = 'Seconds',
+  Minutes = 'Minutes',
+  Hours = 'Hours',
+  Days = 'Days',
+  Months = 'Months',
+  Years = 'Years'
+}

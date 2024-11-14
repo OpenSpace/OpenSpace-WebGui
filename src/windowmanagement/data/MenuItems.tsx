@@ -1,11 +1,14 @@
 import { WindowLayoutPosition } from 'src/windowmanagement/WindowLayout/WindowLayout';
 
 import { ExoplanetsPanel } from '@/panels/ExoplanetsPanel/ExoplanetsPanel';
+import { ActionsPanel } from '@/panels/ActionsPanel/ActionsPanel';
 import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { Scene } from '@/panels/Scene/Scene';
 import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
+import { TimePanel } from '@/panels/TimePanel/TimePanel';
+import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 
 export interface MenuItem {
   title: string; // Title of the rc-dock tab
@@ -36,9 +39,12 @@ export const menuItemsDB: MenuItem[] = [
     defaultVisible: true
   },
   {
-    title: 'Date Picker',
-    componentID: 'datePicker',
-    content: <div>Date / Time Menu</div>,
+    title: 'Date Panel',
+    componentID: 'datePanel',
+    content: <TimePanel />,
+    renderMenuButton: (key, onClick) => (
+      <TimePanelMenuButton key={key} onClick={onClick} />
+    ),
     preferredPosition: 'float',
     defaultVisible: true
   },
@@ -76,7 +82,7 @@ export const menuItemsDB: MenuItem[] = [
   {
     title: 'Actions',
     componentID: 'actions',
-    content: <div>Actions menu</div>,
+    content: <ActionsPanel />,
     preferredPosition: 'float',
     defaultVisible: true
   },

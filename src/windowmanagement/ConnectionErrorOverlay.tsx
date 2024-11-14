@@ -16,7 +16,7 @@ export function ConnectionErrorOverlay() {
     //if (location.reload) {
     //  location.reload();
     //}
-    console.log('Reload');
+    console.log('TODO: Reload');
   }
 
   return (

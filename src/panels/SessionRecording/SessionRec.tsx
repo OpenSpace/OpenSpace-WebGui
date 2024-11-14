@@ -164,11 +164,11 @@ export function SessionRec() {
           {recordButtonStateProperties().text}
         </Button>
       </Group>
-      <Divider my="xs" />
+      <Divider my={'xs'} />
       <h2 style={{ marginTop: 0 }}>Play Session</h2>
       <Stack gap={'xs'}>
         <Checkbox
-          label="Force time change to recorded time"
+          label={'Force time change to recorded time'}
           checked={forceTime}
           onChange={(event) => setForceTime(event.currentTarget.checked)}
         />

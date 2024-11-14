@@ -11,7 +11,7 @@ const theme = createTheme({
 
 function App() {
   return (
-    <MantineProvider theme={theme} defaultColorScheme="dark">
+    <MantineProvider theme={theme} defaultColorScheme={'dark'}>
       <WindowLayout></WindowLayout>
     </MantineProvider>
   );

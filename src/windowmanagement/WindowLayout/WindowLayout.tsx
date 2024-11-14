@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { Button, Container, ScrollArea, Stack } from '@mantine/core';
+import { ScrollArea, Stack } from '@mantine/core';
 import DockLayout, { BoxData, LayoutData, PanelData, TabData, TabGroup } from 'rc-dock';
 
 import { onCloseConnection, startConnection } from '@/redux/connection/connectionSlice';
 import { useAppDispatch } from '@/redux/hooks';
 
-import { ActionsPanel } from '../../panels/ActionsPanel/ActionsPanel';
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
 import { menuItemsDB } from '../data/MenuItems';
 import { TaskBar } from '../TaskBar';
@@ -25,9 +24,7 @@ export interface WindowLayoutOptions {
   position?: WindowLayoutPosition;
 }
 
-function createDefaultLayout(
-  addWindow: (component: JSX.Element, options: WindowLayoutOptions) => void
-): LayoutData {
+function createDefaultLayout(): LayoutData {
   return {
     dockbox: {
       id: 'base',
@@ -35,72 +32,11 @@ function createDefaultLayout(
 
       children: [
         {
-          tabs: [
-            {
-              id: 'left',
-              title: 'Test',
-              closable: true,
-              group: 'regularWindow',
-              content: (
-                <>
-                  <div>Hello World</div>
-                  <Button
-                    onClick={() => {
-                      addWindow(
-                        <Container>
-                          <h1>New tab</h1>
-                        </Container>,
-                        {
-                          position: 'right',
-                          title: 'new window',
-                          id: 'newWindow'
-                        }
-                      );
-                    }}
-                  >
-                    Right Side
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      addWindow(<h1>Floating</h1>, {
-                        title: 'new floating',
-                        id: 'newFloating'
-                      });
-                    }}
-                  >
-                    Floating window
-                  </Button>
-                </>
-              )
-            }
-          ]
-        },
-        {
           id: 'center',
           tabs: [],
           //   size: 1000,
           panelLock: {},
           group: 'headless'
-        }
-      ]
-    },
-    floatbox: {
-      mode: 'float',
-      children: [
-        {
-          tabs: [
-            {
-              id: 'actions',
-              title: 'Actions',
-              closable: true,
-              content: <ActionsPanel />,
-              group: 'regularWindow'
-            }
-          ],
-          x: 150,
-          y: 150,
-          w: 320,
-          h: 450
         }
       ]
     }
@@ -196,7 +132,7 @@ export function WindowLayout() {
         }
         // Adds a new panel to left or right side
         else {
-          tab.group = 'newPanel';
+          tab.group = 'regularWindow';
           const panel: PanelData = {
             widthFlex: 6,
             minWidth: 400,
@@ -213,7 +149,7 @@ export function WindowLayout() {
         break;
 
       default:
-        throw Error('Unhandeled window position');
+        throw Error('Unhandled window position');
     }
   }
 
@@ -239,7 +175,7 @@ export function WindowLayout() {
         >
           <DockLayout
             ref={rcDocRef}
-            defaultLayout={createDefaultLayout(addWindow)}
+            defaultLayout={createDefaultLayout()}
             groups={groups}
             style={{
               position: 'absolute',

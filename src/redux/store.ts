@@ -7,6 +7,7 @@ import { groupsReducer } from './groups/groupsSlice';
 import { luaApiReducer } from './luaapi/luaApiSlice';
 import { propertyTreeReducer } from './propertytree/propertyTreeSlice';
 import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
+import { timeReducer } from './time/timeSlice';
 import { listenerMiddleware } from './listenerMiddleware';
 
 export const store = configureStore({
@@ -17,7 +18,8 @@ export const store = configureStore({
     actions: actionsReducer,
     propertyTree: propertyTreeReducer,
     groups: groupsReducer,
-    exoplanets: exoplanetsReducer
+    exoplanets: exoplanetsReducer,
+    time: timeReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

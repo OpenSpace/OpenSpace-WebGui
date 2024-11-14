@@ -1,5 +1,6 @@
 import { ActionIcon, Button } from '@mantine/core';
 
+import { useOpenSpaceApi } from '@/api/hooks';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import {
   AirplaneIcon,
@@ -7,7 +8,6 @@ import {
   FrameFocusIcon,
   LightningFlashIcon
 } from '@/icons/icons';
-import { useAppSelector } from '@/redux/hooks';
 import { IconSize, NavigationType } from '@/types/enums';
 import { NavigationAimKey, NavigationAnchorKey, RetargetAnchorKey } from '@/util/keys';
 
@@ -33,7 +33,7 @@ export function NodeNavigationButton({
   onFinish,
   variant
 }: NodeNavigationButtonProps) {
-  const luaApi = useAppSelector((state) => state.luaApi);
+  const luaApi = useOpenSpaceApi();
 
   function focus(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     if (!event.shiftKey) {

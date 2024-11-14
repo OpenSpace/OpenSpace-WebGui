@@ -66,6 +66,19 @@ export interface PropertyOwners {
   [key: string]: PropertyOwner | undefined;
 }
 
+export type OpenSpaceTimeState = {
+  time?: string;
+  timeCapped?: string;
+  targetDeltaTime?: number;
+  deltaTime?: number;
+  isPaused?: boolean;
+  hasNextStep?: boolean;
+  hasPrevStep?: boolean;
+  nextStep?: number;
+  prevStep?: number;
+  deltaTimeSteps?: number[];
+};
+
 // Event types, these were manually typed from the event.cpp `toParameter`function:
 // https://github.com/OpenSpace/OpenSpace/blob/6dd3dd8ab88653fddee0b2e480934faf53d3c0f8/src/events/event.cpp#L332
 export type ParallelConnectionEvent = {

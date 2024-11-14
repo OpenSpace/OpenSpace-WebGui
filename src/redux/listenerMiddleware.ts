@@ -8,6 +8,7 @@ import { addFlightControllerListener } from './flightcontroller/flightController
 import { addGroupsListener } from './groups/groupsSliceMiddleware';
 import { addPropertyTreeListener } from './propertytree/propertyTreeMiddleware';
 import { addSessionRecordingListener } from './sessionrecording/sessionRecordingMiddleware';
+import { addTimeListener } from './time/timeMiddleware';
 import type { AppDispatch, RootState } from './store';
 
 export const listenerMiddleware = createListenerMiddleware();
@@ -23,3 +24,4 @@ addEventsListener(startAppListening);
 addPropertyTreeListener(startAppListening);
 addFlightControllerListener(startAppListening);
 addGroupsListener(startAppListening);
+addTimeListener(startAppListening);

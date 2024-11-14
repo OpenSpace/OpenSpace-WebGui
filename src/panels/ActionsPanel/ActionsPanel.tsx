@@ -2,7 +2,7 @@ import { Button, Flex, Grid } from '@mantine/core';
 import { Action } from 'src/types/types';
 
 import { FilterList } from '@/components/FilterList/FilterList';
-import { objectWordBeginningSubstring } from '@/components/FilterList/util';
+import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { FolderIcon } from '@/icons/icons';
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -180,7 +180,7 @@ export function ActionsPanel() {
   function getBackButton() {
     if (navigationPath !== '/') {
       return (
-        <Button onClick={goBack} key="backbtn">
+        <Button onClick={goBack} key={'backbtn'}>
           Back
         </Button>
       );
@@ -215,7 +215,7 @@ export function ActionsPanel() {
           renderElement={(action: Action) => (
             <ActionsButton key={`${action.identifier}Filtered`} action={action} />
           )}
-          matcherFunc={objectWordBeginningSubstring}
+          matcherFunc={generateMatcherFunctionByKeys(['identifier', 'name', 'guiPath'])}
         />
       </FilterList>
     </>
