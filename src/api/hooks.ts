@@ -1,5 +1,6 @@
 import { useAppSelector } from '@/redux/hooks';
 import { Property } from '@/types/types';
+
 // Hook to make it easier to get the api
 export function useOpenSpaceApi() {
   const api = useAppSelector((state) => state.luaApi);
@@ -10,7 +11,7 @@ export function useGetProperty(uri: string): Property | undefined {
   return useAppSelector((state) => state.propertyTree.props.properties[uri]);
 }
 
-export function useGetPropertyValue<T>(uri: string, propertyType: string): T | undefined {
+function useGetPropertyValue<T>(uri: string, propertyType: string): T | undefined {
   return useAppSelector((state) => {
     const prop = state.propertyTree.props.properties[uri];
     if (prop && prop?.description.type === propertyType) {
@@ -36,7 +37,6 @@ export const useGetOptionPropertyValue = (uri: string) =>
   useGetPropertyValue<number>(uri, 'OptionProperty');
 
 // Vectors
-// Now, let's create the specific hooks:
 export const useGetDVec2PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'DVec2Property');
 
