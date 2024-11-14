@@ -7,6 +7,7 @@ import { addExoplanetListener } from './exoplanets/exoplanetsMiddleware';
 import { addFlightControllerListener } from './flightcontroller/flightControllerMiddleware';
 import { addPropertyTreeListener } from './propertytree/propertyTreeMiddleware';
 import { addSessionRecordingListener } from './sessionrecording/sessionRecordingMiddleware';
+import { addTimeListener } from './time/timeMiddleware';
 import type { AppDispatch, RootState } from './store';
 
 export const listenerMiddleware = createListenerMiddleware();
@@ -21,3 +22,4 @@ addExoplanetListener(startAppListening);
 addEventsListener(startAppListening);
 addPropertyTreeListener(startAppListening);
 addFlightControllerListener(startAppListening);
+addTimeListener(startAppListening);

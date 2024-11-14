@@ -5,6 +5,7 @@ import { connectionReducer } from './connection/connectionSlice';
 import { luaApiReducer } from './luaapi/luaApiSlice';
 import { propertyTreeReducer } from './propertytree/propertyTreeSlice';
 import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
+import { timeReducer } from './time/timeSlice';
 import { listenerMiddleware } from './listenerMiddleware';
 
 export const store = configureStore({
@@ -13,7 +14,8 @@ export const store = configureStore({
     connection: connectionReducer,
     luaApi: luaApiReducer,
     actions: actionsReducer,
-    propertyTree: propertyTreeReducer
+    propertyTree: propertyTreeReducer,
+    time: timeReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

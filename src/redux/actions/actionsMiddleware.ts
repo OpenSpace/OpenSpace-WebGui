@@ -22,14 +22,9 @@ async function getShortcut(uri: string): Promise<ActionOrKeybind[]> {
     event: 'get_shortcut',
     identifier: uri
   });
-  try {
-    const { value } = await topic.iterator().next();
-    topic.cancel();
-    return value.shortcuts;
-  } catch (e) {
-    console.error(e);
-    return [];
-  }
+  const { value } = await topic.iterator().next();
+  topic.cancel();
+  return value.shortcuts;
 }
 const getAction = createAction<string>('getAction');
 
@@ -37,12 +32,8 @@ export const addActionsListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onOpenConnection,
     effect: async (_, listenerApi) => {
-      try {
-        const result = await getAllShortcuts();
-        listenerApi.dispatch(initializeShortcuts(result));
-      } catch (e) {
-        console.error(e);
-      }
+      const result = await getAllShortcuts();
+      listenerApi.dispatch(initializeShortcuts(result));
     }
   });
 
