@@ -1,9 +1,15 @@
+export {
+  BiChevronDown as ChevronDown,
+  BiChevronRight as ChevronRight
+} from 'react-icons/bi';
 export { BsThreeDotsVertical as VerticalDotsIcon } from 'react-icons/bs';
+export { FaMinus as Minus, FaPlus as Plus } from 'react-icons/fa';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoTelescopeOutline as TelescopeIcon
 } from 'react-icons/io5';
 export {
+  MdPublic as AddExoplanetIcon,
   MdOutlineAirplanemodeActive as AirplaneIcon,
   MdAnchor as AnchorIcon,
   MdExpandLess as ExpandLessIcon,

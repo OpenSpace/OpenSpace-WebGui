@@ -1,24 +1,43 @@
-import { useEffect, useState } from 'react';
-
-import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { Fragment, useEffect, useState } from 'react';
 import {
-  loadExoplanetsData,
-  removeExoplanets
-} from '@/redux/exoplanets/exoplanetsMiddleware';
+  ActionIcon,
+  Collapse,
+  Container,
+  Divider,
+  Flex,
+  Group,
+  Loader,
+  ScrollArea,
+  Space,
+  Text,
+  Title
+} from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+
+import { useGetStringPropertyValue } from '@/api/hooks';
+import { FilterList } from '@/components/FilterList/FilterList';
+import { Property } from '@/components/Property/Property';
+import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { ChevronDown, ChevronRight } from '@/icons/icons';
+import { loadExoplanetsData } from '@/redux/exoplanets/exoplanetsMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
+import {
+  HabitableZonePropertyKey,
+  NavigationAimKey,
+  NavigationAnchorKey,
+  ScenePrefixKey,
+  Size1AuRingPropertyKey,
+  UncertaintyDiscPropertyKey
+} from '@/util/keys';
 import { propertyDispatcher } from '@/util/propertyDispatcher';
 
-const UNCERTAINTY_DISC_TAG = 'exoplanet_uncertainty_disc';
-const UNCERTAINTY_DISC_PROPERTY = 'Modules.Exoplanets.ShowOrbitUncertainty';
-const HABITABLE_ZONE_TAG = 'exoplanet_habitable_zone';
-const HABITABLE_ZONE_PROPERTY = 'Modules.Exoplanets.ShowHabitableZone';
-const SIZE_1AU_RING_TAG = 'exoplanet_1au_ring';
-const SIZE_1AU_RING_PROPERTY = 'Modules.Exoplanets.ShowComparisonCircle';
+import { ExoplanetEntry } from './ExoplanetEntry';
 
 export function ExoplanetsPanel() {
-  const [starName, setStarName] = useState('');
-  const [isSettingsExpanded, setSettingsExpanded] = useState(false);
+  const [loadingAdded, setLoadingAdded] = useState<string[]>([]);
+  const [loadingRemoved, setLoadingRemoved] = useState<string[]>([]);
+
+  const [open, { toggle }] = useDisclosure();
 
   const luaApi = useAppSelector((state) => state.luaApi);
   const propertyOwners = useAppSelector((state) => {
@@ -26,29 +45,9 @@ export function ExoplanetsPanel() {
   });
 
   const isDataInitialized = useAppSelector((state) => state.exoplanets.isInitialized);
-  const systemList = useAppSelector((state) => state.exoplanets.data);
-
-  const aim = useAppSelector((state) => {
-    const aimProp = state.propertyTree.props.properties[NavigationAimKey];
-    return aimProp && aimProp.value;
-  }) as string | undefined;
-
-  const anchor = useAppSelector((state) => {
-    const anchorProp = state.propertyTree.props.properties[NavigationAnchorKey];
-    return anchorProp && anchorProp.value;
-  }) as string | undefined;
-
-  const showHabitableZone = useAppSelector(
-    (state) => state.propertyTree.props.properties[HABITABLE_ZONE_PROPERTY]?.value
-  );
-
-  const showOrbitUncertainty = useAppSelector(
-    (state) => state.propertyTree.props.properties[UNCERTAINTY_DISC_PROPERTY]?.value
-  );
-
-  const show1AuRing = useAppSelector(
-    (state) => state.propertyTree.props.properties[SIZE_1AU_RING_PROPERTY]?.value
-  );
+  const allSystemNames = useAppSelector((state) => state.exoplanets.data);
+  const aim = useGetStringPropertyValue(NavigationAimKey);
+  const anchor = useGetStringPropertyValue(NavigationAnchorKey);
 
   const dispatch = useAppDispatch();
 
@@ -56,187 +55,111 @@ export function ExoplanetsPanel() {
     if (!isDataInitialized) {
       dispatch(loadExoplanetsData());
     }
-  }, []);
+  }, [dispatch, isDataInitialized]);
 
-  useEffect(() => {
-    showHabitableZoneDispatcher.subscribe();
-    showOrbitUncertaintyDispatcher.subscribe();
-    show1AuRingDispatcher.subscribe();
-    return () => {
-      showHabitableZoneDispatcher.unsubscribe();
-      showOrbitUncertaintyDispatcher.unsubscribe();
-      show1AuRingDispatcher.unsubscribe();
-    };
-  }, []);
-
-  if (!propertyOwners || Object.values(propertyOwners).includes(undefined)) {
-    return <p>No active systems</p>;
-  }
   // Find already existing exoplent systems among the property owners
-  const systems = Object.values(propertyOwners).filter((owner) =>
+  const addedSystems = Object.values(propertyOwners).filter((owner) =>
     owner!.tags.includes('exoplanet_system')
   );
-  const exoplanetSystemsUris = systems.map(
-    (owner) => owner && `Scene.${owner.identifier}`
-  );
-  const hasSystems = systemList && systemList.length > 0;
 
-  const showHabitableZoneDispatcher = propertyDispatcher(
-    dispatch,
-    HABITABLE_ZONE_PROPERTY
+  const justAdded = loadingAdded.filter(
+    (name) => addedSystems.findIndex((s) => s && s.name.includes(name)) !== -1
   );
-  const showOrbitUncertaintyDispatcher = propertyDispatcher(
-    dispatch,
-    UNCERTAINTY_DISC_PROPERTY
+  const justRemoved = loadingRemoved.filter(
+    (name) => addedSystems.findIndex((s) => s && s.name.includes(name)) === -1
   );
-  const show1AuRingDispatcher = propertyDispatcher(dispatch, SIZE_1AU_RING_PROPERTY);
-
-  function toggleShowHabitableZone() {
-    const shouldShow = !showHabitableZone;
-    showHabitableZoneDispatcher.set(shouldShow);
-    // Also disable all previously enabled exoplanet habitable zones
-    if (exoplanetSystemsUris?.length > 0) {
-      luaApi?.setPropertyValueSingle(
-        `{${HABITABLE_ZONE_TAG}}.Renderable.Enabled`,
-        shouldShow
-      );
-    }
+  if (justAdded.length > 0) {
+    const newAdded = loadingAdded.filter((e) => !justAdded.includes(e));
+    setLoadingAdded(newAdded);
+  }
+  if (justRemoved.length > 0) {
+    const newRemoved = loadingRemoved.filter((e) => !justRemoved.includes(e));
+    setLoadingRemoved(newRemoved);
   }
 
-  function toggleShowOrbitUncertainty() {
-    const shouldShow = !showOrbitUncertainty;
-    showOrbitUncertaintyDispatcher.set(shouldShow);
-    // Also disable all previously enabled exoplanet orbit uncertainty discs
-    if (exoplanetSystemsUris?.length > 0) {
-      luaApi?.setPropertyValueSingle(
-        `{${UNCERTAINTY_DISC_TAG}}.Renderable.Enabled`,
-        shouldShow
-      );
-    }
-  }
-
-  function toggleShow1AuRing() {
-    const shouldShow = !show1AuRing;
-    show1AuRingDispatcher.set(shouldShow);
-    // Also disable all previously enabled exoplanet orbit uncertainty discs
-    if (exoplanetSystemsUris?.length > 0) {
-      luaApi?.setPropertyValueSingle(
-        `{${SIZE_1AU_RING_TAG}}.Renderable.Enabled`,
-        shouldShow
-      );
-    }
-  }
-
-  function removeExoplanetSystem(systemName: string) {
-    const matchingAnchor = anchor?.indexOf(systemName) === 0;
-    const matchingAim = aim?.indexOf(systemName) === 0;
+  function removeSystem(starName: string) {
+    const matchingAnchor = anchor?.indexOf(starName) === 0;
+    const matchingAim = aim?.indexOf(starName) === 0;
     if (matchingAnchor || matchingAim) {
       propertyDispatcher(dispatch, NavigationAnchorKey).set('Sun');
       propertyDispatcher(dispatch, NavigationAimKey).set('');
     }
-
-    dispatch(removeExoplanets({ system: systemName }));
+    luaApi?.exoplanets.removeExoplanetSystem(starName);
+    setLoadingRemoved([...loadingRemoved, starName]);
   }
 
-  function addSystem() {
+  function addSystem(starName: string) {
+    setLoadingAdded([...loadingAdded, starName]);
     luaApi?.exoplanets.addExoplanetSystem(starName);
   }
 
-  const noContentLabel = <p>No active systems</p>;
-  let panelContent;
-
-  if (exoplanetSystemsUris.length === 0) {
-    panelContent = noContentLabel;
-  } else {
-    panelContent = exoplanetSystemsUris.map((prop) => (
-      <PropertyOwner
-        key={prop}
-        uri={prop}
-        trashAction={removeExoplanetSystem}
-        expansionIdentifier={`P:${prop}`}
-      />
-    ));
-  }
-  return <></>;
-  //(
-  // <div className={Popover.styles.content}>
-  //   <Row>
-  //     {hasSystems ? (
-  //       <FilterList className={styles.list} searchText="Star name...">
-  //         <FilterListData>
-  //           {systemList.map((system) => (
-  //             <FocusEntry
-  //               key={system.name}
-  //               onSelect={setStarName}
-  //               active={starName}
-  //               {...system}
-  //             />
-  //           ))}
-  //         </FilterListData>
-  //       </FilterList>
-  //     ) : (
-  //       <CenteredLabel className={styles.redText}>
-  //         No exoplanet data was loaded
-  //       </CenteredLabel>
-  //     )}
-  //     <div className={Popover.styles.row}>
-  //       <Button
-  //         onClick={addSystem}
-  //         title="Add system"
-  //         style={{ width: 90 }}
-  //         disabled={!starName}
-  //       >
-  //         <MdPublic alt="add_system" />
-  //         <span style={{ marginLeft: 5 }}>Add System</span>
-  //       </Button>
-  //     </div>
-  //   </Row>
-  // </div>
-  // <HorizontalDelimiter />
-  // <ToggleContent
-  //   title="Settings"
-  //   expanded={isSettingsExpanded}
-  //   setExpanded={setSettingsExpanded}
-  // >
-  //   <Checkbox
-  //     checked={showHabitableZone}
-  //     name="showHabitableZone"
-  //     setChecked={toggleShowHabitableZone}
-  //   >
-  //     <span className={styles.checkboxLabel}>Show Habitable Zones</span>
-  //     <InfoBox
-  //       className={styles.infoBox}
-  //       text={`Show/Hide the habitable zone visualizations. Setting the value
-  //       automatically updates the visibility for all added exoplanet systems`}
-  //     />
-  //   </Checkbox>
-  //   <Checkbox
-  //     checked={showOrbitUncertainty}
-  //     name="showOrbitUncertainty"
-  //     setChecked={toggleShowOrbitUncertainty}
-  //   >
-  //     <span className={styles.checkboxLabel}>Show Orbit Uncertainty</span>
-  //     <InfoBox
-  //       className={styles.infoBox}
-  //       text={`Show/Hide disc visualization of the uncertainty of the planetary
-  //       orbits. Setting the value automatically updates the visibility for all
-  //       added exoplanet systems`}
-  //     />
-  //   </Checkbox>
-  //   <Checkbox checked={show1AuRing} name="show1AuRing" setChecked={toggleShow1AuRing}>
-  //     <span className={styles.checkboxLabel}>Show 1 AU Size Ring</span>
-  //     <InfoBox
-  //       className={styles.infoBox}
-  //       text={`If true, show a ring with the radius 1 AU around the host star of
-  //       each system, to use for size comparison. Setting the value automatically
-  //       updates the visibility for all added exoplanet systems`}
-  //     />
-  //   </Checkbox>
-  // </ToggleContent>
-  // <HorizontalDelimiter />
-  // <div className={Popover.styles.title}>Added Systems </div>
-  // <div className={styles.slideList}>
-  //   <ScrollOverlay>{panelContent}</ScrollOverlay>
-  // </div>
-  // );
+  return (
+    <Container fluid>
+      <Space h={'md'} />
+      {allSystemNames.length > 0 ? (
+        <FilterList placeHolderSearchText="Star name..." height={'500px'}>
+          <FilterList.Data<string>
+            data={allSystemNames}
+            renderElement={(name) => {
+              const isAdded = addedSystems.find((s) => s && s.name.includes(name));
+              return (
+                <Fragment key={`entry${name}`}>
+                  <ExoplanetEntry
+                    name={name}
+                    isLoading={
+                      loadingAdded.includes(name) || loadingRemoved.includes(name)
+                    }
+                    isAdded={isAdded !== undefined}
+                    onClick={() => (isAdded ? removeSystem(name) : addSystem(name))}
+                  />
+                  <Space h={'xs'} />
+                </Fragment>
+              );
+            }}
+            matcherFunc={(name, searchstring) =>
+              name.toLowerCase().includes(searchstring.toLowerCase())
+            }
+          ></FilterList.Data>
+        </FilterList>
+      ) : (
+        <Flex align={'center'} justify={'center'} style={{ height: '500px' }}>
+          <Loader />
+        </Flex>
+      )}
+      <Divider my={'xs'} />
+      <Group>
+        <ActionIcon onClick={toggle} variant="default">
+          {open ? <ChevronDown /> : <ChevronRight />}
+        </ActionIcon>
+        <Title order={4}>Settings</Title>
+      </Group>
+      <Collapse in={open} transitionDuration={300}>
+        <Space h={'md'} />
+        <Container>
+          <Property uri={HabitableZonePropertyKey} />
+          <Property uri={UncertaintyDiscPropertyKey} />
+          <Property uri={Size1AuRingPropertyKey} />
+        </Container>
+      </Collapse>
+      <Divider my={'xs'}></Divider>
+      <Title order={3}>Added Systems</Title>
+      <Space h={'md'} />
+      <ScrollArea>
+        {addedSystems.length === 0 ? (
+          <Text>No active systems</Text>
+        ) : (
+          addedSystems.map(
+            (prop) =>
+              prop && (
+                <Fragment key={`propertyowner${prop.identifier}`}>
+                  <PropertyOwner uri={`${ScenePrefixKey}${prop.identifier}`} />
+                  <Space h={'xs'} />
+                </Fragment>
+              )
+          )
+        )}
+      </ScrollArea>
+      <Space h={'xs'} />
+    </Container>
+  );
 }

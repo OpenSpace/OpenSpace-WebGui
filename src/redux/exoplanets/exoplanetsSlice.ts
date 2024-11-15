@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ExoplanetData } from 'src/types/types';
 
 export interface ExoplanetState {
   isInitialized: boolean;
-  data: ExoplanetData[];
+  data: string[];
 }
 
 const initialState: ExoplanetState = {
@@ -15,7 +14,7 @@ export const exoplanetsSlice = createSlice({
   name: 'exoplanets',
   initialState,
   reducers: {
-    initializeExoplanets: (_, action: PayloadAction<ExoplanetData[]>) => {
+    initializeExoplanets: (_, action: PayloadAction<string[]>) => {
       return {
         isInitialized: true,
         data: action.payload

@@ -11,3 +11,10 @@ export const rootOwnerKey = '__rootOwner';
 
 // OpenSpace engine
 export const EnginePropertyVisibilityKey = 'OpenSpaceEngine.PropertyVisibility';
+
+export const UncertaintyDiscTagKey = 'exoplanet_uncertainty_disc';
+export const UncertaintyDiscPropertyKey = 'Modules.Exoplanets.ShowOrbitUncertainty';
+export const HabitableZoneTagKey = 'exoplanet_habitable_zone';
+export const HabitableZonePropertyKey = 'Modules.Exoplanets.ShowHabitableZone';
+export const Size1AuRingTagKey = 'exoplanet_1au_ring';
+export const Size1AuRingPropertyKey = 'Modules.Exoplanets.ShowComparisonCircle';

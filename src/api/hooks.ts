@@ -14,7 +14,7 @@ export function useGetProperty(uri: string): Property | undefined {
 function useGetPropertyValue<T>(uri: string, propertyType: string): T | undefined {
   return useAppSelector((state) => {
     const prop = state.propertyTree.props.properties[uri];
-    if (prop && prop?.description.type === propertyType) {
+    if (prop && prop?.description.type !== propertyType) {
       throw Error(`Requested a ${propertyType} but got a ${prop.description.type}`);
     }
     return prop?.value;

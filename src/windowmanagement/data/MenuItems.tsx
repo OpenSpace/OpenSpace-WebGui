@@ -1,7 +1,7 @@
 import { WindowLayoutPosition } from 'src/windowmanagement/WindowLayout/WindowLayout';
 
-import { ExoplanetsPanel } from '@/panels/ExoplanetsPanel/ExoplanetsPanel';
 import { ActionsPanel } from '@/panels/ActionsPanel/ActionsPanel';
+import { ExoplanetsPanel } from '@/panels/ExoplanetsPanel/ExoplanetsPanel';
 import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { Scene } from '@/panels/Scene/Scene';

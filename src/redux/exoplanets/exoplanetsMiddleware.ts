@@ -1,12 +1,9 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import { api } from '@/api/api';
-
 import { AppStartListening } from '../listenerMiddleware';
 
 import { initializeExoplanets } from './exoplanetsSlice';
 
-export const removeExoplanets = createAction<{ system: string }>('removeExoplanets');
 export const loadExoplanetsData = createAction<void>('loadExoplanetsData');
 
 export const addExoplanetListener = (startListening: AppStartListening) => {
@@ -18,20 +15,7 @@ export const addExoplanetListener = (startListening: AppStartListening) => {
       if (!planetList) {
         return;
       }
-      const planets = Object.values(planetList).map((item) => ({
-        name: item,
-        identifier: item
-      }));
-      listenerApi.dispatch(initializeExoplanets(planets));
-    }
-  });
-  startListening({
-    actionCreator: removeExoplanets,
-    effect: (action) => {
-      const script = `openspace.exoplanets.removeExoplanetSystem('${action.payload.system}')`;
-      // TODO: (ylvse 2024-10-14) - Should the last argument be true here? In the old repo there was nothing in the
-      // third argument
-      api.executeLuaScript(script, false, true);
+      listenerApi.dispatch(initializeExoplanets(Object.values(planetList)));
     }
   });
 };
