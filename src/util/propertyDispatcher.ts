@@ -1,12 +1,12 @@
 import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
 import { throttle } from 'lodash';
-import { PropertyValue } from 'src/types/types';
 
 import {
   subscribeToProperty,
   unsubscribeToProperty
 } from '@/redux/propertytree/propertyTreeMiddleware';
 import { setPropertyValue } from '@/redux/propertytree/propertyTreeSlice';
+import { PropertyValue } from '@/types/types';
 
 const ThrottleMs = 1000 / 60;
 

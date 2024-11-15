@@ -2,10 +2,9 @@ import { createAction, Dispatch, UnknownAction } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
+import { onOpenConnection } from '@/redux/connection/connectionSlice';
+import { AppStartListening } from '@/redux/listenerMiddleware';
 import { OpenSpaceTimeState } from '@/types/types';
-
-import { onOpenConnection } from '../connection/connectionSlice';
-import { AppStartListening } from '../listenerMiddleware';
 
 import { updateTime } from './timeSlice';
 

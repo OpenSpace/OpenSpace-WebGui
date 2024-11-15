@@ -1,11 +1,11 @@
 import { Button, Flex, Grid } from '@mantine/core';
-import { Action } from 'src/types/types';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { FolderIcon } from '@/icons/icons';
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { Action } from '@/types/types';
 
 import { ActionsButton } from './ActionsButton';
 
