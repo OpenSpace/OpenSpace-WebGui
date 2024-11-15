@@ -4,8 +4,8 @@ import { throttle } from 'lodash';
 import {
   subscribeToProperty,
   unsubscribeToProperty
-} from '@/redux/propertytree/propertyTreeMiddleware';
-import { setPropertyValue } from '@/redux/propertytree/propertyTreeSlice';
+} from '@/redux/propertytree/properties/propertiesMiddleware';
+import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import { PropertyValue } from '@/types/types';
 
 const ThrottleMs = 1000 / 60;

@@ -3,18 +3,20 @@ import { configureStore } from '@reduxjs/toolkit';
 import { actionsReducer } from './actions/actionsSlice';
 import { connectionReducer } from './connection/connectionSlice';
 import { luaApiReducer } from './luaapi/luaApiSlice';
-import { propertyTreeReducer } from './propertytree/propertyTreeSlice';
+import { propertiesReducer } from './propertytree/properties/propertiesSlice';
+import { propertyOwnersReducer } from './propertytree/propertyowner/propertyOwnerSlice';
 import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
 import { timeReducer } from './time/timeSlice';
 import { listenerMiddleware } from './listenerMiddleware';
 
 export const store = configureStore({
   reducer: {
-    sessionRecording: sessionRecordingReducer,
+    actions: actionsReducer,
     connection: connectionReducer,
     luaApi: luaApiReducer,
-    actions: actionsReducer,
-    propertyTree: propertyTreeReducer,
+    properties: propertiesReducer,
+    propertyOwners: propertyOwnersReducer,
+    sessionRecording: sessionRecordingReducer,
     time: timeReducer
   },
   middleware: (getDefaultMiddleware) =>
