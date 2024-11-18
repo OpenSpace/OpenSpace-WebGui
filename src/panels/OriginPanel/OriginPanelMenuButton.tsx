@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { Button, Group, Stack, Text } from '@mantine/core';
 
+import { useGetPropertyOwner, useGetStringPropertyValue } from '@/api/hooks';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
 import {
   subscribeToProperty,
   unsubscribeToProperty
-} from '@/redux/propertytree/propertyTreeMiddleware';
+} from '@/redux/propertytree/properties/propertiesMiddleware';
 import { IconSize } from '@/types/enums';
 import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
 
@@ -19,22 +20,11 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
   //   const engineMode = useAppSelector(
   //     (state) => state.engineMode.mode || EngineModeUserControl
   //   );
-  const anchor = useAppSelector(
-    (state) => state.propertyTree.props.properties[NavigationAnchorKey]?.value
-  );
-  const aim = useAppSelector(
-    (state) => state.propertyTree.props.properties[NavigationAimKey]?.value
-  );
-  const anchorName = useAppSelector(
-    (state) =>
-      state.propertyTree.owners.propertyOwners[ScenePrefixKey + anchor]?.name ??
-      (anchor as string | undefined)
-  );
-  const aimName = useAppSelector(
-    (state) =>
-      state.propertyTree.owners.propertyOwners[ScenePrefixKey + aim]?.name ??
-      (aim as string | undefined)
-  );
+  const anchor = useGetStringPropertyValue(NavigationAnchorKey);
+  const aim = useGetStringPropertyValue(NavigationAimKey);
+  const anchorName = useGetPropertyOwner(`${ScenePrefixKey}${anchor}`)?.name ?? anchor;
+  const aimName = useGetPropertyOwner(`${ScenePrefixKey}${aim}`)?.name ?? aim;
+
   const cappedAnchorName = anchorName?.substring(0, 20) ?? '';
   const cappedAimName = aimName?.substring(0, 20) ?? '';
 
