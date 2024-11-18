@@ -1,10 +1,14 @@
 import { useAppSelector } from '@/redux/hooks';
-import { Property } from '@/types/types';
+import { Property, PropertyOwner } from '@/types/types';
 
 // Hook to make it easier to get the api
 export function useOpenSpaceApi() {
   const api = useAppSelector((state) => state.luaApi);
   return api;
+}
+
+export function useGetPropertyOwner(uri: string): PropertyOwner | undefined {
+  return useAppSelector((state) => state.propertyOwners.propertyOwners[uri]);
 }
 
 export function useGetProperty(uri: string): Property | undefined {

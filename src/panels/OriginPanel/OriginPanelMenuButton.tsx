@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { Button, Group, Stack, Text } from '@mantine/core';
 
-import { useGetStringPropertyValue } from '@/api/hooks';
+import { useGetPropertyOwner, useGetStringPropertyValue } from '@/api/hooks';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
 import {
   subscribeToProperty,
   unsubscribeToProperty
@@ -22,13 +22,9 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
   //   );
   const anchor = useGetStringPropertyValue(NavigationAnchorKey);
   const aim = useGetStringPropertyValue(NavigationAimKey);
-  const anchorName = useAppSelector(
-    (state) =>
-      state.propertyOwners.propertyOwners[ScenePrefixKey + anchor]?.name ?? anchor
-  );
-  const aimName = useAppSelector(
-    (state) => state.propertyOwners.propertyOwners[ScenePrefixKey + aim]?.name ?? aim
-  );
+  const anchorName = useGetPropertyOwner(`${ScenePrefixKey}${anchor}`)?.name ?? anchor;
+  const aimName = useGetPropertyOwner(`${ScenePrefixKey}${aim}`)?.name ?? aim;
+
   const cappedAnchorName = anchorName?.substring(0, 20) ?? '';
   const cappedAimName = aimName?.substring(0, 20) ?? '';
 
