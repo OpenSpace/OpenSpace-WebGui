@@ -129,8 +129,7 @@ export function ExoplanetsPanel() {
         <Title order={4}>Settings</Title>
       </Group>
       <Collapse in={open} transitionDuration={300}>
-        <Space h={'md'} />
-        <Container>
+        <Container mt={'md'}>
           <Property uri={HabitableZonePropertyKey} />
           <Property uri={UncertaintyDiscPropertyKey} />
           <Property uri={Size1AuRingPropertyKey} />
@@ -138,23 +137,21 @@ export function ExoplanetsPanel() {
       </Collapse>
       <Divider my={'xs'}></Divider>
       <Title order={3}>Added Systems</Title>
-      <Space h={'md'} />
-      <ScrollArea>
+      <ScrollArea my={'md'}>
         {addedSystems.length === 0 ? (
           <Text>No active systems</Text>
         ) : (
           addedSystems.map(
             (prop) =>
               prop && (
-                <Fragment key={`propertyowner${prop.identifier}`}>
-                  <PropertyOwner uri={`${ScenePrefixKey}${prop.identifier}`} />
-                  <Space h={'xs'} />
-                </Fragment>
+                <PropertyOwner
+                  key={prop.identifier}
+                  uri={`${ScenePrefixKey}${prop.identifier}`}
+                />
               )
           )
         )}
       </ScrollArea>
-      <Space h={'xs'} />
     </Container>
   );
 }

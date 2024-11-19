@@ -47,9 +47,7 @@ export function PropertyOwner({ uri, autoExpand }: Props) {
   // Alternatively, open the Property and subpropertyowner settings in a sepratae menu?
   return (
     <>
-      <ActionIcon onClick={toggle}>
-        <CollapsibleHeader expanded={expanded} text={name} />
-      </ActionIcon>
+      <CollapsibleHeader expanded={expanded} toggle={toggle} text={name} />
       {/* TODO: These componetns looked awful without the added margin and padding (ml and p).
           But we should remove the styling once we've decided how to do for the entire page*/}
       <Collapse in={expanded} ml={'lg'} transitionDuration={0}>

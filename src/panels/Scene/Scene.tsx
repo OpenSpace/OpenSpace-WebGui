@@ -32,7 +32,7 @@ export function Scene() {
   // visiblility instead?
   const properties = useAppSelector((state) => state.propertyTree.props.properties);
   const hasLoadedScene = useAppSelector(
-    (state) => state.propertyTree.owners.isInitialized
+    (state) => Object.values(state.propertyTree.owners.propertyOwners)?.length > 0
   );
 
   const groups: Groups = useAppSelector((state) => state.groups.groups);
@@ -208,7 +208,6 @@ export function Scene() {
           </Tabs.Panel>
         </Tabs>
       )}
-      <Space h={'sm'} />
     </>
   );
 }
