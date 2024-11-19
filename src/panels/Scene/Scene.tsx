@@ -1,11 +1,9 @@
-import { FilterIcon } from '@/icons/icons';
 import {
   ActionIcon,
   Checkbox,
   Group,
   Menu,
   Skeleton,
-  Space,
   Tabs,
   Text,
   Tree,
@@ -13,9 +11,10 @@ import {
 } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 
-import { CollapsibleHeader } from '@/components/CollapsibleHeader/CollapsibleHeader';
+import { CollapsableHeader } from '@/components/CollapsableHeader/CollapsableHeader';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { FilterIcon } from '@/icons/icons';
 import { Groups } from '@/redux/groups/groupsSlice';
 import { useAppSelector } from '@/redux/hooks';
 import { hasInterestingTag, shouldShowPropertyOwner } from '@/util/propertytreehelper';
@@ -34,9 +33,9 @@ export function Scene() {
   );
 
   const groups: Groups = useAppSelector((state) => state.groups.groups);
-  const customGuiGroupOrdering = useAppSelector(
-    (state) => state.groups.customGroupOrdering
-  );
+  // const customGuiGroupOrdering = useAppSelector(
+  //   (state) => state.groups.customGroupOrdering
+  // );
 
   // TODO: SHould this really be local storage?
   const [showOnlyEnabled, setShowOnlyEnabled] = useLocalStorage<boolean>({
@@ -188,7 +187,7 @@ export function Scene() {
               renderNode={({ node, expanded, hasChildren, elementProps }) => (
                 <div {...elementProps}>
                   {hasChildren ? (
-                    <CollapsibleHeader
+                    <CollapsableHeader
                       expanded={expanded}
                       text={
                         <Text fs={'italic'}>

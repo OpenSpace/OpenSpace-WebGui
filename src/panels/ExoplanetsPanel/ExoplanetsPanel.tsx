@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ActionIcon,
   Collapse,
@@ -8,7 +8,6 @@ import {
   Group,
   Loader,
   ScrollArea,
-  Space,
   Text,
   Title
 } from '@mantine/core';

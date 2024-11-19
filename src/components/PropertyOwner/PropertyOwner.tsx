@@ -1,7 +1,7 @@
-import { ActionIcon, Collapse, Paper } from '@mantine/core';
+import { Collapse, Paper } from '@mantine/core';
 import { shallowEqual, useDisclosure } from '@mantine/hooks';
 
-import { CollapsibleHeader } from '@/components/CollapsibleHeader/CollapsibleHeader';
+import { CollapsableHeader } from '@/components/CollapsableHeader/CollapsableHeader';
 import { Property } from '@/components/Property/Property';
 import { useAppSelector } from '@/redux/hooks';
 import { isPropertyVisible, isRenderable } from '@/util/propertytreehelper';
@@ -45,7 +45,7 @@ export function PropertyOwner({ uri, autoExpand }: Props) {
   // Alternatively, open the Property and subpropertyowner settings in a sepratae menu?
   return (
     <>
-      <CollapsibleHeader expanded={expanded} toggle={toggle} text={name} />
+      <CollapsableHeader expanded={expanded} toggle={toggle} text={name} />
       {/* TODO: These componetns looked awful without the added margin and padding (ml and p).
           But we should remove the styling once we've decided how to do for the entire page*/}
       <Collapse in={expanded} ml={'lg'} transitionDuration={0}>

@@ -2,6 +2,7 @@ import { createAction, Dispatch, UnknownAction } from '@reduxjs/toolkit';
 
 import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
+import { refreshGroups } from '@/redux/groups/groupsSlice';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { Property, PropertyMetaData, PropertyOwner } from '@/types/types';
 import { rootOwnerKey } from '@/util/keys';
@@ -11,7 +12,6 @@ import {
   addPropertyOwners,
   clearPropertyOwners
 } from './propertyowner/propertyOwnerSlice';
-import { refreshGroups } from '@/redux/groups/groupsSlice';
 
 export const reloadPropertyTree = createAction<void>('reloadPropertyTree');
 export const addUriToPropertyTree = createAction<{ uri: string }>('addUriToPropertyTree');

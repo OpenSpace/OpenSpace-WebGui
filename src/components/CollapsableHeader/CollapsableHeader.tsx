@@ -1,5 +1,5 @@
-import { Group } from '@mantine/core';
-import { ActionIcon } from '@mantine/core';
+import { ActionIcon, Group } from '@mantine/core';
+
 import { ChevronDownIcon, ChevronRightIcon } from '@/icons/icons';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
   toggle?: () => void;
 }
 
-export function CollapsibleHeader({ expanded, text, toggle }: Props) {
+export function CollapsableHeader({ expanded, text, toggle }: Props) {
   const chevronProps = { size: 18, style: { flexShrink: 0 } };
   return (
     <Group gap={5} wrap={'nowrap'}>
