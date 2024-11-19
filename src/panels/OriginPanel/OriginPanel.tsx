@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ActionIcon, Container, Group } from '@mantine/core';
 
+import { useGetStringPropertyValue } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
@@ -31,16 +32,10 @@ export function OriginPanel() {
   // redux and restored between open & close, do we want the same here?
   const [navigationAction, setNavigationAction] = useState(NavigationActionState.Focus);
 
-  const propertyOwners = useAppSelector(
-    (state) => state.propertyTree.owners.propertyOwners
-  );
-  const properties = useAppSelector((state) => state.propertyTree.props.properties);
-  const anchor = useAppSelector(
-    (state) => state.propertyTree.props.properties[NavigationAnchorKey]?.value // We could optionally return empty string here, that way anchor is always of type string
-  );
-  const aim = useAppSelector(
-    (state) => state.propertyTree.props.properties[NavigationAimKey]?.value
-  );
+  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+  const properties = useAppSelector((state) => state.properties.properties);
+  const anchor = useGetStringPropertyValue(NavigationAnchorKey);
+  const aim = useGetStringPropertyValue(NavigationAimKey);
 
   const dispatch = useAppDispatch();
   const anchorDispatcher = useRef(propertyDispatcher(dispatch, NavigationAnchorKey));
@@ -53,13 +48,13 @@ export function OriginPanel() {
   useEffect(() => {
     // We make a copy here of the dispatchers to ensure that in the cleanup function they
     // will be exactly the same as they were on creation, i.e. not modifided
-    const anchor = anchorDispatcher.current;
-    const aim = aimDispatcher.current;
-    anchor.subscribe();
-    aim.subscribe();
+    const copyAnchorDispatcher = anchorDispatcher.current;
+    const copyAimDispatcher = aimDispatcher.current;
+    copyAnchorDispatcher.subscribe();
+    copyAimDispatcher.subscribe();
     return () => {
-      anchor.unsubscribe();
-      aim.unsubscribe();
+      copyAnchorDispatcher.unsubscribe();
+      copyAimDispatcher.unsubscribe();
     };
   }, []);
 

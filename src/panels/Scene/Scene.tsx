@@ -23,16 +23,14 @@ import { hasInterestingTag, shouldShowPropertyOwner } from '@/util/propertytreeh
 import { TempPropertyTest } from './TempPropertyTest';
 
 export function Scene() {
-  const propertyOwners = useAppSelector(
-    (state) => state.propertyTree.owners.propertyOwners
-  );
+  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
 
   // TODO: Remove dependency on entire properties object. This means that the entire menu
   // is rerendered as soon as a property changes... Each propertyowner could handle its
   // visiblility instead?
-  const properties = useAppSelector((state) => state.propertyTree.props.properties);
+  const properties = useAppSelector((state) => state.properties.properties);
   const hasLoadedScene = useAppSelector(
-    (state) => Object.values(state.propertyTree.owners.propertyOwners)?.length > 0
+    (state) => Object.values(state.propertyOwners.propertyOwners)?.length > 0
   );
 
   const groups: Groups = useAppSelector((state) => state.groups.groups);

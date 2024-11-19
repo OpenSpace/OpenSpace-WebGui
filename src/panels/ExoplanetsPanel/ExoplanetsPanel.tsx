@@ -41,7 +41,7 @@ export function ExoplanetsPanel() {
 
   const luaApi = useOpenSpaceApi();
   const propertyOwners = useAppSelector((state) => {
-    return state.propertyTree.owners.propertyOwners;
+    return state.propertyOwners.propertyOwners;
   });
 
   const isDataInitialized = useAppSelector((state) => state.exoplanets.isInitialized);

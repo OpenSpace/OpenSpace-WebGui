@@ -29,11 +29,11 @@ export const addGroupsListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: propertyTreeWasChanged,
     effect: (_, listenerApi) => {
-      const { owners, props } = listenerApi.getState().propertyTree;
+      const { properties, propertyOwners } = listenerApi.getState();
       listenerApi.dispatch(
         refreshGroups({
-          propertyOwners: owners.propertyOwners,
-          properties: props.properties
+          propertyOwners: propertyOwners.propertyOwners,
+          properties: properties.properties
         })
       );
     }

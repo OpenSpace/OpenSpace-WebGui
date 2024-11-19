@@ -3,11 +3,6 @@ import { Box } from '@mantine/core';
 import { PropertyValue } from 'src/types/types';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import {
-  subscribeToProperty,
-  unsubscribeToProperty
-} from '@/redux/propertytree/propertyTreeMiddleware';
-import { setPropertyValue } from '@/redux/propertytree/propertyTreeSlice';
 
 import { ListProperty } from './/Types/ListProperty';
 import { BoolProperty } from './Types/BoolProperty';
@@ -18,6 +13,11 @@ import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';
 import { TriggerProperty } from './Types/TriggerProperty';
 import { VectorProperty } from './Types/VectorProperty/VectorProperty';
+import {
+  subscribeToProperty,
+  unsubscribeToProperty
+} from '@/redux/propertytree/properties/propertiesMiddleware';
+import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 
 // (2024-10-21, emmbr) I don't know how to efficiently get rid of "any" in this case
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -78,12 +78,10 @@ export function Property({ uri }: Props) {
   // TODO: The state here has been changed. Should just be propertyTree.properties. Or
   // maybe even just state.properties?
   const description = useAppSelector(
-    (state) => state.propertyTree.props.properties[uri]?.description
+    (state) => state.properties.properties[uri]?.description
   );
 
-  const value = useAppSelector(
-    (state) => state.propertyTree.props.properties[uri]?.value
-  );
+  const value = useAppSelector((state) => state.properties.properties[uri]?.value);
 
   const dispatch = useAppDispatch();
   // TODO: These actions should not have to take an object. The string value is enough

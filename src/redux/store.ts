@@ -5,20 +5,22 @@ import { connectionReducer } from './connection/connectionSlice';
 import { exoplanetsReducer } from './exoplanets/exoplanetsSlice';
 import { groupsReducer } from './groups/groupsSlice';
 import { luaApiReducer } from './luaapi/luaApiSlice';
-import { propertyTreeReducer } from './propertytree/propertyTreeSlice';
+import { propertiesReducer } from './propertytree/properties/propertiesSlice';
+import { propertyOwnersReducer } from './propertytree/propertyowner/propertyOwnerSlice';
 import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
 import { timeReducer } from './time/timeSlice';
 import { listenerMiddleware } from './listenerMiddleware';
 
 export const store = configureStore({
   reducer: {
-    sessionRecording: sessionRecordingReducer,
-    connection: connectionReducer,
-    luaApi: luaApiReducer,
     actions: actionsReducer,
-    propertyTree: propertyTreeReducer,
-    groups: groupsReducer,
+    connection: connectionReducer,
     exoplanets: exoplanetsReducer,
+    luaApi: luaApiReducer,
+    groups: groupsReducer,
+    properties: propertiesReducer,
+    propertyOwners: propertyOwnersReducer,
+    sessionRecording: sessionRecordingReducer,
     time: timeReducer
   },
   middleware: (getDefaultMiddleware) =>

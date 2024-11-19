@@ -14,16 +14,14 @@ interface Props {
 export function PropertyOwner({ uri, autoExpand }: Props) {
   const [expanded, { toggle }] = useDisclosure(autoExpand || false);
 
-  const propertyOwners = useAppSelector(
-    (state) => state.propertyTree.owners.propertyOwners
-  );
+  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const propertyOwner = useAppSelector(
-    (state) => state.propertyTree.owners.propertyOwners[uri]
+    (state) => state.propertyOwners.propertyOwners[uri]
   );
   const properties = useAppSelector((state) => {
     const subProperties = propertyOwner?.properties || [];
     return subProperties.filter((prop) =>
-      isPropertyVisible(state.propertyTree.props.properties, prop)
+      isPropertyVisible(state.properties.properties, prop)
     );
   }, shallowEqual);
 

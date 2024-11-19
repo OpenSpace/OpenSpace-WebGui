@@ -1,5 +1,5 @@
 import { useAppSelector } from '@/redux/hooks';
-import { Property } from '@/types/types';
+import { Property, PropertyOwner } from '@/types/types';
 
 // Hook to make it easier to get the api
 export function useOpenSpaceApi() {
@@ -7,13 +7,17 @@ export function useOpenSpaceApi() {
   return api;
 }
 
+export function useGetPropertyOwner(uri: string): PropertyOwner | undefined {
+  return useAppSelector((state) => state.propertyOwners.propertyOwners[uri]);
+}
+
 export function useGetProperty(uri: string): Property | undefined {
-  return useAppSelector((state) => state.propertyTree.props.properties[uri]);
+  return useAppSelector((state) => state.properties.properties[uri]);
 }
 
 function useGetPropertyValue<T>(uri: string, propertyType: string): T | undefined {
   return useAppSelector((state) => {
-    const prop = state.propertyTree.props.properties[uri];
+    const prop = state.properties.properties[uri];
     if (prop && prop?.description.type !== propertyType) {
       throw Error(`Requested a ${propertyType} but got a ${prop.description.type}`);
     }
