@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import { AppStartListening } from '../listenerMiddleware';
+import { AppStartListening } from '@/redux/listenerMiddleware';
 
 import { initializeExoplanets } from './exoplanetsSlice';
 

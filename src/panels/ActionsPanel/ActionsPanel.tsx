@@ -181,7 +181,7 @@ export function ActionsPanel() {
     if (navigationPath !== '/') {
       return (
         <Button onClick={goBack} key={'backbtn'}>
-          Back
+          {'Back\r'}
         </Button>
       );
     }

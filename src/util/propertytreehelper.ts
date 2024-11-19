@@ -1,4 +1,4 @@
-import { Properties, PropertyOwners } from 'src/types/types';
+import { Properties, PropertyOwners } from '@/types/types';
 
 import { EnginePropertyVisibilityKey, InterestingTagKey } from './keys';
 

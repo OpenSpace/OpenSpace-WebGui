@@ -1,4 +1,4 @@
-import { MdFilterAlt } from 'react-icons/md';
+import { FilterIcon } from '@/icons/icons';
 import {
   ActionIcon,
   Checkbox,
@@ -31,8 +31,9 @@ export function Scene() {
   // is rerendered as soon as a property changes... Each propertyowner could handle its
   // visiblility instead?
   const properties = useAppSelector((state) => state.propertyTree.props.properties);
-
-  const hasLoadedScene = Object.keys(propertyOwners).length > 0;
+  const hasLoadedScene = useAppSelector(
+    (state) => state.propertyTree.owners.isInitialized
+  );
 
   const groups: Groups = useAppSelector((state) => state.groups.groups);
   const customGuiGroupOrdering = useAppSelector(
@@ -125,7 +126,7 @@ export function Scene() {
 
   function loadingBlocks(n: number) {
     return [...Array(n)].map((_, i) => (
-      <Skeleton key={i} height={8} width={`${Math.random() * 100}%`} radius="xl" />
+      <Skeleton key={i} height={8} width={`${Math.random() * 100}%`} radius={'xl'} />
     ));
   }
 
@@ -134,40 +135,41 @@ export function Scene() {
       {!hasLoadedScene ? (
         <>{loadingBlocks(4)}</>
       ) : (
-        <Tabs defaultValue="propertyTest">
+        <Tabs defaultValue={'propertyTest'}>
           <Tabs.List>
-            <Tabs.Tab value="propertyTest">Property test</Tabs.Tab>
-            <Tabs.Tab value="sceneMenu">Scene menu</Tabs.Tab>
+            <Tabs.Tab value={'propertyTest'}>Property test</Tabs.Tab>
+            <Tabs.Tab value={'sceneMenu'}>Scene menu</Tabs.Tab>
           </Tabs.List>
 
-          <Tabs.Panel value="propertyTest">
+          <Tabs.Panel value={'propertyTest'}>
             <TempPropertyTest />
           </Tabs.Panel>
 
-          <Tabs.Panel value="sceneMenu">
+          <Tabs.Panel value={'sceneMenu'}>
             <Group justify={'space-between'}>
               <Text>Scene</Text>
               {/* TODO: Move this settings menu to a separate component */}
               <Menu position={'right-start'} closeOnItemClick={false}>
                 <Menu.Target>
                   <ActionIcon>
-                    <MdFilterAlt />
+                    <FilterIcon />
                   </ActionIcon>
                 </Menu.Target>
                 <Menu.Dropdown>
                   <Group>
                     <Checkbox
-                      label="Show only visible"
+                      label={'Show only visible'}
                       checked={showOnlyEnabled}
                       onChange={(event) =>
                         setShowOnlyEnabled(event.currentTarget.checked)
                       }
                     />
-                    <Tooltip text="Visible = Enabled and not faded out" />
+                    <Tooltip text={'Visible = Enabled and not faded out'} />
                   </Group>
                   <Group>
+                    test {showOnlyEnabled}
                     <Checkbox
-                      label="Show objects with GUI hidden flag"
+                      label={'Show objects with GUI hidden flag'}
                       checked={showHiddenNodes}
                       onChange={(event) =>
                         setShowHiddenNodes(event.currentTarget.checked)
@@ -191,7 +193,7 @@ export function Scene() {
                     <CollapsibleHeader
                       expanded={expanded}
                       text={
-                        <Text fs="italic">
+                        <Text fs={'italic'}>
                           {/* For now, render groups in italic to distiguish them from property owners*/}
                           {node.label}
                         </Text>
@@ -206,7 +208,7 @@ export function Scene() {
           </Tabs.Panel>
         </Tabs>
       )}
-      <Space h="sm" />
+      <Space h={'sm'} />
     </>
   );
 }

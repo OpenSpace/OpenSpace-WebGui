@@ -1,11 +1,10 @@
-import { Collapse, Paper } from '@mantine/core';
+import { ActionIcon, Collapse, Paper } from '@mantine/core';
 import { shallowEqual, useDisclosure } from '@mantine/hooks';
 
+import { CollapsibleHeader } from '@/components/CollapsibleHeader/CollapsibleHeader';
+import { Property } from '@/components/Property/Property';
 import { useAppSelector } from '@/redux/hooks';
 import { isPropertyVisible, isRenderable } from '@/util/propertytreehelper';
-
-import { CollapsibleHeader } from '../CollapsibleHeader/CollapsibleHeader';
-import { Property } from '../Property/Property';
 
 interface Props {
   uri: string;
@@ -21,7 +20,6 @@ export function PropertyOwner({ uri, autoExpand }: Props) {
   const propertyOwner = useAppSelector(
     (state) => state.propertyTree.owners.propertyOwners[uri]
   );
-
   const properties = useAppSelector((state) => {
     const subProperties = propertyOwner?.properties || [];
     return subProperties.filter((prop) =>
@@ -49,13 +47,13 @@ export function PropertyOwner({ uri, autoExpand }: Props) {
   // Alternatively, open the Property and subpropertyowner settings in a sepratae menu?
   return (
     <>
-      <div role="button" onClick={toggle}>
+      <ActionIcon onClick={toggle}>
         <CollapsibleHeader expanded={expanded} text={name} />
-      </div>
+      </ActionIcon>
       {/* TODO: These componetns looked awful without the added margin and padding (ml and p).
           But we should remove the styling once we've decided how to do for the entire page*/}
-      <Collapse in={expanded} ml="lg" transitionDuration={0}>
-        <Paper withBorder p="1px" onClick={(event) => event.stopPropagation()}>
+      <Collapse in={expanded} ml={'lg'} transitionDuration={0}>
+        <Paper withBorder p={'1px'} onClick={(event) => event.stopPropagation()}>
           {/* TODO: The rendering of these components are very slow...
               Setting the transition duration to zero helps a bit, but still*/}
           {sortedSubOwners.map((uri) => (

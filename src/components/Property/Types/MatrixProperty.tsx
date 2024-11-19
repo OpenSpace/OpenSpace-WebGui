@@ -1,8 +1,7 @@
 import { Grid } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput';
-
-import { PropertyLabel } from '../PropertyLabel';
+import { PropertyLabel } from '@/components/Property/PropertyLabel';
 
 interface Props {
   name: string;

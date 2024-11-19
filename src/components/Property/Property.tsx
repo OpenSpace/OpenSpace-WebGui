@@ -80,6 +80,7 @@ export function Property({ uri }: Props) {
   const description = useAppSelector(
     (state) => state.propertyTree.props.properties[uri]?.description
   );
+
   const value = useAppSelector(
     (state) => state.propertyTree.props.properties[uri]?.value
   );
@@ -92,7 +93,7 @@ export function Property({ uri }: Props) {
     return () => {
       dispatch(unsubscribeToProperty({ uri }));
     };
-  });
+  }, [dispatch]);
 
   if (!description || value === undefined) {
     return null;
@@ -111,7 +112,7 @@ export function Property({ uri }: Props) {
   return (
     // All the property types get all informaiton, and then they may do whatever they
     // want with it (like ignore certain parts)
-    <Box pb="xs">
+    <Box pb={'xs'}>
       <ConcreteProperty
         key={description.identifier}
         disabled={description.metaData.isReadOnly}

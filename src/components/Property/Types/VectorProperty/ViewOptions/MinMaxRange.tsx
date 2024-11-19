@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { RangeSlider } from '@mantine/core';
 
-import { PropertyLabel } from '../../../PropertyLabel';
-import { VectorPropertyProps } from '../VectorProperty';
+import { PropertyLabel } from '@/components/Property/PropertyLabel';
+import { VectorPropertyProps } from '@/components/Property/Types/VectorProperty/VectorProperty';
 
 export function MinMaxRange({
   name,
@@ -18,8 +18,7 @@ export function MinMaxRange({
   ]);
 
   if (value.length !== 2) {
-    console.error('Invalid use of MinMaxRange view option!');
-    return;
+    throw Error('Invalid use of MinMaxRange view option!');
   }
 
   const [min] = additionalData.MinimumValue;

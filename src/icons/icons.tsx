@@ -1,9 +1,5 @@
-export {
-  BiChevronDown as ChevronDown,
-  BiChevronRight as ChevronRight
-} from 'react-icons/bi';
 export { BsThreeDotsVertical as VerticalDotsIcon } from 'react-icons/bs';
-export { FaMinus as Minus, FaPlus as Plus } from 'react-icons/fa';
+export { FaMinus as MinusIcon, FaPlus as PlusIcon } from 'react-icons/fa';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoTelescopeOutline as TelescopeIcon
@@ -12,10 +8,13 @@ export {
   MdPublic as AddExoplanetIcon,
   MdOutlineAirplanemodeActive as AirplaneIcon,
   MdAnchor as AnchorIcon,
-  MdExpandLess as ExpandLessIcon,
-  MdExpandMore as ExpandMoreIcon,
+  MdExpandMore as ChevronDownIcon,
+  MdChevronLeft as ChevronLeftIcon,
+  MdChevronRight as ChevronRightIcon,
+  MdExpandLess as ChevronUpIcon,
   MdFastForward as FastForwardIcon,
   MdFastRewind as FastRewindIcon,
+  MdFilterAlt as FilterIcon,
   MdFolder as FolderIcon,
   MdFilterCenterFocus as FrameFocusIcon,
   MdLaunch as LaunchIcon,
@@ -23,6 +22,7 @@ export {
   MdLock as LockIcon,
   MdLockOpen as LockOpenIcon,
   MdPause as PauseIcon,
+  MdOutlineEdit as PenIcon,
   MdPlayArrow as PlayIcon,
   MdFiberManualRecord as RecordIcon,
   MdSettings as SettingsIcon,

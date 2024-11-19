@@ -26,13 +26,13 @@ export function TopMenuBar({
       }}
     >
       <Button size={'xs'} color={'gray'}>
-        Asset
+        {'Asset\r'}
       </Button>
 
       <Menu position={'bottom-start'} offset={4} withArrow arrowPosition={'center'}>
         <Menu.Target>
           <Button size={'xs'} color={'gray'}>
-            Settings
+            {'Settings\r'}
           </Button>
         </Menu.Target>
         <Menu.Dropdown>
@@ -43,7 +43,7 @@ export function TopMenuBar({
       <Menu position={'bottom-start'} offset={4} withArrow arrowPosition={'center'}>
         <Menu.Target>
           <Button size={'xs'} color={'gray'}>
-            View
+            {'View\r'}
           </Button>
         </Menu.Target>
         <Menu.Dropdown>

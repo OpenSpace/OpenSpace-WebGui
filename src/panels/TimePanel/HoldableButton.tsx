@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { ActionIcon, Stack } from '@mantine/core';
 
-import { ExpandLessIcon, ExpandMoreIcon } from '@/icons/icons';
+import { ChevronDownIcon, ChevronUpIcon } from '@/icons/icons';
 
 /**
  * Based on Mantine NumberInput Control buttons
@@ -97,7 +97,7 @@ export function HoldableButton({
         onPointerUp={onStepDone}
         size={'xs'}
       >
-        <ExpandLessIcon />
+        <ChevronUpIcon />
       </ActionIcon>
       <ActionIcon
         onMouseDown={(event) => event.preventDefault()}
@@ -108,7 +108,7 @@ export function HoldableButton({
         onPointerUp={onStepDone}
         size={'xs'}
       >
-        <ExpandMoreIcon />
+        <ChevronDownIcon />
       </ActionIcon>
     </Stack>
   );

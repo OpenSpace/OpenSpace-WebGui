@@ -1,6 +1,6 @@
 import { Select } from '@mantine/core';
 
-import { PropertyLabel } from '../PropertyLabel';
+import { PropertyLabel } from '@/components/Property/PropertyLabel';
 
 interface Option {
   [key: string]: string; // OBS! The key is a number, but will always be converted to a string...
@@ -52,7 +52,7 @@ export function OptionProperty({
   return (
     <Select
       label={<PropertyLabel label={name} tip={description} />}
-      placeholder="Choose an option"
+      placeholder={'Choose an option'}
       disabled={disabled}
       data={Object.keys(options)}
       value={valueToString(value)}

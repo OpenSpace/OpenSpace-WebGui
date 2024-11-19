@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Properties, PropertyOwners } from 'src/types/types';
+
+import { Properties, PropertyOwners } from '@/types/types';
 
 export type Group = {
   subgroups: string[]; // group paths

@@ -1,9 +1,8 @@
 import { createAction, Dispatch, UnknownAction } from '@reduxjs/toolkit';
 
 import type { AppStartListening } from '@/redux/listenerMiddleware';
-
-import { initializeLuaApi } from '../luaapi/luaApiSlice';
-import { propertyTreeWasChanged } from '../propertytree/propertyTreeMiddleware';
+import { initializeLuaApi } from '@/redux/luaapi/luaApiSlice';
+import { propertyTreeWasChanged } from '@/redux/propertytree/propertyTreeMiddleware';
 
 import { refreshGroups, updateCustomGroupOrdering } from './groupsSlice';
 

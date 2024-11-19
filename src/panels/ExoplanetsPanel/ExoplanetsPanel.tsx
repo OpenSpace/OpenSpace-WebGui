@@ -14,11 +14,11 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import { useGetStringPropertyValue } from '@/api/hooks';
+import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
-import { ChevronDown, ChevronRight } from '@/icons/icons';
+import { ChevronDownIcon, ChevronRightIcon } from '@/icons/icons';
 import { loadExoplanetsData } from '@/redux/exoplanets/exoplanetsMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
@@ -39,7 +39,7 @@ export function ExoplanetsPanel() {
 
   const [open, { toggle }] = useDisclosure();
 
-  const luaApi = useAppSelector((state) => state.luaApi);
+  const luaApi = useOpenSpaceApi();
   const propertyOwners = useAppSelector((state) => {
     return state.propertyTree.owners.propertyOwners;
   });
@@ -94,26 +94,21 @@ export function ExoplanetsPanel() {
   }
 
   return (
-    <Container fluid>
-      <Space h={'md'} />
+    <Container fluid my={'md'}>
       {allSystemNames.length > 0 ? (
-        <FilterList placeHolderSearchText="Star name..." height={'500px'}>
+        <FilterList placeHolderSearchText={'Star name...'} height={'500px'}>
           <FilterList.Data<string>
             data={allSystemNames}
             renderElement={(name) => {
               const isAdded = addedSystems.find((s) => s && s.name.includes(name));
               return (
-                <Fragment key={`entry${name}`}>
-                  <ExoplanetEntry
-                    name={name}
-                    isLoading={
-                      loadingAdded.includes(name) || loadingRemoved.includes(name)
-                    }
-                    isAdded={isAdded !== undefined}
-                    onClick={() => (isAdded ? removeSystem(name) : addSystem(name))}
-                  />
-                  <Space h={'xs'} />
-                </Fragment>
+                <ExoplanetEntry
+                  key={`entry${name}`}
+                  name={name}
+                  isLoading={loadingAdded.includes(name) || loadingRemoved.includes(name)}
+                  isAdded={isAdded !== undefined}
+                  onClick={() => (isAdded ? removeSystem(name) : addSystem(name))}
+                />
               );
             }}
             matcherFunc={(name, searchstring) =>
@@ -128,8 +123,8 @@ export function ExoplanetsPanel() {
       )}
       <Divider my={'xs'} />
       <Group>
-        <ActionIcon onClick={toggle} variant="default">
-          {open ? <ChevronDown /> : <ChevronRight />}
+        <ActionIcon onClick={toggle} variant={'default'}>
+          {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
         </ActionIcon>
         <Title order={4}>Settings</Title>
       </Group>

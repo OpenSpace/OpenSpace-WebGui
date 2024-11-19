@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Pill, PillsInput } from '@mantine/core';
 
-import { PropertyLabel } from '../PropertyLabel';
+import { PropertyLabel } from '@/components/Property/PropertyLabel';
 
 interface Props {
   name: string;
@@ -18,7 +18,7 @@ export function ListProperty({
   setPropertyValue,
   value
 }: Props) {
-  const [inputString, setInputString] = useState<string>('');
+  const [inputString, setInputString] = useState('');
   const [editedIndex, setEditedIndex] = useState<number | undefined>(undefined);
 
   function onInputFieldKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -76,7 +76,7 @@ export function ListProperty({
       <Pill.Group>
         {value.map((value, i) => (
           <Pill
-            key={i}
+            key={value}
             withRemoveButton={editedIndex === i}
             onRemove={() => deleteItem(i)}
             onClick={(event) => {

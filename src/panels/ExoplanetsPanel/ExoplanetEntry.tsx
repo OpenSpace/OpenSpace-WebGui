@@ -1,6 +1,6 @@
 import { ActionIcon, Group, Text } from '@mantine/core';
 
-import { Minus, Plus } from '@/icons/icons';
+import { MinusIcon, PlusIcon } from '@/icons/icons';
 
 interface ExoplanetProps {
   name: string;
@@ -11,7 +11,7 @@ interface ExoplanetProps {
 
 export function ExoplanetEntry({ name, isAdded, onClick, isLoading }: ExoplanetProps) {
   return (
-    <Group grow>
+    <Group grow mb={'xs'}>
       {
         <ActionIcon
           size={'lg'} // Fixed size, adjust as needed
@@ -22,10 +22,10 @@ export function ExoplanetEntry({ name, isAdded, onClick, isLoading }: ExoplanetP
           color={isAdded ? 'red' : 'blue'}
           loading={isLoading}
         >
-          {isAdded ? <Minus /> : <Plus />}
+          {isAdded ? <MinusIcon /> : <PlusIcon />}
         </ActionIcon>
       }
-      <Text style={{ flexGrow: 11, maxWidth: '100%' }}>{name}</Text>
+      <Text style={{ flexGrow: 12, maxWidth: '100%' }}>{name}</Text>
     </Group>
   );
 }

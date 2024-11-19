@@ -1,6 +1,6 @@
 import { MultiSelect } from '@mantine/core';
 
-import { PropertyLabel } from '../PropertyLabel';
+import { PropertyLabel } from '@/components/Property/PropertyLabel';
 
 interface Props {
   name: string;

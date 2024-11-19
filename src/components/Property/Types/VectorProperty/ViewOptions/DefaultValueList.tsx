@@ -1,9 +1,8 @@
 import { Flex } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput';
-
-import { PropertyLabel } from '../../../PropertyLabel';
-import { VectorPropertyProps } from '../VectorProperty';
+import { PropertyLabel } from '@/components/Property/PropertyLabel';
+import { VectorPropertyProps } from '@/components/Property/Types/VectorProperty/VectorProperty';
 
 export function ValueList({
   name,

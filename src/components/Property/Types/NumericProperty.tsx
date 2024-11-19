@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { MdOutlineEdit } from 'react-icons/md';
 import { ActionIcon, Grid, Slider } from '@mantine/core';
 import { inRange } from 'lodash';
 
 import { NumericInput } from '@/components/Input/NumericInput';
-
-import { PropertyLabel } from '../PropertyLabel';
+import { PropertyLabel } from '@/components/Property/PropertyLabel';
+import { PenIcon } from '@/icons/icons';
 
 interface Props {
   name: string;
@@ -68,7 +67,7 @@ export function NumericProperty({
     <>
       <PropertyLabel label={name} tip={description} />
       <Grid>
-        <Grid.Col span="auto">
+        <Grid.Col span={'auto'}>
           <Slider
             disabled={disabled}
             value={currentValue}
@@ -79,17 +78,17 @@ export function NumericProperty({
             onChange={onValueChange}
           />
         </Grid.Col>
-        <Grid.Col span="content">
+        <Grid.Col span={'content'}>
           {/* TODO: implement text editing */}
           <ActionIcon>
-            <MdOutlineEdit />
+            <PenIcon />
           </ActionIcon>
         </Grid.Col>
       </Grid>
       {/* Alternaitve - include  */}
       <PropertyLabel label={name} tip={description} />
       <Grid>
-        <Grid.Col span="auto">
+        <Grid.Col span={'auto'}>
           <Slider
             disabled={disabled}
             value={currentValue}
