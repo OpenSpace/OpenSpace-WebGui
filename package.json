@@ -16,6 +16,7 @@
     "@mantine/hooks": "^7.13.1",
     "@reduxjs/toolkit": "^2.2.8",
     "@types/lodash": "^4.17.11",
+    "eslint-plugin-react": "^7.37.2",
     "lodash": "^4.17.21",
     "openspace-api-js": "^0.1.6",
     "rc-dock": "^3.3.0",

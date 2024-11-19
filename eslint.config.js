@@ -3,6 +3,7 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import react from 'eslint-plugin-react';
 import tseslint from 'typescript-eslint';
 import js from '@eslint/js';
 
@@ -23,6 +24,7 @@ export default tseslint.config(
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      react: react,
       'simple-import-sort': simpleImportSort
     },
     linterOptions: {
@@ -54,6 +56,14 @@ export default tseslint.config(
             // Style imports.
             ['^.+\\.?(css)$']
           ]
+        }
+      ],
+      'react/jsx-curly-brace-presence': [
+        'error',
+        {
+          props: 'always',
+          children: 'always',
+          propElementValues: 'always'
         }
       ],
       // Guards against stupidity
