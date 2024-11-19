@@ -13,7 +13,6 @@ let eventTopic: Topic;
 let nSubscribers = 0;
 
 function handleData(dispatch: Dispatch<UnknownAction>, data: EventData) {
-  console.log('data from openspace', data);
   switch (data.Event) {
     case 'PropertyTreeUpdated':
       dispatch(addUriToPropertyTree({ uri: data.Uri }));

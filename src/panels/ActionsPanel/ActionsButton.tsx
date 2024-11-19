@@ -21,7 +21,7 @@ export function ActionsButton({ action }: Props) {
     <Button onClick={handleClick} style={{ height: `120px` }}>
       <Stack>
         <LaunchIcon />
-        <p>{isLocal && <span> (Local)</span>}</p>
+        <p>{isLocal && <span>{' (Local)'}</span>}</p>
         <Group>
           {action.name} {action.documentation && <Tooltip text={action.documentation} />}
         </Group>

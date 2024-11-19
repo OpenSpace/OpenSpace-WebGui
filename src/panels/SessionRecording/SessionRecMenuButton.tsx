@@ -48,7 +48,7 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
             color={'red'}
             size={'xl'}
           >
-            Stop Recording
+            {'Stop Recording\r'}
           </Button>
         );
       case RecordingState.paused:
@@ -60,7 +60,7 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
               color={'orange'}
               size={'xl'}
             >
-              Resume
+              {'Resume\r'}
             </Button>
             <Button
               onClick={stopPlayback}
@@ -68,7 +68,7 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
               color={'orange'}
               size={'xl'}
             >
-              Stop Playback
+              {'Stop Playback\r'}
             </Button>
           </Group>
         );
@@ -80,7 +80,7 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
               leftSection={<PauseIcon />}
               size={'xl'}
             >
-              Pause
+              {'Pause\r'}
             </Button>
             <Button
               onClick={stopPlayback}
@@ -88,14 +88,14 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
               color={'red'}
               size={'xl'}
             >
-              Stop Playback
+              {'Stop Playback\r'}
             </Button>
           </Group>
         );
       default:
         return (
           <Button onClick={onClick} size={'xl'}>
-            Session Rec
+            {'Session Rec\r'}
           </Button>
         );
     }

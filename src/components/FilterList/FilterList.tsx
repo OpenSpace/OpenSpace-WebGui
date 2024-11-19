@@ -1,4 +1,4 @@
-import { Button, Divider, TextInput } from '@mantine/core';
+import { Button, Divider, Stack, TextInput } from '@mantine/core';
 
 import { FilterListData } from './FilterListData';
 import { FilterListFavorites } from './FilterListFavorites';
@@ -43,24 +43,28 @@ interface FilterListProps {
   placeHolderSearchText?: string;
   searchAutoFocus?: boolean;
   showMoreButton?: boolean;
+  height?: number | string;
 }
 
 export function FilterList({
   placeHolderSearchText,
   searchAutoFocus,
   showMoreButton = false,
+  height = '100%',
   children
 }: FilterListProps) {
   return (
-    <FilterListProvider>
-      <InputField
-        placeHolderSearchText={placeHolderSearchText}
-        searchAutoFocus={searchAutoFocus}
-        showMoreButton={showMoreButton}
-      />
-      <Divider my={'xs'}></Divider>
-      {children}
-    </FilterListProvider>
+    <Stack style={{ height: height }}>
+      <FilterListProvider>
+        <InputField
+          placeHolderSearchText={placeHolderSearchText}
+          searchAutoFocus={searchAutoFocus}
+          showMoreButton={showMoreButton}
+        />
+        <Divider my={'xs'}></Divider>
+        {children}
+      </FilterListProvider>
+    </Stack>
   );
 }
 
