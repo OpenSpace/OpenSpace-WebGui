@@ -62,7 +62,7 @@ export default tseslint.config(
         'error',
         {
           props: 'always',
-          children: 'always',
+          children: 'never',
           propElementValues: 'always'
         }
       ],
