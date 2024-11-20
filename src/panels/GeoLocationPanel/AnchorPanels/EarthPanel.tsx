@@ -16,6 +16,7 @@ import {
 import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { CollapsableContent } from '@/components/CollapsableContent/CollapsableContent';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { MinusIcon, PlusIcon } from '@/icons/icons';
@@ -179,32 +180,41 @@ export function EarthPanel({ currentAnchor }: Props) {
               rightSection={<Button onClick={() => getPlaces()}>Search</Button>}
               rightSectionWidth={'md'}
             />
-            <Text>Options</Text>
-            <Group justify={'space-between'} grow>
-              <Tooltip
-                label={'Calculates an appropriate altitude automatically if unchecked'}
-              >
-                <Checkbox
-                  checked={useCustomAltitude}
-                  onChange={(event) => setUseCustomAltitude(event.currentTarget.checked)}
-                  label={'Use custom altitude'}
+            <Divider my={'xs'} />
+            <CollapsableContent title={'Settings'}>
+              <Group justify={'space-between'} grow>
+                <Tooltip
+                  label={'Calculates an appropriate altitude automatically if unchecked'}
+                >
+                  <Checkbox
+                    checked={useCustomAltitude}
+                    onChange={(event) =>
+                      setUseCustomAltitude(event.currentTarget.checked)
+                    }
+                    label={'Use custom altitude'}
+                  />
+                </Tooltip>
+                <NumberInput
+                  value={customAltitude}
+                  onChange={(value) => {
+                    if (typeof value === 'number') {
+                      setCustomAltitude(value);
+                    }
+                  }}
+                  label={'Custom altitude (km)'}
+                  disabled={!useCustomAltitude}
+                  defaultValue={300}
+                  min={0}
                 />
-              </Tooltip>
-              <NumberInput
-                value={customAltitude}
-                onChange={(value) => {
-                  if (typeof value === 'number') {
-                    setCustomAltitude(value);
-                  }
-                }}
-                label={'Custom altitude (km)'}
-                defaultValue={300}
-                min={0}
-              />
-            </Group>
-            <Text>Results</Text>
+              </Group>
+            </CollapsableContent>
+            <Divider my={'xs'} />
 
-            {places.length > 0 && (
+            <Title order={3} my={'xs'}>
+              Results
+            </Title>
+
+            {places.length > 0 ? (
               <FilterList placeHolderSearchText={'Filter search'} height={'350px'}>
                 <FilterList.Data<Candidate>
                   data={places}
@@ -276,6 +286,8 @@ export function EarthPanel({ currentAnchor }: Props) {
                   matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
                 />
               </FilterList>
+            ) : (
+              <Text>Nothing found. Try another search!</Text>
             )}
           </Accordion.Panel>
         </Accordion.Item>
@@ -293,29 +305,33 @@ export function EarthPanel({ currentAnchor }: Props) {
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
-      <Container my={'md'}>
-        <Title order={2} my={'md'}>
-          Added Nodes
-        </Title>
-        {addedCustomNodes.map((identifier) => (
-          <Group gap={'xs'} key={identifier} mb={2}>
-            <ActionIcon onClick={() => removeFocusNode(identifier)} color={'red'}>
-              <MinusIcon />
-            </ActionIcon>
-            <Text
-              style={{
-                flexGrow: 1,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                textWrap: 'nowrap',
-                maxWidth: '300px'
-              }}
-            >
-              {identifier}
-            </Text>
-          </Group>
-        ))}
-      </Container>
+      <Title order={2} my={'md'}>
+        Added Nodes
+      </Title>
+      {addedCustomNodes.length > 0 ? (
+        <Container my={'md'}>
+          {addedCustomNodes.map((identifier) => (
+            <Group gap={'xs'} key={identifier} mb={2}>
+              <ActionIcon onClick={() => removeFocusNode(identifier)} color={'red'}>
+                <MinusIcon />
+              </ActionIcon>
+              <Text
+                style={{
+                  flexGrow: 1,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  textWrap: 'nowrap',
+                  maxWidth: '300px'
+                }}
+              >
+                {identifier}
+              </Text>
+            </Group>
+          ))}
+        </Container>
+      ) : (
+        <Text>No added nodes</Text>
+      )}
     </>
   );
 }

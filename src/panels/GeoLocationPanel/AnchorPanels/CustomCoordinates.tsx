@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { ActionIcon, Group, NumberInput, Stack, TextInput } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { Button, Group, Stack, TextInput } from '@mantine/core';
 
+import { NumericInput } from '@/components/Input/NumericInput';
 import { PlusIcon } from '@/icons/icons';
 import { NodeNavigationButton } from '@/panels/OriginPanel/NodeNavigationButton';
 import { NavigationType } from '@/types/enums';
@@ -21,50 +22,49 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
   const [customName, setCustomName] = useState('');
   const altInKm = alt * 1000;
 
+  const [previewCustomName, setPreviewCustomName] = useState('');
+
   function onClick() {
     const address = customName || `Custom Coordinate (${lat},${long},${alt}km)`;
     onAddFocusNodeCallback(address, lat, long, altInKm);
+    setPreviewCustomName('');
   }
+
+  useEffect(() => {
+    setPreviewCustomName(`Custom Coordinate (${lat},${long},${alt}km)`);
+  }, [lat, long, alt]);
+
   return (
     <Stack gap={'xs'}>
       <Group gap={'xs'} grow>
-        <NumberInput
-          label={'Latitude'}
-          value={lat}
-          onChange={(value) => {
-            if (typeof value === 'number') {
-              setLat(value);
-            }
-          }}
+        <NumericInput
+          label={'Latitude (deg)'}
+          defaultValue={lat}
+          onEnter={(value) => setLat(value)}
           min={-90}
           max={90}
         />
-        <NumberInput
-          label={'Longitude'}
-          value={long}
-          onChange={(value) => {
-            if (typeof value === 'number') {
-              setLong(value);
-            }
-          }}
+        <NumericInput
+          label={'Longitude (deg)'}
+          defaultValue={long}
+          onEnter={(value) => setLong(value)}
           min={-180}
           max={180}
         />
-        <NumberInput
+        <NumericInput
           label={'Altitude'}
-          value={alt}
-          onChange={(value) => {
-            if (typeof value === 'number') {
-              setAlt(value);
-            }
-          }}
+          defaultValue={alt}
+          onEnter={(value) => setAlt(value)}
           min={0}
         />
       </Group>
       <TextInput
         value={customName}
         onChange={(event) => setCustomName(event.currentTarget.value)}
-        placeholder={'Custom name'}
+        label={'Node name (optional)'}
+        placeholder={
+          previewCustomName !== '' ? previewCustomName : 'Custom name (optional)'
+        }
       />
       <Group gap={'xs'}>
         <NodeNavigationButton
@@ -83,9 +83,9 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
           long={long}
           alt={altInKm}
         />
-        <ActionIcon onClick={onClick} size={'lg'}>
-          <PlusIcon />
-        </ActionIcon>
+        <Button onClick={onClick} size={'sm'} leftSection={<PlusIcon />}>
+          Add Focus
+        </Button>
       </Group>
     </Stack>
   );
