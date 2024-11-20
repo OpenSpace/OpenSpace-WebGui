@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Container, Divider, Flex, Loader, ScrollArea, Text, Title } from '@mantine/core';
 
 import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
+import { CollapsableContent } from '@/components/CollapsableContent/CollapsableContent';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
@@ -18,7 +19,6 @@ import {
 import { propertyDispatcher } from '@/util/propertyDispatcher';
 
 import { ExoplanetEntry } from './ExoplanetEntry';
-import { CollapsableContent } from '@/components/CollapsableContent/CollapsableContent';
 
 export function ExoplanetsPanel() {
   const [loadingAdded, setLoadingAdded] = useState<string[]>([]);

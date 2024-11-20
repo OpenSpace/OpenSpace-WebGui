@@ -13,7 +13,7 @@ export function CollapsableContent({ title, children }: Props) {
   return (
     <>
       <Group mt={'xs'}>
-        <ActionIcon onClick={toggle} variant="default">
+        <ActionIcon onClick={toggle} variant={"default"}>
           {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
         </ActionIcon>
         <Title order={4}>{title}</Title>
