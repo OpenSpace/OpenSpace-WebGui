@@ -7,16 +7,23 @@ import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { Property, PropertyMetaData, PropertyOwner } from '@/types/types';
 import { rootOwnerKey } from '@/util/keys';
 
-import { addProperties, clearProperties } from './properties/propertiesSlice';
+import {
+  addProperties,
+  clearProperties,
+  removeProperties
+} from './properties/propertiesSlice';
 import {
   addPropertyOwners,
-  clearPropertyOwners
+  clearPropertyOwners,
+  removePropertyOwners
 } from './propertyowner/propertyOwnerSlice';
 
 export const reloadPropertyTree = createAction<void>('reloadPropertyTree');
-export const addUriToPropertyTree = createAction<{ uri: string }>('addUriToPropertyTree');
 export const propertyTreeWasChanged = createAction<void>('propertyTreeWasChanged');
-
+export const addUriToPropertyTree = createAction<{ uri: string }>('addUriToPropertyTree');
+export const removeUriFromPropertyTree = createAction<{ uri: string }>(
+  'removeUriFromPropertyTree'
+);
 // The property tree middleware is designed to populate the react store's
 // copy of the property tree when the frontend is connected to OpenSpace.
 
@@ -142,6 +149,17 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
           properties: properties.properties
         })
       );
+    }
+  });
+
+  startListening({
+    actionCreator: removeUriFromPropertyTree,
+    effect: (action, listenerApi) => {
+      const { uri } = action.payload;
+
+      listenerApi.dispatch(removePropertyOwners({ uris: [uri] }));
+      listenerApi.dispatch(removeProperties({ uris: [uri] }));
+      listenerApi.dispatch(propertyTreeWasChanged());
     }
   });
 
