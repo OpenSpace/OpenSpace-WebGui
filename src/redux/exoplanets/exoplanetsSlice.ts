@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { ExoplanetData } from '@/types/types';
-
 export interface ExoplanetState {
   isInitialized: boolean;
-  data: ExoplanetData[];
+  data: string[];
 }
 
 const initialState: ExoplanetState = {
@@ -16,7 +14,7 @@ export const exoplanetsSlice = createSlice({
   name: 'exoplanets',
   initialState,
   reducers: {
-    initializeExoplanets: (_, action: PayloadAction<ExoplanetData[]>) => {
+    initializeExoplanets: (_, action: PayloadAction<string[]>) => {
       return {
         isInitialized: true,
         data: action.payload
@@ -27,4 +25,4 @@ export const exoplanetsSlice = createSlice({
 
 // Action creators are generated for each case reducer function, replaces the `Actions/index.js`
 export const { initializeExoplanets } = exoplanetsSlice.actions;
-export const connectionReducer = exoplanetsSlice.reducer;
+export const exoplanetsReducer = exoplanetsSlice.reducer;

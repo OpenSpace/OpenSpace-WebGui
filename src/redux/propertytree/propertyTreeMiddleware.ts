@@ -2,6 +2,7 @@ import { createAction, Dispatch, UnknownAction } from '@reduxjs/toolkit';
 
 import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
+import { refreshGroups } from '@/redux/groups/groupsSlice';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { Property, PropertyMetaData, PropertyOwner } from '@/types/types';
 import { rootOwnerKey } from '@/util/keys';
@@ -14,6 +15,7 @@ import {
 
 export const reloadPropertyTree = createAction<void>('reloadPropertyTree');
 export const addUriToPropertyTree = createAction<{ uri: string }>('addUriToPropertyTree');
+export const propertyTreeWasChanged = createAction<void>('propertyTreeWasChanged');
 
 // The property tree middleware is designed to populate the react store's
 // copy of the property tree when the frontend is connected to OpenSpace.
@@ -111,12 +113,11 @@ async function internalAddUriToPropertyTree(
     );
     dispatch(addPropertyOwners({ propertyOwners: propertyOwners }));
     dispatch(addProperties({ properties: properties }));
-    // listenerApi.dispatch(refreshGroups())); // TODO add
   } else {
     const property = convertOsPropertyToProperty(prop);
     dispatch(addProperties({ properties: [property] }));
-    // listenerApi.dispatch(refreshGroups())); // TODO add
   }
+  dispatch(propertyTreeWasChanged());
 }
 
 export const addPropertyTreeListener = (startListening: AppStartListening) => {
@@ -133,6 +134,14 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
     actionCreator: addUriToPropertyTree,
     effect: (action, listenerApi) => {
       internalAddUriToPropertyTree(listenerApi.dispatch, action.payload.uri);
+
+      const { propertyOwners, properties } = listenerApi.getState();
+      listenerApi.dispatch(
+        refreshGroups({
+          propertyOwners: propertyOwners.propertyOwners,
+          properties: properties.properties
+        })
+      );
     }
   });
 

@@ -55,7 +55,9 @@ export interface ExoplanetData {
 
 export interface PropertyMetaData {
   Group: string;
-  ViewOptions: object; // specify this
+  ViewOptions: {
+    [key: string]: boolean;
+  };
   Visibility: string; // TODO specify this as developer  | user | noviceUser etc
   isReadOnly: boolean;
   needsConfirmation: boolean;
