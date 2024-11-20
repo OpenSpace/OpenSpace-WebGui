@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import {
+  Accordion,
   ActionIcon,
   Button,
   Checkbox,
+  Container,
   Divider,
   Group,
   NumberInput,
   Text,
   TextInput,
+  Title,
   Tooltip
 } from '@mantine/core';
 import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
@@ -15,11 +18,14 @@ import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { MinusIcon, PlusIcon } from '@/icons/icons';
 import { NodeNavigationButton } from '@/panels/OriginPanel/NodeNavigationButton';
 import { useAppSelector } from '@/redux/hooks';
 import { NavigationType } from '@/types/enums';
 import { ArcGISJSON, Candidate, Extent } from '@/types/types';
-import { ScenePrefixKey } from '@/util/keys';
+import { GeoLocationGroupKey, ScenePrefixKey } from '@/util/keys';
+
+import { CustomCoordinates } from './CustomCoordinates';
 
 interface Props {
   currentAnchor: string;
@@ -32,6 +38,20 @@ export function EarthPanel({ currentAnchor }: Props) {
   const luaApi = useOpenSpaceApi();
 
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+
+  const groups = useAppSelector((state) => state.groups.groups);
+
+  const geoLocationOwners = groups[GeoLocationGroupKey]?.propertyOwners.map((uri) => {
+    const index = uri.indexOf(ScenePrefixKey);
+    if (index === -1) {
+      // Not sure if this fallback is necessary since all of our uri:s will have the
+      // prefix key pre-pended to them. If this is not the case, something else is
+      // probably broken
+      return uri;
+    }
+    return uri.substring(index + ScenePrefixKey.length);
+  });
+  const addedCustomNodes = geoLocationOwners ?? [];
 
   async function getPlaces(): Promise<void> {
     if (!inputValue) {
@@ -118,7 +138,7 @@ export function EarthPanel({ currentAnchor }: Props) {
       InteractionSphere: 0,
       BoundingSphere: alt,
       GUI: {
-        Path: '/GeoLocation'
+        Path: GeoLocationGroupKey
       }
     };
 
@@ -144,112 +164,158 @@ export function EarthPanel({ currentAnchor }: Props) {
   return (
     <>
       <Divider my={'xs'} />
-      <TextInput
-        placeholder={'Search places...'}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter') {
-            getPlaces();
-          }
-        }}
-        onChange={(event) => setInputValue(event.target.value)}
-        rightSection={<Button onClick={() => getPlaces()}>Search</Button>}
-        rightSectionWidth={'md'}
-      />
-      <Text>Options</Text>
-      <Group justify={'space-between'}>
-        <Tooltip label={'Calculates an appropriate altitude automatically if unchecked'}>
-          <Checkbox
-            checked={useCustomAltitude}
-            onChange={(event) => setUseCustomAltitude(event.currentTarget.checked)}
-            label={'Use custom altitude'}
-          />
-        </Tooltip>
-        <NumberInput
-          value={customAltitude}
-          onChange={(value) => {
-            if (typeof value === 'number') {
-              setCustomAltitude(value);
-            }
-          }}
-          label={'Custom altitude (km)'}
-          defaultValue={300}
-          min={0}
-        />
-      </Group>
-      <Text>Results</Text>
-      {places.length > 0 && (
-        <FilterList placeHolderSearchText={'Filter search'}>
-          <FilterList.Data<Candidate>
-            data={places}
-            renderElement={(place) => {
-              const address = place.attributes.LongLabel;
-              const addressUtf8 = addressUTF8(address);
+      <Accordion defaultValue={'SearchCoordinates'}>
+        <Accordion.Item value={'SearchCoordinates'}>
+          <Accordion.Control>Search Place</Accordion.Control>
+          <Accordion.Panel>
+            <TextInput
+              placeholder={'Search places...'}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  getPlaces();
+                }
+              }}
+              onChange={(event) => setInputValue(event.target.value)}
+              rightSection={<Button onClick={() => getPlaces()}>Search</Button>}
+              rightSectionWidth={'md'}
+            />
+            <Text>Options</Text>
+            <Group justify={'space-between'} grow>
+              <Tooltip
+                label={'Calculates an appropriate altitude automatically if unchecked'}
+              >
+                <Checkbox
+                  checked={useCustomAltitude}
+                  onChange={(event) => setUseCustomAltitude(event.currentTarget.checked)}
+                  label={'Use custom altitude'}
+                />
+              </Tooltip>
+              <NumberInput
+                value={customAltitude}
+                onChange={(value) => {
+                  if (typeof value === 'number') {
+                    setCustomAltitude(value);
+                  }
+                }}
+                label={'Custom altitude (km)'}
+                defaultValue={300}
+                min={0}
+              />
+            </Group>
+            <Text>Results</Text>
 
-              const isAdded = isSceneGraphNodeAdded(addressUtf8);
-              const cappedAddress = address; // TODO cap address to some fixed size?
-              const lat = place.location.y;
-              const long = place.location.x;
-              const alt = useCustomAltitude
-                ? customAltitude * 1000
-                : calculateAltitude(place.extent);
-              return (
-                <Group
-                  key={address}
-                  gap={'xs'}
-                  mb={2}
-                  justify={'space-between'}
-                  wrap={'nowrap'}
-                >
-                  {/* TODO temporary css to stop long names from linebreaking causing the
+            {places.length > 0 && (
+              <FilterList placeHolderSearchText={'Filter search'} height={'350px'}>
+                <FilterList.Data<Candidate>
+                  data={places}
+                  renderElement={(place) => {
+                    const address = place.attributes.LongLabel;
+                    const addressUtf8 = addressUTF8(address);
+
+                    const isAdded = isSceneGraphNodeAdded(addressUtf8);
+                    const cappedAddress = address; // TODO cap address to some fixed size?
+                    const lat = place.location.y;
+                    const long = place.location.x;
+                    const alt = useCustomAltitude
+                      ? customAltitude * 1000
+                      : calculateAltitude(place.extent);
+                    return (
+                      <Group
+                        key={address}
+                        gap={'xs'}
+                        mb={2}
+                        justify={'space-between'}
+                        wrap={'nowrap'}
+                      >
+                        {/* TODO temporary css to stop long names from linebreaking causing the
                       buttons to be moved to a new row, the maxwidth is just arbitrary
                       minus the size of the buttons... */}
-                  <Text
-                    style={{
-                      flexGrow: 1,
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      textWrap: 'nowrap',
-                      maxWidth: 350 - 125
-                    }}
-                  >
-                    {cappedAddress}
-                    {cappedAddress.length !== address.length ? '...' : ''}
-                  </Text>
+                        <Text
+                          style={{
+                            flexGrow: 1,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            textWrap: 'nowrap',
+                            maxWidth: 350 - 125
+                          }}
+                        >
+                          {cappedAddress}
+                          {cappedAddress.length !== address.length ? '...' : ''}
+                        </Text>
 
-                  <Group gap={'xs'} wrap={'nowrap'}>
-                    <NodeNavigationButton
-                      type={NavigationType.FlyGeo}
-                      identifier={currentAnchor}
-                      lat={lat}
-                      long={long}
-                      alt={alt}
-                    />
-                    <NodeNavigationButton
-                      type={NavigationType.JumpGeo}
-                      identifier={currentAnchor}
-                      lat={lat}
-                      long={long}
-                      alt={alt}
-                    />
-                    <ActionIcon
-                      onClick={() =>
-                        isAdded
-                          ? removeFocusNode(addressUtf8)
-                          : addFocusNode(addressUtf8, lat, long, alt)
-                      }
-                      size={'lg'}
-                      color={isAdded ? 'red' : 'blue'}
-                    >
-                      {isAdded ? '-' : '+'}
-                    </ActionIcon>
-                  </Group>
-                </Group>
-              );
-            }}
-            matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
-          />
-        </FilterList>
-      )}
+                        <Group gap={'xs'} wrap={'nowrap'}>
+                          <NodeNavigationButton
+                            type={NavigationType.FlyGeo}
+                            identifier={currentAnchor}
+                            lat={lat}
+                            long={long}
+                            alt={alt}
+                          />
+                          <NodeNavigationButton
+                            type={NavigationType.JumpGeo}
+                            identifier={currentAnchor}
+                            lat={lat}
+                            long={long}
+                            alt={alt}
+                          />
+                          <ActionIcon
+                            onClick={() =>
+                              isAdded
+                                ? removeFocusNode(addressUtf8)
+                                : addFocusNode(addressUtf8, lat, long, alt)
+                            }
+                            size={'lg'}
+                            color={isAdded ? 'red' : 'blue'}
+                          >
+                            {isAdded ? <MinusIcon /> : <PlusIcon />}
+                          </ActionIcon>
+                        </Group>
+                      </Group>
+                    );
+                  }}
+                  matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
+                />
+              </FilterList>
+            )}
+          </Accordion.Panel>
+        </Accordion.Item>
+
+        <Accordion.Item value={'CustomCoordinates'}>
+          <Accordion.Control>Custom Coordinates</Accordion.Control>
+          <Accordion.Panel>
+            <CustomCoordinates
+              currentAnchor={currentAnchor}
+              onAddFocusNodeCallback={(address, lat, long, alt) => {
+                const identifier = addressUTF8(address);
+                addFocusNode(identifier, lat, long, alt);
+              }}
+            />
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
+      <Container my={'md'}>
+        <Title order={2} my={'md'}>
+          Added Nodes
+        </Title>
+        {addedCustomNodes.map((identifier) => (
+          <Group gap={'xs'} key={identifier} mb={2}>
+            <ActionIcon onClick={() => removeFocusNode(identifier)} color={'red'}>
+              <MinusIcon />
+            </ActionIcon>
+            <Text
+              style={{
+                flexGrow: 1,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                textWrap: 'nowrap',
+                maxWidth: '300px'
+              }}
+            >
+              {identifier}
+            </Text>
+          </Group>
+        ))}
+      </Container>
     </>
   );
 }
