@@ -1,6 +1,7 @@
 import { WindowLayoutPosition } from 'src/windowmanagement/WindowLayout/WindowLayout';
 
 import { ActionsPanel } from '@/panels/ActionsPanel/ActionsPanel';
+import { GeoLocationPanel } from '@/panels/GeoLocationPanel/GeoLocationPanel';
 import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { Scene } from '@/panels/Scene/Scene';
@@ -60,7 +61,7 @@ export const menuItemsDB: MenuItem[] = [
   {
     title: 'Geo Location',
     componentID: 'geoLocation',
-    content: <div>Geo Location menu</div>,
+    content: <GeoLocationPanel />,
     preferredPosition: 'left',
     defaultVisible: true
   },
