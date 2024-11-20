@@ -95,6 +95,15 @@ export interface PropertyOwners {
   [key: string]: PropertyOwner | undefined;
 }
 
+export type Group = {
+  subgroups: string[]; // group paths
+  propertyOwners: string[]; // uris
+};
+
+export type Groups = {
+  [key: string]: Group;
+};
+
 export type OpenSpaceTimeState = {
   time?: string;
   timeCapped?: string;
