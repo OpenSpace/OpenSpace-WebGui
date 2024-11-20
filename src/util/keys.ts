@@ -8,6 +8,7 @@ export const ScenePrefixKey = 'Scene.';
 
 export const InterestingTagKey = 'GUI.Interesting';
 export const rootOwnerKey = '__rootOwner';
+export const GeoLocationGroupKey = '/GeoLocation';
 
 // OpenSpace engine
 export const EnginePropertyVisibilityKey = 'OpenSpaceEngine.PropertyVisibility';
