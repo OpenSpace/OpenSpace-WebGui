@@ -11,8 +11,8 @@ interface Props {
 export function CollapsableHeader({ expanded, text, toggle }: Props) {
   const chevronProps = { size: 18, style: { flexShrink: 0 } };
   return (
-    <Group gap={5} wrap={'nowrap'}>
-      <ActionIcon onClick={toggle} variant={'transparent'}>
+    <Group gap={5} wrap={'nowrap'} onClick={toggle}>
+      <ActionIcon variant={'transparent'}>
         {expanded ? (
           <ChevronDownIcon {...chevronProps} />
         ) : (
