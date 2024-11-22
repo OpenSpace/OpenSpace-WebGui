@@ -95,7 +95,7 @@ export function Scene() {
       .forEach((uri) => {
         const propertyOwner = propertyOwners[uri];
         groupItem.children?.push({
-          value: uri, // TODO; what is this used for?
+          value: uri,
           label: propertyOwner?.name
         });
       });
@@ -116,7 +116,7 @@ export function Scene() {
     )
     .forEach((uri) => {
       treeData.push({
-        value: uri, // TODO; what is this used for?
+        value: uri,
         label: propertyOwners[uri]?.name
       });
     });
@@ -164,7 +164,7 @@ export function Scene() {
                     <Tooltip text={'Visible = Enabled and not faded out'} />
                   </Group>
                   <Group>
-                    test {showOnlyEnabled}
+                    {showOnlyEnabled}
                     <Checkbox
                       label={'Show objects with GUI hidden flag'}
                       checked={showHiddenNodes}
