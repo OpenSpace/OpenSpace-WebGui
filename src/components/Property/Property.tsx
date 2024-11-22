@@ -1,3 +1,4 @@
+import React from 'react';
 import { Box } from '@mantine/core';
 
 import { useSubscribeToProperty } from '@/api/hooks';

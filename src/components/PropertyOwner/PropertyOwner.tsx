@@ -1,3 +1,4 @@
+import React from 'react';
 import { Collapse, Paper } from '@mantine/core';
 import { shallowEqual, useDisclosure } from '@mantine/hooks';
 
@@ -11,7 +12,7 @@ interface Props {
   autoExpand?: boolean;
 }
 
-export function PropertyOwner({ uri, autoExpand }: Props) {
+export const PropertyOwner = React.memo(({ uri, autoExpand }: Props) => {
   const [expanded, { toggle }] = useDisclosure(autoExpand || false);
 
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
@@ -39,27 +40,22 @@ export function PropertyOwner({ uri, autoExpand }: Props) {
     return a.localeCompare(b);
   });
 
-  // TODO: This should possibly be implemented as part of the tree structure instead...
-  // So that we can navigate using the keyboard in the same way (arrow keys and space)
-
-  // Alternatively, open the Property and subpropertyowner settings in a sepratae menu?
   return (
-    <>
+    <Paper withBorder p={'1px'} onClick={(event) => event.stopPropagation()}>
+      {/* TODO: The rendering of these components are very slow...
+            Setting the transition duration to zero helps a bit, but still*/}
       <CollapsableHeader expanded={expanded} toggle={toggle} text={name} />
       {/* TODO: These componetns looked awful without the added margin and padding (ml and p).
           But we should remove the styling once we've decided how to do for the entire page*/}
       <Collapse in={expanded} ml={'lg'} transitionDuration={0}>
-        <Paper withBorder p={'1px'} onClick={(event) => event.stopPropagation()}>
-          {/* TODO: The rendering of these components are very slow...
-              Setting the transition duration to zero helps a bit, but still*/}
-          {sortedSubOwners.map((uri) => (
-            <PropertyOwner key={uri} uri={uri} autoExpand={isRenderable(uri)} />
-          ))}
-          {properties.map((uri) => (
-            <Property key={uri} uri={uri} />
-          ))}
-        </Paper>
+        {sortedSubOwners.map((uri) => (
+          <PropertyOwner key={uri} uri={uri} autoExpand={isRenderable(uri)} />
+        ))}
+        {properties.map((uri) => (
+          <Property key={uri} uri={uri} />
+        ))}
       </Collapse>
-    </>
+    </Paper>
   );
-}
+})
+
