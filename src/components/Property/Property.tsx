@@ -71,8 +71,6 @@ interface Props {
 }
 
 export const Property = React.memo(({ uri }: Props) => {
-  // TODO: The state here has been changed. Should just be propertyTree.properties. Or
-  // maybe even just state.properties?
   const description = useAppSelector(
     (state) => state.properties.properties[uri]?.description
   );

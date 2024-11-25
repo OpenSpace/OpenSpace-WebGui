@@ -1,15 +1,28 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Groups, Properties, PropertyOwners } from '@/types/types';
+import { Properties, PropertyOwners } from '@/types/types';
+import { GroupPrefixKey, treeDataForPropertyOwner } from '@/components/SceneTree/treeUtil';
+import { TreeNodeData } from '@mantine/core';
 
 export interface GroupsState {
   customGroupOrdering: object; // TODO specify this
   groups: Groups;
 }
 
+export type Groups = {
+  [key: string]: Group;
+};
+
+export interface GroupsState {
+  customGroupOrdering: { [key: string]: string[] }; // TODO make a type
+  groups: Groups;
+  sceneTreeData: TreeNodeData[];
+}
+
 const initialState: GroupsState = {
   customGroupOrdering: {},
-  groups: {}
+  groups: {}, // TODO: is this part needed?
+  sceneTreeData: []
 };
 
 const emptyGroup = () => ({
@@ -36,6 +49,8 @@ const computeGroups = (propertyOwners: PropertyOwners, properties: Properties) =
     }
     groups[guiPath] = groups[guiPath] || emptyGroup();
     groups[guiPath].propertyOwners.push(uri);
+
+    // Finally, sort the property owners based on the GuiOrderingNumber
   });
 
   // Create links from parent groups to subgroups
@@ -60,6 +75,55 @@ const computeGroups = (propertyOwners: PropertyOwners, properties: Properties) =
   return groups;
 };
 
+// The data that will be used to render the scene tree
+export function treeDataFromGroups(groups: Groups, propertyOwners: PropertyOwners) {
+  const treeData: TreeNodeData[] = [];
+
+  const topLevelGroupsPaths = Object.keys(groups).filter((path) => {
+    // Get the number of slashes in the path
+    const depth = (path.match(/\//g) || []).length;
+    return depth === 1 && path !== '/';
+  });
+
+  // Build the data structure for the tree
+  function generateGroupData(path: string) {
+    const splitPath = path.split('/');
+    const name = splitPath.length > 1 ? splitPath.pop() : 'Untitled';
+
+    const groupItem: TreeNodeData = {
+      value: GroupPrefixKey + path,
+      label: name,
+      children: []
+    };
+
+    const groupData = groups[path];
+
+    // Add subgroups, recursively
+    groupData.subgroups.forEach((subGroupPath) =>
+      groupItem.children?.push(generateGroupData(subGroupPath))
+    );
+
+    // Add property owners, also recursively
+    groupData.propertyOwners.forEach((uri) => {
+      groupItem.children?.push(treeDataForPropertyOwner(uri, propertyOwners));
+    });
+
+    return groupItem;
+  }
+
+  topLevelGroupsPaths.forEach((path) => {
+    treeData.push(generateGroupData(path));
+  });
+
+  // Add the nodes without any group to the top level
+  const nodesWithoutGroup = groups['/']?.propertyOwners || [];
+  nodesWithoutGroup.forEach((uri) => {
+    treeData.push(treeDataForPropertyOwner(uri, propertyOwners))
+  });
+
+  return treeData;
+}
+
 export const groupsSlice = createSlice({
   name: 'groups',
   initialState,
@@ -70,22 +134,14 @@ export const groupsSlice = createSlice({
     ) => {
       const { propertyOwners, properties } = action.payload;
       state.groups = computeGroups(propertyOwners, properties);
-      // Alternatively:
-      // return {
-      //   ...state,
-      //   groups: computeGroups(propertyOwners, properties)
-      // }
+      state.sceneTreeData = treeDataFromGroups(state.groups, propertyOwners);
+      return state;
     },
     updateCustomGroupOrdering: (
       state,
       action: PayloadAction<object> // TODO: make a type?
     ) => {
       state.customGroupOrdering = action.payload;
-      // Alternatively:
-      // return {
-      //   ...state,
-      //   customGroupOrdering: action.payload
-      // }
     }
   }
 });

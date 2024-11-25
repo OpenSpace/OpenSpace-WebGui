@@ -1,7 +1,7 @@
 import { Paper, RenderTreeNodePayload } from "@mantine/core";
 import { CollapsableHeader } from "../CollapsableHeader/CollapsableHeader";
 import { Property } from "../Property/Property";
-import { GroupPrefixKey } from "./treeUtil";
+import { isGroup, isPropertyOwner } from "./treeUtil";
 
 interface HeaderProps {
   expanded: boolean;
@@ -19,15 +19,12 @@ export function PropertyOwnerHeader({ expanded, label }: HeaderProps) {
 };
 
 export function SceneTreeNode(
-  { node, expanded, hasChildren, elementProps }: RenderTreeNodePayload
+  { node, expanded, elementProps }: RenderTreeNodePayload
 ) {
-  const isGroup = hasChildren && node.value.startsWith(GroupPrefixKey);
-  const isPropertyOwner = hasChildren && !isGroup;
-
   let content;
-  if (isGroup) {
+  if (isGroup(node)) {
     content = <GroupHeader expanded={expanded} label={node.label} />
-  } else if (isPropertyOwner) {
+  } else if (isPropertyOwner(node)) {
     content = <PropertyOwnerHeader expanded={expanded} label={node.label} />
   } else {
     content = <Property uri={node.value} />

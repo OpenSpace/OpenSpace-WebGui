@@ -10,6 +10,7 @@ interface Props {
 export function PropertyOwner({ uri }: Props) {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
 
+  // TODO: Generate the tree data in Redux?
   const treeData = [treeDataForPropertyOwner(uri, propertyOwners)];
 
   return (

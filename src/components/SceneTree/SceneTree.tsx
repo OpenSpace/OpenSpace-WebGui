@@ -1,12 +1,12 @@
 import { Divider, Tree, TreeNodeData } from '@mantine/core';
 
-import { Groups } from '@/redux/groups/groupsSlice';
 import { useAppSelector } from '@/redux/hooks';
 import { hasInterestingTag, shouldShowPropertyOwner } from '@/util/propertytreehelper';
 import { SceneTreeNode } from './SceneTreeNode';
 import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
 import { useGetStringPropertyValue } from '@/api/hooks';
-import { GroupPrefixKey, treeDataForPropertyOwner, treeDataFromGroups } from './treeUtil';
+import { GroupPrefixKey, treeDataForPropertyOwner } from './treeUtil';
+import { sortTreeData } from './sortingUtil';
 
 interface Props {
   propertyOwnerUri?: string;
@@ -27,46 +27,51 @@ export function SceneTree({
   // TODO: Remove dependency on entire properties object. This means that the entire menu
   // is rerendered as soon as a property changes...
   const properties = useAppSelector((state) => state.properties.properties);
-  const groups: Groups = useAppSelector((state) => state.groups.groups);
+  const sceneTreeData = useAppSelector((state) => state.groups.sceneTreeData);
+
+  const customGuiOrdering = useAppSelector((state) => state.groups.customGroupOrdering);
 
   const anchor = useGetStringPropertyValue(NavigationAnchorKey);
   const aim = useGetStringPropertyValue(NavigationAimKey);
 
-  function hidePropertyOwner(uri: string) {
-    return !shouldShowPropertyOwner(uri, properties, showOnlyEnabled, showHiddenNodes);
-  }
-
   function filterTreeData(nodes: TreeNodeData[]): TreeNodeData[] {
     return nodes
       .map((node) => {
-        if (node.children && node.children.length > 0) {
-          node.children = filterTreeData(node.children);
-          if (node.children.length === 0) {
+        let newNode = { ...node };
+        if (newNode.children && newNode.children.length > 0) {
+          newNode.children = filterTreeData(newNode.children);
+          if (newNode.children.length === 0) {
             return null;
           }
 
-          if (node.value.startsWith(GroupPrefixKey)) {
+          if (newNode.value.startsWith(GroupPrefixKey)) {
             // Groups: Always show, if they have children
-            return node;
+            return newNode;
           }
           else {
-            // PropertyOwners
-            return !hidePropertyOwner(node.value) ? node : null;
+            // PropertyOwners, may be filtered out
+            const shouldShow = shouldShowPropertyOwner(
+              newNode.value,
+              properties,
+              showOnlyEnabled,
+              showHiddenNodes
+            );
+            return shouldShow ? newNode : null;
           }
         }
-        // Properties
-        return node;
+        // Properties are returned as is. TODO: filter based on property visiblity setting
+        return newNode;
       })
       .filter((node) => node !== null) as TreeNodeData[];
   }
 
-  let treeData: TreeNodeData[] = [];
-  let featuredTreeData: TreeNodeData[] | undefined = undefined;
+  let treeData = filterTreeData(sceneTreeData);
+  treeData = sortTreeData(treeData, customGuiOrdering, properties);
 
+  // @TODO: make this a separate component, to avoid rerendering the entire tree when anchor changes
   // Quick access and current focus node
+  let featuredTreeData: TreeNodeData[] = [];
   {
-    featuredTreeData = [];
-
     if (anchor) {
       const anchorData = treeDataForPropertyOwner(
         ScenePrefixKey + anchor,
@@ -105,13 +110,12 @@ export function SceneTree({
     }
   }
 
-  treeData = treeDataFromGroups(groups, propertyOwners);
-  treeData = filterTreeData(treeData);
-
+  // TODO: Filter the nodes and property owners based on visiblity
+  // TODO: Remember which parts of the menu were open?
 
   return (
     <>
-      {featuredTreeData && (
+      {featuredTreeData.length > 0 && (
         <>
           <Tree
             data={featuredTreeData}
