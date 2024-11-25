@@ -1,10 +1,9 @@
 import { ActionIcon, Button, Group, Menu, Stack } from '@mantine/core';
 
+import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { VerticalDotsIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
 import { PropertyOwner, PropertyValue } from '@/types/types';
-
-import { NodeNavigationButton } from './NodeNavigationButton';
 
 interface FocusEntryProps {
   entry: PropertyOwner;

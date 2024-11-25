@@ -13,20 +13,19 @@ import {
   Title,
   Tooltip
 } from '@mantine/core';
-import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
-import { MinusIcon, PlusIcon } from '@/icons/icons';
-import { NodeNavigationButton } from '@/panels/OriginPanel/NodeNavigationButton';
+import { MinusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
-import { NavigationType } from '@/types/enums';
-import { ArcGISJSON, Candidate, Extent } from '@/types/types';
+import { ArcGISJSON, Candidate } from '@/types/types';
 import { GeoLocationGroupKey, ScenePrefixKey } from '@/util/keys';
 
 import { CustomCoordinates } from './CustomCoordinates';
+import { EarthEntry } from './EarthEntry';
+import { addressUTF8 } from './util';
 
 interface Props {
   currentAnchor: string;
@@ -34,7 +33,7 @@ interface Props {
 
 export function EarthPanel({ currentAnchor }: Props) {
   const [inputValue, setInputValue] = useState('');
-  const [useCustomAltitude, setUseCustomAltitude] = useState(false);
+  const [isCustomAltitude, setIsCustomAltitude] = useState(false);
   const [customAltitude, setCustomAltitude] = useState(300);
   const [places, setPlaces] = useState<Candidate[]>([]);
   const luaApi = useOpenSpaceApi();
@@ -111,14 +110,6 @@ export function EarthPanel({ currentAnchor }: Props) {
     return `${ScenePrefixKey}${uri}` in propertyOwners;
   }
 
-  function addressUTF8(address: string): string {
-    // Converts the string to utf-8 format removing any illegal characters
-    // \x00-\x7F matches characters between index 0 and index 127, also replaces any
-    // space, ',', and '.' characters
-    // eslint-disable-next-line no-control-regex
-    return address.replace(/[^\x00-\x7F]/g, '').replace(/[\s,.]/g, '_');
-  }
-
   function createSceneGraphNodeTable(
     globe: string,
     identifier: string,
@@ -146,22 +137,6 @@ export function EarthPanel({ currentAnchor }: Props) {
     };
 
     return table;
-  }
-
-  function calculateAltitude(extent: Extent): number {
-    // Get lat long corners of polygon
-    const nw = new LatLng(extent.ymax, extent.xmin);
-    const ne = new LatLng(extent.ymax, extent.xmax);
-    const sw = new LatLng(extent.ymin, extent.xmin);
-    const se = new LatLng(extent.ymin, extent.xmax);
-    // Distances are in meters
-    const height = computeDistanceBetween(nw, sw);
-    const lengthBottom = computeDistanceBetween(sw, se);
-    const lengthTop = computeDistanceBetween(nw, ne);
-    const maxLength = Math.max(lengthBottom, lengthTop);
-    const largestDist = Math.max(height, maxLength);
-    // 0.61 is the radian of 35 degrees - half of the standard horizontal field of view in OpenSpace
-    return (0.5 * largestDist) / Math.tan(0.610865238);
   }
 
   return (
@@ -195,8 +170,8 @@ export function EarthPanel({ currentAnchor }: Props) {
                 label={'Calculates an appropriate altitude automatically if unchecked'}
               >
                 <Checkbox
-                  checked={useCustomAltitude}
-                  onChange={(event) => setUseCustomAltitude(event.currentTarget.checked)}
+                  checked={isCustomAltitude}
+                  onChange={(event) => setIsCustomAltitude(event.currentTarget.checked)}
                   label={'Use custom altitude'}
                   m={'xs'}
                 />
@@ -209,7 +184,7 @@ export function EarthPanel({ currentAnchor }: Props) {
                   }
                 }}
                 label={'Custom altitude (km)'}
-                disabled={!useCustomAltitude}
+                disabled={!isCustomAltitude}
                 defaultValue={300}
                 min={0}
                 m={'xs'}
@@ -221,71 +196,18 @@ export function EarthPanel({ currentAnchor }: Props) {
             <FilterList placeHolderSearchText={'Filter search'} height={'350px'}>
               <FilterList.Data<Candidate>
                 data={places}
-                renderElement={(place) => {
-                  const address = place.attributes.LongLabel;
-                  const addressUtf8 = addressUTF8(address);
-
-                  const isAdded = isSceneGraphNodeAdded(addressUtf8);
-                  const cappedAddress = address; // TODO cap address to some fixed size?
-                  const lat = place.location.y;
-                  const long = place.location.x;
-                  const alt = useCustomAltitude
-                    ? customAltitude * 1000
-                    : calculateAltitude(place.extent);
-                  return (
-                    <Group
-                      key={address}
-                      gap={'xs'}
-                      mb={2}
-                      justify={'space-between'}
-                      wrap={'nowrap'}
-                    >
-                      {/* TODO temporary css to stop long names from linebreaking causing the
-                      buttons to be moved to a new row, the maxwidth is just arbitrary
-                      minus the size of the buttons... */}
-                      <Text
-                        style={{
-                          flexGrow: 1,
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          textWrap: 'nowrap',
-                          maxWidth: 350 - 125
-                        }}
-                      >
-                        {cappedAddress}
-                        {cappedAddress.length !== address.length ? '...' : ''}
-                      </Text>
-
-                      <Group gap={'xs'} wrap={'nowrap'}>
-                        <NodeNavigationButton
-                          type={NavigationType.FlyGeo}
-                          identifier={currentAnchor}
-                          lat={lat}
-                          long={long}
-                          alt={alt}
-                        />
-                        <NodeNavigationButton
-                          type={NavigationType.JumpGeo}
-                          identifier={currentAnchor}
-                          lat={lat}
-                          long={long}
-                          alt={alt}
-                        />
-                        <ActionIcon
-                          onClick={() =>
-                            isAdded
-                              ? removeFocusNode(addressUtf8)
-                              : addFocusNode(addressUtf8, lat, long, alt)
-                          }
-                          size={'lg'}
-                          color={isAdded ? 'red' : 'blue'}
-                        >
-                          {isAdded ? <MinusIcon /> : <PlusIcon />}
-                        </ActionIcon>
-                      </Group>
-                    </Group>
-                  );
-                }}
+                renderElement={(place) => (
+                  <EarthEntry
+                    key={place.attributes.LongLabel}
+                    place={place}
+                    isCustomAltitude={isCustomAltitude}
+                    customAltitude={customAltitude}
+                    currentAnchor={currentAnchor}
+                    isSceneGraphNodeAdded={isSceneGraphNodeAdded}
+                    addFocusNode={addFocusNode}
+                    removeFocusNode={removeFocusNode}
+                  />
+                )}
                 matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
               />
             </FilterList>
@@ -294,7 +216,6 @@ export function EarthPanel({ currentAnchor }: Props) {
           )}
         </Tabs.Panel>
         <Tabs.Panel value={CustomCoordinatesKey}>
-          {' '}
           <CustomCoordinates
             currentAnchor={currentAnchor}
             onAddFocusNodeCallback={(address, lat, long, alt) => {

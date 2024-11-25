@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Container, Divider, Select, Text, Title } from '@mantine/core';
 
-import { EarthPanel } from './AnchorPanels/EarthPanel';
+import { EarthPanel } from './AnchorPanels/EarthPanel/EarthPanel';
 
 export function GeoLocationPanel() {
   const [currentAnchorOption, setCurrentAnchorOption] = useState('Earth');

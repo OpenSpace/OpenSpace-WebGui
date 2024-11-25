@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Button, Group, Stack, TextInput } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput';
+import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PlusIcon } from '@/icons/icons';
-import { NodeNavigationButton } from '@/panels/OriginPanel/NodeNavigationButton';
 import { NavigationType } from '@/types/enums';
 
 interface Props {
