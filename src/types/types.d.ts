@@ -19,6 +19,35 @@ export interface Keybind {
 
 export type ActionOrKeybind = Action | Keybind;
 
+// Incomplete type objects for the ArcGIS object we request for GeoLocationPanel
+// This was to avoid having to import the entire ArcGIS core since the @types file is
+// deprecated on npm.
+export type ArcGISJSON = {
+  candidates: Candidate[];
+  spatialReference: object;
+};
+
+export type Candidate = {
+  address: string;
+  attributes: {
+    LongLabel: string;
+  };
+  extent: Extent;
+  location: Location;
+};
+
+export type Location = {
+  x: number;
+  y: number;
+};
+
+export type Extent = {
+  xmax: number;
+  xmin: number;
+  ymax: number;
+  ymin: number;
+};
+
 export interface ExoplanetData {
   name: string;
   identifier: string;
@@ -65,6 +94,15 @@ export interface PropertyOwner {
 export interface PropertyOwners {
   [key: string]: PropertyOwner | undefined;
 }
+
+export type Group = {
+  subgroups: string[]; // group paths
+  propertyOwners: string[]; // uris
+};
+
+export type Groups = {
+  [key: string]: Group;
+};
 
 export type OpenSpaceTimeState = {
   time?: string;

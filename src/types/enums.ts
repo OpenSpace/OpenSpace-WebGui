@@ -9,10 +9,12 @@ export enum IconSize {
   xl = 42
 }
 export enum NavigationType {
-  jump = 1,
-  fly = 2,
-  focus = 3,
-  frame = 4
+  jump,
+  JumpGeo,
+  fly,
+  FlyGeo,
+  focus,
+  frame
 }
 
 export enum TimePart {

@@ -4,9 +4,10 @@ import { Topic } from 'openspace-api-js';
 import { api } from '@/api/api';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
-import { removeProperties } from '@/redux/propertytree/properties/propertiesSlice';
-import { removePropertyOwners } from '@/redux/propertytree/propertyowner/propertyOwnerSlice';
-import { addUriToPropertyTree } from '@/redux/propertytree/propertyTreeMiddleware';
+import {
+  addUriToPropertyTree,
+  removeUriFromPropertyTree
+} from '@/redux/propertytree/propertyTreeMiddleware';
 import { EventData } from '@/types/event-types';
 
 let eventTopic: Topic;
@@ -18,9 +19,7 @@ function handleData(dispatch: Dispatch<UnknownAction>, data: EventData) {
       dispatch(addUriToPropertyTree({ uri: data.Uri }));
       break;
     case 'PropertyTreePruned':
-      dispatch(removePropertyOwners({ uris: [data.Uri] }));
-      dispatch(removeProperties({ uris: [data.Uri] }));
-      //   dispatch(refreshGroups) // TODO: add refresh groups slice action
+      dispatch(removeUriFromPropertyTree({ uri: data.Uri }));
       break;
     default:
       return;

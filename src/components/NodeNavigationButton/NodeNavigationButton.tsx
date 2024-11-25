@@ -1,4 +1,4 @@
-import { ActionIcon, Button } from '@mantine/core';
+import { ActionIcon, ActionIconProps, Button, ButtonProps } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
@@ -11,13 +11,40 @@ import {
 import { IconSize, NavigationType } from '@/types/enums';
 import { NavigationAimKey, NavigationAnchorKey, RetargetAnchorKey } from '@/util/keys';
 
-interface NodeNavigationButtonProps {
+interface BaseProps {
   type: NavigationType;
   identifier: string;
   showLabel?: boolean;
   onFinish?: () => void;
-  variant?: string;
 }
+
+interface ButtonBaseProps extends ButtonProps {
+  showLabel: true;
+}
+interface ActionIconBaseProps extends ActionIconProps {
+  showLabel?: false;
+  justify?: never;
+}
+
+type BaseButtonProps = ButtonBaseProps | ActionIconBaseProps;
+
+interface PathNavigationProps extends BaseProps {
+  type: Exclude<NavigationType, NavigationType.JumpGeo | NavigationType.FlyGeo>;
+  lat?: never;
+  long?: never;
+  alt?: never;
+}
+
+interface GeoNavigationProps extends BaseProps {
+  type: NavigationType.FlyGeo | NavigationType.JumpGeo;
+  lat: number;
+  long: number;
+  alt: number;
+}
+
+type NodeNavigationButtonProps =
+  | (PathNavigationProps & BaseButtonProps)
+  | (GeoNavigationProps & BaseButtonProps);
 
 interface ButtonContent {
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -31,7 +58,12 @@ export function NodeNavigationButton({
   identifier,
   showLabel,
   onFinish,
-  variant
+  variant,
+  lat,
+  long,
+  alt,
+  justify,
+  style
 }: NodeNavigationButtonProps) {
   const luaApi = useOpenSpaceApi();
 
@@ -53,6 +85,17 @@ export function NodeNavigationButton({
     }
     // stop propagation?
     onFinish?.();
+  }
+
+  function flyToGeo(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    if (type !== NavigationType.FlyGeo && type !== NavigationType.JumpGeo) {
+      return;
+    }
+    if (event.shiftKey) {
+      luaApi?.globebrowsing.flyToGeo(identifier, lat, long, alt, 0.0);
+    } else {
+      luaApi?.globebrowsing.flyToGeo(identifier, lat, long, alt);
+    }
   }
 
   function zoomToFocus(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
@@ -80,6 +123,13 @@ export function NodeNavigationButton({
     onFinish?.();
   }
 
+  function jumpToGeo() {
+    if (type !== NavigationType.FlyGeo && type !== NavigationType.JumpGeo) {
+      return;
+    }
+    luaApi?.globebrowsing.jumpToGeo(identifier, lat, long, alt);
+  }
+
   const content: ButtonContent = {
     onClick: () => {},
     icon: <></>,
@@ -92,6 +142,11 @@ export function NodeNavigationButton({
       content.title = 'Jump to';
       content.icon = <LightningFlashIcon size={IconSize.sm} />;
       break;
+    case NavigationType.JumpGeo:
+      content.onClick = jumpToGeo;
+      content.title = 'Jump to Geo';
+      content.icon = <LightningFlashIcon size={IconSize.sm} />;
+      break;
     case NavigationType.focus:
       content.onClick = focus;
       content.title = 'Focus';
@@ -100,6 +155,11 @@ export function NodeNavigationButton({
     case NavigationType.fly:
       content.onClick = flyTo;
       content.title = 'Fly to';
+      content.icon = <AirplaneIcon size={IconSize.sm} />;
+      break;
+    case NavigationType.FlyGeo:
+      content.onClick = flyToGeo;
+      content.title = 'Fly to Geo';
       content.icon = <AirplaneIcon size={IconSize.sm} />;
       break;
     case NavigationType.frame:
@@ -120,13 +180,14 @@ export function NodeNavigationButton({
         <Button
           onClick={content.onClick}
           leftSection={content.icon}
-          justify={'flex-start'}
+          rightSection={content.info && <Tooltip text={content.info} />}
+          style={style}
+          justify={justify}
         >
           {showLabel && content.title}
-          {content.info && <Tooltip text={content.info} />}
         </Button>
       ) : (
-        <ActionIcon onClick={content.onClick} size={'lg'} variant={variant}>
+        <ActionIcon onClick={content.onClick} size={'lg'} variant={variant} style={style}>
           {content.icon}
         </ActionIcon>
       )}
