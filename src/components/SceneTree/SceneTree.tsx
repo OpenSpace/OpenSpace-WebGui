@@ -1,4 +1,4 @@
-import { Tree, TreeNodeData } from '@mantine/core';
+import { Divider, RenderTreeNodePayload, Tree, TreeNodeData } from '@mantine/core';
 
 import { Groups } from '@/redux/groups/groupsSlice';
 import { useAppSelector } from '@/redux/hooks';
@@ -6,6 +6,8 @@ import { hasInterestingTag, shouldShowPropertyOwner } from '@/util/propertytreeh
 import { PropertyOwners } from '@/types/types';
 import { Property } from '../Property/Property';
 import { GroupHeader, PropertyOwnerHeader } from './SceneTreeHeaders';
+import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
+import { useGetStringPropertyValue } from '@/api/hooks';
 
 const GROUP_PREFIX = '/groups/';
 
@@ -118,6 +120,9 @@ export function SceneTree({
   const properties = useAppSelector((state) => state.properties.properties);
   const groups: Groups = useAppSelector((state) => state.groups.groups);
 
+  const anchor = useGetStringPropertyValue(NavigationAnchorKey);
+  const aim = useGetStringPropertyValue(NavigationAimKey);
+
   function hidePropertyOwner(uri: string) {
     return !shouldShowPropertyOwner(uri, properties, showOnlyEnabled, showHiddenNodes);
   }
@@ -147,6 +152,7 @@ export function SceneTree({
   }
 
   let treeData: TreeNodeData[] = [];
+  let featuredTreeData: TreeNodeData[] | undefined = undefined;
 
   if (propertyOwnerUri) {
     // Create the tree from a certain property owner
@@ -155,52 +161,87 @@ export function SceneTree({
   else {
     // Otherwise, create the tree from the groups
 
-    // Quick access
-    // TODO: Maybe these should be part of their own tree, together with the
-    // current focus node?
-    let interestingNodesTreeData: TreeNodeData = {
-      label: 'Quick Access',
-      value: GROUP_PREFIX + 'interesting',
-      children: []
-    };
+    // Quick access and current focus node
+    {
+      featuredTreeData = [];
 
-    const propertyOwnersScene = propertyOwners.Scene?.subowners ?? [];
-    propertyOwnersScene.forEach((uri) => {
-      if (hasInterestingTag(uri, propertyOwners)) {
-        interestingNodesTreeData.children?.push(
-          treeDataForPropertyOwner(uri, propertyOwners)
+      if (anchor) {
+        const anchorData = treeDataForPropertyOwner(
+          ScenePrefixKey + anchor,
+          propertyOwners
         );
+        anchorData.label = 'Current Focus: ' + anchorData.label;
+        featuredTreeData.push(anchorData);
       }
-    });
 
-    treeData = treeData.concat(
-      interestingNodesTreeData,
-      treeDataFromGroups(groups, propertyOwners)
-    );
+      if (aim) {
+        const aimData = treeDataForPropertyOwner(ScenePrefixKey + aim, propertyOwners);
+        aimData.label = 'Current Aim: ' + aimData.label;
+        featuredTreeData.push(aimData);
+      }
 
+      let interestingNodes: TreeNodeData = {
+        label: 'Quick Access',
+        value: GROUP_PREFIX + 'interesting',
+        children: []
+      };
+
+      const propertyOwnersScene = propertyOwners.Scene?.subowners ?? [];
+      propertyOwnersScene.forEach((uri) => {
+        if (hasInterestingTag(uri, propertyOwners)) {
+          interestingNodes.children?.push(
+            treeDataForPropertyOwner(uri, propertyOwners)
+          );
+        }
+      });
+
+      if (interestingNodes.children && interestingNodes.children.length > 0) {
+        interestingNodes.children = filterTreeData(
+          interestingNodes.children
+        );
+        featuredTreeData.push(interestingNodes);
+      }
+    }
+
+    treeData = treeDataFromGroups(groups, propertyOwners);
     treeData = filterTreeData(treeData);
   }
 
+  function renderTreeNode(
+    { node, expanded, hasChildren, elementProps }: RenderTreeNodePayload
+  ) {
+    const isGroup = hasChildren && node.value.startsWith(GROUP_PREFIX);
+    const isPropertyOwner = hasChildren && !isGroup;
+
+    let content;
+    if (isGroup) {
+      content = <GroupHeader expanded={expanded} label={node.label} />
+    } else if (isPropertyOwner) {
+      content = <PropertyOwnerHeader expanded={expanded} label={node.label} />
+    } else {
+      content = <Property uri={node.value} />
+    }
+
+    return <div {...elementProps}>
+      {content}
+    </div>
+  }
+
   return (
-    <Tree
-      data={treeData}
-      renderNode={({ node, expanded, hasChildren, elementProps }) => {
-        const isGroup = hasChildren && node.value.startsWith(GROUP_PREFIX);
-        const isPropertyOwner = hasChildren && !isGroup;
-
-        let content;
-        if (isGroup) {
-          content = <GroupHeader expanded={expanded} label={node.label} />
-        } else if (isPropertyOwner) {
-          content = <PropertyOwnerHeader expanded={expanded} label={node.label} />
-        } else {
-          content = <Property uri={node.value} />
-        }
-
-        return <div {...elementProps}>
-          {content}
-        </div>
-      }}
-    />
+    <>
+      {featuredTreeData && (
+        <>
+          <Tree
+            data={featuredTreeData}
+            renderNode={renderTreeNode}
+          />
+          <Divider my={'xs'} />
+        </>
+      )}
+      <Tree
+        data={treeData}
+        renderNode={renderTreeNode}
+      />
+    </>
   );
 }
