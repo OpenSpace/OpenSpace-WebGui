@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Group, Stack, TextInput } from '@mantine/core';
+import { Button, Flex, Group, Stack, TextInput } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PlusIcon } from '@/icons/icons';
@@ -30,7 +30,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
 
   return (
     <Stack gap={'xs'}>
-      <Group gap={'xs'} grow>
+      <Flex gap={'xs'} align={'end'}>
         <InlineInput
           label={'Latitude (deg)'}
           value={lat}
@@ -42,8 +42,8 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
           }}
           min={-90}
           max={90}
+          style={{ flexGrow: 1 }}
         />
-
         <InlineInput
           label={'Longitude (deg)'}
           value={long}
@@ -55,6 +55,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
           }}
           min={-180}
           max={180}
+          style={{ flexGrow: 1 }}
         />
         <InlineInput
           label={'Altitude'}
@@ -66,8 +67,9 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
             });
           }}
           min={0}
+          style={{ flexGrow: 1 }}
         />
-      </Group>
+      </Flex>
       <TextInput
         value={customName}
         onChange={(event) => setCustomName(event.currentTarget.value)}
