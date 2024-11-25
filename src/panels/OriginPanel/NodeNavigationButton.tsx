@@ -1,4 +1,4 @@
-import { ActionIcon, Button } from '@mantine/core';
+import { ActionIcon, ActionIconProps, Button, ButtonProps } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
@@ -16,8 +16,17 @@ interface BaseProps {
   identifier: string;
   showLabel?: boolean;
   onFinish?: () => void;
-  variant?: string;
 }
+
+interface ButtonBaseProps extends ButtonProps {
+  showLabel: true;
+}
+interface ActionIconBaseProps extends ActionIconProps {
+  showLabel?: false;
+  justify?: never;
+}
+
+type BaseButtonProps = ButtonBaseProps | ActionIconBaseProps;
 
 interface PathNavigationProps extends BaseProps {
   type: Exclude<NavigationType, NavigationType.JumpGeo | NavigationType.FlyGeo>;
@@ -33,7 +42,9 @@ interface GeoNavigationProps extends BaseProps {
   alt: number;
 }
 
-type NodeNavigationButtonProps = PathNavigationProps | GeoNavigationProps;
+type NodeNavigationButtonProps =
+  | (PathNavigationProps & BaseButtonProps)
+  | (GeoNavigationProps & BaseButtonProps);
 
 interface ButtonContent {
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -50,7 +61,9 @@ export function NodeNavigationButton({
   variant,
   lat,
   long,
-  alt
+  alt,
+  justify,
+  style
 }: NodeNavigationButtonProps) {
   const luaApi = useOpenSpaceApi();
 
@@ -167,13 +180,14 @@ export function NodeNavigationButton({
         <Button
           onClick={content.onClick}
           leftSection={content.icon}
-          justify={'flex-start'}
           rightSection={content.info && <Tooltip text={content.info} />}
+          style={style}
+          justify={justify}
         >
           {showLabel && content.title}
         </Button>
       ) : (
-        <ActionIcon onClick={content.onClick} size={'lg'} variant={variant}>
+        <ActionIcon onClick={content.onClick} size={'lg'} variant={variant} style={style}>
           {content.icon}
         </ActionIcon>
       )}
