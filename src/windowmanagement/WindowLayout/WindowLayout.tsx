@@ -111,6 +111,7 @@ export function WindowLayout() {
       title: options.title,
       content: <ScrollArea h={'100%'}>{component}</ScrollArea>,
       closable: true,
+      cached: true,
       group: 'regularWindow'
     };
 
