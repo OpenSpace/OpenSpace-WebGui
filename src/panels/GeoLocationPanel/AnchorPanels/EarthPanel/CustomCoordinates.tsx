@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Button, Group, Stack, TextInput } from '@mantine/core';
 
-import { NumericInput } from '@/components/Input/NumericInput';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PlusIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
+import { InlineInput } from '@/panels/TimePanel/InlineInput';
 
 interface Props {
   currentAnchor: string;
@@ -31,24 +31,40 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
   return (
     <Stack gap={'xs'}>
       <Group gap={'xs'} grow>
-        <NumericInput
+        <InlineInput
           label={'Latitude (deg)'}
-          defaultValue={lat}
-          onEnter={(value) => setLat(value)}
+          value={lat}
+          onInputChange={(value: number, relative: boolean) => {
+            setLat((oldvalue) => {
+              const newValue = relative ? oldvalue + value : value;
+              return newValue;
+            });
+          }}
           min={-90}
           max={90}
         />
-        <NumericInput
+
+        <InlineInput
           label={'Longitude (deg)'}
-          defaultValue={long}
-          onEnter={(value) => setLong(value)}
+          value={long}
+          onInputChange={(value: number, relative: boolean) => {
+            setLong((oldvalue) => {
+              const newValue = relative ? oldvalue + value : value;
+              return newValue;
+            });
+          }}
           min={-180}
           max={180}
         />
-        <NumericInput
+        <InlineInput
           label={'Altitude'}
-          defaultValue={alt}
-          onEnter={(value) => setAlt(value)}
+          value={alt}
+          onInputChange={(value: number, relative: boolean) => {
+            setAlt((oldvalue) => {
+              const newValue = relative ? oldvalue + value : value;
+              return newValue;
+            });
+          }}
           min={0}
         />
       </Group>
