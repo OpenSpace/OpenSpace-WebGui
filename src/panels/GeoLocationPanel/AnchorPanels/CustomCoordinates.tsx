@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button, Group, Stack, TextInput } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput';
@@ -21,18 +21,12 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
   const [alt, setAlt] = useState(0);
   const [customName, setCustomName] = useState('');
   const altInKm = alt * 1000;
-
-  const [previewCustomName, setPreviewCustomName] = useState('');
+  const previewCustomName = `Custom Coordinate (${lat},${long},${alt}km)`;
 
   function onClick() {
-    const address = customName || `Custom Coordinate (${lat},${long},${alt}km)`;
+    const address = customName || previewCustomName;
     onAddFocusNodeCallback(address, lat, long, altInKm);
-    setPreviewCustomName('');
   }
-
-  useEffect(() => {
-    setPreviewCustomName(`Custom Coordinate (${lat},${long},${alt}km)`);
-  }, [lat, long, alt]);
 
   return (
     <Stack gap={'xs'}>
@@ -66,7 +60,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
           previewCustomName !== '' ? previewCustomName : 'Custom name (optional)'
         }
       />
-      <Group gap={'xs'}>
+      <Group gap={'xs'} grow preventGrowOverflow={false}>
         <NodeNavigationButton
           type={NavigationType.FlyGeo}
           showLabel

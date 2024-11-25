@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, Select, Text, Title } from '@mantine/core';
+import { Container, Divider, Select, Text, Title } from '@mantine/core';
 
 import { EarthPanel } from './AnchorPanels/EarthPanel';
 
@@ -29,7 +29,9 @@ export function GeoLocationPanel() {
         allowDeselect={false}
         label={'Select an anchor'}
         w={'100%'}
+        my={'xs'}
       />
+      <Divider my={'xs'} />
       {anchorPanelContent}
     </Container>
   );

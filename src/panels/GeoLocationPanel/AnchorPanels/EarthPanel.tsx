@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  Accordion,
   ActionIcon,
   Button,
   Checkbox,
@@ -8,6 +7,7 @@ import {
   Divider,
   Group,
   NumberInput,
+  Tabs,
   Text,
   TextInput,
   Title,
@@ -16,9 +16,9 @@ import {
 import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { CollapsableContent } from '@/components/CollapsableContent/CollapsableContent';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
 import { MinusIcon, PlusIcon } from '@/icons/icons';
 import { NodeNavigationButton } from '@/panels/OriginPanel/NodeNavigationButton';
 import { useAppSelector } from '@/redux/hooks';
@@ -31,15 +31,14 @@ import { CustomCoordinates } from './CustomCoordinates';
 interface Props {
   currentAnchor: string;
 }
+
 export function EarthPanel({ currentAnchor }: Props) {
   const [inputValue, setInputValue] = useState('');
   const [useCustomAltitude, setUseCustomAltitude] = useState(false);
   const [customAltitude, setCustomAltitude] = useState(300);
   const [places, setPlaces] = useState<Candidate[]>([]);
   const luaApi = useOpenSpaceApi();
-
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-
   const groups = useAppSelector((state) => state.groups.groups);
 
   const geoLocationOwners = groups[GeoLocationGroupKey]?.propertyOwners.map((uri) => {
@@ -52,7 +51,10 @@ export function EarthPanel({ currentAnchor }: Props) {
     }
     return uri.substring(index + ScenePrefixKey.length);
   });
+
   const addedCustomNodes = geoLocationOwners ?? [];
+  const SearchPlaceKey = 'Search Place';
+  const CustomCoordinatesKey = 'Custom Coordinates';
 
   async function getPlaces(): Promise<void> {
     if (!inputValue) {
@@ -164,147 +166,147 @@ export function EarthPanel({ currentAnchor }: Props) {
 
   return (
     <>
-      <Divider my={'xs'} />
-      <Accordion defaultValue={'SearchCoordinates'}>
-        <Accordion.Item value={'SearchCoordinates'}>
-          <Accordion.Control>Search Place</Accordion.Control>
-          <Accordion.Panel>
-            <TextInput
-              placeholder={'Search places...'}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  getPlaces();
-                }
-              }}
-              onChange={(event) => setInputValue(event.target.value)}
-              rightSection={<Button onClick={() => getPlaces()}>Search</Button>}
-              rightSectionWidth={'md'}
-            />
-            <Divider my={'xs'} />
-            <CollapsableContent title={'Settings'}>
-              <Group justify={'space-between'} grow>
-                <Tooltip
-                  label={'Calculates an appropriate altitude automatically if unchecked'}
-                >
-                  <Checkbox
-                    checked={useCustomAltitude}
-                    onChange={(event) =>
-                      setUseCustomAltitude(event.currentTarget.checked)
-                    }
-                    label={'Use custom altitude'}
-                  />
-                </Tooltip>
-                <NumberInput
-                  value={customAltitude}
-                  onChange={(value) => {
-                    if (typeof value === 'number') {
-                      setCustomAltitude(value);
-                    }
-                  }}
-                  label={'Custom altitude (km)'}
-                  disabled={!useCustomAltitude}
-                  defaultValue={300}
-                  min={0}
-                />
-              </Group>
-            </CollapsableContent>
-            <Divider my={'xs'} />
+      <Tabs variant={'outline'} radius={'md'} defaultValue={SearchPlaceKey}>
+        <Tabs.List>
+          <Tabs.Tab value={SearchPlaceKey}>Search Place</Tabs.Tab>
+          <Tabs.Tab value={CustomCoordinatesKey}>Custom Coordinates</Tabs.Tab>
+        </Tabs.List>
 
+        <Tabs.Panel value={SearchPlaceKey}>
+          <TextInput
+            placeholder={'Search places...'}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                getPlaces();
+              }
+            }}
+            onChange={(event) => setInputValue(event.target.value)}
+            rightSection={<Button onClick={() => getPlaces()}>Search</Button>}
+            rightSectionWidth={'md'}
+            my={'xs'}
+          />
+
+          <Group justify={'space-between'}>
             <Title order={3} my={'xs'}>
               Results
             </Title>
+            <SettingsPopout>
+              <Tooltip
+                label={'Calculates an appropriate altitude automatically if unchecked'}
+              >
+                <Checkbox
+                  checked={useCustomAltitude}
+                  onChange={(event) => setUseCustomAltitude(event.currentTarget.checked)}
+                  label={'Use custom altitude'}
+                  m={'xs'}
+                />
+              </Tooltip>
+              <NumberInput
+                value={customAltitude}
+                onChange={(value) => {
+                  if (typeof value === 'number') {
+                    setCustomAltitude(value);
+                  }
+                }}
+                label={'Custom altitude (km)'}
+                disabled={!useCustomAltitude}
+                defaultValue={300}
+                min={0}
+                m={'xs'}
+              />
+            </SettingsPopout>
+          </Group>
 
-            {places.length > 0 ? (
-              <FilterList placeHolderSearchText={'Filter search'} height={'350px'}>
-                <FilterList.Data<Candidate>
-                  data={places}
-                  renderElement={(place) => {
-                    const address = place.attributes.LongLabel;
-                    const addressUtf8 = addressUTF8(address);
+          {places.length > 0 ? (
+            <FilterList placeHolderSearchText={'Filter search'} height={'350px'}>
+              <FilterList.Data<Candidate>
+                data={places}
+                renderElement={(place) => {
+                  const address = place.attributes.LongLabel;
+                  const addressUtf8 = addressUTF8(address);
 
-                    const isAdded = isSceneGraphNodeAdded(addressUtf8);
-                    const cappedAddress = address; // TODO cap address to some fixed size?
-                    const lat = place.location.y;
-                    const long = place.location.x;
-                    const alt = useCustomAltitude
-                      ? customAltitude * 1000
-                      : calculateAltitude(place.extent);
-                    return (
-                      <Group
-                        key={address}
-                        gap={'xs'}
-                        mb={2}
-                        justify={'space-between'}
-                        wrap={'nowrap'}
-                      >
-                        {/* TODO temporary css to stop long names from linebreaking causing the
+                  const isAdded = isSceneGraphNodeAdded(addressUtf8);
+                  const cappedAddress = address; // TODO cap address to some fixed size?
+                  const lat = place.location.y;
+                  const long = place.location.x;
+                  const alt = useCustomAltitude
+                    ? customAltitude * 1000
+                    : calculateAltitude(place.extent);
+                  return (
+                    <Group
+                      key={address}
+                      gap={'xs'}
+                      mb={2}
+                      justify={'space-between'}
+                      wrap={'nowrap'}
+                    >
+                      {/* TODO temporary css to stop long names from linebreaking causing the
                       buttons to be moved to a new row, the maxwidth is just arbitrary
                       minus the size of the buttons... */}
-                        <Text
-                          style={{
-                            flexGrow: 1,
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            textWrap: 'nowrap',
-                            maxWidth: 350 - 125
-                          }}
+                      <Text
+                        style={{
+                          flexGrow: 1,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          textWrap: 'nowrap',
+                          maxWidth: 350 - 125
+                        }}
+                      >
+                        {cappedAddress}
+                        {cappedAddress.length !== address.length ? '...' : ''}
+                      </Text>
+
+                      <Group gap={'xs'} wrap={'nowrap'}>
+                        <NodeNavigationButton
+                          type={NavigationType.FlyGeo}
+                          identifier={currentAnchor}
+                          lat={lat}
+                          long={long}
+                          alt={alt}
+                        />
+                        <NodeNavigationButton
+                          type={NavigationType.JumpGeo}
+                          identifier={currentAnchor}
+                          lat={lat}
+                          long={long}
+                          alt={alt}
+                        />
+                        <ActionIcon
+                          onClick={() =>
+                            isAdded
+                              ? removeFocusNode(addressUtf8)
+                              : addFocusNode(addressUtf8, lat, long, alt)
+                          }
+                          size={'lg'}
+                          color={isAdded ? 'red' : 'blue'}
                         >
-                          {cappedAddress}
-                          {cappedAddress.length !== address.length ? '...' : ''}
-                        </Text>
-
-                        <Group gap={'xs'} wrap={'nowrap'}>
-                          <NodeNavigationButton
-                            type={NavigationType.FlyGeo}
-                            identifier={currentAnchor}
-                            lat={lat}
-                            long={long}
-                            alt={alt}
-                          />
-                          <NodeNavigationButton
-                            type={NavigationType.JumpGeo}
-                            identifier={currentAnchor}
-                            lat={lat}
-                            long={long}
-                            alt={alt}
-                          />
-                          <ActionIcon
-                            onClick={() =>
-                              isAdded
-                                ? removeFocusNode(addressUtf8)
-                                : addFocusNode(addressUtf8, lat, long, alt)
-                            }
-                            size={'lg'}
-                            color={isAdded ? 'red' : 'blue'}
-                          >
-                            {isAdded ? <MinusIcon /> : <PlusIcon />}
-                          </ActionIcon>
-                        </Group>
+                          {isAdded ? <MinusIcon /> : <PlusIcon />}
+                        </ActionIcon>
                       </Group>
-                    );
-                  }}
-                  matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
-                />
-              </FilterList>
-            ) : (
-              <Text>Nothing found. Try another search!</Text>
-            )}
-          </Accordion.Panel>
-        </Accordion.Item>
+                    </Group>
+                  );
+                }}
+                matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
+              />
+            </FilterList>
+          ) : (
+            <Text>Nothing found. Try another search!</Text>
+          )}
+        </Tabs.Panel>
+        <Tabs.Panel value={CustomCoordinatesKey}>
+          {' '}
+          <CustomCoordinates
+            currentAnchor={currentAnchor}
+            onAddFocusNodeCallback={(address, lat, long, alt) => {
+              const identifier = addressUTF8(address);
+              addFocusNode(identifier, lat, long, alt);
+            }}
+          />
+        </Tabs.Panel>
+      </Tabs>
 
-        <Accordion.Item value={'CustomCoordinates'}>
-          <Accordion.Control>Custom Coordinates</Accordion.Control>
-          <Accordion.Panel>
-            <CustomCoordinates
-              currentAnchor={currentAnchor}
-              onAddFocusNodeCallback={(address, lat, long, alt) => {
-                const identifier = addressUTF8(address);
-                addFocusNode(identifier, lat, long, alt);
-              }}
-            />
-          </Accordion.Panel>
-        </Accordion.Item>
-      </Accordion>
+      <Divider my={'xs'} />
+
       <Title order={2} my={'md'}>
         Added Nodes
       </Title>
