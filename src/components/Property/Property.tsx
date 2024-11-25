@@ -13,6 +13,7 @@ import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';
 import { TriggerProperty } from './Types/TriggerProperty';
 import { VectorProperty } from './Types/VectorProperty/VectorProperty';
+import React from 'react';
 
 // (2024-10-21, emmbr) I don't know how to efficiently get rid of "any" in this case
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -69,7 +70,7 @@ interface Props {
   uri: string;
 }
 
-export function Property({ uri }: Props) {
+export const Property = React.memo(({ uri }: Props) => {
   // TODO: The state here has been changed. Should just be propertyTree.properties. Or
   // maybe even just state.properties?
   const description = useAppSelector(
@@ -110,4 +111,4 @@ export function Property({ uri }: Props) {
       />
     </Box>
   );
-}
+});

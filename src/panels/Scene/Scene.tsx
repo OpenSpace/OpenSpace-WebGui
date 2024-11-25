@@ -6,36 +6,20 @@ import {
   Skeleton,
   Tabs,
   Text,
-  Tree,
-  TreeNodeData
 } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 
-import { CollapsableHeader } from '@/components/CollapsableHeader/CollapsableHeader';
-import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { FilterIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
-import { Groups } from '@/types/types';
-import { hasInterestingTag, shouldShowPropertyOwner } from '@/util/propertytreehelper';
 
 import { TempPropertyTest } from './TempPropertyTest';
+import { SceneTree } from '@/components/SceneTree/SceneTree';
 
 export function Scene() {
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-
-  // TODO: Remove dependency on entire properties object. This means that the entire menu
-  // is rerendered as soon as a property changes... Each propertyowner could handle its
-  // visiblility instead?
-  const properties = useAppSelector((state) => state.properties.properties);
   const hasLoadedScene = useAppSelector(
     (state) => Object.values(state.propertyOwners.propertyOwners)?.length > 0
   );
-
-  const groups: Groups = useAppSelector((state) => state.groups.groups);
-  // const customGuiGroupOrdering = useAppSelector(
-  //   (state) => state.groups.customGroupOrdering
-  // );
 
   // TODO: SHould this really be local storage?
   const [showOnlyEnabled, setShowOnlyEnabled] = useLocalStorage<boolean>({
@@ -46,80 +30,6 @@ export function Scene() {
     key: 'showHiddenNodes',
     defaultValue: false
   });
-
-  const topLevelGroupsPaths = Object.keys(groups).filter((path) => {
-    // Get the number of slashes in the path
-    const depth = (path.match(/\//g) || []).length;
-    return depth === 1 && path !== '/';
-  });
-
-  // TODO: Filter the nodes and property owners based on visiblity
-  // TODO: Remember which parts of the menu were open?
-
-  // Add featured/interesting nodes in a separate list
-  const interestingNodes = [];
-  const propertyOwnersScene = propertyOwners.Scene?.subowners ?? [];
-  propertyOwnersScene.forEach((uri) => {
-    if (hasInterestingTag(uri, propertyOwners)) {
-      interestingNodes.push({
-        key: uri,
-        uri,
-        expansionIdentifier: `scene-search/${uri}`
-      });
-    }
-  });
-
-  // Build the data structure for the tree
-  function generateGroupData(path: string) {
-    const splitPath = path.split('/');
-    const name = splitPath.length > 1 ? splitPath.pop() : 'Untitled';
-
-    const groupItem: TreeNodeData = {
-      value: path,
-      label: name,
-      children: []
-    };
-
-    const groupData = groups[path];
-
-    // Add subgroups, recursively
-    groupData.subgroups.forEach((subGroupPath) =>
-      groupItem.children?.push(generateGroupData(subGroupPath))
-    );
-
-    // Add property owners
-    groupData.propertyOwners
-      .filter((uri) =>
-        shouldShowPropertyOwner(uri, properties, showOnlyEnabled, showHiddenNodes)
-      )
-      .forEach((uri) => {
-        const propertyOwner = propertyOwners[uri];
-        groupItem.children?.push({
-          value: uri,
-          label: propertyOwner?.name
-        });
-      });
-
-    return groupItem;
-  }
-
-  const treeData: TreeNodeData[] = [];
-  topLevelGroupsPaths.forEach((path) => {
-    treeData.push(generateGroupData(path));
-  });
-
-  // Add the nodes without any group to the top level
-  const nodesWithoutGroup = groups['/']?.propertyOwners || [];
-  nodesWithoutGroup
-    .filter((uri) =>
-      shouldShowPropertyOwner(uri, properties, showOnlyEnabled, showHiddenNodes)
-    )
-    .forEach((uri) => {
-      treeData.push({
-        value: uri,
-        label: propertyOwners[uri]?.name
-      });
-    });
 
   function loadingBlocks(n: number) {
     return [...Array(n)].map((_, i) => (
@@ -182,25 +92,9 @@ export function Scene() {
                 </Menu.Dropdown>
               </Menu>
             </Group>
-            <Tree
-              data={treeData}
-              renderNode={({ node, expanded, hasChildren, elementProps }) => (
-                <div {...elementProps}>
-                  {hasChildren ? (
-                    <CollapsableHeader
-                      expanded={expanded}
-                      text={
-                        <Text fs={'italic'}>
-                          {/* For now, render groups in italic to distiguish them from property owners*/}
-                          {node.label}
-                        </Text>
-                      }
-                    />
-                  ) : (
-                    <PropertyOwner uri={node.value} />
-                  )}
-                </div>
-              )}
+            <SceneTree
+              showOnlyEnabled={showOnlyEnabled}
+              showHiddenNodes={showHiddenNodes}
             />
           </Tabs.Panel>
         </Tabs>
