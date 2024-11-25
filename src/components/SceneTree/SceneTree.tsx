@@ -102,6 +102,10 @@ interface Props {
   showHiddenNodes?: boolean;
 }
 
+/**
+ * This component displays a tree of the scene graph, either starting from a certain
+ * property owner, or the entire tree.
+ */
 export function SceneTree({
   propertyOwnerUri = "",
   showOnlyEnabled = false,
@@ -110,10 +114,37 @@ export function SceneTree({
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
 
   // TODO: Remove dependency on entire properties object. This means that the entire menu
-  // is rerendered as soon as a property changes... Each propertyowner could handle its
-  // visiblility instead?
+  // is rerendered as soon as a property changes...
   const properties = useAppSelector((state) => state.properties.properties);
   const groups: Groups = useAppSelector((state) => state.groups.groups);
+
+  function hidePropertyOwner(uri: string) {
+    return !shouldShowPropertyOwner(uri, properties, showOnlyEnabled, showHiddenNodes);
+  }
+
+  function filterTreeData(nodes: TreeNodeData[]): TreeNodeData[] {
+    return nodes
+      .map((node) => {
+        if (node.children && node.children.length > 0) {
+          node.children = filterTreeData(node.children);
+          if (node.children.length === 0) {
+            return null;
+          }
+
+          if (node.value.startsWith(GROUP_PREFIX)) {
+            // Groups: Always show, if they have children
+            return node;
+          }
+          else {
+            // PropertyOwners
+            return !hidePropertyOwner(node.value) ? node : null;
+          }
+        }
+        // Properties
+        return node;
+      })
+      .filter((node) => node !== null) as TreeNodeData[];
+  }
 
   let treeData: TreeNodeData[] = [];
 
@@ -123,14 +154,16 @@ export function SceneTree({
   }
   else {
     // Otherwise, create the tree from the groups
+
+    // Quick access
+    // TODO: Maybe these should be part of their own tree, together with the
+    // current focus node?
     let interestingNodesTreeData: TreeNodeData = {
       label: 'Quick Access',
       value: GROUP_PREFIX + 'interesting',
       children: []
     };
 
-    // TODO: Maybe these should be part of their own tree, together with the
-    // current focus node?
     const propertyOwnersScene = propertyOwners.Scene?.subowners ?? [];
     propertyOwnersScene.forEach((uri) => {
       if (hasInterestingTag(uri, propertyOwners)) {
@@ -144,6 +177,8 @@ export function SceneTree({
       interestingNodesTreeData,
       treeDataFromGroups(groups, propertyOwners)
     );
+
+    treeData = filterTreeData(treeData);
   }
 
   return (
