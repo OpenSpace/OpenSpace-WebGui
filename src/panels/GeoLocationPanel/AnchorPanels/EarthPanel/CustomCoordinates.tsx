@@ -3,8 +3,8 @@ import { Button, Group, Stack, TextInput } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PlusIcon } from '@/icons/icons';
-import { NavigationType } from '@/types/enums';
 import { InlineInput } from '@/panels/TimePanel/InlineInput';
+import { NavigationType } from '@/types/enums';
 
 interface Props {
   currentAnchor: string;
