@@ -4,7 +4,7 @@ import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { initializeLuaApi } from '@/redux/luaapi/luaApiSlice';
 import { propertyTreeWasChanged } from '@/redux/propertytree/propertyTreeMiddleware';
 
-import { refreshGroups, updateCustomGroupOrdering } from './groupsSlice';
+import { CustomGroupOrdering, refreshGroups, updateCustomGroupOrdering } from './groupsSlice';
 
 export const getCustomGroupsOrdering = createAction<void>('getCustomGroupsOrdering');
 
@@ -21,7 +21,7 @@ async function getGuiGroupsOrdering(
         console.error('No GUI tree ordering was set');
         data = {};
       }
-      dispatch(updateCustomGroupOrdering(data));
+      dispatch(updateCustomGroupOrdering(data as CustomGroupOrdering));
     });
 }
 

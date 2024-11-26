@@ -1,11 +1,11 @@
+import { TreeNodeData } from '@mantine/core';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Properties, PropertyOwners } from '@/types/types';
 import { GroupPrefixKey } from '@/components/SceneTree/treeUtil';
-import { TreeNodeData } from '@mantine/core';
+import { Group, Properties, PropertyOwners } from '@/types/types';
 
 export interface GroupsState {
-  customGroupOrdering: object; // TODO specify this
+  customGroupOrdering: CustomGroupOrdering;
   groups: Groups;
 }
 
