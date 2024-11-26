@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Properties, PropertyOwners } from '@/types/types';
-import { GroupPrefixKey, treeDataForPropertyOwner } from '@/components/SceneTree/treeUtil';
+import { GroupPrefixKey } from '@/components/SceneTree/treeUtil';
 import { TreeNodeData } from '@mantine/core';
 
 export interface GroupsState {
@@ -13,8 +13,12 @@ export type Groups = {
   [key: string]: Group;
 };
 
+export type CustomGroupOrdering = {
+  [key: string]: string[]; // group paths
+};
+
 export interface GroupsState {
-  customGroupOrdering: { [key: string]: string[] }; // TODO make a type
+  customGroupOrdering: CustomGroupOrdering;
   groups: Groups;
   sceneTreeData: TreeNodeData[];
 }
@@ -74,6 +78,36 @@ const computeGroups = (propertyOwners: PropertyOwners, properties: Properties) =
 
   return groups;
 };
+
+export function treeDataForPropertyOwner(uri: string, propertyOwners: PropertyOwners) {
+  const propertyOwner = propertyOwners[uri];
+  const properties = propertyOwner?.properties || [];
+  const subPropertyOwners = propertyOwner?.subowners || [];
+  const children: TreeNodeData[] = [];
+
+  const sortedSubOwners = subPropertyOwners.slice().sort((uriA, uriB) => {
+    const a = propertyOwners[uriA]?.name || '';
+    const b = propertyOwners[uriB]?.name || '';
+    return a.localeCompare(b);
+  });
+
+  sortedSubOwners.forEach((subOwner) => {
+    children.push(treeDataForPropertyOwner(subOwner, propertyOwners));
+  });
+
+  properties.forEach((uri) => {
+    children.push({
+      label: uri, // No need to get the name of the property here
+      value: uri
+    });
+  });
+
+  return {
+    label: propertyOwner?.name || '',
+    value: uri,
+    children
+  };
+}
 
 // The data that will be used to render the scene tree
 export function treeDataFromGroups(groups: Groups, propertyOwners: PropertyOwners) {
@@ -139,9 +173,10 @@ export const groupsSlice = createSlice({
     },
     updateCustomGroupOrdering: (
       state,
-      action: PayloadAction<object> // TODO: make a type?
+      action: PayloadAction<CustomGroupOrdering>
     ) => {
       state.customGroupOrdering = action.payload;
+      return state;
     }
   }
 });

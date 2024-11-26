@@ -1,7 +1,7 @@
 import { Tree } from '@mantine/core';
 import { SceneTreeNode } from '../SceneTree/SceneTreeNode';
-import { treeDataForPropertyOwner } from '../SceneTree/treeUtil';
 import { useAppSelector } from '@/redux/hooks';
+import { treeDataForPropertyOwner } from '@/redux/groups/groupsSlice';
 
 interface Props {
   uri: string;

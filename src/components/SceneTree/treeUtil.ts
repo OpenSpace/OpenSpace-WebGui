@@ -1,4 +1,5 @@
-import { PropertyOwners } from "@/types/types";
+import { Properties, PropertyOwners } from "@/types/types";
+import { shouldShowPropertyOwner } from "@/util/propertytreehelper";
 import { TreeNodeData } from "@mantine/core";
 
 export const GroupPrefixKey = '/groups/';
@@ -15,32 +16,43 @@ export function isPropertyOwner(node: TreeNodeData) {
   return hasChildren(node) && !isGroup(node);
 };
 
-export function treeDataForPropertyOwner(uri: string, propertyOwners: PropertyOwners) {
-  const propertyOwner = propertyOwners[uri];
-  const properties = propertyOwner?.properties || [];
-  const subPropertyOwners = propertyOwner?.subowners || [];
-  const children: TreeNodeData[] = [];
+export function filterTreeData(
+  nodes: TreeNodeData[],
+  showOnlyEnabled: boolean,
+  showHiddenNodes: boolean,
+  properties: Properties
+): TreeNodeData[] {
+  return nodes
+    .map((node) => {
+      let newNode = { ...node };
+      if (newNode.children && newNode.children.length > 0) {
+        newNode.children = filterTreeData(
+          newNode.children,
+          showOnlyEnabled,
+          showHiddenNodes,
+          properties
+        );
+        if (newNode.children.length === 0) {
+          return null;
+        }
 
-  const sortedSubOwners = subPropertyOwners.slice().sort((uriA, uriB) => {
-    const a = propertyOwners[uriA]?.name || '';
-    const b = propertyOwners[uriB]?.name || '';
-    return a.localeCompare(b);
-  });
-
-  sortedSubOwners.forEach((subOwner) => {
-    children.push(treeDataForPropertyOwner(subOwner, propertyOwners));
-  });
-
-  properties.forEach((uri) => {
-    children.push({
-      label: uri, // No need to get the name of the property here
-      value: uri
-    });
-  });
-
-  return {
-    label: propertyOwner?.name || '',
-    value: uri,
-    children
-  };
+        if (isGroup(newNode)) {
+          // Groups: Always show, if they have children
+          return newNode;
+        }
+        else {
+          // PropertyOwners, may be filtered out
+          const shouldShow = shouldShowPropertyOwner(
+            newNode.value,
+            properties,
+            showOnlyEnabled,
+            showHiddenNodes
+          );
+          return shouldShow ? newNode : null;
+        }
+      }
+      // Properties are returned as is
+      return newNode;
+    })
+    .filter((node) => node !== null) as TreeNodeData[];
 }
