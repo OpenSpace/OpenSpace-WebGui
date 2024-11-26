@@ -13,7 +13,8 @@ export default defineConfig({
       '@/public': '/public',
       '@/redux': '/src/redux',
       '@/types': '/src/types',
-      '@/util': '/src/util'
+      '@/util': '/src/util',
+      '@/windowmanagement': '/src/windowmanagement'
     }
   },
   server: {
