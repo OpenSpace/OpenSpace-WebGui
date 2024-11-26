@@ -34,29 +34,33 @@ export function SceneGraphNodeHeader({ node }: PropertyOwnerHeaderProps) {
     const content = <div>TODO: Implement Scene Graph Node. {node.value}</div>;
     const title = 'SGN: ' + node.label;
 
-    if (!ref.current.find(defaultWindowId)) {
+    const existingWindow = ref.current.find(defaultWindowId);
+    if (!existingWindow) {
       addWindow(content, {
         id: defaultWindowId,
         title: title,
         position: 'float'
       });
 
-      const sceneGraphNode = ref.current.find(defaultWindowId) as TabData | PanelData;
+      const newWindow = ref.current.find(defaultWindowId) as TabData | PanelData;
       const scenePanelParentBox = ref.current.find('scene')?.parent as BoxData;
 
-      if (!sceneGraphNode || !scenePanelParentBox) {
+      if (!newWindow || !scenePanelParentBox) {
         return;
       }
-
-      console.log(sceneGraphNode);
-      console.log(scenePanelParentBox);
 
       if (scenePanelParentBox.parent && scenePanelParentBox.parent.mode === 'float') {
         // TODO: If floating window, split the scene tree in two instead
       } else {
         // split the curent Layout
-        ref.current.dockMove(sceneGraphNode, scenePanelParentBox, 'bottom');
+        ref.current.dockMove(newWindow, scenePanelParentBox, 'bottom');
       }
+    } else {
+      const prevData = { ...existingWindow } as TabData;
+      prevData.content = content;
+      prevData.title = title;
+      ref.current.updateTab(defaultWindowId, prevData, true);
+      ref.current.dockMove(existingWindow as TabData | PanelData, null, 'front');
     }
   }
 
