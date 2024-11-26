@@ -21,33 +21,32 @@ export function createTreeSortingInformation(
   properties: Properties
 ) {
   const result: TreeSortingInfo = {};
-  treeData
-    .forEach((node) => {
-      function addNode(node: TreeNodeData) {
-        if (isGroup(node)) {
-          const groupPath = node.value.replace(GroupPrefixKey, '');
-          result[node.value] = {
-            type: 'group',
-            payload: groupPath,
-            name: node.label as string,
-            guiOrder: undefined
-          };
-        } else {
-          // Property owner
-          result[node.value] = {
-            type: 'propertyOwner',
-            payload: node.value,
-            name: node.label as string,
-            guiOrder: guiOrderingNumber(properties, node.value)
-          };
-        }
-
-        if (node.children) {
-          node.children.forEach(addNode);
-        }
+  treeData.forEach((node) => {
+    function addNode(node: TreeNodeData) {
+      if (isGroup(node)) {
+        const groupPath = node.value.replace(GroupPrefixKey, '');
+        result[node.value] = {
+          type: 'group',
+          payload: groupPath,
+          name: node.label as string,
+          guiOrder: undefined
+        };
+      } else {
+        // Property owner
+        result[node.value] = {
+          type: 'propertyOwner',
+          payload: node.value,
+          name: node.label as string,
+          guiOrder: guiOrderingNumber(properties, node.value)
+        };
       }
-      addNode(node);
-    });
+
+      if (node.children) {
+        node.children.forEach(addNode);
+      }
+    }
+    addNode(node);
+  });
 
   return result;
 }

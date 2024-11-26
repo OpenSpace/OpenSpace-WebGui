@@ -31,8 +31,7 @@ export function filterTreeData(
           return null;
         }
         return newNode;
-      }
-      else {
+      } else {
         // PropertyOwners, may be filtered out based on settings
         const shouldShow = shouldShowPropertyOwner(
           newNode.value,
