@@ -3,7 +3,7 @@ import { Tree } from '@mantine/core';
 import { treeDataForPropertyOwner } from '@/redux/groups/groupsSlice';
 import { useAppSelector } from '@/redux/hooks';
 
-import { SceneTreeNode } from '../SceneTree/SceneTreeNode';
+import { SceneTreeNode } from '../../panels/Scene/SceneTree/SceneTreeNode';
 
 interface Props {
   uri: string;

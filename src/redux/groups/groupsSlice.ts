@@ -1,7 +1,7 @@
 import { TreeNodeData } from '@mantine/core';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { GroupPrefixKey } from '@/components/SceneTree/treeUtil';
+import { GroupPrefixKey } from '@/panels/Scene/SceneTree/treeUtil';
 import { Group, Properties, PropertyOwners } from '@/types/types';
 
 export interface GroupsState {

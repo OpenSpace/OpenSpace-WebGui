@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { ActionIcon, Checkbox, Group, Menu, Skeleton, Tabs, Text } from '@mantine/core';
 
-import { SceneTree } from '@/components/SceneTree/SceneTree';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { FilterIcon } from '@/icons/icons';
+import { SceneTree } from '@/panels/Scene/SceneTree/SceneTree';
 import { useAppSelector } from '@/redux/hooks';
 
 import { TempPropertyTest } from './TempPropertyTest';
