@@ -81,31 +81,9 @@ const computeGroups = (propertyOwners: PropertyOwners, properties: Properties) =
 
 export function treeDataForPropertyOwner(uri: string, propertyOwners: PropertyOwners) {
   const propertyOwner = propertyOwners[uri];
-  const properties = propertyOwner?.properties || [];
-  const subPropertyOwners = propertyOwner?.subowners || [];
-  const children: TreeNodeData[] = [];
-
-  const sortedSubOwners = subPropertyOwners.slice().sort((uriA, uriB) => {
-    const a = propertyOwners[uriA]?.name || '';
-    const b = propertyOwners[uriB]?.name || '';
-    return a.localeCompare(b);
-  });
-
-  sortedSubOwners.forEach((subOwner) => {
-    children.push(treeDataForPropertyOwner(subOwner, propertyOwners));
-  });
-
-  properties.forEach((uri) => {
-    children.push({
-      label: uri, // No need to get the name of the property here
-      value: uri
-    });
-  });
-
   return {
     label: propertyOwner?.name || '',
-    value: uri,
-    children
+    value: uri
   };
 }
 
@@ -124,7 +102,7 @@ export function treeDataFromGroups(groups: Groups, propertyOwners: PropertyOwner
     const splitPath = path.split('/');
     const name = splitPath.length > 1 ? splitPath.pop() : 'Untitled';
 
-    const groupItem: TreeNodeData = {
+    const groupNodeData: TreeNodeData = {
       value: GroupPrefixKey + path,
       label: name,
       children: []
@@ -134,15 +112,15 @@ export function treeDataFromGroups(groups: Groups, propertyOwners: PropertyOwner
 
     // Add subgroups, recursively
     groupData.subgroups.forEach((subGroupPath) =>
-      groupItem.children?.push(generateGroupData(subGroupPath))
+      groupNodeData.children?.push(generateGroupData(subGroupPath))
     );
 
     // Add property owners, also recursively
     groupData.propertyOwners.forEach((uri) => {
-      groupItem.children?.push(treeDataForPropertyOwner(uri, propertyOwners));
+      groupNodeData.children?.push(treeDataForPropertyOwner(uri, propertyOwners));
     });
 
-    return groupItem;
+    return groupNodeData;
   }
 
   topLevelGroupsPaths.forEach((path) => {

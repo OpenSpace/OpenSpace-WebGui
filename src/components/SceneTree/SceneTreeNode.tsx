@@ -1,36 +1,34 @@
 import { Paper, RenderTreeNodePayload } from '@mantine/core';
 
 import { CollapsableHeader } from '../CollapsableHeader/CollapsableHeader';
-import { Property } from '../Property/Property';
 
-import { isGroup, isPropertyOwner } from './treeUtil';
+import { isGroup } from './treeUtil';
 
-interface HeaderProps {
+interface GroupHeaderProps {
   expanded: boolean;
   label: React.ReactNode;
 }
 
-export function GroupHeader({ expanded, label }: HeaderProps) {
+export function GroupHeader({ expanded, label }: GroupHeaderProps) {
   return <CollapsableHeader expanded={expanded} text={label} />;
 }
 
-export function PropertyOwnerHeader({ expanded, label }: HeaderProps) {
+interface PropertyOwnerHeaderProps {
+  label: React.ReactNode;
+}
+
+export function PropertyOwnerHeader({ label }: PropertyOwnerHeaderProps) {
+  // TODO: Implement how this should look like. Sould be clear that it's clickable
   return (
-    <Paper p={'1px'}>
-      <CollapsableHeader expanded={expanded} text={label} />
-    </Paper>
+    <Paper p={'1px'}>{label}</Paper>
   );
 }
 
 export function SceneTreeNode({ node, expanded, elementProps }: RenderTreeNodePayload) {
-  let content;
-  if (isGroup(node)) {
-    content = <GroupHeader expanded={expanded} label={node.label} />;
-  } else if (isPropertyOwner(node)) {
-    content = <PropertyOwnerHeader expanded={expanded} label={node.label} />;
-  } else {
-    content = <Property uri={node.value} />;
-  }
-
-  return <div {...elementProps}>{content}</div>;
+  return <div {...elementProps}>
+    {isGroup(node) ?
+      <GroupHeader expanded={expanded} label={node.label} /> :
+      <PropertyOwnerHeader label={node.label} />
+    }
+  </div>;
 }

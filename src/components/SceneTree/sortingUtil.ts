@@ -3,7 +3,7 @@ import { TreeNodeData } from '@mantine/core';
 import { Properties } from '@/types/types';
 import { guiOrderingNumber } from '@/util/propertyTreeHelpers';
 
-import { GroupPrefixKey, isGroup, isPropertyOwner } from './treeUtil';
+import { GroupPrefixKey, isGroup } from './treeUtil';
 
 interface TreeSortingInfoEntry {
   type: 'propertyOwner' | 'group';
@@ -22,7 +22,6 @@ export function createTreeSortingInformation(
 ) {
   const result: TreeSortingInfo = {};
   treeData
-    .filter((node) => isGroup(node) || isPropertyOwner(node))
     .forEach((node) => {
       function addNode(node: TreeNodeData) {
         if (isGroup(node)) {

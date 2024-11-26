@@ -5,16 +5,8 @@ import { shouldShowPropertyOwner } from '@/util/propertytreehelper';
 
 export const GroupPrefixKey = '/groups/';
 
-export function hasChildren(node: TreeNodeData) {
-  return node.children !== undefined && node.children.length > 0;
-}
-
 export function isGroup(node: TreeNodeData) {
   return node.value.startsWith(GroupPrefixKey);
-}
-
-export function isPropertyOwner(node: TreeNodeData) {
-  return hasChildren(node) && !isGroup(node);
 }
 
 export function filterTreeData(
@@ -26,33 +18,30 @@ export function filterTreeData(
   return nodes
     .map((node) => {
       const newNode = { ...node };
-      if (newNode.children && newNode.children.length > 0) {
+      if (isGroup(newNode)) {
+        // Groups => filter children
         newNode.children = filterTreeData(
-          newNode.children,
+          newNode.children || [],
           showOnlyEnabled,
           showHiddenNodes,
           properties
         );
         if (newNode.children.length === 0) {
+          // Don't show empty groups
           return null;
         }
-
-        if (isGroup(newNode)) {
-          // Groups: Always show, if they have children
-          return newNode;
-        } else {
-          // PropertyOwners, may be filtered out
-          const shouldShow = shouldShowPropertyOwner(
-            newNode.value,
-            properties,
-            showOnlyEnabled,
-            showHiddenNodes
-          );
-          return shouldShow ? newNode : null;
-        }
+        return newNode;
       }
-      // Properties are returned as is
-      return newNode;
+      else {
+        // PropertyOwners, may be filtered out based on settings
+        const shouldShow = shouldShowPropertyOwner(
+          newNode.value,
+          properties,
+          showOnlyEnabled,
+          showHiddenNodes
+        );
+        return shouldShow ? newNode : null;
+      }
     })
     .filter((node) => node !== null) as TreeNodeData[];
 }
