@@ -152,7 +152,7 @@ export function treeDataFromGroups(groups: Groups, propertyOwners: PropertyOwner
   // Add the nodes without any group to the top level
   const nodesWithoutGroup = groups['/']?.propertyOwners || [];
   nodesWithoutGroup.forEach((uri) => {
-    treeData.push(treeDataForPropertyOwner(uri, propertyOwners))
+    treeData.push(treeDataForPropertyOwner(uri, propertyOwners));
   });
 
   return treeData;
@@ -171,10 +171,7 @@ export const groupsSlice = createSlice({
       state.sceneTreeData = treeDataFromGroups(state.groups, propertyOwners);
       return state;
     },
-    updateCustomGroupOrdering: (
-      state,
-      action: PayloadAction<CustomGroupOrdering>
-    ) => {
+    updateCustomGroupOrdering: (state, action: PayloadAction<CustomGroupOrdering>) => {
       state.customGroupOrdering = action.payload;
       return state;
     }

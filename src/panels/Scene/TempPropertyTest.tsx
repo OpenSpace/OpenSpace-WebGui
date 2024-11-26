@@ -49,7 +49,6 @@ export function TempPropertyTest() {
       <h3 style={styleUnfinished}>Matrix Property:</h3>
       Mat4: ISS Model transform
       <Property uri={'Scene.ISS.Renderable.ModelTransform'} />
-
       <h3 style={styleUnfinished}>A full property owner!</h3>
       <PropertyOwner uri={'Scene.Earth'} />
     </Container>

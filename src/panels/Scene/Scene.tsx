@@ -1,20 +1,12 @@
-import {
-  ActionIcon,
-  Checkbox,
-  Group,
-  Menu,
-  Skeleton,
-  Tabs,
-  Text,
-} from '@mantine/core';
+import { useState } from 'react';
+import { ActionIcon, Checkbox, Group, Menu, Skeleton, Tabs, Text } from '@mantine/core';
 
+import { SceneTree } from '@/components/SceneTree/SceneTree';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { FilterIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
 import { TempPropertyTest } from './TempPropertyTest';
-import { SceneTree } from '@/components/SceneTree/SceneTree';
-import { useState } from 'react';
 
 export function Scene() {
   const hasLoadedScene = useAppSelector(
@@ -60,9 +52,7 @@ export function Scene() {
                 <Checkbox
                   label={'Show only visible'}
                   checked={showOnlyEnabled}
-                  onChange={(event) =>
-                    setShowOnlyEnabled(event.currentTarget.checked)
-                  }
+                  onChange={(event) => setShowOnlyEnabled(event.currentTarget.checked)}
                 />
                 <Tooltip text={'Visible = Enabled and not faded out'} />
               </Group>
@@ -71,9 +61,7 @@ export function Scene() {
                 <Checkbox
                   label={'Show objects with GUI hidden flag'}
                   checked={showHiddenNodes}
-                  onChange={(event) =>
-                    setShowHiddenNodes(event.currentTarget.checked)
-                  }
+                  onChange={(event) => setShowHiddenNodes(event.currentTarget.checked)}
                 />
                 <Tooltip
                   text={
@@ -85,10 +73,7 @@ export function Scene() {
             </Menu.Dropdown>
           </Menu>
         </Group>
-        <SceneTree
-          showOnlyEnabled={showOnlyEnabled}
-          showHiddenNodes={showHiddenNodes}
-        />
+        <SceneTree showOnlyEnabled={showOnlyEnabled} showHiddenNodes={showHiddenNodes} />
       </Tabs.Panel>
     </Tabs>
   );

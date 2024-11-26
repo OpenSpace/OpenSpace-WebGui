@@ -13,7 +13,6 @@ import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';
 import { TriggerProperty } from './Types/TriggerProperty';
 import { VectorProperty } from './Types/VectorProperty/VectorProperty';
-import React from 'react';
 
 // (2024-10-21, emmbr) I don't know how to efficiently get rid of "any" in this case
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

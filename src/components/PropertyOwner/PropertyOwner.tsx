@@ -1,7 +1,9 @@
 import { Tree } from '@mantine/core';
-import { SceneTreeNode } from '../SceneTree/SceneTreeNode';
-import { useAppSelector } from '@/redux/hooks';
+
 import { treeDataForPropertyOwner } from '@/redux/groups/groupsSlice';
+import { useAppSelector } from '@/redux/hooks';
+
+import { SceneTreeNode } from '../SceneTree/SceneTreeNode';
 
 interface Props {
   uri: string;
@@ -14,10 +16,6 @@ export function PropertyOwner({ uri }: Props) {
   const treeData = [treeDataForPropertyOwner(uri, propertyOwners)];
 
   return (
-    <Tree
-      data={treeData}
-      renderNode={(payload) => <SceneTreeNode {...payload} />}
-    />
+    <Tree data={treeData} renderNode={(payload) => <SceneTreeNode {...payload} />} />
   );
 }
-

@@ -4,7 +4,11 @@ import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { initializeLuaApi } from '@/redux/luaapi/luaApiSlice';
 import { propertyTreeWasChanged } from '@/redux/propertytree/propertyTreeMiddleware';
 
-import { CustomGroupOrdering, refreshGroups, updateCustomGroupOrdering } from './groupsSlice';
+import {
+  CustomGroupOrdering,
+  refreshGroups,
+  updateCustomGroupOrdering
+} from './groupsSlice';
 
 export const getCustomGroupsOrdering = createAction<void>('getCustomGroupsOrdering');
 

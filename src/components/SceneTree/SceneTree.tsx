@@ -1,10 +1,11 @@
 import { Tree } from '@mantine/core';
 
 import { useAppSelector } from '@/redux/hooks';
-import { SceneTreeNode } from './SceneTreeNode';
-import { filterTreeData } from './treeUtil';
-import { sortTreeData } from './sortingUtil';
+
 import { FeaturedSceneTree } from './FeaturedSceneTree';
+import { SceneTreeNode } from './SceneTreeNode';
+import { sortTreeData } from './sortingUtil';
+import { filterTreeData } from './treeUtil';
 
 interface Props {
   showOnlyEnabled?: boolean;
@@ -15,10 +16,7 @@ interface Props {
  * This component displays a tree of the scene graph, either starting from a certain
  * property owner, or the entire tree.
  */
-export function SceneTree({
-  showOnlyEnabled = false,
-  showHiddenNodes = false
-}: Props) {
+export function SceneTree({ showOnlyEnabled = false, showHiddenNodes = false }: Props) {
   const sceneTreeData = useAppSelector((state) => state.groups.sceneTreeData);
   // TODO: Remove dependency on entire properties object. This means that the entire menu
   // is rerendered as soon as a property changes...
@@ -42,10 +40,7 @@ export function SceneTree({
         showHiddenNodes={showHiddenNodes}
         showOnlyEnabled={showOnlyEnabled}
       />
-      <Tree
-        data={treeData}
-        renderNode={(payload) => <SceneTreeNode {...payload} />}
-      />
+      <Tree data={treeData} renderNode={(payload) => <SceneTreeNode {...payload} />} />
     </>
   );
 }

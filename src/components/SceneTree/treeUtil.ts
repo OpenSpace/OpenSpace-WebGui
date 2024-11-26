@@ -1,20 +1,21 @@
-import { Properties, PropertyOwners } from "@/types/types";
-import { shouldShowPropertyOwner } from "@/util/propertytreehelper";
-import { TreeNodeData } from "@mantine/core";
+import { TreeNodeData } from '@mantine/core';
+
+import { Properties } from '@/types/types';
+import { shouldShowPropertyOwner } from '@/util/propertytreehelper';
 
 export const GroupPrefixKey = '/groups/';
 
 export function hasChildren(node: TreeNodeData) {
   return node.children !== undefined && node.children.length > 0;
-};
+}
 
 export function isGroup(node: TreeNodeData) {
   return node.value.startsWith(GroupPrefixKey);
-};
+}
 
 export function isPropertyOwner(node: TreeNodeData) {
   return hasChildren(node) && !isGroup(node);
-};
+}
 
 export function filterTreeData(
   nodes: TreeNodeData[],
@@ -24,7 +25,7 @@ export function filterTreeData(
 ): TreeNodeData[] {
   return nodes
     .map((node) => {
-      let newNode = { ...node };
+      const newNode = { ...node };
       if (newNode.children && newNode.children.length > 0) {
         newNode.children = filterTreeData(
           newNode.children,
@@ -39,8 +40,7 @@ export function filterTreeData(
         if (isGroup(newNode)) {
           // Groups: Always show, if they have children
           return newNode;
-        }
-        else {
+        } else {
           // PropertyOwners, may be filtered out
           const shouldShow = shouldShowPropertyOwner(
             newNode.value,

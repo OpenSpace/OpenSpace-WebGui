@@ -1,12 +1,13 @@
 import { Divider, Tree, TreeNodeData } from '@mantine/core';
 
-import { useAppSelector } from '@/redux/hooks';
-import { hasInterestingTag } from '@/util/propertytreehelper';
-import { SceneTreeNode } from './SceneTreeNode';
-import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
 import { useGetStringPropertyValue } from '@/api/hooks';
-import { filterTreeData, GroupPrefixKey } from './treeUtil';
 import { treeDataForPropertyOwner } from '@/redux/groups/groupsSlice';
+import { useAppSelector } from '@/redux/hooks';
+import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
+import { hasInterestingTag } from '@/util/propertytreehelper';
+
+import { SceneTreeNode } from './SceneTreeNode';
+import { filterTreeData, GroupPrefixKey } from './treeUtil';
 
 interface Props {
   showOnlyEnabled?: boolean;
@@ -30,13 +31,10 @@ export function FeaturedSceneTree({
   const anchor = useGetStringPropertyValue(NavigationAnchorKey);
   const aim = useGetStringPropertyValue(NavigationAimKey);
 
-  let featuredTreeData: TreeNodeData[] = [];
+  const featuredTreeData: TreeNodeData[] = [];
 
   if (anchor) {
-    const anchorData = treeDataForPropertyOwner(
-      ScenePrefixKey + anchor,
-      propertyOwners
-    );
+    const anchorData = treeDataForPropertyOwner(ScenePrefixKey + anchor, propertyOwners);
     anchorData.label = 'Current Focus: ' + anchorData.label;
     featuredTreeData.push(anchorData);
   }
@@ -47,7 +45,7 @@ export function FeaturedSceneTree({
     featuredTreeData.push(aimData);
   }
 
-  let interestingNodes: TreeNodeData = {
+  const interestingNodes: TreeNodeData = {
     label: 'Quick Access',
     value: GroupPrefixKey + 'interesting',
     children: []
@@ -56,9 +54,7 @@ export function FeaturedSceneTree({
   const propertyOwnersScene = propertyOwners.Scene?.subowners ?? [];
   propertyOwnersScene.forEach((uri) => {
     if (hasInterestingTag(uri, propertyOwners)) {
-      interestingNodes.children?.push(
-        treeDataForPropertyOwner(uri, propertyOwners)
-      );
+      interestingNodes.children?.push(treeDataForPropertyOwner(uri, propertyOwners));
     }
   });
 
@@ -84,5 +80,5 @@ export function FeaturedSceneTree({
       />
       <Divider my={'xs'} />
     </>
-  )
+  );
 }
