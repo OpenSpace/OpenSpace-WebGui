@@ -34,7 +34,6 @@ function createDefaultLayout(): LayoutData {
         {
           id: 'center',
           tabs: [],
-          //   size: 1000,
           panelLock: {},
           group: 'headless'
         }
@@ -59,11 +58,10 @@ export function WindowLayout() {
     floatable: false,
     maximizable: false,
     tabLocked: true,
-    widthFlex: 10
+    widthFlex: 2
   };
   const regularWindow: TabGroup = {
-    maximizable: false,
-    widthFlex: 1
+    maximizable: false
   };
   const groups = {
     headless,
@@ -135,8 +133,6 @@ export function WindowLayout() {
         else {
           tab.group = 'regularWindow';
           const panel: PanelData = {
-            widthFlex: 6,
-            minWidth: 400,
             tabs: [tab]
           };
 
