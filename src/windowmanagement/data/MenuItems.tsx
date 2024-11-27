@@ -6,6 +6,7 @@ import { GeoLocationPanel } from '@/panels/GeoLocationPanel/GeoLocationPanel';
 import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { Scene } from '@/panels/Scene/Scene';
+import { ScreenSpaceRenderablePanel } from '@/panels/ScreenSpaceRenderablePanel/ScreenSpaceRenderablePanel';
 import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
 import { TimePanel } from '@/panels/TimePanel/TimePanel';
@@ -64,6 +65,13 @@ export const menuItemsDB: MenuItem[] = [
     componentID: 'geoLocation',
     content: <GeoLocationPanel />,
     preferredPosition: 'left',
+    defaultVisible: true
+  },
+  {
+    title: 'Screenspace Renderables',
+    componentID: 'screenSpaceRenderables',
+    content: <ScreenSpaceRenderablePanel />,
+    preferredPosition: 'right',
     defaultVisible: true
   },
   {
