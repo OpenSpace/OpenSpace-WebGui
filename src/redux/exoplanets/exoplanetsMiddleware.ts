@@ -1,21 +1,25 @@
-import { createAction } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { AppStartListening } from '@/redux/listenerMiddleware';
 
 import { initializeExoplanets } from './exoplanetsSlice';
+import { RootState } from '../store';
 
-export const loadExoplanetsData = createAction<void>('loadExoplanetsData');
+export const loadExoplanetsData = createAsyncThunk(
+  'exoplanets/loadExoplanetsData',
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState;
+    return await state.luaApi?.exoplanets.listOfExoplanets();
+  }
+);
 
 export const addExoplanetListener = (startListening: AppStartListening) => {
   startListening({
-    actionCreator: loadExoplanetsData,
-    effect: async (_, listenerApi) => {
-      const state = listenerApi.getState();
-      const planetList = await state.luaApi?.exoplanets.listOfExoplanets();
-      if (!planetList) {
-        return;
+    actionCreator: loadExoplanetsData.fulfilled,
+    effect: async (action, listenerApi) => {
+      if (action.payload) {
+        listenerApi.dispatch(initializeExoplanets(Object.values(action.payload)));
       }
-      listenerApi.dispatch(initializeExoplanets(Object.values(planetList)));
     }
   });
 };

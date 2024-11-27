@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { AnyAction, configureStore, ThunkDispatch } from '@reduxjs/toolkit';
 
 import { actionsReducer } from './actions/actionsSlice';
 import { connectionReducer } from './connection/connectionSlice';
@@ -29,9 +29,10 @@ export const store = configureStore({
         ignoredActions: ['luaApi/initializeLuaApi'],
         ignoredPaths: ['luaApi']
       }
-    }).prepend([listenerMiddleware.middleware])
+    }).concat([listenerMiddleware.middleware])
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
+export type AppThunkDispatch = ThunkDispatch<RootState, any, AnyAction>;
 export type AppDispatch = typeof store.dispatch;

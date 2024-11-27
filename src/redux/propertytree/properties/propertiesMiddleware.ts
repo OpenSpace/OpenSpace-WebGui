@@ -161,6 +161,7 @@ export const addPropertiesListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: addProperties,
     effect: (_, listenerApi) => {
+      console.log('toot');
       promoteSubscriptions(listenerApi.dispatch, listenerApi.getState());
     }
   });

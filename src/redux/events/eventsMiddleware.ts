@@ -1,4 +1,4 @@
-import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
@@ -8,36 +8,34 @@ import {
   addUriToPropertyTree,
   removeUriFromPropertyTree
 } from '@/redux/propertytree/propertyTreeMiddleware';
-import { EventData } from '@/types/event-types';
 
 let eventTopic: Topic;
 let nSubscribers = 0;
 
-function handleData(dispatch: Dispatch<UnknownAction>, data: EventData) {
-  switch (data.Event) {
-    case 'PropertyTreeUpdated':
-      dispatch(addUriToPropertyTree({ uri: data.Uri }));
-      break;
-    case 'PropertyTreePruned':
-      dispatch(removeUriFromPropertyTree({ uri: data.Uri }));
-      break;
-    default:
-      return;
+export const setupSubscription = createAsyncThunk(
+  'propertyTree/addUriToPropertyTree',
+  async (_, thunkAPI) => {
+    eventTopic = api.startTopic('event', {
+      event: '*',
+      status: 'start_subscription'
+    });
+
+    (async () => {
+      for await (const data of eventTopic.iterator()) {
+        switch (data.Event) {
+          case 'PropertyTreeUpdated':
+            thunkAPI.dispatch(addUriToPropertyTree(data.Uri));
+            break;
+          case 'PropertyTreePruned':
+            thunkAPI.dispatch(removeUriFromPropertyTree({ uri: data.Uri }));
+            break;
+          default:
+            break;
+        }
+      }
+    })();
   }
-}
-
-function setupSubscription(dispatch: Dispatch<UnknownAction>) {
-  eventTopic = api.startTopic('event', {
-    event: '*',
-    status: 'start_subscription'
-  });
-
-  (async () => {
-    for await (const data of eventTopic.iterator()) {
-      handleData(dispatch, data as EventData);
-    }
-  })();
-}
+);
 
 function tearDownSubscription() {
   if (!eventTopic) {
@@ -55,7 +53,7 @@ export const addEventsListener = (startListening: AppStartListening) => {
     actionCreator: onOpenConnection,
     effect: (_, listenerApi) => {
       if (nSubscribers === 0) {
-        setupSubscription(listenerApi.dispatch);
+        listenerApi.dispatch(setupSubscription());
         nSubscribers++;
       }
     }

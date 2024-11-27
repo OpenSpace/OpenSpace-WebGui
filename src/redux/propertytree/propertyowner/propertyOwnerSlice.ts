@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { PropertyOwner, PropertyOwners } from '@/types/types';
+import { addUriToPropertyTree } from '../propertyTreeMiddleware';
 
 // actions:
 // addPropertyOwners
@@ -86,6 +87,17 @@ export const propertyOwnersSlice = createSlice({
       });
       return state;
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(addUriToPropertyTree.fulfilled, (state, action) => {
+      if (action.payload?.propertyOwners) {
+        state.propertyOwners = {
+          ...state.propertyOwners,
+          ...action.payload.propertyOwners
+        };
+      }
+      return state;
+    });
   }
 });
 
