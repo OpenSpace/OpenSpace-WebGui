@@ -1,44 +1,32 @@
-import { Button, RenderTreeNodePayload, TreeNodeData } from '@mantine/core';
+import { RenderTreeNodePayload } from '@mantine/core';
 import { BoxData, PanelData, TabData } from 'rc-dock';
 
 import { useWindowManagerProvider } from '@/windowmanagement/WindowLayout/WindowLayoutProvider';
 
 import { CollapsableHeader } from '../../../components/CollapsableHeader/CollapsableHeader';
+import { SceneGraphNode } from '../SceneGraphNode/SceneGraphNode';
+import { SceneGraphNodeHeader } from '../SceneGraphNode/SceneGraphNodeHeader';
 
 import { isGroup } from './treeUtil';
 
-interface GroupHeaderProps {
-  expanded: boolean;
-  node: TreeNodeData;
-}
-
-export function GroupHeader({ expanded, node }: GroupHeaderProps) {
-  return <CollapsableHeader expanded={expanded} text={node.label} />;
-}
-
-interface PropertyOwnerHeaderProps {
-  node: TreeNodeData;
-}
-
-export function SceneGraphNodeHeader({ node }: PropertyOwnerHeaderProps) {
+export function SceneTreeNode({ node, expanded, elementProps }: RenderTreeNodePayload) {
   // TODO: Implement how this should look like. Sould be clear that it's clickable
   const { ref, addWindow } = useWindowManagerProvider();
 
   const defaultWindowId = 'defaultSceneGraphNodeWindow';
 
-  function openSceneGraphNode() {
+  function openSceneGraphNodeWindow(uri: string) {
     if (!ref || !('current' in ref) || ref.current === null) {
       return;
     }
 
-    const content = <div>TODO: Implement Scene Graph Node. {node.value}</div>;
-    const title = 'SGN: ' + node.label;
+    const content = <SceneGraphNode uri={uri} />;
 
     const existingWindow = ref.current.find(defaultWindowId);
     if (!existingWindow) {
       addWindow(content, {
         id: defaultWindowId,
-        title: title,
+        title: 'Scene Graph Node',
         position: 'float'
       });
 
@@ -58,26 +46,22 @@ export function SceneGraphNodeHeader({ node }: PropertyOwnerHeaderProps) {
     } else {
       const prevData = { ...existingWindow } as TabData;
       prevData.content = content;
-      prevData.title = title;
       ref.current.updateTab(defaultWindowId, prevData, true);
-      ref.current.dockMove(existingWindow as TabData | PanelData, null, 'front');
+
+      // TODO: The content is not correctly updated for float windows when this is used
+      // ref.current.dockMove(existingWindow as TabData | PanelData, null, 'front');
     }
   }
 
   return (
-    <Button variant={'subtle'} onClick={openSceneGraphNode}>
-      {node.label}
-    </Button>
-  );
-}
-
-export function SceneTreeNode({ node, expanded, elementProps }: RenderTreeNodePayload) {
-  return (
     <div {...elementProps}>
       {isGroup(node) ? (
-        <GroupHeader expanded={expanded} node={node} />
+        <CollapsableHeader expanded={expanded} text={node.label} />
       ) : (
-        <SceneGraphNodeHeader node={node} />
+        <SceneGraphNodeHeader
+          uri={node.value}
+          onClick={() => openSceneGraphNodeWindow(node.value)}
+        />
       )}
     </div>
   );

@@ -1,21 +1,65 @@
-import { Tree } from '@mantine/core';
+import { Fieldset } from '@mantine/core';
 
-import { treeDataForPropertyOwner } from '@/redux/groups/groupsSlice';
 import { useAppSelector } from '@/redux/hooks';
 
-import { SceneTreeNode } from '../../panels/Scene/SceneTree/SceneTreeNode';
+import { CollapsableContent } from '../CollapsableContent/CollapsableContent';
+import { Property } from '../Property/Property';
 
 interface Props {
   uri: string;
+  hideSubOwners?: boolean;
+  withHeader?: boolean;
+  expandedOnDefault?: boolean;
 }
 
-export function PropertyOwner({ uri }: Props) {
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+export function PropertyOwner({
+  uri,
+  hideSubOwners = false,
+  withHeader = true,
+  expandedOnDefault = false
+}: Props) {
+  const propertyOwner = useAppSelector(
+    (state) => state.propertyOwners.propertyOwners[uri]
+  );
 
-  // TODO: Generate the tree data in Redux?
-  const treeData = [treeDataForPropertyOwner(uri, propertyOwners)];
+  if (!propertyOwner) {
+    return null;
+  }
+
+  // TODO: This should also account for properties filtered on visiblity
+  const hasContent =
+    propertyOwner.subowners.length > 0 || propertyOwner.properties.length > 0;
+
+  if (!hasContent) {
+    return null;
+  }
+
+  const content = (
+    <>
+      {!hideSubOwners &&
+        propertyOwner.subowners.map((subowner) => (
+          <PropertyOwner key={subowner} uri={subowner} />
+        ))}
+      {propertyOwner.properties.length > 0 && (
+        <Fieldset p={'xs'}>
+          {propertyOwner.properties.map((property) => (
+            <Property key={property} uri={property} />
+          ))}
+        </Fieldset>
+      )}
+    </>
+  );
+
+  if (!withHeader) {
+    return content;
+  }
 
   return (
-    <Tree data={treeData} renderNode={(payload) => <SceneTreeNode {...payload} />} />
+    <CollapsableContent
+      title={propertyOwner.name ?? propertyOwner.identifier ?? uri}
+      defaultOpen={expandedOnDefault}
+    >
+      {content}
+    </CollapsableContent>
   );
 }
