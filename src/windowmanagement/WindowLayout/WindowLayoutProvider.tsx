@@ -11,6 +11,18 @@ export interface ProviderProps {
 
 export const WindowManagerContext = createContext<ProviderProps | null>(null);
 
+// TODO: Where should this be placed?
+export function createTabData(id: string, title: string, content: JSX.Element): TabData {
+  return {
+    id,
+    title,
+    content: <ScrollArea h={'100%'}>{content}</ScrollArea>,
+    closable: true,
+    cached: true,
+    group: 'regularWindow'
+  };
+}
+
 export function WindowManagerProvider({ children }: { children: React.ReactNode }) {
   const rcDocRef = useRef<DockLayout>(null);
 
@@ -35,14 +47,7 @@ export function WindowManagerProvider({ children }: { children: React.ReactNode 
     const baseID = rcDocRef.current.state.layout.dockbox.id!;
     const base = rcDocRef.current.find(baseID)! as BoxData;
 
-    const tab: TabData = {
-      id: options.id,
-      title: options.title,
-      content: <ScrollArea h={'100%'}>{component}</ScrollArea>,
-      closable: true,
-      cached: true,
-      group: 'regularWindow'
-    };
+    const tab: TabData = createTabData(options.id, options.title, component);
 
     switch (position) {
       case 'left':

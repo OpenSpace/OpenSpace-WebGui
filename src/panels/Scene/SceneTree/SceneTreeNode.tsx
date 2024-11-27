@@ -1,7 +1,10 @@
 import { RenderTreeNodePayload } from '@mantine/core';
 import { BoxData, PanelData, TabData } from 'rc-dock';
 
-import { useWindowManagerProvider } from '@/windowmanagement/WindowLayout/WindowLayoutProvider';
+import {
+  createTabData,
+  useWindowManagerProvider
+} from '@/windowmanagement/WindowLayout/WindowLayoutProvider';
 
 import { CollapsableHeader } from '../../../components/CollapsableHeader/CollapsableHeader';
 import { SceneGraphNode } from '../SceneGraphNode/SceneGraphNode';
@@ -44,9 +47,8 @@ export function SceneTreeNode({ node, expanded, elementProps }: RenderTreeNodePa
         ref.current.dockMove(newWindow, scenePanelParentBox, 'bottom');
       }
     } else {
-      const prevData = { ...existingWindow } as TabData;
-      prevData.content = content;
-      ref.current.updateTab(defaultWindowId, prevData, true);
+      const newTabData = createTabData(defaultWindowId, 'Scene Graph Node', content);
+      ref.current.updateTab(defaultWindowId, newTabData, true);
 
       // TODO: The content is not correctly updated for float windows when this is used
       // ref.current.dockMove(existingWindow as TabData | PanelData, null, 'front');
