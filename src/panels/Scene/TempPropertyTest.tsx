@@ -3,8 +3,6 @@ import { Container } from '@mantine/core';
 import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 
-import { SceneGraphNode } from './SceneGraphNode/SceneGraphNode';
-
 export function TempPropertyTest() {
   const styleUnfinished = { color: 'red' };
 
@@ -52,7 +50,7 @@ export function TempPropertyTest() {
       Mat4: ISS Model transform
       <Property uri={'Scene.ISS.Renderable.ModelTransform'} />
       <h3 style={styleUnfinished}>A full property owner!</h3>
-      <SceneGraphNode uri={'Scene.Earth'} />
+      <PropertyOwner uri={'Scene.Earth'} />
     </Container>
   );
 }
