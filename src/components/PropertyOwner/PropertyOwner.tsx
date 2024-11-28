@@ -58,6 +58,7 @@ export function PropertyOwner({
     <CollapsableContent
       title={propertyOwner.name ?? propertyOwner.identifier ?? uri}
       defaultOpen={expandedOnDefault}
+      noTransition
     >
       {content}
     </CollapsableContent>
