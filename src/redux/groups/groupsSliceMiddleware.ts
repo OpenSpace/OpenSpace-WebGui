@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import type { AppStartListening } from '@/redux/listenerMiddleware';
-import { initializeLuaApi } from '@/redux/luaapi/luaApiSlice';
 import { addUriToPropertyTree } from '@/redux/propertytree/propertyTreeMiddleware';
 
 import { refreshGroups, updateCustomGroupOrdering } from './groupsSlice';
 import { RootState } from '../store';
+import { initializeLuaApi } from '../luaapi/luaApiSlice';
 
 export const getCustomGroupsOrdering = createAsyncThunk(
   'groups/getCustomGroupOrdering',

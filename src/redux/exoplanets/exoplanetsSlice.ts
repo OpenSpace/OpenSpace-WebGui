@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { loadExoplanetsData } from './exoplanetsMiddleware';
 
 export interface ExoplanetState {
   isInitialized: boolean;
@@ -20,6 +21,15 @@ export const exoplanetsSlice = createSlice({
         data: action.payload
       };
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(loadExoplanetsData.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.isInitialized = true;
+        state.data = Object.values(action.payload);
+      }
+      return state;
+    });
   }
 });
 

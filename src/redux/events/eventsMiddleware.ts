@@ -13,27 +13,28 @@ let eventTopic: Topic;
 let nSubscribers = 0;
 
 export const setupSubscription = createAsyncThunk(
-  'propertyTree/addUriToPropertyTree',
+  'events/setupSubscription',
   async (_, thunkAPI) => {
-    eventTopic = api.startTopic('event', {
-      event: '*',
-      status: 'start_subscription'
-    });
-
-    (async () => {
-      for await (const data of eventTopic.iterator()) {
-        switch (data.Event) {
-          case 'PropertyTreeUpdated':
-            thunkAPI.dispatch(addUriToPropertyTree(data.Uri));
-            break;
-          case 'PropertyTreePruned':
-            thunkAPI.dispatch(removeUriFromPropertyTree({ uri: data.Uri }));
-            break;
-          default:
-            break;
-        }
+    try {
+      eventTopic = api.startTopic('event', {
+        event: '*',
+        status: 'start_subscription'
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    for await (const data of eventTopic.iterator()) {
+      switch (data.Event) {
+        case 'PropertyTreeUpdated':
+          thunkAPI.dispatch(addUriToPropertyTree(data.Uri));
+          break;
+        case 'PropertyTreePruned':
+          thunkAPI.dispatch(removeUriFromPropertyTree({ uri: data.Uri }));
+          break;
+        default:
+          break;
       }
-    })();
+    }
   }
 );
 
