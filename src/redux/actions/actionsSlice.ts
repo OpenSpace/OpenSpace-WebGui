@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Action, ActionOrKeybind, Keybind } from '@/types/types';
 import { getAllShortcuts, getShortcut } from './actionsMiddleware';
-import { TbRulerMeasure } from 'react-icons/tb';
 
 export interface ActionsState {
   isInitialized: boolean;

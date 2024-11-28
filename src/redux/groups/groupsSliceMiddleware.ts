@@ -5,7 +5,7 @@ import { addUriToPropertyTree } from '@/redux/propertytree/propertyTreeMiddlewar
 
 import { updateCustomGroupOrdering } from './groupsSlice';
 import { RootState } from '../store';
-import { initializeLuaApi } from '../luaapi/luaApiSlice';
+import { getLuaApi } from '../connection/connectionMiddleware';
 import { Groups, Properties, PropertyOwners } from '@/types/types';
 
 const emptyGroup = () => ({
@@ -80,7 +80,7 @@ export const refreshGroups = createAsyncThunk(
 
 export const addGroupsListener = (startListening: AppStartListening) => {
   startListening({
-    actionCreator: initializeLuaApi,
+    actionCreator: getLuaApi.fulfilled,
     effect: (_, listenerApi) => {
       listenerApi.dispatch(getCustomGroupsOrdering());
     }
