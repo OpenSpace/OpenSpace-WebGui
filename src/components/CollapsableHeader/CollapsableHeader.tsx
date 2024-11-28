@@ -1,4 +1,4 @@
-import { ActionIcon, Group } from '@mantine/core';
+import { ActionIcon, Group, UnstyledButton } from '@mantine/core';
 
 import { ChevronDownIcon, ChevronRightIcon } from '@/icons/icons';
 
@@ -9,17 +9,21 @@ interface Props {
 }
 
 export function CollapsableHeader({ expanded, text, toggle }: Props) {
-  const chevronProps = { size: 18, style: { flexShrink: 0 } };
+  const iconProps = { size: 18, style: { flexShrink: 0 } };
   return (
-    <Group gap={5} wrap={'nowrap'} onClick={toggle}>
-      <ActionIcon variant={'transparent'}>
-        {expanded ? (
-          <ChevronDownIcon {...chevronProps} />
-        ) : (
-          <ChevronRightIcon {...chevronProps} />
-        )}
-      </ActionIcon>
-      {text}
-    </Group>
+    <div>
+      <UnstyledButton onClick={toggle}>
+        <Group gap={5} wrap={'nowrap'}>
+          <ActionIcon variant={'transparent'}>
+            {expanded ? (
+              <ChevronDownIcon {...iconProps} />
+            ) : (
+              <ChevronRightIcon {...iconProps} />
+            )}
+          </ActionIcon>
+          {text}
+        </Group>
+      </UnstyledButton>
+    </div>
   );
 }
