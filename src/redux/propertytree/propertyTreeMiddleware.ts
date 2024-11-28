@@ -17,7 +17,7 @@ import {
   clearPropertyOwners,
   removePropertyOwners
 } from './propertyowner/propertyOwnerSlice';
-import { refreshGroups } from '../groups/groupsSlice';
+import { refreshGroups } from '../groups/groupsSliceMiddleware';
 
 export const reloadPropertyTree = createAction<void>('reloadPropertyTree');
 export const removeUriFromPropertyTree = createAction<{ uri: string }>(
@@ -156,13 +156,7 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
 
       listenerApi.dispatch(removePropertyOwners({ uris: [uri] }));
       listenerApi.dispatch(removeProperties({ uris: [uri] }));
-      const { properties, propertyOwners } = listenerApi.getState();
-      listenerApi.dispatch(
-        refreshGroups({
-          propertyOwners: propertyOwners.propertyOwners,
-          properties: properties.properties
-        })
-      );
+      listenerApi.dispatch(refreshGroups());
     }
   });
   startListening({
