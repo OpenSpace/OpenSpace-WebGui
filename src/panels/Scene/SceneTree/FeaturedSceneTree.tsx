@@ -79,6 +79,7 @@ export function FeaturedSceneTree({
         renderNode={(payload) => <SceneTreeNode {...payload} />}
         selectOnClick
         clearSelectionOnOutsideClick
+        allowRangeSelection={false}
       />
       <Divider my={'xs'} />
     </>

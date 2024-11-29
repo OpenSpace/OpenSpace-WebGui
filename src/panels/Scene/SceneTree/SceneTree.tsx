@@ -45,6 +45,7 @@ export function SceneTree({ showOnlyVisible = false, showHiddenNodes = false }: 
         renderNode={(payload) => <SceneTreeNode {...payload} />}
         selectOnClick
         clearSelectionOnOutsideClick
+        allowRangeSelection={false}
       />
     </>
   );
