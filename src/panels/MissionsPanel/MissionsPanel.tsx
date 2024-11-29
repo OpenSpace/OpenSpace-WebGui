@@ -1,13 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
-import { Button, Container, Group, Image, Text } from '@mantine/core';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Button, Container, Flex, Group, Image, Text } from '@mantine/core';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
-import { Milestone, Phase } from '@/types/mission-types';
 import { DisplayType } from '@/types/enums';
-import { TimeButtons } from './TimeButtons';
+import { Milestone, Phase } from '@/types/mission-types';
+import { Action } from '@/types/types';
 
-type DisplayedPhase =
+import { ActionsButton } from '../ActionsPanel/ActionsButton';
+
+import { MissionCaptureButtons } from './MissionCaptureButtons';
+import { MissionTimeButtons } from './MissionTimeButtons';
+import { makeUTCString } from './util';
+
+export type DisplayedPhase =
   | { type: DisplayType.Phase; data: Phase }
   | { type: DisplayType.Milestone; data: Milestone }
   | { type: undefined; data: undefined };
@@ -17,6 +23,7 @@ export function MissionsPanel() {
   const missions = useAppSelector((state) => state.missions.data.missions);
   const [selectedMisssion] = missions;
 
+  const allActions = useAppSelector((state) => state.actions.actions);
   // TODO check what happens if we dont have any missions
   const overview = useAppSelector((state) => state.missions.data.missions[0]);
   const [displayedPhase, setDisplayedPhase] = useState<DisplayedPhase>({
@@ -24,6 +31,7 @@ export function MissionsPanel() {
     data: overview
   });
   const [displayCurrentPhase, setDisplayCurrentPhase] = useState(false);
+  const [currentActions, setCurrentActions] = useState<Action[]>([]);
   const now = useAppSelector((state) => state.time.timeCapped);
   const allPhasesNested = useRef<Phase[][]>([]);
 
@@ -38,51 +46,7 @@ export function MissionsPanel() {
     };
   }, [dispatch]);
 
-  // When mission is changed update the phases
-  useEffect(() => {
-    const phases = findAllPhases();
-    allPhasesNested.current = phases;
-  }, [selectedMisssion, findAllPhases]);
-
-  // Keep current mission phase up-to-date with time, to get automatic switching as we
-  // move in time
-  useEffect(() => {
-    if (displayCurrentPhase) {
-      setPhaseToCurrent();
-    }
-  }, [now, displayCurrentPhase]);
-
-  function getTitle() {
-    // Hide title if the overview is currently shown
-    const isShowingOverview = displayedPhase.data?.name === overview.name;
-    const hasType = displayedPhase.type;
-    const hideTile = isShowingOverview || !hasType;
-    return hideTile ? '' : `${displayedPhase.type}: ${displayedPhase.data?.name}`;
-  }
-
-  function getTimeString() {
-    switch (displayedPhase.type) {
-      case DisplayType.Phase:
-        const start = new Date(
-          makeUTCString(displayedPhase.data.timerange.start)
-        ).toDateString();
-        const end = new Date(
-          makeUTCString(displayedPhase.data.timerange.end)
-        ).toDateString();
-        return `${start} - ${end}`;
-      case DisplayType.Milestone:
-        return new Date(makeUTCString(displayedPhase.data.date)).toDateString();
-      default:
-        return '';
-    }
-  }
-
-  function setPhaseManually(phase: DisplayedPhase) {
-    setDisplayedPhase(phase);
-    setDisplayCurrentPhase(false);
-  }
-
-  function findAllPhases() {
+  const findAllPhases = useCallback(() => {
     const phasesByDepth: Phase[][] = [];
 
     function collectPhases(phases: Phase[], depth: number = 0) {
@@ -105,11 +69,16 @@ export function MissionsPanel() {
     collectPhases(selectedMisssion.phases);
 
     return phasesByDepth;
-  }
+  }, [selectedMisssion]);
 
-  function setPhaseToCurrent() {
+  // When mission is changed update the phases
+  useEffect(() => {
+    const phases = findAllPhases();
+    allPhasesNested.current = phases;
+  }, [selectedMisssion, findAllPhases]);
+
+  const setPhaseToCurrent = useCallback(() => {
     if (now === undefined) {
-      console.error('now is not available');
       return;
     }
 
@@ -119,6 +88,7 @@ export function MissionsPanel() {
       const isAfterStart = now >= Date.parse(makeUTCString(phase.timerange.start));
       return isAfterStart && isBeforeEnd;
     });
+
     const found = filteredPhases.pop();
     if (!found) {
       setDisplayedPhase({ type: undefined, data: undefined });
@@ -129,10 +99,72 @@ export function MissionsPanel() {
       }
       setDisplayedPhase({ type: DisplayType.Phase, data: found });
     }
+  }, [now, displayedPhase]);
+
+  // Keep current mission phase up-to-date with time, to get automatic switching as we
+  // move in time
+  useEffect(() => {
+    if (displayCurrentPhase) {
+      setPhaseToCurrent();
+    }
+  }, [now, displayCurrentPhase, setPhaseToCurrent]);
+
+  // Whenever a phase changes, we want to get the actions that are valid for that phase
+  useEffect(() => {
+    function findCurrentActions(phase: Phase | Milestone, allActions: Action[]) {
+      return phase
+        .actions!.map((uri) => allActions.find((action) => action.identifier === uri))
+        .filter((v) => v !== undefined);
+    }
+
+    // We want to add any actions related to the whole mission
+    const phasesToCheck: (Phase | Milestone)[] = [overview];
+
+    // Add any extra actions related to the currently shown phase or milestone
+    if (
+      displayedPhase.data &&
+      displayedPhase.data.actions &&
+      displayedPhase.data !== overview
+    ) {
+      phasesToCheck.push(displayedPhase.data);
+    }
+
+    const result = phasesToCheck.flatMap((phase) =>
+      findCurrentActions(phase, allActions)
+    );
+
+    setCurrentActions(result);
+  }, [allActions, displayedPhase, overview]);
+
+  function getTitle() {
+    // Hide title if the overview is currently shown
+    const isShowingOverview = displayedPhase.data?.name === overview.name;
+    const hasType = displayedPhase.type;
+    const hideTile = isShowingOverview || !hasType;
+    return hideTile ? '' : `${displayedPhase.type}: ${displayedPhase.data?.name}`;
   }
 
-  function makeUTCString(time: string) {
-    return time.includes('Z') ? time : `${time}Z`;
+  function getTimeString() {
+    switch (displayedPhase.type) {
+      case DisplayType.Phase: {
+        const start = new Date(
+          makeUTCString(displayedPhase.data.timerange.start)
+        ).toDateString();
+        const end = new Date(
+          makeUTCString(displayedPhase.data.timerange.end)
+        ).toDateString();
+        return `${start} - ${end}`;
+      }
+      case DisplayType.Milestone:
+        return new Date(makeUTCString(displayedPhase.data.date)).toDateString();
+      default:
+        return '';
+    }
+  }
+
+  function setPhaseManually(phase: DisplayedPhase) {
+    setDisplayedPhase(phase);
+    setDisplayCurrentPhase(false);
   }
 
   return (
@@ -168,10 +200,16 @@ export function MissionsPanel() {
               alt={'Image text not available'}
             />
           )}
-          <TimeButtons
-            displayType={displayedPhase.type}
+          <MissionTimeButtons
+            currentPhase={displayedPhase}
             isMissionOverview={displayedPhase.data === overview}
           />
+          <MissionCaptureButtons mission={selectedMisssion} />{' '}
+          <Flex wrap={'wrap'} gap={'xs'} my={'xs'}>
+            {currentActions.map((action) => (
+              <ActionsButton key={action.identifier} action={action} />
+            ))}
+          </Flex>
         </>
       ) : (
         <Text> No data for this time range </Text>

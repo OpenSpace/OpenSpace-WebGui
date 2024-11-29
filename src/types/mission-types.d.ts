@@ -16,5 +16,5 @@ export interface Phase {
   image: string;
   link: string;
   milestones: Milestone[];
-  capturedtimes: string[];
+  capturetimes: string[];
 }
