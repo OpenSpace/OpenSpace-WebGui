@@ -8,6 +8,7 @@ import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { loadExoplanetsData } from '@/redux/exoplanets/exoplanetsMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import {
   HabitableZonePropertyKey,
   NavigationAimKey,
@@ -16,7 +17,6 @@ import {
   Size1AuRingPropertyKey,
   UncertaintyDiscPropertyKey
 } from '@/util/keys';
-import { propertyDispatcher } from '@/util/propertyDispatcher';
 
 import { ExoplanetEntry } from './ExoplanetEntry';
 
@@ -31,6 +31,7 @@ export function ExoplanetsPanel() {
 
   const isDataInitialized = useAppSelector((state) => state.exoplanets.isInitialized);
   const allSystemNames = useAppSelector((state) => state.exoplanets.data);
+
   const aim = useGetStringPropertyValue(NavigationAimKey);
   const anchor = useGetStringPropertyValue(NavigationAnchorKey);
 
@@ -66,8 +67,8 @@ export function ExoplanetsPanel() {
     const matchingAnchor = anchor?.indexOf(starName) === 0;
     const matchingAim = aim?.indexOf(starName) === 0;
     if (matchingAnchor || matchingAim) {
-      propertyDispatcher(dispatch, NavigationAnchorKey).set('Sun');
-      propertyDispatcher(dispatch, NavigationAimKey).set('');
+      dispatch(setPropertyValue({ uri: NavigationAnchorKey, value: 'Sun' }));
+      dispatch(setPropertyValue({ uri: NavigationAimKey, value: '' }));
     }
     luaApi?.exoplanets.removeExoplanetSystem(starName);
     setLoadingRemoved([...loadingRemoved, starName]);

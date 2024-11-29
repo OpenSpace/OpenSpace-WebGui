@@ -135,6 +135,10 @@ export const useGetIntListPropertyValue = (uri: string) =>
 export const useGetStringListPropertyValue = (uri: string) =>
   useGetPropertyValue<string[]>(uri, 'StringListProperty');
 
+/**
+ * Hook that subscribes to a property and returns a setter function. Unsuscribes when the
+ * component is unmounted.
+ */
 export const useSubscribeToProperty = (uri: string) => {
   const ThrottleMs = 1000 / 60;
   const dispatch = useAppDispatch();
