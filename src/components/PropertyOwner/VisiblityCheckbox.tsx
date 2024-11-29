@@ -42,17 +42,16 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
     return null;
   }
 
-  function onToggleCheckboxClick(event: React.ChangeEvent<HTMLInputElement>) {
-    const shouldBeEnabled = event.target.checked;
-
-    // TODO: Handle shift click
+  function onToggleCheckboxClick(event: React.MouseEvent<HTMLInputElement>) {
+    const shouldBeEnabled = (event.target as HTMLInputElement).checked;
+    const isImmediate = event.shiftKey;
 
     if (!isFadeable) {
       dispatch(setPropertyValue({ uri: enabledUri, value: shouldBeEnabled }));
     } else if (shouldBeEnabled) {
-      luaApi?.fadeIn(uri);
+      luaApi?.fadeIn(uri, isImmediate ? 0 : undefined);
     } else {
-      luaApi?.fadeOut(uri);
+      luaApi?.fadeOut(uri, isImmediate ? 0 : undefined);
     }
   }
 
@@ -63,5 +62,5 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
   if (isMidFade) {
     return <Checkbox checked={isVisible} indeterminate={isMidFade} variant={'outline'} />;
   }
-  return <Checkbox checked={isVisible} onChange={onToggleCheckboxClick} />;
+  return <Checkbox checked={isVisible} onClick={onToggleCheckboxClick} />;
 }
