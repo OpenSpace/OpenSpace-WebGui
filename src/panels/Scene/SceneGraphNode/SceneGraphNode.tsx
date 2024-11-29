@@ -1,4 +1,4 @@
-import { Tabs, Text } from '@mantine/core';
+import { Box, Container, Tabs, Text } from '@mantine/core';
 
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { useAppSelector } from '@/redux/hooks';
@@ -48,8 +48,10 @@ export function SceneGraphNode({ uri }: Props) {
   // TODO: Include information about the Parentnode under Transform
   // TODO: Include a tab with Meta information
   return (
-    <>
-      <SceneGraphNodeHeader uri={uri} />
+    <Box mt={'xs'}>
+      <Container>
+        <SceneGraphNodeHeader uri={uri} />
+      </Container>
       <Tabs variant={'outline'} defaultValue={defaultTab}>
         <Tabs.List>
           {hasRenderable && (
@@ -80,6 +82,6 @@ export function SceneGraphNode({ uri }: Props) {
           <PropertyOwner uri={uri} withHeader={false} hideSubOwners />
         </Tabs.Panel>
       </Tabs>
-    </>
+    </Box>
   );
 }
