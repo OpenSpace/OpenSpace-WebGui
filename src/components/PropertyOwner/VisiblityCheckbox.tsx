@@ -1,17 +1,11 @@
-import { useEffect } from 'react';
 import { Checkbox } from '@mantine/core';
 
 import {
   useGetBoolPropertyValue,
   useGetFloatPropertyValue,
-  useOpenSpaceApi
+  useOpenSpaceApi,
+  useSubscribeToProperty
 } from '@/api/hooks';
-import { useAppDispatch } from '@/redux/hooks';
-import {
-  subscribeToProperty,
-  unsubscribeToProperty
-} from '@/redux/propertytree/properties/propertiesMiddleware';
-import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import { checkVisiblity } from '@/util/propertyTreeHelpers';
 
 interface Props {
@@ -26,15 +20,8 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
   const enabledPropertyValue = useGetBoolPropertyValue(enabledUri);
   const fadePropertyValue = useGetFloatPropertyValue(fadeUri);
 
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(subscribeToProperty({ uri: enabledUri }));
-    dispatch(subscribeToProperty({ uri: fadeUri }));
-    return () => {
-      dispatch(unsubscribeToProperty({ uri: enabledUri }));
-      dispatch(unsubscribeToProperty({ uri: fadeUri }));
-    };
-  }, [dispatch, enabledUri, fadeUri]);
+  const setEnabledProperty = useSubscribeToProperty(enabledUri);
+  useSubscribeToProperty(fadeUri);
 
   const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
   const isFadeable = fadePropertyValue !== undefined;
@@ -47,7 +34,7 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
     const isImmediate = event.shiftKey;
 
     if (!isFadeable) {
-      dispatch(setPropertyValue({ uri: enabledUri, value: shouldBeEnabled }));
+      setEnabledProperty(shouldBeEnabled);
     } else if (shouldBeEnabled) {
       luaApi?.fadeIn(uri, isImmediate ? 0 : undefined);
     } else {
@@ -60,7 +47,14 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
     isMidFade = true;
   }
   if (isMidFade) {
-    return <Checkbox checked={isVisible} indeterminate={isMidFade} variant={'outline'} />;
+    return (
+      <Checkbox
+        checked={isVisible}
+        indeterminate={isMidFade}
+        variant={'outline'}
+        readOnly
+      />
+    );
   }
-  return <Checkbox checked={isVisible} onClick={onToggleCheckboxClick} />;
+  return <Checkbox checked={isVisible} onClick={onToggleCheckboxClick} readOnly />;
 }
