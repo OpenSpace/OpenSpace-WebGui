@@ -1,6 +1,13 @@
-import { useAppSelector } from '@/redux/hooks';
-import { Property, PropertyOwner } from '@/types/types';
+import { useEffect } from 'react';
+import { useThrottledCallback } from '@mantine/hooks';
 
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import {
+  subscribeToProperty,
+  unsubscribeToProperty
+} from '@/redux/propertytree/properties/propertiesMiddleware';
+import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
+import { Property, PropertyOwner, PropertyValue } from '@/types/types';
 // Hook to make it easier to get the api
 export function useOpenSpaceApi() {
   const api = useAppSelector((state) => state.luaApi);
@@ -130,3 +137,20 @@ export const useGetIntListValue = (uri: string) =>
 
 export const useGetStringListValue = (uri: string) =>
   useGetPropertyValue<string[]>(uri, 'StringListProperty');
+
+export const useSubscribeToProperty = (uri: string) => {
+  const ThrottleMs = 1000 / 60;
+  const dispatch = useAppDispatch();
+  const setFunc = useThrottledCallback((value: PropertyValue) => {
+    dispatch(setPropertyValue({ uri: uri, value: value }));
+  }, ThrottleMs);
+
+  useEffect(() => {
+    dispatch(subscribeToProperty({ uri }));
+    return () => {
+      dispatch(unsubscribeToProperty({ uri }));
+    };
+  }, [dispatch, uri]);
+
+  return setFunc;
+};
