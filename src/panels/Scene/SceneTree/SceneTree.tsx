@@ -40,7 +40,12 @@ export function SceneTree({ showOnlyEnabled = false, showHiddenNodes = false }: 
         showHiddenNodes={showHiddenNodes}
         showOnlyEnabled={showOnlyEnabled}
       />
-      <Tree data={treeData} renderNode={(payload) => <SceneTreeNode {...payload} />} />
+      <Tree
+        data={treeData}
+        renderNode={(payload) => <SceneTreeNode {...payload} />}
+        selectOnClick
+        clearSelectionOnOutsideClick
+      />
     </>
   );
 }
