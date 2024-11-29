@@ -31,7 +31,6 @@ export function CollapsableHeader({
         {leftSection && leftSection}
         <UnstyledButton onClick={toggle}>{text}</UnstyledButton>
       </Group>
-
       {rightSection && rightSection}
     </Group>
   );

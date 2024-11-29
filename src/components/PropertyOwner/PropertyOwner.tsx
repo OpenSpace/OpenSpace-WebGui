@@ -5,6 +5,8 @@ import { useAppSelector } from '@/redux/hooks';
 import { CollapsableContent } from '../CollapsableContent/CollapsableContent';
 import { Property } from '../Property/Property';
 
+import { PropertyOwnerVisibilityCheckbox } from './VisiblityCheckbox';
+
 interface Props {
   uri: string;
   hideSubOwners?: boolean;
@@ -28,7 +30,7 @@ export function PropertyOwner({
 
   // TODO: This should also account for properties filtered on visiblity
   const hasContent =
-    propertyOwner.subowners.length > 0 || propertyOwner.properties.length > 0;
+    propertyOwner?.subowners.length > 0 || propertyOwner?.properties.length > 0;
 
   if (!hasContent) {
     return null;
@@ -57,6 +59,7 @@ export function PropertyOwner({
   return (
     <CollapsableContent
       title={propertyOwner.name ?? propertyOwner.identifier ?? uri}
+      leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
       defaultOpen={expandedOnDefault}
       noTransition
     >
