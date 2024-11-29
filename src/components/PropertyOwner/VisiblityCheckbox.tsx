@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Checkbox } from '@mantine/core';
 
 import {
@@ -56,7 +56,5 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
     }
   }
 
-  return (
-    <Checkbox variant={'outline'} checked={isVisible} onChange={onToggleCheckboxClick} />
-  );
+  return <Checkbox checked={isVisible} onChange={onToggleCheckboxClick} />;
 }

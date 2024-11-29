@@ -1,7 +1,10 @@
-import { ActionIcon, Button, Flex, Group, UnstyledButton } from '@mantine/core';
+import { ActionIcon, Group, UnstyledButton } from '@mantine/core';
 
+import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
+import { VerticalDotsIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
+import { NavigationType } from '@/types/enums';
 
 interface Props {
   uri: string;
@@ -21,28 +24,27 @@ export function SceneGraphNodeHeader({ uri, onClick }: Props) {
   const name = propertyOwner?.name ?? propertyOwner?.identifier;
 
   return (
-    <Group
-      justify={'space-between'}
-      align={'start'}
-      wrap={'nowrap'}
-      style={{ boxSizing: 'border-box' }}
-    >
-      <Flex wrap={'nowrap'} align={'flex-start'} gap={'xs'}>
+    <Group justify={'space-between'} align={'start'} wrap={'nowrap'}>
+      <Group wrap={'nowrap'} gap={'xs'} align={'start'} style={{ flexGrow: 1 }}>
         {hasRenderable && <PropertyOwnerVisibilityCheckbox uri={renderableUri} />}
         {onClick ? (
-          <UnstyledButton size={'xs'} onClick={onClick}>
+          <UnstyledButton style={{ flexGrow: 1 }} onClick={onClick}>
             {name}
           </UnstyledButton>
         ) : (
           name
         )}
-      </Flex>
-      <div>
-        <Flex wrap={'nowrap'}>
-          <ActionIcon />
-          <ActionIcon />
-        </Flex>
-      </div>
+      </Group>
+      <Group wrap={'nowrap'} gap={1}>
+        <NodeNavigationButton
+          type={NavigationType.focus}
+          identifier={propertyOwner?.identifier || ''}
+          variant={'light'}
+        />
+        <ActionIcon size={'lg'} variant={'light'}>
+          <VerticalDotsIcon />
+        </ActionIcon>
+      </Group>
     </Group>
   );
 }
