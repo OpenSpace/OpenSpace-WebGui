@@ -12,7 +12,7 @@ import {
   unsubscribeToProperty
 } from '@/redux/propertytree/properties/propertiesMiddleware';
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
-import { checkIfVisible } from '@/util/propertyTreeHelpers';
+import { checkVisiblity } from '@/util/propertyTreeHelpers';
 
 interface Props {
   uri: string;
@@ -36,18 +36,18 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
     };
   }, [dispatch, enabledUri, fadeUri]);
 
-  const isVisible = checkIfVisible(enabledPropertyValue, fadePropertyValue);
-
+  const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
+  const isFadeable = fadePropertyValue !== undefined;
   if (isVisible === undefined) {
     return null;
   }
 
-  // const [isChecked, setIsChecked] = useState(isVisible);
-
   function onToggleCheckboxClick(event: React.ChangeEvent<HTMLInputElement>) {
     const shouldBeEnabled = event.target.checked;
 
-    if (fadePropertyValue === undefined) {
+    // TODO: Handle shift click
+
+    if (!isFadeable) {
       dispatch(setPropertyValue({ uri: enabledUri, value: shouldBeEnabled }));
     } else if (shouldBeEnabled) {
       luaApi?.fadeIn(uri);
@@ -56,5 +56,12 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
     }
   }
 
+  let isMidFade = undefined;
+  if (isFadeable && fadePropertyValue > 0 && fadePropertyValue < 0.99) {
+    isMidFade = true;
+  }
+  if (isMidFade) {
+    return <Checkbox checked={isVisible} indeterminate={isMidFade} variant={'outline'} />;
+  }
   return <Checkbox checked={isVisible} onChange={onToggleCheckboxClick} />;
 }

@@ -1,7 +1,7 @@
 import { TreeNodeData } from '@mantine/core';
 
 import { Properties } from '@/types/types';
-import { shouldShowPropertyOwner } from '@/util/propertytreehelper';
+import { shouldShowSceneGraphNode } from '@/util/propertyTreeHelpers';
 
 export const GroupPrefixKey = '/groups/';
 
@@ -11,7 +11,7 @@ export function isGroup(node: TreeNodeData) {
 
 export function filterTreeData(
   nodes: TreeNodeData[],
-  showOnlyEnabled: boolean,
+  showOnlyVisible: boolean,
   showHiddenNodes: boolean,
   properties: Properties
 ): TreeNodeData[] {
@@ -22,7 +22,7 @@ export function filterTreeData(
         // Groups => filter children
         newNode.children = filterTreeData(
           newNode.children || [],
-          showOnlyEnabled,
+          showOnlyVisible,
           showHiddenNodes,
           properties
         );
@@ -32,11 +32,11 @@ export function filterTreeData(
         }
         return newNode;
       } else {
-        // PropertyOwners, may be filtered out based on settings
-        const shouldShow = shouldShowPropertyOwner(
+        // PropertyOwners (scene graph nodes), may be filtered out based on settings
+        const shouldShow = shouldShowSceneGraphNode(
           newNode.value,
           properties,
-          showOnlyEnabled,
+          showOnlyVisible,
           showHiddenNodes
         );
         return shouldShow ? newNode : null;

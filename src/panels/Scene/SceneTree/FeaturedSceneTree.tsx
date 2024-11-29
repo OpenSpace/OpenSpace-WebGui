@@ -4,13 +4,13 @@ import { useGetStringPropertyValue } from '@/api/hooks';
 import { treeDataForPropertyOwner } from '@/redux/groups/groupsSlice';
 import { useAppSelector } from '@/redux/hooks';
 import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
-import { hasInterestingTag } from '@/util/propertytreehelper';
+import { hasInterestingTag } from '@/util/propertyTreeHelpers';
 
 import { SceneTreeNode } from './SceneTreeNode';
 import { filterTreeData, GroupPrefixKey } from './treeUtil';
 
 interface Props {
-  showOnlyEnabled?: boolean;
+  showOnlyVisible?: boolean;
   showHiddenNodes?: boolean;
 }
 
@@ -19,7 +19,7 @@ interface Props {
  * nodes makred as interesting.
  */
 export function FeaturedSceneTree({
-  showOnlyEnabled = false,
+  showOnlyVisible = false,
   showHiddenNodes = false
 }: Props) {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
@@ -61,7 +61,7 @@ export function FeaturedSceneTree({
   if (interestingNodes.children && interestingNodes.children.length > 0) {
     interestingNodes.children = filterTreeData(
       interestingNodes.children,
-      showOnlyEnabled,
+      showOnlyVisible,
       showHiddenNodes,
       properties
     );

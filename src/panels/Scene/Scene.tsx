@@ -13,7 +13,7 @@ export function Scene() {
     (state) => Object.values(state.propertyOwners.propertyOwners)?.length > 0
   );
 
-  const [showOnlyEnabled, setShowOnlyEnabled] = useState(false);
+  const [showOnlyVisible, setshowOnlyVisible] = useState(false);
   const [showHiddenNodes, setShowHiddenNodes] = useState(false);
 
   function loadingBlocks(n: number) {
@@ -51,13 +51,13 @@ export function Scene() {
               <Group>
                 <Checkbox
                   label={'Show only visible'}
-                  checked={showOnlyEnabled}
-                  onChange={(event) => setShowOnlyEnabled(event.currentTarget.checked)}
+                  checked={showOnlyVisible}
+                  onChange={(event) => setshowOnlyVisible(event.currentTarget.checked)}
                 />
                 <Tooltip text={'Visible = Enabled and not faded out'} />
               </Group>
               <Group>
-                {showOnlyEnabled}
+                {showOnlyVisible}
                 <Checkbox
                   label={'Show objects with GUI hidden flag'}
                   checked={showHiddenNodes}
@@ -73,7 +73,7 @@ export function Scene() {
             </Menu.Dropdown>
           </Menu>
         </Group>
-        <SceneTree showOnlyEnabled={showOnlyEnabled} showHiddenNodes={showHiddenNodes} />
+        <SceneTree showOnlyVisible={showOnlyVisible} showHiddenNodes={showHiddenNodes} />
       </Tabs.Panel>
     </Tabs>
   );

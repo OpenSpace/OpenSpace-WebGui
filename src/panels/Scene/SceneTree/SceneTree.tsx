@@ -8,7 +8,7 @@ import { sortTreeData } from './sortingUtil';
 import { filterTreeData } from './treeUtil';
 
 interface Props {
-  showOnlyEnabled?: boolean;
+  showOnlyVisible?: boolean;
   showHiddenNodes?: boolean;
 }
 
@@ -16,7 +16,7 @@ interface Props {
  * This component displays a tree of the scene graph, either starting from a certain
  * property owner, or the entire tree.
  */
-export function SceneTree({ showOnlyEnabled = false, showHiddenNodes = false }: Props) {
+export function SceneTree({ showOnlyVisible = false, showHiddenNodes = false }: Props) {
   const sceneTreeData = useAppSelector((state) => state.groups.sceneTreeData);
   // TODO: Remove dependency on entire properties object. This means that the entire menu
   // is rerendered as soon as a property changes...
@@ -25,7 +25,7 @@ export function SceneTree({ showOnlyEnabled = false, showHiddenNodes = false }: 
 
   let treeData = filterTreeData(
     sceneTreeData,
-    showOnlyEnabled,
+    showOnlyVisible,
     showHiddenNodes,
     properties
   );
@@ -38,7 +38,7 @@ export function SceneTree({ showOnlyEnabled = false, showHiddenNodes = false }: 
     <>
       <FeaturedSceneTree
         showHiddenNodes={showHiddenNodes}
-        showOnlyEnabled={showOnlyEnabled}
+        showOnlyVisible={showOnlyVisible}
       />
       <Tree
         data={treeData}

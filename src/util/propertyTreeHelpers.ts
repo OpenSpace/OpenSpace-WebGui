@@ -2,7 +2,7 @@ import { Properties, PropertyOwners } from '@/types/types';
 
 import { InterestingTagKey } from './keys';
 
-export function hasInterestingTag(propertyOwners: PropertyOwners, uri: string) {
+export function hasInterestingTag(uri: string, propertyOwners: PropertyOwners) {
   return propertyOwners[uri]?.tags.some((tag) => tag.includes(InterestingTagKey));
 }
 
@@ -22,9 +22,40 @@ export function isRenderable(uri: string) {
   return uri.endsWith(renderableSuffix);
 }
 
+export function shouldShowSceneGraphNode(
+  uri: string,
+  properties: Properties,
+  showOnlyVisible: boolean,
+  showHidden: boolean
+) {
+  let shouldShow = true;
+  if (showOnlyVisible) {
+    shouldShow &&= isSceneGraphNodeVisible(uri, properties);
+  }
+  if (!showHidden) {
+    shouldShow &&= !isPropertyOwnerHidden(properties, uri);
+  }
+  return shouldShow;
+}
+
+export function isPropertyOwnerHidden(properties: Properties, uri: string) {
+  const prop = properties[`${uri}.GuiHidden`];
+  if (prop && prop.value) {
+    return true;
+  }
+  return false;
+}
+
+export function isSceneGraphNodeVisible(uri: string, properties: Properties) {
+  const renderableUri = `${uri}.Renderable`;
+  const enabledValue = properties[`${renderableUri}.Enabled`]?.value as boolean;
+  const fadeValue = properties[`${renderableUri}.Fade`]?.value as number;
+  return checkVisiblity(enabledValue, fadeValue) || false;
+}
+
 // Visible means that the object is enabled, based on the values of its enabled and fade
 // properties (which both may be undefined)
-export function checkIfVisible(enabled: boolean | undefined, fade: number | undefined) {
+export function checkVisiblity(enabled: boolean | undefined, fade: number | undefined) {
   // Enabled is required, but fade can be optional
   if (enabled === undefined) {
     return undefined;
