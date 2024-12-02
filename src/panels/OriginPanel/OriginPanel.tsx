@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { ActionIcon, Container, Group } from '@mantine/core';
 
-import { useGetStringPropertyValue } from '@/api/hooks';
+import { useGetStringPropertyValue, useSubscribeToProperty } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import { FlightControllerData } from '@/types/flightcontroller-types';
 import { PropertyOwner } from '@/types/types';
 import {
@@ -15,7 +16,6 @@ import {
   RetargetAimKey,
   RetargetAnchorKey
 } from '@/util/keys';
-import { propertyDispatcher } from '@/util/propertyDispatcher';
 import { hasInterestingTag } from '@/util/propertyTreeHelpers';
 
 import { FocusEntry } from './FocusEntry';
@@ -38,25 +38,9 @@ export function OriginPanel() {
   const aim = useGetStringPropertyValue(NavigationAimKey);
 
   const dispatch = useAppDispatch();
-  const anchorDispatcher = useRef(propertyDispatcher(dispatch, NavigationAnchorKey));
-  const aimDispatcher = useRef(propertyDispatcher(dispatch, NavigationAimKey));
-  const retargetAnchorDispatcher = useRef(
-    propertyDispatcher(dispatch, RetargetAnchorKey)
-  );
-  const retargetAimDispatcher = useRef(propertyDispatcher(dispatch, RetargetAimKey));
 
-  useEffect(() => {
-    // We make a copy here of the dispatchers to ensure that in the cleanup function they
-    // will be exactly the same as they were on creation, i.e. not modifided
-    const copyAnchorDispatcher = anchorDispatcher.current;
-    const copyAimDispatcher = aimDispatcher.current;
-    copyAnchorDispatcher.subscribe();
-    copyAimDispatcher.subscribe();
-    return () => {
-      copyAnchorDispatcher.unsubscribe();
-      copyAimDispatcher.unsubscribe();
-    };
-  }, []);
+  const setAnchorProperty = useSubscribeToProperty(NavigationAnchorKey);
+  const setAimProperty = useSubscribeToProperty(NavigationAimKey);
 
   const uris: string[] = propertyOwners.Scene?.subowners ?? [];
   const allNodes = uris
@@ -160,9 +144,9 @@ export function OriginPanel() {
 
     if (!event.shiftKey) {
       if (navigationAction === NavigationActionState.Aim) {
-        retargetAimDispatcher.current.set(null);
+        dispatch(setPropertyValue({ uri: RetargetAimKey, value: null }));
       } else {
-        retargetAnchorDispatcher.current.set(null);
+        dispatch(setPropertyValue({ uri: RetargetAnchorKey, value: null }));
       }
     }
 
@@ -177,13 +161,13 @@ export function OriginPanel() {
     dispatch(sendFlightControl(updateViewPayload));
 
     if (updateViewPayload.aim) {
-      anchorDispatcher.current.set(updateViewPayload.anchor);
-      aimDispatcher.current.set(updateViewPayload.aim);
+      setAnchorProperty(updateViewPayload.anchor);
+      setAimProperty(updateViewPayload.aim);
     } else if (updateViewPayload.anchor !== '') {
-      anchorDispatcher.current.set(updateViewPayload.anchor);
+      setAnchorProperty(updateViewPayload.anchor);
     } else {
-      anchorDispatcher.current.set(updateViewPayload.focus);
-      aimDispatcher.current.set(updateViewPayload.aim);
+      setAnchorProperty(updateViewPayload.focus);
+      setAimProperty(updateViewPayload.aim);
     }
   }
 
