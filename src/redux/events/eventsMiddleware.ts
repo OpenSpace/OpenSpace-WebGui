@@ -12,7 +12,7 @@ import {
 let eventTopic: Topic;
 let nSubscribers = 0;
 
-export const setupSubscription = createAsyncThunk(
+export const setupEventsSubscription = createAsyncThunk(
   'events/setupSubscription',
   async (_, thunkAPI) => {
     try {
@@ -53,8 +53,8 @@ export const addEventsListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onOpenConnection,
     effect: (_, listenerApi) => {
-      if (nSubscribers === 0) {
-        listenerApi.dispatch(setupSubscription());
+      if (nSubscribers === 0 && listenerApi.getState().connection.isConnected) {
+        listenerApi.dispatch(setupEventsSubscription());
         nSubscribers++;
       }
     }

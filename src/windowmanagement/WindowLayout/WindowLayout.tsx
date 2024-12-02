@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { ScrollArea, Stack } from '@mantine/core';
 import DockLayout, { BoxData, LayoutData, PanelData, TabData, TabGroup } from 'rc-dock';
 
-import { onCloseConnection, startConnection } from '@/redux/connection/connectionSlice';
+import { closeConnection } from '@/redux/connection/connectionMiddleware';
+import { startConnection } from '@/redux/connection/connectionSlice';
 import { useAppDispatch } from '@/redux/hooks';
 
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
@@ -45,14 +46,6 @@ function createDefaultLayout(): LayoutData {
 export function WindowLayout() {
   const [visibleMenuItems, setVisibleMenuItems] = useState<string[]>([]);
   const rcDocRef = useRef<DockLayout>(null);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(startConnection());
-    return () => {
-      dispatch(onCloseConnection());
-    };
-  }, [dispatch]);
 
   const headless: TabGroup = {
     floatable: false,

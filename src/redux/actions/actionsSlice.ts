@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Action, ActionOrKeybind, Keybind } from '@/types/types';
+
 import { getAllShortcuts, getShortcut } from './actionsMiddleware';
 
 export interface ActionsState {

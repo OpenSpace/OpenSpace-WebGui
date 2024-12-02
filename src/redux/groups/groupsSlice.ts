@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { refreshGroups } from './groupsSliceMiddleware';
+
 import { Groups } from '@/types/types';
+
+import { refreshGroups } from './groupsSliceMiddleware';
 
 export interface GroupsState {
   customGroupOrdering: object; // TODO specify this

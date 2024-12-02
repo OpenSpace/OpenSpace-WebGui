@@ -1,8 +1,11 @@
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
+
 import { api } from '@/api/api';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 
 import { onCloseConnection, onOpenConnection, startConnection } from './connectionSlice';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+
+export const closeConnection = createAction<void>('closeConnection');
 
 export const getLuaApi = createAsyncThunk('connection/getLuaApi', async () => {
   return await api.singleReturnLibrary();
@@ -13,7 +16,6 @@ export const connectToOpenSpace = createAsyncThunk(
   async (_, thunkAPI) => {
     async function onConnect() {
       thunkAPI.dispatch(onOpenConnection());
-      thunkAPI.dispatch(getLuaApi());
     }
 
     function onDisconnect() {
@@ -40,9 +42,11 @@ export const addConnectionListener = (startListening: AppStartListening) => {
     }
   });
   startListening({
-    actionCreator: onCloseConnection,
-    effect: () => {
+    actionCreator: closeConnection,
+    effect: async (_, listenerApi) => {
+      //if (listenerApi.getState().connection.isConnected) {
       api.disconnect();
+      //}
     }
   });
 };

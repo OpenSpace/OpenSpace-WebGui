@@ -2,11 +2,12 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { addUriToPropertyTree } from '@/redux/propertytree/propertyTreeMiddleware';
+import { Groups, Properties, PropertyOwners } from '@/types/types';
+
+import { getLuaApi } from '../connection/connectionMiddleware';
+import { RootState } from '../store';
 
 import { updateCustomGroupOrdering } from './groupsSlice';
-import { RootState } from '../store';
-import { getLuaApi } from '../connection/connectionMiddleware';
-import { Groups, Properties, PropertyOwners } from '@/types/types';
 
 const emptyGroup = () => ({
   subgroups: [],

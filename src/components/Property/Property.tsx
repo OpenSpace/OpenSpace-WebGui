@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Box } from '@mantine/core';
 import { PropertyValue } from 'src/types/types';
 
+import { useSubscribeToProperty } from '@/api/hooks';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   subscribeToProperty,
@@ -82,7 +83,6 @@ export function Property({ uri }: Props) {
   );
 
   const value = useAppSelector((state) => state.properties.properties[uri]?.value);
-
   const dispatch = useAppDispatch();
   // TODO: These actions should not have to take an object. The string value is enough
   // when there is only one value in the payload!

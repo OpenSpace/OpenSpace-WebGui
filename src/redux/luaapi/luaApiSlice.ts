@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import { getLuaApi } from '../connection/connectionMiddleware';
 
 type OpenSpaceApiState = OpenSpace.openspace | null;
@@ -11,7 +12,6 @@ export const luaApiSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getLuaApi.fulfilled, (state, action) => {
-      console.log(action.payload);
       if (action.payload) {
         state = action.payload;
       }

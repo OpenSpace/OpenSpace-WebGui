@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { loadExoplanetsData } from './exoplanetsMiddleware';
 
 export interface ExoplanetState {

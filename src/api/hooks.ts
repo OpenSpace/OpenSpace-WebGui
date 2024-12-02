@@ -1,9 +1,11 @@
 import { useAppSelector } from '@/redux/hooks';
 import { Property, PropertyOwner } from '@/types/types';
 
+import { LuaApiContext } from './LuaApiProvider';
+import { useContext } from 'react';
 // Hook to make it easier to get the api
 export function useOpenSpaceApi() {
-  const api = useAppSelector((state) => state.luaApi);
+  const api = useContext(LuaApiContext);
   return api;
 }
 

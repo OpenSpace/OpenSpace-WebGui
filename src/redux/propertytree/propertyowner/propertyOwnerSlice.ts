@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { PropertyOwner, PropertyOwners } from '@/types/types';
+
 import { addUriToPropertyTree } from '../propertyTreeMiddleware';
 
 // actions:

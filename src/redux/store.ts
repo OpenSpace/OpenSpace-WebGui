@@ -29,7 +29,8 @@ export const store = configureStore({
         ignoredActions: ['luaApi/initializeLuaApi'],
         ignoredPaths: ['luaApi']
       }
-    }).concat([listenerMiddleware.middleware])
+    }).concat([listenerMiddleware.middleware]),
+  devTools: true
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

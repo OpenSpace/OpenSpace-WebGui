@@ -8,7 +8,7 @@ import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { SessionRecordingState, updateSessionrecording } from './sessionRecordingSlice';
 
 const unsubscribeToSessionRecording = createAction<void>('unsubscribeToSessionRecording');
-const subscribeToSessionRecording = createAction<void>('unsubscribeToSessionRecording');
+const subscribeToSessionRecording = createAction<void>('subscribeToSessionRecording');
 
 let topic: Topic;
 let nSubscribers = 0;
@@ -95,4 +95,4 @@ export const addSessionRecordingListener = (startListening: AppStartListening) =
   });
 };
 
-export { unsubscribeToSessionRecording, subscribeToSessionRecording };
+export { subscribeToSessionRecording,unsubscribeToSessionRecording };

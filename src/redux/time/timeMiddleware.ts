@@ -43,7 +43,7 @@ export const addTimeListener = (startListening: AppStartListening) => {
     actionCreator: onOpenConnection,
     effect: (_, listenerApi) => {
       if (nSubscribers > 0) {
-        listenerApi.dispatch(setupSubscription());
+        //listenerApi.dispatch(setupSubscription());
       }
     }
   });
@@ -54,7 +54,7 @@ export const addTimeListener = (startListening: AppStartListening) => {
       ++nSubscribers;
       const { isConnected } = listenerApi.getState().connection;
       if (nSubscribers === 1 && isConnected) {
-        listenerApi.dispatch(setupSubscription());
+        //listenerApi.dispatch(setupSubscription());
       }
     }
   });

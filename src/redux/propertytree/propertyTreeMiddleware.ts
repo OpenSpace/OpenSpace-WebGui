@@ -12,12 +12,13 @@ import {
 } from '@/types/types';
 import { rootOwnerKey } from '@/util/keys';
 
+import { refreshGroups } from '../groups/groupsSliceMiddleware';
+
 import { clearProperties, removeProperties } from './properties/propertiesSlice';
 import {
   clearPropertyOwners,
   removePropertyOwners
 } from './propertyowner/propertyOwnerSlice';
-import { refreshGroups } from '../groups/groupsSliceMiddleware';
 
 export const reloadPropertyTree = createAction<void>('reloadPropertyTree');
 export const removeUriFromPropertyTree = createAction<{ uri: string }>(
@@ -145,7 +146,7 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
     effect: async (_, listenerApi) => {
       // TODO anden88 2024-10-18: Right now the reloadPropertyTree is only dispatched here
       // consder to put the reload logic in here immedieately?
-      listenerApi.dispatch(reloadPropertyTree());
+      //listenerApi.dispatch(reloadPropertyTree());
     }
   });
 
