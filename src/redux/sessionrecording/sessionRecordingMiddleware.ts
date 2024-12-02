@@ -7,14 +7,14 @@ import type { AppStartListening } from '@/redux/listenerMiddleware';
 
 import { SessionRecordingState, updateSessionrecording } from './sessionRecordingSlice';
 
-const unsubscribeToSessionRecording = createAction<void>('unsubscribeToSessionRecording');
-const subscribeToSessionRecording = createAction<void>('subscribeToSessionRecording');
+const subscribeToSessionRecording = createAction<void>('sessionRecording/subscribe');
+const unsubscribeToSessionRecording = createAction<void>('sessionRecording/unsubscribe');
 
 let topic: Topic;
 let nSubscribers = 0;
 
 export const subscribe = createAsyncThunk(
-  'sessionRecording/subscribeToSessionRecording',
+  'sessionRecording/createSubscription',
   async (_, thunkAPI) => {
     topic = api.startTopic('sessionRecording', {
       event: 'start_subscription',
@@ -29,7 +29,7 @@ export const subscribe = createAsyncThunk(
 );
 
 export const refreshSessionRecording = createAsyncThunk(
-  'sessionRecording/refreshSessionRecording',
+  'sessionRecording/refresh',
   async (_, thunkAPI) => {
     if (topic) {
       topic.talk({
@@ -66,10 +66,9 @@ export const addSessionRecordingListener = (startListening: AppStartListening) =
   startListening({
     actionCreator: onOpenConnection,
     effect: async (_, listenerApi) => {
-      if (nSubscribers === 0) {
-        return;
+      if (nSubscribers > 0) {
+        listenerApi.dispatch(subscribe());
       }
-      listenerApi.dispatch(subscribe());
     }
   });
 
