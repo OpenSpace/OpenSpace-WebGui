@@ -40,7 +40,7 @@ export function ExoplanetsPanel() {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await luaApi?.exoplanets.getListOfExoplanets();
+      const res = await luaApi?.exoplanets.listOfExoplanets();
       if (res) {
         dispatch(initializeExoplanets(Object.values(res)));
       }

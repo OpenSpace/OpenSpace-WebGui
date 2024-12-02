@@ -57,6 +57,7 @@ const computeGroups = (
   return groups;
 };
 
+// These computations are a bit slow so making them async
 export const refreshGroups = createAsyncThunk(
   'groups/refreshGroups',
   async (_, thunkAPI) => {
