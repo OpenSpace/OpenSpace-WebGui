@@ -55,12 +55,13 @@ export function SceneGraphNodeHeader({ uri, label, onClick }: Props) {
       </Group>
       <Group wrap={'nowrap'} gap={4}>
         <NodeNavigationButton
+          size={'sm'}
           type={NavigationType.focus}
           identifier={propertyOwner?.identifier || ''}
         />
         <Menu position={'right-start'}>
           <Menu.Target>
-            <ActionIcon size={'lg'} variant={'light'}>
+            <ActionIcon size={'sm'} variant={'light'}>
               <VerticalDotsIcon />
             </ActionIcon>
           </Menu.Target>
