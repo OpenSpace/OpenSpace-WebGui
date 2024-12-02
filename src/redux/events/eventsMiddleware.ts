@@ -13,7 +13,7 @@ let eventTopic: Topic;
 let isSubscribed = false;
 
 export const setupEventsSubscription = createAsyncThunk(
-  'events/createSubscription',
+  'events/setupSubscription',
   async (_, thunkAPI) => {
     try {
       eventTopic = api.startTopic('event', {

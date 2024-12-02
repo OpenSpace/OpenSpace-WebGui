@@ -13,8 +13,8 @@ const unsubscribeToSessionRecording = createAction<void>('sessionRecording/unsub
 let topic: Topic;
 let nSubscribers = 0;
 
-export const subscribe = createAsyncThunk(
-  'sessionRecording/createSubscription',
+export const setupSubscription = createAsyncThunk(
+  'sessionRecording/setupSubscription',
   async (_, thunkAPI) => {
     topic = api.startTopic('sessionRecording', {
       event: 'start_subscription',
@@ -70,7 +70,7 @@ export const addSessionRecordingListener = (startListening: AppStartListening) =
     actionCreator: onOpenConnection,
     effect: async (_, listenerApi) => {
       if (nSubscribers > 0) {
-        listenerApi.dispatch(subscribe());
+        listenerApi.dispatch(setupSubscription());
       }
     }
   });
@@ -81,7 +81,7 @@ export const addSessionRecordingListener = (startListening: AppStartListening) =
       ++nSubscribers;
       const { isConnected } = listenerApi.getState().connection;
       if (nSubscribers === 1 && isConnected) {
-        listenerApi.dispatch(subscribe());
+        listenerApi.dispatch(setupSubscription());
       }
     }
   });

@@ -11,7 +11,7 @@ export const sendFlightControl = createAction<FlightControllerData>('sendFlightC
 let flightControllerTopic: Topic | undefined = undefined;
 
 export const setupSubscription = createAsyncThunk(
-  'flightcontroller/createSubscription',
+  'flightcontroller/setupSubscription',
   async () => {
     if (flightControllerTopic) {
       return;
