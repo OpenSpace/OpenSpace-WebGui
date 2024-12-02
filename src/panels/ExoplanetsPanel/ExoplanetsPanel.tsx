@@ -48,7 +48,7 @@ export function ExoplanetsPanel() {
     if (luaApi || !isDataInitialized) {
       fetchData();
     }
-  }, [luaApi, dispatch]);
+  }, [luaApi, dispatch, isDataInitialized]);
 
   // Find already existing exoplent systems among the property owners
   const addedSystems = Object.values(propertyOwners).filter((owner) =>
