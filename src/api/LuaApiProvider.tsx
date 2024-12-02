@@ -13,6 +13,7 @@ export function LuaApiProvider({ children }: { children: React.ReactNode }) {
   const isConnected = useAppSelector((state) => state.connection.isConnected);
   const dispatch = useAppDispatch();
 
+  // Connect to OpenSpace
   useEffect(() => {
     dispatch(startConnection());
     return () => {
@@ -20,6 +21,7 @@ export function LuaApiProvider({ children }: { children: React.ReactNode }) {
     };
   }, [dispatch]);
 
+  // Get the Lua Api once the connection has been made
   useEffect(() => {
     const fetchApi = async () => {
       try {
@@ -34,6 +36,9 @@ export function LuaApiProvider({ children }: { children: React.ReactNode }) {
     }
   }, [isConnected]);
 
+  // The groups ordering is not part of any topic so we request it
+  // once we have the api
+  // TODO 2024-12-02 (ylvse): make this a part of a topic?
   useEffect(() => {
     async function fetchData() {
       if (luaApi) {

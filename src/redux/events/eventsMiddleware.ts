@@ -10,10 +10,10 @@ import {
 } from '@/redux/propertytree/propertyTreeMiddleware';
 
 let eventTopic: Topic;
-let nSubscribers = 0;
+let isSubscribed = false;
 
 export const setupEventsSubscription = createAsyncThunk(
-  'events/setupSubscription',
+  'events/createSubscription',
   async (_, thunkAPI) => {
     try {
       eventTopic = api.startTopic('event', {
@@ -46,23 +46,23 @@ function tearDownSubscription() {
     event: 'stop_subscription'
   });
   eventTopic.cancel();
-  nSubscribers--;
+  isSubscribed = false;
 }
 
 export const addEventsListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onOpenConnection,
     effect: (_, listenerApi) => {
-      if (nSubscribers === 0 && listenerApi.getState().connection.isConnected) {
+      if (!isSubscribed && listenerApi.getState().connection.isConnected) {
         listenerApi.dispatch(setupEventsSubscription());
-        nSubscribers++;
+        isSubscribed = true;
       }
     }
   });
   startListening({
     actionCreator: onCloseConnection,
     effect: (_, listenerApi) => {
-      if (nSubscribers === 1 && listenerApi.getState().connection.isConnected) {
+      if (isSubscribed && listenerApi.getState().connection.isConnected) {
         tearDownSubscription();
       }
     }
