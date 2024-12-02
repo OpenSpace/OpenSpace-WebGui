@@ -1,7 +1,9 @@
 import {
   Anchor,
   Card,
+  Flex,
   Group,
+  Pill,
   Space,
   Spoiler,
   Table,
@@ -36,6 +38,10 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
     return undefined;
   });
 
+  const propertyOwner = useAppSelector((state) => {
+    return state.propertyOwners.propertyOwners[uri];
+  });
+
   const mainTableData: TableData = {
     body: [
       [
@@ -49,10 +55,23 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
         'URI:',
         <Group justify={'space-between'}>
           {uri}
-          <CopyToClipboardButton value={uri} />{' '}
+          <CopyToClipboardButton value={uri} />
         </Group>
       ],
-      ['Description:', description]
+      ['About:', description],
+      [
+        'Tags:',
+        <Group gap={5}>
+          {propertyOwner?.tags.map((tag) => (
+            <Pill key={tag} size={'md'}>
+              <Flex>
+                {tag}
+                <CopyToClipboardButton value={tag} />
+              </Flex>
+            </Pill>
+          ))}
+        </Group>
+      ]
     ]
   };
 
@@ -104,6 +123,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   return (
     <>
       <Table withRowBorders={false} data={mainTableData} />
+
       <Space h={'md'} />
       <Card>
         <Title order={3}>Asset Info</Title>
