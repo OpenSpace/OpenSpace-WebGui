@@ -63,6 +63,7 @@ export function SceneTreeNode({ node, expanded, elementProps }: RenderTreeNodePa
         <Box mx={'xs'}>
           <SceneGraphNodeHeader
             uri={node.value}
+            label={node.label as string}
             onClick={() => openSceneGraphNodeWindow(node.value)}
           />
         </Box>

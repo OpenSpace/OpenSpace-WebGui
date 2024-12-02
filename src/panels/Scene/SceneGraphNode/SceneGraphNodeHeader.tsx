@@ -11,10 +11,11 @@ import { SceneGraphNode } from './SceneGraphNode';
 
 interface Props {
   uri: string;
+  label?: string;
   onClick?: () => void;
 }
 
-export function SceneGraphNodeHeader({ uri, onClick }: Props) {
+export function SceneGraphNodeHeader({ uri, label, onClick }: Props) {
   const propertyOwner = useAppSelector((state) => {
     return state.propertyOwners.propertyOwners[uri];
   });
@@ -24,7 +25,7 @@ export function SceneGraphNodeHeader({ uri, onClick }: Props) {
     return state.propertyOwners.propertyOwners[renderableUri] !== undefined;
   });
 
-  const name = propertyOwner?.name ?? propertyOwner?.identifier ?? uri;
+  const name = label ?? propertyOwner?.name ?? propertyOwner?.identifier ?? uri;
 
   const { addWindow } = useWindowManagerProvider();
   function openInNewWindow() {
