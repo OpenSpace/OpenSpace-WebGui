@@ -7,8 +7,8 @@ import { AppStartListening } from '@/redux/listenerMiddleware';
 
 import { updateTime } from './timeSlice';
 
-const subscribeToTime = createAction<void>('subscribeToTime');
-const unsubscribeToTime = createAction<void>('unsubscribeToTime');
+const subscribeToTime = createAction<void>('time/subscribe');
+const unsubscribeToTime = createAction<void>('time/unsubscribe');
 
 let timeTopic: Topic;
 let nSubscribers = 0;
@@ -43,7 +43,7 @@ export const addTimeListener = (startListening: AppStartListening) => {
     actionCreator: onOpenConnection,
     effect: (_, listenerApi) => {
       if (nSubscribers > 0) {
-        //listenerApi.dispatch(setupSubscription());
+        listenerApi.dispatch(setupSubscription());
       }
     }
   });
@@ -54,7 +54,7 @@ export const addTimeListener = (startListening: AppStartListening) => {
       ++nSubscribers;
       const { isConnected } = listenerApi.getState().connection;
       if (nSubscribers === 1 && isConnected) {
-        //listenerApi.dispatch(setupSubscription());
+        listenerApi.dispatch(setupSubscription());
       }
     }
   });

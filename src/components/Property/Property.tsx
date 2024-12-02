@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { Box } from '@mantine/core';
 import { PropertyValue } from 'src/types/types';
 
-import { useSubscribeToProperty } from '@/api/hooks';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   subscribeToProperty,

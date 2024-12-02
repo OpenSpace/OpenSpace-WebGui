@@ -95,4 +95,4 @@ export const addSessionRecordingListener = (startListening: AppStartListening) =
   });
 };
 
-export { subscribeToSessionRecording,unsubscribeToSessionRecording };
+export { subscribeToSessionRecording, unsubscribeToSessionRecording };

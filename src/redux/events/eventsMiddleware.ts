@@ -21,7 +21,7 @@ export const setupEventsSubscription = createAsyncThunk(
         status: 'start_subscription'
       });
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
     for await (const data of eventTopic.iterator()) {
       switch (data.Event) {

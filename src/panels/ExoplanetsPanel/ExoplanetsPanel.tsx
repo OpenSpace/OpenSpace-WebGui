@@ -6,6 +6,7 @@ import { CollapsableContent } from '@/components/CollapsableContent/CollapsableC
 import { FilterList } from '@/components/FilterList/FilterList';
 import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   HabitableZonePropertyKey,
@@ -18,7 +19,6 @@ import {
 import { propertyDispatcher } from '@/util/propertyDispatcher';
 
 import { ExoplanetEntry } from './ExoplanetEntry';
-import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 
 export function ExoplanetsPanel() {
   const [loadingAdded, setLoadingAdded] = useState<string[]>([]);
@@ -48,7 +48,7 @@ export function ExoplanetsPanel() {
     if (luaApi) {
       fetchData();
     }
-  }, [luaApi]);
+  }, [luaApi, dispatch]);
 
   // Find already existing exoplent systems among the property owners
   const addedSystems = Object.values(propertyOwners).filter((owner) =>

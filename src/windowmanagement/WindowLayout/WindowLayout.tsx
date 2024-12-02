@@ -2,10 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { ScrollArea, Stack } from '@mantine/core';
 import DockLayout, { BoxData, LayoutData, PanelData, TabData, TabGroup } from 'rc-dock';
 
-import { closeConnection } from '@/redux/connection/connectionMiddleware';
-import { startConnection } from '@/redux/connection/connectionSlice';
-import { useAppDispatch } from '@/redux/hooks';
-
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
 import { menuItemsDB } from '../data/MenuItems';
 import { TaskBar } from '../TaskBar';

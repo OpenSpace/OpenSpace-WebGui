@@ -1,10 +1,9 @@
-import { AnyAction, configureStore, ThunkDispatch } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 
 import { actionsReducer } from './actions/actionsSlice';
 import { connectionReducer } from './connection/connectionSlice';
 import { exoplanetsReducer } from './exoplanets/exoplanetsSlice';
 import { groupsReducer } from './groups/groupsSlice';
-import { luaApiReducer } from './luaapi/luaApiSlice';
 import { propertiesReducer } from './propertytree/properties/propertiesSlice';
 import { propertyOwnersReducer } from './propertytree/propertyowner/propertyOwnerSlice';
 import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
@@ -16,7 +15,6 @@ export const store = configureStore({
     actions: actionsReducer,
     connection: connectionReducer,
     exoplanets: exoplanetsReducer,
-    luaApi: luaApiReducer,
     groups: groupsReducer,
     properties: propertiesReducer,
     propertyOwners: propertyOwnersReducer,
@@ -24,16 +22,10 @@ export const store = configureStore({
     time: timeReducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: ['luaApi/initializeLuaApi'],
-        ignoredPaths: ['luaApi']
-      }
-    }).concat([listenerMiddleware.middleware]),
+    getDefaultMiddleware().concat([listenerMiddleware.middleware]),
   devTools: true
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
-export type AppThunkDispatch = ThunkDispatch<RootState, any, AnyAction>;
 export type AppDispatch = typeof store.dispatch;

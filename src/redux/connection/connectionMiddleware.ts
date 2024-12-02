@@ -7,10 +7,6 @@ import { onCloseConnection, onOpenConnection, startConnection } from './connecti
 
 export const closeConnection = createAction<void>('closeConnection');
 
-export const getLuaApi = createAsyncThunk('connection/getLuaApi', async () => {
-  return await api.singleReturnLibrary();
-});
-
 export const connectToOpenSpace = createAsyncThunk(
   'connection/connectToOpenSpace',
   async (_, thunkAPI) => {
@@ -44,9 +40,9 @@ export const addConnectionListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: closeConnection,
     effect: async (_, listenerApi) => {
-      //if (listenerApi.getState().connection.isConnected) {
-      api.disconnect();
-      //}
+      if (listenerApi.getState().connection.isConnected) {
+        api.disconnect();
+      }
     }
   });
 };

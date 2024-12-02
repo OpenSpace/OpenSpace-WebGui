@@ -103,3 +103,6 @@ export const time = createSlice({
 
 export const { updateTime } = time.actions;
 export const timeReducer = time.reducer;
+
+// Action types can be inferred from the slice:
+export type Actions = ReturnType<typeof time.actions.updateTime>;

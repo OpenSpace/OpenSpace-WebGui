@@ -27,7 +27,7 @@ export const removeUriFromPropertyTree = createAction<{ uri: string }>(
 
 export const addUriToPropertyTree = createAsyncThunk(
   'propertyTree/addUriToPropertyTree',
-  async (uri: string, thunkAPI) => {
+  async (uri: string) => {
     const response = (await api.getProperty(uri)) as
       | OpenSpaceProperty
       | OpenSpacePropertyOwner;
