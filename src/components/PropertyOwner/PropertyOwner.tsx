@@ -1,4 +1,4 @@
-import { Fieldset } from '@mantine/core';
+import { Fieldset, Space } from '@mantine/core';
 
 import { useAppSelector } from '@/redux/hooks';
 
@@ -38,10 +38,14 @@ export function PropertyOwner({
 
   const content = (
     <>
-      {!hideSubOwners &&
-        propertyOwner.subowners.map((subowner) => (
-          <PropertyOwner key={subowner} uri={subowner} />
-        ))}
+      {!hideSubOwners && propertyOwner.subowners.length > 0 && (
+        <>
+          {propertyOwner.subowners.map((subowner) => (
+            <PropertyOwner key={subowner} uri={subowner} />
+          ))}
+          {propertyOwner.properties.length > 0 && <Space h={'xs'} />}
+        </>
+      )}
       {propertyOwner.properties.length > 0 && (
         <Fieldset p={'xs'}>
           {propertyOwner.properties.map((property) => (

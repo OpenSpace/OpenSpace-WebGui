@@ -1,4 +1,4 @@
-import { RenderTreeNodePayload } from '@mantine/core';
+import { Box, RenderTreeNodePayload } from '@mantine/core';
 import { BoxData, PanelData, TabData } from 'rc-dock';
 
 import {
@@ -60,10 +60,12 @@ export function SceneTreeNode({ node, expanded, elementProps }: RenderTreeNodePa
       {isGroup(node) ? (
         <CollapsableHeader expanded={expanded} text={node.label} />
       ) : (
-        <SceneGraphNodeHeader
-          uri={node.value}
-          onClick={() => openSceneGraphNodeWindow(node.value)}
-        />
+        <Box mx={'xs'}>
+          <SceneGraphNodeHeader
+            uri={node.value}
+            onClick={() => openSceneGraphNodeWindow(node.value)}
+          />
+        </Box>
       )}
     </div>
   );

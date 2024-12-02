@@ -1,4 +1,4 @@
-import { Box, Container, Tabs, Text } from '@mantine/core';
+import { Box, Space, Tabs, Text } from '@mantine/core';
 
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { useAppSelector } from '@/redux/hooks';
@@ -50,10 +50,9 @@ export function SceneGraphNode({ uri }: Props) {
   // TODO: Include information about the Parentnode under Transform
   // TODO: Include a tab with Meta information
   return (
-    <Box mt={'xs'}>
-      <Container>
-        <SceneGraphNodeHeader uri={uri} />
-      </Container>
+    <Box m={'xs'}>
+      <SceneGraphNodeHeader uri={uri} />
+      <Space h={'xs'} />
       <Tabs variant={'outline'} defaultValue={defaultTab}>
         <Tabs.List>
           {hasRenderable && (
@@ -64,11 +63,11 @@ export function SceneGraphNode({ uri }: Props) {
           <Tabs.Tab value={TabKeys.Info}>{TabKeys.Info}</Tabs.Tab>
         </Tabs.List>
         {hasRenderable && (
-          <Tabs.Panel value={TabKeys.Renderable} p={'sm'}>
+          <Tabs.Panel value={TabKeys.Renderable}>
             <PropertyOwner uri={tabsData.Renderable!.uri} withHeader={false} />
           </Tabs.Panel>
         )}
-        <Tabs.Panel value={TabKeys.Transform} p={'sm'}>
+        <Tabs.Panel value={TabKeys.Transform}>
           {tabsData.Transform.length > 0 ? (
             tabsData.Transform.map((subowner) => (
               <PropertyOwner
@@ -81,10 +80,10 @@ export function SceneGraphNode({ uri }: Props) {
             <Text>This scene graph node has no transform</Text>
           )}
         </Tabs.Panel>
-        <Tabs.Panel value={TabKeys.Other} p={'sm'}>
+        <Tabs.Panel value={TabKeys.Other}>
           <PropertyOwner uri={uri} withHeader={false} hideSubOwners />
         </Tabs.Panel>
-        <Tabs.Panel value={TabKeys.Info} p={'sm'}>
+        <Tabs.Panel value={TabKeys.Info}>
           <SceneGraphNodeMetaInfo uri={uri} />
         </Tabs.Panel>
       </Tabs>

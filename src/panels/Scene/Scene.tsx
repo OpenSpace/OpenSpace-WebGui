@@ -1,5 +1,15 @@
 import { useState } from 'react';
-import { ActionIcon, Checkbox, Group, Menu, Skeleton, Tabs, Text } from '@mantine/core';
+import {
+  ActionIcon,
+  Checkbox,
+  Container,
+  Group,
+  Menu,
+  Skeleton,
+  Stack,
+  Tabs,
+  Text
+} from '@mantine/core';
 
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { FilterIcon } from '@/icons/icons';
@@ -16,14 +26,23 @@ export function Scene() {
   const [showOnlyVisible, setshowOnlyVisible] = useState(false);
   const [showHiddenNodes, setShowHiddenNodes] = useState(false);
 
-  function loadingBlocks(n: number) {
-    return [...Array(n)].map((_, i) => (
-      <Skeleton key={i} height={8} width={`${Math.random() * 100}%`} radius={'xl'} />
-    ));
+  function loadingBlocks(n: number, minWidthPercentage: number = 0) {
+    const min = minWidthPercentage;
+    return (
+      <Stack>
+        {[...Array(n)].map((_, i) => (
+          <Skeleton
+            key={i}
+            height={10}
+            width={`${min + Math.random() * 100 * (1.0 - min / 100.0)}%`}
+          />
+        ))}
+      </Stack>
+    );
   }
 
   if (!hasLoadedScene) {
-    return <>{loadingBlocks(4)}</>;
+    return <Container mt={'md'}>{loadingBlocks(4, 20)}</Container>;
   }
 
   return (
