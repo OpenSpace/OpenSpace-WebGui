@@ -20,13 +20,13 @@ import {
   removePropertyOwners
 } from './propertyowner/propertyOwnerSlice';
 
-export const reloadPropertyTree = createAction<void>('reloadPropertyTree');
+export const reloadPropertyTree = createAction<void>('propertyTree/reload');
 export const removeUriFromPropertyTree = createAction<{ uri: string }>(
-  'removeUriFromPropertyTree'
+  'propertyTree/removeUri'
 );
 
 export const addUriToPropertyTree = createAsyncThunk(
-  'propertyTree/addUriToPropertyTree',
+  'propertyTree/addUri',
   async (uri: string) => {
     const response = (await api.getProperty(uri)) as
       | OpenSpaceProperty
