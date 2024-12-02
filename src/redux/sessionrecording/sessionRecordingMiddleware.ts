@@ -28,6 +28,9 @@ export const subscribe = createAsyncThunk(
   }
 );
 
+// TODO (ylvse) 2024-12-02: This action is actually never used. In the previous repo we
+// dispatched this when the session recording popover was closed.
+// Now with the window system what to do?
 export const refreshSessionRecording = createAsyncThunk(
   'sessionRecording/refresh',
   async (_, thunkAPI) => {
