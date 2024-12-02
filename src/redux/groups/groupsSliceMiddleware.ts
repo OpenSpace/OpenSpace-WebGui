@@ -4,10 +4,7 @@ import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { addUriToPropertyTree } from '@/redux/propertytree/propertyTreeMiddleware';
 import { Groups, Properties, PropertyOwners } from '@/types/types';
 
-import { getLuaApi } from '../connection/connectionMiddleware';
 import { RootState } from '../store';
-
-import { updateCustomGroupOrdering } from './groupsSlice';
 
 const emptyGroup = () => ({
   subgroups: [],
@@ -60,14 +57,6 @@ const computeGroups = (
   return groups;
 };
 
-export const getCustomGroupsOrdering = createAsyncThunk(
-  'groups/getCustomGroupOrdering',
-  async (_, thunkAPI) => {
-    const state = thunkAPI.getState() as RootState;
-    return await state.luaApi?.guiOrder();
-  }
-);
-
 export const refreshGroups = createAsyncThunk(
   'groups/refreshGroups',
   async (_, thunkAPI) => {
@@ -81,27 +70,8 @@ export const refreshGroups = createAsyncThunk(
 
 export const addGroupsListener = (startListening: AppStartListening) => {
   startListening({
-    actionCreator: getLuaApi.fulfilled,
-    effect: (_, listenerApi) => {
-      listenerApi.dispatch(getCustomGroupsOrdering());
-    }
-  });
-
-  startListening({
-    actionCreator: getCustomGroupsOrdering.fulfilled,
-    effect: (action, listenerApi) => {
-      if (!action.payload) {
-        // eslint-disable-next-line no-console
-        console.error('No GUI tree ordering was set');
-        return;
-      }
-      listenerApi.dispatch(updateCustomGroupOrdering(action.payload));
-    }
-  });
-
-  startListening({
     actionCreator: addUriToPropertyTree.fulfilled,
-    effect: (action, listenerApi) => {
+    effect: (_, listenerApi) => {
       listenerApi.dispatch(refreshGroups());
     }
   });

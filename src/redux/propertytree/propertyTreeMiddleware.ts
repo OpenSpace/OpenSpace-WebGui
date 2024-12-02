@@ -146,7 +146,7 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
     effect: async (_, listenerApi) => {
       // TODO anden88 2024-10-18: Right now the reloadPropertyTree is only dispatched here
       // consder to put the reload logic in here immedieately?
-      //listenerApi.dispatch(reloadPropertyTree());
+      listenerApi.dispatch(reloadPropertyTree());
     }
   });
 

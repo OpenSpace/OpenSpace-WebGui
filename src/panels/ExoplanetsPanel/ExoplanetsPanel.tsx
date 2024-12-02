@@ -6,7 +6,6 @@ import { CollapsableContent } from '@/components/CollapsableContent/CollapsableC
 import { FilterList } from '@/components/FilterList/FilterList';
 import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
-import { loadExoplanetsData } from '@/redux/exoplanets/exoplanetsMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   HabitableZonePropertyKey,
@@ -19,28 +18,37 @@ import {
 import { propertyDispatcher } from '@/util/propertyDispatcher';
 
 import { ExoplanetEntry } from './ExoplanetEntry';
+import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 
 export function ExoplanetsPanel() {
   const [loadingAdded, setLoadingAdded] = useState<string[]>([]);
   const [loadingRemoved, setLoadingRemoved] = useState<string[]>([]);
 
   const luaApi = useOpenSpaceApi();
+  const allSystemNames = useAppSelector((state) => {
+    return state.exoplanets.data;
+  });
+
   const propertyOwners = useAppSelector((state) => {
     return state.propertyOwners.propertyOwners;
   });
 
-  const isDataInitialized = useAppSelector((state) => state.exoplanets.isInitialized);
-  const allSystemNames = useAppSelector((state) => state.exoplanets.data);
   const aim = useGetStringPropertyValue(NavigationAimKey);
   const anchor = useGetStringPropertyValue(NavigationAnchorKey);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!isDataInitialized) {
-      dispatch(loadExoplanetsData());
+    async function fetchData() {
+      const res = await luaApi?.exoplanets.getListOfExoplanets();
+      if (res) {
+        dispatch(initializeExoplanets(Object.values(res)));
+      }
     }
-  }, [dispatch, isDataInitialized]);
+    if (luaApi) {
+      fetchData();
+    }
+  }, [luaApi]);
 
   // Find already existing exoplent systems among the property owners
   const addedSystems = Object.values(propertyOwners).filter((owner) =>
