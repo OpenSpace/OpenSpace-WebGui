@@ -2,6 +2,7 @@ import { createListenerMiddleware, type TypedStartListening } from '@reduxjs/too
 
 import { addActionsListener } from './actions/actionsMiddleware';
 import { addConnectionListener } from './connection/connectionMiddleware';
+import { addDocumentationListener } from './documentation/documentationMiddleware';
 import { addEventsListener } from './events/eventsMiddleware';
 import { addExoplanetListener } from './exoplanets/exoplanetsMiddleware';
 import { addFlightControllerListener } from './flightcontroller/flightControllerMiddleware';
@@ -20,6 +21,7 @@ const startAppListening = listenerMiddleware.startListening as AppStartListening
 addConnectionListener(startAppListening);
 addSessionRecordingListener(startAppListening);
 addActionsListener(startAppListening);
+addDocumentationListener(startAppListening);
 addExoplanetListener(startAppListening);
 addEventsListener(startAppListening);
 addPropertiesListener(startAppListening);

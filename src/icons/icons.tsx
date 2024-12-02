@@ -12,6 +12,7 @@ export {
   MdChevronLeft as ChevronLeftIcon,
   MdChevronRight as ChevronRightIcon,
   MdExpandLess as ChevronUpIcon,
+  MdContentCopy as CopyIcon,
   MdFastForward as FastForwardIcon,
   MdFastRewind as FastRewindIcon,
   MdFilterAlt as FilterIcon,

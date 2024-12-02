@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { actionsReducer } from './actions/actionsSlice';
 import { connectionReducer } from './connection/connectionSlice';
+import { documentationReducer } from './documentation/documentationSlice';
 import { exoplanetsReducer } from './exoplanets/exoplanetsSlice';
 import { groupsReducer } from './groups/groupsSlice';
 import { luaApiReducer } from './luaapi/luaApiSlice';
@@ -15,6 +16,7 @@ export const store = configureStore({
   reducer: {
     actions: actionsReducer,
     connection: connectionReducer,
+    documentation: documentationReducer,
     exoplanets: exoplanetsReducer,
     luaApi: luaApiReducer,
     groups: groupsReducer,

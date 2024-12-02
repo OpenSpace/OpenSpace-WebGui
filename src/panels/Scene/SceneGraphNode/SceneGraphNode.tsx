@@ -5,6 +5,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { PropertyOwner as PropertyOwnerType } from '@/types/types';
 
 import { SceneGraphNodeHeader } from './SceneGraphNodeHeader';
+import { SceneGraphNodeMetaInfo } from './SceneGraphNodeMetaInfo';
 
 interface Props {
   uri: string;
@@ -39,7 +40,8 @@ export function SceneGraphNode({ uri }: Props) {
   const TabKeys = {
     Renderable: 'Renderable',
     Transform: 'Transform',
-    Other: 'Other'
+    Other: 'Other',
+    Info: 'Info'
   };
 
   const hasRenderable = tabsData.Renderable !== undefined;
@@ -59,6 +61,7 @@ export function SceneGraphNode({ uri }: Props) {
           )}
           <Tabs.Tab value={TabKeys.Transform}>{TabKeys.Transform}</Tabs.Tab>
           <Tabs.Tab value={TabKeys.Other}>{TabKeys.Other}</Tabs.Tab>
+          <Tabs.Tab value={TabKeys.Info}>{TabKeys.Info}</Tabs.Tab>
         </Tabs.List>
         {hasRenderable && (
           <Tabs.Panel value={TabKeys.Renderable} p={'sm'}>
@@ -80,6 +83,9 @@ export function SceneGraphNode({ uri }: Props) {
         </Tabs.Panel>
         <Tabs.Panel value={TabKeys.Other} p={'sm'}>
           <PropertyOwner uri={uri} withHeader={false} hideSubOwners />
+        </Tabs.Panel>
+        <Tabs.Panel value={TabKeys.Info} p={'sm'}>
+          <SceneGraphNodeMetaInfo uri={uri} />
         </Tabs.Panel>
       </Tabs>
     </Box>
