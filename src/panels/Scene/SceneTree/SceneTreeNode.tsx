@@ -1,4 +1,4 @@
-import { Box, RenderTreeNodePayload } from '@mantine/core';
+import { Box, RenderTreeNodePayload, TreeNodeData } from '@mantine/core';
 import { BoxData, PanelData, TabData } from 'rc-dock';
 
 import {
@@ -12,7 +12,12 @@ import { SceneGraphNodeHeader } from '../SceneGraphNode/SceneGraphNodeHeader';
 
 import { isGroup } from './treeUtil';
 
-export function SceneTreeNode({ node, expanded, elementProps }: RenderTreeNodePayload) {
+interface Props {
+  node: TreeNodeData;
+  expanded: boolean;
+}
+
+export function SceneTreeNode({ node, expanded }: Props) {
   // TODO: Implement how this should look like. Sould be clear that it's clickable
   const { ref, addWindow } = useWindowManagerProvider();
 
@@ -55,19 +60,28 @@ export function SceneTreeNode({ node, expanded, elementProps }: RenderTreeNodePa
     }
   }
 
+  if (isGroup(node)) {
+    return <CollapsableHeader expanded={expanded} text={node.label} />;
+  }
+  return (
+    <Box mx={'xs'}>
+      <SceneGraphNodeHeader
+        uri={node.value}
+        label={node.label as string}
+        onClick={() => openSceneGraphNodeWindow(node.value)}
+      />
+    </Box>
+  );
+}
+
+export function SceneTreeNodeStyled({
+  node,
+  expanded,
+  elementProps
+}: RenderTreeNodePayload) {
   return (
     <div {...elementProps}>
-      {isGroup(node) ? (
-        <CollapsableHeader expanded={expanded} text={node.label} />
-      ) : (
-        <Box mx={'xs'}>
-          <SceneGraphNodeHeader
-            uri={node.value}
-            label={node.label as string}
-            onClick={() => openSceneGraphNodeWindow(node.value)}
-          />
-        </Box>
-      )}
+      <SceneTreeNode node={node} expanded={expanded} />
     </div>
   );
 }

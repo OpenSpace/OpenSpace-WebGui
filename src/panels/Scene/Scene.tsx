@@ -8,7 +8,7 @@ import {
   Skeleton,
   Stack,
   Tabs,
-  Text
+  Title
 } from '@mantine/core';
 
 import { Tooltip } from '@/components/Tooltip/Tooltip';
@@ -57,42 +57,46 @@ export function Scene() {
       </Tabs.Panel>
 
       <Tabs.Panel value={'sceneMenu'}>
-        <Group justify={'space-between'}>
-          <Text>Scene</Text>
-          {/* TODO: Move this settings menu to a separate component */}
-          <Menu position={'right-start'} closeOnItemClick={false}>
-            <Menu.Target>
-              <ActionIcon>
-                <FilterIcon />
-              </ActionIcon>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Group>
-                <Checkbox
-                  label={'Show only visible'}
-                  checked={showOnlyVisible}
-                  onChange={(event) => setshowOnlyVisible(event.currentTarget.checked)}
-                />
-                <Tooltip text={'Visible = Enabled and not faded out'} />
-              </Group>
-              <Group>
-                {showOnlyVisible}
-                <Checkbox
-                  label={'Show objects with GUI hidden flag'}
-                  checked={showHiddenNodes}
-                  onChange={(event) => setShowHiddenNodes(event.currentTarget.checked)}
-                />
-                <Tooltip
-                  text={
-                    'Show scene graph nodes that are marked as hidden in the GUI ' +
-                    'part of the asset. These are otherwise hidden in the interface'
-                  }
-                />
-              </Group>
-            </Menu.Dropdown>
-          </Menu>
-        </Group>
-        <SceneTree showOnlyVisible={showOnlyVisible} showHiddenNodes={showHiddenNodes} />
+        <Container>
+          <Group justify={'space-between'}>
+            <Title order={2}>Scene</Title>
+            {/* TODO: Move this settings menu to a separate component */}
+            <Menu position={'right-start'} closeOnItemClick={false}>
+              <Menu.Target>
+                <ActionIcon>
+                  <FilterIcon />
+                </ActionIcon>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Group>
+                  <Checkbox
+                    label={'Show only visible'}
+                    checked={showOnlyVisible}
+                    onChange={(event) => setshowOnlyVisible(event.currentTarget.checked)}
+                  />
+                  <Tooltip text={'Visible = Enabled and not faded out'} />
+                </Group>
+                <Group>
+                  <Checkbox
+                    label={'Show objects with GUI hidden flag'}
+                    checked={showHiddenNodes}
+                    onChange={(event) => setShowHiddenNodes(event.currentTarget.checked)}
+                  />
+                  <Tooltip
+                    text={
+                      'Show scene graph nodes that are marked as hidden in the GUI ' +
+                      'part of the asset. These are otherwise hidden in the interface'
+                    }
+                  />
+                </Group>
+              </Menu.Dropdown>
+            </Menu>
+          </Group>
+          <SceneTree
+            showOnlyVisible={showOnlyVisible}
+            showHiddenNodes={showHiddenNodes}
+          />
+        </Container>
       </Tabs.Panel>
     </Tabs>
   );

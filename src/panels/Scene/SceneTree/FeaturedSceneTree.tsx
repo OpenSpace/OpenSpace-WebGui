@@ -6,7 +6,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
 import { hasInterestingTag } from '@/util/propertyTreeHelpers';
 
-import { SceneTreeNode } from './SceneTreeNode';
+import { SceneTreeNodeStyled } from './SceneTreeNode';
 import { filterTreeData, GroupPrefixKey } from './treeUtil';
 
 interface Props {
@@ -76,7 +76,7 @@ export function FeaturedSceneTree({
     <>
       <Tree
         data={featuredTreeData}
-        renderNode={(payload) => <SceneTreeNode {...payload} />}
+        renderNode={(payload) => <SceneTreeNodeStyled {...payload} />}
         selectOnClick
         clearSelectionOnOutsideClick
         allowRangeSelection={false}
