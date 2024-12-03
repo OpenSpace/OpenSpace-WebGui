@@ -1,4 +1,4 @@
-import { createContext, Ref, useContext,useRef } from 'react';
+import { createContext, Ref, useRef } from 'react';
 import { ScrollArea } from '@mantine/core';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
@@ -93,12 +93,4 @@ export function WindowManagerProvider({ children }: { children: React.ReactNode 
       {children}
     </WindowManagerContext.Provider>
   );
-}
-
-export function useWindowManagerProvider() {
-  const context = useContext(WindowManagerContext);
-  if (!context) {
-    throw Error('useWindowManagerProvider must be used within a WindowManagerContext');
-  }
-  return context;
 }

@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { ScrollArea, Stack } from '@mantine/core';
-import DockLayout, { BoxData, LayoutData, PanelData, TabData, TabGroup } from 'rc-dock';
+import { useEffect, useState } from 'react';
+import { Stack } from '@mantine/core';
+import DockLayout, { LayoutData, TabGroup } from 'rc-dock';
 
 import { onCloseConnection, startConnection } from '@/redux/connection/connectionSlice';
 import { useAppDispatch } from '@/redux/hooks';
