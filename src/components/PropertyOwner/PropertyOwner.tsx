@@ -1,6 +1,8 @@
-import { Fieldset, Space } from '@mantine/core';
+import { Paper, Space } from '@mantine/core';
 
+import { GlobeLayersPropertyOwner } from '@/panels/Scene/GlobeLayers/GlobeLayersPropertyOwner';
 import { useAppSelector } from '@/redux/hooks';
+import { displayName, isGlobeLayersUri } from '@/util/propertyTreeHelpers';
 
 import { CollapsableContent } from '../CollapsableContent/CollapsableContent';
 import { Property } from '../Property/Property';
@@ -24,6 +26,10 @@ export function PropertyOwner({
     (state) => state.propertyOwners.propertyOwners[uri]
   );
 
+  const isGlobeLayers = useAppSelector((state) =>
+    isGlobeLayersUri(uri, state.properties.properties)
+  );
+
   if (!propertyOwner) {
     return null;
   }
@@ -36,25 +42,31 @@ export function PropertyOwner({
     return null;
   }
 
-  const content = (
-    <>
-      {!hideSubOwners && propertyOwner.subowners.length > 0 && (
-        <>
-          {propertyOwner.subowners.map((subowner) => (
-            <PropertyOwner key={subowner} uri={subowner} />
-          ))}
-          {propertyOwner.properties.length > 0 && <Space h={'xs'} />}
-        </>
-      )}
-      {propertyOwner.properties.length > 0 && (
-        <Fieldset p={'xs'}>
-          {propertyOwner.properties.map((property) => (
-            <Property key={property} uri={property} />
-          ))}
-        </Fieldset>
-      )}
-    </>
-  );
+  // First handle any custom content types, like GlobeLayers
+  let content;
+  if (isGlobeLayers) {
+    content = <GlobeLayersPropertyOwner uri={uri} />;
+  } else {
+    content = (
+      <>
+        {!hideSubOwners && propertyOwner.subowners.length > 0 && (
+          <>
+            {propertyOwner.subowners.map((subowner) => (
+              <PropertyOwner key={subowner} uri={subowner} />
+            ))}
+            {propertyOwner.properties.length > 0 && <Space h={'xs'} />}
+          </>
+        )}
+        {propertyOwner.properties.length > 0 && (
+          <Paper p={'xs'}>
+            {propertyOwner.properties.map((property) => (
+              <Property key={property} uri={property} />
+            ))}
+          </Paper>
+        )}
+      </>
+    );
+  }
 
   if (!withHeader) {
     return content;
@@ -62,7 +74,7 @@ export function PropertyOwner({
 
   return (
     <CollapsableContent
-      title={propertyOwner.name ?? propertyOwner.identifier ?? uri}
+      title={displayName(propertyOwner)}
       leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
       defaultOpen={expandedOnDefault}
       noTransition

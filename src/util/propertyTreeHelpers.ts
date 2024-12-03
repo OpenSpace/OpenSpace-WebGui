@@ -1,6 +1,10 @@
-import { Properties, PropertyOwners } from '@/types/types';
+import { Properties, PropertyOwner, PropertyOwners } from '@/types/types';
 
 import { InterestingTagKey } from './keys';
+
+export function displayName(propertyOwner: PropertyOwner) {
+  return propertyOwner.name ?? propertyOwner.identifier ?? propertyOwner.uri;
+}
 
 export function hasInterestingTag(uri: string, propertyOwners: PropertyOwners) {
   return propertyOwners[uri]?.tags.some((tag) => tag.includes(InterestingTagKey));
@@ -20,6 +24,19 @@ export function guiOrderingNumber(
 export function isRenderable(uri: string) {
   const renderableSuffix = '.Renderable';
   return uri.endsWith(renderableSuffix);
+}
+
+export function isGlobe(renderableUri: string, properties: Properties) {
+  const renderableSuffix = '.Renderable';
+  return (
+    renderableUri.endsWith(renderableSuffix) &&
+    properties[`${renderableUri}.Type`]?.value === 'RenderableGlobe'
+  );
+}
+
+export function isGlobeLayersUri(uri: string, properties: Properties) {
+  const suffix = '.Renderable.Layers';
+  return uri.endsWith(suffix) && isGlobe(uri.replace('.Layers', ''), properties);
 }
 
 export function shouldShowSceneGraphNode(

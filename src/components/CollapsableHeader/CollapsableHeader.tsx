@@ -19,7 +19,7 @@ export function CollapsableHeader({
 }: Props) {
   const iconProps = { size: 18, style: { flexShrink: 0 } };
   return (
-    <Group justify={'space-between'}>
+    <Group justify={'space-between'} wrap={'nowrap'}>
       <Group gap={5} wrap={'nowrap'}>
         <ActionIcon variant={'transparent'} onClick={toggle}>
           {expanded ? (

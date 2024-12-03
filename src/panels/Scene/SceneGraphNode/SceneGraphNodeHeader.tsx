@@ -5,6 +5,7 @@ import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/Visi
 import { OpenInNewIcon, VerticalDotsIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { IconSize, NavigationType } from '@/types/enums';
+import { displayName } from '@/util/propertyTreeHelpers';
 import { useWindowManagerProvider } from '@/windowmanagement/WindowLayout/WindowLayoutProvider';
 
 import { SceneGraphNode } from './SceneGraphNode';
@@ -25,7 +26,7 @@ export function SceneGraphNodeHeader({ uri, label, onClick }: Props) {
     return state.propertyOwners.propertyOwners[renderableUri] !== undefined;
   });
 
-  const name = label ?? propertyOwner?.name ?? propertyOwner?.identifier ?? uri;
+  const name = label ?? displayName(propertyOwner!);
 
   const { addWindow } = useWindowManagerProvider();
   function openInNewWindow() {
