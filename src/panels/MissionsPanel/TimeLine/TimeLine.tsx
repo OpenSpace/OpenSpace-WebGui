@@ -18,6 +18,8 @@ import {
 import { jumpToTime } from '../util';
 import { useOpenSpaceApi } from '@/api/hooks';
 
+import './TimeLine.css';
+
 interface TimeLineProps {
   allPhasesNested: Phase[][];
   displayedPhase: DisplayedPhase;
@@ -46,13 +48,14 @@ export function TimeLine({
   // Set the dimensions and margins of the graph
   const margin = {
     top: 10,
-    right: 0,
+    right: 2,
     bottom: 10,
     left: 60
   };
-  const paddingGrpah = {
+  const paddingGraph = {
     top: 0,
-    inner: 5
+    inner: 5,
+    bottom: 1
   };
 
   // Depth of nesting for phases
@@ -78,7 +81,10 @@ export function TimeLine({
   // Given in milliseconds
   const transitionDuration = 750;
 
-  let selectedPhase: Phase;
+  const clipPathTop = margin.top - paddingGraph.top;
+  const clipPathBottom = height - margin.bottom + 2 * paddingGraph.bottom;
+
+  let selectedPhase: Phase | undefined = undefined;
   let selectedPhaseIndex: number = 0;
 
   const timeRange = [
@@ -162,7 +168,8 @@ export function TimeLine({
   function createRectangle(
     phase: Phase,
     nestedLevel: number,
-    padding: number = 0
+    padding: number = 0,
+    color?: React.CSSProperties['color']
   ): React.JSX.Element {
     if (now === undefined) {
       return <></>;
@@ -179,15 +186,6 @@ export function TimeLine({
     // Make sure padding doesn't get stretched when zooming
     const paddingY = padding / scale;
     const radiusY = radiusPhase / scale; // same here
-
-    // TODO: do the css some other way to enable &hover styles
-    const style: React.CSSProperties = isCurrent
-      ? {
-          fill: 'var(--mantine-primary-color-4)',
-          opacity: 0.95,
-          cursor: 'pointer'
-        }
-      : { fill: 'grey', opacity: 0.9, cursor: 'pointer' };
 
     return (
       <Tooltip.Floating
@@ -213,14 +211,15 @@ export function TimeLine({
           }}
           ry={radiusY}
           rx={radiusPhase}
-          style={style}
+          className={isCurrent ? 'highlightedRect' : 'normalRect'}
+          style={color ? { fill: color, opacity: 1.0 } : {}}
         />
       </Tooltip.Floating>
     );
   }
 
   return (
-    <div style={{ backgroundColor: 'blue', flexGrow: 0 }}>
+    <div style={{ flexGrow: 0 }}>
       <Group gap={0} justify="space-between">
         <ActionIcon onClick={() => zoomByButton(0.5)} aria-label={'Zoom in timeline'}>
           <ZoomOutIcon size={IconSize.sm} />
@@ -232,27 +231,43 @@ export function TimeLine({
           <ZoomOutMapIcon size={IconSize.sm} />
         </ActionIcon>
       </Group>
-      <svg ref={svgRef} style={{ backgroundColor: 'red' }} width={width} height={height}>
-        <g transform={`translate(0, ${paddingGrpah.top})`}>
+      <svg
+        ref={svgRef}
+        width={width}
+        height={height}
+        style={{
+          clipPath: `polygon(0% ${clipPathTop}px, 100% ${clipPathTop}px,
+           100% ${clipPathBottom}px, 0% ${clipPathBottom}px`
+        }}
+      >
+        <g transform={`translate(0, ${paddingGraph.top})`}>
           <g
             ref={yAxisRef}
-            transform={`translate(${margin.left - paddingGrpah.inner}, ${0})`}
+            transform={`translate(${margin.left - paddingGraph.inner}, ${0})`}
           />
+          {/* This group transforms all the rectangles correctly when we scale and zoom in
+              the timeline */}
           <g transform={`translate(0, ${translation})scale(1, ${scale})`}>
             {allPhasesNested.map((nestedPhase, index) =>
               nestedPhase.map((phase) => {
-                //   if (
-                //     displayedPhase.type === DisplayType.Phase &&
-                //     displayedPhase.data.name === phase.name
-                //   ) {
-                //     // We want to draw the selected phase last so it appears on top, save it
-                //     // for later
-                //     selectedPhase = phase;
-                //     selectedPhaseIndex = index;
-                //     return null;
-                //   }
+                if (
+                  displayedPhase.type === DisplayType.Phase &&
+                  displayedPhase.data.name === phase.name
+                ) {
+                  // We want to draw the selected phase last so it appears on top, save it
+                  // for later
+                  selectedPhase = phase;
+                  selectedPhaseIndex = index;
+                  return null;
+                }
                 return createRectangle(phase, index);
               })
+            )}
+            {selectedPhase && (
+              <>
+                {createRectangle(selectedPhase, selectedPhaseIndex, 2, 'white')}
+                {createRectangle(selectedPhase, selectedPhaseIndex)}
+              </>
             )}
           </g>
         </g>
