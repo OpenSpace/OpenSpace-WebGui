@@ -14,9 +14,8 @@ export const WindowManagerContext = createContext<ProviderProps | null>(null);
 export function WindowManagerProvider({ children }: { children: React.ReactNode }) {
   const rcDocRef = useRef<DockLayout>(null);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function isPanelDataInstance(obj: any) {
-    return obj && Array.isArray(obj.tabs);
+  function isPanelDataInstance(obj: PanelData | BoxData) {
+    return obj && 'tabs' in obj;
   }
 
   function addWindow(component: JSX.Element, options: WindowLayoutOptions) {
