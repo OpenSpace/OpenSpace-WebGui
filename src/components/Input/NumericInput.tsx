@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NumberInput } from '@mantine/core';
 
 interface Props {
@@ -25,6 +25,11 @@ export function NumericInput({
   step
 }: Props) {
   const [currentValue, setCurrentValue] = useState<number>(defaultValue);
+
+  useEffect(() => {
+    setCurrentValue(defaultValue);
+  }, [defaultValue]);
+
   let valueWasSet = false;
 
   function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {

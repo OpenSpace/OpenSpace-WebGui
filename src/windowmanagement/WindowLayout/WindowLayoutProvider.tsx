@@ -65,8 +65,6 @@ export function WindowManagerProvider({ children }: { children: React.ReactNode 
         else {
           tab.group = 'regularWindow';
           const panel: PanelData = {
-            widthFlex: 6,
-            minWidth: 400,
             tabs: [tab]
           };
 
@@ -83,6 +81,7 @@ export function WindowManagerProvider({ children }: { children: React.ReactNode 
         throw Error('Unhandled window position');
     }
   }
+
   return (
     <WindowManagerContext.Provider
       value={{

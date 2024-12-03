@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActionIcon, Grid, Slider } from '@mantine/core';
 import { inRange } from 'lodash';
 
@@ -30,6 +30,10 @@ export function NumericProperty({
   additionalData
 }: Props) {
   const [currentValue, setCurrentValue] = useState<number>(value);
+
+  useEffect(() => {
+    setCurrentValue(value);
+  }, [value]);
 
   const min = additionalData.MinimumValue;
   const max = additionalData.MaximumValue;

@@ -10,7 +10,7 @@ import { menuItemsDB } from '../data/MenuItems';
 import { TaskBar } from '../TaskBar';
 import { TopMenuBar } from '../TopMenuBar';
 
-import { useWindowManagerProvider } from './WindowLayoutProvider';
+import { useWindowManagerProvider } from './hooks';
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import './WindowLayout.css';
@@ -36,7 +36,6 @@ function createDefaultLayout(): LayoutData {
         {
           id: 'center',
           tabs: [],
-          //   size: 1000,
           panelLock: {},
           group: 'headless'
         }
@@ -61,11 +60,10 @@ export function WindowLayout() {
     floatable: false,
     maximizable: false,
     tabLocked: true,
-    widthFlex: 10
+    widthFlex: 2
   };
   const regularWindow: TabGroup = {
-    maximizable: false,
-    widthFlex: 1
+    maximizable: false
   };
   const groups = {
     headless,

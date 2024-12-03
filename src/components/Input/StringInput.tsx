@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextInput } from '@mantine/core';
 
 interface Props {
@@ -19,6 +19,11 @@ export function StringInput({
   defaultValue
 }: Props) {
   const [currentValue, setCurrentValue] = useState<string>(defaultValue);
+
+  useEffect(() => {
+    setCurrentValue(defaultValue);
+  }, [defaultValue]);
+
   let valueWasSet = false;
 
   function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
