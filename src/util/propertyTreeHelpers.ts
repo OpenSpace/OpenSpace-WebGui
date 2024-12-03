@@ -1,4 +1,10 @@
-import { Properties, PropertyOwner, PropertyOwners } from '@/types/types';
+import {
+  Properties,
+  PropertyDetails,
+  PropertyOwner,
+  PropertyOwners,
+  PropertyVisibility
+} from '@/types/types';
 
 import { InterestingTagKey } from './keys';
 
@@ -83,4 +89,38 @@ export function checkVisiblity(enabled: boolean | undefined, fade: number | unde
   }
 
   return enabled && fade > 0;
+}
+
+// Returns whether a property matches the current visiblity settings
+export function isPropertyVisible(
+  propertyDetails: PropertyDetails | undefined,
+  visiblitySetting: number | undefined
+) {
+  if (visiblitySetting === undefined || !propertyDetails) {
+    return true;
+  }
+
+  function propertyVisibilityNumber(visibility: PropertyVisibility) {
+    switch (visibility) {
+      case 'Hidden':
+        return 5;
+      case 'Developer':
+        return 4;
+      case 'AdvancedUser':
+        return 3;
+      case 'User':
+        return 2;
+      case 'NoviceUser':
+        return 1;
+      case 'Always':
+        return 0;
+      default:
+        return 0;
+    }
+  }
+
+  const propertyVisibility = propertyVisibilityNumber(
+    propertyDetails.metaData.Visibility
+  );
+  return visiblitySetting >= propertyVisibility;
 }
