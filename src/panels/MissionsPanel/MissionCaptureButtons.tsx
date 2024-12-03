@@ -4,7 +4,7 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { Phase } from '@/types/mission-types';
 
-import { jumpToTime, makeUTCString } from './util';
+import { jumpToTime } from './util';
 
 interface MissionCaptureButtonsProps {
   mission: Phase;
@@ -22,8 +22,7 @@ export function MissionCaptureButtons({ mission }: MissionCaptureButtonsProps) {
     // Assume the captures are stored with regards to time. Find the first time that is
     // after the current time
     const capture = mission.capturetimes.find((capture) => {
-      const utcTime = makeUTCString(capture);
-      const utcDate = Date.parse(utcTime);
+      const utcDate = Date.parse(capture);
       return now < utcDate;
     });
 
@@ -38,8 +37,7 @@ export function MissionCaptureButtons({ mission }: MissionCaptureButtonsProps) {
     // Assume the captures are sorted with regards to time. Find the last time that is
     // before the current time
     const capture = mission.capturetimes.findLast((capture) => {
-      const utcTime = makeUTCString(capture);
-      const utcDate = Date.parse(utcTime);
+      const utcDate = Date.parse(capture);
       return now > utcDate;
     });
 

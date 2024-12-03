@@ -11,7 +11,7 @@ import { ActionsButton } from '../ActionsPanel/ActionsButton';
 
 import { MissionCaptureButtons } from './MissionCaptureButtons';
 import { MissionTimeButtons } from './MissionTimeButtons';
-import { makeUTCString } from './util';
+import { TimeLine } from './TimeLine/TimeLine';
 
 export type DisplayedPhase =
   | { type: DisplayType.Phase; data: Phase }
@@ -84,8 +84,8 @@ export function MissionsPanel() {
 
     const allPhasesFlat = allPhasesNested.current.flat();
     const filteredPhases = allPhasesFlat.filter((phase) => {
-      const isBeforeEnd = now < Date.parse(makeUTCString(phase.timerange.end));
-      const isAfterStart = now >= Date.parse(makeUTCString(phase.timerange.start));
+      const isBeforeEnd = now < Date.parse(phase.timerange.end);
+      const isAfterStart = now >= Date.parse(phase.timerange.start);
       return isAfterStart && isBeforeEnd;
     });
 
@@ -147,16 +147,12 @@ export function MissionsPanel() {
   function getTimeString() {
     switch (displayedPhase.type) {
       case DisplayType.Phase: {
-        const start = new Date(
-          makeUTCString(displayedPhase.data.timerange.start)
-        ).toDateString();
-        const end = new Date(
-          makeUTCString(displayedPhase.data.timerange.end)
-        ).toDateString();
+        const start = new Date(displayedPhase.data.timerange.start).toDateString();
+        const end = new Date(displayedPhase.data.timerange.end).toDateString();
         return `${start} - ${end}`;
       }
       case DisplayType.Milestone:
-        return new Date(makeUTCString(displayedPhase.data.date)).toDateString();
+        return new Date(displayedPhase.data.date).toDateString();
       default:
         return '';
     }
@@ -169,51 +165,63 @@ export function MissionsPanel() {
 
   return (
     <Container my={'xs'}>
-      <Group grow gap={'xs'}>
-        <Button
-          onClick={() => setPhaseManually({ type: DisplayType.Phase, data: overview })}
-        >
-          Overview
-        </Button>
-        <Button
-          onClick={() => setDisplayCurrentPhase((prevState) => !prevState)}
-          variant={displayCurrentPhase ? 'filled' : 'light'}
-        >
-          Current Phase
-        </Button>
-      </Group>
-      {displayedPhase.data ? (
-        <>
-          <Text>{title}</Text>
-          <Text c={'dimmed'}>{timeString}</Text>
-          <Text my={'xs'}>{displayedPhase.data.description}</Text>
-          {displayedPhase.data.link && (
-            <Button onClick={() => console.log(displayedPhase.data.link)}>
-              Read more
+      <Group grow wrap={'nowrap'} align="start">
+        <TimeLine
+          allPhasesNested={allPhasesNested.current}
+          displayedPhase={displayedPhase}
+          overview={overview}
+          setDisplayedPhase={setPhaseManually}
+        />
+        <div style={{ maxWidth: 'none' }}>
+          <Group grow gap={'xs'}>
+            <Button
+              onClick={() =>
+                setPhaseManually({ type: DisplayType.Phase, data: overview })
+              }
+            >
+              Overview
             </Button>
+            <Button
+              onClick={() => setDisplayCurrentPhase((prevState) => !prevState)}
+              variant={displayCurrentPhase ? 'filled' : 'light'}
+            >
+              Current Phase
+            </Button>
+          </Group>
+          {displayedPhase.data ? (
+            <>
+              <Text>{title}</Text>
+              <Text c={'dimmed'}>{timeString}</Text>
+              <Text my={'xs'}>{displayedPhase.data.description}</Text>
+              {displayedPhase.data.link && (
+                <Button onClick={() => console.log(displayedPhase.data.link)}>
+                  Read more
+                </Button>
+              )}
+              {displayedPhase.data.image && (
+                <Image
+                  my={'xs'}
+                  maw={window.innerWidth * 0.25}
+                  src={displayedPhase.data.image}
+                  alt={'Image text not available'}
+                />
+              )}
+              <MissionTimeButtons
+                currentPhase={displayedPhase}
+                isMissionOverview={displayedPhase.data === overview}
+              />
+              <MissionCaptureButtons mission={selectedMisssion} />{' '}
+              <Flex wrap={'wrap'} gap={'xs'} my={'xs'}>
+                {currentActions.map((action) => (
+                  <ActionsButton key={action.identifier} action={action} />
+                ))}
+              </Flex>
+            </>
+          ) : (
+            <Text> No data for this time range </Text>
           )}
-          {displayedPhase.data.image && (
-            <Image
-              my={'xs'}
-              maw={window.innerWidth * 0.25}
-              src={displayedPhase.data.image}
-              alt={'Image text not available'}
-            />
-          )}
-          <MissionTimeButtons
-            currentPhase={displayedPhase}
-            isMissionOverview={displayedPhase.data === overview}
-          />
-          <MissionCaptureButtons mission={selectedMisssion} />{' '}
-          <Flex wrap={'wrap'} gap={'xs'} my={'xs'}>
-            {currentActions.map((action) => (
-              <ActionsButton key={action.identifier} action={action} />
-            ))}
-          </Flex>
-        </>
-      ) : (
-        <Text> No data for this time range </Text>
-      )}
+        </div>
+      </Group>
     </Container>
   );
 }

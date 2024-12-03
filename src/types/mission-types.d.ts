@@ -1,5 +1,5 @@
 export interface Milestone {
-  date: string; // Date as an ISO8601 string
+  date: string; // Date as an UTC ISO8601 string
   name: string;
   description?: string;
   image?: string;
@@ -11,7 +11,7 @@ export interface Phase {
   name: string;
   description: string;
   actions: string[];
-  timerange: { start: string; end: string }; // Dates as an ISO8601 string
+  timerange: { start: string; end: string }; // Dates as an UTC ISO8601 string
   phases: Phase[];
   image: string;
   link: string;

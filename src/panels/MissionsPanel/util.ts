@@ -1,9 +1,5 @@
 import { isDateValid } from '@/redux/time/util';
 
-export function makeUTCString(time: string): string {
-  return time.includes('Z') ? time : `${time}Z`;
-}
-
 export function jumpToTime(
   currentTime: number | undefined,
   time: string,
@@ -14,13 +10,13 @@ export function jumpToTime(
     return;
   }
 
-  const utcTime = new Date(makeUTCString(time));
+  const utcDate = new Date(time);
 
-  if (!isDateValid(utcTime)) {
+  if (!isDateValid(utcDate)) {
     return;
   }
 
-  const timeDiffInSeconds = Math.abs(currentTime - utcTime.valueOf()) / 1000;
+  const timeDiffInSeconds = Math.abs(currentTime - utcDate.valueOf()) / 1000;
   const nSecondsInADay = 86400;
   const diffBiggerThanADay = timeDiffInSeconds > nSecondsInADay;
 
@@ -32,7 +28,7 @@ export function jumpToTime(
       'QuadraticEaseOut'
     );
     setTimeout(() => {
-      luaApi?.time.setTime(utcTime.toISOString());
+      luaApi?.time.setTime(utcDate.toISOString());
       luaApi?.setPropertyValueSingle(
         'RenderEngine.BlackoutFactor',
         1,
@@ -41,6 +37,6 @@ export function jumpToTime(
       );
     }, fadeTime * 1000);
   } else {
-    luaApi?.time.interpolateTime(utcTime.toISOString(), fadeTime);
+    luaApi?.time.interpolateTime(utcDate.toISOString(), fadeTime);
   }
 }
