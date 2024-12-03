@@ -11,6 +11,7 @@ import {
   Title
 } from '@mantine/core';
 
+import { useGetStringPropertyValue } from '@/api/hooks';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 import { useAppSelector } from '@/redux/hooks';
 
@@ -21,13 +22,14 @@ interface Props {
 export function SceneGraphNodeMetaInfo({ uri }: Props) {
   const identifier = uri.split('.').pop(); // Get last word in uri
 
-  const description = useAppSelector((state) => {
-    const prop = state.properties.properties[`${uri}.GuiDescription`];
-    if (prop && prop.value !== undefined && typeof prop.value === 'string') {
-      return prop.value.replace(/\\n/g, '').replace(/<br>/g, '');
-    }
-    return 'No description found';
-  });
+  let description = useGetStringPropertyValue(`${uri}.GuiDescription`);
+  if (description) {
+    description.replace(/\\n/g, '').replace(/<br>/g, '');
+  } else {
+    description = 'No description found';
+  }
+
+  const guiPath = useGetStringPropertyValue(`${uri}.GuiPath`);
 
   const documentation = useAppSelector((state) => {
     if (identifier) {
@@ -61,7 +63,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
       ['About:', description],
       [
         'Tags:',
-        <Group gap={5}>
+        <Group gap={'xs'}>
           {propertyOwner?.tags.map((tag) => (
             <Pill key={tag}>
               <Flex gap={2}>
@@ -71,7 +73,8 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
             </Pill>
           ))}
         </Group>
-      ]
+      ],
+      ['GUI:', <span style={{ overflowWrap: 'anywhere' }}>{guiPath}</span>]
     ]
   };
 
@@ -86,7 +89,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
       ['Author:', documentation?.author],
       ['License:', documentation?.license],
       [
-        'Description:',
+        'About:',
         <Spoiler showLabel={'Show more'} hideLabel={'Hide details'}>
           {documentation?.description}
         </Spoiler>

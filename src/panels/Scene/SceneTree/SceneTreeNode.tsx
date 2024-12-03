@@ -29,7 +29,7 @@ export function SceneTreeNode({ node, expanded, elementProps }: RenderTreeNodePa
     if (!existingWindow) {
       addWindow(content, {
         id: defaultWindowId,
-        title: 'Scene Graph Node',
+        title: 'Scene: Selected Node',
         position: 'float'
       });
 
@@ -47,7 +47,7 @@ export function SceneTreeNode({ node, expanded, elementProps }: RenderTreeNodePa
         ref.current.dockMove(newWindow, scenePanelParentBox, 'bottom');
       }
     } else {
-      const newTabData = createTabData(defaultWindowId, 'Scene Graph Node', content);
+      const newTabData = createTabData(defaultWindowId, 'Scene: Selected Node', content);
       ref.current.updateTab(defaultWindowId, newTabData, true);
 
       // TODO: The content is not correctly updated for float windows when this is used
