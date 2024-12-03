@@ -1,6 +1,6 @@
 import { ZoomInIcon, ZoomOutIcon, ZoomOutMapIcon } from '@/icons/icons';
 import { Phase } from '@/types/mission-types';
-import { ActionIcon, Group } from '@mantine/core';
+import { ActionIcon, Group, Tooltip, Text } from '@mantine/core';
 import { useEffect, useRef, useState } from 'react';
 import { DisplayedPhase } from '../MissionsPanel';
 import { DisplayType, IconSize } from '@/types/enums';
@@ -15,6 +15,8 @@ import {
   zoomIdentity,
   zoomTransform
 } from 'd3';
+import { jumpToTime } from '../util';
+import { useOpenSpaceApi } from '@/api/hooks';
 
 interface TimeLineProps {
   allPhasesNested: Phase[][];
@@ -32,6 +34,7 @@ export function TimeLine({
   overview,
   setDisplayedPhase
 }: TimeLineProps) {
+  const luaApi = useOpenSpaceApi();
   const [scale, setScale] = useState(1);
   const [translation, setTranslation] = useState(0);
   const now = useAppSelector((state) => state.time.timeCapped);
@@ -177,27 +180,42 @@ export function TimeLine({
     const paddingY = padding / scale;
     const radiusY = radiusPhase / scale; // same here
 
+    // TODO: do the css some other way to enable &hover styles
     const style: React.CSSProperties = isCurrent
       ? {
           fill: 'var(--mantine-primary-color-4)',
-          opacity: 0.95
+          opacity: 0.95,
+          cursor: 'pointer'
         }
-      : { fill: 'grey', opacity: 0.9 };
+      : { fill: 'grey', opacity: 0.9, cursor: 'pointer' };
 
     return (
-      <rect
-        key={`${phase.name}${startTime}-${endTime}`}
-        x={xScale(nestedLevels - nestedLevel - 1) - padding}
-        y={yScale(endTime) - paddingY}
-        height={yScale(startTime) - yScale(endTime) + 2 * paddingY}
-        width={xScale(1) - xScale(0) + 2 * padding}
-        onClick={(event) => {
-          setDisplayedPhase({ type: DisplayType.Phase, data: phase });
-        }}
-        ry={radiusY}
-        rx={radiusPhase}
-        style={style}
-      />
+      <Tooltip.Floating
+        label={
+          <>
+            <Text fw={'bold'}>Phase</Text>
+            {phase.name}
+          </>
+        }
+      >
+        <rect
+          key={`${phase.name}${startTime}-${endTime}`}
+          x={xScale(nestedLevels - nestedLevel - 1) - padding}
+          y={yScale(endTime) - paddingY}
+          height={yScale(startTime) - yScale(endTime) + 2 * paddingY}
+          width={xScale(1) - xScale(0) + 2 * padding}
+          onClick={(event) => {
+            setDisplayedPhase({ type: DisplayType.Phase, data: phase });
+            // TODO: Make into a function?
+            if (event.shiftKey) {
+              jumpToTime(now, phase.timerange.start, luaApi);
+            }
+          }}
+          ry={radiusY}
+          rx={radiusPhase}
+          style={style}
+        />
+      </Tooltip.Floating>
     );
   }
 
