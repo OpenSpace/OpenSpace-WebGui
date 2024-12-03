@@ -3,17 +3,17 @@ import { Phase } from '@/types/mission-types';
 import { ActionIcon, Group } from '@mantine/core';
 import { useEffect, useRef, useState } from 'react';
 import { DisplayedPhase } from '../MissionsPanel';
-import { DisplayType } from '@/types/enums';
+import { DisplayType, IconSize } from '@/types/enums';
 import { useAppSelector } from '@/redux/hooks';
 import {
-  Axis,
-  axisBottom,
   axisLeft,
-  axisTop,
-  NumberValue,
   scaleLinear,
   scaleUtc,
-  select
+  select,
+  zoom,
+  ZoomBehavior,
+  zoomIdentity,
+  zoomTransform
 } from 'd3';
 
 interface TimeLineProps {
@@ -23,7 +23,7 @@ interface TimeLineProps {
   setDisplayedPhase: (phase: DisplayedPhase) => void;
 }
 
-// TODO: rewrite D3.js usage using this guide?
+// TODO: rewrite D3.js usage using this guide? Makes everything more React-esque
 // https://2019.wattenberger.com/blog/react-and-d3
 
 export function TimeLine({
@@ -36,9 +36,10 @@ export function TimeLine({
   const [translation, setTranslation] = useState(0);
   const now = useAppSelector((state) => state.time.timeCapped);
 
-  const xAxisRef = useRef<any>(null);
+  //   const xAxisRef = useRef<any>(null);
   const yAxisRef = useRef<any>(null);
-
+  const svgRef = useRef<any>(null);
+  const zoomRef = useRef<ZoomBehavior<SVGElement, unknown> | null>(null);
   // Set the dimensions and margins of the graph
   const margin = {
     top: 10,
@@ -57,7 +58,6 @@ export function TimeLine({
   const minLevelWidth = 20;
   // Ensure graph is large enough to show all phases
   const minWidth = minLevelWidth * nestedLevels + margin.left + margin.right;
-
   // Height of graph
   //   const height = fullHeight - zoomButtonHeight;
   const height = 550;
@@ -65,6 +65,15 @@ export function TimeLine({
   const maxWidth = 90; // previously fullWidth
   // Width of graph
   const width = Math.max(maxWidth, minWidth);
+  // Min and max scale
+  const scaleExtent: [number, number] = [1, 1000];
+  // Min and max translation
+  const translateExtent: [[number, number], [number, number]] = [
+    [0, 0],
+    [width, height - margin.bottom]
+  ];
+  // Given in milliseconds
+  const transitionDuration = 750;
 
   let selectedPhase: Phase;
   let selectedPhaseIndex: number = 0;
@@ -86,13 +95,66 @@ export function TimeLine({
   //     .tickSize(0)
   //     .ticks(nestedLevels);
 
+  // TODO right now we don't have a way to get the size of the panel we're in so we can't
+  // do any updates related to a panel resize and therefore use a fixed height.
+  // When height changes of window, rescale y axis
+  /*
+  useEffect(() => {
+    // Update the axis every time window rescales
+    yScale = scaleUtc()
+    .range([height - margin.bottom, margin.top])
+    .domain(timeRange);
+    yAxis = axisLeft(yScale);
+    select(yAxisRef.current).call(yAxis);
+}, [height]);
+*/
+
+  // On mount, style axes
   useEffect(() => {
     select(yAxisRef.current).call(yAxis);
+    // TODO set font family? Previously was 'Segoe UI' font on ticks
     select(yAxisRef.current).selectAll('.tick text').style('font-size', '1.3em');
   }, []);
 
-  function zoomByButton(zoomBy: number) {}
-  function reset() {}
+  // Add zoom and update it every the the y scale changes (TODO: panel resize)
+  useEffect(() => {
+    zoomRef.current = zoom<SVGElement, unknown>()
+      .on('zoom', (event) => {
+        // TODO: event is any here which is super annoying, try to find a way to get this
+        // typed properly..
+        const newYScale = event.transform.rescaleY(yScale);
+        select(yAxisRef.current).call(yAxis.scale(newYScale));
+        setScale(event.transform.k);
+        setTranslation(event.transform.y);
+      })
+      .scaleExtent(scaleExtent)
+      .extent(translateExtent)
+      .translateExtent(translateExtent);
+    select(svgRef.current).call(zoomRef.current);
+  }, [yScale]);
+
+  function reset() {
+    if (!zoomRef.current) {
+      return;
+    }
+    select(svgRef.current)
+      .transition()
+      .duration(transitionDuration)
+      .call(
+        zoomRef.current.transform,
+        zoomIdentity,
+        zoomTransform(select(svgRef.current).node()).invert([width * 0.5, height * 0.5])
+      );
+  }
+  function zoomByButton(zoomValue: number) {
+    if (!zoomRef.current) {
+      return;
+    }
+    select(svgRef.current)
+      .transition()
+      .duration(transitionDuration)
+      .call(zoomRef.current.scaleBy, zoomValue);
+  }
 
   function createRectangle(
     phase: Phase,
@@ -111,8 +173,9 @@ export function TimeLine({
 
     // Radius for the rectangles that represent phases
     const radiusPhase = 2;
-    const paddingY = padding / scale; // Make sure padding doesn't get stretched when zooming
-    const radiusY = 5; // radiusPhase / scale;
+    // Make sure padding doesn't get stretched when zooming
+    const paddingY = padding / scale;
+    const radiusY = radiusPhase / scale; // same here
 
     const style: React.CSSProperties = isCurrent
       ? {
@@ -131,10 +194,9 @@ export function TimeLine({
         onClick={(event) => {
           setDisplayedPhase({ type: DisplayType.Phase, data: phase });
         }}
+        ry={radiusY}
         rx={radiusPhase}
-        ry={radiusPhase}
         style={style}
-        strokeWidth={0}
       />
     );
   }
@@ -143,16 +205,16 @@ export function TimeLine({
     <div style={{ backgroundColor: 'blue', flexGrow: 0 }}>
       <Group gap={0} justify="space-between">
         <ActionIcon onClick={() => zoomByButton(0.5)} aria-label={'Zoom in timeline'}>
-          <ZoomInIcon />
+          <ZoomOutIcon size={IconSize.sm} />
         </ActionIcon>
         <ActionIcon onClick={() => zoomByButton(2.0)} aria-label={'Zoom out timeline'}>
-          <ZoomOutIcon />
+          <ZoomInIcon size={IconSize.sm} />
         </ActionIcon>
         <ActionIcon onClick={() => reset()} aria-label={'Full view timeline'}>
-          <ZoomOutMapIcon />
+          <ZoomOutMapIcon size={IconSize.sm} />
         </ActionIcon>
       </Group>
-      <svg style={{ backgroundColor: 'red' }} width={width} height={height}>
+      <svg ref={svgRef} style={{ backgroundColor: 'red' }} width={width} height={height}>
         <g transform={`translate(0, ${paddingGrpah.top})`}>
           <g
             ref={yAxisRef}
