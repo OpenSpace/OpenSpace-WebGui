@@ -27,6 +27,9 @@ export {
   MdFiberManualRecord as RecordIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
-  MdVideocam as VideocamIcon
+  MdVideocam as VideocamIcon,
+  MdZoomOutMap as ZoomOutMapIcon,
+  MdZoomOut as ZoomOutIcon,
+  MdZoomIn as ZoomInIcon
 } from 'react-icons/md';
 export { RiFocus3Line as FocusIcon } from 'react-icons/ri';
