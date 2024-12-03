@@ -63,8 +63,8 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
         'Tags:',
         <Group gap={5}>
           {propertyOwner?.tags.map((tag) => (
-            <Pill key={tag} size={'md'}>
-              <Flex>
+            <Pill key={tag}>
+              <Flex gap={2}>
                 {tag}
                 <CopyToClipboardButton value={tag} />
               </Flex>
@@ -123,7 +123,6 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   return (
     <>
       <Table withRowBorders={false} data={mainTableData} />
-
       <Space h={'md'} />
       <Card>
         <Title order={3}>Asset Info</Title>
