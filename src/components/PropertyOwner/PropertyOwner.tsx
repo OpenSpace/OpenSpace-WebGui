@@ -1,4 +1,4 @@
-import { Paper, Space } from '@mantine/core';
+import { Group, Paper, Space } from '@mantine/core';
 import { shallowEqual } from '@mantine/hooks';
 
 import { useGetOptionPropertyValue, useSubscribeToProperty } from '@/api/hooks';
@@ -13,6 +13,7 @@ import {
 
 import { CollapsableContent } from '../CollapsableContent/CollapsableContent';
 import { Property } from '../Property/Property';
+import { Tooltip } from '../Tooltip/Tooltip';
 
 import { PropertyOwnerVisibilityCheckbox } from './VisiblityCheckbox';
 
@@ -102,7 +103,12 @@ export function PropertyOwner({
 
   return (
     <CollapsableContent
-      title={displayName(propertyOwner)}
+      title={
+        <Group gap={'xs'}>
+          {displayName(propertyOwner)}
+          {propertyOwner.description && <Tooltip text={propertyOwner.description} />}
+        </Group>
+      }
       leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
       defaultOpen={expandedOnDefault}
       noTransition
