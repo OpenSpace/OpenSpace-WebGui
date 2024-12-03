@@ -8,6 +8,7 @@ import {
   addUriToPropertyTree,
   removeUriFromPropertyTree
 } from '@/redux/propertytree/propertyTreeMiddleware';
+import { EventData } from '@/types/event-types';
 
 let eventTopic: Topic;
 let isSubscribed = false;
@@ -23,7 +24,7 @@ export const setupEventsSubscription = createAsyncThunk(
     } catch (e) {
       console.error(e);
     }
-    for await (const data of eventTopic.iterator()) {
+    for await (const data of eventTopic.iterator() as AsyncIterable<EventData>) {
       switch (data.Event) {
         case 'PropertyTreeUpdated':
           thunkAPI.dispatch(addUriToPropertyTree(data.Uri));

@@ -4,6 +4,7 @@ import { Topic } from 'openspace-api-js';
 import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
+import { OpenSpaceTimeState } from '@/types/types';
 
 import { updateTime } from './timeSlice';
 
@@ -21,7 +22,7 @@ export const setupSubscription = createAsyncThunk(
     });
 
     (async () => {
-      for await (const data of timeTopic.iterator()) {
+      for await (const data of timeTopic.iterator() as AsyncIterable<OpenSpaceTimeState>) {
         thunkAPI.dispatch(updateTime(data));
       }
     })();
