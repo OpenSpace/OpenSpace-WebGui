@@ -16,7 +16,7 @@ interface Props {
 
 /**
  * This component displays the current focus and aim of the camera, as well as the list of
- * nodes makred as interesting.
+ * nodes marked as interesting.
  */
 export function FeaturedSceneTree({
   showOnlyVisible = false,

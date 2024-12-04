@@ -46,7 +46,8 @@ export function SceneTreeNode({ node, expanded }: Props) {
       }
 
       if (scenePanelParentBox.parent && scenePanelParentBox.parent.mode === 'float') {
-        // TODO: If floating window, split the scene tree in two instead
+        // @TODO (emmbr, 2024-12-04): If floating window, split the scene tree in two
+        // instead
       } else {
         // split the curent Layout
         ref.current.dockMove(newWindow, scenePanelParentBox, 'bottom');
@@ -55,7 +56,9 @@ export function SceneTreeNode({ node, expanded }: Props) {
       const newTabData = createTabData(defaultWindowId, 'Scene: Selected Node', content);
       ref.current.updateTab(defaultWindowId, newTabData, true);
 
-      // TODO: The content is not correctly updated for float windows when this is used
+      // @TODO (emmbr, 2024-12-04): The content is not correctly updated for float windows
+      // when this is used . Figure out how to solve this, i.e. move the window to the
+      // front
       // ref.current.dockMove(existingWindow as TabData | PanelData, null, 'front');
     }
   }

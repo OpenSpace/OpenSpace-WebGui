@@ -25,7 +25,7 @@ export interface GroupsState {
 
 const initialState: GroupsState = {
   customGroupOrdering: {},
-  groups: {}, // TODO: is this part needed?
+  groups: {}, // @TODO (emmbr, 2024-12-04): this could maybe be removed from the state
   sceneTreeData: []
 };
 
@@ -87,7 +87,7 @@ export function treeDataForPropertyOwner(uri: string, propertyOwners: PropertyOw
   };
 }
 
-// The data that will be used to render the scene tree
+// The data that will be used to render the scene tree, so it uses the TreeNodeData type
 export function treeDataFromGroups(groups: Groups, propertyOwners: PropertyOwners) {
   const treeData: TreeNodeData[] = [];
 

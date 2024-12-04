@@ -92,11 +92,9 @@ export function checkVisiblity(enabled: boolean | undefined, fade: number | unde
   if (enabled === undefined) {
     return undefined;
   }
-
   if (fade == undefined) {
     return enabled;
   }
-
   return enabled && fade > 0;
 }
 

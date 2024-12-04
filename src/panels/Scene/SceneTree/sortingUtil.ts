@@ -72,8 +72,7 @@ export function sortTreeLevel(
   treeListToSort.forEach((node) => {
     const entry = treeSortingInfo[node.value];
     if (!entry) {
-      console.error('Missing entry in treeSortingInfo for', node.value);
-      return;
+      throw Error(`Missing entry in treeSortingInfo for: ${node.value}`);
     }
 
     if (sortOrderingList.includes(entry.name)) {
@@ -159,7 +158,6 @@ export function sortTreeData(
           node.children = resursiveSortChildren(node.children, treeSortingInfo);
         }
       }
-
       return node;
     });
   }

@@ -71,8 +71,10 @@ export function SceneGraphNode({ uri }: Props) {
   const hasOther = tabsData.Other.length > 0;
   const defaultTab = hasRenderable ? TabKeys.Renderable : TabKeys.Transform;
 
-  // TODO: Include information about the Parentnode under Transform
-  // TODO: Include a tab with Meta information
+  // @TODO (emmbr, 2024-12-04): Include information about the Parent node under Transform,
+  // To communicate which transforms it inherits. However, first we need to get that
+  // information from OpenSpace
+
   return (
     <Box m={'xs'}>
       <SceneGraphNodeHeader uri={uri} />
