@@ -14,13 +14,14 @@ import {
 import { useGetStringPropertyValue } from '@/api/hooks';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 import { useAppSelector } from '@/redux/hooks';
+import { identifierFromUri } from '@/util/propertyTreeHelpers';
 
 interface Props {
   uri: string;
 }
 
 export function SceneGraphNodeMetaInfo({ uri }: Props) {
-  const identifier = uri.split('.').pop(); // Get last word in uri
+  const identifier = identifierFromUri(uri);
 
   let description = useGetStringPropertyValue(`${uri}.GuiDescription`);
   if (description) {

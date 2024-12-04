@@ -8,6 +8,15 @@ import {
 
 import { InterestingTagKey } from './keys';
 
+export function identifierFromUri(uri: string) {
+  // The identifier is always the last word in the URI
+  const identifier = uri.split('.').pop();
+  if (!identifier) {
+    throw Error(`Tried to get identifier from invalid URI '${uri}'`);
+  }
+  return identifier;
+}
+
 export function displayName(propertyOwner: PropertyOwner) {
   return propertyOwner.name ?? propertyOwner.identifier ?? propertyOwner.uri;
 }
