@@ -27,7 +27,7 @@ export {
   MdFiberManualRecord as RecordIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
-  MdVideocam as VideocamIcon,
-  MdWeb as UserPageIcon
+  MdWeb as UserPageIcon,
+  MdVideocam as VideocamIcon
 } from 'react-icons/md';
 export { RiFocus3Line as FocusIcon } from 'react-icons/ri';
