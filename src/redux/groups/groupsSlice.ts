@@ -21,12 +21,14 @@ export interface GroupsState {
   customGroupOrdering: CustomGroupOrdering;
   groups: Groups;
   sceneTreeData: TreeNodeData[];
+  expandedGroups: string[];
 }
 
 const initialState: GroupsState = {
   customGroupOrdering: {},
   groups: {}, // @TODO (emmbr, 2024-12-04): this could maybe be removed from the state
-  sceneTreeData: []
+  sceneTreeData: [],
+  expandedGroups: []
 };
 
 const emptyGroup = () => ({
@@ -149,6 +151,10 @@ export const groupsSlice = createSlice({
       state.sceneTreeData = treeDataFromGroups(state.groups, propertyOwners);
       return state;
     },
+    storeSceneTreeNodeExpanded: (state, action: PayloadAction<string[]>) => {
+      state.expandedGroups = action.payload;
+      return state;
+    },
     updateCustomGroupOrdering: (state, action: PayloadAction<CustomGroupOrdering>) => {
       state.customGroupOrdering = action.payload;
       return state;
@@ -157,5 +163,6 @@ export const groupsSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function, replaces the `Actions/index.js`
-export const { refreshGroups, updateCustomGroupOrdering } = groupsSlice.actions;
+export const { refreshGroups, storeSceneTreeNodeExpanded, updateCustomGroupOrdering } =
+  groupsSlice.actions;
 export const groupsReducer = groupsSlice.reducer;

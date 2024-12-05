@@ -5,8 +5,12 @@ import { shouldShowSceneGraphNode } from '@/util/propertyTreeHelpers';
 
 export const GroupPrefixKey = '/groups/';
 
+export function isGroupTreeNodeValue(treeNodeDataValue: string) {
+  return treeNodeDataValue.startsWith(GroupPrefixKey);
+}
+
 export function isGroup(node: TreeNodeData) {
-  return node.value.startsWith(GroupPrefixKey);
+  return isGroupTreeNodeValue(node.value);
 }
 
 export function filterTreeData(

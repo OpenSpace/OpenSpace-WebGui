@@ -1,13 +1,15 @@
-import { Tree, TreeNodeData } from '@mantine/core';
+import { useEffect, useRef } from 'react';
+import { getTreeExpandedState, Tree, TreeNodeData, useTree } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
-import { useAppSelector } from '@/redux/hooks';
+import { storeSceneTreeNodeExpanded } from '@/redux/groups/groupsSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import { FeaturedSceneTree } from './FeaturedSceneTree';
 import { SceneTreeNode, SceneTreeNodeStyled } from './SceneTreeNode';
 import { sortTreeData } from './sortingUtil';
-import { filterTreeData } from './treeUtil';
+import { filterTreeData, isGroupTreeNodeValue } from './treeUtil';
 
 interface Props {
   showOnlyVisible?: boolean;
@@ -32,6 +34,37 @@ export function SceneTree({ showOnlyVisible = false, showHiddenNodes = false }: 
   // so that the property values are stored in a separate object.
   const properties = useAppSelector((state) => state.properties.properties);
   const customGuiOrdering = useAppSelector((state) => state.groups.customGroupOrdering);
+
+  const initialExpandedNodes = useAppSelector((state) => state.groups.expandedGroups);
+
+  const expandedGroups = useRef<string[]>(initialExpandedNodes);
+
+  const tree = useTree({
+    initialExpandedState: getTreeExpandedState(sceneTreeData, initialExpandedNodes),
+    onNodeExpand: (value) => {
+      if (!isGroupTreeNodeValue(value)) {
+        return;
+      }
+      if (!expandedGroups.current.includes(value)) {
+        expandedGroups.current = [...expandedGroups.current, value];
+      }
+    },
+    onNodeCollapse: (value) => {
+      if (!isGroupTreeNodeValue(value)) {
+        return;
+      }
+      expandedGroups.current = expandedGroups.current.filter((v) => v !== value);
+    }
+  });
+
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    return () => {
+      // Save expanded state on unmount
+      dispatch(storeSceneTreeNodeExpanded(expandedGroups.current));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   let treeData = filterTreeData(
     sceneTreeData,
@@ -75,6 +108,7 @@ export function SceneTree({ showOnlyVisible = false, showHiddenNodes = false }: 
         />
         <Tree
           data={treeData}
+          tree={tree}
           renderNode={(payload) => <SceneTreeNodeStyled {...payload} />}
           selectOnClick
           clearSelectionOnOutsideClick
