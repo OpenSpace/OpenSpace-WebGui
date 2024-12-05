@@ -6,7 +6,7 @@ import { OpenInNewIcon, VerticalDotsIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { IconSize, NavigationType } from '@/types/enums';
 import { displayName } from '@/util/propertyTreeHelpers';
-import { useWindowManagerProvider } from '@/windowmanagement/WindowLayout/WindowLayoutProvider';
+import { useWindowManagerProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { SceneGraphNode } from './SceneGraphNode';
 

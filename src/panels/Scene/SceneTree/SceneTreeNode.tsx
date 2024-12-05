@@ -1,10 +1,8 @@
 import { Box, RenderTreeNodePayload, TreeNodeData } from '@mantine/core';
 import { BoxData, PanelData, TabData } from 'rc-dock';
 
-import {
-  createTabData,
-  useWindowManagerProvider
-} from '@/windowmanagement/WindowLayout/WindowLayoutProvider';
+import { useWindowManagerProvider } from '@/windowmanagement/WindowLayout/hooks';
+import { createTabData } from '@/windowmanagement/WindowLayout/WindowLayoutProvider';
 
 import { CollapsableHeader } from '../../../components/CollapsableHeader/CollapsableHeader';
 import { SceneGraphNode } from '../SceneGraphNode/SceneGraphNode';
