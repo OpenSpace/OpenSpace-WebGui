@@ -15,12 +15,12 @@ import { UserPanelIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { intializeUserPanels } from '@/redux/userpanels/userPanelsSlice';
 import { UserPanelsFolderKey, WindowsKey } from '@/util/keys';
-import { useWindowManagerProvider } from '@/windowmanagement/WindowLayout/hooks';
+import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { UserPanel } from './UserPanel';
 
 export function UserPanelsPanel() {
-  const { addWindow } = useWindowManagerProvider();
+  const { addWindow } = useWindowLayoutProvider();
 
   const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
   const [panelURL, setPanelURL] = useState<string>('');
