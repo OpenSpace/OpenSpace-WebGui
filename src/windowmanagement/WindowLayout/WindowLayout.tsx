@@ -7,7 +7,7 @@ import { menuItemsDB } from '../data/MenuItems';
 import { TaskBar } from '../TaskBar';
 import { TopMenuBar } from '../TopMenuBar';
 
-import { useWindowManagerProvider } from './hooks';
+import { useWindowLayoutProvider } from './hooks';
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import './WindowLayout.css';
@@ -42,7 +42,7 @@ function createDefaultLayout(): LayoutData {
 }
 
 export function WindowLayout() {
-  const { ref, addWindow } = useWindowManagerProvider();
+  const { ref, addWindow } = useWindowLayoutProvider();
   const [visibleMenuItems, setVisibleMenuItems] = useState<string[]>([]);
 
   const headless: TabGroup = {
