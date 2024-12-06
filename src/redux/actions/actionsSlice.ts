@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Action, ActionOrKeybind, Keybind } from '@/types/types';
 
+import { getAllActions, getAction } from './actionsMiddleware';
+
 export interface ActionsState {
   isInitialized: boolean;
   navigationPath: string;
@@ -43,15 +45,6 @@ export const actionsSlice = createSlice({
   name: 'actions',
   initialState,
   reducers: {
-    initializeShortcuts: (state, action: PayloadAction<ActionOrKeybind[]>) => {
-      const [actions, keybinds] = splitActionsAndKeybinds(action.payload);
-      return {
-        ...state,
-        isInitialized: true,
-        keybinds: keybinds,
-        actions: actions
-      };
-    },
     setActionsPath: (state, action: PayloadAction<string>) => {
       return {
         ...state,
@@ -62,14 +55,6 @@ export const actionsSlice = createSlice({
       return {
         ...state,
         showKeybinds: !state.showKeybinds
-      };
-    },
-    addActions: (state, action: PayloadAction<ActionOrKeybind[]>) => {
-      const [actions, keybinds] = splitActionsAndKeybinds(action.payload);
-      return {
-        ...state,
-        actions: [...state.actions, ...actions],
-        keybinds: [...state.keybinds, ...keybinds]
       };
     },
     removeAction: (state, action: PayloadAction<string>) => {
@@ -91,16 +76,25 @@ export const actionsSlice = createSlice({
         navigationPath: newNavigationPath
       };
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getAllActions.fulfilled, (state, action) => {
+      const [actions, keybinds] = splitActionsAndKeybinds(action.payload);
+      state.isInitialized = true;
+      state.keybinds = keybinds;
+      state.actions = actions;
+      return state;
+    });
+    builder.addCase(getAction.fulfilled, (state, action) => {
+      const [actions, keybinds] = splitActionsAndKeybinds(action.payload);
+      state.actions = [...state.actions, ...actions];
+      state.keybinds = [...state.keybinds, ...keybinds];
+      return state;
+    });
   }
 });
 
 // Action creators are generated for each case reducer function, replaces the `Actions/index.js`
-export const {
-  initializeShortcuts,
-  setActionsPath,
-  toggleKeybindViewer,
-  addActions,
-  removeAction
-} = actionsSlice.actions;
+export const { setActionsPath, toggleKeybindViewer, removeAction } = actionsSlice.actions;
 
 export const actionsReducer = actionsSlice.reducer;

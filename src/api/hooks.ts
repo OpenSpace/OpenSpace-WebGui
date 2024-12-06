@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useThrottledCallback } from '@mantine/hooks';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -8,9 +8,11 @@ import {
 } from '@/redux/propertytree/properties/propertiesMiddleware';
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import { Property, PropertyOwner, PropertyValue } from '@/types/types';
+
+import { LuaApiContext } from './LuaApiProvider';
 // Hook to make it easier to get the api
 export function useOpenSpaceApi() {
-  const api = useAppSelector((state) => state.luaApi);
+  const api = useContext(LuaApiContext);
   return api;
 }
 
