@@ -1,10 +1,14 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction } from '@reduxjs/toolkit';
 
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { addUriToPropertyTree } from '@/redux/propertytree/propertyTreeMiddleware';
 import { Groups, Properties, PropertyOwners } from '@/types/types';
 
 import { RootState } from '../store';
+
+import { setGroups } from './groupsSlice';
+
+export const refreshGroups = createAction<void>('groups/refresh');
 
 const emptyGroup = () => ({
   subgroups: [],
@@ -57,23 +61,22 @@ const computeGroups = (
   return groups;
 };
 
-// These computations are a bit slow so making them async
-export const refreshGroups = createAsyncThunk(
-  'groups/refreshGroups',
-  async (_, thunkAPI) => {
-    const state = thunkAPI.getState() as RootState;
-    return computeGroups(
-      state.propertyOwners.propertyOwners,
-      state.properties.properties
-    );
-  }
-);
-
 export const addGroupsListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: addUriToPropertyTree.fulfilled,
     effect: (_, listenerApi) => {
       listenerApi.dispatch(refreshGroups());
+    }
+  });
+  startListening({
+    actionCreator: refreshGroups,
+    effect: (_, listenerApi) => {
+      const state = listenerApi.getState() as RootState;
+      const newGroups = computeGroups(
+        state.propertyOwners.propertyOwners,
+        state.properties.properties
+      );
+      listenerApi.dispatch(setGroups(newGroups));
     }
   });
 };
