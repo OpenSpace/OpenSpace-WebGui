@@ -2,6 +2,8 @@ import { ActionIcon, Group, UnstyledButton } from '@mantine/core';
 
 import { ChevronDownIcon, ChevronRightIcon } from '@/icons/icons';
 
+import { ThreePartHeader } from '../ThreePartHeader/ThreeParthHeader';
+
 interface Props {
   expanded: boolean;
   text: React.ReactNode;
@@ -19,19 +21,19 @@ export function CollapsableHeader({
 }: Props) {
   const iconProps = { size: 18, style: { flexShrink: 0 } };
   return (
-    <Group justify={'space-between'} wrap={'nowrap'}>
-      <Group gap={5} wrap={'nowrap'}>
-        <ActionIcon variant={'transparent'} onClick={toggle}>
-          {expanded ? (
-            <ChevronDownIcon {...iconProps} />
-          ) : (
-            <ChevronRightIcon {...iconProps} />
-          )}
-        </ActionIcon>
-        {leftSection && leftSection}
-        <UnstyledButton onClick={toggle}>{text}</UnstyledButton>
-      </Group>
-      {rightSection && rightSection}
+    <Group wrap={'nowrap'} gap={0} align={'start'}>
+      <ActionIcon variant={'transparent'} onClick={toggle}>
+        {expanded ? (
+          <ChevronDownIcon {...iconProps} />
+        ) : (
+          <ChevronRightIcon {...iconProps} />
+        )}
+      </ActionIcon>
+      <ThreePartHeader
+        text={<UnstyledButton onClick={toggle}>{text}</UnstyledButton>}
+        leftSection={leftSection}
+        rightSection={rightSection}
+      />
     </Group>
   );
 }
