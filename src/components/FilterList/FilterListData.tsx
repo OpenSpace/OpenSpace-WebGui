@@ -10,12 +10,16 @@ export interface FilterListDataProps<T> {
   data: T[];
   renderElement: (data: T) => React.ReactNode;
   matcherFunc: (data: T, searchString: string) => boolean;
+  gap?: number; // Gap in pixels between items
+  overscan?: number; // How many items to preload when scrolling
 }
 
 export function FilterListData<T>({
   data,
   renderElement,
-  matcherFunc
+  matcherFunc,
+  gap,
+  overscan
 }: FilterListDataProps<T>) {
   const { searchString, showFavorites } = useFilterListProvider();
 
@@ -28,7 +32,12 @@ export function FilterListData<T>({
 
   return (
     !showFavorites && (
-      <VirtualList data={filteredElements} renderElement={renderElement} />
+      <VirtualList
+        data={filteredElements}
+        renderElement={renderElement}
+        gap={gap}
+        overscan={overscan}
+      />
     )
   );
 }

@@ -4,8 +4,8 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 export interface VirtualListProps<T> {
   data: T[];
   renderElement: (data: T) => React.ReactNode;
-  gap?: number;
-  overscan?: number;
+  gap?: number; // Gap in pixels between items
+  overscan?: number; // How many items to preload when scrolling
 }
 // This component is created from the example in the docs: https://tanstack.com/virtual/latest/docs/introduction
 export function VirtualList<T>({
