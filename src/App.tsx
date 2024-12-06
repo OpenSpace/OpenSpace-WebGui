@@ -1,7 +1,7 @@
 import { createTheme, MantineProvider } from '@mantine/core';
 
 import { WindowLayout } from './windowmanagement/WindowLayout/WindowLayout';
-import { WindowManagerProvider } from './windowmanagement/WindowLayout/WindowLayoutProvider';
+import { WindowLayoutProvider } from './windowmanagement/WindowLayout/WindowLayoutProvider';
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import '@mantine/core/styles.css';
@@ -13,9 +13,9 @@ const theme = createTheme({
 function App() {
   return (
     <MantineProvider theme={theme} defaultColorScheme={'dark'}>
-      <WindowManagerProvider>
+      <WindowLayoutProvider>
         <WindowLayout />
-      </WindowManagerProvider>
+      </WindowLayoutProvider>
     </MantineProvider>
   );
 }
