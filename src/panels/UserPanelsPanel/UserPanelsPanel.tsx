@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
-  Button,
+  ActionIcon,
   Container,
   Divider,
   Group,
@@ -11,9 +11,9 @@ import {
 } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { UserPanelIcon } from '@/icons/icons';
+import { OpenIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { intializeUserPanels } from '@/redux/userpanels/userPanelsSlice';
+import { intializeUserPanels, openWebpanel } from '@/redux/userpanels/userPanelsSlice';
 import { UserPanelsFolderKey, WindowsKey } from '@/util/keys';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
@@ -28,6 +28,7 @@ export function UserPanelsPanel() {
 
   const luaApi = useOpenSpaceApi();
   const isDataInitialized = useAppSelector((state) => state.userPanels.isInitialized);
+  const addedPanels = useAppSelector((state) => state.userPanels.addedWebpanels);
 
   const localPanels = useAppSelector((state) => state.userPanels.panels || []);
   const dispatch = useAppDispatch();
@@ -51,7 +52,7 @@ export function UserPanelsPanel() {
         // Get the folder name from the path
         panel.substring(panel.lastIndexOf(slash) + 1)
       );
-      dispatch(intializeUserPanels({ panels: folderNames, isInitialized: true }));
+      dispatch(intializeUserPanels(folderNames));
     };
 
     if (luaApi && !isDataInitialized) {
@@ -68,11 +69,8 @@ export function UserPanelsPanel() {
     // const src = `http://${window.location.host}/webpanels/${panelName}/index.html`;
     const src = `http://localhost:4680/webpanels/${selectedPanel}/index.html`;
 
-    addWindow(<UserPanel src={src} title={selectedPanel} />, {
-      title: selectedPanel,
-      position: 'right',
-      id: selectedPanel
-    });
+    openPanel(src, selectedPanel);
+
     setSelectedPanel(null);
   }
 
@@ -84,14 +82,19 @@ export function UserPanelsPanel() {
     const src = startsWithHttp ? panelURL : `http://${panelURL}`;
     const title = urlPanelTitle === '' ? src : urlPanelTitle;
 
+    openPanel(src, title);
+
+    setPanelURL('');
+    setUrlPanelTitle('');
+    dispatch(openWebpanel({ title: title, src: src }));
+  }
+
+  function openPanel(src: string, title: string) {
     addWindow(<UserPanel src={src} title={title} />, {
       title: title,
       position: 'right',
       id: title
     });
-
-    setPanelURL('');
-    setUrlPanelTitle('');
   }
 
   return (
@@ -99,7 +102,9 @@ export function UserPanelsPanel() {
       <Title my={'xs'} order={2}>
         User Panels
       </Title>
-      <Title order={3}>Add Local Panel</Title>
+      <Title my={'xs'} order={3}>
+        Open Local Panel
+      </Title>
       <Group align={'flex-end'}>
         <Select
           placeholder={'Select panel'}
@@ -109,13 +114,14 @@ export function UserPanelsPanel() {
           flex={1}
           onKeyDown={(e) => e.key === 'Enter' && addLocalPanel()}
         />
-        <Button onClick={addLocalPanel} disabled={!selectedPanel} p={'xs'}>
-          <UserPanelIcon />
-          <Text mx={'xs'}>Add</Text>
-        </Button>
+        <ActionIcon onClick={addLocalPanel} disabled={!selectedPanel} size={'lg'}>
+          <OpenIcon />
+        </ActionIcon>
       </Group>
       <Divider my={'md'} />
-      <Title order={3}>Add from URL</Title>
+      <Title order={3} my={'xs'}>
+        Open from URL
+      </Title>
       <TextInput
         value={urlPanelTitle}
         label={'Title (optional)'}
@@ -130,12 +136,24 @@ export function UserPanelsPanel() {
           onChange={(evt) => setPanelURL(evt.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && addWebPanel()}
           flex={1}
+          rightSection={
+            <ActionIcon onClick={addWebPanel} disabled={!panelURL} size={'lg'}>
+              <OpenIcon />
+            </ActionIcon>
+          }
         />
-        <Button onClick={addWebPanel} disabled={!panelURL} p={'xs'}>
-          <UserPanelIcon />
-          <Text mx={'xs'}>Add</Text>
-        </Button>
       </Group>
+      <Title mt={'xs'} mb={'xs'} order={4}>
+        Recently Opened URLs
+      </Title>
+      {addedPanels.map((panel) => (
+        <Group key={`${panel.src}${panel.title}`} mb={'xs'}>
+          <Text flex={1}>{panel.title}</Text>
+          <ActionIcon onClick={() => openPanel(panel.src, panel.title)}>
+            <OpenIcon />
+          </ActionIcon>
+        </Group>
+      ))}
     </Container>
   );
 }

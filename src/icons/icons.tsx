@@ -21,13 +21,13 @@ export {
   MdFlashOn as LightningFlashIcon,
   MdLock as LockIcon,
   MdLockOpen as LockOpenIcon,
+  MdOpenInNew as OpenIcon,
   MdPause as PauseIcon,
   MdOutlineEdit as PenIcon,
   MdPlayArrow as PlayIcon,
   MdFiberManualRecord as RecordIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
-  MdWeb as UserPanelIcon,
   MdVideocam as VideocamIcon
 } from 'react-icons/md';
 export { RiFocus3Line as FocusIcon } from 'react-icons/ri';
