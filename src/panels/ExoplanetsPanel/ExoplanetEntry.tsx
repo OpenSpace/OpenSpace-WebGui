@@ -6,10 +6,9 @@ interface ExoplanetProps {
   name: string;
   isAdded: boolean;
   onClick: () => void;
-  isLoading: boolean;
 }
 
-export function ExoplanetEntry({ name, isAdded, onClick, isLoading }: ExoplanetProps) {
+export function ExoplanetEntry({ name, isAdded, onClick }: ExoplanetProps) {
   return (
     <Group grow mb={'xs'}>
       {
@@ -18,9 +17,7 @@ export function ExoplanetEntry({ name, isAdded, onClick, isLoading }: ExoplanetP
           key={`${name}button`}
           style={{ flexGrow: 0 }}
           onClick={onClick}
-          variant={isLoading ? 'light' : 'filled'}
           color={isAdded ? 'red' : 'blue'}
-          loading={isLoading}
         >
           {isAdded ? <MinusIcon /> : <PlusIcon />}
         </ActionIcon>

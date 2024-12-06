@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
   ActionIcon,
   Collapse,
@@ -15,6 +15,7 @@ import { useDisclosure } from '@mantine/hooks';
 
 import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
+import { wordBeginningSubString } from '@/components/FilterList/util';
 import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { ChevronDownIcon, ChevronRightIcon } from '@/icons/icons';
@@ -33,9 +34,6 @@ import { propertyDispatcher } from '@/util/propertyDispatcher';
 import { ExoplanetEntry } from './ExoplanetEntry';
 
 export function ExoplanetsPanel() {
-  const [loadingAdded, setLoadingAdded] = useState<string[]>([]);
-  const [loadingRemoved, setLoadingRemoved] = useState<string[]>([]);
-
   const [open, { toggle }] = useDisclosure();
 
   const luaApi = useOpenSpaceApi();
@@ -61,35 +59,32 @@ export function ExoplanetsPanel() {
     owner!.tags.includes('exoplanet_system')
   );
 
-  const justAdded = loadingAdded.filter(
-    (name) => addedSystems.findIndex((s) => s && s.name.includes(name)) !== -1
-  );
-  const justRemoved = loadingRemoved.filter(
-    (name) => addedSystems.findIndex((s) => s && s.name.includes(name)) === -1
-  );
-  if (justAdded.length > 0) {
-    const newAdded = loadingAdded.filter((e) => !justAdded.includes(e));
-    setLoadingAdded(newAdded);
-  }
-  if (justRemoved.length > 0) {
-    const newRemoved = loadingRemoved.filter((e) => !justRemoved.includes(e));
-    setLoadingRemoved(newRemoved);
+  function isAdded(starName: string) {
+    // Replace all spaces with underscores
+    return (
+      addedSystems.findIndex(
+        (owner) => owner?.identifier === name2Identifier(starName)
+      ) !== -1
+    );
   }
 
-  function removeSystem(starName: string) {
-    const matchingAnchor = anchor?.indexOf(starName) === 0;
-    const matchingAim = aim?.indexOf(starName) === 0;
-    if (matchingAnchor || matchingAim) {
-      propertyDispatcher(dispatch, NavigationAnchorKey).set('Sun');
-      propertyDispatcher(dispatch, NavigationAimKey).set('');
+  function name2Identifier(starName: string) {
+    return starName.replace(/ /g, '_');
+  }
+
+  function handleClick(starName: string) {
+    const starIdentifier = starName.replace(/ /g, '_');
+    if (isAdded(starName)) {
+      const matchingAnchor = anchor?.indexOf(starIdentifier) === 0;
+      const matchingAim = aim?.indexOf(starIdentifier) === 0;
+      if (matchingAnchor || matchingAim) {
+        propertyDispatcher(dispatch, NavigationAnchorKey).set('Sun');
+        propertyDispatcher(dispatch, NavigationAimKey).set('');
+      }
+      luaApi?.exoplanets.removeExoplanetSystem(starName);
+    } else {
+      luaApi?.exoplanets.addExoplanetSystem(starName);
     }
-    luaApi?.exoplanets.removeExoplanetSystem(starName);
-    setLoadingRemoved([...loadingRemoved, starName]);
-  }
-
-  function addSystem(starName: string) {
-    setLoadingAdded([...loadingAdded, starName]);
-    luaApi?.exoplanets.addExoplanetSystem(starName);
   }
 
   return (
@@ -99,20 +94,16 @@ export function ExoplanetsPanel() {
           <FilterList.Data<string>
             data={allSystemNames}
             renderElement={(name) => {
-              const isAdded = addedSystems.find((s) => s && s.name.includes(name));
               return (
                 <ExoplanetEntry
                   key={`entry${name}`}
                   name={name}
-                  isLoading={loadingAdded.includes(name) || loadingRemoved.includes(name)}
-                  isAdded={isAdded !== undefined}
-                  onClick={() => (isAdded ? removeSystem(name) : addSystem(name))}
+                  isAdded={isAdded(name)}
+                  onClick={() => handleClick(name)}
                 />
               );
             }}
-            matcherFunc={(name, searchstring) =>
-              name.toLowerCase().includes(searchstring.toLowerCase())
-            }
+            matcherFunc={wordBeginningSubString}
           ></FilterList.Data>
         </FilterList>
       ) : (
