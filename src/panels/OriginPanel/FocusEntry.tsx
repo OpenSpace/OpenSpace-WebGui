@@ -1,10 +1,9 @@
 import { ActionIcon, Button, Group, Menu, Stack } from '@mantine/core';
 
+import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { VerticalDotsIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
 import { PropertyOwner, PropertyValue } from '@/types/types';
-
-import { NodeNavigationButton } from './NodeNavigationButton';
 
 interface FocusEntryProps {
   entry: PropertyOwner;
@@ -44,12 +43,12 @@ export function FocusEntry({
       </Button>
       {showNavigationButtons && (
         <>
-          {/* {isActive() && (
+          {isActive() && (
             <NodeNavigationButton
               type={NavigationType.frame}
               identifier={entry.identifier}
             />
-          )} */}
+          )}
           <NodeNavigationButton
             type={NavigationType.fly}
             identifier={entry.identifier}
@@ -69,21 +68,25 @@ export function FocusEntry({
                   type={NavigationType.focus}
                   identifier={entry.identifier}
                   showLabel
+                  justify={'flex-start'}
                 />
                 <NodeNavigationButton
                   type={NavigationType.fly}
                   identifier={entry.identifier}
                   showLabel
+                  justify={'flex-start'}
                 />
                 <NodeNavigationButton
                   type={NavigationType.jump}
                   identifier={entry.identifier}
                   showLabel
+                  justify={'flex-start'}
                 />
                 <NodeNavigationButton
                   type={NavigationType.frame}
                   identifier={entry.identifier}
                   showLabel
+                  justify={'flex-start'}
                 />
               </Stack>
             </Menu.Dropdown>

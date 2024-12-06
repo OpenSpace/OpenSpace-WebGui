@@ -1,26 +1,15 @@
 import { useEffect } from 'react';
-import {
-  ActionIcon,
-  Collapse,
-  Container,
-  Divider,
-  Flex,
-  Group,
-  Loader,
-  ScrollArea,
-  Text,
-  Title
-} from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Container, Divider, Flex, Loader, ScrollArea, Text, Title } from '@mantine/core';
 
 import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
+import { CollapsableContent } from '@/components/CollapsableContent/CollapsableContent';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
 import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
-import { ChevronDownIcon, ChevronRightIcon } from '@/icons/icons';
 import { loadExoplanetsData } from '@/redux/exoplanets/exoplanetsMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import {
   HabitableZonePropertyKey,
   NavigationAimKey,
@@ -29,13 +18,10 @@ import {
   Size1AuRingPropertyKey,
   UncertaintyDiscPropertyKey
 } from '@/util/keys';
-import { propertyDispatcher } from '@/util/propertyDispatcher';
 
 import { ExoplanetEntry } from './ExoplanetEntry';
 
 export function ExoplanetsPanel() {
-  const [open, { toggle }] = useDisclosure();
-
   const luaApi = useOpenSpaceApi();
   const propertyOwners = useAppSelector((state) => {
     return state.propertyOwners.propertyOwners;
@@ -43,6 +29,7 @@ export function ExoplanetsPanel() {
 
   const isDataInitialized = useAppSelector((state) => state.exoplanets.isInitialized);
   const allSystemNames = useAppSelector((state) => state.exoplanets.data);
+
   const aim = useGetStringPropertyValue(NavigationAimKey);
   const anchor = useGetStringPropertyValue(NavigationAnchorKey);
 
@@ -78,8 +65,8 @@ export function ExoplanetsPanel() {
       const matchingAnchor = anchor?.indexOf(starIdentifier) === 0;
       const matchingAim = aim?.indexOf(starIdentifier) === 0;
       if (matchingAnchor || matchingAim) {
-        propertyDispatcher(dispatch, NavigationAnchorKey).set('Sun');
-        propertyDispatcher(dispatch, NavigationAimKey).set('');
+        dispatch(setPropertyValue({ uri: NavigationAnchorKey, value: 'Sun' }));
+        dispatch(setPropertyValue({ uri: NavigationAimKey, value: '' }));
       }
       luaApi?.exoplanets.removeExoplanetSystem(starName);
     } else {
@@ -112,19 +99,11 @@ export function ExoplanetsPanel() {
         </Flex>
       )}
       <Divider my={'xs'} />
-      <Group>
-        <ActionIcon onClick={toggle} variant={'default'}>
-          {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
-        </ActionIcon>
-        <Title order={4}>Settings</Title>
-      </Group>
-      <Collapse in={open} transitionDuration={300}>
-        <Container mt={'md'}>
-          <Property uri={HabitableZonePropertyKey} />
-          <Property uri={UncertaintyDiscPropertyKey} />
-          <Property uri={Size1AuRingPropertyKey} />
-        </Container>
-      </Collapse>
+      <CollapsableContent title={'Settings'}>
+        <Property uri={HabitableZonePropertyKey} />
+        <Property uri={UncertaintyDiscPropertyKey} />
+        <Property uri={Size1AuRingPropertyKey} />
+      </CollapsableContent>
       <Divider my={'xs'}></Divider>
       <Title order={3}>Added Systems</Title>
       <ScrollArea my={'md'}>

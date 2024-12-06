@@ -82,7 +82,7 @@ export function SimulationIncrement() {
         />
       </Group>
       <Text size={'md'} ta={'center'} c={'dimmed'} mt={'xs'}>
-        {'Quick Adjust\r'}
+        Quick Adjust
       </Text>
       <Slider
         size={'lg'}

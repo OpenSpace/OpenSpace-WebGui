@@ -1,17 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Properties, PropertyOwners } from '@/types/types';
+import { Groups, Properties, PropertyOwners } from '@/types/types';
 
-export type Group = {
-  subgroups: string[]; // group paths
-  propertyOwners: string[]; // uris
-};
+export interface GroupsState {
+  customGroupOrdering: object; // TODO specify this
+  groups: Groups;
+}
 
-export type Groups = {
-  [key: string]: Group;
-};
-
-const initialState = {
+const initialState: GroupsState = {
   customGroupOrdering: {},
   groups: {}
 };

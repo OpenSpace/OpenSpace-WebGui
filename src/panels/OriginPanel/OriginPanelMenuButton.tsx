@@ -1,13 +1,11 @@
-import { useEffect } from 'react';
 import { Button, Group, Stack, Text } from '@mantine/core';
 
-import { useGetPropertyOwner, useGetStringPropertyValue } from '@/api/hooks';
-import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
-import { useAppDispatch } from '@/redux/hooks';
 import {
-  subscribeToProperty,
-  unsubscribeToProperty
-} from '@/redux/propertytree/properties/propertiesMiddleware';
+  useGetPropertyOwner,
+  useGetStringPropertyValue,
+  useSubscribeToProperty
+} from '@/api/hooks';
+import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
 
@@ -28,15 +26,8 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
   const cappedAnchorName = anchorName?.substring(0, 20) ?? '';
   const cappedAimName = aimName?.substring(0, 20) ?? '';
 
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(subscribeToProperty({ uri: NavigationAnchorKey }));
-    dispatch(subscribeToProperty({ uri: NavigationAimKey }));
-    return () => {
-      dispatch(unsubscribeToProperty({ uri: NavigationAnchorKey }));
-      dispatch(unsubscribeToProperty({ uri: NavigationAimKey }));
-    };
-  }, [dispatch]);
+  useSubscribeToProperty(NavigationAnchorKey);
+  useSubscribeToProperty(NavigationAimKey);
 
   function hasDistinctAim() {
     return aim !== '' && aim !== anchor;

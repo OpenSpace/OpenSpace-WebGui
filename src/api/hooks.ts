@@ -1,6 +1,13 @@
-import { useAppSelector } from '@/redux/hooks';
-import { Property, PropertyOwner } from '@/types/types';
+import { useEffect } from 'react';
+import { useThrottledCallback } from '@mantine/hooks';
 
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import {
+  subscribeToProperty,
+  unsubscribeToProperty
+} from '@/redux/propertytree/properties/propertiesMiddleware';
+import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
+import { Property, PropertyOwner, PropertyValue } from '@/types/types';
 // Hook to make it easier to get the api
 export function useOpenSpaceApi() {
   const api = useAppSelector((state) => state.luaApi);
@@ -31,9 +38,6 @@ export const useGetBoolPropertyValue = (uri: string) =>
 export const useGetStringPropertyValue = (uri: string) =>
   useGetPropertyValue<string>(uri, 'StringProperty');
 
-export const useGetNumberPropertyValue = (uri: string) =>
-  useGetPropertyValue<number>(uri, 'IntProperty');
-
 export const useGetSelectionPropertyValue = (uri: string) =>
   useGetPropertyValue<number>(uri, 'SelectionProperty');
 
@@ -53,80 +57,101 @@ export const useGetDVec4PropertyValue = (uri: string) =>
 export const useGetIVec2PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'IVec2Property');
 // Vectors
-export const useGetIVec3Value = (uri: string) =>
+export const useGetIVec3PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'IVec3Property');
 
-export const useGetIVec4Value = (uri: string) =>
+export const useGetIVec4PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'IVec4Property');
 
-export const useGetUVec2Value = (uri: string) =>
+export const useGetUVec2PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'UVec2Property');
 
-export const useGetUVec3Value = (uri: string) =>
+export const useGetUVec3PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'UVec3Property');
 
-export const useGetUVec4Value = (uri: string) =>
+export const useGetUVec4PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'UVec4Property');
 
-export const useGetVec2Value = (uri: string) =>
+export const useGetVec2PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'Vec2Property');
 
-export const useGetVec3Value = (uri: string) =>
+export const useGetVec3PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'Vec3Property');
 
-export const useGetVec4Value = (uri: string) =>
+export const useGetVec4PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'Vec4Property');
 
 // Scalars
-export const useGetDoubleValue = (uri: string) =>
+export const useGetDoublePropertyValue = (uri: string) =>
   useGetPropertyValue<number>(uri, 'DoubleProperty');
 
-export const useGetFloatValue = (uri: string) =>
+export const useGetFloatPropertyValue = (uri: string) =>
   useGetPropertyValue<number>(uri, 'FloatProperty');
 
-export const useGetIntValue = (uri: string) =>
+export const useGetIntPropertyValue = (uri: string) =>
   useGetPropertyValue<number>(uri, 'IntProperty');
 
-export const useGetLongValue = (uri: string) =>
+export const useGetLongPropertyValue = (uri: string) =>
   useGetPropertyValue<number>(uri, 'LongProperty');
 
-export const useGetShortValue = (uri: string) =>
+export const useGetShortPropertyValue = (uri: string) =>
   useGetPropertyValue<number>(uri, 'ShortProperty');
 
-export const useGetUIntValue = (uri: string) =>
+export const useGetUIntPropertyValue = (uri: string) =>
   useGetPropertyValue<number>(uri, 'UIntProperty');
 
-export const useGetULongValue = (uri: string) =>
+export const useGetULongPropertyValue = (uri: string) =>
   useGetPropertyValue<number>(uri, 'ULongProperty');
 
-export const useGetUShortValue = (uri: string) =>
+export const useGetUShortPropertyValue = (uri: string) =>
   useGetPropertyValue<number>(uri, 'UShortProperty');
 
 // Matrices
-export const useGetDMat2Value = (uri: string) =>
+export const useGetDMat2PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'DMat2Property');
 
-export const useGetDMat3Value = (uri: string) =>
+export const useGetDMat3PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'DMat3Property');
 
-export const useGetDMat4Value = (uri: string) =>
+export const useGetDMat4PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'DMat4Property');
 
-export const useGetMat2Value = (uri: string) =>
+export const useGetMat2PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'Mat2Property');
 
-export const useGetMat3Value = (uri: string) =>
+export const useGetMat3PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'Mat3Property');
 
-export const useGetMat4Value = (uri: string) =>
+export const useGetMat4PropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'Mat4Property');
 
 // Lists
-export const useGetDoubleListValue = (uri: string) =>
+export const useGetDoubleListPropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'DoubleListProperty');
 
-export const useGetIntListValue = (uri: string) =>
+export const useGetIntListPropertyValue = (uri: string) =>
   useGetPropertyValue<number[]>(uri, 'IntListProperty');
 
-export const useGetStringListValue = (uri: string) =>
+export const useGetStringListPropertyValue = (uri: string) =>
   useGetPropertyValue<string[]>(uri, 'StringListProperty');
+
+/**
+ * Hook that subscribes to a property and returns a setter function. Unsuscribes when the
+ * component is unmounted.
+ */
+export const useSubscribeToProperty = (uri: string) => {
+  const ThrottleMs = 1000 / 60;
+  const dispatch = useAppDispatch();
+  const setFunc = useThrottledCallback((value: PropertyValue) => {
+    dispatch(setPropertyValue({ uri: uri, value: value }));
+  }, ThrottleMs);
+
+  useEffect(() => {
+    dispatch(subscribeToProperty({ uri }));
+    return () => {
+      dispatch(unsubscribeToProperty({ uri }));
+    };
+  }, [dispatch, uri]);
+
+  return setFunc;
+};

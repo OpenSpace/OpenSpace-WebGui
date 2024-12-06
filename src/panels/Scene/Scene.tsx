@@ -15,8 +15,8 @@ import { CollapsableHeader } from '@/components/CollapsableHeader/CollapsableHea
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { FilterIcon } from '@/icons/icons';
-import { Groups } from '@/redux/groups/groupsSlice';
 import { useAppSelector } from '@/redux/hooks';
+import { Groups } from '@/types/types';
 import { hasInterestingTag, shouldShowPropertyOwner } from '@/util/propertytreehelper';
 
 import { TempPropertyTest } from './TempPropertyTest';
