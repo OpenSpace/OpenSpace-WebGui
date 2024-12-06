@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 
 import { VirtualList } from '../VirtualList/VirtualList';
 
@@ -18,7 +19,12 @@ export function FilterListData<T>({
 }: FilterListDataProps<T>) {
   const { searchString, showFavorites } = useFilterListProvider();
 
-  const filteredElements = data.filter((e) => matcherFunc(e, searchString));
+  // Memoizing this function so we don't need to recreate it when
+  // the renderElement function changes
+  const filteredElements = useMemo(
+    () => data.filter((e) => matcherFunc(e, searchString)),
+    [searchString, matcherFunc, data]
+  );
 
   return (
     !showFavorites && (
