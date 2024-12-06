@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Action, ActionOrKeybind, Keybind } from '@/types/types';
 
-import { getAllActions, getAction } from './actionsMiddleware';
+import { getAction, getAllActions } from './actionsMiddleware';
 
 export interface ActionsState {
   isInitialized: boolean;
