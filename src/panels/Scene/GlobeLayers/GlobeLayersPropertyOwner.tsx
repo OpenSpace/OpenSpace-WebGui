@@ -6,8 +6,6 @@ import {
   MdWater
 } from 'react-icons/md';
 
-import { useAppSelector } from '@/redux/hooks';
-
 import { GlobeLayerGroup } from './GlobeLayersGroup';
 
 interface Props {
@@ -15,10 +13,6 @@ interface Props {
 }
 
 export function GlobeLayersPropertyOwner({ uri }: Props) {
-  const propertyOwner = useAppSelector(
-    (state) => state.propertyOwners.propertyOwners[uri]
-  );
-
   // TODO: Move icons to the icons file, once decided on the final set and if we use them
   const groups = [
     {

@@ -1,12 +1,9 @@
 import { Box, Space, Tabs, Text } from '@mantine/core';
-import { shallowEqual } from '@mantine/hooks';
 
-import { useGetOptionPropertyValue, useSubscribeToProperty } from '@/api/hooks';
+import { useGetVisibleProperties } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { PropertyOwner as PropertyOwnerType } from '@/types/types';
-import { EnginePropertyVisibilityKey } from '@/util/keys';
-import { isPropertyVisible } from '@/util/propertyTreeHelpers';
 
 import { SceneGraphNodeHeader } from './SceneGraphNodeHeader';
 import { SceneGraphNodeMetaInfo } from './SceneGraphNodeMetaInfo';
@@ -20,6 +17,10 @@ export function SceneGraphNode({ uri }: Props) {
     (state) => state.propertyOwners.propertyOwners[uri]
   );
 
+  if (!propertyOwner) {
+    throw Error(`No property owner found for SGN with uri: ${uri}`);
+  }
+
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const subOwnerDataMap: { [id: string]: PropertyOwnerType } = {};
   propertyOwner?.subowners.forEach((subowner) => {
@@ -27,24 +28,7 @@ export function SceneGraphNode({ uri }: Props) {
     subOwnerDataMap[owner.identifier] = owner;
   });
 
-  const visiblityLevelSetting = useGetOptionPropertyValue(EnginePropertyVisibilityKey);
-  useSubscribeToProperty(EnginePropertyVisibilityKey);
-
-  // @TODO (emmbr, 2024-12-03) Would be nice if we didn't have to use a selector for this.
-  // The reason we do is that the state.properties.properties object includes the property
-  // values, and hence updates on every property change. One idea would be to seprate the
-  // property values from the property descriptions in the redux store.
-  const visibleProperties =
-    useAppSelector(
-      (state) =>
-        propertyOwner?.properties.filter((p) =>
-          isPropertyVisible(
-            state.properties.properties[p]?.description,
-            visiblityLevelSetting
-          )
-        ),
-      shallowEqual
-    ) || [];
+  const visibleProperties = useGetVisibleProperties(propertyOwner);
 
   // We know that all scene graph nodes have the same subowners
   const tabsData = {
