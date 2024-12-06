@@ -5,7 +5,7 @@ interface Props {
   title: string;
 }
 
-export function UserPage({ src, title }: Props) {
+export function UserPanel({ src, title }: Props) {
   // TODO ylvse 2024-12-04: Make this scroll work better
   return (
     <Flex direction={'column'} h={'100vh'}>

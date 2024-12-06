@@ -11,12 +11,13 @@ import {
 } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { UserPageIcon } from '@/icons/icons';
+import { UserPanelIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { intializeUserPages } from '@/redux/userpages/userpagesSlice';
+import { intializeUserPanels } from '@/redux/userpanels/userPanelsSlice';
+import { UserPanelsFolderKey, WindowsKey } from '@/util/keys';
 import { useWindowManagerProvider } from '@/windowmanagement/WindowLayout/hooks';
 
-import { UserPage } from './UserPanel';
+import { UserPanel } from './UserPanel';
 
 export function UserPanelsPanel() {
   const { addWindow } = useWindowManagerProvider();
@@ -26,28 +27,31 @@ export function UserPanelsPanel() {
   const [urlPanelTitle, setUrlPanelTitle] = useState<string>('');
 
   const luaApi = useOpenSpaceApi();
-  const isDataInitialized = useAppSelector((state) => state.userPages.isInitialized);
+  const isDataInitialized = useAppSelector((state) => state.userPanels.isInitialized);
 
-  const localPanels = useAppSelector((state) => state.userPages.panels || []);
+  const localPanels = useAppSelector((state) => state.userPanels.panels || []);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     // Collect all folder paths in the USER folder
     const getUserPanels = async () => {
-      if (!luaApi) return;
+      if (!luaApi) {
+        return;
+      }
 
-      // eslint-disable-next-line no-template-curly-in-string
-      const root = await luaApi.absPath('${USER}/webpanels');
+      const root = await luaApi.absPath(UserPanelsFolderKey);
       const folders = await luaApi.walkDirectoryFolders(root);
 
-      if (!folders) return;
-
-      const slash = navigator.platform.indexOf('Win') > -1 ? '\\' : '/';
+      if (!folders) {
+        return;
+      }
+      const isWindowsMachine = navigator.userAgent.indexOf(WindowsKey) !== -1;
+      const slash = isWindowsMachine ? '\\' : '/';
       const folderNames = Object.values(folders).map((panel) =>
         // Get the folder name from the path
-        panel.substr(panel.lastIndexOf(slash) + 1)
+        panel.substring(panel.lastIndexOf(slash) + 1)
       );
-      dispatch(intializeUserPages({ panels: folderNames, isInitialized: true }));
+      dispatch(intializeUserPanels({ panels: folderNames, isInitialized: true }));
     };
 
     if (luaApi && !isDataInitialized) {
@@ -56,13 +60,15 @@ export function UserPanelsPanel() {
   }, [dispatch, isDataInitialized, luaApi]);
 
   function addLocalPanel() {
-    if (!selectedPanel) return;
+    if (!selectedPanel) {
+      return;
+    }
     // TODO (ylvse) 2024-12-04: Change this back to window.location.host once we no longer
     // serve the gui on port 4670 (the webpanels are served on port 4680)
     // const src = `http://${window.location.host}/webpanels/${panelName}/index.html`;
     const src = `http://localhost:4680/webpanels/${selectedPanel}/index.html`;
 
-    addWindow(<UserPage src={src} title={selectedPanel} />, {
+    addWindow(<UserPanel src={src} title={selectedPanel} />, {
       title: selectedPanel,
       position: 'right',
       id: selectedPanel
@@ -71,13 +77,14 @@ export function UserPanelsPanel() {
   }
 
   function addWebPanel() {
-    if (!panelURL) return;
+    if (!panelURL) {
+      return;
+    }
     const startsWithHttp = panelURL.indexOf('http') === 0;
     const src = startsWithHttp ? panelURL : `http://${panelURL}`;
-    // As of now, we don't have titles for the URLs so we just use the URL
     const title = urlPanelTitle === '' ? src : urlPanelTitle;
 
-    addWindow(<UserPage src={src} title={title} />, {
+    addWindow(<UserPanel src={src} title={title} />, {
       title: title,
       position: 'right',
       id: title
@@ -89,30 +96,30 @@ export function UserPanelsPanel() {
 
   return (
     <Container>
-      <Title my={'xs'} order={4}>
+      <Title my={'xs'} order={2}>
         User Panels
       </Title>
-      <Title order={5}>Add Local Panel</Title>
+      <Title order={3}>Add Local Panel</Title>
       <Group align={'flex-end'}>
         <Select
-          placeholder={'Select Panel'}
+          placeholder={'Select panel'}
           data={localPanels}
           onChange={setSelectedPanel}
           value={selectedPanel}
-          flex={3}
+          flex={1}
           onKeyDown={(e) => e.key === 'Enter' && addLocalPanel()}
         />
         <Button onClick={addLocalPanel} disabled={!selectedPanel} p={'xs'}>
-          <UserPageIcon />
+          <UserPanelIcon />
           <Text mx={'xs'}>Add</Text>
         </Button>
       </Group>
       <Divider my={'md'} />
-      <Title order={5}>Add from URL</Title>
+      <Title order={3}>Add from URL</Title>
       <TextInput
         value={urlPanelTitle}
         label={'Title (optional)'}
-        placeholder={'Input Title (optional)'}
+        placeholder={'Input title (optional)'}
         onChange={(evt) => setUrlPanelTitle(evt.target.value)}
       />
       <Group align={'flex-end'} justify={'space-between'}>
@@ -122,10 +129,10 @@ export function UserPanelsPanel() {
           placeholder={'Input URL'}
           onChange={(evt) => setPanelURL(evt.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && addWebPanel()}
-          flex={3}
+          flex={1}
         />
         <Button onClick={addWebPanel} disabled={!panelURL} p={'xs'}>
-          <UserPageIcon />
+          <UserPanelIcon />
           <Text mx={'xs'}>Add</Text>
         </Button>
       </Group>

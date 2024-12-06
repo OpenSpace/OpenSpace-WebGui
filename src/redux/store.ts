@@ -9,7 +9,7 @@ import { propertiesReducer } from './propertytree/properties/propertiesSlice';
 import { propertyOwnersReducer } from './propertytree/propertyowner/propertyOwnerSlice';
 import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
 import { timeReducer } from './time/timeSlice';
-import { userPagesReducer } from './userpages/userpagesSlice';
+import { userPanelsReducer } from './userpanels/userPanelsSlice';
 import { listenerMiddleware } from './listenerMiddleware';
 
 export const store = configureStore({
@@ -23,7 +23,7 @@ export const store = configureStore({
     propertyOwners: propertyOwnersReducer,
     sessionRecording: sessionRecordingReducer,
     time: timeReducer,
-    userPages: userPagesReducer
+    userPanels: userPanelsReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
