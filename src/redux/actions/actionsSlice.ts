@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Action, ActionOrKeybind, Keybind } from '@/types/types';
 
-import { getAllShortcuts, getShortcut } from './actionsMiddleware';
+import { getAllActions, getAction } from './actionsMiddleware';
 
 export interface ActionsState {
   isInitialized: boolean;
@@ -78,14 +78,14 @@ export const actionsSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(getAllShortcuts.fulfilled, (state, action) => {
+    builder.addCase(getAllActions.fulfilled, (state, action) => {
       const [actions, keybinds] = splitActionsAndKeybinds(action.payload);
       state.isInitialized = true;
       state.keybinds = keybinds;
       state.actions = actions;
       return state;
     });
-    builder.addCase(getShortcut.fulfilled, (state, action) => {
+    builder.addCase(getAction.fulfilled, (state, action) => {
       const [actions, keybinds] = splitActionsAndKeybinds(action.payload);
       state.actions = [...state.actions, ...actions];
       state.keybinds = [...state.keybinds, ...keybinds];

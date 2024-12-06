@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState, PropsWithChildren } from 'react';
 
 import { api } from '@/api/api';
 import { closeConnection } from '@/redux/connection/connectionMiddleware';
@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 export const LuaApiContext = createContext<OpenSpace.openspace | null>(null);
 
-export function LuaApiProvider({ children }: { children: React.ReactNode }) {
+export function LuaApiProvider({ children }: PropsWithChildren) {
   const [luaApi, setLuaApi] = useState<OpenSpace.openspace | null>(null);
   const isConnected = useAppSelector((state) => state.connection.isConnected);
   const dispatch = useAppDispatch();

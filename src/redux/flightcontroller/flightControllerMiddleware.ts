@@ -10,20 +10,17 @@ export const sendFlightControl = createAction<FlightControllerData>('sendFlightC
 
 let flightControllerTopic: Topic | undefined = undefined;
 
-export const setupSubscription = createAsyncThunk(
-  'flightcontroller/setupSubscription',
-  async () => {
-    if (flightControllerTopic) {
-      return;
-    }
-    const payload: FlightControllerData = {
-      type: 'connect'
-    };
-    flightControllerTopic = api.startTopic('flightcontroller', payload);
+export const setupTopic = createAsyncThunk('flightcontroller/setupTopic', async () => {
+  if (flightControllerTopic) {
+    return;
   }
-);
+  const payload: FlightControllerData = {
+    type: 'connect'
+  };
+  flightControllerTopic = api.startTopic('flightcontroller', payload);
+});
 
-function tearDownSubscription() {
+function tearDownTopic() {
   if (!flightControllerTopic) {
     return;
   }
@@ -39,14 +36,14 @@ export const addFlightControllerListener = (startListening: AppStartListening) =
   startListening({
     actionCreator: onOpenConnection,
     effect: (_, listenerApi) => {
-      listenerApi.dispatch(setupSubscription());
+      listenerApi.dispatch(setupTopic());
     }
   });
 
   startListening({
     actionCreator: onCloseConnection,
     effect: () => {
-      tearDownSubscription();
+      tearDownTopic();
     }
   });
 
