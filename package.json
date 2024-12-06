@@ -12,6 +12,7 @@
     "rule-check": "npx eslint-config-prettier src/main.tsx"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^17.0.0",
     "@mantine/core": "^7.13.1",
     "@mantine/hooks": "^7.13.1",
     "@reduxjs/toolkit": "^2.2.8",

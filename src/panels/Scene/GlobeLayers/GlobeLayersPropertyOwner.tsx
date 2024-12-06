@@ -6,6 +6,8 @@ import {
   MdWater
 } from 'react-icons/md';
 
+import { sgnIdentifierFromSubownerUri } from '@/util/propertyTreeHelpers';
+
 import { GlobeLayerGroup } from './GlobeLayersGroup';
 
 interface Props {
@@ -13,6 +15,8 @@ interface Props {
 }
 
 export function GlobeLayersPropertyOwner({ uri }: Props) {
+  const globeIdentifier = sgnIdentifierFromSubownerUri(uri);
+
   // TODO: Move icons to the icons file, once decided on the final set and if we use them
   const groups = [
     {
@@ -40,7 +44,12 @@ export function GlobeLayersPropertyOwner({ uri }: Props) {
   return (
     <>
       {groups?.map((group) => (
-        <GlobeLayerGroup key={group.id} uri={`${uri}.${group.id}`} icon={group.icon} />
+        <GlobeLayerGroup
+          key={group.id}
+          uri={`${uri}.${group.id}`}
+          icon={group.icon}
+          globe={globeIdentifier}
+        />
       ))}
     </>
   );

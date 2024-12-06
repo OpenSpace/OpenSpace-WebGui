@@ -17,6 +17,14 @@ export function identifierFromUri(uri: string) {
   return identifier;
 }
 
+export function sgnIdentifierFromSubownerUri(uri: string) {
+  const splitUri = uri.split('.');
+  if (splitUri.length < 2 || splitUri[0] !== 'Scene') {
+    throw Error(`Invalid SGN URI '${uri}'`);
+  }
+  return splitUri[1];
+}
+
 export function displayName(propertyOwner: PropertyOwner) {
   return propertyOwner.name ?? propertyOwner.identifier ?? propertyOwner.uri;
 }

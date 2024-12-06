@@ -5,20 +5,25 @@ import { Property } from '@/components/Property/Property';
 import { useAppSelector } from '@/redux/hooks';
 import { displayName } from '@/util/propertyTreeHelpers';
 
-import { GlobeLayer } from './GlobeLayer';
+import { LayerList } from './LayersList';
 
 interface Props {
   uri: string;
+  globe: string;
   icon?: React.ReactNode;
 }
 
-export function GlobeLayerGroup({ uri, icon }: Props) {
+export function GlobeLayerGroup({ uri, globe, icon }: Props) {
   const propertyOwner = useAppSelector(
     (state) => state.propertyOwners.propertyOwners[uri]
   );
 
-  const layers = propertyOwner?.subowners;
-  const properties = propertyOwner?.properties;
+  if (!propertyOwner) {
+    throw Error(`No property owner found for uri: ${uri}`);
+  }
+
+  const layers = propertyOwner?.subowners || [];
+  const properties = propertyOwner?.properties || [];
 
   return (
     <CollapsableContent
@@ -30,11 +35,12 @@ export function GlobeLayerGroup({ uri, icon }: Props) {
       }
       noTransition
     >
-      {/* TODO: Implement reordering of layers */}
       <Paper p={'xs'}>
-        {layers?.map((layer) => <GlobeLayer key={layer} uri={layer} />)}
+        <LayerList layers={layers} layerGroup={propertyOwner.identifier} globe={globe} />
         <Space h={'xs'} />
-        {properties?.map((p) => <Property key={p} uri={p} />)}
+        {properties.map((p) => (
+          <Property key={p} uri={p} />
+        ))}
       </Paper>
     </CollapsableContent>
   );
