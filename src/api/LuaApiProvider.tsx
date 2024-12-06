@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
 import { api } from '@/api/api';
 import { closeConnection } from '@/redux/connection/connectionMiddleware';
@@ -6,7 +6,7 @@ import { startConnection } from '@/redux/connection/connectionSlice';
 import { updateCustomGroupOrdering } from '@/redux/groups/groupsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
-export const LuaApiContext = createContext<OpenSpace.openspace | null>(null);
+import { LuaApiContext } from './LuaApiContext';
 
 export function LuaApiProvider({ children }: PropsWithChildren) {
   const [luaApi, setLuaApi] = useState<OpenSpace.openspace | null>(null);

@@ -9,7 +9,7 @@ import {
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import { Property, PropertyOwner, PropertyValue } from '@/types/types';
 
-import { LuaApiContext } from './LuaApiProvider';
+import { LuaApiContext } from './LuaApiContext';
 // Hook to make it easier to get the api
 export function useOpenSpaceApi() {
   const api = useContext(LuaApiContext);
