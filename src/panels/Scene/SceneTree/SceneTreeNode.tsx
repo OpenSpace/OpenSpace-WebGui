@@ -61,17 +61,14 @@ export function SceneTreeNode({ node, expanded }: Props) {
     }
   }
 
-  if (isGroup(node)) {
-    return <CollapsableHeader expanded={expanded} text={node.label} />;
-  }
-  return (
-    <Box mx={'xs'}>
-      <SceneGraphNodeHeader
-        uri={node.value}
-        label={node.label as string}
-        onClick={() => openSceneGraphNodeWindow(node.value)}
-      />
-    </Box>
+  return isGroup(node) ? (
+    <CollapsableHeader expanded={expanded} text={node.label} />
+  ) : (
+    <SceneGraphNodeHeader
+      uri={node.value}
+      label={node.label as string}
+      onClick={() => openSceneGraphNodeWindow(node.value)}
+    />
   );
 }
 
@@ -81,8 +78,8 @@ export function SceneTreeNodeStyled({
   elementProps
 }: RenderTreeNodePayload) {
   return (
-    <div {...elementProps}>
+    <Box {...elementProps}>
       <SceneTreeNode node={node} expanded={expanded} />
-    </div>
+    </Box>
   );
 }
