@@ -112,9 +112,6 @@ export function SceneTree({ filter }: Props) {
           data={treeData}
           tree={tree}
           renderNode={(payload) => <SceneTreeNodeStyled {...payload} />}
-          selectOnClick
-          clearSelectionOnOutsideClick
-          allowRangeSelection={false}
         />
       </FilterList.Favorites>
       <FilterList.Data<SearchData>

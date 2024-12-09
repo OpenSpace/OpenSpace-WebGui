@@ -73,9 +73,6 @@ export function FeaturedSceneTree({ filter }: Props) {
       <Tree
         data={featuredTreeData}
         renderNode={(payload) => <SceneTreeNodeStyled {...payload} />}
-        selectOnClick
-        clearSelectionOnOutsideClick
-        allowRangeSelection={false}
       />
       <Divider my={'xs'} />
     </>
