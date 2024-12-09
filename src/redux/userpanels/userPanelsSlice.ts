@@ -30,9 +30,15 @@ export const userPanelsSlice = createSlice({
       function isEqualToPayload(item: WebPanel) {
         return item.src === action.payload.src && item.title === action.payload.title;
       }
-      if (!state.addedWebpanels.find(isEqualToPayload)) {
-        state.addedWebpanels.push(action.payload);
+      const index = state.addedWebpanels.findIndex((item) => isEqualToPayload(item));
+      const exists = index !== -1;
+      // If item already exists - remove the item, then push to front
+      // That way we have an array sorted on recency
+      if (exists) {
+        state.addedWebpanels.splice(index, 1);
       }
+      // Add to front
+      state.addedWebpanels.splice(0, 0, action.payload);
       return state;
     }
   }
