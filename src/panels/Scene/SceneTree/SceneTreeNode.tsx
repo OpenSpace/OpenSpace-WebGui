@@ -15,8 +15,8 @@ interface Props {
   expanded: boolean;
 }
 
+// @TODO: Make the text in this component look more clickable, e.g. using hover effects
 export function SceneTreeNode({ node, expanded }: Props) {
-  // TODO: Implement how this should look like. Sould be clear that it's clickable
   const { ref, addWindow } = useWindowLayoutProvider();
 
   const defaultWindowId = 'defaultSceneGraphNodeWindow';
@@ -45,9 +45,9 @@ export function SceneTreeNode({ node, expanded }: Props) {
 
       if (scenePanelParentBox.parent && scenePanelParentBox.parent.mode === 'float') {
         // @TODO (emmbr, 2024-12-04): If floating window, split the scene tree in two
-        // instead
+        // instead?
       } else {
-        // split the curent Layout
+        // split the current Layout
         ref.current.dockMove(newWindow, scenePanelParentBox, 'bottom');
       }
     } else {
@@ -55,8 +55,8 @@ export function SceneTreeNode({ node, expanded }: Props) {
       ref.current.updateTab(defaultWindowId, newTabData, true);
 
       // @TODO (emmbr, 2024-12-04): The content is not correctly updated for float windows
-      // when this is used . Figure out how to solve this, i.e. move the window to the
-      // front
+      // when this is used. Figure out how to solve this, i.e. move the window to the
+      // front.
       // ref.current.dockMove(existingWindow as TabData | PanelData, null, 'front');
     }
   }

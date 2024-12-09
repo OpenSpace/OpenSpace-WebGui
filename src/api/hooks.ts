@@ -161,7 +161,7 @@ export const useSubscribeToProperty = (uri: string) => {
 };
 
 /**
- * Find all the properties of a certan property owner that are visible, according to the
+ * Find all the properties of a certain property owner that are visible, according to the
  * current visiblitity level setting. Also subscribe to changes for the visiblity
  * @param propertyOwner
  * @returns

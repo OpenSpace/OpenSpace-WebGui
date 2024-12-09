@@ -57,7 +57,8 @@ export function SceneGraphNode({ uri }: Props) {
 
   // @TODO (emmbr, 2024-12-04): Include information about the Parent node under Transform,
   // To communicate which transforms it inherits. However, first we need to get that
-  // information from OpenSpace
+  // information from OpenSpace. Should probably only be shown is the user level is
+  // advanced or higher
 
   return (
     <Box m={'xs'}>

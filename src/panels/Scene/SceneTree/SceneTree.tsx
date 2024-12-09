@@ -95,9 +95,13 @@ export function SceneTree({ showOnlyVisible = false, showHiddenNodes = false }: 
   }
   const flatTreeData = flattenTreeData(treeData);
 
-  // TODO: Remember which parts of the menu were open?
-
-  // TODO: Make search results order by something. Either alphabetic or by relevance
+  // TODO: Would be nice to sort the results by some type of "relevance", but for now we
+  // just sort by name
+  flatTreeData.sort((a, b) => {
+    const nameA = a.label as string;
+    const nameB = b.label as string;
+    return nameA.toLocaleLowerCase().localeCompare(nameB.toLocaleLowerCase());
+  });
 
   return (
     <FilterList>
