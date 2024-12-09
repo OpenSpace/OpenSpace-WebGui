@@ -3,7 +3,10 @@ import { PropsWithChildren, useEffect, useState } from 'react';
 import { api } from '@/api/api';
 import { closeConnection } from '@/redux/connection/connectionMiddleware';
 import { startConnection } from '@/redux/connection/connectionSlice';
-import { updateCustomGroupOrdering } from '@/redux/groups/groupsSlice';
+import {
+  CustomGroupOrdering,
+  updateCustomGroupOrdering
+} from '@/redux/groups/groupsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import { LuaApiContext } from './LuaApiContext';
@@ -42,7 +45,7 @@ export function LuaApiProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     async function fetchData() {
       if (luaApi) {
-        const res = await luaApi.guiOrder();
+        const res = (await luaApi.guiOrder()) as CustomGroupOrdering;
         dispatch(updateCustomGroupOrdering(res));
       }
     }

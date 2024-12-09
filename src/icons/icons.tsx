@@ -1,7 +1,7 @@
 export { BsThreeDotsVertical as VerticalDotsIcon } from 'react-icons/bs';
 export { FaMinus as MinusIcon, FaPlus as PlusIcon } from 'react-icons/fa';
 export {
-  IoInformationCircleOutline as InformationCircleOutlineIcon,
+  IoInformation as InformationIcon,
   IoTelescopeOutline as TelescopeIcon
 } from 'react-icons/io5';
 export {
@@ -12,6 +12,7 @@ export {
   MdChevronLeft as ChevronLeftIcon,
   MdChevronRight as ChevronRightIcon,
   MdExpandLess as ChevronUpIcon,
+  MdContentCopy as CopyIcon,
   MdFastForward as FastForwardIcon,
   MdFastRewind as FastRewindIcon,
   MdFilterAlt as FilterIcon,
@@ -21,6 +22,7 @@ export {
   MdFlashOn as LightningFlashIcon,
   MdLock as LockIcon,
   MdLockOpen as LockOpenIcon,
+  MdOpenInNew as OpenInNewIcon,
   MdPause as PauseIcon,
   MdOutlineEdit as PenIcon,
   MdPlayArrow as PlayIcon,
