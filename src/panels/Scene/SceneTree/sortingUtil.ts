@@ -150,15 +150,16 @@ export function sortTreeData(
     treeSortingInfo: TreeSortingInfo
   ) {
     return nodes.map((node) => {
-      if (node.children) {
-        if (isGroupNode(node)) {
+      const n = { ...node };
+      if (n.children) {
+        if (isGroupNode(n)) {
           const groupPath = node.value.replace(GroupPrefixKey, '');
           const customOrdering = customGuiOrderingMap[groupPath];
-          node.children = sortTreeLevel(node.children, treeSortingInfo, customOrdering);
-          node.children = resursiveSortChildren(node.children, treeSortingInfo);
+          n.children = sortTreeLevel(n.children, treeSortingInfo, customOrdering);
+          n.children = resursiveSortChildren(n.children, treeSortingInfo);
         }
       }
-      return node;
+      return n;
     });
   }
 

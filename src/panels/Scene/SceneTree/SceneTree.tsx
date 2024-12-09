@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { getTreeExpandedState, Tree, TreeNodeData, useTree } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -66,8 +66,14 @@ export function SceneTree({ filter }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let treeData = filterTreeData(sceneTreeData, filter, properties, propertyOwners);
-  treeData = sortTreeData(treeData, customGuiOrdering, properties);
+  // If the sorting is not wrapped in an useMemo, the component will rerender constantly,
+  // for some reason
+  const treeData = useMemo(() => {
+    let data = sceneTreeData;
+    data = filterTreeData(data, filter, properties, propertyOwners);
+    data = sortTreeData(data, customGuiOrdering, properties);
+    return data;
+  }, [customGuiOrdering, filter, properties, propertyOwners, sceneTreeData]);
 
   function flattenTreeData(treeData: TreeNodeData[]): SearchData[] {
     const flatData: SearchData[] = [];
