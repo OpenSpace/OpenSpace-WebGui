@@ -62,22 +62,6 @@ export function isGlobeLayersUri(uri: string, properties: Properties) {
   return uri.endsWith(suffix) && isGlobe(uri.replace('.Layers', ''), properties);
 }
 
-export function shouldShowSceneGraphNode(
-  uri: string,
-  properties: Properties,
-  showOnlyVisible: boolean,
-  showHidden: boolean
-) {
-  let shouldShow = true;
-  if (showOnlyVisible) {
-    shouldShow &&= isSceneGraphNodeVisible(uri, properties);
-  }
-  if (!showHidden) {
-    shouldShow &&= !isPropertyOwnerHidden(properties, uri);
-  }
-  return shouldShow;
-}
-
 export function isPropertyOwnerHidden(properties: Properties, uri: string) {
   const prop = properties[`${uri}.GuiHidden`];
   if (prop && prop.value) {

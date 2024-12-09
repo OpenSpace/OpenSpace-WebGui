@@ -7,21 +7,17 @@ import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/ke
 import { hasInterestingTag } from '@/util/propertyTreeHelpers';
 
 import { SceneTreeNodeStyled } from './SceneTreeNode';
-import { filterTreeData, GroupPrefixKey } from './treeUtil';
+import { filterTreeData, GroupPrefixKey, SceneTreeFilterProps } from './treeUtil';
 
 interface Props {
-  showOnlyVisible?: boolean;
-  showHiddenNodes?: boolean;
+  filter: SceneTreeFilterProps;
 }
 
 /**
  * This component displays the current focus and aim of the camera, as well as the list of
  * nodes marked as interesting.
  */
-export function FeaturedSceneTree({
-  showOnlyVisible = false,
-  showHiddenNodes = false
-}: Props) {
+export function FeaturedSceneTree({ filter }: Props) {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
 
   // TODO: Remove dependency on entire properties object. This means that the entire menu
@@ -61,9 +57,9 @@ export function FeaturedSceneTree({
   if (interestingNodes.children && interestingNodes.children.length > 0) {
     interestingNodes.children = filterTreeData(
       interestingNodes.children,
-      showOnlyVisible,
-      showHiddenNodes,
-      properties
+      filter,
+      properties,
+      propertyOwners
     );
     featuredTreeData.push(interestingNodes);
   }

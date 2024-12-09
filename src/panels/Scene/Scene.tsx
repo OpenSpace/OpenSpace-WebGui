@@ -5,6 +5,7 @@ import {
   Container,
   Group,
   Menu,
+  MultiSelect,
   Skeleton,
   Stack,
   Tabs,
@@ -22,6 +23,10 @@ export function Scene() {
   const hasLoadedScene = useAppSelector(
     (state) => Object.values(state.propertyOwners.propertyOwners)?.length > 0
   );
+
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const tags = useAppSelector((state) => state.groups.tags);
+  const sortedTags = Array.from(tags).sort();
 
   const [showOnlyVisible, setshowOnlyVisible] = useState(false);
   const [showHiddenNodes, setShowHiddenNodes] = useState(false);
@@ -67,7 +72,7 @@ export function Scene() {
                   <FilterIcon />
                 </ActionIcon>
               </Menu.Target>
-              <Menu.Dropdown>
+              <Menu.Dropdown maw={'300px'}>
                 <Group>
                   <Checkbox
                     label={'Show only visible'}
@@ -89,12 +94,23 @@ export function Scene() {
                     }
                   />
                 </Group>
+                <Title order={3}>Tags</Title>
+                <MultiSelect
+                  data={sortedTags}
+                  value={selectedTags}
+                  onChange={setSelectedTags}
+                  clearable
+                  searchable
+                />
               </Menu.Dropdown>
             </Menu>
           </Group>
           <SceneTree
-            showOnlyVisible={showOnlyVisible}
-            showHiddenNodes={showHiddenNodes}
+            filter={{
+              showOnlyVisible,
+              showHiddenNodes,
+              tags: selectedTags
+            }}
           />
         </Container>
       </Tabs.Panel>

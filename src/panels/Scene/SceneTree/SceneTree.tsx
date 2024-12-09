@@ -11,11 +11,10 @@ import { useOpenCurrentSceneNodeWindow } from '../hooks';
 import { FeaturedSceneTree } from './FeaturedSceneTree';
 import { SceneTreeNode, SceneTreeNodeStyled } from './SceneTreeNode';
 import { sortTreeData } from './sortingUtil';
-import { filterTreeData, isGroup } from './treeUtil';
+import { filterTreeData, isGroup, SceneTreeFilterProps } from './treeUtil';
 
 interface Props {
-  showOnlyVisible?: boolean;
-  showHiddenNodes?: boolean;
+  filter: SceneTreeFilterProps;
 }
 
 // @TODO (emmbr, 2024-12-03): Make the search more sophisticated. For example, include
@@ -25,7 +24,7 @@ interface SearchData extends TreeNodeData {
   guiPath: string | undefined;
 }
 
-export function SceneTree({ showOnlyVisible = false, showHiddenNodes = false }: Props) {
+export function SceneTree({ filter }: Props) {
   const { closeCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
 
   const sceneTreeData = useAppSelector((state) => state.groups.sceneTreeData);
@@ -33,6 +32,7 @@ export function SceneTree({ showOnlyVisible = false, showHiddenNodes = false }: 
   // is rerendered as soon as a property changes... Alternatively, update state structure
   // so that the property values are stored in a separate object.
   const properties = useAppSelector((state) => state.properties.properties);
+  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const customGuiOrdering = useAppSelector((state) => state.groups.customGroupOrdering);
 
   const initialExpandedNodes = useAppSelector((state) => state.groups.expandedGroups);
@@ -66,12 +66,7 @@ export function SceneTree({ showOnlyVisible = false, showHiddenNodes = false }: 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let treeData = filterTreeData(
-    sceneTreeData,
-    showOnlyVisible,
-    showHiddenNodes,
-    properties
-  );
+  let treeData = filterTreeData(sceneTreeData, filter, properties, propertyOwners);
   treeData = sortTreeData(treeData, customGuiOrdering, properties);
 
   function flattenTreeData(treeData: TreeNodeData[]): SearchData[] {
@@ -106,10 +101,7 @@ export function SceneTree({ showOnlyVisible = false, showHiddenNodes = false }: 
   return (
     <FilterList>
       <FilterList.Favorites>
-        <FeaturedSceneTree
-          showHiddenNodes={showHiddenNodes}
-          showOnlyVisible={showOnlyVisible}
-        />
+        <FeaturedSceneTree filter={filter} />
         <Tree
           data={treeData}
           tree={tree}

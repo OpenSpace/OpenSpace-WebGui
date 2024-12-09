@@ -8,7 +8,7 @@ import { Properties, PropertyOwners } from '@/types/types';
 
 import { RootState } from '../store';
 
-import { Groups, setGroups, setSceneTreeData } from './groupsSlice';
+import { Groups, setGroups, setSceneTreeData, setTags } from './groupsSlice';
 
 export const refreshGroups = createAction<void>('groups/refresh');
 
@@ -71,7 +71,7 @@ export function treeDataForPropertyOwner(uri: string, propertyOwners: PropertyOw
 }
 
 // The data that will be used to render the scene tree, so it uses the TreeNodeData type
-export function treeDataFromGroups(groups: Groups, propertyOwners: PropertyOwners) {
+function treeDataFromGroups(groups: Groups, propertyOwners: PropertyOwners) {
   const treeData: TreeNodeData[] = [];
 
   const topLevelGroupsPaths = Object.keys(groups).filter((path) => {
@@ -119,6 +119,14 @@ export function treeDataFromGroups(groups: Groups, propertyOwners: PropertyOwner
   return treeData;
 }
 
+function collectExistingTags(propertyOwners: PropertyOwners) {
+  const tags = new Set<string>();
+  Object.values(propertyOwners).forEach((propertyOwner) => {
+    propertyOwner?.tags.forEach((tag) => tags.add(tag));
+  });
+  return Array.from(tags).sort();
+}
+
 export const addGroupsListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: addUriToPropertyTree.fulfilled,
@@ -130,16 +138,21 @@ export const addGroupsListener = (startListening: AppStartListening) => {
     actionCreator: refreshGroups,
     effect: (_, listenerApi) => {
       const state = listenerApi.getState() as RootState;
+
       const newGroups = computeGroups(
         state.propertyOwners.propertyOwners,
         state.properties.properties
       );
+      listenerApi.dispatch(setGroups(newGroups));
+
       const newSceneTreeData = treeDataFromGroups(
         newGroups,
         state.propertyOwners.propertyOwners
       );
-      listenerApi.dispatch(setGroups(newGroups));
       listenerApi.dispatch(setSceneTreeData(newSceneTreeData));
+
+      const newTags = collectExistingTags(state.propertyOwners.propertyOwners);
+      listenerApi.dispatch(setTags(newTags));
     }
   });
 };
