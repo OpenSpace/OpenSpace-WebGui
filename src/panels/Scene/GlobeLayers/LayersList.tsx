@@ -21,8 +21,8 @@ export function LayerList({ layers, globe, layerGroup }: Props) {
   }
 
   async function onDragEnd(result: DropResult<string>) {
-    // No change - do nothing
     if (!result.destination || result.source.index === result.destination.index) {
+      // No change - do nothing
       return;
     }
     // Get new layer order

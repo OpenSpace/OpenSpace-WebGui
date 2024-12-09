@@ -19,12 +19,13 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
   const fadeUri = `${uri}.Fade`;
   const enabledPropertyValue = useGetBoolPropertyValue(enabledUri);
   const fadePropertyValue = useGetFloatPropertyValue(fadeUri);
+  const isFadeable = fadePropertyValue !== undefined;
 
   const setEnabledProperty = useSubscribeToProperty(enabledUri);
   useSubscribeToProperty(fadeUri);
 
   const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
-  const isFadeable = fadePropertyValue !== undefined;
+
   if (isVisible === undefined) {
     return null;
   }

@@ -2,14 +2,14 @@ import { ActionIcon, Button, Divider, Group, Menu, UnstyledButton } from '@manti
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
-import { ThreePartHeader } from '@/components/ThreePartHeader/ThreeParthHeader';
+import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { OpenInNewIcon, VerticalDotsIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { IconSize, NavigationType } from '@/types/enums';
 import { displayName } from '@/util/propertyTreeHelpers';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
-import { SceneGraphNode } from './SceneGraphNode';
+import { SceneGraphNodeView } from './SceneGraphNodeView';
 
 interface Props {
   uri: string;
@@ -35,7 +35,7 @@ export function SceneGraphNodeHeader({ uri, label, onClick }: Props) {
 
   const { addWindow } = useWindowLayoutProvider();
   function openInNewWindow() {
-    const content = <SceneGraphNode uri={uri} />;
+    const content = <SceneGraphNodeView uri={uri} />;
     addWindow(content, {
       id: 'sgn-' + uri,
       title: name,

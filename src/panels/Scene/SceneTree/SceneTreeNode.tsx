@@ -5,8 +5,8 @@ import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 import { createTabData } from '@/windowmanagement/WindowLayout/WindowLayoutProvider';
 
 import { CollapsableHeader } from '../../../components/CollapsableHeader/CollapsableHeader';
-import { SceneGraphNode } from '../SceneGraphNode/SceneGraphNode';
 import { SceneGraphNodeHeader } from '../SceneGraphNode/SceneGraphNodeHeader';
+import { SceneGraphNodeView } from '../SceneGraphNode/SceneGraphNodeView';
 
 import { isGroup } from './treeUtil';
 
@@ -23,10 +23,10 @@ export function SceneTreeNode({ node, expanded }: Props) {
 
   function openSceneGraphNodeWindow(uri: string) {
     if (!ref || !('current' in ref) || ref.current === null) {
-      return;
+      throw new Error('WindowLayoutProvider ref is not set');
     }
 
-    const content = <SceneGraphNode uri={uri} />;
+    const content = <SceneGraphNodeView uri={uri} />;
 
     const existingWindow = ref.current.find(defaultWindowId);
     if (!existingWindow) {
@@ -40,7 +40,7 @@ export function SceneTreeNode({ node, expanded }: Props) {
       const scenePanelParentBox = ref.current.find('scene')?.parent as BoxData;
 
       if (!newWindow || !scenePanelParentBox) {
-        return;
+        throw new Error('Could not find the new window or the scene panel parent box');
       }
 
       if (scenePanelParentBox.parent && scenePanelParentBox.parent.mode === 'float') {
@@ -64,11 +64,13 @@ export function SceneTreeNode({ node, expanded }: Props) {
   return isGroup(node) ? (
     <CollapsableHeader expanded={expanded} text={node.label} />
   ) : (
-    <SceneGraphNodeHeader
-      uri={node.value}
-      label={node.label as string}
-      onClick={() => openSceneGraphNodeWindow(node.value)}
-    />
+    <Box ml={'xs'} mt={5}>
+      <SceneGraphNodeHeader
+        uri={node.value}
+        label={node.label as string}
+        onClick={() => openSceneGraphNodeWindow(node.value)}
+      />
+    </Box>
   );
 }
 

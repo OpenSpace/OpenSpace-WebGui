@@ -8,8 +8,8 @@ interface Props {
 
 export function ThreePartHeader({ text, leftSection, rightSection }: Props) {
   return (
-    <Group justify={'space-between'} align={'start'} wrap={'nowrap'} w={'100%'}>
-      <Group gap={'xs'} wrap={'nowrap'} align={'start'}>
+    <Group justify={'space-between'} wrap={'nowrap'} w={'100%'}>
+      <Group gap={'xs'} wrap={'nowrap'}>
         {leftSection && leftSection}
         {text}
       </Group>

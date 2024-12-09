@@ -12,7 +12,7 @@ interface Props {
   uri: string;
 }
 
-export function SceneGraphNode({ uri }: Props) {
+export function SceneGraphNodeView({ uri }: Props) {
   const propertyOwner = useAppSelector(
     (state) => state.propertyOwners.propertyOwners[uri]
   );

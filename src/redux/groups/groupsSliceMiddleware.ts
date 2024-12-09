@@ -26,7 +26,7 @@ const computeGroups = (propertyOwners: PropertyOwners, properties: Properties) =
     const guiPath = guiPathProp ? guiPathProp.value : '/';
 
     if (typeof guiPath !== 'string') {
-      return; // This should not happen
+      throw new Error(`GuiPath property for ${uri} is not a string`);
     }
 
     // Only scene graph nodes can use the group feature.
