@@ -10,6 +10,7 @@ import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
 import { TimePanel } from '@/panels/TimePanel/TimePanel';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
+import { UserPanelsPanel } from '@/panels/UserPanelsPanel/UserPanelsPanel';
 
 export interface MenuItem {
   title: string; // Title of the rc-dock tab
@@ -100,5 +101,12 @@ export const menuItemsDB: MenuItem[] = [
     content: <div>Keybindings</div>,
     preferredPosition: 'float',
     defaultVisible: false
+  },
+  {
+    title: 'User Panels',
+    componentID: 'userPanels',
+    content: <UserPanelsPanel />,
+    preferredPosition: 'float',
+    defaultVisible: true
   }
 ];
