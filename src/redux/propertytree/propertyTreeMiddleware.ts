@@ -1,29 +1,65 @@
-import { createAction, Dispatch, UnknownAction } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
-import { refreshGroups } from '@/redux/groups/groupsSlice';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
-import { Property, PropertyMetaData, PropertyOwner } from '@/types/types';
+import {
+  Properties,
+  Property,
+  PropertyMetaData,
+  PropertyOwner,
+  PropertyOwners
+} from '@/types/types';
 import { rootOwnerKey } from '@/util/keys';
 
+import { refreshGroups } from '../groups/groupsSliceMiddleware';
+
+import { clearProperties, removeProperties } from './properties/propertiesSlice';
 import {
-  addProperties,
-  clearProperties,
-  removeProperties
-} from './properties/propertiesSlice';
-import {
-  addPropertyOwners,
   clearPropertyOwners,
   removePropertyOwners
 } from './propertyowner/propertyOwnerSlice';
 
-export const reloadPropertyTree = createAction<void>('reloadPropertyTree');
-export const propertyTreeWasChanged = createAction<void>('propertyTreeWasChanged');
-export const addUriToPropertyTree = createAction<{ uri: string }>('addUriToPropertyTree');
+export const reloadPropertyTree = createAction<void>('propertyTree/reload');
 export const removeUriFromPropertyTree = createAction<{ uri: string }>(
-  'removeUriFromPropertyTree'
+  'propertyTree/removeUri'
 );
+
+export const addUriToPropertyTree = createAsyncThunk(
+  'propertyTree/addUri',
+  async (uri: string) => {
+    const response = (await api.getProperty(uri)) as
+      | OpenSpaceProperty
+      | OpenSpacePropertyOwner;
+
+    if ('properties' in response) {
+      const { properties, propertyOwners } = flattenPropertyTree(response);
+      const propertiesMap: Properties = {};
+      properties.forEach((p) => {
+        propertiesMap[p.uri] = p;
+      });
+      const propertyOwnerMap: PropertyOwners = {};
+      propertyOwners.forEach((p) => {
+        propertyOwnerMap[p.uri] = p;
+      });
+      return {
+        properties: propertiesMap,
+        propertyOwners: propertyOwnerMap
+      };
+    } else {
+      const result = [convertOsPropertyToProperty(response)];
+      const propertiesMap: Properties = {};
+      result.forEach((p) => {
+        propertiesMap[p.uri] = p;
+      });
+      return {
+        properties: propertiesMap,
+        propertyOwners: null
+      };
+    }
+  }
+);
+
 // The property tree middleware is designed to populate the react store's
 // copy of the property tree when the frontend is connected to OpenSpace.
 
@@ -104,29 +140,6 @@ function flattenPropertyTree(propertyOwner: OpenSpacePropertyOwner) {
   return { propertyOwners, properties };
 }
 
-async function internalAddUriToPropertyTree(
-  dispatch: Dispatch<UnknownAction>,
-  uri: string
-) {
-  const prop = (await api.getProperty(uri)) as OpenSpaceProperty | OpenSpacePropertyOwner;
-  if (!prop) {
-    console.error(`Error retrieving property with uri: '${uri}'`);
-    return;
-  }
-
-  if ('properties' in prop) {
-    const { propertyOwners, properties } = flattenPropertyTree(
-      prop as OpenSpacePropertyOwner
-    );
-    dispatch(addPropertyOwners({ propertyOwners: propertyOwners }));
-    dispatch(addProperties({ properties: properties }));
-  } else {
-    const property = convertOsPropertyToProperty(prop);
-    dispatch(addProperties({ properties: [property] }));
-  }
-  dispatch(propertyTreeWasChanged());
-}
-
 export const addPropertyTreeListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onOpenConnection,
@@ -138,37 +151,21 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
   });
 
   startListening({
-    actionCreator: addUriToPropertyTree,
-    effect: (action, listenerApi) => {
-      internalAddUriToPropertyTree(listenerApi.dispatch, action.payload.uri);
-
-      const { propertyOwners, properties } = listenerApi.getState();
-      listenerApi.dispatch(
-        refreshGroups({
-          propertyOwners: propertyOwners.propertyOwners,
-          properties: properties.properties
-        })
-      );
-    }
-  });
-
-  startListening({
     actionCreator: removeUriFromPropertyTree,
     effect: (action, listenerApi) => {
       const { uri } = action.payload;
 
       listenerApi.dispatch(removePropertyOwners({ uris: [uri] }));
       listenerApi.dispatch(removeProperties({ uris: [uri] }));
-      listenerApi.dispatch(propertyTreeWasChanged());
+      listenerApi.dispatch(refreshGroups());
     }
   });
-
   startListening({
     actionCreator: reloadPropertyTree,
     effect: (_, listenerApi) => {
       listenerApi.dispatch(clearProperties());
       listenerApi.dispatch(clearPropertyOwners());
-      internalAddUriToPropertyTree(listenerApi.dispatch, rootOwnerKey);
+      listenerApi.dispatch(addUriToPropertyTree(rootOwnerKey));
     }
   });
 };

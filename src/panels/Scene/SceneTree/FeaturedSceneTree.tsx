@@ -1,7 +1,7 @@
 import { Divider, Tree, TreeNodeData } from '@mantine/core';
 
 import { useGetStringPropertyValue } from '@/api/hooks';
-import { treeDataForPropertyOwner } from '@/redux/groups/groupsSlice';
+import { treeDataForPropertyOwner } from '@/redux/groups/groupsSliceMiddleware';
 import { useAppSelector } from '@/redux/hooks';
 import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
 import { hasInterestingTag } from '@/util/propertyTreeHelpers';

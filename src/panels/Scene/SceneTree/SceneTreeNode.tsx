@@ -1,7 +1,7 @@
 import { Box, RenderTreeNodePayload, TreeNodeData } from '@mantine/core';
 import { BoxData, PanelData, TabData } from 'rc-dock';
 
-import { useWindowManagerProvider } from '@/windowmanagement/WindowLayout/hooks';
+import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 import { createTabData } from '@/windowmanagement/WindowLayout/WindowLayoutProvider';
 
 import { CollapsableHeader } from '../../../components/CollapsableHeader/CollapsableHeader';
@@ -17,7 +17,7 @@ interface Props {
 
 export function SceneTreeNode({ node, expanded }: Props) {
   // TODO: Implement how this should look like. Sould be clear that it's clickable
-  const { ref, addWindow } = useWindowManagerProvider();
+  const { ref, addWindow } = useWindowLayoutProvider();
 
   const defaultWindowId = 'defaultSceneGraphNodeWindow';
 

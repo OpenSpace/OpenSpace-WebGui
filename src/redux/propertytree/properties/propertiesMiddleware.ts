@@ -97,7 +97,7 @@ function handleUpdatedValues(
   }
 }
 
-function createSubscription(dispatch: Dispatch<UnknownAction>, uri: string) {
+function setupSubscription(dispatch: Dispatch<UnknownAction>, uri: string) {
   const subscription = api.subscribeToProperty(uri);
   const handleUpdates = (value: PropertyValue) =>
     handleUpdatedValues(dispatch, uri, value);
@@ -130,7 +130,7 @@ function tryPromoteSubscription(
   const propertyInTree = !!state.properties.properties[uri];
 
   if (subscriptionInfo.state === SubscriptionState.Orphan && propertyInTree) {
-    subscriptionInfo.subscription = createSubscription(dispatch, uri);
+    subscriptionInfo.subscription = setupSubscription(dispatch, uri);
     subscriptionInfo.state = SubscriptionState.Active;
   }
 }

@@ -7,7 +7,7 @@ import { OpenInNewIcon, VerticalDotsIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { IconSize, NavigationType } from '@/types/enums';
 import { displayName } from '@/util/propertyTreeHelpers';
-import { useWindowManagerProvider } from '@/windowmanagement/WindowLayout/hooks';
+import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { SceneGraphNode } from './SceneGraphNode';
 
@@ -33,7 +33,7 @@ export function SceneGraphNodeHeader({ uri, label, onClick }: Props) {
 
   const name = label ?? displayName(propertyOwner!);
 
-  const { addWindow } = useWindowManagerProvider();
+  const { addWindow } = useWindowLayoutProvider();
   function openInNewWindow() {
     const content = <SceneGraphNode uri={uri} />;
     addWindow(content, {

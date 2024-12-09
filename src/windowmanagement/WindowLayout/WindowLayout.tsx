@@ -2,15 +2,12 @@ import { useEffect, useState } from 'react';
 import { Stack } from '@mantine/core';
 import DockLayout, { LayoutData, TabGroup } from 'rc-dock';
 
-import { onCloseConnection, startConnection } from '@/redux/connection/connectionSlice';
-import { useAppDispatch } from '@/redux/hooks';
-
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
 import { menuItemsDB } from '../data/MenuItems';
 import { TaskBar } from '../TaskBar';
 import { TopMenuBar } from '../TopMenuBar';
 
-import { useWindowManagerProvider } from './hooks';
+import { useWindowLayoutProvider } from './hooks';
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import './WindowLayout.css';
@@ -45,16 +42,8 @@ function createDefaultLayout(): LayoutData {
 }
 
 export function WindowLayout() {
-  const { ref, addWindow } = useWindowManagerProvider();
+  const { ref, addWindow } = useWindowLayoutProvider();
   const [visibleMenuItems, setVisibleMenuItems] = useState<string[]>([]);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(startConnection());
-    return () => {
-      dispatch(onCloseConnection());
-    };
-  }, [dispatch]);
 
   const headless: TabGroup = {
     floatable: false,
