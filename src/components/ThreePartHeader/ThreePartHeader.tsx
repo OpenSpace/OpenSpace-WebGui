@@ -9,7 +9,7 @@ interface Props {
 export function ThreePartHeader({ text, leftSection, rightSection }: Props) {
   return (
     <Group justify={'space-between'} wrap={'nowrap'} w={'100%'}>
-      <Group gap={'xs'} wrap={'nowrap'}>
+      <Group gap={'xs'} flex={1} wrap={'nowrap'}>
         {leftSection && leftSection}
         {text}
       </Group>
