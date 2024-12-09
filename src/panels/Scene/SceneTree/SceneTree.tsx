@@ -6,10 +6,12 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { storeSceneTreeNodeExpanded } from '@/redux/groups/groupsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
+import { useOpenCurrentSceneNodeWindow } from '../hooks';
+
 import { FeaturedSceneTree } from './FeaturedSceneTree';
 import { SceneTreeNode, SceneTreeNodeStyled } from './SceneTreeNode';
 import { sortTreeData } from './sortingUtil';
-import { filterTreeData, isGroupTreeNodeValue } from './treeUtil';
+import { filterTreeData, isGroup } from './treeUtil';
 
 interface Props {
   showOnlyVisible?: boolean;
@@ -23,11 +25,9 @@ interface SearchData extends TreeNodeData {
   guiPath: string | undefined;
 }
 
-/**
- * This component displays a tree of the scene graph, either starting from a certain
- * property owner, or the entire tree.
- */
 export function SceneTree({ showOnlyVisible = false, showHiddenNodes = false }: Props) {
+  const { closeCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
+
   const sceneTreeData = useAppSelector((state) => state.groups.sceneTreeData);
   // TODO: Remove dependency on entire properties object. This means that the entire menu
   // is rerendered as soon as a property changes... Alternatively, update state structure
@@ -37,23 +37,21 @@ export function SceneTree({ showOnlyVisible = false, showHiddenNodes = false }: 
 
   const initialExpandedNodes = useAppSelector((state) => state.groups.expandedGroups);
 
+  // We use a ref here, since we need this object to exists for the entire lifetime of the
+  // component, including when the component is unmounted
   const expandedGroups = useRef<string[]>(initialExpandedNodes);
 
   const tree = useTree({
     initialExpandedState: getTreeExpandedState(sceneTreeData, initialExpandedNodes),
     onNodeExpand: (value) => {
-      if (!isGroupTreeNodeValue(value)) {
-        return;
-      }
-      if (!expandedGroups.current.includes(value)) {
+      if (isGroup(value) && !expandedGroups.current.includes(value)) {
         expandedGroups.current = [...expandedGroups.current, value];
       }
     },
     onNodeCollapse: (value) => {
-      if (!isGroupTreeNodeValue(value)) {
-        return;
+      if (isGroup(value)) {
+        expandedGroups.current = expandedGroups.current.filter((v) => v !== value);
       }
-      expandedGroups.current = expandedGroups.current.filter((v) => v !== value);
     }
   });
 
@@ -62,6 +60,8 @@ export function SceneTree({ showOnlyVisible = false, showHiddenNodes = false }: 
     return () => {
       // Save expanded state on unmount
       dispatch(storeSceneTreeNodeExpanded(expandedGroups.current));
+      // Also close the "current node" window
+      closeCurrentNodeWindow();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

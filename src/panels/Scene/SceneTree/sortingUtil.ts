@@ -3,7 +3,7 @@ import { TreeNodeData } from '@mantine/core';
 import { Properties } from '@/types/types';
 import { guiOrderingNumber } from '@/util/propertyTreeHelpers';
 
-import { GroupPrefixKey, isGroup } from './treeUtil';
+import { GroupPrefixKey, isGroupNode } from './treeUtil';
 
 interface TreeSortingInfoEntry {
   type: 'propertyOwner' | 'group';
@@ -23,7 +23,7 @@ export function createTreeSortingInformation(
   const result: TreeSortingInfo = {};
   treeData.forEach((node) => {
     function addNode(node: TreeNodeData) {
-      if (isGroup(node)) {
+      if (isGroupNode(node)) {
         const groupPath = node.value.replace(GroupPrefixKey, '');
         result[node.value] = {
           type: 'group',
@@ -151,7 +151,7 @@ export function sortTreeData(
   ) {
     return nodes.map((node) => {
       if (node.children) {
-        if (isGroup(node)) {
+        if (isGroupNode(node)) {
           const groupPath = node.value.replace(GroupPrefixKey, '');
           const customOrdering = customGuiOrderingMap[groupPath];
           node.children = sortTreeLevel(node.children, treeSortingInfo, customOrdering);

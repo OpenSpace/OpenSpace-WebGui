@@ -5,18 +5,6 @@ import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 import { WindowLayoutOptions } from './WindowLayout';
 import { WindowLayoutContext } from './WindowLayoutContext';
 
-// TODO: Where should this be placed?
-export function createTabData(id: string, title: string, content: JSX.Element): TabData {
-  return {
-    id,
-    title,
-    content: <ScrollArea h={'100%'}>{content}</ScrollArea>,
-    closable: true,
-    cached: true,
-    group: 'regularWindow'
-  };
-}
-
 export function WindowLayoutProvider({ children }: { children: React.ReactNode }) {
   const rcDocRef = useRef<DockLayout>(null);
 
@@ -41,7 +29,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
     const baseID = rcDocRef.current.state.layout.dockbox.id!;
     const base = rcDocRef.current.find(baseID)! as BoxData;
 
-    const tab: TabData = createTabData(options.id, options.title, component);
+    const tab: TabData = createWindowTabData(options.id, options.title, component);
 
     switch (position) {
       case 'left':
@@ -80,11 +68,35 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
     }
   }
 
+  function closeWindow(id: string) {
+    if (!rcDocRef.current) {
+      return;
+    }
+
+    const existingPanel = rcDocRef.current.find(id);
+    if (existingPanel) {
+      rcDocRef.current.dockMove(existingPanel as TabData | PanelData, null, 'remove');
+    }
+  }
+
+  function createWindowTabData(id: string, title: string, content: JSX.Element): TabData {
+    return {
+      id,
+      title,
+      content: <ScrollArea h={'100%'}>{content}</ScrollArea>,
+      closable: true,
+      cached: true,
+      group: 'regularWindow'
+    };
+  }
+
   return (
     <WindowLayoutContext.Provider
       value={{
         ref: rcDocRef,
-        addWindow
+        addWindow,
+        closeWindow,
+        createWindowTabData
       }}
     >
       {children}
