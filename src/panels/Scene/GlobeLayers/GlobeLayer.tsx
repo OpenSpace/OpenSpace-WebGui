@@ -34,10 +34,10 @@ export function GlobeLayer({ uri, showDragHandle, dragHandleProps }: Props) {
       title={<Text c={textColor}>{displayName(propertyOwner!)}</Text>}
       leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
       rightSection={
-        <Group {...dragHandleProps} wrap={'nowrap'}>
+        <Group wrap={'nowrap'}>
           <Tooltip text={propertyOwner?.description || 'No information'} />
           {showDragHandle && dragHandleProps && (
-            <ThemeIcon variant={'default'}>
+            <ThemeIcon variant={'default'} {...dragHandleProps}>
               <MdDragHandle />
             </ThemeIcon>
           )}
