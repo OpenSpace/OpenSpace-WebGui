@@ -1,10 +1,5 @@
-import { ZoomInIcon, ZoomOutIcon, ZoomOutMapIcon } from '@/icons/icons';
-import { Phase } from '@/types/mission-types';
-import { ActionIcon, Group, Tooltip, Text } from '@mantine/core';
 import { useEffect, useRef, useState } from 'react';
-import { DisplayedPhase } from '../MissionsPanel';
-import { DisplayType, IconSize } from '@/types/enums';
-import { useAppSelector } from '@/redux/hooks';
+import { ActionIcon, Group } from '@mantine/core';
 import {
   axisLeft,
   scaleLinear,
@@ -15,15 +10,24 @@ import {
   zoomIdentity,
   zoomTransform
 } from 'd3';
-import { jumpToTime } from '../util';
-import { useOpenSpaceApi } from '@/api/hooks';
+
+import { ZoomInIcon, ZoomOutIcon, ZoomOutMapIcon } from '@/icons/icons';
+import { DisplayType, IconSize } from '@/types/enums';
+import { Phase } from '@/types/mission-types';
+
+import { DisplayedPhase } from '../MissionContent';
+
+import { Circle } from './Circle';
+import { Polygon } from './Polygon';
+import { Rectangle } from './Rectangle';
+import { TimeIndicator } from './TimeIndicator';
 
 import './TimeLine.css';
 
 interface TimeLineProps {
   allPhasesNested: Phase[][];
   displayedPhase: DisplayedPhase;
-  overview: Phase;
+  missionOverview: Phase;
   setDisplayedPhase: (phase: DisplayedPhase) => void;
 }
 
@@ -33,15 +37,13 @@ interface TimeLineProps {
 export function TimeLine({
   allPhasesNested,
   displayedPhase,
-  overview,
+  missionOverview,
   setDisplayedPhase
 }: TimeLineProps) {
-  const luaApi = useOpenSpaceApi();
   const [scale, setScale] = useState(1);
   const [translation, setTranslation] = useState(0);
-  const now = useAppSelector((state) => state.time.timeCapped);
 
-  //   const xAxisRef = useRef<any>(null);
+  // const xAxisRef = useRef<any>(null);
   const yAxisRef = useRef<any>(null);
   const svgRef = useRef<any>(null);
   const zoomRef = useRef<ZoomBehavior<SVGElement, unknown> | null>(null);
@@ -84,20 +86,18 @@ export function TimeLine({
   const clipPathTop = margin.top - paddingGraph.top;
   const clipPathBottom = height - margin.bottom + 2 * paddingGraph.bottom;
 
-  let selectedPhase: Phase | undefined = undefined;
-  let selectedPhaseIndex: number = 0;
-
   const timeRange = [
-    new Date(overview.timerange.start),
-    new Date(overview.timerange.end)
+    new Date(missionOverview.timerange.start),
+    new Date(missionOverview.timerange.end)
   ];
   const xScale = scaleLinear()
     .range([margin.left, width - margin.right])
     .domain([0, nestedLevels]);
-  let yScale = scaleUtc([height - margin.bottom, margin.top]).domain(timeRange);
+  const yScale = scaleUtc([height - margin.bottom, margin.top]).domain(timeRange);
 
   // Calculate axes
-  let yAxis = axisLeft(yScale);
+  const yAxis = axisLeft(yScale);
+
   // TODO: we dont need the xAxis since we're not plotting anything on it anyways
   //   const xAxis = axisTop(xScale)
   //     .tickFormat(() => '')
@@ -117,7 +117,8 @@ export function TimeLine({
     select(yAxisRef.current).call(yAxis);
 }, [height]);
 */
-
+  // TODO: these use Effects should fill their dependency arrays but if we do it with eg
+  // yAxis its recomputed every time, so we need to do some memo? or somethign here
   // On mount, style axes
   useEffect(() => {
     select(yAxisRef.current).call(yAxis);
@@ -165,62 +166,68 @@ export function TimeLine({
       .call(zoomRef.current.scaleBy, zoomValue);
   }
 
-  function createRectangle(
-    phase: Phase,
-    nestedLevel: number,
-    padding: number = 0,
-    color?: React.CSSProperties['color']
-  ): React.JSX.Element {
-    if (now === undefined) {
-      return <></>;
-    }
-    const startTime = new Date(phase.timerange.start);
-    const endTime = new Date(phase.timerange.end);
-
-    const isBeforeEndTime = now < endTime.valueOf();
-    const isAfterBeginning = now > startTime.valueOf();
-    const isCurrent = isBeforeEndTime && isAfterBeginning;
-
-    // Radius for the rectangles that represent phases
-    const radiusPhase = 2;
-    // Make sure padding doesn't get stretched when zooming
-    const paddingY = padding / scale;
-    const radiusY = radiusPhase / scale; // same here
-
+  function createPhases(): React.JSX.Element {
+    let selectedPhase: Phase | undefined = undefined;
+    let selectedPhaseIndex: number = 0;
     return (
-      <Tooltip.Floating
-        label={
-          <>
-            <Text fw={'bold'}>Phase</Text>
-            {phase.name}
-          </>
-        }
-      >
-        <rect
-          key={`${phase.name}${startTime}-${endTime}`}
-          x={xScale(nestedLevels - nestedLevel - 1) - padding}
-          y={yScale(endTime) - paddingY}
-          height={yScale(startTime) - yScale(endTime) + 2 * paddingY}
-          width={xScale(1) - xScale(0) + 2 * padding}
-          onClick={(event) => {
-            setDisplayedPhase({ type: DisplayType.Phase, data: phase });
-            // TODO: Make into a function?
-            if (event.shiftKey) {
-              jumpToTime(now, phase.timerange.start, luaApi);
+      <>
+        {allPhasesNested.map((nestedPhase, index) =>
+          nestedPhase.map((phase) => {
+            if (
+              displayedPhase.type === DisplayType.Phase &&
+              displayedPhase.data.name === phase.name
+            ) {
+              // We want to draw the selected phase last so it appears on top, save it
+              // for later
+              selectedPhase = phase;
+              selectedPhaseIndex = index;
+              return null;
             }
-          }}
-          ry={radiusY}
-          rx={radiusPhase}
-          className={isCurrent ? 'highlightedRect' : 'normalRect'}
-          style={color ? { fill: color, opacity: 1.0 } : {}}
-        />
-      </Tooltip.Floating>
+            return (
+              <Rectangle
+                key={`${phase.name}-${phase.timerange.start}-${phase.timerange.end}`}
+                scale={scale}
+                xScale={xScale}
+                yScale={yScale}
+                nestedLevels={nestedLevels}
+                setDisplayedPhase={setDisplayedPhase}
+                phase={phase}
+                nestedLevel={index}
+              />
+            ); //createRectangle(phase, index);
+          })
+        )}
+        {selectedPhase && (
+          <>
+            <Rectangle
+              scale={scale}
+              xScale={xScale}
+              yScale={yScale}
+              nestedLevels={nestedLevels}
+              setDisplayedPhase={setDisplayedPhase}
+              phase={selectedPhase}
+              nestedLevel={selectedPhaseIndex}
+              padding={2}
+              color={'white'}
+            />
+            <Rectangle
+              scale={scale}
+              xScale={xScale}
+              yScale={yScale}
+              nestedLevels={nestedLevels}
+              setDisplayedPhase={setDisplayedPhase}
+              phase={selectedPhase}
+              nestedLevel={selectedPhaseIndex}
+            />
+          </>
+        )}
+      </>
     );
   }
 
   return (
     <div style={{ flexGrow: 0 }}>
-      <Group gap={0} justify="space-between">
+      <Group gap={0} justify={'space-between'}>
         <ActionIcon onClick={() => zoomByButton(0.5)} aria-label={'Zoom in timeline'}>
           <ZoomOutIcon size={IconSize.sm} />
         </ActionIcon>
@@ -245,30 +252,43 @@ export function TimeLine({
             ref={yAxisRef}
             transform={`translate(${margin.left - paddingGraph.inner}, ${0})`}
           />
-          {/* This group transforms all the rectangles correctly when we scale and zoom in
+          {/* This group transforms all the children correctly when we scale and zoom in
               the timeline */}
           <g transform={`translate(0, ${translation})scale(1, ${scale})`}>
-            {allPhasesNested.map((nestedPhase, index) =>
-              nestedPhase.map((phase) => {
-                if (
-                  displayedPhase.type === DisplayType.Phase &&
-                  displayedPhase.data.name === phase.name
-                ) {
-                  // We want to draw the selected phase last so it appears on top, save it
-                  // for later
-                  selectedPhase = phase;
-                  selectedPhaseIndex = index;
-                  return null;
-                }
-                return createRectangle(phase, index);
-              })
-            )}
-            {selectedPhase && (
-              <>
-                {createRectangle(selectedPhase, selectedPhaseIndex, 2, 'white')}
-                {createRectangle(selectedPhase, selectedPhaseIndex)}
-              </>
-            )}
+            {createPhases()}
+
+            <TimeIndicator
+              yScale={yScale}
+              margin={margin}
+              timelineWidth={width}
+              scale={scale}
+            />
+            {missionOverview.capturetimes.map((capture, index) => (
+              <Circle
+                key={`${capture}-${index}`}
+                capture={capture}
+                yScale={yScale}
+                marginLeft={margin.left}
+                scale={scale}
+              />
+            ))}
+            {missionOverview.milestones.map((milestone) => {
+              const isSelected =
+                displayedPhase.type === DisplayType.Milestone &&
+                displayedPhase.data.name === milestone.name;
+
+              return (
+                <Polygon
+                  key={milestone.date}
+                  scale={scale}
+                  yScale={yScale}
+                  marginLeft={margin.left - paddingGraph.inner}
+                  setDisplayedPhase={setDisplayedPhase}
+                  milestone={milestone}
+                  displayBorder={isSelected}
+                />
+              );
+            })}
           </g>
         </g>
       </svg>
