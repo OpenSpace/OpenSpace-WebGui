@@ -28,8 +28,8 @@ export {
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
   MdVideocam as VideocamIcon,
-  MdZoomOutMap as ZoomOutMapIcon,
+  MdZoomIn as ZoomInIcon,
   MdZoomOut as ZoomOutIcon,
-  MdZoomIn as ZoomInIcon
+  MdZoomOutMap as ZoomOutMapIcon
 } from 'react-icons/md';
 export { RiFocus3Line as FocusIcon } from 'react-icons/ri';
