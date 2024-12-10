@@ -210,7 +210,11 @@ export function OriginPanel() {
           <TelescopeIcon size={'70%'} />
         </ActionIcon>
       </Group>
-      <FilterList placeHolderSearchText={searchPlaceholderText} showMoreButton>
+      <FilterList
+        placeHolderSearchText={searchPlaceholderText}
+        showMoreButton
+        height={300}
+      >
         <FilterList.Favorites>
           {sortedDefaultList.map((entry) => (
             <FocusEntry
