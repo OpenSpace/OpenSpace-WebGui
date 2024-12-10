@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 
-import { WindowManagerContext } from './WindowLayoutProvider';
+import { WindowLayoutContext } from './WindowLayoutContext';
 
-export function useWindowManagerProvider() {
-  const context = useContext(WindowManagerContext);
+export function useWindowLayoutProvider() {
+  const context = useContext(WindowLayoutContext);
   if (!context) {
-    throw Error('useWindowManagerProvider must be used within a WindowManagerContext');
+    throw Error('useWindowLayoutProvider must be used within a WindowLayoutContext');
   }
   return context;
 }

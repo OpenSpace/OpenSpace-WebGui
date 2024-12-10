@@ -7,7 +7,7 @@ import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
 import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
-import { loadExoplanetsData } from '@/redux/exoplanets/exoplanetsMiddleware';
+import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import {
@@ -23,6 +23,7 @@ import { ExoplanetEntry } from './ExoplanetEntry';
 
 export function ExoplanetsPanel() {
   const luaApi = useOpenSpaceApi();
+
   const propertyOwners = useAppSelector((state) => {
     return state.propertyOwners.propertyOwners;
   });
@@ -36,10 +37,16 @@ export function ExoplanetsPanel() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!isDataInitialized) {
-      dispatch(loadExoplanetsData());
+    async function fetchData() {
+      const res = await luaApi?.exoplanets.listOfExoplanets();
+      if (res) {
+        dispatch(initializeExoplanets(Object.values(res)));
+      }
     }
-  }, [dispatch, isDataInitialized]);
+    if (luaApi || !isDataInitialized) {
+      fetchData();
+    }
+  }, [luaApi, dispatch, isDataInitialized]);
 
   // Find already existing exoplent systems among the property owners
   const addedSystems = Object.values(propertyOwners).filter((owner) =>

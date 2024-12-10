@@ -1,17 +1,11 @@
-import { createContext, Ref, useRef } from 'react';
+import { useRef } from 'react';
 import { ScrollArea } from '@mantine/core';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
 import { WindowLayoutOptions } from './WindowLayout';
+import { WindowLayoutContext } from './WindowLayoutContext';
 
-export interface ProviderProps {
-  ref: Ref<DockLayout>;
-  addWindow: (component: JSX.Element, options: WindowLayoutOptions) => void;
-}
-
-export const WindowManagerContext = createContext<ProviderProps | null>(null);
-
-export function WindowManagerProvider({ children }: { children: React.ReactNode }) {
+export function WindowLayoutProvider({ children }: { children: React.ReactNode }) {
   const rcDocRef = useRef<DockLayout>(null);
 
   function isPanelDataInstance(obj: PanelData | BoxData) {
@@ -82,13 +76,13 @@ export function WindowManagerProvider({ children }: { children: React.ReactNode 
   }
 
   return (
-    <WindowManagerContext.Provider
+    <WindowLayoutContext.Provider
       value={{
         ref: rcDocRef,
         addWindow
       }}
     >
       {children}
-    </WindowManagerContext.Provider>
+    </WindowLayoutContext.Provider>
   );
 }
