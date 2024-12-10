@@ -1,5 +1,15 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { getTreeExpandedState, Tree, TreeNodeData, useTree } from '@mantine/core';
+import { FiChevronsDown, FiChevronsUp } from 'react-icons/fi';
+import {
+  ActionIcon,
+  Box,
+  getTreeExpandedState,
+  Group,
+  Tooltip,
+  Tree,
+  TreeNodeData,
+  useTree
+} from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
@@ -108,11 +118,36 @@ export function SceneTree({ filter }: Props) {
     <FilterList>
       <FilterList.Favorites>
         <FeaturedSceneTree filter={filter} />
-        <Tree
-          data={treeData}
-          tree={tree}
-          renderNode={(payload) => <SceneTreeNodeStyled {...payload} />}
-        />
+        <Box pos={'relative'}>
+          <Tree
+            data={treeData}
+            tree={tree}
+            renderNode={(payload) => <SceneTreeNodeStyled {...payload} />}
+          />
+          <Group gap={0} pos={'absolute'} top={0} right={0}>
+            {/* TODO: what icons to use here? */}
+            <Tooltip
+              label={'Collapse all'}
+              position={'top'}
+              transitionProps={{ enterDelay: 400 }}
+              withArrow
+            >
+              <ActionIcon variant={'subtle'} onClick={tree.collapseAllNodes}>
+                <FiChevronsUp />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip
+              label={'Expand all'}
+              position={'top'}
+              transitionProps={{ enterDelay: 400 }}
+              withArrow
+            >
+              <ActionIcon variant={'subtle'} onClick={tree.expandAllNodes}>
+                <FiChevronsDown />
+              </ActionIcon>
+            </Tooltip>
+          </Group>
+        </Box>
       </FilterList.Favorites>
       <FilterList.Data<SearchData>
         data={flatTreeData}
