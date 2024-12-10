@@ -84,7 +84,7 @@ export function ExoplanetsPanel() {
   return (
     <Container fluid my={'md'}>
       {allSystemNames.length > 0 ? (
-        <FilterList placeHolderSearchText={'Star name...'} height={'500px'}>
+        <FilterList placeHolderSearchText={'Star name...'} height={300}>
           <FilterList.Data<string>
             data={allSystemNames}
             renderElement={(name) => {
