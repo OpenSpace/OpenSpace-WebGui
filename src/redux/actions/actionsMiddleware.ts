@@ -25,7 +25,7 @@ async function getShortcut(uri: string): Promise<ActionOrKeybind[]> {
   topic.cancel();
   return value.shortcuts;
 }
-const getAction = createAction<string>('getAction');
+export const getAction = createAction<string>('getAction');
 
 export const addActionsListener = (startListening: AppStartListening) => {
   startListening({

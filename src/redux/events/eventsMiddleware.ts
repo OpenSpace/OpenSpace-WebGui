@@ -10,6 +10,9 @@ import {
 } from '@/redux/propertytree/propertyTreeMiddleware';
 import { EventData } from '@/types/event-types';
 
+import { getAction } from '../actions/actionsMiddleware';
+import { removeAction } from '../actions/actionsSlice';
+
 let eventTopic: Topic;
 let nSubscribers = 0;
 
@@ -20,6 +23,12 @@ function handleData(dispatch: Dispatch<UnknownAction>, data: EventData) {
       break;
     case 'PropertyTreePruned':
       dispatch(removeUriFromPropertyTree({ uri: data.Uri }));
+      break;
+    case 'ActionAdded':
+      dispatch(getAction(data.Uri));
+      break;
+    case 'ActionRemoved':
+      dispatch(removeAction(data.Uri));
       break;
     default:
       return;
