@@ -9,12 +9,7 @@ export interface Action {
 export interface Keybind {
   action: string;
   key: string;
-  modifiers: {
-    alt: boolean;
-    control: boolean;
-    shift: boolean;
-    super: boolean;
-  };
+  modifiers: string[];
 }
 
 export type ActionOrKeybind = Action | Keybind;
