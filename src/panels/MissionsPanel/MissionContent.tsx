@@ -9,9 +9,9 @@ import { Action } from '@/types/types';
 
 import { ActionsButton } from '../ActionsPanel/ActionsButton';
 
+import { TimeLine } from './TimeLine/TimeLine';
 import { MissionCaptureButtons } from './MissionCaptureButtons';
 import { MissionTimeButtons } from './MissionTimeButtons';
-import { TimeLine } from './TimeLine/TimeLine';
 
 export type DisplayedPhase =
   | { type: DisplayType.Phase; data: Phase }
@@ -165,11 +165,11 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
 
   return (
     <Container my={'xs'}>
-      <Group grow wrap={'nowrap'} align="start">
+      <Group grow wrap={'nowrap'} align={'start'}>
         <TimeLine
           allPhasesNested={allPhasesNested.current}
           displayedPhase={displayedPhase}
-          overview={missionOverview}
+          missionOverview={missionOverview}
           setDisplayedPhase={setPhaseManually}
         />
         <div style={{ maxWidth: 'none' }}>
@@ -195,7 +195,7 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
               <Text my={'xs'}>{displayedPhase.data.description}</Text>
               {displayedPhase.data.link && (
                 <Button onClick={() => console.log(displayedPhase.data.link)}>
-                  Read more
+                  TODO: fix Read more
                 </Button>
               )}
               {displayedPhase.data.image && (

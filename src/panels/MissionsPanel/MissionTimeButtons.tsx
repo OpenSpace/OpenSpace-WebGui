@@ -4,7 +4,7 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { DisplayType } from '@/types/enums';
 
-import { DisplayedPhase } from './MissionsPanel';
+import { DisplayedPhase } from './MissionContent';
 import { jumpToTime } from './util';
 
 interface MissionTimeButtonsProps {
