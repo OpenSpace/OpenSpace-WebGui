@@ -9,14 +9,16 @@ import { initializeMissions } from './missionsSlice';
 interface MissionData {
   done: boolean;
   value: {
-    missions: Phase[];
+    missions: Phase[] | null;
   };
 }
 
 async function getMissions(callback: (missions: { missions: Phase[] }) => void) {
   const missionTopic = api.startTopic('missions', {});
   const { value } = (await missionTopic.iterator().next()) as MissionData;
-  callback(value);
+  if (value.missions !== null) {
+    callback({ missions: value.missions });
+  }
   missionTopic.cancel();
 }
 
