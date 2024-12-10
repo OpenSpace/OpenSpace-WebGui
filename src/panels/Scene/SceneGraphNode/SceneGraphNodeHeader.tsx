@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Divider, Group, Menu, UnstyledButton } from '@mantine/core';
+import { ActionIcon, Button, Divider, Group, Menu, Text } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
@@ -47,9 +47,22 @@ export function SceneGraphNodeHeader({ uri, label, onClick }: Props) {
     <ThreePartHeader
       text={
         onClick ? (
-          <UnstyledButton style={{ flexGrow: 1 }} onClick={onClick}>
-            {name}
-          </UnstyledButton>
+          <Button
+            style={{ flexGrow: 1 }}
+            h={'fit-content'}
+            variant={'transparent'}
+            justify={'left'}
+            p={0}
+            size={'compact-sm'}
+            onClick={onClick}
+          >
+            <Text
+              mah={'80px'}
+              style={{ whiteSpace: 'wrap', overflowWrap: 'anywhere', textAlign: 'left' }}
+            >
+              {name}
+            </Text>
+          </Button>
         ) : (
           name
         )
