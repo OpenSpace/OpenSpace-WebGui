@@ -3,7 +3,7 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 
 export interface VirtualListProps<T> {
   data: T[];
-  renderElement: (data: T) => React.ReactNode;
+  renderElement: (data: T, i: number) => React.ReactNode;
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
 }
@@ -61,7 +61,7 @@ export function VirtualList<T>({
                 transform: `translateY(${virtualRow.start}px)`
               }}
             >
-              {renderElement(data[virtualRow.index])}
+              {renderElement(data[virtualRow.index], virtualRow.index)}
             </div>
           ))}
         </div>

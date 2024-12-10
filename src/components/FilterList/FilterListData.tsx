@@ -8,7 +8,7 @@ export const FilterListDataDisplayName = 'FilterListData';
 
 export interface FilterListDataProps<T> {
   data: T[];
-  renderElement: (data: T) => React.ReactNode;
+  renderElement: (data: T, i: number) => React.ReactNode;
   matcherFunc: (data: T, searchString: string) => boolean;
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
