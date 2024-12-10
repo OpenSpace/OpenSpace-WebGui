@@ -1,65 +1,95 @@
-import { Collapse, Paper } from '@mantine/core';
-import { shallowEqual, useDisclosure } from '@mantine/hooks';
+import { Group, Paper, Space } from '@mantine/core';
 
-import { CollapsableHeader } from '@/components/CollapsableHeader/CollapsableHeader';
-import { Property } from '@/components/Property/Property';
+import { useGetVisibleProperties } from '@/api/hooks';
+import { GlobeLayersPropertyOwner } from '@/panels/Scene/GlobeLayers/GlobeLayersPropertyOwner';
 import { useAppSelector } from '@/redux/hooks';
-import { isPropertyVisible, isRenderable } from '@/util/propertytreehelper';
+import { displayName, isGlobeLayersUri } from '@/util/propertyTreeHelpers';
+
+import { CollapsableContent } from '../CollapsableContent/CollapsableContent';
+import { Property } from '../Property/Property';
+import { Tooltip } from '../Tooltip/Tooltip';
+
+import { PropertyOwnerVisibilityCheckbox } from './VisiblityCheckbox';
 
 interface Props {
   uri: string;
-  autoExpand?: boolean;
+  hideSubOwners?: boolean;
+  withHeader?: boolean;
+  expandedOnDefault?: boolean;
 }
 
-export function PropertyOwner({ uri, autoExpand }: Props) {
-  const [expanded, { toggle }] = useDisclosure(autoExpand || false);
-
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+export function PropertyOwner({
+  uri,
+  hideSubOwners = false,
+  withHeader = true,
+  expandedOnDefault = false
+}: Props) {
   const propertyOwner = useAppSelector(
     (state) => state.propertyOwners.propertyOwners[uri]
   );
-  const properties = useAppSelector((state) => {
-    const subProperties = propertyOwner?.properties || [];
-    return subProperties.filter((prop) =>
-      isPropertyVisible(state.properties.properties, prop)
-    );
-  }, shallowEqual);
 
-  const subPropertyOwners = propertyOwner?.subowners || [];
-  const name = propertyOwner?.name;
-
-  const hasChildren = properties.length > 0 || subPropertyOwners.length > 0;
-  if (propertyOwner === undefined || !hasChildren) {
-    return;
+  if (!propertyOwner) {
+    throw Error(`No property owner found for uri: ${uri}`);
   }
 
-  const sortedSubOwners = subPropertyOwners.slice().sort((uriA, uriB) => {
-    const a = propertyOwners[uriA]?.name || '';
-    const b = propertyOwners[uriB]?.name || '';
-    return a.localeCompare(b);
-  });
+  const isGlobeLayers = useAppSelector((state) =>
+    isGlobeLayersUri(uri, state.properties.properties)
+  );
 
-  // TODO: This should possibly be implemented as part of the tree structure instead...
-  // So that we can navigate using the keyboard in the same way (arrow keys and space)
+  const visibleProperties = useGetVisibleProperties(propertyOwner);
+  const subowners = propertyOwner?.subowners ?? [];
+  const hasSubowners = subowners.length > 0;
+  const hasVisibleProperties = visibleProperties.length > 0;
 
-  // Alternatively, open the Property and subpropertyowner settings in a sepratae menu?
+  const hasContent = hasSubowners || hasVisibleProperties;
+
+  if (!hasContent) {
+    return null;
+  }
+
+  // First handle any custom content types, like GlobeLayers
+  let content;
+  if (isGlobeLayers) {
+    content = <GlobeLayersPropertyOwner uri={uri} />;
+  } else {
+    content = (
+      <>
+        {!hideSubOwners && hasSubowners && (
+          <>
+            {subowners.map((subowner) => (
+              <PropertyOwner key={subowner} uri={subowner} />
+            ))}
+            {hasVisibleProperties && <Space h={'xs'} />}
+          </>
+        )}
+        {hasVisibleProperties && (
+          <Paper p={'xs'}>
+            {visibleProperties.map((property) => (
+              <Property key={property} uri={property} />
+            ))}
+          </Paper>
+        )}
+      </>
+    );
+  }
+
+  if (!withHeader) {
+    return content;
+  }
+
   return (
-    <>
-      <CollapsableHeader expanded={expanded} toggle={toggle} text={name} />
-      {/* TODO: These componetns looked awful without the added margin and padding (ml and p).
-          But we should remove the styling once we've decided how to do for the entire page*/}
-      <Collapse in={expanded} ml={'lg'} transitionDuration={0}>
-        <Paper withBorder p={'1px'} onClick={(event) => event.stopPropagation()}>
-          {/* TODO: The rendering of these components are very slow...
-              Setting the transition duration to zero helps a bit, but still*/}
-          {sortedSubOwners.map((uri) => (
-            <PropertyOwner key={uri} uri={uri} autoExpand={isRenderable(uri)} />
-          ))}
-          {properties.map((uri) => (
-            <Property key={uri} uri={uri} />
-          ))}
-        </Paper>
-      </Collapse>
-    </>
+    <CollapsableContent
+      title={
+        <Group gap={'xs'}>
+          {displayName(propertyOwner)}
+          {propertyOwner.description && <Tooltip text={propertyOwner.description} />}
+        </Group>
+      }
+      leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
+      defaultOpen={expandedOnDefault}
+      noTransition
+    >
+      {content}
+    </CollapsableContent>
   );
 }

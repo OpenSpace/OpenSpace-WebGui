@@ -1,3 +1,4 @@
+import React from 'react';
 import { Box } from '@mantine/core';
 
 import { useSubscribeToProperty } from '@/api/hooks';
@@ -68,9 +69,7 @@ interface Props {
   uri: string;
 }
 
-export function Property({ uri }: Props) {
-  // TODO: The state here has been changed. Should just be propertyTree.properties. Or
-  // maybe even just state.properties?
+export const Property = React.memo(({ uri }: Props) => {
   const description = useAppSelector(
     (state) => state.properties.properties[uri]?.description
   );
@@ -109,4 +108,4 @@ export function Property({ uri }: Props) {
       />
     </Box>
   );
-}
+});

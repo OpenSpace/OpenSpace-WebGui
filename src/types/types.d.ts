@@ -53,26 +53,36 @@ export interface ExoplanetData {
   identifier: string;
 }
 
+export type PropertyVisibility =
+  | 'Hidden'
+  | 'Developer'
+  | 'AdvancedUser'
+  | 'User'
+  | 'NoviceUser'
+  | 'Always';
+
 export interface PropertyMetaData {
   Group: string;
   ViewOptions: {
     [key: string]: boolean;
   };
-  Visibility: string; // TODO specify this as developer  | user | noviceUser etc
+  Visibility: PropertyVisibility;
   isReadOnly: boolean;
   needsConfirmation: boolean;
 }
 
+export interface PropertyDetails {
+  additionalData: any;
+  identifier: string;
+  metaData: PropertyMetaData;
+  name: string;
+  type: string; // TODO: define these as property types i.e., boolproperty, stringproperty etc
+  description: string;
+}
+
 export type PropertyValue = string | number | number[] | boolean | null;
 export interface Property {
-  description: {
-    additionalData: any;
-    identifier: string;
-    metaData: PropertyMetaData;
-    name: string;
-    type: string; // TODO: define these as property types i.e., boolproperty, stringproperty etc
-    description: string;
-  };
+  description: PropertyDetails;
   value: PropertyValue; // TODO: investigate if these are all the values we can have
   uri: string;
 }
