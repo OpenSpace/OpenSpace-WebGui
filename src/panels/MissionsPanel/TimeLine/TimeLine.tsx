@@ -12,6 +12,7 @@ import {
 } from 'd3';
 
 import { ZoomInIcon, ZoomOutIcon, ZoomOutMapIcon } from '@/icons/icons';
+import { useAppSelector } from '@/redux/hooks';
 import { DisplayType, IconSize } from '@/types/enums';
 import { Phase } from '@/types/mission-types';
 
@@ -20,6 +21,7 @@ import { DisplayedPhase } from '../MissionContent';
 import { Circle } from './Circle';
 import { Polygon } from './Polygon';
 import { Rectangle } from './Rectangle';
+import { TimeArrow } from './TimeArrow';
 import { TimeIndicator } from './TimeIndicator';
 
 import './TimeLine.css';
@@ -42,11 +44,13 @@ export function TimeLine({
 }: TimeLineProps) {
   const [scale, setScale] = useState(1);
   const [translation, setTranslation] = useState(0);
+  const now = useAppSelector((state) => state.time.timeCapped);
 
   // const xAxisRef = useRef<any>(null);
   const yAxisRef = useRef<any>(null);
   const svgRef = useRef<any>(null);
   const zoomRef = useRef<ZoomBehavior<SVGElement, unknown> | null>(null);
+  const timeIndicatorRef = useRef<SVGRectElement | null>(null);
   // Set the dimensions and margins of the graph
   const margin = {
     top: 10,
@@ -156,6 +160,7 @@ export function TimeLine({
         zoomTransform(select(svgRef.current).node()).invert([width * 0.5, height * 0.5])
       );
   }
+
   function zoomByButton(zoomValue: number) {
     if (!zoomRef.current) {
       return;
@@ -164,6 +169,21 @@ export function TimeLine({
       .transition()
       .duration(transitionDuration)
       .call(zoomRef.current.scaleBy, zoomValue);
+  }
+
+  function centerTime() {
+    if (!now || !zoomRef.current) {
+      return;
+    }
+    // Calculate new translation
+    const centerY = (height * 0.5) / scale;
+    const deltaY = centerY - yScale(now);
+
+    const transform = zoomIdentity.scale(scale).translate(1, deltaY);
+    select(svgRef.current)
+      .transition()
+      .duration(transitionDuration)
+      .call(zoomRef.current.transform, transform);
   }
 
   function createPhases(): React.JSX.Element {
@@ -258,6 +278,7 @@ export function TimeLine({
             {createPhases()}
 
             <TimeIndicator
+              ref={timeIndicatorRef}
               yScale={yScale}
               margin={margin}
               timelineWidth={width}
@@ -290,6 +311,13 @@ export function TimeLine({
               );
             })}
           </g>
+          <TimeArrow
+            timeIndicatorRef={timeIndicatorRef}
+            svgRef={svgRef}
+            fullWidth={width}
+            margin={margin}
+            onClick={() => centerTime()}
+          />
         </g>
       </svg>
     </div>

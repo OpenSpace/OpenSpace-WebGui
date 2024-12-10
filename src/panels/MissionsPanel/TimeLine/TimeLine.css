@@ -25,3 +25,7 @@ polygon:hover {
   stroke-width: 2;
   stroke: white;
 }
+
+.arrow:hover {
+  fill: var(--mantine-primary-color-4);
+}

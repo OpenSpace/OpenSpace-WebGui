@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import { ScaleTime } from 'd3';
 
 import { useAppSelector } from '@/redux/hooks';
@@ -9,32 +10,33 @@ interface TimeIndicatorProps {
   scale: number;
 }
 
-export function TimeIndicator({
-  yScale,
-  margin,
-  timelineWidth,
-  scale
-}: TimeIndicatorProps) {
-  const now = useAppSelector((state) => state.time.timeCapped);
-  const lineHeight = 3;
-  // Divide by scale to avoid the line being stretched when zooming
-  const lineHeightScaled = lineHeight / scale;
+export const TimeIndicator = forwardRef<SVGRectElement, TimeIndicatorProps>(
+  function TimeIndicator(
+    { yScale, margin, timelineWidth, scale }: TimeIndicatorProps,
+    ref
+  ) {
+    const now = useAppSelector((state) => state.time.timeCapped);
+    const lineHeight = 3;
+    // Divide by scale to avoid the line being stretched when zooming
+    const lineHeightScaled = lineHeight / scale;
 
-  if (!now) {
-    return <></>;
+    if (!now) {
+      return <></>;
+    }
+
+    const yPosition = yScale(now) - lineHeightScaled * 0.5; // Center line around time
+
+    return (
+      <rect
+        ref={ref}
+        x={margin.left}
+        y={yPosition}
+        height={lineHeightScaled}
+        width={timelineWidth - margin.left - margin.right}
+        fill={'white'}
+        stroke={'black'}
+        strokeWidth={0.5 / scale}
+      />
+    );
   }
-
-  const yPosition = yScale(now) - lineHeightScaled * 0.5; // Center line around time
-
-  return (
-    <rect
-      x={margin.left}
-      y={yPosition}
-      height={lineHeightScaled}
-      width={timelineWidth - margin.left - margin.right}
-      fill={'white'}
-      stroke={'black'}
-      strokeWidth={0.5 / scale}
-    />
-  );
-}
+);
