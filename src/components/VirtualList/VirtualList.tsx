@@ -7,7 +7,9 @@ export interface VirtualListProps<T> {
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
 }
-// This component is created from the example in the docs: https://tanstack.com/virtual/latest/docs/introduction
+
+// This component is created from the example in the docs:
+// https://tanstack.com/virtual/latest/docs/introduction
 export function VirtualList<T>({
   data,
   renderElement,
@@ -21,15 +23,17 @@ export function VirtualList<T>({
   const rowVirtualizer = useVirtualizer({
     count: data.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 35, // This is the largest estimated size tanstack seems to be able to handle
+    // This is the largest estimated size tanstack seems to be able to handle
+    estimateSize: () => 35,
     overscan: overscan ?? 10,
     gap: gap ?? 5
   });
 
-  // @TODO 2024-12-06 ylvse: style the scrollbar. Mantines scrollbar has a completely separate component for the
-  // actual scrollbar which is not exported. We could copy the source code but leaving this as is for now.
-  // ScrollArea doesn't work with the virtual list and its a pretty complex component so it's hard to just
-  // copy the styles
+  // @TODO 2024-12-06 ylvse: style the scrollbar. Mantines scrollbar has a
+  // completely separate component for the actual scrollbar which is not exported.
+  // We could copy the source code but leaving this as is for now.
+  // ScrollArea doesn't work with the virtual list and its a pretty
+  // complex component so it's hard to just copy the styles
   return (
     <>
       {/* The scrollable element for your list */}
@@ -48,7 +52,8 @@ export function VirtualList<T>({
             position: 'relative'
           }}
         >
-          {/* Only the visible items in the virtualizer, manually positioned to be in view */}
+          {/* Only the visible items in the virtualizer,
+          manually positioned to be in view */}
           {rowVirtualizer.getVirtualItems().map((virtualRow) => (
             <div
               key={virtualRow.index}
