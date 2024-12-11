@@ -264,7 +264,8 @@ export function TimeLine({
         height={height}
         style={{
           clipPath: `polygon(0% ${clipPathTop}px, 100% ${clipPathTop}px,
-           100% ${clipPathBottom}px, 0% ${clipPathBottom}px`
+           100% ${clipPathBottom}px, 0% ${clipPathBottom}px`,
+          mask: 'linear-gradient(transparent, black 5%, black 95%, transparent)'
         }}
       >
         <g transform={`translate(0, ${paddingGraph.top})`}>
