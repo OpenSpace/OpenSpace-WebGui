@@ -43,7 +43,7 @@ export function TimeArrow({
     <polygon
       points={`${-width * 0.5}, ${-width * 0.5}, 0, ${width * 0.5}, ${width * 0.5} ${-width * 0.5}, 0, ${-width * 0.2}`}
       transform={`translate(${xPosition}, ${yPosition})rotate(${rotation})`}
-      fill={"white"}
+      fill={'white'}
       onClick={onClick}
       className={'arrow'}
     />

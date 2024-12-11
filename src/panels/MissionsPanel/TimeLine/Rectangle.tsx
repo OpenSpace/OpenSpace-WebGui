@@ -66,7 +66,6 @@ export function Rectangle({
         width={xScale(1) - xScale(0) + 2 * padding}
         onClick={(event) => {
           setDisplayedPhase({ type: DisplayType.Phase, data: phase });
-          // TODO: Make into a function?
           if (event.shiftKey) {
             jumpToTime(now, phase.timerange.start, luaApi);
           }

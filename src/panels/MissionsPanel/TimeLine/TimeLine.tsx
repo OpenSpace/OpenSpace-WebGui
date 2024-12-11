@@ -46,6 +46,7 @@ export function TimeLine({
   const [translation, setTranslation] = useState(0);
   const now = useAppSelector((state) => state.time.timeCapped);
 
+  // TODO anden88: no idea how to type the ref here properly without 1000 errors later
   // const xAxisRef = useRef<any>(null);
   const yAxisRef = useRef<any>(null);
   const svgRef = useRef<any>(null);
