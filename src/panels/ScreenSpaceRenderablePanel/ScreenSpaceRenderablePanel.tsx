@@ -13,7 +13,6 @@ import { useGetPropertyOwner, useOpenSpaceApi } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { AddPhotoIcon, MinusIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
-import { stringToOpenSpaceIdentifier } from '@/util/functions';
 import { ScreenSpaceKey } from '@/util/keys';
 
 interface ScreenSpaceRenderable {
@@ -31,35 +30,38 @@ export function ScreenSpaceRenderablePanel() {
   const screenSpacePropertyOwner = useGetPropertyOwner(ScreenSpaceKey);
 
   const renderables = screenSpacePropertyOwner?.subowners ?? [];
-  const isButtonDisable = !slideName || !slideURL;
+  const isButtonDisabled = !slideName || !slideURL;
 
-  function addSlide() {
+  async function addSlide() {
+    const osIdentifier = (await luaApi?.makeIdentifier(slideName)) ?? slideName;
+
     const renderable: ScreenSpaceRenderable = {
-      Identifier: stringToOpenSpaceIdentifier(slideName),
+      Identifier: osIdentifier,
       Name: slideName,
       Type: 'ScreenSpaceImageLocal'
     };
 
-    if (slideURL.indexOf('http') !== 0) {
-      renderable.Type = 'ScreenSpaceImageLocal';
-      renderable.TexturePath = slideURL;
-    } else {
+    const isHttpSlide = slideURL.indexOf('http') === 0;
+    if (isHttpSlide) {
       renderable.Type = 'ScreenSpaceImageOnline';
       renderable.URL = slideURL;
+    } else {
+      renderable.Type = 'ScreenSpaceImageLocal';
+      renderable.TexturePath = slideURL;
     }
 
     luaApi?.addScreenSpaceRenderable(renderable);
+    setSlideName('');
+    setSlideURL('');
   }
 
   function removeSlide(uri: string) {
-    // We need to remove the 'ScreenSpaceKey.' part from the URI which has the format:
-    // `ScreenSpaceKey.{identifier}`
-    const index = uri.indexOf(ScreenSpaceKey);
-    if (index === -1) {
+    const identifier = uri.split('.').pop();
+
+    if (!identifier) {
       return;
     }
-    // + 1 for the '.' following the ScreenSpaceKey
-    const identifier = uri.substring(index + ScreenSpaceKey.length + 1);
+
     luaApi?.removeScreenSpaceRenderable(identifier);
   }
 
@@ -72,7 +74,6 @@ export function ScreenSpaceRenderablePanel() {
           placeholder={'Slide name'}
           label={'Display name'}
         />
-
         <TextInput
           value={slideURL}
           onChange={(event) => setSlideURL(event.currentTarget.value)}
@@ -82,7 +83,7 @@ export function ScreenSpaceRenderablePanel() {
         <Button
           onClick={addSlide}
           leftSection={<AddPhotoIcon size={IconSize.sm} />}
-          disabled={isButtonDisable}
+          disabled={isButtonDisabled}
         >
           Add Slide
         </Button>
