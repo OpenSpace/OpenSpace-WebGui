@@ -6,8 +6,9 @@ import { CollapsableContent } from '@/components/CollapsableContent/CollapsableC
 import { FilterList } from '@/components/FilterList/FilterList';
 import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
-import { loadExoplanetsData } from '@/redux/exoplanets/exoplanetsMiddleware';
+import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import {
   HabitableZonePropertyKey,
   NavigationAimKey,
@@ -16,7 +17,6 @@ import {
   Size1AuRingPropertyKey,
   UncertaintyDiscPropertyKey
 } from '@/util/keys';
-import { propertyDispatcher } from '@/util/propertyDispatcher';
 
 import { ExoplanetEntry } from './ExoplanetEntry';
 
@@ -25,22 +25,30 @@ export function ExoplanetsPanel() {
   const [loadingRemoved, setLoadingRemoved] = useState<string[]>([]);
 
   const luaApi = useOpenSpaceApi();
+
   const propertyOwners = useAppSelector((state) => {
     return state.propertyOwners.propertyOwners;
   });
 
   const isDataInitialized = useAppSelector((state) => state.exoplanets.isInitialized);
   const allSystemNames = useAppSelector((state) => state.exoplanets.data);
+
   const aim = useGetStringPropertyValue(NavigationAimKey);
   const anchor = useGetStringPropertyValue(NavigationAnchorKey);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!isDataInitialized) {
-      dispatch(loadExoplanetsData());
+    async function fetchData() {
+      const res = await luaApi?.exoplanets.listOfExoplanets();
+      if (res) {
+        dispatch(initializeExoplanets(Object.values(res)));
+      }
     }
-  }, [dispatch, isDataInitialized]);
+    if (luaApi || !isDataInitialized) {
+      fetchData();
+    }
+  }, [luaApi, dispatch, isDataInitialized]);
 
   // Find already existing exoplent systems among the property owners
   const addedSystems = Object.values(propertyOwners).filter((owner) =>
@@ -62,12 +70,14 @@ export function ExoplanetsPanel() {
     setLoadingRemoved(newRemoved);
   }
 
-  function removeSystem(starName: string) {
-    const matchingAnchor = anchor?.indexOf(starName) === 0;
-    const matchingAim = aim?.indexOf(starName) === 0;
-    if (matchingAnchor || matchingAim) {
-      propertyDispatcher(dispatch, NavigationAnchorKey).set('Sun');
-      propertyDispatcher(dispatch, NavigationAimKey).set('');
+  function removeSystem(starName: string, identifier: string) {
+    // In case we happen to be focused on the removed system star, reset the focus
+    // @TODO (emmbr, 2024-11-29): This will still not check if any of the child nodes are
+    // removed... should be fixed, by setting the anchor/aim property correctly on the
+    // OpenSpace side instead
+    if (anchor === identifier || aim === identifier) {
+      dispatch(setPropertyValue({ uri: NavigationAnchorKey, value: 'Sun' }));
+      dispatch(setPropertyValue({ uri: NavigationAimKey, value: '' }));
     }
     luaApi?.exoplanets.removeExoplanetSystem(starName);
     setLoadingRemoved([...loadingRemoved, starName]);
@@ -92,7 +102,9 @@ export function ExoplanetsPanel() {
                   name={name}
                   isLoading={loadingAdded.includes(name) || loadingRemoved.includes(name)}
                   isAdded={isAdded !== undefined}
-                  onClick={() => (isAdded ? removeSystem(name) : addSystem(name))}
+                  onClick={() =>
+                    isAdded ? removeSystem(name, isAdded.identifier) : addSystem(name)
+                  }
                 />
               );
             }}

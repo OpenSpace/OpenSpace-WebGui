@@ -1,12 +1,6 @@
-import {
-  Children,
-  createContext,
-  Dispatch,
-  isValidElement,
-  SetStateAction,
-  useState
-} from 'react';
+import { Children, isValidElement, useState } from 'react';
 
+import { FilterListContext } from './FilterListContext';
 import { FilterListFavoritesDisplayName } from './FilterListFavorites';
 
 function isFilterListFavorites(child: React.ReactNode) {
@@ -17,16 +11,6 @@ function isFilterListFavorites(child: React.ReactNode) {
     (child.type as React.ComponentType).displayName === FilterListFavoritesDisplayName
   );
 }
-
-export interface ProviderProps {
-  searchString: string;
-  setSearchString: Dispatch<SetStateAction<string>>;
-  showFavorites: boolean;
-  toggleShowDataInstead: () => void;
-  showDataInstead: boolean;
-}
-
-export const FilterListContext = createContext<ProviderProps | null>(null);
 
 export function FilterListProvider({ children }: { children: React.ReactNode }) {
   const [searchString, setSearchString] = useState('');

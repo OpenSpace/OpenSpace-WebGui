@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { FilterListContext } from './FilterListProvider';
+import { FilterListContext } from './FilterListContext';
 
 export function useFilterListProvider() {
   const context = useContext(FilterListContext);

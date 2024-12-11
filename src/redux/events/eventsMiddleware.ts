@@ -1,4 +1,4 @@
-import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
@@ -11,33 +11,33 @@ import {
 import { EventData } from '@/types/event-types';
 
 let eventTopic: Topic;
-let nSubscribers = 0;
+let isSubscribed = false;
 
-function handleData(dispatch: Dispatch<UnknownAction>, data: EventData) {
-  switch (data.Event) {
-    case 'PropertyTreeUpdated':
-      dispatch(addUriToPropertyTree({ uri: data.Uri }));
-      break;
-    case 'PropertyTreePruned':
-      dispatch(removeUriFromPropertyTree({ uri: data.Uri }));
-      break;
-    default:
-      return;
-  }
-}
-
-function setupSubscription(dispatch: Dispatch<UnknownAction>) {
-  eventTopic = api.startTopic('event', {
-    event: '*',
-    status: 'start_subscription'
-  });
-
-  (async () => {
-    for await (const data of eventTopic.iterator()) {
-      handleData(dispatch, data as EventData);
+export const setupEventsSubscription = createAsyncThunk(
+  'events/setupSubscription',
+  async (_, thunkAPI) => {
+    try {
+      eventTopic = api.startTopic('event', {
+        event: '*',
+        status: 'start_subscription'
+      });
+    } catch (e) {
+      console.error(e);
     }
-  })();
-}
+    for await (const data of eventTopic.iterator() as AsyncIterable<EventData>) {
+      switch (data.Event) {
+        case 'PropertyTreeUpdated':
+          thunkAPI.dispatch(addUriToPropertyTree(data.Uri));
+          break;
+        case 'PropertyTreePruned':
+          thunkAPI.dispatch(removeUriFromPropertyTree({ uri: data.Uri }));
+          break;
+        default:
+          break;
+      }
+    }
+  }
+);
 
 function tearDownSubscription() {
   if (!eventTopic) {
@@ -47,23 +47,23 @@ function tearDownSubscription() {
     event: 'stop_subscription'
   });
   eventTopic.cancel();
-  nSubscribers--;
+  isSubscribed = false;
 }
 
 export const addEventsListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onOpenConnection,
     effect: (_, listenerApi) => {
-      if (nSubscribers === 0) {
-        setupSubscription(listenerApi.dispatch);
-        nSubscribers++;
+      if (!isSubscribed && listenerApi.getState().connection.isConnected) {
+        listenerApi.dispatch(setupEventsSubscription());
+        isSubscribed = true;
       }
     }
   });
   startListening({
     actionCreator: onCloseConnection,
     effect: (_, listenerApi) => {
-      if (nSubscribers === 1 && listenerApi.getState().connection.isConnected) {
+      if (isSubscribed && listenerApi.getState().connection.isConnected) {
         tearDownSubscription();
       }
     }
