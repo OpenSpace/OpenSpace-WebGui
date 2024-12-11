@@ -6,6 +6,7 @@ export {
 } from 'react-icons/io5';
 export {
   MdPublic as AddExoplanetIcon,
+  MdOutlineAddPhotoAlternate as AddPhotoIcon,
   MdOutlineAirplanemodeActive as AirplaneIcon,
   MdAnchor as AnchorIcon,
   MdExpandMore as ChevronDownIcon,
