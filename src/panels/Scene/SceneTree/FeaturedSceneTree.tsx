@@ -65,7 +65,7 @@ export function FeaturedSceneTree({ filter }: Props) {
   }
 
   if (featuredTreeData.length === 0) {
-    return null;
+    return <></>;
   }
 
   return (

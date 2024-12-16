@@ -11,7 +11,7 @@ import {
   Title
 } from '@mantine/core';
 
-import { useGetStringPropertyValue } from '@/api/hooks';
+import { useGetPropertyOwner, useGetStringPropertyValue } from '@/api/hooks';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 import { useAppSelector } from '@/redux/hooks';
 import { identifierFromUri } from '@/util/propertyTreeHelpers';
@@ -35,15 +35,13 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   const documentation = useAppSelector((state) => {
     if (identifier) {
       return state.documentation.assetsMetaData.find(
-        (doc) => doc?.identifiers && doc.identifiers.includes(identifier)
+        (doc) => doc.identifiers && doc.identifiers.includes(identifier)
       );
     }
     return undefined;
   });
 
-  const propertyOwner = useAppSelector((state) => {
-    return state.propertyOwners.propertyOwners[uri];
-  });
+  const propertyOwner = useGetPropertyOwner(uri);
 
   const mainTableData: TableData = {
     body: [

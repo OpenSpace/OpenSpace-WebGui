@@ -1,5 +1,6 @@
 import { ActionIcon, Button, Divider, Group, Menu, Text } from '@mantine/core';
 
+import { useGetPropertyOwner } from '@/api/hooks';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
@@ -18,9 +19,7 @@ interface Props {
 }
 
 export function SceneGraphNodeHeader({ uri, label, onClick }: Props) {
-  const propertyOwner = useAppSelector((state) => {
-    return state.propertyOwners.propertyOwners[uri];
-  });
+  const propertyOwner = useGetPropertyOwner(uri);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);
@@ -34,6 +33,7 @@ export function SceneGraphNodeHeader({ uri, label, onClick }: Props) {
   const name = label ?? displayName(propertyOwner!);
 
   const { addWindow } = useWindowLayoutProvider();
+
   function openInNewWindow() {
     const content = <SceneGraphNodeView uri={uri} />;
     addWindow(content, {
@@ -75,7 +75,7 @@ export function SceneGraphNodeHeader({ uri, label, onClick }: Props) {
           <NodeNavigationButton
             size={'sm'}
             type={NavigationType.focus}
-            identifier={propertyOwner?.identifier || ''}
+            identifier={propertyOwner.identifier}
           />
           <Menu position={'right-start'}>
             <Menu.Target>

@@ -43,7 +43,7 @@ export function GlobeLayersPropertyOwner({ uri }: Props) {
 
   return (
     <>
-      {groups?.map((group) => (
+      {groups.map((group) => (
         <GlobeLayerGroup
           key={group.id}
           uri={`${uri}.${group.id}`}

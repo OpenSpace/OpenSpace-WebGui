@@ -1,8 +1,8 @@
 import { Group, Paper, Space } from '@mantine/core';
 
+import { useGetPropertyOwner } from '@/api/hooks';
 import { CollapsableContent } from '@/components/CollapsableContent/CollapsableContent';
 import { Property } from '@/components/Property/Property';
-import { useAppSelector } from '@/redux/hooks';
 import { displayName } from '@/util/propertyTreeHelpers';
 
 import { LayerList } from './LayersList';
@@ -14,23 +14,21 @@ interface Props {
 }
 
 export function GlobeLayerGroup({ uri, globe, icon }: Props) {
-  const propertyOwner = useAppSelector(
-    (state) => state.propertyOwners.propertyOwners[uri]
-  );
+  const propertyOwner = useGetPropertyOwner(uri);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);
   }
 
-  const layers = propertyOwner?.subowners || [];
-  const properties = propertyOwner?.properties || [];
+  const { properties, subowners } = propertyOwner;
+  const layers = subowners;
 
   return (
     <CollapsableContent
       title={
         <Group gap={'xs'}>
           {icon && icon}
-          {displayName(propertyOwner!)}
+          {displayName(propertyOwner)}
         </Group>
       }
       noTransition

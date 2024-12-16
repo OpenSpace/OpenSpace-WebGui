@@ -27,7 +27,7 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
   const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
 
   if (isVisible === undefined) {
-    return null;
+    return <></>;
   }
 
   function setVisiblity(shouldShow: boolean, isImmediate: boolean) {
@@ -41,7 +41,7 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
   }
 
   function onToggleCheckboxClick(event: React.MouseEvent<HTMLInputElement>) {
-    const shouldBeEnabled = (event.target as HTMLInputElement).checked;
+    const shouldBeEnabled = event.currentTarget.checked;
     const isImmediate = event.shiftKey;
     setVisiblity(shouldBeEnabled, isImmediate);
   }

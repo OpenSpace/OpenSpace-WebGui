@@ -1,6 +1,6 @@
 import { Box, Space, Tabs, Text } from '@mantine/core';
 
-import { useGetVisibleProperties } from '@/api/hooks';
+import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { PropertyOwner as PropertyOwnerType } from '@/types/types';
@@ -13,9 +13,7 @@ interface Props {
 }
 
 export function SceneGraphNodeView({ uri }: Props) {
-  const propertyOwner = useAppSelector(
-    (state) => state.propertyOwners.propertyOwners[uri]
-  );
+  const propertyOwner = useGetPropertyOwner(uri);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for SGN with uri: ${uri}`);
@@ -23,7 +21,7 @@ export function SceneGraphNodeView({ uri }: Props) {
 
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const subOwnerDataMap: { [id: string]: PropertyOwnerType } = {};
-  propertyOwner?.subowners.forEach((subowner) => {
+  propertyOwner.subowners.forEach((subowner) => {
     const owner = propertyOwners[subowner]!;
     subOwnerDataMap[owner.identifier] = owner;
   });

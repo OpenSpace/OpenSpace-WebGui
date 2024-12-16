@@ -33,6 +33,7 @@ export function Scene() {
   const [showHiddenNodes, setShowHiddenNodes] = useState(false);
 
   const hasFilters = showOnlyVisible || showHiddenNodes || selectedTags.length > 0;
+
   function clearFilters() {
     setshowOnlyVisible(false);
     setShowHiddenNodes(false);

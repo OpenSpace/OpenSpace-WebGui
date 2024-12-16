@@ -1,8 +1,8 @@
 import { ActionIcon, Group, UnstyledButton } from '@mantine/core';
 
+import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { ChevronDownIcon, ChevronRightIcon } from '@/icons/icons';
-
-import { ThreePartHeader } from '../ThreePartHeader/ThreePartHeader';
+import { IconSize } from '@/types/enums';
 
 interface Props {
   expanded: boolean;
@@ -19,7 +19,7 @@ export function CollapsableHeader({
   leftSection,
   rightSection
 }: Props) {
-  const iconProps = { size: 18, style: { flexShrink: 0 } };
+  const iconProps = { size: IconSize.xs };
   return (
     <Group wrap={'nowrap'} gap={0}>
       <ActionIcon variant={'transparent'} onClick={toggle}>

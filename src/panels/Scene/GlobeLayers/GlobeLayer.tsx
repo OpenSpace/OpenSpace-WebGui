@@ -2,12 +2,11 @@ import { MdDragHandle } from 'react-icons/md';
 import { DraggableProvidedDragHandleProps } from '@hello-pangea/dnd';
 import { Group, Paper, Text, ThemeIcon } from '@mantine/core';
 
-import { useGetBoolPropertyValue } from '@/api/hooks';
+import { useGetBoolPropertyValue, useGetPropertyOwner } from '@/api/hooks';
 import { CollapsableContent } from '@/components/CollapsableContent/CollapsableContent';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
-import { useAppSelector } from '@/redux/hooks';
 import { subscribeToProperty } from '@/redux/propertytree/properties/propertiesMiddleware';
 import { displayName } from '@/util/propertyTreeHelpers';
 
@@ -18,9 +17,7 @@ interface Props {
 }
 
 export function GlobeLayer({ uri, showDragHandle, dragHandleProps }: Props) {
-  const propertyOwner = useAppSelector(
-    (state) => state.propertyOwners.propertyOwners[uri]
-  );
+  const propertyOwner = useGetPropertyOwner(uri);
 
   const isEnabled = useGetBoolPropertyValue(`${uri}.Enabled`);
   subscribeToProperty({ uri: `${uri}.Enabled` });

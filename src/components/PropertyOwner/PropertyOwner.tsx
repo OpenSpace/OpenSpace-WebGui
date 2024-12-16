@@ -1,13 +1,12 @@
 import { Group, Paper, Space } from '@mantine/core';
 
-import { useGetVisibleProperties } from '@/api/hooks';
+import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
+import { CollapsableContent } from '@/components/CollapsableContent/CollapsableContent';
+import { Property } from '@/components/Property/Property';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { GlobeLayersPropertyOwner } from '@/panels/Scene/GlobeLayers/GlobeLayersPropertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { displayName, isGlobeLayersUri } from '@/util/propertyTreeHelpers';
-
-import { CollapsableContent } from '../CollapsableContent/CollapsableContent';
-import { Property } from '../Property/Property';
-import { Tooltip } from '../Tooltip/Tooltip';
 
 import { PropertyOwnerVisibilityCheckbox } from './VisiblityCheckbox';
 
@@ -24,9 +23,7 @@ export function PropertyOwner({
   withHeader = true,
   expandedOnDefault = false
 }: Props) {
-  const propertyOwner = useAppSelector(
-    (state) => state.propertyOwners.propertyOwners[uri]
-  );
+  const propertyOwner = useGetPropertyOwner(uri);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);
@@ -44,7 +41,7 @@ export function PropertyOwner({
   const hasContent = hasSubowners || hasVisibleProperties;
 
   if (!hasContent) {
-    return null;
+    return <></>;
   }
 
   // First handle any custom content types, like GlobeLayers

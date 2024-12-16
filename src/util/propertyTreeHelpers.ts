@@ -8,7 +8,7 @@ import {
 
 import { InterestingTagKey } from './keys';
 
-export function identifierFromUri(uri: string) {
+export function identifierFromUri(uri: string): string {
   // The identifier is always the last word in the URI
   const identifier = uri.split('.').pop();
   if (!identifier) {
@@ -17,7 +17,7 @@ export function identifierFromUri(uri: string) {
   return identifier;
 }
 
-export function sgnIdentifierFromSubownerUri(uri: string) {
+export function sgnIdentifierFromSubownerUri(uri: string): string {
   const splitUri = uri.split('.');
   if (splitUri.length < 2 || splitUri[0] !== 'Scene') {
     throw Error(`Invalid SGN URI '${uri}'`);
@@ -25,11 +25,14 @@ export function sgnIdentifierFromSubownerUri(uri: string) {
   return splitUri[1];
 }
 
-export function displayName(propertyOwner: PropertyOwner) {
+export function displayName(propertyOwner: PropertyOwner): string {
   return propertyOwner.name ?? propertyOwner.identifier ?? propertyOwner.uri;
 }
 
-export function hasInterestingTag(uri: string, propertyOwners: PropertyOwners) {
+export function hasInterestingTag(
+  uri: string,
+  propertyOwners: PropertyOwners
+): boolean | undefined {
   return propertyOwners[uri]?.tags.some((tag) => tag.includes(InterestingTagKey));
 }
 
@@ -44,12 +47,12 @@ export function guiOrderingNumber(
   return properties[`${uri}.GuiOrderingNumber`]?.value as number | undefined;
 }
 
-export function isRenderable(uri: string) {
+export function isRenderable(uri: string): boolean {
   const renderableSuffix = '.Renderable';
   return uri.endsWith(renderableSuffix);
 }
 
-export function isGlobe(renderableUri: string, properties: Properties) {
+export function isGlobe(renderableUri: string, properties: Properties): boolean {
   const renderableSuffix = '.Renderable';
   return (
     renderableUri.endsWith(renderableSuffix) &&
@@ -57,7 +60,7 @@ export function isGlobe(renderableUri: string, properties: Properties) {
   );
 }
 
-export function isGlobeLayersUri(uri: string, properties: Properties) {
+export function isGlobeLayersUri(uri: string, properties: Properties): boolean {
   const suffix = '.Renderable.Layers';
   return uri.endsWith(suffix) && isGlobe(uri.replace('.Layers', ''), properties);
 }
@@ -70,7 +73,7 @@ export function isPropertyOwnerHidden(properties: Properties, uri: string) {
   return false;
 }
 
-export function isSceneGraphNodeVisible(uri: string, properties: Properties) {
+export function isSceneGraphNodeVisible(uri: string, properties: Properties): boolean {
   const renderableUri = `${uri}.Renderable`;
   const enabledValue = properties[`${renderableUri}.Enabled`]?.value as boolean;
   const fadeValue = properties[`${renderableUri}.Fade`]?.value as number;
@@ -79,7 +82,10 @@ export function isSceneGraphNodeVisible(uri: string, properties: Properties) {
 
 // Visible means that the object is enabled, based on the values of its enabled and fade
 // properties (which both may be undefined)
-export function checkVisiblity(enabled: boolean | undefined, fade: number | undefined) {
+export function checkVisiblity(
+  enabled: boolean | undefined,
+  fade: number | undefined
+): boolean | undefined {
   // Enabled is required, but fade can be optional
   if (enabled === undefined) {
     return undefined;
@@ -94,7 +100,7 @@ export function checkVisiblity(enabled: boolean | undefined, fade: number | unde
 export function isPropertyVisible(
   propertyDetails: PropertyDetails | undefined,
   visiblitySetting: number | undefined
-) {
+): boolean {
   if (visiblitySetting === undefined || !propertyDetails) {
     return true;
   }

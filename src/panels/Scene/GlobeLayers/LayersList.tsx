@@ -17,7 +17,7 @@ export function LayerList({ layers, globe, layerGroup }: Props) {
   const luaApi = useOpenSpaceApi();
 
   if (!renderedLayersList || renderedLayersList.length === 0) {
-    return null;
+    return <></>;
   }
 
   async function onDragEnd(result: DropResult<string>) {

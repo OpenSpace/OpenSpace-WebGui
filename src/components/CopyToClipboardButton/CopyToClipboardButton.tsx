@@ -17,7 +17,7 @@ export function CopyToClipboardButton({ value }: Props) {
             variant={'subtle'}
             onClick={copy}
           >
-            {copied ? <CopyIcon /> : <CopyIcon />}
+            <CopyIcon />
           </ActionIcon>
         </Tooltip>
       )}

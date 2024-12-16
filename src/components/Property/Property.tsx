@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { Box } from '@mantine/core';
 
 import { useSubscribeToProperty } from '@/api/hooks';
@@ -69,7 +69,7 @@ interface Props {
   uri: string;
 }
 
-export const Property = React.memo(({ uri }: Props) => {
+export const Property = memo(({ uri }: Props) => {
   const description = useAppSelector(
     (state) => state.properties.properties[uri]?.description
   );
