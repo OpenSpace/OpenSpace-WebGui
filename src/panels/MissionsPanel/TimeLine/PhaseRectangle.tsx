@@ -32,18 +32,20 @@ export function PhaseRectangle({
   padding = 0,
   color
 }: Props) {
-  const now = useAppSelector((state) => state.time.timeCapped);
   const luaApi = useOpenSpaceApi();
 
-  if (now === undefined) {
-    return <></>;
-  }
   const startTime = new Date(phase.timerange.start);
   const endTime = new Date(phase.timerange.end);
 
-  const isBeforeEndTime = now < endTime.valueOf();
-  const isAfterBeginning = now > startTime.valueOf();
-  const isCurrent = isBeforeEndTime && isAfterBeginning;
+  const isCurrent = useAppSelector((state) => {
+    const now = state.time.timeCapped;
+    if (!now) {
+      return false;
+    }
+    const isBeforeEndTime = now < endTime.valueOf();
+    const isAfterBeginning = now > startTime.valueOf();
+    return isBeforeEndTime && isAfterBeginning;
+  });
 
   // Radius for the rectangles that represent phases
   const radiusPhase = 2;

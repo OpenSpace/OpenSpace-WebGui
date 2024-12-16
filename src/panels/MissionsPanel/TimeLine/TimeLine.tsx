@@ -72,6 +72,9 @@ export function TimeLine({
   // Ensure graph is large enough to show all phases
   const minWidth = minLevelWidth * nestedLevels + margin.left + margin.right;
   // Height of graph
+  // TODO right now we don't have a way to get the size of the panel we're in so we can't
+  // do any updates related to a panel resize and therefore use a fixed height.
+  // When height changes of window, rescale y axis
   //   const height = fullHeight - zoomButtonHeight;
   const height = 550;
   // Width of graph
@@ -103,15 +106,7 @@ export function TimeLine({
   // Calculate axes
   const yAxis = axisLeft(yScale);
 
-  // TODO: we dont need the xAxis since we're not plotting anything on it anyways
-  //   const xAxis = axisTop(xScale)
-  //     .tickFormat(() => '')
-  //     .tickSize(0)
-  //     .ticks(nestedLevels);
-
-  // TODO right now we don't have a way to get the size of the panel we're in so we can't
-  // do any updates related to a panel resize and therefore use a fixed height.
-  // When height changes of window, rescale y axis
+  // TODO: When we get the height from the panel we can update the timeline size as well.
   /*
   useEffect(() => {
     // Update the axis every time window rescales
@@ -215,7 +210,7 @@ export function TimeLine({
                 phase={phase}
                 nestedLevel={index}
               />
-            ); //createRectangle(phase, index);
+            );
           })
         )}
         {selectedPhase && (
@@ -246,6 +241,16 @@ export function TimeLine({
     );
   }
 
+  function computeFadeMask() {
+    // Adds fading to the top and/or bottom of the timeline if there is more to show.
+    const topFade = translation < 0 ? '5%' : '0%';
+    // The translation is scaled as we zoom in so we do the same scaling to the height
+    // of the timeline
+    const isAtBottom = Math.abs(translation) >= (height - margin.bottom) * (scale - 1);
+    const bottomFade = isAtBottom ? '100%' : '95%';
+    return `linear-gradient(transparent, black ${topFade}, black ${bottomFade}, transparent)`;
+  }
+
   return (
     <div style={{ flexGrow: 0 }}>
       <Group gap={0} justify={'space-between'}>
@@ -266,7 +271,7 @@ export function TimeLine({
         style={{
           clipPath: `polygon(0% ${clipPathTop}px, 100% ${clipPathTop}px,
            100% ${clipPathBottom}px, 0% ${clipPathBottom}px`,
-          mask: 'linear-gradient(transparent, black 5%, black 95%, transparent)'
+          mask: computeFadeMask()
         }}
       >
         <g transform={`translate(0, ${paddingGraph.top})`}>

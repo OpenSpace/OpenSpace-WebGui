@@ -16,7 +16,7 @@ export function jumpToTime(
     return;
   }
 
-  const timeDiffInSeconds = Math.abs(currentTime - utcDate.valueOf()) / 1000;
+  const timeDiffInSeconds = Math.abs(currentTime - utcDate.valueOf()) / 1000.0;
   const nSecondsInADay = 86400;
   const diffBiggerThanADay = timeDiffInSeconds > nSecondsInADay;
 

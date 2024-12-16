@@ -85,7 +85,9 @@ export const actionsSlice = createSlice({
       const indexPath = state.actions.findIndex(
         (element) => element.guiPath === state.navigationPath
       );
-      state.navigationPath = indexPath < 0 ? '/' : state.navigationPath;
+      if (indexPath === -1) {
+        state.navigationPath = '/';
+      }
     }
   }
 });
