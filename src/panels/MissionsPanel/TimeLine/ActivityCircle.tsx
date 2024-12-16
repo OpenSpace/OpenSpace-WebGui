@@ -6,19 +6,19 @@ import { useAppSelector } from '@/redux/hooks';
 
 import { jumpToTime } from '../util';
 
-interface CircleProps {
+interface Props {
   capture: string;
   yScale: ScaleTime<number, number, never>;
   marginLeft: number;
   scale: number;
 }
-export function Circle({ capture, yScale, marginLeft, scale }: CircleProps) {
+export function ActivityCircle({ capture, yScale, marginLeft, scale }: Props) {
   const now = useAppSelector((state) => state.time.timeCapped);
   const luaApi = useOpenSpaceApi();
   const circleRadius = 3;
 
   return (
-    <Tooltip label={'Insturment Activity'}>
+    <Tooltip label={'Instrument Activity'}>
       <ellipse
         cx={marginLeft - 5}
         cy={yScale(new Date(capture))}

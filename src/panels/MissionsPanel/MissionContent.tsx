@@ -1,5 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, Container, Flex, Group, Image, Text } from '@mantine/core';
+import {
+  Anchor,
+  Button,
+  Container,
+  Flex,
+  Group,
+  Image,
+  Text,
+  Title
+} from '@mantine/core';
 
 import { ActionsButton } from '@/panels/ActionsPanel/ActionsButton';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -191,12 +200,12 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
           </Group>
           {displayedPhase.data ? (
             <>
-              <Text>{title}</Text>
+              <Title order={4}>{title}</Title>
               <Text c={'dimmed'}>{timeString}</Text>
               <Text my={'xs'}>{displayedPhase.data.description}</Text>
               {displayedPhase.data.link && (
-                <Button onClick={() => console.log(displayedPhase.data.link)}>
-                  TODO: fix Read more
+                <Button component={'a'} href={displayedPhase.data.link} target={'_blank'}>
+                  Read more
                 </Button>
               )}
               {displayedPhase.data.image && (

@@ -9,7 +9,7 @@ import { Phase } from '@/types/mission-types';
 import { DisplayedPhase } from '../MissionContent';
 import { jumpToTime } from '../util';
 
-interface RectangleProps {
+interface Props {
   scale: number; // d3 scale 'k' value
   xScale: ScaleLinear<number, number, never>;
   yScale: ScaleTime<number, number, never>;
@@ -21,7 +21,7 @@ interface RectangleProps {
   color?: React.CSSProperties['color'];
 }
 
-export function Rectangle({
+export function PhaseRectangle({
   scale,
   xScale,
   yScale,
@@ -31,7 +31,7 @@ export function Rectangle({
   nestedLevel,
   padding = 0,
   color
-}: RectangleProps) {
+}: Props) {
   const now = useAppSelector((state) => state.time.timeCapped);
   const luaApi = useOpenSpaceApi();
 

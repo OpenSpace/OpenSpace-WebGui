@@ -9,7 +9,7 @@ import { Milestone } from '@/types/mission-types';
 import { DisplayedPhase } from '../MissionContent';
 import { jumpToTime } from '../util';
 
-interface PolygonProps {
+interface Props {
   scale: number; // d3 scale 'k' value
   yScale: ScaleTime<number, number, never>;
   marginLeft: number;
@@ -18,14 +18,14 @@ interface PolygonProps {
   displayBorder?: boolean;
 }
 
-export function Polygon({
+export function MileStonePolygon({
   scale,
   yScale,
   marginLeft,
   setDisplayedPhase,
   milestone,
   displayBorder
-}: PolygonProps) {
+}: Props) {
   const now = useAppSelector((state) => state.time.timeCapped);
   const luaApi = useOpenSpaceApi();
 
@@ -47,7 +47,7 @@ export function Polygon({
     >
       <polygon
         points={`0, ${w * 0.5} ${w * 0.5}, ${w} ${w}, ${w * 0.5} ${w * 0.5}, 0`}
-        transform={`translate(${x + centerOffsetX}, ${yPos})scale(1, ${1 / scale})`}
+        transform={`translate(${x + centerOffsetX}, ${yPos})scale(1.0, ${1.0 / scale})`}
         fill={'orange'}
         stroke={'white'}
         strokeWidth={displayBorder ? 2.0 : 0}

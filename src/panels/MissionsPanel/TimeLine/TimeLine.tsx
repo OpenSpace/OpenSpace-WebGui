@@ -18,9 +18,9 @@ import { Phase } from '@/types/mission-types';
 
 import { DisplayedPhase } from '../MissionContent';
 
-import { Circle } from './Circle';
-import { Polygon } from './Polygon';
-import { Rectangle } from './Rectangle';
+import { ActivityCircle } from './ActivityCircle';
+import { MileStonePolygon } from './MilestonePolygon';
+import { PhaseRectangle } from './PhaseRectangle';
 import { TimeArrow } from './TimeArrow';
 import { TimeIndicator } from './TimeIndicator';
 
@@ -205,7 +205,7 @@ export function TimeLine({
               return null;
             }
             return (
-              <Rectangle
+              <PhaseRectangle
                 key={`${phase.name}-${phase.timerange.start}-${phase.timerange.end}`}
                 scale={scale}
                 xScale={xScale}
@@ -220,7 +220,7 @@ export function TimeLine({
         )}
         {selectedPhase && (
           <>
-            <Rectangle
+            <PhaseRectangle
               scale={scale}
               xScale={xScale}
               yScale={yScale}
@@ -231,7 +231,7 @@ export function TimeLine({
               padding={2}
               color={'white'}
             />
-            <Rectangle
+            <PhaseRectangle
               scale={scale}
               xScale={xScale}
               yScale={yScale}
@@ -287,7 +287,7 @@ export function TimeLine({
               scale={scale}
             />
             {missionOverview.capturetimes.map((capture, index) => (
-              <Circle
+              <ActivityCircle
                 key={`${capture}-${index}`}
                 capture={capture}
                 yScale={yScale}
@@ -301,7 +301,7 @@ export function TimeLine({
                 displayedPhase.data.name === milestone.name;
 
               return (
-                <Polygon
+                <MileStonePolygon
                   key={milestone.date}
                   scale={scale}
                   yScale={yScale}
