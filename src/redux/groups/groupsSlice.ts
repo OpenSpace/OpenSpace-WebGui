@@ -8,7 +8,7 @@ export type Groups = {
 };
 
 export type CustomGroupOrdering = {
-  [key: string]: string[]; // group paths
+  [key: string]: string[]; // list of node names in the order they should be displayed
 };
 
 export interface GroupsState {

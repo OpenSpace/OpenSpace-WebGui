@@ -56,7 +56,7 @@ export function createTreeSortingInformation(
 export function sortTreeLevel(
   treeListToSort: TreeNodeData[],
   treeSortingInfo: TreeSortingInfo,
-  orderedNamesList: string[] | undefined
+  customOrderNamesList: string[] | undefined
 ) {
   // Split the list up into three: 1) Any custom sorted objects, 2) numerically sorted
   // objects, and 3) alphabetically sorted. In most cases, all will be alphabetical.
@@ -65,9 +65,8 @@ export function sortTreeLevel(
   const numericalOrder: TreeNodeData[] = [];
   const alphabeticalOrder: TreeNodeData[] = [];
 
-  // Lua gives us an object with indexes as key, not an array. So first convert
-  // the values to an array
-  const sortOrderingList = orderedNamesList ? Object.values(orderedNamesList) : [];
+  // In most cases there will be no custom ordering, so just use an empty array
+  const orderedNames = customOrderNamesList || [];
 
   treeListToSort.forEach((node) => {
     const entry = treeSortingInfo[node.value];
@@ -75,7 +74,11 @@ export function sortTreeLevel(
       throw Error(`Missing entry in treeSortingInfo for: ${node.value}`);
     }
 
-    if (sortOrderingList.includes(entry.name)) {
+    // Depending on how the entry should be sorted, add it to the correct list.
+    // 1. If the name is in the custom order list, add it to the custom order list
+    // 2. If a numerical guiOrder is defined, it should be sorted numerically
+    // 3. Otherwise, sort alphabetically
+    if (orderedNames.includes(entry.name)) {
       customOrder.push(node);
     } else if (entry.guiOrder !== undefined) {
       numericalOrder.push(node);
@@ -89,8 +92,8 @@ export function sortTreeLevel(
     const a = treeSortingInfo[nodeA.value];
     const b = treeSortingInfo[nodeB.value];
 
-    const left = sortOrderingList.indexOf(a.name);
-    const right = sortOrderingList.indexOf(b.name);
+    const left = orderedNames.indexOf(a.name);
+    const right = orderedNames.indexOf(b.name);
 
     if (left === right) {
       return 0; // keep original order
@@ -103,6 +106,7 @@ export function sortTreeLevel(
       // right not in list => put last
       return -1;
     }
+    // Sort in alphabetical order
     return left < right ? -1 : 1;
   });
 

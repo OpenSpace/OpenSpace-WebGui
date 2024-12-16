@@ -3,10 +3,7 @@ import { PropsWithChildren, useEffect, useState } from 'react';
 import { api } from '@/api/api';
 import { closeConnection } from '@/redux/connection/connectionMiddleware';
 import { startConnection } from '@/redux/connection/connectionSlice';
-import {
-  CustomGroupOrdering,
-  updateCustomGroupOrdering
-} from '@/redux/groups/groupsSlice';
+import { updateCustomGroupOrdering } from '@/redux/groups/groupsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import { LuaApiContext } from './LuaApiContext';
@@ -45,8 +42,19 @@ export function LuaApiProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     async function fetchData() {
       if (luaApi) {
-        const res = (await luaApi.guiOrder()) as CustomGroupOrdering;
-        dispatch(updateCustomGroupOrdering(res));
+        // This is really a map with an array of strings, but Lua formats arrays as
+        // objects with numerical indexes as key
+        type LuaStringArray = { [index: number]: string };
+        type LuaGuiOrderMap = { [guiPath: string]: LuaStringArray };
+        const res = (await luaApi.guiOrder()) as LuaGuiOrderMap;
+
+        // Convert the values to an array
+        const formattedRes: { [key: string]: string[] } = {};
+        Object.keys(res).forEach((key: string) => {
+          const luaObject = res[key];
+          formattedRes[key] = luaObject ? Object.values(luaObject) : [];
+        });
+        dispatch(updateCustomGroupOrdering(formattedRes));
       }
     }
     if (luaApi) {
