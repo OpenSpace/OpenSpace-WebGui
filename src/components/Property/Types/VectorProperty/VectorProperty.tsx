@@ -1,3 +1,6 @@
+import { PropertyLabel } from '../../PropertyLabel';
+
+import { ColorVector } from './ViewOptions/ColorVector';
 import { ValueList } from './ViewOptions/DefaultValueList';
 import { MinMaxRange } from './ViewOptions/MinMaxRange';
 
@@ -20,11 +23,24 @@ export interface VectorPropertyProps {
 }
 
 export function VectorProperty(props: VectorPropertyProps) {
-  const { value, viewOptions } = props;
+  const { value, viewOptions, name, description } = props;
 
-  if (value.length === 2 && viewOptions.MinMaxRange) {
-    return <MinMaxRange {...props} />;
+  const isColor = value.length === 3 || (value.length === 4 && viewOptions.Color);
+  const isMinMaxRange = value.length === 2 && viewOptions.MinMaxRange;
+
+  let view;
+  if (isColor) {
+    view = <ColorVector {...props} />;
+  } else if (isMinMaxRange) {
+    view = <MinMaxRange {...props} />;
+  } else {
+    view = <ValueList {...props} />;
   }
 
-  return <ValueList {...props} />;
+  return (
+    <>
+      <PropertyLabel label={name} tip={description} />
+      {view}
+    </>
+  );
 }

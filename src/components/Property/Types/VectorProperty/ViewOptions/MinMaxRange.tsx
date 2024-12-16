@@ -1,12 +1,9 @@
 import { useState } from 'react';
 import { RangeSlider } from '@mantine/core';
 
-import { PropertyLabel } from '@/components/Property/PropertyLabel';
 import { VectorPropertyProps } from '@/components/Property/Types/VectorProperty/VectorProperty';
 
 export function MinMaxRange({
-  name,
-  description,
   disabled,
   setPropertyValue,
   value,
@@ -32,17 +29,14 @@ export function MinMaxRange({
 
   // TODO: Add a way to edit the values using NumericInputs
   return (
-    <>
-      <PropertyLabel label={name} tip={description} />
-      <RangeSlider
-        disabled={disabled}
-        value={currentValue}
-        min={min}
-        max={max}
-        step={step}
-        // marks={marks} // TODO: Something clever
-        onChange={onValueChange}
-      />
-    </>
+    <RangeSlider
+      disabled={disabled}
+      value={currentValue}
+      min={min}
+      max={max}
+      step={step}
+      // marks={marks} // TODO: Something clever
+      onChange={onValueChange}
+    />
   );
 }

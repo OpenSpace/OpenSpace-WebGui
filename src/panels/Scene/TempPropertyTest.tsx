@@ -41,6 +41,8 @@ export function TempPropertyTest() {
       <h3 style={styleUnfinished}>Vector Property:</h3>
       Vec3 (Color) - 1 lightday grid
       <Property uri={'Scene.1ldGrid.Renderable.Color'} />
+      Vec4 (Color) - RenderEngine.EnabledFontColor
+      <Property uri={'RenderEngine.EnabledFontColor'} />
       IntVec2 - 1 lightday grid
       <Property uri={'Scene.1ldGrid.Renderable.Segments'} />
       MinMaxRange - SDSS FadeIn distances
