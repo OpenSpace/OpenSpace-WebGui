@@ -8,7 +8,7 @@ import {
   FrameFocusIcon,
   LightningFlashIcon
 } from '@/icons/icons';
-import { IconSize, NavigationType } from '@/types/enums';
+import { NavigationType } from '@/types/enums';
 import { NavigationAimKey, NavigationAnchorKey, RetargetAnchorKey } from '@/util/keys';
 
 interface BaseProps {

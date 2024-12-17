@@ -8,11 +8,11 @@ import {
 
 export const GroupPrefixKey = '/groups/';
 
-export function isGroup(treeNodeDataValue: string) {
+export function isGroup(treeNodeDataValue: string): boolean {
   return treeNodeDataValue.startsWith(GroupPrefixKey);
 }
 
-export function isGroupNode(node: TreeNodeData) {
+export function isGroupNode(node: TreeNodeData): boolean {
   return isGroup(node.value);
 }
 
@@ -28,7 +28,7 @@ export function filterTreeData(
   properties: Properties,
   propertyOwners: PropertyOwners
 ): TreeNodeData[] {
-  return nodes
+  const filteredNodes = nodes
     .map((node) => {
       const newNode = { ...node };
       if (isGroupNode(newNode)) {
@@ -66,5 +66,7 @@ export function filterTreeData(
         return shouldShow ? newNode : null;
       }
     })
-    .filter((node) => node !== null) as TreeNodeData[];
+    .filter((node) => node !== null);
+
+  return filteredNodes || [];
 }

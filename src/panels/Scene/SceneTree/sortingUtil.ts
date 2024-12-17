@@ -19,7 +19,7 @@ interface TreeSortingInfo {
 export function createTreeSortingInformation(
   treeData: TreeNodeData[],
   properties: Properties
-) {
+): TreeSortingInfo {
   const result: TreeSortingInfo = {};
   treeData.forEach((node) => {
     function addNode(node: TreeNodeData) {
@@ -57,7 +57,7 @@ export function sortTreeLevel(
   treeListToSort: TreeNodeData[],
   treeSortingInfo: TreeSortingInfo,
   customOrderNamesList: string[] | undefined
-) {
+): TreeNodeData[] {
   // Split the list up into three: 1) Any custom sorted objects, 2) numerically sorted
   // objects, and 3) alphabetically sorted. In most cases, all will be alphabetical.
 
@@ -141,7 +141,7 @@ export function sortTreeData(
   treeData: TreeNodeData[],
   customGuiOrderingMap: { [key: string]: string[] },
   properties: Properties
-) {
+): TreeNodeData[] {
   const treeSortingInfo = createTreeSortingInformation(treeData, properties);
 
   // Start with sorting the top level groups in the tree
