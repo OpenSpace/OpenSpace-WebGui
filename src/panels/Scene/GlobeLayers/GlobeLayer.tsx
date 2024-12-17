@@ -1,4 +1,3 @@
-import { MdDragHandle } from 'react-icons/md';
 import { DraggableProvidedDragHandleProps } from '@hello-pangea/dnd';
 import { Group, Paper, Text, ThemeIcon } from '@mantine/core';
 
@@ -7,6 +6,7 @@ import { CollapsableContent } from '@/components/CollapsableContent/CollapsableC
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { DragHandleIcon } from '@/icons/icons';
 import { subscribeToProperty } from '@/redux/propertytree/properties/propertiesMiddleware';
 import { displayName } from '@/util/propertyTreeHelpers';
 
@@ -35,7 +35,7 @@ export function GlobeLayer({ uri, showDragHandle, dragHandleProps }: Props) {
           <Tooltip text={propertyOwner?.description || 'No information'} />
           {showDragHandle && dragHandleProps && (
             <ThemeIcon variant={'default'} {...dragHandleProps}>
-              <MdDragHandle />
+              <DragHandleIcon />
             </ThemeIcon>
           )}
         </Group>

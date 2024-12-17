@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { FiChevronsDown, FiChevronsUp } from 'react-icons/fi';
 import {
   ActionIcon,
   Box,
@@ -13,6 +12,7 @@ import {
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { ChevronsDownIcon, ChevronsUpIcon } from '@/icons/icons';
 import { storeSceneTreeNodeExpanded } from '@/redux/groups/groupsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
@@ -38,9 +38,9 @@ export function SceneTree({ filter }: Props) {
   const { closeCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
 
   const sceneTreeData = useAppSelector((state) => state.groups.sceneTreeData);
-  // TODO: Remove dependency on entire properties object. This means that the entire menu
-  // is rerendered as soon as a property changes... Alternatively, update state structure
-  // so that the property values are stored in a separate object.
+  // @TODO (emmbr, 2024-12-17): Remove dependency on entire properties object. This means
+  // that the entire menu is rerendered as soon as a property changes... Alternatively,
+  // update state structure so that the property values are stored in a separate object
   const properties = useAppSelector((state) => state.properties.properties);
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const customGuiOrdering = useAppSelector((state) => state.groups.customGroupOrdering);
@@ -133,7 +133,7 @@ export function SceneTree({ filter }: Props) {
               withArrow
             >
               <ActionIcon variant={'subtle'} onClick={tree.collapseAllNodes}>
-                <FiChevronsUp />
+                <ChevronsUpIcon />
               </ActionIcon>
             </Tooltip>
             <Tooltip
@@ -143,7 +143,7 @@ export function SceneTree({ filter }: Props) {
               withArrow
             >
               <ActionIcon variant={'subtle'} onClick={tree.expandAllNodes}>
-                <FiChevronsDown />
+                <ChevronsDownIcon />
               </ActionIcon>
             </Tooltip>
           </Group>

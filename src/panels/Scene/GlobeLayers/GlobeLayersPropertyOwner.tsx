@@ -1,11 +1,10 @@
 import {
-  MdColorLens,
-  MdLandscape,
-  MdNightlight,
-  MdOutlineLayers,
-  MdWater
-} from 'react-icons/md';
-
+  ColorPaletteIcon,
+  LandscapeIcon,
+  LayersIcon,
+  NightIcon,
+  WaterIcon
+} from '@/icons/icons';
 import { sgnIdentifierFromSubownerUri } from '@/util/propertyTreeHelpers';
 
 import { GlobeLayerGroup } from './GlobeLayersGroup';
@@ -17,27 +16,26 @@ interface Props {
 export function GlobeLayersPropertyOwner({ uri }: Props) {
   const globeIdentifier = sgnIdentifierFromSubownerUri(uri);
 
-  // TODO: Move icons to the icons file, once decided on the final set and if we use them
   const groups = [
     {
       id: 'ColorLayers',
-      icon: <MdColorLens />
+      icon: <ColorPaletteIcon />
     },
     {
       id: 'HeightLayers',
-      icon: <MdLandscape />
+      icon: <LandscapeIcon />
     },
     {
       id: 'NightLayers',
-      icon: <MdNightlight />
+      icon: <NightIcon />
     },
     {
       id: 'Overlays',
-      icon: <MdOutlineLayers />
+      icon: <LayersIcon />
     },
     {
       id: 'WaterMasks',
-      icon: <MdWater />
+      icon: <WaterIcon />
     }
   ];
 
