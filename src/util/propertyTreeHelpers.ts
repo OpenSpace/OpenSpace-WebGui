@@ -66,11 +66,8 @@ export function isGlobeLayersUri(uri: string, properties: Properties): boolean {
 }
 
 export function isPropertyOwnerHidden(properties: Properties, uri: string) {
-  const prop = properties[`${uri}.GuiHidden`];
-  if (prop && prop.value) {
-    return true;
-  }
-  return false;
+  const isHidden = properties[`${uri}.GuiHidden`]?.value as boolean | undefined;
+  return isHidden || false;
 }
 
 export function isSceneGraphNodeVisible(uri: string, properties: Properties): boolean {
