@@ -166,7 +166,7 @@ export function NodeNavigationButton({
     case NavigationType.frame:
       content.onClick = zoomToFocus;
       content.title = 'Zoom to / Frame';
-      content.icon = <FrameFocusIcon size={IconSize.sm} />;
+      content.icon = <FrameFocusIcon />;
       content.info = `Focus on the target object by moving the camera in a straigt line
         and rotate towards the object`;
       break;
