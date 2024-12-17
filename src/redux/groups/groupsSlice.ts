@@ -37,12 +37,15 @@ export const groupsSlice = createSlice({
     },
     setGroups: (state, action: PayloadAction<Groups>) => {
       state.groups = action.payload;
+      return state;
     },
     setSceneTreeData: (state, action: PayloadAction<TreeNodeData[]>) => {
       state.sceneTreeData = action.payload;
+      return state;
     },
     setTags: (state, action: PayloadAction<string[]>) => {
       state.tags = action.payload;
+      return state;
     },
     storeSceneTreeNodeExpanded: (state, action: PayloadAction<string[]>) => {
       state.expandedGroups = action.payload;

@@ -26,7 +26,7 @@ const computeGroups = (propertyOwners: PropertyOwners, properties: Properties) =
     const guiPath = guiPathProp ? guiPathProp.value : '/';
 
     if (typeof guiPath !== 'string') {
-      throw new Error(`GuiPath property for ${uri} is not a string`);
+      throw new Error(`GuiPath property for '${uri}' is not a string`);
     }
 
     // Only scene graph nodes can use the group feature.
@@ -36,8 +36,6 @@ const computeGroups = (propertyOwners: PropertyOwners, properties: Properties) =
     }
     groups[guiPath] = groups[guiPath] || emptyGroup();
     groups[guiPath].propertyOwners.push(uri);
-
-    // Finally, sort the property owners based on the GuiOrderingNumber
   });
 
   // Create links from parent groups to subgroups

@@ -29,7 +29,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
     const baseID = rcDocRef.current.state.layout.dockbox.id!;
     const base = rcDocRef.current.find(baseID)! as BoxData;
 
-    const tab: TabData = createWindowTabData(options.id, options.title, component);
+    const tab = createWindowTabData(options.id, options.title, component);
 
     switch (position) {
       case 'left':

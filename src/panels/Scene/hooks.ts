@@ -2,7 +2,7 @@ import { BoxData, PanelData, TabData } from 'rc-dock';
 
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
-export const DefaultWindowId = 'defaultSceneGraphNodeWindow';
+export const DefaultSgnWindowId = 'defaultSceneGraphNodeWindow';
 
 export function useOpenCurrentSceneNodeWindow() {
   const { ref, addWindow, closeWindow, createWindowTabData } = useWindowLayoutProvider();
@@ -12,15 +12,15 @@ export function useOpenCurrentSceneNodeWindow() {
       throw new Error('WindowLayoutProvider ref is not set');
     }
 
-    const existingWindow = ref.current.find(DefaultWindowId);
+    const existingWindow = ref.current.find(DefaultSgnWindowId);
     if (!existingWindow) {
       addWindow(content, {
-        id: DefaultWindowId,
+        id: DefaultSgnWindowId,
         title: 'Scene: Selected Node',
         position: 'float'
       });
 
-      const newWindow = ref.current.find(DefaultWindowId) as TabData | PanelData;
+      const newWindow = ref.current.find(DefaultSgnWindowId) as TabData | PanelData;
       const scenePanelParentBox = ref.current.find('scene')?.parent as BoxData;
 
       if (!newWindow || !scenePanelParentBox) {
@@ -36,11 +36,11 @@ export function useOpenCurrentSceneNodeWindow() {
       }
     } else {
       const newTabData = createWindowTabData(
-        DefaultWindowId,
+        DefaultSgnWindowId,
         'Scene: Selected Node',
         content
       );
-      ref.current.updateTab(DefaultWindowId, newTabData, true);
+      ref.current.updateTab(DefaultSgnWindowId, newTabData, true);
 
       // @TODO (emmbr, 2024-12-04): The content is not correctly updated for float windows
       // when this is used. Figure out how to solve this, i.e. move the window to the
@@ -50,7 +50,7 @@ export function useOpenCurrentSceneNodeWindow() {
   }
 
   function closeCurrentNodeWindow() {
-    closeWindow(DefaultWindowId);
+    closeWindow(DefaultSgnWindowId);
   }
 
   return {

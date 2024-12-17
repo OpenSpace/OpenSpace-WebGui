@@ -25,11 +25,10 @@ export const documentationSlice = createSlice({
   name: 'documentation',
   initialState,
   reducers: {
-    initializeDocumentation: (_, action: PayloadAction<AssetMetaData[]>) => {
-      return {
-        isInitialized: true,
-        assetsMetaData: action.payload
-      };
+    initializeDocumentation: (state, action: PayloadAction<AssetMetaData[]>) => {
+      state.isInitialized = true;
+      state.assetsMetaData = action.payload;
+      return state;
     }
   }
 });
