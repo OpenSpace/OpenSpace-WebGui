@@ -22,7 +22,7 @@ import { TempPropertyTest } from './TempPropertyTest';
 
 export function Scene() {
   const hasLoadedScene = useAppSelector(
-    (state) => Object.values(state.propertyOwners.propertyOwners)?.length > 0
+    (state) => Object.keys(state.propertyOwners.propertyOwners).length > 0
   );
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
