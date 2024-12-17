@@ -1,14 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  Anchor,
-  Button,
-  Container,
-  Flex,
-  Group,
-  Image,
-  Text,
-  Title
-} from '@mantine/core';
+import { Button, Container, Flex, Group, Image, Text, Title } from '@mantine/core';
 
 import { ActionsButton } from '@/panels/ActionsPanel/ActionsButton';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
