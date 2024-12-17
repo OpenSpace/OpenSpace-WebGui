@@ -15,14 +15,21 @@ interface Props {
 export function SceneGraphNodeView({ uri }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
 
-  if (!propertyOwner) {
-    throw Error(`No property owner found for SGN with uri: ${uri}`);
-  }
-
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
 
   // The SGN properties that are visible under the current user level setting
   const visibleProperties = useGetVisibleProperties(propertyOwner);
+
+  if (!propertyOwner) {
+    return (
+      <Box m={'xs'}>
+        <Text c={'dimmed'}>
+          This scene graph node does not exist. It might have been removed since this view
+          opened.
+        </Text>
+      </Box>
+    );
+  }
 
   const TabKeys = {
     Renderable: 'Renderable',

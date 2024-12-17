@@ -166,7 +166,7 @@ export const useSubscribeToProperty = (uri: string) => {
  * @param propertyOwner
  * @returns
  */
-export const useGetVisibleProperties = (propertyOwner: PropertyOwner) => {
+export const useGetVisibleProperties = (propertyOwner: PropertyOwner | undefined) => {
   const visiblityLevelSetting = useGetOptionPropertyValue(EnginePropertyVisibilityKey);
   useSubscribeToProperty(EnginePropertyVisibilityKey);
 
