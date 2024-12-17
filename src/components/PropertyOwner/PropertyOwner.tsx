@@ -34,7 +34,7 @@ export function PropertyOwner({
   );
 
   const visibleProperties = useGetVisibleProperties(propertyOwner);
-  const subowners = propertyOwner?.subowners ?? [];
+  const subowners = propertyOwner.subowners ?? [];
   const hasSubowners = subowners.length > 0;
   const hasVisibleProperties = visibleProperties.length > 0;
 

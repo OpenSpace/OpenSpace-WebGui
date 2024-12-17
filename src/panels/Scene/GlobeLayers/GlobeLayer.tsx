@@ -19,6 +19,10 @@ interface Props {
 export function GlobeLayer({ uri, showDragHandle, dragHandleProps }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
 
+  if (!propertyOwner) {
+    throw Error(`No property owner found for uri: ${uri}`);
+  }
+
   const isEnabled = useGetBoolPropertyValue(`${uri}.Enabled`);
   subscribeToProperty({ uri: `${uri}.Enabled` });
 
@@ -28,11 +32,11 @@ export function GlobeLayer({ uri, showDragHandle, dragHandleProps }: Props) {
 
   return (
     <CollapsableContent
-      title={<Text c={textColor}>{displayName(propertyOwner!)}</Text>}
+      title={<Text c={textColor}>{displayName(propertyOwner)}</Text>}
       leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
       rightSection={
         <Group wrap={'nowrap'}>
-          <Tooltip text={propertyOwner?.description || 'No information'} />
+          <Tooltip text={propertyOwner.description || 'No information'} />
           {showDragHandle && dragHandleProps && (
             <ThemeIcon variant={'default'} {...dragHandleProps}>
               <DragHandleIcon />

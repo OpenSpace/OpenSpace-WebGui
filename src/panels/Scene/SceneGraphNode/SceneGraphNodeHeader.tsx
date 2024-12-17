@@ -21,18 +21,18 @@ interface Props {
 export function SceneGraphNodeHeader({ uri, label, onClick }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
 
-  if (!propertyOwner) {
-    throw Error(`No property owner found for uri: ${uri}`);
-  }
-
   const renderableUri = `${uri}.Renderable`;
   const hasRenderable = useAppSelector((state) => {
     return state.propertyOwners.propertyOwners[renderableUri] !== undefined;
   });
 
-  const name = label ?? displayName(propertyOwner!);
-
   const { addWindow } = useWindowLayoutProvider();
+
+  if (!propertyOwner) {
+    return <></>;
+  }
+
+  const name = label ?? displayName(propertyOwner);
 
   function openInNewWindow() {
     const content = <SceneGraphNodeView uri={uri} />;
