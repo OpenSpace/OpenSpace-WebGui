@@ -27,11 +27,9 @@ export function useOpenCurrentSceneNodeWindow() {
         throw new Error('Could not find the new window or the scene panel parent box');
       }
 
-      if (scenePanelParentBox.parent && scenePanelParentBox.parent.mode === 'float') {
-        // @TODO (emmbr, 2024-12-04): If floating window, split the scene tree in two
-        // instead?
-      } else {
-        // split the current Layout
+      const isFloatingWindow = scenePanelParentBox.parent?.mode === 'float';
+      if (!isFloatingWindow) {
+        // Split the current Layout, and dock the new window to the bottom
         ref.current.dockMove(newWindow, scenePanelParentBox, 'bottom');
       }
     } else {
@@ -43,8 +41,8 @@ export function useOpenCurrentSceneNodeWindow() {
       ref.current.updateTab(DefaultSgnWindowId, newTabData, true);
 
       // @TODO (emmbr, 2024-12-04): The content is not correctly updated for float windows
-      // when this is used. Figure out how to solve this, i.e. move the window to the
-      // front.
+      // when this is used (trying to make the window move to the front). Figure out how
+      // to solve this
       // ref.current.dockMove(existingWindow as TabData | PanelData, null, 'front');
     }
   }

@@ -125,7 +125,6 @@ export function SceneTree({ filter }: Props) {
             renderNode={(payload) => <SceneTreeNodeStyled {...payload} />}
           />
           <Group gap={0} pos={'absolute'} top={0} right={0}>
-            {/* TODO: what icons to use here? */}
             <Tooltip
               label={'Collapse all'}
               position={'top'}
