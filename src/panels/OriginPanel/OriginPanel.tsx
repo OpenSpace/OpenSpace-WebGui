@@ -9,7 +9,7 @@ import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMidd
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import { FlightControllerData } from '@/types/flightcontroller-types';
-import { PropertyOwner } from '@/types/types';
+import { Identifier, PropertyOwner, Uri } from '@/types/types';
 import {
   NavigationAimKey,
   NavigationAnchorKey,
@@ -42,7 +42,7 @@ export function OriginPanel() {
   const setAnchorProperty = useSubscribeToProperty(NavigationAnchorKey);
   const setAimProperty = useSubscribeToProperty(NavigationAimKey);
 
-  const uris: string[] = propertyOwners.Scene?.subowners ?? [];
+  const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
   const allNodes = uris
     .map((uri) => propertyOwners[uri])
     .filter((po) => po !== undefined);
@@ -108,7 +108,7 @@ export function OriginPanel() {
   }
 
   function onSelect(
-    identifier: string,
+    identifier: Identifier,
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
     const updateViewPayload: FlightControllerData = {
@@ -129,14 +129,13 @@ export function OriginPanel() {
         break;
       case NavigationActionState.Anchor:
         if (!aim) {
-          // TODO: can this be written as "anchor! as string"? i.e., can we be sure anchor is always set to something?
-          updateViewPayload.aim = anchor ? (anchor as string) : '';
+          updateViewPayload.aim = anchor ? anchor : '';
         }
         updateViewPayload.anchor = identifier;
         break;
       case NavigationActionState.Aim:
         updateViewPayload.aim = identifier;
-        updateViewPayload.anchor = anchor ? (anchor as string) : ''; // same here
+        updateViewPayload.anchor = anchor ? anchor : '';
         break;
       default:
         throw new Error(`Missing NavigationActionState case for: '${navigationAction}'`);

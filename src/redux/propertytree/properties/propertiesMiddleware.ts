@@ -6,7 +6,7 @@ import { api } from '@/api/api';
 import { onCloseConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { RootState } from '@/redux/store';
-import { PropertyValue } from '@/types/types';
+import { PropertyValue, Uri } from '@/types/types';
 
 import { addProperties, setPropertyValue, updatePropertyValue } from './propertiesSlice';
 
@@ -50,10 +50,8 @@ import { addProperties, setPropertyValue, updatePropertyValue } from './properti
 // At this point, we do not support addition and removal
 // of properties in the backend at runtime.
 
-export const subscribeToProperty = createAction<{ uri: string }>('subscribeToProperty');
-export const unsubscribeToProperty = createAction<{ uri: string }>(
-  'unsubscribeToProperty'
-);
+export const subscribeToProperty = createAction<{ uri: Uri }>('subscribeToProperty');
+export const unsubscribeToProperty = createAction<{ uri: Uri }>('unsubscribeToProperty');
 
 enum SubscriptionState {
   Pending = 0,
@@ -67,12 +65,11 @@ type SubscriptionInfo = {
   subscription?: Topic;
 };
 
-// Map from uri to SubscriptionInfo
-const subscriptionInfos: { [key: string]: SubscriptionInfo } = {};
+const subscriptionInfos: { [key: Uri]: SubscriptionInfo } = {};
 
 function handleUpdatedValues(
   dispatch: Dispatch<UnknownAction>,
-  uri: string,
+  uri: Uri,
   value: PropertyValue
 ) {
   // Update the value in the redux property tree, based on the
@@ -97,7 +94,7 @@ function handleUpdatedValues(
   }
 }
 
-function setupSubscription(dispatch: Dispatch<UnknownAction>, uri: string) {
+function setupSubscription(dispatch: Dispatch<UnknownAction>, uri: Uri) {
   const subscription = api.subscribeToProperty(uri);
   const handleUpdates = (value: PropertyValue) =>
     handleUpdatedValues(dispatch, uri, value);
@@ -114,7 +111,7 @@ function setupSubscription(dispatch: Dispatch<UnknownAction>, uri: string) {
 function tryPromoteSubscription(
   dispatch: Dispatch<UnknownAction>,
   state: RootState,
-  uri: string
+  uri: Uri
 ) {
   const subscriptionInfo = subscriptionInfos[uri];
 
@@ -139,13 +136,13 @@ function promoteSubscriptions(dispatch: Dispatch<UnknownAction>, state: RootStat
   // The added properteis may include properties whose
   // uri is marked as a `pending`/`orphan` subscription, so
   // we check if any subscriptions can be promoted to `active`.
-  Object.keys(subscriptionInfos).forEach((uri: string) => {
+  Object.keys(subscriptionInfos).forEach((uri: Uri) => {
     tryPromoteSubscription(dispatch, state, uri);
   });
 }
 
 function markAllSubscriptionsAsPending() {
-  Object.keys(subscriptionInfos).forEach((uri: string) => {
+  Object.keys(subscriptionInfos).forEach((uri: Uri) => {
     subscriptionInfos[uri].state = SubscriptionState.Pending;
   });
 }
