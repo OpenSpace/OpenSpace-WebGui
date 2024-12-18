@@ -1,3 +1,4 @@
+import React from 'react';
 import { ActionIcon, ActionIconProps, Button, ButtonProps } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -48,7 +49,7 @@ type NodeNavigationButtonProps =
 
 interface ButtonContent {
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  icon: JSX.Element;
+  icon: React.JSX.Element;
   title: string;
   info?: string;
 }

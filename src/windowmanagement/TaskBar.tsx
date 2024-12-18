@@ -1,10 +1,11 @@
+import React from 'react';
 import { Button, Group } from '@mantine/core';
 import { WindowLayoutOptions } from 'src/windowmanagement/WindowLayout/WindowLayout';
 
 import { menuItemsDB } from './data/MenuItems';
 
 interface TaskBarProps {
-  addWindow: (component: JSX.Element, options: WindowLayoutOptions) => void;
+  addWindow: (component: React.JSX.Element, options: WindowLayoutOptions) => void;
   visibleMenuItems: string[];
 }
 

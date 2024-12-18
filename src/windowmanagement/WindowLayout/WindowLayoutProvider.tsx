@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { ScrollArea } from '@mantine/core';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
@@ -12,7 +12,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
     return obj && 'tabs' in obj;
   }
 
-  function addWindow(component: JSX.Element, options: WindowLayoutOptions) {
+  function addWindow(component: React.JSX.Element, options: WindowLayoutOptions) {
     if (!rcDocRef.current) {
       return;
     }
