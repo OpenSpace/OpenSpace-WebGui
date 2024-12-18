@@ -62,8 +62,7 @@ export function filterTreeData(
         }
 
         // PropertyOwners (scene graph nodes), may be filtered out based on settings
-        const shouldShow = shouldShowSceneGraphNode(newNode.value);
-        return shouldShow ? newNode : null;
+        return shouldShowSceneGraphNode(newNode.value) ? newNode : null;
       }
     })
     .filter((node) => node !== null);

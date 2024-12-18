@@ -1,6 +1,6 @@
 import { TreeNodeData } from '@mantine/core';
 
-import { Properties } from '@/types/types';
+import { CustomGroupOrdering, Properties } from '@/types/types';
 import { guiOrderingNumber } from '@/util/propertyTreeHelpers';
 
 import { GroupPrefixKey, isGroupNode } from './treeUtil';
@@ -51,8 +51,10 @@ export function createTreeSortingInformation(
   return result;
 }
 
-// Sort a list of items in the scene menu tree. This is a bit complicated, since there are
-// multiple alternative ways to specify the order.
+/**
+ * Sort a list of items in the scene menu tree. This is a bit complicated, since there are
+ * multiple alternative ways to specify the order.
+ */
 export function sortTreeLevel(
   treeListToSort: TreeNodeData[],
   treeSortingInfo: TreeSortingInfo,
@@ -139,7 +141,7 @@ export function sortTreeLevel(
 
 export function sortTreeData(
   treeData: TreeNodeData[],
-  customGuiOrderingMap: { [key: string]: string[] },
+  customGuiOrderingMap: CustomGroupOrdering,
   properties: Properties
 ): TreeNodeData[] {
   const treeSortingInfo = createTreeSortingInformation(treeData, properties);
@@ -154,20 +156,17 @@ export function sortTreeData(
     treeSortingInfo: TreeSortingInfo
   ) {
     return nodes.map((node) => {
-      const n = { ...node };
-      if (n.children) {
-        if (isGroupNode(n)) {
+      if (node.children) {
+        if (isGroupNode(node)) {
           const groupPath = node.value.replace(GroupPrefixKey, '');
           const customOrdering = customGuiOrderingMap[groupPath];
-          n.children = sortTreeLevel(n.children, treeSortingInfo, customOrdering);
-          n.children = resursiveSortChildren(n.children, treeSortingInfo);
+          node.children = sortTreeLevel(node.children, treeSortingInfo, customOrdering);
+          node.children = resursiveSortChildren(node.children, treeSortingInfo);
         }
       }
-      return n;
+      return node;
     });
   }
 
-  treeData = resursiveSortChildren(treeData, treeSortingInfo);
-
-  return treeData;
+  return resursiveSortChildren(treeData, treeSortingInfo);
 }

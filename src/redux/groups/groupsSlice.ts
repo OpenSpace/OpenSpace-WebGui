@@ -1,15 +1,7 @@
 import { TreeNodeData } from '@mantine/core';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Group } from '@/types/types';
-
-export type Groups = {
-  [key: string]: Group;
-};
-
-export type CustomGroupOrdering = {
-  [key: string]: string[]; // list of node names in the order they should be displayed
-};
+import { CustomGroupOrdering, Groups } from '@/types/types';
 
 export interface GroupsState {
   customGroupOrdering: CustomGroupOrdering;
@@ -21,7 +13,7 @@ export interface GroupsState {
 
 const initialState: GroupsState = {
   customGroupOrdering: {},
-  groups: {}, // @TODO (emmbr, 2024-12-04): this could maybe be removed from the state
+  groups: {},
   sceneTreeData: [],
   tags: [],
   expandedGroups: []

@@ -114,6 +114,11 @@ export type Groups = {
   [key: string]: Group;
 };
 
+export type CustomGroupOrdering = {
+  // The value is a list of node names in the order they should be displayed
+  [key: string]: string[] | undefined;
+};
+
 export type OpenSpaceTimeState = {
   time?: string;
   timeCapped?: string;
