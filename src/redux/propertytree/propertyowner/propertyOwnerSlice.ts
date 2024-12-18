@@ -14,12 +14,10 @@ import { addUriToPropertyTree } from '../propertyTreeMiddleware';
 // clearPropertyTree
 
 export interface PropertyOwnersState {
-  isInitialized: boolean;
   propertyOwners: PropertyOwners;
 }
 
 const initialStatePropertyOwners: PropertyOwnersState = {
-  isInitialized: false,
   propertyOwners: {}
 };
 
@@ -32,7 +30,6 @@ export const propertyOwnersSlice = createSlice({
       action: PayloadAction<{ propertyOwners: PropertyOwner[] }>
     ) => {
       const inputOwners = action.payload.propertyOwners;
-      // const newState = { ...state };
       inputOwners.forEach((owner) => {
         state.propertyOwners[owner.uri] = {
           identifier: owner.identifier,
@@ -62,13 +59,10 @@ export const propertyOwnersSlice = createSlice({
     },
     clearPropertyOwners: () => {
       return {
-        isInitialized: false,
         propertyOwners: {}
       };
     },
     removePropertyOwners: (state, action: PayloadAction<{ uris: string[] }>) => {
-      // const newState = { ...state };
-
       action.payload.uris.forEach((uri) => {
         // Delete this particular property owner
         delete state.propertyOwners[uri];
