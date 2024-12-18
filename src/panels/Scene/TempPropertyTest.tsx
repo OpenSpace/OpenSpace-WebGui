@@ -1,4 +1,4 @@
-import { Container } from '@mantine/core';
+import { Container, Text } from '@mantine/core';
 
 import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
@@ -8,48 +8,65 @@ export function TempPropertyTest() {
 
   return (
     <Container>
-      <h3>Bool (Earth):</h3>
+      <h2>Bool (Earth):</h2>
+      <Text c={'dimmed'}>Scene.Earth.Renderable.Enabled</Text>
       <Property uri={'Scene.Earth.Renderable.Enabled'} />
-      <h3>'String: '</h3>
+      <h2>String:</h2>
+      <Text c={'dimmed'}>Scene.Earth.Renderable.Type</Text>
       <Property uri={'Scene.Earth.Renderable.Type'} />
+      <Text c={'dimmed'}>Scene.Earth.Renderable.LightSourceNode</Text>
       <Property uri={'Scene.Earth.Renderable.LightSourceNode'} />
-      <h3>Trigger (Earth Blue Marble):</h3>
+      <h2>Trigger:</h2>
+      <Text c={'dimmed'}>
+        Scene.Earth.Renderable.Layers.ColorLayers.Blue_Marble.Reset
+      </Text>
       <Property uri={'Scene.Earth.Renderable.Layers.ColorLayers.Blue_Marble.Reset'} />
-      <h3>Option (Earth VIIRS):</h3>
+      <h2>Option:</h2>
+      <Text c={'dimmed'}>
+        Scene.Earth.Renderable.Layers.ColorLayers.ESRI_VIIRS_Combo.BlendMode
+      </Text>
       <Property
         uri={'Scene.Earth.Renderable.Layers.ColorLayers.ESRI_VIIRS_Combo.BlendMode'}
       />
-      <h3>Selection (Contellation Lines):</h3>
+      <h2>Selection:</h2>
+      <Text c={'dimmed'}>Scene.Constellations.Renderable.ConstellationSelection</Text>
       <Property uri={'Scene.Constellations.Renderable.ConstellationSelection'} />
-      <h3 style={styleUnfinished}>String Lists (Server Module - Deny Adresses):</h3>
-      TODO: Make the tags (list items) editable
+      <h2>String Lists:</h2>
+      <Text c={'dimmed'}>
+        Modules.Server.Interfaces.DefaultTcpSocketInterface.DenyAddresses
+      </Text>
       <Property
         uri={'Modules.Server.Interfaces.DefaultTcpSocketInterface.DenyAddresses'}
       />
-      <h3 style={styleUnfinished}>Numeric Property - "Nice" value (Earth opacity):</h3>
+      <h2 style={styleUnfinished}>Numeric Property - "Nice" value (Earth opacity):</h2>
       TODO: Come up with a nice version of the input, that also feels responsive....
       Testing:
       <Property uri={'Scene.Earth.Renderable.Opacity'} />
-      <h3 style={styleUnfinished}>Numeric Property - Disabled:</h3>
+      <h2 style={styleUnfinished}>Numeric Property - Disabled:</h2>
       TODO: This should somehow show info on max/min value. This specific property is a
       good example of why
       <Property uri={'Scene.Earth.Renderable.NActiveLayers'} />
-      <h3 style={styleUnfinished}>Numeric Property - Exponential:</h3>
+      <h2 style={styleUnfinished}>Numeric Property - Exponential:</h2>
       TODO
-      <h3 style={styleUnfinished}>Numeric Property - Linear, but not nice values:</h3>
+      <h2 style={styleUnfinished}>Numeric Property - Linear, but not nice values:</h2>
       TODO
-      <h3 style={styleUnfinished}>Vector Property:</h3>
-      Vec3 (Color) - 1 lightday grid
+      <h2 style={styleUnfinished}>Vector Property:</h2>
+      <h3>Colors</h3>
+      <Text c={'dimmed'}>Scene.1ldGrid.Renderable.Color</Text>
       <Property uri={'Scene.1ldGrid.Renderable.Color'} />
-      Vec4 (Color) - RenderEngine.EnabledFontColor
+      <Text c={'dimmed'}>RenderEngine.EnabledFontColor</Text>
       <Property uri={'RenderEngine.EnabledFontColor'} />
-      IntVec2 - 1 lightday grid
+      <h3>IntVec2</h3>
+      <Text c={'dimmed'}>Scene.1ldGrid.Renderable.Segments</Text>
       <Property uri={'Scene.1ldGrid.Renderable.Segments'} />
-      MinMaxRange - SDSS FadeIn distances
+      <h3 style={styleUnfinished}>MinMaxRange</h3>
+      <Text c={'dimmed'}>
+        Scene.SloanDigitalSkySurvey.Renderable.Fading.FadeInDistances
+      </Text>
       <Property uri={'Scene.SloanDigitalSkySurvey.Renderable.Fading.FadeInDistances'} />
-      TODO: More variants. E.g. MinMaxRange. Vec3 and Vec4 colors
-      <h3 style={styleUnfinished}>Matrix Property:</h3>
-      Mat4: ISS Model transform
+      <h3>TODO: More variants</h3>
+      <h2 style={styleUnfinished}>Matrix Property:</h2>
+      <Text c={'dimmed'}>Scene.ISS.Renderable.ModelTransform</Text>
       <Property uri={'Scene.ISS.Renderable.ModelTransform'} />
       <h3 style={styleUnfinished}>A full property owner!</h3>
       <PropertyOwner uri={'Scene.Earth'} />
