@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { PropertyOwner, PropertyOwners } from '@/types/types';
+import { PropertyOwner, PropertyOwners, Uri } from '@/types/types';
 
 import { addUriToPropertyTree } from '../propertyTreeMiddleware';
 
@@ -62,7 +62,7 @@ export const propertyOwnersSlice = createSlice({
         propertyOwners: {}
       };
     },
-    removePropertyOwners: (state, action: PayloadAction<{ uris: string[] }>) => {
+    removePropertyOwners: (state, action: PayloadAction<{ uris: Uri[] }>) => {
       action.payload.uris.forEach((uri) => {
         // Delete this particular property owner
         delete state.propertyOwners[uri];

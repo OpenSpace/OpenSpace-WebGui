@@ -4,7 +4,7 @@ import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { MinusIcon, PlusIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
-import { Candidate, Extent } from '@/types/types';
+import { Candidate, Extent, Identifier } from '@/types/types';
 
 import { addressUTF8 } from './util';
 
@@ -12,10 +12,10 @@ interface Props {
   place: Candidate;
   isCustomAltitude: boolean;
   customAltitude: number;
-  currentAnchor: string;
-  isSceneGraphNodeAdded: (identifier: string) => boolean;
-  addFocusNode: (identifier: string, lat: number, long: number, alt: number) => void;
-  removeFocusNode: (identifier: string) => void;
+  currentAnchor: Identifier;
+  isSceneGraphNodeAdded: (identifier: Identifier) => boolean;
+  addFocusNode: (identifier: Identifier, lat: number, long: number, alt: number) => void;
+  removeFocusNode: (identifier: Identifier) => void;
 }
 
 export function EarthEntry({

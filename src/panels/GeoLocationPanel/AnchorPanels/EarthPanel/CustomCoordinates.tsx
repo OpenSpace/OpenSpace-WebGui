@@ -5,9 +5,10 @@ import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavi
 import { PlusIcon } from '@/icons/icons';
 import { InlineInput } from '@/panels/TimePanel/InlineInput';
 import { NavigationType } from '@/types/enums';
+import { Identifier } from '@/types/types';
 
 interface Props {
-  currentAnchor: string;
+  currentAnchor: Identifier;
   onAddFocusNodeCallback: (
     address: string,
     lat: number,

@@ -1,4 +1,7 @@
 // Event types, these were manually typed from the event.cpp `toParameter`function:
+
+import { Identifier } from './types';
+
 // https://github.com/OpenSpace/OpenSpace/blob/6dd3dd8ab88653fddee0b2e480934faf53d3c0f8/src/events/event.cpp#L332
 export type ParallelConnectionEvent = {
   Event: 'ParallelConnection';
@@ -16,7 +19,7 @@ export type ApplicationShutdownEvent = {
 };
 export type CameraFocusTransitionEvent = {
   Event: 'CameraFocusTransition';
-  Node: string;
+  Node: Identifer;
   Transition: 'Approaching' | 'Reaching' | 'Receding' | 'Exiting';
 };
 export type TimeOfInterestReachedEvent = {
@@ -27,33 +30,33 @@ export type MissionEventReachedEvent = {
 };
 export type PlanetEclipsedEvent = {
   Event: 'PlanetEclipsed';
-  Eclipsee: string;
-  Eclipser: string;
+  Eclipsee: Identifier;
+  Eclipser: Identifier;
 };
 export type InterpolationFinishedEvent = {
   Event: 'InterpolationFinished';
-  Property: string;
+  Property: Uri;
 };
 export type FocusNodeChangedEvent = {
   Event: 'FocusNodeChanged';
-  OldNode: string;
-  NewNode: string;
+  OldNode: Identifier;
+  NewNode: Identifier;
 };
 export type PropertyTreeUpdatedEvent = {
   Event: 'PropertyTreeUpdated';
-  Uri: string;
+  Uri: Uri;
 };
 export type PropertyTreePrunedEvent = {
   Event: 'PropertyTreePruned';
-  Uri: string;
+  Uri: Uri;
 };
 export type ActionAddedEvent = {
   Event: 'ActionAdded';
-  Uri: string;
+  Uri: Uri;
 };
 export type ActionRemovedEvent = {
   Event: 'ActionRemoved';
-  Uri: string;
+  Uri: Uri;
 };
 export type SessionRecordingPlaybackEvent = {
   Event: 'SessionRecordingPlayback';
@@ -64,21 +67,21 @@ export type PointSpacecraftEvent = {
 };
 export type RenderableEnabledEvent = {
   Event: 'RenderableEnabled';
-  Node: string;
+  Node: Identifier;
 };
 export type RenderableDisabledEvent = {
   Event: 'RenderableDisabled';
-  Node: string;
+  Node: Identifier;
 };
 export type CameraPathStartedEvent = {
   Event: 'CameraPathStarted';
-  Origin: string;
-  Destination: string;
+  Origin: Identifier;
+  Destination: Identifier;
 };
 export type CameraPathFinishedEvent = {
   Event: 'CameraPathFinished';
-  Origin: string;
-  Destination: string;
+  Origin: Identifier;
+  Destination: Identifier;
 };
 export type CameraMovedPositionEvent = {
   Event: 'CameraMovedPosition';
