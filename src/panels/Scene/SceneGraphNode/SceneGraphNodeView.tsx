@@ -50,7 +50,8 @@ export function SceneGraphNodeView({ uri }: Props) {
   propertyOwner.subowners.forEach((subowner) => {
     const owner = propertyOwners[subowner];
     if (owner) {
-      subowners[owner.identifier as keyof typeof subowners] = owner;
+      type SubownerKey = keyof typeof subowners;
+      subowners[owner.identifier as SubownerKey] = owner;
     }
   });
 

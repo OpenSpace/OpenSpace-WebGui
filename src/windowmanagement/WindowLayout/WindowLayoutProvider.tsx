@@ -79,7 +79,11 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
     }
   }
 
-  function createWindowTabData(id: string, title: string, content: JSX.Element): TabData {
+  function createWindowTabData(
+    id: string,
+    title: string,
+    content: React.JSX.Element
+  ): TabData {
     return {
       id,
       title,
