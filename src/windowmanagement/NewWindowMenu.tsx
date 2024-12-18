@@ -1,10 +1,11 @@
+import React from 'react';
 import { Menu } from '@mantine/core';
 
 import { menuItemsDB } from './data/MenuItems';
 import { WindowLayoutOptions } from './WindowLayout/WindowLayout';
 
 interface NewWindowMenuProps {
-  addWindow: (component: JSX.Element, options: WindowLayoutOptions) => void;
+  addWindow: (component: React.JSX.Element, options: WindowLayoutOptions) => void;
 }
 export function NewWindowMenu({ addWindow }: NewWindowMenuProps) {
   return (
