@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Checkbox } from '@mantine/core';
 
 import {
@@ -25,19 +26,27 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
   useSubscribeToProperty(fadeUri);
 
   const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
+  const [checked, setChecked] = useState(isVisible);
+
+  useEffect(() => {
+    setChecked(isVisible);
+  }, [isVisible]);
 
   if (isVisible === undefined) {
+    // This is the case when there is no enabled or fade property => don't render checkbox
     return <></>;
   }
 
   function setVisiblity(shouldShow: boolean, isImmediate: boolean) {
+    const fadeTime = isImmediate ? 0 : undefined;
     if (!isFadeable) {
       setEnabledProperty(shouldShow);
     } else if (shouldShow) {
-      luaApi?.fadeIn(uri, isImmediate ? 0 : undefined);
+      luaApi?.fadeIn(uri, fadeTime);
     } else {
-      luaApi?.fadeOut(uri, isImmediate ? 0 : undefined);
+      luaApi?.fadeOut(uri, fadeTime);
     }
+    setChecked(shouldShow);
   }
 
   function onToggleCheckboxClick(event: React.MouseEvent<HTMLInputElement>) {
@@ -46,20 +55,5 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
     setVisiblity(shouldBeEnabled, isImmediate);
   }
 
-  let isMidFade = undefined;
-  if (isFadeable && fadePropertyValue > 0 && fadePropertyValue < 0.99) {
-    isMidFade = true;
-  }
-  if (isMidFade) {
-    return (
-      <Checkbox
-        checked={isVisible}
-        indeterminate={isMidFade}
-        variant={'outline'}
-        onClick={() => setVisiblity(true, true)}
-        readOnly
-      />
-    );
-  }
-  return <Checkbox checked={isVisible} onClick={onToggleCheckboxClick} readOnly />;
+  return <Checkbox checked={checked} onClick={onToggleCheckboxClick} readOnly />;
 }
