@@ -1,7 +1,7 @@
 import { Group, Paper, Space } from '@mantine/core';
 
 import { useGetPropertyOwner } from '@/api/hooks';
-import { CollapsableContent } from '@/components/CollapsableContent/CollapsableContent';
+import { CollapsableContent } from '@/components/Collapse/CollapsableContent/CollapsableContent';
 import { Property } from '@/components/Property/Property';
 import { displayName } from '@/util/propertyTreeHelpers';
 
@@ -36,8 +36,8 @@ export function GlobeLayerGroup({ uri, globe, icon }: Props) {
       <Paper p={'xs'}>
         <LayerList layers={layers} layerGroup={propertyOwner.identifier} globe={globe} />
         <Space h={'xs'} />
-        {properties.map((p) => (
-          <Property key={p} uri={p} />
+        {properties.map((propertyUri) => (
+          <Property key={propertyUri} uri={propertyUri} />
         ))}
       </Paper>
     </CollapsableContent>

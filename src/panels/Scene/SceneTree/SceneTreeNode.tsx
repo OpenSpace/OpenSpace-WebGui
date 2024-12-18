@@ -1,6 +1,6 @@
 import { Box, RenderTreeNodePayload, TreeNodeData } from '@mantine/core';
 
-import { CollapsableHeader } from '@/components/CollapsableHeader/CollapsableHeader';
+import { CollapsableHeader } from '@/components/Collapse/CollapsableHeader/CollapsableHeader';
 
 import { useOpenCurrentSceneNodeWindow } from '../hooks';
 import { SceneGraphNodeHeader } from '../SceneGraphNode/SceneGraphNodeHeader';

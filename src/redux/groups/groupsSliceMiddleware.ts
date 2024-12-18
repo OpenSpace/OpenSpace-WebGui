@@ -4,11 +4,11 @@ import { createAction } from '@reduxjs/toolkit';
 import { GroupPrefixKey } from '@/panels/Scene/SceneTree/treeUtil';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { addUriToPropertyTree } from '@/redux/propertytree/propertyTreeMiddleware';
-import { Properties, PropertyOwners } from '@/types/types';
+import { Groups, Properties, PropertyOwners } from '@/types/types';
 
 import { RootState } from '../store';
 
-import { Groups, setGroups, setSceneTreeData, setTags } from './groupsSlice';
+import { setGroups, setSceneTreeData, setTags } from './groupsSlice';
 
 export const refreshGroups = createAction<void>('groups/refresh');
 

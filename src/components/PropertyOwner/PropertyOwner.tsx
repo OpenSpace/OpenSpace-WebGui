@@ -1,7 +1,7 @@
 import { Group, Paper, Space } from '@mantine/core';
 
 import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
-import { CollapsableContent } from '@/components/CollapsableContent/CollapsableContent';
+import { CollapsableContent } from '@/components/Collapse/CollapsableContent/CollapsableContent';
 import { Property } from '@/components/Property/Property';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { GlobeLayersPropertyOwner } from '@/panels/Scene/GlobeLayers/GlobeLayersPropertyOwner';

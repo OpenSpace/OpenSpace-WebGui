@@ -2,7 +2,7 @@ import { DraggableProvidedDragHandleProps } from '@hello-pangea/dnd';
 import { Group, Paper, Text, ThemeIcon } from '@mantine/core';
 
 import { useGetBoolPropertyValue, useGetPropertyOwner } from '@/api/hooks';
-import { CollapsableContent } from '@/components/CollapsableContent/CollapsableContent';
+import { CollapsableContent } from '@/components/Collapse/CollapsableContent/CollapsableContent';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
