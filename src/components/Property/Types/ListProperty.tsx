@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pill, PillsInput } from '@mantine/core';
 
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
@@ -18,33 +18,46 @@ export function ListProperty({
   setPropertyValue,
   value
 }: Props) {
-  const [inputString, setInputString] = useState('');
-  const [editedIndex, setEditedIndex] = useState<number | undefined>(undefined);
+  const [placeholderText, setPlaceholderText] = useState('');
 
-  function onInputFieldKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
-    const newItem = inputString.trim();
-    if (event.key === 'Enter' && newItem.length > 0) {
-      setPropertyValue([...value, newItem]);
-      stopEditing();
-    } else if (event.key === 'Escape') {
-      stopEditing();
-      event.currentTarget.blur();
-    }
+  // The input string that the user is typing
+  const [inputString, setInputString] = useState('');
+
+  // The values to shown as a list of pills in the input
+  const [shownValues, setShownValues] = useState(value);
+
+  const [isEditingExisting, setIsEditingExisting] = useState(false);
+  const [clickedItemIndex, setClickedItemIndex] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    setShownValues(value);
+  }, [value]);
+
+  useEffect(() => {
+    setPlaceholderText(placeholder(shownValues));
+  }, [shownValues]);
+
+  function placeholder(values: string[]) {
+    return `item${values.length + 1}, item${values.length + 2}, ...`;
   }
 
-  function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === 'ArrowLeft') {
-      if (editedIndex === undefined) {
-        setEditedIndex(value.length - 1);
-      } else {
-        setEditedIndex(Math.max(editedIndex - 1, 0));
-      }
-    } else if (event.key === 'ArrowRight') {
-      if (editedIndex !== undefined) {
-        setEditedIndex(Math.max(editedIndex + 1, 0));
-      } else if (editedIndex === value.length - 1) {
-        setEditedIndex(undefined);
-      }
+  function onInputKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
+    const input = inputString.trim();
+
+    if (event.key === 'Enter' && input.length > 0) {
+      const splitInput = input
+        .split(',')
+        .map((item) => item.trim())
+        .filter((item) => item.length > 0);
+
+      const newValues = [...shownValues, ...splitInput];
+      setPropertyValue(newValues);
+      setShownValues(newValues);
+      stopEditing();
+    } else if (!isEditingExisting && event.key === 'Backspace') {
+      setIsEditingExisting(true);
+      setInputString(value.join(', '));
+      setShownValues([]);
     } else if (event.key === 'Escape') {
       stopEditing();
       event.currentTarget.blur();
@@ -53,44 +66,53 @@ export function ListProperty({
 
   function stopEditing() {
     setInputString('');
-    setEditedIndex(undefined);
+    setIsEditingExisting(false);
+    setClickedItemIndex(undefined);
   }
 
   function deleteItem(index: number) {
     const newValues = [...value];
     newValues.splice(index, 1);
+
     setPropertyValue(newValues);
-    setEditedIndex(undefined);
+    setShownValues(newValues);
+
+    setClickedItemIndex(undefined);
   }
 
-  // TODO: This input is not finished. Still need to do some work to make it editable.
-  // That is, edit existing values. And make it editable using only keyboard input...
-  // But first, discuss alternative designs witht he team, before making it too complex
+  function onItemClick(index: number) {
+    if (disabled) {
+      return;
+    }
+    const isCurrent = clickedItemIndex === index;
+    setClickedItemIndex(isCurrent ? undefined : index);
+  }
+
   return (
     <PillsInput
       disabled={disabled}
-      onKeyUp={onKeyUp}
       onBlur={() => stopEditing()}
       label={<PropertyLabel label={name} tip={description} />}
     >
       <Pill.Group>
-        {value.map((value, i) => (
+        {shownValues.map((v, i) => (
           <Pill
-            key={value}
-            withRemoveButton={editedIndex === i}
+            key={v}
+            style={disabled ? {} : { cursor: 'pointer' }}
+            withRemoveButton={clickedItemIndex === i}
             onRemove={() => deleteItem(i)}
-            onClick={(event) => {
-              setEditedIndex(i);
-              event.currentTarget.focus();
-            }}
+            onClick={() => onItemClick(i)}
           >
-            {value}
+            {v}
           </Pill>
         ))}
         <PillsInput.Field
-          value={editedIndex !== undefined ? value[editedIndex] : inputString}
+          placeholder={placeholderText}
+          value={inputString}
+          onFocus={() => setPlaceholderText(placeholder(shownValues))}
+          onBlur={() => setPlaceholderText('')}
           onChange={(event) => setInputString(event.currentTarget.value)}
-          onKeyUp={(event) => onInputFieldKeyUp(event)}
+          onKeyUp={(event) => onInputKeyUp(event)}
         />
       </Pill.Group>
     </PillsInput>
