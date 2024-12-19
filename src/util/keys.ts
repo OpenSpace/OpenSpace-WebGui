@@ -2,6 +2,10 @@ export const NavigationAnchorKey = 'NavigationHandler.OrbitalNavigator.Anchor';
 export const NavigationAimKey = 'NavigationHandler.OrbitalNavigator.Aim';
 export const RetargetAnchorKey = 'NavigationHandler.OrbitalNavigator.RetargetAnchor';
 export const RetargetAimKey = 'NavigationHandler.OrbitalNavigator.RetargetAim';
+export const RotationalFrictionKey =
+  'NavigationHandler.OrbitalNavigator.Friction.RotationalFriction';
+export const ZoomFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.ZoomFriction';
+export const RollFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.RollFriction';
 
 // To get any scene graph node you need ScenePrefix+NodeIdentifier
 export const ScenePrefixKey = 'Scene.';

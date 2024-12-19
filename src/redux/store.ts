@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { actionsReducer } from './actions/actionsSlice';
 import { connectionReducer } from './connection/connectionSlice';
 import { exoplanetsReducer } from './exoplanets/exoplanetsSlice';
+import { flightControllerReducer } from './flightcontroller/flightControllerSlice';
 import { groupsReducer } from './groups/groupsSlice';
 import { propertiesReducer } from './propertytree/properties/propertiesSlice';
 import { propertyOwnersReducer } from './propertytree/propertyowner/propertyOwnerSlice';
@@ -15,6 +16,7 @@ export const store = configureStore({
     actions: actionsReducer,
     connection: connectionReducer,
     exoplanets: exoplanetsReducer,
+    flightController: flightControllerReducer,
     groups: groupsReducer,
     properties: propertiesReducer,
     propertyOwners: propertyOwnersReducer,

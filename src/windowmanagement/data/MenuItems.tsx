@@ -2,6 +2,7 @@ import { WindowLayoutPosition } from 'src/windowmanagement/WindowLayout/WindowLa
 
 import { ActionsPanel } from '@/panels/ActionsPanel/ActionsPanel';
 import { ExoplanetsPanel } from '@/panels/ExoplanetsPanel/ExoplanetsPanel';
+import { FlightControlPanel } from '@/panels/FlightControlPanel/FlightControlPanel';
 import { GeoLocationPanel } from '@/panels/GeoLocationPanel/GeoLocationPanel';
 import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
@@ -99,6 +100,13 @@ export const menuItemsDB: MenuItem[] = [
     title: 'Sky Browser',
     componentID: 'skyBrowser',
     content: <div>Sky Broweser</div>,
+    preferredPosition: 'right',
+    defaultVisible: false
+  },
+  {
+    title: 'Flight Control',
+    componentID: 'flightControl',
+    content: <FlightControlPanel />,
     preferredPosition: 'right',
     defaultVisible: false
   },

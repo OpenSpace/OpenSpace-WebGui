@@ -7,7 +7,16 @@ export type FlightControllerDisconnectCommand = {
 };
 export type FlightControllerInputStateCommand = {
   type: 'inputState';
-  // TODO: add additional properties
+  inputState: {
+    values: {
+      zoomIn?: number;
+      orbitX?: number;
+      orbitY?: number;
+      panX?: number;
+      panY?: number;
+      localRollX?: number;
+    };
+  };
 };
 
 export interface FlightControllerUpdateViewCommand {
