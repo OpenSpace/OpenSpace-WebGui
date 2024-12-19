@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { ActionIcon, Container, Group } from '@mantine/core';
 
-import { useGetStringPropertyValue, useSubscribeToProperty } from '@/api/hooks';
+import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import { FlightControllerData } from '@/types/flightcontroller-types';
 import { PropertyOwner } from '@/types/types';
 import {
@@ -34,13 +33,12 @@ export function OriginPanel() {
 
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const properties = useAppSelector((state) => state.properties.properties);
-  const anchor = useGetStringPropertyValue(NavigationAnchorKey);
-  const aim = useGetStringPropertyValue(NavigationAimKey);
+  const [anchor, setAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
+  const [aim, setAim] = useGetStringPropertyValue(NavigationAimKey);
+  const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
+  const triggerRetargetAim = useTriggerProperty(RetargetAimKey);
 
   const dispatch = useAppDispatch();
-
-  const setAnchorProperty = useSubscribeToProperty(NavigationAnchorKey);
-  const setAimProperty = useSubscribeToProperty(NavigationAimKey);
 
   const uris: string[] = propertyOwners.Scene?.subowners ?? [];
   const allNodes = uris
@@ -144,9 +142,9 @@ export function OriginPanel() {
 
     if (!event.shiftKey) {
       if (navigationAction === NavigationActionState.Aim) {
-        dispatch(setPropertyValue({ uri: RetargetAimKey, value: null }));
+        triggerRetargetAim();
       } else {
-        dispatch(setPropertyValue({ uri: RetargetAnchorKey, value: null }));
+        triggerRetargetAnchor();
       }
     }
 
@@ -161,13 +159,13 @@ export function OriginPanel() {
     dispatch(sendFlightControl(updateViewPayload));
 
     if (updateViewPayload.aim) {
-      setAnchorProperty(updateViewPayload.anchor);
-      setAimProperty(updateViewPayload.aim);
+      setAnchor(updateViewPayload.anchor);
+      setAim(updateViewPayload.aim);
     } else if (updateViewPayload.anchor !== '') {
-      setAnchorProperty(updateViewPayload.anchor);
+      setAnchor(updateViewPayload.anchor);
     } else {
-      setAnchorProperty(updateViewPayload.focus);
-      setAimProperty(updateViewPayload.aim);
+      setAnchor(updateViewPayload.focus);
+      setAim(updateViewPayload.aim);
     }
   }
 

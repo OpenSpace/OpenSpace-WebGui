@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { useThrottledCallback } from '@mantine/hooks';
+import { throttle } from 'lodash';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
@@ -20,18 +21,55 @@ export function useGetPropertyOwner(uri: string): PropertyOwner | undefined {
   return useAppSelector((state) => state.propertyOwners.propertyOwners[uri]);
 }
 
+// Since trigger properties are different than the rest, they don't actually
+// have a value. Only returning the trigger function
+export const useTriggerProperty = (uri: string) => {
+  const dispatch = useAppDispatch();
+  // Set function to mimic useState
+  function trigger() {
+    dispatch(setPropertyValue({ uri: uri, value: null }));
+  }
+
+  return trigger;
+};
+
 export function useGetProperty(uri: string): Property | undefined {
   return useAppSelector((state) => state.properties.properties[uri]);
 }
 
-function useGetPropertyValue<T>(uri: string, propertyType: string): T | undefined {
-  return useAppSelector((state) => {
+// TODO: rename all these functions to just use - now its a get / set function
+function useGetPropertyValue<T>(
+  uri: string,
+  propertyType: string
+): [T | undefined, (value: T) => void] {
+  const dispatch = useAppDispatch();
+  // Throttle limit
+  const ThrottleMs = 1000 / 60;
+
+  // Get value from Redux
+  const value = useAppSelector((state) => {
     const prop = state.properties.properties[uri];
     if (prop && prop?.description.type !== propertyType) {
       throw Error(`Requested a ${propertyType} but got a ${prop.description.type}`);
     }
     return prop?.value;
   }) as T | undefined;
+
+  // Every time we want a property value we also want to make sure we get the
+  // updated value. Hence we subscribe
+  useEffect(() => {
+    dispatch(subscribeToProperty({ uri: uri }));
+    return () => {
+      dispatch(unsubscribeToProperty({ uri: uri }));
+    };
+  }, [dispatch, uri]);
+
+  // Set function to mimic useState
+  function setValue(value: T) {
+    dispatch(setPropertyValue({ uri: uri, value: value as PropertyValue }));
+  }
+
+  return [value, throttle(setValue, ThrottleMs)];
 }
 
 export const useGetBoolPropertyValue = (uri: string) =>
