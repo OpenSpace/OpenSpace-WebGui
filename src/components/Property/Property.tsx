@@ -5,7 +5,7 @@ import { useSubscribeToProperty } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
 
-import { ListProperty } from './/Types/ListProperty';
+import { ListProperty, NumericListProperty } from './/Types/ListProperty';
 import { BoolProperty } from './Types/BoolProperty';
 import { MatrixProperty } from './Types/MatrixProperty';
 import { NumericProperty } from './Types/NumericProperty';
@@ -26,8 +26,8 @@ const concreteProperties: { [key: string]: any } = {
   // TODO: The numerical lists have to be fixed, still. There is no DoubleListProperty
   // in use anywhere, and the only IntListProperty I could find did not work in the existing
   // UI
-  // DoubleListProperty: ListProperty,
-  // IntListProperty: ListProperty,
+  DoubleListProperty: NumericListProperty,
+  IntListProperty: NumericListProperty,
   StringListProperty: ListProperty,
 
   SelectionProperty,

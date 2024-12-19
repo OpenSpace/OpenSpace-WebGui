@@ -1,14 +1,24 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pill, PillsInput } from '@mantine/core';
 
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
+
+type ListValueType = string | number;
 
 interface Props {
   name: string;
   description: string;
   disabled: boolean;
-  setPropertyValue: (newValue: string[]) => void;
-  value: string[];
+  setPropertyValue: (newValue: ListValueType[]) => void;
+  value: ListValueType[];
+}
+
+interface ListPropertyProps extends Props {
+  isNumeric?: boolean; // TODO: add options for double VS integers
+}
+
+export function NumericListProperty(props: Props) {
+  return <ListProperty {...props} isNumeric />;
 }
 
 export function ListProperty({
@@ -16,8 +26,9 @@ export function ListProperty({
   description,
   disabled,
   setPropertyValue,
-  value
-}: Props) {
+  value,
+  isNumeric = false
+}: ListPropertyProps) {
   const [placeholderText, setPlaceholderText] = useState('');
 
   // The input string that the user is typing
@@ -35,16 +46,24 @@ export function ListProperty({
     setShownValues(value);
   }, [value]);
 
+  // This needs to be a memoized function because it is used in a useEffect
+  const createPlaceHolderText = useCallback(
+    (values: ListValueType[]) => {
+      if (isNumeric) {
+        return `number${values.length + 1}, number${values.length + 2}, ...`;
+      } else {
+        return `item${values.length + 1}, item${values.length + 2}, ...`;
+      }
+    },
+    [isNumeric]
+  );
+
   useEffect(() => {
     const inputIsFocused = inputFieldRef.current === document.activeElement;
     if (inputIsFocused) {
-      setPlaceholderText(placeholder(shownValues));
+      setPlaceholderText(createPlaceHolderText(shownValues));
     }
-  }, [shownValues]);
-
-  function placeholder(values: string[]) {
-    return `item${values.length + 1}, item${values.length + 2}, ...`;
-  }
+  }, [createPlaceHolderText, shownValues]);
 
   function onInputKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
@@ -54,7 +73,11 @@ export function ListProperty({
         .map((item) => item.trim())
         .filter((item) => item.length > 0);
 
-      const newValues = [...shownValues, ...splitInput];
+      const typedInput = isNumeric
+        ? splitInput.map((item) => parseFloat(item)).filter((item) => !isNaN(item))
+        : splitInput;
+
+      const newValues = [...shownValues, ...typedInput];
       setPropertyValue(newValues);
       setShownValues(newValues);
       stopEditing();
@@ -122,7 +145,7 @@ export function ListProperty({
           ref={inputFieldRef}
           placeholder={placeholderText}
           value={inputString}
-          onFocus={() => setPlaceholderText(placeholder(shownValues))}
+          onFocus={() => setPlaceholderText(createPlaceHolderText(shownValues))}
           onBlur={() => setPlaceholderText('')}
           onChange={(event) => setInputString(event.currentTarget.value)}
           onKeyUp={(event) => onInputKeyUp(event)}

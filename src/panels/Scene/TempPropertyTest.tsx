@@ -38,6 +38,9 @@ export function TempPropertyTest() {
       <Property
         uri={'Modules.Server.Interfaces.DefaultTcpSocketInterface.DenyAddresses'}
       />
+      <h2>Int / Double Lists:</h2>
+      <Text c={'dimmed'}>RenderEngine.ScreenshotWindowId (Int list)</Text>
+      <Property uri={'RenderEngine.ScreenshotWindowId'} />
       <h2 style={styleUnfinished}>Numeric Property - "Nice" value (Earth opacity):</h2>
       TODO: Come up with a nice version of the input, that also feels responsive....
       Testing:
