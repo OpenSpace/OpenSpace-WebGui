@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Pill, PillsInput } from '@mantine/core';
 
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
@@ -26,15 +26,20 @@ export function ListProperty({
   // The values to shown as a list of pills in the input
   const [shownValues, setShownValues] = useState(value);
 
-  const [isEditingExisting, setIsEditingExisting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [clickedItemIndex, setClickedItemIndex] = useState<number | undefined>(undefined);
+
+  const inputFieldRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setShownValues(value);
   }, [value]);
 
   useEffect(() => {
-    setPlaceholderText(placeholder(shownValues));
+    const inputIsFocused = inputFieldRef.current === document.activeElement;
+    if (inputIsFocused) {
+      setPlaceholderText(placeholder(shownValues));
+    }
   }, [shownValues]);
 
   function placeholder(values: string[]) {
@@ -42,10 +47,9 @@ export function ListProperty({
   }
 
   function onInputKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
-    const input = inputString.trim();
-
-    if (event.key === 'Enter' && input.length > 0) {
-      const splitInput = input
+    if (event.key === 'Enter') {
+      // Update values if enter is pressed
+      const splitInput = inputString
         .split(',')
         .map((item) => item.trim())
         .filter((item) => item.length > 0);
@@ -54,19 +58,27 @@ export function ListProperty({
       setPropertyValue(newValues);
       setShownValues(newValues);
       stopEditing();
-    } else if (!isEditingExisting && event.key === 'Backspace') {
-      setIsEditingExisting(true);
+      if (newValues.length === 0) {
+        event.currentTarget.blur();
+      }
+    } else if (!isEditing && event.key === 'Backspace') {
+      // Edit old values if backspace is pressed and we are not currently editing
+      setIsEditing(true);
       setInputString(value.join(', '));
       setShownValues([]);
     } else if (event.key === 'Escape') {
+      // Stop editing and reset the input string
       stopEditing();
       event.currentTarget.blur();
+    } else {
+      // If any other key is pressed, we are editing
+      setIsEditing(true);
     }
   }
 
   function stopEditing() {
     setInputString('');
-    setIsEditingExisting(false);
+    setIsEditing(false);
     setClickedItemIndex(undefined);
   }
 
@@ -97,7 +109,7 @@ export function ListProperty({
       <Pill.Group>
         {shownValues.map((v, i) => (
           <Pill
-            key={v}
+            key={`pill-${i}`}
             style={disabled ? {} : { cursor: 'pointer' }}
             withRemoveButton={clickedItemIndex === i}
             onRemove={() => deleteItem(i)}
@@ -107,6 +119,7 @@ export function ListProperty({
           </Pill>
         ))}
         <PillsInput.Field
+          ref={inputFieldRef}
           placeholder={placeholderText}
           value={inputString}
           onFocus={() => setPlaceholderText(placeholder(shownValues))}
