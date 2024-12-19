@@ -1,4 +1,6 @@
-import { ScrollArea } from '@mantine/core';
+import { useMemo } from 'react';
+
+import { VirtualList } from '../VirtualList/VirtualList';
 
 import { useFilterListProvider } from './hooks';
 
@@ -6,31 +8,36 @@ export const FilterListDataDisplayName = 'FilterListData';
 
 export interface FilterListDataProps<T> {
   data: T[];
-  renderElement: (data: T) => React.ReactNode;
+  renderElement: (data: T, i: number) => React.ReactNode;
   matcherFunc: (data: T, searchString: string) => boolean;
+  gap?: number; // Gap in pixels between items
+  overscan?: number; // How many items to preload when scrolling
 }
 
 export function FilterListData<T>({
   data,
   renderElement,
-  matcherFunc
+  matcherFunc,
+  gap,
+  overscan
 }: FilterListDataProps<T>) {
   const { searchString, showFavorites } = useFilterListProvider();
 
-  const filteredElements = data.filter((e) => matcherFunc(e, searchString));
+  // Memoizing this function so we don't need to recreate it when
+  // the renderElement function changes
+  const filteredElements = useMemo(
+    () => data.filter((e) => matcherFunc(e, searchString)),
+    [searchString, matcherFunc, data]
+  );
+
   return (
     !showFavorites && (
-      <ScrollArea.Autosize
-        scrollbars={'y'}
-        type={'always'}
-        offsetScrollbars
-        mah={'100%'}
-        mb={'var(--mantine-spacing-md)'}
-      >
-        {filteredElements.length > 0
-          ? filteredElements.map(renderElement)
-          : 'Nothing found. Try another search!'}
-      </ScrollArea.Autosize>
+      <VirtualList
+        data={filteredElements}
+        renderElement={renderElement}
+        gap={gap}
+        overscan={overscan}
+      />
     )
   );
 }
