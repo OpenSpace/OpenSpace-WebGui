@@ -1,12 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getVersion } from './versionMiddleware';
+import { OpenSpaceVersion } from '@/types/types';
 
-export interface OpenSpaceVersion {
-  latestOpenSpaceVersion?: { major: number; minor: number; patch: number };
-  openSpaceVersion?: { major: number; minor: number; patch: number };
-  socketApiVersion?: { major: number; minor: number; patch: number };
-}
+import { getVersion } from './versionMiddleware';
 
 const initialState: OpenSpaceVersion = {};
 

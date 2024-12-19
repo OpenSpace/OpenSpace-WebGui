@@ -19,6 +19,12 @@ export interface Keybind {
 
 export type ActionOrKeybind = Action | Keybind;
 
+export interface OpenSpaceVersion {
+  latestOpenSpaceVersion?: { major: number; minor: number; patch: number };
+  openSpaceVersion?: { major: number; minor: number; patch: number };
+  socketApiVersion?: { major: number; minor: number; patch: number };
+}
+
 // Incomplete type objects for the ArcGIS object we request for GeoLocationPanel
 // This was to avoid having to import the entire ArcGIS core since the @types file is
 // deprecated on npm.
