@@ -9,6 +9,7 @@ import { addPropertiesListener } from './propertytree/properties/propertiesMiddl
 import { addPropertyTreeListener } from './propertytree/propertyTreeMiddleware';
 import { addSessionRecordingListener } from './sessionrecording/sessionRecordingMiddleware';
 import { addTimeListener } from './time/timeMiddleware';
+import { addVersionListener } from './version/versionMiddleware';
 import type { AppDispatch, RootState } from './store';
 
 export const listenerMiddleware = createListenerMiddleware();
@@ -25,3 +26,4 @@ addPropertyTreeListener(startAppListening);
 addFlightControllerListener(startAppListening);
 addGroupsListener(startAppListening);
 addTimeListener(startAppListening);
+addVersionListener(startAppListening);

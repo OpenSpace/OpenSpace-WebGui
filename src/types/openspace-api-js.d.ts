@@ -449,7 +449,7 @@ export interface openspace {
   /**
    * Returns the value the property, identified by the provided URI. Deprecated in favor of the 'propertyValue' function
    */
-  propertyValue: () => Promise<void>
+  propertyValue: (uri: string) => Promise<unknown>
   /**
    * Loads the CSV file provided as a parameter and returns it as a vector containing the values of the each row. The inner vector has the same number of values as the CSV has columns. The second parameter controls whether the first entry in the returned outer vector is containing the names of the columns
    */
