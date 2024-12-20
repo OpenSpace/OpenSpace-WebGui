@@ -1,7 +1,6 @@
 import { Button, Group } from '@mantine/core';
 
-import { useOpenSpaceApi } from '@/api/hooks';
-import { useAppSelector } from '@/redux/hooks';
+import { useOpenSpaceApi, useSubscribeToTime } from '@/api/hooks';
 import { Phase } from '@/types/mission-types';
 
 import { jumpToTime } from './util';
@@ -11,7 +10,7 @@ interface MissionCaptureButtonsProps {
 }
 
 export function MissionCaptureButtons({ mission }: MissionCaptureButtonsProps) {
-  const now = useAppSelector((state) => state.time.timeCapped);
+  const now = useSubscribeToTime();
   const luaApi = useOpenSpaceApi();
 
   // Locate the next instrument activity capture

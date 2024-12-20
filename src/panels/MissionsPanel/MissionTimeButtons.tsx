@@ -1,7 +1,6 @@
 import { Button, Group } from '@mantine/core';
 
-import { useOpenSpaceApi } from '@/api/hooks';
-import { useAppSelector } from '@/redux/hooks';
+import { useOpenSpaceApi, useSubscribeToTime } from '@/api/hooks';
 import { DisplayType } from '@/types/enums';
 
 import { DisplayedPhase } from './MissionContent';
@@ -17,11 +16,7 @@ export function MissionTimeButtons({
   currentPhase
 }: MissionTimeButtonsProps) {
   const luaApi = useOpenSpaceApi();
-  // Since this is being used by the MissionPanel which already subscribes to time, we
-  // and this component re-renders every second due to parent being re-rendered,
-  // we don't need to do any subscription here- TODO: do we want to anyways? obs this will be
-  // one subscription for every button we have...
-  const now = useAppSelector((state) => state.time.timeCapped);
+  const now = useSubscribeToTime();
 
   const displayType = currentPhase.type;
 
