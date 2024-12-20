@@ -1,5 +1,7 @@
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
 import { Property, PropertyOwner } from '@/types/types';
+import { useEffect } from 'react';
 
 // Hook to make it easier to get the api
 export function useOpenSpaceApi() {
@@ -130,3 +132,15 @@ export const useGetIntListValue = (uri: string) =>
 
 export const useGetStringListValue = (uri: string) =>
   useGetPropertyValue<string[]>(uri, 'StringListProperty');
+
+export const useSubscribeToTime = () => {
+  const now = useAppSelector((state) => state.time.timeCapped);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(subscribeToTime());
+    return () => {
+      dispatch(unsubscribeToTime());
+    };
+  }, [dispatch]);
+  return now;
+};
