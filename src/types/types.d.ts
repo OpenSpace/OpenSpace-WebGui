@@ -19,10 +19,16 @@ export interface Keybind {
 
 export type ActionOrKeybind = Action | Keybind;
 
-export interface OpenSpaceVersion {
-  latestOpenSpaceVersion?: { major: number; minor: number; patch: number };
-  openSpaceVersion?: { major: number; minor: number; patch: number };
-  socketApiVersion?: { major: number; minor: number; patch: number };
+export interface OpenSpaceVersionNumber {
+  major: number;
+  minor: number;
+  patch: number;
+}
+
+export interface OpenSpaceVersionInfo {
+  latestOpenSpaceVersion?: OpenSpaceVersionNumber;
+  openSpaceVersion?: OpenSpaceVersionNumber;
+  socketApiVersion?: OpenSpaceVersionNumber;
 }
 
 // Incomplete type objects for the ArcGIS object we request for GeoLocationPanel

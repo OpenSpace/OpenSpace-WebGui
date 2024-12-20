@@ -1,4 +1,5 @@
 import { createTheme, MantineProvider } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 
 import { WindowLayout } from './windowmanagement/WindowLayout/WindowLayout';
 import { WindowLayoutProvider } from './windowmanagement/WindowLayout/WindowLayoutProvider';
@@ -13,9 +14,11 @@ const theme = createTheme({
 function App() {
   return (
     <MantineProvider theme={theme} defaultColorScheme={'dark'}>
-      <WindowLayoutProvider>
-        <WindowLayout />
-      </WindowLayoutProvider>
+      <ModalsProvider>
+        <WindowLayoutProvider>
+          <WindowLayout />
+        </WindowLayoutProvider>
+      </ModalsProvider>
     </MantineProvider>
   );
 }

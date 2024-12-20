@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { OpenSpaceVersion } from '@/types/types';
+import { OpenSpaceVersionInfo } from '@/types/types';
 
 import { getVersion } from './versionMiddleware';
 
-const initialState: OpenSpaceVersion = {};
+export type OpenSpaceVersionState = OpenSpaceVersionInfo;
+
+const initialState: OpenSpaceVersionInfo = {};
 
 export const versionSlice = createSlice({
   name: 'version',

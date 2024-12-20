@@ -1,4 +1,4 @@
-import { Button, Menu } from '@mantine/core';
+import { Button, Menu, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import {
@@ -17,6 +17,7 @@ import {
   OpenInBrowserIcon,
   RouteIcon
 } from '@/icons/icons';
+import { modals } from '@mantine/modals';
 
 export function HelpMenu() {
   const luaApi = useOpenSpaceApi();
@@ -31,7 +32,7 @@ export function HelpMenu() {
   }
 
   function openGuiInBrowser() {
-    const port = portProperty ?? 4670; // TODO: Change this to correct port when hosted
+    const port = portProperty ?? 4680;
     const address = addressProperty ?? 'localhost';
 
     const link = `http://${address}:${port}`;
@@ -39,7 +40,13 @@ export function HelpMenu() {
   }
 
   function toggleShutdown() {
-    luaApi?.toggleShutdown();
+    return modals.openConfirmModal({
+      title: 'Confirm action',
+      children: <Text>Are you sure you want to quit OpenSpace? </Text>,
+      labels: { confirm: 'Quit', cancel: 'Cancel' },
+      confirmProps: { color: 'red' },
+      onConfirm: () => luaApi?.toggleShutdown()
+    });
   }
 
   return (
