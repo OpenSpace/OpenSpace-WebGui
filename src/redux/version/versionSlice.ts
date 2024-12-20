@@ -1,12 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { OpenSpaceVersionInfo } from '@/types/types';
+import { SemanticVersion } from '@/types/types';
 
 import { getVersion } from './versionMiddleware';
 
-export type OpenSpaceVersionState = OpenSpaceVersionInfo;
+export interface OpenSpaceVersionInfoState {
+  latestOpenSpaceVersion?: SemanticVersion;
+  openSpaceVersion?: SemanticVersion;
+  socketApiVersion?: SemanticVersion;
+}
 
-const initialState: OpenSpaceVersionInfo = {};
+const initialState: OpenSpaceVersionInfoState = {};
 
 export const versionSlice = createSlice({
   name: 'version',

@@ -1,7 +1,7 @@
 import { Anchor, Grid, Image, Modal, Stack, Text, Title } from '@mantine/core';
 
 import { useAppSelector } from '@/redux/hooks';
-import { OpenSpaceVersionNumber } from '@/types/types';
+import { SemanticVersion } from '@/types/types';
 
 interface Props {
   opened: boolean;
@@ -16,7 +16,7 @@ export function About({ opened, close }: Props) {
       return 'Fetching OpenSpace version...';
     }
 
-    function formatVersion(version: OpenSpaceVersionNumber): string {
+    function formatVersion(version: SemanticVersion): string {
       return version.major !== 255 && version.minor !== 255 && version.patch !== 255
         ? `${version.major}.${version.minor}.${version.patch}`
         : 'Custom';
