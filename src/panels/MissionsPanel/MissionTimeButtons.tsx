@@ -1,10 +1,9 @@
 import { Button, Group } from '@mantine/core';
 
-import { useOpenSpaceApi, useSubscribeToTime } from '@/api/hooks';
 import { DisplayType } from '@/types/enums';
 
 import { DisplayedPhase } from './MissionContent';
-import { jumpToTime } from './util';
+import { useJumpToTime } from './hooks';
 
 interface MissionTimeButtonsProps {
   isMissionOverview?: boolean;
@@ -15,19 +14,18 @@ export function MissionTimeButtons({
   isMissionOverview,
   currentPhase
 }: MissionTimeButtonsProps) {
-  const luaApi = useOpenSpaceApi();
-  const now = useSubscribeToTime();
+  const jumpToTime = useJumpToTime();
 
   const displayType = currentPhase.type;
 
   function jumpToEndOfPhase() {
     if (currentPhase.type === DisplayType.Phase) {
-      jumpToTime(now, currentPhase.data.timerange.end, luaApi);
+      jumpToTime(currentPhase.data.timerange.end);
     }
   }
   function jumpToStartOfPhase() {
     if (currentPhase.type === DisplayType.Phase) {
-      jumpToTime(now, currentPhase.data.timerange.start, luaApi);
+      jumpToTime(currentPhase.data.timerange.start);
     }
   }
 
@@ -46,10 +44,7 @@ export function MissionTimeButtons({
       }
       case DisplayType.Milestone:
         return (
-          <Button
-            onClick={() => jumpToTime(now, currentPhase.data.date, luaApi)}
-            w={'100%'}
-          >
+          <Button onClick={() => jumpToTime(currentPhase.data.date)} w={'100%'}>
             Set Time
           </Button>
         );

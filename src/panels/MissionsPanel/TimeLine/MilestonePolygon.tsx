@@ -1,13 +1,11 @@
 import { Text, Tooltip } from '@mantine/core';
 import { ScaleTime } from 'd3';
 
-import { useOpenSpaceApi } from '@/api/hooks';
-import { useAppSelector } from '@/redux/hooks';
 import { DisplayType } from '@/types/enums';
 import { Milestone } from '@/types/mission-types';
 
 import { DisplayedPhase } from '../MissionContent';
-import { jumpToTime } from '../util';
+import { useJumpToTime } from '../hooks';
 
 interface Props {
   scale: number; // d3 scale 'k' value
@@ -26,8 +24,7 @@ export function MileStonePolygon({
   milestone,
   displayBorder
 }: Props) {
-  const now = useAppSelector((state) => state.time.timeCapped);
-  const luaApi = useOpenSpaceApi();
+  const jumpToTime = useJumpToTime();
 
   const time = new Date(milestone.date);
   const polygonSize = 12;
@@ -54,7 +51,7 @@ export function MileStonePolygon({
         onClick={(event) => {
           setDisplayedPhase({ type: DisplayType.Milestone, data: milestone });
           if (event.shiftKey) {
-            jumpToTime(now, milestone.date, luaApi);
+            jumpToTime(milestone.date);
           }
         }}
       />

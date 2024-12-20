@@ -253,7 +253,7 @@ export function TimeLine({
 
   return (
     <div style={{ flexGrow: 0 }}>
-      <Group gap={0} justify={'space-between'}>
+      <Group justify="flex-end">
         <ActionIcon onClick={() => zoomByButton(0.5)} aria-label={'Zoom in timeline'}>
           <ZoomOutIcon size={IconSize.sm} />
         </ActionIcon>

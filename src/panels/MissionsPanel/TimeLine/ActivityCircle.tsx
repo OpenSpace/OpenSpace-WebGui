@@ -1,10 +1,7 @@
 import { Tooltip } from '@mantine/core';
 import { ScaleTime } from 'd3';
 
-import { useOpenSpaceApi } from '@/api/hooks';
-import { useAppSelector } from '@/redux/hooks';
-
-import { jumpToTime } from '../util';
+import { useJumpToTime } from '../hooks';
 
 interface Props {
   capture: string;
@@ -13,8 +10,7 @@ interface Props {
   scale: number;
 }
 export function ActivityCircle({ capture, yScale, marginLeft, scale }: Props) {
-  const now = useAppSelector((state) => state.time.timeCapped);
-  const luaApi = useOpenSpaceApi();
+  const jumpToTime = useJumpToTime();
   const circleRadius = 3;
 
   return (
@@ -27,7 +23,7 @@ export function ActivityCircle({ capture, yScale, marginLeft, scale }: Props) {
         fill={'yellow'}
         onClick={(event) => {
           if (event.shiftKey) {
-            jumpToTime(now, capture, luaApi);
+            jumpToTime(capture);
           }
         }}
       />

@@ -1,13 +1,12 @@
 import { Text, Tooltip } from '@mantine/core';
 import { ScaleLinear, ScaleTime } from 'd3';
 
-import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { DisplayType } from '@/types/enums';
 import { Phase } from '@/types/mission-types';
 
 import { DisplayedPhase } from '../MissionContent';
-import { jumpToTime } from '../util';
+import { useJumpToTime } from '../hooks';
 
 interface Props {
   scale: number; // d3 scale 'k' value
@@ -32,8 +31,7 @@ export function PhaseRectangle({
   padding = 0,
   color
 }: Props) {
-  const luaApi = useOpenSpaceApi();
-
+  const jumpToTime = useJumpToTime();
   const startTime = new Date(phase.timerange.start);
   const endTime = new Date(phase.timerange.end);
 
@@ -69,7 +67,7 @@ export function PhaseRectangle({
         onClick={(event) => {
           setDisplayedPhase({ type: DisplayType.Phase, data: phase });
           if (event.shiftKey) {
-            jumpToTime(now, phase.timerange.start, luaApi);
+            jumpToTime(phase.timerange.start);
           }
         }}
         ry={radiusY}

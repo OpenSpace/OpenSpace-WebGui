@@ -1,9 +1,9 @@
 import { Button, Group } from '@mantine/core';
 
-import { useOpenSpaceApi, useSubscribeToTime } from '@/api/hooks';
+import { useSubscribeToTime } from '@/api/hooks';
 import { Phase } from '@/types/mission-types';
 
-import { jumpToTime } from './util';
+import { useJumpToTime } from './hooks';
 
 interface MissionCaptureButtonsProps {
   mission: Phase;
@@ -11,7 +11,7 @@ interface MissionCaptureButtonsProps {
 
 export function MissionCaptureButtons({ mission }: MissionCaptureButtonsProps) {
   const now = useSubscribeToTime();
-  const luaApi = useOpenSpaceApi();
+  const jumpToTime = useJumpToTime();
 
   // Locate the next instrument activity capture
   function getNextCapture() {
@@ -53,12 +53,10 @@ export function MissionCaptureButtons({ mission }: MissionCaptureButtonsProps) {
   return (
     <Group gap={'xs'} grow preventGrowOverflow={false} my={'xs'}>
       {nextCapture && (
-        <Button onClick={() => jumpToTime(now, nextCapture, luaApi)}>
-          Set Time to Next Capture
-        </Button>
+        <Button onClick={() => jumpToTime(nextCapture)}>Set Time to Next Capture</Button>
       )}
       {prevCapture && (
-        <Button onClick={() => jumpToTime(now, prevCapture, luaApi)}>
+        <Button onClick={() => jumpToTime(prevCapture)}>
           Set Time to Previous Capture
         </Button>
       )}
