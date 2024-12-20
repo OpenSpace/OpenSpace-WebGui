@@ -6,12 +6,13 @@ import { Property } from '@/components/Property/Property';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { GlobeLayersPropertyOwner } from '@/panels/Scene/GlobeLayers/GlobeLayersPropertyOwner';
 import { useAppSelector } from '@/redux/hooks';
+import { Uri } from '@/types/types';
 import { displayName, isGlobeLayersUri } from '@/util/propertyTreeHelpers';
 
 import { PropertyOwnerVisibilityCheckbox } from './VisiblityCheckbox';
 
 interface Props {
-  uri: string;
+  uri: Uri;
   hideSubOwners?: boolean;
   withHeader?: boolean;
   expandedOnDefault?: boolean;

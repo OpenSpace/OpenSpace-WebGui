@@ -3,13 +3,13 @@ import { ActionIcon, Button, Group, Menu, Stack } from '@mantine/core';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { VerticalDotsIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
-import { PropertyOwner, PropertyValue } from '@/types/types';
+import { Identifier, PropertyOwner, PropertyValue } from '@/types/types';
 
 interface FocusEntryProps {
   entry: PropertyOwner;
   activeNode: PropertyValue | undefined;
   onSelect: (
-    identifier: string,
+    identifier: Identifier,
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
   showNavigationButtons: boolean;

@@ -13,10 +13,11 @@ import { useGetPropertyOwner, useOpenSpaceApi } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { AddPhotoIcon, MinusIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
+import { Identifier, Uri } from '@/types/types';
 import { ScreenSpaceKey } from '@/util/keys';
 
 interface ScreenSpaceRenderable {
-  Identifier: string;
+  Identifier: Identifier;
   Name: string;
   Type: 'ScreenSpaceImageLocal' | 'ScreenSpaceImageOnline';
   TexturePath?: string;
@@ -55,7 +56,7 @@ export function ScreenSpaceRenderablePanel() {
     setSlideURL('');
   }
 
-  function removeSlide(uri: string) {
+  function removeSlide(uri: Uri) {
     const identifier = uri.split('.').pop();
 
     if (!identifier) {

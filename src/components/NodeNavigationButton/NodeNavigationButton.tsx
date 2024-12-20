@@ -10,11 +10,12 @@ import {
   LightningFlashIcon
 } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
+import { Identifier } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey, RetargetAnchorKey } from '@/util/keys';
 
 interface BaseProps {
   type: NavigationType;
-  identifier: string;
+  identifier: Identifier;
   showLabel?: boolean;
   onFinish?: () => void;
 }
