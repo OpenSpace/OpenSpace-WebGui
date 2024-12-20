@@ -1,14 +1,5 @@
 import { useMemo, useState } from 'react';
-import {
-  Button,
-  Container,
-  Flex,
-  Group,
-  Stack,
-  Switch,
-  Text,
-  Title
-} from '@mantine/core';
+import { Button, Container, Group, Switch, Text, Title } from '@mantine/core';
 
 import { DisplayType } from '@/types/enums';
 import { Milestone, Phase } from '@/types/mission-types';

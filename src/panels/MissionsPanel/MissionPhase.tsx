@@ -18,7 +18,7 @@ export function MissionPhase({
   missionOverview
 }: MissionPhaseProps) {
   function title() {
-    // Hide title if the overview is currently shown
+    // Hide title if the overview is currently shown (we don't want to show it twice)
     const hasType = displayedPhase.type;
     const hideTile = isMissionOverview || !hasType;
     return hideTile ? '' : `${displayedPhase.type}: ${displayedPhase.data.name}`;
