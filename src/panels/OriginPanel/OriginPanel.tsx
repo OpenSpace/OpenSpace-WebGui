@@ -8,7 +8,7 @@ import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { FlightControllerData } from '@/types/flightcontroller-types';
-import { PropertyOwner } from '@/types/types';
+import { Identifier, PropertyOwner, Uri } from '@/types/types';
 import {
   NavigationAimKey,
   NavigationAnchorKey,
@@ -40,7 +40,7 @@ export function OriginPanel() {
 
   const dispatch = useAppDispatch();
 
-  const uris: string[] = propertyOwners.Scene?.subowners ?? [];
+  const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
   const allNodes = uris
     .map((uri) => propertyOwners[uri])
     .filter((po) => po !== undefined);
@@ -106,7 +106,7 @@ export function OriginPanel() {
   }
 
   function onSelect(
-    identifier: string,
+    identifier: Identifier,
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
     const updateViewPayload: FlightControllerData = {
