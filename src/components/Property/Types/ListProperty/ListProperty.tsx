@@ -5,7 +5,7 @@ import { PropertyLabel } from '@/components/Property/PropertyLabel';
 
 type ListValueType = string | number;
 
-interface Props {
+export interface ListPropertyProps {
   name: string;
   description: string;
   disabled: boolean;
@@ -13,12 +13,8 @@ interface Props {
   value: ListValueType[];
 }
 
-interface ListPropertyProps extends Props {
-  isNumeric?: boolean; // TODO: add options for double VS integers
-}
-
-export function NumericListProperty(props: Props) {
-  return <ListProperty {...props} isNumeric />;
+interface Props extends ListPropertyProps {
+  valueType: 'string' | 'int' | 'float';
 }
 
 export function ListProperty({
@@ -27,8 +23,8 @@ export function ListProperty({
   disabled,
   setPropertyValue,
   value,
-  isNumeric = false
-}: ListPropertyProps) {
+  valueType = 'string'
+}: Props) {
   const [placeholderText, setPlaceholderText] = useState('');
 
   // The input string that the user is typing
@@ -49,13 +45,18 @@ export function ListProperty({
   // This needs to be a memoized function because it is used in a useEffect
   const createPlaceHolderText = useCallback(
     (values: ListValueType[]) => {
-      if (isNumeric) {
-        return `number${values.length + 1}, number${values.length + 2}, ...`;
-      } else {
-        return `item${values.length + 1}, item${values.length + 2}, ...`;
+      switch (valueType) {
+        case 'float':
+          return `number${values.length + 1}, number${values.length + 2}, ...`;
+        case 'int':
+          return `integer${values.length + 1}, integer${values.length + 2}, ...`;
+        case 'string':
+          return `item${values.length + 1}, item${values.length + 2}, ...`;
+        default:
+          throw new Error('Invalid value type');
       }
     },
-    [isNumeric]
+    [valueType]
   );
 
   useEffect(() => {
@@ -66,6 +67,9 @@ export function ListProperty({
   }, [createPlaceHolderText, shownValues]);
 
   function onInputKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
+    const shouldEditOnBackSpace =
+      (!isEditing || inputString.length === 0) && !(shownValues.length === 0);
+
     if (event.key === 'Enter') {
       // Update values if enter is pressed
       const splitInput = inputString
@@ -73,18 +77,25 @@ export function ListProperty({
         .map((item) => item.trim())
         .filter((item) => item.length > 0);
 
-      const typedInput = isNumeric
-        ? splitInput.map((item) => parseFloat(item)).filter((item) => !isNaN(item))
-        : splitInput;
+      let typedInput: ListValueType[] = splitInput;
+      if (valueType === 'float') {
+        typedInput = splitInput
+          .map((item) => parseFloat(item))
+          .filter((item) => !isNaN(item));
+      } else if (valueType === 'int') {
+        typedInput = splitInput
+          .map((item) => parseInt(item))
+          .filter((item) => !isNaN(item));
+      }
 
       const newValues = [...shownValues, ...typedInput];
-      setPropertyValue(newValues);
       setShownValues(newValues);
+      setPropertyValue(newValues);
       stopEditing();
       if (newValues.length === 0) {
         event.currentTarget.blur();
       }
-    } else if (!isEditing && event.key === 'Backspace') {
+    } else if (shouldEditOnBackSpace && event.key === 'Backspace') {
       // Edit old values if backspace is pressed and we are not currently editing
       setIsEditing(true);
       setInputString(value.join(', '));
