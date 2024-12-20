@@ -13,16 +13,16 @@ import { PropertyOwnerVisibilityCheckbox } from './VisiblityCheckbox';
 
 interface Props {
   uri: Uri;
+  expandedOnDefault?: boolean;
   hideSubOwners?: boolean;
   withHeader?: boolean;
-  expandedOnDefault?: boolean;
 }
 
 export function PropertyOwner({
   uri,
+  expandedOnDefault = false,
   hideSubOwners = false,
-  withHeader = true,
-  expandedOnDefault = false
+  withHeader = true
 }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
 

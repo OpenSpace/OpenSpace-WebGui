@@ -12,11 +12,11 @@ import { displayName } from '@/util/propertyTreeHelpers';
 
 interface Props {
   uri: Uri;
-  showDragHandle?: boolean;
   dragHandleProps?: DraggableProvidedDragHandleProps | null;
+  showDragHandle?: boolean;
 }
 
-export function GlobeLayer({ uri, showDragHandle, dragHandleProps }: Props) {
+export function GlobeLayer({ uri, dragHandleProps, showDragHandle }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
 
   if (!propertyOwner) {

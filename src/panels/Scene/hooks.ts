@@ -1,3 +1,4 @@
+import React from 'react';
 import { BoxData, PanelData, TabData } from 'rc-dock';
 
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
@@ -7,7 +8,7 @@ export const DefaultSgnWindowId = 'defaultSceneGraphNodeWindow';
 export function useOpenCurrentSceneNodeWindow() {
   const { ref, addWindow, closeWindow, createWindowTabData } = useWindowLayoutProvider();
 
-  function openCurrentNodeWindow(content: JSX.Element) {
+  function openCurrentNodeWindow(content: React.JSX.Element) {
     if (!ref || !('current' in ref) || ref.current === null) {
       throw new Error('WindowLayoutProvider ref is not set');
     }

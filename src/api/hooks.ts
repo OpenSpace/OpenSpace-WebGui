@@ -200,9 +200,7 @@ export const useSubscribeToProperty = (uri: Uri) => {
 
 /**
  * Find all the properties of a certain property owner that are visible, according to the
- * current visiblitity level setting. Also subscribe to changes for the visiblity
- * @param propertyOwner
- * @returns
+ * current visiblitity level setting. Also subscribe to changes for the visiblity level.
  */
 export const useGetVisibleProperties = (propertyOwner: PropertyOwner | undefined) => {
   const [visiblityLevelSetting] = useGetOptionPropertyValue(EnginePropertyVisibilityKey);

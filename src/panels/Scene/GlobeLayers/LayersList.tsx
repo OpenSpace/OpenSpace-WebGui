@@ -7,12 +7,12 @@ import { Identifier, Uri } from '@/types/types';
 import { GlobeLayer } from './GlobeLayer';
 
 interface Props {
-  layers: Uri[];
   globe: Identifier;
   layerGroup: Identifier;
+  layers: Uri[];
 }
 
-export function LayerList({ layers, globe, layerGroup }: Props) {
+export function LayerList({ globe, layerGroup, layers }: Props) {
   const [renderedLayersList, setRenderedLayersList] = useState(layers);
 
   const luaApi = useOpenSpaceApi();

@@ -7,9 +7,9 @@ import { GroupPrefixKey, isGroupNode } from './treeUtil';
 
 interface TreeSortingInfoEntry {
   type: 'propertyOwner' | 'group';
-  payload: string;
   name: string;
   guiOrder: number | undefined;
+  payload: string;
 }
 
 interface TreeSortingInfo {
@@ -27,17 +27,17 @@ export function createTreeSortingInformation(
         const groupPath = node.value.replace(GroupPrefixKey, '');
         result[node.value] = {
           type: 'group',
-          payload: groupPath,
           name: node.label as string,
-          guiOrder: undefined
+          guiOrder: undefined,
+          payload: groupPath
         };
       } else {
         // Property owner
         result[node.value] = {
           type: 'propertyOwner',
-          payload: node.value,
           name: node.label as string,
-          guiOrder: guiOrderingNumber(node.value, properties)
+          guiOrder: guiOrderingNumber(node.value, properties),
+          payload: node.value
         };
       }
 
