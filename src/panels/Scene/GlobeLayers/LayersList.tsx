@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
+import { DragDropContext, Draggable, Droppable, DropResult, Id } from '@hello-pangea/dnd';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { Identifier, Uri } from '@/types/types';
 
 import { GlobeLayer } from './GlobeLayer';
 
 interface Props {
-  layers: string[]; // List of URIs
-  globe: string;
-  layerGroup: string;
+  layers: Uri[];
+  globe: Identifier;
+  layerGroup: Identifier;
 }
 
 export function LayerList({ layers, globe, layerGroup }: Props) {
