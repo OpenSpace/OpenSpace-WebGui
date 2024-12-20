@@ -1,24 +1,24 @@
 import { forwardRef } from 'react';
 import { ScaleTime } from 'd3';
 
-import { useAppSelector } from '@/redux/hooks';
+import { useSubscribeToTime } from '@/api/hooks';
+
+import { TimeIndicatorConfig, TimeLineConfig } from './config';
 
 interface TimeIndicatorProps {
   yScale: ScaleTime<number, number, never>;
-  margin: { top: number; right: number; bottom: number; left: number };
   timelineWidth: number;
   scale: number;
 }
 
 export const TimeIndicator = forwardRef<SVGRectElement, TimeIndicatorProps>(
-  function TimeIndicator(
-    { yScale, margin, timelineWidth, scale }: TimeIndicatorProps,
-    ref
-  ) {
-    const now = useAppSelector((state) => state.time.timeCapped);
-    const lineHeight = 3;
+  function TimeIndicator({ yScale, timelineWidth, scale }: TimeIndicatorProps, ref) {
+    const now = useSubscribeToTime();
+    const { color, borderColor, borderWidth, lineWidth } = TimeIndicatorConfig;
+    const { margin } = TimeLineConfig;
+
     // Divide by scale to avoid the line being stretched when zooming
-    const lineHeightScaled = lineHeight / scale;
+    const lineHeightScaled = lineWidth / scale;
 
     if (!now) {
       return <></>;
@@ -33,9 +33,9 @@ export const TimeIndicator = forwardRef<SVGRectElement, TimeIndicatorProps>(
         y={yPosition}
         height={lineHeightScaled}
         width={timelineWidth - margin.left - margin.right}
-        fill={'white'}
-        stroke={'black'}
-        strokeWidth={0.5 / scale}
+        fill={color}
+        stroke={borderColor}
+        strokeWidth={borderWidth / scale}
       />
     );
   }

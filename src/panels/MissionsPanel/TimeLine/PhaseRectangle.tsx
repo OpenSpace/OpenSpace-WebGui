@@ -5,33 +5,35 @@ import { useAppSelector } from '@/redux/hooks';
 import { DisplayType } from '@/types/enums';
 import { Phase } from '@/types/mission-types';
 
-import { DisplayedPhase } from '../MissionContent';
 import { useJumpToTime } from '../hooks';
+import { DisplayedPhase } from '../MissionContent';
+
+import { PhaseRectangleConfig } from './config';
 
 interface Props {
   scale: number; // d3 scale 'k' value
   xScale: ScaleLinear<number, number, never>;
   yScale: ScaleTime<number, number, never>;
+  nestedLevel: number;
   nestedLevels: number;
   setDisplayedPhase: (phase: DisplayedPhase) => void;
   phase: Phase;
-  nestedLevel: number;
-  padding?: number;
-  color?: React.CSSProperties['color'];
+  showBorder?: boolean;
 }
 
 export function PhaseRectangle({
   scale,
   xScale,
   yScale,
+  nestedLevel,
   nestedLevels,
   setDisplayedPhase,
   phase,
-  nestedLevel,
-  padding = 0,
-  color
+  showBorder = false
 }: Props) {
   const jumpToTime = useJumpToTime();
+  const { borderWidth, borderColor, radius, gap } = PhaseRectangleConfig;
+
   const startTime = new Date(phase.timerange.start);
   const endTime = new Date(phase.timerange.end);
 
@@ -45,11 +47,22 @@ export function PhaseRectangle({
     return isBeforeEndTime && isAfterBeginning;
   });
 
-  // Radius for the rectangles that represent phases
-  const radiusPhase = 2;
+  function handleClick(shiftIsPressed: boolean) {
+    setDisplayedPhase({ type: DisplayType.Phase, data: phase });
+    if (shiftIsPressed) {
+      jumpToTime(phase.timerange.start);
+    }
+  }
+
   // Make sure padding doesn't get stretched when zooming
-  const paddingY = padding / scale;
-  const radiusY = radiusPhase / scale; // same here
+  const borderWidthY = borderWidth / scale;
+  const radiusY = radius / scale; // same here
+
+  const x = xScale(nestedLevels - nestedLevel - 1);
+  const y = yScale(endTime);
+  const height = yScale(startTime) - yScale(endTime);
+  const width = xScale(1) - xScale(0) - gap;
+
   return (
     <Tooltip.Floating
       label={
@@ -59,22 +72,30 @@ export function PhaseRectangle({
         </>
       }
     >
-      <rect
-        x={xScale(nestedLevels - nestedLevel - 1) - padding}
-        y={yScale(endTime) - paddingY}
-        height={yScale(startTime) - yScale(endTime) + 2 * paddingY}
-        width={xScale(1) - xScale(0) + 2 * padding}
-        onClick={(event) => {
-          setDisplayedPhase({ type: DisplayType.Phase, data: phase });
-          if (event.shiftKey) {
-            jumpToTime(phase.timerange.start);
-          }
-        }}
-        ry={radiusY}
-        rx={radiusPhase}
-        className={isCurrent ? 'highlightedRect' : 'normalRect'}
-        style={color ? { fill: color, opacity: 1.0 } : {}}
-      />
+      <g>
+        {/* To create a border we draw a larger rectangle behind the other */}
+        {showBorder && (
+          <rect
+            x={x - borderWidth}
+            y={y - borderWidthY}
+            height={height + 2 * borderWidthY}
+            width={width + 2 * borderWidth}
+            ry={radiusY}
+            rx={radius}
+            style={{ fill: borderColor }}
+          />
+        )}
+        <rect
+          x={x}
+          y={y}
+          height={height}
+          width={width}
+          onClick={(evt) => handleClick(evt.shiftKey)}
+          ry={radiusY}
+          rx={radius}
+          className={isCurrent ? 'highlightedRect' : 'normalRect'}
+        />
+      </g>
     </Tooltip.Floating>
   );
 }

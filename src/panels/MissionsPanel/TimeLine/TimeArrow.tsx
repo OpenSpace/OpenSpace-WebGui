@@ -1,3 +1,5 @@
+import { TimeArrowConfig } from './config';
+
 interface TimeArrowProps {
   timeIndicatorRef?: React.RefObject<SVGRectElement | null>;
   svgRef: React.RefObject<SVGSVGElement | null>;
@@ -26,9 +28,8 @@ export function TimeArrow({
   if (!isAtTop && !isAtBottom) {
     return <></>;
   }
+  const { width, yOffset, color } = TimeArrowConfig;
 
-  const width = 20;
-  const yOffset = 5;
   // Center on x across the rectangles
   const xPosition = (fullWidth - margin.left - margin.right) * 0.5 + margin.left;
   // Set arrow either at the top or bottom of the timeline
@@ -43,7 +44,7 @@ export function TimeArrow({
     <polygon
       points={`${-width * 0.5}, ${-width * 0.5}, 0, ${width * 0.5}, ${width * 0.5} ${-width * 0.5}, 0, ${-width * 0.2}`}
       transform={`translate(${xPosition}, ${yPosition})rotate(${rotation})`}
-      fill={'white'}
+      fill={color}
       onClick={onClick}
       className={'arrow'}
     />

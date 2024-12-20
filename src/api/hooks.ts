@@ -1,7 +1,8 @@
+import { useEffect } from 'react';
+
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
 import { Property, PropertyOwner } from '@/types/types';
-import { useEffect } from 'react';
 
 // Hook to make it easier to get the api
 export function useOpenSpaceApi() {

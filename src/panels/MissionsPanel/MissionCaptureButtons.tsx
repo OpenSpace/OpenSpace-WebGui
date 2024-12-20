@@ -52,13 +52,13 @@ export function MissionCaptureButtons({ mission }: MissionCaptureButtonsProps) {
 
   return (
     <Group gap={'xs'} grow preventGrowOverflow={false} my={'xs'}>
-      {nextCapture && (
-        <Button onClick={() => jumpToTime(nextCapture)}>Set Time to Next Capture</Button>
-      )}
       {prevCapture && (
         <Button onClick={() => jumpToTime(prevCapture)}>
           Set Time to Previous Capture
         </Button>
+      )}
+      {nextCapture && (
+        <Button onClick={() => jumpToTime(nextCapture)}>Set Time to Next Capture</Button>
       )}
     </Group>
   );

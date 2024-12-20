@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ActionIcon, Group } from '@mantine/core';
 import {
   axisLeft,
-  scaleLinear,
   scaleUtc,
   select,
   zoom,
@@ -11,16 +10,17 @@ import {
   zoomTransform
 } from 'd3';
 
+import { useSubscribeToTime } from '@/api/hooks';
 import { ZoomInIcon, ZoomOutIcon, ZoomOutMapIcon } from '@/icons/icons';
-import { useAppSelector } from '@/redux/hooks';
 import { DisplayType, IconSize } from '@/types/enums';
 import { Phase } from '@/types/mission-types';
 
 import { DisplayedPhase } from '../MissionContent';
 
 import { ActivityCircle } from './ActivityCircle';
+import { TimeLineConfig } from './config';
 import { MileStonePolygon } from './MilestonePolygon';
-import { PhaseRectangle } from './PhaseRectangle';
+import { Phases } from './Phases';
 import { TimeArrow } from './TimeArrow';
 import { TimeIndicator } from './TimeIndicator';
 
@@ -33,9 +33,6 @@ interface TimeLineProps {
   setDisplayedPhase: (phase: DisplayedPhase) => void;
 }
 
-// TODO: rewrite D3.js usage using this guide? Makes everything more React-esque
-// https://2019.wattenberger.com/blog/react-and-d3
-
 export function TimeLine({
   allPhasesNested,
   displayedPhase,
@@ -44,67 +41,54 @@ export function TimeLine({
 }: TimeLineProps) {
   const [scale, setScale] = useState(1);
   const [translation, setTranslation] = useState(0);
-  const now = useAppSelector((state) => state.time.timeCapped);
-
+  const now = useSubscribeToTime();
   // TODO anden88: no idea how to type the ref here properly without 1000 errors later
   // const xAxisRef = useRef<any>(null);
   const yAxisRef = useRef<any>(null);
   const svgRef = useRef<any>(null);
   const zoomRef = useRef<ZoomBehavior<SVGElement, unknown> | null>(null);
   const timeIndicatorRef = useRef<SVGRectElement | null>(null);
-  // Set the dimensions and margins of the graph
-  const margin = {
-    top: 10,
-    right: 2,
-    bottom: 10,
-    left: 60
-  };
-  const paddingGraph = {
-    top: 0,
-    inner: 5,
-    bottom: 1
-  };
+
+  const {
+    minLevelWidth,
+    margin,
+    maxWidth,
+    maxScale,
+    height,
+    paddingGraph,
+    transitionDuration
+  } = TimeLineConfig;
 
   // Depth of nesting for phases
   const nestedLevels = allPhasesNested.length;
-  // Minimum width of a phase
-  const minLevelWidth = 20;
+
   // Ensure graph is large enough to show all phases
   const minWidth = minLevelWidth * nestedLevels + margin.left + margin.right;
+
   // Height of graph
-  // TODO right now we don't have a way to get the size of the panel we're in so we can't
+  // TODO anden88: right now we don't have a way to get the size of the panel we're in so we can't
   // do any updates related to a panel resize and therefore use a fixed height.
   // When height changes of window, rescale y axis
-  //   const height = fullHeight - zoomButtonHeight;
-  const height = 550;
-  // Width of graph
-  const maxWidth = 90; // previously fullWidth
+  // const height = fullHeight - zoomButtonHeight;
+
   // Width of graph
   const width = Math.max(maxWidth, minWidth);
-  // Min and max scale
-  const scaleExtent: [number, number] = [1, 1000];
-  // Min and max translation
-  const translateExtent: [[number, number], [number, number]] = [
-    [0, 0],
-    [width, height - margin.bottom]
-  ];
-  // Given in milliseconds
-  const transitionDuration = 750;
 
   const clipPathTop = margin.top - paddingGraph.top;
   const clipPathBottom = height - margin.bottom + 2 * paddingGraph.bottom;
 
-  const timeRange = [
-    new Date(missionOverview.timerange.start),
-    new Date(missionOverview.timerange.end)
-  ];
-  const xScale = scaleLinear()
-    .range([margin.left, width - margin.right])
-    .domain([0, nestedLevels]);
-  const yScale = scaleUtc([height - margin.bottom, margin.top]).domain(timeRange);
+  // Calculate y axis
+  // Memoize this so we don't get effect triggers every render
+  const [yAxis, yScale] = useMemo(() => {
+    const timeRange = [
+      new Date(missionOverview.timerange.start),
+      new Date(missionOverview.timerange.end)
+    ];
+    const yScale = scaleUtc([height - margin.bottom, margin.top]).domain(timeRange);
 
-  // Calculate axes
-  const yAxis = axisLeft(yScale);
+    const yAxis = axisLeft(yScale);
+    return [yAxis, yScale];
+  }, [missionOverview, margin.bottom, margin.top, height]);
 
   // TODO: When we get the height from the panel we can update the timeline size as well.
   /*
@@ -117,17 +101,23 @@ export function TimeLine({
     select(yAxisRef.current).call(yAxis);
 }, [height]);
 */
-  // TODO: these use Effects should fill their dependency arrays but if we do it with eg
-  // yAxis its recomputed every time, so we need to do some memo? or somethign here
-  // On mount, style axes
+
   useEffect(() => {
     select(yAxisRef.current).call(yAxis);
     // TODO set font family? Previously was 'Segoe UI' font on ticks
     select(yAxisRef.current).selectAll('.tick text').style('font-size', '1.3em');
-  }, []);
+  }, [yAxis]);
 
-  // Add zoom and update it every the the y scale changes (TODO: panel resize)
+  // Add zoom and update it every the the y scale changes
+  // (TODO: panel resize)
   useEffect(() => {
+    // Min and max scale
+    const scaleExtent: [number, number] = [1, maxScale];
+    // Min and max translation
+    const translateExtent: [[number, number], [number, number]] = [
+      [0, 0],
+      [width, height - margin.bottom]
+    ];
     zoomRef.current = zoom<SVGElement, unknown>()
       .on('zoom', (event) => {
         // TODO: event is any here which is super annoying, try to find a way to get this
@@ -141,7 +131,7 @@ export function TimeLine({
       .extent(translateExtent)
       .translateExtent(translateExtent);
     select(svgRef.current).call(zoomRef.current);
-  }, [yScale]);
+  }, [yScale, yAxis, maxScale, margin.bottom, width, height]);
 
   function reset() {
     if (!zoomRef.current) {
@@ -182,65 +172,6 @@ export function TimeLine({
       .call(zoomRef.current.transform, transform);
   }
 
-  function createPhases(): React.JSX.Element {
-    let selectedPhase: Phase | undefined = undefined;
-    let selectedPhaseIndex: number = 0;
-    return (
-      <>
-        {allPhasesNested.map((nestedPhase, index) =>
-          nestedPhase.map((phase) => {
-            if (
-              displayedPhase.type === DisplayType.Phase &&
-              displayedPhase.data.name === phase.name
-            ) {
-              // We want to draw the selected phase last so it appears on top, save it
-              // for later
-              selectedPhase = phase;
-              selectedPhaseIndex = index;
-              return null;
-            }
-            return (
-              <PhaseRectangle
-                key={`${phase.name}-${phase.timerange.start}-${phase.timerange.end}`}
-                scale={scale}
-                xScale={xScale}
-                yScale={yScale}
-                nestedLevels={nestedLevels}
-                setDisplayedPhase={setDisplayedPhase}
-                phase={phase}
-                nestedLevel={index}
-              />
-            );
-          })
-        )}
-        {selectedPhase && (
-          <>
-            <PhaseRectangle
-              scale={scale}
-              xScale={xScale}
-              yScale={yScale}
-              nestedLevels={nestedLevels}
-              setDisplayedPhase={setDisplayedPhase}
-              phase={selectedPhase}
-              nestedLevel={selectedPhaseIndex}
-              padding={2}
-              color={'white'}
-            />
-            <PhaseRectangle
-              scale={scale}
-              xScale={xScale}
-              yScale={yScale}
-              nestedLevels={nestedLevels}
-              setDisplayedPhase={setDisplayedPhase}
-              phase={selectedPhase}
-              nestedLevel={selectedPhaseIndex}
-            />
-          </>
-        )}
-      </>
-    );
-  }
-
   function computeFadeMask() {
     // Adds fading to the top and/or bottom of the timeline if there is more to show.
     const topFade = translation < 0 ? '5%' : '0%';
@@ -253,7 +184,7 @@ export function TimeLine({
 
   return (
     <div style={{ flexGrow: 0 }}>
-      <Group justify="flex-end">
+      <Group justify={'flex-end'}>
         <ActionIcon onClick={() => zoomByButton(0.5)} aria-label={'Zoom in timeline'}>
           <ZoomOutIcon size={IconSize.sm} />
         </ActionIcon>
@@ -282,12 +213,18 @@ export function TimeLine({
           {/* This group transforms all the children correctly when we scale and zoom in
               the timeline */}
           <g transform={`translate(0, ${translation})scale(1, ${scale})`}>
-            {createPhases()}
-
+            <Phases
+              allPhasesNested={allPhasesNested}
+              displayedPhase={displayedPhase}
+              scale={scale}
+              yScale={yScale}
+              setDisplayedPhase={setDisplayedPhase}
+              nestedLevels={nestedLevels}
+              width={width}
+            />
             <TimeIndicator
               ref={timeIndicatorRef}
               yScale={yScale}
-              margin={margin}
               timelineWidth={width}
               scale={scale}
             />
