@@ -8,7 +8,6 @@ import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import { Identifier } from '@/types/types';
 import {
   HabitableZonePropertyKey,
@@ -33,9 +32,8 @@ export function ExoplanetsPanel() {
 
   const isDataInitialized = useAppSelector((state) => state.exoplanets.isInitialized);
   const allSystemNames = useAppSelector((state) => state.exoplanets.data);
-
-  const aim = useGetStringPropertyValue(NavigationAimKey);
-  const anchor = useGetStringPropertyValue(NavigationAnchorKey);
+  const [aim, setAim] = useGetStringPropertyValue(NavigationAimKey);
+  const [anchor, setAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
 
   const dispatch = useAppDispatch();
 
@@ -77,8 +75,8 @@ export function ExoplanetsPanel() {
     // removed... should be fixed, by setting the anchor/aim property correctly on the
     // OpenSpace side instead
     if (anchor === identifier || aim === identifier) {
-      dispatch(setPropertyValue({ uri: NavigationAnchorKey, value: 'Sun' }));
-      dispatch(setPropertyValue({ uri: NavigationAimKey, value: '' }));
+      setAnchor('Sun');
+      setAim('');
     }
     luaApi?.exoplanets.removeExoplanetSystem(starName);
     setLoadingRemoved([...loadingRemoved, starName]);
