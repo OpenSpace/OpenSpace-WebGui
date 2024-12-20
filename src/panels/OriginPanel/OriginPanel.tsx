@@ -129,13 +129,13 @@ export function OriginPanel() {
         break;
       case NavigationActionState.Anchor:
         if (!aim) {
-          updateViewPayload.aim = anchor ? anchor : '';
+          updateViewPayload.aim = anchor ?? '';
         }
         updateViewPayload.anchor = identifier;
         break;
       case NavigationActionState.Aim:
         updateViewPayload.aim = identifier;
-        updateViewPayload.anchor = anchor ? anchor : '';
+        updateViewPayload.anchor = anchor ?? '';
         break;
       default:
         throw new Error(`Missing NavigationActionState case for: '${navigationAction}'`);
