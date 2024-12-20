@@ -1,8 +1,7 @@
 import { memo } from 'react';
 import { Box } from '@mantine/core';
 
-import { useSubscribeToProperty } from '@/api/hooks';
-import { useAppSelector } from '@/redux/hooks';
+import { useGetProperty, useSubscribeToProperty } from '@/api/hooks';
 import { Uri } from '@/types/types';
 
 import { BoolProperty } from './Types/BoolProperty';
@@ -69,24 +68,20 @@ interface Props {
 }
 
 export const Property = memo(({ uri }: Props) => {
-  const description = useAppSelector(
-    (state) => state.properties.properties[uri]?.description
-  );
-
-  const value = useAppSelector((state) => state.properties.properties[uri]?.value);
-
+  const property = useGetProperty(uri);
   const setPropertyValue = useSubscribeToProperty(uri);
 
+  const description = property?.description;
+  const value = property?.value;
+
   if (!description || value === undefined) {
-    return null;
+    return <></>;
   }
 
   const ConcreteProperty = concreteProperties[description.type];
 
   if (!ConcreteProperty) {
-    // TODO: Bring back once all types are implemented
-    // console.error('Missing property type', property.description.type);
-    return null;
+    throw Error(`Missing property type: '${property.description.type}'`);
   }
 
   // console.log(property);
