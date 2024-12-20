@@ -1,14 +1,21 @@
 import { useMemo, useState } from 'react';
-import { Button, Container, Flex, Group, Image, Text, Title } from '@mantine/core';
+import {
+  Button,
+  Container,
+  Flex,
+  Group,
+  Stack,
+  Switch,
+  Text,
+  Title
+} from '@mantine/core';
 
-import { ActionsButton } from '@/panels/ActionsPanel/ActionsButton';
 import { DisplayType } from '@/types/enums';
 import { Milestone, Phase } from '@/types/mission-types';
 
 import { TimeLine } from './TimeLine/TimeLine';
-import { MissionCaptureButtons } from './MissionCaptureButtons';
-import { MissionTimeButtons } from './MissionTimeButtons';
 import { useSubscribeToTime } from '@/api/hooks';
+import { MissionPhase } from './MissionPhase';
 
 // TODO anden88: for some reason if this was exported from @types file intelisense showed
 // displayedPhase variable as any, aka no type completion :/
@@ -59,28 +66,6 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
     setPhaseToCurrent();
   }
 
-  function title() {
-    // Hide title if the overview is currently shown
-    const isShowingOverview = displayedPhase.data?.name === missionOverview.name;
-    const hasType = displayedPhase.type;
-    const hideTile = isShowingOverview || !hasType;
-    return hideTile ? '' : `${displayedPhase.type}: ${displayedPhase.data.name}`;
-  }
-
-  function timeString() {
-    switch (displayedPhase.type) {
-      case DisplayType.Phase: {
-        const start = new Date(displayedPhase.data.timerange.start).toDateString();
-        const end = new Date(displayedPhase.data.timerange.end).toDateString();
-        return `${start} - ${end}`;
-      }
-      case DisplayType.Milestone:
-        return new Date(displayedPhase.data.date).toDateString();
-      default:
-        return '';
-    }
-  }
-
   function setPhaseManually(phase: DisplayedPhase) {
     setDisplayedPhase(phase);
     setDisplayCurrentPhase(false);
@@ -121,57 +106,29 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
           setDisplayedPhase={setPhaseManually}
         />
         <div style={{ maxWidth: 'none' }}>
-          <Group grow gap={'xs'}>
+          <Group justify="space-between" mb={'md'}>
             <Button
               onClick={() =>
                 setPhaseManually({ type: DisplayType.Phase, data: missionOverview })
               }
+              variant="outline"
+              size="lg"
             >
-              Overview
+              <Title>{missionOverview.name}</Title>
             </Button>
-            <Button
-              onClick={() => setDisplayCurrentPhase((prevState) => !prevState)}
-              variant={displayCurrentPhase ? 'filled' : 'light'}
-            >
-              Current Phase
-            </Button>
-          </Group>
-          {displayedPhase.data ? (
-            <>
-              <Title order={4}>{title()}</Title>
-              <Text c={'dimmed'}>{timeString()}</Text>
-              <Text my={'xs'}>{displayedPhase.data.description}</Text>
-              {displayedPhase.data.link && (
-                <Button component={'a'} href={displayedPhase.data.link} target={'_blank'}>
-                  Read more
-                </Button>
-              )}
-              {displayedPhase.data.image && (
-                <Image
-                  my={'xs'}
-                  maw={window.innerWidth * 0.25}
-                  src={displayedPhase.data.image}
-                  alt={'Image text not available'}
-                />
-              )}
-              <MissionTimeButtons
-                currentPhase={displayedPhase}
-                isMissionOverview={displayedPhase.data === missionOverview}
+            <Group>
+              <Switch
+                checked={displayCurrentPhase}
+                onClick={() => setDisplayCurrentPhase((prevState) => !prevState)}
               />
-              <MissionCaptureButtons mission={missionOverview} />{' '}
-              <Flex wrap={'wrap'} gap={'xs'} my={'xs'}>
-                {displayedPhase.data.name !== missionOverview.name &&
-                  displayedPhase.data?.actions?.map((uri) => (
-                    <ActionsButton key={uri} uri={uri} />
-                  ))}
-                {missionOverview?.actions?.map((uri) => (
-                  <ActionsButton key={uri} uri={uri} />
-                ))}
-              </Flex>
-            </>
-          ) : (
-            <Text> No data for this time range </Text>
-          )}
+              <Text>Show current phase</Text>
+            </Group>
+          </Group>
+          <MissionPhase
+            displayedPhase={displayedPhase}
+            isMissionOverview={displayedPhase.data?.name === missionOverview.name}
+            missionOverview={missionOverview}
+          />
         </div>
       </Group>
     </Container>
