@@ -97,40 +97,38 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
   }
 
   return (
-    <Container my={'xs'}>
-      <Group grow wrap={'nowrap'} align={'start'}>
-        <TimeLine
-          allPhasesNested={allPhasesNested}
-          displayedPhase={displayedPhase}
-          missionOverview={missionOverview}
-          setDisplayedPhase={setPhaseManually}
-        />
-        <div style={{ maxWidth: 'none' }}>
-          <Group justify="space-between" mb={'md'}>
-            <Button
-              onClick={() =>
-                setPhaseManually({ type: DisplayType.Phase, data: missionOverview })
-              }
-              variant="outline"
-              size="lg"
-            >
-              <Title>{missionOverview.name}</Title>
-            </Button>
-            <Group>
-              <Switch
-                checked={displayCurrentPhase}
-                onClick={() => setDisplayCurrentPhase((prevState) => !prevState)}
-              />
-              <Text>Show current phase</Text>
-            </Group>
+    <Group grow wrap={'nowrap'} align={'start'} my={'xs'}>
+      <TimeLine
+        allPhasesNested={allPhasesNested}
+        displayedPhase={displayedPhase}
+        missionOverview={missionOverview}
+        setDisplayedPhase={setPhaseManually}
+      />
+      <Container>
+        <Group justify="space-between" mb={'md'}>
+          <Button
+            onClick={() =>
+              setPhaseManually({ type: DisplayType.Phase, data: missionOverview })
+            }
+            variant="outline"
+            size="lg"
+          >
+            <Title>{missionOverview.name}</Title>
+          </Button>
+          <Group>
+            <Switch
+              checked={displayCurrentPhase}
+              onClick={() => setDisplayCurrentPhase((prevState) => !prevState)}
+            />
+            <Text>Show current phase</Text>
           </Group>
-          <MissionPhase
-            displayedPhase={displayedPhase}
-            isMissionOverview={displayedPhase.data?.name === missionOverview.name}
-            missionOverview={missionOverview}
-          />
-        </div>
-      </Group>
-    </Container>
+        </Group>
+        <MissionPhase
+          displayedPhase={displayedPhase}
+          isMissionOverview={displayedPhase.data?.name === missionOverview.name}
+          missionOverview={missionOverview}
+        />
+      </Container>
+    </Group>
   );
 }
