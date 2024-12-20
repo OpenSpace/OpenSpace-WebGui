@@ -47,12 +47,14 @@ export function FocusEntry({
             <NodeNavigationButton
               type={NavigationType.frame}
               identifier={entry.identifier}
+              size={'lg'}
             />
           )}
           <NodeNavigationButton
             type={NavigationType.fly}
             identifier={entry.identifier}
             variant={buttonVariant}
+            size={'lg'}
           />
 
           <Menu position={'right-start'}>
