@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { DragDropContext, Draggable, Droppable, DropResult, Id } from '@hello-pangea/dnd';
+import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
+import { Box, Group, ThemeIcon } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { DragHandleIcon } from '@/icons/icons';
 import { Identifier, Uri } from '@/types/types';
 
 import { GlobeLayer } from './GlobeLayer';
@@ -48,13 +50,14 @@ export function LayerList({ globe, layerGroup, layers }: Props) {
             {renderedLayersList.map((layerUri, index) => (
               <Draggable key={layerUri} draggableId={layerUri} index={index}>
                 {(item) => (
-                  <div ref={item.innerRef} {...item.draggableProps}>
-                    <GlobeLayer
-                      uri={layerUri}
-                      showDragHandle={renderedLayersList.length > 1}
-                      dragHandleProps={item.dragHandleProps}
-                    />
-                  </div>
+                  <Group ref={item.innerRef} gap={'xs'} {...item.draggableProps}>
+                    <Box flex={1}>
+                      <GlobeLayer uri={layerUri} />
+                    </Box>
+                    <ThemeIcon variant={'default'} {...item.dragHandleProps}>
+                      <DragHandleIcon />
+                    </ThemeIcon>
+                  </Group>
                 )}
               </Draggable>
             ))}

@@ -1,22 +1,18 @@
-import { DraggableProvidedDragHandleProps } from '@hello-pangea/dnd';
-import { Group, Paper, Text, ThemeIcon } from '@mantine/core';
+import { Group, Paper, Text } from '@mantine/core';
 
 import { useGetBoolPropertyValue, useGetPropertyOwner } from '@/api/hooks';
 import { CollapsableContent } from '@/components/Collapse/CollapsableContent/CollapsableContent';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
-import { DragHandleIcon } from '@/icons/icons';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
 
 interface Props {
   uri: Uri;
-  dragHandleProps?: DraggableProvidedDragHandleProps | null;
-  showDragHandle?: boolean;
 }
 
-export function GlobeLayer({ uri, dragHandleProps, showDragHandle }: Props) {
+export function GlobeLayer({ uri }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
 
   if (!propertyOwner) {
@@ -36,11 +32,6 @@ export function GlobeLayer({ uri, dragHandleProps, showDragHandle }: Props) {
       rightSection={
         <Group wrap={'nowrap'}>
           <Tooltip text={propertyOwner.description || 'No information'} />
-          {showDragHandle && dragHandleProps && (
-            <ThemeIcon variant={'default'} {...dragHandleProps}>
-              <DragHandleIcon />
-            </ThemeIcon>
-          )}
         </Group>
       }
       noTransition
