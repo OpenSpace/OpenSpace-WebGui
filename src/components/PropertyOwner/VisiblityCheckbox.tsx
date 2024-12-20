@@ -4,8 +4,7 @@ import { Checkbox } from '@mantine/core';
 import {
   useGetBoolPropertyValue,
   useGetFloatPropertyValue,
-  useOpenSpaceApi,
-  useSubscribeToProperty
+  useOpenSpaceApi
 } from '@/api/hooks';
 import { checkVisiblity } from '@/util/propertyTreeHelpers';
 
@@ -18,12 +17,9 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
 
   const enabledUri = `${uri}.Enabled`;
   const fadeUri = `${uri}.Fade`;
-  const enabledPropertyValue = useGetBoolPropertyValue(enabledUri);
-  const fadePropertyValue = useGetFloatPropertyValue(fadeUri);
+  const [enabledPropertyValue, setEnabledProperty] = useGetBoolPropertyValue(enabledUri);
+  const [fadePropertyValue] = useGetFloatPropertyValue(fadeUri);
   const isFadeable = fadePropertyValue !== undefined;
-
-  const setEnabledProperty = useSubscribeToProperty(enabledUri);
-  useSubscribeToProperty(fadeUri);
 
   const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
   const [checked, setChecked] = useState(isVisible);

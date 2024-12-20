@@ -24,8 +24,8 @@ export function FeaturedSceneTree({ filter }: Props) {
   // is rerendered as soon as a property changes...
   const properties = useAppSelector((state) => state.properties.properties);
 
-  const anchor = useGetStringPropertyValue(NavigationAnchorKey);
-  const aim = useGetStringPropertyValue(NavigationAimKey);
+  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
+  const [aim] = useGetStringPropertyValue(NavigationAimKey);
 
   const featuredTreeData: TreeNodeData[] = [];
 

@@ -23,14 +23,14 @@ interface Props {
 export function SceneGraphNodeMetaInfo({ uri }: Props) {
   const identifier = identifierFromUri(uri);
 
-  let description = useGetStringPropertyValue(`${uri}.GuiDescription`);
+  let [description] = useGetStringPropertyValue(`${uri}.GuiDescription`);
   if (description) {
     description.replace(/\\n/g, '').replace(/<br>/g, '');
   } else {
     description = 'No description found';
   }
 
-  const guiPath = useGetStringPropertyValue(`${uri}.GuiPath`);
+  const [guiPath] = useGetStringPropertyValue(`${uri}.GuiPath`);
 
   const documentation = useAppSelector((state) => {
     if (identifier) {

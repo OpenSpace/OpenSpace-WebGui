@@ -7,7 +7,6 @@ import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { DragHandleIcon } from '@/icons/icons';
-import { subscribeToProperty } from '@/redux/propertytree/properties/propertiesMiddleware';
 import { displayName } from '@/util/propertyTreeHelpers';
 
 interface Props {
@@ -23,8 +22,7 @@ export function GlobeLayer({ uri, showDragHandle, dragHandleProps }: Props) {
     throw Error(`No property owner found for uri: ${uri}`);
   }
 
-  const isEnabled = useGetBoolPropertyValue(`${uri}.Enabled`);
-  subscribeToProperty({ uri: `${uri}.Enabled` });
+  const [isEnabled] = useGetBoolPropertyValue(`${uri}.Enabled`);
 
   // @TODO (emmbr, 2024-12-06): We want to avoid hardcoded colors, but since changing the
   // color of the text is a feature we wanted to keep I decided to do it this way for now.
