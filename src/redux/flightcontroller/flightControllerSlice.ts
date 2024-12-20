@@ -1,43 +1,31 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface FlightControlState {
-  settings: {
-    isEnabled: boolean;
-    inputScaleFactor: number;
-  };
+  isEnabled: boolean;
+  inputScaleFactor: number;
 }
 
 const initialState: FlightControlState = {
-  settings: {
-    isEnabled: false,
-    inputScaleFactor: 0.55
-  }
+  isEnabled: false,
+  inputScaleFactor: 0.55
 };
 
 export const flightControllerSlice = createSlice({
   name: 'flightController',
   initialState,
   reducers: {
-    setSettings: (
-      state,
-      action: PayloadAction<{
-        isEnabled?: boolean;
-        inputscaleFactor?: number;
-      }>
-    ) => {
-      const { isEnabled, inputscaleFactor } = action.payload;
-      if (isEnabled !== undefined) {
-        state.settings.isEnabled = isEnabled;
-      }
-      if (inputscaleFactor !== undefined) {
-        state.settings.inputScaleFactor = inputscaleFactor;
-      }
-
+    setFlightControllerEnabled: (state, action: PayloadAction<boolean>) => {
+      state.isEnabled = action.payload;
+      return state;
+    },
+    setFlightControllerInputScaleFactor: (state, action: PayloadAction<number>) => {
+      state.inputScaleFactor = action.payload;
       return state;
     }
   }
 });
 
-export const { setSettings } = flightControllerSlice.actions;
+export const { setFlightControllerEnabled, setFlightControllerInputScaleFactor } =
+  flightControllerSlice.actions;
 
 export const flightControllerReducer = flightControllerSlice.reducer;

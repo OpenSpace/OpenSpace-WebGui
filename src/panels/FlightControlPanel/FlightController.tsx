@@ -4,11 +4,9 @@ import { FlightControllerInputStateCommand } from '@/types/flightcontroller-type
 
 export function FlightController() {
   const dispatch = useAppDispatch();
-  const isControllerEnabled = useAppSelector(
-    (state) => state.flightController.settings.isEnabled
-  );
+  const isControllerEnabled = useAppSelector((state) => state.flightController.isEnabled);
   const inputScaleFactor = useAppSelector(
-    (state) => state.flightController.settings.inputScaleFactor
+    (state) => state.flightController.inputScaleFactor
   );
 
   const inputSensitivity = 1500;
@@ -130,7 +128,11 @@ export function FlightController() {
     <>
       {isControllerEnabled && (
         <div
-          style={{ height: '100%', width: '100%' }}
+          style={{
+            height: '100%',
+            width: '100%',
+            border: '3px solid var(--mantine-primary-color-filled)'
+          }}
           onPointerDown={mouseDown}
           onPointerUp={mouseUp}
           onPointerCancel={mouseUp}

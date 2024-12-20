@@ -1,78 +1,75 @@
 import { useEffect } from 'react';
-import { Chip, Container, Group, List, Slider, Switch, Text, Title } from '@mantine/core';
-
-import { useGetBoolPropertyValue, useOpenSpaceApi } from '@/api/hooks';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
-import { setSettings } from '@/redux/flightcontroller/flightControllerSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
-  subscribeToProperty,
-  unsubscribeToProperty
-} from '@/redux/propertytree/properties/propertiesMiddleware';
+  Chip,
+  Container,
+  Group,
+  List,
+  Slider,
+  Space,
+  Switch,
+  Text,
+  Title
+} from '@mantine/core';
+
+import { useGetBoolPropertyValue } from '@/api/hooks';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
+import {
+  setFlightControllerEnabled,
+  setFlightControllerInputScaleFactor
+} from '@/redux/flightcontroller/flightControllerSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { RollFrictionKey, RotationalFrictionKey, ZoomFrictionKey } from '@/util/keys';
 
 export function FlightControlPanel() {
-  const luaApi = useOpenSpaceApi();
   const dispatch = useAppDispatch();
 
-  const isControllerEnabled = useAppSelector(
-    (state) => state.flightController.settings.isEnabled
-  );
+  const isControllerEnabled = useAppSelector((state) => state.flightController.isEnabled);
   const mouseScaleFactor = useAppSelector(
-    (state) => state.flightController.settings.inputScaleFactor
+    (state) => state.flightController.inputScaleFactor
   );
 
-  const rotationFriction = useGetBoolPropertyValue(RotationalFrictionKey) ?? false;
-  const zoomFriction = useGetBoolPropertyValue(ZoomFrictionKey) ?? false;
-  const rollFriction = useGetBoolPropertyValue(RollFrictionKey) ?? false;
+  const [rotationFrictionProperty, setRotationFrictionProperty] =
+    useGetBoolPropertyValue(RotationalFrictionKey) ?? false;
+
+  const [zoomFrictionProperty, setZoomFrictionProperty] =
+    useGetBoolPropertyValue(ZoomFrictionKey) ?? false;
+
+  const [rollFrictionProperty, setRollFrictionProperty] =
+    useGetBoolPropertyValue(RollFrictionKey) ?? false;
 
   useEffect(() => {
-    function subscribeTo(uri: string) {
-      dispatch(subscribeToProperty({ uri }));
-    }
-    function unsubscribeTo(uri: string) {
-      dispatch(unsubscribeToProperty({ uri }));
-    }
-
-    subscribeTo(RotationalFrictionKey);
-    subscribeTo(ZoomFrictionKey);
-    subscribeTo(RollFrictionKey);
-
     return () => {
-      unsubscribeTo(RotationalFrictionKey);
-      unsubscribeTo(ZoomFrictionKey);
-      unsubscribeTo(RollFrictionKey);
-      dispatch(setSettings({ isEnabled: false }));
+      dispatch(setFlightControllerEnabled(false));
     };
   }, [dispatch]);
 
-  function toggleEnable() {
-    dispatch(setSettings({ isEnabled: !isControllerEnabled }));
+  function toggleEnabled() {
+    dispatch(setFlightControllerEnabled(!isControllerEnabled));
   }
 
   function toggleRotation() {
-    luaApi?.setPropertyValueSingle(RotationalFrictionKey, !rotationFriction);
+    setRotationFrictionProperty(!rotationFrictionProperty);
   }
 
   function toggleZoom() {
-    luaApi?.setPropertyValueSingle(ZoomFrictionKey, !zoomFriction);
+    setZoomFrictionProperty(!zoomFrictionProperty);
   }
 
   function toggleRoll() {
-    luaApi?.setPropertyValueSingle(RollFrictionKey, !rollFriction);
+    setRollFrictionProperty(!rollFrictionProperty);
   }
 
   const tooltipContent = (
     <Container>
-      <Text>Interact with the area to control the camera.</Text>
-      <br />
+      <Text>Interact with the highlighted area to control the camera.</Text>
+      <Space h={'xs'} />
       <Text fw={'bold'}>Mouse controls:</Text>
       <Text>Click and drag to rotate. Hold</Text>
       <List>
-        <List.Item>Shift to zoom (y-axis) or roll (x-axis) </List.Item>
-        <List.Item>Ctrl to pan </List.Item>
+        <List.Item>Shift to zoom (y-axis) or roll (x-axis)</List.Item>
+        <List.Item>Ctrl to pan</List.Item>
       </List>
-      <br />
+      <Space h={'xs'} />
       <Text fw={'bold'}>Touch controls:</Text>
       <List>
         <List.Item>1 finger to rotate</List.Item>
@@ -84,19 +81,19 @@ export function FlightControlPanel() {
 
   return (
     <Container>
-      <Title order={4}>Flight Control Settings</Title>
-      <Group justify={'space-between'}>
+      <Title order={2}>Flight Control</Title>
+      <Group justify={'space-between'} my={'xs'} wrap={'nowrap'} align={'start'}>
         <Switch
           label={'Toggle flight control'}
           defaultChecked={isControllerEnabled}
           checked={isControllerEnabled}
-          onChange={toggleEnable}
-          my={'xs'}
+          onChange={toggleEnabled}
         />
         <Tooltip text={tooltipContent} />
       </Group>
+      <Title order={3}>Settings</Title>
       <Text>Friction control</Text>
-      <Group gap={2} preventGrowOverflow={false} grow mb={'xs'}>
+      <Group gap={2} preventGrowOverflow={false} mb={'xs'}>
         <Chip onClick={toggleRotation} disabled={!isControllerEnabled}>
           Rotation
         </Chip>
@@ -107,9 +104,9 @@ export function FlightControlPanel() {
           Roll
         </Chip>
       </Group>
-      <Group justify={'space-between'} align={'center'}>
+      <Group justify={'space-between'} align={'start'} wrap={'nowrap'}>
         <Text>Input sensitivity</Text>
-        <Tooltip text={'Controls how sensitive the touch and mouse inputs are.'} />
+        <Tooltip text={'Controls how sensitive the touch and mouse inputs are'} />
       </Group>
       <Slider
         min={0.1}
@@ -119,7 +116,7 @@ export function FlightControlPanel() {
         disabled={!isControllerEnabled}
         marks={[
           {
-            value: 0,
+            value: 0.1,
             label: 0.1
           },
           {
@@ -131,9 +128,7 @@ export function FlightControlPanel() {
           }
         ]}
         onChange={(value) => {
-          if (typeof value === 'number') {
-            dispatch(setSettings({ inputscaleFactor: value }));
-          }
+          dispatch(setFlightControllerInputScaleFactor(value));
         }}
       ></Slider>
     </Container>
