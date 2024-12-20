@@ -3,13 +3,14 @@ import { Group, Paper, Space } from '@mantine/core';
 import { useGetPropertyOwner } from '@/api/hooks';
 import { CollapsableContent } from '@/components/Collapse/CollapsableContent/CollapsableContent';
 import { Property } from '@/components/Property/Property';
+import { Identifier, Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
 
 import { LayerList } from './LayersList';
 
 interface Props {
-  uri: string;
-  globe: string;
+  uri: Uri;
+  globe: Identifier;
   icon?: React.ReactNode;
 }
 

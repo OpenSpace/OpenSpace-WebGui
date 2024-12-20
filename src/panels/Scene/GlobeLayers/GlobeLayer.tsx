@@ -7,10 +7,11 @@ import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { DragHandleIcon } from '@/icons/icons';
+import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
 
 interface Props {
-  uri: string;
+  uri: Uri;
   showDragHandle?: boolean;
   dragHandleProps?: DraggableProvidedDragHandleProps | null;
 }

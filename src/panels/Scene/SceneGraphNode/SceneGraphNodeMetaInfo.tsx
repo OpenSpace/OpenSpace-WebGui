@@ -14,10 +14,11 @@ import {
 import { useGetPropertyOwner, useGetStringPropertyValue } from '@/api/hooks';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 import { useAppSelector } from '@/redux/hooks';
+import { Uri } from '@/types/types';
 import { identifierFromUri } from '@/util/propertyTreeHelpers';
 
 interface Props {
-  uri: string;
+  uri: Uri;
 }
 
 export function SceneGraphNodeMetaInfo({ uri }: Props) {

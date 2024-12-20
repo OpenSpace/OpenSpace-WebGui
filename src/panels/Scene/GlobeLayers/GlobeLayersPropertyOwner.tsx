@@ -5,12 +5,13 @@ import {
   NightIcon,
   WaterIcon
 } from '@/icons/icons';
+import { Uri } from '@/types/types';
 import { sgnIdentifierFromSubownerUri } from '@/util/propertyTreeHelpers';
 
 import { GlobeLayerGroup } from './GlobeLayersGroup';
 
 interface Props {
-  uri: string;
+  uri: Uri;
 }
 
 export function GlobeLayersPropertyOwner({ uri }: Props) {

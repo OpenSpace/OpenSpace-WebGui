@@ -3,13 +3,13 @@ import { Box, Space, Tabs, Text } from '@mantine/core';
 import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { useAppSelector } from '@/redux/hooks';
-import { PropertyOwner as PropertyOwnerType } from '@/types/types';
+import { PropertyOwner as PropertyOwnerType, Uri } from '@/types/types';
 
 import { SceneGraphNodeHeader } from './SceneGraphNodeHeader';
 import { SceneGraphNodeMetaInfo } from './SceneGraphNodeMetaInfo';
 
 interface Props {
-  uri: string;
+  uri: Uri;
 }
 
 export function SceneGraphNodeView({ uri }: Props) {

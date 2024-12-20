@@ -4,7 +4,7 @@ import { createAction } from '@reduxjs/toolkit';
 import { GroupPrefixKey } from '@/panels/Scene/SceneTree/treeUtil';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { addUriToPropertyTree } from '@/redux/propertytree/propertyTreeMiddleware';
-import { Groups, Properties, PropertyOwners } from '@/types/types';
+import { Groups, Properties, PropertyOwners, Uri } from '@/types/types';
 
 import { RootState } from '../store';
 
@@ -60,7 +60,7 @@ const computeGroups = (propertyOwners: PropertyOwners, properties: Properties) =
   return groups;
 };
 
-export function treeDataForPropertyOwner(uri: string, propertyOwners: PropertyOwners) {
+export function treeDataForPropertyOwner(uri: Uri, propertyOwners: PropertyOwners) {
   const propertyOwner = propertyOwners[uri];
   return {
     label: propertyOwner?.name || '',

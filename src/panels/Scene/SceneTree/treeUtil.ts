@@ -1,6 +1,6 @@
 import { TreeNodeData } from '@mantine/core';
 
-import { Properties, PropertyOwners } from '@/types/types';
+import { Properties, PropertyOwners, Uri } from '@/types/types';
 import {
   isPropertyOwnerHidden,
   isSceneGraphNodeVisible
@@ -45,7 +45,7 @@ export function filterTreeData(
         }
         return newNode;
       } else {
-        function shouldShowSceneGraphNode(uri: string) {
+        function shouldShowSceneGraphNode(uri: Uri) {
           let shouldShow = true;
           if (filter.showOnlyVisible) {
             shouldShow &&= isSceneGraphNodeVisible(uri, properties);

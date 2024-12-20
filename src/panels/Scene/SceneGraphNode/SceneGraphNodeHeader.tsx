@@ -7,13 +7,14 @@ import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { OpenInNewIcon, VerticalDotsIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { IconSize, NavigationType } from '@/types/enums';
+import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { SceneGraphNodeView } from './SceneGraphNodeView';
 
 interface Props {
-  uri: string;
+  uri: Uri;
   label?: string;
   onClick?: () => void;
 }

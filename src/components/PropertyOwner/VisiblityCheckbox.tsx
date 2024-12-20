@@ -6,10 +6,11 @@ import {
   useGetFloatPropertyValue,
   useOpenSpaceApi
 } from '@/api/hooks';
+import { Uri } from '@/types/types';
 import { checkVisiblity } from '@/util/propertyTreeHelpers';
 
 interface Props {
-  uri: string;
+  uri: Uri;
 }
 
 export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
