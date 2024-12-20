@@ -1,4 +1,4 @@
-import { Button, Menu, Text } from '@mantine/core';
+import { Button, Kbd, Menu, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import {
@@ -83,14 +83,22 @@ export function HelpMenu() {
             Send Feedback
           </Menu.Item>
           <Menu.Divider />
-          <Menu.Item onClick={toggleLuaConsole} leftSection={<ConsoleIcon />}>
+          <Menu.Item
+            onClick={toggleLuaConsole}
+            leftSection={<ConsoleIcon />}
+            rightSection={<Kbd>~</Kbd>}
+          >
             Toggle Console
           </Menu.Item>
           <Menu.Item onClick={openGuiInBrowser} leftSection={<OpenInBrowserIcon />}>
             Open GUI in Browser
           </Menu.Item>
           <Menu.Divider />
-          <Menu.Item onClick={toggleShutdown} leftSection={<ExitAppIcon />}>
+          <Menu.Item
+            onClick={toggleShutdown}
+            leftSection={<ExitAppIcon />}
+            rightSection={<Kbd>Esc</Kbd>}
+          >
             Quit OpenSpace
           </Menu.Item>
           <Menu.Divider />
