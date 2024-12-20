@@ -11,9 +11,10 @@ import { checkVisiblity } from '@/util/propertyTreeHelpers';
 
 interface Props {
   uri: Uri;
+  onChange?: (isChecked: boolean) => void;
 }
 
-export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
+export function PropertyOwnerVisibilityCheckbox({ uri, onChange }: Props) {
   const luaApi = useOpenSpaceApi();
 
   const enabledUri = `${uri}.Enabled`;
@@ -52,5 +53,13 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
     setVisiblity(shouldBeEnabled, isImmediate);
   }
 
-  return <Checkbox checked={checked} onClick={onToggleCheckboxClick} readOnly />;
+  return (
+    <Checkbox
+      checked={checked}
+      onClick={onToggleCheckboxClick}
+      onChange={(event) => {
+        onChange?.(event.currentTarget.checked);
+      }}
+    />
+  );
 }

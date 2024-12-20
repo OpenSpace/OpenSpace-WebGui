@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Group, Paper, Text } from '@mantine/core';
 
 import { useGetBoolPropertyValue, useGetPropertyOwner } from '@/api/hooks';
@@ -13,22 +14,28 @@ interface Props {
 }
 
 export function GlobeLayer({ uri }: Props) {
+  const [isEnabled] = useGetBoolPropertyValue(`${uri}.Enabled`);
   const propertyOwner = useGetPropertyOwner(uri);
+
+  const [isActive, setIsActive] = useState(isEnabled);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);
   }
 
-  const [isEnabled] = useGetBoolPropertyValue(`${uri}.Enabled`);
-
   // @TODO (emmbr, 2024-12-06): We want to avoid hardcoded colors, but since changing the
   // color of the text is a feature we wanted to keep I decided to do it this way for now.
-  const textColor = isEnabled ? 'white' : 'dimmed';
+  const textColor = isActive ? 'white' : 'dimmed';
 
   return (
     <CollapsableContent
       title={<Text c={textColor}>{displayName(propertyOwner)}</Text>}
-      leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
+      leftSection={
+        <PropertyOwnerVisibilityCheckbox
+          uri={uri}
+          onChange={(isChecked) => setIsActive(isChecked)}
+        />
+      }
       rightSection={
         <Group wrap={'nowrap'}>
           <Tooltip text={propertyOwner.description || 'No information'} />
