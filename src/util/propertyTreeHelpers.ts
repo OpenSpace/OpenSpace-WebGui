@@ -38,7 +38,7 @@ export function hasInterestingTag(
   return propertyOwners[uri]?.tags.some((tag) => tag.includes(InterestingTagKey));
 }
 
-export function guiOrderingNumber(properties: Properties, uri: Uri): number | undefined {
+export function guiOrderingNumber(uri: Uri, properties: Properties): number | undefined {
   const shouldUseGuiOrderingNumber = properties[`${uri}.UseGuiOrdering`]?.value || false;
   if (!shouldUseGuiOrderingNumber) {
     return undefined;
@@ -64,7 +64,7 @@ export function isGlobeLayersUri(uri: Uri, properties: Properties): boolean {
   return uri.endsWith(suffix) && isGlobe(uri.replace('.Layers', ''), properties);
 }
 
-export function isPropertyOwnerHidden(properties: Properties, uri: Uri) {
+export function isPropertyOwnerHidden(uri: Uri, properties: Properties) {
   const isHidden = properties[`${uri}.GuiHidden`]?.value as boolean | undefined;
   return isHidden || false;
 }

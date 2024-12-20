@@ -51,7 +51,7 @@ export function filterTreeData(
             shouldShow &&= isSceneGraphNodeVisible(uri, properties);
           }
           if (!filter.showHiddenNodes) {
-            shouldShow &&= !isPropertyOwnerHidden(properties, uri);
+            shouldShow &&= !isPropertyOwnerHidden(uri, properties);
           }
           if (shouldShow && filter.tags.length > 0) {
             shouldShow &&= filter.tags.some((tag) =>

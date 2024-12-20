@@ -37,7 +37,7 @@ export function createTreeSortingInformation(
           type: 'propertyOwner',
           payload: node.value,
           name: node.label as string,
-          guiOrder: guiOrderingNumber(properties, node.value)
+          guiOrder: guiOrderingNumber(node.value, properties)
         };
       }
 
