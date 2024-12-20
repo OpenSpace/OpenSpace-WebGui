@@ -1,3 +1,6 @@
+export type Uri = string;
+export type Identifier = string;
+
 export interface Action {
   identifier: string;
   guiPath: string;
@@ -50,7 +53,7 @@ export type Extent = {
 
 export interface ExoplanetData {
   name: string;
-  identifier: string;
+  identifier: Identifier;
 }
 
 export interface PropertyMetaData {
@@ -67,37 +70,37 @@ export type PropertyValue = string | number | number[] | boolean | null;
 export interface Property {
   description: {
     additionalData: any;
-    identifier: string;
+    identifier: Identifier;
     metaData: PropertyMetaData;
     name: string;
     type: string; // TODO: define these as property types i.e., boolproperty, stringproperty etc
     description: string;
   };
   value: PropertyValue; // TODO: investigate if these are all the values we can have
-  uri: string;
+  uri: Uri;
 }
 
 export interface Properties {
-  [key: string]: Property | undefined;
+  [key: Uri]: Property | undefined;
 }
 
 export interface PropertyOwner {
   description: string;
   name: string;
-  identifier: string;
-  properties: string[];
-  subowners: string[];
+  identifier: Identifier;
+  properties: Uri[];
+  subowners: Uri[];
   tags: string[];
-  uri: string;
+  uri: Uri;
 }
 
 export interface PropertyOwners {
-  [key: string]: PropertyOwner | undefined;
+  [key: Uri]: PropertyOwner | undefined;
 }
 
 export type Group = {
   subgroups: string[]; // group paths
-  propertyOwners: string[]; // uris
+  propertyOwners: Uri[];
 };
 
 export type Groups = {

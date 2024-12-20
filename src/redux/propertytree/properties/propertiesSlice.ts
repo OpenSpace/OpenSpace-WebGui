@@ -16,7 +16,7 @@ const initialState: PropertiesState = {
 
 // function updateProperty(
 //   state,
-//   uri: string,
+//   uri: Uri,
 //   value: PropertyValue
 // ) {
 //   if (state.properties[uri]) {
@@ -46,7 +46,7 @@ export const propertiesSlice = createSlice({
     },
     setPropertyValue: (
       state,
-      action: PayloadAction<{ uri: string; value: PropertyValue }>
+      action: PayloadAction<{ uri: Uri; value: PropertyValue }>
     ) => {
       const { uri, value } = action.payload;
 
@@ -58,7 +58,7 @@ export const propertiesSlice = createSlice({
     },
     updatePropertyValue: (
       state,
-      action: PayloadAction<{ uri: string; value: PropertyValue }>
+      action: PayloadAction<{ uri: Uri; value: PropertyValue }>
     ) => {
       const { uri, value } = action.payload;
 

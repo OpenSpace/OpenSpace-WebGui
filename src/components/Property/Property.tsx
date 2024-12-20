@@ -2,6 +2,7 @@ import { Box } from '@mantine/core';
 
 import { useSubscribeToProperty } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
+import { Uri } from '@/types/types';
 
 import { ListProperty } from './/Types/ListProperty';
 import { BoolProperty } from './Types/BoolProperty';
@@ -65,7 +66,7 @@ const concreteProperties: { [key: string]: any } = {
 };
 
 interface Props {
-  uri: string;
+  uri: Uri;
 }
 
 export function Property({ uri }: Props) {

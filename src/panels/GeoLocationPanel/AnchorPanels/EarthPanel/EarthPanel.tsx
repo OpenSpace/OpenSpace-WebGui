@@ -20,7 +20,7 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
 import { MinusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
-import { ArcGISJSON, Candidate } from '@/types/types';
+import { ArcGISJSON, Candidate, Identifier, Uri } from '@/types/types';
 import { GeoLocationGroupKey, ScenePrefixKey } from '@/util/keys';
 
 import { CustomCoordinates } from './CustomCoordinates';
@@ -28,7 +28,7 @@ import { EarthEntry } from './EarthEntry';
 import { addressUTF8 } from './util';
 
 interface Props {
-  currentAnchor: string;
+  currentAnchor: Identifier;
 }
 
 export function EarthPanel({ currentAnchor }: Props) {
@@ -85,7 +85,7 @@ export function EarthPanel({ currentAnchor }: Props) {
   }
 
   function addFocusNode(
-    identifier: string,
+    identifier: Identifier,
     lat: number,
     long: number,
     alt: number
@@ -99,20 +99,20 @@ export function EarthPanel({ currentAnchor }: Props) {
     );
   }
 
-  function removeFocusNode(identifier: string): void {
+  function removeFocusNode(identifier: Identifier): void {
     if (!isSceneGraphNodeAdded(identifier)) {
       return;
     }
     luaApi?.removeSceneGraphNode(identifier);
   }
 
-  function isSceneGraphNodeAdded(uri: string): boolean {
+  function isSceneGraphNodeAdded(uri: Uri): boolean {
     return `${ScenePrefixKey}${uri}` in propertyOwners;
   }
 
   function createSceneGraphNodeTable(
-    globe: string,
-    identifier: string,
+    globe: Identifier,
+    identifier: Identifier,
     lat: number,
     long: number,
     alt: number
