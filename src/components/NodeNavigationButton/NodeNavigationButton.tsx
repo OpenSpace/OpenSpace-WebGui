@@ -1,3 +1,4 @@
+import React from 'react';
 import { ActionIcon, ActionIconProps, Button, ButtonProps } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -9,11 +10,12 @@ import {
   LightningFlashIcon
 } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
+import { Identifier } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey, RetargetAnchorKey } from '@/util/keys';
 
 interface BaseProps {
   type: NavigationType;
-  identifier: string;
+  identifier: Identifier;
   showLabel?: boolean;
   onFinish?: () => void;
 }
@@ -48,7 +50,7 @@ type NodeNavigationButtonProps =
 
 interface ButtonContent {
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  icon: JSX.Element;
+  icon: React.JSX.Element;
   title: string;
   info?: string;
 }
