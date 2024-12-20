@@ -1,16 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button, Container, Flex, Group, Image, Text, Title } from '@mantine/core';
 
 import { ActionsButton } from '@/panels/ActionsPanel/ActionsButton';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
 import { DisplayType } from '@/types/enums';
 import { Milestone, Phase } from '@/types/mission-types';
-import { Action } from '@/types/types';
 
 import { TimeLine } from './TimeLine/TimeLine';
 import { MissionCaptureButtons } from './MissionCaptureButtons';
 import { MissionTimeButtons } from './MissionTimeButtons';
+import { useSubscribeToTime } from '@/api/hooks';
 
 // TODO anden88: for some reason if this was exported from @types file intelisense showed
 // displayedPhase variable as any, aka no type completion :/
@@ -24,22 +22,15 @@ interface MissionContentProps {
 }
 
 export function MissionContent({ missionOverview }: MissionContentProps) {
-  const dispatch = useAppDispatch();
-
-  const allActions = useAppSelector((state) => state.actions.actions);
   const [displayedPhase, setDisplayedPhase] = useState<DisplayedPhase>({
     type: DisplayType.Phase,
     data: missionOverview
   });
   const [displayCurrentPhase, setDisplayCurrentPhase] = useState(false);
-  const [currentActions, setCurrentActions] = useState<Action[]>([]);
-  const now = useAppSelector((state) => state.time.timeCapped);
-  const allPhasesNested = useRef<Phase[][]>([]);
 
-  const title = getTitle();
-  const timeString = getTimeString();
+  const now = useSubscribeToTime();
 
-  const findAllPhases = useCallback(() => {
+  const allPhasesNested = useMemo(() => {
     const phasesByDepth: Phase[][] = [];
 
     function collectPhases(phases: Phase[], depth: number = 0) {
@@ -64,80 +55,11 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
     return phasesByDepth;
   }, [missionOverview]);
 
-  const setPhaseToCurrent = useCallback(() => {
-    if (now === undefined) {
-      return;
-    }
+  if (displayCurrentPhase) {
+    setPhaseToCurrent();
+  }
 
-    const allPhasesFlat = allPhasesNested.current.flat();
-    const filteredPhases = allPhasesFlat.filter((phase) => {
-      const isBeforeEnd = now < Date.parse(phase.timerange.end);
-      const isAfterStart = now >= Date.parse(phase.timerange.start);
-      return isAfterStart && isBeforeEnd;
-    });
-
-    const found = filteredPhases.pop();
-    if (!found) {
-      setDisplayedPhase({ type: undefined, data: undefined });
-    } else {
-      // If the found phase is already displayed, do nothing
-      if (found.name === displayedPhase.data?.name) {
-        return;
-      }
-      setDisplayedPhase({ type: DisplayType.Phase, data: found });
-    }
-  }, [now, displayedPhase]);
-
-  useEffect(() => {
-    dispatch(subscribeToTime());
-
-    return () => {
-      dispatch(unsubscribeToTime());
-    };
-  }, [dispatch]);
-
-  // When mission is changed update the phases
-  useEffect(() => {
-    const phases = findAllPhases();
-    allPhasesNested.current = phases;
-  }, [missionOverview, findAllPhases]);
-
-  // Keep current mission phase up-to-date with time, to get automatic switching as we
-  // move in time
-  useEffect(() => {
-    if (displayCurrentPhase) {
-      setPhaseToCurrent();
-    }
-  }, [now, displayCurrentPhase, setPhaseToCurrent]);
-
-  // Whenever a phase changes, we want to get the actions that are valid for that phase
-  useEffect(() => {
-    function findCurrentActions(phase: Phase | Milestone, allActions: Action[]) {
-      return phase
-        .actions!.map((uri) => allActions.find((action) => action.identifier === uri))
-        .filter((v) => v !== undefined);
-    }
-
-    // We want to add any actions related to the whole mission
-    const phasesToCheck: (Phase | Milestone)[] = [missionOverview];
-
-    // Add any extra actions related to the currently shown phase or milestone
-    if (
-      displayedPhase.data &&
-      displayedPhase.data.actions &&
-      displayedPhase.data !== missionOverview
-    ) {
-      phasesToCheck.push(displayedPhase.data);
-    }
-
-    const result = phasesToCheck.flatMap((phase) =>
-      findCurrentActions(phase, allActions)
-    );
-
-    setCurrentActions(result);
-  }, [allActions, displayedPhase, missionOverview]);
-
-  function getTitle() {
+  function title() {
     // Hide title if the overview is currently shown
     const isShowingOverview = displayedPhase.data?.name === missionOverview.name;
     const hasType = displayedPhase.type;
@@ -145,7 +67,7 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
     return hideTile ? '' : `${displayedPhase.type}: ${displayedPhase.data.name}`;
   }
 
-  function getTimeString() {
+  function timeString() {
     switch (displayedPhase.type) {
       case DisplayType.Phase: {
         const start = new Date(displayedPhase.data.timerange.start).toDateString();
@@ -164,11 +86,36 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
     setDisplayCurrentPhase(false);
   }
 
+  function setPhaseToCurrent() {
+    if (now === undefined) {
+      return;
+    }
+
+    const allPhasesFlat = allPhasesNested.flat();
+
+    const filteredPhases = allPhasesFlat.filter((phase) => {
+      const isBeforeEnd = now < Date.parse(phase.timerange.end);
+      const isAfterStart = now >= Date.parse(phase.timerange.start);
+      return isAfterStart && isBeforeEnd;
+    });
+
+    const found = filteredPhases.pop();
+    if (!found) {
+      setDisplayedPhase({ type: undefined, data: undefined });
+    } else {
+      // If the found phase is already displayed, do nothing
+      if (found.name === displayedPhase.data?.name) {
+        return;
+      }
+      setDisplayedPhase({ type: DisplayType.Phase, data: found });
+    }
+  }
+
   return (
     <Container my={'xs'}>
       <Group grow wrap={'nowrap'} align={'start'}>
         <TimeLine
-          allPhasesNested={allPhasesNested.current}
+          allPhasesNested={allPhasesNested}
           displayedPhase={displayedPhase}
           missionOverview={missionOverview}
           setDisplayedPhase={setPhaseManually}
@@ -191,8 +138,8 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
           </Group>
           {displayedPhase.data ? (
             <>
-              <Title order={4}>{title}</Title>
-              <Text c={'dimmed'}>{timeString}</Text>
+              <Title order={4}>{title()}</Title>
+              <Text c={'dimmed'}>{timeString()}</Text>
               <Text my={'xs'}>{displayedPhase.data.description}</Text>
               {displayedPhase.data.link && (
                 <Button component={'a'} href={displayedPhase.data.link} target={'_blank'}>
@@ -213,8 +160,12 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
               />
               <MissionCaptureButtons mission={missionOverview} />{' '}
               <Flex wrap={'wrap'} gap={'xs'} my={'xs'}>
-                {currentActions.map((action) => (
-                  <ActionsButton key={action.identifier} action={action} />
+                {displayedPhase.data.name !== missionOverview.name &&
+                  displayedPhase.data?.actions?.map((uri) => (
+                    <ActionsButton key={uri} uri={uri} />
+                  ))}
+                {missionOverview?.actions?.map((uri) => (
+                  <ActionsButton key={uri} uri={uri} />
                 ))}
               </Flex>
             </>
