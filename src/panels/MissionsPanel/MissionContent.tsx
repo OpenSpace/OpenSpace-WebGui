@@ -106,14 +106,15 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
         missionOverview={missionOverview}
         setDisplayedPhase={setPhaseManually}
       />
-      <Container>
+      <Container pl={'xs'}>
         <Group justify={'space-between'} mb={'md'}>
           <Button
             onClick={() =>
               setPhaseManually({ type: DisplayType.Phase, data: missionOverview })
             }
-            variant={'outline'}
+            variant={'transparent'}
             size={'lg'}
+            px={'xs'}
           >
             <Title>{missionOverview.name}</Title>
           </Button>
@@ -122,14 +123,16 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
               checked={displayCurrentPhase}
               onClick={() => setDisplayCurrentPhase((prevState) => !prevState)}
             />
-            <Text>Show current phase</Text>
+            <Text>Update to current phase</Text>
           </Group>
         </Group>
-        <MissionPhase
-          displayedPhase={displayedPhase}
-          isMissionOverview={displayedPhase.data?.name === missionOverview.name}
-          missionOverview={missionOverview}
-        />
+        <Container px={'xs'}>
+          <MissionPhase
+            displayedPhase={displayedPhase}
+            isMissionOverview={displayedPhase.data?.name === missionOverview.name}
+            missionOverview={missionOverview}
+          />
+        </Container>
       </Container>
     </Group>
   );

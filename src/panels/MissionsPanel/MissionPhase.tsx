@@ -58,11 +58,18 @@ export function MissionPhase({
           alt={'Image text not available'}
         />
       )}
+      <Title order={4} my={'md'}>
+        Set time
+      </Title>
+
       <MissionTimeButtons
         currentPhase={displayedPhase}
         isMissionOverview={isMissionOverview}
       />
-      <MissionCaptureButtons mission={missionOverview} />{' '}
+      <MissionCaptureButtons mission={missionOverview} />
+      <Title order={4} my={'md'}>
+        Actions
+      </Title>
       <Flex wrap={'wrap'} gap={'xs'} my={'xs'}>
         {/* Show phase specific actions */}
         {!isMissionOverview &&
