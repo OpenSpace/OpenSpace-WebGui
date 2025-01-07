@@ -24,4 +24,9 @@ export const HabitableZonePropertyKey = 'Modules.Exoplanets.ShowHabitableZone';
 export const Size1AuRingTagKey = 'exoplanet_1au_ring';
 export const Size1AuRingPropertyKey = 'Modules.Exoplanets.ShowComparisonCircle';
 
+// OpenSpace folders
+// eslint-disable-next-line no-template-curly-in-string
+export const UserPanelsFolderKey = '${USER}/webpanels';
+
+export const WindowsKey = 'Windows';
 export const ScreenSpaceKey = 'ScreenSpace';

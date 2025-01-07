@@ -9,6 +9,7 @@ import { propertiesReducer } from './propertytree/properties/propertiesSlice';
 import { propertyOwnersReducer } from './propertytree/propertyowner/propertyOwnerSlice';
 import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
 import { timeReducer } from './time/timeSlice';
+import { userPanelsReducer } from './userpanels/userPanelsSlice';
 import { versionReducer } from './version/versionSlice';
 import { listenerMiddleware } from './listenerMiddleware';
 
@@ -23,6 +24,7 @@ export const store = configureStore({
     propertyOwners: propertyOwnersReducer,
     sessionRecording: sessionRecordingReducer,
     time: timeReducer,
+    userPanels: userPanelsReducer,
     version: versionReducer
   },
   middleware: (getDefaultMiddleware) =>
