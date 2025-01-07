@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   ActionIcon,
+  Button,
   Container,
   Divider,
   Group,
@@ -147,12 +148,15 @@ export function UserPanelsPanel() {
         Recently Opened URLs
       </Title>
       {addedPanels.map((panel) => (
-        <Group key={`${panel.src}${panel.title}`} mb={'xs'}>
-          <Text flex={1}>{panel.title}</Text>
-          <ActionIcon onClick={() => openPanel(panel.src, panel.title)}>
-            <OpenWindowIcon />
-          </ActionIcon>
-        </Group>
+        <Button
+          key={`${panel.src}${panel.title}`}
+          onClick={() => openPanel(panel.src, panel.title)}
+          fullWidth
+          mb={'xs'}
+        >
+          <Text m={'xs'}>{panel.title}</Text>
+          <OpenWindowIcon />
+        </Button>
       ))}
     </Container>
   );
