@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { OpenIcon } from '@/icons/icons';
+import { OpenWindowIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { intializeUserPanels, openWebpanel } from '@/redux/userpanels/userPanelsSlice';
 import { UserPanelsFolderKey, WindowsKey } from '@/util/keys';
@@ -30,12 +30,12 @@ export function UserPanelsPanel() {
   const isDataInitialized = useAppSelector((state) => state.userPanels.isInitialized);
   const addedPanels = useAppSelector((state) => state.userPanels.addedWebpanels);
 
-  const localPanels = useAppSelector((state) => state.userPanels.panels || []);
+  const localPanels = useAppSelector((state) => state.userPanels.panels);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     // Collect all folder paths in the USER folder
-    const getUserPanels = async () => {
+    async function getUserPanels() {
       if (!luaApi) {
         return;
       }
@@ -53,7 +53,7 @@ export function UserPanelsPanel() {
         panel.substring(panel.lastIndexOf(slash) + 1)
       );
       dispatch(intializeUserPanels(folderNames));
-    };
+    }
 
     if (luaApi && !isDataInitialized) {
       getUserPanels();
@@ -115,7 +115,7 @@ export function UserPanelsPanel() {
           onKeyDown={(e) => e.key === 'Enter' && addLocalPanel()}
         />
         <ActionIcon onClick={addLocalPanel} disabled={!selectedPanel} size={'lg'}>
-          <OpenIcon />
+          <OpenWindowIcon />
         </ActionIcon>
       </Group>
       <Divider my={'md'} />
@@ -126,19 +126,19 @@ export function UserPanelsPanel() {
         value={urlPanelTitle}
         label={'Title (optional)'}
         placeholder={'Input title (optional)'}
-        onChange={(evt) => setUrlPanelTitle(evt.target.value)}
+        onChange={(e) => setUrlPanelTitle(e.target.value)}
       />
       <Group align={'flex-end'} justify={'space-between'}>
         <TextInput
           value={panelURL}
           label={'URL'}
           placeholder={'Input URL'}
-          onChange={(evt) => setPanelURL(evt.target.value)}
+          onChange={(e) => setPanelURL(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && addWebPanel()}
           flex={1}
           rightSection={
             <ActionIcon onClick={addWebPanel} disabled={!panelURL} size={'lg'}>
-              <OpenIcon />
+              <OpenWindowIcon />
             </ActionIcon>
           }
         />
@@ -150,7 +150,7 @@ export function UserPanelsPanel() {
         <Group key={`${panel.src}${panel.title}`} mb={'xs'}>
           <Text flex={1}>{panel.title}</Text>
           <ActionIcon onClick={() => openPanel(panel.src, panel.title)}>
-            <OpenIcon />
+            <OpenWindowIcon />
           </ActionIcon>
         </Group>
       ))}

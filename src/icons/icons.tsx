@@ -21,7 +21,7 @@ export {
   MdFlashOn as LightningFlashIcon,
   MdLock as LockIcon,
   MdLockOpen as LockOpenIcon,
-  MdOpenInNew as OpenIcon,
+  MdOpenInNew as OpenWindowIcon,
   MdPause as PauseIcon,
   MdOutlineEdit as PenIcon,
   MdPlayArrow as PlayIcon,
