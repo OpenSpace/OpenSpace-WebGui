@@ -1,21 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { ActionIcon, Container, Group } from '@mantine/core';
 
-import { useGetStringPropertyValue } from '@/api/hooks';
+import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { FlightControllerData } from '@/types/flightcontroller-types';
-import { PropertyOwner } from '@/types/types';
+import { Identifier, PropertyOwner, Uri } from '@/types/types';
 import {
   NavigationAimKey,
   NavigationAnchorKey,
   RetargetAimKey,
   RetargetAnchorKey
 } from '@/util/keys';
-import { propertyDispatcher } from '@/util/propertyDispatcher';
 import { hasInterestingTag } from '@/util/propertyTreeHelpers';
 
 import { FocusEntry } from './FocusEntry';
@@ -34,31 +33,14 @@ export function OriginPanel() {
 
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const properties = useAppSelector((state) => state.properties.properties);
-  const anchor = useGetStringPropertyValue(NavigationAnchorKey);
-  const aim = useGetStringPropertyValue(NavigationAimKey);
+  const [anchor, setAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
+  const [aim, setAim] = useGetStringPropertyValue(NavigationAimKey);
+  const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
+  const triggerRetargetAim = useTriggerProperty(RetargetAimKey);
 
   const dispatch = useAppDispatch();
-  const anchorDispatcher = useRef(propertyDispatcher(dispatch, NavigationAnchorKey));
-  const aimDispatcher = useRef(propertyDispatcher(dispatch, NavigationAimKey));
-  const retargetAnchorDispatcher = useRef(
-    propertyDispatcher(dispatch, RetargetAnchorKey)
-  );
-  const retargetAimDispatcher = useRef(propertyDispatcher(dispatch, RetargetAimKey));
 
-  useEffect(() => {
-    // We make a copy here of the dispatchers to ensure that in the cleanup function they
-    // will be exactly the same as they were on creation, i.e. not modifided
-    const copyAnchorDispatcher = anchorDispatcher.current;
-    const copyAimDispatcher = aimDispatcher.current;
-    copyAnchorDispatcher.subscribe();
-    copyAimDispatcher.subscribe();
-    return () => {
-      copyAnchorDispatcher.unsubscribe();
-      copyAimDispatcher.unsubscribe();
-    };
-  }, []);
-
-  const uris: string[] = propertyOwners.Scene?.subowners ?? [];
+  const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
   const allNodes = uris
     .map((uri) => propertyOwners[uri])
     .filter((po) => po !== undefined);
@@ -124,7 +106,7 @@ export function OriginPanel() {
   }
 
   function onSelect(
-    identifier: string,
+    identifier: Identifier,
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
     const updateViewPayload: FlightControllerData = {
@@ -160,9 +142,9 @@ export function OriginPanel() {
 
     if (!event.shiftKey) {
       if (navigationAction === NavigationActionState.Aim) {
-        retargetAimDispatcher.current.set(null);
+        triggerRetargetAim();
       } else {
-        retargetAnchorDispatcher.current.set(null);
+        triggerRetargetAnchor();
       }
     }
 
@@ -177,13 +159,13 @@ export function OriginPanel() {
     dispatch(sendFlightControl(updateViewPayload));
 
     if (updateViewPayload.aim) {
-      anchorDispatcher.current.set(updateViewPayload.anchor);
-      aimDispatcher.current.set(updateViewPayload.aim);
+      setAnchor(updateViewPayload.anchor);
+      setAim(updateViewPayload.aim);
     } else if (updateViewPayload.anchor !== '') {
-      anchorDispatcher.current.set(updateViewPayload.anchor);
+      setAnchor(updateViewPayload.anchor);
     } else {
-      anchorDispatcher.current.set(updateViewPayload.focus);
-      aimDispatcher.current.set(updateViewPayload.aim);
+      setAnchor(updateViewPayload.focus);
+      setAim(updateViewPayload.aim);
     }
   }
 

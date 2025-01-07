@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { PropertyOwner, PropertyOwners } from '@/types/types';
+import { PropertyOwner, PropertyOwners, Uri } from '@/types/types';
+
+import { addUriToPropertyTree } from '../propertyTreeMiddleware';
 
 // actions:
 // addPropertyOwners
@@ -12,12 +14,10 @@ import { PropertyOwner, PropertyOwners } from '@/types/types';
 // clearPropertyTree
 
 export interface PropertyOwnersState {
-  isInitialized: boolean;
   propertyOwners: PropertyOwners;
 }
 
 const initialStatePropertyOwners: PropertyOwnersState = {
-  isInitialized: false,
   propertyOwners: {}
 };
 
@@ -30,7 +30,6 @@ export const propertyOwnersSlice = createSlice({
       action: PayloadAction<{ propertyOwners: PropertyOwner[] }>
     ) => {
       const inputOwners = action.payload.propertyOwners;
-      // const newState = { ...state };
       inputOwners.forEach((owner) => {
         state.propertyOwners[owner.uri] = {
           identifier: owner.identifier,
@@ -60,13 +59,10 @@ export const propertyOwnersSlice = createSlice({
     },
     clearPropertyOwners: () => {
       return {
-        isInitialized: false,
         propertyOwners: {}
       };
     },
-    removePropertyOwners: (state, action: PayloadAction<{ uris: string[] }>) => {
-      // const newState = { ...state };
-
+    removePropertyOwners: (state, action: PayloadAction<{ uris: Uri[] }>) => {
       action.payload.uris.forEach((uri) => {
         // Delete this particular property owner
         delete state.propertyOwners[uri];
@@ -86,6 +82,17 @@ export const propertyOwnersSlice = createSlice({
       });
       return state;
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(addUriToPropertyTree.fulfilled, (state, action) => {
+      if (action.payload?.propertyOwners) {
+        state.propertyOwners = {
+          ...state.propertyOwners,
+          ...action.payload.propertyOwners
+        };
+      }
+      return state;
+    });
   }
 });
 

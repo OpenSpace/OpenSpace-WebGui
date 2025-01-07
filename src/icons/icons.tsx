@@ -6,12 +6,15 @@ export {
 } from 'react-icons/io5';
 export {
   MdPublic as AddExoplanetIcon,
+  MdOutlineAddPhotoAlternate as AddPhotoIcon,
   MdOutlineAirplanemodeActive as AirplaneIcon,
   MdAnchor as AnchorIcon,
   MdExpandMore as ChevronDownIcon,
   MdChevronLeft as ChevronLeftIcon,
   MdChevronRight as ChevronRightIcon,
   MdExpandLess as ChevronUpIcon,
+  MdTerminal as ConsoleIcon,
+  MdExitToApp as ExitAppIcon,
   MdFastForward as FastForwardIcon,
   MdFastRewind as FastRewindIcon,
   MdFilterAlt as FilterIcon,
@@ -21,6 +24,8 @@ export {
   MdFlashOn as LightningFlashIcon,
   MdLock as LockIcon,
   MdLockOpen as LockOpenIcon,
+  MdOpenInNew as OpenWindowIcon,
+  MdOpenInBrowser as OpenInBrowserIcon,
   MdPause as PauseIcon,
   MdOutlineEdit as PenIcon,
   MdPlayArrow as PlayIcon,
@@ -32,4 +37,6 @@ export {
   MdZoomOut as ZoomOutIcon,
   MdZoomOutMap as ZoomOutMapIcon
 } from 'react-icons/md';
-export { RiFocus3Line as FocusIcon } from 'react-icons/ri';
+export { PiBookOpenText as BookIcon } from 'react-icons/pi';
+export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
+export { VscFeedback as FeedbackIcon } from 'react-icons/vsc';

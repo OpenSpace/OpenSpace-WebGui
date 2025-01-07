@@ -3,13 +3,15 @@ import { configureStore } from '@reduxjs/toolkit';
 import { actionsReducer } from './actions/actionsSlice';
 import { connectionReducer } from './connection/connectionSlice';
 import { exoplanetsReducer } from './exoplanets/exoplanetsSlice';
+import { flightControllerReducer } from './flightcontroller/flightControllerSlice';
 import { groupsReducer } from './groups/groupsSlice';
-import { luaApiReducer } from './luaapi/luaApiSlice';
 import { missionsReducer } from './missions/missionsSlice';
 import { propertiesReducer } from './propertytree/properties/propertiesSlice';
 import { propertyOwnersReducer } from './propertytree/propertyowner/propertyOwnerSlice';
 import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
 import { timeReducer } from './time/timeSlice';
+import { userPanelsReducer } from './userpanels/userPanelsSlice';
+import { versionReducer } from './version/versionSlice';
 import { listenerMiddleware } from './listenerMiddleware';
 
 export const store = configureStore({
@@ -17,21 +19,19 @@ export const store = configureStore({
     actions: actionsReducer,
     connection: connectionReducer,
     exoplanets: exoplanetsReducer,
+    flightController: flightControllerReducer,
     groups: groupsReducer,
-    luaApi: luaApiReducer,
     missions: missionsReducer,
     properties: propertiesReducer,
     propertyOwners: propertyOwnersReducer,
     sessionRecording: sessionRecordingReducer,
-    time: timeReducer
+    time: timeReducer,
+    userPanels: userPanelsReducer,
+    version: versionReducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: ['luaApi/initializeLuaApi'],
-        ignoredPaths: ['luaApi']
-      }
-    }).prepend([listenerMiddleware.middleware])
+    getDefaultMiddleware().concat([listenerMiddleware.middleware]),
+  devTools: true
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

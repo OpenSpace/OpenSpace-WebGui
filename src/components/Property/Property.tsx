@@ -1,13 +1,8 @@
-import { useEffect } from 'react';
 import { Box } from '@mantine/core';
-import { PropertyValue } from 'src/types/types';
 
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import {
-  subscribeToProperty,
-  unsubscribeToProperty
-} from '@/redux/propertytree/properties/propertiesMiddleware';
-import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
+import { useSubscribeToProperty } from '@/api/hooks';
+import { useAppSelector } from '@/redux/hooks';
+import { Uri } from '@/types/types';
 
 import { ListProperty } from './/Types/ListProperty';
 import { BoolProperty } from './Types/BoolProperty';
@@ -71,7 +66,7 @@ const concreteProperties: { [key: string]: any } = {
 };
 
 interface Props {
-  uri: string;
+  uri: Uri;
 }
 
 export function Property({ uri }: Props) {
@@ -83,15 +78,7 @@ export function Property({ uri }: Props) {
 
   const value = useAppSelector((state) => state.properties.properties[uri]?.value);
 
-  const dispatch = useAppDispatch();
-  // TODO: These actions should not have to take an object. The string value is enough
-  // when there is only one value in the payload!
-  useEffect(() => {
-    dispatch(subscribeToProperty({ uri }));
-    return () => {
-      dispatch(unsubscribeToProperty({ uri }));
-    };
-  }, [dispatch, uri]);
+  const setPropertyValue = useSubscribeToProperty(uri);
 
   if (!description || value === undefined) {
     return null;
@@ -117,9 +104,7 @@ export function Property({ uri }: Props) {
         name={description.name}
         description={description.description}
         value={value}
-        setPropertyValue={(newValue: PropertyValue) => {
-          dispatch(setPropertyValue({ uri, value: newValue }));
-        }}
+        setPropertyValue={setPropertyValue}
         viewOptions={description.metaData.ViewOptions}
         additionalData={description.additionalData}
       />

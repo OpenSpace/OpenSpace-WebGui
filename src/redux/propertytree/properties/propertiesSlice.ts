@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Properties, Property, PropertyValue } from '@/types/types';
+import { Properties, PropertyValue, Uri } from '@/types/types';
+
+import { addUriToPropertyTree } from '../propertyTreeMiddleware';
 
 export interface PropertiesState {
   isInitialized: boolean;
@@ -14,7 +16,7 @@ const initialState: PropertiesState = {
 
 // function updateProperty(
 //   state,
-//   uri: string,
+//   uri: Uri,
 //   value: PropertyValue
 // ) {
 //   if (state.properties[uri]) {
@@ -26,17 +28,8 @@ export const propertiesSlice = createSlice({
   name: 'properties',
   initialState,
   reducers: {
-    addProperties: (state, action: PayloadAction<{ properties: Property[] }>) => {
-      action.payload.properties.forEach((p) => {
-        state.properties[p.uri] = {
-          description: p.description,
-          value: p.value,
-          uri: p.uri // TODO remove this uri. (anden88 2024-10-17) This was left by Ylva,
-          // presumably we can just use the same uri e.g.,
-          //state.properties[p.uri] = { ... state.properties[p.uri], descip: p.descrip...}
-        };
-      });
-
+    addProperties: (state, action: PayloadAction<{ properties: Properties }>) => {
+      state.properties = { ...state.properties, ...action.payload.properties };
       return state;
     },
     removeProperties: (state, action: PayloadAction<{ uris: string[] }>) => {
@@ -53,7 +46,7 @@ export const propertiesSlice = createSlice({
     },
     setPropertyValue: (
       state,
-      action: PayloadAction<{ uri: string; value: PropertyValue }>
+      action: PayloadAction<{ uri: Uri; value: PropertyValue }>
     ) => {
       const { uri, value } = action.payload;
 
@@ -65,7 +58,7 @@ export const propertiesSlice = createSlice({
     },
     updatePropertyValue: (
       state,
-      action: PayloadAction<{ uri: string; value: PropertyValue }>
+      action: PayloadAction<{ uri: Uri; value: PropertyValue }>
     ) => {
       const { uri, value } = action.payload;
 
@@ -82,6 +75,14 @@ export const propertiesSlice = createSlice({
       //   [action.payload.uri]: newPropertyState
       // };
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(addUriToPropertyTree.fulfilled, (state, action) => {
+      if (action.payload?.properties) {
+        state.properties = { ...state.properties, ...action.payload.properties };
+      }
+      return state;
+    });
   }
 });
 
