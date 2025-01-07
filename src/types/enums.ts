@@ -29,5 +29,6 @@ export enum TimePart {
 
 export enum DisplayType {
   Phase = 'Phase',
-  Milestone = 'Milestone'
+  Milestone = 'Milestone',
+  Overview = 'Overview'
 }

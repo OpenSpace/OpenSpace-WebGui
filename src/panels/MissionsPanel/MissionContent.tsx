@@ -12,6 +12,7 @@ import { MissionPhase } from './MissionPhase';
 // displayedPhase variable as any, aka no type completion :/
 export type DisplayedPhase =
   | { type: DisplayType.Phase; data: Phase }
+  | { type: DisplayType.Overview; data: Phase }
   | { type: DisplayType.Milestone; data: Milestone }
   | { type: undefined; data: undefined };
 
@@ -21,7 +22,7 @@ interface MissionContentProps {
 
 export function MissionContent({ missionOverview }: MissionContentProps) {
   const [displayedPhase, setDisplayedPhase] = useState<DisplayedPhase>({
-    type: DisplayType.Phase,
+    type: DisplayType.Overview,
     data: missionOverview
   });
   const [displayCurrentPhase, setDisplayCurrentPhase] = useState(false);
@@ -93,7 +94,6 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
       if (found.name === displayedPhase.data?.name) {
         return;
       }
-
       setDisplayedPhase({ type: DisplayType.Phase, data: found });
     }
   }
@@ -110,7 +110,7 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
         <Group justify={'space-between'} mb={'md'}>
           <Button
             onClick={() =>
-              setPhaseManually({ type: DisplayType.Phase, data: missionOverview })
+              setPhaseManually({ type: DisplayType.Overview, data: missionOverview })
             }
             variant={'transparent'}
             size={'lg'}
@@ -123,13 +123,12 @@ export function MissionContent({ missionOverview }: MissionContentProps) {
               checked={displayCurrentPhase}
               onClick={() => setDisplayCurrentPhase((prevState) => !prevState)}
             />
-            <Text>Update to current phase</Text>
+            <Text>Display current phase</Text>
           </Group>
         </Group>
         <Container px={'xs'}>
           <MissionPhase
             displayedPhase={displayedPhase}
-            isMissionOverview={displayedPhase.data?.name === missionOverview.name}
             missionOverview={missionOverview}
           />
         </Container>

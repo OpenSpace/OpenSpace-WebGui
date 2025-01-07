@@ -10,24 +10,23 @@ import { MissionTimeButtons } from './MissionTimeButtons';
 
 interface MissionPhaseProps {
   displayedPhase: DisplayedPhase;
-  isMissionOverview: boolean;
   missionOverview: Phase;
 }
 
-export function MissionPhase({
-  displayedPhase,
-  isMissionOverview,
-  missionOverview
-}: MissionPhaseProps) {
+export function MissionPhase({ displayedPhase, missionOverview }: MissionPhaseProps) {
+  const isMissionOverview = displayedPhase.type === DisplayType.Overview;
   function title() {
-    // Hide title if the overview is currently shown (we don't want to show it twice)
-    const hasType = displayedPhase.type;
-    const hideTile = isMissionOverview || !hasType;
-    return hideTile ? '' : `${displayedPhase.type}: ${displayedPhase.data.name}`;
+    if (displayedPhase.type === DisplayType.Overview || !displayedPhase.type) {
+      return '';
+    }
+    // Only show title if it is a Phase or a Milestone
+    // If it is overview we don't want to show it twice
+    return `${displayedPhase.type}: ${displayedPhase.data.name}`;
   }
 
   function timeString() {
     switch (displayedPhase.type) {
+      case DisplayType.Overview:
       case DisplayType.Phase: {
         const start = new Date(displayedPhase.data.timerange.start).toDateString();
         const end = new Date(displayedPhase.data.timerange.end).toDateString();
@@ -62,10 +61,7 @@ export function MissionPhase({
         Set time
       </Title>
 
-      <MissionTimeButtons
-        currentPhase={displayedPhase}
-        isMissionOverview={isMissionOverview}
-      />
+      <MissionTimeButtons currentPhase={displayedPhase} />
       <MissionCaptureButtons mission={missionOverview} />
       <Title order={4} my={'md'}>
         Actions
