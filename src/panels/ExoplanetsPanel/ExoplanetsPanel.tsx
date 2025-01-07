@@ -54,7 +54,6 @@ export function ExoplanetsPanel() {
   );
 
   function isAdded(starName: string) {
-    // Replace all spaces with underscores
     return (
       addedSystems.findIndex(
         (owner) => owner?.identifier === name2Identifier(starName)
@@ -62,12 +61,18 @@ export function ExoplanetsPanel() {
     );
   }
 
+  // TODO: this is not a foolproof function to get the identifier.
+  // We should get the identifiers from the engine or redesign the panel
+  // This function copies what the engine does to create the identifiers
   function name2Identifier(starName: string) {
-    return starName.replace(/ /g, '_');
+    let identifier = starName.replaceAll('_', ' ');
+    const punctuationRegex = /[!"#$%&'()*+\-./:;<=>?@[\\\]^_`{|}~]/g;
+    identifier = identifier.replace(punctuationRegex, '-');
+    return identifier.replaceAll(' ', '_');
   }
 
   function handleClick(starName: string) {
-    const starIdentifier = starName.replace(/ /g, '_');
+    const starIdentifier = name2Identifier(starName);
     if (isAdded(starName)) {
       const matchingAnchor = anchor?.indexOf(starIdentifier) === 0;
       const matchingAim = aim?.indexOf(starIdentifier) === 0;
