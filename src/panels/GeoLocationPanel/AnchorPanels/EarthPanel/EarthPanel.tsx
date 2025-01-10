@@ -106,8 +106,8 @@ export function EarthPanel({ currentAnchor }: Props) {
     luaApi?.removeSceneGraphNode(identifier);
   }
 
-  function isSceneGraphNodeAdded(uri: Uri): boolean {
-    return `${ScenePrefixKey}${uri}` in propertyOwners;
+  function isSceneGraphNodeAdded(identifier: Identifier): boolean {
+    return `${ScenePrefixKey}${identifier}` in propertyOwners;
   }
 
   function createSceneGraphNodeTable(
