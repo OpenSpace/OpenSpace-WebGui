@@ -48,7 +48,7 @@ export function SceneTree({ filter }: Props) {
   const initialExpandedNodes = useAppSelector((state) => state.groups.expandedGroups);
 
   // We use a ref here, since we need this object to exists for the entire lifetime of the
-  // component, including when the component is unmounted
+  // component, including on unmount
   const expandedGroups = useRef<string[]>(initialExpandedNodes);
 
   const tree = useTree({
@@ -66,6 +66,8 @@ export function SceneTree({ filter }: Props) {
   });
 
   const dispatch = useAppDispatch();
+
+  // This will only be run on unmount
   useEffect(() => {
     return () => {
       // Save expanded state on unmount

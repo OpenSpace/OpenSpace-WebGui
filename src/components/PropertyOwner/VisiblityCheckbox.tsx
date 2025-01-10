@@ -28,8 +28,12 @@ export function PropertyOwnerVisibilityCheckbox({ uri, onChange }: Props) {
   const isFadeable = fadePropertyValue !== undefined;
 
   const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
+
+  // This is the value that is shown in the checkbox, it is not necessarily the same as
+  // the isVisible value, since the checkbox can be in a transition state
   const [checked, setChecked] = useState(isVisible);
 
+  // If the visibility is changed elsewhere we need to update the checkbox
   useEffect(() => {
     setChecked(isVisible);
   }, [isVisible]);
