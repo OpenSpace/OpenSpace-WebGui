@@ -19,14 +19,13 @@ export function CollapsableHeader({
   leftSection,
   rightSection
 }: Props) {
-  const iconProps = { size: IconSize.xs };
   return (
     <Group wrap={'nowrap'} gap={0}>
       <ActionIcon variant={'transparent'} onClick={toggle}>
         {expanded ? (
-          <ChevronDownIcon {...iconProps} />
+          <ChevronDownIcon size={IconSize.xs} />
         ) : (
-          <ChevronRightIcon {...iconProps} />
+          <ChevronRightIcon size={IconSize.xs} />
         )}
       </ActionIcon>
       <ThreePartHeader

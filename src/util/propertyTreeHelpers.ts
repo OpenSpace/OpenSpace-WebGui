@@ -8,7 +8,7 @@ import {
   Uri
 } from '@/types/types';
 
-import { InterestingTagKey } from './keys';
+import { InterestingTagKey, LayersSuffixKey, RenderableSuffixKey } from './keys';
 
 export function identifierFromUri(uri: Uri): Identifier {
   // The identifier is always the last word in the URI
@@ -25,6 +25,10 @@ export function sgnIdentifierFromSubownerUri(uri: Uri): Identifier {
     throw Error(`Invalid SGN URI '${uri}'`);
   }
   return splitUri[1];
+}
+
+export function sgnRenderableUri(sceneGraphNodeUri: Uri): Uri {
+  return `${sceneGraphNodeUri}${RenderableSuffixKey}`;
 }
 
 export function displayName(propertyOwner: PropertyOwner): string {
@@ -47,21 +51,24 @@ export function guiOrderingNumber(uri: Uri, properties: Properties): number | un
 }
 
 export function isRenderable(uri: Uri): boolean {
-  const renderableSuffix = '.Renderable';
-  return uri.endsWith(renderableSuffix);
+  return uri.endsWith(RenderableSuffixKey);
 }
 
 export function isGlobe(renderableUri: Uri, properties: Properties): boolean {
-  const renderableSuffix = '.Renderable';
   return (
-    renderableUri.endsWith(renderableSuffix) &&
+    renderableUri.endsWith(RenderableSuffixKey) &&
     properties[`${renderableUri}.Type`]?.value === 'RenderableGlobe'
   );
 }
 
 export function isGlobeLayersUri(uri: Uri, properties: Properties): boolean {
-  const suffix = '.Renderable.Layers';
-  return uri.endsWith(suffix) && isGlobe(uri.replace('.Layers', ''), properties);
+  const isLayers = uri.endsWith(LayersSuffixKey);
+  if (!isLayers) {
+    return false;
+  }
+  // The renderable is the parent of the Layers property owner
+  const renderableUri = uri.replace(LayersSuffixKey, '');
+  return isGlobe(renderableUri, properties);
 }
 
 export function isPropertyOwnerHidden(uri: Uri, properties: Properties) {
@@ -70,7 +77,7 @@ export function isPropertyOwnerHidden(uri: Uri, properties: Properties) {
 }
 
 export function isSceneGraphNodeVisible(uri: Uri, properties: Properties): boolean {
-  const renderableUri = `${uri}.Renderable`;
+  const renderableUri = sgnRenderableUri(uri);
   const enabledValue = properties[`${renderableUri}.Enabled`]?.value as boolean;
   const fadeValue = properties[`${renderableUri}.Fade`]?.value as number;
   return checkVisiblity(enabledValue, fadeValue) || false;

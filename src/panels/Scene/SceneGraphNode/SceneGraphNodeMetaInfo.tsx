@@ -4,7 +4,6 @@ import {
   Flex,
   Group,
   Pill,
-  Space,
   Spoiler,
   Table,
   TableData,
@@ -22,7 +21,8 @@ interface Props {
 }
 
 export function SceneGraphNodeMetaInfo({ uri }: Props) {
-  const identifier = identifierFromUri(uri);
+  const propertyOwner = useGetPropertyOwner(uri);
+  const [guiPath] = useGetStringPropertyValue(`${uri}.GuiPath`);
 
   let [description] = useGetStringPropertyValue(`${uri}.GuiDescription`);
   if (description) {
@@ -31,7 +31,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
     description = 'No description found';
   }
 
-  const [guiPath] = useGetStringPropertyValue(`${uri}.GuiPath`);
+  const identifier = identifierFromUri(uri);
 
   const documentation = useAppSelector((state) => {
     if (identifier) {
@@ -41,8 +41,6 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
     }
     return undefined;
   });
-
-  const propertyOwner = useGetPropertyOwner(uri);
 
   const mainTableData: TableData = {
     body: [
@@ -125,8 +123,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
 
   return (
     <>
-      <Table withRowBorders={false} data={mainTableData} />
-      <Space h={'md'} />
+      <Table mb={'md'} withRowBorders={false} data={mainTableData} />
       <Card>
         <Title order={3}>Asset Info</Title>
         <Table data={assetMetaTableData} />

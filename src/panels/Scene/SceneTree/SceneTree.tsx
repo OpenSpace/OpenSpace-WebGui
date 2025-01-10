@@ -21,10 +21,10 @@ import { useOpenCurrentSceneNodeWindow } from '../hooks';
 import { FeaturedSceneTree } from './FeaturedSceneTree';
 import { SceneTreeNode, SceneTreeNodeStyled } from './SceneTreeNode';
 import { sortTreeData } from './sortingUtil';
-import { filterTreeData, isGroup, SceneTreeFilterProps } from './treeUtil';
+import { filterTreeData, isGroup, SceneTreeFilterSettings } from './treeUtil';
 
 interface Props {
-  filter: SceneTreeFilterProps;
+  filter: SceneTreeFilterSettings;
 }
 
 // @TODO (emmbr, 2024-12-03): Make the search more sophisticated. For example, include

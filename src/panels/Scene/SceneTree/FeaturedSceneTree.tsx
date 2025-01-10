@@ -7,10 +7,10 @@ import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/ke
 import { hasInterestingTag } from '@/util/propertyTreeHelpers';
 
 import { SceneTreeNodeStyled } from './SceneTreeNode';
-import { filterTreeData, GroupPrefixKey, SceneTreeFilterProps } from './treeUtil';
+import { filterTreeData, GroupPrefixKey, SceneTreeFilterSettings } from './treeUtil';
 
 interface Props {
-  filter: SceneTreeFilterProps;
+  filter: SceneTreeFilterSettings;
 }
 
 /**

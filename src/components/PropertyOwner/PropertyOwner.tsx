@@ -1,4 +1,4 @@
-import { Group, Paper, Space } from '@mantine/core';
+import { Group, Paper } from '@mantine/core';
 
 import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { CollapsableContent } from '@/components/Collapse/CollapsableContent/CollapsableContent';
@@ -52,16 +52,15 @@ export function PropertyOwner({
   } else {
     content = (
       <>
-        {!hideSubOwners && hasSubowners && (
+        {!hideSubOwners && (
           <>
             {subowners.map((subowner) => (
               <PropertyOwner key={subowner} uri={subowner} />
             ))}
-            {hasVisibleProperties && <Space h={'xs'} />}
           </>
         )}
         {hasVisibleProperties && (
-          <Paper p={'xs'}>
+          <Paper p={'xs'} mt={hasSubowners ? 'xs' : undefined}>
             {visibleProperties.map((property) => (
               <Property key={property} uri={property} />
             ))}

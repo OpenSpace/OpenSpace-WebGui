@@ -8,7 +8,7 @@ import { OpenInNewIcon, VerticalDotsIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
-import { displayName } from '@/util/propertyTreeHelpers';
+import { displayName, sgnRenderableUri } from '@/util/propertyTreeHelpers';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { SceneGraphNodeView } from './SceneGraphNodeView';
@@ -22,7 +22,7 @@ interface Props {
 export function SceneGraphNodeHeader({ uri, label, onClick }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
 
-  const renderableUri = `${uri}.Renderable`;
+  const renderableUri = sgnRenderableUri(uri);
   const hasRenderable = useAppSelector((state) => {
     return state.propertyOwners.propertyOwners[renderableUri] !== undefined;
   });

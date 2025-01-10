@@ -25,13 +25,13 @@ export function Scene() {
     (state) => Object.keys(state.propertyOwners.propertyOwners).length > 0
   );
 
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const tags = useAppSelector((state) => state.groups.tags);
-  const sortedTags = Array.from(tags).sort();
-
   const [showOnlyVisible, setshowOnlyVisible] = useState(false);
   const [showHiddenNodes, setShowHiddenNodes] = useState(false);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
+  const tags = useAppSelector((state) => state.groups.tags);
+
+  const sortedTags = Array.from(tags).sort();
   const hasFilters = showOnlyVisible || showHiddenNodes || selectedTags.length > 0;
 
   function clearFilters() {

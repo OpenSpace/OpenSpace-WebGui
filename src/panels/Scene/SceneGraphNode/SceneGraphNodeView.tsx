@@ -1,4 +1,4 @@
-import { Box, Space, Tabs, Text } from '@mantine/core';
+import { Box, Tabs, Text } from '@mantine/core';
 
 import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
@@ -73,8 +73,7 @@ export function SceneGraphNodeView({ uri }: Props) {
   return (
     <Box m={'xs'}>
       <SceneGraphNodeHeader uri={uri} />
-      <Space h={'xs'} />
-      <Tabs variant={'outline'} defaultValue={defaultTab}>
+      <Tabs mt={'xs'} variant={'outline'} defaultValue={defaultTab}>
         <Tabs.List>
           {hasRenderable && (
             <Tabs.Tab value={TabKeys.Renderable}>{TabKeys.Renderable}</Tabs.Tab>
