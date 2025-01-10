@@ -3,6 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
+
 import { OpenSpaceVersionInfoState } from './versionSlice';
 
 export const getVersion = createAsyncThunk('version/getVersion', async () => {
