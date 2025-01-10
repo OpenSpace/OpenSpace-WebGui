@@ -4,10 +4,11 @@ import { shallowEqual, useDisclosure } from '@mantine/hooks';
 import { CollapsableHeader } from '@/components/CollapsableHeader/CollapsableHeader';
 import { Property } from '@/components/Property/Property';
 import { useAppSelector } from '@/redux/hooks';
+import { Uri } from '@/types/types';
 import { isPropertyVisible, isRenderable } from '@/util/propertytreehelper';
 
 interface Props {
-  uri: string;
+  uri: Uri;
   autoExpand?: boolean;
 }
 

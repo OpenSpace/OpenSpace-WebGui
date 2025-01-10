@@ -4,11 +4,13 @@ import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import {
+  Identifier,
   Properties,
   Property,
   PropertyMetaData,
   PropertyOwner,
-  PropertyOwners
+  PropertyOwners,
+  Uri
 } from '@/types/types';
 import { rootOwnerKey } from '@/util/keys';
 
@@ -21,13 +23,13 @@ import {
 } from './propertyowner/propertyOwnerSlice';
 
 export const reloadPropertyTree = createAction<void>('propertyTree/reload');
-export const removeUriFromPropertyTree = createAction<{ uri: string }>(
+export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(
   'propertyTree/removeUri'
 );
 
 export const addUriToPropertyTree = createAsyncThunk(
   'propertyTree/addUri',
-  async (uri: string) => {
+  async (uri: Uri) => {
     const response = (await api.getProperty(uri)) as
       | OpenSpaceProperty
       | OpenSpacePropertyOwner;
@@ -69,17 +71,17 @@ export const addUriToPropertyTree = createAsyncThunk(
 type OpenSpacePropertyOwner = {
   description: string;
   guiName: string;
-  identifier: string;
+  identifier: Identifier;
   properties: OpenSpaceProperty[];
   subowners: OpenSpacePropertyOwner[];
   tag: string[];
-  uri: string;
+  uri: Uri;
 };
 
 type OpenSpaceProperty = {
   Description: {
     AdditionalData: object;
-    Identifier: string;
+    Identifier: Identifier;
     MetaData: PropertyMetaData;
     Name: string;
     Type: string; // TODO: define these as property types? i.e., boolproperty | stringproperty etc

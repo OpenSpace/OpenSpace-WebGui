@@ -1,10 +1,6 @@
 import { Button, Group, Stack, Text } from '@mantine/core';
 
-import {
-  useGetPropertyOwner,
-  useGetStringPropertyValue,
-  useSubscribeToProperty
-} from '@/api/hooks';
+import { useGetPropertyOwner, useGetStringPropertyValue } from '@/api/hooks';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
@@ -18,16 +14,13 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
   //   const engineMode = useAppSelector(
   //     (state) => state.engineMode.mode || EngineModeUserControl
   //   );
-  const anchor = useGetStringPropertyValue(NavigationAnchorKey);
-  const aim = useGetStringPropertyValue(NavigationAimKey);
+  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
+  const [aim] = useGetStringPropertyValue(NavigationAimKey);
   const anchorName = useGetPropertyOwner(`${ScenePrefixKey}${anchor}`)?.name ?? anchor;
   const aimName = useGetPropertyOwner(`${ScenePrefixKey}${aim}`)?.name ?? aim;
 
   const cappedAnchorName = anchorName?.substring(0, 20) ?? '';
   const cappedAimName = aimName?.substring(0, 20) ?? '';
-
-  useSubscribeToProperty(NavigationAnchorKey);
-  useSubscribeToProperty(NavigationAimKey);
 
   function hasDistinctAim() {
     return aim !== '' && aim !== anchor;

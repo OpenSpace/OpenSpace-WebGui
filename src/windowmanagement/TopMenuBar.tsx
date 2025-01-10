@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Button, Group, Menu } from '@mantine/core';
 
 import { WindowLayoutOptions } from './WindowLayout/WindowLayout';
@@ -9,7 +9,7 @@ import { TaskBarMenuChoices } from './TaskBarMenuChoices';
 interface TopMenuBarProps {
   visibleMenuItems: string[];
   setVisibleMenuItems: Dispatch<SetStateAction<string[]>>;
-  addWindow: (component: JSX.Element, options: WindowLayoutOptions) => void;
+  addWindow: (component: React.JSX.Element, options: WindowLayoutOptions) => void;
 }
 
 export function TopMenuBar({
