@@ -3,7 +3,9 @@ import { Box, Tabs, Text } from '@mantine/core';
 import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { useAppSelector } from '@/redux/hooks';
-import { PropertyOwner as PropertyOwnerType, Uri } from '@/types/types';
+import { TransformType } from '@/types/enums';
+import { Uri } from '@/types/types';
+import { getSgnRenderable, getSgnTransform } from '@/util/propertyTreeHelpers';
 
 import { SceneGraphNodeHeader } from './SceneGraphNodeHeader';
 import { SceneGraphNodeMetaInfo } from './SceneGraphNodeMetaInfo';
@@ -31,37 +33,29 @@ export function SceneGraphNodeView({ uri }: Props) {
     );
   }
 
-  const TabKeys = {
-    Renderable: 'Renderable',
-    Transform: 'Transform',
-    Other: 'Other',
-    Info: 'Info'
-  };
+  enum TabKeys {
+    Renderable = 'Renderable',
+    Transform = 'Transform',
+    Other = 'Other',
+    Info = 'Info'
+  }
 
   // We know that all scene graph nodes have the same subowners. However, not all of them
-  // are guaranteed to exist
-  const subowners: {
-    Renderable?: PropertyOwnerType;
-    Scale?: PropertyOwnerType;
-    Translation?: PropertyOwnerType;
-    Rotation?: PropertyOwnerType;
-  } = {};
-
-  propertyOwner.subowners.forEach((subowner) => {
-    const owner = propertyOwners[subowner];
-    if (owner) {
-      type SubownerKey = keyof typeof subowners;
-      subowners[owner.identifier as SubownerKey] = owner;
-    }
-  });
+  // are guaranteed to exist, so each of these may be undefined
+  const renderable = getSgnRenderable(propertyOwner, propertyOwners);
+  const scale = getSgnTransform(propertyOwner, TransformType.Scale, propertyOwners);
+  const translation = getSgnTransform(
+    propertyOwner,
+    TransformType.Translation,
+    propertyOwners
+  );
+  const rotation = getSgnTransform(propertyOwner, TransformType.Rotation, propertyOwners);
 
   // Group the transforms under one tab, in the following order. Only show the transforms
   // that are actually present
-  const transforms = [subowners.Scale, subowners.Translation, subowners.Rotation].filter(
-    (t) => t !== undefined
-  );
+  const transforms = [scale, translation, rotation].filter((t) => t !== undefined);
 
-  const hasRenderable = subowners.Renderable !== undefined;
+  const hasRenderable = renderable !== undefined;
   const hasOther = visibleProperties.length > 0;
   const defaultTab = hasRenderable ? TabKeys.Renderable : TabKeys.Transform;
 
@@ -82,9 +76,9 @@ export function SceneGraphNodeView({ uri }: Props) {
           {hasOther && <Tabs.Tab value={TabKeys.Other}>{TabKeys.Other}</Tabs.Tab>}
           <Tabs.Tab value={TabKeys.Info}>{TabKeys.Info}</Tabs.Tab>
         </Tabs.List>
-        {subowners.Renderable && (
+        {hasRenderable && (
           <Tabs.Panel value={TabKeys.Renderable}>
-            <PropertyOwner uri={subowners.Renderable.uri} withHeader={false} />
+            <PropertyOwner uri={renderable.uri} withHeader={false} />
           </Tabs.Panel>
         )}
         <Tabs.Panel value={TabKeys.Transform}>

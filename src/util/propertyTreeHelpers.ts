@@ -1,3 +1,4 @@
+import { TransformType } from '@/types/enums';
 import {
   Identifier,
   Properties,
@@ -8,7 +9,14 @@ import {
   Uri
 } from '@/types/types';
 
-import { InterestingTagKey, LayersSuffixKey, RenderableSuffixKey } from './keys';
+import {
+  InterestingTagKey,
+  LayersSuffixKey,
+  RenderableSuffixKey,
+  RotationKey,
+  ScaleKey,
+  TranslationKey
+} from './keys';
 
 // TODO: Maybe move some of these to a "uriHelpers" file?
 export function identifierFromUri(uri: Uri): Identifier {
@@ -42,6 +50,30 @@ export function fadePropertyUri(propertyOwnerUri: Uri): Uri {
 
 export function displayName(propertyOwner: PropertyOwner): string {
   return propertyOwner.name ?? propertyOwner.identifier ?? propertyOwner.uri;
+}
+
+export function getSgnRenderable(
+  sceneGraphNode: PropertyOwner,
+  propertyOwners: PropertyOwners
+): PropertyOwner | undefined {
+  return propertyOwners[sgnRenderableUri(sceneGraphNode.uri)];
+}
+
+export function getSgnTransform(
+  sceneGraphNode: PropertyOwner,
+  transformType: TransformType,
+  propertyOwners: PropertyOwners
+): PropertyOwner | undefined {
+  switch (transformType) {
+    case TransformType.Scale:
+      return propertyOwners[`${sceneGraphNode.uri}.${ScaleKey}`];
+    case TransformType.Translation:
+      return propertyOwners[`${sceneGraphNode.uri}.${TranslationKey}`];
+    case TransformType.Rotation:
+      return propertyOwners[`${sceneGraphNode.uri}.${RotationKey}`];
+    default:
+      return undefined;
+  }
 }
 
 export function hasInterestingTag(

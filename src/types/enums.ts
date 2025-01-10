@@ -26,3 +26,9 @@ export enum TimePart {
   Months = 'Months',
   Years = 'Years'
 }
+
+export enum TransformType {
+  Scale = 'Scale',
+  Translation = 'Translation',
+  Rotation = 'Rotation'
+}

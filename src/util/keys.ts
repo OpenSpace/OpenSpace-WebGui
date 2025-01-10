@@ -25,3 +25,6 @@ export const Size1AuRingPropertyKey = 'Modules.Exoplanets.ShowComparisonCircle';
 
 export const ScreenSpaceKey = 'ScreenSpace';
 export const RenderableKey = 'Renderable';
+export const TranslationKey = 'Translation';
+export const ScaleKey = 'Scale';
+export const RotationKey = 'Rotation';
