@@ -10,6 +10,7 @@ import {
 
 import { InterestingTagKey, LayersSuffixKey, RenderableSuffixKey } from './keys';
 
+// TODO: Maybe move some of these to a "uriHelpers" file?
 export function identifierFromUri(uri: Uri): Identifier {
   // The identifier is always the last word in the URI
   const identifier = uri.split('.').pop();
@@ -29,6 +30,14 @@ export function sgnIdentifierFromSubownerUri(uri: Uri): Identifier {
 
 export function sgnRenderableUri(sceneGraphNodeUri: Uri): Uri {
   return `${sceneGraphNodeUri}${RenderableSuffixKey}`;
+}
+
+export function enabledPropertyUri(propertyOwnerUri: Uri): Uri {
+  return `${propertyOwnerUri}.Enabled`;
+}
+
+export function fadePropertyUri(propertyOwnerUri: Uri): Uri {
+  return `${propertyOwnerUri}.Fade`;
 }
 
 export function displayName(propertyOwner: PropertyOwner): string {
@@ -78,8 +87,8 @@ export function isPropertyOwnerHidden(uri: Uri, properties: Properties) {
 
 export function isSceneGraphNodeVisible(uri: Uri, properties: Properties): boolean {
   const renderableUri = sgnRenderableUri(uri);
-  const enabledValue = properties[`${renderableUri}.Enabled`]?.value as boolean;
-  const fadeValue = properties[`${renderableUri}.Fade`]?.value as number;
+  const enabledValue = properties[enabledPropertyUri(renderableUri)]?.value as boolean;
+  const fadeValue = properties[fadePropertyUri(renderableUri)]?.value as number;
   return checkVisiblity(enabledValue, fadeValue) || false;
 }
 

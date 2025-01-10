@@ -7,7 +7,11 @@ import {
   useOpenSpaceApi
 } from '@/api/hooks';
 import { Uri } from '@/types/types';
-import { checkVisiblity } from '@/util/propertyTreeHelpers';
+import {
+  checkVisiblity,
+  enabledPropertyUri,
+  fadePropertyUri
+} from '@/util/propertyTreeHelpers';
 
 interface Props {
   uri: Uri;
@@ -17,10 +21,10 @@ interface Props {
 export function PropertyOwnerVisibilityCheckbox({ uri, onChange }: Props) {
   const luaApi = useOpenSpaceApi();
 
-  const enabledUri = `${uri}.Enabled`;
-  const fadeUri = `${uri}.Fade`;
-  const [enabledPropertyValue, setEnabledProperty] = useGetBoolPropertyValue(enabledUri);
-  const [fadePropertyValue] = useGetFloatPropertyValue(fadeUri);
+  const [enabledPropertyValue, setEnabledProperty] = useGetBoolPropertyValue(
+    enabledPropertyUri(uri)
+  );
+  const [fadePropertyValue] = useGetFloatPropertyValue(fadePropertyUri(uri));
   const isFadeable = fadePropertyValue !== undefined;
 
   const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
