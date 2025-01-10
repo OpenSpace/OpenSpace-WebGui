@@ -16,7 +16,11 @@ import { rootOwnerKey } from '@/util/keys';
 
 import { refreshGroups } from '../groups/groupsSliceMiddleware';
 
-import { clearProperties, removeProperties } from './properties/propertiesSlice';
+import {
+  addProperties,
+  clearProperties,
+  removeProperties
+} from './properties/propertiesSlice';
 import {
   addPropertyOwners,
   clearPropertyOwners,
@@ -157,6 +161,9 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
     effect: (action, listenerApi) => {
       if (action.payload?.propertyOwners) {
         listenerApi.dispatch(addPropertyOwners(action.payload.propertyOwners));
+      }
+      if (action.payload?.properties) {
+        listenerApi.dispatch(addProperties(action.payload.properties));
       }
     }
   });
