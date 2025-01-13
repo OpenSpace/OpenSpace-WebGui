@@ -204,11 +204,10 @@ export const useSubscribeToProperty = (uri: Uri) => {
  */
 export const useGetVisibleProperties = (propertyOwner: PropertyOwner | undefined) => {
   const [visiblityLevelSetting] = useGetOptionPropertyValue(EnginePropertyVisibilityKey);
-  useSubscribeToProperty(EnginePropertyVisibilityKey);
 
   // @TODO (emmbr, 2024-12-03) Would be nicer if we didn't have to do the filtering as
   // part of the selector, but instead just get the state.properties.properties object
-  // and then and do the filterin outside of the selector. However, as of now
+  // and then and do the filtering outside of the selector. However, as of now
   // state.properties.properties object includes the property values, and it would hence
   // lead to rerendering updates on every property change. One idea would be to seprate
   // the property values from the property descriptions in the redux store.
