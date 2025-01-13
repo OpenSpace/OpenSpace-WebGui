@@ -29,6 +29,12 @@ export function SceneTreeNode({ node, expanded }: Props) {
   );
 }
 
+// This component is a wrapper around the SceneTreeNode component that adds the styling
+// that the Mantine Tree component uses for its nodes, such as the indentation at each
+// tree level.
+//
+// The reason it is split up into two components (one styled and one not) is that there
+// are cases when we want to render the nodes the tree-specic styling, e.g. when searching
 export function SceneTreeNodeStyled({
   node,
   expanded,

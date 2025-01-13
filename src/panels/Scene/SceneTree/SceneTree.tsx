@@ -45,8 +45,9 @@ export function SceneTree({ filter }: Props) {
 
   const initialExpandedNodes = useAppSelector((state) => state.groups.expandedGroups);
 
-  // We use a ref here, since we need this object to exists for the entire lifetime of the
-  // component, including on unmount
+  // Ref to keep track of which groups are currently expanded. The reason it is a ref is
+  // since we need this object to exist for the entire lifetime of the component,
+  // including on unmount
   const expandedGroups = useRef<string[]>(initialExpandedNodes);
 
   function isGroup(value: string): boolean {

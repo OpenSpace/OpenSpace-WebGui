@@ -91,30 +91,33 @@ export function createTreeSortingInformation(
   properties: Properties
 ): TreeSortingInfo {
   const result: TreeSortingInfo = {};
-  treeData.forEach((node) => {
-    function addNode(node: TreeNodeData) {
-      if (isGroupNode(node)) {
-        const groupPath = node.value.replace(SceneTreeGroupPrefixKey, '');
-        result[node.value] = {
-          type: 'group',
-          name: node.label as string,
-          guiOrder: undefined,
-          payload: groupPath
-        };
-      } else {
-        // Property owner
-        result[node.value] = {
-          type: 'propertyOwner',
-          name: node.label as string,
-          guiOrder: guiOrderingNumber(node.value, properties),
-          payload: node.value
-        };
-      }
 
-      if (node.children) {
-        node.children.forEach(addNode);
-      }
+  // Recursively add the sorting information for a node in the tree
+  function addNode(node: TreeNodeData) {
+    if (isGroupNode(node)) {
+      const groupPath = node.value.replace(SceneTreeGroupPrefixKey, '');
+      result[node.value] = {
+        type: 'group',
+        name: node.label as string,
+        guiOrder: undefined,
+        payload: groupPath
+      };
+    } else {
+      // Property owner
+      result[node.value] = {
+        type: 'propertyOwner',
+        name: node.label as string,
+        guiOrder: guiOrderingNumber(node.value, properties),
+        payload: node.value
+      };
     }
+
+    if (node.children) {
+      node.children.forEach(addNode);
+    }
+  }
+
+  treeData.forEach((node) => {
     addNode(node);
   });
 
@@ -226,13 +229,11 @@ export function sortTreeData(
     treeSortingInfo: TreeSortingInfo
   ) {
     return nodes.map((node) => {
-      if (node.children) {
-        if (isGroupNode(node)) {
-          const groupPath = node.value.replace(SceneTreeGroupPrefixKey, '');
-          const customOrdering = customGuiOrderingMap[groupPath];
-          node.children = sortTreeLevel(node.children, treeSortingInfo, customOrdering);
-          node.children = resursiveSortChildren(node.children, treeSortingInfo);
-        }
+      if (node.children && isGroupNode(node)) {
+        const groupPath = node.value.replace(SceneTreeGroupPrefixKey, '');
+        const customOrdering = customGuiOrderingMap[groupPath];
+        node.children = sortTreeLevel(node.children, treeSortingInfo, customOrdering);
+        node.children = resursiveSortChildren(node.children, treeSortingInfo);
       }
       return node;
     });

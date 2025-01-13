@@ -119,6 +119,17 @@ export type CustomGroupOrdering = {
   [key: string]: string[] | undefined;
 };
 
+export interface AssetMetaData {
+  author: string;
+  description: string;
+  identifiers?: string[];
+  license: string;
+  name: string;
+  path: string;
+  url: string;
+  version: string;
+}
+
 export type OpenSpaceTimeState = {
   time?: string;
   timeCapped?: string;
