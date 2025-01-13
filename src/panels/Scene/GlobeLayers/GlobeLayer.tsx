@@ -25,7 +25,7 @@ export function GlobeLayer({ uri }: Props) {
 
   // @TODO (emmbr, 2024-12-06): We want to avoid hardcoded colors, but since changing the
   // color of the text is a feature we wanted to keep I decided to do it this way for now.
-  const textColor = isActive ? 'white' : 'dimmed';
+  const textColor = isActive ? 'green' : undefined;
 
   return (
     <CollapsableContent
