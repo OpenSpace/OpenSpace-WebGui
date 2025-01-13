@@ -7,12 +7,11 @@ import {
   Group,
   Menu,
   MultiSelect,
-  Skeleton,
-  Stack,
   Tabs,
   Title
 } from '@mantine/core';
 
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { FilterIcon } from '@/icons/icons';
 import { SceneTree } from '@/panels/Scene/SceneTree/SceneTree';
@@ -40,23 +39,12 @@ export function Scene() {
     setSelectedTags([]);
   }
 
-  function loadingBlocks(n: number, minWidthPercentage: number = 0) {
-    const min = minWidthPercentage;
-    return (
-      <Stack>
-        {[...Array(n)].map((_, i) => (
-          <Skeleton
-            key={i}
-            height={10}
-            width={`${min + Math.random() * 100 * (1.0 - min / 100.0)}%`}
-          />
-        ))}
-      </Stack>
-    );
-  }
-
   if (!hasLoadedScene) {
-    return <Container mt={'md'}>{loadingBlocks(4, 20)}</Container>;
+    return (
+      <Container mt={'md'}>
+        <LoadingBlocks nBlocks={4} minWidthPercentage={20} />
+      </Container>
+    );
   }
 
   return (
