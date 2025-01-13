@@ -2,6 +2,7 @@ import { Box, Tabs, Text } from '@mantine/core';
 
 import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { useAppSelector } from '@/redux/hooks';
 import { TransformType } from '@/types/enums';
 import { Uri } from '@/types/types';
@@ -56,8 +57,8 @@ export function SceneGraphNodeView({ uri }: Props) {
   const transforms = [scale, translation, rotation].filter((t) => t !== undefined);
 
   const hasRenderable = renderable !== undefined;
-  const hasOther = visibleProperties.length > 0;
   const defaultTab = hasRenderable ? TabKeys.Renderable : TabKeys.Transform;
+  const hasOther = visibleProperties.length > 0;
 
   // @TODO (emmbr, 2024-12-04): Include information about the Parent node under Transform,
   // To communicate which transforms it inherits. However, first we need to get that
@@ -78,7 +79,7 @@ export function SceneGraphNodeView({ uri }: Props) {
         </Tabs.List>
         {hasRenderable && (
           <Tabs.Panel value={TabKeys.Renderable}>
-            <PropertyOwner uri={renderable.uri} withHeader={false} />
+            <PropertyOwnerContent uri={renderable.uri} />
           </Tabs.Panel>
         )}
         <Tabs.Panel value={TabKeys.Transform}>
@@ -96,7 +97,9 @@ export function SceneGraphNodeView({ uri }: Props) {
         </Tabs.Panel>
         {hasOther && (
           <Tabs.Panel value={TabKeys.Other}>
-            <PropertyOwner uri={uri} withHeader={false} hideSubOwners />
+            {/* This tab shows the properties scene graph node, without any of the
+                subowners */}
+            <PropertyOwnerContent uri={uri} hideSubowners />
           </Tabs.Panel>
         )}
         <Tabs.Panel value={TabKeys.Info}>

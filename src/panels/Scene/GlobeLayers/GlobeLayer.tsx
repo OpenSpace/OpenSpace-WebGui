@@ -3,7 +3,7 @@ import { Group, Paper, Text } from '@mantine/core';
 
 import { useGetBoolPropertyValue, useGetPropertyOwner } from '@/api/hooks';
 import { CollapsableContent } from '@/components/Collapse/CollapsableContent/CollapsableContent';
-import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { Uri } from '@/types/types';
@@ -44,7 +44,7 @@ export function GlobeLayer({ uri }: Props) {
       noTransition
     >
       <Paper withBorder>
-        <PropertyOwner uri={uri} withHeader={false} />
+        <PropertyOwnerContent uri={uri} />
       </Paper>
     </CollapsableContent>
   );

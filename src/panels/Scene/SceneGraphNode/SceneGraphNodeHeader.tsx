@@ -36,8 +36,7 @@ export function SceneGraphNodeHeader({ uri, label, onClick }: Props) {
   const name = label ?? displayName(propertyOwner);
 
   function openInNewWindow() {
-    const content = <SceneGraphNodeView uri={uri} />;
-    addWindow(content, {
+    addWindow(<SceneGraphNodeView uri={uri} />, {
       id: 'sgn-' + uri,
       title: name,
       position: 'float'

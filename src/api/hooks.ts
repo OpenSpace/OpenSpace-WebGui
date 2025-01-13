@@ -10,7 +10,7 @@ import {
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import { Property, PropertyOwner, PropertyValue, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
-import { isPropertyVisible } from '@/util/propertyTreeHelpers';
+import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelpers';
 
 import { LuaApiContext } from './LuaApiContext';
 // Hook to make it easier to get the api
@@ -215,12 +215,22 @@ export const useGetVisibleProperties = (propertyOwner: PropertyOwner | undefined
     useAppSelector(
       (state) =>
         propertyOwner?.properties.filter((p) =>
-          isPropertyVisible(
-            state.properties.properties[p]?.description,
-            visiblityLevelSetting
-          )
+          isPropertyVisible(state.properties.properties[p], visiblityLevelSetting)
         ),
       shallowEqual
     ) || []
   );
+};
+
+export const useHasVisibleChildren = (propertyOwnerUri: Uri): boolean => {
+  const [visiblityLevelSetting] = useGetOptionPropertyValue(EnginePropertyVisibilityKey);
+
+  return useAppSelector((state) => {
+    return hasVisibleChildren(
+      propertyOwnerUri,
+      visiblityLevelSetting,
+      state.propertyOwners.propertyOwners,
+      state.properties.properties
+    );
+  });
 };

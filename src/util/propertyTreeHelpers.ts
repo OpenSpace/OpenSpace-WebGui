@@ -2,7 +2,7 @@ import { PropertyVisibilityNumber, TransformType } from '@/types/enums';
 import {
   Identifier,
   Properties,
-  PropertyDetails,
+  Property,
   PropertyOwner,
   PropertyOwners,
   Uri
@@ -150,17 +150,41 @@ export function checkVisiblity(
 
 // Returns whether a property matches the current visiblity settings
 export function isPropertyVisible(
-  propertyDetails: PropertyDetails | undefined,
+  property: Property | undefined,
   visiblitySetting: number | undefined
 ): boolean {
-  if (visiblitySetting === undefined || !propertyDetails) {
+  if (visiblitySetting === undefined || !property) {
     return true;
   }
 
   const propertyVisibility =
-    PropertyVisibilityNumber[propertyDetails.metaData.Visibility] ?? 0;
+    PropertyVisibilityNumber[property?.description.metaData.Visibility] ?? 0;
 
   return visiblitySetting >= propertyVisibility;
+}
+
+export function hasVisibleChildren(
+  ownerUri: Uri,
+  visiblitySetting: number | undefined,
+  propertyOwners: PropertyOwners,
+  properties: Properties
+): boolean {
+  const propertyOwner = propertyOwners[ownerUri];
+  const hasVisibleProperties =
+    propertyOwner?.properties.some((p) =>
+      isPropertyVisible(properties[p], visiblitySetting)
+    ) || false;
+
+  if (hasVisibleProperties) {
+    return true;
+  }
+
+  const hasSubOwnersWithVisibleProperties =
+    propertyOwner?.subowners.some((so) =>
+      hasVisibleChildren(so, visiblitySetting, propertyOwners, properties)
+    ) || false;
+
+  return hasVisibleProperties || hasSubOwnersWithVisibleProperties;
 }
 
 /**

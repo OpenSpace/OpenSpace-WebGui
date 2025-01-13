@@ -1,77 +1,33 @@
-import { Group, Paper } from '@mantine/core';
+import { Group } from '@mantine/core';
 
-import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
+import { useGetPropertyOwner, useHasVisibleChildren } from '@/api/hooks';
 import { CollapsableContent } from '@/components/Collapse/CollapsableContent/CollapsableContent';
-import { Property } from '@/components/Property/Property';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
-import { GlobeLayersPropertyOwner } from '@/panels/Scene/GlobeLayers/GlobeLayersPropertyOwner';
-import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
-import { displayName, isGlobeLayersUri } from '@/util/propertyTreeHelpers';
+import { displayName } from '@/util/propertyTreeHelpers';
 
+import { PropertyOwnerContent } from './PropertyOwnerContent';
 import { PropertyOwnerVisibilityCheckbox } from './VisiblityCheckbox';
 
 interface Props {
   uri: Uri;
   expandedOnDefault?: boolean;
-  hideSubOwners?: boolean;
   withHeader?: boolean;
 }
 
-export function PropertyOwner({
-  uri,
-  expandedOnDefault = false,
-  hideSubOwners = false,
-  withHeader = true
-}: Props) {
+export function PropertyOwner({ uri, expandedOnDefault = false }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);
   }
 
-  const isGlobeLayers = useAppSelector((state) =>
-    isGlobeLayersUri(uri, state.properties.properties)
-  );
+  const hasVisibleChildren = useHasVisibleChildren(uri);
 
-  const visibleProperties = useGetVisibleProperties(propertyOwner);
-  const subowners = propertyOwner.subowners ?? [];
-  const hasSubowners = subowners.length > 0;
-  const hasVisibleProperties = visibleProperties.length > 0;
-
-  const hasContent = hasSubowners || hasVisibleProperties;
-
-  if (!hasContent) {
+  // If there is no content to show for the current visibility settings, we don't want to
+  // render this property owner
+  if (!hasVisibleChildren) {
     return <></>;
-  }
-
-  // First handle any custom content types, like GlobeLayers
-  let content;
-  if (isGlobeLayers) {
-    content = <GlobeLayersPropertyOwner uri={uri} />;
-  } else {
-    content = (
-      <>
-        {!hideSubOwners && (
-          <>
-            {subowners.map((subowner) => (
-              <PropertyOwner key={subowner} uri={subowner} />
-            ))}
-          </>
-        )}
-        {hasVisibleProperties && (
-          <Paper p={'xs'} mt={hasSubowners ? 'xs' : undefined}>
-            {visibleProperties.map((property) => (
-              <Property key={property} uri={property} />
-            ))}
-          </Paper>
-        )}
-      </>
-    );
-  }
-
-  if (!withHeader) {
-    return content;
   }
 
   return (
@@ -86,7 +42,7 @@ export function PropertyOwner({
       defaultOpen={expandedOnDefault}
       noTransition
     >
-      {content}
+      <PropertyOwnerContent uri={uri} />
     </CollapsableContent>
   );
 }
