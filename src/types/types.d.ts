@@ -1,3 +1,6 @@
+import { Property } from '@/components/Property/Property';
+import { PropertyVisibilityNumber } from './enums';
+
 export type Uri = string;
 export type Identifier = string;
 
@@ -56,13 +59,7 @@ export interface ExoplanetData {
   identifier: Identifier;
 }
 
-export type PropertyVisibility =
-  | 'Hidden'
-  | 'Developer'
-  | 'AdvancedUser'
-  | 'User'
-  | 'NoviceUser'
-  | 'Always';
+export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
 
 export interface PropertyMetaData {
   Group: string;

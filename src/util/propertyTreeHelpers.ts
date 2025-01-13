@@ -1,11 +1,10 @@
-import { TransformType } from '@/types/enums';
+import { PropertyVisibilityNumber, TransformType } from '@/types/enums';
 import {
   Identifier,
   Properties,
   PropertyDetails,
   PropertyOwner,
   PropertyOwners,
-  PropertyVisibility,
   Uri
 } from '@/types/types';
 
@@ -158,28 +157,9 @@ export function isPropertyVisible(
     return true;
   }
 
-  function propertyVisibilityNumber(visibility: PropertyVisibility) {
-    switch (visibility) {
-      case 'Hidden':
-        return 5;
-      case 'Developer':
-        return 4;
-      case 'AdvancedUser':
-        return 3;
-      case 'User':
-        return 2;
-      case 'NoviceUser':
-        return 1;
-      case 'Always':
-        return 0;
-      default:
-        return 0;
-    }
-  }
+  const propertyVisibility =
+    PropertyVisibilityNumber[propertyDetails.metaData.Visibility] ?? 0;
 
-  const propertyVisibility = propertyVisibilityNumber(
-    propertyDetails.metaData.Visibility
-  );
   return visiblitySetting >= propertyVisibility;
 }
 

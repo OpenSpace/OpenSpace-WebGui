@@ -32,3 +32,15 @@ export enum TransformType {
   Translation = 'Translation',
   Rotation = 'Rotation'
 }
+
+// This is not really an enum, but a collection of constants that need to be accessible
+// using a string value. It serves a similar function, but we need the keys as strings.
+// Did not find any better place for it, so putting it here for now. // emmbr, 2025-01-13
+export const PropertyVisibilityNumber = {
+  Hidden: 5,
+  Developer: 4,
+  AdvancedUser: 3,
+  User: 2,
+  NoviceUser: 1,
+  Always: 0
+};
