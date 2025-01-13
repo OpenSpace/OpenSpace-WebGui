@@ -15,23 +15,21 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ChevronsDownIcon, ChevronsUpIcon } from '@/icons/icons';
 import { storeSceneTreeNodeExpanded } from '@/redux/groups/groupsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { SceneTreeGroupPrefixKey } from '@/util/sceneTreeGroupsHelper';
 
 import { useOpenCurrentSceneNodeWindow } from '../hooks';
 
 import { FeaturedSceneTree } from './FeaturedSceneTree';
 import { SceneTreeNode, SceneTreeNodeStyled } from './SceneTreeNode';
-import { sortTreeData } from './sortingUtil';
-import { filterTreeData, isGroup, SceneTreeFilterSettings } from './treeUtil';
+import {
+  filterTreeData,
+  flattenTreeData,
+  SceneTreeFilterSettings,
+  sortTreeData
+} from './treeUtil';
 
 interface Props {
   filter: SceneTreeFilterSettings;
-}
-
-// @TODO (emmbr, 2024-12-03): Make the search more sophisticated. For example, include
-// information about the gui path as well. Could be hidden under a setting. Started doing
-// this but it needs some more afterthought. So just left this data structure here for now
-interface SearchData extends TreeNodeData {
-  guiPath: string | undefined;
 }
 
 export function SceneTree({ filter }: Props) {
@@ -50,6 +48,10 @@ export function SceneTree({ filter }: Props) {
   // We use a ref here, since we need this object to exists for the entire lifetime of the
   // component, including on unmount
   const expandedGroups = useRef<string[]>(initialExpandedNodes);
+
+  function isGroup(value: string): boolean {
+    return value.startsWith(SceneTreeGroupPrefixKey);
+  }
 
   const tree = useTree({
     initialExpandedState: getTreeExpandedState(sceneTreeData, initialExpandedNodes),
@@ -87,30 +89,12 @@ export function SceneTree({ filter }: Props) {
     return data;
   }, [customGuiOrdering, filter, properties, propertyOwners, sceneTreeData]);
 
-  function flattenTreeData(treeData: TreeNodeData[]): SearchData[] {
-    const flatData: SearchData[] = [];
-
-    function flatten(nodes: TreeNodeData[]) {
-      nodes.forEach((node) => {
-        if (node.children) {
-          flatten(node.children);
-        } else {
-          // Only add leaf nodes to the flat data
-          flatData.push({
-            ...node,
-            guiPath: properties[`${node.value}.GuiPath`]?.value as string | undefined
-          });
-        }
-      });
-    }
-    flatten(treeData);
-    return flatData;
-  }
+  // Create a flat list of all leaft nodes, that we can use for searching
   const flatTreeData = flattenTreeData(treeData);
 
-  // TODO: Would be nice to sort the results by some type of "relevance", but for now we
-  // just sort by name
-  flatTreeData.sort((a, b) => {
+  // @TODO (2025-01-13 emmbr): Would be nice to sort the results by some type of
+  // "relevance", but for now we just sort alphabetically
+  flatTreeData.sort((a: TreeNodeData, b: TreeNodeData) => {
     const nameA = a.label as string;
     const nameB = b.label as string;
     return nameA.toLocaleLowerCase().localeCompare(nameB.toLocaleLowerCase());
@@ -150,9 +134,9 @@ export function SceneTree({ filter }: Props) {
           </Group>
         </Box>
       </FilterList.Favorites>
-      <FilterList.Data<SearchData>
+      <FilterList.Data<TreeNodeData>
         data={flatTreeData}
-        renderElement={(node: SearchData) => (
+        renderElement={(node: TreeNodeData) => (
           <SceneTreeNode key={node.value} node={node} expanded={false} />
         )}
         matcherFunc={generateMatcherFunctionByKeys(['label'])} // For now we just use the name

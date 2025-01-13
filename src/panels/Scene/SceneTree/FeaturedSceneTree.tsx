@@ -1,13 +1,16 @@
 import { Divider, Tree, TreeNodeData } from '@mantine/core';
 
 import { useGetStringPropertyValue } from '@/api/hooks';
-import { treeDataForPropertyOwner } from '@/redux/groups/groupsSliceMiddleware';
 import { useAppSelector } from '@/redux/hooks';
-import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
-import { hasInterestingTag } from '@/util/propertyTreeHelpers';
+import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
+import { hasInterestingTag, sgnUri } from '@/util/propertyTreeHelpers';
+import {
+  SceneTreeGroupPrefixKey,
+  treeDataForSceneGraphNode
+} from '@/util/sceneTreeGroupsHelper';
 
 import { SceneTreeNodeStyled } from './SceneTreeNode';
-import { filterTreeData, GroupPrefixKey, SceneTreeFilterSettings } from './treeUtil';
+import { filterTreeData, SceneTreeFilterSettings } from './treeUtil';
 
 interface Props {
   filter: SceneTreeFilterSettings;
@@ -30,27 +33,27 @@ export function FeaturedSceneTree({ filter }: Props) {
   const featuredTreeData: TreeNodeData[] = [];
 
   if (anchor) {
-    const anchorData = treeDataForPropertyOwner(ScenePrefixKey + anchor, propertyOwners);
+    const anchorData = treeDataForSceneGraphNode(sgnUri(anchor), propertyOwners);
     anchorData.label = 'Current Focus: ' + anchorData.label;
     featuredTreeData.push(anchorData);
   }
 
   if (aim) {
-    const aimData = treeDataForPropertyOwner(ScenePrefixKey + aim, propertyOwners);
+    const aimData = treeDataForSceneGraphNode(sgnUri(aim), propertyOwners);
     aimData.label = 'Current Aim: ' + aimData.label;
     featuredTreeData.push(aimData);
   }
 
   const interestingNodes: TreeNodeData = {
     label: 'Quick Access',
-    value: GroupPrefixKey + 'interesting',
+    value: SceneTreeGroupPrefixKey + 'interesting',
     children: []
   };
 
   const propertyOwnersScene = propertyOwners.Scene?.subowners ?? [];
   propertyOwnersScene.forEach((uri) => {
     if (hasInterestingTag(uri, propertyOwners)) {
-      interestingNodes.children?.push(treeDataForPropertyOwner(uri, propertyOwners));
+      interestingNodes.children?.push(treeDataForSceneGraphNode(uri, propertyOwners));
     }
   });
 

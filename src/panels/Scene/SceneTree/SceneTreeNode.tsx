@@ -1,12 +1,11 @@
 import { Box, RenderTreeNodePayload, TreeNodeData } from '@mantine/core';
 
 import { CollapsableHeader } from '@/components/Collapse/CollapsableHeader/CollapsableHeader';
+import { isGroupNode } from '@/util/sceneTreeGroupsHelper';
 
 import { useOpenCurrentSceneNodeWindow } from '../hooks';
 import { SceneGraphNodeHeader } from '../SceneGraphNode/SceneGraphNodeHeader';
 import { SceneGraphNodeView } from '../SceneGraphNode/SceneGraphNodeView';
-
-import { isGroupNode } from './treeUtil';
 
 interface Props {
   node: TreeNodeData;

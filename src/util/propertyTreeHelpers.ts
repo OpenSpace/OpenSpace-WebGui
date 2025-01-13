@@ -15,6 +15,7 @@ import {
   RenderableSuffixKey,
   RotationKey,
   ScaleKey,
+  ScenePrefixKey,
   TranslationKey
 } from './keys';
 
@@ -50,6 +51,10 @@ export function fadePropertyUri(propertyOwnerUri: Uri): Uri {
 
 export function displayName(propertyOwner: PropertyOwner): string {
   return propertyOwner.name ?? propertyOwner.identifier ?? propertyOwner.uri;
+}
+
+export function sgnUri(identifier: Identifier): Uri {
+  return `${ScenePrefixKey}${identifier}`;
 }
 
 export function getSgnRenderable(
@@ -89,6 +94,10 @@ export function guiOrderingNumber(uri: Uri, properties: Properties): number | un
     return undefined;
   }
   return properties[`${uri}.GuiOrderingNumber`]?.value as number | undefined;
+}
+
+export function isSceneGraphNode(uri: Uri): boolean {
+  return uri.startsWith(ScenePrefixKey) && uri.split('.').length === 2;
 }
 
 export function isRenderable(uri: Uri): boolean {
@@ -172,4 +181,15 @@ export function isPropertyVisible(
     propertyDetails.metaData.Visibility
   );
   return visiblitySetting >= propertyVisibility;
+}
+
+/**
+ * Get the Gui Path for a specific scene graph node, if it exists.
+ */
+export function getGuiPath(sgnUri: Uri, properties: Properties): string | undefined {
+  const guiPath = properties[`${sgnUri}.GuiPath`]?.value;
+  if (guiPath !== undefined && typeof guiPath !== 'string') {
+    throw new Error(`GuiPath property for '${sgnUri}' is not a string`);
+  }
+  return guiPath as string | undefined;
 }
