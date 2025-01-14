@@ -15,7 +15,7 @@ import {
 import { Action } from '@/types/types';
 
 import { FullKeyboard } from './FullKeyboard/FullKeyboard';
-import { Keybind } from './Keybind';
+import { KeybindButtons } from './Keybind';
 
 export function KeyBindsPanel() {
   const [selectedActions, setSelectedActions] = React.useState<Action[]>([]);
@@ -34,7 +34,7 @@ export function KeyBindsPanel() {
       />{' '}
       <Group my={'md'}>
         <Title order={3}>Selected keybind:</Title>
-        <Keybind selectedKey={selectedKey} modifiers={activeModifiers}></Keybind>
+        <KeybindButtons selectedKey={selectedKey} modifiers={activeModifiers} />
       </Group>
       <Divider />
       <Title order={3} my={'md'}>

@@ -11,7 +11,8 @@ import {
   KeyboardLayout,
   Modifiers,
   NumpadEndLayout,
-  NumpadLayout} from './data';
+  NumpadLayout
+} from './data';
 import {
   arraysEqual,
   commonKeyboardOptions,
@@ -138,7 +139,7 @@ export function FullKeyboard({
         onKeyPress={onKeyPress}
         {...commonKeyboardOptions}
       />
-      <Stack justify={"space-between"}>
+      <Stack justify={'space-between'}>
         <Keyboard
           baseClass={'simple-keyboard-control'}
           buttonTheme={buttonHighlights()}

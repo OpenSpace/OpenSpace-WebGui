@@ -4,12 +4,13 @@ import { Group, Kbd, Text } from '@mantine/core';
 import { KeyboardDisplayNames } from './FullKeyboard/data';
 import { keyToOpenSpaceKey } from './FullKeyboard/util';
 
-interface KeybindProps {
+interface KeybindButtonsProps {
   modifiers: string[];
   selectedKey: string;
 }
 
-export function Keybind({ modifiers, selectedKey }: KeybindProps) {
+export function KeybindButtons({ modifiers, selectedKey }: KeybindButtonsProps) {
+  // Get the display version of the simple-keyboard input key
   const displayKey =
     selectedKey in KeyboardDisplayNames
       ? KeyboardDisplayNames[selectedKey as keyof typeof KeyboardDisplayNames]
