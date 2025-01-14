@@ -5,6 +5,7 @@ import { ActionsPanel } from '@/panels/ActionsPanel/ActionsPanel';
 import { ExoplanetsPanel } from '@/panels/ExoplanetsPanel/ExoplanetsPanel';
 import { FlightControlPanel } from '@/panels/FlightControlPanel/FlightControlPanel';
 import { GeoLocationPanel } from '@/panels/GeoLocationPanel/GeoLocationPanel';
+import { KeyBindsPanel } from '@/panels/KeybindsPanel/KeybindsPanel';
 import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { Scene } from '@/panels/Scene/Scene';
@@ -13,7 +14,6 @@ import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
 import { TimePanel } from '@/panels/TimePanel/TimePanel';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
-import { KeyBindsPanel } from '@/panels/KeybindsPanel/KeybindsPanel';
 import { UserPanelsPanel } from '@/panels/UserPanelsPanel/UserPanelsPanel';
 
 export interface MenuItem {
