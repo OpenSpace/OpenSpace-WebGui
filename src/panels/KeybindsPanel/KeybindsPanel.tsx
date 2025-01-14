@@ -1,12 +1,20 @@
 import React from 'react';
-import { Container, Group, Kbd, Stack,Text, Title } from '@mantine/core';
+import {
+  Badge,
+  Code,
+  Container,
+  Divider,
+  Grid,
+  Group,
+  Paper,
+  Table,
+  Text,
+  Title
+} from '@mantine/core';
 
-import { FilterList } from '@/components/FilterList/FilterList';
-import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
-import { useAppSelector } from '@/redux/hooks';
-import { Action, Keybind as KeybindType } from '@/types/types';
+import { Action } from '@/types/types';
 
-import { KeyboardComponent } from './Keyboard/Keyboard';
+import { FullKeyboard } from './FullKeyboard/FullKeyboard';
 import { Keybind } from './Keybind';
 
 export function KeyBindsPanel() {
@@ -14,62 +22,65 @@ export function KeyBindsPanel() {
   const [activeModifiers, setActiveModifiers] = React.useState<string[]>([]);
   const [selectedKey, setSelectedKey] = React.useState<string>('');
 
+  const hasSelectedKeys = selectedKey === '' && activeModifiers.length === 0;
   return (
-    <>
-      <KeyboardComponent
+    <Container maw={'none'}>
+      <FullKeyboard
         setSelectedActions={setSelectedActions}
         setActiveModifiers={setActiveModifiers}
         setSelectedKey={setSelectedKey}
         selectedKey={selectedKey}
         activeModifiers={activeModifiers}
       />{' '}
-      <Container>
-        <Stack>
-          {selectedActions.length > 0 ? (
-            selectedActions.map((selectedAction) => (
-              <React.Fragment key={selectedAction.identifier}>
-                <Group>
-                  <Text>Name: {selectedAction.name}</Text>
-                  <Keybind
-                    selectedKey={selectedKey}
-                    modifiers={activeModifiers}
-                  ></Keybind>
-                </Group>
-                <Text>Description: {selectedAction.documentation}</Text>
-                <Text>Is Local: {selectedAction.synchronization ? 'Yes' : 'No'}</Text>
-                <Text>GUI Path: {selectedAction.guiPath}</Text>
-              </React.Fragment>
-            ))
-          ) : selectedKey === '' && activeModifiers.length === 0 ? (
-            <Text>No key selected. Select a key to see its action</Text>
-          ) : (
-            <>
-              <Keybind selectedKey={selectedKey} modifiers={activeModifiers}></Keybind>
-              <Text>No action is associated with this keybind</Text>
-            </>
-          )}
-        </Stack>
-      </Container>
-    </>
+      <Group my={'md'}>
+        <Title order={3}>Selected keybind:</Title>
+        <Keybind selectedKey={selectedKey} modifiers={activeModifiers}></Keybind>
+      </Group>
+      <Divider />
+      <Title order={3} my={'md'}>
+        Mapped actions
+      </Title>
+      {selectedActions.length > 0 ? (
+        <Grid mx={'xs'}>
+          {selectedActions.map((selectedAction) => (
+            <Paper key={selectedAction.identifier} p={'md'}>
+              <Title order={4} mb={'md'}>
+                {selectedAction.name}
+              </Title>
+              <Table>
+                <Table.Tbody>
+                  <Table.Tr>
+                    <Table.Td>Description:</Table.Td>
+                    <Table.Td>{selectedAction.documentation}</Table.Td>
+                  </Table.Tr>
+                  <Table.Tr>
+                    <Table.Td>Is Local:</Table.Td>
+                    <Table.Td>
+                      {selectedAction.synchronization ? (
+                        <Badge variant={'filled'}>Yes</Badge>
+                      ) : (
+                        <Badge variant={'outline'}>No</Badge>
+                      )}
+                    </Table.Td>
+                  </Table.Tr>
+                  <Table.Tr>
+                    <Table.Td>GUI Path:</Table.Td>
+                    <Table.Td>
+                      <Code>{selectedAction.guiPath}</Code>
+                    </Table.Td>
+                  </Table.Tr>
+                </Table.Tbody>
+              </Table>
+            </Paper>
+          ))}
+        </Grid>
+      ) : (
+        <Text>
+          {hasSelectedKeys
+            ? 'No action is associated with this keybind.'
+            : 'No key selected. Select a key to see its action.'}
+        </Text>
+      )}
+    </Container>
   );
-  //;
-  // return (
-  //   <Container>
-  //     <Title>Keybinds</Title>
-  //     <FilterList showMoreButton>
-  //       <FilterList.Favorites></FilterList.Favorites>
-  //       <FilterList.Data<KeybindType>
-  //         data={keybinds}
-  //         renderElement={(element) => (
-  //           <Keybind
-  //             key={`${element.action}${element.key}`}
-  //             action={actions.find((action) => action.identifier === element.action)!}
-  //             keybind={element}
-  //           />
-  //         )}
-  //         matcherFunc={generateMatcherFunctionByKeys(['action', 'key', 'modifiers'])}
-  //       ></FilterList.Data>
-  //     </FilterList>
-  //   </Container>
-  // );
 }

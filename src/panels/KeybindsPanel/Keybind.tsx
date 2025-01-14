@@ -1,8 +1,8 @@
 import { Fragment } from 'react/jsx-runtime';
 import { Group, Kbd, Text } from '@mantine/core';
 
-import { KeyboardDisplayNames } from './Keyboard/Layouts';
-import { keyToOpenSpaceKey } from './Keyboard/util';
+import { KeyboardDisplayNames } from './FullKeyboard/data';
+import { keyToOpenSpaceKey } from './FullKeyboard/util';
 
 interface KeybindProps {
   modifiers: string[];

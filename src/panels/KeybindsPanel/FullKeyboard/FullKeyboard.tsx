@@ -1,4 +1,4 @@
-import Keyboard from 'react-simple-keyboard';
+import Keyboard, { KeyboardButtonTheme } from 'react-simple-keyboard';
 
 import { useAppSelector } from '@/redux/hooks';
 import { Action } from '@/types/types';
@@ -9,16 +9,19 @@ import {
   KeyboardDisplayNames,
   KeyboardLayout,
   NumpadEndLayout,
-  NumpadLayout
-} from './Layouts';
+  NumpadLayout,
+  Modifiers
+} from './data';
 import {
   arraysEqual,
   commonKeyboardOptions,
   equals,
-  keyToSimpleKeyboardString} from './util';
+  keyToSimpleKeyboardString
+} from './util';
 
 import 'react-simple-keyboard/build/css/index.css';
-import './KeybindingPanelKeyboard.css';
+import './FullKeyboard.css';
+import { Flex, Stack } from '@mantine/core';
 
 interface Props {
   setSelectedActions: (action: Action[]) => void;
@@ -28,7 +31,7 @@ interface Props {
   setSelectedKey: (kbd: string) => void;
 }
 
-export function KeyboardComponent({
+export function FullKeyboard({
   setSelectedActions,
   setActiveModifiers,
   activeModifiers,
@@ -37,7 +40,6 @@ export function KeyboardComponent({
 }: Props) {
   const actions = useAppSelector((state) => state.actions.actions);
   const keybinds = useAppSelector((state) => state.actions.keybinds);
-  const modifiers = ['{shift}', '{alt}', '{control}', '{super}'];
 
   function toggleModifier(modifier: string) {
     // If it is already selected, remove the modifier
@@ -68,7 +70,7 @@ export function KeyboardComponent({
 
   function onKeyPress(input: string) {
     // Handle modifier clicks
-    if (modifiers.includes(input)) {
+    if (Modifiers.includes(input)) {
       // Remove curly braces
       const strippedModifier = input.replaceAll('{', '').replaceAll('}', '');
       toggleModifier(strippedModifier);
@@ -81,16 +83,17 @@ export function KeyboardComponent({
       setSelectedActions(current.length > 0 ? current : []);
     }
   }
-  // TODO @micahnyc fix colors not from scss
-  function buttonHighlights() {
-    const buttonTheme = [];
 
-    // Highlight the button that match the currently selected keyboard button (turquiose)
+  // Highlight the button that match the currently selected keyboard button (turquiose)
+  function buttonThemeCurrentlySelected(): KeyboardButtonTheme {
     if (selectedKey.length > 0) {
-      buttonTheme.push({ class: 'hg-highlight', buttons: selectedKey });
+      return { class: 'hg-highlight', buttons: selectedKey };
     }
+    return null;
+  }
 
-    // Highlight the existing keyboard buttons for all keybinds (they show up as green)
+  // Highlight the existing keyboard buttons for all keybinds (green)
+  function buttonThemeExistingKeybinds(): KeyboardButtonTheme {
     const currentKeybinds = keybinds.filter((keybind) =>
       arraysEqual(activeModifiers, keybind.modifiers)
     );
@@ -99,63 +102,75 @@ export function KeyboardComponent({
       const currentKeysStrings = currentKeybinds.map((keybind) =>
         keyToSimpleKeyboardString(keybind.key)
       );
-      buttonTheme.push({ class: 'hg-mapped', buttons: currentKeysStrings.join(' ') });
+      return { class: 'hg-mapped', buttons: currentKeysStrings.join(' ') };
     }
+    return null;
+  }
 
-    // Highlight modifiers keyboard buttons (ctr, super, shift)
+  // Highlight selected modifiers keyboard buttons: alt, ctrl, super, shift (orange)
+  function buttonThemeModifiers(): KeyboardButtonTheme {
     if (activeModifiers.length > 0) {
-      buttonTheme.push({
+      return {
         class: 'hg-toggled',
         buttons: activeModifiers.map((s) => `{${s}}`).join(' ')
-      });
+      };
     }
 
-    return buttonTheme;
+    return null;
+  }
+
+  // Get all button highlights and remove the ones which are null
+  function buttonHighlights() {
+    return [
+      buttonThemeCurrentlySelected(),
+      buttonThemeExistingKeybinds(),
+      buttonThemeModifiers()
+    ].filter((theme) => theme);
   }
 
   return (
-    <div className={"keyboardContainer"}>
+    <Flex style={{ color: 'black', fontSize: '0.8em' }}>
       <Keyboard
-        baseClass={"simple-keyboard-main"}
+        baseClass={'main'}
         layoutName={'default'}
         buttonTheme={buttonHighlights()}
         layout={{ default: KeyboardLayout }}
         display={KeyboardDisplayNames}
-        onKeyPress={(button: any) => onKeyPress(button)}
+        onKeyPress={onKeyPress}
         {...commonKeyboardOptions}
       />
-      <div className={"controlArrows"}>
+      <Stack justify="space-between">
         <Keyboard
-          baseClass={"simple-keyboard-control"}
+          baseClass={'simple-keyboard-control'}
           buttonTheme={buttonHighlights()}
           layout={{ default: ControlPadLayout }}
-          onKeyPress={(button: any) => onKeyPress(button)}
+          onKeyPress={onKeyPress}
           {...commonKeyboardOptions}
         />
         <Keyboard
-          baseClass={"simple-keyboard-arrows"}
+          baseClass={'simple-keyboard-arrows'}
           buttonTheme={buttonHighlights()}
           layout={{ default: ArrowsLayout }}
-          onKeyPress={(button: any) => onKeyPress(button)}
+          onKeyPress={onKeyPress}
           {...commonKeyboardOptions}
         />
-      </div>
-      <div className={"numPad"}>
+      </Stack>
+      <Flex align={'flex-end'}>
         <Keyboard
-          baseClass={"simple-keyboard-numpad"}
+          baseClass={'simple-keyboard-numpad'}
           buttonTheme={buttonHighlights()}
-          onKeyPress={(button: any) => onKeyPress(button)}
+          onKeyPress={onKeyPress}
           layout={{ default: NumpadLayout }}
           {...commonKeyboardOptions}
         />
         <Keyboard
-          baseClass={"simple-keyboard-numpadEnd"}
+          baseClass={'simple-keyboard-numpadEnd'}
           buttonTheme={buttonHighlights()}
           layout={{ default: NumpadEndLayout }}
-          onKeyPress={(button: any) => onKeyPress(button)}
+          onKeyPress={onKeyPress}
           {...commonKeyboardOptions}
         />
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 }
