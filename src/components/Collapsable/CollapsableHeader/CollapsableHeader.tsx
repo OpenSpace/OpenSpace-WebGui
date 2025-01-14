@@ -6,7 +6,7 @@ import { IconSize } from '@/types/enums';
 
 interface Props {
   expanded: boolean;
-  text: React.ReactNode;
+  title: React.ReactNode;
   toggle?: () => void;
   leftSection?: React.ReactNode;
   rightSection?: React.ReactNode;
@@ -14,7 +14,7 @@ interface Props {
 
 export function CollapsableHeader({
   expanded,
-  text,
+  title,
   toggle,
   leftSection,
   rightSection
@@ -29,7 +29,7 @@ export function CollapsableHeader({
         )}
       </ActionIcon>
       <ThreePartHeader
-        text={<UnstyledButton onClick={toggle}>{text}</UnstyledButton>}
+        title={<UnstyledButton onClick={toggle}>{title}</UnstyledButton>}
         leftSection={leftSection}
         rightSection={rightSection}
       />

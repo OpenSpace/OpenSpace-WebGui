@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 import { Collapse, Container } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import { CollapsableHeader } from '../CollapsableHeader/CollapsableHeader';
+import { CollapsableHeader } from './CollapsableHeader/CollapsableHeader';
 
 interface Props extends PropsWithChildren {
   // The title of the collapsable content.
@@ -16,7 +16,7 @@ interface Props extends PropsWithChildren {
   // Optional content to be rendered to the right of the title.
   rightSection?: React.ReactNode;
 }
-export function CollapsableContent({
+export function Collapsable({
   title,
   noTransition,
   defaultOpen = false,
@@ -30,7 +30,7 @@ export function CollapsableContent({
     <>
       <CollapsableHeader
         expanded={open}
-        text={title}
+        title={title}
         leftSection={leftSection}
         rightSection={rightSection}
         toggle={toggle}

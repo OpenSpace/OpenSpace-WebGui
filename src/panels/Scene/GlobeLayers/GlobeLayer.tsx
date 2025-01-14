@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Group, Paper, Text } from '@mantine/core';
 
 import { useGetBoolPropertyValue, useGetPropertyOwner } from '@/api/hooks';
-import { CollapsableContent } from '@/components/Collapse/CollapsableContent/CollapsableContent';
+import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
@@ -28,7 +28,7 @@ export function GlobeLayer({ uri }: Props) {
   const textColor = isActive ? 'green' : undefined;
 
   return (
-    <CollapsableContent
+    <Collapsable
       title={<Text c={textColor}>{displayName(propertyOwner)}</Text>}
       leftSection={
         <PropertyOwnerVisibilityCheckbox
@@ -46,6 +46,6 @@ export function GlobeLayer({ uri }: Props) {
       <Paper withBorder>
         <PropertyOwnerContent uri={uri} />
       </Paper>
-    </CollapsableContent>
+    </Collapsable>
   );
 }

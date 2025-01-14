@@ -31,30 +31,30 @@ export function SceneGraphNodeHeader({ uri, label, onClick }: Props) {
 
   const name = label ?? displayName(propertyOwner);
 
+  // This title button has a lot of styling related setting to control how it wraps when
+  // the header is resized.
+  const titleButton = (
+    <Button
+      style={{ flexGrow: 1 }}
+      h={'fit-content'}
+      variant={'transparent'}
+      justify={'left'}
+      p={0}
+      size={'compact-sm'}
+      onClick={onClick}
+    >
+      <Text
+        mah={'80px'}
+        style={{ whiteSpace: 'wrap', overflowWrap: 'anywhere', textAlign: 'left' }}
+      >
+        {name}
+      </Text>
+    </Button>
+  );
+
   return (
     <ThreePartHeader
-      text={
-        onClick ? (
-          <Button
-            style={{ flexGrow: 1 }}
-            h={'fit-content'}
-            variant={'transparent'}
-            justify={'left'}
-            p={0}
-            size={'compact-sm'}
-            onClick={onClick}
-          >
-            <Text
-              mah={'80px'}
-              style={{ whiteSpace: 'wrap', overflowWrap: 'anywhere', textAlign: 'left' }}
-            >
-              {name}
-            </Text>
-          </Button>
-        ) : (
-          name
-        )
-      }
+      title={onClick ? titleButton : name}
       leftSection={
         hasRenderable && <PropertyOwnerVisibilityCheckbox uri={renderableUri} />
       }

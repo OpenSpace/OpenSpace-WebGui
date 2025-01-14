@@ -1,7 +1,7 @@
 import { Group } from '@mantine/core';
 
 import { useGetPropertyOwner, useHasVisibleChildren } from '@/api/hooks';
-import { CollapsableContent } from '@/components/Collapse/CollapsableContent/CollapsableContent';
+import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
@@ -31,7 +31,7 @@ export function PropertyOwner({ uri, expandedOnDefault = false }: Props) {
   }
 
   return (
-    <CollapsableContent
+    <Collapsable
       title={
         <Group gap={'xs'}>
           {displayName(propertyOwner)}
@@ -43,6 +43,6 @@ export function PropertyOwner({ uri, expandedOnDefault = false }: Props) {
       noTransition
     >
       <PropertyOwnerContent uri={uri} />
-    </CollapsableContent>
+    </Collapsable>
   );
 }

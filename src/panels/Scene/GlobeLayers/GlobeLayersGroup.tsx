@@ -1,7 +1,7 @@
 import { Group, Paper, Space } from '@mantine/core';
 
 import { useGetPropertyOwner } from '@/api/hooks';
-import { CollapsableContent } from '@/components/Collapse/CollapsableContent/CollapsableContent';
+import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { Property } from '@/components/Property/Property';
 import { Identifier, Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
@@ -25,7 +25,7 @@ export function GlobeLayerGroup({ uri, globe, icon }: Props) {
   const layers = subowners;
 
   return (
-    <CollapsableContent
+    <Collapsable
       title={
         <Group gap={'xs'}>
           {icon && icon}
@@ -41,6 +41,6 @@ export function GlobeLayerGroup({ uri, globe, icon }: Props) {
           <Property key={propertyUri} uri={propertyUri} />
         ))}
       </Paper>
-    </CollapsableContent>
+    </Collapsable>
   );
 }

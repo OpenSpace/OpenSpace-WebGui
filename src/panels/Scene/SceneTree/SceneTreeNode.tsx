@@ -1,6 +1,6 @@
 import { Box, RenderTreeNodePayload, TreeNodeData } from '@mantine/core';
 
-import { CollapsableHeader } from '@/components/Collapse/CollapsableHeader/CollapsableHeader';
+import { CollapsableHeader } from '@/components/Collapsable/CollapsableHeader/CollapsableHeader';
 import { isGroupNode } from '@/util/sceneTreeGroupsHelper';
 
 import { useOpenCurrentSceneNodeWindow } from '../hooks';
@@ -17,7 +17,7 @@ export function SceneTreeNode({ node, expanded }: Props) {
   const { openCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
 
   return isGroupNode(node) ? (
-    <CollapsableHeader expanded={expanded} text={node.label} />
+    <CollapsableHeader expanded={expanded} title={node.label} />
   ) : (
     <Box ml={'xs'} mt={5}>
       <SceneGraphNodeHeader
