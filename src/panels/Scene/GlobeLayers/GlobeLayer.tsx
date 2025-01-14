@@ -9,15 +9,16 @@ import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
 
+import { usePropertyOwnerVisibility } from '../hooks';
+
 interface Props {
   uri: Uri;
 }
 
 export function GlobeLayer({ uri }: Props) {
-  const [isEnabled] = useGetBoolPropertyValue(`${uri}.Enabled`);
   const propertyOwner = useGetPropertyOwner(uri);
 
-  const [isActive, setIsActive] = useState(isEnabled);
+  const { isVisible } = usePropertyOwnerVisibility(uri);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);
@@ -25,17 +26,12 @@ export function GlobeLayer({ uri }: Props) {
 
   // @TODO (emmbr, 2024-12-06): We want to avoid hardcoded colors, but since changing the
   // color of the text is a feature we wanted to keep I decided to do it this way for now.
-  const textColor = isActive ? 'green' : undefined;
+  const textColor = isVisible ? 'green' : undefined;
 
   return (
     <Collapsable
       title={<Text c={textColor}>{displayName(propertyOwner)}</Text>}
-      leftSection={
-        <PropertyOwnerVisibilityCheckbox
-          uri={uri}
-          onChange={(isChecked) => setIsActive(isChecked)}
-        />
-      }
+      leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
       rightSection={
         <Group wrap={'nowrap'}>
           <Tooltip text={propertyOwner.description || 'No information'} />

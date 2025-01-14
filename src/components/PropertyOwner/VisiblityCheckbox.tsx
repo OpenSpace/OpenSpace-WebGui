@@ -1,37 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Checkbox } from '@mantine/core';
 
-import {
-  useGetBoolPropertyValue,
-  useGetFloatPropertyValue,
-  useOpenSpaceApi
-} from '@/api/hooks';
+import { usePropertyOwnerVisibility } from '@/panels/Scene/hooks';
 import { Uri } from '@/types/types';
-import {
-  checkVisiblity,
-  enabledPropertyUri,
-  fadePropertyUri
-} from '@/util/propertyTreeHelpers';
 
 interface Props {
   uri: Uri;
-  onChange?: (isChecked: boolean) => void;
 }
 
-export function PropertyOwnerVisibilityCheckbox({ uri, onChange }: Props) {
-  const luaApi = useOpenSpaceApi();
-
-  const [enabledPropertyValue, setEnabledProperty] = useGetBoolPropertyValue(
-    enabledPropertyUri(uri)
-  );
-  const [fadePropertyValue] = useGetFloatPropertyValue(fadePropertyUri(uri));
-  const isFadeable = fadePropertyValue !== undefined;
-
-  const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
+export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
+  const { isVisible, setVisiblity } = usePropertyOwnerVisibility(uri);
 
   // This is the value that is shown in the checkbox, it is not necessarily the same as
   // the isVisible value, since the checkbox can be in a transition state
   const [checked, setChecked] = useState(isVisible);
+  const [isImmediate, setIsImmediate] = useState(false);
 
   // If the visibility is changed elsewhere we need to update the checkbox
   useEffect(() => {
@@ -43,30 +26,34 @@ export function PropertyOwnerVisibilityCheckbox({ uri, onChange }: Props) {
     return <></>;
   }
 
-  function setVisiblity(shouldShow: boolean, isImmediate: boolean) {
-    const fadeTime = isImmediate ? 0 : undefined;
-    if (!isFadeable) {
-      setEnabledProperty(shouldShow);
-    } else if (shouldShow) {
-      luaApi?.fadeIn(uri, fadeTime);
-    } else {
-      luaApi?.fadeOut(uri, fadeTime);
-    }
-    setChecked(shouldShow);
+  function updateValue(shouldBeEnabled: boolean, isImmediate: boolean) {
+    setVisiblity(shouldBeEnabled, isImmediate);
+    setChecked(shouldBeEnabled);
   }
 
-  function onToggleCheckboxClick(event: React.MouseEvent<HTMLInputElement>) {
-    const shouldBeEnabled = event.currentTarget.checked;
-    const isImmediate = event.shiftKey;
-    setVisiblity(shouldBeEnabled, isImmediate);
+  function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'Shift') {
+      setIsImmediate(true);
+    }
+    // Set the value when the user presses enter or space
+    if (event.key === 'Enter' || event.key === ' ') {
+      updateValue(!event.currentTarget.checked, isImmediate);
+    }
+  }
+
+  function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'Shift') {
+      setIsImmediate(false);
+    }
   }
 
   return (
     <Checkbox
       checked={checked}
-      onClick={onToggleCheckboxClick}
+      onKeyDown={onKeyDown}
+      onKeyUp={onKeyUp}
       onChange={(event) => {
-        onChange?.(event.currentTarget.checked);
+        updateValue(event.currentTarget.checked, isImmediate);
       }}
     />
   );
