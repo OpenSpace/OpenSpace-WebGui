@@ -29,7 +29,11 @@ export function CollapsableHeader({
         )}
       </ActionIcon>
       <ThreePartHeader
-        title={<UnstyledButton onClick={toggle}>{title}</UnstyledButton>}
+        title={
+          <UnstyledButton onClick={toggle} tabIndex={-1}>
+            {title}
+          </UnstyledButton>
+        }
         leftSection={leftSection}
         rightSection={rightSection}
       />
