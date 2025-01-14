@@ -1,29 +1,40 @@
+/* Background */
+.simple-keyboard-background {
+  color: black;
+  font-size: 0.8em;
+  background-color: var(--mantine-color-dark-6);
+  border-bottom: 1px solid var(--mantine-color-dark-2);
+  border-radius: 5px;
+}
+
 /* Remove background */
 .simple-keyboard {
   background: none;
 }
 
+.hg-theme-default .hg-button {
+  background: var(--mantine-color-dark-9);
+  color: var(--mantine-color-white);
+  border-bottom: 1px solid var(--mantine-color-dark-2);
+}
 /* Button highlights */
 /* All mapped actions */
 .simple-keyboard.hg-layout-default .hg-button.hg-mapped {
-  color: var(--mantine-color-white);
-  background: var(--mantine-color-violet-6);
+  background: var(--mantine-color-violet-8);
 }
 
 /* Currently selected key */
 .simple-keyboard.hg-layout-default .hg-button.hg-highlight {
-  color: var(--mantine-color-black);
-  background: var(--mantine-color-cyan-3);
+  background: var(--mantine-color-cyan-8);
 }
 
 /* Modifiers */
 .simple-keyboard.hg-layout-default .hg-button.hg-toggled {
-  color: var(--mantine-color-white);
   background: var(--mantine-color-yellow-9);
 }
 
 /* Main keyboard */
-.main.simple-keyboard {
+.simple-keyboard-main.simple-keyboard {
   width: 640px;
   min-width: 640px;
 }
@@ -34,7 +45,7 @@
 }
 
 /* Margin under the F keys row */
-.main.simple-keyboard .hg-row:first-child,
+.simple-keyboard-main.simple-keyboard .hg-row:first-child,
 .simple-keyboard-control.simple-keyboard .hg-row:first-child {
   margin-bottom: 10px;
 }

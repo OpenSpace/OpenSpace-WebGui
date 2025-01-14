@@ -129,9 +129,9 @@ export function FullKeyboard({
   }
 
   return (
-    <Flex style={{ color: 'black', fontSize: '0.8em' }}>
+    <Flex className={'simple-keyboard-background'} my={'lg'}>
       <Keyboard
-        baseClass={'main'}
+        baseClass={'simple-keyboard-main'}
         layoutName={'default'}
         buttonTheme={buttonHighlights()}
         layout={{ default: KeyboardLayout }}
