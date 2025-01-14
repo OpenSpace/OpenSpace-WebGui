@@ -1,4 +1,5 @@
 import Keyboard, { KeyboardButtonTheme } from 'react-simple-keyboard';
+import { Flex, Stack } from '@mantine/core';
 
 import { useAppSelector } from '@/redux/hooks';
 import { Action } from '@/types/types';
@@ -8,10 +9,9 @@ import {
   ControlPadLayout,
   KeyboardDisplayNames,
   KeyboardLayout,
+  Modifiers,
   NumpadEndLayout,
-  NumpadLayout,
-  Modifiers
-} from './data';
+  NumpadLayout} from './data';
 import {
   arraysEqual,
   commonKeyboardOptions,
@@ -21,7 +21,6 @@ import {
 
 import 'react-simple-keyboard/build/css/index.css';
 import './FullKeyboard.css';
-import { Flex, Stack } from '@mantine/core';
 
 interface Props {
   setSelectedActions: (action: Action[]) => void;
@@ -139,7 +138,7 @@ export function FullKeyboard({
         onKeyPress={onKeyPress}
         {...commonKeyboardOptions}
       />
-      <Stack justify="space-between">
+      <Stack justify={"space-between"}>
         <Keyboard
           baseClass={'simple-keyboard-control'}
           buttonTheme={buttonHighlights()}

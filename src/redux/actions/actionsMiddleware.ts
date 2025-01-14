@@ -3,7 +3,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
-import { Keybind } from '@/types/types';
 
 export const getAllActions = createAsyncThunk('actions/getAll', async () => {
   // TODO 2024-12-06 ylvse: We should rename all "shortcuts" names to "actions"
