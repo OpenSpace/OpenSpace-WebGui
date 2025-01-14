@@ -1,6 +1,7 @@
 import {
   Anchor,
   Card,
+  Code,
   Flex,
   Group,
   Pill,
@@ -54,7 +55,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
       [
         'URI:',
         <Group justify={'space-between'}>
-          {uri}
+          <Code>{uri}</Code>
           <CopyToClipboardButton value={uri} />
         </Group>
       ],
