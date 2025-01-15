@@ -5,6 +5,7 @@ export {
   FiChevronsUp as ChevronsUpIcon
 } from 'react-icons/fi';
 export {
+  IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoInformation as InformationIcon,
   IoTelescopeOutline as TelescopeIcon
 } from 'react-icons/io5';
