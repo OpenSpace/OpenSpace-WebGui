@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface SkyBrowserImage {
+export interface SkyBrowserImage {
   cartesianDirection: number[];
   collection: string;
   credits: string;
