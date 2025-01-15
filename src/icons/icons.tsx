@@ -13,13 +13,16 @@ export {
   MdOutlineAddPhotoAlternate as AddPhotoIcon,
   MdOutlineAirplanemodeActive as AirplaneIcon,
   MdAnchor as AnchorIcon,
+  MdCancel as CancelIcon,
   MdExpandMore as ChevronDownIcon,
   MdChevronLeft as ChevronLeftIcon,
   MdChevronRight as ChevronRightIcon,
   MdExpandLess as ChevronUpIcon,
   MdColorLens as ColorPaletteIcon,
+  MdTerminal as ConsoleIcon,
   MdContentCopy as CopyIcon,
   MdDragHandle as DragHandleIcon,
+  MdExitToApp as ExitAppIcon,
   MdFastForward as FastForwardIcon,
   MdFastRewind as FastRewindIcon,
   MdFilterAlt as FilterIcon,
@@ -32,7 +35,9 @@ export {
   MdLock as LockIcon,
   MdLockOpen as LockOpenIcon,
   MdNightlight as NightIcon,
+  MdOpenInBrowser as OpenInBrowserIcon,
   MdOpenInNew as OpenInNewIcon,
+  MdOpenInNew as OpenWindowIcon,
   MdPause as PauseIcon,
   MdOutlineEdit as PenIcon,
   MdPlayArrow as PlayIcon,
@@ -42,4 +47,6 @@ export {
   MdVideocam as VideocamIcon,
   MdWater as WaterIcon
 } from 'react-icons/md';
-export { RiFocus3Line as FocusIcon } from 'react-icons/ri';
+export { PiBookOpenText as BookIcon } from 'react-icons/pi';
+export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
+export { VscFeedback as FeedbackIcon } from 'react-icons/vsc';

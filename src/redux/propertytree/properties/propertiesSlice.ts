@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Properties, PropertyValue } from '@/types/types';
+import { Properties, PropertyValue, Uri } from '@/types/types';
 
 import { addUriToPropertyTree } from '../propertyTreeMiddleware';
 

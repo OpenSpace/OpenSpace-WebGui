@@ -3,6 +3,7 @@ import { WindowLayoutPosition } from 'src/windowmanagement/WindowLayout/WindowLa
 
 import { ActionsPanel } from '@/panels/ActionsPanel/ActionsPanel';
 import { ExoplanetsPanel } from '@/panels/ExoplanetsPanel/ExoplanetsPanel';
+import { FlightControlPanel } from '@/panels/FlightControlPanel/FlightControlPanel';
 import { GeoLocationPanel } from '@/panels/GeoLocationPanel/GeoLocationPanel';
 import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
@@ -12,6 +13,7 @@ import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
 import { TimePanel } from '@/panels/TimePanel/TimePanel';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
+import { UserPanelsPanel } from '@/panels/UserPanelsPanel/UserPanelsPanel';
 
 export interface MenuItem {
   title: string; // Title of the rc-dock tab
@@ -104,10 +106,24 @@ export const menuItemsDB: MenuItem[] = [
     defaultVisible: false
   },
   {
+    title: 'Flight Control',
+    componentID: 'flightControl',
+    content: <FlightControlPanel />,
+    preferredPosition: 'right',
+    defaultVisible: false
+  },
+  {
     title: 'Keybindings Layout',
     componentID: 'keybindingsLayout',
     content: <div>Keybindings</div>,
     preferredPosition: 'float',
     defaultVisible: false
+  },
+  {
+    title: 'User Panels',
+    componentID: 'userPanels',
+    content: <UserPanelsPanel />,
+    preferredPosition: 'float',
+    defaultVisible: true
   }
 ];

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Stack } from '@mantine/core';
 import DockLayout, { LayoutData, TabGroup } from 'rc-dock';
 
+import { FlightController } from '@/panels/FlightControlPanel/FlightController';
+
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
 import { menuItemsDB } from '../data/MenuItems';
 import { TaskBar } from '../TaskBar';
@@ -32,7 +34,13 @@ function createDefaultLayout(): LayoutData {
       children: [
         {
           id: 'center',
-          tabs: [],
+          tabs: [
+            {
+              title: 'flightController',
+              content: <FlightController key={'flightcontrollerdiv'} />,
+              id: 'flightController'
+            }
+          ],
           panelLock: {},
           group: 'headless'
         }

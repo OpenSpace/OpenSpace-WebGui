@@ -3,7 +3,7 @@ import { ThemeIcon, Tooltip as MantineTooltip } from '@mantine/core';
 import { InformationIcon } from '@/icons/icons';
 
 interface TooltipProps {
-  text: string;
+  text: React.ReactNode;
 }
 
 export function Tooltip({ text }: TooltipProps) {

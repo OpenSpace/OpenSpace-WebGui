@@ -2,6 +2,10 @@ export const NavigationAnchorKey = 'NavigationHandler.OrbitalNavigator.Anchor';
 export const NavigationAimKey = 'NavigationHandler.OrbitalNavigator.Aim';
 export const RetargetAnchorKey = 'NavigationHandler.OrbitalNavigator.RetargetAnchor';
 export const RetargetAimKey = 'NavigationHandler.OrbitalNavigator.RetargetAim';
+export const RotationalFrictionKey =
+  'NavigationHandler.OrbitalNavigator.Friction.RotationalFriction';
+export const ZoomFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.ZoomFriction';
+export const RollFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.RollFriction';
 
 // To get any scene graph node you need ScenePrefix+NodeIdentifier
 export const ScenePrefixKey = 'Scene.';
@@ -23,6 +27,11 @@ export const HabitableZonePropertyKey = 'Modules.Exoplanets.ShowHabitableZone';
 export const Size1AuRingTagKey = 'exoplanet_1au_ring';
 export const Size1AuRingPropertyKey = 'Modules.Exoplanets.ShowComparisonCircle';
 
+// OpenSpace folders
+// eslint-disable-next-line no-template-curly-in-string
+export const UserPanelsFolderKey = '${USER}/webpanels';
+
+export const WindowsKey = 'Windows';
 export const ScreenSpaceKey = 'ScreenSpace';
 export const RenderableKey = 'Renderable';
 export const ScaleKey = 'Scale';
