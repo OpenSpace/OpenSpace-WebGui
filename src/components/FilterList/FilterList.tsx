@@ -1,9 +1,36 @@
-import { Button, Divider, ScrollArea, Stack, TextInput } from '@mantine/core';
+import { ActionIcon, Button, Divider, ScrollArea, Stack, TextInput } from '@mantine/core';
+
+import { CancelIcon } from '@/icons/icons';
 
 import { FilterListData } from './FilterListData';
 import { FilterListFavorites } from './FilterListFavorites';
 import { FilterListProvider } from './FilterListProvider';
 import { useFilterListProvider } from './hooks';
+
+interface InputButtonProps {
+  showMoreButton: boolean;
+}
+
+function InputButton({ showMoreButton }: InputButtonProps) {
+  const { searchString, setSearchString, showDataInstead, toggleShowDataInstead } =
+    useFilterListProvider();
+
+  const isSearching = searchString !== '';
+
+  if (isSearching) {
+    return (
+      <ActionIcon size={'lg'} onClick={() => setSearchString('')}>
+        <CancelIcon />
+      </ActionIcon>
+    );
+  }
+
+  return (
+    showMoreButton && (
+      <Button onClick={toggleShowDataInstead}>{showDataInstead ? 'Less' : 'More'}</Button>
+    )
+  );
+}
 
 interface InputFieldProps {
   searchAutoFocus?: boolean;
@@ -16,8 +43,7 @@ function InputField({
   placeHolderSearchText,
   showMoreButton
 }: InputFieldProps) {
-  const { searchString, setSearchString, showDataInstead, toggleShowDataInstead } =
-    useFilterListProvider();
+  const { searchString, setSearchString } = useFilterListProvider();
 
   return (
     <TextInput
@@ -27,13 +53,7 @@ function InputField({
       autoFocus={searchAutoFocus}
       // Some arbitrary width must be set so that the More button is rendered correctly
       rightSectionWidth={'md'}
-      rightSection={
-        showMoreButton && (
-          <Button onClick={toggleShowDataInstead}>
-            {showDataInstead ? 'Less' : 'More'}
-          </Button>
-        )
-      }
+      rightSection={<InputButton showMoreButton={showMoreButton} />}
     />
   );
 }
