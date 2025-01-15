@@ -106,34 +106,32 @@ export function SceneTree() {
     <FilterList>
       <Group justify={'space-between'}>
         <FilterList.InputField placeHolderSearchText={'Search for a node...'} flex={1} />
-        <Group>
-          <Group gap={0}>
-            <Tooltip
-              label={'Collapse all'}
-              position={'top'}
-              transitionProps={{ enterDelay: 400 }}
-              withArrow
-            >
-              <ActionIcon variant={'subtle'} onClick={tree.collapseAllNodes}>
-                <ChevronsUpIcon />
-              </ActionIcon>
-            </Tooltip>
-            <Tooltip
-              label={'Expand all'}
-              position={'top'}
-              transitionProps={{ enterDelay: 400 }}
-              withArrow
-            >
-              <ActionIcon variant={'subtle'} onClick={tree.expandAllNodes}>
-                <ChevronsDownIcon />
-              </ActionIcon>
-            </Tooltip>
-          </Group>
-          <SceneTreeFilters onFilterChange={setFilter} />
-        </Group>
+        <SceneTreeFilters onFilterChange={setFilter} />
       </Group>
 
       <FilterList.Favorites>
+        <Group gap={0} pos={'absolute'} top={0} right={0}>
+          <Tooltip
+            label={'Collapse all'}
+            position={'top'}
+            transitionProps={{ enterDelay: 400 }}
+            withArrow
+          >
+            <ActionIcon variant={'subtle'} onClick={tree.collapseAllNodes}>
+              <ChevronsUpIcon />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip
+            label={'Expand all'}
+            position={'top'}
+            transitionProps={{ enterDelay: 400 }}
+            withArrow
+          >
+            <ActionIcon variant={'subtle'} onClick={tree.expandAllNodes}>
+              <ChevronsDownIcon />
+            </ActionIcon>
+          </Tooltip>
+        </Group>
         <Tree
           data={treeData}
           tree={tree}
