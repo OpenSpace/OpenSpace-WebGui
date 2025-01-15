@@ -12,6 +12,7 @@ import { timeReducer } from './time/timeSlice';
 import { userPanelsReducer } from './userpanels/userPanelsSlice';
 import { versionReducer } from './version/versionSlice';
 import { listenerMiddleware } from './listenerMiddleware';
+import { skyBrowserReducer } from './skybrowser/skybrowserSlice';
 
 export const store = configureStore({
   reducer: {
@@ -25,7 +26,8 @@ export const store = configureStore({
     sessionRecording: sessionRecordingReducer,
     time: timeReducer,
     userPanels: userPanelsReducer,
-    version: versionReducer
+    version: versionReducer,
+    skybrowser: skyBrowserReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([listenerMiddleware.middleware]),

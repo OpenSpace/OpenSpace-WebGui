@@ -1,15 +1,56 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+interface SkyBrowserImage {
+  cartesianDirection: number[];
+  collection: string;
+  credits: string;
+  creditsUrl: string;
+  dec: number;
+  fov: number;
+  hasCelestialCoords: boolean;
+  identifier: string;
+  key: string;
+  name: string;
+  ra: number;
+  thumbnail: string;
+  url: string;
+}
+
+interface SkyBrowserBrowser {
+  borderRadius: number;
+  cartesianDirection: number[];
+  color: number[];
+
+  dec: number;
+  displayCopies: object;
+  fov: number;
+  id: string;
+  isFacingCamera: boolean;
+  isUsingRae: boolean;
+  name: string;
+  opacities: number[];
+  ra: number;
+  ratio: number;
+  roll: number;
+  scale: number;
+  selectedImages: number[];
+  targetId: string;
+}
+
 export interface SkyBrowserState {
-  browsers: any; // TODO type this
+  isInitialized: boolean;
+  browsers: { [id: string]: SkyBrowserBrowser };
   cameraInSolarSystem: boolean;
   selectedBrowserId: string;
+  imageList: SkyBrowserImage[];
 }
 
 const initialState: SkyBrowserState = {
+  isInitialized: false,
   browsers: {},
   cameraInSolarSystem: false,
-  selectedBrowserId: ''
+  selectedBrowserId: '',
+  imageList: []
 };
 
 export const skyBrowserSlice = createSlice({
@@ -17,12 +58,14 @@ export const skyBrowserSlice = createSlice({
   initialState,
   reducers: {
     updateSkyBrowser: (state, action: PayloadAction<SkyBrowserState>) => {
+      state.isInitialized = true;
       state.browsers = action.payload.browsers;
       state.cameraInSolarSystem = action.payload.cameraInSolarSystem;
       state.selectedBrowserId = action.payload.selectedBrowserId;
       return state;
     },
-    onOpenConnection: (state) => {
+    setImageCollectionData: (state, action: PayloadAction<SkyBrowserImage[]>) => {
+      state.imageList = action.payload;
       return state;
     },
     onCloseConnection: (state) => {
@@ -32,6 +75,6 @@ export const skyBrowserSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function, replaces the `Actions/index.js`
-export const { updateSkyBrowser, onOpenConnection, onCloseConnection } =
+export const { updateSkyBrowser, setImageCollectionData, onCloseConnection } =
   skyBrowserSlice.actions;
 export const skyBrowserReducer = skyBrowserSlice.reducer;
