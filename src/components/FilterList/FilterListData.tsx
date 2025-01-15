@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
 import { VirtualList } from '../VirtualList/VirtualList';
+import { VirtualGrid } from '../VirtualList/VirtualGrid';
 
 import { useFilterListProvider } from './hooks';
 
@@ -12,6 +13,8 @@ export interface FilterListDataProps<T> {
   matcherFunc: (data: T, searchString: string) => boolean;
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
+  grid?: boolean;
+  estimateSize?: number;
 }
 
 export function FilterListData<T>({
@@ -19,7 +22,9 @@ export function FilterListData<T>({
   renderElement,
   matcherFunc,
   gap,
-  overscan
+  estimateSize,
+  overscan,
+  grid
 }: FilterListDataProps<T>) {
   const { searchString, showFavorites } = useFilterListProvider();
 
@@ -31,13 +36,21 @@ export function FilterListData<T>({
   );
 
   return (
-    !showFavorites && (
+    !showFavorites &&
+    (grid ? (
+      <VirtualGrid
+        data={filteredElements}
+        renderElement={renderElement}
+        estimateSize={estimateSize}
+      />
+    ) : (
       <VirtualList
         data={filteredElements}
         renderElement={renderElement}
         gap={gap}
         overscan={overscan}
+        estimateSize={estimateSize}
       />
-    )
+    ))
   );
 }

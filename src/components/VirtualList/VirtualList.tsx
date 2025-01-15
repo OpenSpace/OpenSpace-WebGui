@@ -6,6 +6,7 @@ export interface VirtualListProps<T> {
   renderElement: (data: T, i: number) => React.ReactNode;
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
+  estimateSize?: number;
 }
 
 // This component is created from the example in the docs:
@@ -14,7 +15,8 @@ export function VirtualList<T>({
   data,
   renderElement,
   gap,
-  overscan
+  overscan,
+  estimateSize
 }: VirtualListProps<T>) {
   // The scrollable element for the list
   const parentRef = useRef(null);
@@ -24,7 +26,7 @@ export function VirtualList<T>({
     count: data.length,
     getScrollElement: () => parentRef.current,
     // This is the largest estimated size tanstack seems to be able to handle
-    estimateSize: () => 35,
+    estimateSize: () => estimateSize ?? 35,
     overscan: overscan ?? 10,
     gap: gap ?? 5
   });
@@ -42,7 +44,8 @@ export function VirtualList<T>({
         style={{
           height: `100%`,
           width: `100%`,
-          overflow: 'auto'
+          overflow: 'auto',
+          paddingRight: '10px'
         }}
       >
         {/* The large inner element to hold all of the items */}
