@@ -1,4 +1,6 @@
+import { useRef } from 'react';
 import { Box, RenderTreeNodePayload, TreeNodeData } from '@mantine/core';
+import { useWindowEvent } from '@mantine/hooks';
 
 import { CollapsableHeader } from '@/components/Collapsable/CollapsableHeader/CollapsableHeader';
 import { isGroupNode } from '@/util/sceneTreeGroupsHelper';
@@ -40,8 +42,22 @@ export function SceneTreeNodeStyled({
   expanded,
   elementProps
 }: RenderTreeNodePayload) {
+  const { openCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
+
+  const nodeRef = useRef<HTMLDivElement>(null);
+
+  // Open the node in the current node window when the user presses Enter on the node
+  useWindowEvent('keydown', (event) => {
+    const parentElement = nodeRef?.current?.parentElement;
+    const isFocused = parentElement && parentElement === document.activeElement;
+
+    if (event.code === 'Enter' && !isGroupNode(node) && isFocused) {
+      openCurrentNodeWindow(<SceneGraphNodeView uri={node.value} />);
+    }
+  });
+
   return (
-    <Box {...elementProps}>
+    <Box {...elementProps} ref={nodeRef}>
       <SceneTreeNode node={node} expanded={expanded} />
     </Box>
   );
