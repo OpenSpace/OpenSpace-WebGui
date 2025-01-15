@@ -82,15 +82,7 @@ export function FilterList({
           showMoreButton={showMoreButton}
         />
         <Divider my={'xs'}></Divider>
-        <ScrollArea.Autosize
-          scrollbars={'y'}
-          type={'always'}
-          offsetScrollbars
-          mah={'100%'}
-          mb={'var(--mantine-spacing-md)'}
-        >
-          {children}
-        </ScrollArea.Autosize>
+        {children}
       </FilterListProvider>
     </Stack>
   );
