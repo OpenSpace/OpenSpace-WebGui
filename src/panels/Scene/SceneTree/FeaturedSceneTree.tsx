@@ -9,7 +9,7 @@ import {
   treeDataForSceneGraphNode
 } from '@/util/sceneTreeGroupsHelper';
 
-import { SceneTreeNodeStyled } from './SceneTreeNode';
+import { SceneTreeNode } from './SceneTreeNode';
 import { filterTreeData, SceneTreeFilterSettings } from './treeUtil';
 
 interface Props {
@@ -75,7 +75,7 @@ export function FeaturedSceneTree({ filter }: Props) {
     <>
       <Tree
         data={featuredTreeData}
-        renderNode={(payload) => <SceneTreeNodeStyled {...payload} />}
+        renderNode={(payload) => <SceneTreeNode {...payload} />}
       />
       <Divider my={'xs'} />
     </>
