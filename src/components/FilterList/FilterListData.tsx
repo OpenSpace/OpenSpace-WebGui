@@ -20,17 +20,11 @@ export function FilterListData<T>({
   const filteredElements = data.filter((e) => matcherFunc(e, searchString));
   return (
     !showFavorites && (
-      <ScrollArea.Autosize
-        scrollbars={'y'}
-        type={'always'}
-        offsetScrollbars
-        mah={'100%'}
-        mb={'var(--mantine-spacing-md)'}
-      >
+      <>
         {filteredElements.length > 0
           ? filteredElements.map(renderElement)
           : 'Nothing found. Try another search!'}
-      </ScrollArea.Autosize>
+      </>
     )
   );
 }

@@ -1,4 +1,4 @@
-import { Button, Divider, Stack, TextInput } from '@mantine/core';
+import { Button, Divider, ScrollArea, Stack, TextInput } from '@mantine/core';
 
 import { FilterListData } from './FilterListData';
 import { FilterListFavorites } from './FilterListFavorites';
@@ -62,7 +62,15 @@ export function FilterList({
           showMoreButton={showMoreButton}
         />
         <Divider my={'xs'}></Divider>
-        {children}
+        <ScrollArea.Autosize
+          scrollbars={'y'}
+          type={'always'}
+          offsetScrollbars
+          mah={'100%'}
+          mb={'var(--mantine-spacing-md)'}
+        >
+          {children}
+        </ScrollArea.Autosize>
       </FilterListProvider>
     </Stack>
   );
