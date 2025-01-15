@@ -21,7 +21,6 @@ export const setupSubscription = createAsyncThunk(
       // TODO: add type to the data
       for await (const data of skybrowserTopic.iterator()) {
         thunkAPI.dispatch(updateSkyBrowser(data));
-        console.log(data);
       }
     })();
   }

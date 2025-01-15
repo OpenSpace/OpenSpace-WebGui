@@ -47,7 +47,9 @@ export function VirtualGrid<T>({
       renderElement={(d, i) => (
         <Grid>
           {d?.map((el, j) => (
-            <Grid.Col span={12 / columns}>{renderElement(el, i + j)}</Grid.Col>
+            <Grid.Col key={`element${i}${j}`} span={12 / columns}>
+              {renderElement(el, i + j)}
+            </Grid.Col>
           ))}
         </Grid>
       )}
