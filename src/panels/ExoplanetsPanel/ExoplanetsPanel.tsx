@@ -9,7 +9,7 @@ import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
+import { Identifier } from '@/types/types';
 import {
   HabitableZonePropertyKey,
   NavigationAimKey,
@@ -30,9 +30,8 @@ export function ExoplanetsPanel() {
 
   const isDataInitialized = useAppSelector((state) => state.exoplanets.isInitialized);
   const allSystemNames = useAppSelector((state) => state.exoplanets.data);
-
-  const aim = useGetStringPropertyValue(NavigationAimKey);
-  const anchor = useGetStringPropertyValue(NavigationAnchorKey);
+  const [aim, setAim] = useGetStringPropertyValue(NavigationAimKey);
+  const [anchor, setAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
 
   const dispatch = useAppDispatch();
 
@@ -64,7 +63,7 @@ export function ExoplanetsPanel() {
   // TODO: this is not a foolproof function to get the identifier.
   // We should get the identifiers from the engine or redesign the panel
   // This function copies what the engine does to create the identifiers
-  function name2Identifier(starName: string) {
+  function name2Identifier(starName: string): Identifier {
     let identifier = starName.replaceAll('_', ' ');
     const punctuationRegex = /[!"#$%&'()*+\-./:;<=>?@[\\\]^_`{|}~]/g;
     identifier = identifier.replace(punctuationRegex, '-');
@@ -77,8 +76,8 @@ export function ExoplanetsPanel() {
       const matchingAnchor = anchor?.indexOf(starIdentifier) === 0;
       const matchingAim = aim?.indexOf(starIdentifier) === 0;
       if (matchingAnchor || matchingAim) {
-        dispatch(setPropertyValue({ uri: NavigationAnchorKey, value: 'Sun' }));
-        dispatch(setPropertyValue({ uri: NavigationAimKey, value: '' }));
+        setAnchor('Sun');
+        setAim('');
       }
       luaApi?.exoplanets.removeExoplanetSystem(starName);
     } else {

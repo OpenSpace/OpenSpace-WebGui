@@ -1,8 +1,8 @@
-import { Properties, PropertyOwners } from '@/types/types';
+import { Properties, PropertyOwners, Uri } from '@/types/types';
 
 import { EnginePropertyVisibilityKey, InterestingTagKey } from './keys';
 
-export function hasInterestingTag(uri: string, propertyOwners: PropertyOwners) {
+export function hasInterestingTag(uri: Uri, propertyOwners: PropertyOwners) {
   return propertyOwners[uri]?.tags.some((tag: string) => tag.includes(InterestingTagKey));
 }
 
@@ -10,7 +10,7 @@ export function hasInterestingTag(uri: string, propertyOwners: PropertyOwners) {
  * Filter based on show enabled/hidden
  */
 export function shouldShowPropertyOwner(
-  uri: string,
+  uri: Uri,
   properties: Properties,
   showOnlyEnabled: boolean,
   showHidden: boolean
@@ -25,7 +25,7 @@ export function shouldShowPropertyOwner(
   return shouldShow;
 }
 
-export function isPropertyOwnerHidden(properties: Properties, uri: string) {
+export function isPropertyOwnerHidden(properties: Properties, uri: Uri) {
   const prop = properties[`${uri}.GuiHidden`];
   if (prop && prop.value) {
     return true;
@@ -33,7 +33,7 @@ export function isPropertyOwnerHidden(properties: Properties, uri: string) {
   return false;
 }
 
-export function isPropertyVisible(properties: Properties, uri: string) {
+export function isPropertyVisible(properties: Properties, uri: Uri) {
   const visibility = properties[uri]?.description?.metaData?.Visibility;
   const visibilitySetting = properties[EnginePropertyVisibilityKey]?.value;
 
@@ -56,7 +56,7 @@ export function isPropertyVisible(properties: Properties, uri: string) {
   return visibilitySetting >= (VisibilityLevelMap[visibility] || 0);
 }
 
-export function isRenderable(uri: string) {
+export function isRenderable(uri: Uri) {
   const splitUri = uri.split('.');
   return splitUri.length > 1 && splitUri[splitUri.length - 1] === 'Renderable'; // TODO: Use pop() ?
 }
@@ -65,7 +65,7 @@ export function isRenderable(uri: string) {
  * Check if this property owner has a fade property, or a renderable with the property.
  * Note that a fadeable must have both the Fade and Enabled property, on the same level.
  */
-export function findFadePropertyUri(properties: Properties, uri: string) {
+export function findFadePropertyUri(properties: Properties, uri: Uri) {
   if (!isRenderable(uri) && properties[`${uri}.Fade`] && properties[`${uri}.Enabled`]) {
     return `${uri}.Fade`;
   }
@@ -78,7 +78,7 @@ export function findFadePropertyUri(properties: Properties, uri: string) {
 /**
  * Check if this property owner has an enabled property, or a renderable with the property
  */
-export function findEnabledPropertyUri(properties: Properties, uri: string) {
+export function findEnabledPropertyUri(properties: Properties, uri: Uri) {
   if (!isRenderable(uri) && properties[`${uri}.Enabled`]) {
     return `${uri}.Enabled`;
   }
@@ -92,7 +92,7 @@ export function findEnabledPropertyUri(properties: Properties, uri: string) {
  * Visible means that the object is enabled and has a fade value that's not zero
  * ownerUri is the uri of the property owner that we want to check is visible or not
  */
-export function isVisible(properties: Properties, ownerUri: string) {
+export function isVisible(properties: Properties, ownerUri: Uri) {
   const enabledUri = findEnabledPropertyUri(properties, ownerUri);
   const fadeUri = findFadePropertyUri(properties, ownerUri);
 

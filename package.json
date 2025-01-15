@@ -14,6 +14,7 @@
   "dependencies": {
     "@mantine/core": "^7.13.1",
     "@mantine/hooks": "^7.13.1",
+    "@mantine/modals": "^7.15.1",
     "@reduxjs/toolkit": "^2.2.8",
     "@tanstack/react-virtual": "^3.10.9",
     "@types/lodash": "^4.17.11",
