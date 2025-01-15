@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActionIcon,
-  Box,
   getTreeExpandedState,
   Group,
   Tooltip,
@@ -19,7 +18,7 @@ import { SceneTreeGroupPrefixKey } from '@/util/sceneTreeGroupsHelper';
 
 import { useOpenCurrentSceneNodeWindow } from '../hooks';
 
-import { FeaturedSceneTree } from './FeaturedSceneTree';
+import { SceneTreeFilters } from './SceneTreeFilters';
 import { SceneTreeNode, SceneTreeNodeContent } from './SceneTreeNode';
 import {
   filterTreeData,
@@ -28,11 +27,13 @@ import {
   sortTreeData
 } from './treeUtil';
 
-interface Props {
-  filter: SceneTreeFilterSettings;
-}
+export function SceneTree() {
+  const [filter, setFilter] = useState<SceneTreeFilterSettings>({
+    showOnlyVisible: false,
+    showHiddenNodes: false,
+    tags: []
+  });
 
-export function SceneTree({ filter }: Props) {
   const { closeCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
 
   const sceneTreeData = useAppSelector((state) => state.groups.sceneTreeData);
@@ -90,7 +91,7 @@ export function SceneTree({ filter }: Props) {
     return data;
   }, [customGuiOrdering, filter, properties, propertyOwners, sceneTreeData]);
 
-  // Create a flat list of all leaft nodes, that we can use for searching
+  // Create a flat list of all leaf nodes, that we can use for searching
   const flatTreeData = flattenTreeData(treeData);
 
   // @TODO (2025-01-13 emmbr): Would be nice to sort the results by some type of
@@ -103,16 +104,10 @@ export function SceneTree({ filter }: Props) {
 
   return (
     <FilterList>
-      <FilterList.InputField placeHolderSearchText={'Search for a node...'} />
-      <FilterList.Favorites>
-        <FeaturedSceneTree />
-        <Box pos={'relative'}>
-          <Tree
-            data={treeData}
-            tree={tree}
-            renderNode={(payload) => <SceneTreeNode {...payload} />}
-          />
-          <Group gap={0} pos={'absolute'} top={0} right={0}>
+      <Group justify={'space-between'}>
+        <FilterList.InputField placeHolderSearchText={'Search for a node...'} flex={1} />
+        <Group>
+          <Group gap={0}>
             <Tooltip
               label={'Collapse all'}
               position={'top'}
@@ -134,8 +129,18 @@ export function SceneTree({ filter }: Props) {
               </ActionIcon>
             </Tooltip>
           </Group>
-        </Box>
+          <SceneTreeFilters onFilterChange={setFilter} />
+        </Group>
+      </Group>
+
+      <FilterList.Favorites>
+        <Tree
+          data={treeData}
+          tree={tree}
+          renderNode={(payload) => <SceneTreeNode {...payload} />}
+        />
       </FilterList.Favorites>
+
       <FilterList.Data<TreeNodeData>
         data={flatTreeData}
         renderElement={(node: TreeNodeData) => (
