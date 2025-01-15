@@ -9,6 +9,7 @@ export {
   MdOutlineAddPhotoAlternate as AddPhotoIcon,
   MdOutlineAirplanemodeActive as AirplaneIcon,
   MdAnchor as AnchorIcon,
+  MdCancel as CancelIcon,
   MdExpandMore as ChevronDownIcon,
   MdChevronLeft as ChevronLeftIcon,
   MdChevronRight as ChevronRightIcon,
