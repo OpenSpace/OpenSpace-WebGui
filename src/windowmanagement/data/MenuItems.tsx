@@ -14,6 +14,7 @@ import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuBu
 import { TimePanel } from '@/panels/TimePanel/TimePanel';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { UserPanelsPanel } from '@/panels/UserPanelsPanel/UserPanelsPanel';
+import { SkyBrowserPanel } from '@/panels/SkyBrowserPanel/SkyBrowserPanel';
 
 export interface MenuItem {
   title: string; // Title of the rc-dock tab
@@ -124,6 +125,13 @@ export const menuItemsDB: MenuItem[] = [
     componentID: 'userPanels',
     content: <UserPanelsPanel />,
     preferredPosition: 'float',
+    defaultVisible: true
+  },
+  {
+    title: 'Sky Browser',
+    componentID: 'skyBrowser',
+    content: <SkyBrowserPanel />,
+    preferredPosition: 'right',
     defaultVisible: true
   }
 ];
