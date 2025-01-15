@@ -102,7 +102,8 @@ export function SceneTree({ filter }: Props) {
   });
 
   return (
-    <FilterList placeHolderSearchText={'Search for a node...'}>
+    <FilterList>
+      <FilterList.InputField placeHolderSearchText={'Search for a node...'} />
       <FilterList.Favorites>
         <FeaturedSceneTree />
         <Box pos={'relative'}>
