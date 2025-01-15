@@ -20,7 +20,7 @@ import { SceneTreeGroupPrefixKey } from '@/util/sceneTreeGroupsHelper';
 import { useOpenCurrentSceneNodeWindow } from '../hooks';
 
 import { FeaturedSceneTree } from './FeaturedSceneTree';
-import { SceneTreeNode, SceneTreeNodeStyled } from './SceneTreeNode';
+import { SceneTreeNode, SceneTreeNodeContent } from './SceneTreeNode';
 import {
   filterTreeData,
   flattenTreeData,
@@ -109,7 +109,7 @@ export function SceneTree({ filter }: Props) {
           <Tree
             data={treeData}
             tree={tree}
-            renderNode={(payload) => <SceneTreeNodeStyled {...payload} />}
+            renderNode={(payload) => <SceneTreeNode {...payload} />}
           />
           <Group gap={0} pos={'absolute'} top={0} right={0}>
             <Tooltip
@@ -138,7 +138,7 @@ export function SceneTree({ filter }: Props) {
       <FilterList.Data<TreeNodeData>
         data={flatTreeData}
         renderElement={(node: TreeNodeData) => (
-          <SceneTreeNode key={node.value} node={node} expanded={false} />
+          <SceneTreeNodeContent key={node.value} node={node} expanded={false} />
         )}
         matcherFunc={generateMatcherFunctionByKeys(['label'])} // For now we just use the name
       />

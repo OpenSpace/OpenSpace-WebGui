@@ -14,10 +14,12 @@ interface Props {
   expanded: boolean;
 }
 
-// @TODO: Make the text in this component look more clickable, e.g. using hover effects
-export function SceneTreeNode({ node, expanded }: Props) {
+// This component adds the content for each node in the tree, without any styling. Used
+// to render the content for the leaf nodes when searching for a node
+export function SceneTreeNodeContent({ node, expanded }: Props) {
   const { openCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
 
+  // @TODO: Make the text in this component look more clickable, e.g. using hover effects
   return isGroupNode(node) ? (
     <CollapsableHeader expanded={expanded} title={node.label} />
   ) : (
@@ -31,17 +33,9 @@ export function SceneTreeNode({ node, expanded }: Props) {
   );
 }
 
-// This component is a wrapper around the SceneTreeNode component that adds the styling
-// that the Mantine Tree component uses for its nodes, such as the indentation at each
-// tree level.
-//
-// The reason it is split up into two components (one styled and one not) is that there
-// are cases when we want to render the nodes the tree-specic styling, e.g. when searching
-export function SceneTreeNodeStyled({
-  node,
-  expanded,
-  elementProps
-}: RenderTreeNodePayload) {
+// This component adds the neccessary props for Mantine tree nodes, which includes styling
+// (indentation at each tree level) and event handling
+export function SceneTreeNode({ node, expanded, elementProps }: RenderTreeNodePayload) {
   const { openCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
 
   const nodeRef = useRef<HTMLDivElement>(null);
@@ -58,7 +52,7 @@ export function SceneTreeNodeStyled({
 
   return (
     <Box {...elementProps} ref={nodeRef}>
-      <SceneTreeNode node={node} expanded={expanded} />
+      <SceneTreeNodeContent node={node} expanded={expanded} />
     </Box>
   );
 }
