@@ -11,6 +11,7 @@ import { addSessionRecordingListener } from './sessionrecording/sessionRecording
 import { addTimeListener } from './time/timeMiddleware';
 import { addVersionListener } from './version/versionMiddleware';
 import type { AppDispatch, RootState } from './store';
+import { addSkyBrowserListener } from './skybrowser/skybrowserMiddleware';
 
 export const listenerMiddleware = createListenerMiddleware();
 export type AppStartListening = TypedStartListening<RootState, AppDispatch>;
@@ -27,3 +28,4 @@ addFlightControllerListener(startAppListening);
 addGroupsListener(startAppListening);
 addTimeListener(startAppListening);
 addVersionListener(startAppListening);
+addSkyBrowserListener(startAppListening);

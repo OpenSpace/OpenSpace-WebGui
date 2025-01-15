@@ -100,13 +100,6 @@ export const menuItemsDB: MenuItem[] = [
     defaultVisible: true
   },
   {
-    title: 'Sky Browser',
-    componentID: 'skyBrowser',
-    content: <div>Sky Broweser</div>,
-    preferredPosition: 'right',
-    defaultVisible: false
-  },
-  {
     title: 'Flight Control',
     componentID: 'flightControl',
     content: <FlightControlPanel />,
