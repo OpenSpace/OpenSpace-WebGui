@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { Group, Paper, Text } from '@mantine/core';
 
-import { useGetBoolPropertyValue, useGetPropertyOwner } from '@/api/hooks';
+import { useGetPropertyOwner } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
