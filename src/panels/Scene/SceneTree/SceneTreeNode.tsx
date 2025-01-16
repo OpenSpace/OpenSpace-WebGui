@@ -3,11 +3,14 @@ import { Box, RenderTreeNodePayload, TreeNodeData } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
 import { CollapsableHeader } from '@/components/Collapsable/CollapsableHeader/CollapsableHeader';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
 import { isGroupNode } from '@/util/sceneTreeGroupsHelper';
 
 import { useOpenCurrentSceneNodeWindow } from '../hooks';
 import { SceneGraphNodeHeader } from '../SceneGraphNode/SceneGraphNodeHeader';
-import { SceneGraphNodeView } from '../SceneGraphNode/SceneGraphNodeView';
+
+import { CurrentNodeView } from './CurrentNodeView';
 
 interface Props {
   node: TreeNodeData;
@@ -18,16 +21,29 @@ interface Props {
 // to render the content for the leaf nodes when searching for a node
 export function SceneTreeNodeContent({ node, expanded }: Props) {
   const { openCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
+  const dispatch = useAppDispatch();
+
+  const isCurrentNode = useAppSelector(
+    (state) => node.value === state.local.sceneTree.currentlySelectedNode
+  );
 
   // @TODO: Make the text in this component look more clickable, e.g. using hover effects
   return isGroupNode(node) ? (
     <CollapsableHeader expanded={expanded} title={node.label} />
   ) : (
-    <Box ml={'xs'} mt={5}>
+    <Box
+      ml={'xs'}
+      p={2}
+      mt={5}
+      bd={isCurrentNode ? '3px solid var(--mantine-primary-color-filled)' : 'none'}
+    >
       <SceneGraphNodeHeader
         uri={node.value}
         label={node.label as string}
-        onClick={() => openCurrentNodeWindow(<SceneGraphNodeView uri={node.value} />)}
+        onClick={() => {
+          dispatch(setSceneTreeSelectedNode(node.value));
+          openCurrentNodeWindow(<CurrentNodeView />);
+        }}
       />
     </Box>
   );
@@ -37,6 +53,7 @@ export function SceneTreeNodeContent({ node, expanded }: Props) {
 // (indentation at each tree level) and event handling
 export function SceneTreeNode({ node, expanded, elementProps }: RenderTreeNodePayload) {
   const { openCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
+  const dispatch = useAppDispatch();
 
   const nodeRef = useRef<HTMLDivElement>(null);
 
@@ -46,7 +63,8 @@ export function SceneTreeNode({ node, expanded, elementProps }: RenderTreeNodePa
     const isFocused = parentElement && parentElement === document.activeElement;
 
     if (event.code === 'Enter' && !isGroupNode(node) && isFocused) {
-      openCurrentNodeWindow(<SceneGraphNodeView uri={node.value} />);
+      dispatch(setSceneTreeSelectedNode(node.value));
+      openCurrentNodeWindow(<CurrentNodeView />);
     }
   });
 
