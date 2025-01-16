@@ -33,7 +33,7 @@ export function ImageCard({ image }: Props) {
             <Text size="sm" fw={500}>
               {image.name}
             </Text>
-            <Text size="sm" c={'dimmed'}>
+            <Text size="sm" c={'dimmed'} lineClamp={10}>
               {image.credits}
             </Text>
             <Anchor size={'sm'} href={image.creditsUrl} target="_blank" underline="hover">

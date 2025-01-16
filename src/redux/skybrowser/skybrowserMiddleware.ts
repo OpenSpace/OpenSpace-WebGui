@@ -5,7 +5,7 @@ const unsubscribeToSkyBrowser = createAction<void>('skybrowser/unsubscribe');
 
 import { api } from '@/api/api';
 import { AppStartListening } from '../listenerMiddleware';
-import { updateSkyBrowser } from './skybrowserSlice';
+import { subscriptionIsSetup, updateSkyBrowser } from './skybrowserSlice';
 
 let skybrowserTopic: any;
 let nSubscribers = 0;
@@ -23,6 +23,7 @@ export const setupSubscription = createAsyncThunk(
         thunkAPI.dispatch(updateSkyBrowser(data));
       }
     })();
+    thunkAPI.dispatch(subscriptionIsSetup());
   }
 );
 

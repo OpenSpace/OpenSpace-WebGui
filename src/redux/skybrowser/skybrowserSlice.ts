@@ -57,8 +57,11 @@ export const skyBrowserSlice = createSlice({
   name: 'skybrowser',
   initialState,
   reducers: {
-    updateSkyBrowser: (state, action: PayloadAction<SkyBrowserState>) => {
+    subscriptionIsSetup: (state) => {
       state.isInitialized = true;
+      return state;
+    },
+    updateSkyBrowser: (state, action: PayloadAction<SkyBrowserState>) => {
       state.browsers = action.payload.browsers;
       state.cameraInSolarSystem = action.payload.cameraInSolarSystem;
       state.selectedBrowserId = action.payload.selectedBrowserId;
@@ -75,6 +78,10 @@ export const skyBrowserSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function, replaces the `Actions/index.js`
-export const { updateSkyBrowser, setImageCollectionData, onCloseConnection } =
-  skyBrowserSlice.actions;
+export const {
+  updateSkyBrowser,
+  setImageCollectionData,
+  onCloseConnection,
+  subscriptionIsSetup
+} = skyBrowserSlice.actions;
 export const skyBrowserReducer = skyBrowserSlice.reducer;
