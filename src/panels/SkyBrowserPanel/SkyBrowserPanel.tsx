@@ -2,9 +2,9 @@ import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
 
 import { useGetSkyBrowserData } from './hooks';
 import { useAppSelector } from '@/redux/hooks';
-import { Button, Container, Title } from '@mantine/core';
-import { ImageList } from './ImageList/ImageList';
+import { Button, Container, Divider, Title } from '@mantine/core';
 import { ImageListSection } from './ImageList/ImageListSection';
+import { BrowserTabs } from './ImageList/Tabs/BrowserTabs';
 
 export function SkyBrowserPanel() {
   const [wwtUrl] = useGetStringPropertyValue('Modules.SkyBrowser.WwtImageCollectionUrl');
@@ -33,6 +33,8 @@ export function SkyBrowserPanel() {
     <Container>
       <Title>SkyBrowser</Title>
       <ImageListSection />
+      <Divider my={'md'} />
+      <BrowserTabs />
     </Container>
   );
 }

@@ -33,7 +33,12 @@ export {
   MdFiberManualRecord as RecordIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
-  MdVideocam as VideocamIcon
+  MdVideocam as VideocamIcon,
+  MdVisibility as EyeIcon,
+  MdFilterCenterFocus as MoveTargetIcon,
+  MdDelete as TrashIcon,
+  MdZoomIn as ZoomInIcon,
+  MdZoomOut as ZoomOutIcon
 } from 'react-icons/md';
 export { PiBookOpenText as BookIcon } from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
