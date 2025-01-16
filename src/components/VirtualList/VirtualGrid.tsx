@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { VirtualList } from './VirtualList';
 import { Grid } from '@mantine/core';
+import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
 
 export interface KeyType {
   key: string;
@@ -25,20 +26,11 @@ export function VirtualGrid<T extends KeyType>({
   estimateSize
 }: VirtualGridProps<T>) {
   const dataByColumns = useMemo(() => {
-    return data
-      .map((d, i, array) => {
-        if (i % columns) {
-          let row = [];
-          for (let j = 0; j < columns; j++) {
-            if (array.length > i + j) {
-              row.push(array[i + j]);
-            }
-          }
-          return row.filter((el) => el);
-        }
-        return undefined;
-      })
-      .filter((d) => d?.filter((el) => el));
+    const result: T[][] = [];
+    for (let i = 0; i < data.length; i += columns) {
+      result.push(data.slice(i, i + columns));
+    }
+    return result;
   }, [data]);
 
   return (
