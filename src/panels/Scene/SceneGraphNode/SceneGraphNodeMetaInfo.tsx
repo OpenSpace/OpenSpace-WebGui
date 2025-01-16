@@ -25,11 +25,9 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
   const [guiPath] = useGetStringPropertyValue(`${uri}.GuiPath`);
 
-  let [description] = useGetStringPropertyValue(`${uri}.GuiDescription`);
+  const [description] = useGetStringPropertyValue(`${uri}.GuiDescription`);
   if (description) {
     description.replace(/\\n/g, '').replace(/<br>/g, '');
-  } else {
-    description = 'No description found';
   }
 
   const identifier = identifierFromUri(uri);
@@ -59,7 +57,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
           <CopyToClipboardButton value={uri} />
         </Group>
       ],
-      ['About:', description],
+      ['About:', description || 'No description found'],
       [
         'Tags:',
         <Group gap={'xs'}>
