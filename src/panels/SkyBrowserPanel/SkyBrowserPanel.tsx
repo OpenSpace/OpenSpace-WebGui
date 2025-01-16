@@ -4,7 +4,7 @@ import { useGetSkyBrowserData } from './hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { Button, Container, Divider, Title } from '@mantine/core';
 import { ImageListSection } from './ImageList/ImageListSection';
-import { BrowserTabs } from './ImageList/Tabs/BrowserTabs';
+import { BrowserTabs } from './Tabs/BrowserTabs';
 
 export function SkyBrowserPanel() {
   const [wwtUrl] = useGetStringPropertyValue('Modules.SkyBrowser.WwtImageCollectionUrl');

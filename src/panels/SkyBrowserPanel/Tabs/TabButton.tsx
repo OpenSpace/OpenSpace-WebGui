@@ -1,4 +1,4 @@
-import { ActionIcon, MantineStyleProps, Popover, Text } from '@mantine/core';
+import { ActionIcon, Popover, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { PropsWithChildren } from 'react';
 

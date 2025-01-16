@@ -1,12 +1,17 @@
 import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
-import { Card, Image, Text, ActionIcon, Popover, Anchor, Button } from '@mantine/core';
-import { AddPhotoIcon, InformationCircleOutlineIcon } from '@/icons/icons';
+import { Card, Image, Text, ActionIcon } from '@mantine/core';
+import { AddPhotoIcon } from '@/icons/icons';
+import { ImageInfoPopover } from '../ImageInfoPopover';
+import { useActiveImage } from '../hooks';
 interface Props {
   image: SkyBrowserImage;
 }
 export function ImageCard({ image }: Props) {
+  const [activeImage, setActiveImage] = useActiveImage();
+  const isActive = activeImage === image.url;
+  console.log('render');
   return (
-    <Card withBorder shadow="sm">
+    <Card withBorder shadow="sm" style={{ borderColor: isActive ? 'red' : 'blue' }}>
       <Card.Section>
         <Image
           src={image.thumbnail}
@@ -21,26 +26,9 @@ export function ImageCard({ image }: Props) {
           mr={'md'}
           onClick={() => console.log('Add image' + image.thumbnail)}
         >
-          <AddPhotoIcon />
+          <AddPhotoIcon onClick={() => setActiveImage(image.url)} />
         </ActionIcon>
-        <Popover width={200} position="bottom" withArrow shadow="md" trapFocus>
-          <Popover.Target>
-            <ActionIcon>
-              <InformationCircleOutlineIcon />
-            </ActionIcon>
-          </Popover.Target>
-          <Popover.Dropdown>
-            <Text size="sm" fw={500}>
-              {image.name}
-            </Text>
-            <Text size="sm" c={'dimmed'} lineClamp={10}>
-              {image.credits}
-            </Text>
-            <Anchor size={'sm'} href={image.creditsUrl} target="_blank" underline="hover">
-              Read more
-            </Anchor>
-          </Popover.Dropdown>
-        </Popover>
+        <ImageInfoPopover image={image} />
       </Card.Section>
     </Card>
   );
