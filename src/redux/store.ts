@@ -6,6 +6,7 @@ import { documentationReducer } from './documentation/documentationSlice';
 import { exoplanetsReducer } from './exoplanets/exoplanetsSlice';
 import { flightControllerReducer } from './flightcontroller/flightControllerSlice';
 import { groupsReducer } from './groups/groupsSlice';
+import { localReducer } from './local/localSlice';
 import { propertiesReducer } from './propertytree/properties/propertiesSlice';
 import { propertyOwnersReducer } from './propertytree/propertyowner/propertyOwnerSlice';
 import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
@@ -22,6 +23,7 @@ export const store = configureStore({
     exoplanets: exoplanetsReducer,
     flightController: flightControllerReducer,
     groups: groupsReducer,
+    local: localReducer,
     properties: propertiesReducer,
     propertyOwners: propertyOwnersReducer,
     sessionRecording: sessionRecordingReducer,

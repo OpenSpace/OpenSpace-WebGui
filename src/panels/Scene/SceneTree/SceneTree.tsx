@@ -12,8 +12,8 @@ import {
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ChevronsDownIcon, ChevronsUpIcon } from '@/icons/icons';
-import { storeSceneTreeNodeExpanded } from '@/redux/groups/groupsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { storeSceneTreeNodeExpanded } from '@/redux/local/localSlice';
 import { SceneTreeGroupPrefixKey } from '@/util/sceneTreeGroupsHelper';
 
 import { useOpenCurrentSceneNodeWindow } from '../hooks';
@@ -44,7 +44,9 @@ export function SceneTree() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const customGuiOrdering = useAppSelector((state) => state.groups.customGroupOrdering);
 
-  const initialExpandedNodes = useAppSelector((state) => state.groups.expandedGroups);
+  const initialExpandedNodes = useAppSelector(
+    (state) => state.local.sceneTree.expandedGroups
+  );
 
   // Ref to keep track of which groups are currently expanded. The reason it is a ref is
   // since we need this object to exist for the entire lifetime of the component,
