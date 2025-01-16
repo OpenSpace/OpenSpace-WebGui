@@ -1,23 +1,25 @@
 import { FilterList } from '@/components/FilterList/FilterList';
 import { FilterListGrid } from '@/components/FilterList/FilterListGrid';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
-import { useAppSelector } from '@/redux/hooks';
 import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
-import { Select, Divider } from '@mantine/core';
+import { Divider } from '@mantine/core';
 import { ImageCard } from './ImageCard';
-import { memo, useMemo, useState } from 'react';
+import { memo, useMemo } from 'react';
 
-// Memoizing this as it doesn't have any props and it is very expensive
-export const ImageList = memo(function ImageList() {
-  const imageList = useAppSelector((state) => state.skybrowser.imageList);
-  const [value, setValue] = useState<string | null>('All Images');
+interface Props {
+  imageList: SkyBrowserImage[];
+}
 
+// Memoizing this as it is very expensive
+// Generic component for all the images
+export const ImageList = memo(function ImageList({ imageList }: Props) {
   const renderImageCard = useMemo(
     () => (image: SkyBrowserImage) => {
       return <ImageCard image={image} />;
     },
     []
   );
+  console.log('render');
 
   const matcherFunc = useMemo(
     () => generateMatcherFunctionByKeys(['collection', 'name']),
@@ -26,11 +28,6 @@ export const ImageList = memo(function ImageList() {
 
   return imageList.length > 0 ? (
     <>
-      <Select
-        data={['All Images', 'Images Within View', 'Sky Surveys']}
-        value={value}
-        onChange={setValue}
-      />
       <Divider my={'md'} />
       <FilterList height={'700px'}>
         <FilterListGrid<SkyBrowserImage>

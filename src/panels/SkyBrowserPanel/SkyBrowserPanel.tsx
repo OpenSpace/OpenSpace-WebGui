@@ -3,13 +3,13 @@ import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
 import { useGetSkyBrowserData } from './hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { Button, Container, Title } from '@mantine/core';
-import { ImageList } from './ImageList';
+import { ImageList } from './ImageList/ImageList';
+import { ImageListSection } from './ImageList/ImageListSection';
 
 export function SkyBrowserPanel() {
   const [wwtUrl] = useGetStringPropertyValue('Modules.SkyBrowser.WwtImageCollectionUrl');
   const luaApi = useOpenSpaceApi();
   const isInitialized = useAppSelector((state) => state.skybrowser.isInitialized);
-  const imageListLength = useAppSelector((state) => state.skybrowser.imageList.length);
   const cameraInSolarSystem = useAppSelector(
     (state) => state.skybrowser.cameraInSolarSystem
   );
@@ -17,7 +17,6 @@ export function SkyBrowserPanel() {
   useGetSkyBrowserData();
 
   if (!isInitialized || !luaApi) {
-    console.log(isInitialized, imageListLength, luaApi);
     return <>...Loading...</>;
   }
   if (!cameraInSolarSystem) {
@@ -33,7 +32,7 @@ export function SkyBrowserPanel() {
   return (
     <Container>
       <Title>SkyBrowser</Title>
-      <ImageList></ImageList>
+      <ImageListSection />
     </Container>
   );
 }
