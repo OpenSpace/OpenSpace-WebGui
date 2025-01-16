@@ -2,7 +2,10 @@ import { useMemo } from 'react';
 import { VirtualList } from './VirtualList';
 import { Grid } from '@mantine/core';
 
-export interface VirtualGridProps<T> {
+export interface KeyType {
+  key: string;
+}
+export interface VirtualGridProps<T extends KeyType> {
   data: T[];
   renderElement: (data: T, i: number) => React.ReactNode;
   gap?: number; // Gap in pixels between items
@@ -13,7 +16,7 @@ export interface VirtualGridProps<T> {
 
 // This component is created from the example in the docs:
 // https://tanstack.com/virtual/latest/docs/introduction
-export function VirtualGrid<T>({
+export function VirtualGrid<T extends KeyType>({
   data,
   renderElement,
   gap,
@@ -45,9 +48,9 @@ export function VirtualGrid<T>({
       estimateSize={estimateSize}
       overscan={overscan}
       renderElement={(d, i) => (
-        <Grid>
+        <Grid key={`grid${i}`}>
           {d?.map((el, j) => (
-            <Grid.Col key={`element${i}${j}`} span={12 / columns}>
+            <Grid.Col key={el.key} span={12 / columns}>
               {renderElement(el, i + j)}
             </Grid.Col>
           ))}

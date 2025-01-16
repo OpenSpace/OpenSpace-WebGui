@@ -1,36 +1,50 @@
 import { FilterList } from '@/components/FilterList/FilterList';
-import { FilterListData } from '@/components/FilterList/FilterListData';
+import { FilterListGrid } from '@/components/FilterList/FilterListGrid';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { useAppSelector } from '@/redux/hooks';
 import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
-import { Card, Image, Text } from '@mantine/core';
+import { Select, Divider } from '@mantine/core';
+import { ImageCard } from './ImageCard';
+import { memo, useMemo, useState } from 'react';
 
-export function ImageList() {
+// Memoizing this as it doesn't have any props and it is very expensive
+export const ImageList = memo(function ImageList() {
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
+  const [value, setValue] = useState<string | null>('All Images');
 
-  return (
-    <FilterList height={'700px'}>
-      <FilterListData<SkyBrowserImage>
-        data={imageList}
-        grid={true}
-        estimateSize={135}
-        renderElement={(image) => (
-          <Card>
-            <Card.Section>
-              <Image
-                src={image.thumbnail}
-                height={60}
-                fallbackSrc="https://placehold.co/600x400?text=Placeholder"
-                onClick={() => console.log(image.thumbnail)}
-              ></Image>
-            </Card.Section>
-            <Card.Section p={'xs'}>
-              <Text lineClamp={1}>{image.name}</Text>
-            </Card.Section>
-          </Card>
-        )}
-        matcherFunc={generateMatcherFunctionByKeys(['collection', 'name'])}
-      ></FilterListData>
-    </FilterList>
+  const renderImageCard = useMemo(
+    () => (image: SkyBrowserImage) => {
+      return <ImageCard image={image} />;
+    },
+    []
   );
-}
+
+  const matcherFunc = useMemo(
+    () => generateMatcherFunctionByKeys(['collection', 'name']),
+    []
+  );
+
+  return imageList.length > 0 ? (
+    <>
+      <Select
+        data={['All Images', 'Images Within View', 'Sky Surveys']}
+        value={value}
+        onChange={setValue}
+      />
+      <Divider my={'md'} />
+      <FilterList height={'700px'}>
+        <FilterListGrid<SkyBrowserImage>
+          data={imageList}
+          grid={true}
+          estimateSize={145}
+          gap={15}
+          renderElement={renderImageCard}
+          matcherFunc={matcherFunc}
+          columns={3}
+        />
+      </FilterList>
+    </>
+  ) : (
+    '...Loading image collection...'
+  );
+});
