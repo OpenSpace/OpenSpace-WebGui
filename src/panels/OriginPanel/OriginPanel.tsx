@@ -208,7 +208,7 @@ export function OriginPanel() {
           <TelescopeIcon size={'70%'} />
         </ActionIcon>
       </Group>
-      <FilterList height={300}>
+      <FilterList heightPercent={40}>
         <FilterList.InputField
           placeHolderSearchText={searchPlaceholderText}
           showMoreButton

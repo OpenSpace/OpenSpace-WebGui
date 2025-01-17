@@ -4,15 +4,19 @@ import { FilterListData } from './FilterListData';
 import { FilterListFavorites } from './FilterListFavorites';
 import { FilterListInputField } from './FilterListInputField';
 import { FilterListProvider } from './FilterListProvider';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 interface FilterListProps {
   children: React.ReactNode;
-  height?: number | string;
+  height?: number | string; // Absolue value; if it is set, it takes precedence
+  heightPercent?: number; // Relative value of window height (percent)
 }
 
-export function FilterList({ height = '100%', children }: FilterListProps) {
+export function FilterList({ height, heightPercent = 100, children }: FilterListProps) {
+  const { height: windowHeight } = useWindowSize();
+  const calculatedHeight = height ?? windowHeight * (heightPercent / 100);
   return (
-    <Stack style={{ height: height }}>
+    <Stack style={{ height: calculatedHeight }}>
       <FilterListProvider>{children}</FilterListProvider>
     </Stack>
   );
