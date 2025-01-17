@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
-import { ScrollArea } from '@mantine/core';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
+
+import { Window } from '../Window/Window';
 
 import { WindowLayoutOptions } from './WindowLayout';
 import { WindowLayoutContext } from './WindowLayoutContext';
@@ -32,7 +33,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
     const tab: TabData = {
       id: options.id,
       title: options.title,
-      content: <ScrollArea h={'100%'}>{component}</ScrollArea>,
+      content: <Window>{component}</Window>,
       closable: true,
       cached: true,
       group: 'regularWindow'
