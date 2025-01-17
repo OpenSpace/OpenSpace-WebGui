@@ -20,6 +20,7 @@ import { Groups } from '@/types/types';
 import { hasInterestingTag, shouldShowPropertyOwner } from '@/util/propertytreehelper';
 
 import { TempPropertyTest } from './TempPropertyTest';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 
 export function Scene() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
@@ -121,16 +122,10 @@ export function Scene() {
       });
     });
 
-  function loadingBlocks(n: number) {
-    return [...Array(n)].map((_, i) => (
-      <Skeleton key={i} height={8} width={`${Math.random() * 100}%`} radius={'xl'} />
-    ));
-  }
-
   return (
     <>
       {!hasLoadedScene ? (
-        <>{loadingBlocks(4)}</>
+        <LoadingBlocks />
       ) : (
         <Tabs defaultValue={'propertyTest'}>
           <Tabs.List>
