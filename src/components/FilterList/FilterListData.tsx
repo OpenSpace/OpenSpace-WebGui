@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 
+import { LoadingBlocks } from '../LoadingBlocks/LoadingBlocks';
 import { VirtualList } from '../VirtualList/VirtualList';
 
 import { useFilterListProvider } from './hooks';
-import { LoadingBlocks } from '../LoadingBlocks/LoadingBlocks';
 
 export const FilterListDataDisplayName = 'FilterListData';
 

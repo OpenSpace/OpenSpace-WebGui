@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Container, Divider, Flex, Loader, ScrollArea, Text, Title } from '@mantine/core';
+import { Container, Divider, ScrollArea, Text, Title } from '@mantine/core';
 
 import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
 import { CollapsableContent } from '@/components/CollapsableContent/CollapsableContent';

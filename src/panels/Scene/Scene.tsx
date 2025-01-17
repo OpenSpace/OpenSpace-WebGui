@@ -3,7 +3,6 @@ import {
   Checkbox,
   Group,
   Menu,
-  Skeleton,
   Tabs,
   Text,
   Tree,
@@ -12,6 +11,7 @@ import {
 import { useLocalStorage } from '@mantine/hooks';
 
 import { CollapsableHeader } from '@/components/CollapsableHeader/CollapsableHeader';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { FilterIcon } from '@/icons/icons';
@@ -20,7 +20,6 @@ import { Groups } from '@/types/types';
 import { hasInterestingTag, shouldShowPropertyOwner } from '@/util/propertytreehelper';
 
 import { TempPropertyTest } from './TempPropertyTest';
-import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 
 export function Scene() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);

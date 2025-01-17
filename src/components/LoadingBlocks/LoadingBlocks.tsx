@@ -1,5 +1,5 @@
-import { Skeleton } from '@mantine/core';
 import { useMemo } from 'react';
+import { Skeleton } from '@mantine/core';
 
 interface Props {
   n?: number;

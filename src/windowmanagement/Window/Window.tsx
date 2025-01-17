@@ -5,8 +5,8 @@ import { ScrollArea } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
 
 import { reloadPropertyTree } from '@/redux/propertytree/propertyTreeMiddleware';
-
 import { fallbackRender } from '@/util/fallbackRenderer';
+
 import { WindowSizeContext } from './WindowSizeContext';
 
 export function Window({ children }: PropsWithChildren) {

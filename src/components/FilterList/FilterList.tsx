@@ -1,10 +1,11 @@
 import { Stack } from '@mantine/core';
 
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
+
 import { FilterListData } from './FilterListData';
 import { FilterListFavorites } from './FilterListFavorites';
 import { FilterListInputField } from './FilterListInputField';
 import { FilterListProvider } from './FilterListProvider';
-import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 interface FilterListProps {
   children: React.ReactNode;
