@@ -14,7 +14,6 @@ export function SelectedImagesList() {
     <>
       {selectedImages?.map((image, i) => {
         return (
-          image &&
           imageList[image] && (
             <SelectedImageCard
               key={imageList[image].url}

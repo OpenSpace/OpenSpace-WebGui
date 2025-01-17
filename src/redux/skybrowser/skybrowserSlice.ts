@@ -43,6 +43,7 @@ export interface SkyBrowserState {
   cameraInSolarSystem: boolean;
   selectedBrowserId: string;
   imageList: SkyBrowserImage[];
+  activeImage: string;
 }
 
 const initialState: SkyBrowserState = {
@@ -50,7 +51,8 @@ const initialState: SkyBrowserState = {
   browsers: {},
   cameraInSolarSystem: false,
   selectedBrowserId: '',
-  imageList: []
+  imageList: [],
+  activeImage: ''
 };
 
 export const skyBrowserSlice = createSlice({
@@ -73,6 +75,10 @@ export const skyBrowserSlice = createSlice({
     },
     onCloseConnection: (state) => {
       return state;
+    },
+    setActiveImage: (state, action: PayloadAction<string>) => {
+      state.activeImage = action.payload;
+      return state;
     }
   }
 });
@@ -82,6 +88,7 @@ export const {
   updateSkyBrowser,
   setImageCollectionData,
   onCloseConnection,
-  subscriptionIsSetup
+  subscriptionIsSetup,
+  setActiveImage
 } = skyBrowserSlice.actions;
 export const skyBrowserReducer = skyBrowserSlice.reducer;

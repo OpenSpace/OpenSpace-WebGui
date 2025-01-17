@@ -6,5 +6,5 @@ import { ImageList } from './ImageList';
 // unneccessarily
 export function NearestImages() {
   const imagesInView = useGetImagesInView();
-  return <ImageList imageList={imagesInView} />;
+  return <ImageList imageList={imagesInView} noImagesText="No images in view" />;
 }

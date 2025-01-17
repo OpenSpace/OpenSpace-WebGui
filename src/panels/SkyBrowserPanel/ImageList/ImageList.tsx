@@ -8,18 +8,21 @@ import { memo, useMemo } from 'react';
 
 interface Props {
   imageList: SkyBrowserImage[];
+  noImagesText?: string;
 }
 
 // Memoizing this as it is very expensive
 // Generic component for all the images
-export const ImageList = memo(function ImageList({ imageList }: Props) {
+export const ImageList = memo(function ImageList({
+  imageList,
+  noImagesText = 'Loading'
+}: Props) {
   const renderImageCard = useMemo(
     () => (image: SkyBrowserImage) => {
       return <ImageCard image={image} />;
     },
     []
   );
-  console.log('render');
 
   const matcherFunc = useMemo(
     () => generateMatcherFunctionByKeys(['collection', 'name']),
@@ -42,6 +45,6 @@ export const ImageList = memo(function ImageList({ imageList }: Props) {
       </FilterList>
     </>
   ) : (
-    '...Loading image collection...'
+    noImagesText
   );
 });

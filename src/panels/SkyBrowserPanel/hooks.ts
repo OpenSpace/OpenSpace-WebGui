@@ -1,10 +1,13 @@
 import { useOpenSpaceApi } from '@/api/hooks';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   subscribeToSkyBrowser,
   unsubscribeToSkyBrowser
 } from '@/redux/skybrowser/skybrowserMiddleware';
-import { setImageCollectionData } from '@/redux/skybrowser/skybrowserSlice';
+import {
+  setImageCollectionData,
+  setActiveImage
+} from '@/redux/skybrowser/skybrowserSlice';
 import { useEffect } from 'react';
 
 export function useGetWwtImageCollection() {
@@ -47,4 +50,15 @@ export function useGetSkyBrowserData() {
       dispatch(unsubscribeToSkyBrowser());
     };
   }, [dispatch]);
+}
+
+export function useActiveImage(): [string, (url: string) => void] {
+  const activeImage = useAppSelector((state) => state.skybrowser.activeImage);
+
+  const dispatch = useAppDispatch();
+
+  function setImage(url: string) {
+    dispatch(setActiveImage(url));
+  }
+  return [activeImage, setImage];
 }

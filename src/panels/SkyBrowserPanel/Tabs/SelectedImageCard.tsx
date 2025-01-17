@@ -1,53 +1,85 @@
-import { TrashIcon } from '@/icons/icons';
-import { ActionIcon, Group, Paper, Slider, Stack, Image, Text } from '@mantine/core';
+import { MoveTargetIcon, TrashIcon } from '@/icons/icons';
+import { Group, Paper, Slider, Stack, Image, Text } from '@mantine/core';
 import { ImageInfoPopover } from '../ImageInfoPopover';
 import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
+import { useThrottledCallback } from '@mantine/hooks';
+import { TabButton } from './TabButton';
+import { useActiveImage } from '../hooks';
 
 interface Props {
   image: SkyBrowserImage;
   selected: boolean;
   opacity: number;
 }
-export function SelectedImageCard({ image, selected, opacity }: Props) {
+export function SelectedImageCard({ image, opacity }: Props) {
   const luaApi = useOpenSpaceApi();
+  const [activeImage] = useActiveImage();
   const selectedBrowserId = useAppSelector((state) => state.skybrowser.selectedBrowserId);
+  const throttle = useThrottledCallback(
+    (newValue) =>
+      luaApi?.skybrowser.setOpacityOfImageLayer(selectedBrowserId, image.url, newValue),
+    250
+  );
+  const isSelected = activeImage === image.url;
   return (
     <Paper
       withBorder={true}
       my={'md'}
-      py={'xs'}
-      px={'md'}
-      style={{ borderColor: selected ? 'pink' : 'blue' }}
+      p={'sm'}
+      style={{ borderColor: isSelected ? 'pink' : 'var(--mantine-color-gray-8)' }}
     >
-      <Group w={'100%'}>
-        <Image
-          src={image.thumbnail}
-          radius={'sm'}
-          fallbackSrc="https://placehold.co/600x400?text=Placeholder"
-        />
-        <Stack flex={1}>
-          <Text fw={600}>{image.name}</Text>
+      <Group w={'100%'} justify="space-between">
+        <Stack maw={'50%'}>
+          <Text fw={600} lineClamp={1}>
+            {image.name}
+          </Text>
+          <Group>
+            <TabButton
+              onClick={() => luaApi?.skybrowser.selectImage(image.url)}
+              text={'Look at image'}
+              variant="filled"
+            >
+              <MoveTargetIcon />
+            </TabButton>
+            <TabButton
+              onClick={() =>
+                luaApi?.skybrowser.removeSelectedImageInBrowser(
+                  selectedBrowserId,
+                  image.url
+                )
+              }
+              text={'Remove image'}
+              variant={'filled'}
+            >
+              <TrashIcon />
+            </TabButton>
+            <ImageInfoPopover image={image} />
+          </Group>
+        </Stack>
+        <Stack gap={'xs'}>
+          <Image
+            fit="cover"
+            src={image.thumbnail}
+            radius={'sm'}
+            height={45}
+            opacity={opacity}
+            fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+            style={{
+              border: '1px solid var(--mantine-color-gray-7)'
+            }}
+          />
           <Slider
+            flex={1}
             value={opacity}
-            onChange={(newValue) =>
-              luaApi?.skybrowser.setOpacityOfImageLayer(
-                selectedBrowserId,
-                image.url,
-                newValue
-              )
-            }
+            onChange={throttle}
             min={0}
             max={1}
             step={0.1}
             label={(value) => value.toFixed(1)}
           />
         </Stack>
-        <ActionIcon onClick={() => 'remove'}>
-          <TrashIcon />
-        </ActionIcon>
-        <ImageInfoPopover image={image} />
       </Group>
     </Paper>
   );
