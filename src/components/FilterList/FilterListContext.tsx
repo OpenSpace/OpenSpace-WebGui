@@ -6,6 +6,7 @@ export interface ProviderProps {
   showFavorites: boolean;
   toggleShowDataInstead: () => void;
   showDataInstead: boolean;
+  isLoading: boolean;
 }
 
 export const FilterListContext = createContext<ProviderProps | null>(null);
