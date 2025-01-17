@@ -15,7 +15,10 @@ const theme = createTheme({
 
 function App() {
   return (
-    <ErrorBoundary fallbackRender={fallbackRender}>
+    <ErrorBoundary
+      fallbackRender={fallbackRender}
+      onReset={() => window.location.reload()}
+    >
       <MantineProvider theme={theme} defaultColorScheme={'dark'}>
         <ModalsProvider>
           <WindowLayoutProvider>
