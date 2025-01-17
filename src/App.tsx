@@ -6,6 +6,8 @@ import { WindowLayoutProvider } from './windowmanagement/WindowLayout/WindowLayo
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import '@mantine/core/styles.css';
+import { ErrorBoundary } from 'react-error-boundary';
+import { fallbackRender } from './util/fallbackRenderer';
 
 const theme = createTheme({
   cursorType: 'pointer'
@@ -13,13 +15,15 @@ const theme = createTheme({
 
 function App() {
   return (
-    <MantineProvider theme={theme} defaultColorScheme={'dark'}>
-      <ModalsProvider>
-        <WindowLayoutProvider>
-          <WindowLayout />
-        </WindowLayoutProvider>
-      </ModalsProvider>
-    </MantineProvider>
+    <ErrorBoundary fallbackRender={fallbackRender}>
+      <MantineProvider theme={theme} defaultColorScheme={'dark'}>
+        <ModalsProvider>
+          <WindowLayoutProvider>
+            <WindowLayout />
+          </WindowLayoutProvider>
+        </ModalsProvider>
+      </MantineProvider>
+    </ErrorBoundary>
   );
 }
 
