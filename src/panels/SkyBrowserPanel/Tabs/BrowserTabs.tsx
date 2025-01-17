@@ -12,13 +12,20 @@ import { TabButton } from './TabButton';
 import { useState } from 'react';
 import { Settings } from './Settings';
 import { SelectedImagesList } from './SelectedImagesList';
+import { useOpenSpaceApi } from '@/api/hooks';
 export function BrowserTabs() {
   const [showSettings, setShowSettings] = useState(false);
   const browsers = useAppSelector((state) => state.skybrowser.browsers);
   const selectedBrowser = useAppSelector((state) => state.skybrowser.selectedBrowserId);
+  const luaApi = useOpenSpaceApi();
 
   return (
-    <Tabs variant="outline" defaultValue={browsers[selectedBrowser].id} mt={'lg'}>
+    <Tabs
+      variant="outline"
+      value={browsers[selectedBrowser].id}
+      onChange={(id) => id && luaApi?.skybrowser.setSelectedBrowser(id)}
+      mt={'lg'}
+    >
       <Tabs.List>
         {Object.values(browsers).map((browser) => (
           <Tabs.Tab key={browser.id} value={browser.id}>
@@ -30,7 +37,10 @@ export function BrowserTabs() {
         <Tabs.Panel key={browser.id} value={browser.id} m={'xs'}>
           <Group>
             <ActionIcon.Group>
-              <TabButton text={'Look at target'} onClick={() => console.log('remove')}>
+              <TabButton
+                text={'Look at target'}
+                onClick={() => console.log('look at target')}
+              >
                 <EyeIcon />
               </TabButton>
               <TabButton
