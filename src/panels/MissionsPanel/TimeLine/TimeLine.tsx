@@ -231,12 +231,6 @@ export function TimeLine({
               nestedLevels={nestedLevels}
               width={width}
             />
-            <TimeIndicator
-              ref={timeIndicatorRef}
-              yScale={yScale}
-              timelineWidth={width}
-              scale={scale}
-            />
             {missionOverview.capturetimes.map((capture, index) => (
               <ActivityCircle
                 key={`${capture}-${index}`}
@@ -263,6 +257,12 @@ export function TimeLine({
                 />
               );
             })}
+            <TimeIndicator
+              ref={timeIndicatorRef}
+              yScale={yScale}
+              timelineWidth={width}
+              scale={scale}
+            />
           </g>
           <TimeArrow
             timeIndicatorRef={timeIndicatorRef}

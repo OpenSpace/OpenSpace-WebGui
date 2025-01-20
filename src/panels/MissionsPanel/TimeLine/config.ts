@@ -23,10 +23,11 @@ export const TimeLineConfig = {
 
 export const TimeIndicatorConfig = {
   // Time indicator
-  color: 'white',
+  color: 'var(--mantine-primary-color-5)',
   borderColor: 'black',
   borderWidth: 0.5,
-  lineWidth: 3
+  lineWidth: 3,
+  circleRadius: 10
 };
 
 export const TimeArrowConfig = {
