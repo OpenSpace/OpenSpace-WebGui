@@ -10,11 +10,7 @@ export function useJumpToTime(fadeTime: number = 1): ReturnType {
   return (time: string) => {
     const utcDate = new Date(time);
 
-    if (!isDateValid(utcDate)) {
-      return;
-    }
-
-    if (currentTime === undefined) {
+    if (!isDateValid(utcDate) || currentTime === undefined) {
       return;
     }
 

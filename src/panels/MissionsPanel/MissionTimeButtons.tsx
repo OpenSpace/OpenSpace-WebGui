@@ -1,5 +1,6 @@
 import { Button, Group } from '@mantine/core';
 
+import { GoToEnd, GoToStart, TimerIcon } from '@/icons/icons';
 import { DisplayType } from '@/types/enums';
 
 import { useJumpToTime } from './hooks';
@@ -30,18 +31,31 @@ export function MissionTimeButtons({ currentPhase }: MissionTimeButtonsProps) {
     case DisplayType.Phase: {
       const phaseType = isMissionOverview ? 'Mission' : 'Phase';
       return (
-        <Group preventGrowOverflow={false} grow gap={'xs'}>
-          <Button onClick={jumpToStartOfPhase}>
-            Set Time to Beginning of {phaseType}
-          </Button>
-          <Button onClick={jumpToEndOfPhase}>Set Time to End of {phaseType}</Button>
-        </Group>
+        <>
+          <Group preventGrowOverflow={false} grow gap={'xs'}>
+            <Button onClick={jumpToStartOfPhase}>
+              <Group wrap={'nowrap'}>
+                <GoToStart />
+                Go to Beginning of {phaseType}
+              </Group>
+            </Button>
+            <Button onClick={jumpToEndOfPhase}>
+              <Group wrap={'nowrap'}>
+                <GoToEnd />
+                Go to End of {phaseType}
+              </Group>
+            </Button>
+          </Group>
+        </>
       );
     }
     case DisplayType.Milestone:
       return (
         <Button onClick={() => jumpToTime(currentPhase.data.date)} fullWidth>
-          Set Time
+          <Group wrap={'nowrap'}>
+            <TimerIcon />
+            Set Time
+          </Group>
         </Button>
       );
     default:

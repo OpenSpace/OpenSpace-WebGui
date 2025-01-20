@@ -1,5 +1,6 @@
-import { Button, Flex, Image, Text, Title } from '@mantine/core';
+import { Anchor, Flex, Group, Image, Text, Title } from '@mantine/core';
 
+import { OpenWindowIcon } from '@/icons/icons';
 import { ActionsButton } from '@/panels/ActionsPanel/ActionsButton';
 import { DisplayType } from '@/types/enums';
 import { Phase } from '@/types/mission-types';
@@ -15,6 +16,11 @@ interface MissionPhaseProps {
 
 export function MissionPhase({ displayedPhase, missionOverview }: MissionPhaseProps) {
   const isMissionOverview = displayedPhase.type === DisplayType.Overview;
+
+  if (!displayedPhase.data) {
+    return <></>;
+  }
+
   function title() {
     if (displayedPhase.type === DisplayType.Overview || !displayedPhase.type) {
       return '';
@@ -39,15 +45,18 @@ export function MissionPhase({ displayedPhase, missionOverview }: MissionPhasePr
     }
   }
 
-  return displayedPhase.data ? (
+  return (
     <>
       <Title order={4}>{title()}</Title>
       <Text c={'dimmed'}>{timeString()}</Text>
       <Text my={'xs'}>{displayedPhase.data.description}</Text>
       {displayedPhase.data.link && (
-        <Button component={'a'} href={displayedPhase.data.link} target={'_blank'}>
-          Read more
-        </Button>
+        <Anchor component={'a'} href={displayedPhase.data.link} target={'_blank'}>
+          <Group>
+            <OpenWindowIcon />
+            Read more
+          </Group>
+        </Anchor>
       )}
       {displayedPhase.data.image && (
         <Image
@@ -55,6 +64,7 @@ export function MissionPhase({ displayedPhase, missionOverview }: MissionPhasePr
           maw={window.innerWidth * 0.25}
           src={displayedPhase.data.image}
           alt={'Image text not available'}
+          fallbackSrc={'https://placehold.co/600x400?text=Placeholder'}
         />
       )}
       <Title order={4} my={'md'}>
@@ -76,7 +86,5 @@ export function MissionPhase({ displayedPhase, missionOverview }: MissionPhasePr
         {missionOverview?.actions?.map((uri) => <ActionsButton key={uri} uri={uri} />)}
       </Flex>
     </>
-  ) : (
-    <Text> No data for this time range </Text>
   );
 }

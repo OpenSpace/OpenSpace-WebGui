@@ -1,5 +1,6 @@
 export { BsThreeDotsVertical as VerticalDotsIcon } from 'react-icons/bs';
 export { FaMinus as MinusIcon, FaPlus as PlusIcon } from 'react-icons/fa';
+export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoTelescopeOutline as TelescopeIcon
@@ -24,14 +25,15 @@ export {
   MdFlashOn as LightningFlashIcon,
   MdLock as LockIcon,
   MdLockOpen as LockOpenIcon,
-  MdOpenInNew as OpenWindowIcon,
   MdOpenInBrowser as OpenInBrowserIcon,
+  MdOpenInNew as OpenWindowIcon,
   MdPause as PauseIcon,
   MdOutlineEdit as PenIcon,
   MdPlayArrow as PlayIcon,
   MdFiberManualRecord as RecordIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
+  MdTimer as TimerIcon,
   MdVideocam as VideocamIcon,
   MdZoomIn as ZoomInIcon,
   MdZoomOut as ZoomOutIcon,
