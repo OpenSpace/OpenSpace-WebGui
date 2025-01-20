@@ -51,7 +51,12 @@ export function SceneTreeNodeContent({ node, expanded }: Props) {
 
 // This component adds the neccessary props for Mantine tree nodes, which includes styling
 // (indentation at each tree level) and event handling
-export function SceneTreeNode({ node, expanded, elementProps }: RenderTreeNodePayload) {
+export function SceneTreeNode({
+  node,
+  expanded,
+  elementProps,
+  tree
+}: RenderTreeNodePayload) {
   const { openCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
   const dispatch = useAppDispatch();
 
@@ -62,9 +67,13 @@ export function SceneTreeNode({ node, expanded, elementProps }: RenderTreeNodePa
     const parentElement = nodeRef?.current?.parentElement;
     const isFocused = parentElement && parentElement === document.activeElement;
 
-    if (event.code === 'Enter' && !isGroupNode(node) && isFocused) {
-      dispatch(setSceneTreeSelectedNode(node.value));
-      openCurrentNodeWindow(<CurrentNodeView />);
+    if (event.code === 'Enter' && isFocused) {
+      if (isGroupNode(node)) {
+        tree.toggleExpanded(node.value);
+      } else {
+        dispatch(setSceneTreeSelectedNode(node.value));
+        openCurrentNodeWindow(<CurrentNodeView />);
+      }
     }
   });
 
