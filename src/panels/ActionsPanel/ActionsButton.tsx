@@ -4,15 +4,17 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { LaunchIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
+import { Action } from '@/types/types';
 
 interface Props {
-  uri: string;
+  uri?: string;
+  action?: Action;
 }
 
-export function ActionsButton({ uri }: Props) {
+export function ActionsButton({ uri, action: _action }: Props) {
   const openspaceApi = useOpenSpaceApi();
   const allActions = useAppSelector((state) => state.actions.actions);
-  const action = allActions.find((action) => action.identifier === uri);
+  const action = uri ? allActions.find((action) => action.identifier === uri) : _action;
 
   if (!action) {
     return <></>;
