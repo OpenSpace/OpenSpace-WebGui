@@ -1,5 +1,6 @@
 import { Button, Kbd, Menu, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { modals } from '@mantine/modals';
 
 import {
   useGetBoolPropertyValue,
@@ -17,7 +18,6 @@ import {
   OpenInBrowserIcon,
   RouteIcon
 } from '@/icons/icons';
-import { modals } from '@mantine/modals';
 
 export function HelpMenu() {
   const luaApi = useOpenSpaceApi();

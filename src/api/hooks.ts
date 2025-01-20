@@ -1,14 +1,14 @@
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
 import { useContext, useEffect } from 'react';
 import { useThrottledCallback } from '@mantine/hooks';
 import { throttle } from 'lodash';
 
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   subscribeToProperty,
   unsubscribeToProperty
 } from '@/redux/propertytree/properties/propertiesMiddleware';
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
+import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
 import { Property, PropertyOwner, PropertyValue, Uri } from '@/types/types';
 
 import { LuaApiContext } from './LuaApiContext';
