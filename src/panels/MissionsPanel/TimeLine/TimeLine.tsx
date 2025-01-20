@@ -42,11 +42,10 @@ export function TimeLine({
   const [scale, setScale] = useState(1);
   const [translation, setTranslation] = useState(0);
   const now = useSubscribeToTime();
-  // TODO anden88: no idea how to type the ref here properly without 1000 errors later
-  // const xAxisRef = useRef<any>(null);
-  const yAxisRef = useRef<any>(null);
-  const svgRef = useRef<any>(null);
-  const zoomRef = useRef<ZoomBehavior<SVGElement, unknown> | null>(null);
+
+  const yAxisRef = useRef<SVGGElement | null>(null);
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const zoomRef = useRef<ZoomBehavior<SVGSVGElement, unknown> | null>(null);
   const timeIndicatorRef = useRef<SVGRectElement | null>(null);
 
   const {
@@ -103,9 +102,11 @@ export function TimeLine({
 */
 
   useEffect(() => {
-    select(yAxisRef.current).call(yAxis);
-    // TODO set font family? Previously was 'Segoe UI' font on ticks
-    select(yAxisRef.current).selectAll('.tick text').style('font-size', '1.3em');
+    if (yAxisRef.current) {
+      select(yAxisRef.current).call(yAxis);
+      // TODO set font family? Previously was 'Segoe UI' font on ticks
+      select(yAxisRef.current).selectAll('.tick text').style('font-size', '1.3em');
+    }
   }, [yAxis]);
 
   // Add zoom and update it every the the y scale changes
@@ -118,23 +119,31 @@ export function TimeLine({
       [0, 0],
       [width, height - margin.bottom]
     ];
-    zoomRef.current = zoom<SVGElement, unknown>()
+    zoomRef.current = zoom<SVGSVGElement, unknown>()
       .on('zoom', (event) => {
         // TODO: event is any here which is super annoying, try to find a way to get this
         // typed properly..
         const newYScale = event.transform.rescaleY(yScale);
-        select(yAxisRef.current).call(yAxis.scale(newYScale));
+        if (yAxisRef.current) {
+          select(yAxisRef.current).call(yAxis.scale(newYScale));
+        }
         setScale(event.transform.k);
         setTranslation(event.transform.y);
       })
       .scaleExtent(scaleExtent)
       .extent(translateExtent)
       .translateExtent(translateExtent);
-    select(svgRef.current).call(zoomRef.current);
+    if (svgRef.current && zoomRef.current) {
+      select(svgRef.current).call(zoomRef.current);
+    }
   }, [yScale, yAxis, maxScale, margin.bottom, width, height]);
 
   function reset() {
-    if (!zoomRef.current) {
+    if (!zoomRef.current || !svgRef.current) {
+      return;
+    }
+    const node = select(svgRef.current).node();
+    if (!node) {
       return;
     }
     select(svgRef.current)
@@ -143,12 +152,12 @@ export function TimeLine({
       .call(
         zoomRef.current.transform,
         zoomIdentity,
-        zoomTransform(select(svgRef.current).node()).invert([width * 0.5, height * 0.5])
+        zoomTransform(node).invert([width * 0.5, height * 0.5])
       );
   }
 
   function zoomByButton(zoomValue: number) {
-    if (!zoomRef.current) {
+    if (!zoomRef.current || !svgRef.current) {
       return;
     }
     select(svgRef.current)
@@ -158,7 +167,7 @@ export function TimeLine({
   }
 
   function centerTime() {
-    if (!now || !zoomRef.current) {
+    if (!now || !zoomRef.current || !svgRef.current) {
       return;
     }
     // Calculate new translation
