@@ -22,7 +22,7 @@ export function KeyBindsPanel() {
   const [activeModifiers, setActiveModifiers] = useState<string[]>([]);
   const [selectedKey, setSelectedKey] = useState<string>('');
 
-  const hasSelectedKeys = selectedKey === '' && activeModifiers.length === 0;
+  const hasSelectedKeys = selectedKey !== '' || activeModifiers.length > 0;
   return (
     <Container maw={'none'}>
       <FullKeyboard

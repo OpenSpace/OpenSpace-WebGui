@@ -5,6 +5,7 @@
   background-color: var(--mantine-color-dark-6);
   border-bottom: 1px solid var(--mantine-color-dark-2);
   border-radius: 5px;
+  width: fit-content;
 }
 
 /* Remove background */
@@ -17,6 +18,7 @@
   color: var(--mantine-color-white);
   border-bottom: 1px solid var(--mantine-color-dark-2);
 }
+
 /* Button highlights */
 /* All mapped actions */
 .simple-keyboard.hg-layout-default .hg-button.hg-mapped {
