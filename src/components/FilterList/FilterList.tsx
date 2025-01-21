@@ -7,21 +7,47 @@ import { FilterListFavorites } from './FilterListFavorites';
 import { FilterListInputField } from './FilterListInputField';
 import { FilterListProvider } from './FilterListProvider';
 
-interface FilterListProps {
+interface BaseProps {
+  heightFunc?: (height: number) => number;
+  heightPercent?: number;
+  height?: number | string;
   children: React.ReactNode;
-  height?: number | string; // Absolue value; if it is set, it takes precedence
-  heightPercent?: number; // Relative value of window height (percent)
   isLoading?: boolean;
 }
 
+interface FuncProps {
+  heightPercent?: never;
+  height?: never;
+}
+interface AbsoluteProps {
+  heightPercent?: never;
+  heightFunc?: never;
+}
+
+interface RelativeProps {
+  height?: never;
+  heightFunc?: never;
+}
+
+type Props =
+  | (BaseProps & FuncProps)
+  | (BaseProps & AbsoluteProps)
+  | (BaseProps & RelativeProps);
+
 export function FilterList({
   height,
-  heightPercent = 100,
+  heightFunc,
+  heightPercent,
   isLoading,
   children
-}: FilterListProps) {
+}: Props) {
   const { height: windowHeight } = useWindowSize();
-  const calculatedHeight = height ?? windowHeight * (heightPercent / 100);
+
+  const calculatedHeight =
+    height ??
+    (heightPercent && windowHeight * (heightPercent / 100)) ??
+    (heightFunc && heightFunc(windowHeight));
+
   return (
     <Stack style={{ height: calculatedHeight }}>
       <FilterListProvider isLoading={isLoading}>{children}</FilterListProvider>
