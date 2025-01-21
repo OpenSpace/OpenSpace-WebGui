@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Skeleton } from '@mantine/core';
+import { Skeleton, Stack } from '@mantine/core';
 
 interface Props {
   n?: number;
@@ -15,7 +15,11 @@ export function LoadingBlocks({ n = 4 }: Props) {
       }),
     [n]
   );
-  return widths.map((width, i) => (
-    <Skeleton key={i} height={16} width={width} radius={'xs'} />
-  ));
+  return (
+    <Stack>
+      {widths.map((width, i) => (
+        <Skeleton key={i} height={16} width={width} radius={'xs'} />
+      ))}
+    </Stack>
+  );
 }

@@ -3,7 +3,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { ScrollArea } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
 
-import { fallbackRender } from '@/components/ErrorFallback/fallbackRenderer';
+import { fallbackRender } from '@/components/ErrorFallback/fallbackRender';
 
 import { WindowSizeContext } from './WindowSizeContext';
 

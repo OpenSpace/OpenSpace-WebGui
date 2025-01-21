@@ -45,7 +45,7 @@ export function FilterList({
 
   const calculatedHeight =
     height ??
-    (heightPercent && windowHeight * (heightPercent / 100)) ??
+    (heightPercent && windowHeight * (heightPercent / 100.0)) ??
     (heightFunc && heightFunc(windowHeight));
 
   return (

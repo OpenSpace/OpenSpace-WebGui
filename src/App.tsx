@@ -2,7 +2,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { createTheme, MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 
-import { fallbackRender } from './components/ErrorFallback/fallbackRenderer';
+import { fallbackRender } from './components/ErrorFallback/fallbackRender';
 import { WindowLayout } from './windowmanagement/WindowLayout/WindowLayout';
 import { WindowLayoutProvider } from './windowmanagement/WindowLayout/WindowLayoutProvider';
 
