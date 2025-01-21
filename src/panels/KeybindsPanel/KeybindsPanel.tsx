@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import {
   Badge,
   Code,
@@ -15,12 +15,12 @@ import {
 import { Action } from '@/types/types';
 
 import { FullKeyboard } from './FullKeyboard/FullKeyboard';
-import { KeybindButtons } from './Keybind';
+import { KeybindButtons } from './KeybindButtons';
 
 export function KeyBindsPanel() {
-  const [selectedActions, setSelectedActions] = React.useState<Action[]>([]);
-  const [activeModifiers, setActiveModifiers] = React.useState<string[]>([]);
-  const [selectedKey, setSelectedKey] = React.useState<string>('');
+  const [selectedActions, setSelectedActions] = useState<Action[]>([]);
+  const [activeModifiers, setActiveModifiers] = useState<string[]>([]);
+  const [selectedKey, setSelectedKey] = useState<string>('');
 
   const hasSelectedKeys = selectedKey === '' && activeModifiers.length === 0;
   return (
@@ -31,7 +31,7 @@ export function KeyBindsPanel() {
         setSelectedKey={setSelectedKey}
         selectedKey={selectedKey}
         activeModifiers={activeModifiers}
-      />{' '}
+      />
       <Group my={'md'}>
         <Title order={3}>Selected keybind:</Title>
         <KeybindButtons selectedKey={selectedKey} modifiers={activeModifiers} />

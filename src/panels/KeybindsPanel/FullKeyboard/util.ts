@@ -1,6 +1,6 @@
 import { Os2Sk } from './data';
 
-export function equals(openSpaceKey: string, simpleKeyboardKey: string) {
+export function equals(openSpaceKey: string, simpleKeyboardKey: string): boolean {
   return (
     openSpaceKey.toLowerCase() === keyToOpenSpaceKey(simpleKeyboardKey).toLowerCase()
   );
@@ -22,7 +22,7 @@ export function arraysEqual(a: string[], b: string[]): boolean {
 
 // Converting from simple-keyboard key to OpenSpace key
 // Most of them are the same word but lower case and curly braces
-export function keyToOpenSpaceKey(key: string) {
+export function keyToOpenSpaceKey(key: string): string {
   let strippedKey = key;
   // Replace numpad mathematical operations and arrows
   for (const [osKey, skKey] of Object.entries(Os2Sk)) {
@@ -40,7 +40,7 @@ export function keyToOpenSpaceKey(key: string) {
   return strippedKey;
 }
 
-export function keyToSimpleKeyboardString(key: string) {
+export function keyToSimpleKeyboardString(key: string): string {
   // Key is a single character
   if (key.length === 1) {
     // Is alphabetic character

@@ -41,7 +41,7 @@ export function FullKeyboard({
   const actions = useAppSelector((state) => state.actions.actions);
   const keybinds = useAppSelector((state) => state.actions.keybinds);
 
-  function toggleModifier(modifier: string) {
+  function toggleModifier(modifier: string): void {
     // If it is already selected, remove the modifier
     if (activeModifiers.includes(modifier)) {
       setActiveModifiers(activeModifiers.filter((e) => e !== modifier));
@@ -68,7 +68,7 @@ export function FullKeyboard({
     return currentActions.filter((action) => action !== undefined);
   }
 
-  function onKeyPress(input: string) {
+  function onKeyPress(input: string): void {
     // Handle modifier clicks
     if (Modifiers.includes(input)) {
       // Remove curly braces
