@@ -2,8 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Properties, PropertyValue, Uri } from '@/types/types';
 
-import { addUriToPropertyTree } from '../propertyTreeMiddleware';
-
 export interface PropertiesState {
   isInitialized: boolean;
   properties: Properties;
@@ -28,8 +26,10 @@ export const propertiesSlice = createSlice({
   name: 'properties',
   initialState,
   reducers: {
-    addProperties: (state, action: PayloadAction<{ properties: Properties }>) => {
-      state.properties = { ...state.properties, ...action.payload.properties };
+    addProperties: (state, action: PayloadAction<Properties>) => {
+      for (const [uri, property] of Object.entries(action.payload)) {
+        state.properties[uri] = property;
+      }
       return state;
     },
     removeProperties: (state, action: PayloadAction<{ uris: string[] }>) => {
@@ -75,14 +75,6 @@ export const propertiesSlice = createSlice({
       //   [action.payload.uri]: newPropertyState
       // };
     }
-  },
-  extraReducers: (builder) => {
-    builder.addCase(addUriToPropertyTree.fulfilled, (state, action) => {
-      if (action.payload?.properties) {
-        state.properties = { ...state.properties, ...action.payload.properties };
-      }
-      return state;
-    });
   }
 });
 
