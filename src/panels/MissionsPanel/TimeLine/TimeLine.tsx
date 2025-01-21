@@ -257,12 +257,15 @@ export function TimeLine({
                 />
               );
             })}
-            <TimeIndicator
-              ref={timeIndicatorRef}
-              yScale={yScale}
-              timelineWidth={width}
-              scale={scale}
-            />
+            {now && (
+              <TimeIndicator
+                ref={timeIndicatorRef}
+                yScale={yScale}
+                timelineWidth={width}
+                scale={scale}
+                now={now}
+              />
+            )}
           </g>
           <TimeArrow
             timeIndicatorRef={timeIndicatorRef}
