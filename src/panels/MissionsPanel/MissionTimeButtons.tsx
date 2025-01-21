@@ -31,28 +31,20 @@ export function MissionTimeButtons({ currentPhase }: MissionTimeButtonsProps) {
     case DisplayType.Phase: {
       const phaseType = isMissionOverview ? 'Mission' : 'Phase';
       return (
-        <>
-          <Group preventGrowOverflow={false} grow gap={'xs'}>
-            <Button onClick={jumpToStartOfPhase}>
-              <Group wrap={'nowrap'}>
-                <GoToStart />
-                Go to Beginning of {phaseType}
-              </Group>
-            </Button>
-            <Button onClick={jumpToEndOfPhase}>
-              <Group wrap={'nowrap'}>
-                <GoToEnd />
-                Go to End of {phaseType}
-              </Group>
-            </Button>
-          </Group>
-        </>
+        <Group>
+          <Button onClick={jumpToStartOfPhase} leftSection={<GoToStart size={16} />}>
+            Start of {phaseType}
+          </Button>
+          <Button onClick={jumpToEndOfPhase} leftSection={<GoToEnd size={16} />}>
+            End of {phaseType}
+          </Button>
+        </Group>
       );
     }
     case DisplayType.Milestone:
       return (
         <Button onClick={() => jumpToTime(currentPhase.data.date)} fullWidth>
-          <Group wrap={'nowrap'}>
+          <Group>
             <TimerIcon />
             Set Time
           </Group>
