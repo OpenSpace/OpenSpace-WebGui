@@ -12,14 +12,11 @@ function isFilterListFavorites(child: React.ReactNode) {
   );
 }
 
-interface Props {
+interface Props extends PropsWithChildren {
   isLoading?: boolean;
 }
 
-export function FilterListProvider({
-  isLoading = false,
-  children
-}: PropsWithChildren<Props>) {
+export function FilterListProvider({ isLoading = false, children }: Props) {
   const [searchString, setSearchString] = useState('');
   const [showDataInstead, setShowDataInstead] = useState(false);
   const isSearching = searchString !== '';

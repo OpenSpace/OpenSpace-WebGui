@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
-import { Window } from '../Window/Window';
+import { Window } from '@/windowmanagement/Window/Window';
 
 import { WindowLayoutOptions } from './WindowLayout';
 import { WindowLayoutContext } from './WindowLayoutContext';

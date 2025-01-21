@@ -10,7 +10,7 @@ export function fallbackRender({ error, resetErrorBoundary }: FallbackProps) {
         {error.message}
       </Code>
       <Button onClick={resetErrorBoundary} mt={'md'}>
-        Try reloading property tree
+        Reload page
       </Button>
     </Alert>
   );

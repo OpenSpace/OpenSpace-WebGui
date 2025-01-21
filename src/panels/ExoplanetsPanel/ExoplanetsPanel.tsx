@@ -91,18 +91,16 @@ export function ExoplanetsPanel() {
         <FilterList.InputField placeHolderSearchText={'Star name...'} />
         <FilterList.Data<string>
           data={allSystemNames}
-          renderElement={(name) => {
-            return (
-              <ExoplanetEntry
-                key={`entry${name}`}
-                name={name}
-                isAdded={isAdded(name)}
-                onClick={() => handleClick(name)}
-              />
-            );
-          }}
+          renderElement={(name) => (
+            <ExoplanetEntry
+              key={`entry${name}`}
+              name={name}
+              isAdded={isAdded(name)}
+              onClick={() => handleClick(name)}
+            />
+          )}
           matcherFunc={wordBeginningSubString}
-        ></FilterList.Data>
+        />
       </FilterList>
 
       <Divider my={'xs'} />
