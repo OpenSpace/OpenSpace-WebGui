@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ActionIcon, Container, Group, Stack } from '@mantine/core';
+import { ActionIcon, Box, Container, Group, Title } from '@mantine/core';
 
 import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -184,9 +184,11 @@ export function OriginPanel() {
 
   return (
     <Container>
-      <Stack ref={ref}>
+      <Box ref={ref}>
         <Group justify={'space-between'}>
-          <h2>Navigation</h2>
+          <Title order={2} my={'md'}>
+            Navigation
+          </Title>
           <OriginSettings />
         </Group>
         <Group gap={0} mb={'xs'}>
@@ -215,7 +217,7 @@ export function OriginPanel() {
             <TelescopeIcon size={'70%'} />
           </ActionIcon>
         </Group>
-      </Stack>
+      </Box>
       <FilterList heightFunc={computeHeight}>
         <FilterList.InputField
           placeHolderSearchText={searchPlaceholderText}
