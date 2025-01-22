@@ -32,7 +32,7 @@ export const ImageList = memo(function ImageList({
   return imageList.length > 0 ? (
     <>
       <Divider my={'md'} />
-      <FilterList height={'700px'}>
+      <FilterList height={'200px'}>
         <FilterListGrid<SkyBrowserImage>
           data={imageList}
           grid={true}

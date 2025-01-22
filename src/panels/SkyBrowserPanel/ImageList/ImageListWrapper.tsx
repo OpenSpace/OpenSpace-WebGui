@@ -6,7 +6,7 @@ import { NearestImages } from './NearestImages';
 import { ViewingMode } from './util';
 
 // Memoizing this as it doesn't have any props and it is very expensive
-export const ImageListSection = memo(function ImageListSection() {
+export const ImageListWrapper = memo(function ImageListSection() {
   const [value, setValue] = useState<string>(ViewingMode.allImages);
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
 

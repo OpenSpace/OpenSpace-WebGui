@@ -2,8 +2,8 @@ import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
 
 import { useGetSkyBrowserData } from './hooks';
 import { useAppSelector } from '@/redux/hooks';
-import { Button, Container, Divider, Title } from '@mantine/core';
-import { ImageListSection } from './ImageList/ImageListSection';
+import { Button, Container, Divider, Title, Text } from '@mantine/core';
+import { ImageListWrapper } from './ImageList/ImageListWrapper';
 import { BrowserTabs } from './Tabs/BrowserTabs';
 
 export function SkyBrowserPanel() {
@@ -17,10 +17,10 @@ export function SkyBrowserPanel() {
   useGetSkyBrowserData();
 
   if (!isInitialized || !luaApi) {
-    return <>...Loading...</>;
+    return <Text>...Loading...</Text>;
   }
   if (!cameraInSolarSystem) {
-    return <>Camera has to be in solar system for skybrowser to work</>;
+    return <Text>Camera has to be in solar system for skybrowser to work</Text>;
   }
   if (Object.keys(browsers).length === 0) {
     return (
@@ -32,7 +32,7 @@ export function SkyBrowserPanel() {
   return (
     <Container>
       <Title>SkyBrowser</Title>
-      <ImageListSection />
+      <ImageListWrapper />
       <Divider my={'md'} />
       <BrowserTabs />
     </Container>

@@ -20,7 +20,6 @@ interface SkyBrowserBrowser {
   borderRadius: number;
   cartesianDirection: number[];
   color: number[];
-
   dec: number;
   displayCopies: object;
   fov: number;
