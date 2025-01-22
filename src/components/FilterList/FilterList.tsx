@@ -46,7 +46,8 @@ export function FilterList({
   const calculatedHeight =
     height ??
     (heightPercent && windowHeight * (heightPercent / 100.0)) ??
-    (heightFunc && heightFunc(windowHeight));
+    (heightFunc && heightFunc(windowHeight)) ??
+    '100%';
 
   return (
     <Stack style={{ height: calculatedHeight }}>
