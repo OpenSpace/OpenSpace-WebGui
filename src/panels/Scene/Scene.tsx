@@ -3,7 +3,6 @@ import {
   Checkbox,
   Group,
   Menu,
-  Skeleton,
   Tabs,
   Text,
   Tree,
@@ -12,6 +11,7 @@ import {
 import { useLocalStorage } from '@mantine/hooks';
 
 import { CollapsableHeader } from '@/components/CollapsableHeader/CollapsableHeader';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { FilterIcon } from '@/icons/icons';
@@ -121,16 +121,10 @@ export function Scene() {
       });
     });
 
-  function loadingBlocks(n: number) {
-    return [...Array(n)].map((_, i) => (
-      <Skeleton key={i} height={8} width={`${Math.random() * 100}%`} radius={'xl'} />
-    ));
-  }
-
   return (
     <>
       {!hasLoadedScene ? (
-        <>{loadingBlocks(4)}</>
+        <LoadingBlocks />
       ) : (
         <Tabs defaultValue={'propertyTest'}>
           <Tabs.List>

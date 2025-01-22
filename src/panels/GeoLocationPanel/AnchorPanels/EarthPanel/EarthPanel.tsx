@@ -193,7 +193,7 @@ export function EarthPanel({ currentAnchor }: Props) {
           </Group>
 
           {places.length > 0 ? (
-            <FilterList height={'350px'}>
+            <FilterList heightPercent={30}>
               <FilterList.InputField placeHolderSearchText={'Filter search'} />
               <FilterList.Data<Candidate>
                 data={places}

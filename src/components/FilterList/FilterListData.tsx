@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { LoadingBlocks } from '../LoadingBlocks/LoadingBlocks';
 import { VirtualList } from '../VirtualList/VirtualList';
 
 import { useFilterListProvider } from './hooks';
@@ -21,7 +22,7 @@ export function FilterListData<T>({
   gap,
   overscan
 }: FilterListDataProps<T>) {
-  const { searchString, showFavorites } = useFilterListProvider();
+  const { searchString, showFavorites, isLoading } = useFilterListProvider();
 
   // Memoizing this function so we don't need to recreate it when
   // the renderElement function changes
@@ -29,6 +30,10 @@ export function FilterListData<T>({
     () => data.filter((e) => matcherFunc(e, searchString)),
     [searchString, matcherFunc, data]
   );
+
+  if (isLoading) {
+    return <LoadingBlocks />;
+  }
 
   return (
     !showFavorites && (
