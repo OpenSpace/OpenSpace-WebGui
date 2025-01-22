@@ -4,10 +4,19 @@ import {
   MoveTargetIcon,
   ZoomInIcon,
   ZoomOutIcon,
-  TrashIcon
+  TrashIcon,
+  PlusIcon
 } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
-import { ActionIcon, Group, Tabs } from '@mantine/core';
+import {
+  ActionIcon,
+  CloseButton,
+  ColorSwatch,
+  Group,
+  Tabs,
+  ThemeIcon,
+  Text
+} from '@mantine/core';
 import { TabButton } from './TabButton';
 import { useState } from 'react';
 import { Settings } from './Settings';
@@ -17,10 +26,10 @@ export function BrowserTabs() {
   const [showSettings, setShowSettings] = useState(false);
   const browsers = useAppSelector((state) => state.skybrowser.browsers);
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
-  const selectedBrowser = useAppSelector((state) => state.skybrowser.selectedBrowserId);
-  const selectedImages = useAppSelector(
-    (state) => state.skybrowser.browsers[selectedBrowser].selectedImages
-  );
+  const selectedBrowser = useAppSelector((state) => {
+    return state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId] ?? null;
+  });
+
   const luaApi = useOpenSpaceApi();
 
   function zoom(id: string, fov: number) {
@@ -30,9 +39,9 @@ export function BrowserTabs() {
   }
 
   function removeAllImages() {
-    selectedImages.forEach((image) =>
+    selectedBrowser?.selectedImages.forEach((image) =>
       luaApi?.skybrowser.removeSelectedImageInBrowser(
-        selectedBrowser,
+        selectedBrowser.id,
         imageList[image].url
       )
     );
@@ -41,16 +50,33 @@ export function BrowserTabs() {
   return (
     <Tabs
       variant="outline"
-      value={browsers[selectedBrowser].id}
-      onChange={(id) => id && luaApi?.skybrowser.setSelectedBrowser(id)}
+      value={selectedBrowser?.id}
+      onChange={(id) => {
+        id && luaApi?.skybrowser.setSelectedBrowser(id);
+        setShowSettings(false);
+      }}
       mt={'lg'}
     >
       <Tabs.List>
         {Object.values(browsers).map((browser) => (
-          <Tabs.Tab key={browser.id} value={browser.id}>
-            {browser.name}
+          <Tabs.Tab
+            key={browser.id}
+            value={browser.id}
+            color={`rgb(${selectedBrowser.color.join(',')}`}
+          >
+            <Group>
+              {browser.name}
+              <ColorSwatch color={`rgb(${browser.color.join(',')}`} size={12} />
+            </Group>
           </Tabs.Tab>
         ))}
+        <ActionIcon
+          variant={'default'}
+          size={'lg'}
+          onClick={() => luaApi?.skybrowser.createTargetBrowserPair()}
+        >
+          <PlusIcon />
+        </ActionIcon>
       </Tabs.List>
       {Object.values(browsers).map((browser) => (
         <Tabs.Panel key={browser.id} value={browser.id} m={'xs'}>
@@ -92,7 +118,7 @@ export function BrowserTabs() {
               <SettingsIcon />
             </TabButton>
           </Group>
-          {showSettings ? <Settings /> : <SelectedImagesList />}
+          {showSettings ? <Settings id={selectedBrowser?.id} /> : <SelectedImagesList />}
         </Tabs.Panel>
       ))}
     </Tabs>

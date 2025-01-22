@@ -2,7 +2,7 @@ import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
 import { Card, Image, Text, ActionIcon } from '@mantine/core';
 import { AddPhotoIcon } from '@/icons/icons';
 import { ImageInfoPopover } from '../ImageInfoPopover';
-import { useActiveImage } from '../hooks';
+import { useActiveImage, useSelectedBrowserColor } from '../hooks';
 import { useOpenSpaceApi } from '@/api/hooks';
 interface Props {
   image: SkyBrowserImage;
@@ -11,6 +11,7 @@ export function ImageCard({ image }: Props) {
   const [activeImage, setActiveImage] = useActiveImage();
   const luaApi = useOpenSpaceApi();
   const isActive = activeImage === image.url;
+  const color = useSelectedBrowserColor();
 
   function select() {
     luaApi?.skybrowser.selectImage(image.url);
@@ -21,7 +22,7 @@ export function ImageCard({ image }: Props) {
     <Card
       withBorder
       shadow="sm"
-      style={{ borderColor: isActive ? 'pink' : 'var(--mantine-color-gray-8)' }}
+      style={{ borderColor: isActive ? color : 'var(--mantine-color-gray-8)' }}
     >
       <Card.Section>
         <Image

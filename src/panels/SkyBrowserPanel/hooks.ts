@@ -26,7 +26,6 @@ export function useGetWwtImageCollection() {
             ...image,
             key: image.identifier
           }));
-          console.log(imgDataWithKey);
           dispatch(setImageCollectionData(imgDataWithKey));
         }
       } else {
@@ -61,4 +60,11 @@ export function useActiveImage(): [string, (url: string) => void] {
     dispatch(setActiveImage(url));
   }
   return [activeImage, setImage];
+}
+
+export function useSelectedBrowserColor() {
+  const color = useAppSelector(
+    (state) => state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId]?.color
+  );
+  return `rgb(${color.join(',')})`;
 }

@@ -6,7 +6,7 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { useThrottledCallback } from '@mantine/hooks';
 import { TabButton } from './TabButton';
-import { useActiveImage } from '../hooks';
+import { useActiveImage, useSelectedBrowserColor } from '../hooks';
 
 interface Props {
   image: SkyBrowserImage;
@@ -15,20 +15,25 @@ interface Props {
 }
 export function SelectedImageCard({ image, opacity }: Props) {
   const luaApi = useOpenSpaceApi();
-  const [activeImage] = useActiveImage();
+  const [activeImage, setActiveImage] = useActiveImage();
   const selectedBrowserId = useAppSelector((state) => state.skybrowser.selectedBrowserId);
+  const color = useSelectedBrowserColor();
+
   const throttle = useThrottledCallback(
     (newValue) =>
       luaApi?.skybrowser.setOpacityOfImageLayer(selectedBrowserId, image.url, newValue),
     250
   );
   const isSelected = activeImage === image.url;
+
   return (
     <Paper
       withBorder={true}
       my={'md'}
       p={'sm'}
-      style={{ borderColor: isSelected ? 'pink' : 'var(--mantine-color-gray-8)' }}
+      style={{
+        borderColor: isSelected ? color : 'var(--mantine-color-gray-8)'
+      }}
     >
       <Group w={'100%'} justify="space-between">
         <Stack maw={'50%'}>
@@ -37,7 +42,10 @@ export function SelectedImageCard({ image, opacity }: Props) {
           </Text>
           <Group>
             <TabButton
-              onClick={() => luaApi?.skybrowser.selectImage(image.url)}
+              onClick={() => {
+                luaApi?.skybrowser.selectImage(image.url);
+                setActiveImage(image.url);
+              }}
               text={'Look at image'}
               variant="filled"
             >
