@@ -7,6 +7,7 @@ import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
 import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Identifier } from '@/types/types';
@@ -87,23 +88,23 @@ export function ExoplanetsPanel() {
 
   return (
     <Container fluid my={'md'}>
-      <FilterList heightPercent={40} isLoading={allSystemNames.length === 0}>
-        <FilterList.InputField placeHolderSearchText={'Star name...'} />
-        <FilterList.Data<string>
-          data={allSystemNames}
-          renderElement={(name) => (
-            <ExoplanetEntry
-              key={`entry${name}`}
-              name={name}
-              isAdded={isAdded(name)}
-              onClick={() => handleClick(name)}
-            />
-          )}
-          matcherFunc={wordBeginningSubString}
-        />
-      </FilterList>
-
-      <Divider my={'xs'} />
+      <ResizeableContent defaultHeight={300}>
+        <FilterList isLoading={allSystemNames.length === 0}>
+          <FilterList.InputField placeHolderSearchText={'Star name...'} />
+          <FilterList.Data<string>
+            data={allSystemNames}
+            renderElement={(name) => (
+              <ExoplanetEntry
+                key={`entry${name}`}
+                name={name}
+                isAdded={isAdded(name)}
+                onClick={() => handleClick(name)}
+              />
+            )}
+            matcherFunc={wordBeginningSubString}
+          />
+        </FilterList>
+      </ResizeableContent>
       <CollapsableContent title={'Settings'}>
         <Property uri={HabitableZonePropertyKey} />
         <Property uri={UncertaintyDiscPropertyKey} />
