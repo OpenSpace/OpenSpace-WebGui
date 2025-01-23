@@ -20,7 +20,7 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
 import { MinusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
-import { ArcGISJSON, Candidate, Identifier, Uri } from '@/types/types';
+import { ArcGISJSON, Candidate, Identifier } from '@/types/types';
 import { GeoLocationGroupKey, ScenePrefixKey } from '@/util/keys';
 
 import { CustomCoordinates } from './CustomCoordinates';
@@ -193,7 +193,8 @@ export function EarthPanel({ currentAnchor }: Props) {
           </Group>
 
           {places.length > 0 ? (
-            <FilterList placeHolderSearchText={'Filter search'} height={'350px'}>
+            <FilterList heightPercent={30}>
+              <FilterList.InputField placeHolderSearchText={'Filter search'} />
               <FilterList.Data<Candidate>
                 data={places}
                 renderElement={(place) => (

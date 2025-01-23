@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ActionIcon, Container, Group } from '@mantine/core';
+import { useRef, useState } from 'react';
+import { ActionIcon, Box, Container, Group, Title } from '@mantine/core';
 
 import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -39,6 +39,7 @@ export function OriginPanel() {
   const triggerRetargetAim = useTriggerProperty(RetargetAimKey);
 
   const dispatch = useAppDispatch();
+  const ref = useRef<HTMLDivElement | null>(null);
 
   const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
   const allNodes = uris
@@ -169,50 +170,59 @@ export function OriginPanel() {
     }
   }
 
+  function computeHeight(height: number): number {
+    if (!ref.current) {
+      return height * 0.5; // A fallback option in case we have no ref yet
+    }
+    // TODO (ylvse 2025-01-21): make this bottom margin a mantine variable somehow?
+    // Same for minSize
+    const bottomMargin = 40;
+    const minSize = 300;
+    const filterListHeight = height - ref.current.clientHeight - bottomMargin;
+    return Math.max(filterListHeight, minSize);
+  }
+
   return (
-    // TODO anden88 2024-10-23: Not a huge fan of setting the flex styles on the container
-    // like this, but this was the only way I could make the filterlist data take up the
-    // remaining screenspace as an scrollable area without causing overflow issues and
-    // without getting direct access to the RC-dock layout data
-    // To expand on the problem, the ScrollArea.Autosize must set a max height at which
-    // the scrollable is activated, perhaps its possible to get that height through a
-    // ref to parent html object (?).
-    <Container style={{ maxHeight: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Group justify={'space-between'}>
-        <h2>Navigation</h2>
-        <OriginSettings />
-      </Group>
-      <Group gap={0} mb={'xs'}>
-        <ActionIcon
-          onClick={() => setNavigationAction(NavigationActionState.Focus)}
-          aria-label={'Select focus'}
-          size={'lg'}
-          style={actionIconStyle(NavigationActionState.Focus)}
-        >
-          <FocusIcon size={'70%'} />
-        </ActionIcon>
-        <ActionIcon
-          onClick={() => setNavigationAction(NavigationActionState.Anchor)}
-          aria-label={'Select anchor'}
-          size={'lg'}
-          style={actionIconStyle(NavigationActionState.Anchor)}
-        >
-          <AnchorIcon size={'70%'} />
-        </ActionIcon>
-        <ActionIcon
-          onClick={() => setNavigationAction(NavigationActionState.Aim)}
-          aria-label={'Select aim'}
-          size={'lg'}
-          style={actionIconStyle(NavigationActionState.Aim)}
-        >
-          <TelescopeIcon size={'70%'} />
-        </ActionIcon>
-      </Group>
-      <FilterList
-        placeHolderSearchText={searchPlaceholderText}
-        showMoreButton
-        height={300}
-      >
+    <Container>
+      <Box ref={ref}>
+        <Group justify={'space-between'}>
+          <Title order={2} my={'md'}>
+            Navigation
+          </Title>
+          <OriginSettings />
+        </Group>
+        <Group gap={0} mb={'xs'}>
+          <ActionIcon
+            onClick={() => setNavigationAction(NavigationActionState.Focus)}
+            aria-label={'Select focus'}
+            size={'lg'}
+            style={actionIconStyle(NavigationActionState.Focus)}
+          >
+            <FocusIcon size={'70%'} />
+          </ActionIcon>
+          <ActionIcon
+            onClick={() => setNavigationAction(NavigationActionState.Anchor)}
+            aria-label={'Select anchor'}
+            size={'lg'}
+            style={actionIconStyle(NavigationActionState.Anchor)}
+          >
+            <AnchorIcon size={'70%'} />
+          </ActionIcon>
+          <ActionIcon
+            onClick={() => setNavigationAction(NavigationActionState.Aim)}
+            aria-label={'Select aim'}
+            size={'lg'}
+            style={actionIconStyle(NavigationActionState.Aim)}
+          >
+            <TelescopeIcon size={'70%'} />
+          </ActionIcon>
+        </Group>
+      </Box>
+      <FilterList heightFunc={computeHeight}>
+        <FilterList.InputField
+          placeHolderSearchText={searchPlaceholderText}
+          showMoreButton
+        />
         <FilterList.Favorites>
           {sortedDefaultList.map((entry) => (
             <FocusEntry

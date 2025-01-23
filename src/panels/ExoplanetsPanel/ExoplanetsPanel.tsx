@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Container, Divider, Flex, Loader, ScrollArea, Text, Title } from '@mantine/core';
+import { Container, Divider, ScrollArea, Text, Title } from '@mantine/core';
 
 import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
 import { CollapsableContent } from '@/components/CollapsableContent/CollapsableContent';
@@ -87,28 +87,22 @@ export function ExoplanetsPanel() {
 
   return (
     <Container fluid my={'md'}>
-      {allSystemNames.length > 0 ? (
-        <FilterList placeHolderSearchText={'Star name...'} height={300}>
-          <FilterList.Data<string>
-            data={allSystemNames}
-            renderElement={(name) => {
-              return (
-                <ExoplanetEntry
-                  key={`entry${name}`}
-                  name={name}
-                  isAdded={isAdded(name)}
-                  onClick={() => handleClick(name)}
-                />
-              );
-            }}
-            matcherFunc={wordBeginningSubString}
-          ></FilterList.Data>
-        </FilterList>
-      ) : (
-        <Flex align={'center'} justify={'center'} style={{ height: '500px' }}>
-          <Loader />
-        </Flex>
-      )}
+      <FilterList heightPercent={40} isLoading={allSystemNames.length === 0}>
+        <FilterList.InputField placeHolderSearchText={'Star name...'} />
+        <FilterList.Data<string>
+          data={allSystemNames}
+          renderElement={(name) => (
+            <ExoplanetEntry
+              key={`entry${name}`}
+              name={name}
+              isAdded={isAdded(name)}
+              onClick={() => handleClick(name)}
+            />
+          )}
+          matcherFunc={wordBeginningSubString}
+        />
+      </FilterList>
+
       <Divider my={'xs'} />
       <CollapsableContent title={'Settings'}>
         <Property uri={HabitableZonePropertyKey} />

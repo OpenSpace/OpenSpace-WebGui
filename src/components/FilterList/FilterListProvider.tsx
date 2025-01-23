@@ -1,4 +1,4 @@
-import { Children, isValidElement, useState } from 'react';
+import { Children, isValidElement, PropsWithChildren, useState } from 'react';
 
 import { FilterListContext } from './FilterListContext';
 import { FilterListFavoritesDisplayName } from './FilterListFavorites';
@@ -12,7 +12,11 @@ function isFilterListFavorites(child: React.ReactNode) {
   );
 }
 
-export function FilterListProvider({ children }: { children: React.ReactNode }) {
+interface Props extends PropsWithChildren {
+  isLoading?: boolean;
+}
+
+export function FilterListProvider({ isLoading = false, children }: Props) {
   const [searchString, setSearchString] = useState('');
   const [showDataInstead, setShowDataInstead] = useState(false);
   const isSearching = searchString !== '';
@@ -34,7 +38,8 @@ export function FilterListProvider({ children }: { children: React.ReactNode }) 
         setSearchString,
         showFavorites,
         toggleShowDataInstead,
-        showDataInstead
+        showDataInstead,
+        isLoading
       }}
     >
       {children}
