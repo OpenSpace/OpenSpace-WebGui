@@ -2,9 +2,9 @@ import { Button, Group } from '@mantine/core';
 
 import { GoToEnd, GoToStart, TimerIcon } from '@/icons/icons';
 import { DisplayType, IconSize } from '@/types/enums';
+import { DisplayedPhase } from '@/types/mission-types';
 
 import { useJumpToTime } from './hooks';
-import { DisplayedPhase } from '@/types/mission-types';
 
 interface Props {
   currentPhase: DisplayedPhase;
@@ -32,10 +32,16 @@ export function MissionTimeButtons({ currentPhase }: Props) {
       const phaseType = isMissionOverview ? 'Mission' : 'Phase';
       return (
         <Group>
-          <Button onClick={jumpToStartOfPhase} leftSection={<GoToStart size={IconSize.xs} />}>
+          <Button
+            onClick={jumpToStartOfPhase}
+            leftSection={<GoToStart size={IconSize.xs} />}
+          >
             Start of {phaseType}
           </Button>
-          <Button onClick={jumpToEndOfPhase} rightSection={<GoToEnd size={IconSize.xs} />}>
+          <Button
+            onClick={jumpToEndOfPhase}
+            rightSection={<GoToEnd size={IconSize.xs} />}
+          >
             End of {phaseType}
           </Button>
         </Group>

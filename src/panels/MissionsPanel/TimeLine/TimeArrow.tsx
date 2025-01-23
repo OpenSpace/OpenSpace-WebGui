@@ -21,7 +21,6 @@ export function TimeArrow({
   if (!indicatorPosition || !svgPosition) {
     return <></>;
   }
-
   const isAtTop = indicatorPosition.y <= svgPosition.y + margin.top;
   const isAtBottom = indicatorPosition.bottom > svgPosition.bottom;
 

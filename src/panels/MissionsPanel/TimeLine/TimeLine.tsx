@@ -14,6 +14,7 @@ import { useSubscribeToTime } from '@/api/hooks';
 import { ZoomInIcon, ZoomOutIcon, ZoomOutMapIcon } from '@/icons/icons';
 import { DisplayType, IconSize } from '@/types/enums';
 import { DisplayedPhase, Phase } from '@/types/mission-types';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { ActivityCircle } from './ActivityCircle';
 import { TimeLineConfig } from './config';
@@ -45,15 +46,17 @@ export function TimeLine({
   const svgRef = useRef<SVGSVGElement | null>(null);
   const zoomRef = useRef<ZoomBehavior<SVGSVGElement, unknown> | null>(null);
   const timeIndicatorRef = useRef<SVGRectElement | null>(null);
+  const { height: windowHeight } = useWindowSize();
 
   const {
     minLevelWidth,
     margin,
     maxWidth,
     maxScale,
-    height,
     paddingGraph,
-    transitionDuration
+    transitionDuration,
+    defaultHeight,
+    menuHeight
   } = TimeLineConfig;
 
   // Depth of nesting for phases
@@ -63,10 +66,7 @@ export function TimeLine({
   const minWidth = minLevelWidth * nestedLevels + margin.left + margin.right;
 
   // Height of graph
-  // TODO anden88: right now we don't have a way to get the size of the panel we're in so we can't
-  // do any updates related to a panel resize and therefore use a fixed height.
-  // When height changes of window, rescale y axis
-  // const height = fullHeight - zoomButtonHeight;
+  const height = Math.max(windowHeight - menuHeight, defaultHeight);
 
   // Width of graph
   const width = Math.max(maxWidth, minWidth);
@@ -87,18 +87,6 @@ export function TimeLine({
     return [yAxis, yScale];
   }, [missionOverview, margin.bottom, margin.top, height]);
 
-  // TODO: When we get the height from the panel we can update the timeline size as well.
-  /*
-  useEffect(() => {
-    // Update the axis every time window rescales
-    yScale = scaleUtc()
-    .range([height - margin.bottom, margin.top])
-    .domain(timeRange);
-    yAxis = axisLeft(yScale);
-    select(yAxisRef.current).call(yAxis);
-}, [height]);
-*/
-
   useEffect(() => {
     if (yAxisRef.current) {
       select(yAxisRef.current).call(yAxis);
@@ -108,15 +96,10 @@ export function TimeLine({
   }, [yAxis]);
 
   // Add zoom and update it every the the y scale changes
-  // (TODO: panel resize)
   useEffect(() => {
     // Min and max scale
     const scaleExtent: [number, number] = [1, maxScale];
-    // Min and max translation
-    const translateExtent: [[number, number], [number, number]] = [
-      [0, 0],
-      [width, height - margin.bottom]
-    ];
+
     zoomRef.current = zoom<SVGSVGElement, unknown>()
       .on('zoom', (event) => {
         // TODO anden88: event is any here which is super annoying, try to find a way to get this
@@ -128,9 +111,7 @@ export function TimeLine({
         setScale(event.transform.k);
         setTranslation(event.transform.y);
       })
-      .scaleExtent(scaleExtent)
-      .extent(translateExtent)
-      .translateExtent(translateExtent);
+      .scaleExtent(scaleExtent);
     if (svgRef.current && zoomRef.current) {
       select(svgRef.current).call(zoomRef.current);
     }

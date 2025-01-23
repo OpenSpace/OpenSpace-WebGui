@@ -82,7 +82,10 @@ export const TimeIndicator = forwardRef<SVGRectElement, Props>(
           transform={`translate(0, ${calculatedY})`}
           x={0}
         >
+          {/* The ref of the rectangle is used for the time arrows, to indicate
+            if the indicator is outside of the view of the timeline */}
           <rect
+            ref={ref}
             height={lineHeightScaled}
             width={timelineWidth}
             fill={color}
@@ -90,10 +93,7 @@ export const TimeIndicator = forwardRef<SVGRectElement, Props>(
             style={{ cursor: 'inherit' }}
             strokeWidth={borderWidth / scale}
           />
-          {/* The ref of the rectangle is used for the time arrows, to indicate
-            if the indicator is outside of the view of the timeline */}
           <rect
-            ref={ref}
             style={{ cursor: 'inherit' }}
             height={(circleRadius * 2) / scale}
             width={circleRadius * 2}

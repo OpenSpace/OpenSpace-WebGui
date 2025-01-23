@@ -13,12 +13,13 @@ export const TimeLineConfig = {
   },
   // Minimum width of a phase
   minLevelWidth: 20,
-  height: 550,
+  defaultHeight: 550,
   // Width of graph
   maxWidth: 90, // previously fullWidth
   maxScale: 1000,
   // Given in milliseconds
-  transitionDuration: 750
+  transitionDuration: 750,
+  menuHeight: 60
 };
 
 export const TimeIndicatorConfig = {
