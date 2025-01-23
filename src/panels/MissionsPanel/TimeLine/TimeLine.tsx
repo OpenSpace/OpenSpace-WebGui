@@ -13,9 +13,7 @@ import {
 import { useSubscribeToTime } from '@/api/hooks';
 import { ZoomInIcon, ZoomOutIcon, ZoomOutMapIcon } from '@/icons/icons';
 import { DisplayType, IconSize } from '@/types/enums';
-import { Phase } from '@/types/mission-types';
-
-import { DisplayedPhase } from '../MissionContent';
+import { DisplayedPhase, Phase } from '@/types/mission-types';
 
 import { ActivityCircle } from './ActivityCircle';
 import { TimeLineConfig } from './config';

@@ -3,10 +3,9 @@ import { Anchor, Flex, Group, Image, Text, Title } from '@mantine/core';
 import { OpenWindowIcon } from '@/icons/icons';
 import { ActionsButton } from '@/panels/ActionsPanel/ActionsButton';
 import { DisplayType } from '@/types/enums';
-import { Phase } from '@/types/mission-types';
+import { DisplayedPhase, Phase } from '@/types/mission-types';
 
 import { MissionCaptureButtons } from './MissionCaptureButtons';
-import { DisplayedPhase } from './MissionContent';
 import { MissionTimeButtons } from './MissionTimeButtons';
 
 interface MissionPhaseProps {

@@ -4,7 +4,7 @@ import { GoToEnd, GoToStart, TimerIcon } from '@/icons/icons';
 import { DisplayType } from '@/types/enums';
 
 import { useJumpToTime } from './hooks';
-import { DisplayedPhase } from './MissionContent';
+import { DisplayedPhase } from '@/types/mission-types';
 
 interface MissionTimeButtonsProps {
   currentPhase: DisplayedPhase;

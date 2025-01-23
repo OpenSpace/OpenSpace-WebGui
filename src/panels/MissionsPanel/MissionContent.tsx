@@ -4,18 +4,10 @@ import { Button, Container, Group, Switch, Text, Title } from '@mantine/core';
 import { useSubscribeToTime } from '@/api/hooks';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { DisplayType } from '@/types/enums';
-import { Milestone, Phase } from '@/types/mission-types';
+import { DisplayedPhase, Phase } from '@/types/mission-types';
 
 import { TimeLine } from './TimeLine/TimeLine';
 import { MissionPhase } from './MissionPhase';
-
-// TODO anden88: for some reason if this was exported from @types file intelisense showed
-// displayedPhase variable as any, aka no type completion :/
-export type DisplayedPhase =
-  | { type: DisplayType.Phase; data: Phase }
-  | { type: DisplayType.Overview; data: Phase }
-  | { type: DisplayType.Milestone; data: Milestone }
-  | { type: undefined; data: undefined };
 
 interface MissionContentProps {
   missionOverview: Phase;
