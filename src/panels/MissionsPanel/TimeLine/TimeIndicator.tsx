@@ -7,15 +7,15 @@ import { useOpenSpaceApi } from '@/api/hooks';
 
 import { TimeIndicatorConfig } from './config';
 
-interface TimeIndicatorProps {
+interface Props {
   yScale: ScaleTime<number, number, never>;
   timelineWidth: number;
   scale: number;
   now: number;
 }
 
-export const TimeIndicator = forwardRef<SVGRectElement, TimeIndicatorProps>(
-  function TimeIndicator({ yScale, timelineWidth, scale, now }: TimeIndicatorProps, ref) {
+export const TimeIndicator = forwardRef<SVGRectElement, Props>(
+  ({ yScale, timelineWidth, scale, now }: Props, ref) => {
     // This y is used while dragging for a smoother UX
     const [y, setY] = useState<number | null>(null);
     const luaApi = useOpenSpaceApi();

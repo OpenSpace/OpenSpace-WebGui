@@ -9,11 +9,11 @@ import { DisplayedPhase, Phase } from '@/types/mission-types';
 import { TimeLine } from './TimeLine/TimeLine';
 import { MissionPhase } from './MissionPhase';
 
-interface MissionContentProps {
+interface Props {
   missionOverview: Phase;
 }
 
-export function MissionContent({ missionOverview }: MissionContentProps) {
+export function MissionContent({ missionOverview }: Props) {
   const [displayedPhase, setDisplayedPhase] = useState<DisplayedPhase>({
     type: DisplayType.Overview,
     data: missionOverview

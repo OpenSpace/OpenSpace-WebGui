@@ -5,11 +5,11 @@ import { Phase } from '@/types/mission-types';
 
 import { useJumpToTime } from './hooks';
 
-interface MissionCaptureButtonsProps {
+interface Props {
   mission: Phase;
 }
 
-export function MissionCaptureButtons({ mission }: MissionCaptureButtonsProps) {
+export function MissionCaptureButtons({ mission }: Props) {
   const now = useSubscribeToTime();
   const jumpToTime = useJumpToTime();
 

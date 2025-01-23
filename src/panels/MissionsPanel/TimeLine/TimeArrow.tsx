@@ -1,6 +1,6 @@
 import { TimeArrowConfig } from './config';
 
-interface TimeArrowProps {
+interface Props {
   timeIndicatorRef?: React.RefObject<SVGRectElement | null>;
   svgRef: React.RefObject<SVGSVGElement | null>;
   fullWidth: number;
@@ -14,7 +14,7 @@ export function TimeArrow({
   fullWidth,
   margin,
   onClick
-}: TimeArrowProps) {
+}: Props) {
   const indicatorPosition = timeIndicatorRef?.current?.getBoundingClientRect();
   const svgPosition = svgRef.current?.getBoundingClientRect();
 

@@ -8,12 +8,12 @@ import { DisplayedPhase, Phase } from '@/types/mission-types';
 import { MissionCaptureButtons } from './MissionCaptureButtons';
 import { MissionTimeButtons } from './MissionTimeButtons';
 
-interface MissionPhaseProps {
+interface Props {
   displayedPhase: DisplayedPhase;
   missionOverview: Phase;
 }
 
-export function MissionPhase({ displayedPhase, missionOverview }: MissionPhaseProps) {
+export function MissionPhase({ displayedPhase, missionOverview }: Props) {
   const isMissionOverview = displayedPhase.type === DisplayType.Overview;
 
   if (!displayedPhase.data) {

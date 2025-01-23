@@ -24,7 +24,7 @@ import { TimeIndicator } from './TimeIndicator';
 
 import './TimeLine.css';
 
-interface TimeLineProps {
+interface Props {
   allPhasesNested: Phase[][];
   displayedPhase: DisplayedPhase;
   missionOverview: Phase;
@@ -36,7 +36,7 @@ export function TimeLine({
   displayedPhase,
   missionOverview,
   setDisplayedPhase
-}: TimeLineProps) {
+}: Props) {
   const [scale, setScale] = useState(1);
   const [translation, setTranslation] = useState(0);
   const now = useSubscribeToTime();
@@ -119,7 +119,7 @@ export function TimeLine({
     ];
     zoomRef.current = zoom<SVGSVGElement, unknown>()
       .on('zoom', (event) => {
-        // TODO: event is any here which is super annoying, try to find a way to get this
+        // TODO anden88: event is any here which is super annoying, try to find a way to get this
         // typed properly..
         const newYScale = event.transform.rescaleY(yScale);
         if (yAxisRef.current) {
