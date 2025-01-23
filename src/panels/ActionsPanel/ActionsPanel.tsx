@@ -204,6 +204,7 @@ export function ActionsPanel() {
         <p>{`${displayedNavigationPath}`}</p>
       </Flex>
       <FilterList>
+        <FilterList.InputField placeHolderSearchText={'Search for an action...'} />
         <FilterList.Favorites>
           <Grid>
             {folders}

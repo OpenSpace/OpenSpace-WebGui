@@ -1,72 +1,61 @@
-import { Button, Divider, Stack, TextInput } from '@mantine/core';
+import { Stack } from '@mantine/core';
+
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { FilterListData } from './FilterListData';
 import { FilterListFavorites } from './FilterListFavorites';
+import { FilterListInputField } from './FilterListInputField';
 import { FilterListProvider } from './FilterListProvider';
-import { useFilterListProvider } from './hooks';
 
-interface InputFieldProps {
-  searchAutoFocus?: boolean;
-  placeHolderSearchText?: string;
-  showMoreButton: boolean;
-}
-
-function InputField({
-  searchAutoFocus,
-  placeHolderSearchText,
-  showMoreButton
-}: InputFieldProps) {
-  const { searchString, setSearchString, showDataInstead, toggleShowDataInstead } =
-    useFilterListProvider();
-
-  return (
-    <TextInput
-      value={searchString}
-      placeholder={placeHolderSearchText}
-      onChange={(event) => setSearchString(event.currentTarget.value)}
-      autoFocus={searchAutoFocus}
-      // Some arbitrary width must be set so that the More button is rendered correctly
-      rightSectionWidth={'md'}
-      rightSection={
-        showMoreButton && (
-          <Button onClick={toggleShowDataInstead}>
-            {showDataInstead ? 'Less' : 'More'}
-          </Button>
-        )
-      }
-    />
-  );
-}
-
-interface FilterListProps {
-  children: React.ReactNode;
-  placeHolderSearchText?: string;
-  searchAutoFocus?: boolean;
-  showMoreButton?: boolean;
+interface BaseProps {
+  heightFunc?: (height: number) => number;
+  heightPercent?: number;
   height?: number | string;
+  children: React.ReactNode;
+  isLoading?: boolean;
 }
+
+interface FuncProps {
+  heightPercent?: never;
+  height?: never;
+}
+interface AbsoluteProps {
+  heightPercent?: never;
+  heightFunc?: never;
+}
+
+interface RelativeProps {
+  height?: never;
+  heightFunc?: never;
+}
+
+type Props =
+  | (BaseProps & FuncProps)
+  | (BaseProps & AbsoluteProps)
+  | (BaseProps & RelativeProps);
 
 export function FilterList({
-  placeHolderSearchText,
-  searchAutoFocus,
-  showMoreButton = false,
-  height = '100%',
+  height,
+  heightFunc,
+  heightPercent,
+  isLoading,
   children
-}: FilterListProps) {
+}: Props) {
+  const { height: windowHeight } = useWindowSize();
+
+  const calculatedHeight =
+    height ??
+    (heightPercent && windowHeight * (heightPercent / 100.0)) ??
+    (heightFunc && heightFunc(windowHeight)) ??
+    '100%';
+
   return (
-    <Stack style={{ height: height }}>
-      <FilterListProvider>
-        <InputField
-          placeHolderSearchText={placeHolderSearchText}
-          searchAutoFocus={searchAutoFocus}
-          showMoreButton={showMoreButton}
-        />
-        <Divider my={'xs'}></Divider>
-        {children}
-      </FilterListProvider>
+    <Stack style={{ height: calculatedHeight }}>
+      <FilterListProvider isLoading={isLoading}>{children}</FilterListProvider>
     </Stack>
   );
 }
 
+FilterList.InputField = FilterListInputField;
 FilterList.Data = FilterListData;
 FilterList.Favorites = FilterListFavorites;

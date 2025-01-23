@@ -1,6 +1,8 @@
+import { ErrorBoundary } from 'react-error-boundary';
 import { createTheme, MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 
+import { fallbackRender } from './components/ErrorFallback/fallbackRender';
 import { WindowLayout } from './windowmanagement/WindowLayout/WindowLayout';
 import { WindowLayoutProvider } from './windowmanagement/WindowLayout/WindowLayoutProvider';
 
@@ -13,13 +15,18 @@ const theme = createTheme({
 
 function App() {
   return (
-    <MantineProvider theme={theme} defaultColorScheme={'dark'}>
-      <ModalsProvider>
-        <WindowLayoutProvider>
-          <WindowLayout />
-        </WindowLayoutProvider>
-      </ModalsProvider>
-    </MantineProvider>
+    <ErrorBoundary
+      fallbackRender={fallbackRender}
+      onReset={() => window.location.reload()}
+    >
+      <MantineProvider theme={theme} defaultColorScheme={'dark'}>
+        <ModalsProvider>
+          <WindowLayoutProvider>
+            <WindowLayout />
+          </WindowLayoutProvider>
+        </ModalsProvider>
+      </MantineProvider>
+    </ErrorBoundary>
   );
 }
 
