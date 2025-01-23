@@ -15,6 +15,7 @@ export {
   MdChevronRight as ChevronRightIcon,
   MdExpandLess as ChevronUpIcon,
   MdTerminal as ConsoleIcon,
+  MdDragHandle as DragHandleIcon,
   MdExitToApp as ExitAppIcon,
   MdFastForward as FastForwardIcon,
   MdFastRewind as FastRewindIcon,
@@ -33,8 +34,7 @@ export {
   MdFiberManualRecord as RecordIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
-  MdVideocam as VideocamIcon
-} from 'react-icons/md';
+  MdVideocam as VideocamIcon} from 'react-icons/md';
 export { PiBookOpenText as BookIcon } from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
 export { VscFeedback as FeedbackIcon } from 'react-icons/vsc';

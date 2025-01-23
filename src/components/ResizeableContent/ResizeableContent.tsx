@@ -5,22 +5,18 @@ import {
   useRef,
   useState
 } from 'react';
-import { MdDragHandle } from 'react-icons/md';
-import { Box, Divider, MantineStyleProps, Stack } from '@mantine/core';
+import { ActionIcon, Box } from '@mantine/core';
 
+import { DragHandleIcon } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
-interface Props extends PropsWithChildren, MantineStyleProps {
+interface Props extends PropsWithChildren {
   minHeight?: number;
   defaultHeight: number;
 }
 
-export function ResizeableContent({
-  minHeight = 10,
-  defaultHeight,
-  children,
-  ...props
-}: Props) {
+export function ResizeableContent({ minHeight = 40, defaultHeight, children }: Props) {
   const [height, setHeight] = useState(defaultHeight);
   const { pointerEvents: windowPointer } = useWindowSize();
 
@@ -115,20 +111,21 @@ export function ResizeableContent({
       <Box ref={contentRef} style={{ height: height }}>
         {children}
       </Box>
-      <Stack
-        ref={resizerRef}
-        onMouseDown={(e) => handleMouseDown(e.clientX, e.clientY)}
-        onTouchStart={handleTouchStart}
-        style={{
-          cursor: 'row-resize'
-        }}
-        gap={0}
-        {...props}
-      >
-        <Divider />
-        <MdDragHandle size={20} style={{ marginLeft: 'auto', marginRight: 'auto' }} />
-        <Divider />
-      </Stack>
+      <Box ref={resizerRef}>
+        <ActionIcon
+          w={'100%'}
+          onMouseDown={(e) => handleMouseDown(e.clientX, e.clientY)}
+          onTouchStart={handleTouchStart}
+          style={{
+            cursor: 'row-resize'
+          }}
+          size={'xs'}
+          radius={0}
+          variant={'default'}
+        >
+          <DragHandleIcon size={IconSize.xs} />
+        </ActionIcon>
+      </Box>
     </>
   );
 }
