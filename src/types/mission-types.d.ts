@@ -1,4 +1,4 @@
-import { DisplayType } from "./enums";
+import { DisplayType } from './enums';
 
 export interface Milestone {
   date: string; // Date as an UTC ISO8601 string
