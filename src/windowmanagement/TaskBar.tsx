@@ -15,11 +15,14 @@ export function TaskBar({ addWindow, visibleMenuItems }: TaskBarProps) {
   });
 
   return (
-    <Group
+    <div
       style={{
         backgroundColor: '#00000080',
         height: 60,
-        paddingLeft: 'var(--mantine-spacing-md)'
+        overflowX: 'scroll',
+        display: 'flex',
+        flexWrap: 'wrap',
+        flexDirection: 'column'
       }}
     >
       {checkedMenuItems.map((item) => {
@@ -31,13 +34,15 @@ export function TaskBar({ addWindow, visibleMenuItems }: TaskBarProps) {
           });
 
         return item.renderMenuButton ? (
-          item.renderMenuButton(item.componentID, handleClick)
+          <div style={{ margin: '0 2px' }}>
+            {item.renderMenuButton(item.componentID, handleClick)}
+          </div>
         ) : (
-          <Button key={item.componentID} size={'xl'} onClick={handleClick}>
+          <Button key={item.componentID} size={'xl'} onClick={handleClick} mx={2}>
             {item.title}
           </Button>
         );
       })}
-    </Group>
+    </div>
   );
 }
