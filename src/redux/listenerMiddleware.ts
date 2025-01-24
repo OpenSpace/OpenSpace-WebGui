@@ -6,6 +6,7 @@ import { addDocumentationListener } from './documentation/documentationMiddlewar
 import { addEventsListener } from './events/eventsMiddleware';
 import { addFlightControllerListener } from './flightcontroller/flightControllerMiddleware';
 import { addGroupsListener } from './groups/groupsSliceMiddleware';
+import { addMissionsListener } from './missions/missionsMiddleware';
 import { addPropertiesListener } from './propertytree/properties/propertiesMiddleware';
 import { addPropertyTreeListener } from './propertytree/propertyTreeMiddleware';
 import { addSessionRecordingListener } from './sessionrecording/sessionRecordingMiddleware';
@@ -23,6 +24,7 @@ addSessionRecordingListener(startAppListening);
 addActionsListener(startAppListening);
 addDocumentationListener(startAppListening);
 addEventsListener(startAppListening);
+addMissionsListener(startAppListening);
 addPropertiesListener(startAppListening);
 addPropertyTreeListener(startAppListening);
 addFlightControllerListener(startAppListening);

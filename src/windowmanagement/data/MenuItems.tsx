@@ -6,6 +6,7 @@ import { ExoplanetsPanel } from '@/panels/ExoplanetsPanel/ExoplanetsPanel';
 import { FlightControlPanel } from '@/panels/FlightControlPanel/FlightControlPanel';
 import { GeoLocationPanel } from '@/panels/GeoLocationPanel/GeoLocationPanel';
 import { KeyBindsPanel } from '@/panels/KeybindsPanel/KeybindsPanel';
+import { MissionsPanel } from '@/panels/MissionsPanel/MissionsPanel';
 import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { Scene } from '@/panels/Scene/Scene';
@@ -105,6 +106,13 @@ export const menuItemsDB: MenuItem[] = [
     content: <div>Sky Broweser</div>,
     preferredPosition: 'right',
     defaultVisible: false
+  },
+  {
+    title: 'Mission',
+    componentID: 'mission',
+    content: <MissionsPanel />,
+    preferredPosition: 'right',
+    defaultVisible: true
   },
   {
     title: 'Flight Control',

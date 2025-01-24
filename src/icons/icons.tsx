@@ -4,6 +4,7 @@ export {
   FiChevronsDown as ChevronsDownIcon,
   FiChevronsUp as ChevronsUpIcon
 } from 'react-icons/fi';
+export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoInformation as InformationIcon,
@@ -45,8 +46,12 @@ export {
   MdFiberManualRecord as RecordIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
+  MdTimer as TimerIcon,
   MdVideocam as VideocamIcon,
-  MdWater as WaterIcon
+  MdWater as WaterIcon,
+  MdZoomIn as ZoomInIcon,
+  MdZoomOut as ZoomOutIcon,
+  MdZoomOutMap as ZoomOutMapIcon
 } from 'react-icons/md';
 export { PiBookOpenText as BookIcon } from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';

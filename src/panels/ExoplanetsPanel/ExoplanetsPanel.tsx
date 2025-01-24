@@ -86,46 +86,48 @@ export function ExoplanetsPanel() {
   }
 
   return (
-    <Container fluid my={'md'}>
-      <FilterList heightPercent={40} isLoading={allSystemNames.length === 0}>
-        <FilterList.InputField placeHolderSearchText={'Star name...'} />
-        <FilterList.Data<string>
-          data={allSystemNames}
-          renderElement={(name) => (
-            <ExoplanetEntry
-              key={`entry${name}`}
-              name={name}
-              isAdded={isAdded(name)}
-              onClick={() => handleClick(name)}
-            />
-          )}
-          matcherFunc={wordBeginningSubString}
-        />
-      </FilterList>
+    <ScrollArea h={'100%'}>
+      <Container fluid my={'md'}>
+        <FilterList heightPercent={40} isLoading={allSystemNames.length === 0}>
+          <FilterList.InputField placeHolderSearchText={'Star name...'} />
+          <FilterList.Data<string>
+            data={allSystemNames}
+            renderElement={(name) => (
+              <ExoplanetEntry
+                key={`entry${name}`}
+                name={name}
+                isAdded={isAdded(name)}
+                onClick={() => handleClick(name)}
+              />
+            )}
+            matcherFunc={wordBeginningSubString}
+          />
+        </FilterList>
 
-      <Divider my={'xs'} />
-      <Collapsable title={'Settings'}>
-        <Property uri={HabitableZonePropertyKey} />
-        <Property uri={UncertaintyDiscPropertyKey} />
-        <Property uri={Size1AuRingPropertyKey} />
-      </Collapsable>
-      <Divider my={'xs'}></Divider>
-      <Title order={3}>Added Systems</Title>
-      <ScrollArea my={'md'}>
-        {addedSystems.length === 0 ? (
-          <Text>No active systems</Text>
-        ) : (
-          addedSystems.map(
-            (prop) =>
-              prop && (
-                <PropertyOwner
-                  key={prop.identifier}
-                  uri={`${ScenePrefixKey}${prop.identifier}`}
-                />
-              )
-          )
-        )}
-      </ScrollArea>
-    </Container>
+        <Divider my={'xs'} />
+        <Collapsable title={'Settings'}>
+          <Property uri={HabitableZonePropertyKey} />
+          <Property uri={UncertaintyDiscPropertyKey} />
+          <Property uri={Size1AuRingPropertyKey} />
+        </Collapsable>
+        <Divider my={'xs'}></Divider>
+        <Title order={3}>Added Systems</Title>
+        <ScrollArea my={'md'}>
+          {addedSystems.length === 0 ? (
+            <Text>No active systems</Text>
+          ) : (
+            addedSystems.map(
+              (prop) =>
+                prop && (
+                  <PropertyOwner
+                    key={prop.identifier}
+                    uri={`${ScenePrefixKey}${prop.identifier}`}
+                  />
+                )
+            )
+          )}
+        </ScrollArea>
+      </Container>
+    </ScrollArea>
   );
 }

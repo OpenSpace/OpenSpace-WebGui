@@ -58,23 +58,21 @@ export const actionsSlice = createSlice({
       };
     },
     removeAction: (state, action: PayloadAction<string>) => {
-      const newData = state.actions;
-      const index = newData.findIndex((element) => element.identifier === action.payload);
+      const index = state.actions.findIndex(
+        (element) => element.identifier === action.payload
+      );
       if (index > -1) {
         // only splice array when item is found
-        newData.splice(index, 1); // 2nd parameter means remove one item only
+        state.actions.splice(index, 1); // 2nd parameter means remove one item only
       }
       // If the removed action was the last one with its gui path, we need to change the
       // navigation path
-      const indexPath = newData.findIndex(
+      const indexPath = state.actions.findIndex(
         (element) => element.guiPath === state.navigationPath
       );
-      const newNavigationPath = indexPath < 0 ? '/' : state.navigationPath;
-      return {
-        ...state,
-        data: [...newData],
-        navigationPath: newNavigationPath
-      };
+      if (indexPath === -1) {
+        state.navigationPath = '/';
+      }
     }
   },
   extraReducers: (builder) => {

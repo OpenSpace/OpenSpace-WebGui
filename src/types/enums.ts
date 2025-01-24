@@ -44,3 +44,9 @@ export const PropertyVisibilityNumber = {
   NoviceUser: 1,
   Always: 0
 };
+
+export enum DisplayType {
+  Phase = 'Phase',
+  Milestone = 'Milestone',
+  Overview = 'Overview'
+}

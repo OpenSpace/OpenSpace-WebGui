@@ -5,6 +5,7 @@ import {
   Container,
   Divider,
   Group,
+  ScrollArea,
   Text,
   TextInput
 } from '@mantine/core';
@@ -67,45 +68,47 @@ export function ScreenSpaceRenderablePanel() {
   }
 
   return (
-    <Container my={'xs'}>
-      <Group gap={'xs'} grow preventGrowOverflow={false} align={'end'}>
-        <TextInput
-          value={slideName}
-          onChange={(event) => setSlideName(event.currentTarget.value)}
-          placeholder={'Slide name'}
-          label={'Display name'}
-        />
-        <TextInput
-          value={slideURL}
-          onChange={(event) => setSlideURL(event.currentTarget.value)}
-          placeholder={'Path / URL'}
-          label={'Path or URL to slide'}
-        />
-        <Button
-          onClick={addSlide}
-          leftSection={<AddPhotoIcon size={IconSize.sm} />}
-          disabled={isButtonDisabled}
-        >
-          Add Slide
-        </Button>
-      </Group>
-      <Divider my={'xs'} />
-      {renderables.length === 0 ? (
-        <Text>No active slides</Text>
-      ) : (
-        renderables.map((uri) => (
-          <Group key={uri} gap={'xs'} my={'xs'}>
-            <ActionIcon
-              onClick={() => removeSlide(uri)}
-              color={'red'}
-              aria-label={'Remove slide'}
-            >
-              <MinusIcon />
-            </ActionIcon>
-            <PropertyOwner uri={uri} />
-          </Group>
-        ))
-      )}
-    </Container>
+    <ScrollArea h={'100%'}>
+      <Container my={'xs'}>
+        <Group gap={'xs'} grow preventGrowOverflow={false} align={'end'}>
+          <TextInput
+            value={slideName}
+            onChange={(event) => setSlideName(event.currentTarget.value)}
+            placeholder={'Slide name'}
+            label={'Display name'}
+          />
+          <TextInput
+            value={slideURL}
+            onChange={(event) => setSlideURL(event.currentTarget.value)}
+            placeholder={'Path / URL'}
+            label={'Path or URL to slide'}
+          />
+          <Button
+            onClick={addSlide}
+            leftSection={<AddPhotoIcon size={IconSize.sm} />}
+            disabled={isButtonDisabled}
+          >
+            Add Slide
+          </Button>
+        </Group>
+        <Divider my={'xs'} />
+        {renderables.length === 0 ? (
+          <Text>No active slides</Text>
+        ) : (
+          renderables.map((uri) => (
+            <Group key={uri} gap={'xs'} my={'xs'}>
+              <ActionIcon
+                onClick={() => removeSlide(uri)}
+                color={'red'}
+                aria-label={'Remove slide'}
+              >
+                <MinusIcon />
+              </ActionIcon>
+              <PropertyOwner uri={uri} />
+            </Group>
+          ))
+        )}
+      </Container>
+    </ScrollArea>
   );
 }

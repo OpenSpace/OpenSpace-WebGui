@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ActionIcon, Box, Container, Group, Title } from '@mantine/core';
+import { ActionIcon, Box, Container, Group, ScrollArea, Title } from '@mantine/core';
 
 import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -183,76 +183,78 @@ export function OriginPanel() {
   }
 
   return (
-    <Container>
-      <Box ref={ref}>
-        <Group justify={'space-between'}>
-          <Title order={2} my={'md'}>
-            Navigation
-          </Title>
-          <OriginSettings />
-        </Group>
-        <Group gap={0} mb={'xs'}>
-          <ActionIcon
-            onClick={() => setNavigationAction(NavigationActionState.Focus)}
-            aria-label={'Select focus'}
-            size={'lg'}
-            style={actionIconStyle(NavigationActionState.Focus)}
-          >
-            <FocusIcon size={'70%'} />
-          </ActionIcon>
-          <ActionIcon
-            onClick={() => setNavigationAction(NavigationActionState.Anchor)}
-            aria-label={'Select anchor'}
-            size={'lg'}
-            style={actionIconStyle(NavigationActionState.Anchor)}
-          >
-            <AnchorIcon size={'70%'} />
-          </ActionIcon>
-          <ActionIcon
-            onClick={() => setNavigationAction(NavigationActionState.Aim)}
-            aria-label={'Select aim'}
-            size={'lg'}
-            style={actionIconStyle(NavigationActionState.Aim)}
-          >
-            <TelescopeIcon size={'70%'} />
-          </ActionIcon>
-        </Group>
-      </Box>
-      <FilterList heightFunc={computeHeight}>
-        <FilterList.InputField
-          placeHolderSearchText={searchPlaceholderText}
-          showMoreButton
-        />
-        <FilterList.Favorites>
-          {sortedDefaultList.map((entry) => (
-            <FocusEntry
-              key={entry.identifier}
-              entry={entry}
-              onSelect={onSelect}
-              activeNode={activeNode}
-              showNavigationButtons={isInFocusMode}
-            />
-          ))}
-        </FilterList.Favorites>
-        <FilterList.Data<PropertyOwner>
-          data={sortedNodes}
-          renderElement={(node) => (
-            <FocusEntry
-              key={node.identifier}
-              entry={node}
-              onSelect={onSelect}
-              activeNode={activeNode}
-              showNavigationButtons={isInFocusMode}
-            />
-          )}
-          matcherFunc={generateMatcherFunctionByKeys([
-            'identifier',
-            'name',
-            'uri',
-            'tags'
-          ])}
-        />
-      </FilterList>
-    </Container>
+    <ScrollArea h={'100%'}>
+      <Container>
+        <Box ref={ref}>
+          <Group justify={'space-between'}>
+            <Title order={2} my={'md'}>
+              Navigation
+            </Title>
+            <OriginSettings />
+          </Group>
+          <Group gap={0} mb={'xs'}>
+            <ActionIcon
+              onClick={() => setNavigationAction(NavigationActionState.Focus)}
+              aria-label={'Select focus'}
+              size={'lg'}
+              style={actionIconStyle(NavigationActionState.Focus)}
+            >
+              <FocusIcon size={'70%'} />
+            </ActionIcon>
+            <ActionIcon
+              onClick={() => setNavigationAction(NavigationActionState.Anchor)}
+              aria-label={'Select anchor'}
+              size={'lg'}
+              style={actionIconStyle(NavigationActionState.Anchor)}
+            >
+              <AnchorIcon size={'70%'} />
+            </ActionIcon>
+            <ActionIcon
+              onClick={() => setNavigationAction(NavigationActionState.Aim)}
+              aria-label={'Select aim'}
+              size={'lg'}
+              style={actionIconStyle(NavigationActionState.Aim)}
+            >
+              <TelescopeIcon size={'70%'} />
+            </ActionIcon>
+          </Group>
+        </Box>
+        <FilterList heightFunc={computeHeight}>
+          <FilterList.InputField
+            placeHolderSearchText={searchPlaceholderText}
+            showMoreButton
+          />
+          <FilterList.Favorites>
+            {sortedDefaultList.map((entry) => (
+              <FocusEntry
+                key={entry.identifier}
+                entry={entry}
+                onSelect={onSelect}
+                activeNode={activeNode}
+                showNavigationButtons={isInFocusMode}
+              />
+            ))}
+          </FilterList.Favorites>
+          <FilterList.Data<PropertyOwner>
+            data={sortedNodes}
+            renderElement={(node) => (
+              <FocusEntry
+                key={node.identifier}
+                entry={node}
+                onSelect={onSelect}
+                activeNode={activeNode}
+                showNavigationButtons={isInFocusMode}
+              />
+            )}
+            matcherFunc={generateMatcherFunctionByKeys([
+              'identifier',
+              'name',
+              'uri',
+              'tags'
+            ])}
+          />
+        </FilterList>
+      </Container>
+    </ScrollArea>
   );
 }

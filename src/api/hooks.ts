@@ -8,6 +8,7 @@ import {
   unsubscribeToProperty
 } from '@/redux/propertytree/properties/propertiesMiddleware';
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
+import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
 import { Property, PropertyOwner, PropertyValue, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
 import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelpers';
@@ -176,6 +177,18 @@ export const useGetIntListPropertyValue = (uri: Uri) =>
 
 export const useGetStringListPropertyValue = (uri: Uri) =>
   useGetPropertyValue<string[]>(uri, 'StringListProperty');
+
+export const useSubscribeToTime = () => {
+  const now = useAppSelector((state) => state.time.timeCapped);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(subscribeToTime());
+    return () => {
+      dispatch(unsubscribeToTime());
+    };
+  }, [dispatch]);
+  return now;
+};
 
 /**
  * Hook that subscribes to a property and returns a setter function. Unsuscribes when the
