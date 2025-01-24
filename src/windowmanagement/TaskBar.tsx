@@ -21,9 +21,8 @@ export function TaskBar({ addWindow, visibleMenuItems }: TaskBarProps) {
       gap={2}
       style={{
         backgroundColor: '#00000080',
-        height: 60,
         whiteSpace: 'nowrap',
-        overflowX: 'scroll'
+        overflowX: 'auto'
       }}
     >
       {checkedMenuItems.map((item) => {
