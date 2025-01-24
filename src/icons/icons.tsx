@@ -13,6 +13,7 @@ export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoTelescopeOutline as TelescopeIcon
 } from 'react-icons/io5';
+export { LuFilePlus2 as AddFileIcon } from 'react-icons/lu';
 export {
   MdPublic as AddExoplanetIcon,
   MdOutlineAddPhotoAlternate as AddPhotoIcon,
@@ -50,7 +51,8 @@ export {
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
   MdOutlineCategory as TreeViewIcon,
-  MdVideocam as VideocamIcon
+  MdVideocam as VideocamIcon,
+  MdOutlineVisibility as VisibilityIcon
 } from 'react-icons/md';
 export { PiBookOpenText as BookIcon } from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';

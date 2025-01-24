@@ -36,21 +36,17 @@ export function TaskBar({ addWindow, visibleMenuItems }: TaskBarProps) {
         }
 
         return (
-          <div style={{ flex: '0 0 auto' }}>
+          <div style={{ flex: '0 0 auto' }} key={item.componentID}>
             {item.renderMenuButton ? (
               item.renderMenuButton(item.componentID, handleClick)
             ) : (
               <>
                 {item.icon ? (
-                  <ActionIcon
-                    key={item.componentID}
-                    onClick={handleClick}
-                    size={'input-xl'}
-                  >
+                  <ActionIcon onClick={handleClick} size={'input-xl'}>
                     {item.icon?.(IconSize.lg)}
                   </ActionIcon>
                 ) : (
-                  <Button key={item.componentID} onClick={handleClick} size={'xl'}>
+                  <Button onClick={handleClick} size={'xl'}>
                     {item.title}
                   </Button>
                 )}

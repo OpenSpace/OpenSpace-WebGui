@@ -1,18 +1,10 @@
-import { Button, Kbd, Menu, Text } from '@mantine/core';
+import { Button, Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { modals } from '@mantine/modals';
 
-import {
-  useGetBoolPropertyValue,
-  useGetIntPropertyValue,
-  useGetStringPropertyValue,
-  useOpenSpaceApi
-} from '@/api/hooks';
+import { useGetIntPropertyValue, useGetStringPropertyValue } from '@/api/hooks';
 import { About } from '@/components/About/About';
 import {
   BookIcon,
-  ConsoleIcon,
-  ExitAppIcon,
   FeedbackIcon,
   InformationCircleOutlineIcon,
   OpenInBrowserIcon,
@@ -20,16 +12,10 @@ import {
 } from '@/icons/icons';
 
 export function HelpMenu() {
-  const luaApi = useOpenSpaceApi();
   const [opened, { open, close }] = useDisclosure(false);
-  const [isConsoleVisible, setIsConsoleVisible] =
-    useGetBoolPropertyValue('LuaConsole.IsVisible');
+
   const [portProperty] = useGetIntPropertyValue('Modules.WebGui.Port');
   const [addressProperty] = useGetStringPropertyValue('Modules.WebGui.Address');
-
-  function toggleLuaConsole() {
-    setIsConsoleVisible(!isConsoleVisible);
-  }
 
   function openGuiInBrowser() {
     const port = portProperty ?? 4680;
@@ -39,21 +25,17 @@ export function HelpMenu() {
     window.open(link, '_blank');
   }
 
-  function toggleShutdown() {
-    return modals.openConfirmModal({
-      title: 'Confirm action',
-      children: <Text>Are you sure you want to quit OpenSpace? </Text>,
-      labels: { confirm: 'Quit', cancel: 'Cancel' },
-      confirmProps: { color: 'red' },
-      onConfirm: () => luaApi?.toggleShutdown()
-    });
-  }
-
   return (
     <>
       <About opened={opened} close={close} />
 
-      <Menu position={'bottom-start'} offset={4} withArrow arrowPosition={'center'}>
+      <Menu
+        position={'bottom-start'}
+        menuItemTabIndex={0}
+        offset={4}
+        withArrow
+        arrowPosition={'center'}
+      >
         <Menu.Target>
           <Button size={'xs'} color={'gray'}>
             Help
@@ -83,24 +65,11 @@ export function HelpMenu() {
             Send Feedback
           </Menu.Item>
           <Menu.Divider />
-          <Menu.Item
-            onClick={toggleLuaConsole}
-            leftSection={<ConsoleIcon />}
-            rightSection={<Kbd>~</Kbd>}
-          >
-            Toggle Console
-          </Menu.Item>
+
           <Menu.Item onClick={openGuiInBrowser} leftSection={<OpenInBrowserIcon />}>
             Open GUI in Browser
           </Menu.Item>
-          <Menu.Divider />
-          <Menu.Item
-            onClick={toggleShutdown}
-            leftSection={<ExitAppIcon />}
-            rightSection={<Kbd>Esc</Kbd>}
-          >
-            Quit OpenSpace
-          </Menu.Item>
+
           <Menu.Divider />
           <Menu.Item onClick={open} leftSection={<InformationCircleOutlineIcon />}>
             About
