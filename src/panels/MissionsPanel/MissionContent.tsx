@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Button, Container, Group, ScrollArea, Switch, Text, Title } from '@mantine/core';
+import { Button, Group, ScrollArea, Switch, Text, Title } from '@mantine/core';
 
 import { useSubscribeToTime } from '@/api/hooks';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
@@ -105,45 +105,41 @@ export function MissionContent({ missionOverview }: Props) {
   }
 
   return (
-    <Group wrap={'nowrap'} align={'start'} mx={'md'} my={'xs'} h={'100%'}>
+    <Group wrap={'nowrap'} align={'start'} mx={'md'} my={'xs'} h={'100%'} gap={0}>
       <TimeLine
         allPhasesNested={allPhasesNested}
         displayedPhase={displayedPhase}
         missionOverview={missionOverview}
         setDisplayedPhase={setPhaseManually}
       />
-      <ScrollArea pl={'xs'} h={'100%'}>
-        <Container>
-          <Group justify={'space-between'} mb={'md'}>
-            <Title>{missionOverview.name}</Title>
-            <Button
-              onClick={() =>
-                setPhaseManually({ type: DisplayType.Overview, data: missionOverview })
-              }
-            >
-              Overview
-            </Button>
-          </Group>
-          <Group m={'xs'}>
-            <Switch checked={displayCurrentPhase} onClick={toggleCurrentPhase} />
-            <Text>Display current phase</Text>
-            <Tooltip
-              text={
-                'If enabled, the mission phase that is currently happening will be displayed. It will update as time passes.'
-              }
-            />
-          </Group>
-          <Container px={'xs'}>
-            {displayedPhase.data ? (
-              <MissionPhase
-                displayedPhase={displayedPhase}
-                missionOverview={missionOverview}
-              />
-            ) : (
-              'No data for the current time range'
-            )}
-          </Container>
-        </Container>
+      <ScrollArea px={'md'} h={'100%'}>
+        <Group justify={'space-between'} mb={'md'}>
+          <Title order={2}>{missionOverview.name}</Title>
+          <Button
+            onClick={() =>
+              setPhaseManually({ type: DisplayType.Overview, data: missionOverview })
+            }
+          >
+            Overview
+          </Button>
+        </Group>
+        <Group m={'xs'}>
+          <Switch checked={displayCurrentPhase} onClick={toggleCurrentPhase} />
+          <Text>Display current phase</Text>
+          <Tooltip
+            text={
+              'If enabled, the mission phase that is currently happening will be displayed. It will update as time passes.'
+            }
+          />
+        </Group>
+        {displayedPhase.data ? (
+          <MissionPhase
+            displayedPhase={displayedPhase}
+            missionOverview={missionOverview}
+          />
+        ) : (
+          'No data for the current time range'
+        )}
       </ScrollArea>
     </Group>
   );

@@ -46,7 +46,7 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
 
   return (
     <>
-      <Title order={4}>{title()}</Title>
+      <Title order={3}>{title()}</Title>
       <Text c={'dimmed'}>{timeString()}</Text>
       <Text my={'xs'}>{displayedPhase.data.description}</Text>
       {displayedPhase.data.link && (
@@ -66,13 +66,13 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
           fallbackSrc={'https://placehold.co/600x400?text=Placeholder'}
         />
       )}
-      <Title order={4} my={'md'}>
+      <Title order={3} my={'md'}>
         Set time
       </Title>
 
       <MissionTimeButtons currentPhase={displayedPhase} />
       <MissionCaptureButtons mission={missionOverview} />
-      <Title order={4} my={'md'}>
+      <Title order={3} my={'md'}>
         Actions
       </Title>
       <Flex wrap={'wrap'} gap={'xs'} my={'xs'}>
