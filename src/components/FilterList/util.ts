@@ -11,7 +11,6 @@ export function wordBeginningSubString(test: string, search: string): boolean {
 export function objectWordBeginningSubstring(test: object, search: string): boolean {
   // Convert search term to lowercase for case-insensitive comparison
   const lowerSearch = search.toLowerCase();
-
   // Recursively traverse objects and arrays
   function searchInValue(value: unknown): boolean {
     if (typeof value === 'string' || typeof value === 'number') {
