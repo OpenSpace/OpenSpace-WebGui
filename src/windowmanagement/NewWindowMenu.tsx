@@ -1,6 +1,9 @@
 import React from 'react';
 import { Menu } from '@mantine/core';
 
+import { ChevronRightIcon } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
+
 import { menuItemsDB } from './data/MenuItems';
 import { WindowLayoutOptions } from './WindowLayout/WindowLayout';
 
@@ -18,13 +21,16 @@ export function NewWindowMenu({ addWindow }: NewWindowMenuProps) {
       arrowPosition={'center'}
     >
       <Menu.Target>
-        <Menu.Item>Windows</Menu.Item>
+        <Menu.Item rightSection={<ChevronRightIcon size={IconSize.sm} />}>
+          Windows
+        </Menu.Item>
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Label>Add New Window</Menu.Label>
         {menuItemsDB.map((item) => (
           <Menu.Item
             key={item.componentID}
+            leftSection={item.icon?.(IconSize.xs)}
             onClick={() => {
               addWindow(item.content, {
                 title: item.title,

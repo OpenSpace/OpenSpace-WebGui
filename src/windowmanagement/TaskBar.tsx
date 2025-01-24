@@ -1,6 +1,8 @@
 import React from 'react';
-import { Button, Group } from '@mantine/core';
+import { ActionIcon, Button, Flex } from '@mantine/core';
 import { WindowLayoutOptions } from 'src/windowmanagement/WindowLayout/WindowLayout';
+
+import { IconSize } from '@/types/enums';
 
 import { menuItemsDB } from './data/MenuItems';
 
@@ -15,34 +17,48 @@ export function TaskBar({ addWindow, visibleMenuItems }: TaskBarProps) {
   });
 
   return (
-    <div
+    <Flex
+      gap={2}
       style={{
         backgroundColor: '#00000080',
         height: 60,
-        overflowX: 'scroll',
-        display: 'flex',
-        flexWrap: 'wrap',
-        flexDirection: 'column'
+        whiteSpace: 'nowrap',
+        overflowX: 'scroll'
       }}
     >
       {checkedMenuItems.map((item) => {
-        const handleClick = () =>
+        function handleClick() {
           addWindow(item.content, {
             title: item.title,
             position: item.preferredPosition,
             id: item.componentID
           });
+        }
 
-        return item.renderMenuButton ? (
-          <div style={{ margin: '0 2px' }}>
-            {item.renderMenuButton(item.componentID, handleClick)}
+        return (
+          <div style={{ flex: '0 0 auto' }}>
+            {item.renderMenuButton ? (
+              item.renderMenuButton(item.componentID, handleClick)
+            ) : (
+              <>
+                {item.icon ? (
+                  <ActionIcon
+                    key={item.componentID}
+                    onClick={handleClick}
+                    size={'input-xl'}
+                  >
+                    {item.icon?.(IconSize.lg)}
+                  </ActionIcon>
+                ) : (
+                  <Button key={item.componentID} onClick={handleClick} size={'xl'}>
+                    {item.title}
+                  </Button>
+                )}
+              </>
+            )}
           </div>
-        ) : (
-          <Button key={item.componentID} size={'xl'} onClick={handleClick} mx={2}>
-            {item.title}
-          </Button>
         );
       })}
-    </div>
+    </Flex>
   );
 }

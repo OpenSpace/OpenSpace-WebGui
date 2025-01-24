@@ -1,0 +1,22 @@
+.ToggleTaskBarItemParent {
+  /* Same padding as Mantine Button */
+  padding: 0 var(--mantine-spacing-sm);
+  &:hover {
+    background-color: var(--mantine-color-dark-4);
+  }
+}
+
+.ToggleTaskBarItem {
+  flex-grow: 1;
+
+  .mantine-Checkbox-body {
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .mantine-Checkbox-labelWrapper {
+    width: 100%;
+    /* Same padding as Mantine Button */
+    padding: calc(var(--mantine-spacing-xs) / 1.5) 0;
+  }
+}
