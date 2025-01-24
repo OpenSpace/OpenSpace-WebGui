@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Container, Divider, ScrollArea, Text, Title } from '@mantine/core';
 
 import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
-import { CollapsableContent } from '@/components/CollapsableContent/CollapsableContent';
+import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
 import { Property } from '@/components/Property/Property';
@@ -18,6 +18,9 @@ import {
   Size1AuRingPropertyKey,
   UncertaintyDiscPropertyKey
 } from '@/util/keys';
+import { sgnUri } from '@/util/propertyTreeHelpers';
+
+import { SceneGraphNodeHeader } from '../Scene/SceneGraphNode/SceneGraphNodeHeader';
 
 import { ExoplanetEntry } from './ExoplanetEntry';
 
@@ -86,46 +89,43 @@ export function ExoplanetsPanel() {
   }
 
   return (
-    <Container fluid my={'md'}>
-      <FilterList heightPercent={40} isLoading={allSystemNames.length === 0}>
-        <FilterList.InputField placeHolderSearchText={'Star name...'} />
-        <FilterList.Data<string>
-          data={allSystemNames}
-          renderElement={(name) => (
-            <ExoplanetEntry
-              key={`entry${name}`}
-              name={name}
-              isAdded={isAdded(name)}
-              onClick={() => handleClick(name)}
-            />
-          )}
-          matcherFunc={wordBeginningSubString}
-        />
-      </FilterList>
+    <ScrollArea h={'100%'}>
+      <Container fluid my={'md'}>
+        <FilterList heightPercent={40} isLoading={allSystemNames.length === 0}>
+          <FilterList.InputField placeHolderSearchText={'Star name...'} />
+          <FilterList.Data<string>
+            data={allSystemNames}
+            renderElement={(name) => (
+              <ExoplanetEntry
+                key={`entry${name}`}
+                name={name}
+                isAdded={isAdded(name)}
+                onClick={() => handleClick(name)}
+              />
+            )}
+            matcherFunc={wordBeginningSubString}
+          />
+        </FilterList>
 
-      <Divider my={'xs'} />
-      <CollapsableContent title={'Settings'}>
-        <Property uri={HabitableZonePropertyKey} />
-        <Property uri={UncertaintyDiscPropertyKey} />
-        <Property uri={Size1AuRingPropertyKey} />
-      </CollapsableContent>
-      <Divider my={'xs'}></Divider>
-      <Title order={3}>Added Systems</Title>
-      <ScrollArea my={'md'}>
-        {addedSystems.length === 0 ? (
-          <Text>No active systems</Text>
-        ) : (
-          addedSystems.map(
-            (prop) =>
-              prop && (
-                <PropertyOwner
-                  key={prop.identifier}
-                  uri={`${ScenePrefixKey}${prop.identifier}`}
-                />
-              )
-          )
-        )}
-      </ScrollArea>
-    </Container>
+        <Divider my={'xs'} />
+        <Collapsable title={'Settings'}>
+          <Property uri={HabitableZonePropertyKey} />
+          <Property uri={UncertaintyDiscPropertyKey} />
+          <Property uri={Size1AuRingPropertyKey} />
+        </Collapsable>
+        <Divider my={'xs'}></Divider>
+        <Title order={3}>Added Systems</Title>
+        <ScrollArea my={'md'}>
+          {addedSystems.length === 0 ? (
+            <Text>No active systems</Text>
+          ) : (
+            addedSystems.map(
+              (hostStar) =>
+                hostStar && <SceneGraphNodeHeader uri={sgnUri(hostStar.identifier)} />
+            )
+          )}
+        </ScrollArea>
+      </Container>
+    </ScrollArea>
   );
 }

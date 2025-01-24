@@ -3,18 +3,26 @@ import { Button, Group, Stack } from '@mantine/core';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { LaunchIcon } from '@/icons/icons';
+import { useAppSelector } from '@/redux/hooks';
 import { Action } from '@/types/types';
 
 interface Props {
-  action: Action;
+  uri?: string;
+  action?: Action;
 }
 
-export function ActionsButton({ action }: Props) {
+export function ActionsButton({ uri, action: _action }: Props) {
   const openspaceApi = useOpenSpaceApi();
+  const allActions = useAppSelector((state) => state.actions.actions);
+  const action = uri ? allActions.find((action) => action.identifier === uri) : _action;
+
+  if (!action) {
+    return <></>;
+  }
   const isLocal = action.synchronization === false;
 
   function handleClick() {
-    openspaceApi?.action.triggerAction(action.identifier);
+    openspaceApi?.action.triggerAction(action!.identifier);
   }
 
   return (

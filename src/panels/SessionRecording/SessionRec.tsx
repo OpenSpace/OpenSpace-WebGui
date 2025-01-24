@@ -5,6 +5,7 @@ import {
   Container,
   Divider,
   Group,
+  ScrollArea,
   Select,
   Stack,
   TextInput,
@@ -14,7 +15,7 @@ import {
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import {
-  InformationCircleOutlineIcon,
+  InformationIcon,
   PlayIcon,
   RecordIcon,
   StopIcon,
@@ -140,96 +141,98 @@ export function SessionRec() {
   }
 
   return (
-    <Container>
-      <h2>Record Session</h2>
-      <Checkbox
-        label={'Text file format'}
-        checked={useTextFormat}
-        onChange={(event) => setUseTextFormat(event.currentTarget.checked)}
-        mb={'sm'}
-      ></Checkbox>
-      <Group>
-        <TextInput
-          value={filenameRecording}
-          placeholder={'Enter recording filename'}
-          aria-label={'Enter recording filename'}
-          onChange={(event) => setFilenameRecording(event.currentTarget.value)}
-        />
-        <Button
-          onClick={toggleRecording}
-          leftSection={recordButtonStateProperties().icon}
-          disabled={!filenameRecording}
-          color={recordButtonStateProperties().color}
-        >
-          {recordButtonStateProperties().text}
-        </Button>
-      </Group>
-      <Divider my={'xs'} />
-      <h2 style={{ marginTop: 0 }}>Play Session</h2>
-      <Stack gap={'xs'}>
+    <ScrollArea h={'100%'}>
+      <Container>
+        <h2>Record Session</h2>
         <Checkbox
-          label={'Force time change to recorded time'}
-          checked={forceTime}
-          onChange={(event) => setForceTime(event.currentTarget.checked)}
-        />
-        <Checkbox
-          label={'Loop playback'}
-          checked={loopPlayback}
-          onChange={onLoopPlaybackChange}
-        />
+          label={'Text file format'}
+          checked={useTextFormat}
+          onChange={(event) => setUseTextFormat(event.currentTarget.checked)}
+          mb={'sm'}
+        ></Checkbox>
         <Group>
-          <Checkbox
-            label={'Output frames'}
-            checked={shouldOutputFrames}
-            onChange={onShouldUpdateFramesChange}
+          <TextInput
+            value={filenameRecording}
+            placeholder={'Enter recording filename'}
+            aria-label={'Enter recording filename'}
+            onChange={(event) => setFilenameRecording(event.currentTarget.value)}
           />
-          <Tooltip
-            label={`If checked, the specified number of frames will be recorded as
+          <Button
+            onClick={toggleRecording}
+            leftSection={recordButtonStateProperties().icon}
+            disabled={!filenameRecording}
+            color={recordButtonStateProperties().color}
+          >
+            {recordButtonStateProperties().text}
+          </Button>
+        </Group>
+        <Divider my={'xs'} />
+        <h2 style={{ marginTop: 0 }}>Play Session</h2>
+        <Stack gap={'xs'}>
+          <Checkbox
+            label={'Force time change to recorded time'}
+            checked={forceTime}
+            onChange={(event) => setForceTime(event.currentTarget.checked)}
+          />
+          <Checkbox
+            label={'Loop playback'}
+            checked={loopPlayback}
+            onChange={onLoopPlaybackChange}
+          />
+          <Group>
+            <Checkbox
+              label={'Output frames'}
+              checked={shouldOutputFrames}
+              onChange={onShouldUpdateFramesChange}
+            />
+            <Tooltip
+              label={`If checked, the specified number of frames will be recorded as
                 screenshots and saved to disk. Per default, they are saved in the
                 user/screenshots folder. This feature can not be used together with
                 'loop playback'`}
-            multiline
-            w={220}
-            withArrow
-            transitionProps={{ duration: 400 }}
-            offset={{ mainAxis: 5, crossAxis: 100 }}
-            events={{ hover: true, focus: true, touch: true }}
+              multiline
+              w={220}
+              withArrow
+              transitionProps={{ duration: 400 }}
+              offset={{ mainAxis: 5, crossAxis: 100 }}
+              events={{ hover: true, focus: true, touch: true }}
+            >
+              <ThemeIcon radius={'xl'} size={'sm'}>
+                <InformationIcon style={{ width: '80%', height: '80%' }} />
+              </ThemeIcon>
+            </Tooltip>
+            {shouldOutputFrames && (
+              <TextInput
+                value={outputFramerate}
+                placeholder={'framerate'}
+                aria-label={'set framerate'}
+                onChange={(event) =>
+                  setOutputFramerate(parseInt(event.currentTarget.value, 10))
+                }
+                height={22}
+                w={120}
+              />
+            )}
+          </Group>
+        </Stack>
+        <Group gap={'xs'} align={'flex-end'}>
+          <Select
+            value={filenamePlayback}
+            label={'Playback file'}
+            placeholder={'Select playback file'}
+            data={fileList}
+            onChange={setFilenamePlayback}
+          />
+          <Button
+            onClick={togglePlayback}
+            leftSection={playbackButtonStateProperties().icon}
+            disabled={!filenamePlayback}
+            color={playbackButtonStateProperties().color}
           >
-            <ThemeIcon radius={'xl'} size={'sm'}>
-              <InformationCircleOutlineIcon style={{ width: '80%', height: '80%' }} />
-            </ThemeIcon>
-          </Tooltip>
-          {shouldOutputFrames && (
-            <TextInput
-              value={outputFramerate}
-              placeholder={'framerate'}
-              aria-label={'set framerate'}
-              onChange={(event) =>
-                setOutputFramerate(parseInt(event.currentTarget.value, 10))
-              }
-              height={22}
-              w={120}
-            />
-          )}
+            {playbackButtonStateProperties().text}
+          </Button>
         </Group>
-      </Stack>
-      <Group gap={'xs'} align={'flex-end'}>
-        <Select
-          value={filenamePlayback}
-          label={'Playback file'}
-          placeholder={'Select playback file'}
-          data={fileList}
-          onChange={setFilenamePlayback}
-        />
-        <Button
-          onClick={togglePlayback}
-          leftSection={playbackButtonStateProperties().icon}
-          disabled={!filenamePlayback}
-          color={playbackButtonStateProperties().color}
-        >
-          {playbackButtonStateProperties().text}
-        </Button>
-      </Group>
-    </Container>
+      </Container>
+    </ScrollArea>
   );
 }

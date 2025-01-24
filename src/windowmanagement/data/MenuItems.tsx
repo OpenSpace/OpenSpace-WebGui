@@ -12,6 +12,7 @@ import {
   InsertPhotoIcon,
   KeyboardIcon,
   LocationPinIcon,
+  RocketLaunchIcon,
   TelescopeIcon,
   TreeViewIcon,
   VideocamIcon
@@ -20,6 +21,8 @@ import { ActionsPanel } from '@/panels/ActionsPanel/ActionsPanel';
 import { ExoplanetsPanel } from '@/panels/ExoplanetsPanel/ExoplanetsPanel';
 import { FlightControlPanel } from '@/panels/FlightControlPanel/FlightControlPanel';
 import { GeoLocationPanel } from '@/panels/GeoLocationPanel/GeoLocationPanel';
+import { KeyBindsPanel } from '@/panels/KeybindsPanel/KeybindsPanel';
+import { MissionsPanel } from '@/panels/MissionsPanel/MissionsPanel';
 import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { Scene } from '@/panels/Scene/Scene';
@@ -143,6 +146,14 @@ export const menuItemsDB: MenuItem[] = [
     defaultVisible: true
   },
   {
+    title: 'Mission',
+    componentID: 'mission',
+    content: <MissionsPanel />,
+    icon: (size) => <RocketLaunchIcon size={size} />,
+    preferredPosition: 'right',
+    defaultVisible: true
+  },
+  {
     title: 'Flight Control',
     componentID: 'flightControl',
     content: <FlightControlPanel />,
@@ -153,7 +164,7 @@ export const menuItemsDB: MenuItem[] = [
   {
     title: 'Keybindings Layout',
     componentID: 'keybindingsLayout',
-    content: <div>Keybindings</div>,
+    content: <KeyBindsPanel />,
     icon: (size) => <KeyboardIcon size={size} />,
     preferredPosition: 'float',
     defaultVisible: false

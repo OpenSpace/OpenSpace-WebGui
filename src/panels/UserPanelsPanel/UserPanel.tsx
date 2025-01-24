@@ -1,4 +1,4 @@
-import { Flex } from '@mantine/core';
+import { Flex, ScrollArea } from '@mantine/core';
 
 interface Props {
   src: string;
@@ -8,8 +8,10 @@ interface Props {
 export function UserPanel({ src, title }: Props) {
   // TODO ylvse 2024-12-04: Make this scroll work better
   return (
-    <Flex direction={'column'} h={'100vh'}>
-      <iframe style={{ flexGrow: 11, border: 0 }} title={title} src={src} />
-    </Flex>
+    <ScrollArea h={'100%'}>
+      <Flex direction={'column'} h={'100vh'}>
+        <iframe style={{ flexGrow: 11, border: 0 }} title={title} src={src} />
+      </Flex>
+    </ScrollArea>
   );
 }
