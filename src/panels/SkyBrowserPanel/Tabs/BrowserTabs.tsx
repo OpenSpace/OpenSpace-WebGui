@@ -1,27 +1,21 @@
+import { useState } from 'react';
+import { ActionIcon, ColorSwatch, Group, Tabs } from '@mantine/core';
+
+import { useOpenSpaceApi } from '@/api/hooks';
 import {
   EyeIcon,
-  SettingsIcon,
   MoveTargetIcon,
-  ZoomInIcon,
-  ZoomOutIcon,
+  PlusIcon,
+  SettingsIcon,
   TrashIcon,
-  PlusIcon
+  ZoomInIcon,
+  ZoomOutIcon
 } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
-import {
-  ActionIcon,
-  CloseButton,
-  ColorSwatch,
-  Group,
-  Tabs,
-  ThemeIcon,
-  Text
-} from '@mantine/core';
-import { TabButton } from './TabButton';
-import { useState } from 'react';
-import { Settings } from './Settings';
+
 import { SelectedImagesList } from './SelectedImagesList';
-import { useOpenSpaceApi } from '@/api/hooks';
+import { Settings } from './Settings';
+import { TabButton } from './TabButton';
 export function BrowserTabs() {
   const [showSettings, setShowSettings] = useState(false);
   const browsers = useAppSelector((state) => state.skybrowser.browsers);
@@ -49,20 +43,22 @@ export function BrowserTabs() {
 
   return (
     <Tabs
-      variant="outline"
+      variant={'outline'}
       value={selectedBrowser?.id}
       onChange={(id) => {
-        id && luaApi?.skybrowser.setSelectedBrowser(id);
-        setShowSettings(false);
+        if (id) {
+          luaApi?.skybrowser.setSelectedBrowser(id);
+          setShowSettings(false);
+        }
       }}
       mt={'lg'}
     >
       <Tabs.List>
         {Object.values(browsers).map((browser) => (
           <Tabs.Tab
-            key={browser.id}
             value={browser.id}
             color={`rgb(${selectedBrowser.color.join(',')}`}
+            key={browser.id}
           >
             <Group>
               {browser.name}
@@ -80,7 +76,7 @@ export function BrowserTabs() {
       </Tabs.List>
       {Object.values(browsers).map((browser) => (
         <Tabs.Panel key={browser.id} value={browser.id} m={'xs'}>
-          <Group justify="space-between">
+          <Group justify={'space-between'}>
             <ActionIcon.Group>
               <TabButton
                 text={'Look at target'}

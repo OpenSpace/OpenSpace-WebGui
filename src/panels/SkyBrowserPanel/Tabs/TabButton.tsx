@@ -1,6 +1,6 @@
+import { PropsWithChildren } from 'react';
 import { ActionIcon, Popover, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { PropsWithChildren } from 'react';
 
 interface Props {
   text: string;
@@ -18,9 +18,9 @@ export function TabButton({
   return (
     <Popover
       width={150}
-      position="bottom"
+      position={'bottom'}
       withArrow
-      shadow="md"
+      shadow={'md'}
       opened={opened}
       transitionProps={{ enterDelay: 500 }}
     >
@@ -35,7 +35,7 @@ export function TabButton({
         </ActionIcon>
       </Popover.Target>
       <Popover.Dropdown>
-        <Text size="sm" ta={'center'}>
+        <Text size={'sm'} ta={'center'}>
           {text}
         </Text>
       </Popover.Dropdown>

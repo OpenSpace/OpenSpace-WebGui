@@ -8,10 +8,10 @@ import { addGroupsListener } from './groups/groupsSliceMiddleware';
 import { addPropertiesListener } from './propertytree/properties/propertiesMiddleware';
 import { addPropertyTreeListener } from './propertytree/propertyTreeMiddleware';
 import { addSessionRecordingListener } from './sessionrecording/sessionRecordingMiddleware';
+import { addSkyBrowserListener } from './skybrowser/skybrowserMiddleware';
 import { addTimeListener } from './time/timeMiddleware';
 import { addVersionListener } from './version/versionMiddleware';
 import type { AppDispatch, RootState } from './store';
-import { addSkyBrowserListener } from './skybrowser/skybrowserMiddleware';
 
 export const listenerMiddleware = createListenerMiddleware();
 export type AppStartListening = TypedStartListening<RootState, AppDispatch>;

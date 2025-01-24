@@ -16,6 +16,7 @@ export {
   MdExpandLess as ChevronUpIcon,
   MdTerminal as ConsoleIcon,
   MdExitToApp as ExitAppIcon,
+  MdVisibility as EyeIcon,
   MdFastForward as FastForwardIcon,
   MdFastRewind as FastRewindIcon,
   MdFilterAlt as FilterIcon,
@@ -25,6 +26,7 @@ export {
   MdFlashOn as LightningFlashIcon,
   MdLock as LockIcon,
   MdLockOpen as LockOpenIcon,
+  MdFilterCenterFocus as MoveTargetIcon,
   MdOpenInBrowser as OpenInBrowserIcon,
   MdOpenInNew as OpenWindowIcon,
   MdPause as PauseIcon,
@@ -33,10 +35,8 @@ export {
   MdFiberManualRecord as RecordIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
-  MdVideocam as VideocamIcon,
-  MdVisibility as EyeIcon,
-  MdFilterCenterFocus as MoveTargetIcon,
   MdDelete as TrashIcon,
+  MdVideocam as VideocamIcon,
   MdZoomIn as ZoomInIcon,
   MdZoomOut as ZoomOutIcon
 } from 'react-icons/md';

@@ -1,9 +1,11 @@
-import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
-import { Card, Image, Text, ActionIcon } from '@mantine/core';
-import { AddPhotoIcon } from '@/icons/icons';
-import { ImageInfoPopover } from '../ImageInfoPopover';
-import { useActiveImage, useSelectedBrowserColor } from '../hooks';
+import { ActionIcon, Card, Image, Text } from '@mantine/core';
+
 import { useOpenSpaceApi } from '@/api/hooks';
+import { AddPhotoIcon } from '@/icons/icons';
+import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
+
+import { useActiveImage, useSelectedBrowserColor } from '../hooks';
+import { ImageInfoPopover } from '../ImageInfoPopover';
 interface Props {
   image: SkyBrowserImage;
 }
@@ -21,14 +23,14 @@ export function ImageCard({ image }: Props) {
   return (
     <Card
       withBorder
-      shadow="sm"
+      shadow={'sm'}
       style={{ borderColor: isActive ? color : 'var(--mantine-color-gray-8)' }}
     >
       <Card.Section>
         <Image
           src={image.thumbnail}
           height={45}
-          fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+          fallbackSrc={'https://placehold.co/600x400?text=Placeholder'}
         ></Image>
       </Card.Section>
       <Card.Section p={'xs'}>

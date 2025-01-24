@@ -1,11 +1,10 @@
 import { useMemo } from 'react';
 
-import { VirtualGrid } from '../VirtualList/VirtualGrid';
+import { KeyType, VirtualGrid } from '../VirtualList/VirtualGrid';
 
 import { useFilterListProvider } from './hooks';
 
 export const FilterListDataDisplayName = 'FilterListData';
-import { KeyType } from '../VirtualList/VirtualGrid';
 
 export interface FilterListGridProps<T> {
   data: T[];
@@ -35,14 +34,12 @@ export function FilterListGrid<T extends KeyType>({
     () => data.filter((e) => matcherFunc(e, searchString)),
     [searchString, matcherFunc, data]
   );
-  // This is a performance bottleneck so memoize this
-  const renderElementMemo = useMemo(() => renderElement, []);
 
   return (
     !showFavorites && (
       <VirtualGrid
         data={filteredElements}
-        renderElement={renderElementMemo}
+        renderElement={renderElement}
         estimateSize={estimateSize}
         gap={gap}
         overscan={overscan}

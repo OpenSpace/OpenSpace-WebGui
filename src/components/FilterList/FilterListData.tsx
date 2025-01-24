@@ -34,9 +34,6 @@ export function FilterListData<T>({
     [searchString, matcherFunc, data]
   );
 
-  // Memioze as this can be a performance bottleneck regarding re-renders
-  const renderElementMemo = useMemo(() => renderElement, []);
-
   if (isLoading) {
     return <LoadingBlocks />;
   }
@@ -45,7 +42,7 @@ export function FilterListData<T>({
     !showFavorites && (
       <VirtualList
         data={filteredElements}
-        renderElement={renderElementMemo}
+        renderElement={renderElement}
         gap={gap}
         overscan={overscan}
         estimateSize={estimateSize}

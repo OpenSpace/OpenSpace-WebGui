@@ -1,7 +1,9 @@
+import { Button, ColorInput, Title } from '@mantine/core';
+
 import { useOpenSpaceApi } from '@/api/hooks';
-import { Button, ColorInput, ColorPicker, Title } from '@mantine/core';
-import { useSelectedBrowserColor } from '../hooks';
 import { useAppSelector } from '@/redux/hooks';
+
+import { useSelectedBrowserColor } from '../hooks';
 
 interface Props {
   id: string | undefined;
@@ -26,8 +28,8 @@ export function Settings({ id }: Props) {
     <>
       <Title>Settings</Title>
       <ColorInput
-        label="Color"
-        placeholder="Set browser color..."
+        label={'Color'}
+        placeholder={'Set browser color...'}
         format={'rgb'}
         defaultValue={color}
         onChange={setColor}

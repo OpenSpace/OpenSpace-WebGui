@@ -1,6 +1,8 @@
-import { useAppSelector } from '@/redux/hooks';
-import { Select } from '@mantine/core';
 import { memo, useMemo, useState } from 'react';
+import { Select } from '@mantine/core';
+
+import { useAppSelector } from '@/redux/hooks';
+
 import { ImageList } from './ImageList';
 import { NearestImages } from './NearestImages';
 import { ViewingMode } from './util';

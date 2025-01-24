@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { VirtualList } from './VirtualList';
 import { Grid } from '@mantine/core';
-import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
+
+import { VirtualList } from './VirtualList';
 
 export interface KeyType {
   key: string;
@@ -31,7 +31,7 @@ export function VirtualGrid<T extends KeyType>({
       result.push(data.slice(i, i + columns));
     }
     return result;
-  }, [data]);
+  }, [data, columns]);
 
   return (
     <VirtualList

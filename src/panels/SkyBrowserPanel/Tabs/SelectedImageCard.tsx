@@ -1,12 +1,15 @@
-import { MoveTargetIcon, TrashIcon } from '@/icons/icons';
-import { Group, Paper, Slider, Stack, Image, Text } from '@mantine/core';
-import { ImageInfoPopover } from '../ImageInfoPopover';
-import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
-import { useOpenSpaceApi } from '@/api/hooks';
-import { useAppSelector } from '@/redux/hooks';
+import { Group, Image, Paper, Slider, Stack, Text } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
-import { TabButton } from './TabButton';
+
+import { useOpenSpaceApi } from '@/api/hooks';
+import { MoveTargetIcon, TrashIcon } from '@/icons/icons';
+import { useAppSelector } from '@/redux/hooks';
+import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
+
 import { useActiveImage, useSelectedBrowserColor } from '../hooks';
+import { ImageInfoPopover } from '../ImageInfoPopover';
+
+import { TabButton } from './TabButton';
 
 interface Props {
   image: SkyBrowserImage;
@@ -35,7 +38,7 @@ export function SelectedImageCard({ image, opacity }: Props) {
         borderColor: isSelected ? color : 'var(--mantine-color-gray-8)'
       }}
     >
-      <Group w={'100%'} justify="space-between">
+      <Group w={'100%'} justify={'space-between'}>
         <Stack maw={'50%'}>
           <Text fw={600} lineClamp={1}>
             {image.name}
@@ -47,7 +50,7 @@ export function SelectedImageCard({ image, opacity }: Props) {
                 setActiveImage(image.url);
               }}
               text={'Look at image'}
-              variant="filled"
+              variant={'filled'}
             >
               <MoveTargetIcon />
             </TabButton>
@@ -68,12 +71,12 @@ export function SelectedImageCard({ image, opacity }: Props) {
         </Stack>
         <Stack gap={'xs'}>
           <Image
-            fit="cover"
+            fit={'cover'}
             src={image.thumbnail}
             radius={'sm'}
             height={45}
             opacity={opacity}
-            fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+            fallbackSrc={'https://placehold.co/600x400?text=Placeholder'}
             style={{
               border: '1px solid var(--mantine-color-gray-7)'
             }}

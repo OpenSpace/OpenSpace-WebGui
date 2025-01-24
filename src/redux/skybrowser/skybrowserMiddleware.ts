@@ -4,7 +4,9 @@ const subscribeToSkyBrowser = createAction<void>('skybrowser/subscribe');
 const unsubscribeToSkyBrowser = createAction<void>('skybrowser/unsubscribe');
 
 import { api } from '@/api/api';
+
 import { AppStartListening } from '../listenerMiddleware';
+
 import { subscriptionIsSetup, updateSkyBrowser } from './skybrowserSlice';
 
 let skybrowserTopic: any;

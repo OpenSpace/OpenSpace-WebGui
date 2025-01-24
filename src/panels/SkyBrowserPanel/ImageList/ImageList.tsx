@@ -1,10 +1,12 @@
+import { memo, useMemo } from 'react';
+import { Divider } from '@mantine/core';
+
 import { FilterList } from '@/components/FilterList/FilterList';
 import { FilterListGrid } from '@/components/FilterList/FilterListGrid';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
-import { Divider } from '@mantine/core';
+
 import { ImageCard } from './ImageCard';
-import { memo, useMemo } from 'react';
 
 interface Props {
   imageList: SkyBrowserImage[];
