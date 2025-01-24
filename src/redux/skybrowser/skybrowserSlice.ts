@@ -16,7 +16,7 @@ export interface SkyBrowserImage {
   url: string;
 }
 
-interface SkyBrowserBrowser {
+export interface SkyBrowserBrowser {
   borderRadius: number;
   cartesianDirection: number[];
   color: number[];

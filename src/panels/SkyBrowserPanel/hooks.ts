@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
@@ -5,10 +7,10 @@ import {
   unsubscribeToSkyBrowser
 } from '@/redux/skybrowser/skybrowserMiddleware';
 import {
+  setActiveImage,
   setImageCollectionData,
-  setActiveImage
+  SkyBrowserBrowser
 } from '@/redux/skybrowser/skybrowserSlice';
-import { useEffect } from 'react';
 
 export function useGetWwtImageCollection() {
   const luaApi = useOpenSpaceApi();
@@ -66,5 +68,48 @@ export function useSelectedBrowserColor() {
   const color = useAppSelector(
     (state) => state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId]?.color
   );
-  return `rgb(${color.join(',')})`;
+  return color ? `rgb(${color.join(',')})` : undefined;
+}
+
+export function useSelectedBrowserProperty<T extends keyof SkyBrowserBrowser>(
+  property: T
+): SkyBrowserBrowser[T] | undefined {
+  const result = useAppSelector(
+    (state) =>
+      state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId]?.[property] ??
+      undefined
+  );
+  return result;
+}
+
+function lowPrecisionEqual(lhs: number | undefined, rhs: number | undefined) {
+  return lhs?.toFixed(2) === rhs?.toFixed(2);
+}
+
+export function useSelectedBrowserCoords() {
+  const ra = useAppSelector(
+    (state) =>
+      state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId]?.['ra'] ??
+      undefined,
+    lowPrecisionEqual
+  );
+  const dec = useAppSelector(
+    (state) =>
+      state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId]?.['dec'] ??
+      undefined,
+    lowPrecisionEqual
+  );
+  const fov = useAppSelector(
+    (state) =>
+      state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId]?.['fov'] ??
+      undefined,
+    lowPrecisionEqual
+  );
+  const roll = useAppSelector(
+    (state) =>
+      state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId]?.['roll'] ??
+      undefined,
+    lowPrecisionEqual
+  );
+  return { ra, dec, fov, roll };
 }
