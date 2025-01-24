@@ -1,6 +1,7 @@
 import React, { useCallback, useRef } from 'react';
-import { ScrollArea } from '@mantine/core';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
+
+import { Window } from '@/windowmanagement/Window/Window';
 
 import { WindowLayoutOptions } from './WindowLayout';
 import { WindowLayoutContext } from './WindowLayoutContext';
@@ -17,7 +18,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
       return {
         id,
         title,
-        content: <ScrollArea h={'100%'}>{content}</ScrollArea>, // TODO ylvse 2025-01-24: this should be changed to the Window component when merging
+        content: <Window>{content}</Window>,
         closable: true,
         cached: true,
         group: 'regularWindow'

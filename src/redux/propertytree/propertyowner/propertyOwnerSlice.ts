@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { PropertyOwner, PropertyOwners, Uri } from '@/types/types';
-
-import { addUriToPropertyTree } from '../propertyTreeMiddleware';
+import { PropertyOwners, Uri } from '@/types/types';
 
 // actions:
 // addPropertyOwners
@@ -25,22 +23,12 @@ export const propertyOwnersSlice = createSlice({
   name: 'propertyOwners',
   initialState: initialStatePropertyOwners,
   reducers: {
-    addPropertyOwners: (
-      state,
-      action: PayloadAction<{ propertyOwners: PropertyOwner[] }>
-    ) => {
-      const inputOwners = action.payload.propertyOwners;
-      inputOwners.forEach((owner) => {
-        state.propertyOwners[owner.uri] = {
-          identifier: owner.identifier,
-          name: owner.name,
-          properties: owner.properties,
-          subowners: owner.subowners,
-          tags: owner.tags || [],
-          uri: owner.uri, // TODO: Remove this
-          description: owner.description
-        };
-
+    addPropertyOwners: (state, action: PayloadAction<PropertyOwners>) => {
+      for (const [uri, owner] of Object.entries(action.payload)) {
+        if (!owner) {
+          continue;
+        }
+        state.propertyOwners[uri] = owner;
         // Ensure the parents of the uri have the links to the new entry
         // Get parent uri
         const periodPos = owner.uri.lastIndexOf('.');
@@ -54,7 +42,8 @@ export const propertyOwnersSlice = createSlice({
         ) {
           state.propertyOwners[parentUri]!.subowners.push(owner.uri);
         }
-      });
+      }
+
       return state;
     },
     clearPropertyOwners: () => {
@@ -82,17 +71,6 @@ export const propertyOwnersSlice = createSlice({
       });
       return state;
     }
-  },
-  extraReducers: (builder) => {
-    builder.addCase(addUriToPropertyTree.fulfilled, (state, action) => {
-      if (action.payload?.propertyOwners) {
-        state.propertyOwners = {
-          ...state.propertyOwners,
-          ...action.payload.propertyOwners
-        };
-      }
-      return state;
-    });
   }
 });
 

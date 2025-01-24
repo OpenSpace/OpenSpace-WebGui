@@ -1,0 +1,88 @@
+/* Background */
+.simple-keyboard-background {
+  color: black;
+  font-size: 0.8em;
+  background-color: var(--mantine-color-dark-6);
+  border-bottom: 1px solid var(--mantine-color-dark-2);
+  border-radius: 5px;
+  width: fit-content;
+}
+
+/* Remove background */
+.simple-keyboard {
+  background: none;
+}
+
+.hg-theme-default .hg-button {
+  background: var(--mantine-color-dark-9);
+  color: var(--mantine-color-white);
+  border-bottom: 1px solid var(--mantine-color-dark-2);
+}
+
+/* Button highlights */
+/* All mapped actions */
+.simple-keyboard.hg-layout-default .hg-button.hg-mapped {
+  background: var(--mantine-color-violet-8);
+}
+
+/* Currently selected key */
+.simple-keyboard.hg-layout-default .hg-button.hg-highlight {
+  background: var(--mantine-color-cyan-8);
+}
+
+/* Modifiers */
+.simple-keyboard.hg-layout-default .hg-button.hg-toggled {
+  background: var(--mantine-color-yellow-9);
+}
+
+/* Main keyboard */
+.simple-keyboard-main.simple-keyboard {
+  width: 640px;
+  min-width: 640px;
+}
+
+/* Width of numpad */
+.simple-keyboard-numpad.simple-keyboard {
+  width: 160px;
+}
+
+/* Margin under the F keys row */
+.simple-keyboard-main.simple-keyboard .hg-row:first-child,
+.simple-keyboard-control.simple-keyboard .hg-row:first-child {
+  margin-bottom: 10px;
+}
+
+/* Place "up" arrow in the center */
+.simple-keyboard-arrows .hg-row {
+  justify-content: center;
+}
+
+/* Make arrows and control pad buttons the same size */
+.simple-keyboard-arrows .hg-button,
+.simple-keyboard-control .hg-button {
+  width: 50px;
+  flex-grow: 0;
+}
+
+/* Width of numpad button */
+.simple-keyboard-numpad.simple-keyboard .hg-button {
+  width: 50px;
+}
+
+/* Numpad end - width and margins */
+.simple-keyboard-numpadEnd.simple-keyboard {
+  width: 50px;
+  margin: 0;
+  padding: 5px 5px 5px 0;
+}
+
+/* Plus and enter button in numpad height */
+.simple-keyboard-numpadEnd .hg-button.hg-standardBtn.hg-button-plus,
+.simple-keyboard-numpadEnd.simple-keyboard .hg-button.hg-button-enter {
+  height: 85px;
+}
+
+/* Width of the space button */
+.hg-button.hg-functionBtn.hg-button-space {
+  width: 350px;
+}

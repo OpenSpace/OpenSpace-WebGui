@@ -16,8 +16,13 @@ import { rootOwnerKey } from '@/util/keys';
 
 import { refreshGroups } from '../groups/groupsSliceMiddleware';
 
-import { clearProperties, removeProperties } from './properties/propertiesSlice';
 import {
+  addProperties,
+  clearProperties,
+  removeProperties
+} from './properties/propertiesSlice';
+import {
+  addPropertyOwners,
   clearPropertyOwners,
   removePropertyOwners
 } from './propertyowner/propertyOwnerSlice';
@@ -33,7 +38,6 @@ export const addUriToPropertyTree = createAsyncThunk(
     const response = (await api.getProperty(uri)) as
       | OpenSpaceProperty
       | OpenSpacePropertyOwner;
-
     if ('properties' in response) {
       const { properties, propertyOwners } = flattenPropertyTree(response);
       const propertiesMap: Properties = {};
@@ -149,6 +153,18 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
       // TODO anden88 2024-10-18: Right now the reloadPropertyTree is only dispatched here
       // consder to put the reload logic in here immedieately?
       listenerApi.dispatch(reloadPropertyTree());
+    }
+  });
+
+  startListening({
+    actionCreator: addUriToPropertyTree.fulfilled,
+    effect: (action, listenerApi) => {
+      if (action.payload?.propertyOwners) {
+        listenerApi.dispatch(addPropertyOwners(action.payload.propertyOwners));
+      }
+      if (action.payload?.properties) {
+        listenerApi.dispatch(addProperties(action.payload.properties));
+      }
     }
   });
 

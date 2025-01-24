@@ -15,7 +15,7 @@ export function Scene() {
   if (!hasLoadedScene) {
     return (
       <Container mt={'md'}>
-        <LoadingBlocks nBlocks={4} minWidthPercentage={20} />
+        <LoadingBlocks />
       </Container>
     );
   }

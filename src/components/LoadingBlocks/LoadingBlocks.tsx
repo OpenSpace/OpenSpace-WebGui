@@ -1,20 +1,24 @@
+import { useMemo } from 'react';
 import { Skeleton, Stack } from '@mantine/core';
 
 interface Props {
-  nBlocks: number;
-  minWidthPercentage: number;
+  n?: number;
 }
 
-export function LoadingBlocks({ nBlocks, minWidthPercentage = 0 }: Props) {
-  const min = minWidthPercentage;
+export function LoadingBlocks({ n = 4 }: Props) {
+  const widths = useMemo(
+    () =>
+      [...Array(n)].map(() => {
+        const min = 50;
+        const max = 100;
+        return `${Math.floor(Math.random() * (max - min + 1)) + min}%`;
+      }),
+    [n]
+  );
   return (
     <Stack>
-      {[...Array(nBlocks)].map((_, i) => (
-        <Skeleton
-          key={i}
-          height={10}
-          width={`${min + Math.random() * 100 * (1.0 - min / 100.0)}%`}
-        />
+      {widths.map((width, i) => (
+        <Skeleton key={i} height={16} width={width} radius={'xs'} />
       ))}
     </Stack>
   );
