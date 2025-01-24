@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu } from '@mantine/core';
 
-import { ChevronRightIcon } from '@/icons/icons';
+import { ChevronRightIcon, PanelIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
 import { menuItemsDB } from './data/MenuItems';
@@ -21,7 +21,10 @@ export function NewWindowMenu({ addWindow }: NewWindowMenuProps) {
       arrowPosition={'center'}
     >
       <Menu.Target>
-        <Menu.Item rightSection={<ChevronRightIcon size={IconSize.sm} />}>
+        <Menu.Item
+          leftSection={<PanelIcon />}
+          rightSection={<ChevronRightIcon size={IconSize.sm} />}
+        >
           Windows
         </Menu.Item>
       </Menu.Target>

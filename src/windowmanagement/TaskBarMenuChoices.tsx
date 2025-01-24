@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Checkbox, Group, Menu, Stack } from '@mantine/core';
 
-import { ChevronRightIcon } from '@/icons/icons';
+import { ChevronRightIcon, TaskBarIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
 import { menuItemsDB } from './data/MenuItems';
@@ -32,7 +32,10 @@ export function TaskBarMenuChoices({
       arrowPosition={'center'}
     >
       <Menu.Target>
-        <Menu.Item rightSection={<ChevronRightIcon size={IconSize.sm} />}>
+        <Menu.Item
+          leftSection={<TaskBarIcon />}
+          rightSection={<ChevronRightIcon size={IconSize.sm} />}
+        >
           Task Bar
         </Menu.Item>
       </Menu.Target>
@@ -41,10 +44,10 @@ export function TaskBarMenuChoices({
         <Stack gap={0}>
           {menuItemsDB.map((item) => {
             return (
-              <Group className={"ToggleTaskBarItemParent"}>
+              <Group className={'ToggleTaskBarItemParent'}>
                 {item.icon?.(IconSize.xs)}
                 <Checkbox
-                  className={"ToggleTaskBarItem"}
+                  className={'ToggleTaskBarItem'}
                   key={item.componentID}
                   label={item.title}
                   labelPosition={'left'}

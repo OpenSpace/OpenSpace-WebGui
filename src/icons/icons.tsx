@@ -1,5 +1,13 @@
-export { BsThreeDotsVertical as VerticalDotsIcon } from 'react-icons/bs';
-export { FaMinus as MinusIcon, FaPlus as PlusIcon } from 'react-icons/fa';
+export {
+  BsWindowSidebar as PanelIcon,
+  BsWindowDock as TaskBarIcon,
+  BsThreeDotsVertical as VerticalDotsIcon
+} from 'react-icons/bs';
+export {
+  FaMinus as MinusIcon,
+  FaPlus as PlusIcon,
+  FaRegSave as SaveIcon
+} from 'react-icons/fa';
 export { GoBrowser as BrowserIcon } from 'react-icons/go';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
@@ -41,7 +49,8 @@ export {
   MdFiberManualRecord as RecordIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
-  MdVideocam as VideocamIcon} from 'react-icons/md';
+  MdVideocam as VideocamIcon
+} from 'react-icons/md';
 export { PiBookOpenText as BookIcon, PiTreeView as TreeViewIcon } from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
 export { VscFeedback as FeedbackIcon } from 'react-icons/vsc';

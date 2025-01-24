@@ -1,6 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Button, Group, Menu } from '@mantine/core';
 
+import { SaveIcon } from '@/icons/icons';
+
 import { WindowLayoutOptions } from './WindowLayout/WindowLayout';
 import { HelpMenu } from './HelpMenu';
 import { NewWindowMenu } from './NewWindowMenu';
@@ -52,7 +54,7 @@ export function TopMenuBar({
             setVisibleMenuItems={setVisibleMenuItems}
           />
           <NewWindowMenu addWindow={addWindow} />
-          <Menu.Item>Load/Save Layout</Menu.Item>
+          <Menu.Item leftSection={<SaveIcon />}>Load/Save Layout</Menu.Item>
         </Menu.Dropdown>
       </Menu>
 
