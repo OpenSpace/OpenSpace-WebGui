@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { BoxData, PanelData, TabData } from 'rc-dock';
 
 import {
@@ -59,9 +59,9 @@ export function useOpenCurrentSceneNodeWindow() {
     }
   }
 
-  function closeCurrentNodeWindow() {
+  const closeCurrentNodeWindow = useCallback(() => {
     closeWindow(DefaultSgnWindowId);
-  }
+  }, [closeWindow]);
 
   return {
     openCurrentNodeWindow,

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { ScrollArea } from '@mantine/core';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
@@ -12,63 +12,80 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
     return obj && 'tabs' in obj;
   }
 
-  function addWindow(component: React.JSX.Element, options: WindowLayoutOptions) {
-    if (!rcDocRef.current) {
-      return;
-    }
+  const createWindowTabData = useCallback(
+    (id: string, title: string, content: React.JSX.Element): TabData => {
+      return {
+        id,
+        title,
+        content: <ScrollArea h={'100%'}>{content}</ScrollArea>, // TODO ylvse 2025-01-24: this should be changed to the Window component when merging
+        closable: true,
+        cached: true,
+        group: 'regularWindow'
+      };
+    },
+    []
+  );
 
-    // If the panel is already existing, give it focus
-    const isExistingPanel = rcDocRef.current.find(options.id);
-    if (isExistingPanel) {
-      rcDocRef.current.updateTab(isExistingPanel.id!, null, true);
-      return;
-    }
-
-    const position = options.position ?? 'float';
-    // Root BoxData that contains all other Boxes & Panels
-    const baseID = rcDocRef.current.state.layout.dockbox.id!;
-    const base = rcDocRef.current.find(baseID)! as BoxData;
-
-    const tab = createWindowTabData(options.id, options.title, component);
-
-    switch (position) {
-      case 'left':
-      case 'right': {
-        const index = position == 'left' ? 0 : base.children.length - 1;
-        const childTarget: PanelData | BoxData = base.children[index];
-        // If the stack is vertical we want to a add panel to left or right side
-        const isHorizontalMode = base.mode === 'horizontal';
-        // We don't want to select the transparent Openspace window
-        const isMainWindow = childTarget.id == 'center';
-        // If the target is of type panel we want add a new tab
-        const isPanelDataType = isPanelDataInstance(childTarget);
-
-        // Adds a new tab to existing panel
-        if (isHorizontalMode && !isMainWindow && isPanelDataType) {
-          rcDocRef.current.dockMove(tab, childTarget, 'middle');
-        }
-        // Adds a new panel to left or right side
-        else {
-          tab.group = 'regularWindow';
-          const panel: PanelData = {
-            tabs: [tab]
-          };
-
-          rcDocRef.current.dockMove(panel, base, position);
-        }
-        break;
+  const addWindow = useCallback(
+    (component: React.JSX.Element, options: WindowLayoutOptions) => {
+      if (!rcDocRef.current) {
+        return;
       }
 
-      case 'float':
-        rcDocRef.current.dockMove(tab, null, 'float');
-        break;
+      // If the panel is already existing, give it focus
+      const isExistingPanel = rcDocRef.current.find(options.id);
+      if (isExistingPanel) {
+        rcDocRef.current.updateTab(isExistingPanel.id!, null, true);
+        return;
+      }
 
-      default:
-        throw Error('Unhandled window position');
-    }
-  }
+      const position = options.position ?? 'float';
+      // Root BoxData that contains all other Boxes & Panels
+      const baseID = rcDocRef.current.state.layout.dockbox.id!;
+      const base = rcDocRef.current.find(baseID)! as BoxData;
 
-  function closeWindow(id: string) {
+      const tab = createWindowTabData(options.id, options.title, component);
+
+      switch (position) {
+        case 'left':
+        case 'right': {
+          const index = position == 'left' ? 0 : base.children.length - 1;
+          const childTarget: PanelData | BoxData = base.children[index];
+          // If the stack is vertical we want to a add panel to left or right side
+          const isHorizontalMode = base.mode === 'horizontal';
+          // We don't want to select the transparent Openspace window
+          const isMainWindow = childTarget.id == 'center';
+          // If the target is of type panel we want add a new tab
+          const isPanelDataType = isPanelDataInstance(childTarget);
+
+          // Adds a new tab to existing panel
+          if (isHorizontalMode && !isMainWindow && isPanelDataType) {
+            rcDocRef.current.dockMove(tab, childTarget, 'middle');
+          }
+          // Adds a new panel to left or right side
+          else {
+            tab.group = 'regularWindow';
+            const panel: PanelData = {
+              tabs: [tab]
+            };
+
+            rcDocRef.current.dockMove(panel, base, position);
+          }
+          break;
+        }
+
+        case 'float':
+          rcDocRef.current.dockMove(tab, null, 'float');
+          break;
+
+        default:
+          throw Error('Unhandled window position');
+      }
+    },
+    [createWindowTabData]
+  );
+
+  const closeWindow = useCallback((id: string) => {
     if (!rcDocRef.current) {
       return;
     }
@@ -77,22 +94,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
     if (existingPanel) {
       rcDocRef.current.dockMove(existingPanel as TabData | PanelData, null, 'remove');
     }
-  }
-
-  function createWindowTabData(
-    id: string,
-    title: string,
-    content: React.JSX.Element
-  ): TabData {
-    return {
-      id,
-      title,
-      content: <ScrollArea h={'100%'}>{content}</ScrollArea>,
-      closable: true,
-      cached: true,
-      group: 'regularWindow'
-    };
-  }
+  }, []);
 
   return (
     <WindowLayoutContext.Provider

@@ -64,7 +64,7 @@ export function SceneTree() {
         expandedGroups.current = [...expandedGroups.current, value];
       }
     },
-    onNodeCollapse: (value) => {
+    onNodeCollapse: (value: string) => {
       if (isGroup(value)) {
         expandedGroups.current = expandedGroups.current.filter((v) => v !== value);
       }
@@ -81,8 +81,7 @@ export function SceneTree() {
       // Also close the "current node" window
       closeCurrentNodeWindow();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, closeCurrentNodeWindow]);
 
   // If the sorting is not wrapped in an useMemo, the component will rerender constantly,
   // for some reason
