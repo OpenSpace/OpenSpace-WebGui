@@ -6,7 +6,6 @@ import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
 import { Property } from '@/components/Property/Property';
-import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Identifier } from '@/types/types';
@@ -14,7 +13,6 @@ import {
   HabitableZonePropertyKey,
   NavigationAimKey,
   NavigationAnchorKey,
-  ScenePrefixKey,
   Size1AuRingPropertyKey,
   UncertaintyDiscPropertyKey
 } from '@/util/keys';
