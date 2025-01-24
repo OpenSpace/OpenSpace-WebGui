@@ -6,6 +6,7 @@ import { ExoplanetsPanel } from '@/panels/ExoplanetsPanel/ExoplanetsPanel';
 import { FlightControlPanel } from '@/panels/FlightControlPanel/FlightControlPanel';
 import { GeoLocationPanel } from '@/panels/GeoLocationPanel/GeoLocationPanel';
 import { MissionsPanel } from '@/panels/MissionsPanel/MissionsPanel';
+import { KeyBindsPanel } from '@/panels/KeybindsPanel/KeybindsPanel';
 import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { Scene } from '@/panels/Scene/Scene';
@@ -123,7 +124,7 @@ export const menuItemsDB: MenuItem[] = [
   {
     title: 'Keybindings Layout',
     componentID: 'keybindingsLayout',
-    content: <div>Keybindings</div>,
+    content: <KeyBindsPanel />,
     preferredPosition: 'float',
     defaultVisible: false
   },

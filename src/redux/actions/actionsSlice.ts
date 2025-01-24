@@ -78,8 +78,20 @@ export const actionsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getAllActions.fulfilled, (state, action) => {
       const [actions, keybinds] = splitActionsAndKeybinds(action.payload);
+      const modifiedKeybinds: Keybind[] = keybinds.map((keybind) => {
+        const modifiers = Object.values(keybind.modifiers)
+          .map((value, i) => (value ? Object.keys(keybind.modifiers)[i] : null))
+          .filter((value) => value !== null) as Keybind['modifiers'];
+
+        return {
+          action: keybind.action,
+          key: keybind.key,
+          modifiers: modifiers
+        };
+      });
+
       state.isInitialized = true;
-      state.keybinds = keybinds;
+      state.keybinds = modifiedKeybinds;
       state.actions = actions;
       return state;
     });
