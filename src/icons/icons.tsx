@@ -49,8 +49,9 @@ export {
   MdFiberManualRecord as RecordIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
+  MdOutlineCategory as TreeViewIcon,
   MdVideocam as VideocamIcon
 } from 'react-icons/md';
-export { PiBookOpenText as BookIcon, PiTreeView as TreeViewIcon } from 'react-icons/pi';
+export { PiBookOpenText as BookIcon } from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
 export { VscFeedback as FeedbackIcon } from 'react-icons/vsc';
