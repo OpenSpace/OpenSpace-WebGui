@@ -25,6 +25,7 @@ export function KeyBindsPanel() {
   const hasSelectedKeys = selectedKey !== '' || activeModifiers.length > 0;
   return (
     <Container maw={'none'}>
+      <Title order={2}>Keybinds</Title>
       <FullKeyboard
         setSelectedActions={setSelectedActions}
         setActiveModifiers={setActiveModifiers}
@@ -33,7 +34,9 @@ export function KeyBindsPanel() {
         activeModifiers={activeModifiers}
       />
       <Group my={'md'}>
-        <Title order={3}>Selected keybind:</Title>
+        <Text size={'lg'} fw={500}>
+          Selected keybind:
+        </Text>
         <KeybindButtons selectedKey={selectedKey} modifiers={activeModifiers} />
       </Group>
       <Divider />
