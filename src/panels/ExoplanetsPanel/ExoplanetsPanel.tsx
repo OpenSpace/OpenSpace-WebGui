@@ -18,6 +18,9 @@ import {
   Size1AuRingPropertyKey,
   UncertaintyDiscPropertyKey
 } from '@/util/keys';
+import { sgnUri } from '@/util/propertyTreeHelpers';
+
+import { SceneGraphNodeHeader } from '../Scene/SceneGraphNode/SceneGraphNodeHeader';
 
 import { ExoplanetEntry } from './ExoplanetEntry';
 
@@ -117,13 +120,8 @@ export function ExoplanetsPanel() {
             <Text>No active systems</Text>
           ) : (
             addedSystems.map(
-              (prop) =>
-                prop && (
-                  <PropertyOwner
-                    key={prop.identifier}
-                    uri={`${ScenePrefixKey}${prop.identifier}`}
-                  />
-                )
+              (hostStar) =>
+                hostStar && <SceneGraphNodeHeader uri={sgnUri(hostStar.identifier)} />
             )
           )}
         </ScrollArea>
