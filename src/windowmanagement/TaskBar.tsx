@@ -1,4 +1,3 @@
-import React from 'react';
 import { ActionIcon, Button, Flex } from '@mantine/core';
 import { WindowLayoutOptions } from 'src/windowmanagement/WindowLayout/WindowLayout';
 
@@ -22,7 +21,11 @@ export function TaskBar({ addWindow, visibleMenuItems }: TaskBarProps) {
       style={{
         backgroundColor: '#00000080',
         whiteSpace: 'nowrap',
-        overflowX: 'auto'
+        overflowX: 'auto',
+        overflowY: 'hidden'
+      }}
+      onWheel={(event) => {
+        event.currentTarget.scrollLeft += event.deltaY;
       }}
     >
       {checkedMenuItems.map((item) => {
