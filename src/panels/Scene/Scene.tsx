@@ -3,6 +3,7 @@ import {
   Checkbox,
   Group,
   Menu,
+  ScrollArea,
   Tabs,
   Text,
   Tree,
@@ -122,7 +123,7 @@ export function Scene() {
     });
 
   return (
-    <>
+    <ScrollArea h={'100%'}>
       {!hasLoadedScene ? (
         <LoadingBlocks />
       ) : (
@@ -199,6 +200,6 @@ export function Scene() {
           </Tabs.Panel>
         </Tabs>
       )}
-    </>
+    </ScrollArea>
   );
 }

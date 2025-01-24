@@ -1,5 +1,6 @@
 export { BsThreeDotsVertical as VerticalDotsIcon } from 'react-icons/bs';
 export { FaMinus as MinusIcon, FaPlus as PlusIcon } from 'react-icons/fa';
+export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoTelescopeOutline as TelescopeIcon
@@ -33,7 +34,11 @@ export {
   MdFiberManualRecord as RecordIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
-  MdVideocam as VideocamIcon
+  MdTimer as TimerIcon,
+  MdVideocam as VideocamIcon,
+  MdZoomIn as ZoomInIcon,
+  MdZoomOut as ZoomOutIcon,
+  MdZoomOutMap as ZoomOutMapIcon
 } from 'react-icons/md';
 export { PiBookOpenText as BookIcon } from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';

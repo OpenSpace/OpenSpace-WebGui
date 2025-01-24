@@ -26,3 +26,9 @@ export enum TimePart {
   Months = 'Months',
   Years = 'Years'
 }
+
+export enum DisplayType {
+  Phase = 'Phase',
+  Milestone = 'Milestone',
+  Overview = 'Overview'
+}

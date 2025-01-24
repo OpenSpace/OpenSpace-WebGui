@@ -1,4 +1,4 @@
-import { Button, Flex, Grid } from '@mantine/core';
+import { Button, Flex, Grid, ScrollArea } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
@@ -198,7 +198,7 @@ export function ActionsPanel() {
   const folders = isEmpty ? <div>No Folders</div> : getFoldersContent(actionLevel);
   const backButton = getBackButton();
   return (
-    <>
+    <ScrollArea h={'100%'}>
       <Flex>
         {backButton}
         <p>{`${displayedNavigationPath}`}</p>
@@ -219,6 +219,6 @@ export function ActionsPanel() {
           matcherFunc={generateMatcherFunctionByKeys(['identifier', 'name', 'guiPath'])}
         />
       </FilterList>
-    </>
+    </ScrollArea>
   );
 }
