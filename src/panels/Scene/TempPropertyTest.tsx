@@ -1,6 +1,7 @@
 import { Container } from '@mantine/core';
 
 import { Property } from '@/components/Property/Property';
+import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 
 export function TempPropertyTest() {
   const styleUnfinished = { color: 'red' };
@@ -48,6 +49,8 @@ export function TempPropertyTest() {
       <h3 style={styleUnfinished}>Matrix Property:</h3>
       Mat4: ISS Model transform
       <Property uri={'Scene.ISS.Renderable.ModelTransform'} />
+      <h3 style={styleUnfinished}>A full property owner!</h3>
+      <PropertyOwner uri={'Scene.Earth'} />
     </Container>
   );
 }

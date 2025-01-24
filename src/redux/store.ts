@@ -2,9 +2,11 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { actionsReducer } from './actions/actionsSlice';
 import { connectionReducer } from './connection/connectionSlice';
+import { documentationReducer } from './documentation/documentationSlice';
 import { exoplanetsReducer } from './exoplanets/exoplanetsSlice';
 import { flightControllerReducer } from './flightcontroller/flightControllerSlice';
 import { groupsReducer } from './groups/groupsSlice';
+import { localReducer } from './local/localSlice';
 import { missionsReducer } from './missions/missionsSlice';
 import { propertiesReducer } from './propertytree/properties/propertiesSlice';
 import { propertyOwnersReducer } from './propertytree/propertyowner/propertyOwnerSlice';
@@ -18,9 +20,11 @@ export const store = configureStore({
   reducer: {
     actions: actionsReducer,
     connection: connectionReducer,
+    documentation: documentationReducer,
     exoplanets: exoplanetsReducer,
     flightController: flightControllerReducer,
     groups: groupsReducer,
+    local: localReducer,
     missions: missionsReducer,
     properties: propertiesReducer,
     propertyOwners: propertyOwnersReducer,

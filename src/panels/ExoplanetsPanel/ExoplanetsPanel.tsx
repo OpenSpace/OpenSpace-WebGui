@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Container, Divider, ScrollArea, Text, Title } from '@mantine/core';
 
 import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
-import { CollapsableContent } from '@/components/CollapsableContent/CollapsableContent';
+import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
 import { Property } from '@/components/Property/Property';
@@ -105,11 +105,11 @@ export function ExoplanetsPanel() {
         </FilterList>
 
         <Divider my={'xs'} />
-        <CollapsableContent title={'Settings'}>
+        <Collapsable title={'Settings'}>
           <Property uri={HabitableZonePropertyKey} />
           <Property uri={UncertaintyDiscPropertyKey} />
           <Property uri={Size1AuRingPropertyKey} />
-        </CollapsableContent>
+        </Collapsable>
         <Divider my={'xs'}></Divider>
         <Title order={3}>Added Systems</Title>
         <ScrollArea my={'md'}>

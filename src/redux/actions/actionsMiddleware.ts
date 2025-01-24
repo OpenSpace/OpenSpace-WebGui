@@ -3,6 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
+import { Uri } from '@/types/types';
 
 export const getAllActions = createAsyncThunk('actions/getAll', async () => {
   // TODO 2024-12-06 ylvse: We should rename all "shortcuts" names to "actions"
@@ -16,7 +17,7 @@ export const getAllActions = createAsyncThunk('actions/getAll', async () => {
 });
 
 // TODO 2024-11-27 (ylvse): This action should be added to the events handling
-export const getAction = createAsyncThunk('actions/get', async (uri: string) => {
+export const getAction = createAsyncThunk('actions/get', async (uri: Uri) => {
   const topic = api.startTopic('shortcuts', {
     event: 'get_shortcut',
     identifier: uri

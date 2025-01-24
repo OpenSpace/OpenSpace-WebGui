@@ -1,8 +1,13 @@
 export { BsThreeDotsVertical as VerticalDotsIcon } from 'react-icons/bs';
 export { FaMinus as MinusIcon, FaPlus as PlusIcon } from 'react-icons/fa';
+export {
+  FiChevronsDown as ChevronsDownIcon,
+  FiChevronsUp as ChevronsUpIcon
+} from 'react-icons/fi';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
+  IoInformation as InformationIcon,
   IoTelescopeOutline as TelescopeIcon
 } from 'react-icons/io5';
 export {
@@ -15,18 +20,25 @@ export {
   MdChevronLeft as ChevronLeftIcon,
   MdChevronRight as ChevronRightIcon,
   MdExpandLess as ChevronUpIcon,
+  MdColorLens as ColorPaletteIcon,
   MdTerminal as ConsoleIcon,
+  MdContentCopy as CopyIcon,
+  MdDragHandle as DragHandleIcon,
   MdExitToApp as ExitAppIcon,
   MdFastForward as FastForwardIcon,
   MdFastRewind as FastRewindIcon,
   MdFilterAlt as FilterIcon,
   MdFolder as FolderIcon,
   MdFilterCenterFocus as FrameFocusIcon,
+  MdLandscape as LandscapeIcon,
   MdLaunch as LaunchIcon,
+  MdOutlineLayers as LayersIcon,
   MdFlashOn as LightningFlashIcon,
   MdLock as LockIcon,
   MdLockOpen as LockOpenIcon,
+  MdNightlight as NightIcon,
   MdOpenInBrowser as OpenInBrowserIcon,
+  MdOpenInNew as OpenInNewIcon,
   MdOpenInNew as OpenWindowIcon,
   MdPause as PauseIcon,
   MdOutlineEdit as PenIcon,
@@ -36,6 +48,7 @@ export {
   MdStop as StopIcon,
   MdTimer as TimerIcon,
   MdVideocam as VideocamIcon,
+  MdWater as WaterIcon,
   MdZoomIn as ZoomInIcon,
   MdZoomOut as ZoomOutIcon,
   MdZoomOutMap as ZoomOutMapIcon

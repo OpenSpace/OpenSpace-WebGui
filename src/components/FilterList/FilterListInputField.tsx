@@ -1,4 +1,4 @@
-import { ActionIcon, Button, TextInput } from '@mantine/core';
+import { ActionIcon, Button, MantineStyleProps, TextInput } from '@mantine/core';
 
 import { CancelIcon } from '@/icons/icons';
 
@@ -29,7 +29,7 @@ function InputButton({ showMoreButton }: InputButtonProps) {
   );
 }
 
-interface InputFieldProps {
+interface Props extends MantineStyleProps {
   searchAutoFocus?: boolean;
   placeHolderSearchText?: string;
   showMoreButton?: boolean;
@@ -38,8 +38,9 @@ interface InputFieldProps {
 export function FilterListInputField({
   searchAutoFocus,
   placeHolderSearchText,
-  showMoreButton = false
-}: InputFieldProps) {
+  showMoreButton = false,
+  ...other // mantine props
+}: Props) {
   const { searchString, setSearchString } = useFilterListProvider();
 
   return (
@@ -51,6 +52,7 @@ export function FilterListInputField({
       // Some arbitrary width must be set so that the More button is rendered correctly
       rightSectionWidth={'md'}
       rightSection={<InputButton showMoreButton={showMoreButton} />}
+      {...other}
     />
   );
 }

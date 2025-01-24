@@ -46,7 +46,7 @@ export function OriginPanel() {
     .map((uri) => propertyOwners[uri])
     .filter((po) => po !== undefined);
 
-  const urisWithTags = uris.filter((uri) => hasInterestingTag(propertyOwners, uri));
+  const urisWithTags = uris.filter((uri) => hasInterestingTag(uri, propertyOwners));
   const favorites = urisWithTags
     .map(
       (uri) => propertyOwners[uri]

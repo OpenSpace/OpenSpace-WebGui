@@ -15,7 +15,7 @@ import {
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import {
-  InformationCircleOutlineIcon,
+  InformationIcon,
   PlayIcon,
   RecordIcon,
   StopIcon,
@@ -198,7 +198,7 @@ export function SessionRec() {
               events={{ hover: true, focus: true, touch: true }}
             >
               <ThemeIcon radius={'xl'} size={'sm'}>
-                <InformationCircleOutlineIcon style={{ width: '80%', height: '80%' }} />
+                <InformationIcon style={{ width: '80%', height: '80%' }} />
               </ThemeIcon>
             </Tooltip>
             {shouldOutputFrames && (
