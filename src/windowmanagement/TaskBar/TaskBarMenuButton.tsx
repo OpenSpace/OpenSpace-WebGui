@@ -1,7 +1,8 @@
 import { ActionIcon, Button } from '@mantine/core';
-import { MenuItem } from './data/MenuItems';
-import { WindowLayoutOptions } from './WindowLayout/WindowLayout';
+
 import { IconSize } from '@/types/enums';
+import { MenuItem } from '@/windowmanagement/data/MenuItems';
+import { WindowLayoutOptions } from '@/windowmanagement/WindowLayout/WindowLayout';
 
 interface Props {
   addWindow: (component: React.JSX.Element, options: WindowLayoutOptions) => void;

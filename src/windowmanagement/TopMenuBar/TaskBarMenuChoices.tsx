@@ -3,8 +3,7 @@ import { Checkbox, Group, Menu, Stack } from '@mantine/core';
 
 import { ChevronRightIcon, TaskBarIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
-
-import { menuItemsDB } from './data/MenuItems';
+import { menuItemsDB } from '@/windowmanagement/data/MenuItems';
 
 import './TaskBarMenuChoices.css';
 

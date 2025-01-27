@@ -10,8 +10,8 @@ import {
   SaveIcon,
   VisibilityIcon
 } from '@/icons/icons';
+import { WindowLayoutOptions } from '@/windowmanagement/WindowLayout/WindowLayout';
 
-import { WindowLayoutOptions } from './WindowLayout/WindowLayout';
 import { HelpMenu } from './HelpMenu';
 import { NewWindowMenu } from './NewWindowMenu';
 import { TaskBarMenuChoices } from './TaskBarMenuChoices';

@@ -6,8 +6,8 @@ import { FlightController } from '@/panels/FlightControlPanel/FlightController';
 
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
 import { menuItemsDB } from '../data/MenuItems';
-import { TaskBar } from '../TaskBar';
-import { TopMenuBar } from '../TopMenuBar';
+import { TaskBar } from '../TaskBar/TaskBar';
+import { TopMenuBar } from '../TopMenuBar/TopMenuBar';
 
 import { useWindowLayoutProvider } from './hooks';
 

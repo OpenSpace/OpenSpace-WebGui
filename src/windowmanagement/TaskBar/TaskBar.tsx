@@ -1,7 +1,8 @@
 import { Box, Flex } from '@mantine/core';
 import { WindowLayoutOptions } from 'src/windowmanagement/WindowLayout/WindowLayout';
 
-import { menuItemsDB } from './data/MenuItems';
+import { menuItemsDB } from '@/windowmanagement/data/MenuItems';
+
 import { TaskBarMenuButton } from './TaskBarMenuButton';
 
 interface Props {

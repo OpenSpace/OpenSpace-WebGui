@@ -2,9 +2,8 @@ import React from 'react';
 import { Menu } from '@mantine/core';
 
 import { IconSize } from '@/types/enums';
-
-import { menuItemsDB } from './data/MenuItems';
-import { WindowLayoutOptions } from './WindowLayout/WindowLayout';
+import { menuItemsDB } from '@/windowmanagement/data/MenuItems';
+import { WindowLayoutOptions } from '@/windowmanagement/WindowLayout/WindowLayout';
 
 interface NewWindowMenuProps {
   addWindow: (component: React.JSX.Element, options: WindowLayoutOptions) => void;
