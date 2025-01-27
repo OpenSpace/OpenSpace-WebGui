@@ -48,12 +48,12 @@ export {
   MdFiberManualRecord as RecordIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
+  MdTimer as TimerIcon,
   MdDelete as TrashIcon,
   MdVideocam as VideocamIcon,
+  MdWater as WaterIcon,
   MdZoomIn as ZoomInIcon,
   MdZoomOut as ZoomOutIcon,
-  MdTimer as TimerIcon,
-  MdWater as WaterIcon,
   MdZoomOutMap as ZoomOutMapIcon
 } from 'react-icons/md';
 export { PiBookOpenText as BookIcon } from 'react-icons/pi';
