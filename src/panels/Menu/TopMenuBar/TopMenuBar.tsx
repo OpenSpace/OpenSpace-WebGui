@@ -48,13 +48,7 @@ export function TopMenuBar({
   }
 
   return (
-    <Group
-      style={{
-        height: 30,
-        width: '100%',
-        backgroundColor: 'var(--mantine-color-gray-filled)'
-      }}
-    >
+    <Group h={30} w={'100%'} bg={'var(--mantine-color-gray-filled)'}>
       <TopMenu>
         <Menu.Target>
           <Button size={'xs'} color={'gray'}>
