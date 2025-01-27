@@ -3,7 +3,7 @@ import { Checkbox, Group, Menu, Stack } from '@mantine/core';
 
 import { ChevronRightIcon, TaskBarIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
-import { menuItemsDB } from '@/windowmanagement/data/MenuItems';
+import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import './TaskBarMenuChoices.css';
 
@@ -42,7 +42,7 @@ export function TaskBarMenuChoices({
       <Menu.Dropdown>
         <Menu.Label>Toggle Task Bar Items</Menu.Label>
         <Stack gap={0}>
-          {menuItemsDB.map((item) => {
+          {menuItemsData.map((item) => {
             return (
               <Group className={'ToggleTaskBarItemParent'} key={item.componentID}>
                 {item.renderIcon?.(IconSize.xs)}

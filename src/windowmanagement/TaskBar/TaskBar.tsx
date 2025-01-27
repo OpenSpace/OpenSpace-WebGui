@@ -1,7 +1,7 @@
 import { Box, Flex } from '@mantine/core';
 import { WindowLayoutOptions } from 'src/windowmanagement/WindowLayout/WindowLayout';
 
-import { menuItemsDB } from '@/windowmanagement/data/MenuItems';
+import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { TaskBarMenuButton } from './TaskBarMenuButton';
 
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export function TaskBar({ addWindow, visibleMenuItems }: Props) {
-  const checkedMenuItems = menuItemsDB.filter((item) => {
+  const checkedMenuItems = menuItemsData.filter((item) => {
     return visibleMenuItems.includes(item.componentID);
   });
 

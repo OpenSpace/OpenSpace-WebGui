@@ -45,7 +45,7 @@ export interface MenuItem {
   visible?: boolean; // TODO: investigate whether this is needed (as of 2024-10-23 its not being used)
 }
 
-export const menuItemsDB: MenuItem[] = [
+export const menuItemsData: MenuItem[] = [
   {
     title: 'Scene',
     componentID: 'scene',

@@ -67,13 +67,12 @@ export {
   MdTimer as TimerIcon,
   MdOutlineCategory as TreeViewIcon,
   MdVideocam as VideocamIcon,
+  MdOutlineVisibility as VisibilityIcon,
   MdWater as WaterIcon,
   MdZoomIn as ZoomInIcon,
   MdZoomOut as ZoomOutIcon,
-  MdOutlineVisibility as VisibilityIcon,
   MdZoomOutMap as ZoomOutMapIcon
 } from 'react-icons/md';
-
 export { PiBookOpenText as BookIcon } from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
 export { VscFeedback as FeedbackIcon } from 'react-icons/vsc';

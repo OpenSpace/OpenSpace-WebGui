@@ -5,7 +5,7 @@ import DockLayout, { LayoutData, TabGroup } from 'rc-dock';
 import { FlightController } from '@/panels/FlightControlPanel/FlightController';
 
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
-import { menuItemsDB } from '../data/MenuItems';
+import { menuItemsData } from '../data/MenuItems';
 import { TaskBar } from '../TaskBar/TaskBar';
 import { TopMenuBar } from '../TopMenuBar/TopMenuBar';
 
@@ -69,7 +69,7 @@ export function WindowLayout() {
 
   // Populate default visible items for taskbar
   useEffect(() => {
-    const defaultVisibleMenuItems = menuItemsDB
+    const defaultVisibleMenuItems = menuItemsData
       .map((menuItem) => {
         if (menuItem.defaultVisible) {
           return menuItem.componentID;
