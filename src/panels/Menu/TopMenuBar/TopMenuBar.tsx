@@ -15,7 +15,7 @@ import { WindowLayoutOptions } from '@/windowmanagement/WindowLayout/WindowLayou
 import { HelpMenu } from './HelpMenu';
 import { NewWindowMenu } from './NewWindowMenu';
 import { TaskBarMenuChoices } from './TaskBarMenuChoices';
-import { TopMenu } from './TopMenu';
+import { MenuWrapper } from './MenuWrapper';
 
 interface TopMenuBarProps {
   visibleMenuItems: string[];
@@ -49,7 +49,7 @@ export function TopMenuBar({
 
   return (
     <Group h={30} w={'100%'} bg={'var(--mantine-color-gray-filled)'}>
-      <TopMenu>
+      <MenuWrapper>
         <Menu.Target>
           <Button size={'xs'} color={'gray'}>
             File
@@ -73,9 +73,9 @@ export function TopMenuBar({
             Quit OpenSpace
           </Menu.Item>
         </Menu.Dropdown>
-      </TopMenu>
+      </MenuWrapper>
 
-      <TopMenu closeOnItemClick={false}>
+      <MenuWrapper closeOnItemClick={false}>
         <Menu.Target>
           <Button size={'xs'} color={'gray'}>
             Windows
@@ -84,9 +84,9 @@ export function TopMenuBar({
         <Menu.Dropdown>
           <NewWindowMenu addWindow={addWindow} />
         </Menu.Dropdown>
-      </TopMenu>
+      </MenuWrapper>
 
-      <TopMenu>
+      <MenuWrapper>
         <Menu.Target>
           <Button size={'xs'} color={'gray'}>
             View
@@ -101,8 +101,7 @@ export function TopMenuBar({
           <Menu.Divider />
           <Menu.Item leftSection={<VisibilityIcon />}>User Visibility</Menu.Item>
         </Menu.Dropdown>
-      </TopMenu>
-
+      </MenuWrapper>
       <HelpMenu />
     </Group>
   );

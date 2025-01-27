@@ -5,7 +5,7 @@ import { ChevronRightIcon, TaskBarIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
-import { TopMenu } from './TopMenu';
+import { MenuWrapper } from './MenuWrapper';
 
 interface TaskBarChoicesProps {
   visibleMenuItems: string[];
@@ -25,7 +25,7 @@ export function TaskBarMenuChoices({
   function toggleMenuItem(id: string): void {
     setVisibleMenuItems((prevstate) => {
       const index = prevstate.indexOf(id);
-      const isChecked = index >= 0;
+      const isChecked = index !== -1;
 
       if (isChecked) {
         prevstate.splice(index, 1);
@@ -37,7 +37,7 @@ export function TaskBarMenuChoices({
   }
 
   return (
-    <TopMenu position={'right-start'} withinPortal={false} closeOnItemClick={false}>
+    <MenuWrapper position={'right-start'} withinPortal={false} closeOnItemClick={false}>
       <Menu.Target>
         <Menu.Item
           leftSection={<TaskBarIcon />}
@@ -61,6 +61,6 @@ export function TaskBarMenuChoices({
           </Menu.Item>
         ))}
       </Menu.Dropdown>
-    </TopMenu>
+    </MenuWrapper>
   );
 }

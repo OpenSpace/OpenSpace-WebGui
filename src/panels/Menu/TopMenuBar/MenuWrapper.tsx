@@ -15,7 +15,7 @@ interface Props extends MenuProps, PropsWithChildren {
   arrowPosition?: ArrowPosition;
 }
 
-export function TopMenu({
+export function MenuWrapper({
   menuItemTabIndex = 0,
   position = 'bottom-start',
   offset = 8,
