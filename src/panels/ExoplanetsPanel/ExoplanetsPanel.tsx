@@ -7,6 +7,7 @@ import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
 import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Identifier } from '@/types/types';
@@ -19,8 +20,6 @@ import {
   UncertaintyDiscPropertyKey
 } from '@/util/keys';
 import { sgnUri } from '@/util/propertyTreeHelpers';
-
-import { SceneGraphNodeHeader } from '../Scene/SceneGraphNode/SceneGraphNodeHeader';
 
 import { ExoplanetEntry } from './ExoplanetEntry';
 

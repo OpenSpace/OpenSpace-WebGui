@@ -2,6 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
+import { getAction } from '@/redux/actions/actionsMiddleware';
+import { removeAction } from '@/redux/actions/actionsSlice';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import {
@@ -9,9 +11,6 @@ import {
   removeUriFromPropertyTree
 } from '@/redux/propertytree/propertyTreeMiddleware';
 import { EventData } from '@/types/event-types';
-
-import { getAction } from '../actions/actionsMiddleware';
-import { removeAction } from '../actions/actionsSlice';
 
 let eventTopic: Topic;
 let isSubscribed = false;

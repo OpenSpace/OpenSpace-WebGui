@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from '@mantine/core';
-import { WindowLayoutPosition } from 'src/windowmanagement/WindowLayout/WindowLayout';
 
 import {
   BrowserIcon,
@@ -33,6 +32,8 @@ import { TimePanel } from '@/panels/TimePanel/TimePanel';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { UserPanelsPanel } from '@/panels/UserPanelsPanel/UserPanelsPanel';
 import { IconSize } from '@/types/enums';
+
+import { WindowLayoutPosition } from '../WindowLayout/WindowLayout';
 
 export interface MenuItem {
   title: string; // Title of the rc-dock tab
