@@ -17,17 +17,19 @@ export function SkyBrowserPanel() {
   const cameraInSolarSystem = useAppSelector(
     (state) => state.skybrowser.cameraInSolarSystem
   );
-  const browsers = useAppSelector((state) => state.skybrowser.browsers);
+  const noOfBrowsers = useAppSelector(
+    (state) => Object.keys(state.skybrowser.browsers).length
+  );
   useGetSkyBrowserData();
 
-  useEffect(
-    () =>
+  useEffect(() => {
+    if (noOfBrowsers > 0) {
       addWindow(<WorldWideTelescope />, {
         id: 'WorldWideTelescope',
         title: 'World Wide Telescope'
-      }),
-    [addWindow]
-  );
+      });
+    }
+  }, [addWindow, noOfBrowsers]);
 
   if (!isInitialized || !luaApi) {
     return <Text>...Loading...</Text>;
@@ -35,7 +37,7 @@ export function SkyBrowserPanel() {
   if (!cameraInSolarSystem) {
     return <Text>Camera has to be in solar system for skybrowser to work</Text>;
   }
-  if (Object.keys(browsers).length === 0) {
+  if (noOfBrowsers === 0) {
     return (
       <Button onClick={() => luaApi.skybrowser.createTargetBrowserPair()}>
         Add browser

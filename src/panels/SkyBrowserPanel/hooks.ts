@@ -64,11 +64,17 @@ export function useActiveImage(): [string, (url: string) => void] {
   return [activeImage, setImage];
 }
 
-export function useSelectedBrowserColor() {
+export function useSelectedBrowserColor(): number[] | undefined {
   const color = useAppSelector(
-    (state) => state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId]?.color
+    (state) => state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId]?.color,
+    lowPrecisionEqualArray
   );
-  return color ? `rgb(${color.join(',')})` : undefined;
+  return color;
+}
+
+export function useSelectedBrowserColorString(): string | undefined {
+  const color = useSelectedBrowserColor();
+  return color ? (`rgb(${color.join(',')})` as string) : undefined;
 }
 
 export function useSelectedBrowserProperty<T extends keyof SkyBrowserBrowser>(
@@ -80,6 +86,16 @@ export function useSelectedBrowserProperty<T extends keyof SkyBrowserBrowser>(
       undefined
   );
   return result;
+}
+
+function lowPrecisionEqualArray(lhs: number[] | undefined, rhs: number[] | undefined) {
+  if (lhs === rhs) {
+    return true;
+  }
+  if (!lhs || !rhs) {
+    return false;
+  }
+  return lhs?.every((value, i) => lowPrecisionEqual(value, rhs[i]));
 }
 
 function lowPrecisionEqual(lhs: number | undefined, rhs: number | undefined) {

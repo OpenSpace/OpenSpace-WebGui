@@ -3,7 +3,7 @@ import { Button, ColorInput, Title } from '@mantine/core';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 
-import { useSelectedBrowserColor } from '../hooks';
+import { useSelectedBrowserColorString } from '../hooks';
 
 interface Props {
   id: string | undefined;
@@ -11,8 +11,10 @@ interface Props {
 
 export function Settings({ id }: Props) {
   const luaApi = useOpenSpaceApi();
-  const color = useSelectedBrowserColor();
+  const color = useSelectedBrowserColorString();
   const selectedBrowser = useAppSelector((state) => state.skybrowser.selectedBrowserId);
+  const browsers = useAppSelector((state) => state.skybrowser.browsers);
+  const browserIds = Object.keys(browsers);
 
   function setColor(newColor: string) {
     const [r, g, b] = newColor
@@ -22,6 +24,21 @@ export function Settings({ id }: Props) {
       .map((val) => parseInt(val, 10));
 
     luaApi?.skybrowser.setBorderColor(selectedBrowser, r, g, b);
+  }
+
+  function deleteBrowser() {
+    if (!id) {
+      return;
+    }
+    // If there are more browsers, select another browser
+    if (browserIds.length > 1) {
+      const index = browserIds.indexOf(id);
+      if (index > -1) {
+        browserIds.splice(index, 1); // 2nd parameter means remove one item only
+      }
+      luaApi?.skybrowser.setSelectedBrowser(browserIds[0]);
+    }
+    luaApi?.skybrowser.removeTargetBrowserPair(id);
   }
 
   return (
@@ -34,10 +51,7 @@ export function Settings({ id }: Props) {
         defaultValue={color}
         onChange={setColor}
       />
-      <Button
-        color={'red'}
-        onClick={() => id && luaApi?.skybrowser.removeTargetBrowserPair(id)}
-      >
+      <Button color={'red'} onClick={deleteBrowser}>
         Delete browser
       </Button>
     </>

@@ -6,7 +6,7 @@ import { MoveTargetIcon, TrashIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
 
-import { useActiveImage, useSelectedBrowserColor } from '../hooks';
+import { useActiveImage, useSelectedBrowserColorString } from '../hooks';
 import { ImageInfoPopover } from '../ImageInfoPopover';
 
 import { TabButton } from './TabButton';
@@ -20,7 +20,7 @@ export function SelectedImageCard({ image, opacity }: Props) {
   const luaApi = useOpenSpaceApi();
   const [activeImage, setActiveImage] = useActiveImage();
   const selectedBrowserId = useAppSelector((state) => state.skybrowser.selectedBrowserId);
-  const color = useSelectedBrowserColor();
+  const color = useSelectedBrowserColorString();
 
   const throttle = useThrottledCallback(
     (newValue) =>

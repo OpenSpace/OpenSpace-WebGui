@@ -57,12 +57,12 @@ export function BrowserTabs() {
         {Object.values(browsers).map((browser) => (
           <Tabs.Tab
             value={browser.id}
-            color={`rgb(${selectedBrowser.color.join(',')}`}
+            color={`rgb(${selectedBrowser?.color.join(',')}`}
             key={browser.id}
           >
             <Group>
               {browser.name}
-              <ColorSwatch color={`rgb(${browser.color.join(',')}`} size={12} />
+              <ColorSwatch color={`rgb(${browser?.color.join(',')}`} size={12} />
             </Group>
           </Tabs.Tab>
         ))}

@@ -121,6 +121,7 @@ export function useSendMessageToWwt() {
     setAim,
     setBorderColor,
     setBorderRadius,
-    imageCollectionLoaded
+    imageCollectionLoaded,
+    wwtHasLoaded
   };
 }
