@@ -1,13 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { RootState } from '../store';
+
+export enum ConnectionStatus {
+  Connected = 'Connected',
+  Connecting = 'Connecting',
+  Disconnected = 'Disconnected'
+}
+
 export interface ConnectionState {
-  isConnected: boolean;
-  connectionLost: boolean;
+  connectionStatus: ConnectionStatus;
 }
 
 const initialState: ConnectionState = {
-  isConnected: false,
-  connectionLost: false
+  connectionStatus: ConnectionStatus.Connecting
 };
 
 export const connectionSlice = createSlice({
@@ -15,18 +21,14 @@ export const connectionSlice = createSlice({
   initialState,
   reducers: {
     startConnection: (state) => {
-      state.isConnected = false;
-      state.connectionLost = false;
-      return state;
+      state.connectionStatus = ConnectionStatus.Connecting;
     },
     onOpenConnection: (state) => {
-      state.isConnected = true;
-      state.connectionLost = false;
+      state.connectionStatus = ConnectionStatus.Connected;
       return state;
     },
     onCloseConnection: (state) => {
-      state.isConnected = false;
-      state.connectionLost = true;
+      state.connectionStatus = ConnectionStatus.Disconnected;
       return state;
     }
   }
@@ -36,3 +38,23 @@ export const connectionSlice = createSlice({
 export const { startConnection, onOpenConnection, onCloseConnection } =
   connectionSlice.actions;
 export const connectionReducer = connectionSlice.reducer;
+
+// Helper functions to check connection status
+export function isConnected(status: ConnectionStatus): boolean {
+  return status === ConnectionStatus.Connected;
+}
+export function isConnecting(status: ConnectionStatus): boolean {
+  return status === ConnectionStatus.Connecting;
+}
+export function isDisconnected(status: ConnectionStatus): boolean {
+  return status === ConnectionStatus.Disconnected;
+}
+export function selectIsConnected(state: RootState): boolean {
+  return isConnected(state.connection.connectionStatus);
+}
+export function selectIsConnecting(state: RootState): boolean {
+  return isConnecting(state.connection.connectionStatus);
+}
+export function selectIsDisconnected(state: RootState): boolean {
+  return isDisconnected(state.connection.connectionStatus);
+}
