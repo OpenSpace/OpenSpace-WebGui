@@ -8,7 +8,7 @@ import { BoolProperty } from './Types/BoolProperty';
 import { FloatingNumberListProperty } from './Types/ListProperty/FloatingNumberListProperty';
 import { ListProperty } from './Types/ListProperty/ListProperty';
 import { MatrixProperty } from './Types/MatrixProperty';
-import { NumericProperty } from './Types/NumericProperty';
+import { NumericProperty } from './Types/NumericProperty/NumericProperty';
 import { OptionProperty } from './Types/OptionProperty';
 import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';
