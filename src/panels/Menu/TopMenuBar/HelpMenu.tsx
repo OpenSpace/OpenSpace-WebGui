@@ -10,6 +10,7 @@ import {
   OpenInBrowserIcon,
   RouteIcon
 } from '@/icons/icons';
+
 import { TopMenu } from './TopMenu';
 
 export function HelpMenu() {

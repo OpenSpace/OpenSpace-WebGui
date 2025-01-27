@@ -1,3 +1,4 @@
+import { PropsWithChildren } from 'react';
 import {
   ArrowPosition,
   FloatingAxesOffsets,
@@ -5,7 +6,6 @@ import {
   Menu,
   MenuProps
 } from '@mantine/core';
-import { PropsWithChildren } from 'react';
 
 interface Props extends MenuProps, PropsWithChildren {
   menuItemTabIndex?: -1 | 0;
@@ -29,7 +29,7 @@ export function TopMenu({
       position={position}
       menuItemTabIndex={menuItemTabIndex}
       offset={offset}
-      withArrow
+      withArrow={withArrow}
       arrowPosition={arrowPosition}
       {...props}
     >

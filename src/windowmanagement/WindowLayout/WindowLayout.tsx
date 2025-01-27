@@ -3,11 +3,11 @@ import { Stack } from '@mantine/core';
 import DockLayout, { LayoutData, TabGroup } from 'rc-dock';
 
 import { FlightController } from '@/panels/FlightControlPanel/FlightController';
+import { TaskBar } from '@/panels/Menu/TaskBar/TaskBar';
+import { TopMenuBar } from '@/panels/Menu/TopMenuBar/TopMenuBar';
 
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
 import { menuItemsData } from '../data/MenuItems';
-import { TaskBar } from '../TaskBar/TaskBar';
-import { TopMenuBar } from '../TopMenuBar/TopMenuBar';
 
 import { useWindowLayoutProvider } from './hooks';
 
