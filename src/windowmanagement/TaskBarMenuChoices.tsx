@@ -27,6 +27,7 @@ export function TaskBarMenuChoices({
     <Menu
       position={'right-start'}
       withinPortal={false}
+      menuItemTabIndex={0}
       closeOnItemClick={false}
       withArrow
       arrowPosition={'center'}
@@ -44,11 +45,10 @@ export function TaskBarMenuChoices({
         <Stack gap={0}>
           {menuItemsDB.map((item) => {
             return (
-              <Group className={'ToggleTaskBarItemParent'}>
+              <Group className={'ToggleTaskBarItemParent'} key={item.componentID}>
                 {item.renderIcon?.(IconSize.xs)}
                 <Checkbox
                   className={'ToggleTaskBarItem'}
-                  key={item.componentID}
                   label={item.title}
                   labelPosition={'left'}
                   defaultChecked={checkedMenuItems[item.componentID]}

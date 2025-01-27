@@ -19,6 +19,7 @@ export {
   IoInformation as InformationIcon,
   IoTelescopeOutline as TelescopeIcon
 } from 'react-icons/io5';
+export { LuFilePlus2 as AddFileIcon } from 'react-icons/lu';
 export {
   MdPublic as AddExoplanetIcon,
   MdOutlineAddPhotoAlternate as AddPhotoIcon,
@@ -69,7 +70,10 @@ export {
   MdWater as WaterIcon,
   MdZoomIn as ZoomInIcon,
   MdZoomOut as ZoomOutIcon,
-  MdZoomOutMap as ZoomOutMapIcon} from 'react-icons/md';
+  MdOutlineVisibility as VisibilityIcon,
+  MdZoomOutMap as ZoomOutMapIcon
+} from 'react-icons/md';
+
 export { PiBookOpenText as BookIcon } from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
 export { VscFeedback as FeedbackIcon } from 'react-icons/vsc';

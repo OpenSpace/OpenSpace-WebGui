@@ -1,7 +1,15 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Button, Group, Menu } from '@mantine/core';
+import { Button, Group, Kbd, Menu, Text } from '@mantine/core';
+import { modals } from '@mantine/modals';
 
-import { SaveIcon } from '@/icons/icons';
+import { useGetBoolPropertyValue, useOpenSpaceApi } from '@/api/hooks';
+import {
+  AddFileIcon,
+  ConsoleIcon,
+  ExitAppIcon,
+  SaveIcon,
+  VisibilityIcon
+} from '@/icons/icons';
 
 import { WindowLayoutOptions } from './WindowLayout/WindowLayout';
 import { HelpMenu } from './HelpMenu';
@@ -19,6 +27,25 @@ export function TopMenuBar({
   setVisibleMenuItems,
   addWindow
 }: TopMenuBarProps) {
+  const luaApi = useOpenSpaceApi();
+
+  const [isConsoleVisible, setIsConsoleVisible] =
+    useGetBoolPropertyValue('LuaConsole.IsVisible');
+
+  function toggleLuaConsole() {
+    setIsConsoleVisible(!isConsoleVisible);
+  }
+
+  function toggleShutdown() {
+    return modals.openConfirmModal({
+      title: 'Confirm action',
+      children: <Text>Are you sure you want to quit OpenSpace? </Text>,
+      labels: { confirm: 'Quit', cancel: 'Cancel' },
+      confirmProps: { color: 'red' },
+      onConfirm: () => luaApi?.toggleShutdown()
+    });
+  }
+
   return (
     <Group
       style={{
@@ -27,22 +54,63 @@ export function TopMenuBar({
         backgroundColor: 'var(--mantine-color-gray-filled)'
       }}
     >
-      <Button size={'xs'} color={'gray'}>
-        Asset
-      </Button>
-
-      <Menu position={'bottom-start'} offset={4} withArrow arrowPosition={'center'}>
+      <Menu
+        position={'bottom-start'}
+        menuItemTabIndex={0}
+        offset={4}
+        withArrow
+        arrowPosition={'center'}
+      >
         <Menu.Target>
           <Button size={'xs'} color={'gray'}>
-            Settings
+            File
           </Button>
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Item>Settings</Menu.Item>
+          <Menu.Item leftSection={<AddFileIcon />}>Add Asset</Menu.Item>
+          <Menu.Item
+            onClick={toggleLuaConsole}
+            leftSection={<ConsoleIcon />}
+            rightSection={<Kbd>~</Kbd>}
+          >
+            Toggle Console
+          </Menu.Item>
+          <Menu.Divider />
+          <Menu.Item
+            onClick={toggleShutdown}
+            leftSection={<ExitAppIcon />}
+            rightSection={<Kbd>Esc</Kbd>}
+          >
+            Quit OpenSpace
+          </Menu.Item>
         </Menu.Dropdown>
       </Menu>
 
-      <Menu position={'bottom-start'} offset={4} withArrow arrowPosition={'center'}>
+      <Menu
+        position={'bottom-start'}
+        closeOnItemClick={false}
+        offset={4}
+        menuItemTabIndex={0}
+        withArrow
+        arrowPosition={'center'}
+      >
+        <Menu.Target>
+          <Button size={'xs'} color={'gray'}>
+            Windows
+          </Button>
+        </Menu.Target>
+        <Menu.Dropdown>
+          <NewWindowMenu addWindow={addWindow} />
+        </Menu.Dropdown>
+      </Menu>
+
+      <Menu
+        position={'bottom-start'}
+        menuItemTabIndex={0}
+        offset={4}
+        withArrow
+        arrowPosition={'center'}
+      >
         <Menu.Target>
           <Button size={'xs'} color={'gray'}>
             View
@@ -53,8 +121,9 @@ export function TopMenuBar({
             visibleMenuItems={visibleMenuItems}
             setVisibleMenuItems={setVisibleMenuItems}
           />
-          <NewWindowMenu addWindow={addWindow} />
           <Menu.Item leftSection={<SaveIcon />}>Load/Save Layout</Menu.Item>
+          <Menu.Divider />
+          <Menu.Item leftSection={<VisibilityIcon />}>User Visibility</Menu.Item>
         </Menu.Dropdown>
       </Menu>
 
