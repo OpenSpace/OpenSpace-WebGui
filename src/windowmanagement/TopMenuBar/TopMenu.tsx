@@ -18,7 +18,7 @@ interface Props extends MenuProps, PropsWithChildren {
 export function TopMenu({
   menuItemTabIndex = 0,
   position = 'bottom-start',
-  offset = 4,
+  offset = 8,
   withArrow = true,
   arrowPosition = 'center',
   children,
