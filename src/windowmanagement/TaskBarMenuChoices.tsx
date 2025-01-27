@@ -45,7 +45,7 @@ export function TaskBarMenuChoices({
           {menuItemsDB.map((item) => {
             return (
               <Group className={'ToggleTaskBarItemParent'}>
-                {item.icon?.(IconSize.xs)}
+                {item.renderIcon?.(IconSize.xs)}
                 <Checkbox
                   className={'ToggleTaskBarItem'}
                   key={item.componentID}

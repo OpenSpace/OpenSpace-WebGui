@@ -33,7 +33,7 @@ export function NewWindowMenu({ addWindow }: NewWindowMenuProps) {
         {menuItemsDB.map((item) => (
           <Menu.Item
             key={item.componentID}
-            leftSection={item.icon?.(IconSize.xs)}
+            leftSection={item.renderIcon?.(IconSize.xs)}
             onClick={() => {
               addWindow(item.content, {
                 title: item.title,

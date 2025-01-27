@@ -39,7 +39,7 @@ export interface MenuItem {
   componentID: string; // Unqiue ID to identify this component among the rc-dock tabs
   content: React.JSX.Element; // Content to render inside the rc-dock tab
   renderMenuButton?: (key: string, onClick: () => void) => React.JSX.Element; // Custom menu button to render
-  icon?: (size: IconSize) => React.JSX.Element; // Custom icon to render
+  renderIcon?: (size: IconSize) => React.JSX.Element; // Custom icon to render
   preferredPosition: WindowLayoutPosition; // Where this panel is instantiated
   defaultVisible: boolean; // Whether this panel is visible in the taskbar on startup
   visible?: boolean; // TODO: investigate whether this is needed (as of 2024-10-23 its not being used)
@@ -60,7 +60,7 @@ export const menuItemsDB: MenuItem[] = [
         Scene
       </Button>
     ),
-    icon: (size) => <TreeViewIcon size={size} />,
+    renderIcon: (size) => <TreeViewIcon size={size} />,
     preferredPosition: 'left',
     defaultVisible: true
   },
@@ -71,7 +71,7 @@ export const menuItemsDB: MenuItem[] = [
     renderMenuButton: (key, onClick) => (
       <OriginPanelMenuButton key={key} onClick={onClick} />
     ),
-    icon: (size) => <FocusIcon size={size} />,
+    renderIcon: (size) => <FocusIcon size={size} />,
     preferredPosition: 'float',
     defaultVisible: true
   },
@@ -82,7 +82,7 @@ export const menuItemsDB: MenuItem[] = [
     renderMenuButton: (key, onClick) => (
       <TimePanelMenuButton key={key} onClick={onClick} />
     ),
-    icon: (size) => <CalendarIcon size={size} />,
+    renderIcon: (size) => <CalendarIcon size={size} />,
     preferredPosition: 'float',
     defaultVisible: true
   },
@@ -93,7 +93,7 @@ export const menuItemsDB: MenuItem[] = [
     renderMenuButton: (key, onClick) => (
       <SessionRecMenuButton key={key} onClick={onClick} />
     ),
-    icon: (size) => <VideocamIcon size={size} />,
+    renderIcon: (size) => <VideocamIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: true
   },
@@ -101,7 +101,7 @@ export const menuItemsDB: MenuItem[] = [
     title: 'Geo Location',
     componentID: 'geoLocation',
     content: <GeoLocationPanel />,
-    icon: (size) => <LocationPinIcon size={size} />,
+    renderIcon: (size) => <LocationPinIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: true
   },
@@ -109,7 +109,7 @@ export const menuItemsDB: MenuItem[] = [
     title: 'Screenspace Renderables',
     componentID: 'screenSpaceRenderables',
     content: <ScreenSpaceRenderablePanel />,
-    icon: (size) => <InsertPhotoIcon size={size} />,
+    renderIcon: (size) => <InsertPhotoIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: true
   },
@@ -117,7 +117,7 @@ export const menuItemsDB: MenuItem[] = [
     title: 'Exoplanets',
     componentID: 'exoplanets',
     content: <ExoplanetsPanel />,
-    icon: (size) => <ExoplanetIcon size={size} />,
+    renderIcon: (size) => <ExoplanetIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: true
   },
@@ -125,7 +125,7 @@ export const menuItemsDB: MenuItem[] = [
     title: 'User Panels',
     componentID: 'userPanels',
     content: <UserPanelsPanel />,
-    icon: (size) => <BrowserIcon size={size} />,
+    renderIcon: (size) => <BrowserIcon size={size} />,
     preferredPosition: 'float',
     defaultVisible: true
   },
@@ -133,7 +133,7 @@ export const menuItemsDB: MenuItem[] = [
     title: 'Actions',
     componentID: 'actions',
     content: <ActionsPanel />,
-    icon: (size) => <DashboardIcon size={size} />,
+    renderIcon: (size) => <DashboardIcon size={size} />,
     preferredPosition: 'float',
     defaultVisible: true
   },
@@ -141,7 +141,7 @@ export const menuItemsDB: MenuItem[] = [
     title: 'Sky Browser',
     componentID: 'skyBrowser',
     content: <div>Sky Broweser</div>,
-    icon: (size) => <TelescopeIcon size={size} />,
+    renderIcon: (size) => <TelescopeIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: true
   },
@@ -149,7 +149,7 @@ export const menuItemsDB: MenuItem[] = [
     title: 'Mission',
     componentID: 'mission',
     content: <MissionsPanel />,
-    icon: (size) => <RocketLaunchIcon size={size} />,
+    renderIcon: (size) => <RocketLaunchIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: true
   },
@@ -157,7 +157,7 @@ export const menuItemsDB: MenuItem[] = [
     title: 'Flight Control',
     componentID: 'flightControl',
     content: <FlightControlPanel />,
-    icon: (size) => <ExpandArrowsIcon size={size} />,
+    renderIcon: (size) => <ExpandArrowsIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: false
   },
@@ -165,7 +165,7 @@ export const menuItemsDB: MenuItem[] = [
     title: 'Keybindings Layout',
     componentID: 'keybindingsLayout',
     content: <KeyBindsPanel />,
-    icon: (size) => <KeyboardIcon size={size} />,
+    renderIcon: (size) => <KeyboardIcon size={size} />,
     preferredPosition: 'float',
     defaultVisible: false
   }
