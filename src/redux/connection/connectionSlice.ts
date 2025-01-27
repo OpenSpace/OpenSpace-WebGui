@@ -1,12 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { RootState } from '../store';
-
-export enum ConnectionStatus {
-  Connected = 'Connected',
-  Connecting = 'Connecting',
-  Disconnected = 'Disconnected'
-}
+import { ConnectionStatus } from '@/types/enums';
 
 export interface ConnectionState {
   connectionStatus: ConnectionStatus;

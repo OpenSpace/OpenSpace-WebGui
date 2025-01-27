@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
-import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
+import { onCloseConnection, onOpenConnection, selectIsConnected } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import {
   addUriToPropertyTree,
@@ -63,7 +63,7 @@ export const addEventsListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onOpenConnection,
     effect: (_, listenerApi) => {
-      if (!isSubscribed && listenerApi.getState().connection.isConnected) {
+      if (!isSubscribed && selectIsConnected(listenerApi.getState())) {
         listenerApi.dispatch(setupEventsSubscription());
         isSubscribed = true;
       }
@@ -72,7 +72,7 @@ export const addEventsListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onCloseConnection,
     effect: (_, listenerApi) => {
-      if (isSubscribed && listenerApi.getState().connection.isConnected) {
+      if (isSubscribed && selectIsConnected(listenerApi.getState())) {
         tearDownSubscription();
       }
     }
