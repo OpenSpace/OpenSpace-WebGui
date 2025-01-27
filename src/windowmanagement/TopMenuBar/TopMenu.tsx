@@ -27,7 +27,7 @@ export function TopMenu({
   return (
     <Menu
       position={position}
-      // menuItemTabIndex={menuItemTabIndex}
+      menuItemTabIndex={menuItemTabIndex}
       offset={offset}
       withArrow
       arrowPosition={arrowPosition}
