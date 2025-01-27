@@ -1,7 +1,13 @@
 export { BsThreeDotsVertical as VerticalDotsIcon } from 'react-icons/bs';
 export { FaMinus as MinusIcon, FaPlus as PlusIcon } from 'react-icons/fa';
 export {
+  FiChevronsDown as ChevronsDownIcon,
+  FiChevronsUp as ChevronsUpIcon
+} from 'react-icons/fi';
+export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
+export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
+  IoInformation as InformationIcon,
   IoTelescopeOutline as TelescopeIcon
 } from 'react-icons/io5';
 export {
@@ -14,7 +20,10 @@ export {
   MdChevronLeft as ChevronLeftIcon,
   MdChevronRight as ChevronRightIcon,
   MdExpandLess as ChevronUpIcon,
+  MdColorLens as ColorPaletteIcon,
   MdTerminal as ConsoleIcon,
+  MdContentCopy as CopyIcon,
+  MdDragHandle as DragHandleIcon,
   MdExitToApp as ExitAppIcon,
   MdVisibility as EyeIcon,
   MdFastForward as FastForwardIcon,
@@ -22,12 +31,16 @@ export {
   MdFilterAlt as FilterIcon,
   MdFolder as FolderIcon,
   MdFilterCenterFocus as FrameFocusIcon,
+  MdLandscape as LandscapeIcon,
   MdLaunch as LaunchIcon,
+  MdOutlineLayers as LayersIcon,
   MdFlashOn as LightningFlashIcon,
   MdLock as LockIcon,
   MdLockOpen as LockOpenIcon,
   MdFilterCenterFocus as MoveTargetIcon,
+  MdNightlight as NightIcon,
   MdOpenInBrowser as OpenInBrowserIcon,
+  MdOpenInNew as OpenInNewIcon,
   MdOpenInNew as OpenWindowIcon,
   MdPause as PauseIcon,
   MdOutlineEdit as PenIcon,
@@ -38,7 +51,10 @@ export {
   MdDelete as TrashIcon,
   MdVideocam as VideocamIcon,
   MdZoomIn as ZoomInIcon,
-  MdZoomOut as ZoomOutIcon
+  MdZoomOut as ZoomOutIcon,
+  MdTimer as TimerIcon,
+  MdWater as WaterIcon,
+  MdZoomOutMap as ZoomOutMapIcon
 } from 'react-icons/md';
 export { PiBookOpenText as BookIcon } from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';

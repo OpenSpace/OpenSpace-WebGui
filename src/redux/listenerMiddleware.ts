@@ -2,9 +2,11 @@ import { createListenerMiddleware, type TypedStartListening } from '@reduxjs/too
 
 import { addActionsListener } from './actions/actionsMiddleware';
 import { addConnectionListener } from './connection/connectionMiddleware';
+import { addDocumentationListener } from './documentation/documentationMiddleware';
 import { addEventsListener } from './events/eventsMiddleware';
 import { addFlightControllerListener } from './flightcontroller/flightControllerMiddleware';
 import { addGroupsListener } from './groups/groupsSliceMiddleware';
+import { addMissionsListener } from './missions/missionsMiddleware';
 import { addPropertiesListener } from './propertytree/properties/propertiesMiddleware';
 import { addPropertyTreeListener } from './propertytree/propertyTreeMiddleware';
 import { addSessionRecordingListener } from './sessionrecording/sessionRecordingMiddleware';
@@ -21,7 +23,9 @@ const startAppListening = listenerMiddleware.startListening as AppStartListening
 addConnectionListener(startAppListening);
 addSessionRecordingListener(startAppListening);
 addActionsListener(startAppListening);
+addDocumentationListener(startAppListening);
 addEventsListener(startAppListening);
+addMissionsListener(startAppListening);
 addPropertiesListener(startAppListening);
 addPropertyTreeListener(startAppListening);
 addFlightControllerListener(startAppListening);

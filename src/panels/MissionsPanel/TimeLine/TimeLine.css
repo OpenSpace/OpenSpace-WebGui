@@ -1,0 +1,31 @@
+rect {
+  cursor: pointer;
+}
+
+.highlightedRect {
+  fill: var(--mantine-primary-color-4);
+  opacity: 0.95;
+}
+
+.normalRect {
+  fill: grey;
+  opacity: 0.9;
+}
+
+.highlightedRect:hover,
+.normalRect:hover {
+  fill: lightgray;
+}
+
+polygon {
+  cursor: pointer;
+}
+
+polygon:hover {
+  stroke-width: 2;
+  stroke: white;
+}
+
+.arrow:hover {
+  fill: var(--mantine-primary-color-4);
+}

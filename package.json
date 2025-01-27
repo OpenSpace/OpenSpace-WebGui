@@ -12,12 +12,14 @@
     "rule-check": "npx eslint-config-prettier src/main.tsx"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^17.0.0",
     "@mantine/core": "^7.13.1",
     "@mantine/hooks": "^7.13.1",
     "@mantine/modals": "^7.15.1",
     "@reduxjs/toolkit": "^2.2.8",
     "@tanstack/react-virtual": "^3.10.9",
     "@types/lodash": "^4.17.11",
+    "d3": "^7.9.0",
     "lodash": "^4.17.21",
     "openspace-api-js": "^0.1.6",
     "rc-dock": "^3.3.0",
@@ -31,6 +33,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
+    "@types/d3": "^7.4.3",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",

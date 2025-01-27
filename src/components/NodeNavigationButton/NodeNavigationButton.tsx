@@ -9,7 +9,7 @@ import {
   FrameFocusIcon,
   LightningFlashIcon
 } from '@/icons/icons';
-import { IconSize, NavigationType } from '@/types/enums';
+import { NavigationType } from '@/types/enums';
 import { Identifier } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey, RetargetAnchorKey } from '@/util/keys';
 
@@ -65,6 +65,7 @@ export function NodeNavigationButton({
   long,
   alt,
   justify,
+  size,
   style
 }: NodeNavigationButtonProps) {
   const luaApi = useOpenSpaceApi();
@@ -142,32 +143,32 @@ export function NodeNavigationButton({
     case NavigationType.jump:
       content.onClick = fadeTo;
       content.title = 'Jump to';
-      content.icon = <LightningFlashIcon size={IconSize.sm} />;
+      content.icon = <LightningFlashIcon />;
       break;
     case NavigationType.JumpGeo:
       content.onClick = jumpToGeo;
       content.title = 'Jump to Geo';
-      content.icon = <LightningFlashIcon size={IconSize.sm} />;
+      content.icon = <LightningFlashIcon />;
       break;
     case NavigationType.focus:
       content.onClick = focus;
       content.title = 'Focus';
-      content.icon = <FocusIcon size={IconSize.sm} />;
+      content.icon = <FocusIcon />;
       break;
     case NavigationType.fly:
       content.onClick = flyTo;
       content.title = 'Fly to';
-      content.icon = <AirplaneIcon size={IconSize.sm} />;
+      content.icon = <AirplaneIcon />;
       break;
     case NavigationType.FlyGeo:
       content.onClick = flyToGeo;
       content.title = 'Fly to Geo';
-      content.icon = <AirplaneIcon size={IconSize.sm} />;
+      content.icon = <AirplaneIcon />;
       break;
     case NavigationType.frame:
       content.onClick = zoomToFocus;
       content.title = 'Zoom to / Frame';
-      content.icon = <FrameFocusIcon size={IconSize.sm} />;
+      content.icon = <FrameFocusIcon />;
       content.info = `Focus on the target object by moving the camera in a straigt line
         and rotate towards the object`;
       break;
@@ -183,13 +184,14 @@ export function NodeNavigationButton({
           onClick={content.onClick}
           leftSection={content.icon}
           rightSection={content.info && <Tooltip text={content.info} />}
+          size={size}
           style={style}
           justify={justify}
         >
           {showLabel && content.title}
         </Button>
       ) : (
-        <ActionIcon onClick={content.onClick} size={'lg'} variant={variant} style={style}>
+        <ActionIcon onClick={content.onClick} size={size} variant={variant} style={style}>
           {content.icon}
         </ActionIcon>
       )}
