@@ -6,6 +6,7 @@ import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import './TaskBarMenuChoices.css';
+import { TopMenu } from './TopMenu';
 
 interface TaskBarChoicesProps {
   visibleMenuItems: string[];
@@ -23,14 +24,7 @@ export function TaskBarMenuChoices({
   });
 
   return (
-    <Menu
-      position={'right-start'}
-      withinPortal={false}
-      menuItemTabIndex={0}
-      closeOnItemClick={false}
-      withArrow
-      arrowPosition={'center'}
-    >
+    <TopMenu position={'right-start'} withinPortal={false} closeOnItemClick={false}>
       <Menu.Target>
         <Menu.Item
           leftSection={<TaskBarIcon />}
@@ -78,6 +72,6 @@ export function TaskBarMenuChoices({
           })}
         </Stack>
       </Menu.Dropdown>
-    </Menu>
+    </TopMenu>
   );
 }

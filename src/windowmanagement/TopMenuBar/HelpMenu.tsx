@@ -10,6 +10,7 @@ import {
   OpenInBrowserIcon,
   RouteIcon
 } from '@/icons/icons';
+import { TopMenu } from './TopMenu';
 
 export function HelpMenu() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -29,13 +30,7 @@ export function HelpMenu() {
     <>
       <About opened={opened} close={close} />
 
-      <Menu
-        position={'bottom-start'}
-        menuItemTabIndex={0}
-        offset={4}
-        withArrow
-        arrowPosition={'center'}
-      >
+      <TopMenu>
         <Menu.Target>
           <Button size={'xs'} color={'gray'}>
             Help
@@ -75,7 +70,7 @@ export function HelpMenu() {
             About
           </Menu.Item>
         </Menu.Dropdown>
-      </Menu>
+      </TopMenu>
     </>
   );
 }
