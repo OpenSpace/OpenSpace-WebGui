@@ -7,7 +7,11 @@ import { useAppSelector } from '@/redux/hooks';
 
 import { TabContent } from './TabContent';
 
-export function BrowserTabs() {
+interface Props {
+  openWorldWideTelescope: () => void;
+}
+
+export function BrowserTabs({ openWorldWideTelescope }: Props) {
   const [showSettings, setShowSettings] = useState(false);
   const browsers = useAppSelector((state) => state.skybrowser.browsers);
   const selectedBrowser = useAppSelector((state) => {
@@ -50,7 +54,11 @@ export function BrowserTabs() {
       </Tabs.List>
       {Object.values(browsers).map((browser) => (
         <Tabs.Panel key={browser.id} value={browser.id} m={'xs'}>
-          <TabContent showSettings={showSettings} setShowSettings={setShowSettings} />
+          <TabContent
+            showSettings={showSettings}
+            setShowSettings={setShowSettings}
+            openWorldWideTelescope={openWorldWideTelescope}
+          />
         </Tabs.Panel>
       ))}
     </Tabs>

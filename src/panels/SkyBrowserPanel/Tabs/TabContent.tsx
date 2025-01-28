@@ -3,6 +3,7 @@ import { TabButton } from './TabButton';
 import {
   EyeIcon,
   MoveTargetIcon,
+  OpenInNewIcon,
   SettingsIcon,
   TrashIcon,
   ZoomInIcon,
@@ -16,9 +17,14 @@ import { useAppSelector } from '@/redux/hooks';
 interface Props {
   showSettings: boolean;
   setShowSettings: (func: (old: boolean) => boolean) => void;
+  openWorldWideTelescope: () => void;
 }
 
-export function TabContent({ showSettings, setShowSettings }: Props) {
+export function TabContent({
+  showSettings,
+  setShowSettings,
+  openWorldWideTelescope
+}: Props) {
   const luaApi = useOpenSpaceApi();
   const selectedBrowser = useAppSelector((state) => {
     return state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId] ?? null;
@@ -70,6 +76,9 @@ export function TabContent({ showSettings, setShowSettings }: Props) {
           </TabButton>
           <TabButton text={'Remove all images'} onClick={removeAllImages}>
             <TrashIcon />
+          </TabButton>
+          <TabButton text={'Open Telescope View'} onClick={openWorldWideTelescope}>
+            <OpenInNewIcon />
           </TabButton>
         </ActionIcon.Group>
         <TabButton
