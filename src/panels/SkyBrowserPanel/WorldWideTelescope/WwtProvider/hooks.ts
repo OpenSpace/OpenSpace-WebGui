@@ -1,12 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, useContext } from 'react';
 
 import { useGetStringPropertyValue } from '@/api/hooks';
 
 import { Messages } from './types';
+import { WwtContext } from './WwtContext';
 
 // This hook defines the messages WWT can receive and provides the ref
 // that should be attached to the iframe of WWT
-function useMessages() {
+export function useMessages() {
   const ref = useRef<HTMLIFrameElement>(null);
 
   const sendMessageToWwt = useCallback((message: Messages) => {
@@ -74,19 +75,57 @@ function useMessages() {
     [sendMessageToWwt]
   );
 
+  const loadImage = useCallback(
+    (url: string) => {
+      sendMessageToWwt({
+        event: 'image_layer_create',
+        id: url,
+        url: url,
+        mode: 'preloaded',
+        goto: false
+      });
+    },
+    [sendMessageToWwt]
+  );
+
+  const setOpacity = useCallback(
+    (url: string, opacity: number) => {
+      sendMessageToWwt({
+        event: 'image_layer_set',
+        id: url,
+        setting: 'opacity',
+        value: opacity
+      });
+    },
+    [sendMessageToWwt]
+  );
+
+  const removeImage = useCallback(
+    (id: string) => {
+      sendMessageToWwt({
+        event: 'image_layer_remove',
+        id: id
+      });
+    },
+    [sendMessageToWwt]
+  );
+
   return {
     ref,
     setBorderColor,
     setBorderRadius,
     hideChrome,
     loadImageCollection,
-    setAim
+    setAim,
+    loadImage,
+    setOpacity,
+    removeImage
   };
 }
 
 // This hook will set up message listeners so we can collect the messages wwt sends
 // Once wwt has loaded, we load the image collection
-function useWwtEventListener() {
+export function useWwtEventListener() {
   const [wwtHasLoaded, setWwtHasLoaded] = useState(false);
   const [imageCollectionLoaded, setImageCollectionLoaded] = useState(false);
 
@@ -113,7 +152,7 @@ function useWwtEventListener() {
 
 // This hook will start sending messages to WorldWideTelescope to trigger a response
 // Once a response has been given we cancel the pinging
-function useStartConnection(
+export function useStartConnection(
   connect: boolean,
   setAim: (ra: number, dec: number, fov: number, roll: number) => void
 ) {
@@ -136,40 +175,10 @@ function useStartConnection(
   }, [connect, setAim]);
 }
 
-export function useSendMessageToWwt() {
-  const {
-    ref,
-    setAim,
-    setBorderColor,
-    setBorderRadius,
-    hideChrome,
-    loadImageCollection
-  } = useMessages();
-  // Set up the message listener which will tell us once wwt has been loaded
-  // and when the image collection has been loaded
-  const { imageCollectionLoaded, wwtHasLoaded } = useWwtEventListener();
-
-  // Start pinging WWT with the set aim function
-  // We want to make sure we have the image collection url so wait for that
-  const [url] = useGetStringPropertyValue('Modules.SkyBrowser.WwtImageCollectionUrl');
-  const connect = !wwtHasLoaded && url !== undefined;
-  useStartConnection(connect, setAim);
-
-  // Once wwt has been loaded, we pass messages to hide chrome and load the image
-  // collection
-  useEffect(() => {
-    if (wwtHasLoaded && url !== undefined) {
-      hideChrome();
-      loadImageCollection(url);
-    }
-  }, [wwtHasLoaded]);
-
-  return {
-    ref,
-    setAim,
-    setBorderColor,
-    setBorderRadius,
-    imageCollectionLoaded,
-    wwtHasLoaded
-  };
+export function useWwtProvider() {
+  const context = useContext(WwtContext);
+  if (!context) {
+    throw Error('useWwtProvider must be used within a WwtProvider');
+  }
+  return context;
 }

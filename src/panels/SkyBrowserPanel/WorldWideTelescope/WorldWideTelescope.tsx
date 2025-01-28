@@ -9,17 +9,29 @@ import {
   useSelectedBrowserProperty
 } from '../hooks';
 import { Text } from '@mantine/core';
-import { useSendMessageToWwt } from './hooks';
+import { useWwtProvider } from './WwtProvider/hooks';
 import { useAppSelector } from '@/redux/hooks';
 
 export function WorldWideTelescope() {
-  const { ref, setAim, setBorderColor, setBorderRadius, wwtHasLoaded } =
-    useSendMessageToWwt();
+  const {
+    ref,
+    setAim,
+    setBorderColor,
+    setBorderRadius,
+    wwtHasLoaded,
+    imageCollectionLoaded,
+    loadImage,
+    setOpacity,
+    removeImage
+  } = useWwtProvider();
   const { width, height } = useWindowSize();
   const { ra, dec, fov, roll } = useSelectedBrowserCoords();
   const borderRadius = useSelectedBrowserProperty('borderRadius');
+  const selectedImages = useSelectedBrowserProperty('selectedImages');
+  const opacities = useSelectedBrowserProperty('opacities');
   const borderColor = useSelectedBrowserColor();
   const browsers = useAppSelector((state) => state.skybrowser.browsers);
+  const imageList = useAppSelector((state) => state.skybrowser.imageList);
   const noOfBrowsers = Object.keys(browsers).length;
 
   // const id = useSelectedBrowserProperty('id');
@@ -44,14 +56,45 @@ export function WorldWideTelescope() {
     }
   }, [borderRadius, setBorderRadius, wwtHasLoaded]);
 
+  // Update opacities in WWT when the opacities changes
+  useEffect(() => {
+    if (imageList.length === 0 || !imageCollectionLoaded || opacities === undefined) {
+      return;
+    }
+    // Brute force this as the performance loss is negligible and there are many complicated cases
+    opacities.map((opacity, i) => {
+      if (!selectedImages) {
+        return;
+      }
+      const url = imageList[selectedImages[i]].url;
+      setOpacity(url, opacity);
+    });
+  }, [imageList, selectedImages, opacities, imageCollectionLoaded]);
+
+  // Update images in WWT when the selected images changes
+  useEffect(() => {
+    if (
+      imageList.length === 0 ||
+      !imageCollectionLoaded ||
+      selectedImages === undefined
+    ) {
+      return;
+    }
+    // Brute force this as the performance loss is negligible and there are many complicated cases
+    selectedImages.toReversed().map((index) => {
+      loadImage(imageList[index]?.url);
+    });
+    return () => selectedImages?.forEach((image) => removeImage(imageList[image].url));
+  }, [imageList, selectedImages, imageCollectionLoaded]);
+
   return noOfBrowsers === 0 ? (
     <Text>No browsers</Text>
   ) : (
     <iframe
+      ref={ref}
       id={'webpage'}
       name={'wwt'}
       title={'WorldWideTelescope'}
-      ref={ref}
       src={'http://wwt.openspaceproject.com/1/gui/'}
       allow={'accelerometer; clipboard-write; gyroscope'}
       allowFullScreen

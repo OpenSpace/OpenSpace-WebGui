@@ -9,6 +9,7 @@ import { ImageListWrapper } from './ImageList/ImageListWrapper';
 import { BrowserTabs } from './Tabs/BrowserTabs';
 import { WorldWideTelescope } from './WorldWideTelescope/WorldWideTelescope';
 import { useGetSkyBrowserData } from './hooks';
+import { WwtProvider } from './WorldWideTelescope/WwtProvider/WwtProvider';
 
 export function SkyBrowserPanel() {
   const luaApi = useOpenSpaceApi();
@@ -24,10 +25,15 @@ export function SkyBrowserPanel() {
 
   useEffect(() => {
     if (noOfBrowsers > 0) {
-      addWindow(<WorldWideTelescope />, {
-        id: 'WorldWideTelescope',
-        title: 'World Wide Telescope'
-      });
+      addWindow(
+        <WwtProvider>
+          <WorldWideTelescope />
+        </WwtProvider>,
+        {
+          id: 'WorldWideTelescope',
+          title: 'World Wide Telescope'
+        }
+      );
     }
   }, [addWindow, noOfBrowsers]);
 

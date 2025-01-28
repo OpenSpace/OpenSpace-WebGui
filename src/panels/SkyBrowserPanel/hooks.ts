@@ -88,7 +88,10 @@ export function useSelectedBrowserProperty<T extends keyof SkyBrowserBrowser>(
   return result;
 }
 
-function lowPrecisionEqualArray(lhs: number[] | undefined, rhs: number[] | undefined) {
+export function lowPrecisionEqualArray(
+  lhs: number[] | undefined,
+  rhs: number[] | undefined
+) {
   if (lhs === rhs) {
     return true;
   }
@@ -98,8 +101,8 @@ function lowPrecisionEqualArray(lhs: number[] | undefined, rhs: number[] | undef
   return lhs?.every((value, i) => lowPrecisionEqual(value, rhs[i]));
 }
 
-function lowPrecisionEqual(lhs: number | undefined, rhs: number | undefined) {
-  return lhs?.toFixed(2) === rhs?.toFixed(2);
+export function lowPrecisionEqual(lhs: number | undefined, rhs: number | undefined) {
+  return lhs?.toFixed(4) === rhs?.toFixed(4);
 }
 
 export function useSelectedBrowserCoords() {
