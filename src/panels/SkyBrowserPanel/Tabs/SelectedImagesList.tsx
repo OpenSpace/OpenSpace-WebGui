@@ -8,6 +8,7 @@ export function SelectedImagesList() {
     (state) =>
       state.skybrowser.browsers[state.skybrowser.selectedBrowserId]?.selectedImages
   );
+  const activeImage = useAppSelector((state) => state.skybrowser.activeImage);
   const opacities = useAppSelector(
     (state) => state.skybrowser.browsers[state.skybrowser.selectedBrowserId]?.opacities
   );
@@ -19,7 +20,7 @@ export function SelectedImagesList() {
             <SelectedImageCard
               key={imageList[image].url}
               image={imageList[image]}
-              selected={i % 3 === 0}
+              selected={activeImage === imageList[image].url}
               opacity={opacities[i]}
             />
           )
