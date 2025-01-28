@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useRef, useState, useContext } from 'react';
 
-import { useGetStringPropertyValue } from '@/api/hooks';
-
 import { Messages } from './types';
 import { WwtContext } from './WwtContext';
+import { useAppSelector } from '@/redux/hooks';
+import {
+  useSelectedBrowserColor,
+  useSelectedBrowserCoords,
+  useSelectedBrowserProperty
+} from '../../hooks';
 
 // This hook defines the messages WWT can receive and provides the ref
 // that should be attached to the iframe of WWT
@@ -181,4 +185,78 @@ export function useWwtProvider() {
     throw Error('useWwtProvider must be used within a WwtProvider');
   }
   return context;
+}
+
+export function useUpdateSelectedImages() {
+  const { imageCollectionLoaded, loadImage, removeImage } = useWwtProvider();
+  const imageList = useAppSelector((state) => state.skybrowser.imageList);
+  const selectedImages = useSelectedBrowserProperty('selectedImages');
+
+  // Update images in WWT when the selected images changes
+  useEffect(() => {
+    if (
+      imageList.length === 0 ||
+      !imageCollectionLoaded ||
+      selectedImages === undefined
+    ) {
+      return;
+    }
+    // Brute force this as the performance loss is negligible and there are many complicated cases
+    selectedImages.toReversed().map((index) => {
+      loadImage(imageList[index]?.url);
+    });
+    return () => selectedImages?.forEach((image) => removeImage(imageList[image].url));
+  }, [imageList, selectedImages, imageCollectionLoaded]);
+}
+
+export function useUpdateOpacities() {
+  const { imageCollectionLoaded, setOpacity } = useWwtProvider();
+  const imageList = useAppSelector((state) => state.skybrowser.imageList);
+  const selectedImages = useSelectedBrowserProperty('selectedImages');
+  const opacities = useSelectedBrowserProperty('opacities');
+  // Update opacities in WWT when the opacities changes
+  useEffect(() => {
+    if (imageList.length === 0 || !imageCollectionLoaded || opacities === undefined) {
+      return;
+    }
+    // Brute force this as the performance loss is negligible and there are many complicated cases
+    opacities.map((opacity, i) => {
+      if (!selectedImages) {
+        return;
+      }
+      const url = imageList[selectedImages[i]].url;
+      setOpacity(url, opacity);
+    });
+  }, [imageList, selectedImages, opacities, imageCollectionLoaded]);
+}
+
+export function useUpdateAim() {
+  const { ra, dec, fov, roll } = useSelectedBrowserCoords();
+  const { setAim } = useWwtProvider();
+
+  useEffect(() => {
+    setAim(ra, dec, fov, roll);
+  }, [ra, dec, fov, roll, setAim]);
+}
+
+export function useUpdateBorderColor() {
+  const borderColor = useSelectedBrowserColor();
+  const { wwtHasLoaded, setBorderColor } = useWwtProvider();
+
+  useEffect(() => {
+    if (borderColor && wwtHasLoaded) {
+      setBorderColor(borderColor);
+    }
+  }, [borderColor, wwtHasLoaded]);
+}
+
+export function useUpdateBorderRadius() {
+  const borderRadius = useSelectedBrowserProperty('borderRadius');
+  const { setBorderRadius, wwtHasLoaded } = useWwtProvider();
+
+  useEffect(() => {
+    if (borderRadius && wwtHasLoaded) {
+      setBorderRadius(borderRadius);
+    }
+  }, [borderRadius, setBorderRadius, wwtHasLoaded]);
 }
