@@ -128,7 +128,8 @@ export function useMessages() {
 }
 
 // This hook will set up message listeners so we can collect the messages wwt sends
-// Once wwt has loaded, we load the image collection
+// It keeps tabs of two states: when the application has loaded and when the image
+// collection has finished loading
 export function useWwtEventListener() {
   const [wwtHasLoaded, setWwtHasLoaded] = useState(false);
   const [imageCollectionLoaded, setImageCollectionLoaded] = useState(false);
@@ -156,7 +157,7 @@ export function useWwtEventListener() {
 
 // This hook will start sending messages to WorldWideTelescope to trigger a response
 // Once a response has been given we cancel the pinging
-export function useStartConnection(
+export function startPingingWwt(
   connect: boolean,
   setAim: (ra: number, dec: number, fov: number, roll: number) => void
 ) {
@@ -179,6 +180,8 @@ export function useStartConnection(
   }, [connect, setAim]);
 }
 
+// This is the context that will set up all needed connection and expose the
+// functions, states, and ref to the children
 export function useWwtProvider() {
   const context = useContext(WwtContext);
   if (!context) {
@@ -187,6 +190,9 @@ export function useWwtProvider() {
   return context;
 }
 
+// These are the hooks that will keep tabs of the redux state and
+// when it changes, it will pass along these messages to WWT
+// The hooks are: images, opacities, aim, border color and border radius
 export function useUpdateSelectedImages() {
   const { imageCollectionLoaded, loadImage, removeImage } = useWwtProvider();
   const imageList = useAppSelector((state) => state.skybrowser.imageList);

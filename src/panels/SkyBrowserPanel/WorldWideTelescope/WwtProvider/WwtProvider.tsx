@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect } from 'react';
 
 import { WwtContext } from './WwtContext';
-import { useMessages, useStartConnection, useWwtEventListener } from './hooks';
+import { useMessages, startPingingWwt, useWwtEventListener } from './hooks';
 import { useGetStringPropertyValue } from '@/api/hooks';
 
 export function WwtProvider({ children }: PropsWithChildren) {
@@ -24,7 +24,7 @@ export function WwtProvider({ children }: PropsWithChildren) {
   // We want to make sure we have the image collection url so wait for that
   const [url] = useGetStringPropertyValue('Modules.SkyBrowser.WwtImageCollectionUrl');
   const connect = !wwtHasLoaded && url !== undefined;
-  useStartConnection(connect, setAim);
+  startPingingWwt(connect, setAim);
 
   // Once wwt has been loaded, we pass messages to hide chrome and load the image
   // collection
