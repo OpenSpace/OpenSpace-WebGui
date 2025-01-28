@@ -1,4 +1,4 @@
-import { Paper } from '@mantine/core';
+import { Container } from '@mantine/core';
 
 import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { Property } from '@/components/Property/Property';
@@ -43,11 +43,11 @@ export function PropertyOwnerContent({ uri, hideSubowners = false }: Props) {
         </>
       )}
       {visibleProperties.length > 0 && (
-        <Paper p={'xs'} mt={subowners.length > 0 ? 'xs' : undefined}>
+        <Container pr={0}>
           {visibleProperties.map((property) => (
             <Property key={property} uri={property} />
           ))}
-        </Paper>
+        </Container>
       )}
     </>
   );
