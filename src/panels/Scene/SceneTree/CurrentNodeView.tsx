@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Overlay, Transition } from '@mantine/core';
+import { Box, Overlay, ScrollArea, Transition } from '@mantine/core';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
@@ -41,7 +41,7 @@ export function CurrentNodeView() {
 
   return (
     currentNode && (
-      <Box>
+      <ScrollArea h={'100%'}>
         <SceneGraphNodeView uri={currentNode} />
         <Transition transition={'fade'} duration={200} mounted={showHighlight}>
           {(transitionStyle) => (
@@ -55,7 +55,7 @@ export function CurrentNodeView() {
             </Box>
           )}
         </Transition>
-      </Box>
+      </ScrollArea>
     )
   );
 }

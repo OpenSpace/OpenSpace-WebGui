@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
 import { Box, Group, ThemeIcon } from '@mantine/core';
 
@@ -16,6 +16,10 @@ interface Props {
 
 export function LayerList({ globe, layerGroup, layers }: Props) {
   const [renderedLayersList, setRenderedLayersList] = useState(layers);
+
+  useEffect(() => {
+    setRenderedLayersList(layers);
+  }, [layers]);
 
   const luaApi = useOpenSpaceApi();
 
