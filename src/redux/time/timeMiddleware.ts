@@ -4,6 +4,7 @@ import { Topic } from 'openspace-api-js';
 import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
+import { ConnectionStatus } from '@/types/enums';
 import { OpenSpaceTimeState } from '@/types/types';
 
 import { updateTime } from './timeSlice';
@@ -53,8 +54,8 @@ export const addTimeListener = (startListening: AppStartListening) => {
     actionCreator: subscribeToTime,
     effect: (_, listenerApi) => {
       ++nSubscribers;
-      const { isConnected } = listenerApi.getState().connection;
-      if (nSubscribers === 1 && isConnected) {
+      const { connectionStatus } = listenerApi.getState().connection;
+      if (nSubscribers === 1 && connectionStatus === ConnectionStatus.Connected) {
         listenerApi.dispatch(setupSubscription());
       }
     }

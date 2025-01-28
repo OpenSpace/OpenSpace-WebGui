@@ -2,13 +2,9 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { api } from '@/api/api';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
+import { ConnectionStatus } from '@/types/enums';
 
-import {
-  onCloseConnection,
-  onOpenConnection,
-  selectIsConnected,
-  startConnection
-} from './connectionSlice';
+import { onCloseConnection, onOpenConnection, startConnection } from './connectionSlice';
 
 export const closeConnection = createAction<void>('closeConnection');
 
@@ -43,8 +39,8 @@ export const addConnectionListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: closeConnection,
     effect: async (_, listenerApi) => {
-      const state = listenerApi.getState();
-      if (selectIsConnected(state)) {
+      const { connectionStatus } = listenerApi.getState().connection;
+      if (connectionStatus === ConnectionStatus.Connected) {
         api.disconnect();
       }
     }

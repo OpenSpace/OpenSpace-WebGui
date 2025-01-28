@@ -1,12 +1,11 @@
 import { Button, Center, Loader, Modal, Text, Title } from '@mantine/core';
 
-import { isConnecting, isDisconnected } from '@/redux/connection/connectionSlice';
-import { useAppSelector } from '@/redux/hooks';
+import { useIsConnectionStatus } from '@/api/hooks';
+import { ConnectionStatus } from '@/types/enums';
 
 export function ConnectionErrorOverlay() {
-  const connectionStatus = useAppSelector((state) => state.connection.connectionStatus);
-  const connectionLost = isDisconnected(connectionStatus);
-  const connecting = isConnecting(connectionStatus);
+  const connectionLost = useIsConnectionStatus(ConnectionStatus.Disconnected);
+  const connecting = useIsConnectionStatus(ConnectionStatus.Connecting);
 
   return (
     <>

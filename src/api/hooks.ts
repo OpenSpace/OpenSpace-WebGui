@@ -9,6 +9,7 @@ import {
 } from '@/redux/propertytree/properties/propertiesMiddleware';
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
+import { ConnectionStatus } from '@/types/enums';
 import { Property, PropertyOwner, PropertyValue, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
 import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelpers';
@@ -247,3 +248,7 @@ export const useHasVisibleChildren = (propertyOwnerUri: Uri): boolean => {
     );
   });
 };
+
+export function useIsConnectionStatus(status: ConnectionStatus): boolean {
+  return useAppSelector((state) => state.connection.connectionStatus) === status;
+}

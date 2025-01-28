@@ -3,9 +3,10 @@ import { throttle } from 'lodash';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
-import { onCloseConnection, selectIsConnected } from '@/redux/connection/connectionSlice';
+import { onCloseConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { RootState } from '@/redux/store';
+import { ConnectionStatus } from '@/types/enums';
 import { PropertyValue, Uri } from '@/types/types';
 
 import { addProperties, setPropertyValue, updatePropertyValue } from './propertiesSlice';
@@ -115,7 +116,7 @@ function tryPromoteSubscription(
 ) {
   const subscriptionInfo = subscriptionInfos[uri];
 
-  if (!selectIsConnected(state)) {
+  if (state.connection.connectionStatus !== ConnectionStatus.Connected) {
     return;
   }
 
