@@ -8,6 +8,7 @@ import {
   useSelectedBrowserCoords,
   useSelectedBrowserProperty
 } from '../../hooks';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 // This hook defines the messages WWT can receive and provides the ref
 // that should be attached to the iframe of WWT
@@ -259,10 +260,11 @@ export function useUpdateBorderColor() {
 export function useUpdateBorderRadius() {
   const borderRadius = useSelectedBrowserProperty('borderRadius');
   const { setBorderRadius, wwtHasLoaded } = useWwtProvider();
+  const { width, height } = useWindowSize();
 
   useEffect(() => {
     if (borderRadius && wwtHasLoaded) {
       setBorderRadius(borderRadius);
     }
-  }, [borderRadius, setBorderRadius, wwtHasLoaded]);
+  }, [borderRadius, setBorderRadius, wwtHasLoaded, width, height]);
 }
