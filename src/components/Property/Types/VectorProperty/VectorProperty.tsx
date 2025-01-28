@@ -25,7 +25,7 @@ export interface VectorPropertyProps {
 export function VectorProperty(props: VectorPropertyProps) {
   const { value, viewOptions, name, description } = props;
 
-  const isColor = value.length === 3 || (value.length === 4 && viewOptions.Color);
+  const isColor = (value.length === 3 || value.length === 4) && viewOptions.Color;
   const isMinMaxRange = value.length === 2 && viewOptions.MinMaxRange;
 
   let view;
