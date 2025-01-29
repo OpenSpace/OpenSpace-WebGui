@@ -1,17 +1,15 @@
 import { Box, Flex } from '@mantine/core';
-import { WindowLayoutOptions } from 'src/windowmanagement/WindowLayout/WindowLayout';
 
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { TaskBarMenuButton } from './TaskBarMenuButton';
 
 interface Props {
-  addWindow: (component: React.JSX.Element, options: WindowLayoutOptions) => void;
   visibleMenuItems: string[];
 }
 
-export function TaskBar({ addWindow, visibleMenuItems }: Props) {
-  const checkedMenuItems = menuItemsData.filter((item) => {
+export function TaskBar({ visibleMenuItems }: Props) {
+  const visibleTaskBarButtons = menuItemsData.filter((item) => {
     return visibleMenuItems.includes(item.componentID);
   });
 
@@ -19,7 +17,6 @@ export function TaskBar({ addWindow, visibleMenuItems }: Props) {
     <Flex
       gap={2}
       style={{
-        backgroundColor: '#00000080',
         whiteSpace: 'nowrap',
         overflowX: 'auto',
         overflowY: 'hidden'
@@ -28,10 +25,13 @@ export function TaskBar({ addWindow, visibleMenuItems }: Props) {
         event.currentTarget.scrollLeft += event.deltaY;
       }}
     >
-      {checkedMenuItems.map((item) => {
+      {visibleTaskBarButtons.map((item) => {
         return (
+          // The wrapper box is needed here so custom menu buttons like the play/pause,
+          // are playing nicely with the rest of the buttons. For example the
+          // SessionRecording Play/Pause buttons wrap on multiple rows without this css
           <Box key={item.componentID} style={{ flex: '0 0 auto' }}>
-            <TaskBarMenuButton addWindow={addWindow} item={item} />
+            <TaskBarMenuButton item={item} />
           </Box>
         );
       })}

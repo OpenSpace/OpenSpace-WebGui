@@ -1,14 +1,12 @@
-import React from 'react';
 import { Menu } from '@mantine/core';
 
 import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
-import { WindowLayoutOptions } from '@/windowmanagement/WindowLayout/WindowLayout';
+import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
-interface NewWindowMenuProps {
-  addWindow: (component: React.JSX.Element, options: WindowLayoutOptions) => void;
-}
-export function NewWindowMenu({ addWindow }: NewWindowMenuProps) {
+export function NewWindowMenu() {
+  const { addWindow } = useWindowLayoutProvider();
+
   return (
     <>
       <Menu.Label>Add New Window</Menu.Label>

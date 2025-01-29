@@ -16,12 +16,6 @@ export function TaskBarMenuChoices({
   visibleMenuItems,
   setVisibleMenuItems
 }: TaskBarChoicesProps) {
-  // Mapping menu item ids to boolean flag to determine their checked status
-  const checkedMenuItems: { [key: string]: boolean } = {};
-  visibleMenuItems.forEach((menuItemID) => {
-    checkedMenuItems[menuItemID] = true;
-  });
-
   function toggleMenuItem(id: string): void {
     setVisibleMenuItems((prevstate) => {
       const index = prevstate.indexOf(id);
@@ -53,7 +47,7 @@ export function TaskBarMenuChoices({
             key={item.componentID}
             leftSection={item.renderIcon?.(IconSize.xs)}
             rightSection={
-              <CheckboxIndicator checked={checkedMenuItems[item.componentID]} />
+              <CheckboxIndicator checked={visibleMenuItems.includes(item.componentID)} />
             }
             onClick={() => toggleMenuItem(item.componentID)}
           >

@@ -50,7 +50,7 @@ function createDefaultLayout(): LayoutData {
 }
 
 export function WindowLayout() {
-  const { ref, addWindow } = useWindowLayoutProvider();
+  const { ref } = useWindowLayoutProvider();
   const [visibleMenuItems, setVisibleMenuItems] = useState<string[]>([]);
 
   const headless: TabGroup = {
@@ -70,13 +70,8 @@ export function WindowLayout() {
   // Populate default visible items for taskbar
   useEffect(() => {
     const defaultVisibleMenuItems = menuItemsData
-      .map((menuItem) => {
-        if (menuItem.defaultVisible) {
-          return menuItem.componentID;
-        }
-        return ''; // We dont want to return undefined so we do empty string instead
-      })
-      .filter((id) => id !== ''); // And then clean up the empty strings...
+      .filter((item) => item.defaultVisible)
+      .map((item) => item.componentID);
 
     setVisibleMenuItems(defaultVisibleMenuItems);
   }, []);
@@ -93,7 +88,6 @@ export function WindowLayout() {
         <TopMenuBar
           visibleMenuItems={visibleMenuItems}
           setVisibleMenuItems={setVisibleMenuItems}
-          addWindow={addWindow}
         />
         <div
           style={{
@@ -115,7 +109,7 @@ export function WindowLayout() {
           />
         </div>
 
-        <TaskBar addWindow={addWindow} visibleMenuItems={visibleMenuItems}></TaskBar>
+        <TaskBar visibleMenuItems={visibleMenuItems}></TaskBar>
       </Stack>
     </>
   );

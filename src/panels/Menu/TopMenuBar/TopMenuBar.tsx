@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { Button, Group, Kbd, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
@@ -10,24 +10,18 @@ import {
   SaveIcon,
   VisibilityIcon
 } from '@/icons/icons';
-import { WindowLayoutOptions } from '@/windowmanagement/WindowLayout/WindowLayout';
 
 import { HelpMenu } from './HelpMenu';
+import { MenuWrapper } from './MenuWrapper';
 import { NewWindowMenu } from './NewWindowMenu';
 import { TaskBarMenuChoices } from './TaskBarMenuChoices';
-import { MenuWrapper } from './MenuWrapper';
 
 interface TopMenuBarProps {
   visibleMenuItems: string[];
   setVisibleMenuItems: Dispatch<SetStateAction<string[]>>;
-  addWindow: (component: React.JSX.Element, options: WindowLayoutOptions) => void;
 }
 
-export function TopMenuBar({
-  visibleMenuItems,
-  setVisibleMenuItems,
-  addWindow
-}: TopMenuBarProps) {
+export function TopMenuBar({ visibleMenuItems, setVisibleMenuItems }: TopMenuBarProps) {
   const luaApi = useOpenSpaceApi();
 
   const [isConsoleVisible, setIsConsoleVisible] =
@@ -82,7 +76,7 @@ export function TopMenuBar({
           </Button>
         </Menu.Target>
         <Menu.Dropdown>
-          <NewWindowMenu addWindow={addWindow} />
+          <NewWindowMenu />
         </Menu.Dropdown>
       </MenuWrapper>
 
