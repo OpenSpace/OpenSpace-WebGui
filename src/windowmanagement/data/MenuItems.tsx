@@ -172,13 +172,6 @@ export const menuItemsData: MenuItem[] = [
     defaultVisible: false
   },
   {
-    title: 'User Panels',
-    componentID: 'userPanels',
-    content: <UserPanelsPanel />,
-    preferredPosition: 'float',
-    defaultVisible: true
-  },
-  {
     title: 'Localization Test',
     componentID: 'test',
     content: <TestPanel />,
