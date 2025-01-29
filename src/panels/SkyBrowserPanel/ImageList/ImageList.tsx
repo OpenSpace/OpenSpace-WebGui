@@ -35,6 +35,7 @@ export const ImageList = memo(function ImageList({
     <>
       <Divider my={'md'} />
       <FilterList height={'200px'}>
+        <FilterList.InputField />
         <FilterListGrid<SkyBrowserImage>
           data={imageList}
           grid={true}
