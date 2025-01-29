@@ -2,10 +2,9 @@ import { createAction } from '@reduxjs/toolkit';
 
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { addUriToPropertyTree } from '@/redux/propertytree/propertyTreeMiddleware';
+import { RootState } from '@/redux/store';
 import { PropertyOwners } from '@/types/types';
 import { computeGroups, sceneTreeDataFromGroups } from '@/util/sceneTreeGroupsHelper';
-
-import { RootState } from '../store';
 
 import { setGroups, setSceneTreeData, setTags } from './groupsSlice';
 

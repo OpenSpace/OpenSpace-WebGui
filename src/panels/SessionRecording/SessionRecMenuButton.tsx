@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
-import { Button, Group } from '@mantine/core';
+import { ActionIcon, Button, Group } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { PauseIcon, PlayIcon, StopIcon } from '@/icons/icons';
+import { PauseIcon, PlayIcon, StopIcon, VideocamIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   subscribeToSessionRecording,
   unsubscribeToSessionRecording
 } from '@/redux/sessionrecording/sessionRecordingMiddleware';
 import { RecordingState } from '@/redux/sessionrecording/sessionRecordingSlice';
+import { IconSize } from '@/types/enums';
 
 interface SessionRecMenuButtonProps {
   onClick: () => void;
@@ -94,9 +95,9 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
         );
       default:
         return (
-          <Button onClick={onClick} size={'xl'}>
-            Session Rec
-          </Button>
+          <ActionIcon onClick={onClick} size={'input-xl'}>
+            <VideocamIcon size={IconSize.lg} />
+          </ActionIcon>
         );
     }
   }
