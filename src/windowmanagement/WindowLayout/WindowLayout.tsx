@@ -3,11 +3,11 @@ import { Stack } from '@mantine/core';
 import DockLayout, { LayoutData, TabGroup } from 'rc-dock';
 
 import { FlightController } from '@/panels/FlightControlPanel/FlightController';
+import { TaskBar } from '@/panels/Menu/TaskBar/TaskBar';
+import { TopMenuBar } from '@/panels/Menu/TopMenuBar/TopMenuBar';
 
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
-import { menuItemsDB } from '../data/MenuItems';
-import { TaskBar } from '../TaskBar';
-import { TopMenuBar } from '../TopMenuBar';
+import { menuItemsData } from '../data/MenuItems';
 
 import { useWindowLayoutProvider } from './hooks';
 
@@ -50,7 +50,7 @@ function createDefaultLayout(): LayoutData {
 }
 
 export function WindowLayout() {
-  const { ref, addWindow } = useWindowLayoutProvider();
+  const { ref } = useWindowLayoutProvider();
   const [visibleMenuItems, setVisibleMenuItems] = useState<string[]>([]);
 
   const headless: TabGroup = {
@@ -69,14 +69,9 @@ export function WindowLayout() {
 
   // Populate default visible items for taskbar
   useEffect(() => {
-    const defaultVisibleMenuItems = menuItemsDB
-      .map((menuItem) => {
-        if (menuItem.defaultVisible) {
-          return menuItem.componentID;
-        }
-        return ''; // We dont want to return undefined so we do empty string instead
-      })
-      .filter((id) => id !== ''); // And then clean up the empty strings...
+    const defaultVisibleMenuItems = menuItemsData
+      .filter((item) => item.defaultVisible)
+      .map((item) => item.componentID);
 
     setVisibleMenuItems(defaultVisibleMenuItems);
   }, []);
@@ -93,7 +88,6 @@ export function WindowLayout() {
         <TopMenuBar
           visibleMenuItems={visibleMenuItems}
           setVisibleMenuItems={setVisibleMenuItems}
-          addWindow={addWindow}
         />
         <div
           style={{
@@ -115,7 +109,7 @@ export function WindowLayout() {
           />
         </div>
 
-        <TaskBar addWindow={addWindow} visibleMenuItems={visibleMenuItems}></TaskBar>
+        <TaskBar visibleMenuItems={visibleMenuItems}></TaskBar>
       </Stack>
     </>
   );

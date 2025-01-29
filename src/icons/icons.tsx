@@ -1,20 +1,31 @@
-export { BsThreeDotsVertical as VerticalDotsIcon } from 'react-icons/bs';
-export { FaMinus as MinusIcon, FaPlus as PlusIcon } from 'react-icons/fa';
+export {
+  BsWindowSidebar as PanelIcon,
+  BsWindowDock as TaskBarIcon,
+  BsThreeDotsVertical as VerticalDotsIcon
+} from 'react-icons/bs';
+export {
+  FaMinus as MinusIcon,
+  FaPlus as PlusIcon,
+  FaRegSave as SaveIcon
+} from 'react-icons/fa';
 export {
   FiChevronsDown as ChevronsDownIcon,
   FiChevronsUp as ChevronsUpIcon
 } from 'react-icons/fi';
+export { GoBrowser as BrowserIcon } from 'react-icons/go';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoInformation as InformationIcon,
   IoTelescopeOutline as TelescopeIcon
 } from 'react-icons/io5';
+export { LuFilePlus2 as AddFileIcon } from 'react-icons/lu';
 export {
   MdPublic as AddExoplanetIcon,
   MdOutlineAddPhotoAlternate as AddPhotoIcon,
   MdOutlineAirplanemodeActive as AirplaneIcon,
   MdAnchor as AnchorIcon,
+  MdCalendarMonth as CalendarIcon,
   MdCancel as CancelIcon,
   MdExpandMore as ChevronDownIcon,
   MdChevronLeft as ChevronLeftIcon,
@@ -23,17 +34,23 @@ export {
   MdColorLens as ColorPaletteIcon,
   MdTerminal as ConsoleIcon,
   MdContentCopy as CopyIcon,
+  MdDashboard as DashboardIcon,
   MdDragHandle as DragHandleIcon,
   MdExitToApp as ExitAppIcon,
+  MdHdrStrong as ExoplanetIcon,
+  MdOpenWith as ExpandArrowsIcon,
   MdFastForward as FastForwardIcon,
   MdFastRewind as FastRewindIcon,
   MdFilterAlt as FilterIcon,
   MdFolder as FolderIcon,
   MdFilterCenterFocus as FrameFocusIcon,
+  MdOutlineInsertPhoto as InsertPhotoIcon,
+  MdKeyboard as KeyboardIcon,
   MdLandscape as LandscapeIcon,
   MdLaunch as LaunchIcon,
   MdOutlineLayers as LayersIcon,
   MdFlashOn as LightningFlashIcon,
+  MdLocationOn as LocationPinIcon,
   MdLock as LockIcon,
   MdLockOpen as LockOpenIcon,
   MdNightlight as NightIcon,
@@ -44,10 +61,13 @@ export {
   MdOutlineEdit as PenIcon,
   MdPlayArrow as PlayIcon,
   MdFiberManualRecord as RecordIcon,
+  MdRocketLaunch as RocketLaunchIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
   MdTimer as TimerIcon,
+  MdOutlineCategory as TreeViewIcon,
   MdVideocam as VideocamIcon,
+  MdOutlineVisibility as VisibilityIcon,
   MdWater as WaterIcon,
   MdZoomIn as ZoomInIcon,
   MdZoomOut as ZoomOutIcon,
