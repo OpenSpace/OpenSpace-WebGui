@@ -6,7 +6,7 @@ import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
 import { Property } from '@/components/Property/Property';
-import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -15,7 +15,6 @@ import {
   HabitableZonePropertyKey,
   NavigationAimKey,
   NavigationAnchorKey,
-  ScenePrefixKey,
   Size1AuRingPropertyKey,
   UncertaintyDiscPropertyKey
 } from '@/util/keys';
@@ -88,9 +87,9 @@ export function ExoplanetsPanel() {
   }
 
   return (
-    <ScrollArea h={'100%'}>
-      <Container fluid my={'md'}>
-        <FilterList heightPercent={40} isLoading={allSystemNames.length === 0}>
+    <Container fluid my={'md'}>
+      <ResizeableContent defaultHeight={300}>
+        <FilterList isLoading={allSystemNames.length === 0}>
           <FilterList.InputField placeHolderSearchText={'Star name...'} />
           <FilterList.Data<string>
             data={allSystemNames}
@@ -105,26 +104,24 @@ export function ExoplanetsPanel() {
             matcherFunc={wordBeginningSubString}
           />
         </FilterList>
-
-        <Divider my={'xs'} />
-        <Collapsable title={'Settings'}>
-          <Property uri={HabitableZonePropertyKey} />
-          <Property uri={UncertaintyDiscPropertyKey} />
-          <Property uri={Size1AuRingPropertyKey} />
-        </Collapsable>
-        <Divider my={'xs'}></Divider>
-        <Title order={3}>Added Systems</Title>
-        <ScrollArea my={'md'}>
-          {addedSystems.length === 0 ? (
-            <Text>No active systems</Text>
-          ) : (
-            addedSystems.map(
-              (hostStar) =>
-                hostStar && <SceneGraphNodeHeader uri={sgnUri(hostStar.identifier)} />
-            )
-          )}
-        </ScrollArea>
-      </Container>
-    </ScrollArea>
+      </ResizeableContent>
+      <Collapsable title={'Settings'}>
+        <Property uri={HabitableZonePropertyKey} />
+        <Property uri={UncertaintyDiscPropertyKey} />
+        <Property uri={Size1AuRingPropertyKey} />
+      </Collapsable>
+      <Divider my={'xs'}></Divider>
+      <Title order={3}>Added Systems</Title>
+      <ScrollArea my={'md'}>
+        {addedSystems.length === 0 ? (
+          <Text>No active systems</Text>
+        ) : (
+          addedSystems.map(
+            (hostStar) =>
+              hostStar && <SceneGraphNodeHeader uri={sgnUri(hostStar.identifier)} />
+          )
+        )}
+      </ScrollArea>
+    </Container>
   );
 }

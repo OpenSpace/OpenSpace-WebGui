@@ -16,11 +16,28 @@ export function Window({ children }: PropsWithChildren) {
     window.location.reload();
   }
 
+  function disablePointerEvents(): void {
+    if (!ref.current) {
+      return;
+    }
+    ref.current.style.pointerEvents = 'none';
+    ref.current.style.userSelect = 'none';
+  }
+
+  function enablePointerEvents(): void {
+    if (!ref.current) {
+      return;
+    }
+    ref.current.style.removeProperty('user-select');
+    ref.current.style.removeProperty('pointer-events');
+  }
+
   return (
     <WindowSizeContext.Provider
       value={{
         width: width,
-        height: height
+        height: height,
+        pointerEvents: { enable: enablePointerEvents, disable: disablePointerEvents }
       }}
     >
       <Box h={'100%'} ref={ref}>
