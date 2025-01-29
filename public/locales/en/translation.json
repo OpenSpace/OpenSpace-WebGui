@@ -1,0 +1,11 @@
+{
+  "mytest": "Hello in English",
+  "deep": {
+    "foo": "Accessing deeper levels is easy"
+  },
+  "dynamic_values": "Using dynamic values: Hello {{firstName}} {{lastName}}",
+
+  "test_plurals_zero": "Using the special `count` param:  We don't have any apples",
+  "test_plurals_one": "Using the special `count` param:  We have one apple",
+  "test_plurals_other": "Using the special `count` param:  We have many apples"
+}

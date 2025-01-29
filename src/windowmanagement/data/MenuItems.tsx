@@ -28,6 +28,7 @@ import { Scene } from '@/panels/Scene/Scene';
 import { ScreenSpaceRenderablePanel } from '@/panels/ScreenSpaceRenderablePanel/ScreenSpaceRenderablePanel';
 import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
+import { TestPanel } from '@/panels/TestPanel';
 import { TimePanel } from '@/panels/TimePanel/TimePanel';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { UserPanelsPanel } from '@/panels/UserPanelsPanel/UserPanelsPanel';
@@ -169,5 +170,19 @@ export const menuItemsData: MenuItem[] = [
     renderIcon: (size) => <KeyboardIcon size={size} />,
     preferredPosition: 'float',
     defaultVisible: false
+  },
+  {
+    title: 'User Panels',
+    componentID: 'userPanels',
+    content: <UserPanelsPanel />,
+    preferredPosition: 'float',
+    defaultVisible: true
+  },
+  {
+    title: 'Localization Test',
+    componentID: 'test',
+    content: <TestPanel />,
+    preferredPosition: 'right',
+    defaultVisible: true
   }
 ];

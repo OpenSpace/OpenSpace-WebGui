@@ -2,6 +2,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 
+import './localization/config.ts';
+
 import { LuaApiProvider } from './api/LuaApiProvider';
 import { store } from './redux/store';
 import App from './App.tsx';
