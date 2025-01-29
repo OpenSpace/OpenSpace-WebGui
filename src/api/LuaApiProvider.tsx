@@ -4,13 +4,15 @@ import { api } from '@/api/api';
 import { closeConnection } from '@/redux/connection/connectionMiddleware';
 import { startConnection } from '@/redux/connection/connectionSlice';
 import { updateCustomGroupOrdering } from '@/redux/groups/groupsSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
+import { ConnectionStatus } from '@/types/enums';
 
+import { useIsConnectionStatus } from './hooks';
 import { LuaApiContext } from './LuaApiContext';
 
 export function LuaApiProvider({ children }: PropsWithChildren) {
   const [luaApi, setLuaApi] = useState<OpenSpace.openspace | null>(null);
-  const isConnected = useAppSelector((state) => state.connection.isConnected);
+  const isConnected = useIsConnectionStatus(ConnectionStatus.Connected);
   const dispatch = useAppDispatch();
 
   // Connect to OpenSpace

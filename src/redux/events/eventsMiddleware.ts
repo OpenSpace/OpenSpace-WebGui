@@ -10,6 +10,7 @@ import {
   addUriToPropertyTree,
   removeUriFromPropertyTree
 } from '@/redux/propertytree/propertyTreeMiddleware';
+import { ConnectionStatus } from '@/types/enums';
 import { EventData } from '@/types/event-types';
 
 let eventTopic: Topic;
@@ -62,7 +63,8 @@ export const addEventsListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onOpenConnection,
     effect: (_, listenerApi) => {
-      if (!isSubscribed && listenerApi.getState().connection.isConnected) {
+      const { connectionStatus } = listenerApi.getState().connection;
+      if (!isSubscribed && connectionStatus === ConnectionStatus.Connected) {
         listenerApi.dispatch(setupEventsSubscription());
         isSubscribed = true;
       }
@@ -71,7 +73,8 @@ export const addEventsListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onCloseConnection,
     effect: (_, listenerApi) => {
-      if (isSubscribed && listenerApi.getState().connection.isConnected) {
+      const { connectionStatus } = listenerApi.getState().connection;
+      if (isSubscribed && connectionStatus === ConnectionStatus.Connected) {
         tearDownSubscription();
       }
     }
