@@ -7,7 +7,7 @@ import { api } from '@/api/api';
 
 import { AppStartListening } from '../listenerMiddleware';
 
-import { subscriptionIsSetup, updateSkyBrowser } from './skybrowserSlice';
+import { updateSkyBrowser } from './skybrowserSlice';
 
 let skybrowserTopic: any;
 let nSubscribers = 0;
@@ -25,7 +25,6 @@ export const setupSubscription = createAsyncThunk(
         thunkAPI.dispatch(updateSkyBrowser(data));
       }
     })();
-    thunkAPI.dispatch(subscriptionIsSetup());
   }
 );
 

@@ -58,11 +58,8 @@ export const skyBrowserSlice = createSlice({
   name: 'skybrowser',
   initialState,
   reducers: {
-    subscriptionIsSetup: (state) => {
-      state.isInitialized = true;
-      return state;
-    },
     updateSkyBrowser: (state, action: PayloadAction<SkyBrowserState>) => {
+      state.isInitialized = true;
       state.browsers = action.payload.browsers;
       state.cameraInSolarSystem = action.payload.cameraInSolarSystem;
       state.selectedBrowserId = action.payload.selectedBrowserId;
@@ -87,7 +84,6 @@ export const {
   updateSkyBrowser,
   setImageCollectionData,
   onCloseConnection,
-  subscriptionIsSetup,
   setActiveImage
 } = skyBrowserSlice.actions;
 export const skyBrowserReducer = skyBrowserSlice.reducer;
