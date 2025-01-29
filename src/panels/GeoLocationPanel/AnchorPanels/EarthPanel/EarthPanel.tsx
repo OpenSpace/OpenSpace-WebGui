@@ -4,7 +4,6 @@ import {
   Button,
   Checkbox,
   Container,
-  Divider,
   Group,
   NumberInput,
   Tabs,
@@ -17,6 +16,7 @@ import {
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
 import { MinusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
@@ -193,25 +193,27 @@ export function EarthPanel({ currentAnchor }: Props) {
           </Group>
 
           {places.length > 0 ? (
-            <FilterList heightPercent={30}>
-              <FilterList.InputField placeHolderSearchText={'Filter search'} />
-              <FilterList.Data<Candidate>
-                data={places}
-                renderElement={(place) => (
-                  <EarthEntry
-                    key={place.attributes.LongLabel}
-                    place={place}
-                    isCustomAltitude={isCustomAltitude}
-                    customAltitude={customAltitude}
-                    currentAnchor={currentAnchor}
-                    isSceneGraphNodeAdded={isSceneGraphNodeAdded}
-                    addFocusNode={addFocusNode}
-                    removeFocusNode={removeFocusNode}
-                  />
-                )}
-                matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
-              />
-            </FilterList>
+            <ResizeableContent defaultHeight={250}>
+              <FilterList>
+                <FilterList.InputField placeHolderSearchText={'Filter search'} />
+                <FilterList.Data<Candidate>
+                  data={places}
+                  renderElement={(place) => (
+                    <EarthEntry
+                      key={place.attributes.LongLabel}
+                      place={place}
+                      isCustomAltitude={isCustomAltitude}
+                      customAltitude={customAltitude}
+                      currentAnchor={currentAnchor}
+                      isSceneGraphNodeAdded={isSceneGraphNodeAdded}
+                      addFocusNode={addFocusNode}
+                      removeFocusNode={removeFocusNode}
+                    />
+                  )}
+                  matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
+                />
+              </FilterList>
+            </ResizeableContent>
           ) : (
             <Text>Nothing found. Try another search!</Text>
           )}
@@ -226,8 +228,6 @@ export function EarthPanel({ currentAnchor }: Props) {
           />
         </Tabs.Panel>
       </Tabs>
-
-      <Divider my={'xs'} />
 
       <Title order={2} my={'md'}>
         Added Nodes
