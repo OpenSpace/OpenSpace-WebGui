@@ -10,6 +10,7 @@ import {
   SaveIcon,
   VisibilityIcon
 } from '@/icons/icons';
+import { LocaleSwitcher } from '@/localization/LocaleSwitcher';
 
 import { HelpMenu } from './HelpMenu';
 import { MenuWrapper } from './MenuWrapper';
@@ -97,6 +98,7 @@ export function TopMenuBar({ visibleMenuItems, setVisibleMenuItems }: TopMenuBar
         </Menu.Dropdown>
       </MenuWrapper>
       <HelpMenu />
+      <LocaleSwitcher />
     </Group>
   );
 }
