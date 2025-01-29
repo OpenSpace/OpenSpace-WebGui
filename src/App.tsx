@@ -1,5 +1,5 @@
 import { ErrorBoundary } from 'react-error-boundary';
-import { createTheme, MantineProvider } from '@mantine/core';
+import { createTheme, MantineProvider, RangeSlider, Slider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 
 import { fallbackRender } from './components/ErrorFallback/fallbackRender';
@@ -8,9 +8,18 @@ import { WindowLayoutProvider } from './windowmanagement/WindowLayout/WindowLayo
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import '@mantine/core/styles.css';
+import sliderClasses from './styles/Slider.module.css';
 
 const theme = createTheme({
-  cursorType: 'pointer'
+  cursorType: 'pointer',
+  components: {
+    Slider: Slider.extend({
+      classNames: sliderClasses
+    }),
+    RangeSlider: RangeSlider.extend({
+      classNames: sliderClasses
+    })
+  }
 });
 
 function App() {

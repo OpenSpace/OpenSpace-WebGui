@@ -5,8 +5,6 @@ import { scalePow } from 'd3';
 import { NumericInput } from '@/components/Input/NumericInput';
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
 
-import classes from './NumericProperty.module.css';
-
 interface Props {
   name: string;
   description: string;
@@ -64,14 +62,14 @@ export function NumericProperty({
   // TODO: Figure out how to ha
 
   function markLabel(value: number): JSX.Element | string {
-    return value < 100000 ? (
+    return value < 100000 && value > 0.0001 ? (
       <NumberFormatter value={value} decimalScale={decimalPlaces} />
     ) : (
       value.toPrecision(1)
     );
   }
 
-  // TODO: Only create marks for valid steps
+  // TODO: Only create marks for valid steps and make it work nicely for integer steps
   const marksStep = (max - min) / 4;
   const marks = [
     { value: min, label: markLabel(min) },
@@ -106,7 +104,6 @@ export function NumericProperty({
             setCurrentValue(value);
             setPropertyValue(value);
           }}
-          classNames={classes}
         />
         <Group w={'100px'}>
           <NumericInput

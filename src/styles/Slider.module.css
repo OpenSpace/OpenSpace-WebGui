@@ -1,0 +1,17 @@
+.thumb {
+  background-color: var(--mantine-color-gray-2) ;
+  border: none;
+  outline: none;
+}
+
+.mark {
+  background-color: var(--mantine-color-gray-4);
+  border: none;
+  width: 2px;
+  /* This makes the mark centered on the actual value */
+  transform: translateX(100%);
+}
+
+.markLabel {
+  font-size: var(--mantine-font-size-xs);
+}
