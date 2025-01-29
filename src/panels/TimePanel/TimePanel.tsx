@@ -1,4 +1,4 @@
-import { Button, Container, Divider, Group } from '@mantine/core';
+import { Button, Container, Divider, Group, ScrollArea } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 
@@ -24,16 +24,18 @@ export function TimePanel() {
   }
 
   return (
-    <Container>
-      <h2>Select Date</h2>
-      <TimeInput />
-      <h2>Simulation Speed</h2>
-      <SimulationIncrement />
-      <Divider my={'xs'} />
-      <Group grow gap={'xs'}>
-        <Button onClick={realTime}>Realtime</Button>
-        <Button onClick={now}>Now</Button>
-      </Group>
-    </Container>
+    <ScrollArea h={'100%'}>
+      <Container>
+        <h2>Select Date</h2>
+        <TimeInput />
+        <h2>Simulation Speed</h2>
+        <SimulationIncrement />
+        <Divider my={'xs'} />
+        <Group grow gap={'xs'}>
+          <Button onClick={realTime}>Realtime</Button>
+          <Button onClick={now}>Now</Button>
+        </Group>
+      </Container>
+    </ScrollArea>
   );
 }

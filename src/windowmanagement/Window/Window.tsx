@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { ScrollArea } from '@mantine/core';
+import { Box } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
 
 import { fallbackRender } from '@/components/ErrorFallback/fallbackRender';
@@ -40,11 +40,11 @@ export function Window({ children }: PropsWithChildren) {
         pointerEvents: { enable: enablePointerEvents, disable: disablePointerEvents }
       }}
     >
-      <ScrollArea h={'100%'} ref={ref}>
+      <Box h={'100%'} ref={ref}>
         <ErrorBoundary fallbackRender={fallbackRender} onReset={handleReset}>
           {children}
         </ErrorBoundary>
-      </ScrollArea>
+      </Box>
     </WindowSizeContext.Provider>
   );
 }

@@ -22,6 +22,7 @@ export function BoolProperty({
       <Checkbox
         checked={value}
         onChange={(event) => setPropertyValue(event.currentTarget.checked)}
+        onKeyDown={(event) => event.key === 'Enter' && setPropertyValue(!value)}
         disabled={disabled}
         label={name}
       />

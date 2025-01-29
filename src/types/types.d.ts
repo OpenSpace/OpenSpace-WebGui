@@ -1,3 +1,6 @@
+import { Property } from '@/components/Property/Property';
+import { PropertyVisibilityNumber } from './enums';
+
 export type Uri = string;
 export type Identifier = string;
 
@@ -12,12 +15,7 @@ export interface Action {
 export interface Keybind {
   action: string;
   key: string;
-  modifiers: {
-    alt: boolean;
-    control: boolean;
-    shift: boolean;
-    super: boolean;
-  };
+  modifiers: ('super' | 'alt' | 'shift' | 'control')[];
 }
 
 export type ActionOrKeybind = Action | Keybind;
@@ -62,26 +60,30 @@ export interface ExoplanetData {
   identifier: Identifier;
 }
 
+export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
+
 export interface PropertyMetaData {
   Group: string;
   ViewOptions: {
     [key: string]: boolean;
   };
-  Visibility: string; // TODO specify this as developer  | user | noviceUser etc
+  Visibility: PropertyVisibility;
   isReadOnly: boolean;
   needsConfirmation: boolean;
 }
 
+export interface PropertyDetails {
+  additionalData: any;
+  identifier: Identifier;
+  metaData: PropertyMetaData;
+  name: string;
+  type: string; // TODO: define these as property types i.e., boolproperty, stringproperty etc
+  description: string;
+}
+
 export type PropertyValue = string | number | number[] | boolean | null;
 export interface Property {
-  description: {
-    additionalData: any;
-    identifier: Identifier;
-    metaData: PropertyMetaData;
-    name: string;
-    type: string; // TODO: define these as property types i.e., boolproperty, stringproperty etc
-    description: string;
-  };
+  description: PropertyDetails;
   value: PropertyValue; // TODO: investigate if these are all the values we can have
   uri: Uri;
 }
@@ -112,6 +114,22 @@ export type Group = {
 export type Groups = {
   [key: string]: Group;
 };
+
+export type CustomGroupOrdering = {
+  // The value is a list of node names in the order they should be displayed
+  [key: string]: string[] | undefined;
+};
+
+export interface AssetMetaData {
+  author: string;
+  description: string;
+  identifiers?: string[];
+  license: string;
+  name: string;
+  path: string;
+  url: string;
+  version: string;
+}
 
 export type OpenSpaceTimeState = {
   time?: string;

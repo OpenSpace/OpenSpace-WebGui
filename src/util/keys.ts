@@ -10,6 +10,9 @@ export const RollFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.Roll
 // To get any scene graph node you need ScenePrefix+NodeIdentifier
 export const ScenePrefixKey = 'Scene.';
 
+export const RenderableSuffixKey = '.Renderable';
+export const LayersSuffixKey = '.Layers';
+
 export const InterestingTagKey = 'GUI.Interesting';
 export const rootOwnerKey = '__rootOwner';
 export const GeoLocationGroupKey = '/GeoLocation';
@@ -30,3 +33,7 @@ export const UserPanelsFolderKey = '${USER}/webpanels';
 
 export const WindowsKey = 'Windows';
 export const ScreenSpaceKey = 'ScreenSpace';
+export const RenderableKey = 'Renderable';
+export const ScaleKey = 'Scale';
+export const TranslationKey = 'Translation';
+export const RotationKey = 'Rotation';

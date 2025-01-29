@@ -10,6 +10,9 @@ import {
 } from '@/redux/propertytree/propertyTreeMiddleware';
 import { EventData } from '@/types/event-types';
 
+import { getAction } from '../actions/actionsMiddleware';
+import { removeAction } from '../actions/actionsSlice';
+
 let eventTopic: Topic;
 let isSubscribed = false;
 
@@ -31,6 +34,12 @@ export const setupEventsSubscription = createAsyncThunk(
           break;
         case 'PropertyTreePruned':
           thunkAPI.dispatch(removeUriFromPropertyTree({ uri: data.Uri }));
+          break;
+        case 'ActionAdded':
+          thunkAPI.dispatch(getAction(data.Uri));
+          break;
+        case 'ActionRemoved':
+          thunkAPI.dispatch(removeAction(data.Uri));
           break;
         default:
           break;
