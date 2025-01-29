@@ -1,14 +1,25 @@
 import { useAppSelector } from '@/redux/hooks';
 
 import { DistanceSortThreshold, euclidianDistance, isWithinFOV } from './util';
+import {
+  useSelectedBrowserCoords,
+  useSelectedBrowserFov,
+  useSkyBrowserCartesianDirection
+} from '../hooks';
 
 export function useGetImagesInView() {
-  const { fov, ra, dec, cartesianDirection } = useAppSelector(
-    (state) => state.skybrowser.browsers[state.skybrowser.selectedBrowserId]
-  );
+  const { ra, dec } = useSelectedBrowserCoords();
+  const fov = useSelectedBrowserFov();
+  const cartesianDirection = useSkyBrowserCartesianDirection();
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
 
-  if (!cartesianDirection || !imageList) {
+  if (
+    !cartesianDirection ||
+    !imageList ||
+    ra === undefined ||
+    fov === undefined ||
+    dec === undefined
+  ) {
     return [];
   }
 

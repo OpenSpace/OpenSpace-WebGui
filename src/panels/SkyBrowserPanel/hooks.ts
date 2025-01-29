@@ -8,8 +8,7 @@ import {
 } from '@/redux/skybrowser/skybrowserMiddleware';
 import {
   setActiveImage,
-  setImageCollectionData,
-  SkyBrowserBrowser
+  setImageCollectionData
 } from '@/redux/skybrowser/skybrowserSlice';
 
 export function useGetWwtImageCollection() {
@@ -64,9 +63,15 @@ export function useActiveImage(): [string, (url: string) => void] {
   return [activeImage, setImage];
 }
 
+// Below are hooks to get the values from the sky browser topic. They
+// are setup so the value from the selector only should update when
+// the value itself actually updates. TODO (ylvse 2025-01-29): rewrite
+// the topic so that most of the data are properties instead, and only
+// pass the data for the currently selected browser
+
 export function useSelectedBrowserColor(): number[] | undefined {
   const color = useAppSelector(
-    (state) => state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId]?.color,
+    (state) => state.skybrowser.selectedBrowser?.color,
     lowPrecisionEqualArray
   );
   return color;
@@ -77,58 +82,142 @@ export function useSelectedBrowserColorString(): string | undefined {
   return color ? (`rgb(${color.join(',')})` as string) : undefined;
 }
 
-export function useSelectedBrowserProperty<T extends keyof SkyBrowserBrowser>(
-  property: T
-): SkyBrowserBrowser[T] | undefined {
-  const result = useAppSelector(
-    (state) =>
-      state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId]?.[property] ??
-      undefined
+export function useSelectedBrowserRadius(): number | undefined {
+  const radius = useAppSelector(
+    (state) => state.skybrowser.selectedBrowser?.borderRadius,
+    lowPrecisionEqual()
   );
-  return result;
+  return radius;
+}
+
+export function lowPrecisionEqualMatrix(
+  lhs: number[][] | undefined,
+  rhs: number[][] | undefined
+) {
+  if (lhs === undefined && rhs === undefined) {
+    return true;
+  }
+  if (lhs === undefined || rhs === undefined) {
+    return false;
+  }
+  if (lhs.length !== rhs.length) {
+    return false;
+  }
+  return lhs.every((value, i) => lowPrecisionEqualArray(value, rhs[i]));
+}
+
+export function equalArray<T>(lhs: T[] | undefined, rhs: T[] | undefined) {
+  if (lhs === undefined && rhs === undefined) {
+    return true;
+  }
+  if (lhs === undefined || rhs === undefined) {
+    return false;
+  }
+  if (lhs.length !== rhs.length) {
+    return false;
+  }
+  return lhs.every((value, i) => value === rhs[i]);
 }
 
 export function lowPrecisionEqualArray(
   lhs: number[] | undefined,
   rhs: number[] | undefined
 ) {
-  if (lhs === rhs) {
+  if (lhs === undefined && rhs === undefined) {
     return true;
   }
-  if (!lhs || !rhs) {
+  if (lhs === undefined || rhs === undefined) {
     return false;
   }
-  return lhs?.every((value, i) => lowPrecisionEqual(value, rhs[i]));
+  if (lhs.length !== rhs.length) {
+    return false;
+  }
+
+  return lhs?.every((value, i) => lowPrecisionEqual()(value, rhs[i]));
 }
 
-export function lowPrecisionEqual(lhs: number | undefined, rhs: number | undefined) {
-  return lhs?.toFixed(4) === rhs?.toFixed(4);
+export function lowPrecisionEqual(epsilon: number = 1e-3) {
+  return (lhs: number | undefined, rhs: number | undefined) => {
+    if (lhs === undefined && rhs === undefined) {
+      return true;
+    }
+    if (lhs === undefined || rhs === undefined) {
+      return false;
+    }
+    return Math.abs(lhs - rhs) < epsilon;
+  };
 }
 
 export function useSelectedBrowserCoords() {
   const ra = useAppSelector(
-    (state) =>
-      state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId]?.['ra'] ??
-      undefined,
-    lowPrecisionEqual
+    (state) => state.skybrowser.selectedBrowser?.ra,
+    lowPrecisionEqual(1e-6)
   );
   const dec = useAppSelector(
-    (state) =>
-      state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId]?.['dec'] ??
-      undefined,
-    lowPrecisionEqual
+    (state) => state.skybrowser.selectedBrowser?.dec,
+    lowPrecisionEqual(1e-6)
   );
-  const fov = useAppSelector(
-    (state) =>
-      state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId]?.['fov'] ??
-      undefined,
-    lowPrecisionEqual
-  );
+
   const roll = useAppSelector(
-    (state) =>
-      state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId]?.['roll'] ??
-      undefined,
-    lowPrecisionEqual
+    (state) => state.skybrowser.selectedBrowser?.roll,
+    lowPrecisionEqual(1e-6)
   );
-  return { ra, dec, fov, roll };
+  return { ra, dec, roll };
+}
+
+export function useSelectedBrowserFov() {
+  const fov = useAppSelector(
+    (state) => state.skybrowser.selectedBrowser?.fov,
+    lowPrecisionEqual(1e-6)
+  );
+
+  return fov;
+}
+
+export function useSkyBrowserCartesianDirection() {
+  const cartesianDirection = useAppSelector(
+    (state) => state.skybrowser.selectedBrowser?.cartesianDirection,
+    lowPrecisionEqualArray
+  );
+  return cartesianDirection;
+}
+
+export function useSkyBrowserColors() {
+  const browserColors = useAppSelector(
+    (state) => state.skybrowser.browserColors,
+    lowPrecisionEqualMatrix
+  );
+  return browserColors;
+}
+
+export function useSkyBrowserNames() {
+  const browserNames = useAppSelector(
+    (state) => state.skybrowser.browserNames,
+    equalArray<string>
+  );
+  return browserNames;
+}
+
+export function useSkyBrowserIds() {
+  const browsersIds = useAppSelector(
+    (state) => state.skybrowser.browserIds,
+    equalArray<string>
+  );
+  return browsersIds;
+}
+
+export function useSkyBrowserSelectedImages() {
+  const selectedImages = useAppSelector(
+    (state) => state.skybrowser.selectedBrowser?.selectedImages,
+    equalArray<number>
+  );
+  return selectedImages;
+}
+
+export function useSkyBrowserSelectedOpacities() {
+  const opacities = useAppSelector(
+    (state) => state.skybrowser.selectedBrowser?.opacities,
+    lowPrecisionEqualArray
+  );
+  return opacities;
 }

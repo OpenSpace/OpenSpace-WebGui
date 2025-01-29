@@ -6,6 +6,7 @@ import { PlusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
 import { TabContent } from './TabContent';
+import { useSkyBrowserColors, useSkyBrowserIds, useSkyBrowserNames } from '../hooks';
 
 interface Props {
   openWorldWideTelescope: () => void;
@@ -13,16 +14,18 @@ interface Props {
 
 export function BrowserTabs({ openWorldWideTelescope }: Props) {
   const [showSettings, setShowSettings] = useState(false);
-  const browsers = useAppSelector((state) => state.skybrowser.browsers);
-  const selectedBrowser = useAppSelector((state) => {
-    return state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId] ?? null;
+  const browsersIds = useSkyBrowserIds();
+  const browserNames = useSkyBrowserNames();
+  const browserColors = useSkyBrowserColors();
+  const selectedBrowserId = useAppSelector((state) => {
+    return state.skybrowser.selectedBrowserId;
   });
   const luaApi = useOpenSpaceApi();
 
   return (
     <Tabs
       variant={'outline'}
-      value={selectedBrowser?.id}
+      value={selectedBrowserId}
       onChange={(id) => {
         if (id) {
           luaApi?.skybrowser.setSelectedBrowser(id);
@@ -32,15 +35,14 @@ export function BrowserTabs({ openWorldWideTelescope }: Props) {
       mt={'lg'}
     >
       <Tabs.List>
-        {Object.values(browsers).map((browser) => (
-          <Tabs.Tab
-            value={browser.id}
-            color={`rgb(${selectedBrowser?.color.join(',')}`}
-            key={browser.id}
-          >
+        {Object.values(browsersIds).map((id, i) => (
+          <Tabs.Tab value={id} key={id}>
             <Group>
-              {browser.name}
-              <ColorSwatch color={`rgb(${browser?.color.join(',')}`} size={12} />
+              {browserNames[i]}
+              <ColorSwatch
+                color={browserColors[i] ? `rgb(${browserColors[i].join(',')}` : 'gray'}
+                size={12}
+              />
             </Group>
           </Tabs.Tab>
         ))}
@@ -52,8 +54,8 @@ export function BrowserTabs({ openWorldWideTelescope }: Props) {
           <PlusIcon />
         </ActionIcon>
       </Tabs.List>
-      {Object.values(browsers).map((browser) => (
-        <Tabs.Panel key={browser.id} value={browser.id} m={'xs'}>
+      {browsersIds.map((id) => (
+        <Tabs.Panel key={id} value={id} m={'xs'}>
           <TabContent
             showSettings={showSettings}
             setShowSettings={setShowSettings}

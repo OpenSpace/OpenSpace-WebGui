@@ -12,16 +12,14 @@ import { WwtProvider } from './WorldWideTelescope/WwtProvider/WwtProvider';
 import { WorldWideTelescope } from './WorldWideTelescope/WorldWideTelescope';
 
 export function SkyBrowserPanel() {
-  const luaApi = useOpenSpaceApi();
   const isInitialized = useAppSelector((state) => state.skybrowser.isInitialized);
-  const { addWindow } = useWindowLayoutProvider();
-
   const cameraInSolarSystem = useAppSelector(
     (state) => state.skybrowser.cameraInSolarSystem
   );
-  const noOfBrowsers = useAppSelector(
-    (state) => Object.keys(state.skybrowser.browsers).length
-  );
+  const noOfBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
+  const { addWindow } = useWindowLayoutProvider();
+  const luaApi = useOpenSpaceApi();
+
   useGetSkyBrowserData();
 
   useEffect(() => {

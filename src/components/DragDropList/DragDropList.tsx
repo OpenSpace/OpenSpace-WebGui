@@ -1,6 +1,7 @@
 import { DragHandleIcon } from '@/icons/icons';
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
 import { ActionIcon, Box, Group } from '@mantine/core';
+import { useEffect, useState } from 'react';
 
 export interface OnDragEndProps<T> {
   oldIndex: number;
@@ -26,6 +27,12 @@ export function DragDropList<T>({
   keyFunc,
   dragHandlePosition = 'left'
 }: Props<T>) {
+  const [localCache, setLocalCache] = useState(data);
+
+  useEffect(() => {
+    setLocalCache(data);
+  }, [data]);
+
   async function handleDragEnd(result: DropResult<string>) {
     if (!result.destination || result.source.index === result.destination.index) {
       // No change - do nothing
@@ -42,6 +49,7 @@ export function DragDropList<T>({
       updatedData: updatedData,
       id: result.draggableId
     });
+    setLocalCache(updatedData);
   }
 
   return (
@@ -49,7 +57,7 @@ export function DragDropList<T>({
       <Droppable droppableId={id}>
         {(provided) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
-            {data.map((element, i) => (
+            {localCache.map((element, i) => (
               <Draggable key={keyFunc(element)} draggableId={keyFunc(element)} index={i}>
                 {(item) => (
                   <Group ref={item.innerRef} {...item.draggableProps} wrap="nowrap">

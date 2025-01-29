@@ -1,28 +1,26 @@
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { Box, Text } from '@mantine/core';
+import { useWwtProvider } from './WwtProvider/hooks';
+import { useAppSelector } from '@/redux/hooks';
+import { useGetBoolPropertyValue, useOpenSpaceApi } from '@/api/hooks';
+import { useEffect, useState } from 'react';
 import {
   useUpdateAim,
   useUpdateBorderColor,
   useUpdateBorderRadius,
   useUpdateOpacities,
-  useUpdateSelectedImages,
-  useWwtProvider
-} from './WwtProvider/hooks';
-import { useAppSelector } from '@/redux/hooks';
-import { useGetBoolPropertyValue, useOpenSpaceApi } from '@/api/hooks';
-import { useSelectedBrowserProperty } from '../hooks';
-import { useEffect, useState } from 'react';
+  useUpdateSelectedImages
+} from './hooks';
 
 export function WorldWideTelescope() {
   const [isDragging, setIsDragging] = useState(false);
   const [startDragPosition, setStartDragPosition] = useState({ x: 0, y: 0 });
   const { ref } = useWwtProvider();
   const { width, height } = useWindowSize();
-  const browsers = useAppSelector((state) => state.skybrowser.browsers);
-  const noOfBrowsers = Object.keys(browsers).length;
+  const noOfBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
   const luaApi = useOpenSpaceApi();
-  const id = useSelectedBrowserProperty('id');
+  const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
   const [inverseZoom] = useGetBoolPropertyValue(
     'Modules.SkyBrowser.InverseZoomDirection'
   );

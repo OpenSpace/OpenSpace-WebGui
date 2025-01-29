@@ -36,33 +36,57 @@ export interface SkyBrowserBrowser {
   targetId: string;
 }
 
+interface SkyBrowserUpdate
+  extends Pick<SkyBrowserState, 'selectedBrowserId' | 'cameraInSolarSystem'> {
+  browsers: { [id: string]: SkyBrowserBrowser };
+}
+
 export interface SkyBrowserState {
   isInitialized: boolean;
-  browsers: { [id: string]: SkyBrowserBrowser };
   cameraInSolarSystem: boolean;
   selectedBrowserId: string;
+  selectedBrowser: SkyBrowserBrowser | null;
+  browserIds: string[];
+  browserNames: string[];
+  browserColors: number[][];
   imageList: SkyBrowserImage[];
   activeImage: string;
 }
 
 const initialState: SkyBrowserState = {
   isInitialized: false,
-  browsers: {},
   cameraInSolarSystem: false,
   selectedBrowserId: '',
   imageList: [],
-  activeImage: ''
+  activeImage: '',
+  browserColors: [],
+  selectedBrowser: null,
+  browserIds: [],
+  browserNames: []
 };
 
 export const skyBrowserSlice = createSlice({
   name: 'skybrowser',
   initialState,
   reducers: {
-    updateSkyBrowser: (state, action: PayloadAction<SkyBrowserState>) => {
+    updateSkyBrowser: (state, action: PayloadAction<SkyBrowserUpdate>) => {
       state.isInitialized = true;
-      state.browsers = action.payload.browsers;
       state.cameraInSolarSystem = action.payload.cameraInSolarSystem;
       state.selectedBrowserId = action.payload.selectedBrowserId;
+
+      // Derived state
+      state.selectedBrowser = action.payload.browsers[state.selectedBrowserId];
+      // For some reason the indices are sent as strings... convert them to numbers
+      state.selectedBrowser.selectedImages = state.selectedBrowser.selectedImages.map(
+        (id) => (typeof id === 'string' ? parseInt(id) : id)
+      );
+      state.browserIds = Object.keys(action.payload.browsers);
+      // Get all colors
+      state.browserColors = state.browserIds.map(
+        (id) => action.payload.browsers[id].color
+      );
+      state.browserNames = state.browserIds.map((id) => action.payload.browsers[id].name);
+
       return state;
     },
     setImageCollectionData: (state, action: PayloadAction<SkyBrowserImage[]>) => {

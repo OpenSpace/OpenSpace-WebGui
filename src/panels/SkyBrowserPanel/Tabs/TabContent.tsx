@@ -13,6 +13,7 @@ import { SelectedImagesList } from './SelectedImagesList';
 import { Settings } from './Settings';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
+import { useSelectedBrowserFov, useSkyBrowserSelectedImages } from '../hooks';
 
 interface Props {
   showSettings: boolean;
@@ -25,11 +26,15 @@ export function TabContent({
   setShowSettings,
   openWorldWideTelescope
 }: Props) {
-  const luaApi = useOpenSpaceApi();
-  const selectedBrowser = useAppSelector((state) => {
-    return state.skybrowser.browsers?.[state.skybrowser.selectedBrowserId] ?? null;
-  });
+  const selectedImages = useSkyBrowserSelectedImages();
+  const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
+  const fov = useSelectedBrowserFov();
+  const luaApi = useOpenSpaceApi();
+
+  if (fov === undefined || id === undefined) {
+    return null;
+  }
 
   function zoom(id: string, fov: number) {
     luaApi?.skybrowser.stopAnimations(id);
@@ -38,11 +43,11 @@ export function TabContent({
   }
 
   function removeAllImages() {
-    selectedBrowser?.selectedImages.forEach((image) =>
-      luaApi?.skybrowser.removeSelectedImageInBrowser(
-        selectedBrowser.id,
-        imageList[image].url
-      )
+    if (!id) {
+      return;
+    }
+    selectedImages?.forEach((image) =>
+      luaApi?.skybrowser.removeSelectedImageInBrowser(id, imageList[image].url)
     );
   }
 
@@ -52,26 +57,20 @@ export function TabContent({
         <ActionIcon.Group>
           <TabButton
             text={'Look at target'}
-            onClick={() => luaApi?.skybrowser.adjustCamera(selectedBrowser.id)}
+            onClick={() => luaApi?.skybrowser.adjustCamera(id)}
           >
             <EyeIcon />
           </TabButton>
           <TabButton
             text={'Move target to center of view'}
-            onClick={() => luaApi?.skybrowser.centerTargetOnScreen(selectedBrowser.id)}
+            onClick={() => luaApi?.skybrowser.centerTargetOnScreen(id)}
           >
             <MoveTargetIcon />
           </TabButton>
-          <TabButton
-            text={'Zoom in'}
-            onClick={() => zoom(selectedBrowser.id, selectedBrowser.fov - 5)}
-          >
+          <TabButton text={'Zoom in'} onClick={() => zoom(id, fov - 5)}>
             <ZoomInIcon />
           </TabButton>
-          <TabButton
-            text={'Zoom out'}
-            onClick={() => zoom(selectedBrowser.id, selectedBrowser.fov + 5)}
-          >
+          <TabButton text={'Zoom out'} onClick={() => zoom(id, fov + 5)}>
             <ZoomOutIcon />
           </TabButton>
           <TabButton text={'Remove all images'} onClick={removeAllImages}>
@@ -89,7 +88,7 @@ export function TabContent({
           <SettingsIcon />
         </TabButton>
       </Group>
-      {showSettings ? <Settings id={selectedBrowser?.id} /> : <SelectedImagesList />}
+      {showSettings ? <Settings id={id} /> : <SelectedImagesList />}
     </>
   );
 }
