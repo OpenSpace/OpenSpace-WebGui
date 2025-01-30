@@ -1,10 +1,11 @@
+import { useEffect, useState } from 'react';
+import { Box, Text } from '@mantine/core';
+
+import { useGetBoolPropertyValue, useOpenSpaceApi } from '@/api/hooks';
+import { useAppSelector } from '@/redux/hooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
-import { Box, Text } from '@mantine/core';
 import { useWwtProvider } from './WwtProvider/hooks';
-import { useAppSelector } from '@/redux/hooks';
-import { useGetBoolPropertyValue, useOpenSpaceApi } from '@/api/hooks';
-import { useEffect, useState } from 'react';
 import {
   useUpdateAim,
   useUpdateBorderColor,
@@ -80,13 +81,13 @@ export function WorldWideTelescope() {
     <Text>No browsers</Text>
   ) : (
     <Box
-      component="button"
+      component={"button"}
       onMouseMove={(e) => handleDrag(e.clientX, e.clientY)}
       onMouseDown={(e) => mouseDown(e.clientX, e.clientY)}
       onMouseUp={mouseUp}
       onMouseLeave={mouseUp}
       onWheel={(e) => scroll(e.deltaY)}
-      aria-label="Dragging area for WorldWideTelescope"
+      aria-label={"Dragging area for WorldWideTelescope"}
       style={{
         position: 'absolute',
         backgroundColor: 'transparent',

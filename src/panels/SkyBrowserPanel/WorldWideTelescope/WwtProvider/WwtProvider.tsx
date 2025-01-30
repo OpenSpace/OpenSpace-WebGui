@@ -1,9 +1,10 @@
 import { PropsWithChildren, useEffect } from 'react';
 
-import { WwtContext } from './WwtContext';
-import { useMessages, useStartPingingWwt, useWwtEventListener } from './hooks';
 import { useGetStringPropertyValue } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
+
+import { useMessages, useStartPingingWwt, useWwtEventListener } from './hooks';
+import { WwtContext } from './WwtContext';
 
 export function WwtProvider({ children }: PropsWithChildren) {
   const {

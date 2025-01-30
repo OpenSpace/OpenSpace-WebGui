@@ -1,5 +1,6 @@
 import { ActionIcon, Group } from '@mantine/core';
-import { TabButton } from './TabButton';
+
+import { useOpenSpaceApi } from '@/api/hooks';
 import {
   EyeIcon,
   MoveTargetIcon,
@@ -9,11 +10,13 @@ import {
   ZoomInIcon,
   ZoomOutIcon
 } from '@/icons/icons';
+import { useAppSelector } from '@/redux/hooks';
+
+import { useSelectedBrowserFov, useSkyBrowserSelectedImages } from '../hooks';
+
 import { SelectedImagesList } from './SelectedImagesList';
 import { Settings } from './Settings';
-import { useOpenSpaceApi } from '@/api/hooks';
-import { useAppSelector } from '@/redux/hooks';
-import { useSelectedBrowserFov, useSkyBrowserSelectedImages } from '../hooks';
+import { TabButton } from './TabButton';
 
 interface Props {
   showSettings: boolean;

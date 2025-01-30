@@ -5,8 +5,9 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { PlusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
-import { TabContent } from './TabContent';
 import { useSkyBrowserColors, useSkyBrowserIds, useSkyBrowserNames } from '../hooks';
+
+import { TabContent } from './TabContent';
 
 interface Props {
   openWorldWideTelescope: () => void;

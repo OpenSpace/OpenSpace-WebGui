@@ -1,11 +1,12 @@
 import { useAppSelector } from '@/redux/hooks';
 
-import { DistanceSortThreshold, euclidianDistance, isWithinFOV } from './util';
 import {
   useSelectedBrowserCoords,
   useSelectedBrowserFov,
   useSkyBrowserCartesianDirection
 } from '../hooks';
+
+import { DistanceSortThreshold, euclidianDistance, isWithinFOV } from './util';
 
 export function useGetImagesInView() {
   const { ra, dec } = useSelectedBrowserCoords();

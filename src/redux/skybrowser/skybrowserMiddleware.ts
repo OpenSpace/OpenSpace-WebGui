@@ -4,11 +4,11 @@ const subscribeToSkyBrowser = createAction<void>('skybrowser/subscribe');
 const unsubscribeToSkyBrowser = createAction<void>('skybrowser/unsubscribe');
 
 import { api } from '@/api/api';
+import { ConnectionStatus } from '@/types/enums';
 
 import { AppStartListening } from '../listenerMiddleware';
 
 import { subscriptionIsSetup, updateSkyBrowser } from './skybrowserSlice';
-import { ConnectionStatus } from '@/types/enums';
 
 let skybrowserTopic: any;
 let nSubscribers = 0;

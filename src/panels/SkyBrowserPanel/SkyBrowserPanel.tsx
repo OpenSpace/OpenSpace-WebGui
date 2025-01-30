@@ -1,15 +1,15 @@
+import { useEffect } from 'react';
 import { Button, Container, Divider, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
+import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { ImageListWrapper } from './ImageList/ImageListWrapper';
 import { BrowserTabs } from './Tabs/BrowserTabs';
-import { useGetSkyBrowserData } from './hooks';
-import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
-import { useEffect } from 'react';
-import { WwtProvider } from './WorldWideTelescope/WwtProvider/WwtProvider';
 import { WorldWideTelescope } from './WorldWideTelescope/WorldWideTelescope';
+import { WwtProvider } from './WorldWideTelescope/WwtProvider/WwtProvider';
+import { useGetSkyBrowserData } from './hooks';
 
 export function SkyBrowserPanel() {
   const isInitialized = useAppSelector((state) => state.skybrowser.isInitialized);

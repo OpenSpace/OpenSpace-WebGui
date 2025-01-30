@@ -1,7 +1,8 @@
-import { DragHandleIcon } from '@/icons/icons';
+import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
 import { ActionIcon, Box, Group } from '@mantine/core';
-import { useEffect, useState } from 'react';
+
+import { DragHandleIcon } from '@/icons/icons';
 
 export interface OnDragEndProps<T> {
   oldIndex: number;
@@ -60,7 +61,7 @@ export function DragDropList<T>({
             {localCache.map((element, i) => (
               <Draggable key={keyFunc(element)} draggableId={keyFunc(element)} index={i}>
                 {(item) => (
-                  <Group ref={item.innerRef} {...item.draggableProps} wrap="nowrap">
+                  <Group ref={item.innerRef} {...item.draggableProps} wrap={"nowrap"}>
                     {dragHandlePosition === 'right' && (
                       <Box flex={1}>{renderFunc(element, i)}</Box>
                     )}

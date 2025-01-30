@@ -1,10 +1,12 @@
+import { useCallback } from 'react';
+
+import { useOpenSpaceApi } from '@/api/hooks';
+import { DragDropList, OnDragEndProps } from '@/components/DragDropList/DragDropList';
 import { useAppSelector } from '@/redux/hooks';
 
-import { SelectedImageCard } from './SelectedImageCard';
-import { useOpenSpaceApi } from '@/api/hooks';
 import { useSkyBrowserSelectedImages, useSkyBrowserSelectedOpacities } from '../hooks';
-import { DragDropList, OnDragEndProps } from '@/components/DragDropList/DragDropList';
-import { useCallback } from 'react';
+
+import { SelectedImageCard } from './SelectedImageCard';
 
 export function SelectedImagesList() {
   const luaApi = useOpenSpaceApi();

@@ -1,6 +1,8 @@
-import { useAppSelector } from '@/redux/hooks';
-import { useWwtProvider } from './WwtProvider/hooks';
 import { useEffect } from 'react';
+
+import { useAppSelector } from '@/redux/hooks';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
+
 import {
   useSelectedBrowserColor,
   useSelectedBrowserCoords,
@@ -9,7 +11,8 @@ import {
   useSkyBrowserSelectedImages,
   useSkyBrowserSelectedOpacities
 } from '../hooks';
-import { useWindowSize } from '@/windowmanagement/Window/hooks';
+
+import { useWwtProvider } from './WwtProvider/hooks';
 
 // These are the hooks that will keep tabs of the redux state and
 // when it changes, it will pass along these messages to WWT
@@ -53,7 +56,7 @@ export function useUpdateOpacities() {
       if (!selectedImages) {
         return;
       }
-      const url = imageList[selectedImages[i]].url;
+      const {url} = imageList[selectedImages[i]];
       setOpacity(url, opacity);
     });
   }, [imageList, selectedImages, opacities, imageCollectionLoaded]);

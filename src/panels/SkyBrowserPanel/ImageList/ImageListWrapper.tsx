@@ -1,13 +1,13 @@
 import { memo, useMemo, useState } from 'react';
 import { Select } from '@mantine/core';
 
+import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { useAppSelector } from '@/redux/hooks';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { ImageList } from './ImageList';
 import { NearestImages } from './NearestImages';
 import { ViewingMode } from './util';
-import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
-import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 // Memoizing this as it doesn't have any props and it is very expensive
 export const ImageListWrapper = memo(function ImageListSection() {
