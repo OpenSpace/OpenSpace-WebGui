@@ -1,5 +1,4 @@
 import { memo, useMemo } from 'react';
-import { Divider } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { FilterListGrid } from '@/components/FilterList/FilterListGrid';
@@ -32,21 +31,20 @@ export const ImageList = memo(function ImageList({
   );
 
   return imageList.length > 0 ? (
-    <>
-      <Divider my={'md'} />
-      <FilterList height={'200px'}>
-        <FilterList.InputField />
-        <FilterListGrid<SkyBrowserImage>
-          data={imageList}
-          grid={true}
-          estimateSize={145}
-          gap={15}
-          renderElement={renderImageCard}
-          matcherFunc={matcherFunc}
-          columns={3}
-        />
-      </FilterList>
-    </>
+    <FilterList>
+      <FilterList.InputField
+        placeHolderSearchText={`Search ${imageList.length} image${imageList.length > 1 ? 's' : ''}...`}
+      />
+      <FilterListGrid<SkyBrowserImage>
+        data={imageList}
+        grid={true}
+        estimateSize={145}
+        gap={15}
+        renderElement={renderImageCard}
+        matcherFunc={matcherFunc}
+        columns={6}
+      />
+    </FilterList>
   ) : (
     noImagesText
   );

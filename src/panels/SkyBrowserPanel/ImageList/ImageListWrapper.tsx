@@ -6,6 +6,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { ImageList } from './ImageList';
 import { NearestImages } from './NearestImages';
 import { ViewingMode } from './util';
+import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 
 // Memoizing this as it doesn't have any props and it is very expensive
 export const ImageListWrapper = memo(function ImageListSection() {
@@ -28,12 +29,17 @@ export const ImageListWrapper = memo(function ImageListSection() {
         value={value}
         onChange={(_, option) => setValue(option.value)}
         allowDeselect={false}
+        mb={'md'}
       />
-      {value === ViewingMode.nearestImages ? (
-        <NearestImages />
-      ) : (
-        <ImageList imageList={value === ViewingMode.allImages ? allImages : skySurveys} />
-      )}
+      <ResizeableContent defaultHeight={450}>
+        {value === ViewingMode.nearestImages ? (
+          <NearestImages />
+        ) : (
+          <ImageList
+            imageList={value === ViewingMode.allImages ? allImages : skySurveys}
+          />
+        )}
+      </ResizeableContent>
     </>
   );
 });
