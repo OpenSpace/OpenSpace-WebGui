@@ -1,19 +1,9 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
-const ReactCompilerConfig = {
-  target: '18'
-};
-
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react({
-      babel: {
-        plugins: [['babel-plugin-react-compiler', ReactCompilerConfig]]
-      }
-    })
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
       '@/api': '/src/api',
