@@ -2,6 +2,7 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { api } from '@/api/api';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
+import { ConnectionStatus } from '@/types/enums';
 
 import { onCloseConnection, onOpenConnection, startConnection } from './connectionSlice';
 
@@ -17,13 +18,11 @@ export const connectToOpenSpace = createAsyncThunk(
     function onDisconnect() {
       thunkAPI.dispatch(onCloseConnection());
 
-      let reconnectionInterval = 1000;
+      const reconnectionInterval = 1000;
       setTimeout(() => {
         api.connect();
-        reconnectionInterval += 1000;
       }, reconnectionInterval);
     }
-
     api.onConnect(onConnect);
     api.onDisconnect(onDisconnect);
     api.connect();
@@ -40,7 +39,8 @@ export const addConnectionListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: closeConnection,
     effect: async (_, listenerApi) => {
-      if (listenerApi.getState().connection.isConnected) {
+      const { connectionStatus } = listenerApi.getState().connection;
+      if (connectionStatus === ConnectionStatus.Connected) {
         api.disconnect();
       }
     }

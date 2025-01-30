@@ -6,6 +6,7 @@ import { api } from '@/api/api';
 import { onCloseConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { RootState } from '@/redux/store';
+import { ConnectionStatus } from '@/types/enums';
 import { PropertyValue, Uri } from '@/types/types';
 
 import { addProperties, setPropertyValue, updatePropertyValue } from './propertiesSlice';
@@ -115,7 +116,7 @@ function tryPromoteSubscription(
 ) {
   const subscriptionInfo = subscriptionInfos[uri];
 
-  if (!state.connection.isConnected) {
+  if (state.connection.connectionStatus !== ConnectionStatus.Connected) {
     return;
   }
 

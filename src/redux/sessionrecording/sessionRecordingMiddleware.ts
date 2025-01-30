@@ -4,6 +4,7 @@ import { Topic } from 'openspace-api-js';
 import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
+import { ConnectionStatus } from '@/types/enums';
 
 import { SessionRecordingState, updateSessionrecording } from './sessionRecordingSlice';
 
@@ -79,8 +80,8 @@ export const addSessionRecordingListener = (startListening: AppStartListening) =
     actionCreator: subscribeToSessionRecording,
     effect: async (_, listenerApi) => {
       ++nSubscribers;
-      const { isConnected } = listenerApi.getState().connection;
-      if (nSubscribers === 1 && isConnected) {
+      const { connectionStatus } = listenerApi.getState().connection;
+      if (nSubscribers === 1 && connectionStatus === ConnectionStatus.Connected) {
         listenerApi.dispatch(setupSubscription());
       }
     }

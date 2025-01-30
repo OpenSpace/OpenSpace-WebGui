@@ -2,16 +2,16 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
+import { getAction } from '@/redux/actions/actionsMiddleware';
+import { removeAction } from '@/redux/actions/actionsSlice';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import {
   addUriToPropertyTree,
   removeUriFromPropertyTree
 } from '@/redux/propertytree/propertyTreeMiddleware';
+import { ConnectionStatus } from '@/types/enums';
 import { EventData } from '@/types/event-types';
-
-import { getAction } from '../actions/actionsMiddleware';
-import { removeAction } from '../actions/actionsSlice';
 
 let eventTopic: Topic;
 let isSubscribed = false;
@@ -63,7 +63,8 @@ export const addEventsListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onOpenConnection,
     effect: (_, listenerApi) => {
-      if (!isSubscribed && listenerApi.getState().connection.isConnected) {
+      const { connectionStatus } = listenerApi.getState().connection;
+      if (!isSubscribed && connectionStatus === ConnectionStatus.Connected) {
         listenerApi.dispatch(setupEventsSubscription());
         isSubscribed = true;
       }
@@ -72,7 +73,8 @@ export const addEventsListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onCloseConnection,
     effect: (_, listenerApi) => {
-      if (isSubscribed && listenerApi.getState().connection.isConnected) {
+      const { connectionStatus } = listenerApi.getState().connection;
+      if (isSubscribed && connectionStatus === ConnectionStatus.Connected) {
         tearDownSubscription();
       }
     }

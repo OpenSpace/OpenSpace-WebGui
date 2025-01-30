@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { ConnectionStatus } from '@/types/enums';
+
 export interface ConnectionState {
-  isConnected: boolean;
-  connectionLost: boolean;
+  connectionStatus: ConnectionStatus;
 }
 
 const initialState: ConnectionState = {
-  isConnected: false,
-  connectionLost: false
+  connectionStatus: ConnectionStatus.Connecting
 };
 
 export const connectionSlice = createSlice({
@@ -15,18 +15,14 @@ export const connectionSlice = createSlice({
   initialState,
   reducers: {
     startConnection: (state) => {
-      state.isConnected = false;
-      state.connectionLost = false;
-      return state;
+      state.connectionStatus = ConnectionStatus.Connecting;
     },
     onOpenConnection: (state) => {
-      state.isConnected = true;
-      state.connectionLost = false;
+      state.connectionStatus = ConnectionStatus.Connected;
       return state;
     },
     onCloseConnection: (state) => {
-      state.isConnected = false;
-      state.connectionLost = true;
+      state.connectionStatus = ConnectionStatus.Disconnected;
       return state;
     }
   }

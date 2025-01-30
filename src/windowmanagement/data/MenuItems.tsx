@@ -1,6 +1,21 @@
 import React from 'react';
-import { WindowLayoutPosition } from 'src/windowmanagement/WindowLayout/WindowLayout';
+import { Button } from '@mantine/core';
 
+import {
+  BrowserIcon,
+  CalendarIcon,
+  DashboardIcon,
+  ExoplanetIcon,
+  ExpandArrowsIcon,
+  FocusIcon,
+  InsertPhotoIcon,
+  KeyboardIcon,
+  LocationPinIcon,
+  RocketLaunchIcon,
+  TelescopeIcon,
+  TreeViewIcon,
+  VideocamIcon
+} from '@/icons/icons';
 import { ActionsPanel } from '@/panels/ActionsPanel/ActionsPanel';
 import { ExoplanetsPanel } from '@/panels/ExoplanetsPanel/ExoplanetsPanel';
 import { FlightControlPanel } from '@/panels/FlightControlPanel/FlightControlPanel';
@@ -17,22 +32,37 @@ import { SkyBrowserPanel } from '@/panels/SkyBrowserPanel/SkyBrowserPanel';
 import { TimePanel } from '@/panels/TimePanel/TimePanel';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { UserPanelsPanel } from '@/panels/UserPanelsPanel/UserPanelsPanel';
+import { IconSize } from '@/types/enums';
+
+import { WindowLayoutPosition } from '../WindowLayout/WindowLayout';
 
 export interface MenuItem {
   title: string; // Title of the rc-dock tab
   componentID: string; // Unqiue ID to identify this component among the rc-dock tabs
   content: React.JSX.Element; // Content to render inside the rc-dock tab
   renderMenuButton?: (key: string, onClick: () => void) => React.JSX.Element; // Custom menu button to render
+  renderIcon?: (size: IconSize) => React.JSX.Element; // Custom icon to render
   preferredPosition: WindowLayoutPosition; // Where this panel is instantiated
   defaultVisible: boolean; // Whether this panel is visible in the taskbar on startup
   visible?: boolean; // TODO: investigate whether this is needed (as of 2024-10-23 its not being used)
 }
 
-export const menuItemsDB: MenuItem[] = [
+export const menuItemsData: MenuItem[] = [
   {
     title: 'Scene',
     componentID: 'scene',
     content: <Scene />,
+    renderMenuButton: (key, onclick) => (
+      <Button
+        key={key}
+        onClick={onclick}
+        leftSection={<TreeViewIcon size={IconSize.lg} />}
+        size={'xl'}
+      >
+        Scene
+      </Button>
+    ),
+    renderIcon: (size) => <TreeViewIcon size={size} />,
     preferredPosition: 'left',
     defaultVisible: true
   },
@@ -43,6 +73,7 @@ export const menuItemsDB: MenuItem[] = [
     renderMenuButton: (key, onClick) => (
       <OriginPanelMenuButton key={key} onClick={onClick} />
     ),
+    renderIcon: (size) => <FocusIcon size={size} />,
     preferredPosition: 'float',
     defaultVisible: true
   },
@@ -53,6 +84,7 @@ export const menuItemsDB: MenuItem[] = [
     renderMenuButton: (key, onClick) => (
       <TimePanelMenuButton key={key} onClick={onClick} />
     ),
+    renderIcon: (size) => <CalendarIcon size={size} />,
     preferredPosition: 'float',
     defaultVisible: true
   },
@@ -63,6 +95,7 @@ export const menuItemsDB: MenuItem[] = [
     renderMenuButton: (key, onClick) => (
       <SessionRecMenuButton key={key} onClick={onClick} />
     ),
+    renderIcon: (size) => <VideocamIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: true
   },
@@ -70,13 +103,15 @@ export const menuItemsDB: MenuItem[] = [
     title: 'Geo Location',
     componentID: 'geoLocation',
     content: <GeoLocationPanel />,
-    preferredPosition: 'left',
+    renderIcon: (size) => <LocationPinIcon size={size} />,
+    preferredPosition: 'right',
     defaultVisible: true
   },
   {
     title: 'Screenspace Renderables',
     componentID: 'screenSpaceRenderables',
     content: <ScreenSpaceRenderablePanel />,
+    renderIcon: (size) => <InsertPhotoIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: true
   },
@@ -84,48 +119,23 @@ export const menuItemsDB: MenuItem[] = [
     title: 'Exoplanets',
     componentID: 'exoplanets',
     content: <ExoplanetsPanel />,
+    renderIcon: (size) => <ExoplanetIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: true
-  },
-  {
-    title: 'User Control',
-    componentID: 'userControl',
-    content: <div>User control menu</div>,
-    preferredPosition: 'right',
-    defaultVisible: false
-  },
-  {
-    title: 'Actions',
-    componentID: 'actions',
-    content: <ActionsPanel />,
-    preferredPosition: 'float',
-    defaultVisible: true
-  },
-  {
-    title: 'Mission',
-    componentID: 'mission',
-    content: <MissionsPanel />,
-    preferredPosition: 'right',
-    defaultVisible: true
-  },
-  {
-    title: 'Flight Control',
-    componentID: 'flightControl',
-    content: <FlightControlPanel />,
-    preferredPosition: 'right',
-    defaultVisible: false
-  },
-  {
-    title: 'Keybindings Layout',
-    componentID: 'keybindingsLayout',
-    content: <KeyBindsPanel />,
-    preferredPosition: 'float',
-    defaultVisible: false
   },
   {
     title: 'User Panels',
     componentID: 'userPanels',
     content: <UserPanelsPanel />,
+    renderIcon: (size) => <BrowserIcon size={size} />,
+    preferredPosition: 'float',
+    defaultVisible: true
+  },
+  {
+    title: 'Actions',
+    componentID: 'actions',
+    content: <ActionsPanel />,
+    renderIcon: (size) => <DashboardIcon size={size} />,
     preferredPosition: 'float',
     defaultVisible: true
   },
@@ -133,7 +143,32 @@ export const menuItemsDB: MenuItem[] = [
     title: 'Sky Browser',
     componentID: 'skyBrowser',
     content: <SkyBrowserPanel />,
+    renderIcon: (size) => <TelescopeIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: true
+  },
+  {
+    title: 'Mission',
+    componentID: 'mission',
+    content: <MissionsPanel />,
+    renderIcon: (size) => <RocketLaunchIcon size={size} />,
+    preferredPosition: 'right',
+    defaultVisible: true
+  },
+  {
+    title: 'Flight Control',
+    componentID: 'flightControl',
+    content: <FlightControlPanel />,
+    renderIcon: (size) => <ExpandArrowsIcon size={size} />,
+    preferredPosition: 'right',
+    defaultVisible: false
+  },
+  {
+    title: 'Keybindings Layout',
+    componentID: 'keybindingsLayout',
+    content: <KeyBindsPanel />,
+    renderIcon: (size) => <KeyboardIcon size={size} />,
+    preferredPosition: 'float',
+    defaultVisible: false
   }
 ];
