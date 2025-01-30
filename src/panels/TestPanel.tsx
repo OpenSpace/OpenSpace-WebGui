@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 export function TestPanel() {
   const { t } = useTranslation();
-  const { t: withCustomNamespace } = useTranslation(['otherNamespace']);
+  const { t: withCustomNamespace } = useTranslation('otherNamespace');
 
   return (
     <>

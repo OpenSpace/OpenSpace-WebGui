@@ -8,10 +8,10 @@ import { IconSize } from '@/types/enums';
 import { SupportedLanguages } from './config';
 
 export function LocaleSwitcher() {
-  const { t, i18n } = useTranslation(['settings']);
+  const { t, i18n } = useTranslation('settings');
 
   function languageIcon(): React.JSX.Element {
-    const {resolvedLanguage} = i18n;
+    const { resolvedLanguage } = i18n;
     return resolvedLanguage ? (
       SupportedLanguages[resolvedLanguage].icon
     ) : (
