@@ -25,6 +25,8 @@ export function VirtualGrid<T extends KeyType>({
   columns = 3,
   estimateSize
 }: VirtualGridProps<T>) {
+  // Create a new array with n no of data entries per entry,
+  // where n == columns
   const dataByColumns = useMemo(() => {
     const result: T[][] = [];
     for (let i = 0; i < data.length; i += columns) {
