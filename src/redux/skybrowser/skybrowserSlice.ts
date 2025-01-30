@@ -69,18 +69,23 @@ export const skyBrowserSlice = createSlice({
   name: 'skybrowser',
   initialState,
   reducers: {
-    updateSkyBrowser: (state, action: PayloadAction<SkyBrowserUpdate>) => {
+    subscriptionIsSetup: (state) => {
       state.isInitialized = true;
+      return state;
+    },
+    updateSkyBrowser: (state, action: PayloadAction<SkyBrowserUpdate>) => {
       state.cameraInSolarSystem = action.payload.cameraInSolarSystem;
       state.selectedBrowserId = action.payload.selectedBrowserId;
 
       // Derived state
       state.selectedBrowser = action.payload.browsers[state.selectedBrowserId];
-      // For some reason the indices are sent as strings... convert them to numbers
-      state.selectedBrowser.selectedImages = state.selectedBrowser.selectedImages.map(
-        (id) => (typeof id === 'string' ? parseInt(id) : id)
-      );
-      state.browserIds = Object.keys(action.payload.browsers);
+      if (state.selectedBrowser?.selectedImages !== undefined) {
+        // For some reason the indices are sent as strings... convert them to numbers
+        state.selectedBrowser.selectedImages = state.selectedBrowser.selectedImages.map(
+          (id) => (typeof id === 'string' ? parseInt(id) : id)
+        );
+      }
+      state.browserIds = Object.keys(action.payload.browsers) ?? [];
       // Get all colors
       state.browserColors = state.browserIds.map(
         (id) => action.payload.browsers[id].color
@@ -108,6 +113,7 @@ export const {
   updateSkyBrowser,
   setImageCollectionData,
   onCloseConnection,
-  setActiveImage
+  setActiveImage,
+  subscriptionIsSetup
 } = skyBrowserSlice.actions;
 export const skyBrowserReducer = skyBrowserSlice.reducer;

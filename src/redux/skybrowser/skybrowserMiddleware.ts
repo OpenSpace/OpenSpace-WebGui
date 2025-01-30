@@ -7,7 +7,8 @@ import { api } from '@/api/api';
 
 import { AppStartListening } from '../listenerMiddleware';
 
-import { updateSkyBrowser } from './skybrowserSlice';
+import { subscriptionIsSetup, updateSkyBrowser } from './skybrowserSlice';
+import { ConnectionStatus } from '@/types/enums';
 
 let skybrowserTopic: any;
 let nSubscribers = 0;
@@ -25,6 +26,7 @@ export const setupSubscription = createAsyncThunk(
         thunkAPI.dispatch(updateSkyBrowser(data));
       }
     })();
+    thunkAPI.dispatch(subscriptionIsSetup());
   }
 );
 
@@ -43,8 +45,8 @@ export const addSkyBrowserListener = (startListening: AppStartListening) => {
     actionCreator: subscribeToSkyBrowser,
     effect: (_, listenerApi) => {
       ++nSubscribers;
-      const { isConnected } = listenerApi.getState().connection;
-      if (nSubscribers === 1 && isConnected) {
+      const { connectionStatus } = listenerApi.getState().connection;
+      if (connectionStatus === ConnectionStatus.Connected) {
         listenerApi.dispatch(setupSubscription());
       }
     }

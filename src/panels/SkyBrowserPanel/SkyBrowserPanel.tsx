@@ -37,20 +37,20 @@ export function SkyBrowserPanel() {
       }
     );
   }
-
   if (!isInitialized || !luaApi) {
     return <Text>...Loading...</Text>;
   }
-  if (!cameraInSolarSystem) {
-    return <Text>Camera has to be in solar system for skybrowser to work</Text>;
-  }
-  if (noOfBrowsers === 0) {
+  if (isInitialized && noOfBrowsers === 0) {
     return (
       <Button onClick={() => luaApi.skybrowser.createTargetBrowserPair()}>
         Add browser
       </Button>
     );
   }
+  if (!cameraInSolarSystem) {
+    return <Text>Camera has to be in solar system for skybrowser to work</Text>;
+  }
+
   return (
     <Container>
       <Title>SkyBrowser</Title>
