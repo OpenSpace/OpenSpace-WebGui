@@ -6,6 +6,7 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import react from 'eslint-plugin-react';
 import tseslint from 'typescript-eslint';
 import js from '@eslint/js';
+import reactCompiler from 'eslint-plugin-react-compiler';
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -25,7 +26,8 @@ export default tseslint.config(
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       react: react,
-      'simple-import-sort': simpleImportSort
+      'simple-import-sort': simpleImportSort,
+      'react-compiler': reactCompiler
     },
     linterOptions: {
       reportUnusedDisableDirectives: 'error'
@@ -34,6 +36,7 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       '@typescript-eslint/no-explicit-any': 'error', // Disallow usage of any
+      'react-compiler/react-compiler': 'error',
       'no-duplicate-imports': 'error', // Imports should be on one line
       'no-console': 'warn',
       'prefer-destructuring': ['error', { object: true, array: true }],
