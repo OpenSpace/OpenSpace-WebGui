@@ -20,7 +20,7 @@ export function MenuWrapper({
   position = 'bottom-start',
   offset = 8,
   withArrow = true,
-  arrowPosition = 'center',
+  arrowPosition = 'side',
   children,
   ...props
 }: Props) {

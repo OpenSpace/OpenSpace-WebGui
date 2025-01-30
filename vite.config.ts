@@ -9,6 +9,7 @@ export default defineConfig({
       '@/api': '/src/api',
       '@/components': '/src/components',
       '@/icons': '/src/icons',
+      '@/localization': '/src/localization',
       '@/panels': '/src/panels',
       '@/public': '/public',
       '@/redux': '/src/redux',

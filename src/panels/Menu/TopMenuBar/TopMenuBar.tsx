@@ -12,6 +12,7 @@ import {
 } from '@/icons/icons';
 
 import { HelpMenu } from './HelpMenu';
+import { LocaleSwitcher } from './LocaleSwitcher';
 import { MenuWrapper } from './MenuWrapper';
 import { NewWindowMenu } from './NewWindowMenu';
 import { TaskBarMenuChoices } from './TaskBarMenuChoices';
@@ -97,6 +98,7 @@ export function TopMenuBar({ visibleMenuItems, setVisibleMenuItems }: TopMenuBar
         </Menu.Dropdown>
       </MenuWrapper>
       <HelpMenu />
+      <LocaleSwitcher />
     </Group>
   );
 }

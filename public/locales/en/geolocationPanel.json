@@ -1,0 +1,33 @@
+{
+  "selectAnchor": "Select an anchor",
+  "noPanelAvailable": "Currently, no data is available for locations on {{anchor}}",
+
+  "earthPanel": {
+    "searchPlaceholder": "Search places...",
+    "search": "Search",
+    "results": "Results",
+    "tabs": {
+      "searchPlace": "Search Places",
+      "customCoordinates": "Custom Coordinates"
+    },
+    "settings": {
+      "tooltip": "Calculates an appropriate altitude automatically if unchecked",
+      "useCustomAltitude": "Use custom altitude",
+      "inputfieldCustomAltitude": "Custom altitude (km)"
+    },
+    "filterList": {
+      "placeholder": "Filter search",
+      "noResults": "Nothing found. Try another search!"
+    },
+    "customCoordinates": {
+      "previewCustomName": "Custom Coordinate ({{lat}}, {{long}}, {{alt}} km)",
+      "inputLat": "Latitude (deg)",
+      "inputLong": "Longitude (deg)",
+      "inputAlt": "Altitude (km)",
+      "customNameLabel": "Node name (optional)",
+      "addFocus": "Add Focus"
+    },
+    "addedNodes": "Added Nodes",
+    "emptyNodesList": "No added nodes"
+  }
+}

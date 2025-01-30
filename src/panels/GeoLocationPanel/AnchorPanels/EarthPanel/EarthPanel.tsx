@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
   Button,
@@ -39,6 +40,7 @@ export function EarthPanel({ currentAnchor }: Props) {
   const luaApi = useOpenSpaceApi();
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const groups = useAppSelector((state) => state.groups.groups);
+  const { t } = useTranslation('geolocationPanel', { keyPrefix: 'earthPanel' });
 
   const geoLocationOwners = groups[GeoLocationGroupKey]?.propertyOwners.map((uri) => {
     const index = uri.indexOf(ScenePrefixKey);
@@ -52,7 +54,7 @@ export function EarthPanel({ currentAnchor }: Props) {
   });
 
   const addedCustomNodes = geoLocationOwners ?? [];
-  const SearchPlaceKey = 'Search Place';
+  const SearchPlaceKey = 'searchPlace';
   const CustomCoordinatesKey = 'Custom Coordinates';
 
   async function getPlaces(): Promise<void> {
@@ -143,36 +145,34 @@ export function EarthPanel({ currentAnchor }: Props) {
     <>
       <Tabs variant={'outline'} radius={'md'} defaultValue={SearchPlaceKey}>
         <Tabs.List>
-          <Tabs.Tab value={SearchPlaceKey}>Search Place</Tabs.Tab>
-          <Tabs.Tab value={CustomCoordinatesKey}>Custom Coordinates</Tabs.Tab>
+          <Tabs.Tab value={SearchPlaceKey}>{t('tabs.searchPlace')}</Tabs.Tab>
+          <Tabs.Tab value={CustomCoordinatesKey}>{t('tabs.customCoordinates')}</Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value={SearchPlaceKey}>
           <TextInput
-            placeholder={'Search places...'}
+            placeholder={t('searchPlaceholder')}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
                 getPlaces();
               }
             }}
             onChange={(event) => setInputValue(event.target.value)}
-            rightSection={<Button onClick={() => getPlaces()}>Search</Button>}
+            rightSection={<Button onClick={() => getPlaces()}>{t('search')}</Button>}
             rightSectionWidth={'md'}
             my={'xs'}
           />
 
           <Group justify={'space-between'}>
             <Title order={3} my={'xs'}>
-              Results
+              {t('results')}
             </Title>
             <SettingsPopout>
-              <Tooltip
-                label={'Calculates an appropriate altitude automatically if unchecked'}
-              >
+              <Tooltip label={t('settings.tooltip')}>
                 <Checkbox
                   checked={isCustomAltitude}
                   onChange={(event) => setIsCustomAltitude(event.currentTarget.checked)}
-                  label={'Use custom altitude'}
+                  label={t('settings.useCustomAltitude')}
                   m={'xs'}
                 />
               </Tooltip>
@@ -183,7 +183,7 @@ export function EarthPanel({ currentAnchor }: Props) {
                     setCustomAltitude(value);
                   }
                 }}
-                label={'Custom altitude (km)'}
+                label={t('settings.inputfieldCustomAltitude')}
                 disabled={!isCustomAltitude}
                 defaultValue={300}
                 min={0}
@@ -195,7 +195,9 @@ export function EarthPanel({ currentAnchor }: Props) {
           {places.length > 0 ? (
             <ResizeableContent defaultHeight={250}>
               <FilterList>
-                <FilterList.InputField placeHolderSearchText={'Filter search'} />
+                <FilterList.InputField
+                  placeHolderSearchText={t('filterList.placeholder')}
+                />
                 <FilterList.Data<Candidate>
                   data={places}
                   renderElement={(place) => (
@@ -215,7 +217,7 @@ export function EarthPanel({ currentAnchor }: Props) {
               </FilterList>
             </ResizeableContent>
           ) : (
-            <Text>Nothing found. Try another search!</Text>
+            <Text>{t('filterList.noResults')}</Text>
           )}
         </Tabs.Panel>
         <Tabs.Panel value={CustomCoordinatesKey}>
@@ -230,7 +232,7 @@ export function EarthPanel({ currentAnchor }: Props) {
       </Tabs>
 
       <Title order={2} my={'md'}>
-        Added Nodes
+        {t('addedNodes')}
       </Title>
       {addedCustomNodes.length > 0 ? (
         <Container my={'md'}>
@@ -254,7 +256,7 @@ export function EarthPanel({ currentAnchor }: Props) {
           ))}
         </Container>
       ) : (
-        <Text>No added nodes</Text>
+        <Text> {t('emptyNodesList')}</Text>
       )}
     </>
   );

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Flex, Group, Stack, TextInput } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
@@ -21,8 +22,11 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
   const [long, setLong] = useState(0);
   const [alt, setAlt] = useState(0);
   const [customName, setCustomName] = useState('');
+  const { t } = useTranslation('geolocationPanel', {
+    keyPrefix: 'earthPanel.customCoordinates'
+  });
   const altInKm = alt * 1000;
-  const previewCustomName = `Custom Coordinate (${lat},${long},${alt}km)`;
+  const previewCustomName = t('previewCustomName', { lat: lat, long: long, alt: alt });
 
   function onClick() {
     const address = customName || previewCustomName;
@@ -33,7 +37,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
     <Stack gap={'xs'}>
       <Flex gap={'xs'} align={'end'}>
         <InlineInput
-          label={'Latitude (deg)'}
+          label={t('inputLat')}
           value={lat}
           onInputChange={(value: number, relative: boolean) => {
             setLat((oldvalue) => {
@@ -46,7 +50,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
           style={{ flexGrow: 1 }}
         />
         <InlineInput
-          label={'Longitude (deg)'}
+          label={t('inputLong')}
           value={long}
           onInputChange={(value: number, relative: boolean) => {
             setLong((oldvalue) => {
@@ -59,7 +63,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
           style={{ flexGrow: 1 }}
         />
         <InlineInput
-          label={'Altitude'}
+          label={t('inputAlt')}
           value={alt}
           onInputChange={(value: number, relative: boolean) => {
             setAlt((oldvalue) => {
@@ -74,7 +78,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
       <TextInput
         value={customName}
         onChange={(event) => setCustomName(event.currentTarget.value)}
-        label={'Node name (optional)'}
+        label={t('customNameLabel')}
         placeholder={
           previewCustomName !== '' ? previewCustomName : 'Custom name (optional)'
         }
@@ -97,7 +101,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
           alt={altInKm}
         />
         <Button onClick={onClick} size={'sm'} leftSection={<PlusIcon />}>
-          Add Focus
+          {t('addFocus')}
         </Button>
       </Group>
     </Stack>

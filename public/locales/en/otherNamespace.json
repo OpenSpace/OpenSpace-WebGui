@@ -1,0 +1,4 @@
+{
+  "bar": "This text is from a custom namespace",
+  "baz": "We can also access a namespace using the option param: ns"
+}

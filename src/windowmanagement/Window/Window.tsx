@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Box } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
@@ -42,7 +42,8 @@ export function Window({ children }: PropsWithChildren) {
     >
       <Box h={'100%'} ref={ref}>
         <ErrorBoundary fallbackRender={fallbackRender} onReset={handleReset}>
-          {children}
+          {/*The Suspense catches while language translation is downloading files */}
+          <Suspense fallback={<Box>Loading...</Box>}>{children}</Suspense>
         </ErrorBoundary>
       </Box>
     </WindowSizeContext.Provider>
