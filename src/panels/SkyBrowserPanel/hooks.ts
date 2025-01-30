@@ -36,9 +36,9 @@ export function useGetWwtImageCollection() {
     try {
       getWwtListOfImages();
     } catch (e) {
-      console.error(e);
+      throw Error(`Could not load image collection from OpenSpace: ${e}`);
     }
-  }, [luaApi]);
+  }, [luaApi, dispatch]);
 }
 
 export function useGetSkyBrowserData() {

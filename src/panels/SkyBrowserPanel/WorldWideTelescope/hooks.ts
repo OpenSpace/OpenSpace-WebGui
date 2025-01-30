@@ -37,7 +37,7 @@ export function useUpdateSelectedImages() {
       loadImage(imageList[index]?.url);
     });
     return () => selectedImages?.forEach((image) => removeImage(imageList[image].url));
-  }, [imageList, selectedImages, imageCollectionLoaded]);
+  }, [imageList, selectedImages, imageCollectionLoaded, loadImage, removeImage]);
 }
 
 export function useUpdateOpacities() {
@@ -56,10 +56,10 @@ export function useUpdateOpacities() {
       if (!selectedImages) {
         return;
       }
-      const {url} = imageList[selectedImages[i]];
+      const { url } = imageList[selectedImages[i]];
       setOpacity(url, opacity);
     });
-  }, [imageList, selectedImages, opacities, imageCollectionLoaded]);
+  }, [imageList, selectedImages, opacities, imageCollectionLoaded, setOpacity]);
 }
 
 export function useUpdateAim() {
@@ -87,7 +87,7 @@ export function useUpdateBorderColor() {
     if (borderColor && wwtHasLoaded) {
       setBorderColor(borderColor);
     }
-  }, [borderColor, wwtHasLoaded]);
+  }, [borderColor, wwtHasLoaded, setBorderColor]);
 }
 
 export function useUpdateBorderRadius() {

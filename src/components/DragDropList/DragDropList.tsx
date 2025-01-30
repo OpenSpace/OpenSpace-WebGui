@@ -61,7 +61,7 @@ export function DragDropList<T>({
             {localCache.map((element, i) => (
               <Draggable key={keyFunc(element)} draggableId={keyFunc(element)} index={i}>
                 {(item) => (
-                  <Group ref={item.innerRef} {...item.draggableProps} wrap={"nowrap"}>
+                  <Group ref={item.innerRef} {...item.draggableProps} wrap={'nowrap'}>
                     {dragHandlePosition === 'right' && (
                       <Box flex={1}>{renderFunc(element, i)}</Box>
                     )}

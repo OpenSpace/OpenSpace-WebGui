@@ -33,6 +33,14 @@ export function WorldWideTelescope() {
   useUpdateBorderRadius();
   useUpdateBorderColor();
 
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+    const ratio = width / height;
+    luaApi?.skybrowser.setBrowserRatio(id, ratio);
+  }, [width, height, id, luaApi?.skybrowser]);
+
   function handleDrag(x: number, y: number) {
     if (!id) {
       return;
@@ -69,25 +77,17 @@ export function WorldWideTelescope() {
     luaApi?.skybrowser.stopAnimations(id);
   }
 
-  useEffect(() => {
-    if (!id) {
-      return;
-    }
-    const ratio = width / height;
-    luaApi?.skybrowser.setBrowserRatio(id, ratio);
-  }, [width, height]);
-
   return noOfBrowsers === 0 ? (
     <Text>No browsers</Text>
   ) : (
     <Box
-      component={"button"}
+      component={'button'}
       onMouseMove={(e) => handleDrag(e.clientX, e.clientY)}
       onMouseDown={(e) => mouseDown(e.clientX, e.clientY)}
       onMouseUp={mouseUp}
       onMouseLeave={mouseUp}
       onWheel={(e) => scroll(e.deltaY)}
-      aria-label={"Dragging area for WorldWideTelescope"}
+      aria-label={'Dragging area for WorldWideTelescope'}
       style={{
         position: 'absolute',
         backgroundColor: 'transparent',

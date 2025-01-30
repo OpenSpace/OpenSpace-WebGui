@@ -41,7 +41,7 @@ export function WwtProvider({ children }: PropsWithChildren) {
       hideChrome();
       loadImageCollection(url);
     }
-  }, [wwtHasLoaded]);
+  }, [wwtHasLoaded, hideChrome, loadImageCollection, url]);
 
   // If we have no browsers we want to reset the flags for next time
   useEffect(() => {
@@ -49,7 +49,7 @@ export function WwtProvider({ children }: PropsWithChildren) {
       setWwtHasLoaded(false);
       setImageCollectionLoaded(false);
     }
-  }, [noOfBrowsers]);
+  }, [noOfBrowsers, setWwtHasLoaded, setImageCollectionLoaded]);
 
   return (
     <WwtContext.Provider

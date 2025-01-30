@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Button, Container, Divider, Text, Title } from '@mantine/core';
+import { useCallback, useEffect } from 'react';
+import { Button, Container, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
@@ -22,11 +22,8 @@ export function SkyBrowserPanel() {
 
   useGetSkyBrowserData();
 
-  useEffect(() => {
-    openWorldWideTelescope();
-  }, [addWindow]);
-
-  function openWorldWideTelescope() {
+  // Use useCallback here so we don't trigger the effect every render
+  const openWorldWideTelescope = useCallback(() => {
     addWindow(
       <WwtProvider>
         <WorldWideTelescope />
@@ -36,7 +33,13 @@ export function SkyBrowserPanel() {
         title: 'World Wide Telescope'
       }
     );
-  }
+  }, [addWindow]);
+
+  // Call this function first render to open the wwt window
+  useEffect(() => {
+    openWorldWideTelescope();
+  }, [openWorldWideTelescope]);
+
   if (!isInitialized || !luaApi) {
     return <Text>...Loading...</Text>;
   }
