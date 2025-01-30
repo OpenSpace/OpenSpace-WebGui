@@ -1,8 +1,9 @@
 import { PropsWithChildren, useEffect } from 'react';
 
 import { WwtContext } from './WwtContext';
-import { useMessages, startPingingWwt, useWwtEventListener } from './hooks';
+import { useMessages, useStartPingingWwt, useWwtEventListener } from './hooks';
 import { useGetStringPropertyValue } from '@/api/hooks';
+import { useAppSelector } from '@/redux/hooks';
 
 export function WwtProvider({ children }: PropsWithChildren) {
   const {
@@ -18,14 +19,20 @@ export function WwtProvider({ children }: PropsWithChildren) {
   } = useMessages();
   // Set up the message listener which will tell us once wwt has been loaded
   // and when the image collection has been loaded
-  const { imageCollectionLoaded, wwtHasLoaded } = useWwtEventListener();
+  const {
+    imageCollectionLoaded,
+    wwtHasLoaded,
+    setWwtHasLoaded,
+    setImageCollectionLoaded
+  } = useWwtEventListener();
 
+  const noOfBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
+
+  const [url] = useGetStringPropertyValue('Modules.SkyBrowser.WwtImageCollectionUrl');
+  const connect = !wwtHasLoaded && url !== undefined && noOfBrowsers === 0;
   // Start pinging WWT with the set aim function
   // We want to make sure we have the image collection url so wait for that
-  const [url] = useGetStringPropertyValue('Modules.SkyBrowser.WwtImageCollectionUrl');
-  const connect = !wwtHasLoaded && url !== undefined;
-  startPingingWwt(connect, setAim);
-
+  useStartPingingWwt(connect, setAim);
   // Once wwt has been loaded, we pass messages to hide chrome and load the image
   // collection
   useEffect(() => {
@@ -34,6 +41,14 @@ export function WwtProvider({ children }: PropsWithChildren) {
       loadImageCollection(url);
     }
   }, [wwtHasLoaded]);
+
+  // If we have no browsers we want to reset the flags for next time
+  useEffect(() => {
+    if (noOfBrowsers === 0) {
+      setWwtHasLoaded(false);
+      setImageCollectionLoaded(false);
+    }
+  }, [noOfBrowsers]);
 
   return (
     <WwtContext.Provider

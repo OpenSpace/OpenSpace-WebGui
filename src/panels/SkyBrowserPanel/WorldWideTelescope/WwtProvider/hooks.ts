@@ -149,12 +149,17 @@ export function useWwtEventListener() {
     return () => window.removeEventListener('message', handleCallbackMessage);
   }, []);
 
-  return { wwtHasLoaded, imageCollectionLoaded };
+  return {
+    wwtHasLoaded,
+    imageCollectionLoaded,
+    setWwtHasLoaded,
+    setImageCollectionLoaded
+  };
 }
 
 // This hook will start sending messages to WorldWideTelescope to trigger a response
 // Once a response has been given we cancel the pinging
-export function startPingingWwt(
+export function useStartPingingWwt(
   connect: boolean,
   setAim: (ra: number, dec: number, fov: number, roll: number) => void
 ) {
