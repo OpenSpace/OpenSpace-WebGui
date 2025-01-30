@@ -6,21 +6,20 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
 
 import { ImageCard } from './ImageCard';
-import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 interface Props {
   imageList: SkyBrowserImage[];
   noImagesText?: string;
+  columns?: number;
 }
 
 // Memoizing this as it is very expensive
 // Generic component for all the images
 export const ImageList = memo(function ImageList({
   imageList,
-  noImagesText = 'Loading'
+  noImagesText = 'Loading',
+  columns
 }: Props) {
-  const { width } = useWindowSize();
-
   const renderImageCard = useMemo(
     () => (image: SkyBrowserImage) => {
       return <ImageCard image={image} />;
@@ -32,7 +31,6 @@ export const ImageList = memo(function ImageList({
     () => generateMatcherFunctionByKeys(['collection', 'name']),
     []
   );
-  const columns = Math.min(Math.floor(width / 150), 6);
 
   return imageList.length > 0 ? (
     <FilterList>
@@ -41,7 +39,6 @@ export const ImageList = memo(function ImageList({
       />
       <FilterListGrid<SkyBrowserImage>
         data={imageList}
-        grid={true}
         estimateSize={145}
         gap={15}
         renderElement={renderImageCard}

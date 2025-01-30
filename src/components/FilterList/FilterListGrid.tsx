@@ -12,7 +12,6 @@ export interface FilterListGridProps<T> {
   matcherFunc: (data: T, searchString: string) => boolean;
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
-  grid?: boolean;
   estimateSize?: number;
   columns?: number;
 }
