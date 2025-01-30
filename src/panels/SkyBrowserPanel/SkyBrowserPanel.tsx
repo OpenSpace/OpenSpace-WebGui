@@ -55,7 +55,6 @@ export function SkyBrowserPanel() {
     <Container>
       <Title>SkyBrowser</Title>
       <ImageListWrapper />
-      <Divider my={'md'} />
       <BrowserTabs openWorldWideTelescope={openWorldWideTelescope} />
     </Container>
   );
