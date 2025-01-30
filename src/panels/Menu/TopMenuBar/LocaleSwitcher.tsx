@@ -2,10 +2,9 @@ import { useTranslation } from 'react-i18next';
 import { ActionIcon, Menu } from '@mantine/core';
 
 import { LanguageIcon } from '@/icons/icons';
+import { SupportedLanguages } from '@/localization/config';
 import { MenuWrapper } from '@/panels/Menu/TopMenuBar/MenuWrapper';
 import { IconSize } from '@/types/enums';
-
-import { SupportedLanguages } from './config';
 
 export function LocaleSwitcher() {
   const { t, i18n } = useTranslation('settings');

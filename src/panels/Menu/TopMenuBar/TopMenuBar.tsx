@@ -10,9 +10,9 @@ import {
   SaveIcon,
   VisibilityIcon
 } from '@/icons/icons';
-import { LocaleSwitcher } from '@/localization/LocaleSwitcher';
 
 import { HelpMenu } from './HelpMenu';
+import { LocaleSwitcher } from './LocaleSwitcher';
 import { MenuWrapper } from './MenuWrapper';
 import { NewWindowMenu } from './NewWindowMenu';
 import { TaskBarMenuChoices } from './TaskBarMenuChoices';

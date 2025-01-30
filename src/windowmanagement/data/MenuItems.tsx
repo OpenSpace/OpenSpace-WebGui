@@ -28,7 +28,7 @@ import { Scene } from '@/panels/Scene/Scene';
 import { ScreenSpaceRenderablePanel } from '@/panels/ScreenSpaceRenderablePanel/ScreenSpaceRenderablePanel';
 import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
-import { TestPanel } from '@/panels/TestPanel';
+import { TestPanel } from '@/localization/example/TestPanel';
 import { TimePanel } from '@/panels/TimePanel/TimePanel';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { UserPanelsPanel } from '@/panels/UserPanelsPanel/UserPanelsPanel';
@@ -176,6 +176,6 @@ export const menuItemsData: MenuItem[] = [
     componentID: 'test',
     content: <TestPanel />,
     preferredPosition: 'right',
-    defaultVisible: true
+    defaultVisible: false
   }
 ];

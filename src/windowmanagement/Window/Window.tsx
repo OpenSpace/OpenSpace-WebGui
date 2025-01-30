@@ -42,7 +42,8 @@ export function Window({ children }: PropsWithChildren) {
     >
       <Box h={'100%'} ref={ref}>
         <ErrorBoundary fallbackRender={fallbackRender} onReset={handleReset}>
-          <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+          {/*The Suspense catches while language translation is downloading files */}
+          <Suspense fallback={<Box>Loading...</Box>}>{children}</Suspense>
         </ErrorBoundary>
       </Box>
     </WindowSizeContext.Provider>
