@@ -1,4 +1,4 @@
-import { Button, ColorInput, Title } from '@mantine/core';
+import { Button, ColorInput, Stack, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
@@ -41,8 +41,8 @@ export function Settings({ id }: Props) {
   }
 
   return (
-    <>
-      <Title>Settings</Title>
+    <Stack gap={5} my={'lg'}>
+      <Title order={2}>Settings</Title>
       <ColorInput
         label={'Color'}
         placeholder={'Set browser color...'}
@@ -50,9 +50,9 @@ export function Settings({ id }: Props) {
         defaultValue={color}
         onChange={setColor}
       />
-      <Button color={'red'} onClick={deleteBrowser}>
+      <Button color={'red'} onClick={deleteBrowser} mt={'lg'}>
         Delete browser
       </Button>
-    </>
+    </Stack>
   );
 }

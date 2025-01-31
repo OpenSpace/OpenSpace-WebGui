@@ -6,10 +6,11 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
 
 import { ImageCard } from './ImageCard';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 
 interface Props {
   imageList: SkyBrowserImage[];
-  noImagesText?: string;
+  noImagesText?: React.JSX.Element;
   columns?: number;
 }
 
@@ -17,8 +18,8 @@ interface Props {
 // Generic component for all the images
 export const ImageList = memo(function ImageList({
   imageList,
-  noImagesText = 'Loading',
-  columns
+  columns,
+  noImagesText = <LoadingBlocks />
 }: Props) {
   const renderImageCard = useMemo(
     () => (image: SkyBrowserImage) => {

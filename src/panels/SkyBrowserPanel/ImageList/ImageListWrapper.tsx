@@ -1,5 +1,5 @@
 import { memo, useMemo, useState } from 'react';
-import { Select } from '@mantine/core';
+import { Container, Select } from '@mantine/core';
 
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { useAppSelector } from '@/redux/hooks';
@@ -34,9 +34,9 @@ export const ImageListWrapper = memo(function ImageListSection() {
         value={value}
         onChange={(_, option) => setValue(option.value)}
         allowDeselect={false}
-        mb={'md'}
+        m={'md'}
       />
-      <ResizeableContent defaultHeight={450}>
+      <ResizeableContent defaultHeight={450} m={'md'} mb={'xs'}>
         {value === ViewingMode.nearestImages ? (
           <NearestImages columns={columns} />
         ) : (

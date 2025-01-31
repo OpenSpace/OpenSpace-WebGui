@@ -1,5 +1,5 @@
-import { useCallback, useEffect } from 'react';
-import { Button, Container, Text, Title } from '@mantine/core';
+import { useCallback, useEffect, useRef } from 'react';
+import { Box, Button, Container, ScrollArea, Stack, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
@@ -55,10 +55,9 @@ export function SkyBrowserPanel() {
   }
 
   return (
-    <Container>
-      <Title>SkyBrowser</Title>
+    <ScrollArea dir="y" h={'100%'}>
       <ImageListWrapper />
       <BrowserTabs openWorldWideTelescope={openWorldWideTelescope} />
-    </Container>
+    </ScrollArea>
   );
 }
