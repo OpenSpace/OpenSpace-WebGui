@@ -3,10 +3,10 @@ import { memo, useMemo } from 'react';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { FilterListGrid } from '@/components/FilterList/FilterListGrid';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
 
 import { ImageCard } from './ImageCard';
-import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 
 interface Props {
   imageList: SkyBrowserImage[];

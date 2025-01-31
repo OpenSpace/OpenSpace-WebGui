@@ -1,5 +1,5 @@
 import { memo, useMemo, useState } from 'react';
-import { Container, Select } from '@mantine/core';
+import { Select } from '@mantine/core';
 
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { useAppSelector } from '@/redux/hooks';
