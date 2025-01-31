@@ -13,6 +13,7 @@ export interface FilterListDataProps<T> {
   matcherFunc: (data: T, searchString: string) => boolean;
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
+  virtualize?: boolean; // Whether to use virtualization or not. Note that with virtualiation, the size of the items are limited...
 }
 
 export function FilterListData<T>({
@@ -20,7 +21,8 @@ export function FilterListData<T>({
   renderElement,
   matcherFunc,
   gap,
-  overscan
+  overscan,
+  virtualize = true
 }: FilterListDataProps<T>) {
   const { searchString, showFavorites, isLoading } = useFilterListProvider();
 
@@ -33,6 +35,14 @@ export function FilterListData<T>({
 
   if (isLoading) {
     return <LoadingBlocks />;
+  }
+
+  if (!virtualize) {
+    return (
+      !showFavorites && (
+        <>{filteredElements.map((element, i) => renderElement(element, i))}</>
+      )
+    );
   }
 
   return (
