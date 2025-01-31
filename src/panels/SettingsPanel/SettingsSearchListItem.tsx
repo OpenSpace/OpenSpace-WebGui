@@ -1,5 +1,7 @@
 import { Stack, Text } from '@mantine/core';
+import { useInViewport } from '@mantine/hooks';
 
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { removeLastWordFromUri } from '@/util/propertyTreeHelpers';
@@ -12,6 +14,8 @@ interface Props {
 }
 
 export function SettingsSearchListItem({ type, uri }: Props) {
+  const { ref, inViewport } = useInViewport();
+
   switch (type) {
     case SearchItemType.PropertyOwner:
       return <PropertyOwner uri={uri} />;
@@ -30,7 +34,11 @@ export function SettingsSearchListItem({ type, uri }: Props) {
           <Text truncate c={'dimmed'}>
             {removeLastWordFromUri(uri)}
           </Text>
-          <Property key={uri} uri={uri} />
+          <div ref={ref}>
+            {/* Do not render the properties until they are visible in the viewport, since
+                they have quite a bad performance */}
+            {inViewport ? <Property key={uri} uri={uri} /> : <LoadingBlocks n={1} />}
+          </div>
         </Stack>
       );
     default:
