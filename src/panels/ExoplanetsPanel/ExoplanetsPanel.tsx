@@ -118,7 +118,12 @@ export function ExoplanetsPanel() {
         ) : (
           addedSystems.map(
             (hostStar) =>
-              hostStar && <SceneGraphNodeHeader uri={sgnUri(hostStar.identifier)} />
+              hostStar && (
+                <SceneGraphNodeHeader
+                  key={hostStar.identifier}
+                  uri={sgnUri(hostStar.identifier)}
+                />
+              )
           )
         )}
       </ScrollArea>
