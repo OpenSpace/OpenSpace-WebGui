@@ -19,3 +19,8 @@ body {
 .dock-panel {
   background-color: rgba(20, 20, 20, 0.8);
 }
+
+.dock-style-headless {
+  flex-shrink: 1 !important;
+  flex-grow: 1 !important;
+}
