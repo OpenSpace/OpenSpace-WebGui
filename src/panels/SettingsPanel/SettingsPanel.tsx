@@ -31,7 +31,7 @@ export function SettingsPanel() {
               <PropertyOwner uri={uri} key={uri} />
             ))}
           </FilterList.Favorites>
-          {/* This componet creates the FilterList.Data component */}
+          {/* This component creates the FilterList.Data component */}
           <SettingsSearchList searchableTopOwners={topLevelPropertyOwners} />
         </FilterList>
       </Container>
