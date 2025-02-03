@@ -12,25 +12,23 @@ export interface SearchItem {
   searchKeys: string[];
 }
 
-export function collectSearchableItemsRecursively(
+export function collectSearchableItems(
   owners: Uri[],
-  allPropertyOwners: PropertyOwners,
-  collectedOwners: Uri[],
-  collectedProperties: Uri[]
-) {
-  owners.forEach((uri) => {
+  allPropertyOwners: PropertyOwners
+): [Uri[], Uri[]] {
+  let collectedOwners: Uri[] = [];
+  let collectedProperties: Uri[] = [];
+  let queue: Uri[] = [...owners];
+
+  while (queue.length > 0) {
+    const uri = queue.shift()!;
     const subowners = allPropertyOwners[uri]?.subowners || [];
     const propertiesUri = allPropertyOwners[uri]?.properties || [];
 
     collectedOwners = collectedOwners.concat(subowners);
     collectedProperties = collectedProperties.concat(propertiesUri);
+    queue = queue.concat(subowners);
+  }
 
-    [collectedOwners, collectedProperties] = collectSearchableItemsRecursively(
-      subowners,
-      allPropertyOwners,
-      collectedOwners,
-      collectedProperties
-    );
-  });
   return [collectedOwners, collectedProperties];
 }

@@ -5,15 +5,11 @@ import { FilterList } from '@/components/FilterList/FilterList';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
-import {
-  hasVisibleChildren,
-  identifierFromUri,
-  isPropertyVisible
-} from '@/util/propertyTreeHelpers';
+import { hasVisibleChildren, identifierFromUri } from '@/util/propertyTreeHelpers';
 import { checkCaseInsensitiveSubstringList } from '@/util/stringmatcher';
 
 import { SettingsSearchListItem } from './SettingsSearchListItem';
-import { collectSearchableItemsRecursively, SearchItem, SearchItemType } from './util';
+import { collectSearchableItems, SearchItem, SearchItemType } from './util';
 
 interface Props {
   searchableTopOwners: Uri[];
@@ -21,12 +17,7 @@ interface Props {
 
 export function SettingsSearchList({ searchableTopOwners }: Props) {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-
-  // TODO: We want to avoid getting the entire property object here, since it also
-  // includes the value of the properties. This means that the entire menu is rerendered
-  // as soon as a property changes...
-  // TODO: Split up properties state so that values and meta are two different objects
-  const properties = useAppSelector((state) => state.properties.properties);
+  const propertyOverview = useAppSelector((state) => state.properties.propertyOverview);
 
   const [visiblityLevelSetting] = useGetOptionPropertyValue(EnginePropertyVisibilityKey);
 
@@ -42,21 +33,18 @@ export function SettingsSearchList({ searchableTopOwners }: Props) {
   }, []);
 
   const searchData = useMemo(() => {
-    let searchableSubOwners: Uri[] = [];
-    let searchableProperties: Uri[] = [];
-    [searchableSubOwners, searchableProperties] = collectSearchableItemsRecursively(
+    let [searchableSubOwners, searchableProperties] = collectSearchableItems(
       searchableTopOwners,
-      propertyOwners,
-      searchableSubOwners,
-      searchableProperties
+      propertyOwners
+    );
+    searchableSubOwners = searchableSubOwners.filter((uri) =>
+      hasVisibleChildren(uri, visiblityLevelSetting, propertyOwners, propertyOverview)
+    );
+    searchableProperties = searchableProperties.filter(
+      (uri) =>
+        visiblityLevelSetting && visiblityLevelSetting >= propertyOverview[uri].visibility
     );
 
-    searchableSubOwners = searchableSubOwners.filter((uri) =>
-      hasVisibleChildren(uri, visiblityLevelSetting, propertyOwners, properties)
-    );
-    searchableProperties = searchableProperties.filter((uri) =>
-      isPropertyVisible(properties[uri]!, visiblityLevelSetting)
-    );
     return searchableSubOwners
       .map((uri) => ({
         type: SearchItemType.SubPropertyOwner,
@@ -67,10 +55,10 @@ export function SettingsSearchList({ searchableTopOwners }: Props) {
         searchableProperties.map((uri) => ({
           type: SearchItemType.Property,
           uri,
-          searchKeys: [properties[uri]!.description.name, identifierFromUri(uri)]
+          searchKeys: [propertyOverview[uri].name, identifierFromUri(uri)]
         }))
       );
-  }, [properties, propertyOwners, searchableTopOwners, visiblityLevelSetting]);
+  }, [propertyOverview, propertyOwners, searchableTopOwners, visiblityLevelSetting]);
 
   return (
     <FilterList.Data<SearchItem>

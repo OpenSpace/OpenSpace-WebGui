@@ -3,6 +3,7 @@ import {
   Identifier,
   Properties,
   Property,
+  PropertyOverview,
   PropertyOwner,
   PropertyOwners,
   Uri
@@ -177,24 +178,31 @@ export function hasVisibleChildren(
   ownerUri: Uri,
   visiblitySetting: number | undefined,
   propertyOwners: PropertyOwners,
-  properties: Properties
+  properties: PropertyOverview
 ): boolean {
-  const propertyOwner = propertyOwners[ownerUri];
-  const hasVisibleProperties =
-    propertyOwner?.properties.some((p) =>
-      isPropertyVisible(properties[p], visiblitySetting)
-    ) || false;
+  let queue: Uri[] = [ownerUri];
 
-  if (hasVisibleProperties) {
-    return true;
+  while (queue.length > 0) {
+    const currentOwner = queue.shift()!;
+    const propertyOwner = propertyOwners[currentOwner];
+
+    if (!propertyOwner) continue;
+
+    // Check if any of the owner's properties are visible
+    if (
+      visiblitySetting &&
+      propertyOwner.properties.some(
+        (uri) => visiblitySetting >= properties[uri].visibility
+      )
+    ) {
+      return true;
+    }
+
+    // Add subowners to the queue for further checking
+    queue = queue.concat(propertyOwner.subowners);
   }
 
-  const hasSubOwnersWithVisibleProperties =
-    propertyOwner?.subowners.some((so) =>
-      hasVisibleChildren(so, visiblitySetting, propertyOwners, properties)
-    ) || false;
-
-  return hasVisibleProperties || hasSubOwnersWithVisibleProperties;
+  return false;
 }
 
 /**
