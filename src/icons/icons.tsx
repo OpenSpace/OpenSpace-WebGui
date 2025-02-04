@@ -21,6 +21,7 @@ export {
 } from 'react-icons/io5';
 export { LuFilePlus2 as AddFileIcon } from 'react-icons/lu';
 export {
+  MdArrowBack as BackArrowIcon,
   MdPublic as AddExoplanetIcon,
   MdOutlineAddPhotoAlternate as AddPhotoIcon,
   MdOutlineAirplanemodeActive as AirplaneIcon,
