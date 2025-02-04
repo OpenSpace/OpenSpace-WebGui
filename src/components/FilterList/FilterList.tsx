@@ -13,19 +13,19 @@ interface BaseProps {
 }
 
 interface FuncHeightProps extends BaseProps {
-  heightFunc: (height: number) => number;
+  heightFunc?: (height: number) => number;
   heightPercent?: never;
   height?: never;
 }
 
 interface AbsoluteHeightProps extends BaseProps {
-  height: number | string;
+  height?: number | string;
   heightPercent?: never;
   heightFunc?: never;
 }
 
 interface RelativeHeightProps extends BaseProps {
-  heightPercent: number;
+  heightPercent?: number;
   height?: never;
   heightFunc?: never;
 }
