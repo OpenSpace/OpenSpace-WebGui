@@ -30,17 +30,6 @@ export function SettingsPanel() {
     [propertyOwners]
   );
 
-  const renderfunc = useCallback(
-    (item: SearchItem) => (
-      <SettingsSearchListItem key={item.uri} type={item.type} uri={item.uri} />
-    ),
-    []
-  );
-
-  const matcher = useCallback((testItem: SearchItem, search: string): boolean => {
-    return checkCaseInsensitiveSubstringList(testItem.searchKeys, search);
-  }, []);
-
   const searchData = useMemo(() => {
     let [searchableSubOwners, searchableProperties] = collectSearchableItems(
       topLevelPropertyOwners,
@@ -69,11 +58,22 @@ export function SettingsPanel() {
       );
   }, [propertyOverview, propertyOwners, topLevelPropertyOwners, visiblityLevelSetting]);
 
+  const renderfunc = useCallback(
+    (item: SearchItem) => (
+      <SettingsSearchListItem key={item.uri} type={item.type} uri={item.uri} />
+    ),
+    []
+  );
+
+  const matcher = useCallback((testItem: SearchItem, search: string): boolean => {
+    return checkCaseInsensitiveSubstringList(testItem.searchKeys, search);
+  }, []);
+
   return (
     <ScrollArea h={'100%'}>
       <Container>
         <FilterList>
-          <FilterList.InputField placeHolderSearchText={'Search...'} />
+          <FilterList.InputField placeHolderSearchText={'Search for a setting...'} />
           <FilterList.Favorites>
             {topLevelPropertyOwners.map((uri) => (
               <PropertyOwner uri={uri} key={uri} />
@@ -87,6 +87,7 @@ export function SettingsPanel() {
             virtualize={false}
             renderElement={renderfunc}
             matcherFunc={matcher}
+            maxMatchedItems={20}
           />
         </FilterList>
       </Container>

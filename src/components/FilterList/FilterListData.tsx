@@ -7,22 +7,36 @@ import { useFilterListProvider } from './hooks';
 
 export const FilterListDataDisplayName = 'FilterListData';
 
-export interface FilterListDataProps<T> {
+interface BaseProps<T> {
   data: T[];
   renderElement: (data: T, i: number) => React.ReactNode;
   matcherFunc: (data: T, searchString: string) => boolean;
+}
+
+interface VirtualizedProps<T> extends BaseProps<T> {
+  virtualize?: true;
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
-  virtualize?: boolean; // Whether to use virtualization or not. Note that with virtualiation, the size of the items are limited...
+  maxMatchedItems?: never;
 }
+
+interface NonVirtualizedProps<T> extends BaseProps<T> {
+  virtualize?: false;
+  gap?: never;
+  overscan?: never;
+  maxMatchedItems?: number; // Maximum number of matches for the list to render
+}
+
+export type FilterListDataProps<T> = VirtualizedProps<T> | NonVirtualizedProps<T>;
 
 export function FilterListData<T>({
   data,
   renderElement,
   matcherFunc,
+  virtualize = true,
   gap,
   overscan,
-  virtualize = true
+  maxMatchedItems = 100
 }: FilterListDataProps<T>) {
   const { searchString, showFavorites, isLoading } = useFilterListProvider();
 
@@ -33,26 +47,35 @@ export function FilterListData<T>({
     [searchString, matcherFunc, data]
   );
 
+  if (showFavorites) {
+    return <></>;
+  }
+
   if (isLoading) {
     return <LoadingBlocks />;
   }
 
-  if (!virtualize) {
+  if (!virtualize && filteredElements.length > maxMatchedItems) {
     return (
-      !showFavorites && (
-        <>{filteredElements.map((element, i) => renderElement(element, i))}</>
-      )
+      <>
+        Too many matches. Try narrowing down your search...
+        <LoadingBlocks />
+      </>
     );
   }
 
-  return (
-    !showFavorites && (
-      <VirtualList
-        data={filteredElements}
-        renderElement={renderElement}
-        gap={gap}
-        overscan={overscan}
-      />
-    )
+  if (filteredElements.length === 0) {
+    return <>No matches found. Try another search</>;
+  }
+
+  return virtualize ? (
+    <VirtualList
+      data={filteredElements}
+      renderElement={renderElement}
+      gap={gap}
+      overscan={overscan}
+    />
+  ) : (
+    <>{filteredElements.map((element, i) => renderElement(element, i))}</>
   );
 }
