@@ -42,7 +42,6 @@ export function SettingsSearchListItem({ type, uri }: Props) {
         </Stack>
       );
     default:
-      // This should not happen. @TODO: Throw?
-      return <></>;
+      throw Error(`Unknown search item type: ${type}`);
   }
 }
