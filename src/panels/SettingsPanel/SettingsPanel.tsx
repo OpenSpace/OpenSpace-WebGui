@@ -87,7 +87,7 @@ export function SettingsPanel() {
             virtualize={false}
             renderElement={renderfunc}
             matcherFunc={matcher}
-            maxMatchedItems={20}
+            maxAllowedMatches={20}
           />
         </FilterList>
       </Container>

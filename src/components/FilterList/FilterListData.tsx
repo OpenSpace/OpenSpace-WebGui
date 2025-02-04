@@ -17,14 +17,14 @@ interface VirtualizedProps<T> extends BaseProps<T> {
   virtualize?: true;
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
-  maxMatchedItems?: never;
+  maxAllowedMatches?: never;
 }
 
 interface NonVirtualizedProps<T> extends BaseProps<T> {
   virtualize?: false;
   gap?: never;
   overscan?: never;
-  maxMatchedItems?: number; // Maximum number of matches for the list to render
+  maxAllowedMatches?: number; // Maximum number of matches for the list to render
 }
 
 export type FilterListDataProps<T> = VirtualizedProps<T> | NonVirtualizedProps<T>;
@@ -36,7 +36,7 @@ export function FilterListData<T>({
   virtualize = true,
   gap,
   overscan,
-  maxMatchedItems = 100
+  maxAllowedMatches = 100
 }: FilterListDataProps<T>) {
   const { searchString, showFavorites, isLoading } = useFilterListProvider();
 
@@ -55,7 +55,7 @@ export function FilterListData<T>({
     return <LoadingBlocks />;
   }
 
-  if (!virtualize && filteredElements.length > maxMatchedItems) {
+  if (!virtualize && filteredElements.length > maxAllowedMatches) {
     return (
       <>
         Too many matches. Try narrowing down your search...
