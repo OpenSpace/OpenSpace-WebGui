@@ -9,7 +9,7 @@ import {
   Title
 } from '@mantine/core';
 
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { FilterIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
@@ -64,7 +64,7 @@ export function SceneTreeFilters({ onFilterChange }: Props) {
               checked={showOnlyVisible}
               onChange={(event) => setshowOnlyVisible(event.currentTarget.checked)}
             />
-            <Tooltip text={'Visible = Enabled and not faded out'} />
+            <InfoBox text={'Visible = Enabled and not faded out'} />
           </Group>
           <Group>
             <Checkbox
@@ -72,7 +72,7 @@ export function SceneTreeFilters({ onFilterChange }: Props) {
               checked={showHiddenNodes}
               onChange={(event) => setShowHiddenNodes(event.currentTarget.checked)}
             />
-            <Tooltip
+            <InfoBox
               text={
                 'Show scene graph nodes that are marked as hidden in the GUI ' +
                 'part of the asset. These are otherwise hidden in the interface'

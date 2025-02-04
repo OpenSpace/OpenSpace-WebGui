@@ -1,8 +1,8 @@
 import React from 'react';
-import { ActionIcon, ActionIconProps, Button, ButtonProps } from '@mantine/core';
+import { ActionIcon, ActionIconProps, Button, ButtonProps, Group } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import {
   AirplaneIcon,
   FocusIcon,
@@ -180,16 +180,18 @@ export function NodeNavigationButton({
   return (
     <>
       {showLabel ? (
-        <Button
-          onClick={content.onClick}
-          leftSection={content.icon}
-          rightSection={content.info && <Tooltip text={content.info} />}
-          size={size}
-          style={style}
-          justify={justify}
-        >
-          {showLabel && content.title}
-        </Button>
+        <Group>
+          <Button
+            onClick={content.onClick}
+            leftSection={content.icon}
+            size={size}
+            style={style}
+            justify={justify}
+          >
+            {showLabel && content.title}
+          </Button>
+          {content.info && <InfoBox text={content.info} />}
+        </Group>
       ) : (
         <ActionIcon onClick={content.onClick} size={size} variant={variant} style={style}>
           {content.icon}

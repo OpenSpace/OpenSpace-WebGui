@@ -7,7 +7,6 @@ import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
 import { Property } from '@/components/Property/Property';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
-import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Identifier } from '@/types/types';
@@ -19,6 +18,8 @@ import {
   UncertaintyDiscPropertyKey
 } from '@/util/keys';
 import { sgnUri } from '@/util/propertyTreeHelpers';
+
+import { SceneGraphNodeHeader } from '../Scene/SceneGraphNode/SceneGraphNodeHeader';
 
 import { ExoplanetEntry } from './ExoplanetEntry';
 
@@ -48,7 +49,7 @@ export function ExoplanetsPanel() {
     }
   }, [luaApi, dispatch, isDataInitialized]);
 
-  // Find already existing exoplent systems among the property owners
+  // Find already existing exoplanet systems among the property owners
   const addedSystems = Object.values(propertyOwners).filter((owner) =>
     owner!.tags.includes('exoplanet_system')
   );
@@ -72,8 +73,8 @@ export function ExoplanetsPanel() {
   }
 
   function handleClick(starName: string) {
-    const starIdentifier = name2Identifier(starName);
     if (isAdded(starName)) {
+      const starIdentifier = name2Identifier(starName);
       const matchingAnchor = anchor?.indexOf(starIdentifier) === 0;
       const matchingAim = aim?.indexOf(starIdentifier) === 0;
       if (matchingAnchor || matchingAim) {

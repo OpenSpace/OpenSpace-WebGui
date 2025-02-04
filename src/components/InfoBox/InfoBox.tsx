@@ -1,14 +1,14 @@
-import { ThemeIcon, Tooltip as MantineTooltip } from '@mantine/core';
+import { ThemeIcon, Tooltip } from '@mantine/core';
 
 import { InformationIcon } from '@/icons/icons';
 
-interface TooltipProps {
+interface Props {
   text: React.ReactNode;
 }
 
-export function Tooltip({ text }: TooltipProps) {
+export function InfoBox({ text }: Props) {
   return (
-    <MantineTooltip
+    <Tooltip
       label={text}
       multiline
       w={220}
@@ -19,6 +19,6 @@ export function Tooltip({ text }: TooltipProps) {
       <ThemeIcon radius={'xl'} size={'xs'} variant={'default'}>
         <InformationIcon />
       </ThemeIcon>
-    </MantineTooltip>
+    </Tooltip>
   );
 }
