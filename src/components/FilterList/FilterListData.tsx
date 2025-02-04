@@ -36,7 +36,7 @@ export function FilterListData<T>({
   virtualize = true,
   gap,
   overscan,
-  maxAllowedMatches = 100
+  maxAllowedMatches
 }: FilterListDataProps<T>) {
   const { searchString, showFavorites, isLoading } = useFilterListProvider();
 
@@ -55,7 +55,7 @@ export function FilterListData<T>({
     return <LoadingBlocks />;
   }
 
-  if (!virtualize && filteredElements.length > maxAllowedMatches) {
+  if (!virtualize && maxAllowedMatches && filteredElements.length > maxAllowedMatches) {
     return (
       <>
         Too many matches. Try narrowing down your search...
