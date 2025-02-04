@@ -1,13 +1,4 @@
-import {
-  ActionIcon,
-  Button,
-  Center,
-  Divider,
-  Group,
-  Menu,
-  Stack,
-  Text
-} from '@mantine/core';
+import { ActionIcon, Button, Divider, Group, Menu, Stack, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
 import {
@@ -92,7 +83,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
           Pop out
         </Button>
         <Divider m={'xs'} />
-        <Stack>
+        <Stack gap={'xs'}>
           <Group gap={'xs'}>
             <NodeNavigationButton
               type={NavigationType.fly}
@@ -118,7 +109,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
             disabled={anchor === propertyOwner.identifier}
             onClick={onRemove}
             color={'red'}
-            variant={'subtle'}
+            variant={'outline'}
             leftSection={<DeleteIcon />}
           >
             Delete
