@@ -28,7 +28,12 @@ export function PaginationList<T>({ data, renderElement, itemsPerPage }: Props<T
   return (
     <>
       {items}
-      <Pagination total={data.length} value={activePage} onChange={setPage} mt={'sm'} />
+      <Pagination
+        total={chunkedData.length}
+        value={activePage}
+        onChange={setPage}
+        mt={'sm'}
+      />
     </>
   );
 }
