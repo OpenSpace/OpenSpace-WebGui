@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Group, NumberFormatter, Slider } from '@mantine/core';
+import { TbMapX } from 'react-icons/tb';
+import { Group, NumberFormatter, Slider, Text } from '@mantine/core';
 import { scalePow } from 'd3';
 
 import { NumericInput } from '@/components/Input/NumericInput';
@@ -61,11 +62,11 @@ export function NumericProperty({
 
   // TODO: Figure out how to ha
 
-  function markLabel(value: number): JSX.Element | string {
+  function markLabel(value: number, largeValuePrecision?: number): JSX.Element | string {
     return value < 100000 && value > 0.0001 ? (
       <NumberFormatter value={value} decimalScale={decimalPlaces} />
     ) : (
-      value.toPrecision(1)
+      value.toPrecision(largeValuePrecision || 1)
     );
   }
 
@@ -84,35 +85,46 @@ export function NumericProperty({
     label: mark.label
   }));
 
+  // Something, when no min/max is set, the marks for the slider cannot be nicely
+  // compute it
+  const hasNiceMinMax = isFinite(max - min);
+
   return (
     <>
       <PropertyLabel label={name} tip={description} />
       <Group align={'bottom'}>
         <Slider
           flex={1}
-          disabled={disabled}
           label={(value) => (
             <NumberFormatter value={value} decimalScale={decimalPlaces} />
           )}
+          disabled={disabled}
           value={currentValue}
           min={min}
           max={max}
           step={step}
-          marks={scaledMarks}
+          marks={hasNiceMinMax ? scaledMarks : undefined}
           scale={(value) => scale(value)}
           onChange={(value) => {
             setCurrentValue(value);
             setPropertyValue(value);
           }}
+          opacity={disabled ? 0.5 : 1}
         />
         <Group w={'100px'}>
-          <NumericInput
-            defaultValue={currentValue}
-            disabled={disabled}
-            min={min}
-            max={max}
-            step={step}
-          />
+          {disabled ? (
+            <Text size={'sm'} w={'100%'} ta={'center'}>
+              {markLabel(currentValue, 3)}
+            </Text>
+          ) : (
+            <NumericInput
+              defaultValue={currentValue}
+              disabled={disabled}
+              min={min}
+              max={max}
+              step={step}
+            />
+          )}
         </Group>
       </Group>
     </>

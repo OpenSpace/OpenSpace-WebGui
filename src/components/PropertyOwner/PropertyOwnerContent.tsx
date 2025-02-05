@@ -43,11 +43,11 @@ export function PropertyOwnerContent({ uri, hideSubowners = false }: Props) {
         </>
       )}
       {visibleProperties.length > 0 && (
-        <Container pr={0}>
+        <>
           {visibleProperties.map((property) => (
             <Property key={property} uri={property} />
           ))}
-        </Container>
+        </>
       )}
     </>
   );
