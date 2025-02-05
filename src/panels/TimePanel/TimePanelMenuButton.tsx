@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Button, Stack, Text } from '@mantine/core';
+import { Button, Skeleton, Stack, Text } from '@mantine/core';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
@@ -13,6 +13,8 @@ export function TimePanelMenuButton({ onClick }: TimePanelMenuButtonProps) {
   const time = useAppSelector((state) => state.time.time);
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime);
   const isPaused = useAppSelector((state) => state.time.isPaused);
+
+  const isReady = time !== undefined;
 
   const date = new Date(time ?? '');
   const isValiDate = isDateValid(date);
@@ -73,10 +75,19 @@ export function TimePanelMenuButton({ onClick }: TimePanelMenuButtonProps) {
   }
 
   return (
-    <Button onClick={onClick} size={'xl'}>
+    <Button onClick={onClick} size={'xl'} disabled={!isReady}>
       <Stack gap={0} align={'flex-start'}>
-        <Text size={'lg'}>{timeLabel}</Text>
-        <Text>{speedLabel}</Text>
+        {isReady ? (
+          <>
+            <Text size={'lg'}>{timeLabel}</Text>
+            <Text>{speedLabel}</Text>
+          </>
+        ) : (
+          <>
+            <Skeleton mb={'xs'}>Mon, 03 Feb 2025 15:11:47</Skeleton>
+            <Skeleton h={'sm'} w={'30%'} />
+          </>
+        )}
       </Stack>
     </Button>
   );

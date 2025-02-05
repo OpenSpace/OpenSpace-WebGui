@@ -33,12 +33,7 @@ export function FocusEntry({
 
   return (
     <Group justify={'space-between'} gap={'xs'} w={'100%'}>
-      <Button
-        onClick={onSelectEntry}
-        justify={'left'}
-        flex={1}
-        variant={buttonVariant}
-      >
+      <Button onClick={onSelectEntry} justify={'left'} flex={1} variant={buttonVariant}>
         <Text truncate>{entry.name}</Text>
       </Button>
       {showNavigationButtons && (

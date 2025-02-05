@@ -196,22 +196,24 @@ export function EarthPanel({ currentAnchor }: Props) {
             <ResizeableContent defaultHeight={250}>
               <FilterList>
                 <FilterList.InputField placeHolderSearchText={'Filter search'} />
-                <FilterList.Data<Candidate>
-                  data={places}
-                  renderElement={(place) => (
-                    <EarthEntry
-                      key={place.attributes.LongLabel}
-                      place={place}
-                      isCustomAltitude={isCustomAltitude}
-                      customAltitude={customAltitude}
-                      currentAnchor={currentAnchor}
-                      isSceneGraphNodeAdded={isSceneGraphNodeAdded}
-                      addFocusNode={addFocusNode}
-                      removeFocusNode={removeFocusNode}
-                    />
-                  )}
-                  matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
-                />
+                <FilterList.SearchResults>
+                  <FilterList.SearchResults.VirtualList<Candidate>
+                    data={places}
+                    renderElement={(place) => (
+                      <EarthEntry
+                        key={place.attributes.LongLabel}
+                        place={place}
+                        isCustomAltitude={isCustomAltitude}
+                        customAltitude={customAltitude}
+                        currentAnchor={currentAnchor}
+                        isSceneGraphNodeAdded={isSceneGraphNodeAdded}
+                        addFocusNode={addFocusNode}
+                        removeFocusNode={removeFocusNode}
+                      />
+                    )}
+                    matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
+                  />
+                </FilterList.SearchResults>
               </FilterList>
             </ResizeableContent>
           ) : (

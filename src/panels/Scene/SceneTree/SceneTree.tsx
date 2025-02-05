@@ -140,13 +140,15 @@ export function SceneTree() {
         />
       </FilterList.Favorites>
 
-      <FilterList.Data<TreeNodeData>
-        data={flatTreeData}
-        renderElement={(node: TreeNodeData) => (
-          <SceneTreeNodeContent key={node.value} node={node} expanded={false} />
-        )}
-        matcherFunc={generateMatcherFunctionByKeys(['label'])} // For now we just use the name
-      />
+      <FilterList.SearchResults>
+        <FilterList.SearchResults.VirtualList<TreeNodeData>
+          data={flatTreeData}
+          renderElement={(node: TreeNodeData) => (
+            <SceneTreeNodeContent key={node.value} node={node} expanded={false} />
+          )}
+          matcherFunc={generateMatcherFunctionByKeys(['label'])} // For now we just use the name
+        />
+      </FilterList.SearchResults>
     </FilterList>
   );
 }
