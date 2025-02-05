@@ -28,7 +28,8 @@ export function NumericProperty({
   value,
   additionalData
 }: Props) {
-  const [currentValue, setCurrentValue] = useState<number>(value);
+  // Note that this value does not take the slider scale into account
+  const [currentSliderValue, setCurrentSliderValue] = useState<number>(value);
 
   // TODO: Figure out a nice way to handle this, i.e. update the current value when the
   // value property changes
@@ -67,60 +68,68 @@ export function NumericProperty({
     );
   }
 
-  // TODO: Only create marks for valid steps and make it work nicely for integer steps
+  // When no min/max is set, the marks for the slider cannot be nicely computed
+  const hasNiceMinMax = isFinite(max - min);
+
+  // @TODO: Only create marks for valid steps and make it work nicely for integer steps
   const marksStep = (max - min) / 4;
-  const marks = [
-    { value: min, label: markLabel(min) },
-    { value: min + 1 * marksStep },
-    { value: min + 2 * marksStep, label: markLabel(min + 2 * marksStep) },
-    { value: min + 3 * marksStep },
-    { value: max, label: markLabel(max) }
-  ];
+  const marks = hasNiceMinMax
+    ? [
+        { value: min, label: markLabel(min) },
+        { value: min + 1 * marksStep },
+        { value: min + 2 * marksStep, label: markLabel(min + 2 * marksStep) },
+        { value: min + 3 * marksStep },
+        { value: max, label: markLabel(max) }
+      ]
+    : [];
 
   const scaledMarks = marks.map((mark) => ({
     value: scale.invert(mark.value),
     label: mark.label
   }));
 
-  // Something, when no min/max is set, the marks for the slider cannot be nicely
-  // compute it
-  const hasNiceMinMax = isFinite(max - min);
+  function onSliderInput(newValue: number) {
+    setCurrentSliderValue(newValue);
+    setPropertyValue(scale(newValue));
+  }
 
-  function onInput(newValue: number) {
-    setCurrentValue(newValue);
+  function onNumberInput(newValue: number) {
+    setCurrentSliderValue(scale.invert(newValue));
     setPropertyValue(newValue);
   }
 
+  // @TODO (2025-02-05, emmbr): The slider value and resulting property value are not in
+  // sync, and this is something that the accessibility consultant commented on. We should
+  // make sure that the set value (i.e. including the scale) is property communicated to
+  // screen readers
   return (
     <>
       <PropertyLabel label={name} tip={description} />
       <Group align={'bottom'}>
-        {hasNiceMinMax && (
+        {hasNiceMinMax && ( //
           <Slider
             flex={2}
             miw={100}
-            label={(value) => (
-              <NumberFormatter value={value} decimalScale={decimalPlaces} />
-            )}
+            label={(v) => <NumberFormatter value={v} decimalScale={decimalPlaces} />}
             disabled={disabled}
-            value={currentValue}
+            value={currentSliderValue}
             min={min}
             max={max}
             step={step}
             marks={scaledMarks}
-            scale={(value) => scale(value)}
-            onChange={onInput}
+            scale={(v) => scale(v)}
+            onChange={onSliderInput}
             opacity={disabled ? 0.5 : 1}
           />
         )}
         <Flex flex={1} miw={100}>
           <NumericInput
-            defaultValue={currentValue}
+            defaultValue={scale(currentSliderValue)}
             disabled={disabled}
             min={min}
             max={max}
             step={step}
-            onEnter={onInput}
+            onEnter={onNumberInput}
           />
         </Flex>
       </Group>
