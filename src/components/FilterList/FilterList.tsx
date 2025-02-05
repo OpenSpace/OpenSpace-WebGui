@@ -2,7 +2,7 @@ import { Stack } from '@mantine/core';
 
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
-import { FilterListData } from './FilterListData';
+import { SearchResults } from './SearchResults/SearchResults';
 import { FilterListFavorites } from './FilterListFavorites';
 import { FilterListInputField } from './FilterListInputField';
 import { FilterListProvider } from './FilterListProvider';
@@ -55,5 +55,5 @@ export function FilterList({
 }
 
 FilterList.InputField = FilterListInputField;
-FilterList.Data = FilterListData;
 FilterList.Favorites = FilterListFavorites;
+FilterList.SearchResults = SearchResults;

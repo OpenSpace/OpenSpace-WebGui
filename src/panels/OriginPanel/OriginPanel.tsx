@@ -235,24 +235,26 @@ export function OriginPanel() {
               />
             ))}
           </FilterList.Favorites>
-          <FilterList.Data<PropertyOwner>
-            data={sortedNodes}
-            renderElement={(node) => (
-              <FocusEntry
-                key={node.identifier}
-                entry={node}
-                onSelect={onSelect}
-                activeNode={activeNode}
-                showNavigationButtons={isInFocusMode}
-              />
-            )}
-            matcherFunc={generateMatcherFunctionByKeys([
-              'identifier',
-              'name',
-              'uri',
-              'tags'
-            ])}
-          />
+          <FilterList.SearchResults>
+            <FilterList.SearchResults.VirtualList<PropertyOwner>
+              data={sortedNodes}
+              renderElement={(node) => (
+                <FocusEntry
+                  key={node.identifier}
+                  entry={node}
+                  onSelect={onSelect}
+                  activeNode={activeNode}
+                  showNavigationButtons={isInFocusMode}
+                />
+              )}
+              matcherFunc={generateMatcherFunctionByKeys([
+                'identifier',
+                'name',
+                'uri',
+                'tags'
+              ])}
+            />
+          </FilterList.SearchResults>
         </FilterList>
       </Container>
     </ScrollArea>

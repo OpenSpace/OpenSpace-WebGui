@@ -211,13 +211,15 @@ export function ActionsPanel() {
             {actions}
           </Grid>
         </FilterList.Favorites>
-        <FilterList.Data<Action>
-          data={displayedActions}
-          renderElement={(action: Action) => (
-            <ActionsButton key={`${action.identifier}Filtered`} action={action} />
-          )}
-          matcherFunc={generateMatcherFunctionByKeys(['identifier', 'name', 'guiPath'])}
-        />
+        <FilterList.SearchResults>
+          <FilterList.SearchResults.VirtualList<Action>
+            data={displayedActions}
+            renderElement={(action: Action) => (
+              <ActionsButton key={`${action.identifier}Filtered`} action={action} />
+            )}
+            matcherFunc={generateMatcherFunctionByKeys(['identifier', 'name', 'guiPath'])}
+          />
+        </FilterList.SearchResults>
       </FilterList>
     </ScrollArea>
   );
