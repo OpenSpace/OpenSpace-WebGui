@@ -1,7 +1,7 @@
 import { Button, Group, Stack } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { LaunchIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { Action } from '@/types/types';
@@ -31,7 +31,7 @@ export function ActionsButton({ uri, action: _action }: Props) {
         <LaunchIcon />
         <p>{isLocal && <span> (Local)</span>}</p>
         <Group>
-          {action.name} {action.documentation && <Tooltip text={action.documentation} />}
+          {action.name} {action.documentation && <InfoBox text={action.documentation} />}
         </Group>
       </Stack>
     </Button>

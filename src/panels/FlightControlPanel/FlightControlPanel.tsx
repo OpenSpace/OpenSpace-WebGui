@@ -13,7 +13,7 @@ import {
 } from '@mantine/core';
 
 import { useGetBoolPropertyValue } from '@/api/hooks';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import {
   setFlightControllerEnabled,
   setFlightControllerInputScaleFactor
@@ -60,7 +60,7 @@ export function FlightControlPanel() {
     setRollFrictionProperty(!rollFrictionProperty);
   }
 
-  const tooltipContent = (
+  const InfoBoxContent = (
     <Container>
       <Text>Interact with the highlighted area to control the camera.</Text>
       <Space h={'xs'} />
@@ -91,7 +91,7 @@ export function FlightControlPanel() {
             checked={isControllerEnabled}
             onChange={toggleEnabled}
           />
-          <Tooltip text={tooltipContent} />
+          <InfoBox text={InfoBoxContent} />
         </Group>
         <Title order={3}>Settings</Title>
         <Text>Friction control</Text>
@@ -108,7 +108,7 @@ export function FlightControlPanel() {
         </Group>
         <Group justify={'space-between'} align={'start'} wrap={'nowrap'}>
           <Text>Input sensitivity</Text>
-          <Tooltip text={'Controls how sensitive the touch and mouse inputs are'} />
+          <InfoBox text={'Controls how sensitive the touch and mouse inputs are'} />
         </Group>
         <Slider
           min={0.1}

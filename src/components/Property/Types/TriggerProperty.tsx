@@ -1,6 +1,6 @@
 import { Button, Group } from '@mantine/core';
 
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 
 interface Props {
   name: string;
@@ -20,7 +20,7 @@ export function TriggerProperty({
       <Button onClick={() => setPropertyValue(null)} disabled={disabled}>
         {name}
       </Button>
-      <Tooltip text={description} />
+      <InfoBox text={description} />
     </Group>
   );
 }

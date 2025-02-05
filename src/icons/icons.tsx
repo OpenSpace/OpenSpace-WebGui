@@ -35,6 +35,7 @@ export {
   MdTerminal as ConsoleIcon,
   MdContentCopy as CopyIcon,
   MdDashboard as DashboardIcon,
+  MdDelete as DeleteIcon,
   MdDragHandle as DragHandleIcon,
   MdExitToApp as ExitAppIcon,
   MdHdrStrong as ExoplanetIcon,

@@ -1,6 +1,6 @@
 import { Checkbox, Group } from '@mantine/core';
 
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 
 interface Props {
   name: string;
@@ -26,7 +26,7 @@ export function BoolProperty({
         disabled={disabled}
         label={name}
       />
-      <Tooltip text={description} />
+      <InfoBox text={description} />
     </Group>
   );
 }

@@ -1,6 +1,6 @@
 import { Group, InputLabel } from '@mantine/core';
 
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 
 interface Props {
   label: string;
@@ -11,7 +11,7 @@ export function PropertyLabel({ label, tip }: Props) {
   return (
     <Group>
       <InputLabel>{label}</InputLabel>
-      {tip && <Tooltip text={tip} />}
+      {tip && <InfoBox text={tip} />}
     </Group>
   );
 }

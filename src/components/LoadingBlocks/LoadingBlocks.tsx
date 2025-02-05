@@ -18,7 +18,7 @@ export function LoadingBlocks({ n = 4 }: Props) {
   return (
     <Stack>
       {widths.map((width, i) => (
-        <Skeleton key={i} height={16} width={width} radius={'xs'} />
+        <Skeleton key={i} height={16} width={width} />
       ))}
     </Stack>
   );
