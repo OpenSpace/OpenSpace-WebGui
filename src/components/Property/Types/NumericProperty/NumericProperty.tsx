@@ -60,8 +60,6 @@ export function NumericProperty({
 
   const decimalPlaces = getDecimalPlaces(step);
 
-  // TODO: Figure out how to ha
-
   function markLabel(value: number, largeValuePrecision?: number): JSX.Element | string {
     return value < 100000 && value > 0.0001 ? (
       <NumberFormatter value={value} decimalScale={decimalPlaces} />
@@ -93,38 +91,34 @@ export function NumericProperty({
     <>
       <PropertyLabel label={name} tip={description} />
       <Group align={'bottom'}>
-        <Slider
-          flex={1}
-          label={(value) => (
-            <NumberFormatter value={value} decimalScale={decimalPlaces} />
-          )}
-          disabled={disabled}
-          value={currentValue}
-          min={min}
-          max={max}
-          step={step}
-          marks={hasNiceMinMax ? scaledMarks : undefined}
-          scale={(value) => scale(value)}
-          onChange={(value) => {
-            setCurrentValue(value);
-            setPropertyValue(value);
-          }}
-          opacity={disabled ? 0.5 : 1}
-        />
-        <Group w={'100px'}>
-          {disabled ? (
-            <Text size={'sm'} w={'100%'} ta={'center'}>
-              {markLabel(currentValue, 3)}
-            </Text>
-          ) : (
-            <NumericInput
-              defaultValue={currentValue}
-              disabled={disabled}
-              min={min}
-              max={max}
-              step={step}
-            />
-          )}
+        {hasNiceMinMax && (
+          <Slider
+            flex={1}
+            label={(value) => (
+              <NumberFormatter value={value} decimalScale={decimalPlaces} />
+            )}
+            disabled={disabled}
+            value={currentValue}
+            min={min}
+            max={max}
+            step={step}
+            marks={scaledMarks}
+            scale={(value) => scale(value)}
+            onChange={(value) => {
+              setCurrentValue(value);
+              setPropertyValue(value);
+            }}
+            opacity={disabled ? 0.5 : 1}
+          />
+        )}
+        <Group w={hasNiceMinMax ? '100px' : undefined}>
+          <NumericInput
+            defaultValue={currentValue}
+            disabled={disabled}
+            min={min}
+            max={max}
+            step={step}
+          />
         </Group>
       </Group>
     </>
