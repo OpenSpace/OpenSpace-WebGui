@@ -36,7 +36,7 @@ export function FocusEntry({
       <Button
         onClick={onSelectEntry}
         justify={'left'}
-        flex={'1 1'}
+        flex={1}
         variant={buttonVariant}
       >
         <Text truncate>{entry.name}</Text>
