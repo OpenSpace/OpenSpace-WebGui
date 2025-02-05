@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { Container, ScrollArea } from '@mantine/core';
+import { ScrollArea } from '@mantine/core';
 
 import { useGetOptionPropertyValue } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -71,26 +71,24 @@ export function SettingsPanel() {
 
   return (
     <ScrollArea h={'100%'}>
-      <Container>
-        <FilterList>
-          <FilterList.InputField placeHolderSearchText={'Search for a setting...'} />
-          <FilterList.Favorites>
-            {topLevelPropertyOwners.map((uri) => (
-              <PropertyOwner uri={uri} key={uri} />
-            ))}
-          </FilterList.Favorites>
-          <FilterList.Data<SearchItem>
-            data={searchData}
-            // Do not virtualize here, since this requires the rendered objects to have a
-            // fixed size, which PropertyOwners won't. Also, the list is not expected to
-            // be very long
-            virtualize={false}
-            renderElement={renderfunc}
-            matcherFunc={matcher}
-            maxShownMatches={20}
-          />
-        </FilterList>
-      </Container>
+      <FilterList>
+        <FilterList.InputField placeHolderSearchText={'Search for a setting...'} />
+        <FilterList.Favorites>
+          {topLevelPropertyOwners.map((uri) => (
+            <PropertyOwner uri={uri} key={uri} />
+          ))}
+        </FilterList.Favorites>
+        <FilterList.Data<SearchItem>
+          data={searchData}
+          // Do not virtualize here, since this requires the rendered objects to have a
+          // fixed size, which PropertyOwners won't. Also, the list is not expected to
+          // be very long
+          virtualize={false}
+          renderElement={renderfunc}
+          matcherFunc={matcher}
+          maxShownMatches={20}
+        />
+      </FilterList>
     </ScrollArea>
   );
 }

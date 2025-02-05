@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { TbMapX } from 'react-icons/tb';
-import { Group, NumberFormatter, Slider, Text } from '@mantine/core';
+import { Flex, Group, NumberFormatter, Slider } from '@mantine/core';
 import { scalePow } from 'd3';
 
 import { NumericInput } from '@/components/Input/NumericInput';
@@ -87,13 +86,19 @@ export function NumericProperty({
   // compute it
   const hasNiceMinMax = isFinite(max - min);
 
+  function onInput(newValue: number) {
+    setCurrentValue(newValue);
+    setPropertyValue(newValue);
+  }
+
   return (
     <>
       <PropertyLabel label={name} tip={description} />
       <Group align={'bottom'}>
         {hasNiceMinMax && (
           <Slider
-            flex={1}
+            flex={2}
+            miw={100}
             label={(value) => (
               <NumberFormatter value={value} decimalScale={decimalPlaces} />
             )}
@@ -104,22 +109,20 @@ export function NumericProperty({
             step={step}
             marks={scaledMarks}
             scale={(value) => scale(value)}
-            onChange={(value) => {
-              setCurrentValue(value);
-              setPropertyValue(value);
-            }}
+            onChange={onInput}
             opacity={disabled ? 0.5 : 1}
           />
         )}
-        <Group w={hasNiceMinMax ? '100px' : undefined}>
+        <Flex flex={1} miw={100}>
           <NumericInput
             defaultValue={currentValue}
             disabled={disabled}
             min={min}
             max={max}
             step={step}
+            onEnter={onInput}
           />
-        </Group>
+        </Flex>
       </Group>
     </>
   );
