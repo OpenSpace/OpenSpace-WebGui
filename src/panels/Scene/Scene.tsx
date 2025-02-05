@@ -1,4 +1,4 @@
-import { Container, ScrollArea } from '@mantine/core';
+import { Box, Container, Divider, ScrollArea } from '@mantine/core';
 
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { SceneTree } from '@/panels/Scene/SceneTree/SceneTree';
@@ -20,9 +20,12 @@ export function Scene() {
   }
 
   return (
-    <ScrollArea h={'100%'} p={'xs'}>
-      <FeaturedSceneTree />
-      <SceneTree />
+    <ScrollArea h={'100%'}>
+      <Box p={'xs'}>
+        <FeaturedSceneTree />
+        <Divider mt={'xs'} mb={'xs'} />
+        <SceneTree />
+      </Box>
     </ScrollArea>
   );
 }

@@ -29,13 +29,16 @@ export function SceneTreeNodeContent({ node, expanded }: Props) {
 
   // @TODO: Make the text in this component look more clickable, e.g. using hover effects
   return isGroupNode(node) ? (
-    <CollapsableHeader expanded={expanded} title={node.label} />
+    <Box mt={5}>
+      <CollapsableHeader expanded={expanded} title={node.label} />
+    </Box>
   ) : (
     <Box
-      ml={'xs'}
-      p={2}
+      ml={5}
       mt={5}
-      bd={isCurrentNode ? '3px solid var(--mantine-primary-color-filled)' : 'none'}
+      style={{
+        outline: isCurrentNode ? '3px solid var(--mantine-primary-color-filled)' : 'none'
+      }}
     >
       <SceneGraphNodeHeader
         uri={node.value}

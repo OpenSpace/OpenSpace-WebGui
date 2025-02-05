@@ -105,13 +105,13 @@ export function SceneTree() {
 
   return (
     <FilterList>
-      <Group px={'xs'} justify={'space-between'}>
+      <Group justify={'space-between'} gap={'xs'} mr={'xs'}>
         <FilterList.InputField placeHolderSearchText={'Search for a node...'} flex={1} />
         <SceneTreeFilters onFilterChange={setFilter} />
       </Group>
 
       <FilterList.Favorites>
-        <Group gap={0} pos={'absolute'} top={0} right={0}>
+        <Group gap={0} pos={'absolute'} top={0} right={0} mr={'xs'}>
           <Tooltip
             label={'Collapse all'}
             position={'top'}
