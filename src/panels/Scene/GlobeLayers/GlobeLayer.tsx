@@ -2,9 +2,9 @@ import { Group, Paper, Text } from '@mantine/core';
 
 import { useGetPropertyOwner } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
 
@@ -33,7 +33,7 @@ export function GlobeLayer({ uri }: Props) {
       leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
       rightSection={
         <Group wrap={'nowrap'}>
-          <Tooltip text={propertyOwner.description || 'No information'} />
+          <InfoBox text={propertyOwner.description || 'No information'} />
         </Group>
       }
       noTransition

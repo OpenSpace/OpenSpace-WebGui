@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Group, Menu, Stack } from '@mantine/core';
+import { ActionIcon, Button, Group, Menu, Stack, Text } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { VerticalDotsIcon } from '@/icons/icons';
@@ -32,14 +32,14 @@ export function FocusEntry({
   }
 
   return (
-    <Group justify={'space-between'} gap={'xs'}>
+    <Group justify={'space-between'} gap={'xs'} w={'100%'}>
       <Button
         onClick={onSelectEntry}
         justify={'left'}
-        style={{ flexGrow: 1 }}
+        flex={1}
         variant={buttonVariant}
       >
-        {entry.name}
+        <Text truncate>{entry.name}</Text>
       </Button>
       {showNavigationButtons && (
         <>

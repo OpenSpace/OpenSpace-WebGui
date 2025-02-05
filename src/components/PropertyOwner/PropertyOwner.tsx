@@ -2,7 +2,7 @@ import { Group } from '@mantine/core';
 
 import { useGetPropertyOwner, useHasVisibleChildren } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
 
@@ -35,7 +35,7 @@ export function PropertyOwner({ uri, expandedOnDefault = false }: Props) {
       title={
         <Group gap={'xs'}>
           {displayName(propertyOwner)}
-          {propertyOwner.description && <Tooltip text={propertyOwner.description} />}
+          {propertyOwner.description && <InfoBox text={propertyOwner.description} />}
         </Group>
       }
       leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}

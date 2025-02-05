@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Button, Group, ScrollArea, Switch, Text, Title } from '@mantine/core';
 
 import { useSubscribeToTime } from '@/api/hooks';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { DisplayType } from '@/types/enums';
 import { DisplayedPhase, Phase } from '@/types/mission-types';
 
@@ -126,7 +126,7 @@ export function MissionContent({ missionOverview }: Props) {
         <Group m={'xs'}>
           <Switch checked={displayCurrentPhase} onClick={toggleCurrentPhase} />
           <Text>Display current phase</Text>
-          <Tooltip
+          <InfoBox
             text={
               'If enabled, the mission phase that is currently happening will be displayed. It will update as time passes.'
             }

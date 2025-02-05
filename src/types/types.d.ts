@@ -88,6 +88,10 @@ export interface Property {
   uri: Uri;
 }
 
+export interface PropertyOverview {
+  [uri: string]: { name: string; visibility: number };
+}
+
 export interface Properties {
   [key: Uri]: Property | undefined;
 }

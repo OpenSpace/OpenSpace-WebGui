@@ -8,31 +8,29 @@ import { FilterListInputField } from './FilterListInputField';
 import { FilterListProvider } from './FilterListProvider';
 
 interface BaseProps {
-  heightFunc?: (height: number) => number;
-  heightPercent?: number;
-  height?: number | string;
   children: React.ReactNode;
   isLoading?: boolean;
 }
 
-interface FuncProps {
+interface FuncHeightProps extends BaseProps {
+  heightFunc?: (height: number) => number;
   heightPercent?: never;
   height?: never;
 }
-interface AbsoluteProps {
+
+interface AbsoluteHeightProps extends BaseProps {
+  height?: number | string;
   heightPercent?: never;
   heightFunc?: never;
 }
 
-interface RelativeProps {
+interface RelativeHeightProps extends BaseProps {
+  heightPercent?: number;
   height?: never;
   heightFunc?: never;
 }
 
-type Props =
-  | (BaseProps & FuncProps)
-  | (BaseProps & AbsoluteProps)
-  | (BaseProps & RelativeProps);
+type Props = FuncHeightProps | AbsoluteHeightProps | RelativeHeightProps;
 
 export function FilterList({
   height,
