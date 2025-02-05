@@ -1,4 +1,4 @@
-import { Button, Group, Stack, Text } from '@mantine/core';
+import { Button, Group, Skeleton, Stack, Text } from '@mantine/core';
 
 import { useGetPropertyOwner, useGetStringPropertyValue } from '@/api/hooks';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
@@ -26,11 +26,13 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
     return aim !== '' && aim !== anchor;
   }
 
+  const isReady = anchor !== '' && anchor !== undefined;
+
   function AnchorAndAimButton() {
     // TODO: make sure Button has a working label for screen readers since we have mixed
     // icons, text and other elements inside the button
     return (
-      <Button onClick={onClick} size={'xl'}>
+      <Button onClick={onClick} size={'xl'} disabled={!isReady}>
         <Group>
           <>
             <AnchorIcon size={IconSize.lg} />
@@ -55,10 +57,12 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
     return (
       <Button
         onClick={onClick}
+        disabled={!isReady}
         leftSection={<FocusIcon size={IconSize.lg} />}
         size={'xl'}
       >
         <Stack gap={0} align={'flex-start'} justify={'center'}>
+          {!isReady && <Skeleton>Anchor</Skeleton>}
           {cappedAnchorName}
           <Text>Focus</Text>
         </Stack>
