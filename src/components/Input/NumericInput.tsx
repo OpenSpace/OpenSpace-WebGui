@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NumberInput } from '@mantine/core';
+import { useTimeout } from '@mantine/hooks';
 
 interface Props {
   label?: React.ReactNode | string;
@@ -25,6 +26,12 @@ export function NumericInput({
   step
 }: Props) {
   const [currentValue, setCurrentValue] = useState<number>(defaultValue);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
+
+  const { start: startIsTypingTimout, clear: clearIsTypingTimout } = useTimeout(
+    () => setIsTyping(false),
+    200
+  );
 
   useEffect(() => {
     setCurrentValue(defaultValue);
@@ -43,6 +50,12 @@ export function NumericInput({
     }
   }
 
+  function onKeyDown() {
+    setIsTyping(true);
+    clearIsTypingTimout();
+    startIsTypingTimout();
+  }
+
   function onBlur() {
     if (!valueWasSet) {
       setCurrentValue(defaultValue);
@@ -50,16 +63,22 @@ export function NumericInput({
   }
 
   function onValueChange(newValue: number | undefined) {
-    if (newValue !== undefined) {
-      setCurrentValue(newValue);
+    if (newValue === undefined) {
+      return;
+    }
+    setCurrentValue(newValue);
+
+    if (!isTyping) {
+      onEnter(newValue);
     }
   }
 
   return (
     <NumberInput
       value={currentValue}
-      onKeyUp={(event) => onKeyUp(event)}
-      onValueChange={(newValue) => onValueChange(newValue.floatValue)}
+      onKeyUp={onKeyUp}
+      onKeyDown={onKeyDown}
+      onValueChange={(v) => onValueChange(v.floatValue)}
       onBlur={onBlur}
       disabled={disabled}
       label={label}
