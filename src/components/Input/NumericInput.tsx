@@ -86,7 +86,7 @@ export function NumericInput({
       max={max}
       step={step}
       stepHoldDelay={500}
-      stepHoldInterval={100}
+      stepHoldInterval={50}
       // TODO: Provide error on invalid input
     />
   );
