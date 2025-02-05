@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
 import { LoadingBlocks } from '../LoadingBlocks/LoadingBlocks';
+import { PaginationList } from '../PaginationList/PaginationList';
 import { VirtualList } from '../VirtualList/VirtualList';
 
 import { useFilterListProvider } from './hooks';
@@ -17,14 +18,14 @@ interface VirtualizedProps<T> extends BaseProps<T> {
   virtualize?: true;
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
-  maxAllowedMatches?: never;
+  maxShownMatches?: never;
 }
 
 interface NonVirtualizedProps<T> extends BaseProps<T> {
   virtualize?: false;
   gap?: never;
   overscan?: never;
-  maxAllowedMatches?: number; // Maximum number of matches for the list to render
+  maxShownMatches?: number; // Maximum number of matches to render at once
 }
 
 export type FilterListDataProps<T> = VirtualizedProps<T> | NonVirtualizedProps<T>;
@@ -36,7 +37,7 @@ export function FilterListData<T>({
   virtualize = true,
   gap,
   overscan,
-  maxAllowedMatches
+  maxShownMatches
 }: FilterListDataProps<T>) {
   const { searchString, showFavorites, isLoading } = useFilterListProvider();
 
@@ -55,12 +56,14 @@ export function FilterListData<T>({
     return <LoadingBlocks />;
   }
 
-  if (!virtualize && maxAllowedMatches && filteredElements.length > maxAllowedMatches) {
+  if (!virtualize && maxShownMatches && filteredElements.length > maxShownMatches) {
+    // If we only allow a certain number of matches to be shown, we need to paginate
     return (
-      <>
-        Too many matches. Try narrowing down your search...
-        <LoadingBlocks />
-      </>
+      <PaginationList
+        data={filteredElements}
+        renderElement={renderElement}
+        itemsPerPage={maxShownMatches}
+      />
     );
   }
 
