@@ -20,7 +20,7 @@ export function Scene() {
   }
 
   return (
-    <ScrollArea h={'100%'} m={'xs'}>
+    <ScrollArea h={'100%'} p={'xs'}>
       <FeaturedSceneTree />
       <SceneTree />
     </ScrollArea>
