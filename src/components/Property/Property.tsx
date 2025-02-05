@@ -89,7 +89,7 @@ export const Property = memo(({ uri }: Props) => {
   return (
     // All the property types get all informaiton, and then they may do whatever they
     // want with it (like ignore certain parts)
-    <Box pb={'xs'}>
+    <Box mb={'md'}>
       <ConcreteProperty
         key={description.identifier}
         disabled={description.metaData.isReadOnly}

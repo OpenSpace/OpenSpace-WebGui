@@ -26,6 +26,7 @@ import { MissionsPanel } from '@/panels/MissionsPanel/MissionsPanel';
 import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { Scene } from '@/panels/Scene/Scene';
+import { TempPropertyTest } from '@/panels/Scene/TempPropertyTest';
 import { ScreenSpaceRenderablePanel } from '@/panels/ScreenSpaceRenderablePanel/ScreenSpaceRenderablePanel';
 import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
@@ -188,6 +189,13 @@ export const menuItemsData: MenuItem[] = [
     content: <KeyBindsPanel />,
     renderIcon: (size) => <KeyboardIcon size={size} />,
     preferredPosition: 'float',
+    defaultVisible: false
+  },
+  {
+    title: 'Property Test (TEMP)',
+    componentID: 'propertyTest',
+    content: <TempPropertyTest />,
+    preferredPosition: 'left',
     defaultVisible: false
   }
 ];

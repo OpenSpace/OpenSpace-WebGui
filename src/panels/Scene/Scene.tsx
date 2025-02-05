@@ -1,11 +1,10 @@
-import { Container, ScrollArea, Tabs, Title } from '@mantine/core';
+import { Container, ScrollArea } from '@mantine/core';
 
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { SceneTree } from '@/panels/Scene/SceneTree/SceneTree';
 import { useAppSelector } from '@/redux/hooks';
 
 import { FeaturedSceneTree } from './SceneTree/FeaturedSceneTree';
-import { TempPropertyTest } from './TempPropertyTest';
 
 export function Scene() {
   const hasLoadedScene = useAppSelector(
@@ -21,25 +20,9 @@ export function Scene() {
   }
 
   return (
-    <ScrollArea h={'100%'}>
-      <Tabs defaultValue={'propertyTest'}>
-        <Tabs.List>
-          <Tabs.Tab value={'propertyTest'}>Property test</Tabs.Tab>
-          <Tabs.Tab value={'sceneMenu'}>Scene menu</Tabs.Tab>
-        </Tabs.List>
-
-        <Tabs.Panel value={'propertyTest'}>
-          <TempPropertyTest />
-        </Tabs.Panel>
-
-        <Tabs.Panel value={'sceneMenu'}>
-          <Container>
-            <Title order={2}>Scene</Title>
-            <FeaturedSceneTree />
-            <SceneTree />
-          </Container>
-        </Tabs.Panel>
-      </Tabs>
+    <ScrollArea h={'100%'} m={'xs'}>
+      <FeaturedSceneTree />
+      <SceneTree />
     </ScrollArea>
   );
 }

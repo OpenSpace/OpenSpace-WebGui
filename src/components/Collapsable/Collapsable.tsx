@@ -1,6 +1,8 @@
 import { PropsWithChildren } from 'react';
-import { Collapse, Container } from '@mantine/core';
+import { Box, Collapse } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+
+import { IconSize } from '@/types/enums';
 
 import { CollapsableHeader } from './CollapsableHeader/CollapsableHeader';
 
@@ -35,8 +37,9 @@ export function Collapsable({
         rightSection={rightSection}
         toggle={toggle}
       />
-      <Collapse in={open} transitionDuration={noTransition ? 0 : 300} my={'xs'}>
-        <Container>{children}</Container>
+      <Collapse in={open} transitionDuration={noTransition ? 0 : 300}>
+        {/* Note that the margin here is set to somewhat align with the header's icon size */}
+        <Box ml={IconSize.md}>{children}</Box>
       </Collapse>
     </>
   );

@@ -1,4 +1,4 @@
-import { Container } from '@mantine/core';
+import { Box } from '@mantine/core';
 
 import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { Property } from '@/components/Property/Property';
@@ -34,21 +34,21 @@ export function PropertyOwnerContent({ uri, hideSubowners = false }: Props) {
   }
 
   return (
-    <>
+    <Box>
       {!hideSubowners && (
-        <>
+        <Box mt={5}>
           {subowners.map((subowner) => (
             <PropertyOwner key={subowner} uri={subowner} />
           ))}
-        </>
+        </Box>
       )}
-      {visibleProperties.length > 0 && (
-        <>
+      {visibleProperties.length > 0 && ( // TODO: Not nice with the hardcoded margin here
+        <Box ml={2} mt={'xs'}>
           {visibleProperties.map((property) => (
             <Property key={property} uri={property} />
           ))}
-        </>
+        </Box>
       )}
-    </>
+    </Box>
   );
 }

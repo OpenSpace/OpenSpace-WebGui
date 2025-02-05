@@ -60,7 +60,7 @@ export function SceneGraphNodeView({ uri }: Props) {
   const hasOther = visibleProperties.length > 0;
 
   return (
-    <ScrollArea h={'100%'} m={'xs'}>
+    <ScrollArea h={'100%'} m={'xs'} mr={'md'}>
       <SceneGraphNodeHeader uri={uri} />
       <Tabs mt={'xs'} variant={'outline'} defaultValue={defaultTab}>
         <Tabs.List>
@@ -109,39 +109,41 @@ export function SceneGraphNodeView({ uri }: Props) {
           </Tooltip>
         </Tabs.List>
 
-        <Tabs.Panel value={TabKeys.Renderable}>
-          {hasRenderable ? (
-            <PropertyOwnerContent uri={renderable.uri} />
-          ) : (
-            <Text m={'xs'}>This scene graph node has no renderable.</Text>
-          )}
-        </Tabs.Panel>
-
-        <Tabs.Panel value={TabKeys.Transform}>
-          {transforms.length > 0 ? (
-            transforms.map((subowner) => (
-              <PropertyOwner
-                key={subowner.identifier}
-                uri={subowner.uri}
-                expandedOnDefault
-              />
-            ))
-          ) : (
-            <Text m={'xs'}>This scene graph node has no transform</Text>
-          )}
-        </Tabs.Panel>
-
-        {hasOther && (
-          <Tabs.Panel value={TabKeys.Other}>
-            {/* This tab shows the properties scene graph node, without any of the
-                subowners */}
-            <PropertyOwnerContent uri={uri} hideSubowners />
+        <Box m={'xs'}>
+          <Tabs.Panel value={TabKeys.Renderable}>
+            {hasRenderable ? (
+              <PropertyOwnerContent uri={renderable.uri} />
+            ) : (
+              <Text m={'xs'}>This scene graph node has no renderable.</Text>
+            )}
           </Tabs.Panel>
-        )}
 
-        <Tabs.Panel value={TabKeys.Info}>
-          <SceneGraphNodeMetaInfo uri={uri} />
-        </Tabs.Panel>
+          <Tabs.Panel value={TabKeys.Transform}>
+            {transforms.length > 0 ? (
+              transforms.map((subowner) => (
+                <PropertyOwner
+                  key={subowner.identifier}
+                  uri={subowner.uri}
+                  expandedOnDefault
+                />
+              ))
+            ) : (
+              <Text m={'xs'}>This scene graph node has no transform</Text>
+            )}
+          </Tabs.Panel>
+
+          {hasOther && (
+            <Tabs.Panel value={TabKeys.Other}>
+              {/* This tab shows the properties scene graph node, without any of the
+                subowners */}
+              <PropertyOwnerContent uri={uri} hideSubowners />
+            </Tabs.Panel>
+          )}
+
+          <Tabs.Panel value={TabKeys.Info}>
+            <SceneGraphNodeMetaInfo uri={uri} />
+          </Tabs.Panel>
+        </Box>
       </Tabs>
     </ScrollArea>
   );

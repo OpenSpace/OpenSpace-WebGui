@@ -1,4 +1,4 @@
-import { Fieldset, Grid } from '@mantine/core';
+import { Grid } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput';
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
@@ -37,11 +37,9 @@ export function MatrixProperty({
   }
 
   return (
-    <Fieldset
-      variant={'default'}
-      legend={<PropertyLabel label={name} tip={description} />}
-    >
-      <Grid>
+    <>
+      <PropertyLabel label={name} tip={description} />
+      <Grid gutter={'xs'}>
         {value.map((v, i) => (
           <Grid.Col key={i} span={12 / matrixSize}>
             <NumericInput
@@ -55,6 +53,6 @@ export function MatrixProperty({
           </Grid.Col>
         ))}
       </Grid>
-    </Fieldset>
+    </>
   );
 }

@@ -72,7 +72,11 @@ export function SettingsPanel() {
   return (
     <ScrollArea h={'100%'}>
       <FilterList>
-        <FilterList.InputField placeHolderSearchText={'Search for a setting...'} />
+        <FilterList.InputField
+          m={'xs'}
+          mb={0}
+          placeHolderSearchText={'Search for a setting...'}
+        />
         <FilterList.Favorites>
           {topLevelPropertyOwners.map((uri) => (
             <PropertyOwner uri={uri} key={uri} />
