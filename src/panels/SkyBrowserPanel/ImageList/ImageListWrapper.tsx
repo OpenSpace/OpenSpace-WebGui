@@ -3,7 +3,6 @@ import { Select } from '@mantine/core';
 
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { useAppSelector } from '@/redux/hooks';
-import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { ImageList } from './ImageList';
 import { NearestImages } from './NearestImages';
@@ -13,7 +12,6 @@ import { ViewingMode } from './util';
 export const ImageListWrapper = memo(function ImageListSection() {
   const [value, setValue] = useState<string>(ViewingMode.allImages);
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
-  const { width } = useWindowSize();
 
   // These computations are expensive so memoizing them too
   const skySurveys = useMemo(
@@ -24,8 +22,6 @@ export const ImageListWrapper = memo(function ImageListSection() {
     () => imageList.filter((img) => img.hasCelestialCoords),
     [imageList]
   );
-
-  const columns = Math.min(Math.floor(width / 150), 6);
 
   return (
     <>
@@ -38,11 +34,10 @@ export const ImageListWrapper = memo(function ImageListSection() {
       />
       <ResizeableContent defaultHeight={450} m={'md'} mb={'xs'}>
         {value === ViewingMode.nearestImages ? (
-          <NearestImages columns={columns} />
+          <NearestImages />
         ) : (
           <ImageList
             imageList={value === ViewingMode.allImages ? allImages : skySurveys}
-            columns={columns}
           />
         )}
       </ResizeableContent>

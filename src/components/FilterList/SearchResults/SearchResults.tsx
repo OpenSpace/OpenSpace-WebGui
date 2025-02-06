@@ -6,6 +6,7 @@ import { useFilterListProvider } from '../hooks';
 
 import { SearchResultsPagination } from './SearchResultsPagination';
 import { SearchResultsVirtualList } from './SearchResultsVirtualList';
+import { SearchResultsVirtualGrid } from './SearchResultsVirtualGrid';
 
 export function SearchResults({ children }: PropsWithChildren) {
   const { showFavorites, isLoading } = useFilterListProvider();
@@ -23,3 +24,4 @@ export function SearchResults({ children }: PropsWithChildren) {
 
 SearchResults.VirtualList = SearchResultsVirtualList;
 SearchResults.Pagination = SearchResultsPagination;
+SearchResults.VirtualGrid = SearchResultsVirtualGrid;

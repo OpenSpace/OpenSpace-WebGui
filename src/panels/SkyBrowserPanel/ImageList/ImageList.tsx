@@ -1,51 +1,54 @@
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 
 import { FilterList } from '@/components/FilterList/FilterList';
-import { FilterListGrid } from '@/components/FilterList/FilterListGrid';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
-
 import { ImageCard } from './ImageCard';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 interface Props {
   imageList: SkyBrowserImage[];
   noImagesText?: React.JSX.Element;
-  columns?: number;
 }
 
 // Memoizing this as it is very expensive
 // Generic component for all the images
 export const ImageList = memo(function ImageList({
   imageList,
-  columns,
   noImagesText = <LoadingBlocks />
 }: Props) {
-  const renderImageCard = useMemo(
-    () => (image: SkyBrowserImage) => {
-      return <ImageCard image={image} />;
-    },
-    []
-  );
+  const { width: windowWidth } = useWindowSize();
+
+  const renderImageCard = useCallback((image: SkyBrowserImage) => {
+    return <ImageCard image={image} />;
+  }, []);
 
   const matcherFunc = useMemo(
     () => generateMatcherFunctionByKeys(['collection', 'name']),
     []
   );
 
+  // Sometimes the window returns 0 as the with of the window - mitigate this
+  const width = windowWidth === 0 ? 300 : windowWidth;
+  const cardWidth = 150;
+  const maxColumns = 10;
+  const columns = Math.min(Math.floor(width / cardWidth), maxColumns);
+
   return imageList.length > 0 ? (
     <FilterList>
       <FilterList.InputField
         placeHolderSearchText={`Search ${imageList.length} image${imageList.length > 1 ? 's' : ''}...`}
       />
-      <FilterListGrid<SkyBrowserImage>
-        data={imageList}
-        estimateSize={145}
-        gap={15}
-        renderElement={renderImageCard}
-        matcherFunc={matcherFunc}
-        columns={columns}
-      />
+      <FilterList.SearchResults>
+        <FilterList.SearchResults.VirtualGrid<SkyBrowserImage>
+          data={imageList}
+          gap={15}
+          renderElement={renderImageCard}
+          matcherFunc={matcherFunc}
+          columns={columns}
+        />
+      </FilterList.SearchResults>
     </FilterList>
   ) : (
     noImagesText
