@@ -1,7 +1,7 @@
+import { SearchResultsProps } from '@/types/types';
 import { VirtualList } from '../../VirtualList/VirtualList';
 
 import { useSearch } from './hooks';
-import { SearchResultsProps } from './SearchResults';
 
 interface VirtualizedProps<T> extends SearchResultsProps<T> {
   gap?: number; // Gap in pixels between items

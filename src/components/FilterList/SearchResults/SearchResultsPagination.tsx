@@ -1,7 +1,7 @@
 import { PaginationList } from '@/components/PaginationList/PaginationList';
 
 import { useSearch } from './hooks';
-import { SearchResultsProps } from './SearchResults';
+import { SearchResultsProps } from '@/types/types';
 
 interface Props<T> extends SearchResultsProps<T> {
   maxShownMatches?: number; // Maximum number of matches to render at once

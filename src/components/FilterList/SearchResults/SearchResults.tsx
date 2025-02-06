@@ -7,12 +7,6 @@ import { useFilterListProvider } from '../hooks';
 import { SearchResultsPagination } from './SearchResultsPagination';
 import { SearchResultsVirtualList } from './SearchResultsVirtualList';
 
-export interface SearchResultsProps<T> {
-  data: T[];
-  renderElement: (data: T, i: number) => React.ReactNode;
-  matcherFunc: (data: T, searchString: string) => boolean;
-}
-
 export function SearchResults({ children }: PropsWithChildren) {
   const { showFavorites, isLoading } = useFilterListProvider();
   if (!children) {
