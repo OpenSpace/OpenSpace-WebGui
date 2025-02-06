@@ -1,5 +1,6 @@
-import { Anchor, Flex, Group, Image, Text, Title } from '@mantine/core';
+import { Anchor, Group, Image, Text, Title } from '@mantine/core';
 
+import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { OpenWindowIcon } from '@/icons/icons';
 import { ActionsButton } from '@/panels/ActionsPanel/ActionsButton';
 import { DisplayType } from '@/types/enums';
@@ -75,15 +76,21 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
       <Title order={3} my={'md'}>
         Actions
       </Title>
-      <Flex wrap={'wrap'} gap={'xs'} my={'xs'}>
+      <DynamicGrid minChildSize={200}>
         {/* Show phase specific actions */}
         {!isMissionOverview &&
           displayedPhase.data?.actions?.map((uri) => (
-            <ActionsButton key={uri} uri={uri} />
+            <DynamicGrid.Col key={uri}>
+              <ActionsButton uri={uri} />
+            </DynamicGrid.Col>
           ))}
         {/* We always want to show the actions for the whole mission */}
-        {missionOverview?.actions?.map((uri) => <ActionsButton key={uri} uri={uri} />)}
-      </Flex>
+        {missionOverview.actions?.map((uri) => (
+          <DynamicGrid.Col key={uri}>
+            <ActionsButton uri={uri} />
+          </DynamicGrid.Col>
+        ))}
+      </DynamicGrid>
     </>
   );
 }

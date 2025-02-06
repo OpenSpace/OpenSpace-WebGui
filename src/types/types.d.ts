@@ -26,8 +26,8 @@ export interface FolderContent {
 }
 
 export interface Folder {
-    [key: string]: FolderContent;
-  }
+  [key: string]: FolderContent;
+}
 
 export interface SemanticVersion {
   major: number;
