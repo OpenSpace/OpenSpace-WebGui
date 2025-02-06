@@ -8,8 +8,8 @@ import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware'
 import { isDateValid } from '@/redux/time/util';
 import { TimePart } from '@/types/enums';
 
-import { TimeIncrementInput } from './TimeIncrementInput';
 import { MonthInput } from './MonthInput';
+import { TimeIncrementInput } from './TimeIncrementInput';
 import { setDate } from './util';
 
 export function TimeInput() {
