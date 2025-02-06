@@ -18,7 +18,7 @@ export const ImageList = memo(function ImageList({
   imageList,
   noImagesText = <LoadingBlocks />
 }: Props) {
-  const { width: windowWidth } = useWindowSize();
+  const { width } = useWindowSize();
 
   const renderImageCard = useCallback((image: SkyBrowserImage) => {
     return <ImageCard image={image} />;
@@ -29,8 +29,6 @@ export const ImageList = memo(function ImageList({
     []
   );
 
-  // Sometimes the window returns 0 as the with of the window - mitigate this
-  const width = windowWidth === 0 ? 300 : windowWidth;
   const cardWidth = 150;
   const maxColumns = 10;
   const columns = Math.min(Math.floor(width / cardWidth), maxColumns);
