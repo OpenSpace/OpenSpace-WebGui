@@ -1,16 +1,18 @@
 import { useState } from 'react';
-import { NumberInput, NumberInputProps } from '@mantine/core';
+import { NumberInput, NumberInputProps, Stack } from '@mantine/core';
 
 import { HoldableButton } from './HoldableButton';
 
 interface Props extends NumberInputProps {
   value: number;
   onInputChange: (value: number, relative: boolean, interpolate: boolean) => void;
+  wrapStepControlButtons?: boolean;
 }
 
 export function InlineInput({
   value,
   onInputChange,
+  wrapStepControlButtons = true,
   min,
   max,
   step,
@@ -53,32 +55,65 @@ export function InlineInput({
     setIsFocused(true);
   }
 
-  const buttonControls = (
-    <HoldableButton
-      stepHoldDelay={500}
-      stepHoldInterval={50}
-      onChange={(value, shiftKey) => onInputChange(value, true, !shiftKey)}
-      step={step}
-    />
-  );
+  function displayInputField(): React.JSX.Element {
+    if (wrapStepControlButtons) {
+      // We wrap the increment/decrement buttons above the input field
+      return (
+        <HoldableButton
+          stepHoldDelay={500}
+          stepHoldInterval={50}
+          onChange={(value, shiftKey) => onInputChange(value, true, !shiftKey)}
+          step={step}
+        >
+          <NumberInput
+            value={storedValue}
+            onKeyUp={onKeyUp}
+            onChange={(val) => onValueChange(val)}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            min={min}
+            max={max}
+            step={step}
+            stepHoldDelay={500}
+            stepHoldInterval={50}
+            clampBehavior={'strict'}
+            label={label}
+            style={style}
+            decimalScale={decimalScale}
+            hideControls
+          />
+        </HoldableButton>
+      );
+    } else {
+      return (
+        // Let the increment/decrement buttons be part of the input field
+        <NumberInput
+          value={storedValue}
+          onKeyUp={onKeyUp}
+          onChange={(val) => onValueChange(val)}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          min={min}
+          max={max}
+          step={step}
+          stepHoldDelay={500}
+          stepHoldInterval={50}
+          clampBehavior={'strict'}
+          label={label}
+          style={style}
+          decimalScale={decimalScale}
+          rightSection={
+            <HoldableButton
+              stepHoldDelay={500}
+              stepHoldInterval={50}
+              onChange={(value, shiftKey) => onInputChange(value, true, !shiftKey)}
+              step={step}
+            />
+          }
+        />
+      );
+    }
+  }
 
-  return (
-    <NumberInput
-      value={storedValue}
-      rightSection={buttonControls}
-      onKeyUp={onKeyUp}
-      onChange={(val) => onValueChange(val)}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      min={min}
-      max={max}
-      step={step}
-      stepHoldDelay={500}
-      stepHoldInterval={50}
-      clampBehavior={'strict'}
-      label={label}
-      style={style}
-      decimalScale={decimalScale}
-    />
-  );
+  return displayInputField();
 }

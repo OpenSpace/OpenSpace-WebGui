@@ -79,6 +79,7 @@ export function SimulationIncrement() {
           onInputChange={setDeltaTime}
           step={1}
           decimalScale={Decimals[stepSize]}
+          wrapStepControlButtons={false}
         />
       </Group>
       <Text size={'md'} ta={'center'} c={'dimmed'} mt={'xs'}>
