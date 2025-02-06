@@ -8,7 +8,7 @@ import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware'
 import { isDateValid } from '@/redux/time/util';
 import { TimePart } from '@/types/enums';
 
-import { InlineInput } from './InlineInput';
+import { TimeIncrementInput } from './TimeIncrementInput';
 import { MonthInput } from './MonthInput';
 import { setDate } from './util';
 
@@ -172,7 +172,7 @@ export function TimeInput() {
             {useLock ? <LockIcon /> : <LockOpenIcon />}
           </ActionIcon>
           <Group gap={5}>
-            <InlineInput
+            <TimeIncrementInput
               value={time.getUTCFullYear()}
               onInputChange={(value, relative, shiftKey) =>
                 onInputChange(value, relative, shiftKey, TimePart.Years)
@@ -187,7 +187,7 @@ export function TimeInput() {
               style={{ maxWidth: 55 }}
             />
 
-            <InlineInput
+            <TimeIncrementInput
               value={time.getUTCDate()}
               onInputChange={(value, relative, shiftKey) =>
                 onInputChange(value, relative, shiftKey, TimePart.Days)
@@ -198,7 +198,7 @@ export function TimeInput() {
             />
           </Group>
           <Group gap={5}>
-            <InlineInput
+            <TimeIncrementInput
               value={time.getUTCHours()}
               onInputChange={(value, relative, shiftKey) =>
                 onInputChange(value, relative, shiftKey, TimePart.Hours)
@@ -207,7 +207,7 @@ export function TimeInput() {
               max={24}
               style={{ maxWidth: 40 }}
             />
-            <InlineInput
+            <TimeIncrementInput
               value={time.getUTCMinutes()}
               onInputChange={(value, relative, shiftKey) =>
                 onInputChange(value, relative, shiftKey, TimePart.Minutes)
@@ -216,7 +216,7 @@ export function TimeInput() {
               max={60}
               style={{ maxWidth: 40 }}
             />
-            <InlineInput
+            <TimeIncrementInput
               value={time.getUTCSeconds()}
               onInputChange={(value, relative, shiftKey) =>
                 onInputChange(value, relative, shiftKey, TimePart.Seconds)

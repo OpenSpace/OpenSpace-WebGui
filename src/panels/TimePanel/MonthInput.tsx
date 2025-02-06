@@ -1,8 +1,7 @@
 import { useRef, useState } from 'react';
 import { TextInput, TextInputProps } from '@mantine/core';
 
-import { HoldableButton } from './HoldableButton';
-import { StopIcon } from '@/icons/icons';
+import { StepControlButtons } from './StepControls';
 
 const Months: string[] = [
   'January',
@@ -113,7 +112,7 @@ export function MonthInput({ month, onInputChange, style }: MonthProps) {
   }
 
   return (
-    <HoldableButton
+    <StepControlButtons
       stepHoldDelay={500}
       stepHoldInterval={50}
       onChange={(change, shiftKey) => {
@@ -129,6 +128,6 @@ export function MonthInput({ month, onInputChange, style }: MonthProps) {
         onKeyDown={onKeyDown}
         style={style}
       />
-    </HoldableButton>
+    </StepControlButtons>
   );
 }

@@ -14,7 +14,7 @@ interface Props extends PropsWithChildren {
   onChange: (change: number, shiftKey: boolean) => void;
   step?: number;
 }
-export function HoldableButton({
+export function StepControlButtons({
   stepHoldDelay,
   stepHoldInterval,
   onChange,

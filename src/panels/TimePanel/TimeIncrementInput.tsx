@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { NumberInput, NumberInputProps, Stack } from '@mantine/core';
+import { NumberInput, NumberInputProps } from '@mantine/core';
 
-import { HoldableButton } from './HoldableButton';
+import { StepControlButtons } from './StepControls';
 
 interface Props extends NumberInputProps {
   value: number;
@@ -9,7 +9,7 @@ interface Props extends NumberInputProps {
   wrapStepControlButtons?: boolean;
 }
 
-export function InlineInput({
+export function TimeIncrementInput({
   value,
   onInputChange,
   wrapStepControlButtons = true,
@@ -59,7 +59,7 @@ export function InlineInput({
     if (wrapStepControlButtons) {
       // We wrap the increment/decrement buttons above the input field
       return (
-        <HoldableButton
+        <StepControlButtons
           stepHoldDelay={500}
           stepHoldInterval={50}
           onChange={(value, shiftKey) => onInputChange(value, true, !shiftKey)}
@@ -82,7 +82,7 @@ export function InlineInput({
             decimalScale={decimalScale}
             hideControls
           />
-        </HoldableButton>
+        </StepControlButtons>
       );
     } else {
       return (
@@ -103,7 +103,7 @@ export function InlineInput({
           style={style}
           decimalScale={decimalScale}
           rightSection={
-            <HoldableButton
+            <StepControlButtons
               stepHoldDelay={500}
               stepHoldInterval={50}
               onChange={(value, shiftKey) => onInputChange(value, true, !shiftKey)}
