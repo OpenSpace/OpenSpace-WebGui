@@ -167,24 +167,24 @@ export function TimeInput() {
   return (
     <>
       {cappedTime ? (
-        <Group gap={'lg'} mb={'xs'}>
+        <Group gap={'xs'} mb={'xs'}>
           <ActionIcon onClick={toggleLock}>
             {useLock ? <LockIcon /> : <LockOpenIcon />}
           </ActionIcon>
-          <Group gap={'xs'}>
+          <Group gap={5}>
             <InlineInput
               value={time.getUTCFullYear()}
               onInputChange={(value, relative, shiftKey) =>
                 onInputChange(value, relative, shiftKey, TimePart.Years)
               }
-              style={{ maxWidth: 100 }}
+              style={{ maxWidth: 65 }}
             />
             <MonthInput
               month={time.getUTCMonth()}
               onInputChange={(value, relative, shiftKey) =>
                 onInputChange(value, relative, shiftKey, TimePart.Months)
               }
-              style={{ maxWidth: 75 }}
+              style={{ maxWidth: 55 }}
             />
 
             <InlineInput
@@ -192,12 +192,12 @@ export function TimeInput() {
               onInputChange={(value, relative, shiftKey) =>
                 onInputChange(value, relative, shiftKey, TimePart.Days)
               }
-              min={0}
+              min={1}
               max={31}
-              style={{ maxWidth: 65 }}
+              style={{ maxWidth: 40 }}
             />
           </Group>
-          <Group gap={'xs'}>
+          <Group gap={5}>
             <InlineInput
               value={time.getUTCHours()}
               onInputChange={(value, relative, shiftKey) =>
@@ -205,7 +205,7 @@ export function TimeInput() {
               }
               min={0}
               max={24}
-              style={{ maxWidth: 65 }}
+              style={{ maxWidth: 40 }}
             />
             <InlineInput
               value={time.getUTCMinutes()}
@@ -214,7 +214,7 @@ export function TimeInput() {
               }
               min={0}
               max={60}
-              style={{ maxWidth: 65 }}
+              style={{ maxWidth: 40 }}
             />
             <InlineInput
               value={time.getUTCSeconds()}
@@ -223,7 +223,7 @@ export function TimeInput() {
               }
               min={0}
               max={60}
-              style={{ maxWidth: 65 }}
+              style={{ maxWidth: 40 }}
             />
           </Group>
         </Group>
