@@ -25,7 +25,6 @@ export function VirtualList<T>({
     getScrollElement: () => parentRef.current,
     estimateSize: () => 45,
     enabled: true,
-    gap: gap,
     overscan: overscan
   });
 
@@ -72,6 +71,7 @@ export function VirtualList<T>({
                 key={virtualRow.key}
                 data-index={virtualRow.index}
                 ref={virtualizer.measureElement}
+                style={{ padding: `${gap}px 0 0 0` }}
               >
                 {renderElement(data[virtualRow.index], virtualRow.index)}
               </div>
