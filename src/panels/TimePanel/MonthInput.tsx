@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { TextInput, TextInputProps } from '@mantine/core';
 
 import { HoldableButton } from './HoldableButton';
+import { StopIcon } from '@/icons/icons';
 
 const Months: string[] = [
   'January',
@@ -31,7 +32,6 @@ export function MonthInput({ month, onInputChange, style }: MonthProps) {
 
   // Ref is used to get access to the latest value in the `onKeyDown` callbacks
   const storedMonthRef = useRef(month);
-  storedMonthRef.current = month;
 
   // If we are not editing we can update the value and re-render
   if (storedMonth !== month && !isFocused) {
@@ -53,14 +53,14 @@ export function MonthInput({ month, onInputChange, style }: MonthProps) {
 
   function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'ArrowUp') {
-      const newIndex = wrapIndex(storedMonthRef.current + 1);
+      const newIndex = clampMonthIndex(storedMonthRef.current + 1);
+      storedMonthRef.current = newIndex;
       setInputValue(getMonthFromIndex(newIndex).substring(0, 3));
-      onInputChange(1, true, false);
     }
     if (event.key === 'ArrowDown') {
-      const newIndex = wrapIndex(storedMonthRef.current - 1);
+      const newIndex = clampMonthIndex(storedMonthRef.current - 1);
+      storedMonthRef.current = newIndex;
       setInputValue(getMonthFromIndex(newIndex).substring(0, 3));
-      onInputChange(-1, true, false);
     }
   }
 
@@ -78,12 +78,11 @@ export function MonthInput({ month, onInputChange, style }: MonthProps) {
     setInputValue(newValue);
   }
 
-  function wrapIndex(newIndex: number) {
+  function clampMonthIndex(newIndex: number) {
     if (newIndex < 0) {
-      return 11; // wrap to December
-    }
-    if (newIndex >= 12) {
-      return 0; // Wrap to January
+      return 0;
+    } else if (newIndex > 11) {
+      return 11;
     }
     return newIndex;
   }
@@ -107,33 +106,29 @@ export function MonthInput({ month, onInputChange, style }: MonthProps) {
       }
       return null; // Index out of range
     }
-
     const index = Months.findIndex((m) =>
       m.toLowerCase().startsWith(month.toLowerCase())
     );
     return index !== -1 ? index : null;
   }
 
-  const buttonControls = (
+  return (
     <HoldableButton
       stepHoldDelay={500}
       stepHoldInterval={50}
       onChange={(change, shiftKey) => {
         onInputChange(change, true, !shiftKey);
       }}
-    />
-  );
-
-  return (
-    <TextInput
-      value={isFocused ? inputValue : monthLabel}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      onChange={(event) => onValueChange(event.currentTarget.value)}
-      onKeyUp={onKeyUp}
-      onKeyDown={onKeyDown}
-      rightSection={buttonControls}
-      style={style}
-    />
+    >
+      <TextInput
+        value={isFocused ? inputValue : monthLabel}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        onChange={(event) => onValueChange(event.currentTarget.value)}
+        onKeyUp={onKeyUp}
+        onKeyDown={onKeyDown}
+        style={style}
+      />
+    </HoldableButton>
   );
 }
