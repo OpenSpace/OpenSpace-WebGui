@@ -18,13 +18,16 @@ export function WorldWideTelescope() {
   const [isDragging, setIsDragging] = useState(false);
   const [startDragPosition, setStartDragPosition] = useState({ x: 0, y: 0 });
   const { ref } = useWwtProvider();
-  const { width, height } = useWindowSize();
+  const { width: windowWidth, height: windowHeight } = useWindowSize();
   const noOfBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
   const luaApi = useOpenSpaceApi();
   const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
   const [inverseZoom] = useGetBoolPropertyValue(
     'Modules.SkyBrowser.InverseZoomDirection'
   );
+  // Sometimes we get 0 from the useWindowSize hook
+  const height = windowHeight === 0 ? 300 : windowHeight;
+  const width = windowWidth === 0 ? 300 : windowWidth;
 
   // A bunch of hooks that pass messages to WWT when our redux state changes
   useUpdateAim();
