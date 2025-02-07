@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import {
-  ActionIcon,
   Button,
   Checkbox,
-  Container,
   Group,
   NumberInput,
   Tabs,
@@ -18,11 +16,11 @@ import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
-import { MinusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { ArcGISJSON, Candidate, Identifier } from '@/types/types';
 import { GeoLocationGroupKey, ScenePrefixKey } from '@/util/keys';
 
+import { AddedCustomNodes } from './AddedCustomNodes';
 import { CustomCoordinates } from './CustomCoordinates';
 import { EarthEntry } from './EarthEntry';
 import { addressUTF8 } from './util';
@@ -229,33 +227,10 @@ export function EarthPanel({ currentAnchor }: Props) {
         </Tabs.Panel>
       </Tabs>
 
-      <Title order={2} my={'md'}>
+      <Title order={2} my={'xs'}>
         Added Nodes
       </Title>
-      {addedCustomNodes.length > 0 ? (
-        <Container my={'md'}>
-          {addedCustomNodes.map((identifier) => (
-            <Group gap={'xs'} key={identifier} mb={2}>
-              <ActionIcon onClick={() => removeFocusNode(identifier)} color={'red'}>
-                <MinusIcon />
-              </ActionIcon>
-              <Text
-                style={{
-                  flexGrow: 1,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  textWrap: 'nowrap',
-                  maxWidth: '300px'
-                }}
-              >
-                {identifier}
-              </Text>
-            </Group>
-          ))}
-        </Container>
-      ) : (
-        <Text>No added nodes</Text>
-      )}
+      <AddedCustomNodes addedNodes={addedCustomNodes} removeFocusNode={removeFocusNode} />
     </>
   );
 }

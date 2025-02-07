@@ -15,9 +15,10 @@ interface Props {
   uri: Uri;
   label?: string;
   onClick?: () => void;
+  leftSection?: React.ReactNode;
 }
 
-export function SceneGraphNodeHeader({ uri, label, onClick }: Props) {
+export function SceneGraphNodeHeader({ uri, label, onClick, leftSection }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
 
   const renderableUri = sgnRenderableUri(uri);
@@ -56,7 +57,8 @@ export function SceneGraphNodeHeader({ uri, label, onClick }: Props) {
     <ThreePartHeader
       title={onClick ? titleButton : name}
       leftSection={
-        hasRenderable && <PropertyOwnerVisibilityCheckbox uri={renderableUri} />
+        leftSection ??
+        (hasRenderable && <PropertyOwnerVisibilityCheckbox uri={renderableUri} />)
       }
       rightSection={
         <Group wrap={'nowrap'} gap={4}>

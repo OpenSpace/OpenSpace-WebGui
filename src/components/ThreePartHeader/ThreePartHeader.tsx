@@ -1,4 +1,4 @@
-import { Group } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 
 interface Props {
   title: React.ReactNode;
@@ -8,12 +8,12 @@ interface Props {
 
 export function ThreePartHeader({ title, leftSection, rightSection }: Props) {
   return (
-    <Group justify={'space-between'} gap={'xs'} wrap={'nowrap'} w={'100%'}>
-      <Group gap={'xs'} flex={1} wrap={'nowrap'}>
-        {leftSection && leftSection}
+    <Group justify={'space-between'} gap={'xs'} w={'100%'}>
+      {leftSection}
+      <Text truncate flex={1}>
         {title}
-      </Group>
-      {rightSection && rightSection}
+      </Text>
+      {rightSection}
     </Group>
   );
 }
