@@ -59,7 +59,7 @@ export function WwtProvider({ children }: PropsWithChildren) {
       setWwtHasLoaded(false);
       setImageCollectionLoaded(false);
     }
-  }, [id]);
+  }, [id, setWwtHasLoaded, setImageCollectionLoaded]);
 
   return (
     <WwtContext.Provider

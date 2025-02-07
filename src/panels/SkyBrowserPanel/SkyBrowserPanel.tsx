@@ -1,14 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import {
-  Button,
-  Center,
-  Container,
-  Image,
-  LoadingOverlay,
-  ScrollArea,
-  Stack,
-  Text
-} from '@mantine/core';
+import { Button, Image, LoadingOverlay, ScrollArea, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
