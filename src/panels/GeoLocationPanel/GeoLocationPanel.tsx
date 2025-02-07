@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, Divider, ScrollArea, Select, Text, Title } from '@mantine/core';
+import { Box, Container, Divider, ScrollArea, Select, Text, Title } from '@mantine/core';
 
 import { EarthPanel } from './AnchorPanels/EarthPanel/EarthPanel';
 
@@ -20,21 +20,19 @@ export function GeoLocationPanel() {
   }
 
   return (
-    <ScrollArea h={'100%'}>
-      <Container>
-        <Title order={2}>Geo Location</Title>
-        <Select
-          data={anchorOptions}
-          value={currentAnchorOption}
-          onChange={(value) => setCurrentAnchorOption(value!)}
-          allowDeselect={false}
-          label={'Select an anchor'}
-          w={'100%'}
-          my={'xs'}
-        />
-        <Divider my={'xs'} />
-        {anchorPanelContent}
-      </Container>
-    </ScrollArea>
+    <Box w={'100%'} h={'100%'} style={{ overflowY: 'scroll' }}>
+      <Title order={2}>Geo Location</Title>
+      <Select
+        data={anchorOptions}
+        value={currentAnchorOption}
+        onChange={(value) => setCurrentAnchorOption(value!)}
+        allowDeselect={false}
+        label={'Select an anchor'}
+        w={'100%'}
+        my={'xs'}
+      />
+      <Divider my={'xs'} />
+      {anchorPanelContent}
+    </Box>
   );
 }

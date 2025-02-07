@@ -1,6 +1,6 @@
-import { ActionIcon, Anchor, Popover, Text } from '@mantine/core';
+import { ActionIcon, Button, Popover, Text, Tooltip } from '@mantine/core';
 
-import { InformationCircleOutlineIcon } from '@/icons/icons';
+import { InformationIcon, OpenInBrowserIcon } from '@/icons/icons';
 import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
 interface Props {
@@ -11,9 +11,11 @@ export function ImageInfoPopover({ image }: Props) {
   return (
     <Popover width={200} position={'bottom'} withArrow shadow={'md'} trapFocus>
       <Popover.Target>
-        <ActionIcon>
-          <InformationCircleOutlineIcon />
-        </ActionIcon>
+        <Tooltip label={'Info'}>
+          <ActionIcon>
+            <InformationIcon />
+          </ActionIcon>
+        </Tooltip>
       </Popover.Target>
       <Popover.Dropdown>
         <Text size={'sm'} fw={500}>
@@ -22,9 +24,17 @@ export function ImageInfoPopover({ image }: Props) {
         <Text size={'sm'} c={'dimmed'} lineClamp={10}>
           {image.credits}
         </Text>
-        <Anchor size={'sm'} href={image.creditsUrl} target={'_blank'} underline={'hover'}>
-          Read more
-        </Anchor>
+        <Button
+          component="a"
+          size={'xs'}
+          href={image.creditsUrl}
+          target={'_blank'}
+          variant="outline"
+          mt={'md'}
+        >
+          <Text m={'xs'}>Read more</Text>
+          <OpenInBrowserIcon size={16} />
+        </Button>
       </Popover.Dropdown>
     </Popover>
   );

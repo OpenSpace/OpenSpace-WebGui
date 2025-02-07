@@ -57,15 +57,7 @@ export function EarthEntry({
       {/* TODO temporary css to stop long names from linebreaking causing the
           buttons to be moved to a new row, the maxwidth is just arbitrary
           minus the size of the buttons... */}
-      <Text
-        style={{
-          flexGrow: 1,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          textWrap: 'nowrap',
-          maxWidth: 350 - 125
-        }}
-      >
+      <Text truncate>
         {cappedAddress}
         {cappedAddress.length !== address.length ? '...' : ''}
       </Text>

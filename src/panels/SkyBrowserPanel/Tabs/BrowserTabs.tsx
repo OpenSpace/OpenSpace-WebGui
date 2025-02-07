@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ActionIcon, ColorSwatch, Group, Tabs } from '@mantine/core';
+import { ActionIcon, ColorSwatch, Group, Tabs, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { PlusIcon } from '@/icons/icons';
@@ -48,13 +48,15 @@ export function BrowserTabs({ openWorldWideTelescope }: Props) {
             </Group>
           </Tabs.Tab>
         ))}
-        <ActionIcon
-          variant={'default'}
-          size={'lg'}
-          onClick={() => luaApi?.skybrowser.createTargetBrowserPair()}
-        >
-          <PlusIcon />
-        </ActionIcon>
+        <Tooltip label={'Add new browser'}>
+          <ActionIcon
+            variant={'default'}
+            size={'lg'}
+            onClick={() => luaApi?.skybrowser.createTargetBrowserPair()}
+          >
+            <PlusIcon />
+          </ActionIcon>
+        </Tooltip>
       </Tabs.List>
 
       {/* Tab content */}

@@ -1,7 +1,7 @@
-import { ActionIcon, Card, Image, Text } from '@mantine/core';
+import { ActionIcon, Card, Image, Text, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { AddPhotoIcon } from '@/icons/icons';
+import { AddPhotoIcon, PlusIcon } from '@/icons/icons';
 import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
 import { useActiveImage, useSelectedBrowserColorString } from '../hooks';
@@ -31,11 +31,17 @@ export function ImageCard({ image }: Props) {
         <Image src={image.thumbnail} height={45} fallbackSrc={'placeholder.svg'} />
       </Card.Section>
       <Card.Section p={'xs'}>
-        <Text truncate={'end'}>{image.name}</Text>
-        <ActionIcon mt={'xs'} mr={'md'} onClick={select}>
-          <AddPhotoIcon />
-        </ActionIcon>
-        <ImageInfoPopover image={image} />
+        <Tooltip label={image.name}>
+          <Text truncate={'end'}>{image.name}</Text>
+        </Tooltip>
+        <Tooltip label={'Add image'}>
+          <ActionIcon mt={'xs'} mr={'md'} onClick={select}>
+            <PlusIcon />
+          </ActionIcon>
+        </Tooltip>
+        <Tooltip label={'Info'}>
+          <ImageInfoPopover image={image} />
+        </Tooltip>
       </Card.Section>
     </Card>
   );

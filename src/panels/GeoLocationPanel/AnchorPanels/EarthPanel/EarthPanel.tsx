@@ -4,8 +4,11 @@ import {
   Button,
   Checkbox,
   Container,
+  Flex,
   Group,
   NumberInput,
+  ScrollArea,
+  Stack,
   Tabs,
   Text,
   TextInput,
@@ -235,26 +238,13 @@ export function EarthPanel({ currentAnchor }: Props) {
         Added Nodes
       </Title>
       {addedCustomNodes.length > 0 ? (
-        <Container my={'md'}>
+        <>
           {addedCustomNodes.map((identifier) => (
-            <Group gap={'xs'} key={identifier} mb={2}>
-              <ActionIcon onClick={() => removeFocusNode(identifier)} color={'red'}>
-                <MinusIcon />
-              </ActionIcon>
-              <Text
-                style={{
-                  flexGrow: 1,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  textWrap: 'nowrap',
-                  maxWidth: '300px'
-                }}
-              >
-                {identifier}
-              </Text>
-            </Group>
+            <Text key={identifier} truncate={'end'}>
+              {identifier}
+            </Text>
           ))}
-        </Container>
+        </>
       ) : (
         <Text>No added nodes</Text>
       )}
