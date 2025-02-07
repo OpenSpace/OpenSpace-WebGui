@@ -3,7 +3,8 @@ import { memo, useCallback, useMemo } from 'react';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
-import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
+import { SkyBrowserImage } from '@/types/skybrowsertypes';
+
 import { ImageCard } from './ImageCard';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 

@@ -8,7 +8,7 @@ import { WwtContext } from './WwtContext';
 
 // This hook defines the messages WWT can receive and provides the ref
 // that should be attached to the iframe of WWT
-export function useMessages() {
+export function useWwtMessages() {
   const ref = useRef<HTMLIFrameElement>(null);
 
   const sendMessageToWwt = useCallback((message: Messages) => {
@@ -27,14 +27,14 @@ export function useMessages() {
     (radius: number) => {
       sendMessageToWwt({
         event: 'set_border_radius',
-        data: radius
+        data: radius // Range [0, 1]
       });
     },
     [sendMessageToWwt]
   );
 
   const setBorderColor = useCallback(
-    (color: number[]) => {
+    (color: [number, number, number]) => {
       sendMessageToWwt({
         event: 'set_background_color',
         data: color
@@ -63,7 +63,20 @@ export function useMessages() {
   );
 
   const setAim = useCallback(
-    (ra: number, dec: number, fov: number, roll: number) => {
+    (
+      ra: number | undefined,
+      dec: number | undefined,
+      fov: number | undefined,
+      roll: number | undefined
+    ) => {
+      if (
+        ra === undefined ||
+        dec === undefined ||
+        fov === undefined ||
+        roll === undefined
+      ) {
+        return;
+      }
       sendMessageToWwt({
         event: 'center_on_coordinates',
         ra,

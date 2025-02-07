@@ -1,45 +1,9 @@
+import {
+  SkyBrowserBrowser,
+  SkyBrowserImage,
+  SkyBrowserUpdate
+} from '@/types/skybrowsertypes';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface SkyBrowserImage {
-  cartesianDirection: number[];
-  collection: string;
-  credits: string;
-  creditsUrl: string;
-  dec: number;
-  fov: number;
-  hasCelestialCoords: boolean;
-  identifier: string;
-  key: string;
-  name: string;
-  ra: number;
-  thumbnail: string;
-  url: string;
-}
-
-export interface SkyBrowserBrowser {
-  borderRadius: number;
-  cartesianDirection: number[];
-  color: number[];
-  dec: number;
-  displayCopies: object;
-  fov: number;
-  id: string;
-  isFacingCamera: boolean;
-  isUsingRae: boolean;
-  name: string;
-  opacities: number[];
-  ra: number;
-  ratio: number;
-  roll: number;
-  scale: number;
-  selectedImages: number[];
-  targetId: string;
-}
-
-interface SkyBrowserUpdate
-  extends Pick<SkyBrowserState, 'selectedBrowserId' | 'cameraInSolarSystem'> {
-  browsers: { [id: string]: SkyBrowserBrowser };
-}
 
 export interface SkyBrowserState {
   isInitialized: boolean;
@@ -102,9 +66,6 @@ export const skyBrowserSlice = createSlice({
       state.imageList = action.payload;
       return state;
     },
-    onCloseConnection: (state) => {
-      return state;
-    },
     setActiveImage: (state, action: PayloadAction<string>) => {
       state.activeImage = action.payload;
       return state;
@@ -116,7 +77,6 @@ export const skyBrowserSlice = createSlice({
 export const {
   updateSkyBrowser,
   setImageCollectionData,
-  onCloseConnection,
   setActiveImage,
   subscriptionIsSetup
 } = skyBrowserSlice.actions;

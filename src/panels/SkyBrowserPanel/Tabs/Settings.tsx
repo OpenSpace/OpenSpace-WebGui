@@ -31,7 +31,7 @@ export function Settings({ id }: Props) {
     // If there are more browsers, select another browser
     if (browserIds.length > 1) {
       const otherBrowsers = browserIds.filter((b) => b !== id);
-      //luaApi?.skybrowser.setSelectedBrowser(otherBrowsers[0]);
+      luaApi?.skybrowser.setSelectedBrowser(otherBrowsers[0]);
     }
     luaApi?.skybrowser.removeTargetBrowserPair(id);
   }

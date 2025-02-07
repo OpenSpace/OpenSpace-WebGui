@@ -2,7 +2,7 @@ import { ActionIcon, Card, Image, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { AddPhotoIcon } from '@/icons/icons';
-import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
+import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
 import { useActiveImage, useSelectedBrowserColorString } from '../hooks';
 import { ImageInfoPopover } from '../ImageInfoPopover';

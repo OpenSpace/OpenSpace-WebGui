@@ -7,6 +7,7 @@ import { ConnectionStatus } from '@/types/enums';
 import { AppStartListening } from '../listenerMiddleware';
 
 import { subscriptionIsSetup, updateSkyBrowser } from './skybrowserSlice';
+import { SkyBrowserUpdate } from '@/types/skybrowsertypes';
 
 const subscribeToSkyBrowser = createAction<void>('skybrowser/subscribe');
 const unsubscribeToSkyBrowser = createAction<void>('skybrowser/unsubscribe');
@@ -22,9 +23,8 @@ export const setupSubscription = createAsyncThunk(
     });
 
     (async () => {
-      // TODO: add type to the data
       for await (const data of skybrowserTopic.iterator()) {
-        thunkAPI.dispatch(updateSkyBrowser(data));
+        thunkAPI.dispatch(updateSkyBrowser(data as SkyBrowserUpdate));
       }
     })();
     thunkAPI.dispatch(subscriptionIsSetup());

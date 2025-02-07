@@ -2,8 +2,13 @@ import { createContext } from 'react';
 
 export interface ProviderProps {
   ref: React.RefObject<HTMLIFrameElement>;
-  setAim: (ra: number, dec: number, fov: number, roll: number) => void;
-  setBorderColor: (color: number[]) => void;
+  setAim: (
+    ra: number | undefined,
+    dec: number | undefined,
+    fov: number | undefined,
+    roll: number | undefined
+  ) => void;
+  setBorderColor: (color: [number, number, number]) => void;
   setBorderRadius: (radius: number) => void;
   loadImage: (url: string) => void;
   setOpacity: (url: string, opacity: number) => void;

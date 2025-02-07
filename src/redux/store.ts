@@ -30,10 +30,10 @@ export const store = configureStore({
     properties: propertiesReducer,
     propertyOwners: propertyOwnersReducer,
     sessionRecording: sessionRecordingReducer,
+    skybrowser: skyBrowserReducer,
     time: timeReducer,
     userPanels: userPanelsReducer,
-    version: versionReducer,
-    skybrowser: skyBrowserReducer
+    version: versionReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([listenerMiddleware.middleware]),

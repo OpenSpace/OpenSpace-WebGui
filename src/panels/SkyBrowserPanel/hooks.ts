@@ -10,33 +10,34 @@ import {
   setActiveImage,
   setImageCollectionData
 } from '@/redux/skybrowser/skybrowserSlice';
+import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
 export function useGetWwtImageCollection() {
   const luaApi = useOpenSpaceApi();
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     async function getWwtListOfImages() {
       if (!luaApi || !luaApi.skybrowser) {
         return;
       }
       const imgData = await luaApi.skybrowser.listOfImages();
-      if (imgData) {
-        const images = Object.values(imgData);
-        if (images.length !== 0) {
-          const imgDataWithKey = images.map((image) => ({
-            ...image,
-            key: image.identifier
-          }));
-          dispatch(setImageCollectionData(imgDataWithKey));
-        }
-      } else {
-        throw new Error('No AAS WorldWide Telescope images!');
+      if (!imgData) {
+        throw new Error(`Couldn't load AAS WorldWide Telescope images!`);
       }
+      const images = Object.values(imgData) as SkyBrowserImage[];
+      if (images.length === 0) {
+        throw new Error('Received 0 AAS WorldWide Telescope images!');
+      }
+
+      // Success - we got the images. Adding to redux
+      dispatch(setImageCollectionData(images));
     }
+
     try {
       getWwtListOfImages();
     } catch (e) {
-      throw Error(`Could not load image collection from OpenSpace: ${e}`);
+      throw Error(`Could not load image collection from OpenSpace. Error: ${e}`);
     }
   }, [luaApi, dispatch]);
 }
@@ -69,12 +70,11 @@ export function useActiveImage(): [string, (url: string) => void] {
 // the topic so that most of the data are properties instead, and only
 // pass the data for the currently selected browser
 
-export function useSelectedBrowserColor(): number[] | undefined {
-  const color = useAppSelector(
+export function useSelectedBrowserColor(): [number, number, number] | undefined {
+  return useAppSelector(
     (state) => state.skybrowser.selectedBrowser?.color,
     lowPrecisionEqualArray
   );
-  return color;
 }
 
 export function useSelectedBrowserColorString(): string | undefined {
@@ -83,11 +83,10 @@ export function useSelectedBrowserColorString(): string | undefined {
 }
 
 export function useSelectedBrowserRadius(): number | undefined {
-  const radius = useAppSelector(
+  return useAppSelector(
     (state) => state.skybrowser.selectedBrowser?.borderRadius,
     lowPrecisionEqual()
   );
-  return radius;
 }
 
 export function lowPrecisionEqualMatrix(
@@ -166,58 +165,44 @@ export function useSelectedBrowserCoords() {
 }
 
 export function useSelectedBrowserFov() {
-  const fov = useAppSelector(
+  return useAppSelector(
     (state) => state.skybrowser.selectedBrowser?.fov,
     lowPrecisionEqual(1e-6)
   );
-
-  return fov;
 }
 
 export function useSkyBrowserCartesianDirection() {
-  const cartesianDirection = useAppSelector(
+  return useAppSelector(
     (state) => state.skybrowser.selectedBrowser?.cartesianDirection,
     lowPrecisionEqualArray
   );
-  return cartesianDirection;
 }
 
 export function useSkyBrowserColors() {
-  const browserColors = useAppSelector(
+  return useAppSelector(
     (state) => state.skybrowser.browserColors,
     lowPrecisionEqualMatrix
   );
-  return browserColors;
 }
 
 export function useSkyBrowserNames() {
-  const browserNames = useAppSelector(
-    (state) => state.skybrowser.browserNames,
-    equalArray<string>
-  );
-  return browserNames;
+  return useAppSelector((state) => state.skybrowser.browserNames, equalArray<string>);
 }
 
 export function useSkyBrowserIds() {
-  const browsersIds = useAppSelector(
-    (state) => state.skybrowser.browserIds,
-    equalArray<string>
-  );
-  return browsersIds;
+  return useAppSelector((state) => state.skybrowser.browserIds, equalArray<string>);
 }
 
 export function useSkyBrowserSelectedImages() {
-  const selectedImages = useAppSelector(
+  return useAppSelector(
     (state) => state.skybrowser.selectedBrowser?.selectedImages,
     equalArray<number>
   );
-  return selectedImages;
 }
 
 export function useSkyBrowserSelectedOpacities() {
-  const opacities = useAppSelector(
+  return useAppSelector(
     (state) => state.skybrowser.selectedBrowser?.opacities,
     lowPrecisionEqualArray
   );
-  return opacities;
 }
