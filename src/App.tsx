@@ -1,5 +1,5 @@
 import { ErrorBoundary } from 'react-error-boundary';
-import { createTheme, MantineProvider } from '@mantine/core';
+import { ActionIcon, Button, createTheme, MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 
 import { fallbackRender } from './components/ErrorFallback/fallbackRender';
@@ -10,7 +10,19 @@ import 'rc-dock/dist/rc-dock-dark.css';
 import '@mantine/core/styles.css';
 
 const theme = createTheme({
-  cursorType: 'pointer'
+  cursorType: 'pointer',
+  components: {
+    Button: Button.extend({
+      defaultProps: {
+        variant: 'default'
+      }
+    }),
+    ActionIcon: ActionIcon.extend({
+      defaultProps: {
+        variant: 'default'
+      }
+    })
+  }
 });
 
 function App() {
