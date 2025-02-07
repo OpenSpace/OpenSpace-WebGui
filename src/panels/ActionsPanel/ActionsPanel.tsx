@@ -100,23 +100,21 @@ export function ActionsPanel() {
           <FilterList.InputField placeHolderSearchText={'Search for an action...'} />
           <FilterList.Favorites>
             <DynamicGrid gutter={'xs'} minChildSize={150} className={'actionsPanelGrid'}>
-              {Object.keys(actionLevel.folders)
-                .sort()
-                .map((folder, i) => (
-                  <DynamicGrid.Col key={`${folder}_${i}`}>
-                    <Button
-                      leftSection={<FolderIcon />}
-                      onClick={() => addNavPath(folder)}
-                      variant={'default'}
-                      fullWidth
-                      h={80} // TODO anden88 2025-02-06: use same css variable as ActionsButton
-                    >
-                      <Text style={{ whiteSpace: 'wrap', wordBreak: 'break-all' }}>
-                        {folder}
-                      </Text>
-                    </Button>
-                  </DynamicGrid.Col>
-                ))}
+              {actionLevel.folders.sort().map((folder, i) => (
+                <DynamicGrid.Col key={`${folder}_${i}`}>
+                  <Button
+                    leftSection={<FolderIcon />}
+                    onClick={() => addNavPath(folder)}
+                    variant={'default'}
+                    fullWidth
+                    h={80} // TODO anden88 2025-02-06: use same css variable as ActionsButton
+                  >
+                    <Text style={{ whiteSpace: 'wrap', wordBreak: 'break-all' }}>
+                      {folder}
+                    </Text>
+                  </Button>
+                </DynamicGrid.Col>
+              ))}
 
               {actionLevel.actions.map((action: Action) => (
                 <DynamicGrid.Col key={`${action.identifier}_action`}>

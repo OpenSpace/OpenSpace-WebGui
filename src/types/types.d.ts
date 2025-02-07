@@ -20,15 +20,6 @@ export interface Keybind {
 
 export type ActionOrKeybind = Action | Keybind;
 
-export interface FolderContent {
-  actions: Action[];
-  folders: Folder;
-}
-
-export interface Folder {
-  [key: string]: FolderContent;
-}
-
 export interface SemanticVersion {
   major: number;
   minor: number;

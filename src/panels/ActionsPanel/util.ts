@@ -1,67 +1,51 @@
-import { Action, FolderContent } from '@/types/types';
+import { Action } from '@/types/types';
+
+export interface ActionFolderContent {
+  actions: Action[];
+  folders: string[];
+}
 
 export function actionsForLevel(
   actions: Action[],
   navigationPath: string
-): FolderContent {
-  const mappedActions: FolderContent = { actions: [], folders: {} };
+): ActionFolderContent {
+  const mappedActions: ActionFolderContent = { actions: [], folders: [] };
+  const levelDepth = navigationPath.split('/').filter((s) => s.length > 0).length;
 
-  // @TODO: (2025-02-07, emmbr), this code collects ALL actions and folders, not only
-  // the ones that are on the current level. We should refactor it
+  // Find all actions and folders that match the current navigation path
   actions.forEach((action) => {
     let { guiPath } = action;
-    // If there is no backslash at beginning of GUI path, add that manually
-    // (there should always be though)
+
+    // Ensure that the GUI path starts with a slash (they all should)
     if (guiPath.length > 0 && guiPath[0] !== '/') {
       guiPath = `/${guiPath}`;
     }
 
-    // Splite the GUI path up into the individual subfolders..
-    // Remove all empty strings: which is what we get before initial slash and
-    // if the path is just a slash
-    const guiFolders = guiPath.split('/').filter((s) => s !== '');
-    const isTopLevelAction = guiFolders.length === 0;
+    if (!guiPath.startsWith(navigationPath)) {
+      return;
+    }
 
-    // Is this is action at the top level, and we're finding the top level actions?
-    // Just add it then
-    if (isTopLevelAction && navigationPath === '/') {
+    if (guiPath === navigationPath) {
       mappedActions.actions.push(action);
       return;
     }
 
-    // Add actions of other levels
-    let parent = mappedActions;
-    while (guiFolders.length > 0) {
-      const folderName = guiFolders.shift();
-      if (folderName === undefined) {
-        throw 'Foldername was undefined! Typescript conversion need some look over';
-      }
-      if (!(folderName in parent.folders)) {
-        parent.folders[folderName] = { actions: [], folders: {} };
-      }
-      if (guiFolders.length === 0) {
-        parent.folders[folderName].actions.push(action);
-      } else {
-        parent = parent.folders[folderName];
-      }
+    // Add all the subfolders to the folders list. Unfortunately we currently have to do
+    // this based on the GUI paths of all the remaining actions
+    // @TODO (2025-02-07, emmbr): This is not very efficient, but it works for now. Better
+    // would be to prepare the data in a more structured way in the Redux store
+
+    const splitPath = guiPath.split('/');
+    if (splitPath.length <= levelDepth) {
+      return;
+    }
+    const folderName = splitPath[levelDepth + 1];
+    if (folderName && !mappedActions.folders.includes(folderName)) {
+      mappedActions.folders.push(folderName);
     }
   });
 
-  // @TODO : This code is quite confusing.... It steps thought
-  let actionsForPath = mappedActions;
-  if (navigationPath.length > 1) {
-    const folders = navigationPath.split('/');
-    folders.shift();
-    while (folders.length > 0) {
-      const folderName = folders.shift();
-      if (folderName === undefined) {
-        throw 'Foldername was undefined! Typescript conversion need some look over';
-      }
-      actionsForPath = actionsForPath.folders[folderName];
-    }
-  }
-
-  return actionsForPath;
+  return mappedActions;
 }
 
 export function getDisplayedActions(allActions: Action[], navPath: string): Action[] {
