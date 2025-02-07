@@ -3,7 +3,11 @@ import { PropsWithChildren, useEffect } from 'react';
 import { useGetStringPropertyValue } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 
-import { useMessages, useStartPingingWwt, useWwtEventListener } from './hooks';
+import {
+  useMessages as useWwtMessages,
+  useStartPingingWwt,
+  useWwtEventListener
+} from './hooks';
 import { WwtContext } from './WwtContext';
 
 export function WwtProvider({ children }: PropsWithChildren) {
@@ -17,7 +21,7 @@ export function WwtProvider({ children }: PropsWithChildren) {
     loadImage,
     setOpacity,
     removeImage
-  } = useMessages();
+  } = useWwtMessages();
   // Set up the message listener which will tell us once wwt has been loaded
   // and when the image collection has been loaded
   const {
@@ -27,15 +31,16 @@ export function WwtProvider({ children }: PropsWithChildren) {
     setImageCollectionLoaded
   } = useWwtEventListener();
 
-  const noOfBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
+  const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
 
   const [url] = useGetStringPropertyValue('Modules.SkyBrowser.WwtImageCollectionUrl');
-  const connect = !wwtHasLoaded && url !== undefined && noOfBrowsers === 0;
+  const shouldConnect = !wwtHasLoaded && url !== undefined && nBrowsers === 0;
+  const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
   // Start pinging WWT with the set aim function
   // We want to make sure we have the image collection url so wait for that
-  useStartPingingWwt(connect, setAim);
-  // Once wwt has been loaded, we pass messages to hide chrome and load the image
-  // collection
+  useStartPingingWwt(shouldConnect, setAim);
+  // Once wwt has been loaded, we pass messages to hide the built in default interface
+  // with the "hide chrome" message and load the image collection
   useEffect(() => {
     if (wwtHasLoaded && url !== undefined) {
       hideChrome();
@@ -45,11 +50,20 @@ export function WwtProvider({ children }: PropsWithChildren) {
 
   // If we have no browsers we want to reset the flags for next time
   useEffect(() => {
-    if (noOfBrowsers === 0) {
+    if (nBrowsers === 0) {
       setWwtHasLoaded(false);
       setImageCollectionLoaded(false);
     }
-  }, [noOfBrowsers, setWwtHasLoaded, setImageCollectionLoaded]);
+  }, [nBrowsers, setWwtHasLoaded, setImageCollectionLoaded]);
+
+  // This should never happen but it is technically possible for no browser to
+  // be selected - if so, we need to reset the WWT window
+  useEffect(() => {
+    if (id === '') {
+      setWwtHasLoaded(false);
+      setImageCollectionLoaded(false);
+    }
+  }, [id]);
 
   return (
     <WwtContext.Provider

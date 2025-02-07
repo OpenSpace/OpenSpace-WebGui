@@ -17,10 +17,13 @@ import {
 export function WorldWideTelescope() {
   const [isDragging, setIsDragging] = useState(false);
   const [startDragPosition, setStartDragPosition] = useState({ x: 0, y: 0 });
+
   const { ref } = useWwtProvider();
+
   const { width, height } = useWindowSize();
-  const noOfBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
   const luaApi = useOpenSpaceApi();
+
+  const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
   const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
   const [inverseZoom] = useGetBoolPropertyValue(
     'Modules.SkyBrowser.InverseZoomDirection'
@@ -42,16 +45,14 @@ export function WorldWideTelescope() {
   }, [width, height, id, luaApi?.skybrowser]);
 
   function handleDrag(x: number, y: number) {
-    if (!id) {
+    if (!id || !isDragging) {
       return;
     }
-    if (isDragging) {
-      // Calculate pixel translation
-      const dx = x - startDragPosition.x;
-      const dy = y - startDragPosition.y;
-      // Call lua function with relative values
-      luaApi?.skybrowser.finetuneTargetPosition(id, [dx / width, dy / height]);
-    }
+    // Calculate pixel translation
+    const dx = x - startDragPosition.x;
+    const dy = y - startDragPosition.y;
+    // Call lua function with relative values
+    luaApi?.skybrowser.finetuneTargetPosition(id, [dx / width, dy / height]);
   }
 
   function mouseDown(x: number, y: number) {
@@ -77,9 +78,15 @@ export function WorldWideTelescope() {
     luaApi?.skybrowser.stopAnimations(id);
   }
 
-  return noOfBrowsers === 0 ? (
-    <Text>No browsers</Text>
-  ) : (
+  if (id === '') {
+    return <Text m={'lg'}>No browser selected</Text>;
+  }
+
+  if (nBrowsers === 0) {
+    return <Text m={'lg'}>No browsers</Text>;
+  }
+
+  return (
     <Box
       component={'button'}
       onMouseMove={(e) => handleDrag(e.clientX, e.clientY)}
@@ -88,12 +95,11 @@ export function WorldWideTelescope() {
       onMouseLeave={mouseUp}
       onWheel={(e) => scroll(e.deltaY)}
       aria-label={'Dragging area for WorldWideTelescope'}
+      p={'0px'}
+      bg={'transparent'}
+      pos={'absolute'}
+      bd={'0px'}
       style={{
-        position: 'absolute',
-        backgroundColor: 'transparent',
-        zIndex: 10,
-        borderWidth: '0px',
-        padding: '0px',
         cursor: isDragging ? 'grabbing' : 'grab'
       }}
     >

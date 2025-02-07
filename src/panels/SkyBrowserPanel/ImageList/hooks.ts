@@ -11,11 +11,11 @@ import { DistanceSortThreshold, euclidianDistance, isWithinFOV } from './util';
 export function useGetImagesInView() {
   const { ra, dec } = useSelectedBrowserCoords();
   const fov = useSelectedBrowserFov();
-  const cartesianDirection = useSkyBrowserCartesianDirection();
+  const viewDirection = useSkyBrowserCartesianDirection();
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
 
   if (
-    !cartesianDirection ||
+    !viewDirection ||
     !imageList ||
     ra === undefined ||
     fov === undefined ||
@@ -36,20 +36,21 @@ export function useGetImagesInView() {
     );
   });
 
-  imgsWithinTarget.sort((a, b) => {
-    const distA = euclidianDistance(a.cartesianDirection, cartesianDirection);
-    const distB = euclidianDistance(b.cartesianDirection, cartesianDirection);
-    let result = distA > distB;
+  imgsWithinTarget.sort((imgA, imgB) => {
+    // Get the distance from the image to the center of the view
+    const distA = euclidianDistance(imgA.cartesianDirection, viewDirection);
+    const distB = euclidianDistance(imgB.cartesianDirection, viewDirection);
+
     // If both the images are within a certain distance of each other
-    // assume they are taken of the same object and sort on fov.
-    if (
-      euclidianDistance(a.cartesianDirection, cartesianDirection) <
-        DistanceSortThreshold &&
-      euclidianDistance(b.cartesianDirection, cartesianDirection) < DistanceSortThreshold
-    ) {
-      result = a.fov > b.fov;
+    // assume they are taken of the same object and sort by fov.
+    // This is because it is nice to have an overview of the object before getting
+    // the details
+    const isSameObject = distA < DistanceSortThreshold && distB < DistanceSortThreshold;
+    if (isSameObject) {
+      return imgA.fov > imgB.fov ? 1 : -1;
     }
-    return result ? 1 : -1;
+    // Else sort by distance
+    return distA > distB ? 1 : -1;
   });
 
   return imgsWithinTarget;

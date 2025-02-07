@@ -2,7 +2,7 @@ import { Group, Image, Paper, Slider, Stack, Text } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { MoveTargetIcon, TrashIcon } from '@/icons/icons';
+import { MoveTargetIcon, DeleteIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
 
@@ -16,13 +16,13 @@ interface Props {
   selected: boolean;
   opacity: number;
 }
-export function SelectedImageCard({ image, opacity }: Props) {
+export function AddedImageCard({ image, opacity }: Props) {
   const luaApi = useOpenSpaceApi();
   const [activeImage, setActiveImage] = useActiveImage();
   const selectedBrowserId = useAppSelector((state) => state.skybrowser.selectedBrowserId);
   const color = useSelectedBrowserColorString();
 
-  const throttle = useThrottledCallback(
+  const setOpacity = useThrottledCallback(
     (newValue) =>
       luaApi?.skybrowser.setOpacityOfImageLayer(selectedBrowserId, image.url, newValue),
     250
@@ -31,8 +31,7 @@ export function SelectedImageCard({ image, opacity }: Props) {
 
   return (
     <Paper
-      withBorder={true}
-      my={'md'}
+      withBorder
       p={'sm'}
       style={{
         borderColor: isSelected ? color : 'var(--mantine-color-gray-8)'
@@ -54,6 +53,7 @@ export function SelectedImageCard({ image, opacity }: Props) {
             >
               <MoveTargetIcon />
             </TabButton>
+            <ImageInfoPopover image={image} />
             <TabButton
               onClick={() =>
                 luaApi?.skybrowser.removeSelectedImageInBrowser(
@@ -62,11 +62,11 @@ export function SelectedImageCard({ image, opacity }: Props) {
                 )
               }
               text={'Remove image'}
-              variant={'filled'}
+              variant={'outline'}
+              color={'red'}
             >
-              <TrashIcon />
+              <DeleteIcon />
             </TabButton>
-            <ImageInfoPopover image={image} />
           </Group>
         </Stack>
         <Stack gap={'xs'}>
@@ -76,15 +76,12 @@ export function SelectedImageCard({ image, opacity }: Props) {
             radius={'sm'}
             height={45}
             opacity={opacity}
-            fallbackSrc={'https://placehold.co/600x400?text=Placeholder'}
-            style={{
-              border: '1px solid var(--mantine-color-gray-7)'
-            }}
+            fallbackSrc={'public/placeholder.svg'}
+            bd={'1px solid var(--mantine-color-gray-7)'}
           />
           <Slider
-            flex={1}
             value={opacity}
-            onChange={throttle}
+            onChange={setOpacity}
             min={0}
             max={1}
             step={0.1}

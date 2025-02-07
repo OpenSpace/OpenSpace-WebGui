@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
-import { Messages } from './types';
+import { Messages } from '@/types/skybrowsertypes';
 import { WwtContext } from './WwtContext';
 
 // This file contains the hooks necessary to set up the communication with
@@ -17,9 +17,9 @@ export function useMessages() {
       if (frame && message) {
         frame.postMessage(message, '*');
       }
-    } catch (e) {
-      // Do nothing
-      console.error(e);
+    } catch {
+      // Do nothing since it is expected behavior that passing
+      // messages to wwt sometimes fails
     }
   }, []);
 
@@ -124,7 +124,7 @@ export function useMessages() {
   };
 }
 
-// This hook will set up message listeners so we can collect the messages wwt sends
+// This hook will set up message listeners so we can collect the messages wwt sends.
 // It keeps tabs of two states: when the application has loaded and when the image
 // collection has finished loading
 export function useWwtEventListener() {
@@ -134,8 +134,7 @@ export function useWwtEventListener() {
   // Add event listeners for World Wide Telescope responses
   useEffect(() => {
     function handleCallbackMessage(event: MessageEvent) {
-      // We got the first response from wwt - now load the image collection
-      // and hide the settings icons on the side
+      // We got the first response from wwt
       if (event.data === 'wwt_has_loaded') {
         setWwtHasLoaded(true);
       }
@@ -157,17 +156,17 @@ export function useWwtEventListener() {
   };
 }
 
-// This hook will start sending messages to WorldWideTelescope to trigger a response
+// This hook will start sending messages to WorldWideTelescope to trigger a response.
 // Once a response has been given we cancel the pinging
 export function useStartPingingWwt(
-  connect: boolean,
+  shouldConnect: boolean,
   setAim: (ra: number, dec: number, fov: number, roll: number) => void
 ) {
   const setSetupWwtFunc = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Start send messages to World Wide Telescope to trigger a response
   useEffect(() => {
-    if (connect) {
+    if (shouldConnect) {
       // Send aim messages to WorldWide Telescope to prompt it to reply with a message
       setSetupWwtFunc.current = setInterval(setAim, 250);
     }
@@ -179,11 +178,11 @@ export function useStartPingingWwt(
       clearInterval(setSetupWwtFunc.current);
       setSetupWwtFunc.current = null;
     };
-  }, [connect, setAim]);
+  }, [shouldConnect, setAim]);
 }
 
-// This is the context that will set up all needed connection and expose the
-// functions, states, and ref to the children
+// This is the context that will set up all needed connection to the wwt instance
+// and expose the functions, states, and ref to the children
 export function useWwtProvider() {
   const context = useContext(WwtContext);
   if (!context) {

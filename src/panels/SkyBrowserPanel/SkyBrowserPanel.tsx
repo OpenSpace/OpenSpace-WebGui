@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { Button, ScrollArea, Text } from '@mantine/core';
+import { Button, Center, Container, Image, ScrollArea, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
@@ -37,17 +37,25 @@ export function SkyBrowserPanel() {
 
   // Call this function first render to open the wwt window
   useEffect(() => {
-    openWorldWideTelescope();
-  }, [openWorldWideTelescope]);
+    if (noOfBrowsers > 0) {
+      openWorldWideTelescope();
+    }
+  }, [openWorldWideTelescope, noOfBrowsers]);
 
   if (!isInitialized || !luaApi) {
     return <Text>...Loading...</Text>;
   }
   if (isInitialized && noOfBrowsers === 0) {
     return (
-      <Button onClick={() => luaApi.skybrowser.createTargetBrowserPair()}>
-        Add browser
-      </Button>
+      <Stack h={'100%'} w={'100%'} align="center" p={'lg'}>
+        <Button onClick={() => luaApi.skybrowser.createTargetBrowserPair()} my={'lg'}>
+          Add browser
+        </Button>
+        <Text ta={'center'} c="dimmed" mt={'lg'}>
+          Powered by AAS WorldWide Telescope
+        </Text>
+        <Image src={'public/wwt.png'} mah={100} maw={100} mb={'lg'} />
+      </Stack>
     );
   }
   if (!cameraInSolarSystem) {

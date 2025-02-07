@@ -18,15 +18,17 @@ interface Props<T> {
   keyFunc: (item: T) => string;
   id: string;
   dragHandlePosition?: 'left' | 'right';
+  gap?: number;
 }
 
-export function DragDropList<T>({
+export function DragReorderList<T>({
   id,
   onDragEnd,
   data,
   renderFunc,
   keyFunc,
-  dragHandlePosition = 'left'
+  dragHandlePosition = 'left',
+  gap = 5
 }: Props<T>) {
   const [localCache, setLocalCache] = useState(data);
 
@@ -61,14 +63,19 @@ export function DragDropList<T>({
             {localCache.map((element, i) => (
               <Draggable key={keyFunc(element)} draggableId={keyFunc(element)} index={i}>
                 {(item) => (
-                  <Group ref={item.innerRef} {...item.draggableProps} wrap={'nowrap'}>
+                  <Group
+                    ref={item.innerRef}
+                    {...item.draggableProps}
+                    wrap={'nowrap'}
+                    mb={gap}
+                  >
                     {dragHandlePosition === 'right' && (
                       <Box flex={1}>{renderFunc(element, i)}</Box>
                     )}
                     <ActionIcon
                       variant={'default'}
-                      {...item.dragHandleProps}
                       style={{ cursor: 'grab' }}
+                      {...item.dragHandleProps}
                     >
                       <DragHandleIcon />
                     </ActionIcon>

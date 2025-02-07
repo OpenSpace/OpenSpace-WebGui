@@ -7,6 +7,7 @@ export interface Props<T> extends SearchResultsProps<T> {
   overscan?: number; // How many items to preload when scrolling
   estimateSize?: number;
   columns?: number;
+  keyFunc: (element: T) => string;
 }
 
 export function SearchResultsVirtualGrid<T extends KeyType>({
@@ -15,7 +16,8 @@ export function SearchResultsVirtualGrid<T extends KeyType>({
   matcherFunc,
   gap,
   overscan,
-  columns
+  columns,
+  keyFunc
 }: Props<T>) {
   const filteredElements = useSearch(matcherFunc, data);
 
@@ -26,6 +28,7 @@ export function SearchResultsVirtualGrid<T extends KeyType>({
       gap={gap}
       overscan={overscan}
       columns={columns}
+      keyFunc={keyFunc}
     />
   );
 }

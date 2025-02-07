@@ -4,14 +4,16 @@ import { useDisclosure } from '@mantine/hooks';
 
 interface Props {
   text: string;
-  variant?: string;
   onClick: () => void;
+  variant?: string;
+  color?: string | null;
 }
 
 export function TabButton({
   text,
   onClick,
   variant = 'default',
+  color = null,
   children
 }: PropsWithChildren<Props>) {
   const [opened, { close, open }] = useDisclosure(false);
@@ -30,6 +32,7 @@ export function TabButton({
           onMouseEnter={open}
           onMouseLeave={close}
           onClick={onClick}
+          color={color ?? undefined}
         >
           {children}
         </ActionIcon>

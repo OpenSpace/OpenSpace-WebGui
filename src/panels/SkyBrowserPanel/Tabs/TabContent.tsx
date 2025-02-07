@@ -6,7 +6,7 @@ import {
   MoveTargetIcon,
   OpenInNewIcon,
   SettingsIcon,
-  TrashIcon,
+  DeleteIcon,
   ZoomInIcon,
   ZoomOutIcon
 } from '@/icons/icons';
@@ -14,7 +14,7 @@ import { useAppSelector } from '@/redux/hooks';
 
 import { useSelectedBrowserFov, useSkyBrowserSelectedImages } from '../hooks';
 
-import { SelectedImagesList } from './SelectedImagesList';
+import { AddedImagesList } from './AddedImagesList';
 import { Settings } from './Settings';
 import { TabButton } from './TabButton';
 
@@ -34,18 +34,22 @@ export function TabContent({
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
   const fov = useSelectedBrowserFov();
   const luaApi = useOpenSpaceApi();
+  const zoomStep = 5;
 
-  if (fov === undefined || id === undefined) {
-    return null;
+  if (fov === undefined || id === '') {
+    return <></>;
   }
 
-  function zoom(id: string, fov: number) {
+  function zoom(id: string, fov: number): void {
+    if (!id) {
+      return;
+    }
     luaApi?.skybrowser.stopAnimations(id);
     const newFov = Math.max(fov, 0.01);
     luaApi?.skybrowser.setVerticalFov(id, Number(newFov));
   }
 
-  function removeAllImages() {
+  function removeAllImages(): void {
     if (!id) {
       return;
     }
@@ -70,14 +74,14 @@ export function TabContent({
           >
             <MoveTargetIcon />
           </TabButton>
-          <TabButton text={'Zoom in'} onClick={() => zoom(id, fov - 5)}>
+          <TabButton text={'Zoom in'} onClick={() => zoom(id, fov - zoomStep)}>
             <ZoomInIcon />
           </TabButton>
-          <TabButton text={'Zoom out'} onClick={() => zoom(id, fov + 5)}>
+          <TabButton text={'Zoom out'} onClick={() => zoom(id, fov + zoomStep)}>
             <ZoomOutIcon />
           </TabButton>
           <TabButton text={'Remove all images'} onClick={removeAllImages}>
-            <TrashIcon />
+            <DeleteIcon />
           </TabButton>
           <TabButton text={'Open Telescope View'} onClick={openWorldWideTelescope}>
             <OpenInNewIcon />
@@ -91,7 +95,7 @@ export function TabContent({
           <SettingsIcon />
         </TabButton>
       </Group>
-      {showSettings ? <Settings id={id} /> : <SelectedImagesList />}
+      {showSettings ? <Settings id={id} /> : <AddedImagesList />}
     </>
   );
 }

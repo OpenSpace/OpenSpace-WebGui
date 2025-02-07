@@ -1,14 +1,14 @@
 import { useCallback } from 'react';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { DragDropList, OnDragEndProps } from '@/components/DragDropList/DragDropList';
+import { DragReorderList, OnDragEndProps } from '@/components/DragDropList/DragDropList';
 import { useAppSelector } from '@/redux/hooks';
 
 import { useSkyBrowserSelectedImages, useSkyBrowserSelectedOpacities } from '../hooks';
 
-import { SelectedImageCard } from './SelectedImageCard';
+import { AddedImageCard } from './AddedImageCard';
 
-export function SelectedImagesList() {
+export function AddedImagesList() {
   const luaApi = useOpenSpaceApi();
   const browserId = useAppSelector((state) => {
     return state.skybrowser.selectedBrowserId;
@@ -21,10 +21,6 @@ export function SelectedImagesList() {
 
   const onDragEnd = useCallback(
     async ({ newIndex, id }: OnDragEndProps<number>) => {
-      if (!browserId) {
-        return;
-      }
-      // Call the scripting for the engine
       await luaApi?.skybrowser.setImageLayerOrder(browserId, id, newIndex);
     },
     [luaApi, browserId]
@@ -36,7 +32,7 @@ export function SelectedImagesList() {
         return <></>;
       }
       return (
-        <SelectedImageCard
+        <AddedImageCard
           key={imageList[image].url}
           image={imageList[image]}
           selected={activeImage === imageList[image].url}
@@ -54,12 +50,12 @@ export function SelectedImagesList() {
   }
 
   return (
-    <DragDropList<number>
+    <DragReorderList<number>
       onDragEnd={onDragEnd}
       id={'selectedImages'}
       renderFunc={renderFunc}
       data={selectedImages}
       keyFunc={keyFunc}
-    ></DragDropList>
+    />
   );
 }

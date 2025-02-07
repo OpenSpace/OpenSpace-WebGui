@@ -68,7 +68,6 @@ export {
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
   MdTimer as TimerIcon,
-  MdDelete as TrashIcon,
   MdOutlineCategory as TreeViewIcon,
   MdVideocam as VideocamIcon,
   MdOutlineVisibility as VisibilityIcon,

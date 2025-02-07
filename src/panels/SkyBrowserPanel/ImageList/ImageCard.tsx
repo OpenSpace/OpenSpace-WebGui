@@ -6,6 +6,7 @@ import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
 
 import { useActiveImage, useSelectedBrowserColorString } from '../hooks';
 import { ImageInfoPopover } from '../ImageInfoPopover';
+
 interface Props {
   image: SkyBrowserImage;
 }
@@ -27,14 +28,10 @@ export function ImageCard({ image }: Props) {
       style={{ borderColor: isActive ? color : 'var(--mantine-color-gray-8)' }}
     >
       <Card.Section>
-        <Image
-          src={image.thumbnail}
-          height={45}
-          fallbackSrc={'https://placehold.co/600x400?text=Placeholder'}
-        ></Image>
+        <Image src={image.thumbnail} height={45} fallbackSrc={'public/placeholder.svg'} />
       </Card.Section>
       <Card.Section p={'xs'}>
-        <Text lineClamp={1}>{image.name}</Text>
+        <Text truncate={'end'}>{image.name}</Text>
         <ActionIcon mt={'xs'} mr={'md'} onClick={select}>
           <AddPhotoIcon />
         </ActionIcon>

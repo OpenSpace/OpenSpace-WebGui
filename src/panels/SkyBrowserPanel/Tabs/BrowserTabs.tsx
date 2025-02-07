@@ -22,7 +22,7 @@ export function BrowserTabs({ openWorldWideTelescope }: Props) {
     return state.skybrowser.selectedBrowserId;
   });
   const luaApi = useOpenSpaceApi();
-
+  console.log(selectedBrowserId);
   return (
     <Tabs
       variant={'outline'}
@@ -35,6 +35,7 @@ export function BrowserTabs({ openWorldWideTelescope }: Props) {
       }}
       mt={'lg'}
     >
+      {/* Tabs */}
       <Tabs.List>
         {Object.values(browsersIds).map((id, i) => (
           <Tabs.Tab value={id} key={id}>
@@ -55,6 +56,8 @@ export function BrowserTabs({ openWorldWideTelescope }: Props) {
           <PlusIcon />
         </ActionIcon>
       </Tabs.List>
+
+      {/* Tab content */}
       {browsersIds.map((id) => (
         <Tabs.Panel key={id} value={id} m={'xs'}>
           <TabContent

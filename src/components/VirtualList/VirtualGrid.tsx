@@ -9,6 +9,7 @@ export interface KeyType {
 export interface VirtualGridProps<T extends KeyType> {
   data: T[];
   renderElement: (data: T, i: number) => React.ReactNode;
+  keyFunc: (data: T) => string;
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
   columns?: number;
@@ -19,18 +20,15 @@ export interface VirtualGridProps<T extends KeyType> {
 export function VirtualGrid<T extends KeyType>({
   data,
   renderElement,
+  keyFunc,
   gap,
   overscan,
   columns = 3
 }: VirtualGridProps<T>) {
-  // Create a new array with n no of data entries per entry,
-  // where n == columns
+  // Create a new array with n no of data entries per entry, where n == columns
   const dataByColumns = useMemo(() => {
     const result: T[][] = [];
     for (let i = 0; i < data.length; i += columns) {
-      if (i >= data.length) {
-        throw Error('Outside array boundaries');
-      }
       result.push(data.slice(i, i + columns));
     }
     return result;
@@ -41,11 +39,11 @@ export function VirtualGrid<T extends KeyType>({
       data={dataByColumns}
       gap={gap}
       overscan={overscan}
-      renderElement={(d, i) => (
-        <Grid key={`grid${i}`}>
-          {d?.map((el, j) => (
-            <Grid.Col key={el.key} span={12 / columns}>
-              {renderElement(el, i + j)}
+      renderElement={(row, iRow) => (
+        <Grid key={`grid${iRow}`}>
+          {row?.map((element, iCol) => (
+            <Grid.Col key={keyFunc(element)} span={12 / columns}>
+              {renderElement(element, iRow + iCol)}
             </Grid.Col>
           ))}
         </Grid>

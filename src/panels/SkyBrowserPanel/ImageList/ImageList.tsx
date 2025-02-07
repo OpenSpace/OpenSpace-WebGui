@@ -12,8 +12,8 @@ interface Props {
   noImagesText?: React.JSX.Element;
 }
 
+// Generic component for all the image lists
 // Memoizing this as it is very expensive
-// Generic component for all the images
 export const ImageList = memo(function ImageList({
   imageList,
   noImagesText = <LoadingBlocks />
@@ -28,6 +28,8 @@ export const ImageList = memo(function ImageList({
     () => generateMatcherFunctionByKeys(['collection', 'name']),
     []
   );
+
+  const keyFunc = useCallback((image: SkyBrowserImage) => image.url, []);
 
   const cardWidth = 150;
   const maxColumns = 10;
@@ -45,6 +47,7 @@ export const ImageList = memo(function ImageList({
           renderElement={renderImageCard}
           matcherFunc={matcherFunc}
           columns={columns}
+          keyFunc={keyFunc}
         />
       </FilterList.SearchResults>
     </FilterList>
