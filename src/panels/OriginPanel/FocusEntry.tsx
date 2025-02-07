@@ -33,12 +33,7 @@ export function FocusEntry({
 
   return (
     <Group justify={'space-between'} gap={'xs'} w={'100%'}>
-      <Button
-        onClick={onSelectEntry}
-        justify={'left'}
-        flex={1}
-        variant={buttonVariant}
-      >
+      <Button onClick={onSelectEntry} justify={'left'} flex={1} variant={buttonVariant}>
         <Text truncate>{entry.name}</Text>
       </Button>
       {showNavigationButtons && (
@@ -46,6 +41,7 @@ export function FocusEntry({
           {isActive() && (
             <NodeNavigationButton
               type={NavigationType.frame}
+              variant={buttonVariant}
               identifier={entry.identifier}
               size={'lg'}
             />
@@ -59,7 +55,7 @@ export function FocusEntry({
 
           <Menu position={'right-start'}>
             <Menu.Target>
-              <ActionIcon size={'lg'} variant={buttonVariant}>
+              <ActionIcon size={'lg'}>
                 <VerticalDotsIcon />
               </ActionIcon>
             </Menu.Target>

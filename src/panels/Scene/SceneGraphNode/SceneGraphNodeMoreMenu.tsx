@@ -78,6 +78,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
         <Menu.Label>{name}</Menu.Label>
         <Button
           onClick={openInNewWindow}
+          variant={'filled'}
           leftSection={<OpenInNewIcon size={IconSize.sm} />}
         >
           Pop out
