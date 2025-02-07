@@ -72,7 +72,7 @@ export function ActionsPanel() {
           const isLast = i === paths.length - 1;
           return (
             <Text
-              key={path}
+              key={`${path}_${i}`}
               onClick={isTopLevel ? undefined : () => goToPath(path)}
               display={'inline'}
               style={{ cursor: isTopLevel ? 'default' : 'pointer' }}
@@ -107,17 +107,17 @@ export function ActionsPanel() {
             <DynamicGrid gutter={'xs'} minChildSize={150} className={'actionsPanelGrid'}>
               {Object.keys(actionLevel.folders)
                 .sort()
-                .map((key) => (
-                  <DynamicGrid.Col key={key}>
+                .map((folder, i) => (
+                  <DynamicGrid.Col key={`${folder}_${i}`}>
                     <Button
                       leftSection={<FolderIcon />}
-                      onClick={() => addNavPath(key)}
+                      onClick={() => addNavPath(folder)}
                       variant={'default'}
                       fullWidth
                       h={80} // TODO anden88 2025-02-06: use same css variable as ActionsButton
                     >
                       <Text style={{ whiteSpace: 'wrap', wordBreak: 'break-all' }}>
-                        {key}
+                        {folder}
                       </Text>
                     </Button>
                   </DynamicGrid.Col>
