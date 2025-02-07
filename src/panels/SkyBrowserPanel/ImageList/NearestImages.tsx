@@ -1,4 +1,5 @@
 import { Stack, Text } from '@mantine/core';
+
 import { useGetImagesInView } from './hooks';
 import { ImageList } from './ImageList';
 import { InfoGraphic } from './InfoGraphic';

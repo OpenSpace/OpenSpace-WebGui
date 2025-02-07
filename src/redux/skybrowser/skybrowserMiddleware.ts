@@ -3,11 +3,11 @@ import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
 import { ConnectionStatus } from '@/types/enums';
+import { SkyBrowserUpdate } from '@/types/skybrowsertypes';
 
 import { AppStartListening } from '../listenerMiddleware';
 
 import { subscriptionIsSetup, updateSkyBrowser } from './skybrowserSlice';
-import { SkyBrowserUpdate } from '@/types/skybrowsertypes';
 
 const subscribeToSkyBrowser = createAction<void>('skybrowser/subscribe');
 const unsubscribeToSkyBrowser = createAction<void>('skybrowser/unsubscribe');

@@ -1,5 +1,14 @@
 import { useCallback, useEffect } from 'react';
-import { Button, Center, Container, Image, ScrollArea, Stack, Text } from '@mantine/core';
+import {
+  Button,
+  Center,
+  Container,
+  Image,
+  LoadingOverlay,
+  ScrollArea,
+  Stack,
+  Text
+} from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
@@ -43,15 +52,15 @@ export function SkyBrowserPanel() {
   }, [openWorldWideTelescope, noOfBrowsers]);
 
   if (!isInitialized || !luaApi) {
-    return <Text>...Loading...</Text>;
+    return <LoadingOverlay>...Loading...</LoadingOverlay>;
   }
   if (isInitialized && noOfBrowsers === 0) {
     return (
-      <Stack h={'100%'} w={'100%'} align="center" p={'lg'}>
+      <Stack h={'100%'} w={'100%'} align={'center'} p={'lg'}>
         <Button onClick={() => luaApi.skybrowser.createTargetBrowserPair()} my={'lg'}>
           Add browser
         </Button>
-        <Text ta={'center'} c="dimmed" mt={'lg'}>
+        <Text ta={'center'} c={'dimmed'} mt={'lg'}>
           Powered by AAS WorldWide Telescope
         </Text>
         <Image src={'wwt.png'} mah={100} maw={100} mb={'lg'} />

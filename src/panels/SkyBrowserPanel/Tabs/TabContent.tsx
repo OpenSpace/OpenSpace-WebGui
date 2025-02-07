@@ -2,11 +2,11 @@ import { ActionIcon, Chip, Group, Radio, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import {
+  DeleteIcon,
   EyeIcon,
   MoveTargetIcon,
   OpenInNewIcon,
   SettingsIcon,
-  DeleteIcon,
   ZoomInIcon,
   ZoomOutIcon
 } from '@/icons/icons';
@@ -61,39 +61,39 @@ export function TabContent({
     <>
       <Group justify={'space-between'}>
         <ActionIcon.Group>
-          <Tooltip label="Look at target">
+          <Tooltip label={'Look at target'}>
             <ActionIcon onClick={() => luaApi?.skybrowser.adjustCamera(id)}>
               <EyeIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip label="Move target to center of view">
+          <Tooltip label={'Move target to center of view'}>
             <ActionIcon onClick={() => luaApi?.skybrowser.centerTargetOnScreen(id)}>
               <MoveTargetIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip label="Zoom in">
+          <Tooltip label={'Zoom in'}>
             <ActionIcon onClick={() => zoom(id, fov - zoomStep)}>
               <ZoomInIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip label="Zoom out">
+          <Tooltip label={'Zoom out'}>
             <ActionIcon onClick={() => zoom(id, fov + zoomStep)}>
               <ZoomOutIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip label="Remove all images">
+          <Tooltip label={'Remove all images'}>
             <ActionIcon onClick={removeAllImages}>
               <DeleteIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip label="Open Telescope View">
+          <Tooltip label={'Open Telescope View'}>
             <ActionIcon onClick={openWorldWideTelescope}>
               <OpenInNewIcon />
             </ActionIcon>
           </Tooltip>
         </ActionIcon.Group>
 
-        <Tooltip label="Settings">
+        <Tooltip label={'Settings'}>
           <ActionIcon
             onClick={() => setShowSettings((old) => !old)}
             variant={showSettings ? 'filled' : 'default'}

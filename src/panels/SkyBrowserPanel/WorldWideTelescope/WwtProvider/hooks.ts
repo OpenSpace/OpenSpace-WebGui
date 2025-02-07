@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { Messages } from '@/types/skybrowsertypes';
+
 import { WwtContext } from './WwtContext';
 
 // This file contains the hooks necessary to set up the communication with

@@ -11,7 +11,7 @@ import {
 import { useThrottledCallback } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { MoveTargetIcon, DeleteIcon } from '@/icons/icons';
+import { DeleteIcon, MoveTargetIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
@@ -50,7 +50,7 @@ export function AddedImageCard({ image, opacity }: Props) {
             {image.name}
           </Text>
           <Group>
-            <Tooltip label="Look at image">
+            <Tooltip label={'Look at image'}>
               <ActionIcon
                 onClick={() => {
                   luaApi?.skybrowser.selectImage(image.url);
@@ -61,10 +61,10 @@ export function AddedImageCard({ image, opacity }: Props) {
               </ActionIcon>
             </Tooltip>
             <ImageInfoPopover image={image} />
-            <Tooltip label="Remove image">
+            <Tooltip label={'Remove image'}>
               <ActionIcon
                 color={'red'}
-                variant="outline"
+                variant={'outline'}
                 onClick={() =>
                   luaApi?.skybrowser.removeSelectedImageInBrowser(
                     selectedBrowserId,

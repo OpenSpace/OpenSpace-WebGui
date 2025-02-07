@@ -4,9 +4,9 @@ import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { SkyBrowserImage } from '@/types/skybrowsertypes';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { ImageCard } from './ImageCard';
-import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 interface Props {
   imageList: SkyBrowserImage[];

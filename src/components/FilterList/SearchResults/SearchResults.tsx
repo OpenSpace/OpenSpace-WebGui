@@ -5,8 +5,8 @@ import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useFilterListProvider } from '../hooks';
 
 import { SearchResultsPagination } from './SearchResultsPagination';
-import { SearchResultsVirtualList } from './SearchResultsVirtualList';
 import { SearchResultsVirtualGrid } from './SearchResultsVirtualGrid';
+import { SearchResultsVirtualList } from './SearchResultsVirtualList';
 
 export function SearchResults({ children }: PropsWithChildren) {
   const { showFavorites, isLoading } = useFilterListProvider();

@@ -1,4 +1,5 @@
 import { SearchResultsProps } from '@/types/types';
+
 import { VirtualList } from '../../VirtualList/VirtualList';
 
 import { useSearch } from './hooks';

@@ -1,6 +1,7 @@
 import { KeyType, VirtualGrid } from '@/components/VirtualList/VirtualGrid';
-import { useSearch } from './hooks';
 import { SearchResultsProps } from '@/types/types';
+
+import { useSearch } from './hooks';
 
 export interface Props<T> extends SearchResultsProps<T> {
   gap?: number; // Gap in pixels between items

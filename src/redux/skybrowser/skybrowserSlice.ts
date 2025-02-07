@@ -1,9 +1,10 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import {
   SkyBrowserBrowser,
   SkyBrowserImage,
   SkyBrowserUpdate
 } from '@/types/skybrowsertypes';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface SkyBrowserState {
   isInitialized: boolean;

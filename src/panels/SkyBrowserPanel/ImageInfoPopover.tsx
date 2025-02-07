@@ -10,13 +10,13 @@ interface Props {
 export function ImageInfoPopover({ image }: Props) {
   return (
     <Popover width={200} position={'bottom'} withArrow shadow={'md'} trapFocus>
-      <Popover.Target>
-        <Tooltip label={'Info'}>
+      <Tooltip label={'Info'}>
+        <Popover.Target>
           <ActionIcon>
             <InformationIcon />
           </ActionIcon>
-        </Tooltip>
-      </Popover.Target>
+        </Popover.Target>
+      </Tooltip>
       <Popover.Dropdown>
         <Text size={'sm'} fw={500}>
           {image.name}
@@ -25,11 +25,11 @@ export function ImageInfoPopover({ image }: Props) {
           {image.credits}
         </Text>
         <Button
-          component="a"
+          component={'a'}
           size={'xs'}
           href={image.creditsUrl}
           target={'_blank'}
-          variant="outline"
+          variant={'outline'}
           mt={'md'}
         >
           <Text m={'xs'}>Read more</Text>
