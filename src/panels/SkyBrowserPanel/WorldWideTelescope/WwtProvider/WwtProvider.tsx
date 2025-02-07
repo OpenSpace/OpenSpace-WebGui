@@ -28,10 +28,16 @@ export function WwtProvider({ children }: PropsWithChildren) {
   } = useWwtEventListener();
 
   const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
-
   const [url] = useGetStringPropertyValue('Modules.SkyBrowser.WwtImageCollectionUrl');
-  const shouldConnect = !wwtHasLoaded && url !== undefined && nBrowsers === 0;
+  const shouldConnect = !wwtHasLoaded && url !== undefined && nBrowsers > 0;
   const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
+
+  useEffect(() => {
+    return () => {
+      setWwtHasLoaded(false);
+      setImageCollectionLoaded(false);
+    };
+  }, []);
   // Start pinging WWT with the set aim function
   // We want to make sure we have the image collection url so wait for that
   useStartPingingWwt(shouldConnect, setAim);
@@ -45,21 +51,13 @@ export function WwtProvider({ children }: PropsWithChildren) {
   }, [wwtHasLoaded, hideChrome, loadImageCollection, url]);
 
   // If we have no browsers we want to reset the flags for next time
+  // If the browser gets deselected we need to reset the WWT window
   useEffect(() => {
-    if (nBrowsers === 0) {
+    if (nBrowsers === 0 || id == '') {
       setWwtHasLoaded(false);
       setImageCollectionLoaded(false);
     }
-  }, [nBrowsers, setWwtHasLoaded, setImageCollectionLoaded]);
-
-  // This should never happen but it is technically possible for no browser to
-  // be selected - if so, we need to reset the WWT window
-  useEffect(() => {
-    if (id === '') {
-      setWwtHasLoaded(false);
-      setImageCollectionLoaded(false);
-    }
-  }, [id, setWwtHasLoaded, setImageCollectionLoaded]);
+  }, [nBrowsers, id, setWwtHasLoaded, setImageCollectionLoaded]);
 
   return (
     <WwtContext.Provider

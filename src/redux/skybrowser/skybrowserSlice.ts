@@ -43,23 +43,27 @@ export const skyBrowserSlice = createSlice({
       state.selectedBrowserId = action.payload.selectedBrowserId;
 
       // Derived state
-      if (state.selectedBrowserId in action.payload.browsers) {
+      if (action.payload.browsers && state.selectedBrowserId in action.payload.browsers) {
         state.selectedBrowser = action.payload.browsers[state.selectedBrowserId];
         // For some reason the indices are sent as strings... convert them to numbers
         state.selectedBrowser.selectedImages = state.selectedBrowser.selectedImages.map(
           (id) => (typeof id === 'string' ? parseInt(id) : id)
         );
+        state.browserIds = Object.keys(action.payload.browsers) ?? [];
+        // Get all colors
+        state.browserColors = state.browserIds.map(
+          (id) => action.payload.browsers[id].color
+        );
+        state.browserNames = state.browserIds.map(
+          (id) => action.payload.browsers[id].name
+        );
       } else {
         state.selectedBrowserId = '';
         state.selectedBrowser = null;
+        state.browserIds = [];
+        state.browserNames = [];
+        state.browserColors = [];
       }
-
-      state.browserIds = Object.keys(action.payload.browsers) ?? [];
-      // Get all colors
-      state.browserColors = state.browserIds.map(
-        (id) => action.payload.browsers[id].color
-      );
-      state.browserNames = state.browserIds.map((id) => action.payload.browsers[id].name);
 
       return state;
     },

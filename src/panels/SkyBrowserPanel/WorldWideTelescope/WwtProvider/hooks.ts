@@ -182,7 +182,7 @@ export function useStartPingingWwt(
   useEffect(() => {
     if (shouldConnect) {
       // Send aim messages to WorldWide Telescope to prompt it to reply with a message
-      setSetupWwtFunc.current = setInterval(setAim, 250);
+      setSetupWwtFunc.current = setInterval(() => setAim(0, 0, 70, 0), 250);
     }
     // When WorldWide Telescope has replied with a message, stop sending it unnecessary messages
     return () => {

@@ -45,7 +45,10 @@ export function SkyBrowserPanel() {
   if (!isInitialized || !luaApi) {
     return <LoadingOverlay>...Loading...</LoadingOverlay>;
   }
-  if (isInitialized && noOfBrowsers === 0) {
+  if (!cameraInSolarSystem) {
+    return <Text m={'lg'}>Camera has to be in solar system for Sky Browser to work</Text>;
+  }
+  if (noOfBrowsers === 0) {
     return (
       <Stack h={'100%'} w={'100%'} align={'center'} p={'lg'}>
         <Button onClick={() => luaApi.skybrowser.createTargetBrowserPair()} my={'lg'}>
@@ -57,9 +60,6 @@ export function SkyBrowserPanel() {
         <Image src={'wwt.png'} mah={100} maw={100} mb={'lg'} />
       </Stack>
     );
-  }
-  if (!cameraInSolarSystem) {
-    return <Text>Camera has to be in solar system for skybrowser to work</Text>;
   }
 
   return (
