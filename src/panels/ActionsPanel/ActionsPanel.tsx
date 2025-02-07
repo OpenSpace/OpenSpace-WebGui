@@ -28,7 +28,7 @@ export function ActionsPanel() {
 
   const dispatch = useAppDispatch();
 
-  const actionLevel = actionsForLevel(allActions, navigationPath, isInitialized);
+  const actionLevel = actionsForLevel(allActions, navigationPath);
   const displayedNavigationPath = truncatePath(navigationPath);
   const displayedActions = getDisplayedActions(allActions, navigationPath);
 
@@ -86,7 +86,7 @@ export function ActionsPanel() {
     );
   }
 
-  if (actionLevel === undefined) {
+  if (!isInitialized || !actionLevel) {
     return <p>Loading...</p>;
   }
 

@@ -1,34 +1,36 @@
-import { Action, Folder } from '@/types/types';
+import { Action, FolderContent } from '@/types/types';
 
 export function actionsForLevel(
   actions: Action[],
-  navigationPath: string,
-  isInitialized: boolean
-) {
-  const actionsMapped: Folder = { '/': { actions: [], folders: {} } };
-  if (!isInitialized) {
-    return actionsMapped['/'];
-  }
+  navigationPath: string
+): FolderContent {
+  const mappedActions: FolderContent = { actions: [], folders: {} };
+
+  // @TODO: (2025-02-07, emmbr), this code collects ALL actions and folders, not only
+  // the ones that are on the current level. We should refactor it
   actions.forEach((action) => {
+    let { guiPath } = action;
     // If there is no backslash at beginning of GUI path, add that manually
     // (there should always be though)
-    let actionGuiPath = action.guiPath;
-    if (action.guiPath.length > 0 && action.guiPath[0] !== '/') {
-      actionGuiPath = `/${action.guiPath}`;
+    if (guiPath.length > 0 && guiPath[0] !== '/') {
+      guiPath = `/${guiPath}`;
     }
 
-    let guiFolders = actionGuiPath.split('/');
+    // Splite the GUI path up into the individual subfolders..
     // Remove all empty strings: which is what we get before initial slash and
     // if the path is just a slash
-    guiFolders = guiFolders.filter((s) => s !== '');
+    const guiFolders = guiPath.split('/').filter((s) => s !== '');
+    const isTopLevelAction = guiFolders.length === 0;
 
-    // Add to top level actions (no gui path)
-    if (guiFolders.length === 0) {
-      actionsMapped['/'].actions.push(action);
+    // Is this is action at the top level, and we're finding the top level actions?
+    // Just add it then
+    if (isTopLevelAction && navigationPath === '/') {
+      mappedActions.actions.push(action);
+      return;
     }
 
     // Add actions of other levels
-    let parent = actionsMapped['/'];
+    let parent = mappedActions;
     while (guiFolders.length > 0) {
       const folderName = guiFolders.shift();
       if (folderName === undefined) {
@@ -45,10 +47,10 @@ export function actionsForLevel(
     }
   });
 
-  const navPath = navigationPath;
-  let actionsForPath = actionsMapped['/'];
-  if (navPath.length > 1) {
-    const folders = navPath.split('/');
+  // @TODO : This code is quite confusing.... It steps thought
+  let actionsForPath = mappedActions;
+  if (navigationPath.length > 1) {
+    const folders = navigationPath.split('/');
     folders.shift();
     while (folders.length > 0) {
       const folderName = folders.shift();
@@ -58,6 +60,7 @@ export function actionsForLevel(
       actionsForPath = actionsForPath.folders[folderName];
     }
   }
+
   return actionsForPath;
 }
 
