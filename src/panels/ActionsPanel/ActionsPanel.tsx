@@ -1,11 +1,12 @@
 import {
   ActionIcon,
-  Box,
+  Breadcrumbs,
   Button,
   Container,
   Group,
   ScrollArea,
-  Text
+  Text,
+  VisuallyHidden
 } from '@mantine/core';
 
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
@@ -31,6 +32,8 @@ export function ActionsPanel() {
   const actionLevel = actionsForLevel(allActions, navigationPath);
   const displayedNavigationPath = truncatePath(navigationPath);
   const displayedActions = getDisplayedActions(allActions, navigationPath);
+
+  const isTopLevel = navigationPath === '/';
 
   function addNavPath(path: string): void {
     const newPath = `${navigationPath}/${path}`.replace('//', '/');
@@ -59,30 +62,21 @@ export function ActionsPanel() {
     dispatch(setActionsPath(navPath));
   }
 
-  function displayNavigationPath(): React.JSX.Element {
-    const isTopLevel = displayedNavigationPath === '/';
+  function pathBreadbrumbs(): React.JSX.Element {
     const paths = displayedNavigationPath.split('/');
-
-    // @TODO (2024-02-07, emmbr) Clickable text is not really accessible. We should use
-    // a button or some up with some other solution that makes it clearer which part is
-    // clickable
     return (
-      <Box flex={1}>
-        {paths.map((path, i) => {
-          const isLast = i === paths.length - 1;
-          return (
-            <Text
-              key={`${path}_${i}`}
-              onClick={isTopLevel ? undefined : () => goToPath(path)}
-              display={'inline'}
-              style={{ cursor: isTopLevel ? 'default' : 'pointer' }}
-            >
-              {path}
-              {!isLast ? '/' : ''}
-            </Text>
-          );
-        })}
-      </Box>
+      <Breadcrumbs separatorMargin={0}>
+        {paths.map((path, i) => (
+          <Button
+            key={`${path}_${i}`}
+            p={2}
+            variant={'subtle'}
+            onClick={() => goToPath(path)}
+          >
+            {path}
+          </Button>
+        ))}
+      </Breadcrumbs>
     );
   }
 
@@ -92,15 +86,16 @@ export function ActionsPanel() {
 
   return (
     <ScrollArea h={'100%'}>
-      <Container>
-        <Group gap={'xs'} my={'xs'}>
-          {navigationPath !== '/' && (
-            <ActionIcon onClick={goBack} key={'backbtn'}>
+      <Container mt={'xs'}>
+        {!isTopLevel && (
+          <Group gap={'xs'} mb={'xs'}>
+            <ActionIcon onClick={goBack}>
               <BackArrowIcon />
+              <VisuallyHidden>Back</VisuallyHidden>
             </ActionIcon>
-          )}
-          {displayNavigationPath()}
-        </Group>
+            {pathBreadbrumbs()}
+          </Group>
+        )}
         <FilterList>
           <FilterList.InputField placeHolderSearchText={'Search for an action...'} />
           <FilterList.Favorites>
