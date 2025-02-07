@@ -16,7 +16,7 @@ export function InfoBox({ text }: Props) {
       transitionProps={{ duration: 400 }}
       offset={{ mainAxis: 5, crossAxis: 100 }}
     >
-      <ThemeIcon radius={'xl'} size={'xs'} variant={'default'}>
+      <ThemeIcon radius={'xl'} size={'xs'}>
         <InformationIcon />
       </ThemeIcon>
     </Tooltip>
