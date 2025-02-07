@@ -1,4 +1,4 @@
-import { Button, Group, Stack, Text } from '@mantine/core';
+import { Button, Card, Group, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
@@ -16,10 +16,12 @@ export function ActionsButton({ uri, action: _action }: Props) {
   const action = uri ? allActions.find((action) => action.identifier === uri) : _action;
   // TODO anden88 2025-02-06: make this into a css variable
   const height = 80;
+  const borderPadding = 4;
 
   if (!action) {
     return <></>;
   }
+
   const isLocal = action.synchronization === false;
 
   function handleClick() {
@@ -27,25 +29,24 @@ export function ActionsButton({ uri, action: _action }: Props) {
   }
 
   return (
-    <Group
-      gap={0}
-      p={2}
-      bg={'var(--mantine-color-gray-8)'}
-      style={{ borderRadius: 'var(--mantine-radius-default)' }}
-    >
-      <Button onClick={handleClick} h={height} px={5} flex={1}>
-        <Text style={{ whiteSpace: 'wrap' }}>{action.name}</Text>
-      </Button>
-      <Stack
-        h={height}
-        justify={'center'}
-        align={'center'}
-        px={5}
-        bg={'var(--mantine-color-gray-8)'}
-      >
-        {action.documentation && <InfoBox text={action.documentation} />}
-        {isLocal && <Text> (L)</Text>}
-      </Stack>
-    </Group>
+    <Card p={borderPadding} h={height}>
+      <Group gap={0}>
+        <Button
+          onClick={handleClick}
+          p={5}
+          h={height - 2 * borderPadding - 1}
+          flex={1}
+          variant={'filled'}
+        >
+          <Text size={'sm'} style={{ whiteSpace: 'wrap' }}>
+            {action.name}
+          </Text>
+        </Button>
+        <Stack justify={'center'} align={'center'} px={5}>
+          {action.documentation && <InfoBox text={action.documentation} />}
+          {isLocal && <Text>(L)</Text>}
+        </Stack>
+      </Group>
+    </Card>
   );
 }
