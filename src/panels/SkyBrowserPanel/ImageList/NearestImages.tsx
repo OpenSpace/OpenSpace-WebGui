@@ -16,5 +16,5 @@ function NoImagesDisplay() {
 // it's own component to avoid the list being re-rendered unneccessarily
 export function NearestImages() {
   const imagesInView = useGetImagesInView();
-  return <ImageList imageList={imagesInView} noImagesText={<NoImagesDisplay />} />;
+  return <ImageList imageList={imagesInView} noImagesDisplay={<NoImagesDisplay />} />;
 }

@@ -1,4 +1,13 @@
-import { Group, Image, Paper, Slider, Stack, Text } from '@mantine/core';
+import {
+  ActionIcon,
+  Group,
+  Image,
+  Paper,
+  Slider,
+  Stack,
+  Text,
+  Tooltip
+} from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -8,8 +17,6 @@ import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
 import { useActiveImage, useSelectedBrowserColorString } from '../hooks';
 import { ImageInfoPopover } from '../ImageInfoPopover';
-
-import { TabButton } from './TabButton';
 
 interface Props {
   image: SkyBrowserImage;
@@ -43,30 +50,31 @@ export function AddedImageCard({ image, opacity }: Props) {
             {image.name}
           </Text>
           <Group>
-            <TabButton
-              onClick={() => {
-                luaApi?.skybrowser.selectImage(image.url);
-                setActiveImage(image.url);
-              }}
-              text={'Look at image'}
-              variant={'filled'}
-            >
-              <MoveTargetIcon />
-            </TabButton>
+            <Tooltip label="Look at image">
+              <ActionIcon
+                onClick={() => {
+                  luaApi?.skybrowser.selectImage(image.url);
+                  setActiveImage(image.url);
+                }}
+              >
+                <MoveTargetIcon />
+              </ActionIcon>
+            </Tooltip>
             <ImageInfoPopover image={image} />
-            <TabButton
-              onClick={() =>
-                luaApi?.skybrowser.removeSelectedImageInBrowser(
-                  selectedBrowserId,
-                  image.url
-                )
-              }
-              text={'Remove image'}
-              variant={'outline'}
-              color={'red'}
-            >
-              <DeleteIcon />
-            </TabButton>
+            <Tooltip label="Remove image">
+              <ActionIcon
+                color={'red'}
+                variant="outline"
+                onClick={() =>
+                  luaApi?.skybrowser.removeSelectedImageInBrowser(
+                    selectedBrowserId,
+                    image.url
+                  )
+                }
+              >
+                <DeleteIcon />
+              </ActionIcon>
+            </Tooltip>
           </Group>
         </Stack>
         <Stack gap={'xs'}>
@@ -76,7 +84,7 @@ export function AddedImageCard({ image, opacity }: Props) {
             radius={'sm'}
             height={45}
             opacity={opacity}
-            fallbackSrc={'public/placeholder.svg'}
+            fallbackSrc={'placeholder.svg'}
             bd={'1px solid var(--mantine-color-gray-7)'}
           />
           <Slider

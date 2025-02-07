@@ -28,7 +28,7 @@ export function ImageCard({ image }: Props) {
       style={{ borderColor: isActive ? color : 'var(--mantine-color-gray-8)' }}
     >
       <Card.Section>
-        <Image src={image.thumbnail} height={45} fallbackSrc={'public/placeholder.svg'} />
+        <Image src={image.thumbnail} height={45} fallbackSrc={'placeholder.svg'} />
       </Card.Section>
       <Card.Section p={'xs'}>
         <Text truncate={'end'}>{image.name}</Text>

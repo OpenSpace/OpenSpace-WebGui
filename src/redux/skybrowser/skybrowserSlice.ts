@@ -12,7 +12,7 @@ export interface SkyBrowserState {
   selectedBrowser: SkyBrowserBrowser | null;
   browserIds: string[];
   browserNames: string[];
-  browserColors: number[][];
+  browserColors: [number, number, number][];
   imageList: SkyBrowserImage[];
   activeImage: string;
 }

@@ -14,7 +14,7 @@ import {
   useUpdateSelectedImages
 } from './hooks';
 
-export function WorldWideTelescope() {
+export function WorldWideTelescopeView() {
   const [isDragging, setIsDragging] = useState(false);
   const [startDragPosition, setStartDragPosition] = useState({ x: 0, y: 0 });
 

@@ -10,14 +10,14 @@ import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 interface Props {
   imageList: SkyBrowserImage[];
-  noImagesText?: React.JSX.Element;
+  noImagesDisplay?: React.JSX.Element;
 }
 
 // Generic component for all the image lists
 // Memoizing this as it is very expensive
 export const ImageList = memo(function ImageList({
   imageList,
-  noImagesText = <LoadingBlocks />
+  noImagesDisplay = <LoadingBlocks />
 }: Props) {
   const { width } = useWindowSize();
 
@@ -36,7 +36,10 @@ export const ImageList = memo(function ImageList({
   const maxColumns = 10;
   const columns = Math.min(Math.floor(width / cardWidth), maxColumns);
 
-  return imageList.length > 0 ? (
+  if (imageList.length === 0) {
+    return noImagesDisplay;
+  }
+  return (
     <FilterList>
       <FilterList.InputField
         placeHolderSearchText={`Search ${imageList.length} image${imageList.length > 1 ? 's' : ''}...`}
@@ -52,7 +55,5 @@ export const ImageList = memo(function ImageList({
         />
       </FilterList.SearchResults>
     </FilterList>
-  ) : (
-    noImagesText
   );
 });

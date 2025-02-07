@@ -1,7 +1,7 @@
 import { ActionIcon, Anchor, Popover, Text } from '@mantine/core';
 
 import { InformationCircleOutlineIcon } from '@/icons/icons';
-import { SkyBrowserImage } from '@/redux/skybrowser/skybrowserSlice';
+import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
 interface Props {
   image: SkyBrowserImage;

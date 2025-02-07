@@ -7,7 +7,7 @@ import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { ImageListWrapper } from './ImageList/ImageListWrapper';
 import { BrowserTabs } from './Tabs/BrowserTabs';
-import { WorldWideTelescope } from './WorldWideTelescope/WorldWideTelescope';
+import { WorldWideTelescopeView } from './WorldWideTelescope/WorldWideTelescopeView';
 import { WwtProvider } from './WorldWideTelescope/WwtProvider/WwtProvider';
 import { useGetSkyBrowserData } from './hooks';
 
@@ -26,7 +26,7 @@ export function SkyBrowserPanel() {
   const openWorldWideTelescope = useCallback(() => {
     addWindow(
       <WwtProvider>
-        <WorldWideTelescope />
+        <WorldWideTelescopeView />
       </WwtProvider>,
       {
         id: 'WorldWideTelescope',
@@ -54,7 +54,7 @@ export function SkyBrowserPanel() {
         <Text ta={'center'} c="dimmed" mt={'lg'}>
           Powered by AAS WorldWide Telescope
         </Text>
-        <Image src={'public/wwt.png'} mah={100} maw={100} mb={'lg'} />
+        <Image src={'wwt.png'} mah={100} maw={100} mb={'lg'} />
       </Stack>
     );
   }

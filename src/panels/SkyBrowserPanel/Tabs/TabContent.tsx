@@ -1,4 +1,4 @@
-import { ActionIcon, Group } from '@mantine/core';
+import { ActionIcon, Chip, Group, Radio, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import {
@@ -16,7 +16,6 @@ import { useSelectedBrowserFov, useSkyBrowserSelectedImages } from '../hooks';
 
 import { AddedImagesList } from './AddedImagesList';
 import { Settings } from './Settings';
-import { TabButton } from './TabButton';
 
 interface Props {
   showSettings: boolean;
@@ -62,38 +61,46 @@ export function TabContent({
     <>
       <Group justify={'space-between'}>
         <ActionIcon.Group>
-          <TabButton
-            text={'Look at target'}
-            onClick={() => luaApi?.skybrowser.adjustCamera(id)}
-          >
-            <EyeIcon />
-          </TabButton>
-          <TabButton
-            text={'Move target to center of view'}
-            onClick={() => luaApi?.skybrowser.centerTargetOnScreen(id)}
-          >
-            <MoveTargetIcon />
-          </TabButton>
-          <TabButton text={'Zoom in'} onClick={() => zoom(id, fov - zoomStep)}>
-            <ZoomInIcon />
-          </TabButton>
-          <TabButton text={'Zoom out'} onClick={() => zoom(id, fov + zoomStep)}>
-            <ZoomOutIcon />
-          </TabButton>
-          <TabButton text={'Remove all images'} onClick={removeAllImages}>
-            <DeleteIcon />
-          </TabButton>
-          <TabButton text={'Open Telescope View'} onClick={openWorldWideTelescope}>
-            <OpenInNewIcon />
-          </TabButton>
+          <Tooltip label="Look at target">
+            <ActionIcon onClick={() => luaApi?.skybrowser.adjustCamera(id)}>
+              <EyeIcon />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label="Move target to center of view">
+            <ActionIcon onClick={() => luaApi?.skybrowser.centerTargetOnScreen(id)}>
+              <MoveTargetIcon />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label="Zoom in">
+            <ActionIcon onClick={() => zoom(id, fov - zoomStep)}>
+              <ZoomInIcon />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label="Zoom out">
+            <ActionIcon onClick={() => zoom(id, fov + zoomStep)}>
+              <ZoomOutIcon />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label="Remove all images">
+            <ActionIcon onClick={removeAllImages}>
+              <DeleteIcon />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label="Open Telescope View">
+            <ActionIcon onClick={openWorldWideTelescope}>
+              <OpenInNewIcon />
+            </ActionIcon>
+          </Tooltip>
         </ActionIcon.Group>
-        <TabButton
-          text={'Settings'}
-          onClick={() => setShowSettings((old) => !old)}
-          variant={showSettings ? 'filled' : 'default'}
-        >
-          <SettingsIcon />
-        </TabButton>
+
+        <Tooltip label="Settings">
+          <ActionIcon
+            onClick={() => setShowSettings((old) => !old)}
+            variant={showSettings ? 'filled' : 'default'}
+          >
+            <SettingsIcon />
+          </ActionIcon>
+        </Tooltip>
       </Group>
       {showSettings ? <Settings id={id} /> : <AddedImagesList />}
     </>

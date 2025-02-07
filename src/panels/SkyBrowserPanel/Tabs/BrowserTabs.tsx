@@ -22,7 +22,7 @@ export function BrowserTabs({ openWorldWideTelescope }: Props) {
     return state.skybrowser.selectedBrowserId;
   });
   const luaApi = useOpenSpaceApi();
-  console.log(selectedBrowserId);
+
   return (
     <Tabs
       variant={'outline'}
