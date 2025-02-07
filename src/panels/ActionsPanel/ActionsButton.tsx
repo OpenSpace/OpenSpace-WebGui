@@ -1,4 +1,4 @@
-import { Button, Card, Group, Stack, Text } from '@mantine/core';
+import { Badge, Button, Card, Group, Stack, Text, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
@@ -44,7 +44,13 @@ export function ActionsButton({ uri, action: _action }: Props) {
         </Button>
         <Stack justify={'center'} align={'center'} px={5}>
           {action.documentation && <InfoBox text={action.documentation} />}
-          {isLocal && <Text>(L)</Text>}
+          {isLocal && (
+            <Tooltip label={'Local action'} position={'top'}>
+              <Badge variant={'light'} circle>
+                L
+              </Badge>
+            </Tooltip>
+          )}
         </Stack>
       </Group>
     </Card>
