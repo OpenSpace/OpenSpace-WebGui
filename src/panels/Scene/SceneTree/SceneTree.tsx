@@ -27,7 +27,11 @@ import {
   sortTreeData
 } from './treeUtil';
 
-export function SceneTree() {
+interface Props {
+  siblingRef: React.RefObject<HTMLDivElement>;
+}
+
+export function SceneTree({ siblingRef }: Props) {
   const [filter, setFilter] = useState<SceneTreeFilterSettings>({
     showOnlyVisible: false,
     showHiddenNodes: false,
@@ -103,8 +107,21 @@ export function SceneTree() {
     return nameA.toLocaleLowerCase().localeCompare(nameB.toLocaleLowerCase());
   });
 
+  function computeHeight(windowHeight: number): number {
+    if (!siblingRef.current) {
+      return windowHeight * 0.5; // A fallback option in case we have no ref yet
+    }
+    // TODO (ylvse 2025-01-21): make this bottom margin a mantine variable somehow?
+    // Same for minSize
+    const bottomMargin = 10;
+    const minSize = 300;
+    const filterListHeight =
+      windowHeight - siblingRef.current.clientHeight - bottomMargin;
+    return Math.max(filterListHeight, minSize);
+  }
+
   return (
-    <FilterList>
+    <FilterList heightFunc={computeHeight}>
       <Group justify={'space-between'}>
         <FilterList.InputField placeHolderSearchText={'Search for a node...'} flex={1} />
         <SceneTreeFilters onFilterChange={setFilter} />

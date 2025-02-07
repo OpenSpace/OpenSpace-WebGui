@@ -170,15 +170,15 @@ export function OriginPanel() {
     }
   }
 
-  function computeHeight(height: number): number {
+  function computeHeight(windowHeight: number): number {
     if (!ref.current) {
-      return height * 0.5; // A fallback option in case we have no ref yet
+      return windowHeight * 0.5; // A fallback option in case we have no ref yet
     }
     // TODO (ylvse 2025-01-21): make this bottom margin a mantine variable somehow?
     // Same for minSize
     const bottomMargin = 40;
     const minSize = 300;
-    const filterListHeight = height - ref.current.clientHeight - bottomMargin;
+    const filterListHeight = windowHeight - ref.current.clientHeight - bottomMargin;
     return Math.max(filterListHeight, minSize);
   }
 

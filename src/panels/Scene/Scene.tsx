@@ -1,4 +1,5 @@
-import { Container, ScrollArea, Tabs, Title } from '@mantine/core';
+import { useRef } from 'react';
+import { Box, Container, ScrollArea, Tabs, Title } from '@mantine/core';
 
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { SceneTree } from '@/panels/Scene/SceneTree/SceneTree';
@@ -11,6 +12,7 @@ export function Scene() {
   const hasLoadedScene = useAppSelector(
     (state) => Object.keys(state.propertyOwners.propertyOwners).length > 0
   );
+  const ref = useRef<HTMLDivElement>(null);
 
   if (!hasLoadedScene) {
     return (
@@ -34,9 +36,11 @@ export function Scene() {
 
         <Tabs.Panel value={'sceneMenu'}>
           <Container>
-            <Title order={2}>Scene</Title>
-            <FeaturedSceneTree />
-            <SceneTree />
+            <Box ref={ref}>
+              <Title order={2}>Scene</Title>
+              <FeaturedSceneTree />
+            </Box>
+            <SceneTree siblingRef={ref} />
           </Container>
         </Tabs.Panel>
       </Tabs>
