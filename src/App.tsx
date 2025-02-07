@@ -1,5 +1,11 @@
 import { ErrorBoundary } from 'react-error-boundary';
-import { ActionIcon, Button, createTheme, MantineProvider } from '@mantine/core';
+import {
+  ActionIcon,
+  Button,
+  createTheme,
+  MantineProvider,
+  ThemeIcon
+} from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 
 import { fallbackRender } from './components/ErrorFallback/fallbackRender';
@@ -18,6 +24,11 @@ const theme = createTheme({
       }
     }),
     ActionIcon: ActionIcon.extend({
+      defaultProps: {
+        variant: 'default'
+      }
+    }),
+    ThemeIcon: ThemeIcon.extend({
       defaultProps: {
         variant: 'default'
       }
