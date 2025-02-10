@@ -26,7 +26,7 @@ export function TimePanel() {
   return (
     <ScrollArea h={'100%'}>
       <Container>
-        <Title order={2}>Select Date</Title>
+        <Title order={2}>Select Time</Title>
         <TimeInput />
         <Title order={2}>Simulation Speed</Title>
         <SimulationIncrement />
