@@ -8,12 +8,15 @@ import { ChevronDownIcon, ChevronUpIcon } from '@/icons/icons';
  * https://github.com/mantinedev/mantine/blob/master/packages/%40mantine/core/src/components/NumberInput/NumberInput.tsx#L406
  */
 
+type StepDirection = 'up' | 'down';
+
 interface Props extends PropsWithChildren {
   stepHoldDelay?: number;
   stepHoldInterval?: number;
   onChange: (change: number, shiftKey: boolean) => void;
   step?: number;
 }
+
 export function StepControlButtons({
   stepHoldDelay,
   stepHoldInterval,
@@ -28,27 +31,27 @@ export function StepControlButtons({
   const shouldUseStepInterval =
     stepHoldDelay !== undefined && stepHoldInterval !== undefined;
 
-  function downHandler(event: KeyboardEvent): void {
+  function keyDownHandler(event: KeyboardEvent): void {
     if (event.key === 'Shift') {
       shiftKeyRef.current = true;
     }
   }
 
-  function upHandler(event: KeyboardEvent): void {
+  function keyUpHandler(event: KeyboardEvent): void {
     if (event.key === 'Shift') {
       shiftKeyRef.current = false;
     }
   }
 
-  function onStepHandleChange(isIncrement: boolean, shiftKey?: boolean): void {
+  function onStepHandleChange(direction: StepDirection, shiftKey?: boolean): void {
     const amount = step ?? 1;
-    const change = isIncrement ? amount : -amount;
+    const change = direction === 'up' ? amount : -amount;
     onChange(change, shiftKey !== undefined ? shiftKey : shiftKeyRef.current);
   }
 
   function onStep(
     event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
-    isIncrement: boolean
+    direction: StepDirection
   ): void {
     // Prevent keyboard events to repeatedly trigger the step loop which causes dangling
     // references to the setTimeout function
@@ -65,28 +68,28 @@ export function StepControlButtons({
 
     // We pass the shift key on first press since we have not yet added the event
     // listeners. This allows us to read the value on the first callback correctly.
-    onStepHandleChange(isIncrement, event.shiftKey);
+    onStepHandleChange(direction, event.shiftKey);
 
     // We want to be notified when user holds shiftkey during press
-    window.addEventListener('keydown', downHandler);
-    window.addEventListener('keyup', upHandler);
+    window.addEventListener('keydown', keyDownHandler);
+    window.addEventListener('keyup', keyUpHandler);
 
     // If the timeout has already been set, don't start another one to avoid dangling
     // references
     if (shouldUseStepInterval && onStepTimeoutRef.current === null) {
       onStepTimeoutRef.current = window.setTimeout(
-        () => onStepLoop(isIncrement),
+        () => onStepLoop(direction),
         stepHoldDelay
       );
     }
   }
 
-  function onStepLoop(isIncrement: boolean): void {
-    onStepHandleChange(isIncrement);
+  function onStepLoop(direction: StepDirection): void {
+    onStepHandleChange(direction);
 
     if (shouldUseStepInterval) {
       onStepTimeoutRef.current = window.setTimeout(
-        () => onStepLoop(isIncrement),
+        () => onStepLoop(direction),
         stepHoldInterval
       );
     }
@@ -95,23 +98,21 @@ export function StepControlButtons({
   function onStepDone(): void {
     if (onStepTimeoutRef.current) {
       window.clearTimeout(onStepTimeoutRef.current);
-      window.removeEventListener('keydown', downHandler);
-      window.removeEventListener('keyup', upHandler);
+      window.removeEventListener('keydown', keyDownHandler);
+      window.removeEventListener('keyup', keyUpHandler);
       onStepTimeoutRef.current = null;
     }
   }
 
-  function stepControlButton(direction: 'up' | 'down'): React.JSX.Element {
-    const isIncrement = direction === 'up';
-
+  function stepControlButton(direction: StepDirection): React.JSX.Element {
     return (
       <ActionIcon
         onPointerDown={(event) => {
-          onStep(event, isIncrement);
+          onStep(event, direction);
         }}
         onPointerOut={onStepDone}
         onPointerUp={onStepDone}
-        onKeyDown={(event) => onStep(event, isIncrement)}
+        onKeyDown={(event) => onStep(event, direction)}
         onKeyUp={() => onStepDone()}
         size={'xs'}
         variant={'light'}
