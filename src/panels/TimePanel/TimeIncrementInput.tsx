@@ -13,12 +13,7 @@ export function TimeIncrementInput({
   value,
   onInputChange,
   wrapStepControlButtons = true,
-  min,
-  max,
   step,
-  label,
-  decimalScale,
-  style,
   ...props
 }: Props) {
   const [storedValue, setStoredValue] = useState(value);
@@ -56,67 +51,52 @@ export function TimeIncrementInput({
     setIsFocused(true);
   }
 
-  function displayInputField(): React.JSX.Element {
-    if (wrapStepControlButtons) {
-      // We wrap the increment/decrement buttons above the input field
-      return (
-        <StepControlButtons
-          stepHoldDelay={500}
-          stepHoldInterval={50}
-          onChange={(value, shiftKey) => onInputChange(value, true, !shiftKey)}
-          step={step}
-        >
-          <NumberInput
-            value={storedValue}
-            onKeyUp={onKeyUp}
-            onChange={(val) => onValueChange(val)}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            min={min}
-            max={max}
-            step={step}
-            stepHoldDelay={500}
-            stepHoldInterval={50}
-            clampBehavior={'strict'}
-            label={label}
-            style={style}
-            decimalScale={decimalScale}
-            hideControls
-            {...props}
-          />
-        </StepControlButtons>
-      );
-    } else {
-      return (
-        // Let the increment/decrement buttons be part of the input field
+  if (wrapStepControlButtons) {
+    // We wrap the increment/decrement buttons above the input field
+    return (
+      <StepControlButtons
+        stepHoldDelay={500}
+        stepHoldInterval={50}
+        onChange={(value, shiftKey) => onInputChange(value, true, !shiftKey)}
+        step={step}
+      >
         <NumberInput
           value={storedValue}
           onKeyUp={onKeyUp}
           onChange={(val) => onValueChange(val)}
           onFocus={onFocus}
           onBlur={onBlur}
-          min={min}
-          max={max}
-          step={step}
           stepHoldDelay={500}
           stepHoldInterval={50}
           clampBehavior={'strict'}
-          label={label}
-          style={style}
-          decimalScale={decimalScale}
-          rightSection={
-            <StepControlButtons
-              stepHoldDelay={500}
-              stepHoldInterval={50}
-              onChange={(value, shiftKey) => onInputChange(value, true, !shiftKey)}
-              step={step}
-            />
-          }
+          hideControls
           {...props}
         />
-      );
-    }
+      </StepControlButtons>
+    );
+  } else {
+    return (
+      // Let the increment/decrement buttons be part of the input field
+      <NumberInput
+        value={storedValue}
+        onKeyUp={onKeyUp}
+        onChange={(val) => onValueChange(val)}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        step={step}
+        stepHoldDelay={500}
+        stepHoldInterval={50}
+        clampBehavior={'strict'}
+        rightSection={
+          <StepControlButtons
+            stepHoldDelay={500}
+            stepHoldInterval={50}
+            onChange={(value, shiftKey) => onInputChange(value, true, !shiftKey)}
+            step={step}
+          />
+        }
+        {...props}
+      />
+    );
   }
-
-  return displayInputField();
 }
