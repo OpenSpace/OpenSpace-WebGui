@@ -196,7 +196,7 @@ export function OriginPanel() {
           <SegmentedControl
             value={navigationAction}
             withItemsBorders={false}
-            onChange={(v) => setNavigationAction(v as NavigationActionState)}
+            onChange={(value) => setNavigationAction(value as NavigationActionState)}
             data={[
               {
                 value: NavigationActionState.Focus,
