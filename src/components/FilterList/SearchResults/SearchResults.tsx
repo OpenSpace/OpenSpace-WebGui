@@ -10,7 +10,7 @@ import { SearchResultsVirtualList } from './SearchResultsVirtualList';
 export function SearchResults({ children }: PropsWithChildren) {
   const { showFavorites, isLoading } = useFilterListProvider();
   if (!children) {
-    throw Error('FilterList.SearchResults should contain children!');
+    throw Error('FilterList.SearchResults must contain children! Please provide a search result type component as the  child of this component);
   }
   if (showFavorites) {
     return <></>;
