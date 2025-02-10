@@ -3,7 +3,7 @@ import { Button, Flex, Group, Stack, TextInput } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PlusIcon } from '@/icons/icons';
-import { InlineInput } from '@/panels/TimePanel/InlineInput';
+import { TimeIncrementInput } from '@/panels/TimePanel/TimeIncrementInput';
 import { NavigationType } from '@/types/enums';
 import { Identifier } from '@/types/types';
 
@@ -32,7 +32,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
   return (
     <Stack gap={'xs'}>
       <Flex gap={'xs'} align={'end'}>
-        <InlineInput
+        <TimeIncrementInput
           label={'Latitude (deg)'}
           value={lat}
           onInputChange={(value: number, relative: boolean) => {
@@ -44,8 +44,9 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
           min={-90}
           max={90}
           style={{ flexGrow: 1 }}
+          wrapStepControlButtons={false}
         />
-        <InlineInput
+        <TimeIncrementInput
           label={'Longitude (deg)'}
           value={long}
           onInputChange={(value: number, relative: boolean) => {
@@ -57,8 +58,9 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
           min={-180}
           max={180}
           style={{ flexGrow: 1 }}
+          wrapStepControlButtons={false}
         />
-        <InlineInput
+        <TimeIncrementInput
           label={'Altitude'}
           value={alt}
           onInputChange={(value: number, relative: boolean) => {
@@ -69,6 +71,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
           }}
           min={0}
           style={{ flexGrow: 1 }}
+          wrapStepControlButtons={false}
         />
       </Flex>
       <TextInput
@@ -79,7 +82,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
           previewCustomName !== '' ? previewCustomName : 'Custom name (optional)'
         }
       />
-      <Group gap={'xs'} grow preventGrowOverflow={false}>
+      <Group gap={'xs'}>
         <NodeNavigationButton
           type={NavigationType.FlyGeo}
           showLabel
