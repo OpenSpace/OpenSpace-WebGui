@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ActionIcon, Button, Group } from '@mantine/core';
+import { ActionIcon, Button, Group, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LockIcon, LockOpenIcon } from '@/icons/icons';
@@ -164,79 +164,79 @@ export function TimeInput() {
     setUseLock(false);
   }
 
-  return (
-    <>
-      {cappedTime ? (
-        <Group gap={'xs'} mb={'xs'}>
-          <ActionIcon onClick={toggleLock}>
-            {useLock ? <LockIcon /> : <LockOpenIcon />}
-          </ActionIcon>
-          <Group gap={5}>
-            <TimeIncrementInput
-              value={time.getUTCFullYear()}
-              onInputChange={(value, relative, shiftKey) =>
-                onInputChange(value, relative, shiftKey, TimePart.Years)
-              }
-              style={{ maxWidth: 65 }}
-            />
-            <MonthInput
-              month={time.getUTCMonth()}
-              onInputChange={(value, relative, shiftKey) =>
-                onInputChange(value, relative, shiftKey, TimePart.Months)
-              }
-              style={{ maxWidth: 55 }}
-            />
+  return cappedTime ? (
+    <Stack gap={'xs'} mb={'xs'}>
+      <Group gap={'xs'}>
+        <ActionIcon onClick={toggleLock}>
+          {useLock ? <LockIcon /> : <LockOpenIcon />}
+        </ActionIcon>
+        <Group gap={5}>
+          <TimeIncrementInput
+            value={time.getUTCFullYear()}
+            onInputChange={(value, relative, shiftKey) =>
+              onInputChange(value, relative, shiftKey, TimePart.Years)
+            }
+            w={65}
+          />
+          <MonthInput
+            month={time.getUTCMonth()}
+            onInputChange={(value, relative, shiftKey) =>
+              onInputChange(value, relative, shiftKey, TimePart.Months)
+            }
+            w={55}
+          />
 
-            <TimeIncrementInput
-              value={time.getUTCDate()}
-              onInputChange={(value, relative, shiftKey) =>
-                onInputChange(value, relative, shiftKey, TimePart.Days)
-              }
-              min={1}
-              max={31}
-              style={{ maxWidth: 40 }}
-            />
-          </Group>
-          <Group gap={5}>
-            <TimeIncrementInput
-              value={time.getUTCHours()}
-              onInputChange={(value, relative, shiftKey) =>
-                onInputChange(value, relative, shiftKey, TimePart.Hours)
-              }
-              min={0}
-              max={24}
-              style={{ maxWidth: 40 }}
-            />
-            <TimeIncrementInput
-              value={time.getUTCMinutes()}
-              onInputChange={(value, relative, shiftKey) =>
-                onInputChange(value, relative, shiftKey, TimePart.Minutes)
-              }
-              min={0}
-              max={60}
-              style={{ maxWidth: 40 }}
-            />
-            <TimeIncrementInput
-              value={time.getUTCSeconds()}
-              onInputChange={(value, relative, shiftKey) =>
-                onInputChange(value, relative, shiftKey, TimePart.Seconds)
-              }
-              min={0}
-              max={60}
-              style={{ maxWidth: 40 }}
-            />
-          </Group>
+          <TimeIncrementInput
+            value={time.getUTCDate()}
+            onInputChange={(value, relative, shiftKey) =>
+              onInputChange(value, relative, shiftKey, TimePart.Days)
+            }
+            min={1}
+            max={31}
+            w={40}
+          />
         </Group>
-      ) : (
-        <h2>Date out of range</h2>
-      )}
+        <Group gap={5}>
+          <TimeIncrementInput
+            value={time.getUTCHours()}
+            onInputChange={(value, relative, shiftKey) =>
+              onInputChange(value, relative, shiftKey, TimePart.Hours)
+            }
+            min={0}
+            max={24}
+            w={40}
+          />
+          <TimeIncrementInput
+            value={time.getUTCMinutes()}
+            onInputChange={(value, relative, shiftKey) =>
+              onInputChange(value, relative, shiftKey, TimePart.Minutes)
+            }
+            min={0}
+            max={60}
+            w={40}
+          />
+          <TimeIncrementInput
+            value={time.getUTCSeconds()}
+            onInputChange={(value, relative, shiftKey) =>
+              onInputChange(value, relative, shiftKey, TimePart.Seconds)
+            }
+            min={0}
+            max={60}
+            w={40}
+          />
+        </Group>
+      </Group>
       {useLock && (
         <Group gap={'xs'} grow>
           <Button onClick={interpolateToPendingTime}>Interpolate</Button>
           <Button onClick={setToPendingTime}>Set</Button>
-          <Button onClick={resetPendingTime}>Cancel</Button>
+          <Button variant={'light'} onClick={resetPendingTime}>
+            Cancel
+          </Button>
         </Group>
       )}
-    </>
+    </Stack>
+  ) : (
+    <Text>Date out of range</Text>
   );
 }

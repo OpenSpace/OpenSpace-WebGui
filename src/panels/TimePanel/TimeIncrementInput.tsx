@@ -18,7 +18,8 @@ export function TimeIncrementInput({
   step,
   label,
   decimalScale,
-  style
+  style,
+  ...props
 }: Props) {
   const [storedValue, setStoredValue] = useState(value);
   const [isFocused, setIsFocused] = useState(false);
@@ -81,6 +82,7 @@ export function TimeIncrementInput({
             style={style}
             decimalScale={decimalScale}
             hideControls
+            {...props}
           />
         </StepControlButtons>
       );
@@ -110,6 +112,7 @@ export function TimeIncrementInput({
               step={step}
             />
           }
+          {...props}
         />
       );
     }

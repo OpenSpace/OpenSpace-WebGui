@@ -22,7 +22,7 @@ interface MonthProps extends TextInputProps {
   month: number;
   onInputChange: (value: number, relative: boolean, interpolate: boolean) => void;
 }
-export function MonthInput({ month, onInputChange, style }: MonthProps) {
+export function MonthInput({ month, onInputChange, style, ...props }: MonthProps) {
   const [storedMonth, setStoredMonth] = useState<number>(month);
   const [inputValue, setInputValue] = useState<string>('');
   const [isFocused, setIsFocused] = useState(false);
@@ -127,6 +127,7 @@ export function MonthInput({ month, onInputChange, style }: MonthProps) {
         onKeyUp={onKeyUp}
         onKeyDown={onKeyDown}
         style={style}
+        {...props}
       />
     </StepControlButtons>
   );
