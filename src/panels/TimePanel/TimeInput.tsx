@@ -236,7 +236,7 @@ export function TimeInput() {
         <Group gap={'xs'} grow>
           <Button onClick={interpolateToPendingTime}>Interpolate</Button>
           <Button onClick={setToPendingTime}>Set</Button>
-          <Button variant={'light'} onClick={resetPendingTime}>
+          <Button variant={'outline'} onClick={resetPendingTime}>
             Cancel
           </Button>
         </Group>
