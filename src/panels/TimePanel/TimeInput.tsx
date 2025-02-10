@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ActionIcon, Button, Group, Stack, Text } from '@mantine/core';
+import { ActionIcon, Button, Center, Group, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LockIcon, LockOpenIcon } from '@/icons/icons';
@@ -165,12 +165,18 @@ export function TimeInput() {
   }
 
   return cappedTime ? (
-    <Stack gap={'xs'} mb={'xs'}>
-      <Group gap={'xs'}>
-        <ActionIcon onClick={toggleLock}>
+    <Stack
+      gap={'xs'}
+      p={'xs'}
+      style={{
+        outline: useLock ? '3px solid var(--mantine-primary-color-filled)' : undefined
+      }}
+    >
+      <Group gap={'xs'} justify={'center'}>
+        <ActionIcon onClick={toggleLock} variant={useLock ? 'filled' : 'light'}>
           {useLock ? <LockIcon /> : <LockOpenIcon />}
         </ActionIcon>
-        <Group gap={5}>
+        <Group gap={5} wrap={'nowrap'}>
           <TimeIncrementInput
             value={time.getUTCFullYear()}
             onInputChange={(value, relative, shiftKey) =>
@@ -196,7 +202,7 @@ export function TimeInput() {
             w={40}
           />
         </Group>
-        <Group gap={5}>
+        <Group gap={5} wrap={'nowrap'}>
           <TimeIncrementInput
             value={time.getUTCHours()}
             onInputChange={(value, relative, shiftKey) =>
@@ -237,6 +243,8 @@ export function TimeInput() {
       )}
     </Stack>
   ) : (
-    <Text>Date out of range</Text>
+    <Center p={'xl'}>
+      <Text>Date out of range</Text>
+    </Center>
   );
 }
