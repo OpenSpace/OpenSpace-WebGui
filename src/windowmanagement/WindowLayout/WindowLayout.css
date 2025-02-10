@@ -24,3 +24,8 @@ body {
   flex-shrink: 1 !important;
   flex-grow: 1 !important;
 }
+
+.dock-divider {
+  /* Stops OpenSpace from receiving docked-panel drag events */
+  background: rgba(0,0,0, 0.05);
+}
