@@ -4,7 +4,8 @@ import {
   Button,
   createTheme,
   MantineProvider,
-  ThemeIcon
+  ThemeIcon,
+  Tooltip
 } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 
@@ -18,12 +19,12 @@ import '@mantine/core/styles.css';
 const theme = createTheme({
   cursorType: 'pointer',
   components: {
-    Button: Button.extend({
+    ActionIcon: ActionIcon.extend({
       defaultProps: {
         variant: 'default'
       }
     }),
-    ActionIcon: ActionIcon.extend({
+    Button: Button.extend({
       defaultProps: {
         variant: 'default'
       }
@@ -31,6 +32,13 @@ const theme = createTheme({
     ThemeIcon: ThemeIcon.extend({
       defaultProps: {
         variant: 'default'
+      }
+    }),
+    Tooltip: Tooltip.extend({
+      defaultProps: {
+        withArrow: true,
+        transitionProps: { duration: 400, enterDelay: 400 },
+        position: 'top'
       }
     })
   }
