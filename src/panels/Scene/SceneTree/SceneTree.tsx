@@ -112,22 +112,12 @@ export function SceneTree() {
 
       <FilterList.Favorites>
         <Group gap={0} pos={'absolute'} top={0} right={0} mr={'xs'}>
-          <Tooltip
-            label={'Collapse all'}
-            position={'top'}
-            transitionProps={{ enterDelay: 400 }}
-            withArrow
-          >
+          <Tooltip label={'Collapse all'}>
             <ActionIcon variant={'subtle'} onClick={tree.collapseAllNodes}>
               <ChevronsUpIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip
-            label={'Expand all'}
-            position={'top'}
-            transitionProps={{ enterDelay: 400 }}
-            withArrow
-          >
+          <Tooltip label={'Expand all'}>
             <ActionIcon variant={'subtle'} onClick={tree.expandAllNodes}>
               <ChevronsDownIcon />
             </ActionIcon>

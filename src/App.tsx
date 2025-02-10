@@ -1,5 +1,14 @@
 import { ErrorBoundary } from 'react-error-boundary';
-import { createTheme, MantineProvider, RangeSlider, Slider } from '@mantine/core';
+import {
+  ActionIcon,
+  Button,
+  createTheme,
+  MantineProvider,
+  RangeSlider,
+  Slider,
+  ThemeIcon,
+  Tooltip
+} from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 
 import { fallbackRender } from './components/ErrorFallback/fallbackRender';
@@ -13,11 +22,33 @@ import sliderClasses from './styles/Slider.module.css';
 const theme = createTheme({
   cursorType: 'pointer',
   components: {
-    Slider: Slider.extend({
-      classNames: sliderClasses
+    ActionIcon: ActionIcon.extend({
+      defaultProps: {
+        variant: 'default'
+      }
+    }),
+    Button: Button.extend({
+      defaultProps: {
+        variant: 'default'
+      }
     }),
     RangeSlider: RangeSlider.extend({
       classNames: sliderClasses
+    }),
+    Slider: Slider.extend({
+      classNames: sliderClasses
+    }),
+    ThemeIcon: ThemeIcon.extend({
+      defaultProps: {
+        variant: 'default'
+      }
+    }),
+    Tooltip: Tooltip.extend({
+      defaultProps: {
+        withArrow: true,
+        transitionProps: { duration: 400, enterDelay: 400 },
+        position: 'top'
+      }
     })
   }
 });
