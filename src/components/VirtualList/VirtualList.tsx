@@ -38,7 +38,6 @@ export function VirtualList<T>({
   return (
     <>
       {/* The scrollable element for your list */}
-
       <div
         ref={parentRef}
         style={{
@@ -64,8 +63,7 @@ export function VirtualList<T>({
               transform: `translateY(${items[0]?.start ?? 0}px)`
             }}
           >
-            {/* Only the visible items in the virtualizer,
-          manually positioned to be in view */}
+            {/* The visible items, manually positioned to be in view */}
             {items.map((virtualRow) => (
               <div
                 key={virtualRow.key}
