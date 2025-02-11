@@ -41,7 +41,7 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
 
   function renderMenuButtons() {
     switch (recordingState) {
-      case RecordingState.recording:
+      case RecordingState.Recording:
         return (
           <Button
             onClick={stopRecording}
@@ -52,7 +52,7 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
             Stop Recording
           </Button>
         );
-      case RecordingState.paused:
+      case RecordingState.Paused:
         return (
           <Group gap={'xs'}>
             <Button
@@ -73,7 +73,7 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
             </Button>
           </Group>
         );
-      case RecordingState.playing:
+      case RecordingState.Playing:
         return (
           <Group gap={'xs'}>
             <Button

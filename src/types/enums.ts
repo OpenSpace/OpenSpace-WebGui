@@ -10,12 +10,12 @@ export enum IconSize {
 }
 
 export enum NavigationType {
-  jump,
+  Jump,
   JumpGeo,
-  fly,
+  Fly,
   FlyGeo,
-  focus,
-  frame
+  Focus,
+  Frame
 }
 
 export enum TransformType {

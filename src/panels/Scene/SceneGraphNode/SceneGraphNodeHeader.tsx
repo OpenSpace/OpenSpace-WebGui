@@ -64,7 +64,7 @@ export function SceneGraphNodeHeader({ uri, label, onClick, leftSection }: Props
         <Group wrap={'nowrap'} gap={4}>
           <NodeNavigationButton
             size={'sm'}
-            type={NavigationType.focus}
+            type={NavigationType.Focus}
             identifier={propertyOwner.identifier}
           />
           <SceneGraphNodeMoreMenu uri={uri} />

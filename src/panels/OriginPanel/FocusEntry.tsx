@@ -40,14 +40,14 @@ export function FocusEntry({
         <>
           {isActive() && (
             <NodeNavigationButton
-              type={NavigationType.frame}
+              type={NavigationType.Frame}
               variant={buttonVariant}
               identifier={entry.identifier}
               size={'lg'}
             />
           )}
           <NodeNavigationButton
-            type={NavigationType.fly}
+            type={NavigationType.Fly}
             identifier={entry.identifier}
             variant={buttonVariant}
             size={'lg'}
@@ -63,25 +63,25 @@ export function FocusEntry({
               <Menu.Label>{entry.name}</Menu.Label>
               <Stack gap={'xs'}>
                 <NodeNavigationButton
-                  type={NavigationType.focus}
+                  type={NavigationType.Focus}
                   identifier={entry.identifier}
                   showLabel
                   justify={'flex-start'}
                 />
                 <NodeNavigationButton
-                  type={NavigationType.fly}
+                  type={NavigationType.Fly}
                   identifier={entry.identifier}
                   showLabel
                   justify={'flex-start'}
                 />
                 <NodeNavigationButton
-                  type={NavigationType.jump}
+                  type={NavigationType.Jump}
                   identifier={entry.identifier}
                   showLabel
                   justify={'flex-start'}
                 />
                 <NodeNavigationButton
-                  type={NavigationType.frame}
+                  type={NavigationType.Frame}
                   identifier={entry.identifier}
                   showLabel
                   justify={'flex-start'}
