@@ -1,5 +1,13 @@
 import { useRef, useState } from 'react';
-import { ActionIcon, Box, Container, Group, ScrollArea, Title } from '@mantine/core';
+import {
+  Box,
+  Container,
+  Group,
+  ScrollArea,
+  SegmentedControl,
+  Title,
+  VisuallyHidden
+} from '@mantine/core';
 
 import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -7,6 +15,7 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { IconSize } from '@/types/enums';
 import { FlightControllerData } from '@/types/flightcontroller-types';
 import { Identifier, Uri } from '@/types/types';
 import {
@@ -93,14 +102,6 @@ export function OriginPanel() {
   const isInFocusMode = navigationAction === NavigationActionState.Focus;
   // We'll highlight the anchor node in both Focus and Anchor state otherwise aim node
   const activeNode = navigationAction === NavigationActionState.Aim ? aim : anchor;
-
-  // TODO find a better (?) way to color them depending on state
-  function actionIconStyle(state: NavigationActionState) {
-    return {
-      backgroundColor:
-        navigationAction === state ? 'var(--mantine-primary-color-filled)' : 'transparent'
-    };
-  }
 
   function hasDistinctAim() {
     return aim !== '' && aim !== anchor;
@@ -192,32 +193,40 @@ export function OriginPanel() {
             </Title>
             <OriginSettings />
           </Group>
-          <Group gap={0} mb={'xs'}>
-            <ActionIcon
-              onClick={() => setNavigationAction(NavigationActionState.Focus)}
-              aria-label={'Select focus'}
-              size={'lg'}
-              style={actionIconStyle(NavigationActionState.Focus)}
-            >
-              <FocusIcon size={'70%'} />
-            </ActionIcon>
-            <ActionIcon
-              onClick={() => setNavigationAction(NavigationActionState.Anchor)}
-              aria-label={'Select anchor'}
-              size={'lg'}
-              style={actionIconStyle(NavigationActionState.Anchor)}
-            >
-              <AnchorIcon size={'70%'} />
-            </ActionIcon>
-            <ActionIcon
-              onClick={() => setNavigationAction(NavigationActionState.Aim)}
-              aria-label={'Select aim'}
-              size={'lg'}
-              style={actionIconStyle(NavigationActionState.Aim)}
-            >
-              <TelescopeIcon size={'70%'} />
-            </ActionIcon>
-          </Group>
+          <SegmentedControl
+            value={navigationAction}
+            withItemsBorders={false}
+            onChange={(value) => setNavigationAction(value as NavigationActionState)}
+            data={[
+              {
+                value: NavigationActionState.Focus,
+                label: (
+                  <>
+                    <FocusIcon size={IconSize.sm} style={{ display: 'block' }} />
+                    <VisuallyHidden>Set focus</VisuallyHidden>
+                  </>
+                )
+              },
+              {
+                value: NavigationActionState.Anchor,
+                label: (
+                  <>
+                    <AnchorIcon size={IconSize.sm} style={{ display: 'block' }} />
+                    <VisuallyHidden>Set anchor</VisuallyHidden>
+                  </>
+                )
+              },
+              {
+                value: NavigationActionState.Aim,
+                label: (
+                  <>
+                    <TelescopeIcon size={IconSize.sm} style={{ display: 'block' }} />
+                    <VisuallyHidden>Set aim</VisuallyHidden>
+                  </>
+                )
+              }
+            ]}
+          />
         </Box>
         <FilterList heightFunc={computeHeight}>
           <FilterList.InputField
