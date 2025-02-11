@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { ActionIcon, Grid, Slider } from '@mantine/core';
 import { inRange } from 'lodash';
 
-import { NumericInput } from '@/components/Input/NumericInput';
+import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
 import { PenIcon } from '@/icons/icons';
 
@@ -60,7 +60,7 @@ export function NumericProperty({
     // min or maximum value...
     return (
       <NumericInput
-        defaultValue={currentValue}
+        value={currentValue}
         disabled={disabled}
         label={<PropertyLabel label={name} tip={description} />}
       />
@@ -107,7 +107,7 @@ export function NumericProperty({
           <NumericInput
             // TODO: this does not update correctly when slider updates
             disabled={disabled}
-            defaultValue={currentValue}
+            value={currentValue}
             min={min}
             max={max}
             step={step}
