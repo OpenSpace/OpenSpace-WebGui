@@ -37,7 +37,7 @@ export function WwtProvider({ children }: PropsWithChildren) {
       setWwtHasLoaded(false);
       setImageCollectionLoaded(false);
     };
-  }, []);
+  }, [setImageCollectionLoaded, setWwtHasLoaded]);
   // Start pinging WWT with the set aim function
   // We want to make sure we have the image collection url so wait for that
   useStartPingingWwt(shouldConnect, setAim);
