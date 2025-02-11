@@ -1,10 +1,10 @@
 import { ActionIcon, Box, Text } from '@mantine/core';
 
+import { MinusIcon } from '@/icons/icons';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { Identifier } from '@/types/types';
 import { sgnUri } from '@/util/propertyTreeHelpers';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
-import { MinusIcon } from '@/icons/icons';
 
 interface Props {
   addedNodes: Identifier[];

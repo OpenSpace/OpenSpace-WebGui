@@ -17,12 +17,13 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
 import { useAppSelector } from '@/redux/hooks';
-import { ArcGISJSON, Candidate, Identifier } from '@/types/types';
+import { Identifier } from '@/types/types';
 import { GeoLocationGroupKey, ScenePrefixKey } from '@/util/keys';
 
 import { AddedCustomNodes } from './AddedCustomNodes';
 import { CustomCoordinates } from './CustomCoordinates';
 import { EarthEntry } from './EarthEntry';
+import { ArcGISJSON, Candidate } from './types';
 import { addressUTF8 } from './util';
 
 interface Props {

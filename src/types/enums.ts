@@ -8,6 +8,7 @@ export enum IconSize {
   lg = 32,
   xl = 42
 }
+
 export enum NavigationType {
   jump,
   JumpGeo,
@@ -15,16 +16,6 @@ export enum NavigationType {
   FlyGeo,
   focus,
   frame
-}
-
-export enum TimePart {
-  Milliseconds = 'Milliseconds',
-  Seconds = 'Seconds',
-  Minutes = 'Minutes',
-  Hours = 'Hours',
-  Days = 'Days',
-  Months = 'Months',
-  Years = 'Years'
 }
 
 export enum TransformType {
@@ -50,9 +41,3 @@ export const PropertyVisibilityNumber = {
   NoviceUser: 1,
   Always: 0
 };
-
-export enum DisplayType {
-  Phase = 'Phase',
-  Milestone = 'Milestone',
-  Overview = 'Overview'
-}

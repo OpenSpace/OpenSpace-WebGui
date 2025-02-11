@@ -13,10 +13,10 @@ import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
+import { FlightControllerData } from '@/panels/FlightControlPanel/types';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';
-import { FlightControllerData } from '@/types/flightcontroller-types';
 import { Identifier, PropertyOwner, Uri } from '@/types/types';
 import {
   NavigationAimKey,
@@ -107,6 +107,7 @@ export function OriginPanel() {
     return aim !== '' && aim !== anchor;
   }
 
+  // TODO: anden88: @emma take a look at this
   function onSelect(
     identifier: Identifier,
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>

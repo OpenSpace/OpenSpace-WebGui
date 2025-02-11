@@ -1,99 +1,121 @@
+import { Identifier, Uri } from '@/types/types';
+
 // Event types, these were manually typed from the event.cpp `toParameter`function:
-
-import { Identifier } from './types';
-
 // https://github.com/OpenSpace/OpenSpace/blob/6dd3dd8ab88653fddee0b2e480934faf53d3c0f8/src/events/event.cpp#L332
-export type ParallelConnectionEvent = {
+type ParallelConnectionEvent = {
   Event: 'ParallelConnection';
   State: 'Established' | 'Lost' | 'HostshipGained' | 'HostshipLost';
 };
-export type ProfileLoadingFinishedEvent = {
+
+type ProfileLoadingFinishedEvent = {
   Event: 'ProfileLoadingFinished';
 };
-export type AssetLoadingFinishedEvent = {
+
+type AssetLoadingFinishedEvent = {
   Event: 'AssetLoadingFinished';
 };
-export type ApplicationShutdownEvent = {
+
+type ApplicationShutdownEvent = {
   Event: 'ApplicationShutdown';
   State: 'Started' | 'Aborted' | 'Finished';
 };
-export type CameraFocusTransitionEvent = {
+
+type CameraFocusTransitionEvent = {
   Event: 'CameraFocusTransition';
-  Node: Identifer;
+  Node: Identifier;
   Transition: 'Approaching' | 'Reaching' | 'Receding' | 'Exiting';
 };
-export type TimeOfInterestReachedEvent = {
+
+type TimeOfInterestReachedEvent = {
   Event: 'TimeOfInterestReached';
 };
-export type MissionEventReachedEvent = {
+
+type MissionEventReachedEvent = {
   Event: 'MissionEventReached';
 };
-export type PlanetEclipsedEvent = {
+
+type PlanetEclipsedEvent = {
   Event: 'PlanetEclipsed';
   Eclipsee: Identifier;
   Eclipser: Identifier;
 };
-export type InterpolationFinishedEvent = {
+
+type InterpolationFinishedEvent = {
   Event: 'InterpolationFinished';
   Property: Uri;
 };
-export type FocusNodeChangedEvent = {
+
+type FocusNodeChangedEvent = {
   Event: 'FocusNodeChanged';
   OldNode: Identifier;
   NewNode: Identifier;
 };
-export type PropertyTreeUpdatedEvent = {
+
+type PropertyTreeUpdatedEvent = {
   Event: 'PropertyTreeUpdated';
   Uri: Uri;
 };
-export type PropertyTreePrunedEvent = {
+
+type PropertyTreePrunedEvent = {
   Event: 'PropertyTreePruned';
   Uri: Uri;
 };
-export type ActionAddedEvent = {
+
+type ActionAddedEvent = {
   Event: 'ActionAdded';
   Uri: Uri;
 };
-export type ActionRemovedEvent = {
+
+type ActionRemovedEvent = {
   Event: 'ActionRemoved';
   Uri: Uri;
 };
-export type SessionRecordingPlaybackEvent = {
+
+type SessionRecordingPlaybackEvent = {
   Event: 'SessionRecordingPlayback';
   State: 'Started' | 'Paused' | 'Resumed' | 'Finished';
 };
-export type PointSpacecraftEvent = {
+
+type PointSpacecraftEvent = {
   Event: 'PointSpacecraft';
 };
-export type RenderableEnabledEvent = {
+
+type RenderableEnabledEvent = {
   Event: 'RenderableEnabled';
   Node: Identifier;
 };
-export type RenderableDisabledEvent = {
+
+type RenderableDisabledEvent = {
   Event: 'RenderableDisabled';
   Node: Identifier;
 };
-export type CameraPathStartedEvent = {
+
+type CameraPathStartedEvent = {
   Event: 'CameraPathStarted';
   Origin: Identifier;
   Destination: Identifier;
 };
-export type CameraPathFinishedEvent = {
+
+type CameraPathFinishedEvent = {
   Event: 'CameraPathFinished';
   Origin: Identifier;
   Destination: Identifier;
 };
-export type CameraMovedPositionEvent = {
+
+type CameraMovedPositionEvent = {
   Event: 'CameraMovedPosition';
 };
-export type ScheduledScriptExecutedEvent = {
+
+type ScheduledScriptExecutedEvent = {
   Event: 'ScheduledScriptExecuted';
   Script: string;
 };
-export type GuiTreeUpdatedEvent = {
+
+type GuiTreeUpdatedEvent = {
   Event: 'GuiTreeUpdated';
 };
-export type CustomEvent = {
+
+type CustomEvent = {
   Event: 'Custom';
   Subtype: string;
   Payload: string;

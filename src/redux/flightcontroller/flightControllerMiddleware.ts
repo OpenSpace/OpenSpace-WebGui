@@ -2,9 +2,9 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
+import { FlightControllerData } from '@/panels/FlightControlPanel/types';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
-import { FlightControllerData } from '@/types/flightcontroller-types';
 
 export const sendFlightControl = createAction<FlightControllerData>('sendFlightControl');
 

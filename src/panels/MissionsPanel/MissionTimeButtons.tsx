@@ -1,10 +1,10 @@
 import { Button, Group } from '@mantine/core';
 
 import { GoToEnd, GoToStart, TimerIcon } from '@/icons/icons';
-import { DisplayType, IconSize } from '@/types/enums';
-import { DisplayedPhase } from '@/types/mission-types';
+import { IconSize } from '@/types/enums';
 
 import { useJumpToTime } from './hooks';
+import { DisplayedPhase, DisplayType } from './types';
 
 interface Props {
   currentPhase: DisplayedPhase;

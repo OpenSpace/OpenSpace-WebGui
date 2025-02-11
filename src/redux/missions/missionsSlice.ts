@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Phase } from '@/types/mission-types';
+import { Phase } from '@/panels/MissionsPanel/types';
 
 export interface MissionState {
   isInitialized: boolean;

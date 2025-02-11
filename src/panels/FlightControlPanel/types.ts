@@ -1,11 +1,12 @@
-// Flightcontroller types
-export type FlightControllerConnectCommand = {
+interface FlightControllerConnectCommand {
   type: 'connect';
-};
-export type FlightControllerDisconnectCommand = {
+}
+
+interface FlightControllerDisconnectCommand {
   type: 'disconnect';
-};
-export type FlightControllerInputStateCommand = {
+}
+
+interface FlightControllerInputStateCommand {
   type: 'inputState';
   inputState: {
     values: {
@@ -17,9 +18,9 @@ export type FlightControllerInputStateCommand = {
       localRollX?: number;
     };
   };
-};
+}
 
-export interface FlightControllerUpdateViewCommand {
+interface FlightControllerUpdateViewCommand {
   type: 'updateView';
   focus: string;
   anchor: string;
