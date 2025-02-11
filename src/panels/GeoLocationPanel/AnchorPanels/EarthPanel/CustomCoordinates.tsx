@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Button, Flex, Group, Stack, TextInput } from '@mantine/core';
+import { Button, Group, Stack, TextInput } from '@mantine/core';
 
+import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PlusIcon } from '@/icons/icons';
-import { TimeIncrementInput } from '@/panels/TimePanel/TimeIncrementInput';
 import { NavigationType } from '@/types/enums';
 import { Identifier } from '@/types/types';
 
@@ -11,92 +11,72 @@ interface Props {
   currentAnchor: Identifier;
   onAddFocusNodeCallback: (
     address: string,
-    lat: number,
-    long: number,
-    alt: number
+    latitude: number,
+    longitude: number,
+    altitude: number
   ) => void;
 }
 export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Props) {
-  const [lat, setLat] = useState(0);
-  const [long, setLong] = useState(0);
-  const [alt, setAlt] = useState(0);
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
+  const [altitude, setAltitude] = useState(0);
   const [customName, setCustomName] = useState('');
-  const altInKm = alt * 1000;
-  const previewCustomName = `Custom Coordinate (${lat},${long},${alt}km)`;
+  const altInKm = altitude * 1000;
+  const previewCustomName = `Custom Coordinate (${latitude},${longitude},${altitude}km)`;
 
   function onClick() {
     const address = customName || previewCustomName;
-    onAddFocusNodeCallback(address, lat, long, altInKm);
+    onAddFocusNodeCallback(address, latitude, longitude, altInKm);
   }
 
   return (
     <Stack gap={'xs'}>
-      <Flex gap={'xs'} align={'end'}>
-        <TimeIncrementInput
+      <Group grow gap={'xs'}>
+        <NumericInput
           label={'Latitude (deg)'}
-          value={lat}
-          onInputChange={(value: number, relative: boolean) => {
-            setLat((oldvalue) => {
-              const newValue = relative ? oldvalue + value : value;
-              return newValue;
-            });
-          }}
+          value={latitude}
+          onEnter={(value) => setLatitude(value)}
           min={-90}
           max={90}
-          style={{ flexGrow: 1 }}
-          wrapStepControlButtons={false}
+          // clampBehavior={'strict'} // TODO: Implement for up/down buttons
         />
-        <TimeIncrementInput
+        <NumericInput
           label={'Longitude (deg)'}
-          value={long}
-          onInputChange={(value: number, relative: boolean) => {
-            setLong((oldvalue) => {
-              const newValue = relative ? oldvalue + value : value;
-              return newValue;
-            });
-          }}
+          value={longitude}
+          onEnter={(value) => setLongitude(value)}
           min={-180}
           max={180}
-          style={{ flexGrow: 1 }}
-          wrapStepControlButtons={false}
+          // clampBehavior={'strict'} // TODO: Implement for up/down buttons
         />
-        <TimeIncrementInput
-          label={'Altitude'}
-          value={alt}
-          onInputChange={(value: number, relative: boolean) => {
-            setAlt((oldvalue) => {
-              const newValue = relative ? oldvalue + value : value;
-              return newValue;
-            });
-          }}
+        <NumericInput
+          label={'Longitude (deg)'}
+          value={longitude}
+          onEnter={(value) => setAltitude(value)}
           min={0}
-          style={{ flexGrow: 1 }}
-          wrapStepControlButtons={false}
+          // clampBehavior={'strict'} // TODO: Implement for up/down buttons
         />
-      </Flex>
+      </Group>
       <TextInput
         value={customName}
         onChange={(event) => setCustomName(event.currentTarget.value)}
         label={'Node name (optional)'}
-        placeholder={
-          previewCustomName !== '' ? previewCustomName : 'Custom name (optional)'
-        }
+        placeholder={previewCustomName}
       />
       <Group gap={'xs'}>
         <NodeNavigationButton
           type={NavigationType.FlyGeo}
           showLabel
           identifier={currentAnchor}
-          lat={lat}
-          long={long}
+          lat={latitude}
+          long={longitude}
           alt={altInKm}
         />
         <NodeNavigationButton
           type={NavigationType.JumpGeo}
           showLabel
           identifier={currentAnchor}
-          lat={lat}
-          long={long}
+          lat={latitude}
+          long={longitude}
           alt={altInKm}
         />
         <Button onClick={onClick} size={'sm'} leftSection={<PlusIcon />}>

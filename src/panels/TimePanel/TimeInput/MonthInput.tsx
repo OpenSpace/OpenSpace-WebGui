@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { TextInput, TextInputProps } from '@mantine/core';
 
-import { StepControlButtons } from './StepControls';
+import { StackedStepControls } from './StackedStepControls';
 
 const Months: string[] = [
   'January',
@@ -112,13 +112,12 @@ export function MonthInput({ month, onInputChange, style, ...props }: MonthProps
   }
 
   return (
-    <StepControlButtons
-      stepHoldDelay={500}
-      stepHoldInterval={50}
+    <StackedStepControls
       onChange={(change, shiftKey) => {
         onInputChange(change, true, !shiftKey);
       }}
     >
+      {/* TODO: Replace with our custom textinput component that submits on enter */}
       <TextInput
         value={isFocused ? inputValue : monthLabel}
         onFocus={onFocus}
@@ -129,6 +128,6 @@ export function MonthInput({ month, onInputChange, style, ...props }: MonthProps
         style={style}
         {...props}
       />
-    </StepControlButtons>
+    </StackedStepControls>
   );
 }

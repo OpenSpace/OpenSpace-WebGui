@@ -8,9 +8,10 @@ import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware'
 import { isDateValid } from '@/redux/time/util';
 import { TimePart } from '@/types/enums';
 
+import { setDate } from '../util';
+
 import { MonthInput } from './MonthInput';
 import { TimeIncrementInput } from './TimeIncrementInput';
-import { setDate } from './util';
 
 export function TimeInput() {
   const [useLock, setUseLock] = useState(false);

@@ -18,6 +18,7 @@ interface Props extends NumberInputProps {
 export function NumericInput({
   label = '',
   disabled = false,
+  hideControls,
   onEnter = () => {},
   value,
   min,
@@ -65,8 +66,11 @@ export function NumericInput({
       min={min}
       max={max}
       step={step}
+      hideControls={hideControls}
       rightSection={
-        <NumberStepControls step={step} onChange={(change) => onStep(change)} />
+        !hideControls && (
+          <NumberStepControls step={step} onChange={(change) => onStep(change)} />
+        )
       }
       {...props}
       // TODO: Provide error on invalid input

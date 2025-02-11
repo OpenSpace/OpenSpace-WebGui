@@ -2,8 +2,8 @@ import { Button, Container, Divider, Group, ScrollArea, Title } from '@mantine/c
 
 import { useOpenSpaceApi } from '@/api/hooks';
 
+import { TimeInput } from './TimeInput/TimeInput';
 import { SimulationIncrement } from './SimulationIncrement';
-import { TimeInput } from './TimeInput';
 import { setDate } from './util';
 
 export function TimePanel() {
