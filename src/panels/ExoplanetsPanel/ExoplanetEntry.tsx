@@ -15,6 +15,7 @@ export function ExoplanetEntry({ name, isAdded, onClick }: ExoplanetProps) {
         <ActionIcon
           size={'lg'} // Fixed size, adjust as needed
           key={`${name}button`}
+          variant={isAdded ? 'outline' : 'filled'}
           style={{ flexGrow: 0 }}
           onClick={onClick}
           color={isAdded ? 'red' : 'blue'}

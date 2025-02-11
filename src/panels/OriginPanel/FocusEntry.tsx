@@ -41,6 +41,7 @@ export function FocusEntry({
           {isActive() && (
             <NodeNavigationButton
               type={NavigationType.frame}
+              variant={buttonVariant}
               identifier={entry.identifier}
               size={'lg'}
             />
@@ -54,7 +55,7 @@ export function FocusEntry({
 
           <Menu position={'right-start'}>
             <Menu.Target>
-              <ActionIcon size={'lg'} variant={buttonVariant}>
+              <ActionIcon size={'lg'}>
                 <VerticalDotsIcon />
               </ActionIcon>
             </Menu.Target>

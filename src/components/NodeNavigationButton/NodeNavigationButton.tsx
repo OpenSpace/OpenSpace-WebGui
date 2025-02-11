@@ -187,6 +187,7 @@ export function NodeNavigationButton({
             size={size}
             style={style}
             justify={justify}
+            variant={variant ?? 'filled'}
           >
             {showLabel && content.title}
           </Button>

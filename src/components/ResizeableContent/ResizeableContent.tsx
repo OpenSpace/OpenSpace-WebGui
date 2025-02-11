@@ -126,7 +126,6 @@ export function ResizeableContent({
           }}
           size={'xs'}
           radius={0}
-          variant={'default'}
         >
           <DragHandleIcon size={IconSize.xs} />
         </ActionIcon>

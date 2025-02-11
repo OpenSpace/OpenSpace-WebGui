@@ -1,4 +1,4 @@
-import { ActionIcon, Group, Text } from '@mantine/core';
+import { ActionIcon, Group, Text, Tooltip } from '@mantine/core';
 import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
@@ -31,7 +31,6 @@ export function EarthEntry({
   const addressUtf8 = addressUTF8(address);
 
   const isAdded = isSceneGraphNodeAdded(addressUtf8);
-  const cappedAddress = address; // TODO cap address to some fixed size?
   const lat = place.location.y;
   const long = place.location.x;
   const alt = isCustomAltitude ? customAltitude * 1000 : calculateAltitude(place.extent);
@@ -53,22 +52,12 @@ export function EarthEntry({
   }
 
   return (
-    <Group key={address} gap={'xs'} mb={2} justify={'space-between'} wrap={'nowrap'}>
-      {/* TODO temporary css to stop long names from linebreaking causing the
-          buttons to be moved to a new row, the maxwidth is just arbitrary
-          minus the size of the buttons... */}
-      <Text
-        style={{
-          flexGrow: 1,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          textWrap: 'nowrap',
-          maxWidth: 350 - 125
-        }}
-      >
-        {cappedAddress}
-        {cappedAddress.length !== address.length ? '...' : ''}
-      </Text>
+    <Group key={address} gap={'xs'} justify={'space-between'} w={'100%'}>
+      <Tooltip label={address} withArrow openDelay={200}>
+        <Text truncate flex={1}>
+          {address}
+        </Text>
+      </Tooltip>
 
       <Group gap={'xs'} wrap={'nowrap'}>
         <NodeNavigationButton
@@ -91,7 +80,6 @@ export function EarthEntry({
               ? removeFocusNode(addressUtf8)
               : addFocusNode(addressUtf8, lat, long, alt)
           }
-          size={'lg'}
           color={isAdded ? 'red' : 'blue'}
         >
           {isAdded ? <MinusIcon /> : <PlusIcon />}
