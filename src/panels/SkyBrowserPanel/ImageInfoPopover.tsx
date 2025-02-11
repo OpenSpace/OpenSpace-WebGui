@@ -10,13 +10,11 @@ interface Props {
 export function ImageInfoPopover({ image }: Props) {
   return (
     <Popover width={200} position={'bottom'} withArrow shadow={'md'} trapFocus>
-      <Tooltip label={'Info'}>
-        <Popover.Target>
-          <ActionIcon>
-            <InformationIcon />
-          </ActionIcon>
-        </Popover.Target>
-      </Tooltip>
+      <Popover.Target>
+        <ActionIcon variant="outline" size={'xs'}>
+          <InformationIcon />
+        </ActionIcon>
+      </Popover.Target>
       <Popover.Dropdown>
         <Text size={'sm'} fw={500}>
           {image.name}

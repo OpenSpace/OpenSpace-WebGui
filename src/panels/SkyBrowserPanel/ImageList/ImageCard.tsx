@@ -1,4 +1,4 @@
-import { ActionIcon, Card, Image, Text, Tooltip } from '@mantine/core';
+import { Card, Group, Image, Text, ThemeIcon, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { PlusIcon } from '@/icons/icons';
@@ -22,24 +22,27 @@ export function ImageCard({ image }: Props) {
   }
 
   return (
-    <Card
-      withBorder
-      shadow={'sm'}
-      style={{ borderColor: isActive ? color : 'var(--mantine-color-gray-8)' }}
-    >
-      <Card.Section>
-        <Image src={image.thumbnail} height={45} fallbackSrc={'placeholder.svg'} />
+    <Card withBorder shadow={'sm'} style={{ borderColor: isActive ? color : undefined }}>
+      <Card.Section role="button" onClick={select} style={{ cursor: 'pointer' }}>
+        <Image src={image.thumbnail} fallbackSrc={'placeholder.svg'} />
+        <ThemeIcon
+          pos={'absolute'}
+          top={0}
+          right={0}
+          variant="default"
+          color="gray"
+          size={'sm'}
+        >
+          <PlusIcon size={12} />
+        </ThemeIcon>
       </Card.Section>
       <Card.Section p={'xs'}>
-        <Tooltip label={image.name}>
-          <Text truncate={'end'}>{image.name}</Text>
-        </Tooltip>
-        <Tooltip label={'Add image'}>
-          <ActionIcon mt={'xs'} mr={'md'} onClick={select}>
-            <PlusIcon />
-          </ActionIcon>
-        </Tooltip>
-        <ImageInfoPopover image={image} />
+        <Group wrap="nowrap">
+          <Tooltip label={image.name}>
+            <Text truncate={'end'}>{image.name}</Text>
+          </Tooltip>
+          <ImageInfoPopover image={image} />
+        </Group>
       </Card.Section>
     </Card>
   );

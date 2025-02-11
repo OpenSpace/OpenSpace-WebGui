@@ -1,11 +1,13 @@
 import {
   ActionIcon,
+  Card,
   Group,
   Image,
   Paper,
   Slider,
   Stack,
   Text,
+  ThemeIcon,
   Tooltip
 } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
@@ -37,66 +39,61 @@ export function AddedImageCard({ image, opacity }: Props) {
   const isSelected = activeImage === image.url;
 
   return (
-    <Paper
+    <Card
       withBorder
-      p={'sm'}
       style={{
         borderColor: isSelected ? color : 'var(--mantine-color-gray-8)'
       }}
     >
-      <Group w={'100%'} justify={'space-between'}>
-        <Stack maw={'50%'}>
-          <Text fw={600} lineClamp={1}>
-            {image.name}
-          </Text>
-          <Group>
-            <Tooltip label={'Look at image'}>
-              <ActionIcon
-                onClick={() => {
-                  luaApi?.skybrowser.selectImage(image.url);
-                  setActiveImage(image.url);
-                }}
-              >
-                <MoveTargetIcon />
-              </ActionIcon>
-            </Tooltip>
-            <ImageInfoPopover image={image} />
-            <Tooltip label={'Remove image'}>
-              <ActionIcon
-                color={'red'}
-                variant={'outline'}
-                onClick={() =>
-                  luaApi?.skybrowser.removeSelectedImageInBrowser(
-                    selectedBrowserId,
-                    image.url
-                  )
-                }
-              >
-                <DeleteIcon />
-              </ActionIcon>
-            </Tooltip>
-          </Group>
-        </Stack>
-        <Stack gap={'xs'}>
-          <Image
-            fit={'cover'}
-            src={image.thumbnail}
-            radius={'sm'}
-            height={45}
-            opacity={opacity}
-            fallbackSrc={'placeholder.svg'}
-            bd={'1px solid var(--mantine-color-gray-7)'}
-          />
-          <Slider
-            value={opacity}
-            onChange={setOpacity}
-            min={0}
-            max={1}
-            step={0.1}
-            label={(value) => value.toFixed(1)}
-          />
-        </Stack>
+      <Card.Section>
+        <Image
+          src={image.thumbnail}
+          radius={'sm'}
+          fallbackSrc={'placeholder.svg'}
+          bd={'1px solid var(--mantine-color-gray-7)'}
+        />
+        <ThemeIcon
+          onClick={() => {
+            luaApi?.skybrowser.selectImage(image.url);
+            setActiveImage(image.url);
+          }}
+        >
+          <MoveTargetIcon />
+        </ThemeIcon>
+      </Card.Section>
+      <Stack>
+        <Text fw={600} lineClamp={1}>
+          {image.name}
+        </Text>
+        <ImageInfoPopover image={image} />
+      </Stack>
+
+      <Group>
+        <Tooltip label={'Remove image'}>
+          <ActionIcon
+            color={'red'}
+            variant={'outline'}
+            onClick={() =>
+              luaApi?.skybrowser.removeSelectedImageInBrowser(
+                selectedBrowserId,
+                image.url
+              )
+            }
+          >
+            <DeleteIcon />
+          </ActionIcon>
+        </Tooltip>
       </Group>
-    </Paper>
+      <Stack gap={'xs'}>
+        <Slider
+          value={opacity}
+          onChange={setOpacity}
+          min={0}
+          max={1}
+          step={0.1}
+          label={(value) => value.toFixed(1)}
+        />
+      </Stack>
+    </Card>
   );
 }
