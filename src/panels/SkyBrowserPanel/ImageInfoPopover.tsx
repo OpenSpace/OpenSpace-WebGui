@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Popover, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Button, Popover, Text } from '@mantine/core';
 
 import { InformationIcon, OpenInBrowserIcon } from '@/icons/icons';
 import { SkyBrowserImage } from '@/types/skybrowsertypes';
@@ -11,7 +11,7 @@ export function ImageInfoPopover({ image }: Props) {
   return (
     <Popover width={200} position={'bottom'} withArrow shadow={'md'} trapFocus>
       <Popover.Target>
-        <ActionIcon variant={"outline"} size={'xs'}>
+        <ActionIcon variant={'outline'} size={'xs'}>
           <InformationIcon />
         </ActionIcon>
       </Popover.Target>

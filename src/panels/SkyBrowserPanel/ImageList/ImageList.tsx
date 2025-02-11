@@ -32,7 +32,7 @@ export const ImageList = memo(function ImageList({
 
   const keyFunc = useCallback((image: SkyBrowserImage) => image.url, []);
 
-  const cardWidth = 150;
+  const cardWidth = 120;
   const maxColumns = 10;
   const columns = Math.min(Math.floor(width / cardWidth), maxColumns);
 

@@ -1,4 +1,4 @@
-import { Card, Group, Image, Text, ThemeIcon, Tooltip } from '@mantine/core';
+import { Card, Group, Text, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { PlusIcon } from '@/icons/icons';
@@ -25,7 +25,7 @@ export function ImageCard({ image }: Props) {
   return (
     <Card withBorder shadow={'sm'} style={{ borderColor: isActive ? color : undefined }}>
       <Card.Section>
-        <IconImage url={image.thumbnail} handleClick={select} icon={<PlusIcon />} />
+        <IconImage url={image.thumbnail} onClick={select} icon={<PlusIcon />} />
       </Card.Section>
       <Card.Section p={'xs'}>
         <Group wrap={'nowrap'}>
