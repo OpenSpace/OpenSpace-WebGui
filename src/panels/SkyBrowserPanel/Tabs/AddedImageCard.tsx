@@ -1,13 +1,4 @@
-import {
-  ActionIcon,
-  Box,
-  Group,
-  Paper,
-  Slider,
-  Stack,
-  Text,
-  Tooltip
-} from '@mantine/core';
+import { ActionIcon, Group, Paper, Slider, Stack, Text, Tooltip } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -55,7 +46,7 @@ export function AddedImageCard({ image, opacity }: Props) {
         <ImageInfoPopover image={image} />
       </Group>
 
-      <Group wrap={'nowrap'} justify={'space-between'} align={"end"}>
+      <Group wrap={'nowrap'} justify={'space-between'} align={'end'}>
         <IconImage
           url={image.thumbnail}
           icon={<MoveTargetIcon />}

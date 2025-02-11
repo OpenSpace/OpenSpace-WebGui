@@ -10,7 +10,7 @@ interface Props extends AspectRatioProps {
   onClick: () => void;
   icon: JSX.Element;
   url: string;
-  radius: MantineRadius;
+  radius?: MantineRadius;
 }
 
 export function IconImage({ url, onClick, icon, radius, ...props }: Props) {
