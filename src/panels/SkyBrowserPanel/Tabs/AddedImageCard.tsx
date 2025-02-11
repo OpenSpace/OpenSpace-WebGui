@@ -55,7 +55,7 @@ export function AddedImageCard({ image, opacity }: Props) {
         <ImageInfoPopover image={image} />
       </Group>
 
-      <Group wrap={'nowrap'} justify={'space-between'} align="end">
+      <Group wrap={'nowrap'} justify={'space-between'} align={"end"}>
         <IconImage
           url={image.thumbnail}
           icon={<MoveTargetIcon />}
