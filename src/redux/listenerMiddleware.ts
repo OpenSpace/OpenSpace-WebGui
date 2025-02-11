@@ -1,8 +1,10 @@
 import { createListenerMiddleware, type TypedStartListening } from '@reduxjs/toolkit';
 
 import { addActionsListener } from './actions/actionsMiddleware';
+import { addCameraPathListener } from './camerapath/cameraPathMiddleware';
 import { addConnectionListener } from './connection/connectionMiddleware';
 import { addDocumentationListener } from './documentation/documentationMiddleware';
+import { addEngineModeListener } from './enginemode/engineModeMiddleware';
 import { addEventsListener } from './events/eventsMiddleware';
 import { addFlightControllerListener } from './flightcontroller/flightControllerMiddleware';
 import { addGroupsListener } from './groups/groupsSliceMiddleware';
@@ -19,15 +21,17 @@ export type AppStartListening = TypedStartListening<RootState, AppDispatch>;
 
 const startAppListening = listenerMiddleware.startListening as AppStartListening;
 
-addConnectionListener(startAppListening);
-addSessionRecordingListener(startAppListening);
 addActionsListener(startAppListening);
+addCameraPathListener(startAppListening);
+addConnectionListener(startAppListening);
 addDocumentationListener(startAppListening);
+addEngineModeListener(startAppListening);
 addEventsListener(startAppListening);
+addFlightControllerListener(startAppListening);
+addGroupsListener(startAppListening);
 addMissionsListener(startAppListening);
 addPropertiesListener(startAppListening);
 addPropertyTreeListener(startAppListening);
-addFlightControllerListener(startAppListening);
-addGroupsListener(startAppListening);
+addSessionRecordingListener(startAppListening);
 addTimeListener(startAppListening);
 addVersionListener(startAppListening);
