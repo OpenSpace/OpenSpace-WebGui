@@ -1,5 +1,7 @@
-import { useRef, useState } from 'react';
-import { TextInput, TextInputProps } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { MantineStyleProps } from '@mantine/core';
+
+import { StringInput } from '@/components/Input/StringInput';
 
 import { StackedStepControls } from './StackedStepControls';
 
@@ -18,83 +20,59 @@ const Months: string[] = [
   'December'
 ];
 
-interface MonthProps extends TextInputProps {
+interface Props extends MantineStyleProps {
   month: number;
   onInputChange: (value: number, relative: boolean, interpolate: boolean) => void;
 }
-export function MonthInput({ month, onInputChange, style, ...props }: MonthProps) {
+
+export function MonthInput({ month, onInputChange, ...styleProps }: Props) {
   const [storedMonth, setStoredMonth] = useState<number>(month);
-  const [inputValue, setInputValue] = useState<string>('');
-  const [isFocused, setIsFocused] = useState(false);
 
-  const monthLabel = getMonthFromIndex(storedMonth).substring(0, 3);
-
-  // Ref is used to get access to the latest value in the `onKeyDown` callbacks
-  const storedMonthRef = useRef(month);
-
-  // If we are not editing we can update the value and re-render
-  if (storedMonth !== month && !isFocused) {
+  useEffect(() => {
     setStoredMonth(month);
-  }
+  }, [month]);
 
-  function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === 'Enter') {
-      const monthIndex = getIndexForMonth(inputValue);
-      if (monthIndex !== null) {
-        onInputChange(monthIndex, false, false);
-        event.currentTarget.blur();
-      }
-    }
-    if (event.key === 'Escape') {
-      event.currentTarget.blur();
+  function onInput(newValue: string): void {
+    const monthIndex = parseMonthTextInput(newValue);
+    if (monthIndex !== null) {
+      onInputChange(monthIndex, false, false);
+      setStoredMonth(monthIndex);
     }
   }
 
   function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'ArrowUp') {
-      const newIndex = clampMonthIndex(storedMonthRef.current + 1);
-      storedMonthRef.current = newIndex;
-      setInputValue(getMonthFromIndex(newIndex).substring(0, 3));
+      setStoredMonth(clampMonthIndex(storedMonth + 1));
     }
     if (event.key === 'ArrowDown') {
-      const newIndex = clampMonthIndex(storedMonthRef.current - 1);
-      storedMonthRef.current = newIndex;
-      setInputValue(getMonthFromIndex(newIndex).substring(0, 3));
+      setStoredMonth(clampMonthIndex(storedMonth - 1));
     }
   }
 
-  function onBlur(): void {
-    setIsFocused(false);
+  function monthLabel(index: number): string {
+    return monthFromIndex(index).substring(0, 3);
   }
 
-  function onFocus(): void {
-    // We want to start editing using the same value shown right before user clicked
-    setInputValue(monthLabel);
-    setIsFocused(true);
+  function clampMonthIndex(index: number) {
+    return Math.min(11, Math.max(0, index));
   }
 
-  function onValueChange(newValue: string): void {
-    setInputValue(newValue);
-  }
-
-  function clampMonthIndex(newIndex: number) {
-    if (newIndex < 0) {
-      return 0;
-    } else if (newIndex > 11) {
-      return 11;
+  function isValidMonth(index: number | null): boolean {
+    if (index === null) {
+      return false;
     }
-    return newIndex;
+    return index > -1 && index < Months.length;
   }
 
-  function getMonthFromIndex(index: number): string {
+  function monthFromIndex(index: number): string {
     // Returns the corresponding month string given the 0-based index
     if (index >= 0 && index < Months.length) {
       return Months[index];
     }
-    return '';
+    return ''; // TODO: This should be an error
   }
 
-  function getIndexForMonth(month: string): number | null {
+  function parseMonthTextInput(month: string): number | null {
     // Parse the input value and return the correspondning 0-based month index
     const monthIndex = Number.parseInt(month);
     const isNumber = !Number.isNaN(monthIndex);
@@ -105,10 +83,15 @@ export function MonthInput({ month, onInputChange, style, ...props }: MonthProps
       }
       return null; // Index out of range
     }
-    const index = Months.findIndex((m) =>
-      m.toLowerCase().startsWith(month.toLowerCase())
+
+    // Otherwise, try to match the month string with the names of the months
+    const matches = Months.filter((m) =>
+      m.toLowerCase().startsWith(month.trim().toLowerCase())
     );
-    return index !== -1 ? index : null;
+    if (matches.length > 1) {
+      return null; // Ambiguous month (more than one match)
+    }
+    return Months.indexOf(matches[0]);
   }
 
   return (
@@ -117,16 +100,12 @@ export function MonthInput({ month, onInputChange, style, ...props }: MonthProps
         onInputChange(change, true, !shiftKey);
       }}
     >
-      {/* TODO: Replace with our custom textinput component that submits on enter */}
-      <TextInput
-        value={isFocused ? inputValue : monthLabel}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        onChange={(event) => onValueChange(event.currentTarget.value)}
-        onKeyUp={onKeyUp}
+      <StringInput
+        value={monthLabel(storedMonth)}
+        onEnter={(newValue) => onInput(newValue)}
         onKeyDown={onKeyDown}
-        style={style}
-        {...props}
+        errorCheck={(value) => !isValidMonth(parseMonthTextInput(value))}
+        {...styleProps}
       />
     </StackedStepControls>
   );
