@@ -63,16 +63,16 @@ export function EarthEntry({
         <NodeNavigationButton
           type={NavigationType.FlyGeo}
           identifier={currentAnchor}
-          lat={lat}
-          long={long}
-          alt={alt}
+          latitude={lat}
+          longitude={long}
+          altitude={alt}
         />
         <NodeNavigationButton
           type={NavigationType.JumpGeo}
           identifier={currentAnchor}
-          lat={lat}
-          long={long}
-          alt={alt}
+          latitude={lat}
+          longitude={long}
+          altitude={alt}
         />
         <ActionIcon
           onClick={() =>

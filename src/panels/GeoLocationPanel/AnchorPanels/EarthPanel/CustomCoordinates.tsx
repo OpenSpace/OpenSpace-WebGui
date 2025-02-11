@@ -21,12 +21,12 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
   const [longitude, setLongitude] = useState(0);
   const [altitude, setAltitude] = useState(0);
   const [customName, setCustomName] = useState('');
-  const altInKm = altitude * 1000;
+  const altitudeInMeter = altitude * 1000;
   const previewCustomName = `Custom Coordinate (${latitude},${longitude},${altitude}km)`;
 
   function onClick() {
     const address = customName || previewCustomName;
-    onAddFocusNodeCallback(address, latitude, longitude, altInKm);
+    onAddFocusNodeCallback(address, latitude, longitude, altitudeInMeter);
   }
 
   return (
@@ -49,7 +49,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
           clampBehavior={'strict'}
         />
         <NumericInput
-          label={'Altitude (m)'}
+          label={'Altitude (km)'}
           value={longitude}
           onEnter={(value) => setAltitude(value)}
           min={0}
@@ -67,17 +67,17 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
           type={NavigationType.FlyGeo}
           showLabel
           identifier={currentAnchor}
-          lat={latitude}
-          long={longitude}
-          alt={altInKm}
+          latitude={latitude}
+          longitude={longitude}
+          altitude={altitudeInMeter}
         />
         <NodeNavigationButton
           type={NavigationType.JumpGeo}
           showLabel
           identifier={currentAnchor}
-          lat={latitude}
-          long={longitude}
-          alt={altInKm}
+          latitude={latitude}
+          longitude={longitude}
+          altitude={altitudeInMeter}
         />
         <Button onClick={onClick} size={'sm'} leftSection={<PlusIcon />}>
           Add Focus

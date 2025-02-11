@@ -32,16 +32,16 @@ type BaseButtonProps = ButtonBaseProps | ActionIconBaseProps;
 
 interface PathNavigationProps extends BaseProps {
   type: Exclude<NavigationType, NavigationType.JumpGeo | NavigationType.FlyGeo>;
-  lat?: never;
-  long?: never;
-  alt?: never;
+  latitude?: never;
+  longitude?: never;
+  altitude?: never;
 }
 
 interface GeoNavigationProps extends BaseProps {
   type: NavigationType.FlyGeo | NavigationType.JumpGeo;
-  lat: number;
-  long: number;
-  alt: number;
+  latitude: number;
+  longitude: number;
+  altitude: number;
 }
 
 type NodeNavigationButtonProps =
@@ -61,9 +61,9 @@ export function NodeNavigationButton({
   showLabel,
   onFinish,
   variant,
-  lat,
-  long,
-  alt,
+  latitude,
+  longitude,
+  altitude,
   justify,
   size,
   style
@@ -95,9 +95,9 @@ export function NodeNavigationButton({
       return;
     }
     if (event.shiftKey) {
-      luaApi?.globebrowsing.flyToGeo(identifier, lat, long, alt, 0.0);
+      luaApi?.globebrowsing.flyToGeo(identifier, latitude, longitude, altitude, 0.0);
     } else {
-      luaApi?.globebrowsing.flyToGeo(identifier, lat, long, alt);
+      luaApi?.globebrowsing.flyToGeo(identifier, latitude, longitude, altitude);
     }
   }
 
@@ -130,7 +130,7 @@ export function NodeNavigationButton({
     if (type !== NavigationType.FlyGeo && type !== NavigationType.JumpGeo) {
       return;
     }
-    luaApi?.globebrowsing.jumpToGeo(identifier, lat, long, alt);
+    luaApi?.globebrowsing.jumpToGeo(identifier, latitude, longitude, altitude);
   }
 
   const content: ButtonContent = {
