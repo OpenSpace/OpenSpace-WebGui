@@ -56,3 +56,9 @@ export enum DisplayType {
   Milestone = 'Milestone',
   Overview = 'Overview'
 }
+
+export enum EngineMode {
+  UserControl = 'user_control',
+  SessionRecordingPlayback = 'session_recording_playback',
+  CameraPath = 'camera_path'
+}
