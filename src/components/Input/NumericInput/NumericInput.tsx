@@ -26,7 +26,7 @@ export function NumericInput({
   step,
   ...props
 }: Props) {
-  const [storedValue, setStoredValue] = useState(value);
+  const [storedValue, setStoredValue] = useState<number | undefined>(value);
 
   const shouldClamp = props.clampBehavior === 'strict';
   const shouldClampMin = shouldClamp && min !== undefined;
@@ -36,26 +36,31 @@ export function NumericInput({
     setStoredValue(value);
   }, [value]);
 
+  function resetValue() {
+    setStoredValue(value);
+  }
+
   function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
-      onEnter(storedValue);
+      if (storedValue !== undefined) {
+        onEnter(storedValue);
+      } else {
+        resetValue();
+      }
       event.currentTarget.blur();
     }
     if (event.key === 'Escape') {
-      setStoredValue(value);
+      resetValue();
       event.currentTarget.blur();
     }
   }
 
   function onValueChange(newValue: number | undefined) {
-    if (newValue === undefined) {
-      return;
-    }
     setStoredValue(newValue);
   }
 
   function onStep(change: number) {
-    let newValue = storedValue + change;
+    let newValue = (storedValue ?? 0) + change;
 
     if (shouldClampMin && newValue < min) {
       newValue = min;
@@ -81,8 +86,8 @@ export function NumericInput({
         !hideControls && (
           <NumberStepControls
             step={step}
-            disableMin={shouldClampMin && storedValue <= min}
-            disableMax={shouldClampMax && storedValue >= max}
+            disableMin={shouldClampMin && storedValue !== undefined && storedValue <= min}
+            disableMax={shouldClampMax && storedValue !== undefined && storedValue >= max}
             onChange={(change) => onStep(change)}
           />
         )
