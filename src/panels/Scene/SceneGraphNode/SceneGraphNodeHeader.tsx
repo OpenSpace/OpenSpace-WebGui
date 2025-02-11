@@ -15,7 +15,7 @@ interface Props {
   uri: Uri;
   label?: string;
   onClick?: () => void;
-  leftSection?: React.ReactNode;
+  leftSection?: React.ReactNode; // If specified, replaces the checkbox if the node has an attached renderable
 }
 
 export function SceneGraphNodeHeader({ uri, label, onClick, leftSection }: Props) {

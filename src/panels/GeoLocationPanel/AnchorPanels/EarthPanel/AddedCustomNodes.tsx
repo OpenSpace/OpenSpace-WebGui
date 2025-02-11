@@ -11,15 +11,17 @@ interface Props {
   removeFocusNode: (identifier: Identifier) => void;
 }
 
-// This component is its own to reduce the amount of rerenders in
-// EarthPanel due to the `useWindowSize()` hook
 export function AddedCustomNodes({ addedNodes, removeFocusNode }: Props) {
   // TODO anden88 2025-02-07 Using the windowSize like this causes some stuttering when
   // moving the window panel. Investigation with Ylva we found that the culprit is most
   // likely the `ScrollArea` wrapping the entire window, possible solution is make own
   // scroll behaviour and instead wrap in e.g, `Box`
   const { width } = useWindowSize();
+  // The wrapping `Container` has a default padding of 16 on each side, so we compensate
+  // the width by the total padding
   const containerPadding = 36;
+  // The wrapping `Container` has a max-width of 925, capping the box at the same width
+  // to avoid it expanding further than that.
   const containerMaxWidth = 925;
 
   return addedNodes.length === 0 ? (
