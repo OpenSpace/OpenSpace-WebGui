@@ -28,6 +28,10 @@ export function NumericInput({
 }: Props) {
   const [storedValue, setStoredValue] = useState(value);
 
+  const shouldClamp = props.clampBehavior === 'strict';
+  const shouldClampMin = shouldClamp && min !== undefined;
+  const shouldClampMax = shouldClamp && max !== undefined;
+
   useEffect(() => {
     setStoredValue(value);
   }, [value]);
@@ -51,7 +55,13 @@ export function NumericInput({
   }
 
   function onStep(change: number) {
-    const newValue = storedValue + change;
+    let newValue = storedValue + change;
+
+    if (shouldClampMin && newValue < min) {
+      newValue = min;
+    } else if (shouldClampMax && newValue > max) {
+      newValue = max;
+    }
     setStoredValue(newValue);
     onEnter(newValue);
   }
@@ -69,7 +79,12 @@ export function NumericInput({
       hideControls={hideControls}
       rightSection={
         !hideControls && (
-          <NumberStepControls step={step} onChange={(change) => onStep(change)} />
+          <NumberStepControls
+            step={step}
+            disableMin={shouldClampMin && storedValue <= min}
+            disableMax={shouldClampMax && storedValue >= max}
+            onChange={(change) => onStep(change)}
+          />
         )
       }
       {...props}

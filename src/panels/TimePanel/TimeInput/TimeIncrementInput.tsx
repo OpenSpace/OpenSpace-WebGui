@@ -18,7 +18,7 @@ export function TimeIncrementInput({ value, onInputChange, step, ...props }: Pro
       <NumericInput
         value={value}
         onEnter={(newValue) => onInputChange(newValue, false, false)}
-        clampBehavior={'strict'} // TODO: Make strict clamping work
+        clampBehavior={'strict'}
         hideControls
         {...props}
       />

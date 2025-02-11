@@ -3,6 +3,8 @@ import { Stack, UnstyledButtonProps } from '@mantine/core';
 import { StepControlButton } from './StepControlButton';
 
 interface Props extends UnstyledButtonProps {
+  disableMin?: boolean;
+  disableMax?: boolean;
   stepHoldDelay?: number;
   stepHoldInterval?: number;
   onChange: (change: number) => void;
@@ -10,6 +12,8 @@ interface Props extends UnstyledButtonProps {
 }
 
 export function NumberStepControls({
+  disableMin,
+  disableMax,
   stepHoldDelay,
   stepHoldInterval,
   onChange,
@@ -26,8 +30,8 @@ export function NumberStepControls({
   };
   return (
     <Stack gap={0}>
-      <StepControlButton direction={'up'} {...commonProps} />
-      <StepControlButton direction={'down'} {...commonProps} />
+      <StepControlButton direction={'up'} disabled={disableMax} {...commonProps} />
+      <StepControlButton direction={'down'} disabled={disableMin} {...commonProps} />
     </Stack>
   );
 }

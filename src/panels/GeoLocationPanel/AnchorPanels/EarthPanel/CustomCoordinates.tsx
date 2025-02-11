@@ -31,14 +31,14 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
 
   return (
     <Stack gap={'xs'}>
-      <Group grow gap={'xs'}>
+      <Group grow gap={'xs'} align={'end'}>
         <NumericInput
           label={'Latitude (deg)'}
           value={latitude}
           onEnter={(value) => setLatitude(value)}
           min={-90}
           max={90}
-          // clampBehavior={'strict'} // TODO: Implement for up/down buttons
+          clampBehavior={'strict'}
         />
         <NumericInput
           label={'Longitude (deg)'}
@@ -46,14 +46,14 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
           onEnter={(value) => setLongitude(value)}
           min={-180}
           max={180}
-          // clampBehavior={'strict'} // TODO: Implement for up/down buttons
+          clampBehavior={'strict'}
         />
         <NumericInput
-          label={'Longitude (deg)'}
+          label={'Altitude (m)'}
           value={longitude}
           onEnter={(value) => setAltitude(value)}
           min={0}
-          // clampBehavior={'strict'} // TODO: Implement for up/down buttons
+          clampBehavior={'strict'}
         />
       </Group>
       <TextInput

@@ -17,6 +17,7 @@ interface Props extends ActionIconProps {
   stepHoldInterval?: number;
   onChange: (change: number) => void;
   step?: number;
+  useStrictClamping?: boolean;
 }
 
 export function StepControlButton({
