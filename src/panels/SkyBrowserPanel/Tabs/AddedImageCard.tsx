@@ -55,18 +55,19 @@ export function AddedImageCard({ image, opacity }: Props) {
         <ImageInfoPopover image={image} />
       </Group>
 
-      <Group wrap={'nowrap'} justify={'space-between'}>
-        <Box>
-          <IconImage
-            url={image.thumbnail}
-            icon={<MoveTargetIcon />}
-            onClick={() => {
-              luaApi?.skybrowser.selectImage(image.url);
-              setActiveImage(image.url);
-            }}
-            radius={'sm'}
-          />
-        </Box>
+      <Group wrap={'nowrap'} justify={'space-between'} align="end">
+        <IconImage
+          url={image.thumbnail}
+          icon={<MoveTargetIcon />}
+          onClick={() => {
+            luaApi?.skybrowser.selectImage(image.url);
+            setActiveImage(image.url);
+          }}
+          miw={96}
+          maw={150}
+          flex={1}
+          radius={'sm'}
+        />
         <Stack flex={'1 1'} gap={0}>
           <Text c={'dimmed'} size={'sm'}>
             Opacity
@@ -80,7 +81,6 @@ export function AddedImageCard({ image, opacity }: Props) {
             label={(value) => value.toFixed(1)}
           />
         </Stack>
-
         <Tooltip label={'Remove image'}>
           <ActionIcon
             color={'red'}

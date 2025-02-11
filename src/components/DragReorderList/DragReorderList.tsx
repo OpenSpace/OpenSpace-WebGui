@@ -72,11 +72,7 @@ export function DragReorderList<T>({
                     {dragHandlePosition === 'right' && (
                       <Box flex={1}>{renderFunc(element, i)}</Box>
                     )}
-                    <ActionIcon
-                      variant={'default'}
-                      style={{ cursor: 'grab' }}
-                      {...item.dragHandleProps}
-                    >
+                    <ActionIcon style={{ cursor: 'grab' }} {...item.dragHandleProps}>
                       <DragHandleIcon />
                     </ActionIcon>
                     {dragHandlePosition === 'left' && (

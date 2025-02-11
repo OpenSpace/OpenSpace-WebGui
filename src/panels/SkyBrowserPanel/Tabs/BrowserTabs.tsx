@@ -49,7 +49,6 @@ export function BrowserTabs({ openWorldWideTelescope }: Props) {
         ))}
         <Tooltip label={'Add new browser'}>
           <ActionIcon
-            variant={'default'}
             size={'lg'}
             onClick={() => luaApi?.skybrowser.createTargetBrowserPair()}
           >
