@@ -1,56 +1,55 @@
 import { useEffect, useState } from 'react';
-import { TextInput } from '@mantine/core';
+import { TextInput, TextInputProps } from '@mantine/core';
 
-interface Props {
-  label?: React.ReactNode | string;
-  disabled?: boolean;
+export interface Props extends TextInputProps {
   onEnter: (newValue: string) => void;
-  defaultValue: string;
+  value: string;
+  errorCheck?: (value: string) => boolean;
 }
 
 /**
  * This is a version of the text input that sets the value only on ENTER, and re-sets
  * the value on ESCAPE.
  */
-export function StringInput({
-  label = '',
-  disabled = false,
-  onEnter,
-  defaultValue
-}: Props) {
-  const [currentValue, setCurrentValue] = useState<string>(defaultValue);
+export function StringInput({ onEnter, value, errorCheck, ...props }: Props) {
+  const [storedValue, setStoredValue] = useState<string>(value);
+  let valueWasEntered = false;
 
   useEffect(() => {
-    setCurrentValue(defaultValue);
-  }, [defaultValue]);
+    setStoredValue(value);
+  }, [value]);
 
-  let valueWasSet = false;
+  function resetValue() {
+    setStoredValue(value);
+  }
 
   function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
-      onEnter(currentValue);
-      valueWasSet = true;
+      if (!errorCheck || !errorCheck(storedValue)) {
+        onEnter(storedValue);
+        valueWasEntered = true;
+      }
       event.currentTarget.blur();
-    } else if (event.key === 'Escape') {
-      setCurrentValue(defaultValue);
+    }
+    if (event.key === 'Escape') {
       event.currentTarget.blur();
     }
   }
 
   function onBlur() {
-    if (!valueWasSet) {
-      setCurrentValue(defaultValue);
+    if (!valueWasEntered) {
+      resetValue();
     }
   }
 
   return (
     <TextInput
-      value={currentValue}
-      onChange={(event) => setCurrentValue(event.currentTarget.value)}
-      onKeyUp={(event) => onKeyUp(event)}
+      value={storedValue}
+      onChange={(event) => setStoredValue(event.currentTarget.value)}
+      onKeyUp={onKeyUp}
       onBlur={onBlur}
-      disabled={disabled}
-      label={label}
+      error={errorCheck ? errorCheck(storedValue) : false}
+      {...props}
       // TODO: Provide error on invalid input
     />
   );

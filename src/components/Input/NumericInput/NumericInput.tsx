@@ -3,7 +3,7 @@ import { NumberInput, NumberInputProps } from '@mantine/core';
 
 import { NumberStepControls } from './NumberStepControls';
 
-interface Props extends NumberInputProps {
+export interface Props extends NumberInputProps {
   // The function to call when the user hits the ENTER key or presses the UP/DOWN buttons
   onEnter?: (newValue: number) => void;
   // The value of the input - here we only allow numbers, not strings
@@ -32,6 +32,8 @@ export function NumericInput({
   const shouldClampMin = shouldClamp && min !== undefined;
   const shouldClampMax = shouldClamp && max !== undefined;
 
+  let valueWasEntered = false;
+
   useEffect(() => {
     setStoredValue(value);
   }, [value]);
@@ -43,6 +45,7 @@ export function NumericInput({
   function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
       if (storedValue !== undefined) {
+        valueWasEntered = true;
         onEnter(storedValue);
       } else {
         resetValue();
@@ -50,13 +53,14 @@ export function NumericInput({
       event.currentTarget.blur();
     }
     if (event.key === 'Escape') {
-      resetValue();
       event.currentTarget.blur();
     }
   }
 
-  function onValueChange(newValue: number | undefined) {
-    setStoredValue(newValue);
+  function onBlur() {
+    if (!valueWasEntered) {
+      resetValue();
+    }
   }
 
   function onStep(change: number) {
@@ -75,7 +79,8 @@ export function NumericInput({
     <NumberInput
       value={storedValue}
       onKeyUp={onKeyUp}
-      onValueChange={(newValue) => onValueChange(newValue.floatValue)}
+      onBlur={onBlur}
+      onValueChange={(newValue) => setStoredValue(newValue.floatValue)}
       disabled={disabled}
       label={label}
       min={min}

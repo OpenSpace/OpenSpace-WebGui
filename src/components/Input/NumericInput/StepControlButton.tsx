@@ -70,7 +70,7 @@ export function StepControlButton({
       return;
     }
 
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' || event.key === 'Space') {
       onStep();
     }
     if (event.key === 'Escape') {
