@@ -1,5 +1,14 @@
 import { useRef, useState } from 'react';
-import { ActionIcon, Box, Container, Group, ScrollArea, Title } from '@mantine/core';
+import {
+  ActionIcon,
+  Box,
+  Center,
+  Container,
+  Group,
+  Overlay,
+  ScrollArea,
+  Title
+} from '@mantine/core';
 
 import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -7,6 +16,7 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { EngineMode } from '@/types/enums';
 import { FlightControllerData } from '@/types/flightcontroller-types';
 import { Identifier, PropertyOwner, Uri } from '@/types/types';
 import {
@@ -17,8 +27,10 @@ import {
 } from '@/util/keys';
 import { hasInterestingTag } from '@/util/propertyTreeHelpers';
 
+import { CancelFlightButton } from './CancelFlightButton';
 import { FocusEntry } from './FocusEntry';
 import { OriginSettings } from './OriginSettings';
+import { RemainingFlightTime } from './RemainingFlightTime';
 
 enum NavigationActionState {
   Focus = 'Focus',
@@ -33,6 +45,7 @@ export function OriginPanel() {
 
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const properties = useAppSelector((state) => state.properties.properties);
+  const engineMode = useAppSelector((state) => state.engineMode.mode);
   const [anchor, setAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
   const [aim, setAim] = useGetStringPropertyValue(NavigationAimKey);
   const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
@@ -48,19 +61,11 @@ export function OriginPanel() {
 
   const urisWithTags = uris.filter((uri) => hasInterestingTag(uri, propertyOwners));
   const favorites = urisWithTags
-    .map(
-      (uri) => propertyOwners[uri]
-      // key: uri // TODO anden88 2024-10-21: do we really need to create a new object with key here or can we just use the propertyOwner interface and use the uri or identifier as its key?
-    )
+    .map((uri) => propertyOwners[uri])
     .filter((po) => po !== undefined);
 
-  // Searchable nodes are all nodes that are not hidden in the GUI
-  const searchableNodes = allNodes.filter((node) => {
-    const isHiddenProp = properties[`${node.uri}.GuiHidden`];
-    const isHidden = isHiddenProp && isHiddenProp.value;
-    return !isHidden;
-  });
   const defaultList = favorites.slice();
+
   // Make sure current anchor is in default list
   if (anchor && !defaultList.find((owner) => owner.identifier === anchor)) {
     const anchorNode = allNodes.find((node) => node.identifier === anchor);
@@ -76,6 +81,13 @@ export function OriginPanel() {
       defaultList.push(aimNode);
     }
   }
+
+  // Searchable nodes are all nodes that are not hidden in the GUI
+  const searchableNodes = allNodes.filter((node) => {
+    const isHiddenProp = properties[`${node.uri}.GuiHidden`];
+    const isHidden = isHiddenProp && isHiddenProp.value;
+    return !isHidden;
+  });
 
   const sortedDefaultList = defaultList
     .slice()
@@ -93,6 +105,7 @@ export function OriginPanel() {
   const isInFocusMode = navigationAction === NavigationActionState.Focus;
   // We'll highlight the anchor node in both Focus and Anchor state otherwise aim node
   const activeNode = navigationAction === NavigationActionState.Aim ? aim : anchor;
+  const isInFlight = engineMode === EngineMode.CameraPath;
 
   // TODO find a better (?) way to color them depending on state
   function actionIconStyle(state: NavigationActionState) {
@@ -128,14 +141,13 @@ export function OriginPanel() {
         break;
       case NavigationActionState.Anchor:
         if (!aim) {
-          // TODO: can this be written as "anchor! as string"? i.e., can we be sure anchor is always set to something?
-          updateViewPayload.aim = anchor ? (anchor as string) : '';
+          updateViewPayload.aim = anchor ?? '';
         }
         updateViewPayload.anchor = identifier;
         break;
       case NavigationActionState.Aim:
         updateViewPayload.aim = identifier;
-        updateViewPayload.anchor = anchor ? (anchor as string) : ''; // same here
+        updateViewPayload.anchor = anchor ?? '';
         break;
       default:
         throw new Error(`Missing NavigationActionState case for: '${navigationAction}'`);
@@ -149,7 +161,6 @@ export function OriginPanel() {
       }
     }
 
-    // TODO: these were null checks before but that is wierd
     const shouldRetargetAim = !event.shiftKey && updateViewPayload.aim !== '';
     const shouldRetargetAnchor = !event.shiftKey && updateViewPayload.aim === '';
 
@@ -185,6 +196,20 @@ export function OriginPanel() {
   return (
     <ScrollArea h={'100%'}>
       <Container>
+        {isInFlight && (
+          <Overlay>
+            <Center h={'100%'}>
+              <Group
+                bg={'gray'}
+                style={{ borderRadius: 'var(--mantine-radius-default)' }}
+                pr={'xs'}
+              >
+                <CancelFlightButton anchorName={''} />
+                <RemainingFlightTime />
+              </Group>
+            </Center>
+          </Overlay>
+        )}
         <Box ref={ref}>
           <Group justify={'space-between'}>
             <Title order={2} my={'md'}>

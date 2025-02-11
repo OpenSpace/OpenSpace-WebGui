@@ -6,6 +6,13 @@ export const RotationalFrictionKey =
   'NavigationHandler.OrbitalNavigator.Friction.RotationalFriction';
 export const ZoomFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.ZoomFriction';
 export const RollFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.RollFriction';
+// Origin panel settings
+export const ApplyIdleBehaviorOnPathFinishKey =
+  'NavigationHandler.PathNavigator.ApplyIdleBehaviorOnFinish';
+export const CameraPathArrivalDistanceFactorKey =
+  'NavigationHandler.PathNavigator.ArrivalDistanceFactor';
+export const CameraPathSpeedFactorKey = 'NavigationHandler.PathNavigator.SpeedScale';
+export const JumpToFadeDurationKey = 'NavigationHandler.JumpToFadeDuration';
 
 // To get any scene graph node you need ScenePrefix+NodeIdentifier
 export const ScenePrefixKey = 'Scene.';
