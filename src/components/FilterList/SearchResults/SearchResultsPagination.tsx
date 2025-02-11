@@ -1,29 +1,23 @@
 import { PaginationList } from '@/components/PaginationList/PaginationList';
 
-import { useSearch } from './hooks';
-import { SearchResultsProps } from '@/types/types';
+import { useSearchResultProvider } from './hooks';
 
-interface Props<T> extends SearchResultsProps<T> {
+interface Props {
   maxShownMatches?: number; // Maximum number of matches to render at once
 }
 
-export function SearchResultsPagination<T>({
-  matcherFunc,
-  data,
-  renderElement,
-  maxShownMatches
-}: Props<T>) {
-  const filteredElements = useSearch(matcherFunc, data);
+export function SearchResultsPagination<T>({ maxShownMatches }: Props) {
+  const { filteredItems, renderElement } = useSearchResultProvider<T>();
 
   // If we only allow a certain number of matches to be shown, we need to paginate
-  if (maxShownMatches && filteredElements.length > maxShownMatches) {
+  if (maxShownMatches && filteredItems.length > maxShownMatches) {
     return (
       <PaginationList
-        data={filteredElements}
+        data={filteredItems}
         renderElement={renderElement}
         itemsPerPage={maxShownMatches}
       />
     );
   }
-  return filteredElements.map(renderElement);
+  return filteredItems.map(renderElement);
 }

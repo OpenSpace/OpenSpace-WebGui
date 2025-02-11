@@ -1,29 +1,18 @@
-import { SearchResultsProps } from '@/types/types';
 import { VirtualList } from '../../VirtualList/VirtualList';
 
-import { useSearch } from './hooks';
+import { useSearchResultProvider } from './hooks';
 
-interface VirtualizedProps<T> extends SearchResultsProps<T> {
+interface VirtualizedProps {
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
 }
 
-export function SearchResultsVirtualList<T>({
-  data,
-  renderElement,
-  matcherFunc,
-  gap,
-  overscan
-}: VirtualizedProps<T>) {
-  const filteredElements = useSearch(matcherFunc, data);
-
-  if (filteredElements.length === 0) {
-    return <>No matches found. Try another search</>;
-  }
+export function SearchResultsVirtualList<T>({ gap, overscan }: VirtualizedProps) {
+  const { filteredItems, renderElement } = useSearchResultProvider<T>();
 
   return (
     <VirtualList
-      data={filteredElements}
+      data={filteredItems}
       renderElement={renderElement}
       gap={gap}
       overscan={overscan}

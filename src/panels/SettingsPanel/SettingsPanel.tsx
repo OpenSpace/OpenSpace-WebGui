@@ -79,13 +79,12 @@ export function SettingsPanel() {
               <PropertyOwner uri={uri} key={uri} />
             ))}
           </FilterList.Favorites>
-          <FilterList.SearchResults>
-            <FilterList.SearchResults.Pagination<SearchItem>
-              data={searchData}
-              renderElement={renderfunc}
-              matcherFunc={matcher}
-              maxShownMatches={20}
-            />
+          <FilterList.SearchResults
+            data={searchData}
+            renderElement={renderfunc}
+            matcherFunc={matcher}
+          >
+            <FilterList.SearchResults.Pagination maxShownMatches={20} />
           </FilterList.SearchResults>
         </FilterList>
       </Container>

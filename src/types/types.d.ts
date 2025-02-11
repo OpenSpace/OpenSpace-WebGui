@@ -147,9 +147,3 @@ export type OpenSpaceTimeState = {
   prevStep?: number;
   deltaTimeSteps?: number[];
 };
-
-export interface SearchResultsProps<T> {
-  data: T[];
-  renderElement: (data: T, i: number) => React.ReactNode;
-  matcherFunc: (data: T, searchString: string) => boolean;
-}
