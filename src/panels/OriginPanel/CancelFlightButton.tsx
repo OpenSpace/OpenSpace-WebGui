@@ -1,14 +1,23 @@
 import { Button, Group, Stack, Text } from '@mantine/core';
 
-import { useOpenSpaceApi } from '@/api/hooks';
+import {
+  useGetPropertyOwner,
+  useGetStringPropertyValue,
+  useOpenSpaceApi
+} from '@/api/hooks';
 import { AirplaneCancelIcon, AnchorIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
+import { NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
 
 interface Props {
-  anchorName: string;
+  capAnchorText?: boolean;
 }
+export function CancelFlightButton({ capAnchorText = true }: Props) {
+  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
+  const anchorName = useGetPropertyOwner(`${ScenePrefixKey}${anchor}`)?.name ?? anchor;
 
-export function CancelFlightButton({ anchorName }: Props) {
+  const cappedAnchorName = anchorName?.substring(0, 20) ?? '';
+
   const luaApi = useOpenSpaceApi();
 
   function cancelFlight(): void {
@@ -26,7 +35,7 @@ export function CancelFlightButton({ anchorName }: Props) {
         <Group gap={0}>
           <Text>(</Text>
           <AnchorIcon />
-          <Text>{anchorName}</Text>
+          <Text>{capAnchorText ? cappedAnchorName : anchorName}</Text>
           <Text>)</Text>
         </Group>
       </Stack>

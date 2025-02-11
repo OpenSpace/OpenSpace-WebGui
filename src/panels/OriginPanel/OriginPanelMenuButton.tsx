@@ -87,7 +87,7 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
   function cameraPathButtons() {
     return (
       <Group gap={'xs'}>
-        <CancelFlightButton anchorName={cappedAnchorName} />
+        <CancelFlightButton />
         <RemainingFlightTime />
       </Group>
     );

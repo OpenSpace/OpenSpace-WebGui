@@ -2,35 +2,42 @@ import { useRef, useState } from 'react';
 import {
   ActionIcon,
   Box,
+  Button,
   Center,
   Container,
   Group,
   Overlay,
   ScrollArea,
+  Stack,
+  Text,
   Title
 } from '@mantine/core';
 
-import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
+import {
+  useGetPropertyOwner,
+  useGetStringPropertyValue,
+  useOpenSpaceApi,
+  useTriggerProperty
+} from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
-import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
+import { AirplaneCancelIcon, AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { EngineMode } from '@/types/enums';
+import { EngineMode, IconSize } from '@/types/enums';
 import { FlightControllerData } from '@/types/flightcontroller-types';
 import { Identifier, PropertyOwner, Uri } from '@/types/types';
 import {
   NavigationAimKey,
   NavigationAnchorKey,
   RetargetAimKey,
-  RetargetAnchorKey
+  RetargetAnchorKey,
+  ScenePrefixKey
 } from '@/util/keys';
 import { hasInterestingTag } from '@/util/propertyTreeHelpers';
 
-import { CancelFlightButton } from './CancelFlightButton';
 import { FocusEntry } from './FocusEntry';
 import { OriginSettings } from './OriginSettings';
-import { RemainingFlightTime } from './RemainingFlightTime';
 
 enum NavigationActionState {
   Focus = 'Focus',
@@ -39,13 +46,18 @@ enum NavigationActionState {
 }
 
 export function OriginPanel() {
-  // TODO (anden88 2024-10-17): in the old GUI the chosen navigation state is saved in
-  // redux and restored between open & close, do we want the same here?
+  const luaApi = useOpenSpaceApi();
+
   const [navigationAction, setNavigationAction] = useState(NavigationActionState.Focus);
 
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const properties = useAppSelector((state) => state.properties.properties);
   const engineMode = useAppSelector((state) => state.engineMode.mode);
+  const pathTargetNode = useAppSelector((state) => state.cameraPath.target);
+  const remainingTimeForPath = useAppSelector((state) => state.cameraPath.remainingTime);
+
+  const pathTargetNodeName =
+    useGetPropertyOwner(`${ScenePrefixKey}${pathTargetNode}`)?.name ?? pathTargetNode;
   const [anchor, setAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
   const [aim, setAim] = useGetStringPropertyValue(NavigationAimKey);
   const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
@@ -199,14 +211,22 @@ export function OriginPanel() {
         {isInFlight && (
           <Overlay>
             <Center h={'100%'}>
+              <Stack px={'xs'}>
+                <Title order={2}>Flying to {pathTargetNodeName}...</Title>
+                <Text>Remaning time: {remainingTimeForPath}</Text>
+                <Button
+                  onClick={() => luaApi?.pathnavigation.stopPath()}
+                  leftSection={<AirplaneCancelIcon size={IconSize.md} />}
+                  size={'lg'}
+                >
+                  Cancel Flight
+                </Button>
+              </Stack>
               <Group
                 bg={'gray'}
                 style={{ borderRadius: 'var(--mantine-radius-default)' }}
                 pr={'xs'}
-              >
-                <CancelFlightButton anchorName={''} />
-                <RemainingFlightTime />
-              </Group>
+              ></Group>
             </Center>
           </Overlay>
         )}
