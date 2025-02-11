@@ -5,6 +5,7 @@ import { PlusIcon } from '@/icons/icons';
 import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
 import { useActiveImage, useSelectedBrowserColorString } from '../hooks';
+import { IconImage } from '../IconImage';
 import { ImageInfoPopover } from '../ImageInfoPopover';
 
 interface Props {
@@ -23,21 +24,11 @@ export function ImageCard({ image }: Props) {
 
   return (
     <Card withBorder shadow={'sm'} style={{ borderColor: isActive ? color : undefined }}>
-      <Card.Section role="button" onClick={select} style={{ cursor: 'pointer' }}>
-        <Image src={image.thumbnail} fallbackSrc={'placeholder.svg'} />
-        <ThemeIcon
-          pos={'absolute'}
-          top={0}
-          right={0}
-          variant="default"
-          color="gray"
-          size={'sm'}
-        >
-          <PlusIcon size={12} />
-        </ThemeIcon>
+      <Card.Section>
+        <IconImage url={image.thumbnail} handleClick={select} icon={<PlusIcon />} />
       </Card.Section>
       <Card.Section p={'xs'}>
-        <Group wrap="nowrap">
+        <Group wrap={'nowrap'}>
           <Tooltip label={image.name}>
             <Text truncate={'end'}>{image.name}</Text>
           </Tooltip>

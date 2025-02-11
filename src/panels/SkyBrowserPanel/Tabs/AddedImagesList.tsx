@@ -1,7 +1,11 @@
 import { useCallback } from 'react';
+import { Box } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { DragReorderList, OnDragEndProps } from '@/components/DragDropList/DragDropList';
+import {
+  DragReorderList,
+  OnDragEndProps
+} from '@/components/DragReorderList/DragReorderList';
 import { useAppSelector } from '@/redux/hooks';
 
 import { useSkyBrowserSelectedImages, useSkyBrowserSelectedOpacities } from '../hooks';
@@ -50,12 +54,15 @@ export function AddedImagesList() {
   }
 
   return (
-    <DragReorderList<number>
-      onDragEnd={onDragEnd}
-      id={'selectedImages'}
-      renderFunc={renderFunc}
-      data={selectedImages}
-      keyFunc={keyFunc}
-    />
+    <Box my={'md'}>
+      <DragReorderList<number>
+        onDragEnd={onDragEnd}
+        id={'selectedImages'}
+        renderFunc={renderFunc}
+        data={selectedImages}
+        keyFunc={keyFunc}
+        gap={15}
+      />
+    </Box>
   );
 }

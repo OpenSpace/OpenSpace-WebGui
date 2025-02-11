@@ -1,15 +1,4 @@
-import {
-  ActionIcon,
-  Card,
-  Group,
-  Image,
-  Paper,
-  Slider,
-  Stack,
-  Text,
-  ThemeIcon,
-  Tooltip
-} from '@mantine/core';
+import { ActionIcon, Group, Paper, Slider, Stack, Text, Tooltip } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -18,6 +7,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
 import { useActiveImage, useSelectedBrowserColorString } from '../hooks';
+import { IconImage } from '../IconImage';
 import { ImageInfoPopover } from '../ImageInfoPopover';
 
 interface Props {
@@ -39,36 +29,46 @@ export function AddedImageCard({ image, opacity }: Props) {
   const isSelected = activeImage === image.url;
 
   return (
-    <Card
+    <Paper
       withBorder
       style={{
         borderColor: isSelected ? color : 'var(--mantine-color-gray-8)'
       }}
+      miw={350}
+      mr={'sm'}
     >
-      <Card.Section>
-        <Image
-          src={image.thumbnail}
-          radius={'sm'}
-          fallbackSrc={'placeholder.svg'}
-          bd={'1px solid var(--mantine-color-gray-7)'}
-        />
-        <ThemeIcon
-          onClick={() => {
+      <Group wrap={'nowrap'}>
+        <IconImage
+          url={image.thumbnail}
+          icon={<MoveTargetIcon />}
+          handleClick={() => {
             luaApi?.skybrowser.selectImage(image.url);
             setActiveImage(image.url);
           }}
-        >
-          <MoveTargetIcon />
-        </ThemeIcon>
-      </Card.Section>
-      <Stack>
-        <Text fw={600} lineClamp={1}>
-          {image.name}
-        </Text>
-        <ImageInfoPopover image={image} />
-      </Stack>
+          radius={'sm'}
+        />
+        <Stack flex={'1 1'} gap={0}>
+          <Group wrap={'nowrap'} justify={'space-between'}>
+            <Tooltip label={image.name}>
+              <Text fw={600} lineClamp={1}>
+                {image.name}
+              </Text>
+            </Tooltip>
+            <ImageInfoPopover image={image} />
+          </Group>
+          <Text c={'dimmed'} size={'sm'}>
+            Opacity
+          </Text>
+          <Slider
+            value={opacity}
+            onChange={setOpacity}
+            min={0}
+            max={1}
+            step={0.1}
+            label={(value) => value.toFixed(1)}
+          />
+        </Stack>
 
-      <Group>
         <Tooltip label={'Remove image'}>
           <ActionIcon
             color={'red'}
@@ -79,21 +79,12 @@ export function AddedImageCard({ image, opacity }: Props) {
                 image.url
               )
             }
+            mr={'sm'}
           >
             <DeleteIcon />
           </ActionIcon>
         </Tooltip>
       </Group>
-      <Stack gap={'xs'}>
-        <Slider
-          value={opacity}
-          onChange={setOpacity}
-          min={0}
-          max={1}
-          step={0.1}
-          label={(value) => value.toFixed(1)}
-        />
-      </Stack>
-    </Card>
+    </Paper>
   );
 }

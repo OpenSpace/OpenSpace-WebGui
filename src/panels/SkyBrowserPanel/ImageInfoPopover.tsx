@@ -11,7 +11,7 @@ export function ImageInfoPopover({ image }: Props) {
   return (
     <Popover width={200} position={'bottom'} withArrow shadow={'md'} trapFocus>
       <Popover.Target>
-        <ActionIcon variant="outline" size={'xs'}>
+        <ActionIcon variant={"outline"} size={'xs'}>
           <InformationIcon />
         </ActionIcon>
       </Popover.Target>
