@@ -34,7 +34,7 @@ export const ImageList = memo(function ImageList({
 
   const cardWidth = 120;
   const maxColumns = 10;
-  const columns = Math.min(Math.floor(width / cardWidth), maxColumns);
+  const columns = Math.max(Math.min(Math.floor(width / cardWidth), maxColumns), 1);
 
   if (imageList.length === 0) {
     return noImagesDisplay;
