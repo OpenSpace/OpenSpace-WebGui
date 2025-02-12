@@ -39,7 +39,7 @@ export function AddedImageCard({ image, opacity }: Props) {
     >
       <Group justify={'space-between'} wrap={'nowrap'} mb={'xs'}>
         <Tooltip label={image.name}>
-          <Text fw={600} lineClamp={1}>
+          <Text size={'sm'} lineClamp={1}>
             {image.name}
           </Text>
         </Tooltip>
@@ -70,20 +70,15 @@ export function AddedImageCard({ image, opacity }: Props) {
             label={(value) => value.toFixed(1)}
           />
         </Stack>
-        <Tooltip label={'Remove image'}>
-          <ActionIcon
-            color={'red'}
-            variant={'outline'}
-            onClick={() =>
-              luaApi?.skybrowser.removeSelectedImageInBrowser(
-                selectedBrowserId,
-                image.url
-              )
-            }
-          >
-            <DeleteIcon />
-          </ActionIcon>
-        </Tooltip>
+        <ActionIcon
+          color={'red'}
+          variant={'outline'}
+          onClick={() =>
+            luaApi?.skybrowser.removeSelectedImageInBrowser(selectedBrowserId, image.url)
+          }
+        >
+          <DeleteIcon />
+        </ActionIcon>
       </Group>
     </Paper>
   );
