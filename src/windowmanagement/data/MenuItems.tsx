@@ -86,8 +86,8 @@ export const menuItemsData: MenuItem[] = [
     defaultVisible: false
   },
   {
-    title: 'Focus',
-    componentID: 'focus',
+    title: 'Navigation',
+    componentID: 'navigation',
     content: <OriginPanel />,
     renderMenuButton: (key, onClick) => (
       <OriginPanelMenuButton key={key} onClick={onClick} />

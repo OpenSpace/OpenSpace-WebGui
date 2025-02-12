@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Box, Group, Stack, Text } from '@mantine/core';
+import { Box, Group, Text } from '@mantine/core';
 
 import { useGetPropertyOwner } from '@/api/hooks';
 import { AirplaneIcon } from '@/icons/icons';
@@ -11,7 +11,11 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';
 import { ScenePrefixKey } from '@/util/keys';
 
-export function RemainingFlightTime() {
+interface Props {
+  compact?: boolean;
+}
+
+export function RemainingFlightTime({ compact = true }: Props) {
   const pathTargetNode = useAppSelector((state) => state.cameraPath.target);
   const pathTargetNodeName =
     useGetPropertyOwner(`${ScenePrefixKey}${pathTargetNode}`)?.name ?? pathTargetNode;
@@ -28,14 +32,22 @@ export function RemainingFlightTime() {
   }, [dispatch]);
 
   return (
-    <Stack pr={'xs'}>
-      <Group wrap={'nowrap'}>
-        <AirplaneIcon size={IconSize.lg} />
-        <Box>
-          <Text truncate>{cappedPathTargetNodeName}</Text>
+    <>
+      {compact ? (
+        <Group wrap={'nowrap'} pr={'xs'}>
+          <AirplaneIcon size={IconSize.lg} />
+          <Box>
+            <Text truncate>{cappedPathTargetNodeName}</Text>
+            <Text>{remainingTimeForPath}</Text>
+          </Box>
+        </Group>
+      ) : (
+        <Group>
+          <AirplaneIcon size={IconSize.lg} />
+          <Text>Flying to {cappedPathTargetNodeName}</Text>
           <Text>{remainingTimeForPath}</Text>
-        </Box>
-      </Group>
-    </Stack>
+        </Group>
+      )}
+    </>
   );
 }

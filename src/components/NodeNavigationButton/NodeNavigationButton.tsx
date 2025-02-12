@@ -66,7 +66,8 @@ export function NodeNavigationButton({
   alt,
   justify,
   size,
-  style
+  style,
+  disabled
 }: NodeNavigationButtonProps) {
   const luaApi = useOpenSpaceApi();
 
@@ -187,13 +188,20 @@ export function NodeNavigationButton({
             size={size}
             style={style}
             justify={justify}
+            disabled={disabled}
           >
             {showLabel && content.title}
           </Button>
           {content.info && <InfoBox text={content.info} />}
         </Group>
       ) : (
-        <ActionIcon onClick={content.onClick} size={size} variant={variant} style={style}>
+        <ActionIcon
+          onClick={content.onClick}
+          size={size}
+          variant={variant}
+          style={style}
+          disabled={disabled}
+        >
           {content.icon}
         </ActionIcon>
       )}

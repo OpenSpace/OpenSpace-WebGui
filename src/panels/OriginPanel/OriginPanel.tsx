@@ -6,15 +6,11 @@ import {
   Center,
   Container,
   Group,
-  Overlay,
-  ScrollArea,
-  Stack,
-  Text,
-  Title
+  Paper,
+  ScrollArea
 } from '@mantine/core';
 
 import {
-  useGetPropertyOwner,
   useGetStringPropertyValue,
   useOpenSpaceApi,
   useTriggerProperty
@@ -31,13 +27,13 @@ import {
   NavigationAimKey,
   NavigationAnchorKey,
   RetargetAimKey,
-  RetargetAnchorKey,
-  ScenePrefixKey
+  RetargetAnchorKey
 } from '@/util/keys';
 import { hasInterestingTag } from '@/util/propertyTreeHelpers';
 
 import { FocusEntry } from './FocusEntry';
 import { OriginSettings } from './OriginSettings';
+import { RemainingFlightTime } from './RemainingFlightTime';
 
 enum NavigationActionState {
   Focus = 'Focus',
@@ -53,11 +49,7 @@ export function OriginPanel() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const properties = useAppSelector((state) => state.properties.properties);
   const engineMode = useAppSelector((state) => state.engineMode.mode);
-  const pathTargetNode = useAppSelector((state) => state.cameraPath.target);
-  const remainingTimeForPath = useAppSelector((state) => state.cameraPath.remainingTime);
 
-  const pathTargetNodeName =
-    useGetPropertyOwner(`${ScenePrefixKey}${pathTargetNode}`)?.name ?? pathTargetNode;
   const [anchor, setAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
   const [aim, setAim] = useGetStringPropertyValue(NavigationAimKey);
   const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
@@ -208,61 +200,54 @@ export function OriginPanel() {
   return (
     <ScrollArea h={'100%'}>
       <Container>
-        {isInFlight && (
-          <Overlay>
-            <Center h={'100%'}>
-              <Stack px={'xs'}>
-                <Title order={2}>Flying to {pathTargetNodeName}...</Title>
-                <Text>Remaning time: {remainingTimeForPath}</Text>
-                <Button
-                  onClick={() => luaApi?.pathnavigation.stopPath()}
-                  leftSection={<AirplaneCancelIcon size={IconSize.md} />}
-                  size={'lg'}
-                >
-                  Cancel Flight
-                </Button>
-              </Stack>
-              <Group
-                bg={'gray'}
-                style={{ borderRadius: 'var(--mantine-radius-default)' }}
-                pr={'xs'}
-              ></Group>
-            </Center>
-          </Overlay>
-        )}
-        <Box ref={ref}>
+        <Box ref={ref} mt={'xs'}>
           <Group justify={'space-between'}>
-            <Title order={2} my={'md'}>
-              Navigation
-            </Title>
+            <Group gap={0} mb={'xs'}>
+              <ActionIcon
+                onClick={() => setNavigationAction(NavigationActionState.Focus)}
+                aria-label={'Select focus'}
+                size={'lg'}
+                style={actionIconStyle(NavigationActionState.Focus)}
+                disabled={isInFlight}
+              >
+                <FocusIcon size={'70%'} />
+              </ActionIcon>
+              <ActionIcon
+                onClick={() => setNavigationAction(NavigationActionState.Anchor)}
+                aria-label={'Select anchor'}
+                size={'lg'}
+                style={actionIconStyle(NavigationActionState.Anchor)}
+                disabled={isInFlight}
+              >
+                <AnchorIcon size={'70%'} />
+              </ActionIcon>
+              <ActionIcon
+                onClick={() => setNavigationAction(NavigationActionState.Aim)}
+                aria-label={'Select aim'}
+                size={'lg'}
+                style={actionIconStyle(NavigationActionState.Aim)}
+                disabled={isInFlight}
+              >
+                <TelescopeIcon size={'70%'} />
+              </ActionIcon>
+            </Group>
             <OriginSettings />
           </Group>
-          <Group gap={0} mb={'xs'}>
-            <ActionIcon
-              onClick={() => setNavigationAction(NavigationActionState.Focus)}
-              aria-label={'Select focus'}
-              size={'lg'}
-              style={actionIconStyle(NavigationActionState.Focus)}
-            >
-              <FocusIcon size={'70%'} />
-            </ActionIcon>
-            <ActionIcon
-              onClick={() => setNavigationAction(NavigationActionState.Anchor)}
-              aria-label={'Select anchor'}
-              size={'lg'}
-              style={actionIconStyle(NavigationActionState.Anchor)}
-            >
-              <AnchorIcon size={'70%'} />
-            </ActionIcon>
-            <ActionIcon
-              onClick={() => setNavigationAction(NavigationActionState.Aim)}
-              aria-label={'Select aim'}
-              size={'lg'}
-              style={actionIconStyle(NavigationActionState.Aim)}
-            >
-              <TelescopeIcon size={'70%'} />
-            </ActionIcon>
-          </Group>
+          {isInFlight && (
+            <Paper my={'xs'} py={'xs'}>
+              <Center>
+                <Group>
+                  <RemainingFlightTime compact={false} />{' '}
+                  <Button
+                    onClick={() => luaApi?.pathnavigation.stopPath()}
+                    leftSection={<AirplaneCancelIcon size={IconSize.md} />}
+                  >
+                    Cancel Flight
+                  </Button>
+                </Group>
+              </Center>
+            </Paper>
+          )}
         </Box>
         <FilterList heightFunc={computeHeight}>
           <FilterList.InputField
@@ -277,6 +262,7 @@ export function OriginPanel() {
                 onSelect={onSelect}
                 activeNode={activeNode}
                 showNavigationButtons={isInFocusMode}
+                disableFocus={isInFlight}
               />
             ))}
           </FilterList.Favorites>
@@ -289,6 +275,7 @@ export function OriginPanel() {
                 onSelect={onSelect}
                 activeNode={activeNode}
                 showNavigationButtons={isInFocusMode}
+                disableFocus={isInFlight}
               />
             )}
             matcherFunc={generateMatcherFunctionByKeys([
