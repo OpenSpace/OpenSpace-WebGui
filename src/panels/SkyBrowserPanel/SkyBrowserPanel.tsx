@@ -2,6 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { Button, Image, Loader, ScrollArea, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { PlusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
@@ -56,7 +57,12 @@ export function SkyBrowserPanel() {
   if (noOfBrowsers === 0) {
     return (
       <Stack h={'100%'} w={'100%'} align={'center'} p={'lg'}>
-        <Button onClick={() => luaApi.skybrowser.createTargetBrowserPair()} my={'lg'}>
+        <Button
+          onClick={() => luaApi.skybrowser.createTargetBrowserPair()}
+          my={'lg'}
+          leftSection={<PlusIcon />}
+          size={'lg'}
+        >
           Add browser
         </Button>
         <Text ta={'center'} c={'dimmed'} mt={'lg'}>
