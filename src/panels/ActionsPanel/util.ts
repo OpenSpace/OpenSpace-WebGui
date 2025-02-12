@@ -63,26 +63,3 @@ export function getDisplayedActions(allActions: Action[], navPath: string): Acti
     return true;
   });
 }
-
-// Truncate navigation path if too long
-export function truncatePath(navigationPath: string): string {
-  const NAVPATH_LENGTH_LIMIT = 60;
-  const shouldTruncate = navigationPath.length > NAVPATH_LENGTH_LIMIT;
-
-  if (!shouldTruncate) {
-    return navigationPath;
-  }
-
-  const path = navigationPath.startsWith('/')
-    ? navigationPath.substring(1)
-    : navigationPath;
-  const pieces = path.split('/');
-
-  if (pieces.length > 1) {
-    // TODO: maybe keep more pieces of the path, if possible?
-    return `/${pieces[0]}/.../${pieces[pieces.length - 1]}`;
-  } else {
-    // Path with very long folder name
-    return navigationPath.substring(0, NAVPATH_LENGTH_LIMIT);
-  }
-}

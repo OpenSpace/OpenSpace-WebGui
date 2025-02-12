@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Action } from '@/types/types';
 
 import { ActionsButton } from './ActionsButton';
-import { actionsForLevel, getDisplayedActions, truncatePath } from './util';
+import { actionsForLevel, getDisplayedActions } from './util';
 
 import './ActionsPanel.css';
 
@@ -30,7 +30,6 @@ export function ActionsPanel() {
   const dispatch = useAppDispatch();
 
   const actionLevel = actionsForLevel(allActions, navigationPath);
-  const displayedNavigationPath = truncatePath(navigationPath);
   const displayedActions = getDisplayedActions(allActions, navigationPath);
 
   const isTopLevel = navigationPath === '/';
@@ -63,7 +62,7 @@ export function ActionsPanel() {
   }
 
   function pathBreadbrumbs(): React.JSX.Element {
-    const paths = displayedNavigationPath.split('/');
+    const paths = navigationPath.split('/');
     return (
       <Breadcrumbs separatorMargin={0}>
         {paths.map((path, i) => (
