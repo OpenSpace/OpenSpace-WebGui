@@ -4,10 +4,13 @@ import {
   Box,
   Button,
   Center,
+  Paper,
   Container,
   Group,
-  Paper,
-  ScrollArea
+  ScrollArea,
+  SegmentedControl,
+  Title,
+  VisuallyHidden
 } from '@mantine/core';
 
 import {
@@ -111,14 +114,6 @@ export function OriginPanel() {
   const activeNode = navigationAction === NavigationActionState.Aim ? aim : anchor;
   const isInFlight = engineMode === EngineMode.CameraPath;
 
-  // TODO find a better (?) way to color them depending on state
-  function actionIconStyle(state: NavigationActionState) {
-    return {
-      backgroundColor:
-        navigationAction === state ? 'var(--mantine-primary-color-filled)' : 'transparent'
-    };
-  }
-
   function hasDistinctAim() {
     return aim !== '' && aim !== anchor;
   }
@@ -202,7 +197,7 @@ export function OriginPanel() {
       <Container>
         <Box ref={ref} mt={'xs'}>
           <Group justify={'space-between'}>
-            <Group gap={0} mb={'xs'}>
+            {/* <Group gap={0} mb={'xs'}>
               <ActionIcon
                 onClick={() => setNavigationAction(NavigationActionState.Focus)}
                 aria-label={'Select focus'}
@@ -230,17 +225,56 @@ export function OriginPanel() {
               >
                 <TelescopeIcon size={'70%'} />
               </ActionIcon>
-            </Group>
+            </Group> */}
+            <SegmentedControl
+              value={navigationAction}
+              withItemsBorders={false}
+              disabled={isInFlight}
+              my={'xs'}
+              onChange={(value) => setNavigationAction(value as NavigationActionState)}
+              data={[
+                {
+                  value: NavigationActionState.Focus,
+                  label: (
+                    <>
+                      <FocusIcon size={IconSize.sm} style={{ display: 'block' }} />
+                      <VisuallyHidden>Set focus</VisuallyHidden>
+                    </>
+                  )
+                },
+                {
+                  value: NavigationActionState.Anchor,
+                  label: (
+                    <>
+                      <AnchorIcon size={IconSize.sm} style={{ display: 'block' }} />
+                      <VisuallyHidden>Set anchor</VisuallyHidden>
+                    </>
+                  )
+                },
+                {
+                  value: NavigationActionState.Aim,
+                  label: (
+                    <>
+                      <TelescopeIcon size={IconSize.sm} style={{ display: 'block' }} />
+                      <VisuallyHidden>Set aim</VisuallyHidden>
+                    </>
+                  )
+                }
+              ]}
+            />
             <OriginSettings />
           </Group>
+
           {isInFlight && (
-            <Paper my={'xs'} py={'xs'}>
+            <Paper mb={'xs'} py={'xs'}>
               <Center>
                 <Group>
                   <RemainingFlightTime compact={false} />{' '}
                   <Button
                     onClick={() => luaApi?.pathnavigation.stopPath()}
                     leftSection={<AirplaneCancelIcon size={IconSize.md} />}
+                    variant={'outline'}
+                    color="red"
                   >
                     Cancel Flight
                   </Button>

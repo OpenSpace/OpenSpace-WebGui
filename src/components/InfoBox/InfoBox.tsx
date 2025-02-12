@@ -8,15 +8,8 @@ interface Props {
 
 export function InfoBox({ text }: Props) {
   return (
-    <Tooltip
-      label={text}
-      multiline
-      w={220}
-      withArrow
-      transitionProps={{ duration: 400 }}
-      offset={{ mainAxis: 5, crossAxis: 100 }}
-    >
-      <ThemeIcon radius={'xl'} size={'xs'} variant={'default'}>
+    <Tooltip label={text} multiline w={220} offset={{ mainAxis: 5, crossAxis: 100 }}>
+      <ThemeIcon radius={'xl'} size={'xs'}>
         <InformationIcon />
       </ThemeIcon>
     </Tooltip>

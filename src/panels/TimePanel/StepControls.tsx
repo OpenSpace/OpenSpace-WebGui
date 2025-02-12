@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { PropsWithChildren, useRef } from 'react';
 import { ActionIcon, Stack } from '@mantine/core';
 
 import { ChevronDownIcon, ChevronUpIcon } from '@/icons/icons';
@@ -8,17 +8,21 @@ import { ChevronDownIcon, ChevronUpIcon } from '@/icons/icons';
  * https://github.com/mantinedev/mantine/blob/master/packages/%40mantine/core/src/components/NumberInput/NumberInput.tsx#L406
  */
 
-interface Props {
+type StepDirection = 'up' | 'down';
+
+interface Props extends PropsWithChildren {
   stepHoldDelay?: number;
   stepHoldInterval?: number;
   onChange: (change: number, shiftKey: boolean) => void;
   step?: number;
 }
-export function HoldableButton({
+
+export function StepControlButtons({
   stepHoldDelay,
   stepHoldInterval,
   onChange,
-  step
+  step,
+  children
 }: Props) {
   // The reference allows us to get the latest state in the `onCallback`, necessary due to
   // how capturing works with the `window.setTimeout` function.
@@ -27,89 +31,104 @@ export function HoldableButton({
   const shouldUseStepInterval =
     stepHoldDelay !== undefined && stepHoldInterval !== undefined;
 
-  function downHandler(event: KeyboardEvent) {
+  function keyDownHandler(event: KeyboardEvent): void {
     if (event.key === 'Shift') {
       shiftKeyRef.current = true;
     }
   }
 
-  function upHandler(event: KeyboardEvent) {
+  function keyUpHandler(event: KeyboardEvent): void {
     if (event.key === 'Shift') {
       shiftKeyRef.current = false;
     }
   }
 
-  function onStepHandleChange(isIncrement: boolean, shiftKey?: boolean) {
+  function onStepHandleChange(direction: StepDirection, shiftKey?: boolean): void {
     const amount = step ?? 1;
-    const change = isIncrement ? amount : -amount;
+    const change = direction === 'up' ? amount : -amount;
     onChange(change, shiftKey !== undefined ? shiftKey : shiftKeyRef.current);
   }
 
   function onStep(
     event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
-    isIncrement: boolean
-  ) {
-    event.preventDefault();
+    direction: StepDirection
+  ): void {
+    // Prevent keyboard events to repeatedly trigger the step loop which causes dangling
+    // references to the setTimeout function
+    if ('repeat' in event) {
+      if (event.repeat) {
+        return;
+      }
+
+      const shouldStep = event.key === 'Enter' || event.code === 'Space';
+      if (!shouldStep) {
+        return;
+      }
+    }
+
     // We pass the shift key on first press since we have not yet added the event
     // listeners. This allows us to read the value on the first callback correctly.
-    onStepHandleChange(isIncrement, event.shiftKey);
+    onStepHandleChange(direction, event.shiftKey);
 
     // We want to be notified when user holds shiftkey during press
-    window.addEventListener('keydown', downHandler);
-    window.addEventListener('keyup', upHandler);
+    window.addEventListener('keydown', keyDownHandler);
+    window.addEventListener('keyup', keyUpHandler);
 
-    if (shouldUseStepInterval) {
+    // If the timeout has already been set, don't start another one to avoid dangling
+    // references
+    if (shouldUseStepInterval && onStepTimeoutRef.current === null) {
       onStepTimeoutRef.current = window.setTimeout(
-        () => onStepLoop(isIncrement),
+        () => onStepLoop(direction),
         stepHoldDelay
       );
     }
   }
 
-  function onStepLoop(isIncrement: boolean) {
-    onStepHandleChange(isIncrement);
+  function onStepLoop(direction: StepDirection): void {
+    onStepHandleChange(direction);
 
     if (shouldUseStepInterval) {
       onStepTimeoutRef.current = window.setTimeout(
-        () => onStepLoop(isIncrement),
+        () => onStepLoop(direction),
         stepHoldInterval
       );
     }
   }
 
-  function onStepDone() {
+  function onStepDone(): void {
     if (onStepTimeoutRef.current) {
       window.clearTimeout(onStepTimeoutRef.current);
-      window.removeEventListener('keydown', downHandler);
-      window.removeEventListener('keyup', upHandler);
+      window.removeEventListener('keydown', keyDownHandler);
+      window.removeEventListener('keyup', keyUpHandler);
       onStepTimeoutRef.current = null;
     }
   }
 
+  function stepControlButton(direction: StepDirection): React.JSX.Element {
+    return (
+      <ActionIcon
+        onPointerDown={(event) => {
+          onStep(event, direction);
+        }}
+        onPointerOut={onStepDone}
+        onPointerUp={onStepDone}
+        onKeyDown={(event) => onStep(event, direction)}
+        onKeyUp={() => onStepDone()}
+        size={'xs'}
+        variant={'light'}
+        w={'100%'}
+        color={'gray'}
+      >
+        {direction === 'up' ? <ChevronUpIcon /> : <ChevronDownIcon />}
+      </ActionIcon>
+    );
+  }
+
   return (
-    <Stack gap={0}>
-      <ActionIcon
-        onMouseDown={(event) => event.preventDefault()}
-        onPointerDown={(event) => {
-          onStep(event, true);
-        }}
-        onPointerOut={onStepDone}
-        onPointerUp={onStepDone}
-        size={'xs'}
-      >
-        <ChevronUpIcon />
-      </ActionIcon>
-      <ActionIcon
-        onMouseDown={(event) => event.preventDefault()}
-        onPointerDown={(event) => {
-          onStep(event, false);
-        }}
-        onPointerOut={onStepDone}
-        onPointerUp={onStepDone}
-        size={'xs'}
-      >
-        <ChevronDownIcon />
-      </ActionIcon>
+    <Stack gap={5} align={'center'}>
+      {stepControlButton('up')}
+      {children}
+      {stepControlButton('down')}
     </Stack>
   );
 }
