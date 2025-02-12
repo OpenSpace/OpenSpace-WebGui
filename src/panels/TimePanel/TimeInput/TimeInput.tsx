@@ -57,127 +57,120 @@ export function TimeInput() {
     setUseLock((current) => !current);
   }
 
-  function interpolateDateRelative(delta: number) {
-    luaApi?.time.interpolateTimeRelative(delta);
-  }
-
   function interpolateDate(newTime: Date) {
     const fixedTimeString = newTime.toJSON().replace('Z', '');
     luaApi?.time.interpolateTime(fixedTimeString);
   }
 
-  function changeDate(event: {
+  function interpolateToPendingTime() {
+    interpolateDate(pendingTime);
+  }
+
+  function setToPendingTime() {
+    setDate(luaApi, pendingTime);
+  }
+
+  function setTime(data: {
     time: Date;
     immediate: boolean; // If not, interpolate
     delta: number;
     relative: boolean;
   }) {
+    if (!isDateValid(data.time)) {
+      return;
+    }
+
     if (useLock) {
-      setPendingTime(event.time);
+      // If we're in locked mode, just set the pending timestamp. this timestamp will
+      // be used when the user clicks the "interpolate" or "set" button
+      setPendingTime(data.time);
       return;
     }
 
-    if (event.immediate) {
-      setDate(luaApi, event.time);
+    if (data.immediate) {
+      setDate(luaApi, data.time);
       return;
     }
 
-    if (event.relative) {
-      interpolateDateRelative(event.delta);
+    // Interpolate
+    if (data.relative) {
+      luaApi?.time.interpolateTimeRelative(data.delta);
     } else {
-      interpolateDate(event.time);
+      interpolateDate(data.time);
     }
   }
 
-  function updateTime(timePart: TimePart, value: number, relative: boolean) {
+  function onTimeInputRelative(timePart: TimePart, change: number) {
+    // Update the current time stamp with the change
     const newTime = new Date(timeRef.current);
     switch (timePart) {
       case TimePart.Milliseconds:
-        if (relative) {
-          newTime.setUTCMilliseconds(newTime.getUTCMilliseconds() + value);
-        } else {
-          newTime.setUTCMilliseconds(value);
-        }
+        newTime.setUTCMilliseconds(newTime.getUTCMilliseconds() + change);
         break;
       case TimePart.Seconds:
-        if (relative) {
-          newTime.setUTCSeconds(newTime.getUTCSeconds() + value);
-        } else {
-          newTime.setUTCSeconds(value);
-        }
+        newTime.setUTCSeconds(newTime.getUTCSeconds() + change);
         break;
       case TimePart.Minutes:
-        if (relative) {
-          newTime.setUTCMinutes(newTime.getUTCMinutes() + value);
-        } else {
-          newTime.setUTCMinutes(value);
-        }
+        newTime.setUTCMinutes(newTime.getUTCMinutes() + change);
         break;
       case TimePart.Hours:
-        if (relative) {
-          newTime.setUTCHours(newTime.getUTCHours() + value);
-        } else {
-          newTime.setUTCHours(value);
-        }
+        newTime.setUTCHours(newTime.getUTCHours() + change);
         break;
       case TimePart.Days:
-        if (relative) {
-          newTime.setUTCDate(newTime.getUTCDate() + value);
-        } else {
-          newTime.setUTCDate(value);
-        }
+        newTime.setUTCDate(newTime.getUTCDate() + change);
         break;
       case TimePart.Months:
-        if (relative) {
-          newTime.setUTCMonth(newTime.getUTCMonth() + value);
-        } else {
-          newTime.setUTCMonth(value);
-        }
+        newTime.setUTCMonth(newTime.getUTCMonth() + change);
         break;
       case TimePart.Years:
-        if (relative) {
-          newTime.setUTCFullYear(newTime.getUTCFullYear() + value);
-        } else {
-          newTime.setUTCFullYear(value);
-        }
+        newTime.setUTCFullYear(newTime.getUTCFullYear() + change);
         break;
       default:
         throw Error(`Unhandled 'TimePart' case: ${timePart}`);
     }
-    return newTime;
-  }
 
-  function onInputChange(
-    value: number,
-    relative: boolean,
-    immediate: boolean,
-    timePart: TimePart
-  ) {
-    const newTime = updateTime(timePart, value, relative);
-
-    if (!isDateValid(newTime)) {
-      return;
-    }
-
-    changeDate({
+    setTime({
       time: newTime,
-      immediate: immediate ?? isHoldingShift,
+      immediate: isHoldingShift,
       delta: (newTime.getTime() - timeRef.current.getTime()) / 1000,
-      relative
+      relative: true
     });
   }
 
-  function interpolateToPendingTime() {
-    interpolateDate(pendingTime);
-    setUseLock(false);
-  }
+  function onTimeInput(timePart: TimePart, value: number) {
+    const newTime = new Date(timeRef.current);
+    switch (timePart) {
+      case TimePart.Milliseconds:
+        newTime.setUTCMilliseconds(value);
+        break;
+      case TimePart.Seconds:
+        newTime.setUTCSeconds(value);
+        break;
+      case TimePart.Minutes:
+        newTime.setUTCMinutes(value);
+        break;
+      case TimePart.Hours:
+        newTime.setUTCHours(value);
+        break;
+      case TimePart.Days:
+        newTime.setUTCDate(value);
+        break;
+      case TimePart.Months:
+        newTime.setUTCMonth(value);
+        break;
+      case TimePart.Years:
+        newTime.setUTCFullYear(value);
+        break;
+      default:
+        throw Error(`Unhandled 'TimePart' case: ${timePart}`);
+    }
 
-  function setToPendingTime() {
-    setDate(luaApi, pendingTime);
-    setUseLock(false);
-  }
-  function resetPendingTime() {
-    setUseLock(false);
+    setTime({
+      time: newTime,
+      immediate: true,
+      delta: 0, // This variable is not relevant in this case
+      relative: false
+    });
   }
 
   return cappedTime ? (
@@ -195,27 +188,21 @@ export function TimeInput() {
         <Group gap={5} wrap={'nowrap'}>
           <TimeIncrementInput
             value={time.getUTCFullYear()}
-            onInputChange={(value) => onInputChange(value, false, true, TimePart.Years)}
-            onInputChangeStep={(change) =>
-              onInputChange(change, true, isHoldingShift, TimePart.Years)
-            }
+            onInputChange={(value) => onTimeInput(TimePart.Years, value)}
+            onInputChangeStep={(change) => onTimeInputRelative(TimePart.Years, change)}
             w={65}
           />
           <MonthInput
             month={time.getUTCMonth()}
-            onInputChange={(value) => onInputChange(value, false, true, TimePart.Months)}
-            onInputChangeStep={(change) =>
-              onInputChange(change, true, isHoldingShift, TimePart.Months)
-            }
+            onInputChange={(value) => onTimeInput(TimePart.Months, value)}
+            onInputChangeStep={(change) => onTimeInputRelative(TimePart.Months, change)}
             w={55}
           />
 
           <TimeIncrementInput
             value={time.getUTCDate()}
-            onInputChange={(value) => onInputChange(value, false, true, TimePart.Days)}
-            onInputChangeStep={(change) =>
-              onInputChange(change, true, isHoldingShift, TimePart.Days)
-            }
+            onInputChange={(value) => onTimeInput(TimePart.Days, value)}
+            onInputChangeStep={(change) => onTimeInputRelative(TimePart.Days, change)}
             min={1}
             max={31}
             w={40}
@@ -224,30 +211,24 @@ export function TimeInput() {
         <Group gap={5} wrap={'nowrap'}>
           <TimeIncrementInput
             value={time.getUTCHours()}
-            onInputChange={(value) => onInputChange(value, false, true, TimePart.Hours)}
-            onInputChangeStep={(change) =>
-              onInputChange(change, true, isHoldingShift, TimePart.Hours)
-            }
+            onInputChange={(value) => onTimeInput(TimePart.Hours, value)}
+            onInputChangeStep={(change) => onTimeInputRelative(TimePart.Hours, change)}
             min={0}
             max={24}
             w={40}
           />
           <TimeIncrementInput
             value={time.getUTCMinutes()}
-            onInputChange={(value) => onInputChange(value, false, true, TimePart.Minutes)}
-            onInputChangeStep={(change) =>
-              onInputChange(change, true, isHoldingShift, TimePart.Minutes)
-            }
+            onInputChange={(value) => onTimeInput(TimePart.Minutes, value)}
+            onInputChangeStep={(change) => onTimeInputRelative(TimePart.Minutes, change)}
             min={0}
             max={60}
             w={40}
           />
           <TimeIncrementInput
             value={time.getUTCSeconds()}
-            onInputChange={(value) => onInputChange(value, false, true, TimePart.Seconds)}
-            onInputChangeStep={(change) =>
-              onInputChange(change, true, isHoldingShift, TimePart.Seconds)
-            }
+            onInputChange={(value) => onTimeInput(TimePart.Seconds, value)}
+            onInputChangeStep={(change) => onTimeInputRelative(TimePart.Seconds, change)}
             min={0}
             max={60}
             w={40}
@@ -256,9 +237,23 @@ export function TimeInput() {
       </Group>
       {useLock && (
         <Group gap={'xs'} grow>
-          <Button onClick={interpolateToPendingTime}>Interpolate</Button>
-          <Button onClick={setToPendingTime}>Set</Button>
-          <Button variant={'outline'} onClick={resetPendingTime}>
+          <Button
+            onClick={() => {
+              interpolateToPendingTime();
+              setUseLock(false);
+            }}
+          >
+            Interpolate
+          </Button>
+          <Button
+            onClick={() => {
+              setToPendingTime();
+              setUseLock(false);
+            }}
+          >
+            Set
+          </Button>
+          <Button variant={'outline'} onClick={() => setUseLock(false)}>
             Cancel
           </Button>
         </Group>
