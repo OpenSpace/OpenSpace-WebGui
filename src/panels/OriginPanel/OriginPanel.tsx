@@ -195,37 +195,8 @@ export function OriginPanel() {
   return (
     <ScrollArea h={'100%'}>
       <Container>
-        <Box ref={ref} mt={'xs'}>
+        <Box ref={ref}>
           <Group justify={'space-between'}>
-            {/* <Group gap={0} mb={'xs'}>
-              <ActionIcon
-                onClick={() => setNavigationAction(NavigationActionState.Focus)}
-                aria-label={'Select focus'}
-                size={'lg'}
-                style={actionIconStyle(NavigationActionState.Focus)}
-                disabled={isInFlight}
-              >
-                <FocusIcon size={'70%'} />
-              </ActionIcon>
-              <ActionIcon
-                onClick={() => setNavigationAction(NavigationActionState.Anchor)}
-                aria-label={'Select anchor'}
-                size={'lg'}
-                style={actionIconStyle(NavigationActionState.Anchor)}
-                disabled={isInFlight}
-              >
-                <AnchorIcon size={'70%'} />
-              </ActionIcon>
-              <ActionIcon
-                onClick={() => setNavigationAction(NavigationActionState.Aim)}
-                aria-label={'Select aim'}
-                size={'lg'}
-                style={actionIconStyle(NavigationActionState.Aim)}
-                disabled={isInFlight}
-              >
-                <TelescopeIcon size={'70%'} />
-              </ActionIcon>
-            </Group> */}
             <SegmentedControl
               value={navigationAction}
               withItemsBorders={false}
@@ -264,7 +235,6 @@ export function OriginPanel() {
             />
             <OriginSettings />
           </Group>
-
           {isInFlight && (
             <Paper mb={'xs'} py={'xs'}>
               <Center>
@@ -283,6 +253,7 @@ export function OriginPanel() {
             </Paper>
           )}
         </Box>
+
         <FilterList heightFunc={computeHeight}>
           <FilterList.InputField
             placeHolderSearchText={searchPlaceholderText}
