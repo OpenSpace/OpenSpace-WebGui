@@ -17,7 +17,7 @@ export function SkyBrowserPanel() {
   const cameraInSolarSystem = useAppSelector(
     (state) => state.skybrowser.cameraInSolarSystem
   );
-  const noOfBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
+  const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
   const { addWindow } = useWindowLayoutProvider();
   const luaApi = useOpenSpaceApi();
 
@@ -38,10 +38,10 @@ export function SkyBrowserPanel() {
 
   // Call this function first render to open the wwt window
   useEffect(() => {
-    if (noOfBrowsers > 0) {
+    if (nBrowsers > 0) {
       openWorldWideTelescope();
     }
-  }, [openWorldWideTelescope, noOfBrowsers]);
+  }, [openWorldWideTelescope, nBrowsers]);
 
   if (!isInitialized || !luaApi) {
     return (
@@ -54,7 +54,7 @@ export function SkyBrowserPanel() {
   if (!cameraInSolarSystem) {
     return <Text m={'lg'}>Camera has to be in solar system for Sky Browser to work</Text>;
   }
-  if (noOfBrowsers === 0) {
+  if (nBrowsers === 0) {
     return (
       <Stack h={'100%'} w={'100%'} align={'center'} p={'lg'}>
         <Button
