@@ -50,7 +50,6 @@ export function StringInput({ onEnter, value, errorCheck, ...props }: Props) {
       onBlur={onBlur}
       error={errorCheck ? errorCheck(storedValue) : false}
       {...props}
-      // TODO: Provide error on invalid input
     />
   );
 }
