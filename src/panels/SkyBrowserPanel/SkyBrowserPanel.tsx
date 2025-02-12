@@ -1,5 +1,13 @@
 import { useCallback, useEffect } from 'react';
-import { Button, Image, LoadingOverlay, ScrollArea, Stack, Text } from '@mantine/core';
+import {
+  Button,
+  Image,
+  Loader,
+  LoadingOverlay,
+  ScrollArea,
+  Stack,
+  Text
+} from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
@@ -43,7 +51,12 @@ export function SkyBrowserPanel() {
   }, [openWorldWideTelescope, noOfBrowsers]);
 
   if (!isInitialized || !luaApi) {
-    return <LoadingOverlay>...Loading...</LoadingOverlay>;
+    return (
+      <Stack align="center">
+        <Text>Loading Sky Browser...</Text>
+        <Loader />
+      </Stack>
+    );
   }
   if (!cameraInSolarSystem) {
     return <Text m={'lg'}>Camera has to be in solar system for Sky Browser to work</Text>;

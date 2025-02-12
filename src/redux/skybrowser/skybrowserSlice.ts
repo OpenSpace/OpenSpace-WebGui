@@ -20,7 +20,7 @@ export interface SkyBrowserState {
 
 const initialState: SkyBrowserState = {
   isInitialized: false,
-  cameraInSolarSystem: false,
+  cameraInSolarSystem: true, // Setting this to true as OpenSpace usually starts on Earth
   selectedBrowserId: '',
   imageList: [],
   activeImage: '',
