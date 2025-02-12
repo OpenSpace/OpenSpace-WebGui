@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Button, Group, Skeleton, Stack, Text } from '@mantine/core';
+import { Button, Card, Group, Paper, Skeleton, Stack, Text } from '@mantine/core';
 
 import { useGetPropertyOwner, useGetStringPropertyValue } from '@/api/hooks';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
@@ -12,7 +12,7 @@ import { EngineMode, IconSize } from '@/types/enums';
 import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
 
 import { CancelFlightButton } from './CancelFlightButton';
-import { RemainingFlightTime } from './RemainingFlightTime';
+import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
 interface OriginPanelMenuButtonProps {
   onClick: () => void;
@@ -26,8 +26,6 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
   const aimName = useGetPropertyOwner(`${ScenePrefixKey}${aim}`)?.name ?? aim;
 
   const dispatch = useAppDispatch();
-  const cappedAnchorName = anchorName?.substring(0, 20) ?? '';
-  const cappedAimName = aimName?.substring(0, 20) ?? '';
 
   useEffect(() => {
     dispatch(subscribeToEngineMode());
@@ -50,15 +48,15 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
         <Group>
           <>
             <AnchorIcon size={IconSize.lg} />
-            <Stack gap={0} align={'flex-start'}>
-              {cappedAnchorName}
+            <Stack gap={0} maw={130} style={{ textAlign: 'start' }}>
+              <Text truncate>{anchorName}</Text>
               <Text>Anchor</Text>
             </Stack>
           </>
           <>
             <TelescopeIcon size={IconSize.lg} />
-            <Stack gap={0} align={'flex-start'}>
-              {cappedAimName}
+            <Stack gap={0} maw={130} style={{ textAlign: 'start' }}>
+              <Text truncate>{aimName}</Text>
               <Text>Aim</Text>
             </Stack>
           </>
@@ -75,20 +73,20 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
         leftSection={<FocusIcon size={IconSize.lg} />}
         size={'xl'}
       >
-        <Stack gap={0} align={'flex-start'} justify={'center'}>
+        <Stack gap={0} justify={'center'} maw={130} style={{ textAlign: 'start' }}>
           {!isReady && <Skeleton>Anchor</Skeleton>}
-          {cappedAnchorName}
+          <Text truncate>{anchorName}</Text>
           <Text>Focus</Text>
         </Stack>
       </Button>
     );
   }
 
-  function cameraPathButtons() {
+  function cameraPathButtons(): React.JSX.Element {
     return (
-      <Group gap={'xs'}>
+      <Group>
         <CancelFlightButton />
-        <RemainingFlightTime />
+        <RemainingFlightTimeIndicator />
       </Group>
     );
   }

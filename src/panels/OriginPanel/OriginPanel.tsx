@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import {
-  ActionIcon,
   Box,
   Button,
   Center,
@@ -9,7 +8,6 @@ import {
   Paper,
   ScrollArea,
   SegmentedControl,
-  Title,
   VisuallyHidden
 } from '@mantine/core';
 
@@ -32,11 +30,11 @@ import {
   RetargetAimKey,
   RetargetAnchorKey
 } from '@/util/keys';
-import { hasInterestingTag } from '@/util/propertyTreeHelpers';
+import { hasInterestingTag, isPropertyOwnerHidden } from '@/util/propertyTreeHelpers';
 
 import { FocusEntry } from './FocusEntry';
 import { OriginSettings } from './OriginSettings';
-import { RemainingFlightTime } from './RemainingFlightTime';
+import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
 enum NavigationActionState {
   Focus = 'Focus',
@@ -91,9 +89,7 @@ export function OriginPanel() {
 
   // Searchable nodes are all nodes that are not hidden in the GUI
   const searchableNodes = allNodes.filter((node) => {
-    const isHiddenProp = properties[`${node.uri}.GuiHidden`];
-    const isHidden = isHiddenProp && isHiddenProp.value;
-    return !isHidden;
+    return !isPropertyOwnerHidden(node.uri, properties);
   });
 
   const sortedDefaultList = defaultList
@@ -239,7 +235,7 @@ export function OriginPanel() {
             <Paper mb={'xs'} py={'xs'}>
               <Center>
                 <Group>
-                  <RemainingFlightTime compact={false} />{' '}
+                  <RemainingFlightTimeIndicator compact={false} />{' '}
                   <Button
                     onClick={() => luaApi?.pathnavigation.stopPath()}
                     leftSection={<AirplaneCancelIcon size={IconSize.md} />}

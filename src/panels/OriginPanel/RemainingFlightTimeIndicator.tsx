@@ -15,14 +15,13 @@ interface Props {
   compact?: boolean;
 }
 
-export function RemainingFlightTime({ compact = true }: Props) {
+export function RemainingFlightTimeIndicator({ compact = true }: Props) {
   const pathTargetNode = useAppSelector((state) => state.cameraPath.target);
   const pathTargetNodeName =
     useGetPropertyOwner(`${ScenePrefixKey}${pathTargetNode}`)?.name ?? pathTargetNode;
   const remainingTimeForPath = useAppSelector((state) => state.cameraPath.remainingTime);
 
   const dispatch = useAppDispatch();
-  const cappedPathTargetNodeName = pathTargetNodeName.substring(0, 20);
 
   useEffect(() => {
     dispatch(subscribeToCameraPath());
@@ -37,15 +36,17 @@ export function RemainingFlightTime({ compact = true }: Props) {
         <Group wrap={'nowrap'} pr={'xs'}>
           <AirplaneIcon size={IconSize.lg} />
           <Box>
-            <Text truncate>{cappedPathTargetNodeName}</Text>
-            <Text>{remainingTimeForPath}</Text>
+            <Text truncate maw={130}>
+              {pathTargetNodeName}
+            </Text>
+            <Text>{remainingTimeForPath} s</Text>
           </Box>
         </Group>
       ) : (
         <Group gap={'xs'}>
           <AirplaneIcon size={IconSize.md} />
-          <Text>Flying to {cappedPathTargetNodeName}</Text>
-          <Text>{remainingTimeForPath}</Text>
+          <Text>Flying to {pathTargetNodeName}</Text>
+          <Text>{remainingTimeForPath} s</Text>
         </Group>
       )}
     </>
