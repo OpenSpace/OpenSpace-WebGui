@@ -4,9 +4,9 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { PlusIcon } from '@/icons/icons';
 import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
-import { useActiveImage, useSelectedBrowserColorString } from '../hooks';
 import { IconImage } from '../components/IconImage';
 import { ImageInfoPopover } from '../components/ImageInfoPopover';
+import { useActiveImage, useSelectedBrowserColorString } from '../hooks';
 
 interface Props {
   image: SkyBrowserImage;

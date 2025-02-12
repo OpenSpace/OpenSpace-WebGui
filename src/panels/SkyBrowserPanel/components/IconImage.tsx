@@ -1,4 +1,5 @@
 import { AspectRatio, Image, ImageProps, ThemeIcon, UnstyledButton } from '@mantine/core';
+
 import styles from './IconImage.module.css';
 
 interface Props extends ImageProps {

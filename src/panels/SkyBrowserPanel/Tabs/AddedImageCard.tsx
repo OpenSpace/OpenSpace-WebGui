@@ -6,9 +6,9 @@ import { DeleteIcon, MoveTargetIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
-import { useActiveImage, useSelectedBrowserColorString } from '../hooks';
 import { IconImage } from '../components/IconImage';
 import { ImageInfoPopover } from '../components/ImageInfoPopover';
+import { useActiveImage, useSelectedBrowserColorString } from '../hooks';
 
 interface Props {
   image: SkyBrowserImage;

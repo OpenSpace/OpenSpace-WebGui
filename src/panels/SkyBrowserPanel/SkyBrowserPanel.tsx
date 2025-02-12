@@ -1,13 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import {
-  Button,
-  Image,
-  Loader,
-  LoadingOverlay,
-  ScrollArea,
-  Stack,
-  Text
-} from '@mantine/core';
+import { Button, Image, Loader, ScrollArea, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
@@ -52,7 +44,7 @@ export function SkyBrowserPanel() {
 
   if (!isInitialized || !luaApi) {
     return (
-      <Stack align="center">
+      <Stack align={'center'}>
         <Text>Loading Sky Browser...</Text>
         <Loader />
       </Stack>
