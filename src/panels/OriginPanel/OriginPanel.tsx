@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { ActionIcon, Box, Container, Group, ScrollArea, Title } from '@mantine/core';
 
 import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
+import { useGenerateHeightFunction } from '@/components/FilterList/hooks';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
@@ -38,8 +39,9 @@ export function OriginPanel() {
   const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
   const triggerRetargetAim = useTriggerProperty(RetargetAimKey);
 
+  const { ref, heightFunction } = useGenerateHeightFunction(300, 20);
+
   const dispatch = useAppDispatch();
-  const ref = useRef<HTMLDivElement | null>(null);
 
   const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
   const allNodes = uris
@@ -170,18 +172,6 @@ export function OriginPanel() {
     }
   }
 
-  function computeHeight(windowHeight: number): number {
-    if (!ref.current) {
-      return windowHeight * 0.5; // A fallback option in case we have no ref yet
-    }
-    // TODO (ylvse 2025-01-21): make this bottom margin a mantine variable somehow?
-    // Same for minSize
-    const bottomMargin = 40;
-    const minSize = 300;
-    const filterListHeight = windowHeight - ref.current.clientHeight - bottomMargin;
-    return Math.max(filterListHeight, minSize);
-  }
-
   return (
     <ScrollArea h={'100%'}>
       <Container>
@@ -219,7 +209,7 @@ export function OriginPanel() {
             </ActionIcon>
           </Group>
         </Box>
-        <FilterList heightFunc={computeHeight}>
+        <FilterList heightFunc={heightFunction}>
           <FilterList.InputField
             placeHolderSearchText={searchPlaceholderText}
             showMoreButton

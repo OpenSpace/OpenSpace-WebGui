@@ -1,6 +1,6 @@
-import { useRef } from 'react';
 import { Box, Container, ScrollArea, Tabs, Title } from '@mantine/core';
 
+import { useGenerateHeightFunction } from '@/components/FilterList/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { SceneTree } from '@/panels/Scene/SceneTree/SceneTree';
 import { useAppSelector } from '@/redux/hooks';
@@ -12,7 +12,8 @@ export function Scene() {
   const hasLoadedScene = useAppSelector(
     (state) => Object.keys(state.propertyOwners.propertyOwners).length > 0
   );
-  const ref = useRef<HTMLDivElement>(null);
+
+  const { ref, heightFunction } = useGenerateHeightFunction(300, 10);
 
   if (!hasLoadedScene) {
     return (
@@ -40,7 +41,7 @@ export function Scene() {
               <Title order={2}>Scene</Title>
               <FeaturedSceneTree />
             </Box>
-            <SceneTree siblingRef={ref} />
+            <SceneTree heightFunction={heightFunction} />
           </Container>
         </Tabs.Panel>
       </Tabs>
