@@ -5,8 +5,8 @@ import { PlusIcon } from '@/icons/icons';
 import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
 import { useActiveImage, useSelectedBrowserColorString } from '../hooks';
-import { IconImage } from '../IconImage';
-import { ImageInfoPopover } from '../ImageInfoPopover';
+import { IconImage } from '../components/IconImage';
+import { ImageInfoPopover } from '../components/ImageInfoPopover';
 
 interface Props {
   image: SkyBrowserImage;
@@ -25,7 +25,13 @@ export function ImageCard({ image }: Props) {
   return (
     <Card withBorder shadow={'sm'} style={{ borderColor: isActive ? color : undefined }}>
       <Card.Section>
-        <IconImage url={image.thumbnail} onClick={select} icon={<PlusIcon />} />
+        <IconImage
+          url={image.thumbnail}
+          onClick={select}
+          icon={<PlusIcon />}
+          h={'100%'}
+          w={'100%'}
+        />
       </Card.Section>
       <Card.Section p={'xs'}>
         <Group wrap={'nowrap'}>

@@ -7,8 +7,8 @@ import { useAppSelector } from '@/redux/hooks';
 import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
 import { useActiveImage, useSelectedBrowserColorString } from '../hooks';
-import { IconImage } from '../IconImage';
-import { ImageInfoPopover } from '../ImageInfoPopover';
+import { IconImage } from '../components/IconImage';
+import { ImageInfoPopover } from '../components/ImageInfoPopover';
 
 interface Props {
   image: SkyBrowserImage;
@@ -54,9 +54,7 @@ export function AddedImageCard({ image, opacity }: Props) {
             luaApi?.skybrowser.selectImage(image.url);
             setActiveImage(image.url);
           }}
-          miw={96}
-          maw={150}
-          flex={1}
+          bd={'1px solid var(--mantine-color-gray-7)'}
           radius={'sm'}
         />
         <Stack flex={'1 1'} gap={0}>
