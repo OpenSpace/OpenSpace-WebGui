@@ -4,9 +4,9 @@ import {
   Box,
   Button,
   Center,
-  Paper,
   Container,
   Group,
+  Paper,
   ScrollArea,
   SegmentedControl,
   Title,
@@ -244,7 +244,7 @@ export function OriginPanel() {
                     onClick={() => luaApi?.pathnavigation.stopPath()}
                     leftSection={<AirplaneCancelIcon size={IconSize.md} />}
                     variant={'outline'}
-                    color="red"
+                    color={'red'}
                   >
                     Cancel Flight
                   </Button>

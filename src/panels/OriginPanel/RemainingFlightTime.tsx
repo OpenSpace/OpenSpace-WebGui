@@ -42,8 +42,8 @@ export function RemainingFlightTime({ compact = true }: Props) {
           </Box>
         </Group>
       ) : (
-        <Group>
-          <AirplaneIcon size={IconSize.lg} />
+        <Group gap={'xs'}>
+          <AirplaneIcon size={IconSize.md} />
           <Text>Flying to {cappedPathTargetNodeName}</Text>
           <Text>{remainingTimeForPath}</Text>
         </Group>

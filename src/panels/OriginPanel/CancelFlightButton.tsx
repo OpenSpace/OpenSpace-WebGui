@@ -29,6 +29,8 @@ export function CancelFlightButton({ capAnchorText = true }: Props) {
       leftSection={<AirplaneCancelIcon size={IconSize.lg} />}
       onClick={cancelFlight}
       size={'xl'}
+      variant={'filled'}
+      color={'red'}
     >
       <Stack gap={0}>
         <Text>Cancel</Text>
