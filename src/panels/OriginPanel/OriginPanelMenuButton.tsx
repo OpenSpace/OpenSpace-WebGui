@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Button, Card, Group, Paper, Skeleton, Stack, Text } from '@mantine/core';
+import { Button, Group, Skeleton, Stack, Text } from '@mantine/core';
 
 import { useGetPropertyOwner, useGetStringPropertyValue } from '@/api/hooks';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';

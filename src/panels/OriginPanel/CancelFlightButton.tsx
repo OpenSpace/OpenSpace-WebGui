@@ -1,4 +1,4 @@
-import { Button, Group, Stack, Text } from '@mantine/core';
+import { Button, Stack, Text } from '@mantine/core';
 
 import {
   useGetPropertyOwner,
