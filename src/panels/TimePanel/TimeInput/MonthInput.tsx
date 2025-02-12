@@ -22,10 +22,16 @@ const Months: string[] = [
 
 interface Props extends MantineStyleProps {
   month: number;
-  onInputChange: (value: number, relative: boolean, interpolate: boolean) => void;
+  onInputChangeStep: (change: number) => void;
+  onInputChange: (value: number) => void;
 }
 
-export function MonthInput({ month, onInputChange, ...styleProps }: Props) {
+export function MonthInput({
+  month,
+  onInputChange,
+  onInputChangeStep,
+  ...styleProps
+}: Props) {
   const [storedMonth, setStoredMonth] = useState<number>(month);
 
   useEffect(() => {
@@ -35,7 +41,7 @@ export function MonthInput({ month, onInputChange, ...styleProps }: Props) {
   function onInput(newValue: string): void {
     const monthIndex = parseMonthTextInput(newValue);
     if (monthIndex !== null) {
-      onInputChange(monthIndex, false, false);
+      onInputChange(monthIndex);
       setStoredMonth(monthIndex);
     }
   }
@@ -95,14 +101,10 @@ export function MonthInput({ month, onInputChange, ...styleProps }: Props) {
   }
 
   return (
-    <StackedStepControls
-      onChange={(change, shiftKey) => {
-        onInputChange(change, true, !shiftKey);
-      }}
-    >
+    <StackedStepControls onChange={onInputChangeStep}>
       <StringInput
         value={monthLabel(storedMonth)}
-        onEnter={(newValue) => onInput(newValue)}
+        onEnter={onInput}
         onKeyDown={onKeyDown}
         errorCheck={(value) => !isValidMonth(parseMonthTextInput(value))}
         {...styleProps}

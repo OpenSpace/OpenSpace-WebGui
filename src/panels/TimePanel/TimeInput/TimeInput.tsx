@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ActionIcon, Button, Center, Group, Stack, Text } from '@mantine/core';
+import { useWindowEvent } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LockIcon, LockOpenIcon } from '@/icons/icons';
@@ -16,6 +17,7 @@ import { TimeIncrementInput } from './TimeIncrementInput';
 export function TimeInput() {
   const [useLock, setUseLock] = useState(false);
   const [pendingTime, setPendingTime] = useState(new Date(''));
+  const [isHoldingShift, setIsHoldingShift] = useState(false);
 
   const dispatch = useAppDispatch();
   const cappedTime = useAppSelector((state) => state.time.timeCapped);
@@ -24,6 +26,7 @@ export function TimeInput() {
   const cappedDate = new Date(cappedTime ?? '');
   const time = useLock ? pendingTime : cappedDate;
 
+  // @TODO (2025-02-12, emmbr) is this ref really recessary?
   // To avoid stale state and javascript capture magic, we need to set the time
   // to a ref so we can use the latest time in the functions in the component
   const timeRef = useRef(time);
@@ -36,6 +39,18 @@ export function TimeInput() {
       dispatch(unsubscribeToTime());
     };
   }, [dispatch]);
+
+  useWindowEvent('keydown', (event: KeyboardEvent) => {
+    if (event.key === 'Shift' && !event.repeat) {
+      setIsHoldingShift(true);
+    }
+  });
+
+  useWindowEvent('keyup', (event: KeyboardEvent) => {
+    if (event.key === 'Shift' && !event.repeat) {
+      setIsHoldingShift(false);
+    }
+  });
 
   function toggleLock() {
     setPendingTime(new Date(timeRef.current));
@@ -53,7 +68,7 @@ export function TimeInput() {
 
   function changeDate(event: {
     time: Date;
-    interpolate: boolean;
+    immediate: boolean; // If not, interpolate
     delta: number;
     relative: boolean;
   }) {
@@ -62,16 +77,16 @@ export function TimeInput() {
       return;
     }
 
-    if (event.interpolate) {
-      if (event.relative) {
-        interpolateDateRelative(event.delta);
-      } else {
-        interpolateDate(event.time);
-      }
+    if (event.immediate) {
+      setDate(luaApi, event.time);
       return;
     }
 
-    setDate(luaApi, event.time);
+    if (event.relative) {
+      interpolateDateRelative(event.delta);
+    } else {
+      interpolateDate(event.time);
+    }
   }
 
   function updateTime(timePart: TimePart, value: number, relative: boolean) {
@@ -135,7 +150,7 @@ export function TimeInput() {
   function onInputChange(
     value: number,
     relative: boolean,
-    interpolate: boolean,
+    immediate: boolean,
     timePart: TimePart
   ) {
     const newTime = updateTime(timePart, value, relative);
@@ -146,9 +161,9 @@ export function TimeInput() {
 
     changeDate({
       time: newTime,
-      interpolate: interpolate,
+      immediate: immediate ?? isHoldingShift,
       delta: (newTime.getTime() - timeRef.current.getTime()) / 1000,
-      relative: relative
+      relative
     });
   }
 
@@ -180,23 +195,26 @@ export function TimeInput() {
         <Group gap={5} wrap={'nowrap'}>
           <TimeIncrementInput
             value={time.getUTCFullYear()}
-            onInputChange={(value, relative, shiftKey) =>
-              onInputChange(value, relative, shiftKey, TimePart.Years)
+            onInputChange={(value) => onInputChange(value, false, true, TimePart.Years)}
+            onInputChangeStep={(change) =>
+              onInputChange(change, true, isHoldingShift, TimePart.Years)
             }
             w={65}
           />
           <MonthInput
             month={time.getUTCMonth()}
-            onInputChange={(value, relative, shiftKey) =>
-              onInputChange(value, relative, shiftKey, TimePart.Months)
+            onInputChange={(value) => onInputChange(value, false, true, TimePart.Months)}
+            onInputChangeStep={(change) =>
+              onInputChange(change, true, isHoldingShift, TimePart.Months)
             }
             w={55}
           />
 
           <TimeIncrementInput
             value={time.getUTCDate()}
-            onInputChange={(value, relative, shiftKey) =>
-              onInputChange(value, relative, shiftKey, TimePart.Days)
+            onInputChange={(value) => onInputChange(value, false, true, TimePart.Days)}
+            onInputChangeStep={(change) =>
+              onInputChange(change, true, isHoldingShift, TimePart.Days)
             }
             min={1}
             max={31}
@@ -206,8 +224,9 @@ export function TimeInput() {
         <Group gap={5} wrap={'nowrap'}>
           <TimeIncrementInput
             value={time.getUTCHours()}
-            onInputChange={(value, relative, shiftKey) =>
-              onInputChange(value, relative, shiftKey, TimePart.Hours)
+            onInputChange={(value) => onInputChange(value, false, true, TimePart.Hours)}
+            onInputChangeStep={(change) =>
+              onInputChange(change, true, isHoldingShift, TimePart.Hours)
             }
             min={0}
             max={24}
@@ -215,8 +234,9 @@ export function TimeInput() {
           />
           <TimeIncrementInput
             value={time.getUTCMinutes()}
-            onInputChange={(value, relative, shiftKey) =>
-              onInputChange(value, relative, shiftKey, TimePart.Minutes)
+            onInputChange={(value) => onInputChange(value, false, true, TimePart.Minutes)}
+            onInputChangeStep={(change) =>
+              onInputChange(change, true, isHoldingShift, TimePart.Minutes)
             }
             min={0}
             max={60}
@@ -224,8 +244,9 @@ export function TimeInput() {
           />
           <TimeIncrementInput
             value={time.getUTCSeconds()}
-            onInputChange={(value, relative, shiftKey) =>
-              onInputChange(value, relative, shiftKey, TimePart.Seconds)
+            onInputChange={(value) => onInputChange(value, false, true, TimePart.Seconds)}
+            onInputChangeStep={(change) =>
+              onInputChange(change, true, isHoldingShift, TimePart.Seconds)
             }
             min={0}
             max={60}
