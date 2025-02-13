@@ -46,7 +46,7 @@ export function Settings({ id }: Props) {
         defaultValue={color}
         onChange={setColor}
       />
-      <Button color={'red'} onClick={deleteBrowser} mt={'lg'}>
+      <Button variant={'outline'} color={'red'} onClick={deleteBrowser} mt={'lg'}>
         Delete browser
       </Button>
     </Stack>
