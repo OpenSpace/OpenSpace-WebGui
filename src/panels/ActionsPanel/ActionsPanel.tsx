@@ -112,7 +112,10 @@ export function ActionsPanel() {
                     fullWidth
                     h={80} // TODO anden88 2025-02-06: use same css variable as ActionsButton
                   >
-                    <Text style={{ whiteSpace: 'wrap', wordBreak: 'break-all' }}>
+                    <Text
+                      lineClamp={3}
+                      style={{ whiteSpace: 'wrap', wordBreak: 'break-all' }}
+                    >
                       {folder}
                     </Text>
                   </Button>

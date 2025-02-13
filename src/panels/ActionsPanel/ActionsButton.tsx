@@ -38,7 +38,7 @@ export function ActionsButton({ uri, action: _action }: Props) {
           flex={1}
           variant={'filled'}
         >
-          <Text size={'sm'} style={{ whiteSpace: 'wrap' }}>
+          <Text lineClamp={3} size={'sm'} style={{ whiteSpace: 'wrap' }}>
             {action.name}
           </Text>
         </Button>
