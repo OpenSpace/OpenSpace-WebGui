@@ -107,7 +107,7 @@ export function OriginPanel() {
     return aim !== '' && aim !== anchor;
   }
 
-  // TODO: anden88: @emma take a look at this
+  // TODO: anden88: @emma take a look at this. Is the flgiht controller really needed for this?
   function onSelect(
     identifier: Identifier,
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>

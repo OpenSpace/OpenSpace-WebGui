@@ -2,11 +2,9 @@ import { Property } from '@/components/Property/Property';
 
 import { PropertyVisibilityNumber } from './enums';
 
-/*--------------------------------------------------------------------------------------*/
 export type Uri = string;
 export type Identifier = string;
 
-/*--------------------------------------------------------------------------------------*/
 export interface Action {
   identifier: string;
   guiPath: string;
@@ -23,14 +21,11 @@ export interface Keybind {
 
 export type ActionOrKeybind = Action | Keybind;
 
-/*--------------------------------------------------------------------------------------*/
 export interface SemanticVersion {
   major: number;
   minor: number;
   patch: number;
 }
-
-/*--------------------------------------------------------------------------------------*/
 
 export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
 
@@ -82,7 +77,6 @@ export interface PropertyOwners {
   [key: Uri]: PropertyOwner | undefined;
 }
 
-/*--------------------------------------------------------------------------------------*/
 export type Group = {
   subgroups: string[]; // group paths
   propertyOwners: Uri[];
@@ -92,7 +86,6 @@ export type Groups = {
   [key: string]: Group;
 };
 
-/*--------------------------------------------------------------------------------------*/
 export type CustomGroupOrdering = {
   // The value is a list of node names in the order they should be displayed
   [key: string]: string[] | undefined;
