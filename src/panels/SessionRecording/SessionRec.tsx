@@ -8,20 +8,12 @@ import {
   ScrollArea,
   Select,
   Stack,
-  TextInput,
-  ThemeIcon,
-  Tooltip
+  TextInput
 } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import {
-  InformationIcon,
-  PlayIcon,
-  RecordIcon,
-  StopIcon,
-  VideocamIcon
-} from '@/icons/icons';
+import { PlayIcon, RecordIcon, StopIcon, VideocamIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   subscribeToSessionRecording,
