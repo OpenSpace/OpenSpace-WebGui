@@ -3,7 +3,7 @@ import { ActionIcon, Box, Container, Group, ScrollArea, Title } from '@mantine/c
 
 import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
-import { useGenerateHeightFunction } from '@/components/FilterList/hooks';
+import { useComputeHeightFunction } from '@/components/FilterList/hooks';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
@@ -39,7 +39,7 @@ export function OriginPanel() {
   const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
   const triggerRetargetAim = useTriggerProperty(RetargetAimKey);
 
-  const { ref, heightFunction } = useGenerateHeightFunction(300, 20);
+  const { ref, heightFunction } = useComputeHeightFunction(300, 20);
 
   const dispatch = useAppDispatch();
 

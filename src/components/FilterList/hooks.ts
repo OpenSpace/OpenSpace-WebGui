@@ -10,11 +10,21 @@ export function useFilterListProvider() {
   return context;
 }
 
-export function useGenerateHeightFunction(minHeight: number, bottomMargin?: number) {
-  const ref = useRef<HTMLDivElement | null>(null);
+/**
+ * @param minHeight The minimum height the `FilterList` can be
+ * @param bottomMargin The amount of margin to the bottom of the panel, this value is
+ * subtracted from the total `FilterList` height and is not to be confused with css margin
+ *
+ * @returns An object containing:
+ * - `ref` -  A reference to a sibling HTML element of `FilterList`, used to determine the
+ * available space within the parent container
+ * - `heightFunction` - Generated function that calculates the appropriate height, to be
+ * passed to `FilterList` component*/
+export function useComputeHeightFunction(minHeight: number, bottomMargin?: number) {
+  const siblingRef = useRef<HTMLDivElement | null>(null);
 
   const heightFunction = (windowHeight: number): number => {
-    const siblingHeight = ref.current?.clientHeight;
+    const siblingHeight = siblingRef.current?.clientHeight;
     // A fallback option in case we don't know about our siblings height
     if (siblingHeight === undefined) {
       return windowHeight * 0.5;
@@ -25,5 +35,5 @@ export function useGenerateHeightFunction(minHeight: number, bottomMargin?: numb
     return Math.max(filterListHeight, minHeight);
   };
 
-  return { ref, heightFunction };
+  return { ref: siblingRef, heightFunction };
 }

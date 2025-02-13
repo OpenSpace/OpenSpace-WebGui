@@ -1,6 +1,6 @@
 import { Box, Container, ScrollArea, Tabs, Title } from '@mantine/core';
 
-import { useGenerateHeightFunction } from '@/components/FilterList/hooks';
+import { useComputeHeightFunction } from '@/components/FilterList/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { SceneTree } from '@/panels/Scene/SceneTree/SceneTree';
 import { useAppSelector } from '@/redux/hooks';
@@ -13,7 +13,7 @@ export function Scene() {
     (state) => Object.keys(state.propertyOwners.propertyOwners).length > 0
   );
 
-  const { ref, heightFunction } = useGenerateHeightFunction(300, 10);
+  const { ref, heightFunction } = useComputeHeightFunction(300, 10);
 
   if (!hasLoadedScene) {
     return (
