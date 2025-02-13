@@ -17,7 +17,7 @@ body {
 }
 
 .dock-panel {
-  background-color: rgba(20, 20, 20, 0.8);
+  background-color: var(--mantine-color-dark-9) ;
 }
 
 .dock-style-headless {
