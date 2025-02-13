@@ -42,16 +42,16 @@ export function VirtualList<T>({
         ref={parentRef}
         style={{
           height: `100%`,
-          width: `100%`,
-          overflow: 'auto'
+          overflow: 'auto',
+          width: '100%'
         }}
       >
         {/* The large inner element to hold all of the items */}
         <div
           style={{
             height: `${virtualizer.getTotalSize()}px`,
-            width: '100%',
-            position: 'relative'
+            position: 'relative',
+            width: '100%'
           }}
         >
           <div

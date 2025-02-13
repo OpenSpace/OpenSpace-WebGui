@@ -30,11 +30,9 @@ export const ImageList = memo(function ImageList({
     []
   );
 
-  const keyFunc = useCallback((image: SkyBrowserImage) => image.url, []);
-
   const cardWidth = 140;
   const maxColumns = 10;
-  const columns = Math.max(Math.min(Math.floor(width / cardWidth), maxColumns), 1);
+  const columns = Math.max(Math.min(Math.ceil(width / cardWidth), maxColumns), 1);
 
   if (imageList.length === 0) {
     return noImagesDisplay;
@@ -44,15 +42,12 @@ export const ImageList = memo(function ImageList({
       <FilterList.InputField
         placeHolderSearchText={`Search ${imageList.length} image${imageList.length > 1 ? 's' : ''}...`}
       />
-      <FilterList.SearchResults>
-        <FilterList.SearchResults.VirtualGrid<SkyBrowserImage>
-          data={imageList}
-          gap={15}
-          renderElement={renderImageCard}
-          matcherFunc={matcherFunc}
-          columns={columns}
-          keyFunc={keyFunc}
-        />
+      <FilterList.SearchResults
+        data={imageList}
+        renderElement={renderImageCard}
+        matcherFunc={matcherFunc}
+      >
+        <FilterList.SearchResults.VirtualGrid gap={15} columns={columns} />
       </FilterList.SearchResults>
     </FilterList>
   );

@@ -1,35 +1,27 @@
 import { KeyType, VirtualGrid } from '@/components/VirtualList/VirtualGrid';
-import { SearchResultsProps } from '@/types/types';
 
-import { useSearch } from './hooks';
+import { useSearchResultProvider } from './hooks';
 
-export interface Props<T> extends SearchResultsProps<T> {
+export interface Props {
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
-  estimateSize?: number;
   columns?: number;
-  keyFunc: (element: T) => string;
 }
 
 export function SearchResultsVirtualGrid<T extends KeyType>({
-  data,
-  renderElement,
-  matcherFunc,
   gap,
   overscan,
-  columns,
-  keyFunc
-}: Props<T>) {
-  const filteredElements = useSearch(matcherFunc, data);
+  columns
+}: Props) {
+  const { filteredItems, renderElement } = useSearchResultProvider<T>();
 
   return (
     <VirtualGrid
-      data={filteredElements}
+      data={filteredItems}
       renderElement={renderElement}
       gap={gap}
       overscan={overscan}
       columns={columns}
-      keyFunc={keyFunc}
     />
   );
 }

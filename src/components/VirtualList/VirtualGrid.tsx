@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Grid } from '@mantine/core';
+import { Box, SimpleGrid } from '@mantine/core';
 
 import { VirtualList } from './VirtualList';
 
@@ -9,7 +9,6 @@ export interface KeyType {
 export interface VirtualGridProps<T extends KeyType> {
   data: T[];
   renderElement: (data: T, i: number) => React.ReactNode;
-  keyFunc: (data: T) => string;
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
   columns?: number;
@@ -20,7 +19,6 @@ export interface VirtualGridProps<T extends KeyType> {
 export function VirtualGrid<T extends KeyType>({
   data,
   renderElement,
-  keyFunc,
   gap,
   overscan,
   columns = 3
@@ -40,13 +38,11 @@ export function VirtualGrid<T extends KeyType>({
       gap={gap}
       overscan={overscan}
       renderElement={(row, iRow) => (
-        <Grid key={`grid${iRow}`}>
+        <SimpleGrid key={`grid${iRow}`} cols={columns} spacing={gap}>
           {row?.map((element, iCol) => (
-            <Grid.Col key={keyFunc(element)} span={12 / columns}>
-              {renderElement(element, iRow + iCol)}
-            </Grid.Col>
+            <Box key={`row${iRow}${iCol}`}>{renderElement(element, iRow + iCol)}</Box>
           ))}
-        </Grid>
+        </SimpleGrid>
       )}
     />
   );

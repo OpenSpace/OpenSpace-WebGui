@@ -8,6 +8,7 @@ import { useFilterListProvider } from '../hooks';
 import { SearchResultContext } from './SearchResultContext';
 import { SearchResultsPagination } from './SearchResultsPagination';
 import { SearchResultsVirtualList } from './SearchResultsVirtualList';
+import { SearchResultsVirtualGrid } from './SearchResultsVirtualGrid';
 
 interface Props<T> extends PropsWithChildren {
   renderElement: renderFunc<T>;
@@ -32,7 +33,7 @@ export function SearchResults<T>({
 
   if (!children) {
     throw Error(
-      'FilterList.SearchResults must contain children! Please provide a search result type component as the  child of this component'
+      'FilterList.SearchResults must contain children! Please provide a search result type component as the child of this component.'
     );
   }
 
@@ -51,5 +52,6 @@ export function SearchResults<T>({
   );
 }
 
+SearchResults.VirtualGrid = SearchResultsVirtualGrid;
 SearchResults.VirtualList = SearchResultsVirtualList;
 SearchResults.Pagination = SearchResultsPagination;
