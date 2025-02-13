@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button, Image, Loader, ScrollArea, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -13,6 +13,7 @@ import { WwtProvider } from './WorldWideTelescope/WwtProvider/WwtProvider';
 import { useGetSkyBrowserData } from './hooks';
 
 export function SkyBrowserPanel() {
+  const [waitingForData, setWaitingForData] = useState(false);
   const isInitialized = useAppSelector((state) => state.skybrowser.isInitialized);
   const cameraInSolarSystem = useAppSelector(
     (state) => state.skybrowser.cameraInSolarSystem
@@ -40,10 +41,11 @@ export function SkyBrowserPanel() {
   useEffect(() => {
     if (nBrowsers > 0) {
       openWorldWideTelescope();
+      setWaitingForData(false);
     }
-  }, [openWorldWideTelescope, nBrowsers]);
+  }, [openWorldWideTelescope, nBrowsers, setWaitingForData]);
 
-  if (!isInitialized || !luaApi) {
+  if (!isInitialized || !luaApi || waitingForData) {
     return (
       <Stack align={'center'}>
         <Text>Loading Sky Browser...</Text>
@@ -58,7 +60,10 @@ export function SkyBrowserPanel() {
     return (
       <Stack h={'100%'} w={'100%'} align={'center'} p={'lg'}>
         <Button
-          onClick={() => luaApi.skybrowser.createTargetBrowserPair()}
+          onClick={() => {
+            luaApi.skybrowser.createTargetBrowserPair();
+            setWaitingForData(true);
+          }}
           my={'lg'}
           leftSection={<PlusIcon />}
           size={'lg'}
