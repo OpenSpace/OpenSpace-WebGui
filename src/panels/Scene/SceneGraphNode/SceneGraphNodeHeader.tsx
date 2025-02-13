@@ -36,18 +36,14 @@ export function SceneGraphNodeHeader({ uri, label, onClick, leftSection }: Props
   // the header is resized.
   const titleButton = (
     <Button
-      style={{ flexGrow: 1 }}
+      flex={1}
       h={'fit-content'}
       variant={'transparent'}
-      justify={'left'}
       p={0}
       size={'compact-sm'}
       onClick={onClick}
     >
-      <Text
-        mah={'80px'}
-        style={{ whiteSpace: 'wrap', overflowWrap: 'anywhere', textAlign: 'left' }}
-      >
+      <Text mah={'80px'} style={{ textWrap: 'pretty', textAlign: 'left' }}>
         {name}
       </Text>
     </Button>
