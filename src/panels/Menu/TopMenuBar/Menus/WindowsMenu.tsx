@@ -4,11 +4,13 @@ import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
-export function NewWindowMenu() {
+import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
+
+export function WindowsMenu() {
   const { addWindow } = useWindowLayoutProvider();
 
   return (
-    <>
+    <TopBarMenuWrapper closeOnItemClick={false} targetTitle={'Windows'}>
       <Menu.Label>Add New Window</Menu.Label>
       {menuItemsData.map((item) => (
         <Menu.Item
@@ -26,6 +28,6 @@ export function NewWindowMenu() {
           {item.title}
         </Menu.Item>
       ))}
-    </>
+    </TopBarMenuWrapper>
   );
 }

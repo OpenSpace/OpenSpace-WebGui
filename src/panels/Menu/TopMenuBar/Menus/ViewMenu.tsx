@@ -1,21 +1,18 @@
 import { Dispatch, SetStateAction } from 'react';
 import { CheckboxIndicator, Menu } from '@mantine/core';
 
-import { ChevronRightIcon, TaskBarIcon } from '@/icons/icons';
+import { ChevronRightIcon, SaveIcon, TaskBarIcon, VisibilityIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
-import { MenuWrapper } from './MenuWrapper';
+import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
-interface TaskBarChoicesProps {
+interface Props {
   visibleMenuItems: string[];
   setVisibleMenuItems: Dispatch<SetStateAction<string[]>>;
 }
 
-export function TaskBarMenuChoices({
-  visibleMenuItems,
-  setVisibleMenuItems
-}: TaskBarChoicesProps) {
+export function ViewMenu({ visibleMenuItems, setVisibleMenuItems }: Props) {
   function toggleMenuItem(id: string): void {
     setVisibleMenuItems((prevstate) => {
       const index = prevstate.indexOf(id);
@@ -31,16 +28,20 @@ export function TaskBarMenuChoices({
   }
 
   return (
-    <MenuWrapper position={'right-start'} withinPortal={false} closeOnItemClick={false}>
-      <Menu.Target>
-        <Menu.Item
-          leftSection={<TaskBarIcon />}
-          rightSection={<ChevronRightIcon size={IconSize.sm} />}
-        >
-          Task Bar
-        </Menu.Item>
-      </Menu.Target>
-      <Menu.Dropdown>
+    <TopBarMenuWrapper targetTitle={'View'}>
+      <TopBarMenuWrapper
+        targetTitle={
+          <Menu.Item
+            leftSection={<TaskBarIcon />}
+            rightSection={<ChevronRightIcon size={IconSize.sm} />}
+          >
+            Task Bar
+          </Menu.Item>
+        }
+        position={'right-start'}
+        withinPortal={false}
+        closeOnItemClick={false}
+      >
         <Menu.Label>Toggle Task Bar Items</Menu.Label>
         {menuItemsData.map((item) => (
           <Menu.Item
@@ -54,7 +55,11 @@ export function TaskBarMenuChoices({
             {item.title}
           </Menu.Item>
         ))}
-      </Menu.Dropdown>
-    </MenuWrapper>
+      </TopBarMenuWrapper>
+
+      <Menu.Item leftSection={<SaveIcon />}>Load/Save Layout</Menu.Item>
+      <Menu.Divider />
+      <Menu.Item leftSection={<VisibilityIcon />}>User Visibility</Menu.Item>
+    </TopBarMenuWrapper>
   );
 }

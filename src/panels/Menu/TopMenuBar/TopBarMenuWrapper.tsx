@@ -1,13 +1,16 @@
 import { PropsWithChildren } from 'react';
 import {
   ArrowPosition,
+  Button,
   FloatingAxesOffsets,
   FloatingPosition,
   Menu,
-  MenuProps
+  MenuProps,
+  Text
 } from '@mantine/core';
 
 interface Props extends MenuProps, PropsWithChildren {
+  targetTitle: string | React.ReactNode;
   menuItemTabIndex?: -1 | 0;
   position?: FloatingPosition;
   offset?: number | FloatingAxesOffsets;
@@ -15,10 +18,11 @@ interface Props extends MenuProps, PropsWithChildren {
   arrowPosition?: ArrowPosition;
 }
 
-export function MenuWrapper({
+export function TopBarMenuWrapper({
+  targetTitle,
   menuItemTabIndex = 0,
   position = 'bottom-start',
-  offset = 8,
+  offset = 5,
   withArrow = true,
   arrowPosition = 'center',
   children,
@@ -33,7 +37,16 @@ export function MenuWrapper({
       arrowPosition={arrowPosition}
       {...props}
     >
-      {children}
+      <Menu.Target>
+        {typeof targetTitle === 'string' ? (
+          <Button size={'xs'} variant={'transparent'} color={'white'}>
+            <Text>{targetTitle}</Text>
+          </Button>
+        ) : (
+          targetTitle
+        )}
+      </Menu.Target>
+      <Menu.Dropdown>{children}</Menu.Dropdown>
     </Menu>
   );
 }
