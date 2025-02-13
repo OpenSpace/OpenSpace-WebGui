@@ -63,7 +63,7 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
           maw={window.innerWidth * 0.25}
           src={displayedPhase.data.image}
           alt={'Image text not available'}
-          fallbackSrc={'public/placeholder.svg'}
+          fallbackSrc={'placeholder.svg'}
         />
       )}
       <Title order={3} my={'md'}>

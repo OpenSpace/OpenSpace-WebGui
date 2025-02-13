@@ -7,8 +7,8 @@ import { useFilterListProvider } from '../hooks';
 
 import { SearchResultContext } from './SearchResultContext';
 import { SearchResultsPagination } from './SearchResultsPagination';
-import { SearchResultsVirtualList } from './SearchResultsVirtualList';
 import { SearchResultsVirtualGrid } from './SearchResultsVirtualGrid';
+import { SearchResultsVirtualList } from './SearchResultsVirtualList';
 
 interface Props<T> extends PropsWithChildren {
   renderElement: renderFunc<T>;

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
-import { useVirtualizer } from '@tanstack/react-virtual';
 import { Box, MantineSpacing } from '@mantine/core';
+import { useVirtualizer } from '@tanstack/react-virtual';
 
 export interface VirtualListProps<T> {
   data: T[];

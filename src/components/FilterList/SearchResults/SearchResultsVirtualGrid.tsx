@@ -1,7 +1,8 @@
+import { MantineSpacing } from '@mantine/core';
+
 import { KeyType, VirtualGrid } from '@/components/VirtualList/VirtualGrid';
 
 import { useSearchResultProvider } from './hooks';
-import { MantineSpacing } from '@mantine/core';
 
 export interface Props {
   gap?: MantineSpacing; // Gap in pixels between items
