@@ -11,6 +11,8 @@ export function useFilterListProvider() {
 }
 
 /**
+ * Generates a function that calculates the available height for the `FilterList` component
+ *
  * @param minHeight The minimum height the `FilterList` can be
  * @param bottomMargin The amount of margin to the bottom of the panel, this value is
  * subtracted from the total `FilterList` height and is not to be confused with css margin
