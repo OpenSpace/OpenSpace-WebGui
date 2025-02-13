@@ -121,7 +121,6 @@ export function ResizeableContent({ minHeight = 40, defaultHeight, children }: P
           }}
           size={'xs'}
           radius={0}
-          variant={'default'}
         >
           <DragHandleIcon size={IconSize.xs} />
         </ActionIcon>

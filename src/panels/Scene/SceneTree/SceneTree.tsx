@@ -116,22 +116,12 @@ export function SceneTree({ heightFunction }: Props) {
 
       <FilterList.Favorites>
         <Group gap={0} pos={'absolute'} top={0} right={0}>
-          <Tooltip
-            label={'Collapse all'}
-            position={'top'}
-            transitionProps={{ enterDelay: 400 }}
-            withArrow
-          >
+          <Tooltip label={'Collapse all'} position={'top'}>
             <ActionIcon variant={'subtle'} onClick={tree.collapseAllNodes}>
               <ChevronsUpIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip
-            label={'Expand all'}
-            position={'top'}
-            transitionProps={{ enterDelay: 400 }}
-            withArrow
-          >
+          <Tooltip label={'Expand all'} position={'top'}>
             <ActionIcon variant={'subtle'} onClick={tree.expandAllNodes}>
               <ChevronsDownIcon />
             </ActionIcon>
@@ -144,13 +134,15 @@ export function SceneTree({ heightFunction }: Props) {
         />
       </FilterList.Favorites>
 
-      <FilterList.Data<TreeNodeData>
+      <FilterList.SearchResults
         data={flatTreeData}
         renderElement={(node: TreeNodeData) => (
           <SceneTreeNodeContent key={node.value} node={node} expanded={false} />
         )}
         matcherFunc={generateMatcherFunctionByKeys(['label'])} // For now we just use the name
-      />
+      >
+        <FilterList.SearchResults.VirtualList />
+      </FilterList.SearchResults>
     </FilterList>
   );
 }

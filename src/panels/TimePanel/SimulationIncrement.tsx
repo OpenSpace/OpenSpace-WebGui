@@ -7,7 +7,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { TimePart } from '@/types/enums';
 
 import { DeltaTimeStepsControl } from './DeltaTimeStepControl';
-import { InlineInput } from './InlineInput';
+import { TimeIncrementInput } from './TimeIncrementInput';
 import { Decimals, StepSizes } from './util';
 
 export function SimulationIncrement() {
@@ -73,12 +73,13 @@ export function SimulationIncrement() {
           allowDeselect={false}
           onChange={(value) => setStepSize(value! as TimePart)}
         />
-        <InlineInput
+        <TimeIncrementInput
           label={`${stepSize} / second`}
           value={targetDeltaTime / StepSizes[stepSize]}
           onInputChange={setDeltaTime}
           step={1}
           decimalScale={Decimals[stepSize]}
+          wrapStepControlButtons={false}
         />
       </Group>
       <Text size={'md'} ta={'center'} c={'dimmed'} mt={'xs'}>

@@ -1,6 +1,8 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
 
-export interface ProviderProps {
+export type renderFunc<T> = (data: T, i: number) => React.ReactNode;
+
+export interface FilterListProviderProps {
   searchString: string;
   setSearchString: Dispatch<SetStateAction<string>>;
   showFavorites: boolean;
@@ -9,4 +11,4 @@ export interface ProviderProps {
   isLoading: boolean;
 }
 
-export const FilterListContext = createContext<ProviderProps | null>(null);
+export const FilterListContext = createContext<FilterListProviderProps | null>(null);
