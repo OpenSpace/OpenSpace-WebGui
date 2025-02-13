@@ -1,13 +1,13 @@
-import { VirtualList } from '../../VirtualList/VirtualList';
+import { VirtualList } from '@/components/VirtualList/VirtualList';
 
 import { useSearchResultProvider } from './hooks';
 
-interface VirtualizedProps {
+interface Props {
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
 }
 
-export function SearchResultsVirtualList<T>({ gap, overscan }: VirtualizedProps) {
+export function SearchResultsVirtualList<T>({ gap, overscan }: Props) {
   const { filteredItems, renderElement } = useSearchResultProvider<T>();
 
   return (
