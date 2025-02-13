@@ -45,15 +45,14 @@ export const skyBrowserSlice = createSlice({
       if (action.payload.browsers && state.selectedBrowserId in action.payload.browsers) {
         state.browsers = action.payload.browsers;
         // For some reason the indices are sent as strings... convert them to numbers
-        for (const [_, browser] of Object.entries(state.browsers)) {
-          browser.selectedImages = browser.selectedImages.map((id) =>
-            typeof id === 'string' ? parseInt(id) : id
+        for (const browser of Object.values(state.browsers)) {
+          browser.selectedImages = browser.selectedImages.map((idx) =>
+            typeof idx === 'string' ? parseInt(idx) : idx
           );
         }
 
-        // Derived state
+        // Derived state for easier access
         state.browserIds = Object.keys(action.payload.browsers) ?? [];
-        // Get all colors
         state.browserColors = state.browserIds.map(
           (id) => action.payload.browsers[id].color
         );
@@ -61,6 +60,7 @@ export const skyBrowserSlice = createSlice({
           (id) => action.payload.browsers[id].name
         );
       } else {
+        // If the update is invalid, reset the state
         state.selectedBrowserId = '';
         state.browsers = {};
         state.browserIds = [];

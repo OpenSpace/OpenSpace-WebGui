@@ -1,9 +1,10 @@
 import { Stack, Text } from '@mantine/core';
 
+import { useAppSelector } from '@/redux/hooks';
+
 import { useGetImagesInView } from './hooks';
 import { ImageList } from './ImageList';
 import { InfoGraphic } from './InfoGraphic';
-import { useAppSelector } from '@/redux/hooks';
 
 function NoImagesDisplay() {
   return (
