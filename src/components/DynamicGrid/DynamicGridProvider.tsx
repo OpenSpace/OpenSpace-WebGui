@@ -4,11 +4,17 @@ import { DynamicGridContext } from './DynamicGridContext';
 
 interface Props extends PropsWithChildren {
   minChildSize: number;
-  nColumns: number;
+  columns: number;
+  gridWidth?: number;
 }
-export function DynamicGridProvider({ minChildSize, nColumns, children }: Props) {
+export function DynamicGridProvider({
+  minChildSize,
+  columns,
+  gridWidth,
+  children
+}: Props) {
   return (
-    <DynamicGridContext.Provider value={{ minChildSize, nColumns }}>
+    <DynamicGridContext.Provider value={{ minChildSize, columns, gridWidth }}>
       {children}
     </DynamicGridContext.Provider>
   );

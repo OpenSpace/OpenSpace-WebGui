@@ -5,6 +5,7 @@ import { OpenWindowIcon } from '@/icons/icons';
 import { ActionsButton } from '@/panels/ActionsPanel/ActionsButton';
 import { DisplayType } from '@/types/enums';
 import { DisplayedPhase, Phase } from '@/types/mission-types';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { MissionCaptureButtons } from './MissionCaptureButtons';
 import { MissionTimeButtons } from './MissionTimeButtons';
@@ -15,7 +16,9 @@ interface Props {
 }
 
 export function MissionPhase({ displayedPhase, missionOverview }: Props) {
+  const { width: panelWidth } = useWindowSize();
   const isMissionOverview = displayedPhase.type === DisplayType.Overview;
+  const timeLineWidth = 120;
 
   if (!displayedPhase.data) {
     return <></>;
@@ -76,7 +79,7 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
       <Title order={3} my={'md'}>
         Actions
       </Title>
-      <DynamicGrid minChildSize={200}>
+      <DynamicGrid minChildSize={170} gridWidth={panelWidth - timeLineWidth}>
         {/* Show phase specific actions */}
         {!isMissionOverview &&
           displayedPhase.data?.actions?.map((uri) => (

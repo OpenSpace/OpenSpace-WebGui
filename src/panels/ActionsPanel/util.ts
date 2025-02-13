@@ -49,17 +49,22 @@ export function actionsForLevel(
 }
 
 export function getDisplayedActions(allActions: Action[], navPath: string): Action[] {
+  const navPathGui = navPath.split('/');
+
   return allActions.filter((action) => {
+    // If we are at root path every action matches
     if (navPath.length === 1) {
       return true;
     }
-    const navPathGui = navPath.split('/');
-    const actionPathGui = action.guiPath?.split('/');
-    for (let i = 0; i < navPathGui.length; i++) {
-      if (actionPathGui?.[i] !== navPathGui[i]) {
-        return false;
-      }
+
+    const actionPathGui = action.guiPath.split('/');
+
+    // Paths don't match if they are not the same length
+    if (actionPathGui.length !== navPathGui.length) {
+      return false;
     }
-    return true;
+
+    // Make sure each part of the path matches
+    return actionPathGui.every((part, index) => part === navPathGui[index]);
   });
 }

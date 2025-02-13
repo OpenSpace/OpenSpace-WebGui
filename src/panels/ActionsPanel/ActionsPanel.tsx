@@ -20,7 +20,7 @@ import { Action } from '@/types/types';
 import { ActionsButton } from './ActionsButton';
 import { actionsForLevel, getDisplayedActions } from './util';
 
-import './ActionsPanel.css';
+import classes from './ActionsPanel.module.css';
 
 export function ActionsPanel() {
   const allActions = useAppSelector((state) => state.actions.actions);
@@ -98,9 +98,13 @@ export function ActionsPanel() {
         <FilterList>
           <FilterList.InputField placeHolderSearchText={'Search for an action...'} />
           <FilterList.Favorites>
-            <DynamicGrid gutter={'xs'} minChildSize={150} className={'actionsPanelGrid'}>
-              {actionLevel.folders.sort().map((folder, i) => (
-                <DynamicGrid.Col key={`${folder}_${i}`}>
+            <DynamicGrid
+              gutter={'xs'}
+              minChildSize={170}
+              className={classes.actionsPanelGrid}
+            >
+              {actionLevel.folders.sort().map((folder) => (
+                <DynamicGrid.Col key={folder}>
                   <Button
                     leftSection={<FolderIcon />}
                     onClick={() => addNavPath(folder)}
@@ -116,7 +120,7 @@ export function ActionsPanel() {
               ))}
 
               {actionLevel.actions.map((action: Action) => (
-                <DynamicGrid.Col key={`${action.identifier}_action`}>
+                <DynamicGrid.Col key={action.identifier}>
                   <ActionsButton action={action} />
                 </DynamicGrid.Col>
               ))}
@@ -125,7 +129,7 @@ export function ActionsPanel() {
           <FilterList.Data<Action>
             data={displayedActions}
             renderElement={(action: Action) => (
-              <ActionsButton key={`${action.identifier}Filtered`} action={action} />
+              <ActionsButton key={action.identifier} action={action} />
             )}
             matcherFunc={generateMatcherFunctionByKeys(['identifier', 'name', 'guiPath'])}
           />

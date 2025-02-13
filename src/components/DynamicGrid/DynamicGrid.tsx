@@ -6,12 +6,23 @@ import { DynamicGridProvider } from './DynamicGridProvider';
 
 interface Props extends GridProps, PropsWithChildren {
   minChildSize: number; // The minimum a child column can be before it will row break
+  gridWidth?: number; // The available width of this grid
 }
 
-export function DynamicGrid({ minChildSize, columns = 12, children, ...props }: Props) {
+export function DynamicGrid({
+  minChildSize,
+  columns = 12,
+  gridWidth,
+  children,
+  ...props
+}: Props) {
   return (
     <Grid columns={columns} {...props}>
-      <DynamicGridProvider minChildSize={minChildSize} nColumns={columns}>
+      <DynamicGridProvider
+        minChildSize={minChildSize}
+        columns={columns}
+        gridWidth={gridWidth}
+      >
         {children}
       </DynamicGridProvider>
     </Grid>

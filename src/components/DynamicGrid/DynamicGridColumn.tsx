@@ -5,19 +5,20 @@ import { useWindowSize } from '@/windowmanagement/Window/hooks';
 import { useDynamicGridProvider } from './hooks';
 
 export function DynamicGridColumn({ children, span, ...props }: GridColProps) {
-  const { width } = useWindowSize();
-  const { minChildSize, nColumns } = useDynamicGridProvider();
+  const { width: panelWidth } = useWindowSize();
+  const { minChildSize, columns, gridWidth } = useDynamicGridProvider();
 
-  const columns = computeNCols();
+  const spanNColumns = computeNCols();
 
   function computeNCols() {
+    const width = gridWidth ?? panelWidth;
     // Compute how many columns this element should span
     const childrenPerRow = Math.max(Math.floor(width / minChildSize), 1);
-    return Math.ceil(nColumns / childrenPerRow);
+    return Math.ceil(columns / childrenPerRow);
   }
 
   return (
-    <Grid.Col span={span ?? columns} {...props}>
+    <Grid.Col span={span ?? spanNColumns} {...props}>
       {children}
     </Grid.Col>
   );

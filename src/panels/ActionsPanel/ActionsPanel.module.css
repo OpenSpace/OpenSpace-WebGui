@@ -2,8 +2,12 @@
   /* The y-margin results in a scroll bar in the ActionsPanel when ScrollArea is set to
      * 100%. Resulting in a ~ 10px scroll 
     **/
+
+  background-color: red;
+
   & .mantine-Grid-inner {
     margin-top: 0;
     margin-bottom: 0;
+    background-color: green !important;
   }
 }
