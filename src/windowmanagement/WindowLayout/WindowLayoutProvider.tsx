@@ -34,7 +34,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
         content: <Window>{content}</Window>,
         closable: true,
         cached: true,
-        group: 'regularWindow'
+        group: 'card'
       };
     },
     []
@@ -79,7 +79,6 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
           }
           // Adds a new panel to left or right side
           else {
-            tab.group = 'regularWindow';
             const panel: PanelData = {
               tabs: [tab],
               size: SidePanelDefaultWidth

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Stack } from '@mantine/core';
-import DockLayout, { LayoutData, TabGroup } from 'rc-dock';
+import { ActionIcon, CloseIcon, Stack } from '@mantine/core';
+import DockLayout, { DockContext, LayoutData, PanelData, TabGroup } from 'rc-dock';
 
 import { FlightController } from '@/panels/FlightControlPanel/FlightController';
 import { TaskBar } from '@/panels/Menu/TaskBar/TaskBar';
@@ -55,19 +55,32 @@ export function WindowLayout() {
   const { ref } = useWindowLayoutProvider();
   const [visibleMenuItems, setVisibleMenuItems] = useState<string[]>([]);
 
-  const headless: TabGroup = {
-    floatable: false,
-    maximizable: false,
-    tabLocked: true,
-    widthFlex: 1
-  };
-  const regularWindow: TabGroup = {
-    maximizable: false,
-    heightFlex: 1
-  };
-  const groups = {
-    headless,
-    regularWindow
+  const groups: { [key: string]: TabGroup } = {
+    // This is the rc-dock group configuration we use for the transparent window in the
+    // center
+    headless: {
+      floatable: false,
+      maximizable: false,
+      tabLocked: true,
+      widthFlex: 1
+    },
+    // This is the rc-dock group configuration for all the other windows. Note that
+    // 'card' is a pre-existing rc-dock group that adds certina styling to the tab
+    card: {
+      maximizable: false,
+      heightFlex: 1,
+      panelExtra: (panelData: PanelData, context: DockContext) => {
+        return (
+          <ActionIcon
+            variant={'transparent'}
+            aria-label={'Close window'}
+            onClick={() => context.dockMove(panelData, null, 'remove')}
+          >
+            <CloseIcon />
+          </ActionIcon>
+        );
+      }
+    }
   };
 
   // Populate default visible items for taskbar
