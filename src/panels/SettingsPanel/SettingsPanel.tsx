@@ -79,16 +79,13 @@ export function SettingsPanel() {
               <PropertyOwner uri={uri} key={uri} />
             ))}
           </FilterList.Favorites>
-          <FilterList.Data<SearchItem>
+          <FilterList.SearchResults
             data={searchData}
-            // Do not virtualize here, since this requires the rendered objects to have a
-            // fixed size, which PropertyOwners won't. Also, the list is not expected to
-            // be very long
-            virtualize={false}
             renderElement={renderfunc}
             matcherFunc={matcher}
-            maxShownMatches={20}
-          />
+          >
+            <FilterList.SearchResults.Pagination maxShownMatches={20} />
+          </FilterList.SearchResults>
         </FilterList>
       </Container>
     </ScrollArea>

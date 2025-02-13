@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 
-import { FilterListContext } from './FilterListContext';
+import { FilterListContext, FilterListProviderProps } from './FilterListContext';
 
 export function useFilterListProvider() {
-  const context = useContext(FilterListContext);
+  const context = useContext(FilterListContext) as FilterListProviderProps;
   if (!context) {
     throw Error('useFilterListProvider must be used within a FilterListProvider');
   }

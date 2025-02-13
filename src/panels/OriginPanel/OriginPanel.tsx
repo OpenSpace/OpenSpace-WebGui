@@ -17,7 +17,7 @@ import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMidd
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';
 import { FlightControllerData } from '@/types/flightcontroller-types';
-import { Identifier, PropertyOwner, Uri } from '@/types/types';
+import { Identifier, Uri } from '@/types/types';
 import {
   NavigationAimKey,
   NavigationAnchorKey,
@@ -244,7 +244,7 @@ export function OriginPanel() {
               />
             ))}
           </FilterList.Favorites>
-          <FilterList.Data<PropertyOwner>
+          <FilterList.SearchResults
             data={sortedNodes}
             renderElement={(node) => (
               <FocusEntry
@@ -261,7 +261,9 @@ export function OriginPanel() {
               'uri',
               'tags'
             ])}
-          />
+          >
+            <FilterList.SearchResults.VirtualList />
+          </FilterList.SearchResults>
         </FilterList>
       </Container>
     </ScrollArea>

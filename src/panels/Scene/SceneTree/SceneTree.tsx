@@ -130,13 +130,15 @@ export function SceneTree() {
         />
       </FilterList.Favorites>
 
-      <FilterList.Data<TreeNodeData>
+      <FilterList.SearchResults
         data={flatTreeData}
         renderElement={(node: TreeNodeData) => (
           <SceneTreeNodeContent key={node.value} node={node} expanded={false} />
         )}
         matcherFunc={generateMatcherFunctionByKeys(['label'])} // For now we just use the name
-      />
+      >
+        <FilterList.SearchResults.VirtualList />
+      </FilterList.SearchResults>
     </FilterList>
   );
 }
