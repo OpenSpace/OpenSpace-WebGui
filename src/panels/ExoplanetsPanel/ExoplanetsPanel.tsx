@@ -92,19 +92,19 @@ export function ExoplanetsPanel() {
       <ResizeableContent defaultHeight={300}>
         <FilterList isLoading={allSystemNames.length === 0}>
           <FilterList.InputField placeHolderSearchText={'Star name...'} />
-          <FilterList.SearchResults>
-            <FilterList.SearchResults.VirtualList<string>
-              data={allSystemNames}
-              renderElement={(name) => (
-                <ExoplanetEntry
-                  key={`entry${name}`}
-                  name={name}
-                  isAdded={isAdded(name)}
-                  onClick={() => handleClick(name)}
-                />
-              )}
-              matcherFunc={wordBeginningSubString}
-            />
+          <FilterList.SearchResults
+            data={allSystemNames}
+            renderElement={(name) => (
+              <ExoplanetEntry
+                key={`entry${name}`}
+                name={name}
+                isAdded={isAdded(name)}
+                onClick={() => handleClick(name)}
+              />
+            )}
+            matcherFunc={wordBeginningSubString}
+          >
+            <FilterList.SearchResults.VirtualList />
           </FilterList.SearchResults>
         </FilterList>
       </ResizeableContent>

@@ -6,7 +6,6 @@ export interface VirtualListProps<T> {
   renderElement: (data: T, i: number) => React.ReactNode;
   gap?: number; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
-  estimateSize?: number;
 }
 
 // This component is copied from this tutorial and customized to fit
@@ -39,14 +38,12 @@ export function VirtualList<T>({
   return (
     <>
       {/* The scrollable element for your list */}
-
       <div
         ref={parentRef}
         style={{
           height: `100%`,
           width: `100%`,
-          overflow: 'auto',
-          paddingRight: '10px'
+          overflow: 'auto'
         }}
       >
         {/* The large inner element to hold all of the items */}
@@ -66,8 +63,7 @@ export function VirtualList<T>({
               transform: `translateY(${items[0]?.start ?? 0}px)`
             }}
           >
-            {/* Only the visible items in the virtualizer,
-          manually positioned to be in view */}
+            {/* The visible items, manually positioned to be in view */}
             {items.map((virtualRow) => (
               <div
                 key={virtualRow.key}

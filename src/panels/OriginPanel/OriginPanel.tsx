@@ -17,7 +17,7 @@ import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMidd
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';
 import { FlightControllerData } from '@/types/flightcontroller-types';
-import { Identifier, PropertyOwner, Uri } from '@/types/types';
+import { Identifier, Uri } from '@/types/types';
 import {
   NavigationAimKey,
   NavigationAnchorKey,
@@ -244,25 +244,25 @@ export function OriginPanel() {
               />
             ))}
           </FilterList.Favorites>
-          <FilterList.SearchResults>
-            <FilterList.SearchResults.VirtualList<PropertyOwner>
-              data={sortedNodes}
-              renderElement={(node) => (
-                <FocusEntry
-                  key={node.identifier}
-                  entry={node}
-                  onSelect={onSelect}
-                  activeNode={activeNode}
-                  showNavigationButtons={isInFocusMode}
-                />
-              )}
-              matcherFunc={generateMatcherFunctionByKeys([
-                'identifier',
-                'name',
-                'uri',
-                'tags'
-              ])}
-            />
+          <FilterList.SearchResults
+            data={sortedNodes}
+            renderElement={(node) => (
+              <FocusEntry
+                key={node.identifier}
+                entry={node}
+                onSelect={onSelect}
+                activeNode={activeNode}
+                showNavigationButtons={isInFocusMode}
+              />
+            )}
+            matcherFunc={generateMatcherFunctionByKeys([
+              'identifier',
+              'name',
+              'uri',
+              'tags'
+            ])}
+          >
+            <FilterList.SearchResults.VirtualList />
           </FilterList.SearchResults>
         </FilterList>
       </Container>
