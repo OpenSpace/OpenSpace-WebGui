@@ -3,7 +3,7 @@ import { Button, ColorInput, Stack, Title } from '@mantine/core';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 
-import { useSelectedBrowserColorString, useSkyBrowserIds } from '../hooks';
+import { useBrowserColorString, useSkyBrowserIds } from '../hooks';
 
 interface Props {
   id: string | undefined;
@@ -11,8 +11,8 @@ interface Props {
 
 export function Settings({ id }: Props) {
   const luaApi = useOpenSpaceApi();
-  const color = useSelectedBrowserColorString();
   const selectedBrowserId = useAppSelector((state) => state.skybrowser.selectedBrowserId);
+  const color = useBrowserColorString(selectedBrowserId);
   const browserIds = useSkyBrowserIds();
 
   function setColor(newColor: string) {

@@ -30,11 +30,11 @@ export function WorldWideTelescopeView() {
   );
 
   // A bunch of hooks that pass messages to WWT when our redux state changes
-  useUpdateAim();
-  useUpdateSelectedImages();
-  useUpdateOpacities();
-  useUpdateBorderRadius();
-  useUpdateBorderColor();
+  useUpdateAim(id);
+  useUpdateSelectedImages(id);
+  useUpdateOpacities(id);
+  useUpdateBorderRadius(id);
+  useUpdateBorderColor(id);
 
   useEffect(() => {
     if (!id) {

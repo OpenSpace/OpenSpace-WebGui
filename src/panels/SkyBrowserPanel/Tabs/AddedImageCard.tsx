@@ -8,7 +8,7 @@ import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
 import { IconImage } from '../components/IconImage';
 import { ImageInfoPopover } from '../components/ImageInfoPopover';
-import { useActiveImage, useSelectedBrowserColorString } from '../hooks';
+import { useActiveImage, useBrowserColorString } from '../hooks';
 
 interface Props {
   image: SkyBrowserImage;
@@ -19,7 +19,7 @@ export function AddedImageCard({ image, opacity }: Props) {
   const luaApi = useOpenSpaceApi();
   const [activeImage, setActiveImage] = useActiveImage();
   const selectedBrowserId = useAppSelector((state) => state.skybrowser.selectedBrowserId);
-  const color = useSelectedBrowserColorString();
+  const color = useBrowserColorString(selectedBrowserId);
 
   const setOpacity = useThrottledCallback(
     (newValue) =>

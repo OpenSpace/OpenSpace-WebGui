@@ -6,7 +6,8 @@ import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
 import { IconImage } from '../components/IconImage';
 import { ImageInfoPopover } from '../components/ImageInfoPopover';
-import { useActiveImage, useSelectedBrowserColorString } from '../hooks';
+import { useActiveImage, useBrowserColorString } from '../hooks';
+import { useAppSelector } from '@/redux/hooks';
 
 interface Props {
   image: SkyBrowserImage;
@@ -15,7 +16,8 @@ export function ImageCard({ image }: Props) {
   const [activeImage, setActiveImage] = useActiveImage();
   const luaApi = useOpenSpaceApi();
   const isActive = activeImage === image.url;
-  const color = useSelectedBrowserColorString();
+  const selectedBrowserId = useAppSelector((state) => state.skybrowser.selectedBrowserId);
+  const color = useBrowserColorString(selectedBrowserId);
 
   function select() {
     luaApi?.skybrowser.selectImage(image.url);

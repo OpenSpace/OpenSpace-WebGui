@@ -12,7 +12,7 @@ import {
 } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
-import { useSelectedBrowserFov, useSkyBrowserSelectedImages } from '../hooks';
+import { useBrowserFov, useSelectedImages } from '../hooks';
 
 import { AddedImagesList } from './AddedImagesList';
 import { Settings } from './Settings';
@@ -21,39 +21,40 @@ interface Props {
   showSettings: boolean;
   setShowSettings: (func: (old: boolean) => boolean) => void;
   openWorldWideTelescope: () => void;
+  browserId: string;
 }
 
 export function TabContent({
   showSettings,
   setShowSettings,
-  openWorldWideTelescope
+  openWorldWideTelescope,
+  browserId
 }: Props) {
-  const selectedImages = useSkyBrowserSelectedImages();
-  const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
+  const selectedImages = useSelectedImages(browserId);
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
-  const fov = useSelectedBrowserFov();
+  const fov = useBrowserFov(browserId);
   const luaApi = useOpenSpaceApi();
   const zoomStep = 5;
 
-  if (fov === undefined || id === '') {
+  if (fov === undefined || browserId === '') {
     return <></>;
   }
 
-  function zoom(id: string, fov: number): void {
-    if (!id) {
+  function zoom(browserId: string, fov: number): void {
+    if (!browserId) {
       return;
     }
-    luaApi?.skybrowser.stopAnimations(id);
+    luaApi?.skybrowser.stopAnimations(browserId);
     const newFov = Math.max(fov, 0.01);
-    luaApi?.skybrowser.setVerticalFov(id, Number(newFov));
+    luaApi?.skybrowser.setVerticalFov(browserId, Number(newFov));
   }
 
   function removeAllImages(): void {
-    if (!id) {
+    if (!browserId) {
       return;
     }
     selectedImages?.forEach((image) =>
-      luaApi?.skybrowser.removeSelectedImageInBrowser(id, imageList[image].url)
+      luaApi?.skybrowser.removeSelectedImageInBrowser(browserId, imageList[image].url)
     );
   }
 
@@ -62,22 +63,24 @@ export function TabContent({
       <Group justify={'space-between'}>
         <ActionIcon.Group>
           <Tooltip label={'Look at target'}>
-            <ActionIcon onClick={() => luaApi?.skybrowser.adjustCamera(id)}>
+            <ActionIcon onClick={() => luaApi?.skybrowser.adjustCamera(browserId)}>
               <EyeIcon />
             </ActionIcon>
           </Tooltip>
           <Tooltip label={'Move target to center of view'}>
-            <ActionIcon onClick={() => luaApi?.skybrowser.centerTargetOnScreen(id)}>
+            <ActionIcon
+              onClick={() => luaApi?.skybrowser.centerTargetOnScreen(browserId)}
+            >
               <MoveTargetIcon />
             </ActionIcon>
           </Tooltip>
           <Tooltip label={'Zoom in'}>
-            <ActionIcon onClick={() => zoom(id, fov - zoomStep)}>
+            <ActionIcon onClick={() => zoom(browserId, fov - zoomStep)}>
               <ZoomInIcon />
             </ActionIcon>
           </Tooltip>
           <Tooltip label={'Zoom out'}>
-            <ActionIcon onClick={() => zoom(id, fov + zoomStep)}>
+            <ActionIcon onClick={() => zoom(browserId, fov + zoomStep)}>
               <ZoomOutIcon />
             </ActionIcon>
           </Tooltip>
@@ -102,7 +105,7 @@ export function TabContent({
           </ActionIcon>
         </Tooltip>
       </Group>
-      {showSettings ? <Settings id={id} /> : <AddedImagesList />}
+      {showSettings ? <Settings id={browserId} /> : <AddedImagesList id={browserId} />}
     </>
   );
 }

@@ -4,12 +4,12 @@ import { useAppSelector } from '@/redux/hooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import {
-  useSelectedBrowserColor,
-  useSelectedBrowserCoords,
-  useSelectedBrowserFov,
-  useSelectedBrowserRadius,
-  useSkyBrowserSelectedImages,
-  useSkyBrowserSelectedOpacities
+  useBrowserColor,
+  useBrowserCoords,
+  useBrowserFov,
+  useBrowserRadius,
+  useOpacities,
+  useSelectedImages
 } from '../hooks';
 
 import { useWwtProvider } from './WwtProvider/hooks';
@@ -23,10 +23,10 @@ import { useWwtProvider } from './WwtProvider/hooks';
 // time an image is added or removed, all previously added images will be
 // removed and then the new array of images is added. This is because the
 // performance loss is negligible and there are many complicated cases to keep track of.
-export function useUpdateSelectedImages() {
+export function useUpdateSelectedImages(id: string) {
   const { imageCollectionLoaded, loadImage, removeImage } = useWwtProvider();
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
-  const selectedImages = useSkyBrowserSelectedImages();
+  const selectedImages = useSelectedImages(id);
 
   useEffect(() => {
     const isDataLoaded = imageList.length !== 0 && selectedImages !== undefined;
@@ -47,11 +47,11 @@ export function useUpdateSelectedImages() {
 // instead we pass messages for all the opacities whenever we detect a change.
 // This because this is much easier - the performance loss is negligible and
 // there are many complicated cases.
-export function useUpdateOpacities() {
+export function useUpdateOpacities(id: string) {
   const { imageCollectionLoaded, setOpacity } = useWwtProvider();
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
-  const selectedImages = useSkyBrowserSelectedImages();
-  const opacities = useSkyBrowserSelectedOpacities();
+  const selectedImages = useSelectedImages(id);
+  const opacities = useOpacities(id);
 
   useEffect(() => {
     const isWwtReady = imageList.length !== 0 && imageCollectionLoaded;
@@ -68,9 +68,9 @@ export function useUpdateOpacities() {
 
 // Whenever a redux state change of the aim is detected,
 // pass messages to WWT to reflect this change
-export function useUpdateAim() {
-  const { ra, dec, roll } = useSelectedBrowserCoords();
-  const fov = useSelectedBrowserFov();
+export function useUpdateAim(id: string) {
+  const { ra, dec, roll } = useBrowserCoords(id);
+  const fov = useBrowserFov(id);
   const { setAim } = useWwtProvider();
 
   useEffect(() => {
@@ -80,8 +80,8 @@ export function useUpdateAim() {
 
 // Whenever a redux state change of the border color is detected,
 // pass messages to WWT to reflect this change
-export function useUpdateBorderColor() {
-  const borderColor = useSelectedBrowserColor();
+export function useUpdateBorderColor(id: string) {
+  const borderColor = useBrowserColor(id);
   const { wwtHasLoaded, setBorderColor } = useWwtProvider();
 
   useEffect(() => {
@@ -93,8 +93,8 @@ export function useUpdateBorderColor() {
 
 // Whenever a redux state change of the border radius is detected,
 // pass messages to WWT to reflect this change
-export function useUpdateBorderRadius() {
-  const borderRadius = useSelectedBrowserRadius();
+export function useUpdateBorderRadius(id: string) {
+  const borderRadius = useBrowserRadius(id);
   const { setBorderRadius, wwtHasLoaded } = useWwtProvider();
   const { width, height } = useWindowSize();
 

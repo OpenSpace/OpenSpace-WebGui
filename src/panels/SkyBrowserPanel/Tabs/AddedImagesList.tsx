@@ -8,19 +8,23 @@ import {
 } from '@/components/DragReorderList/DragReorderList';
 import { useAppSelector } from '@/redux/hooks';
 
-import { useSkyBrowserSelectedImages, useSkyBrowserSelectedOpacities } from '../hooks';
+import { useOpacities, useSelectedImages } from '../hooks';
 
 import { AddedImageCard } from './AddedImageCard';
 
-export function AddedImagesList() {
+interface Props {
+  id: string;
+}
+
+export function AddedImagesList({ id }: Props) {
   const luaApi = useOpenSpaceApi();
   const browserId = useAppSelector((state) => {
     return state.skybrowser.selectedBrowserId;
   });
 
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
-  const selectedImages = useSkyBrowserSelectedImages();
-  const opacities = useSkyBrowserSelectedOpacities();
+  const selectedImages = useSelectedImages(id);
+  const opacities = useOpacities(id);
   const activeImage = useAppSelector((state) => state.skybrowser.activeImage);
 
   const onDragEnd = useCallback(

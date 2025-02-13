@@ -5,8 +5,8 @@ export function InfoGraphic() {
       xmlns={'http://www.w3.org/2000/svg'}
       xmlnsXlink={'http://www.w3.org/1999/xlink'}
       viewBox={'0 0 600 600'}
-      shape-rendering={'geometricPrecision'}
-      text-rendering={'geometricPrecision'}
+      shapeRendering={'geometricPrecision'}
+      textRendering={'geometricPrecision'}
     >
       <ellipse
         rx={'130.128503'}
@@ -14,7 +14,7 @@ export function InfoGraphic() {
         transform={'translate(300 292.171779)'}
         fill={'#3e3e3e'}
         stroke={'#fff'}
-        stroke-width={'3'}
+        strokeWidth={'3'}
       />
 
       <path
@@ -24,7 +24,7 @@ export function InfoGraphic() {
         transform={'matrix(.895539 0 0 0.848466 38.030093 37.430359)'}
         fill={'#353535'}
         stroke={'#fff'}
-        stroke-width={'3'}
+        strokeWidth={'3'}
       />
       <path
         d={
@@ -33,7 +33,7 @@ export function InfoGraphic() {
         transform={'translate(-.909241 0.909245)'}
         fill={'#353535'}
         stroke={'#fff'}
-        stroke-width={'3'}
+        strokeWidth={'3'}
       />
 
       <rect
@@ -43,7 +43,7 @@ export function InfoGraphic() {
         ry={'0'}
         transform={'translate(57.287998 285.448697)'}
         stroke={'#fff'}
-        stroke-width={'5'}
+        strokeWidth={'5'}
       />
       <rect
         id={'eAFitDlh5T28'}
@@ -54,7 +54,7 @@ export function InfoGraphic() {
         transform={'translate(431.058154 171.568246)'}
         fill={'none'}
         stroke={'#fff'}
-        stroke-width={'4'}
+        strokeWidth={'4'}
       >
         <animateTransform
           attributeName={'transform'}
@@ -72,7 +72,7 @@ export function InfoGraphic() {
         transform={'translate(457.504894 196.223945)'}
         fill={'none'}
         stroke={'#fff'}
-        stroke-width={'4'}
+        strokeWidth={'4'}
       >
         <animateTransform
           attributeName={'transform'}
@@ -90,7 +90,7 @@ export function InfoGraphic() {
         transform={'translate(457.672767 195.412229)'}
         fill={'none'}
         stroke={'#fff'}
-        stroke-width={'4'}
+        strokeWidth={'4'}
       >
         <animateTransform
           attributeName={'transform'}
@@ -160,7 +160,7 @@ export function InfoGraphic() {
         }
         transform={'matrix(.931349-.364127 0.364127 0.931349 46.781645 298.073307)'}
         fill={'#fff'}
-        stroke-width={'1.2'}
+        strokeWidth={'1.2'}
       >
         <animateTransform
           attributeName={'transform'}

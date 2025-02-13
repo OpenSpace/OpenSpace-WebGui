@@ -64,6 +64,7 @@ export function BrowserTabs({ openWorldWideTelescope }: Props) {
             showSettings={showSettings}
             setShowSettings={setShowSettings}
             openWorldWideTelescope={openWorldWideTelescope}
+            browserId={id}
           />
         </Tabs.Panel>
       ))}

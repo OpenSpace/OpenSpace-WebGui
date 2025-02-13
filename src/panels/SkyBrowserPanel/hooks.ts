@@ -11,6 +11,12 @@ import {
   setImageCollectionData
 } from '@/redux/skybrowser/skybrowserSlice';
 import { SkyBrowserImage } from '@/types/skybrowsertypes';
+import {
+  equalArray,
+  lowPrecisionEqual,
+  lowPrecisionEqualArray,
+  lowPrecisionEqualMatrix
+} from '@/util/equals';
 
 export function useGetWwtImageCollection() {
   const luaApi = useOpenSpaceApi();
@@ -70,110 +76,66 @@ export function useActiveImage(): [string, (url: string) => void] {
 // the topic so that most of the data are properties instead, and only
 // pass the data for the currently selected browser
 
-export function useSelectedBrowserColor(): [number, number, number] | undefined {
+export function useBrowserColor(id: string): [number, number, number] | undefined {
   return useAppSelector(
-    (state) => state.skybrowser.selectedBrowser?.color,
+    (state) => state.skybrowser.browsers[id]?.color,
     lowPrecisionEqualArray
   );
 }
 
-export function useSelectedBrowserColorString(): string | undefined {
-  const color = useSelectedBrowserColor();
+export function useBrowserColorString(id: string): string | undefined {
+  const color = useBrowserColor(id);
   return color ? (`rgb(${color.join(',')})` as string) : undefined;
 }
 
-export function useSelectedBrowserRadius(): number | undefined {
+export function useBrowserRadius(id: string): number | undefined {
   return useAppSelector(
-    (state) => state.skybrowser.selectedBrowser?.borderRadius,
+    (state) => state.skybrowser.browsers[id]?.borderRadius,
     lowPrecisionEqual()
   );
 }
 
-export function lowPrecisionEqualMatrix(
-  lhs: number[][] | undefined,
-  rhs: number[][] | undefined
-) {
-  if (lhs === undefined && rhs === undefined) {
-    return true;
-  }
-  if (lhs === undefined || rhs === undefined) {
-    return false;
-  }
-  if (lhs.length !== rhs.length) {
-    return false;
-  }
-  return lhs.every((value, i) => lowPrecisionEqualArray(value, rhs[i]));
-}
-
-export function equalArray<T>(lhs: T[] | undefined, rhs: T[] | undefined) {
-  if (lhs === undefined && rhs === undefined) {
-    return true;
-  }
-  if (lhs === undefined || rhs === undefined) {
-    return false;
-  }
-  if (lhs.length !== rhs.length) {
-    return false;
-  }
-  return lhs.every((value, i) => value === rhs[i]);
-}
-
-export function lowPrecisionEqualArray(
-  lhs: number[] | undefined,
-  rhs: number[] | undefined
-) {
-  if (lhs === undefined && rhs === undefined) {
-    return true;
-  }
-  if (lhs === undefined || rhs === undefined) {
-    return false;
-  }
-  if (lhs.length !== rhs.length) {
-    return false;
-  }
-
-  return lhs?.every((value, i) => lowPrecisionEqual()(value, rhs[i]));
-}
-
-export function lowPrecisionEqual(epsilon: number = 1e-3) {
-  return (lhs: number | undefined, rhs: number | undefined) => {
-    if (lhs === undefined && rhs === undefined) {
-      return true;
-    }
-    if (lhs === undefined || rhs === undefined) {
-      return false;
-    }
-    return Math.abs(lhs - rhs) < epsilon;
-  };
-}
-
-export function useSelectedBrowserCoords() {
+export function useBrowserCoords(id: string) {
   const ra = useAppSelector(
-    (state) => state.skybrowser.selectedBrowser?.ra,
+    (state) => state.skybrowser.browsers[id]?.ra,
     lowPrecisionEqual(1e-6)
   );
   const dec = useAppSelector(
-    (state) => state.skybrowser.selectedBrowser?.dec,
+    (state) => state.skybrowser.browsers[id]?.dec,
     lowPrecisionEqual(1e-6)
   );
 
   const roll = useAppSelector(
-    (state) => state.skybrowser.selectedBrowser?.roll,
+    (state) => state.skybrowser.browsers[id]?.roll,
     lowPrecisionEqual(1e-6)
   );
   return { ra, dec, roll };
 }
 
-export function useSelectedBrowserFov() {
+export function useBrowserFov(id: string) {
   return useAppSelector(
-    (state) => state.skybrowser.selectedBrowser?.fov,
+    (state) => state.skybrowser.browsers[id]?.fov,
     lowPrecisionEqual(1e-6)
   );
 }
 
-export function useSkyBrowserCartesianDirection() {
+export function useCartesianDirection(id: string) {
   return useAppSelector(
-    (state) => state.skybrowser.selectedBrowser?.cartesianDirection,
+    (state) => state.skybrowser.browsers[id]?.cartesianDirection,
+    lowPrecisionEqualArray
+  );
+}
+
+export function useSelectedImages(id: string) {
+  return useAppSelector(
+    (state) => state.skybrowser.browsers[id]?.selectedImages,
+    equalArray<number>
+  );
+}
+
+export function useOpacities(id: string) {
+  return useAppSelector(
+    (state) => state.skybrowser.browsers[id]?.opacities,
     lowPrecisionEqualArray
   );
 }
@@ -191,18 +153,4 @@ export function useSkyBrowserNames() {
 
 export function useSkyBrowserIds() {
   return useAppSelector((state) => state.skybrowser.browserIds, equalArray<string>);
-}
-
-export function useSkyBrowserSelectedImages() {
-  return useAppSelector(
-    (state) => state.skybrowser.selectedBrowser?.selectedImages,
-    equalArray<number>
-  );
-}
-
-export function useSkyBrowserSelectedOpacities() {
-  return useAppSelector(
-    (state) => state.skybrowser.selectedBrowser?.opacities,
-    lowPrecisionEqualArray
-  );
 }
