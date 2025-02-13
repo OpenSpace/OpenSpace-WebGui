@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
-import { ActionIcon, Box, Group } from '@mantine/core';
+import { ActionIcon, Box, Group, MantineSpacing } from '@mantine/core';
 
 import { DragHandleIcon } from '@/icons/icons';
 
@@ -18,7 +18,7 @@ interface Props<T> {
   keyFunc: (item: T) => string;
   id: string;
   dragHandlePosition?: 'left' | 'right';
-  gap?: number;
+  gap?: MantineSpacing;
 }
 
 export function DragReorderList<T>({
@@ -28,7 +28,7 @@ export function DragReorderList<T>({
   renderFunc,
   keyFunc,
   dragHandlePosition = 'left',
-  gap = 5
+  gap = 'xs'
 }: Props<T>) {
   const [localCache, setLocalCache] = useState(data);
 

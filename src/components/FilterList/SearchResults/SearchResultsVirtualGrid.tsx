@@ -1,9 +1,10 @@
 import { KeyType, VirtualGrid } from '@/components/VirtualList/VirtualGrid';
 
 import { useSearchResultProvider } from './hooks';
+import { MantineSpacing } from '@mantine/core';
 
 export interface Props {
-  gap?: number; // Gap in pixels between items
+  gap?: MantineSpacing; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
   columns?: number;
 }

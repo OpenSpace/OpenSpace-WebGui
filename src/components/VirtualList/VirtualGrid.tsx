@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Box, SimpleGrid } from '@mantine/core';
+import { Box, MantineSpacing, SimpleGrid } from '@mantine/core';
 
 import { VirtualList } from './VirtualList';
 
@@ -9,7 +9,7 @@ export interface KeyType {
 export interface VirtualGridProps<T extends KeyType> {
   data: T[];
   renderElement: (data: T, i: number) => React.ReactNode;
-  gap?: number; // Gap in pixels between items
+  gap?: MantineSpacing; // Gap inbetween items
   overscan?: number; // How many items to preload when scrolling
   columns?: number;
 }

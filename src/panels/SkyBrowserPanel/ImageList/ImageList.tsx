@@ -47,7 +47,7 @@ export const ImageList = memo(function ImageList({
         renderElement={renderImageCard}
         matcherFunc={matcherFunc}
       >
-        <FilterList.SearchResults.VirtualGrid gap={15} columns={columns} />
+        <FilterList.SearchResults.VirtualGrid gap={'sm'} columns={columns} />
       </FilterList.SearchResults>
     </FilterList>
   );
