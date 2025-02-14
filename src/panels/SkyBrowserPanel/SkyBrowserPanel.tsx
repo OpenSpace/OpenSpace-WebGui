@@ -7,7 +7,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { ImageListWrapper } from './ImageList/ImageListWrapper';
-import { BrowserTabs } from './Tabs/BrowserTabs';
+import { BrowserTabs } from './BrowserTabs/BrowserTabs';
 import { WorldWideTelescopeView } from './WorldWideTelescope/WorldWideTelescopeView';
 import { WwtProvider } from './WorldWideTelescope/WwtProvider/WwtProvider';
 import { useGetSkyBrowserData } from './hooks';
@@ -26,15 +26,16 @@ export function SkyBrowserPanel() {
 
   // Use useCallback here so we don't trigger the effect every render
   const openWorldWideTelescope = useCallback(() => {
-    addWindow(
+    const content = (
       <WwtProvider>
         <WorldWideTelescopeView />
-      </WwtProvider>,
-      {
-        id: 'WorldWideTelescope',
-        title: 'World Wide Telescope'
-      }
+      </WwtProvider>
     );
+
+    addWindow(content, {
+      id: 'WorldWideTelescope',
+      title: 'World Wide Telescope'
+    });
   }, [addWindow]);
 
   // Call this function first render to open the wwt window
