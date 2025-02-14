@@ -273,14 +273,14 @@ export interface openspace {
   addTag: (uri: string, tag: string) => Promise<void>
   /**
    * Add a value to the property with the given identifier. Works on both
-      numerical and string properties, where adding to a string property means appending
-      the given string value to the existing string value.
+ numerical and string properties, where adding to a string property means appending
+ the given string value to the existing string value.
    */
   addToPropertyValue: (identifier: string, value: string | number) => Promise<void>
   /**
    * Add a value to the list property with the given identifier. The
-      value can be any type, as long as it is the correct type for the given property.
-      Note that a number will be converted to a string automatically.
+ value can be any type, as long as it is the correct type for the given property.
+ Note that a number will be converted to a string automatically.
    */
   appendToListProperty: (identifier: string, value: any) => Promise<void>
   /**
@@ -329,18 +329,18 @@ export interface openspace {
   dpiScaling: () => Promise<number>
   /**
    * Fades in the node(s) with the given identifier over the given time
-      in seconds. The identifier can contain a tag and/or a wildcard to target several
-      nodes. If the fade time is not provided then the 'OpenSpaceEngine.FadeDuration'
-      property will be used instead. If the third argument (endScript) is provided then
-      that script will be run after the fade is finished.
+ in seconds. The identifier can contain a tag and/or a wildcard to target several
+ nodes. If the fade time is not provided then the 'OpenSpaceEngine.FadeDuration'
+ property will be used instead. If the third argument (endScript) is provided then
+ that script will be run after the fade is finished.
    */
   fadeIn: (identifier: string, fadeTime?: number, endScript?: string) => Promise<void>
   /**
    * Fades out the node(s) with the given identifier over the given time
-      in seconds. The identifier can contain a tag and/or a wildcard to target several
-      nodes. If the fade time is not provided then the 'OpenSpaceEngine.FadeDuration'
-      property will be used instead. If the third argument (endScript) is provided then
-      that script will be run after the fade is finished.
+ in seconds. The identifier can contain a tag and/or a wildcard to target several
+ nodes. If the fade time is not provided then the 'OpenSpaceEngine.FadeDuration'
+ property will be used instead. If the third argument (endScript) is provided then
+ that script will be run after the fade is finished.
    */
   fadeOut: (identifier: string, fadeTime?: number, endScript?: string) => Promise<void>
   /**
@@ -376,15 +376,15 @@ export interface openspace {
    */
   interactionSphere: (identifier: string) => Promise<number>
   /**
-   * Inverts the value of a boolean property with the given identifier
+   * Inverts the value of a boolean property with the given identifier.
    */
   invertBooleanProperty: (identifier: string) => Promise<void>
   /**
    * A utility function to check whether an object is empty or not. Identifies `nil`
-      objects, Tables without any keys, and empty strings.
+ objects, Tables without any keys, and empty strings.
 
-      \\param object The object to check
-      \\return A Boolean that specifies if the object is empty or not
+ \\param object The object to check
+ \\return A Boolean that specifies if the object is empty or not
    */
   isEmpty: (object: any) => Promise<boolean>
   /**
@@ -413,13 +413,13 @@ export interface openspace {
   makeIdentifier: (input: string) => Promise<string>
   /**
    * This function marks the scene graph nodes identified by name as
-      interesting, which will provide shortcut access to focus buttons and featured
-      properties
+ interesting, which will provide shortcut access to focus buttons and featured
+ properties.
    */
   markInterestingNodes: (sceneGraphNodes: string[]) => Promise<void>
   /**
    * This function marks interesting times for the current scene, which
-      will create shortcuts for a quick access
+ will create shortcuts for a quick access.
    */
   markInterestingTimes: (times: table[]) => Promise<void>
   /**
@@ -476,7 +476,7 @@ export interface openspace {
   readFileLines: (file: path) => Promise<string[]>
   /**
    * Rebinds all scripts from the old key (first argument) to the new
-      key (second argument)
+ key (second argument).
    */
   rebindKey: (oldKey: string, newKey: string) => Promise<void>
   /**
@@ -489,7 +489,7 @@ export interface openspace {
   removeCustomProperty: (identifier: string) => Promise<void>
   /**
    * This function removes unmarks the scene graph nodes identified by
-      name as interesting, thus removing the shortcuts from the features properties list
+ name as interesting, thus removing the shortcuts from the features properties list.
    */
   removeInterestingNodes: (sceneGraphNodes: string[]) => Promise<void>
   /**
@@ -533,6 +533,10 @@ export interface openspace {
    */
   sceneGraphNodes: () => Promise<string[]>
   /**
+   * Schedules a `script` to be run in `delay` seconds. The delay is measured in wallclock time, which is seconds that occur in the real world, not in relation to the in-game time.
+   */
+  scheduleScript: (script: string, delay: number) => Promise<void>
+  /**
    * Returns a list of all screen-space renderables
    */
   screenSpaceRenderables: () => Promise<string[]>
@@ -542,8 +546,8 @@ export interface openspace {
   setCurrentMission: (identifier: string) => Promise<void>
   /**
    * This function sets the default values for the dashboard consisting
-      of 'DashboardItemDate', 'DashboardItemSimulationIncrement', 'DashboardItemDistance',
-      'DashboardItemFramerate', and 'DashboardItemParallelConnection'
+ of 'DashboardItemDate', 'DashboardItemSimulationIncrement', 'DashboardItemDistance',
+ 'DashboardItemFramerate', and 'DashboardItemParallelConnection'.
    */
   setDefaultDashboard: () => Promise<void>
   /**
@@ -581,19 +585,19 @@ The URI is interpreted using a wildcard in which '*' is expanded to '(.*)' and b
   /**
    * A utility function to return a specific value based on a True/False condition.
 
-      \\param condition The condition to check against
-      \\param trueValue The value to return if the condition is True
-      \\param falseValue The value to return if the condition is False
-      \\return Either the trueValue of falseValue, depending on if the condition is true
-      or not
+ \\param condition The condition to check against
+ \\param trueValue The value to return if the condition is True
+ \\param falseValue The value to return if the condition is False
+ \\return Either the trueValue of falseValue, depending on if the condition is true
+ or not
    */
   ternary: (condition: boolean, trueValue: any, falseValue: any) => Promise<any>
   /**
    * Toggles the fade state of the node(s) with the given identifier over
-      the given time in seconds. The identifier can contain a tag and/or a wildcard to
-      target several nodes. If the fade time is not provided then the
-      "OpenSpaceEngine.FadeDuration" property will be used instead. If the third argument
-      (endScript) is provided then that script will be run after the fade is finished.
+ the given time in seconds. The identifier can contain a tag and/or a wildcard to
+ target several nodes. If the fade time is not provided then the
+ "OpenSpaceEngine.FadeDuration" property will be used instead. If the third argument
+ (endScript) is provided then that script will be run after the fade is finished.
    */
   toggleFade: (identifier: string, fadeTime?: number, endScript?: string) => Promise<void>
   /**
@@ -837,7 +841,7 @@ interface dashboardLibrary {
   /**
    * Returns all loaded dashboard-item identifiers from the main dashboard.
 
-      \\return a list of loaded dashboard-item identifiers from the main dashbaord
+\\return a list of loaded dashboard-item identifiers from the main dashbaord
    */
   dashboardItems: () => Promise<string[]>
   /**
@@ -852,13 +856,22 @@ interface dashboardLibrary {
 
 interface debuggingLibrary {
   /**
-   *       Creates a new scene graph node that show the coordinate system used for the
-      currently selected focus node. The first argument specifies the name of the
-      scene graph node for which the axes should be added. If this parameter is
-      not specified, the current focus node is used instead. The second argument
-      provides the length of the coordinate axis in meters. If this value is not
-      specified 2.5 times the interaction sphere of the selected node is used
-      instead.
+   * Creates a new scene graph node that show the coordinate system used for the
+ currently selected focus node, or a specified scene graph node.
+
+ Usage:
+ ```lua
+ -- To add coordinate axes for the currently selected focus node, do not specify any
+ -- parameters
+ openspace.debugging.createCoordinateAxes()
+ ```
+
+ \\param nodeIdentifier The identifier of the scene graph node for which the axes
+ should be added. If this parameter is not specified, the
+ current focus node is used instead.
+ \\param scale An optional parameter that specifies the size of the coordinate axes,
+ in meters. If not specified, the size is set to 2.5 times the
+ interaction sphere of the selected node.
    */
   createCoordinateAxes: (nodeIdentifier?: string, scale?: number) => Promise<void>
   /**
@@ -906,8 +919,8 @@ interface exoplanetsLibrary {
   /**
    * Add a specific exoplanet system to the scene, based on a star name.
 
-   Note that the formatting of the name must match the one in the dataset. That is, it
-   must match the name as given in the [NASA Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/).
+ Note that the formatting of the name must match the one in the dataset. That is, it
+ must match the name as given in the [NASA Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/).
 
  \\param starName The name of the star
    */
@@ -985,42 +998,77 @@ When dowloading the data from the archive we recommend including all columns, si
 
 interface gaiaLibrary {
   /**
-   * Creates a clipping box for the Gaia renderable in the first argument
+   * Creates a clipping box for a specific Gaia dataset, that can be used to filter out
+ stars that are outside of the box. The box is visualized as a grid in the scene.
+
+ Note that only one clipping box can be active at a time. If a new box is added, the
+ old one will be removed.
+
+ \\param identifier The identifier of the scene graph node with a
+ [RenderableGaiaStars](#gaiamission_renderablegaiastars) to be
+ filtered
+ \\param size The size of each dimension of the box, in Kiloparsec
+ \\param position The position of the center of the box, specified in galactic
+ coordinates in Kiloparsec
    */
-  addClippingBox: (name: string, size: vec3, position: vec3) => Promise<void>
+  addClippingBox: (identifier: string, size: vec3, position: vec3) => Promise<void>
   /**
-   * Creates a clipping sphere for the Gaia renderable in the first argument
+   * Creates a clipping sphere for a specific Gaia dataset, that can be used to filter
+ out stars that are outside of the sphere. The sphere is visualized as a grid in the
+ scene.
+
+ Note that only one clipping sphere can be active at a time. If a new one is added,
+ the old one will be removed.
+
+ \\param identifier The identifier of the scene graph node with a
+ [RenderableGaiaStars](#gaiamission_renderablegaiastars) to be
+ filtered
+ \\param radius The desired radius outside of the clipping sphere, in Kiloparsec
    */
-  addClippingSphere: (name: string, radius: number) => Promise<void>
+  addClippingSphere: (identifier: string, radius: number) => Promise<void>
   /**
-   * 
+   * Remove any added clipping box.
    */
   removeClippingBox: () => Promise<void>
+  /**
+   * Remove any added clipping sphere.
+   */
+  removeClippingSphere: () => Promise<void>
 } // interface gaiaLibrary
 
 interface globebrowsingLibrary {
   /**
-   *       Retrieves all info files recursively in the directory passed as the first argument
-      to this function. The color and height tables retrieved from these info files are
-      then added to the RenderableGlobe identified by name passed to the second argument.
-      Usage:
-      openspace.globebrowsing.addBlendingLayersFromDirectory(directory, "Earth")
+   * Retrieves all info files recursively in the directory passed as the first argument
+ to this function. The color and height tables retrieved from these info files are
+ then added to the RenderableGlobe identified by name passed to the second argument.
+
+ Usage:
+ ```lua
+ openspace.globebrowsing.addBlendingLayersFromDirectory(directory, "Earth")
+ ```
    */
   addBlendingLayersFromDirectory: (directory: string, nodeName: string) => Promise<void>
   /**
-   *       Creates a new SceneGraphNode that can be used as focus node.
-      Usage:
-      openspace.globebrowsing.addFocusNodeFromLatLong(
-        "Olympus Mons", "Mars", -18.65, 226.2, optionalAltitude
-      )
+   * Creates a new SceneGraphNode that can be used as focus node for a specific point on
+ a globe. If no altitude is specified, an altitude of 0 will be used.
+
+ Usage:
+ ```lua
+ openspace.globebrowsing.addFocusNodeFromLatLong(
+ "Olympus Mons", "Mars", -18.65, 226.2, optionalAltitude
+ )
+ ```
    */
-  addFocusNodeFromLatLong: (name: string, globeIdentifier: string, latitude: number, longitude: number, altitude: number) => Promise<void>
+  addFocusNodeFromLatLong: (name: string, globeIdentifier: string, latitude: number, longitude: number, altitude?: number) => Promise<void>
   /**
-   *       Retrieves all info files recursively in the directory passed as the first argument
-      to this function. The name and location retrieved from these info files are then
-      used to create new SceneGraphNodes that can be used as focus nodes.
-      Usage:
-      openspace.globebrowsing.addFocusNodesFromDirectory(directory, "Mars")
+   * Retrieves all info files recursively in the directory passed as the first argument
+ to this function. The name and location retrieved from these info files are then
+ used to create new SceneGraphNodes that can be used as focus nodes.
+
+ Usage:
+ ```lua
+ openspace.globebrowsing.addFocusNodesFromDirectory(directory, "Mars")
+ ```
    */
   addFocusNodesFromDirectory: (directory: string, nodeName: string) => Promise<void>
   /**
@@ -1036,14 +1084,17 @@ interface globebrowsingLibrary {
    */
   addGeoJsonFromFile: (filename: string, name?: string) => Promise<void>
   /**
-   *       Adds a new layer from NASA GIBS to the Earth globe. Arguments are: imagery layer
-      name, imagery resolution, start date, end date, format.
-      For all specifications, see
-      https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products
-      Usage:
-      openspace.globebrowsing.addGibsLayer(
-        "AIRS_Temperature_850hPa_Night", "2km", "2013-07-15", "Present", "png"
-      )
+   * Adds a new layer from NASA GIBS to the Earth globe.
+
+ For all specifications, see
+ [this page](https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products).
+
+ Usage:
+ ```lua
+ openspace.globebrowsing.addGibsLayer(
+ "AIRS_Temperature_850hPa_Night", "2km", "2013-07-15", "Present", "png"
+ )
+ ```
    */
   addGibsLayer: (layer: string, resolution: string, format: string, startDate: string, endDate: string) => Promise<void>
   /**
@@ -1059,34 +1110,34 @@ interface globebrowsingLibrary {
    */
   capabilitiesWMS: (name: string) => Promise<table[]>
   /**
-   *       Creates an XML configuration for a GIBS dataset.
-      Arguments are: layerName, date, resolution, format.
-      For all specifications, see
-      https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products
+   * Creates an XML configuration for a GIBS dataset.
 
-      Usage:
-      openspace.globebrowsing.addLayer(
-        "Earth",
-        "ColorLayers",
-        {
-          Name = "MODIS_Terra_Chlorophyll_A",
-          FilePath = openspace.globebrowsing.createGibsGdalXml(
-            "MODIS_Terra_Chlorophyll_A",
-            "2013-07-02",
-            "1km",
-            "png"
-          )
-        }
-      )
-    
+ For all specifications, see
+ [this page](https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products).
+
+ Usage:
+ ```lua
+ openspace.globebrowsing.addLayer(
+ "Earth",
+ "ColorLayers",
+ {
+ Name = "MODIS_Terra_Chlorophyll_A",
+ FilePath = openspace.globebrowsing.createGibsGdalXml(
+ "MODIS_Terra_Chlorophyll_A",
+ "2013-07-02",
+ "1km",
+ "png"
+ )
+ }
+ )
+ ```
    */
-  createGibsGdalXml: (layerName: string, date: string, resolution: string, format: string) => Promise<void>
+  createGibsGdalXml: (layerName: string, date: string, resolution: string, format: string) => Promise<string>
   /**
-   *       Creates an XML configuration for a temporal GIBS dataset to be used in a
-      TemporalTileprovider
-    
+   * Creates an XML configuration for a temporal GIBS dataset to be used in a
+ TemporalTileprovider.
    */
-  createTemporalGibsGdalXml: (layerName: string, resolution: string, format: string) => Promise<void>
+  createTemporalGibsGdalXml: (layerName: string, resolution: string, format: string) => Promise<string>
   /**
    * Remove the GeoJson layer specified by the given table or string identifier from the specified globe.
 
@@ -1176,9 +1227,8 @@ This is done by triggering another script that handles the logic.
    */
   loadWMSCapabilities: (name: string, globe: string, url: string) => Promise<void>
   /**
-   *       Loads all WMS servers from the provided file and passes them to the
-      'openspace.globebrowsing.loadWMSCapabilities' file.
-    
+   * Loads all WMS servers from the provided file and passes them to the
+ 'openspace.globebrowsing.loadWMSCapabilities' file.
    */
   loadWMSServersFromFile: (filePath: string) => Promise<void>
   /**
@@ -1196,15 +1246,20 @@ The `source` and `destination` parameters can also be the identifiers of the lay
    */
   moveLayer: (globeIdentifier: string, layerGroup: string, source: integer | string, destination: integer | string) => Promise<void>
   /**
-   *       Parses the passed info file and return the table with the information provided in
-      the info file. The return table contains the optional keys:
-      'Color', 'Height', 'Node', 'Location', 'Identifier'.
-      Usage:
-      local t = openspace.globebrowsing.parseInfoFile(file)
-      openspace.globebrowsing.addLayer("Earth", "ColorLayers", t.color)
-      openspace.globebrowsing.addLayer("Earth", "HeightLayers", t.height)
+   * Parses the passed info file and return the table with the information provided in
+ the info file.
+
+ The return table contains the optional keys: `Color`, `Height`, `Node`, `Location`,
+ `Identifier`.
+
+ Usage:
+ ```lua
+ local t = openspace.globebrowsing.parseInfoFile(file)
+ openspace.globebrowsing.addLayer("Earth", "ColorLayers", t.color)
+ openspace.globebrowsing.addLayer("Earth", "HeightLayers", t.height)
+ ```
    */
-  parseInfoFile: (file: string) => Promise<void>
+  parseInfoFile: (file: string) => Promise<table>
   /**
    * Removes the specified WMS server from the list of available servers. The name parameter corresponds to the first argument in the `loadWMSCapabilities` call that was used to load the WMS server.
 
@@ -1212,24 +1267,45 @@ The `source` and `destination` parameters can also be the identifiers of the lay
    */
   removeWMSServer: (name: string) => Promise<void>
   /**
-   *       Sets the position of a SceneGraphNode that has GlobeTranslation/GlobeRotations.
-      Usage:
-      openspace.globebrowsing.setNodePosition(
-        "Scale_StatueOfLiberty", "Earth", 40.000, -117.5, optionalAltitude
-      )
-    
+   * Sets the position of a scene graph node that has a
+ [GlobeTranslation](#globebrowsing_translation_globetranslation) and/or
+ [GlobeRotation](#globebrowsing_rotation_globerotation).
+
+ Usage:
+ ```lua
+ openspace.globebrowsing.setNodePosition(
+ "Scale_StatueOfLiberty", "Earth", 40.000, -117.5, optionalAltitude
+ )
+ ```
+
+ \\param nodeIdentifier The identifier of the scene graph node to move
+ \\param globeIdentifier The identifier of the [RenderableGlobe](#globebrowsing_renderableglobe)
+ that the object should be put on
+ \\param latitude The latitude value for the new position, in degrees
+ \\param longitude The longitude value for the new position, in degrees
+ \\param altitude An optional altitude value for the new position, in meters. If
+ excluded, an altitude of 0 will be used
    */
-  setNodePosition: (nodeIdentifer: string, globeIdentifier: string, latitude: number, longitude: number, altitude: number) => Promise<void>
+  setNodePosition: (nodeIdentifier: string, globeIdentifier: string, latitude: number, longitude: number, altitude?: number) => Promise<void>
   /**
-   *       Sets the position of a SceneGraphNode that has GlobeTranslation/GlobeRotations to
-      match the camera. Only uses camera position not rotation. If useAltitude is true,
-      then the position will also be updated to the camera's altitude.
-      Usage:
-      openspace.globebrowsing.setNodePositionFromCamera(
-        "Scale_StatueOfLiberty", optionalUseAltitude
-      )
+   * Sets the position of a scene graph node that has a
+ [GlobeTranslation](#globebrowsing_translation_globetranslation) and/or
+ [GlobeRotation](#globebrowsing_rotation_globerotation) to match the camera. Only
+ uses camera position not rotation. If useAltitude is true, then the position
+ will also be updated to the camera's altitude.
+
+ Usage:
+ ```lua
+ openspace.globebrowsing.setNodePositionFromCamera(
+ "Scale_StatueOfLiberty", optionalUseAltitude
+ )
+ ```
+
+ \\param nodeIdentifier The identifier of the scene graph node to move
+ \\param useAltitude If true, the camera's altitude will also be used for the new
+ positions. Otherwise, it will not.
    */
-  setNodePositionFromCamera: (nodeIdentifer: string, useAltitude: boolean) => Promise<void>
+  setNodePositionFromCamera: (nodeIdentifer: string, useAltitude?: boolean) => Promise<void>
 } // interface globebrowsingLibrary
 
 interface keyframeRecordingLibrary {
@@ -1966,23 +2042,23 @@ interface timeLibrary {
   /**
    * Modify a specified timestamp by a given delta time. That is, advance the value either forwards or backwards in time.
 
-      The returned value will be of the same type as the first argument. That is, either a number of seconds past the J2000 epoch, or an ISO 8601 date string.
+The returned value will be of the same type as the first argument. That is, either a number of seconds past the J2000 epoch, or an ISO 8601 date string.
 
-      \\param base The timestamp to alter, either given as an ISO 8601 date string or a number of seconds past the J2000 epoch. \\param change The amount of time to add to the specified timestamp. Can be given either in a number of seconds (including negative), or as a string of the form [-]XX(s,m,h,d,M,y] with (s)econds, (m)inutes, (h)ours, (d)ays, (M)onths, and (y)ears as units and an optional - sign to move backwards in time.
+\\param base The timestamp to alter, either given as an ISO 8601 date string or a number of seconds past the J2000 epoch. \\param change The amount of time to add to the specified timestamp. Can be given either in a number of seconds (including negative), or as a string of the form [-]XX(s,m,h,d,M,y] with (s)econds, (m)inutes, (h)ours, (d)ays, (M)onths, and (y)ears as units and an optional - sign to move backwards in time.
 
-      \\return The updated timestamp
+\\return The updated timestamp
    */
   advancedTime: (base: string | number, change: string | number) => Promise<string | number>
   /**
    * Convert the given time from either a J2000 seconds number to an ISO 8601 timestamp, or vice versa.
 
-      If the given time is a timestamp, the function returns a double precision value representing the ephemeris version of that time; that is, the number of TDB seconds past the J2000 epoch.
+If the given time is a timestamp, the function returns a double precision value representing the ephemeris version of that time; that is, the number of TDB seconds past the J2000 epoch.
 
-      If the given time is a J2000 seconds value, the function returns a ISO 8601 timestamp.
+If the given time is a J2000 seconds value, the function returns a ISO 8601 timestamp.
 
-      \\param time The timestamp to convert, either given as an ISO 8601 date string or a number of seconds past the J2000 epoch.
+\\param time The timestamp to convert, either given as an ISO 8601 date string or a number of seconds past the J2000 epoch.
 
-      \\return The converted timestamp
+\\return The converted timestamp
    */
   convertTime: (time: string | number) => Promise<string | number>
   /**
