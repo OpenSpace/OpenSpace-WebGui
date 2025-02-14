@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { ActionIcon, Button, Center, Group, Stack, Text } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
-import { useOpenSpaceApi } from '@/api/hooks';
+import { useOpenSpaceApi, useSubscribeToTime } from '@/api/hooks';
 import { LockIcon, LockOpenIcon } from '@/icons/icons';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
+import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
 import { TimePart } from '@/types/enums';
 
@@ -19,9 +18,9 @@ export function TimeInput() {
   const [pendingTime, setPendingTime] = useState(new Date(''));
   const [isHoldingShift, setIsHoldingShift] = useState(false);
 
-  const dispatch = useAppDispatch();
   const cappedTime = useAppSelector((state) => state.time.timeCapped);
   const luaApi = useOpenSpaceApi();
+  useSubscribeToTime();
 
   const cappedDate = new Date(cappedTime ?? '');
   const time = useLock ? pendingTime : cappedDate;
@@ -31,14 +30,6 @@ export function TimeInput() {
   // to a ref so we can use the latest time in the functions in the component
   const timeRef = useRef(time);
   timeRef.current = time;
-
-  useEffect(() => {
-    dispatch(subscribeToTime());
-
-    return () => {
-      dispatch(unsubscribeToTime());
-    };
-  }, [dispatch]);
 
   useWindowEvent('keydown', (event: KeyboardEvent) => {
     if (event.key === 'Shift' && !event.repeat) {

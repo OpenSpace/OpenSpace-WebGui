@@ -56,7 +56,10 @@ export function MonthInput({
   }
 
   function monthLabel(index: number): string {
-    return monthFromIndex(index).substring(0, 3);
+    if (!isValidMonth(index)) {
+      throw new Error('Invalid month index');
+    }
+    return Months[index].substring(0, 3);
   }
 
   function clampMonthIndex(index: number) {
@@ -68,14 +71,6 @@ export function MonthInput({
       return false;
     }
     return index >= 0 && index < Months.length;
-  }
-
-  function monthFromIndex(index: number): string {
-    // Returns the corresponding month string given the 0-based index
-    if (index >= 0 && index < Months.length) {
-      return Months[index];
-    }
-    return ''; // TODO: This should be an error
   }
 
   function parseMonthTextInput(month: string): number | null {
@@ -91,13 +86,10 @@ export function MonthInput({
     }
 
     // Otherwise, try to match the month string with the names of the months
-    const matches = Months.filter((m) =>
+    const index = Months.findIndex((m) =>
       m.toLowerCase().startsWith(month.trim().toLowerCase())
     );
-    if (matches.length > 1) {
-      return null; // Ambiguous month (more than one match)
-    }
-    return Months.indexOf(matches[0]);
+    return index === -1 ? null : index;
   }
 
   return (
