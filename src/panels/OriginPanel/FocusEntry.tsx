@@ -13,13 +13,15 @@ interface FocusEntryProps {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
   showNavigationButtons: boolean;
+  disableFocus?: boolean;
 }
 
 export function FocusEntry({
   entry,
   activeNode,
   onSelect,
-  showNavigationButtons
+  showNavigationButtons,
+  disableFocus
 }: FocusEntryProps) {
   const buttonVariant = isActive() ? 'filled' : 'light';
 
@@ -33,7 +35,13 @@ export function FocusEntry({
 
   return (
     <Group justify={'space-between'} gap={'xs'} w={'100%'}>
-      <Button onClick={onSelectEntry} justify={'left'} flex={1} variant={buttonVariant}>
+      <Button
+        onClick={onSelectEntry}
+        justify={'left'}
+        flex={1}
+        variant={buttonVariant}
+        disabled={disableFocus}
+      >
         <Text truncate>{entry.name}</Text>
       </Button>
       {showNavigationButtons && (
@@ -67,6 +75,7 @@ export function FocusEntry({
                   identifier={entry.identifier}
                   showLabel
                   justify={'flex-start'}
+                  disabled={disableFocus}
                 />
                 <NodeNavigationButton
                   type={NavigationType.Fly}

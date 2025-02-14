@@ -41,3 +41,9 @@ export const PropertyVisibilityNumber = {
   NoviceUser: 1,
   Always: 0
 };
+
+export enum EngineMode {
+  UserControl = 'user_control',
+  SessionRecordingPlayback = 'session_recording_playback',
+  CameraPath = 'camera_path'
+}

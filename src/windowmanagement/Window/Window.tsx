@@ -35,8 +35,11 @@ export function Window({ children }: PropsWithChildren) {
   return (
     <WindowSizeContext.Provider
       value={{
-        width: width,
-        height: height,
+        // Sometimes these values are 0 just when opening a window which can lead to strange
+        // behaviour if there are calculations depending on these values. Mitigating this with
+        // a dummy value
+        width: width === 0 ? 300 : width,
+        height: height === 0 ? 300 : height,
         pointerEvents: { enable: enablePointerEvents, disable: disablePointerEvents }
       }}
     >

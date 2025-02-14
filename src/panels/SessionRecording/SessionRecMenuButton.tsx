@@ -54,7 +54,7 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
         );
       case RecordingState.Paused:
         return (
-          <Group gap={'xs'}>
+          <Group gap={0}>
             <Button
               onClick={togglePlaybackPaused}
               leftSection={<PlayIcon />}

@@ -195,7 +195,7 @@ export function EarthPanel({ currentAnchor }: Props) {
             <ResizeableContent defaultHeight={250}>
               <FilterList>
                 <FilterList.InputField placeHolderSearchText={'Filter search'} />
-                <FilterList.Data<Candidate>
+                <FilterList.SearchResults
                   data={places}
                   renderElement={(place) => (
                     <EarthEntry
@@ -210,7 +210,9 @@ export function EarthPanel({ currentAnchor }: Props) {
                     />
                   )}
                   matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
-                />
+                >
+                  <FilterList.SearchResults.VirtualList />
+                </FilterList.SearchResults>
               </FilterList>
             </ResizeableContent>
           ) : (
