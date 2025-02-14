@@ -244,7 +244,7 @@ export const useHasVisibleChildren = (propertyOwnerUri: Uri): boolean => {
       propertyOwnerUri,
       visiblityLevelSetting,
       state.propertyOwners.propertyOwners,
-      state.properties.properties
+      state.properties.propertyOverview
     );
   });
 };

@@ -58,7 +58,7 @@ export function LayerList({ globe, layerGroup, layers }: Props) {
                     <Box flex={1}>
                       <GlobeLayer uri={layerUri} />
                     </Box>
-                    <ThemeIcon variant={'default'} {...item.dragHandleProps}>
+                    <ThemeIcon {...item.dragHandleProps}>
                       <DragHandleIcon />
                     </ThemeIcon>
                   </Group>

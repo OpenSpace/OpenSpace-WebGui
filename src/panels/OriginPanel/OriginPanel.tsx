@@ -1,14 +1,24 @@
-import { useRef, useState } from 'react';
-import { ActionIcon, Box, Container, Group, ScrollArea, Title } from '@mantine/core';
+import { useState } from 'react';
+import {
+  Box,
+  Container,
+  Group,
+  ScrollArea,
+  SegmentedControl,
+  Title,
+  VisuallyHidden
+} from '@mantine/core';
 
 import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
+import { useComputeHeightFunction } from '@/components/FilterList/hooks';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { IconSize } from '@/types/enums';
 import { FlightControllerData } from '@/types/flightcontroller-types';
-import { Identifier, PropertyOwner, Uri } from '@/types/types';
+import { Identifier, Uri } from '@/types/types';
 import {
   NavigationAimKey,
   NavigationAnchorKey,
@@ -38,8 +48,9 @@ export function OriginPanel() {
   const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
   const triggerRetargetAim = useTriggerProperty(RetargetAimKey);
 
+  const { ref, heightFunction } = useComputeHeightFunction(300, 20);
+
   const dispatch = useAppDispatch();
-  const ref = useRef<HTMLDivElement | null>(null);
 
   const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
   const allNodes = uris
@@ -93,14 +104,6 @@ export function OriginPanel() {
   const isInFocusMode = navigationAction === NavigationActionState.Focus;
   // We'll highlight the anchor node in both Focus and Anchor state otherwise aim node
   const activeNode = navigationAction === NavigationActionState.Aim ? aim : anchor;
-
-  // TODO find a better (?) way to color them depending on state
-  function actionIconStyle(state: NavigationActionState) {
-    return {
-      backgroundColor:
-        navigationAction === state ? 'var(--mantine-primary-color-filled)' : 'transparent'
-    };
-  }
 
   function hasDistinctAim() {
     return aim !== '' && aim !== anchor;
@@ -170,18 +173,6 @@ export function OriginPanel() {
     }
   }
 
-  function computeHeight(height: number): number {
-    if (!ref.current) {
-      return height * 0.5; // A fallback option in case we have no ref yet
-    }
-    // TODO (ylvse 2025-01-21): make this bottom margin a mantine variable somehow?
-    // Same for minSize
-    const bottomMargin = 40;
-    const minSize = 300;
-    const filterListHeight = height - ref.current.clientHeight - bottomMargin;
-    return Math.max(filterListHeight, minSize);
-  }
-
   return (
     <ScrollArea h={'100%'}>
       <Container>
@@ -192,34 +183,42 @@ export function OriginPanel() {
             </Title>
             <OriginSettings />
           </Group>
-          <Group gap={0} mb={'xs'}>
-            <ActionIcon
-              onClick={() => setNavigationAction(NavigationActionState.Focus)}
-              aria-label={'Select focus'}
-              size={'lg'}
-              style={actionIconStyle(NavigationActionState.Focus)}
-            >
-              <FocusIcon size={'70%'} />
-            </ActionIcon>
-            <ActionIcon
-              onClick={() => setNavigationAction(NavigationActionState.Anchor)}
-              aria-label={'Select anchor'}
-              size={'lg'}
-              style={actionIconStyle(NavigationActionState.Anchor)}
-            >
-              <AnchorIcon size={'70%'} />
-            </ActionIcon>
-            <ActionIcon
-              onClick={() => setNavigationAction(NavigationActionState.Aim)}
-              aria-label={'Select aim'}
-              size={'lg'}
-              style={actionIconStyle(NavigationActionState.Aim)}
-            >
-              <TelescopeIcon size={'70%'} />
-            </ActionIcon>
-          </Group>
+          <SegmentedControl
+            value={navigationAction}
+            withItemsBorders={false}
+            onChange={(value) => setNavigationAction(value as NavigationActionState)}
+            data={[
+              {
+                value: NavigationActionState.Focus,
+                label: (
+                  <>
+                    <FocusIcon size={IconSize.sm} style={{ display: 'block' }} />
+                    <VisuallyHidden>Set focus</VisuallyHidden>
+                  </>
+                )
+              },
+              {
+                value: NavigationActionState.Anchor,
+                label: (
+                  <>
+                    <AnchorIcon size={IconSize.sm} style={{ display: 'block' }} />
+                    <VisuallyHidden>Set anchor</VisuallyHidden>
+                  </>
+                )
+              },
+              {
+                value: NavigationActionState.Aim,
+                label: (
+                  <>
+                    <TelescopeIcon size={IconSize.sm} style={{ display: 'block' }} />
+                    <VisuallyHidden>Set aim</VisuallyHidden>
+                  </>
+                )
+              }
+            ]}
+          />
         </Box>
-        <FilterList heightFunc={computeHeight}>
+        <FilterList heightFunc={heightFunction}>
           <FilterList.InputField
             placeHolderSearchText={searchPlaceholderText}
             showMoreButton
@@ -235,7 +234,7 @@ export function OriginPanel() {
               />
             ))}
           </FilterList.Favorites>
-          <FilterList.Data<PropertyOwner>
+          <FilterList.SearchResults
             data={sortedNodes}
             renderElement={(node) => (
               <FocusEntry
@@ -252,7 +251,9 @@ export function OriginPanel() {
               'uri',
               'tags'
             ])}
-          />
+          >
+            <FilterList.SearchResults.VirtualList />
+          </FilterList.SearchResults>
         </FilterList>
       </Container>
     </ScrollArea>

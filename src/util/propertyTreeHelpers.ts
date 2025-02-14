@@ -3,6 +3,7 @@ import {
   Identifier,
   Properties,
   Property,
+  PropertyOverview,
   PropertyOwner,
   PropertyOwners,
   Uri
@@ -56,6 +57,12 @@ export function sgnUri(identifier: Identifier): Uri {
   return `${ScenePrefixKey}${identifier}`;
 }
 
+// Get the uri without the last word, or the full uri if it has no dot
+export function removeLastWordFromUri(uri: Uri): Uri {
+  const index = uri.lastIndexOf('.');
+  return index === -1 ? uri : uri.substring(0, index);
+}
+
 export function getSgnRenderable(
   sceneGraphNode: PropertyOwner,
   propertyOwners: PropertyOwners
@@ -101,6 +108,10 @@ export function isSceneGraphNode(uri: Uri): boolean {
 
 export function isRenderable(uri: Uri): boolean {
   return uri.endsWith(RenderableSuffixKey);
+}
+
+export function isTopLevelPropertyOwner(uri: Uri): boolean {
+  return !uri.includes('.');
 }
 
 export function isGlobe(renderableUri: Uri, properties: Properties): boolean {
@@ -167,24 +178,31 @@ export function hasVisibleChildren(
   ownerUri: Uri,
   visiblitySetting: number | undefined,
   propertyOwners: PropertyOwners,
-  properties: Properties
+  properties: PropertyOverview
 ): boolean {
-  const propertyOwner = propertyOwners[ownerUri];
-  const hasVisibleProperties =
-    propertyOwner?.properties.some((p) =>
-      isPropertyVisible(properties[p], visiblitySetting)
-    ) || false;
+  let queue: Uri[] = [ownerUri];
 
-  if (hasVisibleProperties) {
-    return true;
+  while (queue.length > 0) {
+    const currentOwner = queue.shift()!;
+    const propertyOwner = propertyOwners[currentOwner];
+
+    if (!propertyOwner) continue;
+
+    // Check if any of the owner's properties are visible
+    if (
+      visiblitySetting &&
+      propertyOwner.properties.some(
+        (uri) => visiblitySetting >= properties[uri].visibility
+      )
+    ) {
+      return true;
+    }
+
+    // Add subowners to the queue for further checking
+    queue = queue.concat(propertyOwner.subowners);
   }
 
-  const hasSubOwnersWithVisibleProperties =
-    propertyOwner?.subowners.some((so) =>
-      hasVisibleChildren(so, visiblitySetting, propertyOwners, properties)
-    ) || false;
-
-  return hasVisibleProperties || hasSubOwnersWithVisibleProperties;
+  return false;
 }
 
 /**

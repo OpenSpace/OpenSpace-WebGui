@@ -12,6 +12,7 @@ import {
   KeyboardIcon,
   LocationPinIcon,
   RocketLaunchIcon,
+  SettingsIcon,
   TelescopeIcon,
   TreeViewIcon,
   VideocamIcon
@@ -28,6 +29,7 @@ import { Scene } from '@/panels/Scene/Scene';
 import { ScreenSpaceRenderablePanel } from '@/panels/ScreenSpaceRenderablePanel/ScreenSpaceRenderablePanel';
 import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
+import { SettingsPanel } from '@/panels/SettingsPanel/SettingsPanel';
 import { TimePanel } from '@/panels/TimePanel/TimePanel';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { UserPanelsPanel } from '@/panels/UserPanelsPanel/UserPanelsPanel';
@@ -67,6 +69,24 @@ export const menuItemsData: MenuItem[] = [
     renderIcon: (size) => <TreeViewIcon size={size} />,
     preferredPosition: 'left',
     defaultVisible: true
+  },
+  {
+    title: 'Settings',
+    componentID: 'settings',
+    content: <SettingsPanel />,
+    renderMenuButton: (key, onclick) => (
+      <Button
+        key={key}
+        onClick={onclick}
+        leftSection={<SettingsIcon size={IconSize.lg} />}
+        size={'xl'}
+      >
+        Settings
+      </Button>
+    ),
+    renderIcon: (size) => <SettingsIcon size={size} />,
+    preferredPosition: 'left',
+    defaultVisible: false
   },
   {
     title: 'Focus',
