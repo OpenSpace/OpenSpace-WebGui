@@ -13,7 +13,8 @@ interface Props {
 
 export function NumberStepControls(props: Props) {
   // In the numeric inputs, stepping can be done with the keyboard using the up/down
-  // keys, so we don't need the step control buttons to be focusable by the keyboard
+  // keys, so we don't need the step control buttons to be focusable by the keyboard.
+  // Hence, we tab index -1 here.
   return (
     <Stack gap={0}>
       <StepControlButton
