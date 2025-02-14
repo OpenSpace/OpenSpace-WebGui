@@ -6,8 +6,8 @@ import { PlusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
-import { ImageListWrapper } from './ImageList/ImageListWrapper';
 import { BrowserTabs } from './BrowserTabs/BrowserTabs';
+import { ImageListWrapper } from './ImageList/ImageListWrapper';
 import { WorldWideTelescopeView } from './WorldWideTelescope/WorldWideTelescopeView';
 import { WwtProvider } from './WorldWideTelescope/WwtProvider/WwtProvider';
 import { useGetSkyBrowserData } from './hooks';
