@@ -12,6 +12,7 @@ import {
 } from '@/redux/skybrowser/skybrowserSlice';
 import { SkyBrowserImage } from '@/types/skybrowsertypes';
 import {
+  customPrecisionEqualFunc,
   equalArray,
   lowPrecisionEqual,
   lowPrecisionEqualArray,
@@ -91,23 +92,23 @@ export function useBrowserColorString(id: string): string | undefined {
 export function useBrowserRadius(id: string): number | undefined {
   return useAppSelector(
     (state) => state.skybrowser.browsers[id]?.borderRadius,
-    lowPrecisionEqual()
+    lowPrecisionEqual
   );
 }
 
 export function useBrowserCoords(id: string) {
   const ra = useAppSelector(
     (state) => state.skybrowser.browsers[id]?.ra,
-    lowPrecisionEqual(1e-6)
+    customPrecisionEqualFunc(1e-6)
   );
   const dec = useAppSelector(
     (state) => state.skybrowser.browsers[id]?.dec,
-    lowPrecisionEqual(1e-6)
+    customPrecisionEqualFunc(1e-6)
   );
 
   const roll = useAppSelector(
     (state) => state.skybrowser.browsers[id]?.roll,
-    lowPrecisionEqual(1e-6)
+    customPrecisionEqualFunc(1e-6)
   );
   return { ra, dec, roll };
 }
@@ -115,7 +116,7 @@ export function useBrowserCoords(id: string) {
 export function useBrowserFov(id: string) {
   return useAppSelector(
     (state) => state.skybrowser.browsers[id]?.fov,
-    lowPrecisionEqual(1e-6)
+    customPrecisionEqualFunc(1e-6)
   );
 }
 
