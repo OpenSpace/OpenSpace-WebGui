@@ -3,11 +3,11 @@ import { Anchor, Group, Image, Text, Title } from '@mantine/core';
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { OpenWindowIcon } from '@/icons/icons';
 import { ActionsButton } from '@/panels/ActionsPanel/ActionsButton';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { MissionCaptureButtons } from './MissionCaptureButtons';
 import { MissionTimeButtons } from './MissionTimeButtons';
 import { DisplayedPhase, DisplayType, Phase } from './types';
-import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 interface Props {
   displayedPhase: DisplayedPhase;
