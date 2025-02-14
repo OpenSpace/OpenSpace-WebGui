@@ -22,14 +22,14 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-declare module "openspace-api-js" {
+declare module 'openspace-api-js' {
   export class OpenSpaceApi {
     /**
      * Construct an instance of the OpenSpace API.
      * @param socket An instance of Socket or WebSocket.
      *               The socket should not be connected prior to calling this constructor.
      */
-    constructor(socket: SocketWrpper | WebSocketWrapper);
+    constructor(socket: SocketWrapper | WebSocketWrapper);
 
     /**
      * Set connect callback.
@@ -163,25 +163,25 @@ declare module "openspace-api-js" {
   }
 
   export class SocketWrapper {
-   /** Internal usage only */
-   constructor(address: string, port: number);
-   onConnect(cb: () => void): void;
-   onDisconnect(cb: () => void): void;
-   onMessage(cb: (message: string) => void): void;
-   connect(): void;
-   send(message: any): void;
-   disconnect(): void;
- }
+    /** Internal usage only */
+    constructor(address: string, port: number);
+    onConnect(cb: () => void): void;
+    onDisconnect(cb: () => void): void;
+    onMessage(cb: (message: string) => void): void;
+    connect(): void;
+    send(message: any): void;
+    disconnect(): void;
+  }
 
- export class WebSocketWrapper {
-   constructor(address: string, port: number);
-   onConnect(cb: () => void): void;
-   onDisconnect(cb: () => void): void;
-   onMessage(cb: (message: string) => void): void;
-   connect(): void;
-   send(message: any): void;
-   disconnect(): void;
- }
+  export class WebSocketWrapper {
+    constructor(address: string, port: number);
+    onConnect(cb: () => void): void;
+    onDisconnect(cb: () => void): void;
+    onMessage(cb: (message: string) => void): void;
+    connect(): void;
+    send(message: any): void;
+    disconnect(): void;
+  }
 
   export class Topic {
     /** Internal usage only */
@@ -380,6 +380,14 @@ export interface openspace {
    */
   invertBooleanProperty: (identifier: string) => Promise<void>
   /**
+   * A utility function to check whether an object is empty or not. Identifies `nil`
+      objects, Tables without any keys, and empty strings.
+
+      \\param object The object to check
+      \\return A Boolean that specifies if the object is empty or not
+   */
+  isEmpty: (object: any) => Promise<boolean>
+  /**
    * Returns whether the current OpenSpace instance is the master node of a cluster configuration. If this instance is not part of a cluster, this function also returns 'true'.
    */
   isMaster: () => Promise<boolean>
@@ -451,6 +459,10 @@ export interface openspace {
    */
   propertyValue: (uri: string) => Promise<unknown>
   /**
+   * Returns the number of bytes of system memory that is currently being used. This function only works on Windows.
+   */
+  ramInUse: () => Promise<number>
+  /**
    * Loads the CSV file provided as a parameter and returns it as a vector containing the values of the each row. The inner vector has the same number of values as the CSV has columns. The second parameter controls whether the first entry in the returned outer vector is containing the names of the columns
    */
   readCSVFile: (file: path, includeFirstLine?: boolean) => Promise<string[][]>
@@ -468,6 +480,10 @@ export interface openspace {
    */
   rebindKey: (oldKey: string, newKey: string) => Promise<void>
   /**
+   * This function registers another Lua script that will be periodically executed as long as the application is running. The `identifier` is used to later remove the script. The `script` is being executed every `timeout` seconds. This timeout is only as accurate as the framerate at which the application is running. Optionally the `preScript` Lua script is run when registering the repeated script and the `postScript` is run when unregistering it or when the application closes. If the `timeout` is 0, the script will be executed every frame. The `identifier` has to be a unique name that cannot have been used to register a repeated script before. A registered script is removed with the #removeRepeatedScript function.
+   */
+  registerRepeatedScript: (identifier: string, script: string, timeout?: number, preScript?: string, postScript?: string) => Promise<void>
+  /**
    * 
    */
   removeCustomProperty: (identifier: string) => Promise<void>
@@ -476,6 +492,10 @@ export interface openspace {
       name as interesting, thus removing the shortcuts from the features properties list
    */
   removeInterestingNodes: (sceneGraphNodes: string[]) => Promise<void>
+  /**
+   * Removes a previously registered repeated script (see #registerRepeatedScript)
+   */
+  removeRepeatedScript: (identifier: string) => Promise<void>
   /**
    * Removes the SceneGraphNode identified by name or by extracting the 'Identifier' key if the parameter is a table.
    */
@@ -559,6 +579,16 @@ The URI is interpreted using a wildcard in which '*' is expanded to '(.*)' and b
    */
   takeScreenshot: () => Promise<integer>
   /**
+   * A utility function to return a specific value based on a True/False condition.
+
+      \\param condition The condition to check against
+      \\param trueValue The value to return if the condition is True
+      \\param falseValue The value to return if the condition is False
+      \\return Either the trueValue of falseValue, depending on if the condition is true
+      or not
+   */
+  ternary: (condition: boolean, trueValue: any, falseValue: any) => Promise<any>
+  /**
    * Toggles the fade state of the node(s) with the given identifier over
       the given time in seconds. The identifier can contain a tag and/or a wildcard to
       target several nodes. If the fade time is not provided then the
@@ -582,6 +612,10 @@ The URI is interpreted using a wildcard in which '*' is expanded to '(.*)' and b
    * This function returns information about the current OpenSpace version. The resulting table has the structure: \\code Version = { Major = <number> Minor = <number> Patch = <number> }, Commit = <string> Branch = <string> \\endcode
    */
   version: () => Promise<table>
+  /**
+   * Returns the number of bytes of video memory that is currently being used. This function only works on Windows.
+   */
+  vramInUse: () => Promise<number>
   /**
    * Walks a directory and returns the contents of the directory as absolute paths. The first argument is the path of the directory that should be walked, the second argument determines if the walk is recursive and will continue in contained directories. The default value for this parameter is \"false\". The third argument determines whether the table that is returned is sorted. The default value for this parameter is \"false\".
    */
@@ -801,6 +835,12 @@ interface dashboardLibrary {
    */
   clearDashboardItems: () => Promise<void>
   /**
+   * Returns all loaded dashboard-item identifiers from the main dashboard.
+
+      \\return a list of loaded dashboard-item identifiers from the main dashbaord
+   */
+  dashboardItems: () => Promise<string[]>
+  /**
    * Removes the dashboard item with the specified identifier.
    */
   removeDashboardItem: (identifier: string | table) => Promise<void>
@@ -819,7 +859,6 @@ interface debuggingLibrary {
       provides the length of the coordinate axis in meters. If this value is not
       specified 2.5 times the interaction sphere of the selected node is used
       instead.
-    
    */
   createCoordinateAxes: (nodeIdentifier?: string, scale?: number) => Promise<void>
   /**
@@ -865,37 +904,83 @@ interface eventLibrary {
 
 interface exoplanetsLibrary {
   /**
-   * Add one or multiple exoplanet systems to the scene, as specified by the input. An input string should be the name of the system host star.
+   * Add a specific exoplanet system to the scene, based on a star name.
+
+   Note that the formatting of the name must match the one in the dataset. That is, it
+   must match the name as given in the [NASA Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/).
+
+ \\param starName The name of the star
    */
-  addExoplanetSystem: (starNames: string | string[]) => Promise<void>
+  addExoplanetSystem: (starName: string) => Promise<void>
+  /**
+   * Add multiple exoplanet systems to the scene, based on a list of names.
+
+ Note that the formatting of the name must match the one in the dataset. That is,
+ they must match the names as given in the [NASA Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/).
+
+ \\param listOfStarNames A list of star names for which to create the exoplanet systems
+   */
+  addExoplanetSystems: (listOfStarNames: string[]) => Promise<void>
   /**
    * Deprecated in favor of 'listOfExoplanets'
    */
   getListOfExoplanets: () => Promise<string[]>
   /**
-   * 
+   * Lists the names of the host stars of all exoplanet systems that have sufficient data for generating a visualization, and prints the list to the console.
    */
   listAvailableExoplanetSystems: () => Promise<void>
   /**
    * Returns a list with names of the host star of all the exoplanet systems that have sufficient data for generating a visualization, based on the module's loaded data file.
+
+\\return A list of exoplanet host star names.
    */
   listOfExoplanets: () => Promise<string[]>
   /**
-   * Load a set of exoplanets based on custom data, in the form of a CSV file, and add them to the rendering. Can be used to load custom datasets, or more recent planets than what are included in the internal data file that is released with OpenSpace.
+   * Load a set of exoplanets based on custom data, in the form of a CSV file, and add
+ them to the rendering. Can be used to load custom datasets, or more recent planets
+ than what are included in the internal data file that is released with OpenSpace.
 
-The format and column names in the CSV sould be the same as the ones provided by the NASA Exoplanet Archive. https://exoplanetarchive.ipac.caltech.edu/
+ The format and column names in the CSV should be the same as the ones provided by
+ the [NASA Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/).
 
-We recommend downloading the file from the Exoplanet Archive's Composite data table, where multiple sources are combined into one row per planet. https://exoplanetarchive.ipac.caltech.edu /cgi-bin/TblView/nph-tblView?app=ExoTbls&config=PSCompPars
+ We recommend downloading the file from the [Exoplanet Archive's Composite data table](https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=PSCompPars),
+ where multiple sources are combined into one row per planet.
 
-Please remember to include all columns in the file download, as missing data columns may lead to an incomplete visualization.
+ Please remember to include all columns in the file download, as missing data columns
+ may lead to an incomplete visualization.
 
-Also, avoid loading too large files of planets, as each added system will affect the rendering performance.
+ Also, avoid loading too large files of planets, as each added system will affect the
+ rendering performance.
+
+ \\param csvFile A path to a .csv file that contains the data for the exoplanets
    */
   loadExoplanetsFromCsv: (csvFile: string) => Promise<void>
   /**
-   * 
+   * Load a set of exoplanet information based on custom data in the form of a CSV file.
+
+The format and column names in the CSV should be the same as the ones provided by the [NASA Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/).
+
+When dowloading the data from the archive we recommend including all columns, since a few required ones are not selected by default.
+
+\\param csvFile A path to the CSV file to load the data from.
+
+\\return A list of objects of the type [ExoplanetSystemData](#exoplanets_exoplanet_system_data), that can be used to create the scene graph nodes for the exoplanet systems
+   */
+  loadSystemDataFromCsv: (csvFile: string) => Promise<table[]>
+  /**
+   * Remove a loaded exoplanet system.
+
+\\param starName The name of the host star for the system to remove.
    */
   removeExoplanetSystem: (starName: string) => Promise<void>
+  /**
+   * Return an object containing the information needed to add a specific exoplanet system. The data is retrieved from the module's prepared datafile for exoplanets. This file is in a binary format, for fast retrieval during runtime.
+
+\\param starName The name of the star to get the information for.
+
+\\return An object of the type [ExoplanetSystemData](#exoplanets_exoplanet_system_data) that can be used to create the scene graph nodes for the exoplanet system
+   */
+  systemData: (starName: string) => Promise<table>
 } // interface exoplanetsLibrary
 
 interface gaiaLibrary {
@@ -920,7 +1005,6 @@ interface globebrowsingLibrary {
       then added to the RenderableGlobe identified by name passed to the second argument.
       Usage:
       openspace.globebrowsing.addBlendingLayersFromDirectory(directory, "Earth")
-    
    */
   addBlendingLayersFromDirectory: (directory: string, nodeName: string) => Promise<void>
   /**
@@ -929,7 +1013,6 @@ interface globebrowsingLibrary {
       openspace.globebrowsing.addFocusNodeFromLatLong(
         "Olympus Mons", "Mars", -18.65, 226.2, optionalAltitude
       )
-    
    */
   addFocusNodeFromLatLong: (name: string, globeIdentifier: string, latitude: number, longitude: number, altitude: number) => Promise<void>
   /**
@@ -938,7 +1021,6 @@ interface globebrowsingLibrary {
       used to create new SceneGraphNodes that can be used as focus nodes.
       Usage:
       openspace.globebrowsing.addFocusNodesFromDirectory(directory, "Mars")
-    
    */
   addFocusNodesFromDirectory: (directory: string, nodeName: string) => Promise<void>
   /**
@@ -962,7 +1044,6 @@ interface globebrowsingLibrary {
       openspace.globebrowsing.addGibsLayer(
         "AIRS_Temperature_850hPa_Night", "2km", "2013-07-15", "Present", "png"
       )
-    
    */
   addGibsLayer: (layer: string, resolution: string, format: string, startDate: string, endDate: string) => Promise<void>
   /**
@@ -1122,7 +1203,6 @@ The `source` and `destination` parameters can also be the identifiers of the lay
       local t = openspace.globebrowsing.parseInfoFile(file)
       openspace.globebrowsing.addLayer("Earth", "ColorLayers", t.color)
       openspace.globebrowsing.addLayer("Earth", "HeightLayers", t.height)
-    
    */
   parseInfoFile: (file: string) => Promise<void>
   /**
@@ -1148,84 +1228,53 @@ The `source` and `destination` parameters can also be the identifiers of the lay
       openspace.globebrowsing.setNodePositionFromCamera(
         "Scale_StatueOfLiberty", optionalUseAltitude
       )
-    
    */
   setNodePositionFromCamera: (nodeIdentifer: string, useAltitude: boolean) => Promise<void>
 } // interface globebrowsingLibrary
 
 interface keyframeRecordingLibrary {
   /**
-   * Adds a keyframe at the specified time in the sequence.
-
-\\param sequenceTime The time at which to add the new keyframe in the sequence given in seconds
+   * Adds a keyframe at the specified sequence-time
    */
-  addKeyframe: (sequenceTime: number) => Promise<void>
+  addCameraKeyframe: (sequenceTime: number) => Promise<void>
   /**
-   * Returns true if there currently is a sequence loaded, otherwise false.
+   * Adds a keyframe at the specified sequence-time
    */
-  hasKeyframeRecording: () => Promise<boolean>
+  addScriptKeyframe: (sequenceTime: number, script: string) => Promise<void>
   /**
-   * Jumps to a specified keyframe within the keyframe recording sequence.
-
-\\param index The index of the keyframe to jump to
-   */
-  jumpToKeyframe: (index: integer) => Promise<void>
-  /**
-   * Fetches the sequence keyframes as a JSON object.
+   * 
    */
   keyframes: () => Promise<table[]>
   /**
-   * Loads a keyframe recording sequence from the specified file.
-
-\\param filename The name of the file to load
+   * Loads a sequence from the specified file
    */
-  loadSequence: (filename: string) => Promise<void>
+  loadSequence: (filename: path) => Promise<void>
   /**
-   * Move an existing keyframe in time.
-
-\\param index The index of the keyframe to move \\param sequenceTime The new time in seconds to update the keyframe to
+   * Move keyframe of `index` to the new specified `sequenceTime`
    */
   moveKeyframe: (index: integer, sequenceTime: number) => Promise<void>
   /**
-   * Starts a new sequence of keyframes. Any previously loaded sequence is discarded.
+   * Starts a new sequence of keyframes, any previously loaded sequence is discarded
    */
   newSequence: () => Promise<void>
   /**
-   * Pauses a playing keyframe recording sequence.
+   * Pauses a playing sequence
    */
   pause: () => Promise<void>
   /**
-   * Playback keyframe recording sequence optionally from the specified `sequenceTime` or if not specified starts playing from the beginning.
-
-\\param sequenceTime The time in seconds at which to start playing the sequence. If omitted, the playback starts at the beginning of the sequence.
+   * Playback sequence optionally from the specified `sequenceTime` or if not specified starts playing from the current time set within the sequence
    */
   play: (sequenceTime?: number) => Promise<void>
   /**
-   * Removes a keyframe at the specified index.
-
-\\param index The 0-based index of the keyframe to remove
+   * Removes a keyframe at the specified 0-based index
    */
   removeKeyframe: (index: integer) => Promise<void>
   /**
-   * Resume playing a keyframe recording sequence that has been paused.
+   * Saves the current sequence of keyframes to disk by the optionally specified `filename`.
    */
-  resume: () => Promise<void>
+  saveSequence: (filename: path) => Promise<void>
   /**
-   * Saves the current sequence of keyframes to disk by the optionally specified `filename`. `filename` can be omitted if the sequence was previously saved or loaded from file.
-
-\\param filename The name of the file to save
-   */
-  saveSequence: (filename?: string) => Promise<void>
-  /**
-   * Jumps to a specified time within the keyframe recording sequence.
-
-\\param sequenceTime The time in seconds to jump to
-   */
-  setTime: (sequenceTime: number) => Promise<void>
-  /**
-   * Update the camera position of a keyframe at the specified index.
-
-\\param index The 0-based index of the keyframe to update
+   * Update the camera position at keyframe specified by the 0-based index
    */
   updateKeyframe: (index: integer) => Promise<void>
 } // interface keyframeRecordingLibrary
@@ -1527,9 +1576,9 @@ interface pathnavigationLibrary {
   /**
    * Fade rendering to black, jump to the specified node, and then fade in. This is done by triggering another script that handles the logic.
 
-\\param navigationState A [NavigationState](#core_navigation_state) to jump to \\param fadeDuration An optional duration for the fading. If not included, the property in Navigation Handler will be used
+\\param navigationState A [NavigationState](#core_navigation_state) to jump to. \\param useTimeStamp if true, and the provided NavigationState includes a timestamp, the time will be set as well. \\param fadeDuration An optional duration for the fading. If not included, the property in Navigation Handler will be used.
    */
-  jumpToNavigationState: (navigationState: table, fadeDuration?: number) => Promise<void>
+  jumpToNavigationState: (navigationState: table, useTimeStamp?: boolean, fadeDuration?: number) => Promise<void>
   /**
    * Pause a playing camera path.
    */
@@ -1579,33 +1628,9 @@ interface scriptSchedulerLibrary {
    * Returns the list of all scheduled scripts
    */
   scheduledScripts: () => Promise<table[]>
-  /**
-   * Sets the time reference for scheduled scripts to application time (seconds since OpenSpace application started).
-   */
-  setModeApplicationTime: () => Promise<void>
-  /**
-   * Sets the time reference for scheduled scripts to the time since the recording was started (the same relative time applies to playback).
-   */
-  setModeRecordedTime: () => Promise<void>
-  /**
-   * Sets the time reference for scheduled scripts to the simulated date & time (J2000 epoch seconds).
-   */
-  setModeSimulationTime: () => Promise<void>
 } // interface scriptSchedulerLibrary
 
 interface sessionRecordingLibrary {
-  /**
-   * Used to disable that renderings are saved during playback.
-   */
-  disableTakeScreenShotDuringPlayback: () => Promise<void>
-  /**
-   * Enables that rendered frames should be saved during playback. The parameter determines the number of frames that are exported per second if this value is not provided, 60 frames per second will be exported.
-   */
-  enableTakeScreenShotDuringPlayback: (fps?: integer) => Promise<void>
-  /**
-   * Performs a conversion of the specified file to the most most recent file format, creating a copy of the recording file.
-   */
-  fileFormatConversion: (convertFilePath: string) => Promise<void>
   /**
    * Returns true if session recording is currently playing back a recording.
    */
@@ -1621,35 +1646,19 @@ interface sessionRecordingLibrary {
   /**
    * Starts a playback session with keyframe times that are relative to the time since the recording was started (the same relative time applies to the playback). When playback starts, the simulation time is automatically set to what it was at recording time. The string argument is the filename to pull playback keyframes from (the file path is relative to the RECORDINGS variable specified in the config file). If a second input value of true is given, then playback will continually loop until it is manually stopped.
    */
-  startPlayback: (file: string, loop?: boolean, shouldWaitForTiles?: boolean) => Promise<void>
+  startPlayback: (file: string, loop?: boolean, shouldWaitForTiles?: boolean, screenshotFps?: integer) => Promise<void>
   /**
-   * Starts a playback session with keyframe times that are relative to application time (seconds since OpenSpace application started). The string argument is the filename to pull playback keyframes from (the file path is relative to the RECORDINGS variable specified in the config file).
+   * Starts a recording session. The string argument is the filename used for the file where the recorded keyframes are saved.
    */
-  startPlaybackApplicationTime: (file: string) => Promise<void>
-  /**
-   * Starts a playback session with keyframe times that are relative to the time since the recording was started (the same relative time applies to the playback). The string argument is the filename to pull playback keyframes from (the file path is relative to the RECORDINGS variable specified in the config file). If a second input value of true is given, then playback will continually loop until it is manually stopped.
-   */
-  startPlaybackRecordedTime: (file: string, loop?: boolean) => Promise<void>
-  /**
-   * Starts a playback session with keyframe times that are relative to the simulated date & time. The string argument is the filename to pull playback keyframes from (the file path is relative to the RECORDINGS variable specified in the config file).
-   */
-  startPlaybackSimulationTime: (file: string) => Promise<void>
-  /**
-   * Starts a recording session. The string argument is the filename used for the file where the recorded keyframes are saved. The file data format is binary.
-   */
-  startRecording: (recordFilePath: string) => Promise<void>
-  /**
-   * Starts a recording session. The string argument is the filename used for the file where the recorded keyframes are saved. The file data format is ASCII.
-   */
-  startRecordingAscii: (recordFilePath: string) => Promise<void>
+  startRecording: () => Promise<void>
   /**
    * Stops a playback session before playback of all keyframes is complete.
    */
   stopPlayback: () => Promise<void>
   /**
-   * Stops a recording session.
+   * Stops a recording session. `dataMode` has to be \"Ascii\" or \"Binary\"
    */
-  stopRecording: () => Promise<void>
+  stopRecording: (recordFilePath: path, dataMode: string) => Promise<void>
   /**
    * Toggles the pause function, i.e. temporarily setting the delta time to 0 and restoring it afterwards.
    */
@@ -1825,13 +1834,12 @@ interface spaceLibrary {
    */
   readKeplerFile: (p: path, type: string) => Promise<table[]>
   /**
-   *       Takes the provided TLE file, converts it into a SPICE kernel and returns a
-      SpiceTranslation instance that can be used to access the information in the TLE
-      file using SPICE's superior integral solver.
+   * Takes the provided TLE file, converts it into a SPICE kernel and returns a
+ SpiceTranslation instance that can be used to access the information in the TLE
+ file using SPICE's superior integral solver.
 
-      The second return value is the spice kernel that should be loaded and unloaded by
-      whoever called this function.
-    
+ The second return value is the spice kernel that should be loaded and unloaded by
+ whoever called this function.
    */
   tleToSpiceTranslation: (tlePath: string) => Promise<[ translation, spicekernel ]>
 } // interface spaceLibrary
@@ -1956,67 +1964,109 @@ interface systemCapabilitiesLibrary {
 
 interface timeLibrary {
   /**
-   * Modifies the passed time (first argument) by the delta time (second argument). The first argument can either be an ISO 8601 date string or the number of seconds past the J2000 epoch. The second argument can either be a string of the form [-]XX(s,m,h,d,M,y] with (s)econds, (m)inutes, (h)ours, (d)ays, (M)onths, and (y)ears as units and an optional - sign to move backwards in time. If the second argument is a number, it is interpreted as a number of seconds. The return value is of the same type as the first argument.
+   * Modify a specified timestamp by a given delta time. That is, advance the value either forwards or backwards in time.
+
+      The returned value will be of the same type as the first argument. That is, either a number of seconds past the J2000 epoch, or an ISO 8601 date string.
+
+      \\param base The timestamp to alter, either given as an ISO 8601 date string or a number of seconds past the J2000 epoch. \\param change The amount of time to add to the specified timestamp. Can be given either in a number of seconds (including negative), or as a string of the form [-]XX(s,m,h,d,M,y] with (s)econds, (m)inutes, (h)ours, (d)ays, (M)onths, and (y)ears as units and an optional - sign to move backwards in time.
+
+      \\return The updated timestamp
    */
   advancedTime: (base: string | number, change: string | number) => Promise<string | number>
   /**
-   * Converts the given time to either a J2000 seconds number or a ISO 8601 timestamp, depending on the type of the given time.
+   * Convert the given time from either a J2000 seconds number to an ISO 8601 timestamp, or vice versa.
 
-If the given time is a timestamp: the function returns a double precision value representing the ephemeris version of that time; that is the number of TDB seconds past the J2000 epoch.
+      If the given time is a timestamp, the function returns a double precision value representing the ephemeris version of that time; that is, the number of TDB seconds past the J2000 epoch.
 
-If the given time is a J2000 seconds value: the function returns a ISO 8601 timestamp.
+      If the given time is a J2000 seconds value, the function returns a ISO 8601 timestamp.
+
+      \\param time The timestamp to convert, either given as an ISO 8601 date string or a number of seconds past the J2000 epoch.
+
+      \\return The converted timestamp
    */
   convertTime: (time: string | number) => Promise<string | number>
   /**
    * Returns the current application time as the number of seconds since the OpenSpace application started.
+
+\\return The number of seconds since OpenSpace started
    */
   currentApplicationTime: () => Promise<number>
   /**
    * Returns the current time as the number of seconds since the J2000 epoch.
+
+\\return The current time, as the number of seconds since the J2000 epoch
    */
   currentTime: () => Promise<number>
   /**
    * Returns the current wall time as an ISO 8601 date string (YYYY-MM-DDTHH-MN-SS) in the UTC timezone.
+
+\\return The current wall time, in the UTC time zone, as an ISO 8601 date string
    */
   currentWallTime: () => Promise<string>
   /**
    * Returns the amount of simulated time that passes in one second of real time.
+
+\\return The simulated delta time, in seconds per real time second
    */
   deltaTime: () => Promise<number>
   /**
-   * Returns the number of seconds between the provided start time and end time. If the end time is before the start time, the return value is negative. If the start time is equal to the end time, the return value is 0. Both start and end times must be valid ISO 8601 date strings.
+   * Returns the number of seconds between the provided start time and end time.
+
+If the end time is before the start time, the return value is negative. If the start time is equal to the end time, the return value is 0.
+
+\\param start The start time for the computation, given as an ISO 8601 date string \\param end The end time for the computation, given as an ISO 8601 date string
+
+\\return The time between the start time and end time
    */
   duration: (start: string, end: string) => Promise<number>
   /**
-   * Sets the amount of simulation time that happens in one second of real time. If a second input value is given, the interpolation is done over the specified number of seconds.
+   * Set the amount of simulation time that happens in one second of real time, by smoothly interpolating to that value.
+
+\\param deltaTime The value to set the speed to, in seconds per real time second \\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for delta time interpolation specified in the TimeManager.
    */
   interpolateDeltaTime: (deltaTime: number, interpolationDuration?: number) => Promise<void>
   /**
-   * Interpolate the simulation speed to the first delta time step in the list that is larger than the current simulation speed, if any. If an input value is given, the interpolation is done over the specified number of seconds.
+   * Interpolate the simulation speed to the first delta time step in the list that is larger than the current simulation speed, if any.
+
+\\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value specified in the TimeManager.
    */
   interpolateNextDeltaTimeStep: (interpolationDuration?: number) => Promise<void>
   /**
-   * Same behaviour as setPause, but with interpolation. If no interpolation duration is provided, the interpolation time will be based on the `defaultPauseInterpolationDuration` and `defaultUnpauseInterpolationDuration` properties of the TimeManager.
+   * Same behaviour as `setPause`, but with interpolation. That is, if it should be paused, the delta time will be interpolated to 0, and if unpausing, the delta time will be interpolated to whatever delta time value is set.
+
+\\param isPaused True if the simulation should be paused, and false otherwise \\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for pause/unpause specified in the TimeManager.
    */
   interpolatePause: (isPaused: boolean, interpolationDuration?: number) => Promise<void>
   /**
-   * Interpolate the simulation speed to the first delta time step in the list that is smaller than the current simulation speed, if any. If an input value is given, the interpolation is done over the specified number of seconds.
+   * Interpolate the simulation speed to the first delta time step in the list that is smaller than the current simulation speed, if any.
+
+\\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value specified in the TimeManager.
    */
   interpolatePreviousDeltaTimeStep: (interpolationDuration?: number) => Promise<void>
   /**
-   * Sets the current simulation time to the specified value. If the first parameter is a number, the target is the number of seconds past the J2000 epoch. If it is a string, it has to be a valid ISO 8601-like date string of the format YYYY-MM-DDTHH:MN:SS (Note: providing time zone using the Z format is not supported. UTC is assumed). If a second input value is given, the interpolation is done over the specified number of seconds.
+   * Set the current simulation time to the specified value, using interpolation. The time can be specified either a number of seconds past the J2000 epoch, or as a ISO 8601 string.
+
+Note that providing time zone using the Z format is not supported. UTC is assumed.
+
+\\param time The time to set. If the parameter is a number, the value is the number of seconds past the J2000 epoch. If it is a string, it has to be a valid ISO 8601-like date string of the format YYYY-MM-DDTHH:MN:SS. \\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for time interpolation specified in the TimeManager.
    */
   interpolateTime: (time: string | number, interpolationDutation?: number) => Promise<void>
   /**
-   * Increments the current simulation time by the specified number of seconds. If a second input value is given, the interpolation is done over the specified number of seconds.
+   * Increment the current simulation time by the specified number of seconds, using interpolation.
+
+\\param delta The number of seconds to increase the current simulation time by \\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for time interpolation specified in the TimeManager.
    */
   interpolateTimeRelative: (delta: number, interpolationDuration?: number) => Promise<void>
   /**
-   * Toggles the pause function, i.e. temporarily setting the delta time to 0 and restoring it afterwards. If an input value is given, the interpolation is done over the specified number of seconds.
+   * Toggle the pause function, i.e. if the simulation is paused it will resume, and otherwise it will be paused. This is done by smoothly interpolating from the current delta time value to 0 (pause), or from 0 to the current delta time value (unpause).
+
+\\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for pause/unpause specified in the TimeManager.
    */
   interpolateTogglePause: (interpolationDuration?: number) => Promise<void>
   /**
    * Returns whether the simulation time is currently paused or is progressing.
+
+\\return True if the simulation is paused, and false otherwise
    */
   isPaused: () => Promise<boolean>
   /**
@@ -2024,19 +2074,27 @@ If the given time is a J2000 seconds value: the function returns a ISO 8601 time
    */
   pauseToggleViaKeyboard: () => Promise<void>
   /**
-   * Returns the number of seconds per day where a day in this case is exactly 24 hours. The total number of seconds is equal to 86400.
+   * Returns the number of seconds per day, where a day in this case is exactly 24 hours. The total number of seconds is equal to 86400.
+
+\\return The number of seconds in a day
    */
   secondsPerDay: () => Promise<number>
   /**
-   * Returns the number of seconds in a Julian year, which is equal to 31557600.
+   * Returns the number of seconds in a Gregorian year, which is equal to 31556952.
+
+\\return The number of seconds in a Gregorian year
    */
   secondsPerYear: () => Promise<number>
   /**
-   * Sets the amount of simulation time that happens in one second of real time.
+   * Set the amount of simulation time that happens in one second of real time.
+
+\\param deltaTime The value to set the speed to, in seconds per real time second
    */
   setDeltaTime: (deltaTime: number) => Promise<void>
   /**
-   * Sets the list of discrete delta time steps for the simulation speed that can be quickly jumped between. The list will be sorted to be in increasing order. A negative verison of each specified time step will be added per default as well.
+   * Set the list of discrete delta time steps for the simulation speed that can be quickly jumped between. The list will be sorted to be in increasing order. A negative verison of each specified time step will be added per default as well.
+
+\\param deltaTime The list of delta times, given in seconds per real time second. Should only include positive values.
    */
   setDeltaTimeSteps: (deltaTime: number[]) => Promise<void>
   /**
@@ -2044,27 +2102,37 @@ If the given time is a J2000 seconds value: the function returns a ISO 8601 time
    */
   setNextDeltaTimeStep: () => Promise<void>
   /**
-   * Toggles a pause function i.e. setting the delta time to 0 and restoring it afterwards.
+   * Set whether the simulation should be paused or not. Note that to pause means temporarily setting the delta time to 0, and unpausing means restoring it to whatever delta time value is set.
+
+\\param isPaused True if the simulation should be paused, and false otherwise
    */
   setPause: (isPaused: boolean) => Promise<void>
   /**
-   * Immediately set the simulation speed to the first delta time step in the list that is smaller than the current choice of simulation speed if any.
+   * Immediately set the simulation speed to the first delta time step in the list that is smaller than the current choice of simulation speed, if any.
    */
   setPreviousDeltaTimeStep: () => Promise<void>
   /**
-   * Sets the current simulation time to the specified value. If the parameter is a number, the value is the number of seconds past the J2000 epoch. If it is a string, it has to be a valid ISO 8601-like date string of the format YYYY-MM-DDTHH:MN:SS. Note: providing time zone using the Z format is not supported. UTC is assumed.
+   * Set the current simulation time to the specified value. The time can be specified either a number of seconds past the J2000 epoch, or as a ISO 8601 string.
+
+Note that providing time zone using the Z format is not supported. UTC is assumed.
+
+\\param time The time to set. If the parameter is a number, the value is the number of seconds past the J2000 epoch. If it is a string, it has to be a valid ISO 8601-like date string of the format YYYY-MM-DDTHH:MN:SS.
    */
   setTime: (time: number | string) => Promise<void>
   /**
    * Returns the current time as an date string of the form (YYYY MON DDTHR:MN:SC.### ::RND) as returned by SPICE.
+
+\\return The current time, in the format used by SPICE (YYYY MON DDTHR:MN:SC.### ::RND)
    */
   SPICE: () => Promise<string>
   /**
-   * Toggles the pause function, i.e. temporarily setting the delta time to 0 and restoring it afterwards.
+   * Toggle the pause function, i.e. if the simulation is paused it will resume, and otherwise it will be paused. Note that to pause means temporarily setting the delta time to 0, and unpausing means restoring it to whatever delta time value is set.
    */
   togglePause: () => Promise<void>
   /**
    * Returns the current time as an ISO 8601 date string (YYYY-MM-DDTHH:MN:SS).
+
+\\return The current time, as an ISO 8601 date string
    */
   UTC: () => Promise<string>
 } // interface timeLibrary
