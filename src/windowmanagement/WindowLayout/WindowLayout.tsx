@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ActionIcon, CloseIcon, Stack } from '@mantine/core';
+import { CloseButton, Stack } from '@mantine/core';
 import DockLayout, { DockContext, LayoutData, PanelData, TabGroup } from 'rc-dock';
 
 import { FlightController } from '@/panels/FlightControlPanel/FlightController';
@@ -71,13 +71,10 @@ export function WindowLayout() {
       heightFlex: 1,
       panelExtra: (panelData: PanelData, context: DockContext) => {
         return (
-          <ActionIcon
-            variant={'transparent'}
+          <CloseButton
             aria-label={'Close window'}
             onClick={() => context.dockMove(panelData, null, 'remove')}
-          >
-            <CloseIcon />
-          </ActionIcon>
+          />
         );
       }
     }
