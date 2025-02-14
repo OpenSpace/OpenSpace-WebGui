@@ -39,7 +39,7 @@ export function TopBarMenuWrapper({
     >
       <Menu.Target>
         {typeof targetTitle === 'string' ? (
-          <Button size={'xs'} variant={'transparent'} color={'white'}>
+          <Button size={'xs'} variant={'subtle'} color={'white'}>
             <Text>{targetTitle}</Text>
           </Button>
         ) : (
