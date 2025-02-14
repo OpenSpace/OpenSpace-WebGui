@@ -70,7 +70,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
   return (
     <Menu position={'right-start'}>
       <Menu.Target>
-        <ActionIcon size={'sm'} variant={'light'}>
+        <ActionIcon size={'sm'}>
           <VerticalDotsIcon />
         </ActionIcon>
       </Menu.Target>
@@ -78,6 +78,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
         <Menu.Label>{name}</Menu.Label>
         <Button
           onClick={openInNewWindow}
+          variant={'filled'}
           leftSection={<OpenInNewIcon size={IconSize.sm} />}
         >
           Pop out
@@ -86,18 +87,18 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
         <Stack gap={'xs'}>
           <Group gap={'xs'}>
             <NodeNavigationButton
-              type={NavigationType.fly}
+              type={NavigationType.Fly}
               identifier={propertyOwner.identifier}
               showLabel
             />
             <NodeNavigationButton
-              type={NavigationType.jump}
+              type={NavigationType.Jump}
               identifier={propertyOwner.identifier}
               showLabel
             />
           </Group>
           <NodeNavigationButton
-            type={NavigationType.frame}
+            type={NavigationType.Frame}
             identifier={propertyOwner.identifier}
             showLabel
           />

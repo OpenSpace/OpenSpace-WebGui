@@ -5,18 +5,23 @@ import {
   useRef,
   useState
 } from 'react';
-import { ActionIcon, Box } from '@mantine/core';
+import { ActionIcon, Box, BoxComponentProps } from '@mantine/core';
 
 import { DragHandleIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
-interface Props extends PropsWithChildren {
+interface Props extends PropsWithChildren, BoxComponentProps {
   minHeight?: number;
   defaultHeight: number;
 }
 
-export function ResizeableContent({ minHeight = 40, defaultHeight, children }: Props) {
+export function ResizeableContent({
+  minHeight = 40,
+  defaultHeight,
+  children,
+  ...props
+}: Props) {
   const [height, setHeight] = useState(defaultHeight);
   const { pointerEvents: windowPointer } = useWindowSize();
 
@@ -108,7 +113,7 @@ export function ResizeableContent({ minHeight = 40, defaultHeight, children }: P
 
   return (
     <>
-      <Box ref={contentRef} style={{ height: height }}>
+      <Box ref={contentRef} style={{ height: height }} {...props}>
         {children}
       </Box>
       <Box ref={resizerRef}>
@@ -121,7 +126,6 @@ export function ResizeableContent({ minHeight = 40, defaultHeight, children }: P
           }}
           size={'xs'}
           radius={0}
-          variant={'default'}
         >
           <DragHandleIcon size={IconSize.xs} />
         </ActionIcon>

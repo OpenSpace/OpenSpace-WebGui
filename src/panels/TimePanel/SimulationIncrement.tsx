@@ -4,11 +4,10 @@ import { useThrottledCallback } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
-import { TimePart } from '@/types/enums';
 
 import { DeltaTimeStepsControl } from './DeltaTimeStepControl';
-import { InlineInput } from './InlineInput';
-import { Decimals, StepSizes } from './util';
+import { TimeIncrementInput } from './TimeIncrementInput';
+import { Decimals, StepSizes, TimePart } from './types';
 
 export function SimulationIncrement() {
   const updateDeltaTime = useThrottledCallback(updateDeltaTimeNow, 50);
@@ -73,12 +72,13 @@ export function SimulationIncrement() {
           allowDeselect={false}
           onChange={(value) => setStepSize(value! as TimePart)}
         />
-        <InlineInput
+        <TimeIncrementInput
           label={`${stepSize} / second`}
           value={targetDeltaTime / StepSizes[stepSize]}
           onInputChange={setDeltaTime}
           step={1}
           decimalScale={Decimals[stepSize]}
+          wrapStepControlButtons={false}
         />
       </Group>
       <Text size={'md'} ta={'center'} c={'dimmed'} mt={'xs'}>

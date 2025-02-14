@@ -27,7 +27,11 @@ import {
   sortTreeData
 } from './treeUtil';
 
-export function SceneTree() {
+interface Props {
+  heightFunction: (windowHeight: number) => number;
+}
+
+export function SceneTree({ heightFunction }: Props) {
   const [filter, setFilter] = useState<SceneTreeFilterSettings>({
     showOnlyVisible: false,
     showHiddenNodes: false,
@@ -104,7 +108,7 @@ export function SceneTree() {
   });
 
   return (
-    <FilterList>
+    <FilterList heightFunc={heightFunction}>
       <Group justify={'space-between'}>
         <FilterList.InputField placeHolderSearchText={'Search for a node...'} flex={1} />
         <SceneTreeFilters onFilterChange={setFilter} />
@@ -112,22 +116,12 @@ export function SceneTree() {
 
       <FilterList.Favorites>
         <Group gap={0} pos={'absolute'} top={0} right={0}>
-          <Tooltip
-            label={'Collapse all'}
-            position={'top'}
-            transitionProps={{ enterDelay: 400 }}
-            withArrow
-          >
+          <Tooltip label={'Collapse all'} position={'top'}>
             <ActionIcon variant={'subtle'} onClick={tree.collapseAllNodes}>
               <ChevronsUpIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip
-            label={'Expand all'}
-            position={'top'}
-            transitionProps={{ enterDelay: 400 }}
-            withArrow
-          >
+          <Tooltip label={'Expand all'} position={'top'}>
             <ActionIcon variant={'subtle'} onClick={tree.expandAllNodes}>
               <ChevronsDownIcon />
             </ActionIcon>
@@ -140,13 +134,15 @@ export function SceneTree() {
         />
       </FilterList.Favorites>
 
-      <FilterList.Data<TreeNodeData>
+      <FilterList.SearchResults
         data={flatTreeData}
         renderElement={(node: TreeNodeData) => (
           <SceneTreeNodeContent key={node.value} node={node} expanded={false} />
         )}
         matcherFunc={generateMatcherFunctionByKeys(['label'])} // For now we just use the name
-      />
+      >
+        <FilterList.SearchResults.VirtualList />
+      </FilterList.SearchResults>
     </FilterList>
   );
 }

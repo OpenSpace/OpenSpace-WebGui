@@ -1,38 +1,38 @@
+import { PropsWithChildren } from 'react';
 import { Stack } from '@mantine/core';
 
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
-import { FilterListData } from './FilterListData';
+import { SearchResults } from './SearchResults/SearchResults';
 import { FilterListFavorites } from './FilterListFavorites';
 import { FilterListInputField } from './FilterListInputField';
 import { FilterListProvider } from './FilterListProvider';
 
-interface BaseProps {
+interface FuncHeightProps {
   heightFunc?: (height: number) => number;
-  heightPercent?: number;
+  heightPercent?: never;
+  height?: never;
+}
+
+interface AbsoluteHeightProps {
   height?: number | string;
-  children: React.ReactNode;
+  heightPercent?: never;
+  heightFunc?: never;
+}
+
+interface RelativeHeightProps {
+  heightPercent?: number;
+  height?: never;
+  heightFunc?: never;
+}
+
+type HeightProps = FuncHeightProps | AbsoluteHeightProps | RelativeHeightProps;
+
+interface BaseProps extends PropsWithChildren {
   isLoading?: boolean;
 }
 
-interface FuncProps {
-  heightPercent?: never;
-  height?: never;
-}
-interface AbsoluteProps {
-  heightPercent?: never;
-  heightFunc?: never;
-}
-
-interface RelativeProps {
-  height?: never;
-  heightFunc?: never;
-}
-
-type Props =
-  | (BaseProps & FuncProps)
-  | (BaseProps & AbsoluteProps)
-  | (BaseProps & RelativeProps);
+type Props = HeightProps & BaseProps;
 
 export function FilterList({
   height,
@@ -57,5 +57,5 @@ export function FilterList({
 }
 
 FilterList.InputField = FilterListInputField;
-FilterList.Data = FilterListData;
 FilterList.Favorites = FilterListFavorites;
+FilterList.SearchResults = SearchResults;

@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Group, Menu, Stack } from '@mantine/core';
+import { ActionIcon, Button, Group, Menu, Stack, Text } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { VerticalDotsIcon } from '@/icons/icons';
@@ -13,13 +13,15 @@ interface FocusEntryProps {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
   showNavigationButtons: boolean;
+  disableFocus?: boolean;
 }
 
 export function FocusEntry({
   entry,
   activeNode,
   onSelect,
-  showNavigationButtons
+  showNavigationButtons,
+  disableFocus
 }: FocusEntryProps) {
   const buttonVariant = isActive() ? 'filled' : 'light';
 
@@ -32,26 +34,28 @@ export function FocusEntry({
   }
 
   return (
-    <Group justify={'space-between'} gap={'xs'}>
+    <Group justify={'space-between'} gap={'xs'} w={'100%'}>
       <Button
         onClick={onSelectEntry}
         justify={'left'}
-        style={{ flexGrow: 1 }}
+        flex={1}
         variant={buttonVariant}
+        disabled={disableFocus}
       >
-        {entry.name}
+        <Text truncate>{entry.name}</Text>
       </Button>
       {showNavigationButtons && (
         <>
           {isActive() && (
             <NodeNavigationButton
-              type={NavigationType.frame}
+              type={NavigationType.Frame}
+              variant={buttonVariant}
               identifier={entry.identifier}
               size={'lg'}
             />
           )}
           <NodeNavigationButton
-            type={NavigationType.fly}
+            type={NavigationType.Fly}
             identifier={entry.identifier}
             variant={buttonVariant}
             size={'lg'}
@@ -59,7 +63,7 @@ export function FocusEntry({
 
           <Menu position={'right-start'}>
             <Menu.Target>
-              <ActionIcon size={'lg'} variant={buttonVariant}>
+              <ActionIcon size={'lg'}>
                 <VerticalDotsIcon />
               </ActionIcon>
             </Menu.Target>
@@ -67,25 +71,26 @@ export function FocusEntry({
               <Menu.Label>{entry.name}</Menu.Label>
               <Stack gap={'xs'}>
                 <NodeNavigationButton
-                  type={NavigationType.focus}
+                  type={NavigationType.Focus}
+                  identifier={entry.identifier}
+                  showLabel
+                  justify={'flex-start'}
+                  disabled={disableFocus}
+                />
+                <NodeNavigationButton
+                  type={NavigationType.Fly}
                   identifier={entry.identifier}
                   showLabel
                   justify={'flex-start'}
                 />
                 <NodeNavigationButton
-                  type={NavigationType.fly}
+                  type={NavigationType.Jump}
                   identifier={entry.identifier}
                   showLabel
                   justify={'flex-start'}
                 />
                 <NodeNavigationButton
-                  type={NavigationType.jump}
-                  identifier={entry.identifier}
-                  showLabel
-                  justify={'flex-start'}
-                />
-                <NodeNavigationButton
-                  type={NavigationType.frame}
+                  type={NavigationType.Frame}
                   identifier={entry.identifier}
                   showLabel
                   justify={'flex-start'}

@@ -1,15 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Properties, PropertyValue, Uri } from '@/types/types';
+import { PropertyVisibilityNumber } from '@/types/enums';
+import { Properties, PropertyOverview, PropertyValue, Uri } from '@/types/types';
 
 export interface PropertiesState {
   isInitialized: boolean;
   properties: Properties;
+  propertyOverview: PropertyOverview;
 }
 
 const initialState: PropertiesState = {
   isInitialized: false,
-  properties: {}
+  properties: {},
+  // This is an overview of all properties at our disposal
+  // that doesn't update when the values of properties update
+  propertyOverview: {}
 };
 
 // function updateProperty(
@@ -29,19 +34,27 @@ export const propertiesSlice = createSlice({
     addProperties: (state, action: PayloadAction<Properties>) => {
       for (const [uri, property] of Object.entries(action.payload)) {
         state.properties[uri] = property;
+        state.propertyOverview[uri] = {
+          name: property?.description.name ?? '',
+          visibility: property?.description.metaData.Visibility
+            ? PropertyVisibilityNumber[property?.description.metaData.Visibility]
+            : 0
+        };
       }
       return state;
     },
     removeProperties: (state, action: PayloadAction<{ uris: string[] }>) => {
       action.payload.uris.forEach((uri) => {
         delete state.properties[uri];
+        delete state.propertyOverview[uri];
       });
       return state;
     },
     clearProperties: () => {
       return {
         isInitialized: false,
-        properties: {}
+        properties: {},
+        propertyOverview: {}
       };
     },
     setPropertyValue: (

@@ -3,12 +3,11 @@ import { Anchor, Group, Image, Text, Title } from '@mantine/core';
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { OpenWindowIcon } from '@/icons/icons';
 import { ActionsButton } from '@/panels/ActionsPanel/ActionsButton';
-import { DisplayType } from '@/types/enums';
-import { DisplayedPhase, Phase } from '@/types/mission-types';
-import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { MissionCaptureButtons } from './MissionCaptureButtons';
 import { MissionTimeButtons } from './MissionTimeButtons';
+import { DisplayedPhase, DisplayType, Phase } from './types';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 interface Props {
   displayedPhase: DisplayedPhase;
@@ -67,7 +66,7 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
           maw={window.innerWidth * 0.25}
           src={displayedPhase.data.image}
           alt={'Image text not available'}
-          fallbackSrc={'https://placehold.co/600x400?text=Placeholder'}
+          fallbackSrc={'placeholder.svg'}
         />
       )}
       <Title order={3} my={'md'}>

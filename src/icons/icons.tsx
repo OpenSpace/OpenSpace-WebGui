@@ -23,6 +23,7 @@ export { LuFilePlus2 as AddFileIcon } from 'react-icons/lu';
 export {
   MdPublic as AddExoplanetIcon,
   MdOutlineAddPhotoAlternate as AddPhotoIcon,
+  MdOutlineAirplanemodeInactive as AirplaneCancelIcon,
   MdOutlineAirplanemodeActive as AirplaneIcon,
   MdAnchor as AnchorIcon,
   MdArrowBack as BackArrowIcon,
@@ -41,6 +42,7 @@ export {
   MdExitToApp as ExitAppIcon,
   MdHdrStrong as ExoplanetIcon,
   MdOpenWith as ExpandArrowsIcon,
+  MdVisibility as EyeIcon,
   MdFastForward as FastForwardIcon,
   MdFastRewind as FastRewindIcon,
   MdFilterAlt as FilterIcon,
@@ -55,6 +57,7 @@ export {
   MdLocationOn as LocationPinIcon,
   MdLock as LockIcon,
   MdLockOpen as LockOpenIcon,
+  MdFilterCenterFocus as MoveTargetIcon,
   MdNightlight as NightIcon,
   MdOpenInBrowser as OpenInBrowserIcon,
   MdOpenInNew as OpenInNewIcon,

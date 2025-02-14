@@ -120,13 +120,16 @@ export function ActionsPanel() {
               ))}
             </DynamicGrid>
           </FilterList.Favorites>
-          <FilterList.Data<Action>
+
+          <FilterList.SearchResults
             data={displayedActions}
             renderElement={(action: Action) => (
               <ActionsButton key={action.identifier} action={action} />
             )}
             matcherFunc={generateMatcherFunctionByKeys(['identifier', 'name', 'guiPath'])}
-          />
+          >
+            <FilterList.SearchResults.VirtualList />
+          </FilterList.SearchResults>
         </FilterList>
       </Container>
     </ScrollArea>

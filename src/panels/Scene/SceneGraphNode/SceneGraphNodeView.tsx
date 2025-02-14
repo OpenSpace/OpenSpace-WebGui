@@ -70,41 +70,23 @@ export function SceneGraphNodeView({ uri }: Props) {
                 ? 'Properties that control the visuals of this object'
                 : 'This scene graph node has no renderable'
             }
-            position={'top'}
-            transitionProps={{ enterDelay: 400 }}
-            withArrow
           >
             <Tabs.Tab value={TabKeys.Renderable} disabled={!hasRenderable}>
               Renderable
             </Tabs.Tab>
           </Tooltip>
 
-          <Tooltip
-            label={'Properties that control the position, scale, and orientation'}
-            position={'top'}
-            transitionProps={{ enterDelay: 400 }}
-            withArrow
-          >
+          <Tooltip label={'Properties that control the position, scale, and orientation'}>
             <Tabs.Tab value={TabKeys.Transform}>Transform</Tabs.Tab>
           </Tooltip>
 
           {hasOther && (
-            <Tooltip
-              label={'Other properties of the scene graph node'}
-              position={'top'}
-              transitionProps={{ enterDelay: 400 }}
-              withArrow
-            >
+            <Tooltip label={'Other properties of the scene graph node'}>
               <Tabs.Tab value={TabKeys.Other}>Other</Tabs.Tab>
             </Tooltip>
           )}
 
-          <Tooltip
-            label={'Information about the scene graph node and its asset'}
-            position={'top'}
-            transitionProps={{ enterDelay: 400 }}
-            withArrow
-          >
+          <Tooltip label={'Information about the scene graph node and its asset'}>
             <Tabs.Tab value={TabKeys.Info}>Info</Tabs.Tab>
           </Tooltip>
         </Tabs.List>

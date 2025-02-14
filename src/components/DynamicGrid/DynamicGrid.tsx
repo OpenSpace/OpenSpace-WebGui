@@ -12,10 +12,11 @@ export function DynamicGrid({ minChildSize, gridWidth, children, ...props }: Pro
   const { width: panelWidth } = useWindowSize();
 
   function computeNCols() {
+    // Compute how many columns the grid should have
     const width = gridWidth ?? panelWidth;
-    // Compute how many columns this element should span
+    //
     const childrenPerRow = Math.max(Math.floor(width / minChildSize), 1);
-    return childrenPerRow;
+    return Math.min(childrenPerRow, 6);
   }
 
   return (

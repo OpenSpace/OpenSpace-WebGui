@@ -1,10 +1,8 @@
 import { Text, Tooltip } from '@mantine/core';
 import { ScaleTime } from 'd3';
 
-import { DisplayType } from '@/types/enums';
-import { DisplayedPhase, Milestone } from '@/types/mission-types';
-
 import { useJumpToTime } from '../hooks';
+import { DisplayedPhase, DisplayType, Milestone } from '../types';
 
 import { MileStoneConfig } from './config';
 
