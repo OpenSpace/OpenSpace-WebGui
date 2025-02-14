@@ -30,7 +30,7 @@ export function TaskBarMenuButton({ item }: Props) {
         p={'sm'}
         onClick={() => handleClick(item)}
         size={'xl'}
-        variant={'taskbar'}
+        variant={'menubar'}
         aria-label={item.title}
       >
         {item.renderIcon ? item.renderIcon(IconSize.lg) : item.title}

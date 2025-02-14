@@ -19,7 +19,7 @@ const variantColorResolver: VariantColorsResolver = (input) => {
   const defaultResolvedColors = defaultVariantColorsResolver(input);
 
   // Add new variants
-  if (input.variant === 'taskbar') {
+  if (input.variant === 'menubar') {
     return {
       background: 'transparent',
       hover: alpha('var(--mantine-color-dark-2)', 0.5),
