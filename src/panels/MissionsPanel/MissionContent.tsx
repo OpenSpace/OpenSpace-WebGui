@@ -104,7 +104,7 @@ export function MissionContent({ missionOverview }: Props) {
   }
 
   return (
-    <Group wrap={'nowrap'} align={'start'} mx={'md'} my={'xs'} h={'100%'} gap={0}>
+    <Group wrap={'nowrap'} align={'start'} mx={'md'} py={'xs'} h={'100%'} gap={0}>
       <TimeLine
         allPhasesNested={allPhasesNested}
         displayedPhase={displayedPhase}
