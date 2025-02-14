@@ -32,7 +32,7 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
     // TODO: make sure Button has a working label for screen readers since we have mixed
     // icons, text and other elements inside the button
     return (
-      <Button onClick={onClick} size={'xl'} disabled={!isReady}>
+      <Button onClick={onClick} size={'xl'} variant={'taskbar'} disabled={!isReady}>
         <Group>
           <>
             <AnchorIcon size={IconSize.lg} />
@@ -59,6 +59,7 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
         onClick={onClick}
         disabled={!isReady}
         leftSection={<FocusIcon size={IconSize.lg} />}
+        variant={'taskbar'}
         size={'xl'}
       >
         <Stack gap={0} align={'flex-start'} justify={'center'}>

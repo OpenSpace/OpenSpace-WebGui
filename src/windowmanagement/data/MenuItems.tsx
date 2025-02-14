@@ -61,6 +61,7 @@ export const menuItemsData: MenuItem[] = [
       <Button
         key={key}
         onClick={onclick}
+        variant={'taskbar'}
         leftSection={<TreeViewIcon size={IconSize.lg} />}
         size={'xl'}
       >
@@ -79,6 +80,7 @@ export const menuItemsData: MenuItem[] = [
       <Button
         key={key}
         onClick={onclick}
+        variant={'taskbar'}
         leftSection={<SettingsIcon size={IconSize.lg} />}
         size={'xl'}
       >

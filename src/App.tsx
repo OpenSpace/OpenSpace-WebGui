@@ -10,6 +10,7 @@ import {
 import { ModalsProvider } from '@mantine/modals';
 
 import { fallbackRender } from './components/ErrorFallback/fallbackRender';
+import { variantColorResolver } from './util/variantColorResolver';
 import { WindowLayout } from './windowmanagement/WindowLayout/WindowLayout';
 import { WindowLayoutProvider } from './windowmanagement/WindowLayout/WindowLayoutProvider';
 
@@ -52,7 +53,8 @@ const theme = createTheme({
       h5: { fontSize: '0.875rem' },
       h6: { fontSize: '0.75rem' }
     }
-  }
+  },
+  variantColorResolver
 });
 
 function App() {

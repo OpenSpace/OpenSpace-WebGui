@@ -95,7 +95,7 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
         );
       default:
         return (
-          <ActionIcon onClick={onClick} size={'input-xl'}>
+          <ActionIcon onClick={onClick} variant={'taskbar'} size={'input-xl'}>
             <VideocamIcon size={IconSize.lg} />
           </ActionIcon>
         );

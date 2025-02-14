@@ -75,7 +75,7 @@ export function TimePanelMenuButton({ onClick }: TimePanelMenuButtonProps) {
   }
 
   return (
-    <Button onClick={onClick} size={'xl'} disabled={!isReady}>
+    <Button onClick={onClick} size={'xl'} variant={'taskbar'} disabled={!isReady}>
       <Stack gap={0} align={'flex-start'}>
         {isReady ? (
           <>
