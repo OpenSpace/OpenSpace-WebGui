@@ -1,5 +1,3 @@
-import { DisplayType } from './enums';
-
 export interface Milestone {
   date: string; // Date as an UTC ISO8601 string
   name: string;
@@ -26,3 +24,9 @@ export type DisplayedPhase =
   | { type: DisplayType.Overview; data: Phase }
   | { type: DisplayType.Milestone; data: Milestone }
   | { type: undefined; data: undefined };
+
+export enum DisplayType {
+  Phase = 'Phase',
+  Milestone = 'Milestone',
+  Overview = 'Overview'
+}

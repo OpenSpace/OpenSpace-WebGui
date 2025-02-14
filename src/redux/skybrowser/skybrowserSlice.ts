@@ -1,10 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import {
-  SkyBrowserBrowser,
-  SkyBrowserImage,
-  SkyBrowserUpdate
-} from '@/types/skybrowsertypes';
+import { SkyBrowserImage } from '@/panels/SkyBrowserPanel/types';
+
+import { SkyBrowserBrowser } from './types';
+
+// This is the structure of the updates we get from the skybrowser subscription
+export interface SkyBrowserUpdate
+  extends Pick<SkyBrowserState, 'selectedBrowserId' | 'cameraInSolarSystem'> {
+  browsers: { [id: string]: SkyBrowserBrowser };
+}
 
 export interface SkyBrowserState {
   isInitialized: boolean;

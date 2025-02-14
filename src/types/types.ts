@@ -1,4 +1,5 @@
 import { Property } from '@/components/Property/Property';
+
 import { PropertyVisibilityNumber } from './enums';
 
 export type Uri = string;
@@ -24,47 +25,6 @@ export interface SemanticVersion {
   major: number;
   minor: number;
   patch: number;
-}
-
-export type FloatWindowPosition = {
-  offsetX: number;
-  offsetY: number;
-  width: number;
-  height: number;
-};
-
-// Incomplete type objects for the ArcGIS object we request for GeoLocationPanel
-// This was to avoid having to import the entire ArcGIS core since the @types file is
-// deprecated on npm.
-export type ArcGISJSON = {
-  candidates: Candidate[];
-  spatialReference: object;
-};
-
-export type Candidate = {
-  address: string;
-  attributes: {
-    LongLabel: string;
-  };
-  extent: Extent;
-  location: Location;
-};
-
-export type Location = {
-  x: number;
-  y: number;
-};
-
-export type Extent = {
-  xmax: number;
-  xmin: number;
-  ymax: number;
-  ymin: number;
-};
-
-export interface ExoplanetData {
-  name: string;
-  identifier: Identifier;
 }
 
 export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
@@ -129,28 +89,4 @@ export type Groups = {
 export type CustomGroupOrdering = {
   // The value is a list of node names in the order they should be displayed
   [key: string]: string[] | undefined;
-};
-
-export interface AssetMetaData {
-  author: string;
-  description: string;
-  identifiers?: string[];
-  license: string;
-  name: string;
-  path: string;
-  url: string;
-  version: string;
-}
-
-export type OpenSpaceTimeState = {
-  time?: string;
-  timeCapped?: string;
-  targetDeltaTime?: number;
-  deltaTime?: number;
-  isPaused?: boolean;
-  hasNextStep?: boolean;
-  hasPrevStep?: boolean;
-  nextStep?: number;
-  prevStep?: number;
-  deltaTimeSteps?: number[];
 };

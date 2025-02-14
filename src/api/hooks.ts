@@ -2,6 +2,14 @@ import { useContext, useEffect } from 'react';
 import { shallowEqual, useThrottledCallback } from '@mantine/hooks';
 import { throttle } from 'lodash';
 
+import {
+  subscribeToCameraPath,
+  unsubscribeToCameraPath
+} from '@/redux/camerapath/cameraPathMiddleware';
+import {
+  subscribeToEngineMode,
+  unsubscribeToEngineMode
+} from '@/redux/enginemode/engineModeMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   subscribeToProperty,
@@ -190,6 +198,33 @@ export const useSubscribeToTime = () => {
   }, [dispatch]);
   return now;
 };
+
+export function useSubscribeToEngineMode() {
+  const engineMode = useAppSelector((state) => state.engineMode.mode);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(subscribeToEngineMode());
+    return () => {
+      dispatch(unsubscribeToEngineMode());
+    };
+  }, [dispatch]);
+  return engineMode;
+}
+
+export function useSubscribeToCameraPath() {
+  const cameraPath = useAppSelector((state) => state.cameraPath);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(subscribeToCameraPath());
+    return () => {
+      dispatch(unsubscribeToCameraPath());
+    };
+  }, [dispatch]);
+
+  return cameraPath;
+}
 
 /**
  * Hook that subscribes to a property and returns a setter function. Unsuscribes when the

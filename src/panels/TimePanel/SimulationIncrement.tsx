@@ -5,10 +5,9 @@ import { useThrottledCallback } from '@mantine/hooks';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useAppSelector } from '@/redux/hooks';
-import { TimePart } from '@/types/enums';
 
 import { DeltaTimeStepsControl } from './DeltaTimeStepControl';
-import { Decimals, StepSizes } from './util';
+import { Decimals, StepSizes, TimePart } from './types';
 
 export function SimulationIncrement() {
   const updateDeltaTime = useThrottledCallback(updateDeltaTimeNow, 50);

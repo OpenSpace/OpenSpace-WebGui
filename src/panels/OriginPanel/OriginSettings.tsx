@@ -1,6 +1,13 @@
-import { ActionIcon, Checkbox, Menu } from '@mantine/core';
+import { ActionIcon, Menu } from '@mantine/core';
 
+import { Property } from '@/components/Property/Property';
 import { SettingsIcon } from '@/icons/icons';
+import {
+  ApplyIdleBehaviorOnPathFinishKey,
+  CameraPathArrivalDistanceFactorKey,
+  CameraPathSpeedFactorKey,
+  JumpToFadeDurationKey
+} from '@/util/keys';
 
 export function OriginSettings() {
   return (
@@ -11,14 +18,11 @@ export function OriginSettings() {
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>
-        <Checkbox
-          label={'Close window after selecting'}
-          onChange={() => console.error('TODO: implement checkbox function')}
-        />
-        <Menu.Item>TODO: Property settings 1</Menu.Item>
-        <Menu.Item>TODO: Property settings 2</Menu.Item>
-        <Menu.Item>TODO: Property settings 3</Menu.Item>
-        <Menu.Item>TODO: Property settings 4</Menu.Item>
+        <Menu.Label>Camera Path Settings</Menu.Label>
+        <Property uri={CameraPathSpeedFactorKey} />
+        <Property uri={CameraPathArrivalDistanceFactorKey} />
+        <Property uri={ApplyIdleBehaviorOnPathFinishKey} />
+        <Property uri={JumpToFadeDurationKey} />
       </Menu.Dropdown>
     </Menu>
   );

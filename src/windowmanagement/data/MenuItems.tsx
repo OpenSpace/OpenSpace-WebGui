@@ -35,8 +35,8 @@ import { TimePanel } from '@/panels/TimePanel/TimePanel';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { UserPanelsPanel } from '@/panels/UserPanelsPanel/UserPanelsPanel';
 import { IconSize } from '@/types/enums';
-import { FloatWindowPosition } from '@/types/types';
 
+import { FloatWindowPosition } from '../WindowLayout/types';
 import { WindowLayoutPosition } from '../WindowLayout/WindowLayout';
 
 export interface MenuItem {
@@ -90,15 +90,15 @@ export const menuItemsData: MenuItem[] = [
     defaultVisible: false
   },
   {
-    title: 'Focus',
-    componentID: 'focus',
+    title: 'Navigation',
+    componentID: 'navigation',
     content: <OriginPanel />,
     renderMenuButton: (key, onClick) => (
       <OriginPanelMenuButton key={key} onClick={onClick} />
     ),
     renderIcon: (size) => <FocusIcon size={size} />,
     preferredPosition: 'float',
-    floatPosition: { offsetY: 100, offsetX: 320, width: 300, height: 440 },
+    floatPosition: { offsetY: 100, offsetX: 320, width: 400, height: 440 },
     defaultVisible: true
   },
   {

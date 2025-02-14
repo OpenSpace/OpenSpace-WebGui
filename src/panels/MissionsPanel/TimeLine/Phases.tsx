@@ -1,7 +1,6 @@
 import { scaleLinear, ScaleTime } from 'd3';
 
-import { DisplayType } from '@/types/enums';
-import { DisplayedPhase, Phase } from '@/types/mission-types';
+import { DisplayedPhase, DisplayType, Phase } from '../types';
 
 import { TimeLineConfig } from './config';
 import { PhaseRectangle } from './PhaseRectangle';

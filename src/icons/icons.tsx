@@ -23,8 +23,10 @@ export { LuFilePlus2 as AddFileIcon } from 'react-icons/lu';
 export {
   MdPublic as AddExoplanetIcon,
   MdOutlineAddPhotoAlternate as AddPhotoIcon,
+  MdOutlineAirplanemodeInactive as AirplaneCancelIcon,
   MdOutlineAirplanemodeActive as AirplaneIcon,
   MdAnchor as AnchorIcon,
+  MdArrowBack as BackArrowIcon,
   MdCalendarMonth as CalendarIcon,
   MdCancel as CancelIcon,
   MdExpandMore as ChevronDownIcon,

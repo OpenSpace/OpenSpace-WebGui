@@ -6,8 +6,8 @@ import { useOpenSpaceApi, useSubscribeToTime } from '@/api/hooks';
 import { LockIcon, LockOpenIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
-import { TimePart } from '@/types/enums';
 
+import { TimePart } from '../types';
 import { setDate } from '../util';
 
 import { MonthInput } from './MonthInput';

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { AssetMetaData } from '@/types/types';
+import { AssetMetaData } from './types';
 
 export interface DocumentationState {
   isInitialized: boolean;
