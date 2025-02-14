@@ -1,6 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
+import { FloatWindowPosition } from '@/types/types';
 import { Window } from '@/windowmanagement/Window/Window';
 
 import { WindowLayoutOptions } from './WindowLayout';
@@ -11,6 +12,18 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
 
   function isPanelDataInstance(obj: PanelData | BoxData) {
     return obj && 'tabs' in obj;
+  }
+
+  function convertFloatPosition(pos?: FloatWindowPosition) {
+    if (!pos) {
+      return undefined;
+    }
+    return {
+      top: window.innerHeight - pos.height - pos.offsetY,
+      height: pos.height,
+      left: pos.offsetX,
+      width: pos.width
+    };
   }
 
   const createWindowTabData = useCallback(
@@ -46,6 +59,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
       const base = rcDocRef.current.find(baseID)! as BoxData;
 
       const tab = createWindowTabData(options.id, options.title, component);
+      const SidePanelDefaultWidth = 300;
 
       switch (position) {
         case 'left':
@@ -67,18 +81,22 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
           else {
             tab.group = 'regularWindow';
             const panel: PanelData = {
-              tabs: [tab]
+              tabs: [tab],
+              size: SidePanelDefaultWidth
             };
 
             rcDocRef.current.dockMove(panel, base, position);
           }
           break;
         }
-
         case 'float':
-          rcDocRef.current.dockMove(tab, null, 'float');
+          rcDocRef.current.dockMove(
+            tab,
+            null,
+            'float',
+            convertFloatPosition(options.floatPosition)
+          );
           break;
-
         default:
           throw Error('Unhandled window position');
       }

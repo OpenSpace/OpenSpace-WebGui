@@ -34,6 +34,7 @@ import { TimePanel } from '@/panels/TimePanel/TimePanel';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { UserPanelsPanel } from '@/panels/UserPanelsPanel/UserPanelsPanel';
 import { IconSize } from '@/types/enums';
+import { FloatWindowPosition } from '@/types/types';
 
 import { WindowLayoutPosition } from '../WindowLayout/WindowLayout';
 
@@ -44,6 +45,8 @@ export interface MenuItem {
   renderMenuButton?: (key: string, onClick: () => void) => React.JSX.Element; // Custom menu button to render
   renderIcon?: (size: IconSize) => React.JSX.Element; // Custom icon to render
   preferredPosition: WindowLayoutPosition; // Where this panel is instantiated
+  floatPosition?: FloatWindowPosition; // Preferred position and size of a floating window given in px,
+  // the offset is computed from the panels top left corner to the bottom right corner of the main window
   defaultVisible: boolean; // Whether this panel is visible in the taskbar on startup
   visible?: boolean; // TODO: investigate whether this is needed (as of 2024-10-23 its not being used)
 }
@@ -94,6 +97,7 @@ export const menuItemsData: MenuItem[] = [
     ),
     renderIcon: (size) => <FocusIcon size={size} />,
     preferredPosition: 'float',
+    floatPosition: { offsetY: 100, offsetX: 320, width: 300, height: 440 },
     defaultVisible: true
   },
   {
@@ -105,6 +109,7 @@ export const menuItemsData: MenuItem[] = [
     ),
     renderIcon: (size) => <CalendarIcon size={size} />,
     preferredPosition: 'float',
+    floatPosition: { offsetY: 100, offsetX: 370, width: 410, height: 520 },
     defaultVisible: true
   },
   {
@@ -147,7 +152,7 @@ export const menuItemsData: MenuItem[] = [
     componentID: 'userPanels',
     content: <UserPanelsPanel />,
     renderIcon: (size) => <BrowserIcon size={size} />,
-    preferredPosition: 'float',
+    preferredPosition: 'right',
     defaultVisible: true
   },
   {
@@ -155,7 +160,7 @@ export const menuItemsData: MenuItem[] = [
     componentID: 'actions',
     content: <ActionsPanel />,
     renderIcon: (size) => <DashboardIcon size={size} />,
-    preferredPosition: 'float',
+    preferredPosition: 'right',
     defaultVisible: true
   },
   {
@@ -188,6 +193,7 @@ export const menuItemsData: MenuItem[] = [
     content: <KeyBindsPanel />,
     renderIcon: (size) => <KeyboardIcon size={size} />,
     preferredPosition: 'float',
+    floatPosition: { offsetY: 150, offsetX: 350, width: 1050, height: 680 },
     defaultVisible: false
   }
 ];
