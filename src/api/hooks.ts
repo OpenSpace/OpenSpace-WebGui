@@ -21,6 +21,7 @@ import { ConnectionStatus } from '@/types/enums';
 import { Property, PropertyOwner, PropertyValue, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
 import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelpers';
+import { dateToOpenSpaceTimeString } from '@/util/time';
 
 import { LuaApiContext } from './LuaApiContext';
 // Hook to make it easier to get the api
@@ -286,4 +287,20 @@ export const useHasVisibleChildren = (propertyOwnerUri: Uri): boolean => {
 
 export function useIsConnectionStatus(status: ConnectionStatus): boolean {
   return useAppSelector((state) => state.connection.connectionStatus) === status;
+}
+
+export function useSetOpenSpaceTime() {
+  const luaApi = useOpenSpaceApi();
+
+  const setTime = (newTime: Date) => {
+    const fixedTimeString = dateToOpenSpaceTimeString(newTime);
+    luaApi?.time.setTime(fixedTimeString);
+  };
+
+  const interpolateTime = (newTime: Date) => {
+    const fixedTimeString = dateToOpenSpaceTimeString(newTime);
+    luaApi?.time.interpolateTime(fixedTimeString);
+  };
+
+  return [setTime, interpolateTime];
 }

@@ -2,24 +2,24 @@ import { useRef, useState } from 'react';
 import { ActionIcon, Button, Center, Group, Stack, Text } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
-import { useOpenSpaceApi, useSubscribeToTime } from '@/api/hooks';
+import { useOpenSpaceApi, useSetOpenSpaceTime, useSubscribeToTime } from '@/api/hooks';
 import { LockIcon, LockOpenIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
 
 import { TimePart } from '../types';
-import { setDate } from '../util';
 
 import { MonthInput } from './MonthInput';
 import { TimeIncrementInput } from './TimeIncrementInput';
 
 export function TimeInput() {
   const [useLock, setUseLock] = useState(false);
-  const [pendingTime, setPendingTime] = useState(new Date(''));
+  const [pendingTime, setPendingTime] = useState(new Date());
   const [isHoldingShift, setIsHoldingShift] = useState(false);
 
   const cappedTime = useAppSelector((state) => state.time.timeCapped);
   const luaApi = useOpenSpaceApi();
+  const [setTime, interpolateTime] = useSetOpenSpaceTime();
   useSubscribeToTime();
 
   const cappedDate = new Date(cappedTime ?? '');
@@ -48,20 +48,15 @@ export function TimeInput() {
     setUseLock((current) => !current);
   }
 
-  function interpolateDate(newTime: Date) {
-    const fixedTimeString = newTime.toJSON().replace('Z', '');
-    luaApi?.time.interpolateTime(fixedTimeString);
-  }
-
   function interpolateToPendingTime() {
-    interpolateDate(pendingTime);
+    interpolateTime(pendingTime);
   }
 
   function setToPendingTime() {
-    setDate(luaApi, pendingTime);
+    setTime(pendingTime);
   }
 
-  function setTime(data: {
+  function updateTime(data: {
     time: Date;
     immediate: boolean; // If not, interpolate
     delta: number;
@@ -79,7 +74,7 @@ export function TimeInput() {
     }
 
     if (data.immediate) {
-      setDate(luaApi, data.time);
+      setTime(data.time);
       return;
     }
 
@@ -87,7 +82,7 @@ export function TimeInput() {
     if (data.relative) {
       luaApi?.time.interpolateTimeRelative(data.delta);
     } else {
-      interpolateDate(data.time);
+      interpolateTime(data.time);
     }
   }
 
@@ -120,7 +115,7 @@ export function TimeInput() {
         throw Error(`Unhandled 'TimePart' case: ${timePart}`);
     }
 
-    setTime({
+    updateTime({
       time: newTime,
       immediate: isHoldingShift,
       delta: (newTime.getTime() - timeRef.current.getTime()) / 1000,
@@ -156,7 +151,7 @@ export function TimeInput() {
         throw Error(`Unhandled 'TimePart' case: ${timePart}`);
     }
 
-    setTime({
+    updateTime({
       time: newTime,
       immediate: true,
       delta: 0, // This variable is not relevant in this case
@@ -164,7 +159,15 @@ export function TimeInput() {
     });
   }
 
-  return cappedTime ? (
+  if (cappedTime === undefined) {
+    return (
+      <Center p={'xl'}>
+        <Text>Date out of range</Text>
+      </Center>
+    );
+  }
+
+  return (
     <Stack
       gap={'xs'}
       p={'xs'}
@@ -173,7 +176,7 @@ export function TimeInput() {
       }}
     >
       <Group gap={'xs'} justify={'center'}>
-        <ActionIcon onClick={toggleLock} variant={useLock ? 'filled' : 'light'}>
+        <ActionIcon onClick={toggleLock} variant={useLock ? 'filled' : 'default'}>
           {useLock ? <LockIcon /> : <LockOpenIcon />}
         </ActionIcon>
         <Group gap={5} wrap={'nowrap'}>
@@ -250,9 +253,5 @@ export function TimeInput() {
         </Group>
       )}
     </Stack>
-  ) : (
-    <Center p={'xl'}>
-      <Text>Date out of range</Text>
-    </Center>
   );
 }

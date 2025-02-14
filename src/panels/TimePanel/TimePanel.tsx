@@ -1,13 +1,13 @@
 import { Button, Container, Divider, Group, ScrollArea, Title } from '@mantine/core';
 
-import { useOpenSpaceApi } from '@/api/hooks';
+import { useOpenSpaceApi, useSetOpenSpaceTime } from '@/api/hooks';
 
 import { TimeInput } from './TimeInput/TimeInput';
 import { SimulationIncrement } from './SimulationIncrement';
-import { setDate } from './util';
 
 export function TimePanel() {
   const luaApi = useOpenSpaceApi();
+  const [setTime] = useSetOpenSpaceTime();
 
   function realTime(event: React.MouseEvent<HTMLElement>) {
     if (event.shiftKey) {
@@ -19,8 +19,8 @@ export function TimePanel() {
 
   function now() {
     // This date object will be in the local timezone but
-    // the setDate function will convert it to UTC
-    setDate(luaApi, new Date());
+    // the setTime function will convert it to UTC
+    setTime(new Date());
   }
 
   return (
