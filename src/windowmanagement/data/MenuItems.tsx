@@ -30,6 +30,7 @@ import { ScreenSpaceRenderablePanel } from '@/panels/ScreenSpaceRenderablePanel/
 import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
 import { SettingsPanel } from '@/panels/SettingsPanel/SettingsPanel';
+import { SkyBrowserPanel } from '@/panels/SkyBrowserPanel/SkyBrowserPanel';
 import { TimePanel } from '@/panels/TimePanel/TimePanel';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { UserPanelsPanel } from '@/panels/UserPanelsPanel/UserPanelsPanel';
@@ -166,7 +167,7 @@ export const menuItemsData: MenuItem[] = [
   {
     title: 'Sky Browser',
     componentID: 'skyBrowser',
-    content: <div>Sky Broweser</div>,
+    content: <SkyBrowserPanel />,
     renderIcon: (size) => <TelescopeIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: true

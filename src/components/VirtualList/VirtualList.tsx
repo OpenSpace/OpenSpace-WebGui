@@ -1,10 +1,11 @@
 import { useRef } from 'react';
+import { Box, MantineSpacing } from '@mantine/core';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
 export interface VirtualListProps<T> {
   data: T[];
   renderElement: (data: T, i: number) => React.ReactNode;
-  gap?: number; // Gap in pixels between items
+  gap?: MantineSpacing; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
 }
 
@@ -38,45 +39,40 @@ export function VirtualList<T>({
   return (
     <>
       {/* The scrollable element for your list */}
-      <div
+      <Box
         ref={parentRef}
+        h={'100%'}
+        w={'100%'}
         style={{
-          height: `100%`,
-          width: `100%`,
           overflow: 'auto'
         }}
+        pr={'xs'}
       >
         {/* The large inner element to hold all of the items */}
-        <div
-          style={{
-            height: `${virtualizer.getTotalSize()}px`,
-            width: '100%',
-            position: 'relative'
-          }}
-        >
-          <div
+        <Box h={`${virtualizer.getTotalSize()}px`} pos={'relative'} w={'100%'}>
+          <Box
+            pos={'absolute'}
+            top={0}
+            left={0}
+            w={'100%'}
             style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
               transform: `translateY(${items[0]?.start ?? 0}px)`
             }}
           >
             {/* The visible items, manually positioned to be in view */}
             {items.map((virtualRow) => (
-              <div
+              <Box
+                ref={virtualizer.measureElement}
                 key={virtualRow.key}
                 data-index={virtualRow.index}
-                ref={virtualizer.measureElement}
-                style={{ padding: `${gap}px 0 0 0` }}
+                pb={gap}
               >
                 {renderElement(data[virtualRow.index], virtualRow.index)}
-              </div>
+              </Box>
             ))}
-          </div>
-        </div>
-      </div>
+          </Box>
+        </Box>
+      </Box>
     </>
   );
 }
