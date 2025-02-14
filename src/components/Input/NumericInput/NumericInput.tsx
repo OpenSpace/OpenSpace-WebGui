@@ -93,7 +93,7 @@ export function NumericInput({
             step={step}
             disableMin={shouldClampMin && storedValue !== undefined && storedValue <= min}
             disableMax={shouldClampMax && storedValue !== undefined && storedValue >= max}
-            onChange={(change) => onStep(change)}
+            onChange={onStep}
           />
         )
       }

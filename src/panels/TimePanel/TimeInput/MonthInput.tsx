@@ -67,7 +67,7 @@ export function MonthInput({
     if (index === null) {
       return false;
     }
-    return index > -1 && index < Months.length;
+    return index >= 0 && index < Months.length;
   }
 
   function monthFromIndex(index: number): string {

@@ -13,18 +13,18 @@ type StepDirection = 'up' | 'down';
 
 interface Props extends ActionIconProps {
   direction: StepDirection;
+  onChange: (change: number) => void;
   stepHoldDelay?: number;
   stepHoldInterval?: number;
-  onChange: (change: number) => void;
   step?: number;
   useStrictClamping?: boolean;
 }
 
 export function StepControlButton({
   direction,
+  onChange,
   stepHoldDelay = 200,
   stepHoldInterval = 50,
-  onChange,
   step = 1,
   ...props
 }: Props) {

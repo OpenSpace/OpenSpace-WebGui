@@ -50,7 +50,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
         />
         <NumericInput
           label={'Altitude (km)'}
-          value={longitude}
+          value={altitude}
           onEnter={(value) => setAltitude(value)}
           min={0}
           clampBehavior={'strict'}
