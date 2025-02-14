@@ -1,7 +1,7 @@
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
-import { FlightControllerData } from './types';
+import { FlightControllerInputStateCommand } from './types';
 
 export function FlightController() {
   const dispatch = useAppDispatch();
@@ -15,7 +15,7 @@ export function FlightController() {
   let xStart = 0.0;
   let yStart = 0.0;
 
-  const identityState: FlightControllerData = {
+  const identityState: FlightControllerInputStateCommand = {
     type: 'inputState',
     inputState: {
       values: {
@@ -29,7 +29,7 @@ export function FlightController() {
     }
   };
 
-  function sendFlightControlInput(input: FlightControllerData) {
+  function sendFlightControlInput(input: FlightControllerInputStateCommand) {
     dispatch(sendFlightControl(input));
   }
 
@@ -65,7 +65,7 @@ export function FlightController() {
     const deltaX = (xStart - xPos) * scaleFactor;
     const deltaY = (yStart - yPos) * scaleFactor;
 
-    const input: FlightControllerData = {
+    const input: FlightControllerInputStateCommand = {
       type: 'inputState',
       inputState: {
         values: {}
@@ -105,7 +105,7 @@ export function FlightController() {
     const deltaX = (xStart - xPos) * scaleFactor;
     const deltaY = (yStart - yPos) * scaleFactor;
 
-    const input: FlightControllerData = {
+    const input: FlightControllerInputStateCommand = {
       type: 'inputState',
       inputState: {
         values: {}

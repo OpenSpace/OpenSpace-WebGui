@@ -1,12 +1,12 @@
-interface FlightControllerConnectCommand {
+export interface FlightControllerConnectCommand {
   type: 'connect';
 }
 
-interface FlightControllerDisconnectCommand {
+export interface FlightControllerDisconnectCommand {
   type: 'disconnect';
 }
 
-interface FlightControllerInputStateCommand {
+export interface FlightControllerInputStateCommand {
   type: 'inputState';
   inputState: {
     values: {
@@ -20,7 +20,7 @@ interface FlightControllerInputStateCommand {
   };
 }
 
-interface FlightControllerUpdateViewCommand {
+export interface FlightControllerUpdateViewCommand {
   type: 'updateView';
   focus: string;
   anchor: string;
