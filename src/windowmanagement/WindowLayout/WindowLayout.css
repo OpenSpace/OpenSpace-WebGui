@@ -27,5 +27,5 @@ body {
 
 .dock-divider {
   /* Stops OpenSpace from receiving docked-panel drag events */
-  background: rgba(0,0,0, 0.05);
+  background: rgba(0, 0, 0, 0.05);
 }
