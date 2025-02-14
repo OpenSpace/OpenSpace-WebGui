@@ -6,10 +6,10 @@ import { LockIcon, LockOpenIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
 import { isDateValid } from '@/redux/time/util';
-import { TimePart } from '@/types/enums';
 
 import { MonthInput } from './MonthInput';
 import { TimeIncrementInput } from './TimeIncrementInput';
+import { TimePart } from './types';
 import { setDate } from './util';
 
 export function TimeInput() {

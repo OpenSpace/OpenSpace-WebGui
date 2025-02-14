@@ -2,10 +2,9 @@ import { Text, Tooltip } from '@mantine/core';
 import { ScaleLinear, ScaleTime } from 'd3';
 
 import { useAppSelector } from '@/redux/hooks';
-import { DisplayType } from '@/types/enums';
-import { DisplayedPhase, Phase } from '@/types/mission-types';
 
 import { useJumpToTime } from '../hooks';
+import { DisplayedPhase, DisplayType, Phase } from '../types';
 
 import { PhaseRectangleConfig } from './config';
 

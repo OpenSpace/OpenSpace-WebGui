@@ -141,7 +141,7 @@ export function NodeNavigationButton({
   };
 
   switch (type) {
-    case NavigationType.jump:
+    case NavigationType.Jump:
       content.onClick = fadeTo;
       content.title = 'Jump to';
       content.icon = <LightningFlashIcon />;
@@ -151,12 +151,12 @@ export function NodeNavigationButton({
       content.title = 'Jump to Geo';
       content.icon = <LightningFlashIcon />;
       break;
-    case NavigationType.focus:
+    case NavigationType.Focus:
       content.onClick = focus;
       content.title = 'Focus';
       content.icon = <FocusIcon />;
       break;
-    case NavigationType.fly:
+    case NavigationType.Fly:
       content.onClick = flyTo;
       content.title = 'Fly to';
       content.icon = <AirplaneIcon />;
@@ -166,7 +166,7 @@ export function NodeNavigationButton({
       content.title = 'Fly to Geo';
       content.icon = <AirplaneIcon />;
       break;
-    case NavigationType.frame:
+    case NavigationType.Frame:
       content.onClick = zoomToFocus;
       content.title = 'Zoom to / Frame';
       content.icon = <FrameFocusIcon />;

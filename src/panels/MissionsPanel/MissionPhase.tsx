@@ -2,11 +2,10 @@ import { Anchor, Flex, Group, Image, Text, Title } from '@mantine/core';
 
 import { OpenWindowIcon } from '@/icons/icons';
 import { ActionsButton } from '@/panels/ActionsPanel/ActionsButton';
-import { DisplayType } from '@/types/enums';
-import { DisplayedPhase, Phase } from '@/types/mission-types';
 
 import { MissionCaptureButtons } from './MissionCaptureButtons';
 import { MissionTimeButtons } from './MissionTimeButtons';
+import { DisplayedPhase, DisplayType, Phase } from './types';
 
 interface Props {
   displayedPhase: DisplayedPhase;

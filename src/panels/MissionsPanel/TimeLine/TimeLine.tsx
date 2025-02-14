@@ -12,9 +12,10 @@ import {
 
 import { useSubscribeToTime } from '@/api/hooks';
 import { ZoomInIcon, ZoomOutIcon, ZoomOutMapIcon } from '@/icons/icons';
-import { DisplayType, IconSize } from '@/types/enums';
-import { DisplayedPhase, Phase } from '@/types/mission-types';
+import { IconSize } from '@/types/enums';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
+
+import { DisplayedPhase, DisplayType, Phase } from '../types';
 
 import { ActivityCircle } from './ActivityCircle';
 import { TimeLineConfig } from './config';

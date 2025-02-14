@@ -20,10 +20,10 @@ import { FilterList } from '@/components/FilterList/FilterList';
 import { useComputeHeightFunction } from '@/components/FilterList/hooks';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AirplaneCancelIcon, AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
+import { FlightControllerData } from '@/panels/FlightControlPanel/types';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
-import { FlightControllerData } from '@/types/flightcontroller-types';
 import { Identifier, Uri } from '@/types/types';
 import {
   NavigationAimKey,
@@ -116,6 +116,7 @@ export function OriginPanel() {
     return aim !== '' && aim !== anchor;
   }
 
+  // TODO: anden88: @emma take a look at this. Is the flgiht controller really needed for this?
   function onSelect(
     identifier: Identifier,
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>

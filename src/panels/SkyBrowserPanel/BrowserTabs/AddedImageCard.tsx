@@ -4,11 +4,11 @@ import { useThrottledCallback } from '@mantine/hooks';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { DeleteIcon, MoveTargetIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
-import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
 import { IconImage } from '../components/IconImage';
 import { ImageInfoPopover } from '../components/ImageInfoPopover';
 import { useActiveImage, useBrowserColorString } from '../hooks';
+import { SkyBrowserImage } from '../types';
 
 interface Props {
   image: SkyBrowserImage;

@@ -1,7 +1,7 @@
 import { api } from '@/api/api';
+import { Phase } from '@/panels/MissionsPanel/types';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
-import { Phase } from '@/types/mission-types';
 
 import { initializeMissions } from './missionsSlice';
 

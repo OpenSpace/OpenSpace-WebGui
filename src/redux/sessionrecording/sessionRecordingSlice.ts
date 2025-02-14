@@ -1,10 +1,10 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 export enum RecordingState {
-  idle = 'idle',
-  recording = 'recording',
-  playing = 'playing',
-  paused = 'playing-paused'
+  Idle = 'idle',
+  Recording = 'recording',
+  Playing = 'playing',
+  Paused = 'playing-paused'
 }
 
 export interface SessionRecordingState {
@@ -14,7 +14,7 @@ export interface SessionRecordingState {
 
 const initialState: SessionRecordingState = {
   files: [],
-  state: RecordingState.idle
+  state: RecordingState.Idle
 };
 
 export const sessionRecordingSlice = createSlice({

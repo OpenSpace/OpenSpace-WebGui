@@ -3,11 +3,11 @@ import { Card, Group, Text, Tooltip } from '@mantine/core';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { PlusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
-import { SkyBrowserImage } from '@/types/skybrowsertypes';
 
 import { IconImage } from '../components/IconImage';
 import { ImageInfoPopover } from '../components/ImageInfoPopover';
 import { useActiveImage, useBrowserColorString } from '../hooks';
+import { SkyBrowserImage } from '../types';
 
 interface Props {
   image: SkyBrowserImage;

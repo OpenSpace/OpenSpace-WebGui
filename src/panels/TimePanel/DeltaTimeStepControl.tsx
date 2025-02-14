@@ -3,9 +3,9 @@ import { ActionIcon, Group, NumberFormatter, Stack, Text } from '@mantine/core';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FastForwardIcon, FastRewindIcon, PauseIcon, PlayIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
-import { IconSize, TimePart } from '@/types/enums';
+import { IconSize } from '@/types/enums';
 
-import { Decimals, StepSizes } from './util';
+import { Decimals, StepSizes, TimePart } from './types';
 
 interface DeltaTimeStepsControlProps {
   stepSize: TimePart;
