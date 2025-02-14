@@ -43,7 +43,7 @@ export function StepControlButton({
     return () => {
       window.removeEventListener('pointerup', onStepDone);
     };
-  });
+  }, [onStepDone]);
 
   function onStepHandleChange(): void {
     const change = direction === 'up' ? step : -step;

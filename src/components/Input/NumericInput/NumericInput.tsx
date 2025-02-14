@@ -3,7 +3,7 @@ import { NumberInput, NumberInputProps } from '@mantine/core';
 
 import { NumberStepControls } from './NumberStepControls';
 
-export interface Props extends NumberInputProps {
+interface Props extends NumberInputProps {
   // The function to call when the user hits the ENTER key or presses the UP/DOWN buttons
   onEnter?: (newValue: number) => void;
   // The value of the input - here we only allow numbers, not strings
@@ -28,15 +28,15 @@ export function NumericInput({
 }: Props) {
   const [storedValue, setStoredValue] = useState<number | undefined>(value);
 
+  useEffect(() => {
+    setStoredValue(value);
+  }, [value]);
+
   const shouldClamp = props.clampBehavior === 'strict';
   const shouldClampMin = shouldClamp && min !== undefined;
   const shouldClampMax = shouldClamp && max !== undefined;
 
   let valueWasEntered = false;
-
-  useEffect(() => {
-    setStoredValue(value);
-  }, [value]);
 
   function resetValue() {
     setStoredValue(value);
@@ -64,8 +64,10 @@ export function NumericInput({
   }
 
   function onStep(change: number) {
-    let newValue = (storedValue ?? 0) + change;
-
+    if (storedValue === undefined) {
+      return;
+    }
+    let newValue = storedValue + change;
     if (shouldClampMin && newValue < min) {
       newValue = min;
     } else if (shouldClampMax && newValue > max) {
