@@ -11,6 +11,7 @@ import { missionsReducer } from './missions/missionsSlice';
 import { propertiesReducer } from './propertytree/properties/propertiesSlice';
 import { propertyOwnersReducer } from './propertytree/propertyowner/propertyOwnerSlice';
 import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
+import { skyBrowserReducer } from './skybrowser/skybrowserSlice';
 import { timeReducer } from './time/timeSlice';
 import { userPanelsReducer } from './userpanels/userPanelsSlice';
 import { versionReducer } from './version/versionSlice';
@@ -29,6 +30,7 @@ export const store = configureStore({
     properties: propertiesReducer,
     propertyOwners: propertyOwnersReducer,
     sessionRecording: sessionRecordingReducer,
+    skybrowser: skyBrowserReducer,
     time: timeReducer,
     userPanels: userPanelsReducer,
     version: versionReducer

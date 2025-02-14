@@ -1,5 +1,6 @@
-import { Container, ScrollArea, Tabs, Title } from '@mantine/core';
+import { Box, Container, ScrollArea, Tabs, Title } from '@mantine/core';
 
+import { useComputeHeightFunction } from '@/components/FilterList/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { SceneTree } from '@/panels/Scene/SceneTree/SceneTree';
 import { useAppSelector } from '@/redux/hooks';
@@ -11,6 +12,8 @@ export function Scene() {
   const hasLoadedScene = useAppSelector(
     (state) => Object.keys(state.propertyOwners.propertyOwners).length > 0
   );
+
+  const { ref, heightFunction } = useComputeHeightFunction(300, 10);
 
   if (!hasLoadedScene) {
     return (
@@ -34,9 +37,11 @@ export function Scene() {
 
         <Tabs.Panel value={'sceneMenu'}>
           <Container>
-            <Title order={2}>Scene</Title>
-            <FeaturedSceneTree />
-            <SceneTree />
+            <Box ref={ref}>
+              <Title order={2}>Scene</Title>
+              <FeaturedSceneTree />
+            </Box>
+            <SceneTree heightFunction={heightFunction} />
           </Container>
         </Tabs.Panel>
       </Tabs>

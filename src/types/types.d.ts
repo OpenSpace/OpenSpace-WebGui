@@ -26,6 +26,13 @@ export interface SemanticVersion {
   patch: number;
 }
 
+export type FloatWindowPosition = {
+  offsetX: number;
+  offsetY: number;
+  width: number;
+  height: number;
+};
+
 // Incomplete type objects for the ArcGIS object we request for GeoLocationPanel
 // This was to avoid having to import the entire ArcGIS core since the @types file is
 // deprecated on npm.

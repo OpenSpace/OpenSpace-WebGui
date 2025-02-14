@@ -92,7 +92,7 @@ export function ExoplanetsPanel() {
       <ResizeableContent defaultHeight={300}>
         <FilterList isLoading={allSystemNames.length === 0}>
           <FilterList.InputField placeHolderSearchText={'Star name...'} />
-          <FilterList.Data<string>
+          <FilterList.SearchResults
             data={allSystemNames}
             renderElement={(name) => (
               <ExoplanetEntry
@@ -103,7 +103,9 @@ export function ExoplanetsPanel() {
               />
             )}
             matcherFunc={wordBeginningSubString}
-          />
+          >
+            <FilterList.SearchResults.VirtualList />
+          </FilterList.SearchResults>
         </FilterList>
       </ResizeableContent>
       <Collapsable title={'Settings'}>
