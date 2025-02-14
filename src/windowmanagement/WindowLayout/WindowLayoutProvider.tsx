@@ -1,4 +1,5 @@
 import React, { useCallback, useRef } from 'react';
+import { ActionIcon, CloseIcon, Group, Title } from '@mantine/core';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
 import { FloatWindowPosition } from '@/types/types';
@@ -30,9 +31,22 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
     (id: string, title: string, content: React.JSX.Element): TabData => {
       return {
         id,
-        title,
+        title: (
+          <Group gap={0}>
+            <Title order={1} size={'md'} fw={500}>
+              {title}
+            </Title>
+            <ActionIcon
+              size={'sm'}
+              variant={'transparent'}
+              color={'gray.6'}
+              onClick={() => closeWindow(id)}
+            >
+              <CloseIcon />
+            </ActionIcon>
+          </Group>
+        ),
         content: <Window>{content}</Window>,
-        closable: true,
         cached: true,
         group: 'card'
       };
