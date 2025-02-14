@@ -234,8 +234,8 @@ export function OriginPanel() {
           {isInFlight && (
             <Paper mb={'xs'} py={'xs'}>
               <Center>
-                <Group>
-                  <RemainingFlightTimeIndicator compact={false} />{' '}
+                <Group gap={'xs'}>
+                  <RemainingFlightTimeIndicator compact={false} />
                   <Button
                     onClick={() => luaApi?.pathnavigation.stopPath()}
                     leftSection={<AirplaneCancelIcon size={IconSize.md} />}
