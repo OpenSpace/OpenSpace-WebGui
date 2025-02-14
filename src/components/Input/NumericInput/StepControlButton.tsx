@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { ActionIcon, ActionIconProps } from '@mantine/core';
 import { useInterval, useTimeout } from '@mantine/hooks';
 
@@ -36,6 +36,13 @@ export function StepControlButton({
     stepHoldDelay
   );
 
+  const onStepDone = useCallback((): void => {
+    clearTimeout();
+    if (stepInterval.active) {
+      stepInterval.stop();
+    }
+  }, [clearTimeout, stepInterval]);
+
   useEffect(() => {
     // Prevent the step loop from running after the pointer is released, even when the
     // pointer is not over the button
@@ -57,13 +64,6 @@ export function StepControlButton({
 
   function onStepLoop(): void {
     onStepHandleChange();
-  }
-
-  function onStepDone(): void {
-    clearTimeout();
-    if (stepInterval.active) {
-      stepInterval.stop();
-    }
   }
 
   function onKeyDown(event: React.KeyboardEvent<HTMLElement>): void {
