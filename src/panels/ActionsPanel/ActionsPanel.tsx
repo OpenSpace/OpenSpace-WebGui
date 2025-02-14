@@ -20,8 +20,6 @@ import { Action } from '@/types/types';
 import { ActionsButton } from './ActionsButton';
 import { actionsForLevel, getDisplayedActions } from './util';
 
-import classes from './ActionsPanel.module.css';
-
 export function ActionsPanel() {
   const allActions = useAppSelector((state) => state.actions.actions);
   const navigationPath = useAppSelector((state) => state.actions.navigationPath);
@@ -98,34 +96,27 @@ export function ActionsPanel() {
         <FilterList>
           <FilterList.InputField placeHolderSearchText={'Search for an action...'} />
           <FilterList.Favorites>
-            <DynamicGrid
-              gutter={'xs'}
-              minChildSize={170}
-              className={classes.actionsPanelGrid}
-            >
+            <DynamicGrid spacing={'xs'} verticalSpacing={'xs'} minChildSize={170}>
               {actionLevel.folders.sort().map((folder) => (
-                <DynamicGrid.Col key={folder}>
-                  <Button
-                    leftSection={<FolderIcon />}
-                    onClick={() => addNavPath(folder)}
-                    variant={'default'}
-                    fullWidth
-                    h={80} // TODO anden88 2025-02-06: use same css variable as ActionsButton
+                <Button
+                  leftSection={<FolderIcon />}
+                  onClick={() => addNavPath(folder)}
+                  variant={'default'}
+                  fullWidth
+                  h={80} // TODO anden88 2025-02-06: use same css variable as ActionsButton
+                  key={folder}
+                >
+                  <Text
+                    lineClamp={3}
+                    style={{ whiteSpace: 'wrap', wordBreak: 'break-all' }}
                   >
-                    <Text
-                      lineClamp={3}
-                      style={{ whiteSpace: 'wrap', wordBreak: 'break-all' }}
-                    >
-                      {folder}
-                    </Text>
-                  </Button>
-                </DynamicGrid.Col>
+                    {folder}
+                  </Text>
+                </Button>
               ))}
 
               {actionLevel.actions.map((action: Action) => (
-                <DynamicGrid.Col key={action.identifier}>
-                  <ActionsButton action={action} />
-                </DynamicGrid.Col>
+                <ActionsButton action={action} key={action.identifier} />
               ))}
             </DynamicGrid>
           </FilterList.Favorites>

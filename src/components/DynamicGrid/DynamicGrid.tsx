@@ -1,32 +1,26 @@
 import { PropsWithChildren } from 'react';
-import { Grid, GridProps } from '@mantine/core';
+import { SimpleGrid, SimpleGridProps } from '@mantine/core';
 
-import { DynamicGridColumn } from './DynamicGridColumn';
-import { DynamicGridProvider } from './DynamicGridProvider';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
-interface Props extends GridProps, PropsWithChildren {
+interface Props extends SimpleGridProps, PropsWithChildren {
   minChildSize: number; // The minimum a child column can be before it will row break
   gridWidth?: number; // The available width of this grid
 }
 
-export function DynamicGrid({
-  minChildSize,
-  columns = 12,
-  gridWidth,
-  children,
-  ...props
-}: Props) {
+export function DynamicGrid({ minChildSize, gridWidth, children, ...props }: Props) {
+  const { width: panelWidth } = useWindowSize();
+
+  function computeNCols() {
+    const width = gridWidth ?? panelWidth;
+    // Compute how many columns this element should span
+    const childrenPerRow = Math.max(Math.floor(width / minChildSize), 1);
+    return childrenPerRow;
+  }
+
   return (
-    <Grid columns={columns} {...props}>
-      <DynamicGridProvider
-        minChildSize={minChildSize}
-        columns={columns}
-        gridWidth={gridWidth}
-      >
-        {children}
-      </DynamicGridProvider>
-    </Grid>
+    <SimpleGrid cols={computeNCols()} {...props}>
+      {children}
+    </SimpleGrid>
   );
 }
-
-DynamicGrid.Col = DynamicGridColumn;

@@ -83,16 +83,10 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
         {/* Show phase specific actions */}
         {!isMissionOverview &&
           displayedPhase.data?.actions?.map((uri) => (
-            <DynamicGrid.Col key={uri}>
-              <ActionsButton uri={uri} />
-            </DynamicGrid.Col>
+            <ActionsButton uri={uri} key={uri} />
           ))}
         {/* We always want to show the actions for the whole mission */}
-        {missionOverview.actions?.map((uri) => (
-          <DynamicGrid.Col key={uri}>
-            <ActionsButton uri={uri} />
-          </DynamicGrid.Col>
-        ))}
+        {missionOverview.actions?.map((uri) => <ActionsButton uri={uri} key={uri} />)}
       </DynamicGrid>
     </>
   );
