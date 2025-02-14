@@ -15,7 +15,8 @@ export function TaskBarMenuButton({ item }: Props) {
     addWindow(item.content, {
       title: item.title,
       position: item.preferredPosition,
-      id: item.componentID
+      id: item.componentID,
+      floatPosition: item.floatPosition
     });
   }
 
