@@ -35,8 +35,8 @@ import { TimePanel } from '@/panels/TimePanel/TimePanel';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { UserPanelsPanel } from '@/panels/UserPanelsPanel/UserPanelsPanel';
 import { IconSize } from '@/types/enums';
-import { FloatWindowPosition } from '@/types/types';
 
+import { FloatWindowPosition } from '../WindowLayout/types';
 import { WindowLayoutPosition } from '../WindowLayout/WindowLayout';
 
 export interface MenuItem {

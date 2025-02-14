@@ -5,12 +5,12 @@ import DockLayout, { LayoutData, TabGroup } from 'rc-dock';
 import { FlightController } from '@/panels/FlightControlPanel/FlightController';
 import { TaskBar } from '@/panels/Menu/TaskBar/TaskBar';
 import { TopMenuBar } from '@/panels/Menu/TopMenuBar/TopMenuBar';
-import { FloatWindowPosition } from '@/types/types';
 
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
 import { menuItemsData } from '../data/MenuItems';
 
 import { useWindowLayoutProvider } from './hooks';
+import { FloatWindowPosition } from './types';
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import './WindowLayout.css';

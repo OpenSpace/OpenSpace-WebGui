@@ -27,47 +27,6 @@ export interface SemanticVersion {
   patch: number;
 }
 
-export type FloatWindowPosition = {
-  offsetX: number;
-  offsetY: number;
-  width: number;
-  height: number;
-};
-
-// Incomplete type objects for the ArcGIS object we request for GeoLocationPanel
-// This was to avoid having to import the entire ArcGIS core since the @types file is
-// deprecated on npm.
-export type ArcGISJSON = {
-  candidates: Candidate[];
-  spatialReference: object;
-};
-
-export type Candidate = {
-  address: string;
-  attributes: {
-    LongLabel: string;
-  };
-  extent: Extent;
-  location: Location;
-};
-
-export type Location = {
-  x: number;
-  y: number;
-};
-
-export type Extent = {
-  xmax: number;
-  xmin: number;
-  ymax: number;
-  ymin: number;
-};
-
-export interface ExoplanetData {
-  name: string;
-  identifier: Identifier;
-}
-
 export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
 
 export interface PropertyMetaData {

@@ -1,9 +1,9 @@
 import React, { useCallback, useRef } from 'react';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
-import { FloatWindowPosition } from '@/types/types';
 import { Window } from '@/windowmanagement/Window/Window';
 
+import { FloatWindowPosition } from './types';
 import { WindowLayoutOptions } from './WindowLayout';
 import { WindowLayoutContext } from './WindowLayoutContext';
 
