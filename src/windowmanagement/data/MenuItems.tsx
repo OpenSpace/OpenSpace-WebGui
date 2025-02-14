@@ -97,7 +97,7 @@ export const menuItemsData: MenuItem[] = [
     ),
     renderIcon: (size) => <FocusIcon size={size} />,
     preferredPosition: 'float',
-    floatPosition: { offsetY: 100, offsetX: 320, width: 300, height: 430 },
+    floatPosition: { offsetY: 100, offsetX: 320, width: 300, height: 440 },
     defaultVisible: true
   },
   {
@@ -109,7 +109,7 @@ export const menuItemsData: MenuItem[] = [
     ),
     renderIcon: (size) => <CalendarIcon size={size} />,
     preferredPosition: 'float',
-    floatPosition: { offsetY: 100, offsetX: 370, width: 580, height: 520 },
+    floatPosition: { offsetY: 100, offsetX: 370, width: 410, height: 520 },
     defaultVisible: true
   },
   {
