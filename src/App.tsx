@@ -16,7 +16,6 @@ import { WindowLayoutProvider } from './windowmanagement/WindowLayout/WindowLayo
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import '@mantine/core/styles.css';
-import './styles/rc-dock-customization.scss';
 
 const theme = createTheme({
   cursorType: 'pointer',

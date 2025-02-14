@@ -29,3 +29,11 @@ body {
   /* Stops OpenSpace from receiving docked-panel drag events */
   background: rgba(0, 0, 0, 0.05);
 }
+
+.dock-tab .dock-tab-btn {
+  color: var(--mantine-color-dimmed);
+}
+
+.dock-tab-active .dock-tab-btn {
+  color: var(--mantine-color-bright);
+}

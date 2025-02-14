@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { CloseButton, Group, Title } from '@mantine/core';
+import { Title } from '@mantine/core';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
 import { FloatWindowPosition } from '@/types/types';
@@ -32,19 +32,13 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
       return {
         id,
         title: (
-          <Group gap={0}>
-            <Title order={1} size={'md'} fw={500}>
-              {title}
-            </Title>
-            <CloseButton
-              size={'sm'}
-              aria-label={'Close tab'}
-              onClick={() => closeWindow(id)}
-            />
-          </Group>
+          <Title order={1} size={'md'} pr={3} fw={500}>
+            {title}
+          </Title>
         ),
         content: <Window>{content}</Window>,
         cached: true,
+        closable: true,
         group: 'card'
       };
     },
