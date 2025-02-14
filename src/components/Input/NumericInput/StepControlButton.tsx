@@ -18,6 +18,7 @@ interface Props extends ActionIconProps {
   stepHoldInterval?: number;
   step?: number;
   useStrictClamping?: boolean;
+  tabIndex?: number;
 }
 
 export function StepControlButton({
@@ -26,6 +27,7 @@ export function StepControlButton({
   stepHoldDelay = 200,
   stepHoldInterval = 50,
   step = 1,
+  tabIndex,
   ...props
 }: Props) {
   const stepInterval = useInterval(() => onStepLoop(), stepHoldInterval);
@@ -86,6 +88,7 @@ export function StepControlButton({
       onKeyUp={onStepDone}
       size={'xs'}
       variant={'transparent'}
+      tabIndex={tabIndex}
       {...props}
     >
       {direction === 'up' ? <ChevronUpIcon /> : <ChevronDownIcon />}

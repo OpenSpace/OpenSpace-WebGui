@@ -1,8 +1,8 @@
-import { Stack, UnstyledButtonProps } from '@mantine/core';
+import { Stack } from '@mantine/core';
 
 import { StepControlButton } from './StepControlButton';
 
-interface Props extends UnstyledButtonProps {
+interface Props {
   disableMin?: boolean;
   disableMax?: boolean;
   stepHoldDelay?: number;
@@ -11,27 +11,23 @@ interface Props extends UnstyledButtonProps {
   step?: number;
 }
 
-export function NumberStepControls({
-  disableMin,
-  disableMax,
-  stepHoldDelay,
-  stepHoldInterval,
-  onChange,
-  step
-}: Props) {
-  const commonProps = {
-    onChange,
-    step,
-    stepHoldDelay,
-    stepHoldInterval,
-    // In the numeric inputs, stepping can be done with the keyboard using the up/down
-    // keys, so we don't need the step control buttons to be focusable by the keyboard
-    tabIndex: -1
-  };
+export function NumberStepControls(props: Props) {
+  // In the numeric inputs, stepping can be done with the keyboard using the up/down
+  // keys, so we don't need the step control buttons to be focusable by the keyboard
   return (
     <Stack gap={0}>
-      <StepControlButton direction={'up'} disabled={disableMax} {...commonProps} />
-      <StepControlButton direction={'down'} disabled={disableMin} {...commonProps} />
+      <StepControlButton
+        direction={'up'}
+        disabled={props.disableMax}
+        tabIndex={-1}
+        {...props}
+      />
+      <StepControlButton
+        direction={'down'}
+        disabled={props.disableMin}
+        tabIndex={-1}
+        {...props}
+      />
     </Stack>
   );
 }
