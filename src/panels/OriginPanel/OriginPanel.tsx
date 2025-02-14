@@ -20,6 +20,7 @@ import { FilterList } from '@/components/FilterList/FilterList';
 import { useComputeHeightFunction } from '@/components/FilterList/hooks';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AirplaneCancelIcon, AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
+import { FlightControllerData } from '@/panels/FlightControlPanel/types';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
@@ -35,7 +36,6 @@ import { hasInterestingTag, isPropertyOwnerHidden } from '@/util/propertyTreeHel
 import { FocusEntry } from './FocusEntry';
 import { OriginSettings } from './OriginSettings';
 import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
-import { FlightControllerData } from '@/panels/FlightControlPanel/types';
 
 enum NavigationActionState {
   Focus = 'Focus',

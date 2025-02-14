@@ -4,10 +4,10 @@ import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { MinusIcon, PlusIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
-
-import { addressUTF8 } from './util';
-import { Candidate, Extent } from './types';
 import { Identifier } from '@/types/types';
+
+import { Candidate, Extent } from './types';
+import { addressUTF8 } from './util';
 
 interface Props {
   place: Candidate;

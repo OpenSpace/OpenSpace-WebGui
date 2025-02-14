@@ -10,7 +10,6 @@ import {
   setActiveImage,
   setImageCollectionData
 } from '@/redux/skybrowser/skybrowserSlice';
-import { SkyBrowserImage } from '@/types/skybrowsertypes';
 import {
   customPrecisionEqualFunc,
   equalArray,
@@ -18,6 +17,8 @@ import {
   lowPrecisionEqualArray,
   lowPrecisionEqualMatrix
 } from '@/util/equals';
+
+import { SkyBrowserImage } from './types';
 
 export function useGetWwtImageCollection() {
   const luaApi = useOpenSpaceApi();
