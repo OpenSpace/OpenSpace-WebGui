@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import { actionsReducer } from './actions/actionsSlice';
+import { cameraPathReducer } from './camerapath/cameraPathSlice';
 import { connectionReducer } from './connection/connectionSlice';
 import { documentationReducer } from './documentation/documentationSlice';
+import { engineModeReducer } from './enginemode/engineModeSlice';
 import { exoplanetsReducer } from './exoplanets/exoplanetsSlice';
 import { flightControllerReducer } from './flightcontroller/flightControllerSlice';
 import { groupsReducer } from './groups/groupsSlice';
@@ -20,8 +22,10 @@ import { listenerMiddleware } from './listenerMiddleware';
 export const store = configureStore({
   reducer: {
     actions: actionsReducer,
+    cameraPath: cameraPathReducer,
     connection: connectionReducer,
     documentation: documentationReducer,
+    engineMode: engineModeReducer,
     exoplanets: exoplanetsReducer,
     flightController: flightControllerReducer,
     groups: groupsReducer,
