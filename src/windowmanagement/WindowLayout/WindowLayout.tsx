@@ -65,7 +65,7 @@ export function WindowLayout() {
       widthFlex: 1
     },
     // This is the rc-dock group configuration for all the other windows. Note that
-    // 'card' is a pre-existing rc-dock group that adds certina styling to the tab
+    // 'card' is a pre-existing rc-dock group that adds certain styling to the tab
     card: {
       maximizable: false,
       heightFlex: 1,
