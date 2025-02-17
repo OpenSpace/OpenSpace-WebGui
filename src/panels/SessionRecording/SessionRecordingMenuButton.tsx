@@ -44,7 +44,7 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
             onClick={stopRecording}
             leftSection={<StopIcon />}
             color={'red'}
-            variant={'filled'}
+            variant={'light'}
             size={'xl'}
           >
             Stop Recording
@@ -52,11 +52,11 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
         );
       case RecordingState.Paused:
         return (
-          <Group gap={0}>
+          <Group gap={2}>
             <Button
               onClick={togglePlaybackPaused}
               leftSection={<PlayIcon />}
-              variant={'filled'}
+              variant={'light'}
               color={'orange'}
               size={'xl'}
             >
@@ -65,8 +65,8 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
             <Button
               onClick={stopPlayback}
               leftSection={<StopIcon />}
-              color={'orange'}
-              variant={'filled'}
+              color={'red'}
+              variant={'light'}
               size={'xl'}
             >
               Stop Playback
@@ -75,12 +75,12 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
         );
       case RecordingState.Playing:
         return (
-          <Group gap={'xs'}>
+          <Group gap={2}>
             <Button
               onClick={togglePlaybackPaused}
               leftSection={<PauseIcon />}
               size={'xl'}
-              variant={'filled'}
+              variant={'light'}
             >
               Pause
             </Button>
@@ -88,7 +88,7 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
               onClick={stopPlayback}
               leftSection={<StopIcon />}
               color={'red'}
-              variant={'filled'}
+              variant={'light'}
               size={'xl'}
             >
               Stop Playback
