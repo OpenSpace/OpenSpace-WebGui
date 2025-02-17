@@ -24,6 +24,10 @@ import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelper
 import { dateToOpenSpaceTimeString } from '@/util/time';
 
 import { LuaApiContext } from './LuaApiContext';
+import {
+  subscribeToSessionRecording,
+  unsubscribeToSessionRecording
+} from '@/redux/sessionrecording/sessionRecordingMiddleware';
 // Hook to make it easier to get the api
 export function useOpenSpaceApi() {
   const api = useContext(LuaApiContext);
@@ -225,6 +229,20 @@ export function useSubscribeToCameraPath() {
   }, [dispatch]);
 
   return cameraPath;
+}
+
+export function useSubscribeToSessionRecording() {
+  const recordingState = useAppSelector((state) => state.sessionRecording.state);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(subscribeToSessionRecording());
+    return () => {
+      dispatch(unsubscribeToSessionRecording());
+    };
+  }, [dispatch]);
+
+  return recordingState;
 }
 
 /**

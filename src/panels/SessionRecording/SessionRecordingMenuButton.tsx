@@ -8,15 +8,19 @@ import {
   subscribeToSessionRecording,
   unsubscribeToSessionRecording
 } from '@/redux/sessionrecording/sessionRecordingMiddleware';
-import { RecordingState } from '@/redux/sessionrecording/sessionRecordingSlice';
 import { IconSize } from '@/types/enums';
+import { RecordingsFolderKey } from '@/util/keys';
+import { RecordingState } from './types';
 
 interface SessionRecMenuButtonProps {
   onClick: () => void;
 }
 
-export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
+export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProps) {
   const recordingState = useAppSelector((state) => state.sessionRecording.state);
+  const { format, recordingFileName: fileName } = useAppSelector(
+    (state) => state.sessionRecording.settings
+  );
   const openspace = useOpenSpaceApi();
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -32,7 +36,10 @@ export function SessionRecMenuButton({ onClick }: SessionRecMenuButtonProps) {
   }
 
   function stopRecording() {
-    openspace?.sessionRecording.stopRecording();
+    openspace?.sessionRecording.stopRecording(
+      `${RecordingsFolderKey}${fileName}`,
+      format
+    );
   }
 
   function stopPlayback() {
