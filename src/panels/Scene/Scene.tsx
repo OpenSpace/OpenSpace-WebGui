@@ -12,7 +12,7 @@ export function Scene() {
     (state) => Object.keys(state.propertyOwners.propertyOwners).length > 0
   );
 
-  const { ref, heightFunction } = useComputeHeightFunction(300, 10);
+  const { ref, heightFunction } = useComputeHeightFunction(100, 10);
 
   if (!hasLoadedScene) {
     return (
@@ -26,8 +26,7 @@ export function Scene() {
     <Container>
       <Box ref={ref}>
         <FeaturedSceneTree />
-        {/* // TODO: Do we want this? */}
-        <Divider mt={'xs'} mb={'xs'} />
+        <Divider my={'xs'} />
       </Box>
       <SceneTree heightFunction={heightFunction} />
     </Container>

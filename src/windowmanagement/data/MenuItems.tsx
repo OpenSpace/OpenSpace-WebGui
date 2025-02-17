@@ -204,12 +204,5 @@ export const menuItemsData: MenuItem[] = [
     content: <TempPropertyTest />,
     preferredPosition: 'left',
     defaultVisible: false
-  },
-  {
-    title: 'Property Test (TEMP)',
-    componentID: 'propertyTest',
-    content: <TempPropertyTest />,
-    preferredPosition: 'left',
-    defaultVisible: false
   }
 ];

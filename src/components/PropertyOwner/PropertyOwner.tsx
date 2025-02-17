@@ -42,11 +42,7 @@ export function PropertyOwner({ uri, expandedOnDefault = false }: Props) {
       defaultOpen={expandedOnDefault}
       noTransition
     >
-      <Box
-        mt={'xs'}
-        mb={'xs'}
-        style={{ borderLeft: '4px solid var(--mantine-color-gray-7)' }}
-      >
+      <Box style={{ borderLeft: '2px solid var(--mantine-color-gray-8)' }}>
         <PropertyOwnerContent uri={uri} />
       </Box>
     </Collapsable>
