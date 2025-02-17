@@ -37,7 +37,9 @@ export function TempPropertyTest() {
         <Property uri={'Scene.Earth.ApproachFactor'} />
         <h3>Linear, but not nice values:</h3>
         <Property uri={'Scene.Earth.BoundingSphere'} />
-        TODO
+        <h3>Int:</h3>
+        <Property uri={'Scene.EclipticLine.Renderable.CircleSegments'} />
+
         <h2>Vector Property:</h2>
         <h3>Colors</h3>
         <Property uri={'Scene.1ldGrid.Renderable.Color'} />
