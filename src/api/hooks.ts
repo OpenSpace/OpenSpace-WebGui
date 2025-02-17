@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { shallowEqual, useThrottledCallback } from '@mantine/hooks';
 import { throttle } from 'lodash';
 
@@ -302,5 +302,18 @@ export function useSetOpenSpaceTime() {
     luaApi?.time.interpolateTime(fixedTimeString);
   };
 
-  return [setTime, interpolateTime];
+  return { setTime, interpolateTime };
+}
+
+/**
+ * Hook that listens to a prop and updates the local state when the prop changes.
+ */
+export function usePropListeningState<T>(prop: T) {
+  const [value, set] = useState<T>(prop);
+
+  useEffect(() => {
+    set(prop);
+  }, [prop]);
+
+  return { value, set };
 }

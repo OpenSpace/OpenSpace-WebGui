@@ -7,7 +7,7 @@ import { SimulationIncrement } from './SimulationIncrement';
 
 export function TimePanel() {
   const luaApi = useOpenSpaceApi();
-  const [setTime] = useSetOpenSpaceTime();
+  const { setTime } = useSetOpenSpaceTime();
 
   function realTime(event: React.MouseEvent<HTMLElement>) {
     if (event.shiftKey) {

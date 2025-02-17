@@ -19,7 +19,7 @@ export function TimeInput() {
 
   const cappedTime = useAppSelector((state) => state.time.timeCapped);
   const luaApi = useOpenSpaceApi();
-  const [setTime, interpolateTime] = useSetOpenSpaceTime();
+  const { setTime, interpolateTime } = useSetOpenSpaceTime();
   useSubscribeToTime();
 
   const cappedDate = new Date(cappedTime ?? '');

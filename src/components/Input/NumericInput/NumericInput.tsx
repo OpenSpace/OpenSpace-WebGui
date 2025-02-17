@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
 import { NumberInput, NumberInputProps } from '@mantine/core';
+
+import { usePropListeningState } from '@/api/hooks';
 
 import { NumberStepControls } from './NumberStepControls';
 
@@ -26,11 +27,9 @@ export function NumericInput({
   step,
   ...props
 }: Props) {
-  const [storedValue, setStoredValue] = useState<number | undefined>(value);
-
-  useEffect(() => {
-    setStoredValue(value);
-  }, [value]);
+  const { value: storedValue, set: setStoredValue } = usePropListeningState<
+    number | undefined
+  >(value);
 
   const shouldClamp = props.clampBehavior === 'strict';
   const shouldClampMin = shouldClamp && min !== undefined;

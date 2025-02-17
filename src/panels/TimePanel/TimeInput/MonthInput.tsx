@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
 import { MantineStyleProps } from '@mantine/core';
 
+import { usePropListeningState } from '@/api/hooks';
 import { StringInput } from '@/components/Input/StringInput';
 
 import { StackedStepControls } from './StackedStepControls';
@@ -32,11 +32,7 @@ export function MonthInput({
   onInputChangeStep,
   ...styleProps
 }: Props) {
-  const [storedMonth, setStoredMonth] = useState<number>(month);
-
-  useEffect(() => {
-    setStoredMonth(month);
-  }, [month]);
+  const { value: storedMonth, set: setStoredMonth } = usePropListeningState(month);
 
   function onInput(newValue: string): void {
     const monthIndex = parseMonthTextInput(newValue);
