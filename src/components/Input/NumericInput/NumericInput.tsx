@@ -8,7 +8,8 @@ import { NumberStepControls } from './NumberStepControls';
 interface Props extends NumberInputProps {
   // The function to call when the user hits the ENTER key or presses the UP/DOWN buttons
   onEnter?: (newValue: number) => void;
-  // The value of the input. In contrast to the original NumberInput, we here only allow numbers, not strings
+  // The value of the input. In contrast to the original NumberInput, we here only allow
+  // numbers, not strings
   value: number;
 }
 
