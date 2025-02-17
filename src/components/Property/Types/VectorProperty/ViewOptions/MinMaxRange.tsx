@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { Group, RangeSlider, Stack } from '@mantine/core';
 
+import { usePropListeningState } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { VectorPropertyProps } from '@/components/Property/Types/VectorProperty/VectorProperty';
 
@@ -10,10 +10,9 @@ export function MinMaxRange({
   value,
   additionalData
 }: VectorPropertyProps) {
-  const [currentValue, setCurrentValue] = useState<[number, number]>([
-    value[0],
-    value[1]
-  ]);
+  const { value: currentValue, set: setCurrentValue } = usePropListeningState<
+    [number, number]
+  >([value[0], value[1]]);
 
   if (value.length !== 2) {
     throw Error('Invalid use of MinMaxRange view option!');
@@ -33,22 +32,31 @@ export function MinMaxRange({
     setPropertyValue(newValue);
   }
 
-  // TODO: Add a way to edit the values using NumericInputs
+  const commonProps = { disabled, min, max, step };
+
+  // @TODO: Prevent entering numeric values where e.g. max < min? Or at least provide a
+  // warning?
   return (
     <Stack>
+      <Group grow>
+        <NumericInput
+          value={currentValue[0]}
+          onEnter={(newFirst) => onValueChange([newFirst, currentValue[1]])}
+          {...commonProps}
+        />
+        <NumericInput
+          value={currentValue[1]}
+          onEnter={(newSecond) => onValueChange([currentValue[0], newSecond])}
+          {...commonProps}
+        />
+      </Group>
       <RangeSlider
-        disabled={disabled}
         value={currentValue}
-        min={min}
-        max={max}
-        step={step}
         marks={marks}
         onChange={onValueChange}
+        mb={'xs'}
+        {...commonProps}
       />
-      <Group grow>
-        <NumericInput value={currentValue[0]} />
-        <NumericInput value={currentValue[1]} />
-      </Group>
     </Stack>
   );
 }
