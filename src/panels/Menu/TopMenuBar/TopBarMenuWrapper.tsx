@@ -1,21 +1,8 @@
 import { PropsWithChildren } from 'react';
-import {
-  ArrowPosition,
-  Button,
-  FloatingAxesOffsets,
-  FloatingPosition,
-  Menu,
-  MenuProps,
-  Text
-} from '@mantine/core';
+import { Button, Menu, MenuProps, Text } from '@mantine/core';
 
 interface Props extends MenuProps, PropsWithChildren {
   targetTitle: string | React.ReactNode;
-  menuItemTabIndex?: -1 | 0;
-  position?: FloatingPosition;
-  offset?: number | FloatingAxesOffsets;
-  withArrow?: boolean;
-  arrowPosition?: ArrowPosition;
 }
 
 export function TopBarMenuWrapper({
