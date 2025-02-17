@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { NumberInput, NumberInputProps } from '@mantine/core';
 
 import { usePropListeningState } from '@/api/hooks';
@@ -35,7 +36,9 @@ export function NumericInput({
   const shouldClampMin = shouldClamp && min !== undefined;
   const shouldClampMax = shouldClamp && max !== undefined;
 
-  let shouldResetOnBlur = true;
+  // We only want to reset the value on blur if the user didn't hit ENTER.
+  // This ref keeps track of that
+  const shouldResetOnBlurRef = useRef(true);
 
   function resetValue() {
     setStoredValue(value);
@@ -44,7 +47,7 @@ export function NumericInput({
   function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
       if (storedValue !== undefined) {
-        shouldResetOnBlur = false;
+        shouldResetOnBlurRef.current = false;
         onEnter(storedValue);
       } else {
         resetValue();
@@ -57,9 +60,10 @@ export function NumericInput({
   }
 
   function onBlur() {
-    if (shouldResetOnBlur) {
+    if (shouldResetOnBlurRef.current === true) {
       resetValue();
     }
+    shouldResetOnBlurRef.current = true;
   }
 
   function onStep(change: number) {

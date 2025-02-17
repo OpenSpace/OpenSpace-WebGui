@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { TextInput, TextInputProps } from '@mantine/core';
+
+import { usePropListeningState } from '@/api/hooks';
 
 export interface Props extends TextInputProps {
   onEnter: (newValue: string) => void;
@@ -12,12 +14,12 @@ export interface Props extends TextInputProps {
  * the value on ESCAPE.
  */
 export function StringInput({ onEnter, value, errorCheck, ...props }: Props) {
-  const [storedValue, setStoredValue] = useState<string>(value);
-  let valueWasEntered = false;
+  const { value: storedValue, set: setStoredValue } =
+    usePropListeningState<string>(value);
 
-  useEffect(() => {
-    setStoredValue(value);
-  }, [value]);
+  // We only want to reset the value on blur if the user didn't hit ENTER.
+  // This ref keeps track of that
+  const shouldResetOnBlurRef = useRef(true);
 
   function resetValue() {
     setStoredValue(value);
@@ -27,7 +29,7 @@ export function StringInput({ onEnter, value, errorCheck, ...props }: Props) {
     if (event.key === 'Enter') {
       if (!errorCheck || !errorCheck(storedValue)) {
         onEnter(storedValue);
-        valueWasEntered = true;
+        shouldResetOnBlurRef.current = false;
       }
       event.currentTarget.blur();
     }
@@ -37,9 +39,10 @@ export function StringInput({ onEnter, value, errorCheck, ...props }: Props) {
   }
 
   function onBlur() {
-    if (!valueWasEntered) {
+    if (shouldResetOnBlurRef.current === true) {
       resetValue();
     }
+    shouldResetOnBlurRef.current = true;
   }
 
   return (
