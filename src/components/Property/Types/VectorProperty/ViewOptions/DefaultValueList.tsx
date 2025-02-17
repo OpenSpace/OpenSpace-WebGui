@@ -1,6 +1,6 @@
 import { Flex } from '@mantine/core';
 
-import { NumericInput } from '@/components/Input/NumericInput';
+import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
 import { VectorPropertyProps } from '@/components/Property/Types/VectorProperty/VectorProperty';
 
@@ -29,7 +29,7 @@ export function ValueList({
         {value.map((v, i) => (
           <NumericInput
             key={i}
-            defaultValue={v}
+            value={v}
             disabled={disabled}
             min={min[i]}
             max={max[i]}
