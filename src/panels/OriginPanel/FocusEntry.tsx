@@ -13,13 +13,15 @@ interface FocusEntryProps {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
   showNavigationButtons: boolean;
+  disableFocus?: boolean;
 }
 
 export function FocusEntry({
   entry,
   activeNode,
   onSelect,
-  showNavigationButtons
+  showNavigationButtons,
+  disableFocus
 }: FocusEntryProps) {
   const buttonVariant = isActive() ? 'filled' : 'light';
 
@@ -33,21 +35,27 @@ export function FocusEntry({
 
   return (
     <Group justify={'space-between'} gap={'xs'} w={'100%'}>
-      <Button onClick={onSelectEntry} justify={'left'} flex={1} variant={buttonVariant}>
+      <Button
+        onClick={onSelectEntry}
+        justify={'left'}
+        flex={1}
+        variant={buttonVariant}
+        disabled={disableFocus}
+      >
         <Text truncate>{entry.name}</Text>
       </Button>
       {showNavigationButtons && (
         <>
           {isActive() && (
             <NodeNavigationButton
-              type={NavigationType.frame}
+              type={NavigationType.Frame}
               variant={buttonVariant}
               identifier={entry.identifier}
               size={'lg'}
             />
           )}
           <NodeNavigationButton
-            type={NavigationType.fly}
+            type={NavigationType.Fly}
             identifier={entry.identifier}
             variant={buttonVariant}
             size={'lg'}
@@ -63,25 +71,26 @@ export function FocusEntry({
               <Menu.Label>{entry.name}</Menu.Label>
               <Stack gap={'xs'}>
                 <NodeNavigationButton
-                  type={NavigationType.focus}
+                  type={NavigationType.Focus}
+                  identifier={entry.identifier}
+                  showLabel
+                  justify={'flex-start'}
+                  disabled={disableFocus}
+                />
+                <NodeNavigationButton
+                  type={NavigationType.Fly}
                   identifier={entry.identifier}
                   showLabel
                   justify={'flex-start'}
                 />
                 <NodeNavigationButton
-                  type={NavigationType.fly}
+                  type={NavigationType.Jump}
                   identifier={entry.identifier}
                   showLabel
                   justify={'flex-start'}
                 />
                 <NodeNavigationButton
-                  type={NavigationType.jump}
-                  identifier={entry.identifier}
-                  showLabel
-                  justify={'flex-start'}
-                />
-                <NodeNavigationButton
-                  type={NavigationType.frame}
+                  type={NavigationType.Frame}
                   identifier={entry.identifier}
                   showLabel
                   justify={'flex-start'}

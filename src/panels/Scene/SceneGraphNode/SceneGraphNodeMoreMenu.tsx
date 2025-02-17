@@ -87,18 +87,18 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
         <Stack gap={'xs'}>
           <Group gap={'xs'}>
             <NodeNavigationButton
-              type={NavigationType.fly}
+              type={NavigationType.Fly}
               identifier={propertyOwner.identifier}
               showLabel
             />
             <NodeNavigationButton
-              type={NavigationType.jump}
+              type={NavigationType.Jump}
               identifier={propertyOwner.identifier}
               showLabel
             />
           </Group>
           <NodeNavigationButton
-            type={NavigationType.frame}
+            type={NavigationType.Frame}
             identifier={propertyOwner.identifier}
             showLabel
           />

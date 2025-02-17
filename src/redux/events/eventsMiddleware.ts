@@ -11,7 +11,8 @@ import {
   removeUriFromPropertyTree
 } from '@/redux/propertytree/propertyTreeMiddleware';
 import { ConnectionStatus } from '@/types/enums';
-import { EventData } from '@/types/event-types';
+
+import { EventData } from './types';
 
 let eventTopic: Topic;
 let isSubscribed = false;

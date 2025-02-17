@@ -1,7 +1,15 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { shallowEqual, useThrottledCallback } from '@mantine/hooks';
 import { throttle } from 'lodash';
 
+import {
+  subscribeToCameraPath,
+  unsubscribeToCameraPath
+} from '@/redux/camerapath/cameraPathMiddleware';
+import {
+  subscribeToEngineMode,
+  unsubscribeToEngineMode
+} from '@/redux/enginemode/engineModeMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   subscribeToProperty,
@@ -13,6 +21,7 @@ import { ConnectionStatus } from '@/types/enums';
 import { Property, PropertyOwner, PropertyValue, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
 import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelpers';
+import { dateToOpenSpaceTimeString } from '@/util/time';
 
 import { LuaApiContext } from './LuaApiContext';
 // Hook to make it easier to get the api
@@ -191,6 +200,33 @@ export const useSubscribeToTime = () => {
   return now;
 };
 
+export function useSubscribeToEngineMode() {
+  const engineMode = useAppSelector((state) => state.engineMode.mode);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(subscribeToEngineMode());
+    return () => {
+      dispatch(unsubscribeToEngineMode());
+    };
+  }, [dispatch]);
+  return engineMode;
+}
+
+export function useSubscribeToCameraPath() {
+  const cameraPath = useAppSelector((state) => state.cameraPath);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(subscribeToCameraPath());
+    return () => {
+      dispatch(unsubscribeToCameraPath());
+    };
+  }, [dispatch]);
+
+  return cameraPath;
+}
+
 /**
  * Hook that subscribes to a property and returns a setter function. Unsuscribes when the
  * component is unmounted.
@@ -251,4 +287,33 @@ export const useHasVisibleChildren = (propertyOwnerUri: Uri): boolean => {
 
 export function useIsConnectionStatus(status: ConnectionStatus): boolean {
   return useAppSelector((state) => state.connection.connectionStatus) === status;
+}
+
+export function useSetOpenSpaceTime() {
+  const luaApi = useOpenSpaceApi();
+
+  const setTime = (newTime: Date) => {
+    const fixedTimeString = dateToOpenSpaceTimeString(newTime);
+    luaApi?.time.setTime(fixedTimeString);
+  };
+
+  const interpolateTime = (newTime: Date) => {
+    const fixedTimeString = dateToOpenSpaceTimeString(newTime);
+    luaApi?.time.interpolateTime(fixedTimeString);
+  };
+
+  return { setTime, interpolateTime };
+}
+
+/**
+ * Hook that listens to a prop and updates the local state when the prop changes.
+ */
+export function usePropListeningState<T>(prop: T) {
+  const [value, set] = useState<T>(prop);
+
+  useEffect(() => {
+    set(prop);
+  }, [prop]);
+
+  return { value, set };
 }

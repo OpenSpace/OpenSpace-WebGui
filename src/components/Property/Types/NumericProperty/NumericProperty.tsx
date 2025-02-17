@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Flex, Group, NumberFormatter, Slider } from '@mantine/core';
 import { scalePow } from 'd3';
 
-import { NumericInput } from '@/components/Input/NumericInput';
+import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
 
 interface Props {
@@ -110,7 +110,7 @@ export function NumericProperty({
         )}
         <Flex flex={1} miw={100}>
           <NumericInput
-            defaultValue={scale(currentSliderValue)}
+            value={scale(currentSliderValue)}
             disabled={disabled}
             min={min}
             max={max}

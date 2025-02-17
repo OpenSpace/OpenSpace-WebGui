@@ -20,7 +20,7 @@ export function StringProperty({
     <StringInput
       disabled={disabled}
       onEnter={setPropertyValue}
-      defaultValue={value}
+      value={value}
       label={<PropertyLabel label={name} tip={description} />}
     />
   );

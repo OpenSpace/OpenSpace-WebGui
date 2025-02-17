@@ -8,20 +8,12 @@ import {
   ScrollArea,
   Select,
   Stack,
-  TextInput,
-  ThemeIcon,
-  Tooltip
+  TextInput
 } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import {
-  InformationIcon,
-  PlayIcon,
-  RecordIcon,
-  StopIcon,
-  VideocamIcon
-} from '@/icons/icons';
+import { PlayIcon, RecordIcon, StopIcon, VideocamIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   subscribeToSessionRecording,
@@ -52,7 +44,7 @@ export function SessionRec() {
   }, [dispatch]);
 
   function isIdle() {
-    return recordingState === RecordingState.idle;
+    return recordingState === RecordingState.Idle;
   }
 
   function onLoopPlaybackChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -122,7 +114,7 @@ export function SessionRec() {
 
   function recordButtonStateProperties() {
     switch (recordingState) {
-      case RecordingState.recording:
+      case RecordingState.Recording:
         return { text: 'Stop Recording', color: 'red', icon: <VideocamIcon /> };
       default:
         // Use default color
@@ -132,8 +124,8 @@ export function SessionRec() {
 
   function playbackButtonStateProperties() {
     switch (recordingState) {
-      case RecordingState.playing:
-      case RecordingState.paused:
+      case RecordingState.Playing:
+      case RecordingState.Paused:
         return { text: 'Stop Playback', color: 'red', icon: <StopIcon /> };
       default:
         // Use default color

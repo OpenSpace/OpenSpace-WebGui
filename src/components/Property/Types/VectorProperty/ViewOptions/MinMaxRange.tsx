@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Group, RangeSlider, Stack } from '@mantine/core';
 
-import { NumericInput } from '@/components/Input/NumericInput';
+import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { VectorPropertyProps } from '@/components/Property/Types/VectorProperty/VectorProperty';
 
 export function MinMaxRange({
@@ -46,8 +46,8 @@ export function MinMaxRange({
         onChange={onValueChange}
       />
       <Group grow>
-        <NumericInput defaultValue={currentValue[0]} />
-        <NumericInput defaultValue={currentValue[1]} />
+        <NumericInput value={currentValue[0]} />
+        <NumericInput value={currentValue[1]} />
       </Group>
     </Stack>
   );

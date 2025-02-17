@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { OpenSpaceTimeState } from '@/types/types';
-
+import { OpenSpaceTimeState } from './types';
 import { dateStringUTC as parseTimeStringToUTCString, isDateValid } from './util';
 
 export interface TimeState {

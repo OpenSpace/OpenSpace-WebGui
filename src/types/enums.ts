@@ -8,23 +8,14 @@ export enum IconSize {
   lg = 32,
   xl = 42
 }
-export enum NavigationType {
-  jump,
-  JumpGeo,
-  fly,
-  FlyGeo,
-  focus,
-  frame
-}
 
-export enum TimePart {
-  Milliseconds = 'Milliseconds',
-  Seconds = 'Seconds',
-  Minutes = 'Minutes',
-  Hours = 'Hours',
-  Days = 'Days',
-  Months = 'Months',
-  Years = 'Years'
+export enum NavigationType {
+  Jump,
+  JumpGeo,
+  Fly,
+  FlyGeo,
+  Focus,
+  Frame
 }
 
 export enum TransformType {
@@ -51,8 +42,8 @@ export const PropertyVisibilityNumber = {
   Always: 0
 };
 
-export enum DisplayType {
-  Phase = 'Phase',
-  Milestone = 'Milestone',
-  Overview = 'Overview'
+export enum EngineMode {
+  UserControl = 'user_control',
+  SessionRecordingPlayback = 'session_recording_playback',
+  CameraPath = 'camera_path'
 }

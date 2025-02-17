@@ -5,9 +5,9 @@ import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { ConnectionStatus } from '@/types/enums';
-import { OpenSpaceTimeState } from '@/types/types';
 
 import { updateTime } from './timeSlice';
+import { OpenSpaceTimeState } from './types';
 
 const subscribeToTime = createAction<void>('time/subscribe');
 const unsubscribeToTime = createAction<void>('time/unsubscribe');

@@ -3,11 +3,10 @@ import { Button, Group, ScrollArea, Switch, Text, Title } from '@mantine/core';
 
 import { useSubscribeToTime } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { DisplayType } from '@/types/enums';
-import { DisplayedPhase, Phase } from '@/types/mission-types';
 
 import { TimeLine } from './TimeLine/TimeLine';
 import { MissionPhase } from './MissionPhase';
+import { DisplayedPhase, DisplayType, Phase } from './types';
 
 interface Props {
   missionOverview: Phase;
@@ -105,7 +104,7 @@ export function MissionContent({ missionOverview }: Props) {
   }
 
   return (
-    <Group wrap={'nowrap'} align={'start'} mx={'md'} my={'xs'} h={'100%'} gap={0}>
+    <Group wrap={'nowrap'} align={'start'} mx={'md'} py={'xs'} h={'100%'} gap={0}>
       <TimeLine
         allPhasesNested={allPhasesNested}
         displayedPhase={displayedPhase}

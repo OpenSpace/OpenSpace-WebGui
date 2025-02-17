@@ -1,9 +1,9 @@
 import { Button, Group } from '@mantine/core';
 
 import { useSubscribeToTime } from '@/api/hooks';
-import { Phase } from '@/types/mission-types';
 
 import { useJumpToTime } from './hooks';
+import { Phase } from './types';
 
 interface Props {
   mission: Phase;

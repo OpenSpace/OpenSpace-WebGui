@@ -1,6 +1,7 @@
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { FlightControllerInputStateCommand } from '@/types/flightcontroller-types';
+
+import { FlightControllerInputStateCommand } from './types';
 
 export function FlightController() {
   const dispatch = useAppDispatch();

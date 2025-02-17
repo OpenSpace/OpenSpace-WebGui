@@ -10,19 +10,18 @@ import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
 import { menuItemsData } from '../data/MenuItems';
 
 import { useWindowLayoutProvider } from './hooks';
+import { FloatWindowPosition } from './types';
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import './WindowLayout.css';
 
 export type WindowLayoutPosition = 'left' | 'right' | 'float' | 'top';
+
 export interface WindowLayoutOptions {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
   title: string;
   id: string;
   position?: WindowLayoutPosition;
+  floatPosition?: FloatWindowPosition;
 }
 
 function createDefaultLayout(): LayoutData {
@@ -42,7 +41,10 @@ function createDefaultLayout(): LayoutData {
             }
           ],
           panelLock: {},
-          group: 'headless'
+          group: 'headless',
+          size: 800 // This is quite arbitary chosen, but helps if the first thing you do
+          // is moving a panel above the empty area. Increasing this value gives less space
+          // for the panel being moved ontop or below
         }
       ]
     }
@@ -57,10 +59,11 @@ export function WindowLayout() {
     floatable: false,
     maximizable: false,
     tabLocked: true,
-    widthFlex: 2
+    widthFlex: 1
   };
   const regularWindow: TabGroup = {
-    maximizable: false
+    maximizable: false,
+    heightFlex: 1
   };
   const groups = {
     headless,
