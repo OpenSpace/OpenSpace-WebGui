@@ -1,15 +1,20 @@
+import { useState } from 'react';
+import { Button, Checkbox, Group, TextInput, Title } from '@mantine/core';
+
+import { useOpenSpaceApi, useSubscribeToSessionRecording } from '@/api/hooks';
+import { RecordIcon, VideocamIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { updateSessionRecordingSettings } from '@/redux/sessionrecording/sessionRecordingSlice';
-import { Button, Checkbox, Group, TextInput, Title } from '@mantine/core';
-import { useState } from 'react';
-import { RecordingState } from './types';
-import { useOpenSpaceApi, useSubscribeToSessionRecording } from '@/api/hooks';
 import { RecordingsFolderKey } from '@/util/keys';
-import { RecordIcon, VideocamIcon } from '@/icons/icons';
+
+import { RecordingState } from './types';
 
 export function RecordSession() {
   const [filenameRecording, setFilenameRecording] = useState('');
-  const [invalidFileName, setInvalidFilename] = useState(false);
+  const [filenameState, setFilenameState] = useState({
+    invalid: false,
+    errorMessage: ''
+  });
 
   const recordingState = useSubscribeToSessionRecording();
   const luaApi = useOpenSpaceApi();
@@ -18,24 +23,34 @@ export function RecordSession() {
   const fileList = useAppSelector((state) => state.sessionRecording.files);
   const { format } = useAppSelector((state) => state.sessionRecording.settings);
 
-  function toggleFormat(useTextFormat: boolean): void {
-    const _format = useTextFormat ? 'Ascii' : 'Binary';
-    updateSessionRecordingSettings({ format: _format });
-  }
-
-  function isIdle() {
+  function isIdle(): boolean {
     return recordingState === RecordingState.Idle;
   }
 
+  function isRecordingState(): boolean {
+    return (
+      recordingState === RecordingState.Idle ||
+      recordingState === RecordingState.Recording
+    );
+  }
+
   function toggleRecording(): void {
-    if (isIdle()) {
+    if (recordingState === RecordingState.Idle) {
       startRecording();
-    } else {
+    } else if (recordingState === RecordingState.Recording) {
       stopRecording();
     }
   }
 
   function startRecording(): void {
+    if (filenameRecording === '') {
+      setFilenameState({ invalid: true, errorMessage: 'Filename cannot be empty' });
+      return;
+    }
+    if (!isFileUnique(filenameRecording)) {
+      setFilenameState({ invalid: true, errorMessage: 'Filename already exists' });
+      return;
+    }
     luaApi?.sessionRecording.startRecording();
   }
 
@@ -45,21 +60,35 @@ export function RecordSession() {
       .then((value) => luaApi?.sessionRecording.stopRecording(value, format));
   }
 
+  function isFileUnique(filename: string): boolean {
+    // Check if filename already exists
+    return fileList.every((file) => {
+      // Remove file extension
+      const index = file.lastIndexOf('.');
+      const existingFilename = index !== -1 ? file.substring(0, index) : file;
+      return existingFilename.toLowerCase() !== filename.toLowerCase();
+    });
+  }
+
   function onFilenameChanged(value: string): void {
     setFilenameRecording(value);
 
-    // Check if filename already exists
-    const isFileUnique = fileList.every((file) => {
-      // Remove file extension
-      const index = file.lastIndexOf('.');
-      const filename = index !== -1 ? file.substring(0, index) : file;
-      return filename !== value;
-    });
-
-    if (isFileUnique) {
-      dispatch(updateSessionRecordingSettings({ recordingFileName: value }));
+    if (!value.trim()) {
+      setFilenameState({ invalid: true, errorMessage: 'Filename cannot be empty' });
+      return;
     }
-    setInvalidFilename(!isFileUnique);
+
+    if (isFileUnique(value)) {
+      dispatch(updateSessionRecordingSettings({ recordingFileName: value }));
+      setFilenameState({ invalid: false, errorMessage: '' });
+    } else {
+      setFilenameState({ invalid: true, errorMessage: `File '${value}' already exists` });
+    }
+  }
+
+  function onFormatChanged(useTextFormat: boolean): void {
+    const _format = useTextFormat ? 'Ascii' : 'Binary';
+    updateSessionRecordingSettings({ format: _format });
   }
 
   function recordButtonStateProperties(): {
@@ -83,22 +112,24 @@ export function RecordSession() {
       <Title order={2}>Record Session</Title>
       <Checkbox
         label={'Text file format'}
-        onChange={(event) => toggleFormat(event.currentTarget.checked)}
+        onChange={(event) => onFormatChanged(event.currentTarget.checked)}
         mb={'sm'}
       ></Checkbox>
-      <Group>
+      <Group align={"start"}>
         <TextInput
           value={filenameRecording}
           placeholder={'Enter recording filename'}
           aria-label={'Enter recording filename'}
           onChange={(event) => onFilenameChanged(event.currentTarget.value)}
-          error={invalidFileName && `File '${filenameRecording}' already exists`}
+          error={filenameState.invalid && filenameState.errorMessage}
+          disabled={!isIdle()}
         />
         <Button
           onClick={toggleRecording}
           leftSection={recordButtonProps.icon}
-          disabled={invalidFileName}
+          disabled={filenameState.invalid || !isRecordingState()}
           color={recordButtonProps.color}
+          variant={"light"}
         >
           {recordButtonProps.text}
         </Button>

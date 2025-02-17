@@ -1,7 +1,7 @@
 import { Container, Divider, ScrollArea } from '@mantine/core';
 
-import { RecordSession } from './RecordSession';
 import { PlaySession } from './PlaySession';
+import { RecordSession } from './RecordSession';
 
 export function SessionRecording() {
   return (

@@ -16,6 +16,10 @@ import {
   unsubscribeToProperty
 } from '@/redux/propertytree/properties/propertiesMiddleware';
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
+import {
+  subscribeToSessionRecording,
+  unsubscribeToSessionRecording
+} from '@/redux/sessionrecording/sessionRecordingMiddleware';
 import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
 import { ConnectionStatus } from '@/types/enums';
 import { Property, PropertyOwner, PropertyValue, Uri } from '@/types/types';
@@ -24,10 +28,6 @@ import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelper
 import { dateToOpenSpaceTimeString } from '@/util/time';
 
 import { LuaApiContext } from './LuaApiContext';
-import {
-  subscribeToSessionRecording,
-  unsubscribeToSessionRecording
-} from '@/redux/sessionrecording/sessionRecordingMiddleware';
 // Hook to make it easier to get the api
 export function useOpenSpaceApi() {
   const api = useContext(LuaApiContext);

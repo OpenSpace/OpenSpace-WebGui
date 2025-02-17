@@ -1,15 +1,12 @@
-import { useEffect } from 'react';
 import { ActionIcon, Button, Group } from '@mantine/core';
 
-import { useOpenSpaceApi } from '@/api/hooks';
+import { useOpenSpaceApi, useSubscribeToSessionRecording } from '@/api/hooks';
 import { PauseIcon, PlayIcon, StopIcon, VideocamIcon } from '@/icons/icons';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import {
-  subscribeToSessionRecording,
-  unsubscribeToSessionRecording
-} from '@/redux/sessionrecording/sessionRecordingMiddleware';
+import { useAppSelector } from '@/redux/hooks';
+
 import { IconSize } from '@/types/enums';
 import { RecordingsFolderKey } from '@/util/keys';
+
 import { RecordingState } from './types';
 
 interface SessionRecMenuButtonProps {
@@ -17,29 +14,22 @@ interface SessionRecMenuButtonProps {
 }
 
 export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProps) {
-  const recordingState = useAppSelector((state) => state.sessionRecording.state);
+  const recordingState = useSubscribeToSessionRecording();
+  const openspace = useOpenSpaceApi();
+
   const { format, recordingFileName: fileName } = useAppSelector(
     (state) => state.sessionRecording.settings
   );
-  const openspace = useOpenSpaceApi();
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(subscribeToSessionRecording());
-    //dispatch(subscribeToEngineMode()); // TODO: Add this from store
-    return () => {
-      dispatch(unsubscribeToSessionRecording());
-    };
-  }, [dispatch]);
 
   function togglePlaybackPaused() {
     openspace?.sessionRecording.togglePlaybackPause();
   }
 
   function stopRecording() {
-    openspace?.sessionRecording.stopRecording(
-      `${RecordingsFolderKey}${fileName}`,
-      format
-    );
+    // prettier-ignore
+    openspace
+      ?.absPath(`${RecordingsFolderKey}${fileName}`)
+      .then((value) => openspace?.sessionRecording.stopRecording(value, format));
   }
 
   function stopPlayback() {
@@ -54,6 +44,7 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
             onClick={stopRecording}
             leftSection={<StopIcon />}
             color={'red'}
+            variant={'filled'}
             size={'xl'}
           >
             Stop Recording
@@ -65,6 +56,7 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
             <Button
               onClick={togglePlaybackPaused}
               leftSection={<PlayIcon />}
+              variant={'filled'}
               color={'orange'}
               size={'xl'}
             >
@@ -74,6 +66,7 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
               onClick={stopPlayback}
               leftSection={<StopIcon />}
               color={'orange'}
+              variant={'filled'}
               size={'xl'}
             >
               Stop Playback
@@ -87,6 +80,7 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
               onClick={togglePlaybackPaused}
               leftSection={<PauseIcon />}
               size={'xl'}
+              variant={'filled'}
             >
               Pause
             </Button>
@@ -94,6 +88,7 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
               onClick={stopPlayback}
               leftSection={<StopIcon />}
               color={'red'}
+              variant={'filled'}
               size={'xl'}
             >
               Stop Playback

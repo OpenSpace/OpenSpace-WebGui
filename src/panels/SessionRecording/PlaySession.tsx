@@ -1,11 +1,13 @@
+import { useState } from 'react';
+import { Button, Checkbox, Group, Select, Stack, TextInput, Title } from '@mantine/core';
+
 import { useOpenSpaceApi, useSubscribeToSessionRecording } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { PauseIcon, PlayIcon, StopIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
-import { Button, Checkbox, Group, Select, Stack, TextInput } from '@mantine/core';
-import { useState } from 'react';
-import { RecordingState } from './types';
 import { RecordingsFolderKey } from '@/util/keys';
-import { PlayIcon, StopIcon } from '@/icons/icons';
+
+import { RecordingState } from './types';
 
 export function PlaySession() {
   const [loopPlayback, setLoopPlayback] = useState(false);
@@ -34,8 +36,16 @@ export function PlaySession() {
       setShouldOutputFrames(false);
     }
   }
+
   function isIdle() {
     return recordingState === RecordingState.Idle;
+  }
+
+  function isPlaybackState(): boolean {
+    return (
+      recordingState === RecordingState.Paused ||
+      recordingState === RecordingState.Playing
+    );
   }
 
   function togglePlayback(): void {
@@ -87,18 +97,22 @@ export function PlaySession() {
 
   return (
     <>
-      <h2 style={{ marginTop: 0 }}>Play Session</h2>
+      <Title order={2} style={{ marginTop: 0 }}>
+        Play Session
+      </Title>
       <Stack gap={'xs'}>
         <Checkbox
           label={'Loop playback'}
           checked={loopPlayback}
           onChange={onLoopPlaybackChange}
+          disabled={!isIdle()}
         />
         <Group>
           <Checkbox
             label={'Output frames'}
             checked={shouldOutputFrames}
             onChange={onShouldUpdateFramesChange}
+            disabled={!isIdle()}
           />
           <InfoBox
             text={`If checked, the specified number of frames will be recorded as
@@ -127,11 +141,24 @@ export function PlaySession() {
             data={fileList}
             onChange={setFilenamePlayback}
           />
+          {isPlaybackState() && (
+            <Button
+              onClick={() => luaApi?.sessionRecording.togglePlaybackPause()}
+              leftSection={
+                recordingState === RecordingState.Paused ? <PlayIcon /> : <PauseIcon />
+              }
+              variant={'light'}
+              color={recordingState === RecordingState.Paused ? 'orange' : undefined}
+            >
+              {recordingState === RecordingState.Paused ? 'Resume' : 'Pause'}
+            </Button>
+          )}
           <Button
             onClick={togglePlayback}
             leftSection={playbackButtonProps.icon}
             disabled={!filenamePlayback}
             color={playbackButtonProps.color}
+            variant={'light'}
           >
             {playbackButtonProps.text}
           </Button>
