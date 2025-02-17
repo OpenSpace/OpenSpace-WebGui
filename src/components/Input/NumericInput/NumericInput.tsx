@@ -35,7 +35,7 @@ export function NumericInput({
   const shouldClampMin = shouldClamp && min !== undefined;
   const shouldClampMax = shouldClamp && max !== undefined;
 
-  let valueWasEntered = false;
+  let shouldResetOnBlur = true;
 
   function resetValue() {
     setStoredValue(value);
@@ -44,7 +44,7 @@ export function NumericInput({
   function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
       if (storedValue !== undefined) {
-        valueWasEntered = true;
+        shouldResetOnBlur = false;
         onEnter(storedValue);
       } else {
         resetValue();
@@ -57,7 +57,7 @@ export function NumericInput({
   }
 
   function onBlur() {
-    if (!valueWasEntered) {
+    if (shouldResetOnBlur) {
       resetValue();
     }
   }
