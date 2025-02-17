@@ -37,7 +37,7 @@ export function MinMaxRange({
   // @TODO: Prevent entering numeric values where e.g. max < min? Or at least provide a
   // warning?
   return (
-    <Stack>
+    <Stack gap={'xs'} mb={'xs'}>
       <Group grow>
         <NumericInput
           value={currentValue[0]}
@@ -54,7 +54,6 @@ export function MinMaxRange({
         value={currentValue}
         marks={marks}
         onChange={onValueChange}
-        mb={'xs'}
         {...commonProps}
       />
     </Stack>

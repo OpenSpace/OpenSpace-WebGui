@@ -13,6 +13,8 @@ export function ValueList({
   const max = additionalData.MaximumValue;
   const step = additionalData.SteppingValue;
 
+  const isInt = step.every((s) => s >= 1);
+
   function setValue(index: number, newValue: number) {
     const v = [...value];
     v[index] = newValue;
@@ -30,6 +32,7 @@ export function ValueList({
           min={min[i]}
           max={max[i]}
           step={step[i]}
+          allowDecimal={!isInt}
           onEnter={(newValue) => setValue(i, newValue)}
         />
       ))}

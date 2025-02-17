@@ -37,6 +37,8 @@ export function NumericProperty({
   const step = additionalData.SteppingValue;
   const exponent = additionalData.Exponent;
 
+  const isInt = step >= 1;
+
   // When no min/max is set, the marks for the slider cannot be nicely computed
   const hasNiceMinMax = isFinite(max - min);
 
@@ -72,6 +74,7 @@ export function NumericProperty({
             min={min}
             max={max}
             step={step}
+            allowDecimal={!isInt}
             onEnter={onValueChange}
           />
         </Flex>

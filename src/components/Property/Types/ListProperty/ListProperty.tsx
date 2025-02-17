@@ -45,13 +45,15 @@ export function ListProperty({
   // This needs to be a memoized function because it is used in a useEffect
   const createPlaceHolderText = useCallback(
     (values: ListValueType[]) => {
+      const count1 = values.length + 1;
+      const count2 = values.length + 2;
       switch (valueType) {
         case 'float':
-          return `number${values.length + 1}, number${values.length + 2}, ...`;
+          return `number${count1}, number${count2}, ...`;
         case 'int':
-          return `integer${values.length + 1}, integer${values.length + 2}, ...`;
+          return `integer${count1}, integer${count2}, ...`;
         case 'string':
-          return `item${values.length + 1}, item${values.length + 2}, ...`;
+          return `item${count1}, item${count2}, ...`;
         default:
           throw new Error('Invalid value type');
       }
