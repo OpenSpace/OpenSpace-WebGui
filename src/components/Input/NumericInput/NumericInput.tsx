@@ -78,7 +78,7 @@ export function NumericInput({
 
   return (
     <NumberInput
-      value={storedValue}
+      value={storedValue === undefined ? '' : storedValue}
       onKeyUp={onKeyUp}
       onBlur={onBlur}
       onValueChange={(newValue) => setStoredValue(newValue.floatValue)}
