@@ -49,18 +49,9 @@ export function SimulationIncrement() {
     setSliderValue(value);
   }
 
-  const marks = [
-    { value: -10, label: '-' },
-    { value: -8 },
-    { value: -6 },
-    { value: -4 },
-    { value: -2 },
-    { value: 2 },
-    { value: 4 },
-    { value: 6 },
-    { value: 8 },
-    { value: 10, label: '+' }
-  ];
+  const sliderMax = 10;
+  const percentagePerStep = 100 / (sliderMax * 2);
+  const sliderWidth = `${Math.abs(sliderValue * percentagePerStep)}%`;
 
   return (
     <>
@@ -81,14 +72,21 @@ export function SimulationIncrement() {
           wrapStepControlButtons={false}
         />
       </Group>
-      <Text size={'md'} ta={'center'} c={'dimmed'} mt={'xs'}>
-        Quick Adjust
-      </Text>
+      <Group mt={'xs'} justify={'space-between'}>
+        <Text size={'md'} c={'dimmed'}>
+          -
+        </Text>
+        <Text size={'md'} c={'dimmed'}>
+          Quick Adjust
+        </Text>
+        <Text size={'md'} c={'dimmed'}>
+          +
+        </Text>
+      </Group>
       <Slider
-        size={'lg'}
         mb={'xl'}
-        min={-10}
-        max={10}
+        min={-sliderMax}
+        max={sliderMax}
         onChange={setQuickAdjust}
         onChangeEnd={() => {
           // Reset the slider back to middle and set the deltaTime to whatever it was
@@ -99,7 +97,14 @@ export function SimulationIncrement() {
         label={null}
         step={0.05}
         value={sliderValue}
-        marks={marks}
+        marks={[{ value: 0 }]}
+        // Make the bar start from the center
+        styles={{
+          bar: {
+            left: sliderValue > 0 ? '50%' : `calc(50% - ${sliderWidth})`,
+            width: `${sliderWidth}`
+          }
+        }}
       />
       <DeltaTimeStepsControl stepSize={stepSize} />
     </>
