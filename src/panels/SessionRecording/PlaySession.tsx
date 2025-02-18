@@ -24,7 +24,7 @@ export function PlaySession() {
   const luaApi = useOpenSpaceApi();
 
   const isIdle = recordingState === RecordingState.Idle;
-  const isPlaybackState =
+  const isPlayingBack =
     recordingState === RecordingState.Paused || recordingState === RecordingState.Playing;
 
   function onLoopPlaybackChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -106,21 +106,14 @@ export function PlaySession() {
             data={fileList}
             onChange={setFilenamePlayback}
             searchable
+            disabled={isPlayingBack}
           />
-          {isPlaybackState && (
-            <>
-              {recordingState === RecordingState.Paused ? (
-                <ResumePlaybackButton />
-              ) : (
-                <PausePlaybackButton />
-              )}
-            </>
-          )}
-          {isPlaybackState ? (
-            <StopPlaybackButton />
-          ) : (
-            <PlayPlaybackButton onClick={startPlayback} />
-          )}
+          <PlayPlaybackButton onClick={startPlayback} disabled={isPlayingBack} />
+        </Group>
+        <Group gap={'xs'}>
+          {recordingState === RecordingState.Paused && <ResumePlaybackButton />}
+          {recordingState === RecordingState.Playing && <PausePlaybackButton />}
+          {isPlayingBack && <StopPlaybackButton />}
         </Group>
       </Stack>
     </>

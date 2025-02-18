@@ -15,14 +15,14 @@ export function RecordSession() {
     invalid: false,
     errorMessage: ''
   });
+
+  const dispatch = useAppDispatch();
+  const fileList = useAppSelector((state) => state.sessionRecording.files);
   const { overwriteFile } = useAppSelector((state) => state.sessionRecording.settings);
   const [showOverwriteCheckbox, setShowOverwriteCheckbox] = useState(overwriteFile);
 
   const recordingState = useSubscribeToSessionRecording();
   const luaApi = useOpenSpaceApi();
-
-  const dispatch = useAppDispatch();
-  const fileList = useAppSelector((state) => state.sessionRecording.files);
 
   const isIdle = recordingState === RecordingState.Idle;
   const isRecordingState = recordingState === RecordingState.Recording;
