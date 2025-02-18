@@ -1,7 +1,6 @@
+import { useEffect, useState } from 'react';
 import { MantineStyleProps, NumberFormatter, Slider } from '@mantine/core';
 import { scalePow } from 'd3';
-
-import { usePropListeningState } from '@/api/hooks';
 
 interface Props extends MantineStyleProps {
   disabled: boolean;
@@ -24,8 +23,15 @@ export function NumericPropertySlider({
   ...props
 }: Props) {
   // Note that this value does not take the slider scale into account
-  const { value: currentSliderValue, set: setCurrentSliderValue } =
-    usePropListeningState<number>(value);
+  const [currentValue, setCurrentValue] = useState(value);
+  const [isEditingSlider, setIsEditingSlider] = useState(false);
+
+  useEffect(() => {
+    // Only update the current value if the value is not currently being edited
+    if (!isEditingSlider) {
+      setCurrentValue(value);
+    }
+  }, [isEditingSlider, value]);
 
   const scale = scalePow().exponent(exponent).domain([min, max]).range([min, max]);
   const decimalPlaces = Math.max(0, -Math.floor(Math.log10(step)));
@@ -73,8 +79,17 @@ export function NumericPropertySlider({
   }));
 
   function onSliderInput(newValue: number) {
-    setCurrentSliderValue(newValue);
-    onInput(scale(newValue));
+    setIsEditingSlider(true);
+    setCurrentValue(sliderValueToValue(newValue));
+    onInput(sliderValueToValue(newValue));
+  }
+
+  function valueToSliderValue(value: number) {
+    return scale.invert(value);
+  }
+
+  function sliderValueToValue(sliderValue: number) {
+    return scale(sliderValue);
   }
 
   // @TODO (2025-02-05, emmbr): The slider value and resulting property value are not in
@@ -85,13 +100,14 @@ export function NumericPropertySlider({
     <Slider
       label={(v) => <NumberFormatter value={v} decimalScale={decimalPlaces} />}
       disabled={disabled}
-      value={currentSliderValue}
+      value={valueToSliderValue(currentValue)}
       min={min}
       max={max}
       step={step}
       marks={scaledMarks}
       scale={(v) => scale(v)}
       onChange={onSliderInput}
+      onChangeEnd={() => setIsEditingSlider(false)}
       opacity={disabled ? 0.5 : 1}
       {...props}
     />
