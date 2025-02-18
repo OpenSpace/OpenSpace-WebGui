@@ -110,6 +110,7 @@ export function PlaySession() {
             placeholder={'Select playback file'}
             data={fileList}
             onChange={setFilenamePlayback}
+            searchable
           />
           {isPlaybackState() && (
             <>
