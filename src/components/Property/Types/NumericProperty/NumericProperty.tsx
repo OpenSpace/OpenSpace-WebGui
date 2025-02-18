@@ -71,7 +71,6 @@ export function NumericProperty({
           <NumericInput
             value={currentValue}
             disabled={disabled}
-            decimalScale={5}
             min={min}
             max={max}
             step={step}
