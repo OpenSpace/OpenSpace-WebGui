@@ -37,6 +37,8 @@ export const Size1AuRingPropertyKey = 'Modules.Exoplanets.ShowComparisonCircle';
 // OpenSpace folders
 // eslint-disable-next-line no-template-curly-in-string
 export const UserPanelsFolderKey = '${USER}/webpanels';
+// eslint-disable-next-line no-template-curly-in-string
+export const RecordingsFolderKey = '${RECORDINGS}/';
 
 export const WindowsKey = 'Windows';
 export const ScreenSpaceKey = 'ScreenSpace';
