@@ -5,8 +5,8 @@ import { useOpenSpaceApi, useSubscribeToSessionRecording } from '@/api/hooks';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { updateSessionRecordingSettings } from '@/redux/sessionrecording/sessionRecordingSlice';
 
-import { RecordButton } from './Buttons/RecordButton';
-import { StopRecordingButton } from './Buttons/StopRecordingButton';
+import { RecordingStopButton } from './Record/RecordingStopButton';
+import { RecordStartButton } from './Record/RecordStartButton';
 import { RecordingState } from './types';
 
 export function RecordSession() {
@@ -128,9 +128,9 @@ export function RecordSession() {
           disabled={!isIdle}
         />
         {isRecordingState ? (
-          <StopRecordingButton filename={filenameRecording} />
+          <RecordingStopButton filename={filenameRecording} />
         ) : (
-          <RecordButton
+          <RecordStartButton
             onClick={startRecording}
             disabled={(!overwriteFile && filenameState.invalid) || !isIdle}
           />

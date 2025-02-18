@@ -5,10 +5,10 @@ import { VideocamIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';
 
-import { PausePlaybackButton } from './Buttons/PausePlaybackButton';
-import { ResumePlaybackButton } from './Buttons/ResumePlaybackButton';
-import { StopPlaybackButton } from './Buttons/StopPlaybackButton';
-import { StopRecordingButton } from './Buttons/StopRecordingButton';
+import { PlaybackPauseButton } from './Playback/PlaybackPauseButton';
+import { PlaybackResumeButton } from './Playback/PlaybackResumeButton';
+import { PlaybackStopButton } from './Playback/PlaybackStopButton';
+import { RecordingStopButton } from './Record/RecordingStopButton';
 import { RecordingState } from './types';
 
 interface SessionRecMenuButtonProps {
@@ -23,14 +23,14 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
   );
 
   if (recordingState === RecordingState.Recording) {
-    return <StopRecordingButton filename={fileName} size={'xl'} />;
+    return <RecordingStopButton filename={fileName} size={'xl'} />;
   }
 
   if (recordingState === RecordingState.Paused) {
     return (
       <Group gap={2}>
-        <ResumePlaybackButton size={'xl'} />
-        <StopPlaybackButton size={'xl'} />
+        <PlaybackResumeButton size={'xl'} />
+        <PlaybackStopButton size={'xl'} />
       </Group>
     );
   }
@@ -38,8 +38,8 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
   if (recordingState === RecordingState.Playing) {
     return (
       <Group gap={2}>
-        <PausePlaybackButton size={'xl'} />
-        <StopPlaybackButton size={'xl'} />
+        <PlaybackPauseButton size={'xl'} />
+        <PlaybackStopButton size={'xl'} />
       </Group>
     );
   }

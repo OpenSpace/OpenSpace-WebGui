@@ -9,7 +9,7 @@ interface Props extends ButtonProps {
   filename: string;
 }
 
-export function StopRecordingButton({ filename, ...props }: Props) {
+export function RecordingStopButton({ filename, ...props }: Props) {
   const luaApi = useOpenSpaceApi();
   const { format, overwriteFile } = useAppSelector(
     (state) => state.sessionRecording.settings

@@ -1,8 +1,8 @@
 import { Button, ButtonProps } from '@mantine/core';
 
+import { useOpenSpaceApi } from '@/api/hooks';
 import { PlayIcon } from '@/icons/icons';
 import { RecordingsFolderKey } from '@/util/keys';
-import { useOpenSpaceApi } from '@/api/hooks';
 
 interface Props extends ButtonProps {
   filename: string | null;
@@ -11,7 +11,7 @@ interface Props extends ButtonProps {
   outputFramerate: number;
 }
 
-export function PlayPlaybackButton({
+export function PlaybackPlayButton({
   filename,
   shouldOutputFrames,
   loopPlayback,

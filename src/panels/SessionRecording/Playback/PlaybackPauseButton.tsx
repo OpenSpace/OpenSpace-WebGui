@@ -3,7 +3,7 @@ import { Button, ButtonProps } from '@mantine/core';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { PauseIcon } from '@/icons/icons';
 
-export function PausePlaybackButton({ ...props }: ButtonProps) {
+export function PlaybackPauseButton({ ...props }: ButtonProps) {
   const luaApi = useOpenSpaceApi();
 
   return (

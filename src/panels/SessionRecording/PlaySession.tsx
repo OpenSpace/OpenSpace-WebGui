@@ -6,10 +6,10 @@ import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useAppSelector } from '@/redux/hooks';
 
-import { PausePlaybackButton } from './Buttons/PausePlaybackButton';
-import { PlayPlaybackButton } from './Buttons/PlayPlaybackButton';
-import { ResumePlaybackButton } from './Buttons/ResumePlaybackButton';
-import { StopPlaybackButton } from './Buttons/StopPlaybackButton';
+import { PlaybackPauseButton } from './Playback/PlaybackPauseButton';
+import { PlaybackPlayButton } from './Playback/PlaybackPlayButton';
+import { PlaybackResumeButton } from './Playback/PlaybackResumeButton';
+import { PlaybackStopButton } from './Playback/PlaybackStopButton';
 import { RecordingState } from './types';
 
 export function PlaySession() {
@@ -88,7 +88,7 @@ export function PlaySession() {
             searchable
             disabled={isPlayingBack}
           />
-          <PlayPlaybackButton
+          <PlaybackPlayButton
             disabled={isPlayingBack || filenamePlayback === null}
             filename={filenamePlayback}
             loopPlayback={loopPlayback}
@@ -97,9 +97,9 @@ export function PlaySession() {
           />
         </Group>
         <Group gap={'xs'}>
-          {recordingState === RecordingState.Paused && <ResumePlaybackButton />}
-          {recordingState === RecordingState.Playing && <PausePlaybackButton />}
-          {isPlayingBack && <StopPlaybackButton />}
+          {recordingState === RecordingState.Paused && <PlaybackResumeButton />}
+          {recordingState === RecordingState.Playing && <PlaybackPauseButton />}
+          {isPlayingBack && <PlaybackStopButton />}
         </Group>
       </Stack>
     </>
