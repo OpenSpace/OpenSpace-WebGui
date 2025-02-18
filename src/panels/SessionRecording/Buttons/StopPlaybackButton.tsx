@@ -11,7 +11,7 @@ export function StopPlaybackButton({ ...props }: ButtonProps) {
       onClick={() => luaApi?.sessionRecording.stopPlayback()}
       leftSection={<StopIcon />}
       color={'red'}
-      variant={"light"}
+      variant={'light'}
       {...props}
     >
       Stop Playback

@@ -7,7 +7,7 @@ interface Props extends ButtonProps {
 }
 export function PlayPlaybackButton({ onClick, ...props }: Props) {
   return (
-    <Button onClick={onClick} leftSection={<PlayIcon />} variant={"light"} {...props}>
+    <Button onClick={onClick} leftSection={<PlayIcon />} variant={'light'} {...props}>
       Play
     </Button>
   );

@@ -10,7 +10,7 @@ export function PausePlaybackButton({ ...props }: ButtonProps) {
     <Button
       onClick={() => luaApi?.sessionRecording.togglePlaybackPause()}
       leftSection={<PauseIcon />}
-      variant={"light"}
+      variant={'light'}
       {...props}
     >
       Pause

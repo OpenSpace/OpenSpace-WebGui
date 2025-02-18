@@ -1,13 +1,5 @@
 import { useState } from 'react';
-import {
-  Checkbox,
-  Group,
-  NumberInput,
-  Select,
-  Stack,
-  TextInput,
-  Title
-} from '@mantine/core';
+import { Checkbox, Group, Select, Stack, Title } from '@mantine/core';
 
 import { useOpenSpaceApi, useSubscribeToSessionRecording } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';

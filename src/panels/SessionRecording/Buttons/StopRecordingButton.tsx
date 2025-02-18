@@ -23,8 +23,8 @@ export function StopRecordingButton({ filename, ...props }: Props) {
     <Button
       onClick={stopRecording}
       leftSection={<StopIcon />}
-      color={"red"}
-      variant={"light"}
+      color={'red'}
+      variant={'light'}
       {...props}
     >
       Stop Recording
