@@ -12,7 +12,7 @@
     "rule-check": "npx eslint-config-prettier src/main.tsx"
   },
   "dependencies": {
-    "@hello-pangea/dnd": "^17.0.0",
+    "@hello-pangea/dnd": "^18.0.1",
     "@mantine/core": "^7.13.1",
     "@mantine/hooks": "^7.13.1",
     "@mantine/modals": "^7.15.1",
