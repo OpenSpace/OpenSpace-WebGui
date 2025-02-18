@@ -29,8 +29,8 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
   if (recordingState === RecordingState.Paused) {
     return (
       <Group gap={2}>
-        <ResumePlaybackButton size={"xl"} />
-        <StopPlaybackButton size={"xl"} />
+        <ResumePlaybackButton size={'xl'} />
+        <StopPlaybackButton size={'xl'} />
       </Group>
     );
   }
@@ -38,8 +38,8 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
   if (recordingState === RecordingState.Playing) {
     return (
       <Group gap={2}>
-        <PausePlaybackButton size={"xl"} />
-        <StopPlaybackButton size={"xl"} />
+        <PausePlaybackButton size={'xl'} />
+        <StopPlaybackButton size={'xl'} />
       </Group>
     );
   }
