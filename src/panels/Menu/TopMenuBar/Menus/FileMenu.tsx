@@ -21,7 +21,7 @@ export function FileMenu() {
       title: 'Confirm action',
       children: <Text>Are you sure you want to quit OpenSpace?</Text>,
       labels: { confirm: 'Quit', cancel: 'Cancel' },
-      confirmProps: { color: 'red' },
+      confirmProps: { color: 'red', variant: 'filled' },
       onConfirm: () => luaApi?.toggleShutdown()
     });
   }
