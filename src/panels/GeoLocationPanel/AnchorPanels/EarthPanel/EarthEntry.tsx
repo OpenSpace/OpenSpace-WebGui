@@ -38,10 +38,10 @@ export function EarthEntry({
 
   function calculateAltitude(extent: Extent): number {
     // Get lat long corners of polygon
-    const nw = new LatLng(extent.yMax, extent.xMin);
-    const ne = new LatLng(extent.yMax, extent.xMax);
-    const sw = new LatLng(extent.yMin, extent.xMin);
-    const se = new LatLng(extent.yMin, extent.xMax);
+    const nw = new LatLng(extent.ymax, extent.xmin);
+    const ne = new LatLng(extent.ymax, extent.xmax);
+    const sw = new LatLng(extent.ymin, extent.xmin);
+    const se = new LatLng(extent.ymin, extent.xmax);
     // Distances are in meters
     const height = computeDistanceBetween(nw, sw);
     const lengthBottom = computeDistanceBetween(sw, se);

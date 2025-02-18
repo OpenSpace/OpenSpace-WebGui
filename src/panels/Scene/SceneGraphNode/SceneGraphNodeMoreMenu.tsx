@@ -54,7 +54,9 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
       children: (
         <Stack>
           <Text>Are you sure you want to remove the scene graph node:</Text>
-          <Text size={'lg'}>{propertyOwner?.name}?</Text>
+          <Text fw={500} size={'lg'}>
+            {propertyOwner?.name}?
+          </Text>
           <Text mt={'xs'}>
             This action is irreversible and will also remove all nodes in the scene tree
             that depend on this node!
@@ -62,7 +64,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
         </Stack>
       ),
       labels: { confirm: 'Remove', cancel: 'Cancel' },
-      confirmProps: { color: 'red' },
+      confirmProps: { color: 'red', variant: 'filled' },
       onConfirm: () => remove()
     });
   }
