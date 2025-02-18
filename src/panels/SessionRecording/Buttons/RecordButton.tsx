@@ -8,7 +8,7 @@ interface Props extends ButtonProps {
 
 export function RecordButton({ onClick, ...props }: Props) {
   return (
-    <Button onClick={onClick} leftSection={<RecordIcon />} variant={'light'} {...props}>
+    <Button onClick={onClick} leftSection={<RecordIcon color="red" />} {...props}>
       Record
     </Button>
   );

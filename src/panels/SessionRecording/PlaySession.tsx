@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { Checkbox, Group, Select, Stack, Title } from '@mantine/core';
 
-import { useOpenSpaceApi, useSubscribeToSessionRecording } from '@/api/hooks';
+import { useSubscribeToSessionRecording } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useAppSelector } from '@/redux/hooks';
-import { RecordingsFolderKey } from '@/util/keys';
 
 import { PausePlaybackButton } from './Buttons/PausePlaybackButton';
 import { PlayPlaybackButton } from './Buttons/PlayPlaybackButton';
@@ -21,7 +20,6 @@ export function PlaySession() {
 
   const fileList = useAppSelector((state) => state.sessionRecording.files);
   const recordingState = useSubscribeToSessionRecording();
-  const luaApi = useOpenSpaceApi();
 
   const isIdle = recordingState === RecordingState.Idle;
   const isPlayingBack =
@@ -45,28 +43,10 @@ export function PlaySession() {
     }
   }
 
-  async function startPlayback(): Promise<void> {
-    const shouldWaitForTiles = true;
-    const filePath = await luaApi?.absPath(`${RecordingsFolderKey}${filenamePlayback}`);
-    if (!filePath) {
-      return; // TODO anden88 2025-02-18: notification about error using mantine notification system?
-    }
-    if (shouldOutputFrames) {
-      luaApi?.sessionRecording.startPlayback(
-        filePath,
-        loopPlayback,
-        shouldWaitForTiles,
-        outputFramerate
-      );
-    } else {
-      luaApi?.sessionRecording.startPlayback(filePath, loopPlayback, shouldWaitForTiles);
-    }
-  }
-
   return (
     <>
       <Title order={2} my={'xs'}>
-        Play Session
+        Play
       </Title>
       <Stack gap={'xs'}>
         <Checkbox
@@ -108,7 +88,13 @@ export function PlaySession() {
             searchable
             disabled={isPlayingBack}
           />
-          <PlayPlaybackButton onClick={startPlayback} disabled={isPlayingBack} />
+          <PlayPlaybackButton
+            disabled={isPlayingBack || filenamePlayback === null}
+            filename={filenamePlayback}
+            loopPlayback={loopPlayback}
+            shouldOutputFrames={shouldOutputFrames}
+            outputFramerate={outputFramerate}
+          />
         </Group>
         <Group gap={'xs'}>
           {recordingState === RecordingState.Paused && <ResumePlaybackButton />}

@@ -102,7 +102,7 @@ export function RecordSession() {
   return (
     <>
       <Title order={2} my={'xs'}>
-        Record Session
+        Record
       </Title>
       <Checkbox
         label={'Text file format'}
