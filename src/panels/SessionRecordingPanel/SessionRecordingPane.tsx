@@ -3,7 +3,7 @@ import { Container, Divider, ScrollArea } from '@mantine/core';
 import { PlaySession } from './PlaySession';
 import { RecordSession } from './RecordSession';
 
-export function SessionRecording() {
+export function SessionRecordingPanel() {
   return (
     <ScrollArea h={'100%'}>
       <Container>

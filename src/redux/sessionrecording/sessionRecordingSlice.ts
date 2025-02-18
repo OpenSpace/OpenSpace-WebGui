@@ -3,7 +3,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import {
   RecordingState,
   SessionRecordingSettings
-} from '@/panels/SessionRecording/types';
+} from '@/panels/SessionRecordingPanel/types';
 
 export interface SessionRecordingState {
   files: string[];
