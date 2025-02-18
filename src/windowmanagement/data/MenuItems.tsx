@@ -28,8 +28,8 @@ import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButto
 import { Scene } from '@/panels/Scene/Scene';
 import { TempPropertyTest } from '@/panels/Scene/TempPropertyTest';
 import { ScreenSpaceRenderablePanel } from '@/panels/ScreenSpaceRenderablePanel/ScreenSpaceRenderablePanel';
-import { SessionRecording } from '@/panels/SessionRecording/SessionRecording';
-import { SessionRecordingMenuButton } from '@/panels/SessionRecording/SessionRecordingMenuButton';
+import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
+import { SessionRecordingPanel } from '@/panels/SessionRecordingPanel/SessionRecordingPane';
 import { SettingsPanel } from '@/panels/SettingsPanel/SettingsPanel';
 import { SkyBrowserPanel } from '@/panels/SkyBrowserPanel/SkyBrowserPanel';
 import { TimePanel } from '@/panels/TimePanel/TimePanel';
@@ -119,7 +119,7 @@ export const menuItemsData: MenuItem[] = [
   {
     title: 'Session Recording',
     componentID: 'sessionRecording',
-    content: <SessionRecording />,
+    content: <SessionRecordingPanel />,
     renderMenuButton: (key, onClick) => (
       <SessionRecordingMenuButton key={key} onClick={onClick} />
     ),
