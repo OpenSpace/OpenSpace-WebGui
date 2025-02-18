@@ -1,4 +1,4 @@
-import { CloseIcon, Stack, Text, ThemeIcon, Title } from '@mantine/core';
+import { Stack, Text, ThemeIcon, Title } from '@mantine/core';
 
 import { RocketLaunchIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
