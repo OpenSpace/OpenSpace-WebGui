@@ -18,6 +18,7 @@ import {
   VideocamIcon
 } from '@/icons/icons';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
+import { TempPropertyTest } from '@/panels/Scene/TempPropertyTest';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { IconSize } from '@/types/enums';
@@ -198,6 +199,13 @@ export const menuItemsData: MenuItem[] = [
     renderIcon: (size) => <KeyboardIcon size={size} />,
     preferredPosition: 'float',
     floatPosition: { offsetY: 150, offsetX: 350, width: 1050, height: 680 },
+    defaultVisible: false
+  },
+  {
+    title: 'Property Test (TEMP)',
+    componentID: 'propertyTest',
+    content: <TempPropertyTest />,
+    preferredPosition: 'left',
     defaultVisible: false
   }
 ];

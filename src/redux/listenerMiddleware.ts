@@ -29,7 +29,6 @@ addDocumentationListener(startAppListening);
 addEngineModeListener(startAppListening);
 addEventsListener(startAppListening);
 addFlightControllerListener(startAppListening);
-addGroupsListener(startAppListening);
 addMissionsListener(startAppListening);
 addPropertiesListener(startAppListening);
 addPropertyTreeListener(startAppListening);
@@ -37,3 +36,8 @@ addSessionRecordingListener(startAppListening);
 addTimeListener(startAppListening);
 addVersionListener(startAppListening);
 addSkyBrowserListener(startAppListening);
+
+// @TODO (2024-02-17, emmbr): The scene tree currently breaks if this lsitener is added
+// before the property tree listener. This should be investigated, and fixed so that
+// the order of the listeners does not matter.
+addGroupsListener(startAppListening);
