@@ -23,6 +23,10 @@ export function PlaySession() {
   const recordingState = useSubscribeToSessionRecording();
   const luaApi = useOpenSpaceApi();
 
+  const isIdle = recordingState === RecordingState.Idle;
+  const isPlaybackState =
+    recordingState === RecordingState.Paused || recordingState === RecordingState.Playing;
+
   function onLoopPlaybackChange(event: React.ChangeEvent<HTMLInputElement>): void {
     if (event.currentTarget.checked) {
       setLoopPlayback(true);
@@ -39,17 +43,6 @@ export function PlaySession() {
     } else {
       setShouldOutputFrames(false);
     }
-  }
-
-  function isIdle() {
-    return recordingState === RecordingState.Idle;
-  }
-
-  function isPlaybackState(): boolean {
-    return (
-      recordingState === RecordingState.Paused ||
-      recordingState === RecordingState.Playing
-    );
   }
 
   async function startPlayback(): Promise<void> {
@@ -72,20 +65,22 @@ export function PlaySession() {
 
   return (
     <>
-      <Title order={2}>Play Session</Title>
+      <Title order={2} my={'xs'}>
+        Play Session
+      </Title>
       <Stack gap={'xs'}>
         <Checkbox
           label={'Loop playback'}
           checked={loopPlayback}
           onChange={onLoopPlaybackChange}
-          disabled={!isIdle()}
+          disabled={!isIdle}
         />
         <Group>
           <Checkbox
             label={'Output frames'}
             checked={shouldOutputFrames}
             onChange={onShouldUpdateFramesChange}
-            disabled={!isIdle()}
+            disabled={!isIdle}
           />
           <InfoBox
             text={`If checked, the specified number of frames will be recorded as
@@ -112,7 +107,7 @@ export function PlaySession() {
             onChange={setFilenamePlayback}
             searchable
           />
-          {isPlaybackState() && (
+          {isPlaybackState && (
             <>
               {recordingState === RecordingState.Paused ? (
                 <ResumePlaybackButton />
@@ -121,7 +116,7 @@ export function PlaySession() {
               )}
             </>
           )}
-          {isPlaybackState() ? (
+          {isPlaybackState ? (
             <StopPlaybackButton />
           ) : (
             <PlayPlaybackButton onClick={startPlayback} />

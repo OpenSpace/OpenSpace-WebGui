@@ -11,7 +11,7 @@ export function ResumePlaybackButton({ ...props }: ButtonProps) {
       onClick={() => luaApi?.sessionRecording.togglePlaybackPause()}
       leftSection={<PlayIcon />}
       color={'orange'}
-      variant={'light'}
+      variant={'filled'}
       {...props}
     >
       Resume

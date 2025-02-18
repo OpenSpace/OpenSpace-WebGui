@@ -24,16 +24,8 @@ export function RecordSession() {
   const dispatch = useAppDispatch();
   const fileList = useAppSelector((state) => state.sessionRecording.files);
 
-  function isIdle(): boolean {
-    return recordingState === RecordingState.Idle;
-  }
-
-  function isRecordingState(): boolean {
-    return (
-      recordingState === RecordingState.Idle ||
-      recordingState === RecordingState.Recording
-    );
-  }
+  const isIdle = recordingState === RecordingState.Idle;
+  const isRecordingState = recordingState === RecordingState.Recording;
 
   function startRecording(): void {
     if (filenameRecording === '') {
@@ -71,8 +63,8 @@ export function RecordSession() {
 
     if (!value.trim()) {
       setFilenameState({
-        invalid: true,
-        errorMessage: 'Filename cannot be empty'
+        invalid: false,
+        errorMessage: ''
       });
       setShowOverwriteCheckbox(false);
       return;
@@ -109,7 +101,9 @@ export function RecordSession() {
 
   return (
     <>
-      <Title order={2}>Record Session</Title>
+      <Title order={2} my={'xs'}>
+        Record Session
+      </Title>
       <Checkbox
         label={'Text file format'}
         onChange={(event) => onFormatChanged(event.currentTarget.checked)}
@@ -124,22 +118,22 @@ export function RecordSession() {
           mb={'sm'}
         />
       )}
-      <Group align={'start'}>
+      <Group align={'start'} gap={'xs'}>
         <TextInput
           value={filenameRecording}
           placeholder={'Enter recording filename'}
           aria-label={'Enter recording filename'}
           onChange={(event) => onFilenameChanged(event.currentTarget.value)}
           error={filenameState.invalid && filenameState.errorMessage}
-          disabled={!isIdle()}
+          disabled={!isIdle}
         />
-        {recordingState !== RecordingState.Recording ? (
+        {isRecordingState ? (
+          <StopRecordingButton filename={filenameRecording} />
+        ) : (
           <RecordButton
             onClick={startRecording}
-            disabled={(!overwriteFile && filenameState.invalid) || !isRecordingState()}
+            disabled={(!overwriteFile && filenameState.invalid) || !isIdle}
           />
-        ) : (
-          <StopRecordingButton filename={filenameRecording} />
         )}
       </Group>
     </>
