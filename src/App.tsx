@@ -3,7 +3,7 @@ import { MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 
 import { fallbackRender } from './components/ErrorFallback/fallbackRender';
-import { theme } from './theme/mantinetheme';
+import { theme } from './theme/mantineTheme';
 import { WindowLayout } from './windowmanagement/WindowLayout/WindowLayout';
 import { WindowLayoutProvider } from './windowmanagement/WindowLayout/WindowLayoutProvider';
 
