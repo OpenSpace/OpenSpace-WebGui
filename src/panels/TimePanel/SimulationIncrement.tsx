@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Group, Select, Slider, Text } from '@mantine/core';
+import { Group, Select } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -7,13 +7,12 @@ import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useAppSelector } from '@/redux/hooks';
 
 import { DeltaTimeStepsControl } from './DeltaTimeStepControl';
+import { QuickAdjustSlider } from './QuickAdjustSlider';
 import { Decimals, StepSizes, TimePart } from './types';
 
 export function SimulationIncrement() {
   const updateDeltaTime = useThrottledCallback(updateDeltaTimeNow, 50);
   const [stepSize, setStepSize] = useState<TimePart>(TimePart.Seconds);
-  const [beforeQuickAdjust, setBeforeQuickAdjust] = useState<number>(0);
-  const [sliderValue, setSliderValue] = useState(0);
 
   const luaApi = useOpenSpaceApi();
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime) ?? 1;
@@ -38,33 +37,14 @@ export function SimulationIncrement() {
     updateDeltaTime(newDeltaTime);
   }
 
-  function setQuickAdjust(value: number) {
-    // Store the current deltaTime, because of capture this value will be the same as long
-    // as the first time user pressed the slider
-    setBeforeQuickAdjust(targetDeltaTime);
-
+  function onQuickAdjust(value: number) {
     const quickAdjust = StepSizes[stepSize] * value ** 5;
-    updateDeltaTime(quickAdjust);
-
-    setSliderValue(value);
+    updateDeltaTime(targetDeltaTime + quickAdjust);
   }
-
-  const marks = [
-    { value: -10, label: '-' },
-    { value: -8 },
-    { value: -6 },
-    { value: -4 },
-    { value: -2 },
-    { value: 2 },
-    { value: 4 },
-    { value: 6 },
-    { value: 8 },
-    { value: 10, label: '+' }
-  ];
 
   return (
     <>
-      <Group grow>
+      <Group grow mb={'xs'}>
         <Select
           label={'Display Unit'}
           value={stepSize}
@@ -80,25 +60,9 @@ export function SimulationIncrement() {
           decimalScale={Decimals[stepSize]}
         />
       </Group>
-      <Text size={'md'} ta={'center'} c={'dimmed'} mt={'xs'}>
-        Quick Adjust
-      </Text>
-      <Slider
-        size={'lg'}
-        mb={'xl'}
-        min={-10}
-        max={10}
-        onChange={setQuickAdjust}
-        onChangeEnd={() => {
-          // Reset the slider back to middle and set the deltaTime to whatever it was
-          // before we started adjusting
-          setSliderValue(0);
-          updateDeltaTime(beforeQuickAdjust);
-        }}
-        label={null}
-        step={0.05}
-        value={sliderValue}
-        marks={marks}
+      <QuickAdjustSlider
+        onChange={onQuickAdjust}
+        onEnd={() => updateDeltaTime(targetDeltaTime)}
       />
       <DeltaTimeStepsControl stepSize={stepSize} />
     </>

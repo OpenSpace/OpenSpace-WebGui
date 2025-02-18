@@ -45,7 +45,7 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
   }
 
   return (
-    <ActionIcon onClick={onClick} size={'input-xl'}>
+    <ActionIcon onClick={onClick} variant={'menubar'} size={'input-xl'}>
       <VideocamIcon size={IconSize.lg} />
     </ActionIcon>
   );
