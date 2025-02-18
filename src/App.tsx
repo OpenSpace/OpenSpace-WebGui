@@ -1,48 +1,14 @@
 import { ErrorBoundary } from 'react-error-boundary';
-import {
-  ActionIcon,
-  Button,
-  createTheme,
-  MantineProvider,
-  ThemeIcon,
-  Tooltip
-} from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 
 import { fallbackRender } from './components/ErrorFallback/fallbackRender';
+import { theme } from './theme/mantineTheme';
 import { WindowLayout } from './windowmanagement/WindowLayout/WindowLayout';
 import { WindowLayoutProvider } from './windowmanagement/WindowLayout/WindowLayoutProvider';
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import '@mantine/core/styles.css';
-
-const theme = createTheme({
-  cursorType: 'pointer',
-  components: {
-    ActionIcon: ActionIcon.extend({
-      defaultProps: {
-        variant: 'default'
-      }
-    }),
-    Button: Button.extend({
-      defaultProps: {
-        variant: 'default'
-      }
-    }),
-    ThemeIcon: ThemeIcon.extend({
-      defaultProps: {
-        variant: 'default'
-      }
-    }),
-    Tooltip: Tooltip.extend({
-      defaultProps: {
-        withArrow: true,
-        transitionProps: { duration: 400, enterDelay: 400 },
-        position: 'top'
-      }
-    })
-  }
-});
 
 function App() {
   return (

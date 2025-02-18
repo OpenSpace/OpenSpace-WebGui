@@ -18,18 +18,23 @@ export function AnchorAimButtons({
   // TODO: make sure Button has a working label for screen readers since we have mixed
   // icons, text and other elements inside the button
   return (
-    <Button onClick={onClick} size={'xl'} disabled={!isOpenSpaceReady}>
+    <Button
+      onClick={onClick}
+      size={'xl'}
+      disabled={!isOpenSpaceReady}
+      variant={'menubar'}
+    >
       <Group>
         <>
           <AnchorIcon size={IconSize.lg} />
-          <Stack gap={0} maw={130} style={{ textAlign: 'start' }}>
+          <Stack gap={0} maw={130} ta={'start'}>
             <Text truncate>{anchorName}</Text>
             <Text>Anchor</Text>
           </Stack>
         </>
         <>
           <TelescopeIcon size={IconSize.lg} />
-          <Stack gap={0} maw={130} style={{ textAlign: 'start' }}>
+          <Stack gap={0} maw={130} ta={'start'}>
             <Text truncate>{aimName}</Text>
             <Text>Aim</Text>
           </Stack>
