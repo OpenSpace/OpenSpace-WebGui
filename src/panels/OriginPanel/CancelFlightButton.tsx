@@ -27,7 +27,7 @@ export function CancelFlightButton() {
       variant={'filled'}
       color={'red'}
     >
-      <Stack gap={0} style={{ textAlign: 'start' }}>
+      <Stack gap={0} ta={'start'}>
         Cancel
         <Text truncate maw={130}>
           <AnchorIcon /> {anchorName}

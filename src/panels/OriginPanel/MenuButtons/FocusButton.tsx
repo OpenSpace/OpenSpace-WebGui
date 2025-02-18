@@ -18,7 +18,7 @@ export function FocusButton({ anchorName, isOpenSpaceReady, onClick }: Props) {
       size={'xl'}
       variant={'menubar'}
     >
-      <Stack gap={0} justify={'center'} maw={130} style={{ textAlign: 'start' }}>
+      <Stack gap={0} justify={'center'} maw={130} ta={'start'}>
         {!isOpenSpaceReady && <Skeleton>Anchor</Skeleton>}
         <Text truncate>{anchorName}</Text>
         <Text>Focus</Text>

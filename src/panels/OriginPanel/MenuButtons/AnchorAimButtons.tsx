@@ -27,14 +27,14 @@ export function AnchorAimButtons({
       <Group>
         <>
           <AnchorIcon size={IconSize.lg} />
-          <Stack gap={0} maw={130} style={{ textAlign: 'start' }}>
+          <Stack gap={0} maw={130} ta={'start'}>
             <Text truncate>{anchorName}</Text>
             <Text>Anchor</Text>
           </Stack>
         </>
         <>
           <TelescopeIcon size={IconSize.lg} />
-          <Stack gap={0} maw={130} style={{ textAlign: 'start' }}>
+          <Stack gap={0} maw={130} ta={'start'}>
             <Text truncate>{aimName}</Text>
             <Text>Aim</Text>
           </Stack>
