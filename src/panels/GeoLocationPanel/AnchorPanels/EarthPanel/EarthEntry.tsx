@@ -4,8 +4,9 @@ import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { MinusIcon, PlusIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
-import { Candidate, Extent, Identifier } from '@/types/types';
+import { Identifier } from '@/types/types';
 
+import { Candidate, Extent } from './types';
 import { addressUTF8 } from './util';
 
 interface Props {
@@ -37,10 +38,10 @@ export function EarthEntry({
 
   function calculateAltitude(extent: Extent): number {
     // Get lat long corners of polygon
-    const nw = new LatLng(extent.ymax, extent.xmin);
-    const ne = new LatLng(extent.ymax, extent.xmax);
-    const sw = new LatLng(extent.ymin, extent.xmin);
-    const se = new LatLng(extent.ymin, extent.xmax);
+    const nw = new LatLng(extent.yMax, extent.xMin);
+    const ne = new LatLng(extent.yMax, extent.xMax);
+    const sw = new LatLng(extent.yMin, extent.xMin);
+    const se = new LatLng(extent.yMin, extent.xMax);
     // Distances are in meters
     const height = computeDistanceBetween(nw, sw);
     const lengthBottom = computeDistanceBetween(sw, se);
@@ -63,16 +64,16 @@ export function EarthEntry({
         <NodeNavigationButton
           type={NavigationType.FlyGeo}
           identifier={currentAnchor}
-          lat={lat}
-          long={long}
-          alt={alt}
+          latitude={lat}
+          longitude={long}
+          altitude={alt}
         />
         <NodeNavigationButton
           type={NavigationType.JumpGeo}
           identifier={currentAnchor}
-          lat={lat}
-          long={long}
-          alt={alt}
+          latitude={lat}
+          longitude={long}
+          altitude={alt}
         />
         <ActionIcon
           onClick={() =>

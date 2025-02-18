@@ -1,122 +1,24 @@
-import { Button, Flex, Grid, ScrollArea } from '@mantine/core';
+import {
+  ActionIcon,
+  Breadcrumbs,
+  Button,
+  Container,
+  Group,
+  ScrollArea,
+  Text,
+  VisuallyHidden
+} from '@mantine/core';
 
+import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
-import { FolderIcon } from '@/icons/icons';
+import { BackArrowIcon, FolderIcon } from '@/icons/icons';
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Action } from '@/types/types';
 
 import { ActionsButton } from './ActionsButton';
-
-interface FolderContent {
-  actions: Action[];
-  folders: Folder;
-}
-
-interface Folder {
-  [key: string]: FolderContent;
-}
-
-function actionsForLevel(
-  actions: Action[],
-  navigationPath: string,
-  isInitialized: boolean
-) {
-  const actionsMapped: Folder = { '/': { actions: [], folders: {} } };
-  if (!isInitialized) {
-    return actionsMapped['/'];
-  }
-  actions.forEach((action) => {
-    // If there is no backslash at beginning of GUI path, add that manually
-    // (there should always be though)
-    let actionGuiPath = action.guiPath;
-    if (action.guiPath.length > 0 && action.guiPath[0] !== '/') {
-      actionGuiPath = `/${action.guiPath}`;
-    }
-
-    let guiFolders = actionGuiPath.split('/');
-    // Remove all empty strings: which is what we get before initial slash and
-    // if the path is just a slash
-    guiFolders = guiFolders.filter((s) => s !== '');
-
-    // Add to top level actions (no gui path)
-    if (guiFolders.length === 0) {
-      actionsMapped['/'].actions.push(action);
-    }
-
-    // Add actions of other levels
-    let parent = actionsMapped['/'];
-    while (guiFolders.length > 0) {
-      const folderName = guiFolders.shift();
-      if (folderName === undefined) {
-        throw 'Foldername was undefined! Typescript conversion need some look over';
-      }
-      if (!(folderName in parent.folders)) {
-        parent.folders[folderName] = { actions: [], folders: {} };
-      }
-      if (guiFolders.length === 0) {
-        parent.folders[folderName].actions.push(action);
-      } else {
-        parent = parent.folders[folderName];
-      }
-    }
-  });
-
-  const navPath = navigationPath;
-  let actionsForPath = actionsMapped['/'];
-  if (navPath.length > 1) {
-    const folders = navPath.split('/');
-    folders.shift();
-    while (folders.length > 0) {
-      const folderName = folders.shift();
-      if (folderName === undefined) {
-        throw 'Foldername was undefined! Typescript conversion need some look over';
-      }
-      actionsForPath = actionsForPath.folders[folderName];
-    }
-  }
-  return actionsForPath;
-}
-
-// Truncate navigation path if too long
-function truncatePath(navigationPath: string) {
-  const NAVPATH_LENGTH_LIMIT = 60;
-  const shouldTruncate = navigationPath.length > NAVPATH_LENGTH_LIMIT;
-
-  let truncatedPath = navigationPath;
-  if (shouldTruncate) {
-    let originalPath = navigationPath;
-    if (originalPath[0] === '/') {
-      originalPath = originalPath.substring(1);
-    }
-    const pieces = originalPath.split('/');
-    if (pieces.length > 1) {
-      // TODO: maybe keep more pieces of the path, if possible?
-      truncatedPath = `/${pieces[0]}/.../${pieces[pieces.length - 1]}`;
-    } else {
-      truncatedPath = navigationPath.substring(0, NAVPATH_LENGTH_LIMIT);
-    }
-  }
-
-  return truncatedPath;
-}
-
-function getDisplayedActions(allActions: Action[], navPath: string) {
-  return allActions.filter((action) => {
-    if (navPath.length === 1) {
-      return true;
-    }
-    const navPathGui = navPath.split('/');
-    const actionPathGui = action.guiPath?.split('/');
-    for (let i = 0; i < navPathGui.length; i++) {
-      if (actionPathGui?.[i] !== navPathGui[i]) {
-        return false;
-      }
-    }
-    return true;
-  });
-}
+import { actionsForLevel, getDisplayedActions } from './util';
 
 export function ActionsPanel() {
   const allActions = useAppSelector((state) => state.actions.actions);
@@ -125,102 +27,111 @@ export function ActionsPanel() {
 
   const dispatch = useAppDispatch();
 
-  const actionLevel = actionsForLevel(allActions, navigationPath, isInitialized);
-  const displayedNavigationPath = truncatePath(navigationPath);
+  const actionLevel = actionsForLevel(allActions, navigationPath);
   const displayedActions = getDisplayedActions(allActions, navigationPath);
 
-  function actionPath(action: string) {
-    dispatch(setActionsPath(action));
+  const isTopLevel = navigationPath === '/';
+
+  function addNavPath(path: string): void {
+    const newPath = `${navigationPath}/${path}`.replace('//', '/');
+    dispatch(setActionsPath(newPath));
   }
 
-  function addNavPath(path: string) {
-    let navString = navigationPath;
-    if (navigationPath === '/') {
-      navString += path;
-    } else {
-      navString += `/${path}`;
+  function goBack(): void {
+    let newPath = navigationPath.substring(0, navigationPath.lastIndexOf('/'));
+    if (newPath.length === 0) {
+      newPath = '/';
     }
-    actionPath(navString);
+    dispatch(setActionsPath(newPath));
   }
 
-  function goBack() {
-    let navString = navigationPath;
-    navString = navString.substring(0, navString.lastIndexOf('/'));
-    if (navString.length === 0) {
-      navString = '/';
+  function goToPath(path: string): void {
+    const index = navigationPath.indexOf(path);
+    // If we don't find the path e.g., when '...' is displayed go back one step
+    if (index === -1) {
+      goBack();
+      return;
     }
-    actionPath(navString);
+    let navPath = navigationPath.substring(0, index + path.length);
+    if (navPath.length === 0) {
+      navPath = '/';
+    }
+    dispatch(setActionsPath(navPath));
   }
 
-  function folderButton(key: string) {
+  function pathBreadbrumbs(): React.JSX.Element {
+    const paths = navigationPath.split('/');
     return (
-      <Button onClick={() => addNavPath(key)} key={key}>
-        <FolderIcon />
-        <p>{key}</p>
-      </Button>
+      <Breadcrumbs separatorMargin={0}>
+        {paths.map((path, i) => (
+          <Button
+            key={`${path}_${i}`}
+            p={2}
+            variant={'subtle'}
+            onClick={() => goToPath(path)}
+          >
+            {path}
+          </Button>
+        ))}
+      </Breadcrumbs>
     );
   }
 
-  function getFoldersContent(level: FolderContent) {
-    return Object.keys(level.folders)
-      .sort()
-      .map((key) => folderButton(key));
-  }
-
-  function getActionContent(level: FolderContent) {
-    if (level.actions.length === 0) {
-      return null;
-    }
-
-    return level.actions.map((action: Action) => (
-      <ActionsButton key={`${action.identifier}Action`} action={action} />
-    ));
-  }
-
-  function getBackButton() {
-    if (navigationPath !== '/') {
-      return (
-        <Button onClick={goBack} key={'backbtn'}>
-          Back
-        </Button>
-      );
-    }
-    return null;
-  }
-
-  if (actionLevel === undefined) {
+  if (!isInitialized || !actionLevel) {
     return <p>Loading...</p>;
   }
-  // TODO (ylvse 2024-10-10) Check what this check is meant to do?
-  // In the js it is actionlevel.length === 0. But how can it have a length?
-  const isEmpty = actionLevel === null;
-  const actions = isEmpty ? <div>No Actions</div> : getActionContent(actionLevel);
-  const folders = isEmpty ? <div>No Folders</div> : getFoldersContent(actionLevel);
-  const backButton = getBackButton();
+
   return (
     <ScrollArea h={'100%'}>
-      <Flex>
-        {backButton}
-        <p>{`${displayedNavigationPath}`}</p>
-      </Flex>
-      <FilterList>
-        <FilterList.InputField placeHolderSearchText={'Search for an action...'} />
-        <FilterList.Favorites>
-          <Grid>
-            {folders}
-            {actions}
-          </Grid>
-        </FilterList.Favorites>
-        <FilterList.SearchResults
-          data={displayedActions}
-          renderElement={(action: Action) => (
-            <ActionsButton key={`${action.identifier}Filtered`} action={action} />
-          )}
-          matcherFunc={generateMatcherFunctionByKeys(['identifier', 'name', 'guiPath'])}
-        >
-          <FilterList.SearchResults.VirtualList />
-        </FilterList.SearchResults>
-      </FilterList>
+      <Container mt={'xs'}>
+        {!isTopLevel && (
+          <Group gap={'xs'} mb={'xs'}>
+            <ActionIcon onClick={goBack}>
+              <BackArrowIcon />
+              <VisuallyHidden>Back</VisuallyHidden>
+            </ActionIcon>
+            {pathBreadbrumbs()}
+          </Group>
+        )}
+        <FilterList>
+          <FilterList.InputField placeHolderSearchText={'Search for an action...'} />
+          <FilterList.Favorites>
+            <DynamicGrid spacing={'xs'} verticalSpacing={'xs'} minChildSize={170}>
+              {actionLevel.folders.sort().map((folder) => (
+                <Button
+                  leftSection={<FolderIcon />}
+                  onClick={() => addNavPath(folder)}
+                  variant={'default'}
+                  fullWidth
+                  h={80} // TODO anden88 2025-02-06: use same css variable as ActionsButton
+                  key={folder}
+                >
+                  <Text
+                    lineClamp={3}
+                    style={{ whiteSpace: 'wrap', wordBreak: 'break-all' }}
+                  >
+                    {folder}
+                  </Text>
+                </Button>
+              ))}
+
+              {actionLevel.actions.map((action: Action) => (
+                <ActionsButton action={action} key={action.identifier} />
+              ))}
+            </DynamicGrid>
+          </FilterList.Favorites>
+
+          <FilterList.SearchResults
+            data={displayedActions}
+            renderElement={(action: Action) => (
+              <ActionsButton key={action.identifier} action={action} />
+            )}
+            matcherFunc={generateMatcherFunctionByKeys(['identifier', 'name', 'guiPath'])}
+          >
+            <FilterList.SearchResults.VirtualList />
+          </FilterList.SearchResults>
+        </FilterList>
+      </Container>
     </ScrollArea>
   );
 }

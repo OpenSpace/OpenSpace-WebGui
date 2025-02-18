@@ -1,23 +1,29 @@
 import { useState } from 'react';
 import {
   Box,
+  Button,
+  Center,
   Container,
   Group,
+  Paper,
   ScrollArea,
   SegmentedControl,
-  Title,
   VisuallyHidden
 } from '@mantine/core';
 
-import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
+import {
+  useGetStringPropertyValue,
+  useOpenSpaceApi,
+  useTriggerProperty
+} from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { useComputeHeightFunction } from '@/components/FilterList/hooks';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
-import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
+import { AirplaneCancelIcon, AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
+import { FlightControllerData } from '@/panels/FlightControlPanel/types';
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { IconSize } from '@/types/enums';
-import { FlightControllerData } from '@/types/flightcontroller-types';
+import { EngineMode, IconSize } from '@/types/enums';
 import { Identifier, Uri } from '@/types/types';
 import {
   NavigationAimKey,
@@ -25,10 +31,11 @@ import {
   RetargetAimKey,
   RetargetAnchorKey
 } from '@/util/keys';
-import { hasInterestingTag } from '@/util/propertyTreeHelpers';
+import { hasInterestingTag, isPropertyOwnerHidden } from '@/util/propertyTreeHelpers';
 
 import { FocusEntry } from './FocusEntry';
 import { OriginSettings } from './OriginSettings';
+import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
 enum NavigationActionState {
   Focus = 'Focus',
@@ -37,12 +44,14 @@ enum NavigationActionState {
 }
 
 export function OriginPanel() {
-  // TODO (anden88 2024-10-17): in the old GUI the chosen navigation state is saved in
-  // redux and restored between open & close, do we want the same here?
+  const luaApi = useOpenSpaceApi();
+
   const [navigationAction, setNavigationAction] = useState(NavigationActionState.Focus);
 
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const properties = useAppSelector((state) => state.properties.properties);
+  const engineMode = useAppSelector((state) => state.engineMode.mode);
+
   const [anchor, setAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
   const [aim, setAim] = useGetStringPropertyValue(NavigationAimKey);
   const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
@@ -59,19 +68,11 @@ export function OriginPanel() {
 
   const urisWithTags = uris.filter((uri) => hasInterestingTag(uri, propertyOwners));
   const favorites = urisWithTags
-    .map(
-      (uri) => propertyOwners[uri]
-      // key: uri // TODO anden88 2024-10-21: do we really need to create a new object with key here or can we just use the propertyOwner interface and use the uri or identifier as its key?
-    )
+    .map((uri) => propertyOwners[uri])
     .filter((po) => po !== undefined);
 
-  // Searchable nodes are all nodes that are not hidden in the GUI
-  const searchableNodes = allNodes.filter((node) => {
-    const isHiddenProp = properties[`${node.uri}.GuiHidden`];
-    const isHidden = isHiddenProp && isHiddenProp.value;
-    return !isHidden;
-  });
   const defaultList = favorites.slice();
+
   // Make sure current anchor is in default list
   if (anchor && !defaultList.find((owner) => owner.identifier === anchor)) {
     const anchorNode = allNodes.find((node) => node.identifier === anchor);
@@ -87,6 +88,11 @@ export function OriginPanel() {
       defaultList.push(aimNode);
     }
   }
+
+  // Searchable nodes are all nodes that are not hidden in the GUI
+  const searchableNodes = allNodes.filter((node) => {
+    return !isPropertyOwnerHidden(node.uri, properties);
+  });
 
   const sortedDefaultList = defaultList
     .slice()
@@ -104,11 +110,13 @@ export function OriginPanel() {
   const isInFocusMode = navigationAction === NavigationActionState.Focus;
   // We'll highlight the anchor node in both Focus and Anchor state otherwise aim node
   const activeNode = navigationAction === NavigationActionState.Aim ? aim : anchor;
+  const isInFlight = engineMode === EngineMode.CameraPath;
 
   function hasDistinctAim() {
     return aim !== '' && aim !== anchor;
   }
 
+  // TODO: anden88: @emma take a look at this. Is the flgiht controller really needed for this?
   function onSelect(
     identifier: Identifier,
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -131,14 +139,13 @@ export function OriginPanel() {
         break;
       case NavigationActionState.Anchor:
         if (!aim) {
-          // TODO: can this be written as "anchor! as string"? i.e., can we be sure anchor is always set to something?
-          updateViewPayload.aim = anchor ? (anchor as string) : '';
+          updateViewPayload.aim = anchor ?? '';
         }
         updateViewPayload.anchor = identifier;
         break;
       case NavigationActionState.Aim:
         updateViewPayload.aim = identifier;
-        updateViewPayload.anchor = anchor ? (anchor as string) : ''; // same here
+        updateViewPayload.anchor = anchor ?? '';
         break;
       default:
         throw new Error(`Missing NavigationActionState case for: '${navigationAction}'`);
@@ -152,7 +159,6 @@ export function OriginPanel() {
       }
     }
 
-    // TODO: these were null checks before but that is wierd
     const shouldRetargetAim = !event.shiftKey && updateViewPayload.aim !== '';
     const shouldRetargetAnchor = !event.shiftKey && updateViewPayload.aim === '';
 
@@ -178,45 +184,61 @@ export function OriginPanel() {
       <Container>
         <Box ref={ref}>
           <Group justify={'space-between'}>
-            <Title order={2} my={'md'}>
-              Navigation
-            </Title>
+            <SegmentedControl
+              value={navigationAction}
+              withItemsBorders={false}
+              disabled={isInFlight}
+              my={'xs'}
+              onChange={(value) => setNavigationAction(value as NavigationActionState)}
+              data={[
+                {
+                  value: NavigationActionState.Focus,
+                  label: (
+                    <>
+                      <FocusIcon size={IconSize.sm} style={{ display: 'block' }} />
+                      <VisuallyHidden>Set focus</VisuallyHidden>
+                    </>
+                  )
+                },
+                {
+                  value: NavigationActionState.Anchor,
+                  label: (
+                    <>
+                      <AnchorIcon size={IconSize.sm} style={{ display: 'block' }} />
+                      <VisuallyHidden>Set anchor</VisuallyHidden>
+                    </>
+                  )
+                },
+                {
+                  value: NavigationActionState.Aim,
+                  label: (
+                    <>
+                      <TelescopeIcon size={IconSize.sm} style={{ display: 'block' }} />
+                      <VisuallyHidden>Set aim</VisuallyHidden>
+                    </>
+                  )
+                }
+              ]}
+            />
             <OriginSettings />
           </Group>
-          <SegmentedControl
-            value={navigationAction}
-            withItemsBorders={false}
-            onChange={(value) => setNavigationAction(value as NavigationActionState)}
-            data={[
-              {
-                value: NavigationActionState.Focus,
-                label: (
-                  <>
-                    <FocusIcon size={IconSize.sm} style={{ display: 'block' }} />
-                    <VisuallyHidden>Set focus</VisuallyHidden>
-                  </>
-                )
-              },
-              {
-                value: NavigationActionState.Anchor,
-                label: (
-                  <>
-                    <AnchorIcon size={IconSize.sm} style={{ display: 'block' }} />
-                    <VisuallyHidden>Set anchor</VisuallyHidden>
-                  </>
-                )
-              },
-              {
-                value: NavigationActionState.Aim,
-                label: (
-                  <>
-                    <TelescopeIcon size={IconSize.sm} style={{ display: 'block' }} />
-                    <VisuallyHidden>Set aim</VisuallyHidden>
-                  </>
-                )
-              }
-            ]}
-          />
+          {isInFlight && (
+            <Paper mb={'xs'} py={'xs'}>
+              <Center>
+                <Group gap={'xs'}>
+                  <RemainingFlightTimeIndicator compact={false} />
+                  <Button
+                    onClick={() => luaApi?.pathnavigation.stopPath()}
+                    leftSection={<AirplaneCancelIcon size={IconSize.md} />}
+                    variant={'outline'}
+                    color={'red'}
+                  >
+                    Cancel Flight
+                  </Button>
+                </Group>
+              </Center>
+            </Paper>
+          )}
         </Box>
         <FilterList heightFunc={heightFunction}>
           <FilterList.InputField
@@ -231,6 +253,7 @@ export function OriginPanel() {
                 onSelect={onSelect}
                 activeNode={activeNode}
                 showNavigationButtons={isInFocusMode}
+                disableFocus={isInFlight}
               />
             ))}
           </FilterList.Favorites>
@@ -243,6 +266,7 @@ export function OriginPanel() {
                 onSelect={onSelect}
                 activeNode={activeNode}
                 showNavigationButtons={isInFocusMode}
+                disableFocus={isInFlight}
               />
             )}
             matcherFunc={generateMatcherFunctionByKeys([

@@ -32,16 +32,16 @@ type BaseButtonProps = ButtonBaseProps | ActionIconBaseProps;
 
 interface PathNavigationProps extends BaseProps {
   type: Exclude<NavigationType, NavigationType.JumpGeo | NavigationType.FlyGeo>;
-  lat?: never;
-  long?: never;
-  alt?: never;
+  latitude?: never;
+  longitude?: never;
+  altitude?: never;
 }
 
 interface GeoNavigationProps extends BaseProps {
   type: NavigationType.FlyGeo | NavigationType.JumpGeo;
-  lat: number;
-  long: number;
-  alt: number;
+  latitude: number;
+  longitude: number;
+  altitude: number;
 }
 
 type NodeNavigationButtonProps =
@@ -61,12 +61,13 @@ export function NodeNavigationButton({
   showLabel,
   onFinish,
   variant,
-  lat,
-  long,
-  alt,
+  latitude,
+  longitude,
+  altitude,
   justify,
   size,
-  style
+  style,
+  disabled
 }: NodeNavigationButtonProps) {
   const luaApi = useOpenSpaceApi();
 
@@ -95,9 +96,9 @@ export function NodeNavigationButton({
       return;
     }
     if (event.shiftKey) {
-      luaApi?.globebrowsing.flyToGeo(identifier, lat, long, alt, 0.0);
+      luaApi?.globebrowsing.flyToGeo(identifier, latitude, longitude, altitude, 0.0);
     } else {
-      luaApi?.globebrowsing.flyToGeo(identifier, lat, long, alt);
+      luaApi?.globebrowsing.flyToGeo(identifier, latitude, longitude, altitude);
     }
   }
 
@@ -130,7 +131,7 @@ export function NodeNavigationButton({
     if (type !== NavigationType.FlyGeo && type !== NavigationType.JumpGeo) {
       return;
     }
-    luaApi?.globebrowsing.jumpToGeo(identifier, lat, long, alt);
+    luaApi?.globebrowsing.jumpToGeo(identifier, latitude, longitude, altitude);
   }
 
   const content: ButtonContent = {
@@ -140,7 +141,7 @@ export function NodeNavigationButton({
   };
 
   switch (type) {
-    case NavigationType.jump:
+    case NavigationType.Jump:
       content.onClick = fadeTo;
       content.title = 'Jump to';
       content.icon = <LightningFlashIcon />;
@@ -150,12 +151,12 @@ export function NodeNavigationButton({
       content.title = 'Jump to Geo';
       content.icon = <LightningFlashIcon />;
       break;
-    case NavigationType.focus:
+    case NavigationType.Focus:
       content.onClick = focus;
       content.title = 'Focus';
       content.icon = <FocusIcon />;
       break;
-    case NavigationType.fly:
+    case NavigationType.Fly:
       content.onClick = flyTo;
       content.title = 'Fly to';
       content.icon = <AirplaneIcon />;
@@ -165,7 +166,7 @@ export function NodeNavigationButton({
       content.title = 'Fly to Geo';
       content.icon = <AirplaneIcon />;
       break;
-    case NavigationType.frame:
+    case NavigationType.Frame:
       content.onClick = zoomToFocus;
       content.title = 'Zoom to / Frame';
       content.icon = <FrameFocusIcon />;
@@ -187,6 +188,7 @@ export function NodeNavigationButton({
             size={size}
             style={style}
             justify={justify}
+            disabled={disabled}
             variant={variant ?? 'filled'}
           >
             {showLabel && content.title}
@@ -194,7 +196,13 @@ export function NodeNavigationButton({
           {content.info && <InfoBox text={content.info} />}
         </Group>
       ) : (
-        <ActionIcon onClick={content.onClick} size={size} variant={variant} style={style}>
+        <ActionIcon
+          onClick={content.onClick}
+          size={size}
+          variant={variant}
+          style={style}
+          disabled={disabled}
+        >
           {content.icon}
         </ActionIcon>
       )}

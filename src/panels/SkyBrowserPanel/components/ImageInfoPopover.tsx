@@ -1,7 +1,8 @@
 import { ActionIcon, Button, Popover, Text } from '@mantine/core';
 
 import { InformationIcon, OpenInBrowserIcon } from '@/icons/icons';
-import { SkyBrowserImage } from '@/types/skybrowsertypes';
+
+import { SkyBrowserImage } from '../types';
 
 interface Props {
   image: SkyBrowserImage;
