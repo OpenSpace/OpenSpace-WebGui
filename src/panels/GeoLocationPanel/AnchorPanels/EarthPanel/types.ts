@@ -21,8 +21,8 @@ export interface Location {
 }
 
 export interface Extent {
-  xMax: number;
-  xMin: number;
-  yMax: number;
-  yMin: number;
+  xmax: number;
+  xmin: number;
+  ymax: number;
+  ymin: number;
 }
