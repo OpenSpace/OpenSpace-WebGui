@@ -15,6 +15,8 @@ export function RecordSession() {
     invalid: false,
     errorMessage: ''
   });
+  const { overwriteFile } = useAppSelector((state) => state.sessionRecording.settings);
+  const [showOverwriteCheckbox, setShowOverwriteCheckbox] = useState(overwriteFile);
 
   const recordingState = useSubscribeToSessionRecording();
   const luaApi = useOpenSpaceApi();
@@ -35,11 +37,20 @@ export function RecordSession() {
 
   function startRecording(): void {
     if (filenameRecording === '') {
-      setFilenameState({ invalid: true, errorMessage: 'Filename cannot be empty' });
+      setFilenameState({
+        invalid: true,
+        errorMessage: 'Filename cannot be empty'
+      });
+      setShowOverwriteCheckbox(false);
       return;
     }
-    if (!isFileUnique(filenameRecording)) {
-      setFilenameState({ invalid: true, errorMessage: 'Filename already exists' });
+
+    if (!overwriteFile && !isFileUnique(filenameRecording)) {
+      setFilenameState({
+        invalid: true,
+        errorMessage: 'Filename already exists'
+      });
+      setShowOverwriteCheckbox(true);
       return;
     }
     luaApi?.sessionRecording.startRecording();
@@ -59,15 +70,27 @@ export function RecordSession() {
     setFilenameRecording(value);
 
     if (!value.trim()) {
-      setFilenameState({ invalid: true, errorMessage: 'Filename cannot be empty' });
+      setFilenameState({
+        invalid: true,
+        errorMessage: 'Filename cannot be empty'
+      });
+      setShowOverwriteCheckbox(false);
       return;
     }
 
     if (isFileUnique(value)) {
       dispatch(updateSessionRecordingSettings({ recordingFileName: value }));
-      setFilenameState({ invalid: false, errorMessage: '' });
+      setFilenameState({
+        invalid: false,
+        errorMessage: ''
+      });
+      setShowOverwriteCheckbox(false);
     } else {
-      setFilenameState({ invalid: true, errorMessage: `File '${value}' already exists` });
+      setFilenameState({
+        invalid: true,
+        errorMessage: `File '${value}' already exists`
+      });
+      setShowOverwriteCheckbox(true);
     }
   }
 
@@ -76,14 +99,31 @@ export function RecordSession() {
     updateSessionRecordingSettings({ format: _format });
   }
 
+  function onOverwriteFileChanged(value: boolean): void {
+    dispatch(
+      updateSessionRecordingSettings({
+        overwriteFile: value
+      })
+    );
+  }
+
   return (
     <>
       <Title order={2}>Record Session</Title>
       <Checkbox
         label={'Text file format'}
         onChange={(event) => onFormatChanged(event.currentTarget.checked)}
+        defaultChecked
         mb={'sm'}
-      ></Checkbox>
+      />
+      {showOverwriteCheckbox && (
+        <Checkbox
+          label={'Overwrite file'}
+          onChange={(event) => onOverwriteFileChanged(event.currentTarget.checked)}
+          checked={overwriteFile}
+          mb={'sm'}
+        />
+      )}
       <Group align={'start'}>
         <TextInput
           value={filenameRecording}
@@ -96,7 +136,7 @@ export function RecordSession() {
         {recordingState !== RecordingState.Recording ? (
           <RecordButton
             onClick={startRecording}
-            disabled={filenameState.invalid || !isRecordingState()}
+            disabled={(!overwriteFile && filenameState.invalid) || !isRecordingState()}
           />
         ) : (
           <StopRecordingButton filename={filenameRecording} />

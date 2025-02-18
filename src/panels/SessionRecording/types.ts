@@ -8,4 +8,5 @@ export enum RecordingState {
 export interface SessionRecordingSettings {
   recordingFileName: string;
   format: 'Ascii' | 'Binary';
+  overwriteFile: boolean;
 }

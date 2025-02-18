@@ -1732,9 +1732,9 @@ interface sessionRecordingLibrary {
    */
   stopPlayback: () => Promise<void>
   /**
-   * Stops a recording session. `dataMode` has to be \"Ascii\" or \"Binary\"
+   * Stops a recording session. `dataMode` has to be \"Ascii\" or \"Binary\". If `overwrite` is true, any existing session recording file will be overwritten, false by default.
    */
-  stopRecording: (recordFilePath: path, dataMode: string) => Promise<void>
+  stopRecording: (recordFilePath: path, dataMode: string, overwrite?: boolean) => Promise<void>
   /**
    * Toggles the pause function, i.e. temporarily setting the delta time to 0 and restoring it afterwards.
    */

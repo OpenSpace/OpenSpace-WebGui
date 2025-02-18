@@ -16,7 +16,8 @@ const initialState: SessionRecordingState = {
   state: RecordingState.Idle,
   settings: {
     recordingFileName: '',
-    format: 'Binary'
+    format: 'Ascii',
+    overwriteFile: false
   }
 };
 
@@ -34,12 +35,15 @@ export const sessionRecordingSlice = createSlice({
       state,
       action: PayloadAction<Partial<SessionRecordingSettings>>
     ) => {
-      const { format, recordingFileName: filename } = action.payload;
+      const { format, recordingFileName: filename, overwriteFile } = action.payload;
       if (format !== undefined) {
         state.settings.format = format;
       }
       if (filename !== undefined) {
         state.settings.recordingFileName = filename;
+      }
+      if (overwriteFile !== undefined) {
+        state.settings.overwriteFile = overwriteFile;
       }
       return state;
     }

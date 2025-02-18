@@ -11,12 +11,14 @@ interface Props extends ButtonProps {
 
 export function StopRecordingButton({ filename, ...props }: Props) {
   const luaApi = useOpenSpaceApi();
-  const format = useAppSelector((state) => state.sessionRecording.settings.format);
+  const { format, overwriteFile } = useAppSelector(
+    (state) => state.sessionRecording.settings
+  );
 
   function stopRecording(): void {
     // prettier-ignore
     luaApi?.absPath(`${RecordingsFolderKey}${filename}`)
-          .then((value) => luaApi?.sessionRecording.stopRecording(value, format));
+          .then((value) => luaApi?.sessionRecording.stopRecording(value, format, overwriteFile));
   }
 
   return (
