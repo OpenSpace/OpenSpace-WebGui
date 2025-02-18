@@ -19,5 +19,15 @@ export default defineConfig({
   },
   server: {
     port: 4670
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          mantine: ['@mantine/core', '@mantine/hooks', '@mantine/modals'],
+          rcdock: ['rc-dock']
+        }
+      }
+    }
   }
 });
