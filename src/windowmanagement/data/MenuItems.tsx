@@ -1,4 +1,4 @@
-import React from 'react';
+import { JSX } from 'react';
 import { Button } from '@mantine/core';
 
 import {
@@ -17,34 +17,37 @@ import {
   TreeViewIcon,
   VideocamIcon
 } from '@/icons/icons';
-import { ActionsPanel } from '@/panels/ActionsPanel/ActionsPanel';
-import { ExoplanetsPanel } from '@/panels/ExoplanetsPanel/ExoplanetsPanel';
-import { FlightControlPanel } from '@/panels/FlightControlPanel/FlightControlPanel';
-import { GeoLocationPanel } from '@/panels/GeoLocationPanel/GeoLocationPanel';
-import { KeyBindsPanel } from '@/panels/KeybindsPanel/KeybindsPanel';
-import { MissionsPanel } from '@/panels/MissionsPanel/MissionsPanel';
-import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
-import { Scene } from '@/panels/Scene/Scene';
-import { ScreenSpaceRenderablePanel } from '@/panels/ScreenSpaceRenderablePanel/ScreenSpaceRenderablePanel';
-import { SessionRec } from '@/panels/SessionRecording/SessionRec';
 import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
-import { SettingsPanel } from '@/panels/SettingsPanel/SettingsPanel';
-import { SkyBrowserPanel } from '@/panels/SkyBrowserPanel/SkyBrowserPanel';
-import { TimePanel } from '@/panels/TimePanel/TimePanel';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
-import { UserPanelsPanel } from '@/panels/UserPanelsPanel/UserPanelsPanel';
 import { IconSize } from '@/types/enums';
 
 import { FloatWindowPosition } from '../WindowLayout/types';
 import { WindowLayoutPosition } from '../WindowLayout/WindowLayout';
 
+import {
+  ActionsPanel,
+  ExoplanetsPanel,
+  FlightControlPanel,
+  GeoLocationPanel,
+  KeyBindsPanel,
+  MissionsPanel,
+  OriginPanel,
+  Scene,
+  ScreenSpaceRenderablePanel,
+  SessionRec,
+  SettingsPanel,
+  SkyBrowserPanel,
+  TimePanel,
+  UserPanelsPanel
+} from './LazyLoads';
+
 export interface MenuItem {
   title: string; // Title of the rc-dock tab
   componentID: string; // Unqiue ID to identify this component among the rc-dock tabs
-  content: React.JSX.Element; // Content to render inside the rc-dock tab
-  renderMenuButton?: (key: string, onClick: () => void) => React.JSX.Element; // Custom menu button to render
-  renderIcon?: (size: IconSize) => React.JSX.Element; // Custom icon to render
+  content: JSX.Element; // Content to render inside the rc-dock tab
+  renderMenuButton?: (key: string, onClick: () => void) => JSX.Element; // Custom menu button to render
+  renderIcon?: (size: IconSize) => JSX.Element; // Custom icon to render
   preferredPosition: WindowLayoutPosition; // Where this panel is instantiated
   floatPosition?: FloatWindowPosition; // Preferred position and size of a floating window given in px,
   // the offset is computed from the panels top left corner to the bottom right corner of the main window
