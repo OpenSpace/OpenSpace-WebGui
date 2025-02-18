@@ -81,6 +81,7 @@ export function NumericInput({
     onEnter(newValue);
   }
 
+  // @TODO (2025-02-18, emmbr): This input type does not support scientific notation...
   return (
     <NumberInput
       value={storedValue === undefined ? '' : storedValue}
