@@ -40,6 +40,8 @@ export interface PropertyMetaData {
 }
 
 export interface PropertyDetails {
+  // TODO: ylvse (2025-02-17): create the type for additionalData
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   additionalData: any;
   identifier: Identifier;
   metaData: PropertyMetaData;

@@ -3,11 +3,11 @@ import { Group, Select } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useAppSelector } from '@/redux/hooks';
 
 import { DeltaTimeStepsControl } from './DeltaTimeStepControl';
 import { QuickAdjustSlider } from './QuickAdjustSlider';
-import { TimeIncrementInput } from './TimeIncrementInput';
 import { Decimals, StepSizes, TimePart } from './types';
 
 export function SimulationIncrement() {
@@ -52,13 +52,12 @@ export function SimulationIncrement() {
           allowDeselect={false}
           onChange={(value) => setStepSize(value! as TimePart)}
         />
-        <TimeIncrementInput
+        <NumericInput
           label={`${stepSize} / second`}
           value={targetDeltaTime / StepSizes[stepSize]}
-          onInputChange={setDeltaTime}
+          onEnter={(newValue) => setDeltaTime(newValue, false)}
           step={1}
           decimalScale={Decimals[stepSize]}
-          wrapStepControlButtons={false}
         />
       </Group>
       <QuickAdjustSlider
