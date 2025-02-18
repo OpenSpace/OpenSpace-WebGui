@@ -1,6 +1,6 @@
 import { Grid } from '@mantine/core';
 
-import { NumericInput } from '@/components/Input/NumericInput';
+import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
 
 interface Props {
@@ -43,7 +43,7 @@ export function MatrixProperty({
         {value.map((v, i) => (
           <Grid.Col key={i} span={12 / matrixSize}>
             <NumericInput
-              defaultValue={v}
+              value={v}
               min={min[i]}
               max={max[i]}
               step={step[i]}
