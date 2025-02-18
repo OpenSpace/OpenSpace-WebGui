@@ -41,7 +41,7 @@ function createDefaultLayout(): LayoutData {
             }
           ],
           panelLock: {},
-          group: 'headless',
+          group: 'headless openspaceView',
           size: 800 // This is quite arbitary chosen, but helps if the first thing you do
           // is moving a panel above the empty area. Increasing this value gives less space
           // for the panel being moved ontop or below
@@ -57,8 +57,8 @@ export function WindowLayout() {
 
   const groups: { [key: string]: TabGroup } = {
     // This is the rc-dock group configuration we use for the transparent window in the
-    // center
-    headless: {
+    // center. Headless is an existing rc-dock group that removes the tab and the header
+    'headless openspaceView': {
       floatable: false,
       maximizable: false,
       tabLocked: true,
@@ -66,7 +66,7 @@ export function WindowLayout() {
     },
     // This is the rc-dock group configuration for all the other windows. Note that
     // 'card' is a pre-existing rc-dock group that adds certain styling to the tab
-    card: {
+    'card regularWindow': {
       maximizable: false,
       heightFlex: 1,
       panelExtra: (panelData: PanelData, context: DockContext) => {

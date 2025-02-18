@@ -39,7 +39,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
         content: <Window>{content}</Window>,
         cached: true,
         closable: true,
-        group: 'card'
+        group: 'card regularWindow'
       };
     },
     []
