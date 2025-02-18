@@ -1,12 +1,24 @@
 import { useState } from 'react';
-import { Button, Checkbox, Group, Select, Stack, TextInput, Title } from '@mantine/core';
+import {
+  Checkbox,
+  Group,
+  NumberInput,
+  Select,
+  Stack,
+  TextInput,
+  Title
+} from '@mantine/core';
 
 import { useOpenSpaceApi, useSubscribeToSessionRecording } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { PauseIcon, PlayIcon, StopIcon } from '@/icons/icons';
+import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useAppSelector } from '@/redux/hooks';
 import { RecordingsFolderKey } from '@/util/keys';
 
+import { PausePlaybackButton } from './Buttons/PausePlaybackButton';
+import { PlayPlaybackButton } from './Buttons/PlayPlaybackButton';
+import { ResumePlaybackButton } from './Buttons/ResumePlaybackButton';
+import { StopPlaybackButton } from './Buttons/StopPlaybackButton';
 import { RecordingState } from './types';
 
 export function PlaySession() {
@@ -48,19 +60,11 @@ export function PlaySession() {
     );
   }
 
-  function togglePlayback(): void {
-    if (isIdle()) {
-      startPlayback();
-    } else {
-      stopPlayback();
-    }
-  }
-
   async function startPlayback(): Promise<void> {
     const shouldWaitForTiles = true;
     const filePath = await luaApi?.absPath(`${RecordingsFolderKey}${filenamePlayback}`);
     if (!filePath) {
-      return; // TODO: notification about error
+      return; // TODO anden88 2025-02-18: notification about error using mantine notification system?
     }
     if (shouldOutputFrames) {
       luaApi?.sessionRecording.startPlayback(
@@ -74,32 +78,9 @@ export function PlaySession() {
     }
   }
 
-  function stopPlayback(): void {
-    luaApi?.sessionRecording.stopPlayback();
-  }
-
-  function playbackButtonStateProperties(): {
-    text: string;
-    color: string | undefined;
-    icon: React.JSX.Element;
-  } {
-    switch (recordingState) {
-      case RecordingState.Playing:
-      case RecordingState.Paused:
-        return { text: 'Stop Playback', color: 'red', icon: <StopIcon /> };
-      default:
-        // Use default color
-        return { text: 'Play', color: undefined, icon: <PlayIcon /> };
-    }
-  }
-
-  const playbackButtonProps = playbackButtonStateProperties();
-
   return (
     <>
-      <Title order={2} style={{ marginTop: 0 }}>
-        Play Session
-      </Title>
+      <Title order={2}>Play Session</Title>
       <Stack gap={'xs'}>
         <Checkbox
           label={'Loop playback'}
@@ -121,15 +102,12 @@ export function PlaySession() {
                 'loop playback'`}
           />
           {shouldOutputFrames && (
-            <TextInput
+            <NumericInput
               value={outputFramerate}
-              placeholder={'framerate'}
-              aria-label={'set framerate'}
-              onChange={(event) =>
-                setOutputFramerate(parseInt(event.currentTarget.value, 10))
-              }
-              height={22}
-              w={120}
+              placeholder={'Framerate'}
+              aria-label={'Set framerate'}
+              onEnter={(value) => setOutputFramerate(value)}
+              w={80}
             />
           )}
         </Group>
@@ -142,26 +120,19 @@ export function PlaySession() {
             onChange={setFilenamePlayback}
           />
           {isPlaybackState() && (
-            <Button
-              onClick={() => luaApi?.sessionRecording.togglePlaybackPause()}
-              leftSection={
-                recordingState === RecordingState.Paused ? <PlayIcon /> : <PauseIcon />
-              }
-              variant={'light'}
-              color={recordingState === RecordingState.Paused ? 'orange' : undefined}
-            >
-              {recordingState === RecordingState.Paused ? 'Resume' : 'Pause'}
-            </Button>
+            <>
+              {recordingState === RecordingState.Paused ? (
+                <ResumePlaybackButton />
+              ) : (
+                <PausePlaybackButton />
+              )}
+            </>
           )}
-          <Button
-            onClick={togglePlayback}
-            leftSection={playbackButtonProps.icon}
-            disabled={!filenamePlayback}
-            color={playbackButtonProps.color}
-            variant={'light'}
-          >
-            {playbackButtonProps.text}
-          </Button>
+          {isPlaybackState() ? (
+            <StopPlaybackButton />
+          ) : (
+            <PlayPlaybackButton onClick={startPlayback} />
+          )}
         </Group>
       </Stack>
     </>

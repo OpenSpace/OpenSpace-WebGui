@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Button, Checkbox, Group, TextInput, Title } from '@mantine/core';
+import { Checkbox, Group, TextInput, Title } from '@mantine/core';
 
 import { useOpenSpaceApi, useSubscribeToSessionRecording } from '@/api/hooks';
-import { RecordIcon, VideocamIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { updateSessionRecordingSettings } from '@/redux/sessionrecording/sessionRecordingSlice';
-import { RecordingsFolderKey } from '@/util/keys';
 
+import { RecordButton } from './Buttons/RecordButton';
+import { StopRecordingButton } from './Buttons/StopRecordingButton';
 import { RecordingState } from './types';
 
 export function RecordSession() {
@@ -21,7 +21,6 @@ export function RecordSession() {
 
   const dispatch = useAppDispatch();
   const fileList = useAppSelector((state) => state.sessionRecording.files);
-  const { format } = useAppSelector((state) => state.sessionRecording.settings);
 
   function isIdle(): boolean {
     return recordingState === RecordingState.Idle;
@@ -34,14 +33,6 @@ export function RecordSession() {
     );
   }
 
-  function toggleRecording(): void {
-    if (recordingState === RecordingState.Idle) {
-      startRecording();
-    } else if (recordingState === RecordingState.Recording) {
-      stopRecording();
-    }
-  }
-
   function startRecording(): void {
     if (filenameRecording === '') {
       setFilenameState({ invalid: true, errorMessage: 'Filename cannot be empty' });
@@ -52,12 +43,6 @@ export function RecordSession() {
       return;
     }
     luaApi?.sessionRecording.startRecording();
-  }
-
-  function stopRecording(): void {
-    // prettier-ignore
-    luaApi?.absPath(`${RecordingsFolderKey}${filenameRecording}`)
-      .then((value) => luaApi?.sessionRecording.stopRecording(value, format));
   }
 
   function isFileUnique(filename: string): boolean {
@@ -91,22 +76,6 @@ export function RecordSession() {
     updateSessionRecordingSettings({ format: _format });
   }
 
-  function recordButtonStateProperties(): {
-    text: string;
-    color: string | undefined;
-    icon: React.JSX.Element;
-  } {
-    switch (recordingState) {
-      case RecordingState.Recording:
-        return { text: 'Stop Recording', color: 'red', icon: <VideocamIcon /> };
-      default:
-        // Use default color
-        return { text: 'Record', color: undefined, icon: <RecordIcon /> };
-    }
-  }
-
-  const recordButtonProps = recordButtonStateProperties();
-
   return (
     <>
       <Title order={2}>Record Session</Title>
@@ -115,7 +84,7 @@ export function RecordSession() {
         onChange={(event) => onFormatChanged(event.currentTarget.checked)}
         mb={'sm'}
       ></Checkbox>
-      <Group align={"start"}>
+      <Group align={'start'}>
         <TextInput
           value={filenameRecording}
           placeholder={'Enter recording filename'}
@@ -124,15 +93,14 @@ export function RecordSession() {
           error={filenameState.invalid && filenameState.errorMessage}
           disabled={!isIdle()}
         />
-        <Button
-          onClick={toggleRecording}
-          leftSection={recordButtonProps.icon}
-          disabled={filenameState.invalid || !isRecordingState()}
-          color={recordButtonProps.color}
-          variant={"light"}
-        >
-          {recordButtonProps.text}
-        </Button>
+        {recordingState !== RecordingState.Recording ? (
+          <RecordButton
+            onClick={startRecording}
+            disabled={filenameState.invalid || !isRecordingState()}
+          />
+        ) : (
+          <StopRecordingButton filename={filenameRecording} />
+        )}
       </Group>
     </>
   );

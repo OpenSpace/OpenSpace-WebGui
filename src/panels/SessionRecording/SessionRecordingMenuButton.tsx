@@ -1,12 +1,14 @@
-import { ActionIcon, Button, Group } from '@mantine/core';
+import { ActionIcon, Group } from '@mantine/core';
 
-import { useOpenSpaceApi, useSubscribeToSessionRecording } from '@/api/hooks';
-import { PauseIcon, PlayIcon, StopIcon, VideocamIcon } from '@/icons/icons';
+import { useSubscribeToSessionRecording } from '@/api/hooks';
+import { VideocamIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
-
 import { IconSize } from '@/types/enums';
-import { RecordingsFolderKey } from '@/util/keys';
 
+import { PausePlaybackButton } from './Buttons/PausePlaybackButton';
+import { ResumePlaybackButton } from './Buttons/ResumePlaybackButton';
+import { StopPlaybackButton } from './Buttons/StopPlaybackButton';
+import { StopRecordingButton } from './Buttons/StopRecordingButton';
 import { RecordingState } from './types';
 
 interface SessionRecMenuButtonProps {
@@ -15,94 +17,36 @@ interface SessionRecMenuButtonProps {
 
 export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProps) {
   const recordingState = useSubscribeToSessionRecording();
-  const openspace = useOpenSpaceApi();
 
-  const { format, recordingFileName: fileName } = useAppSelector(
+  const { recordingFileName: fileName } = useAppSelector(
     (state) => state.sessionRecording.settings
   );
 
-  function togglePlaybackPaused() {
-    openspace?.sessionRecording.togglePlaybackPause();
+  if (recordingState === RecordingState.Recording) {
+    return <StopRecordingButton filename={fileName} size={'xl'} />;
   }
 
-  function stopRecording() {
-    // prettier-ignore
-    openspace
-      ?.absPath(`${RecordingsFolderKey}${fileName}`)
-      .then((value) => openspace?.sessionRecording.stopRecording(value, format));
+  if (recordingState === RecordingState.Paused) {
+    return (
+      <Group gap={2}>
+        <ResumePlaybackButton size="xl" />
+        <StopPlaybackButton size="xl" />
+      </Group>
+    );
   }
 
-  function stopPlayback() {
-    openspace?.sessionRecording.stopPlayback();
+  if (recordingState === RecordingState.Playing) {
+    return (
+      <Group gap={2}>
+        <PausePlaybackButton size="xl" />
+        <StopPlaybackButton size="xl" />
+      </Group>
+    );
   }
 
-  function renderMenuButtons() {
-    switch (recordingState) {
-      case RecordingState.Recording:
-        return (
-          <Button
-            onClick={stopRecording}
-            leftSection={<StopIcon />}
-            color={'red'}
-            variant={'light'}
-            size={'xl'}
-          >
-            Stop Recording
-          </Button>
-        );
-      case RecordingState.Paused:
-        return (
-          <Group gap={2}>
-            <Button
-              onClick={togglePlaybackPaused}
-              leftSection={<PlayIcon />}
-              variant={'light'}
-              color={'orange'}
-              size={'xl'}
-            >
-              Resume
-            </Button>
-            <Button
-              onClick={stopPlayback}
-              leftSection={<StopIcon />}
-              color={'red'}
-              variant={'light'}
-              size={'xl'}
-            >
-              Stop Playback
-            </Button>
-          </Group>
-        );
-      case RecordingState.Playing:
-        return (
-          <Group gap={2}>
-            <Button
-              onClick={togglePlaybackPaused}
-              leftSection={<PauseIcon />}
-              size={'xl'}
-              variant={'light'}
-            >
-              Pause
-            </Button>
-            <Button
-              onClick={stopPlayback}
-              leftSection={<StopIcon />}
-              color={'red'}
-              variant={'light'}
-              size={'xl'}
-            >
-              Stop Playback
-            </Button>
-          </Group>
-        );
-      default:
-        return (
-          <ActionIcon onClick={onClick} size={'input-xl'}>
-            <VideocamIcon size={IconSize.lg} />
-          </ActionIcon>
-        );
-    }
-  }
-
-  return renderMenuButtons();
+  return (
+    <ActionIcon onClick={onClick} size={'input-xl'}>
+      <VideocamIcon size={IconSize.lg} />
+    </ActionIcon>
+  );
 }
