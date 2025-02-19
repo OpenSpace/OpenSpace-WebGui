@@ -1,8 +1,10 @@
 import { memo, useMemo, useState } from 'react';
 import { Select } from '@mantine/core';
 
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
-import { useAppSelector } from '@/redux/hooks';
+
+import { useGetWwtImageCollection } from '../hooks';
 
 import { ImageList } from './ImageList';
 import { NearestImages } from './NearestImages';
@@ -11,7 +13,7 @@ import { ViewingMode } from './util';
 // Memoizing this as it doesn't have any props and it is very expensive
 export const ImageListWrapper = memo(function ImageListSection() {
   const [value, setValue] = useState<string>(ViewingMode.allImages);
-  const imageList = useAppSelector((state) => state.skybrowser.imageList);
+  const [isPending, imageList] = useGetWwtImageCollection();
 
   // These computations are expensive so memoizing them too
   const skySurveys = useMemo(
@@ -33,7 +35,9 @@ export const ImageListWrapper = memo(function ImageListSection() {
         m={'md'}
       />
       <ResizeableContent defaultHeight={450} m={'md'} mb={'xs'}>
-        {value === ViewingMode.nearestImages ? (
+        {isPending ? (
+          <LoadingBlocks />
+        ) : value === ViewingMode.nearestImages ? (
           <NearestImages />
         ) : (
           <ImageList

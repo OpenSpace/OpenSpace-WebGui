@@ -29,6 +29,9 @@ export function useUpdateSelectedImages(id: string) {
   const selectedImages = useSelectedImages(id);
 
   useEffect(() => {
+    if (!imageList) {
+      return;
+    }
     const isDataLoaded = imageList.length !== 0 && selectedImages !== undefined;
     if (!isDataLoaded || !imageCollectionLoaded) {
       return;
@@ -54,6 +57,9 @@ export function useUpdateOpacities(id: string) {
   const opacities = useOpacities(id);
 
   useEffect(() => {
+    if (!imageList) {
+      return;
+    }
     const isWwtReady = imageList.length !== 0 && imageCollectionLoaded;
     const isBrowserDataLoaded = opacities !== undefined && selectedImages !== undefined;
     if (!isWwtReady || !isBrowserDataLoaded) {

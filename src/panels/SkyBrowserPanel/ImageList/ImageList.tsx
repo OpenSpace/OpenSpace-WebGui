@@ -1,8 +1,8 @@
 import { memo, useCallback, useMemo } from 'react';
+import { Text } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
-import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { SkyBrowserImage } from '../types';
@@ -16,10 +16,7 @@ interface Props {
 
 // Generic component for all the image lists
 // Memoizing this as it is very expensive
-export const ImageList = memo(function ImageList({
-  imageList,
-  noImagesDisplay = <LoadingBlocks />
-}: Props) {
+export const ImageList = memo(function ImageList({ imageList, noImagesDisplay }: Props) {
   const { width } = useWindowSize();
 
   const renderImageCard = useCallback((image: SkyBrowserImage) => {
@@ -36,7 +33,7 @@ export const ImageList = memo(function ImageList({
   const columns = Math.max(Math.min(Math.floor(width / cardWidth), maxColumns), 1);
 
   if (imageList.length === 0) {
-    return noImagesDisplay;
+    return noImagesDisplay ?? <Text>No images found, try another search!</Text>;
   }
   return (
     <FilterList>
