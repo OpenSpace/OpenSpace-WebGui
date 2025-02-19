@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Box,
   Button,
@@ -11,14 +11,13 @@ import {
   ThemeIcon
 } from '@mantine/core';
 
-import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
 import { useComputeHeightFunction } from '@/components/FilterList/hooks';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { AirplaneCancelIcon, AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
-import { NavigationAnchorKey } from '@/util/keys';
 import { hasInterestingTag, isPropertyOwnerHidden } from '@/util/propertyTreeHelpers';
 
 import { AnchorAimView } from './AnchowAimView';
@@ -32,19 +31,13 @@ enum NavigationMode {
 }
 
 export function OriginPanel() {
-  const luaApi = useOpenSpaceApi();
-
   const [navigationMode, setNavigationMode] = useState(NavigationMode.Focus);
 
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const properties = useAppSelector((state) => state.properties.properties);
   const engineMode = useAppSelector((state) => state.engineMode.mode);
 
-  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
-  // const [aim, setAim] = useGetStringPropertyValue(NavigationAimKey);
-  // const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
-  // const triggerRetargetAim = useTriggerProperty(RetargetAimKey);
-
+  const luaApi = useOpenSpaceApi();
   const { ref, heightFunction } = useComputeHeightFunction(300, 20);
 
   const searchMatcherFunction = generateMatcherFunctionByKeys([
@@ -54,61 +47,33 @@ export function OriginPanel() {
     'tags'
   ]);
 
-  const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
-  const allNodes = uris
-    .map((uri) => propertyOwners[uri])
-    .filter((po) => po !== undefined);
+  const sortedDefaultList = useMemo(() => {
+    const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
+    const markedInterestingNodeUris = uris.filter((uri) =>
+      hasInterestingTag(uri, propertyOwners)
+    );
+    const favorites = markedInterestingNodeUris
+      .map((uri) => propertyOwners[uri])
+      .filter((po) => po !== undefined);
+    return favorites.slice().sort((a, b) => a.name.localeCompare(b.name));
+  }, [propertyOwners]);
 
-  const urisWithTags = uris.filter((uri) => hasInterestingTag(uri, propertyOwners));
-  const favorites = urisWithTags
-    .map((uri) => propertyOwners[uri])
-    .filter((po) => po !== undefined);
+  // @TODO: Remove dependency on properties object
+  const sortedSearchableNodes = useMemo(() => {
+    const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
+    const allNodes = uris
+      .map((uri) => propertyOwners[uri])
+      .filter((po) => po !== undefined);
 
-  const defaultList = favorites.slice();
+    // Searchable nodes are all nodes that are not hidden in the GUI
+    const searchableNodes = allNodes.filter((node) => {
+      return !isPropertyOwnerHidden(node.uri, properties);
+    });
 
-  // Make sure current anchor is in default list
-  let anchorNode = undefined;
-  if (anchor) {
-    anchorNode = allNodes.find((node) => node.identifier === anchor);
-    if (anchorNode && !defaultList.find((owner) => owner.identifier === anchor)) {
-      defaultList.push(anchorNode);
-    }
-  }
-
-  // Searchable nodes are all nodes that are not hidden in the GUI
-  const searchableNodes = allNodes.filter((node) => {
-    return !isPropertyOwnerHidden(node.uri, properties);
-  });
-
-  const sortedDefaultList = defaultList
-    .slice()
-    .sort((a, b) => a.name.localeCompare(b.name));
-
-  const sortedNodes = searchableNodes
-    .slice()
-    .sort((a, b) => a.name.localeCompare(b.name));
-
-  // // Make sure current anchor is in default list
-  // if (anchor && !defaultList.find((owner) => owner.identifier === anchor)) {
-  //   const anchorNode = allNodes.find((node) => node.identifier === anchor);
-  //   if (anchorNode) {
-  //     defaultList.push(anchorNode);
-  //   }
-  // }
-
-  // // Make sure current aim is in the default list
-  // if (hasDistinctAim() && !defaultList.find((owner) => owner.identifier === aim)) {
-  //   const aimNode = allNodes.find((node) => node.identifier === aim);
-  //   if (aimNode) {
-  //     defaultList.push(aimNode);
-  //   }
-  // }
+    return searchableNodes.slice().sort((a, b) => a.name.localeCompare(b.name));
+  }, [properties, propertyOwners]);
 
   const isInFlight = engineMode === EngineMode.CameraPath;
-
-  // function hasDistinctAim() {
-  //   return aim !== '' && aim !== anchor;
-  // }
 
   // // TODO: anden88: @emma take a look at this. Is the flgiht controller really needed for this?
   // function onSelect(
@@ -227,7 +192,7 @@ export function OriginPanel() {
           <FocusView
             heightFunction={heightFunction}
             favorites={sortedDefaultList}
-            searchableNodes={sortedNodes}
+            searchableNodes={sortedSearchableNodes}
             matcherFunction={searchMatcherFunction}
           />
         )}
@@ -235,7 +200,7 @@ export function OriginPanel() {
           <AnchorAimView
             heightFunction={heightFunction}
             favorites={sortedDefaultList}
-            searchableNodes={sortedNodes}
+            searchableNodes={sortedSearchableNodes}
             matcherFunction={searchMatcherFunction}
           />
         )}
