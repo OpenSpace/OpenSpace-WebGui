@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
-import { CheckboxIndicator, Menu } from '@mantine/core';
+import { CheckboxIndicator, Group, Menu } from '@mantine/core';
 
+import { Property } from '@/components/Property/Property';
 import { ChevronRightIcon, SaveIcon, TaskBarIcon, VisibilityIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
@@ -59,7 +60,12 @@ export function ViewMenu({ visibleMenuItems, setVisibleMenuItems }: Props) {
 
       <Menu.Item leftSection={<SaveIcon />}>Load/Save Layout</Menu.Item>
       <Menu.Divider />
-      <Menu.Item leftSection={<VisibilityIcon />}>User Visibility</Menu.Item>
+      <Menu.Label>
+        <Group>
+          <VisibilityIcon /> User Visibility{' '}
+        </Group>
+      </Menu.Label>
+      <Property uri={'OpenSpaceEngine.PropertyVisibility'} />
     </TopBarMenuWrapper>
   );
 }
