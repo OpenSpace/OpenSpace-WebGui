@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { Button, Image, Loader, ScrollArea, Stack, Text } from '@mantine/core';
+import { Button, Image, ScrollArea, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { PlusIcon } from '@/icons/icons';
@@ -44,14 +44,6 @@ export function SkyBrowserPanel() {
     }
   }, [openWorldWideTelescope, nBrowsers]);
 
-  if (!isInitialized || !luaApi) {
-    return (
-      <Stack align={'center'}>
-        <Text>Loading Sky Browser...</Text>
-        <Loader />
-      </Stack>
-    );
-  }
   if (!cameraInSolarSystem) {
     return <Text m={'lg'}>Camera has to be in solar system for Sky Browser to work</Text>;
   }
@@ -60,11 +52,12 @@ export function SkyBrowserPanel() {
       <Stack h={'100%'} w={'100%'} align={'center'} p={'lg'}>
         <Button
           onClick={() => {
-            luaApi.skybrowser.createTargetBrowserPair();
+            luaApi?.skybrowser.createTargetBrowserPair();
           }}
           my={'lg'}
           leftSection={<PlusIcon />}
           size={'lg'}
+          loading={!luaApi || !isInitialized}
         >
           Add browser
         </Button>

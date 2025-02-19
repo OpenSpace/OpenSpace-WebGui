@@ -55,7 +55,7 @@ export function AddedImagesList({ id }: Props) {
   const keyFunc = useCallback((item: number) => imageList![item].url, [imageList]);
 
   if (imageList === null || selectedImages === undefined || opacities === undefined) {
-    return <LoadingBlocks />;
+    return <LoadingBlocks mt={'md'} />;
   }
 
   return (
