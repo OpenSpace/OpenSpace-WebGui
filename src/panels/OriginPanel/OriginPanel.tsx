@@ -8,7 +8,8 @@ import {
   Paper,
   ScrollArea,
   SegmentedControl,
-  ThemeIcon
+  Text,
+  VisuallyHidden
 } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -18,6 +19,7 @@ import { AirplaneCancelIcon, AnchorIcon, FocusIcon, TelescopeIcon } from '@/icon
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
+import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
 import { hasInterestingTag, isPropertyOwnerHidden } from '@/util/propertyTreeHelpers';
 
 import { AnchorAimView } from './AnchowAimView';
@@ -31,8 +33,6 @@ enum NavigationMode {
 }
 
 export function OriginPanel() {
-  const [navigationMode, setNavigationMode] = useState(NavigationMode.Focus);
-
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const properties = useAppSelector((state) => state.properties.properties);
   const engineMode = useAppSelector((state) => state.engineMode.mode);
@@ -46,6 +46,15 @@ export function OriginPanel() {
     'uri',
     'tags'
   ]);
+
+  const shouldStartInAnchorAim = useAppSelector((state) => {
+    const aimProp = state.properties.properties[NavigationAimKey];
+    const anchorProp = state.properties.properties[NavigationAnchorKey];
+    return aimProp?.value !== anchorProp?.value && aimProp?.value !== '';
+  });
+  const [navigationMode, setNavigationMode] = useState(
+    shouldStartInAnchorAim ? NavigationMode.AnchorAim : NavigationMode.Focus
+  );
 
   const sortedDefaultList = useMemo(() => {
     const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
@@ -152,18 +161,23 @@ export function OriginPanel() {
                 {
                   value: NavigationMode.Focus,
                   label: (
-                    <ThemeIcon variant={'transparent'}>
-                      <FocusIcon size={IconSize.sm} aria-label={'Set Focus'} />
-                    </ThemeIcon>
+                    <Center h={20}>
+                      <FocusIcon size={IconSize.sm} />
+                      <VisuallyHidden>Focus mode</VisuallyHidden>
+                    </Center>
                   )
                 },
                 {
                   value: NavigationMode.AnchorAim,
                   label: (
-                    <ThemeIcon variant={'transparent'}>
-                      <AnchorIcon size={IconSize.sm} />
-                      <TelescopeIcon size={IconSize.sm} />
-                    </ThemeIcon>
+                    <Center h={20}>
+                      <AnchorIcon />
+                      <Text c={'dimmed'} size={'sm'}>
+                        /
+                      </Text>
+                      <TelescopeIcon />
+                      <VisuallyHidden>Anchor & Aim mode</VisuallyHidden>
+                    </Center>
                   )
                 }
               ]}

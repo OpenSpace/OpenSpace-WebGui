@@ -43,20 +43,6 @@ export function AnchorAimView({
     identifier: Identifier,
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
-    // const updateViewPayload: FlightControllerData = {
-    //   type: 'updateView',
-    //   focus: '',
-    //   aim: '',
-    //   anchor: '',
-    //   resetVelocities: false,
-    //   retargetAnchor: false,
-    //   retargetAim: false
-    // };
-
-    // updateViewPayload.focus = identifier;
-    // updateViewPayload.aim = '';
-    // updateViewPayload.anchor = '';
-
     setAnchor(identifier);
 
     if (!event.shiftKey) {
@@ -70,20 +56,6 @@ export function AnchorAimView({
     identifier: Identifier,
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
-    // const updateViewPayload: FlightControllerData = {
-    //   type: 'updateView',
-    //   focus: '',
-    //   aim: '',
-    //   anchor: '',
-    //   resetVelocities: false,
-    //   retargetAnchor: false,
-    //   retargetAim: false
-    // };
-
-    // updateViewPayload.focus = identifier;
-    // updateViewPayload.aim = '';
-    // updateViewPayload.anchor = '';
-
     setAim(identifier);
 
     if (!event.shiftKey) {
