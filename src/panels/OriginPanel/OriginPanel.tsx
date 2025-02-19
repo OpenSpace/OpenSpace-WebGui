@@ -1,21 +1,18 @@
 import { useMemo, useState } from 'react';
 import {
   Box,
-  Button,
   Center,
   Container,
   Group,
-  Paper,
   ScrollArea,
   SegmentedControl,
   Text,
   VisuallyHidden
 } from '@mantine/core';
 
-import { useOpenSpaceApi } from '@/api/hooks';
 import { useComputeHeightFunction } from '@/components/FilterList/hooks';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
-import { AirplaneCancelIcon, AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
+import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
@@ -25,7 +22,6 @@ import { hasInterestingTag, isPropertyOwnerHidden } from '@/util/propertyTreeHel
 import { AnchorAimView } from './AnchowAimView';
 import { FocusView } from './FocusView';
 import { OriginSettings } from './OriginSettings';
-import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
 enum NavigationMode {
   Focus = 'Focus',
@@ -37,7 +33,6 @@ export function OriginPanel() {
   const properties = useAppSelector((state) => state.properties.properties);
   const engineMode = useAppSelector((state) => state.engineMode.mode);
 
-  const luaApi = useOpenSpaceApi();
   const { ref, heightFunction } = useComputeHeightFunction(300, 20);
 
   const searchMatcherFunction = generateMatcherFunctionByKeys([
@@ -184,23 +179,6 @@ export function OriginPanel() {
             />
             <OriginSettings />
           </Group>
-          {isInFlight && (
-            <Paper mb={'xs'} py={'xs'}>
-              <Center>
-                <Group gap={'xs'}>
-                  <RemainingFlightTimeIndicator compact={false} />
-                  <Button
-                    onClick={() => luaApi?.pathnavigation.stopPath()}
-                    leftSection={<AirplaneCancelIcon size={IconSize.md} />}
-                    variant={'outline'}
-                    color={'red'}
-                  >
-                    Cancel Flight
-                  </Button>
-                </Group>
-              </Center>
-            </Paper>
-          )}
         </Box>
         {navigationMode === NavigationMode.Focus && (
           <FocusView

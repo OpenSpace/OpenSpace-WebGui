@@ -1,8 +1,12 @@
-import { Box, Divider, Group, ThemeIcon, Title, Tooltip } from '@mantine/core';
+import { Button, Center, Divider, Group, Paper, Title } from '@mantine/core';
 
-import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
+import {
+  useGetStringPropertyValue,
+  useOpenSpaceApi,
+  useTriggerProperty
+} from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
-import { AnchorIcon } from '@/icons/icons';
+import { AirplaneCancelIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
 import { Identifier, PropertyOwner } from '@/types/types';
@@ -10,6 +14,7 @@ import { NavigationAimKey, NavigationAnchorKey, RetargetAnchorKey } from '@/util
 import { sgnUri } from '@/util/propertyTreeHelpers';
 
 import { FocusEntry } from './FocusEntry';
+import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
 interface Props {
   favorites: PropertyOwner[];
@@ -30,6 +35,8 @@ export function FocusView({
   const [anchor, setAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
   const [, setAim] = useGetStringPropertyValue(NavigationAimKey);
   const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
+
+  const luaApi = useOpenSpaceApi();
 
   const anchorNode = anchor ? propertyOwners[sgnUri(anchor)] : undefined;
   const isInFlight = engineMode === EngineMode.CameraPath;
@@ -65,29 +72,38 @@ export function FocusView({
   return (
     <FilterList heightFunc={heightFunction}>
       <Title order={2}>Focus</Title>
-      {anchorNode && (
-        <>
-          <Group gap={'xs'} wrap={'nowrap'}>
-            <Tooltip label={'The currently selected anchor (focus) node'}>
-              <ThemeIcon size={'lg'}>
-                <AnchorIcon size={IconSize.sm} />
-              </ThemeIcon>
-            </Tooltip>
-            <Box flex={1}>
-              <FocusEntry
-                key={anchor}
-                entry={anchorNode}
-                onSelect={onSelect}
-                activeNode={anchor}
-                showNavigationButtons={true} // TODO remove option
-                showFrameButton
-                disableFocus={isInFlight}
-              />
-            </Box>
-          </Group>
-          <Divider />
-        </>
-      )}
+      <>
+        {anchorNode && !isInFlight && (
+          <FocusEntry
+            key={anchor}
+            entry={anchorNode}
+            onSelect={onSelect}
+            activeNode={anchor}
+            showNavigationButtons={true} // TODO remove option
+            showFrameButton
+            disableFocus={isInFlight}
+          />
+        )}
+        {isInFlight && (
+          <Paper mb={'xs'} py={'xs'}>
+            <Center>
+              <Group gap={'xs'}>
+                <RemainingFlightTimeIndicator compact={false} />
+                <Button
+                  onClick={() => luaApi?.pathnavigation.stopPath()}
+                  leftSection={<AirplaneCancelIcon size={IconSize.md} />}
+                  variant={'outline'}
+                  color={'red'}
+                >
+                  Cancel Flight
+                </Button>
+              </Group>
+            </Center>
+          </Paper>
+        )}
+        <Divider />
+      </>
+
       <FilterList.InputField
         placeHolderSearchText={'Search for a new focus...'}
         showMoreButton
