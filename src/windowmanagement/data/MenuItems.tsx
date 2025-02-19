@@ -168,7 +168,7 @@ export const menuItemsData: MenuItem[] = [
     defaultVisible: true
   },
   {
-    title: 'Sky Browser',
+    title: 'SkyBrowser',
     componentID: 'skyBrowser',
     content: <SkyBrowserPanel />,
     renderIcon: (size) => <TelescopeIcon size={size} />,
