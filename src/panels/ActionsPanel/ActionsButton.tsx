@@ -6,16 +6,16 @@ import { useAppSelector } from '@/redux/hooks';
 import { Action } from '@/types/types';
 
 interface Props {
+  height: number;
   uri?: string;
   action?: Action;
 }
 
-export function ActionsButton({ uri, action: _action }: Props) {
+export function ActionsButton({ uri, action: _action, height }: Props) {
   const openspaceApi = useOpenSpaceApi();
   const allActions = useAppSelector((state) => state.actions.actions);
   const action = uri ? allActions.find((action) => action.identifier === uri) : _action;
-  // TODO anden88 2025-02-06: make this into a css variable
-  const height = 80;
+
   const borderPadding = 4;
 
   if (!action) {
