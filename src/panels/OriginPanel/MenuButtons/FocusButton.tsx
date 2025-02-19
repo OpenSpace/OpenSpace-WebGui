@@ -14,14 +14,17 @@ export function FocusButton({ anchorName, isOpenSpaceReady, onClick }: Props) {
     <Button
       onClick={onClick}
       disabled={!isOpenSpaceReady}
-      leftSection={<FocusIcon size={IconSize.lg} />}
+      leftSection={<FocusIcon size={IconSize.md} />}
       size={'xl'}
+      px={'md'}
       variant={'menubar'}
     >
-      <Stack gap={0} justify={'center'} maw={130} ta={'start'}>
+      <Stack gap={0} maw={130} ta={'start'}>
         {!isOpenSpaceReady && <Skeleton>Anchor</Skeleton>}
         <Text truncate>{anchorName}</Text>
-        <Text>Focus</Text>
+        <Text fw={500} size={'xs'} c={'dimmed'}>
+          Focus
+        </Text>
       </Stack>
     </Button>
   );
