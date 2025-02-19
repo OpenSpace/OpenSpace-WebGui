@@ -30,14 +30,8 @@ export function ActionsButton({ uri, action: _action, height }: Props) {
 
   return (
     <Card p={borderPadding} h={height}>
-      <Group gap={0}>
-        <Button
-          onClick={handleClick}
-          p={5}
-          h={height - 2 * borderPadding - 1}
-          flex={1}
-          variant={'filled'}
-        >
+      <Group gap={0} h={'100%'}>
+        <Button onClick={handleClick} h={'100%'} p={5} flex={1} variant={'filled'}>
           <Text lineClamp={3} size={'sm'} style={{ whiteSpace: 'wrap' }}>
             {action.name}
           </Text>
