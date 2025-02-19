@@ -1,8 +1,8 @@
-import { ActionIcon, Button, Group, Menu, Stack, Text } from '@mantine/core';
+import { Button, Group, Text } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
-import { VerticalDotsIcon } from '@/icons/icons';
-import { NavigationType } from '@/types/enums';
+import { FocusIcon } from '@/icons/icons';
+import { IconSize, NavigationType } from '@/types/enums';
 import { Identifier, PropertyOwner, PropertyValue } from '@/types/types';
 
 interface FocusEntryProps {
@@ -13,6 +13,7 @@ interface FocusEntryProps {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
   showNavigationButtons: boolean;
+  showFrameButton?: boolean;
   disableFocus?: boolean;
 }
 
@@ -21,13 +22,11 @@ export function FocusEntry({
   activeNode,
   onSelect,
   showNavigationButtons,
+  showFrameButton,
   disableFocus
 }: FocusEntryProps) {
-  const buttonVariant = isActive() ? 'filled' : 'light';
-
-  function isActive() {
-    return entry.identifier === activeNode;
-  }
+  const isActive = activeNode === entry.identifier;
+  const buttonVariant = isActive ? 'filled' : 'light';
 
   function onSelectEntry(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     onSelect(entry.identifier, event);
@@ -39,14 +38,16 @@ export function FocusEntry({
         onClick={onSelectEntry}
         justify={'left'}
         flex={1}
+        leftSection={<FocusIcon size={IconSize.sm} />}
         variant={buttonVariant}
         disabled={disableFocus}
+        miw={70}
       >
         <Text truncate>{entry.name}</Text>
       </Button>
       {showNavigationButtons && (
-        <>
-          {isActive() && (
+        <Group gap={'xs'}>
+          {showFrameButton && (
             <NodeNavigationButton
               type={NavigationType.Frame}
               variant={buttonVariant}
@@ -60,45 +61,13 @@ export function FocusEntry({
             variant={buttonVariant}
             size={'lg'}
           />
-
-          <Menu position={'right-start'}>
-            <Menu.Target>
-              <ActionIcon size={'lg'}>
-                <VerticalDotsIcon />
-              </ActionIcon>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Label>{entry.name}</Menu.Label>
-              <Stack gap={'xs'}>
-                <NodeNavigationButton
-                  type={NavigationType.Focus}
-                  identifier={entry.identifier}
-                  showLabel
-                  justify={'flex-start'}
-                  disabled={disableFocus}
-                />
-                <NodeNavigationButton
-                  type={NavigationType.Fly}
-                  identifier={entry.identifier}
-                  showLabel
-                  justify={'flex-start'}
-                />
-                <NodeNavigationButton
-                  type={NavigationType.Jump}
-                  identifier={entry.identifier}
-                  showLabel
-                  justify={'flex-start'}
-                />
-                <NodeNavigationButton
-                  type={NavigationType.Frame}
-                  identifier={entry.identifier}
-                  showLabel
-                  justify={'flex-start'}
-                />
-              </Stack>
-            </Menu.Dropdown>
-          </Menu>
-        </>
+          <NodeNavigationButton
+            type={NavigationType.Jump}
+            identifier={entry.identifier}
+            variant={buttonVariant}
+            size={'lg'}
+          />
+        </Group>
       )}
     </Group>
   );

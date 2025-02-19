@@ -50,7 +50,7 @@ export function FilterList({
     '100%';
 
   return (
-    <Stack style={{ height: calculatedHeight }}>
+    <Stack style={{ height: calculatedHeight }} gap={'xs'}>
       <FilterListProvider isLoading={isLoading}>{children}</FilterListProvider>
     </Stack>
   );
