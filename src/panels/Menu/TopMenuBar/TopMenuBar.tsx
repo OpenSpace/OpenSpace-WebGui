@@ -35,7 +35,6 @@ export function TopMenuBar({ visibleMenuItems, setVisibleMenuItems }: TopMenuBar
           visibleMenuItems={visibleMenuItems}
           setVisibleMenuItems={setVisibleMenuItems}
         />
-
         <HelpMenu />
       </Group>
 
