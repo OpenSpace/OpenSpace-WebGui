@@ -1,4 +1,4 @@
-import { ActionIcon, Breadcrumbs, Button, Group, VisuallyHidden } from '@mantine/core';
+import { ActionIcon, Breadcrumbs, Button, Group } from '@mantine/core';
 
 import { BackArrowIcon, HomeIcon } from '@/icons/icons';
 import { setActionsPath } from '@/redux/actions/actionsSlice';
