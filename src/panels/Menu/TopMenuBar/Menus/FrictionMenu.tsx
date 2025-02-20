@@ -1,4 +1,4 @@
-import { Button, Group } from '@mantine/core';
+import { Chip, Group } from '@mantine/core';
 
 import { useGetBoolPropertyValue } from '@/api/hooks';
 import { RollFrictionKey, RotationalFrictionKey, ZoomFrictionKey } from '@/util/keys';
@@ -9,31 +9,34 @@ export function FrictionMenu() {
   const [roll, setRoll] = useGetBoolPropertyValue(RollFrictionKey);
 
   return (
-    <Group pos={'absolute'} left={'50%'} style={{ transform: 'translateX(-50%)' }}>
-      <Button
-        onClick={() => setRotation(!rotation)}
-        variant={"filled"}
-        color={rotation ? 'green' : 'red'}
-        size={"xs"}
+    <Group gap={'xs'}>
+      <Chip
+        checked={rotation}
+        onChange={() => setRotation(!rotation)}
+        variant={'light'}
+        size={'xs'}
+        color="white"
       >
         Rotation
-      </Button>
-      <Button
-        onClick={() => setZoom(!zoom)}
-        variant={"filled"}
-        color={zoom ? 'green' : 'red'}
-        size={"xs"}
+      </Chip>
+      <Chip
+        checked={zoom}
+        onChange={() => setZoom(!zoom)}
+        variant={'light'}
+        size={'xs'}
+        color="white"
       >
         Zoom
-      </Button>
-      <Button
-        onClick={() => setRoll(!roll)}
-        variant={"filled"}
-        color={roll ? 'green' : 'red'}
-        size={"xs"}
+      </Chip>
+      <Chip
+        checked={roll}
+        onChange={() => setRoll(!roll)}
+        variant={'light'}
+        size={'xs'}
+        color="white"
       >
         Roll
-      </Button>
+      </Chip>
     </Group>
   );
 }
