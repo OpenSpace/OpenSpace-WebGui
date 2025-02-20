@@ -3,7 +3,7 @@ import { Box, Group, Text } from '@mantine/core';
 import { useGetPropertyOwner, useSubscribeToCameraPath } from '@/api/hooks';
 import { AirplaneIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
-import { ScenePrefixKey } from '@/util/keys';
+import { sgnUri } from '@/util/propertyTreeHelpers';
 
 interface Props {
   compact?: boolean;
@@ -14,7 +14,7 @@ export function RemainingFlightTimeIndicator({ compact = true }: Props) {
     useSubscribeToCameraPath();
 
   const pathTargetNodeName =
-    useGetPropertyOwner(`${ScenePrefixKey}${pathTargetNode}`)?.name ?? pathTargetNode;
+    useGetPropertyOwner(sgnUri(pathTargetNode))?.name ?? pathTargetNode;
 
   return compact ? (
     <Group wrap={'nowrap'} pr={'xs'}>

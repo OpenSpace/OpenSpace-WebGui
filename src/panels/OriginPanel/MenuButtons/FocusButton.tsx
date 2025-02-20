@@ -14,9 +14,8 @@ export function FocusButton({ anchorName, isOpenSpaceReady, onClick }: Props) {
     <Button
       onClick={onClick}
       disabled={!isOpenSpaceReady}
-      leftSection={<FocusIcon size={IconSize.md} />}
+      leftSection={<FocusIcon size={IconSize.lg} />}
       size={'xl'}
-      px={'md'}
       variant={'menubar'}
     >
       <Stack gap={0} maw={130} ta={'start'}>

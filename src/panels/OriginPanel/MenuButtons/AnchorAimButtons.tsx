@@ -23,7 +23,6 @@ export function AnchorAimButtons({
       size={'xl'}
       disabled={!isOpenSpaceReady}
       variant={'menubar'}
-      px={'md'}
     >
       <Group>
         <Group gap={5} align={'center'}>

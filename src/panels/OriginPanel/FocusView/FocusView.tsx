@@ -1,4 +1,4 @@
-import { Button, Center, Divider, Group, Paper, Title } from '@mantine/core';
+import { Button, Divider, Paper, Stack, Title } from '@mantine/core';
 
 import {
   useGetStringPropertyValue,
@@ -6,15 +6,16 @@ import {
   useTriggerProperty
 } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
-import { AirplaneCancelIcon } from '@/icons/icons';
+import { CancelIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
 import { Identifier, PropertyOwner } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey, RetargetAnchorKey } from '@/util/keys';
 import { sgnUri } from '@/util/propertyTreeHelpers';
 
+import { RemainingFlightTimeIndicator } from '../RemainingFlightTimeIndicator';
+
 import { FocusEntry } from './FocusEntry';
-import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
 interface Props {
   favorites: PropertyOwner[];
@@ -86,19 +87,18 @@ export function FocusView({
         )}
         {isInFlight && (
           <Paper mb={'xs'} py={'xs'}>
-            <Center>
-              <Group gap={'xs'}>
-                <RemainingFlightTimeIndicator compact={false} />
-                <Button
-                  onClick={() => luaApi?.pathnavigation.stopPath()}
-                  leftSection={<AirplaneCancelIcon size={IconSize.md} />}
-                  variant={'outline'}
-                  color={'red'}
-                >
-                  Cancel Flight
-                </Button>
-              </Group>
-            </Center>
+            <Stack gap={'xs'} align={'center'}>
+              <RemainingFlightTimeIndicator compact={false} />
+              <Button
+                onClick={() => luaApi?.pathnavigation.stopPath()}
+                leftSection={<CancelIcon size={IconSize.sm} />}
+                variant={'light'}
+                size={'xs'}
+                color={'red'}
+              >
+                Cancel Flight
+              </Button>
+            </Stack>
           </Paper>
         )}
         <Divider />

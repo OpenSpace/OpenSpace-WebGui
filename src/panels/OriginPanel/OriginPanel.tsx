@@ -19,8 +19,8 @@ import { Uri } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
 import { hasInterestingTag, isPropertyOwnerHidden } from '@/util/propertyTreeHelpers';
 
-import { AnchorAimView } from './AnchowAimView';
-import { FocusView } from './FocusView';
+import { FocusView } from './FocusView/FocusView';
+import { AnchorAimView } from './AnchorAimView';
 import { OriginSettings } from './OriginSettings';
 
 enum NavigationMode {
