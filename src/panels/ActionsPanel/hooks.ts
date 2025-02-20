@@ -49,7 +49,7 @@ export function useActionsForLevel(): ActionFolderContent {
       }
     });
     return mappedActions;
-  }, [actions, navigationPath]);
+  }, [actions, navigationPath, levelDepth]);
 
   return mappedActions;
 }
