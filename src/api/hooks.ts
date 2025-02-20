@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { shallowEqual, useThrottledCallback } from '@mantine/hooks';
-import { throttle } from 'lodash';
 
 import {
   subscribeToCameraPath,
@@ -82,11 +81,11 @@ function useGetPropertyValue<T>(
   }, [dispatch, uri]);
 
   // Set function to mimic useState
-  function setValue(value: T) {
+  const setValue = useThrottledCallback((value: T) => {
     dispatch(setPropertyValue({ uri: uri, value: value as PropertyValue }));
-  }
+  }, ThrottleMs);
 
-  return [value, throttle(setValue, ThrottleMs)];
+  return [value, setValue];
 }
 
 export const useGetBoolPropertyValue = (uri: Uri) =>
