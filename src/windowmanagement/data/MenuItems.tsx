@@ -1,4 +1,4 @@
-import { JSX } from 'react';
+import { React } from 'react';
 import { Button } from '@mantine/core';
 
 import {
@@ -46,9 +46,9 @@ import {
 export interface MenuItem {
   title: string; // Title of the rc-dock tab
   componentID: string; // Unqiue ID to identify this component among the rc-dock tabs
-  content: JSX.Element; // Content to render inside the rc-dock tab
-  renderMenuButton?: (key: string, onClick: () => void) => JSX.Element; // Custom menu button to render
-  renderIcon?: (size: IconSize) => JSX.Element; // Custom icon to render
+  content: React.JSX.Element; // Content to render inside the rc-dock tab
+  renderMenuButton?: (key: string, onClick: () => void) => React.JSX.Element; // Custom menu button to render
+  renderIcon?: (size: IconSize) => React.JSX.Element; // Custom icon to render
   preferredPosition: WindowLayoutPosition; // Where this panel is instantiated
   floatPosition?: FloatWindowPosition; // Preferred position and size of a floating window given in px,
   // the offset is computed from the panels top left corner to the bottom right corner of the main window
