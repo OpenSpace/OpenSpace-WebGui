@@ -66,13 +66,4 @@ export function useActionsInPath(): Action[] {
   // We want to include the subfolders of the current path
   // Hence we check if the GUI path starts with the navigation path
   return allActions.filter((action) => action.guiPath.startsWith(navigationPath));
-
-  //   if (!action.guiPath.startsWith(navigationPath)) {
-  //     return false;
-  //   }
-  //   const actionPathGui = action.guiPath.split('/');
-  //   return navPathGui.every((part, index) => {
-  //     return part === actionPathGui[index];
-  //   });
-  // });
 }
