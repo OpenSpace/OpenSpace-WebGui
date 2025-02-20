@@ -27,11 +27,7 @@ import {
   sortTreeData
 } from './treeUtil';
 
-interface Props {
-  heightFunction: (windowHeight: number) => number;
-}
-
-export function SceneTree({ heightFunction }: Props) {
+export function SceneTree() {
   const [filter, setFilter] = useState<SceneTreeFilterSettings>({
     showOnlyVisible: false,
     showHiddenNodes: false,
@@ -108,7 +104,7 @@ export function SceneTree({ heightFunction }: Props) {
   });
 
   return (
-    <FilterList heightFunc={heightFunction}>
+    <FilterList>
       <Group justify={'space-between'}>
         <FilterList.InputField placeHolderSearchText={'Search for a node...'} flex={1} />
         <SceneTreeFilters onFilterChange={setFilter} />

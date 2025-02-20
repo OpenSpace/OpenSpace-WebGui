@@ -57,7 +57,7 @@ export function FeaturedSceneTree() {
         data={featuredTreeData}
         renderNode={(payload) => <SceneTreeNode {...payload} />}
       />
-      <Divider my={'xs'} />
+      <Divider py={'xs'} />
     </>
   );
 }
