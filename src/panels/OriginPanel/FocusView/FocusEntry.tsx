@@ -3,29 +3,26 @@ import { Button, Group, Text } from '@mantine/core';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { FocusIcon } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
-import { Identifier, PropertyOwner, PropertyValue } from '@/types/types';
+import { Identifier, PropertyOwner } from '@/types/types';
 
 interface FocusEntryProps {
   entry: PropertyOwner;
-  activeNode: PropertyValue | undefined;
   onSelect: (
     identifier: Identifier,
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
-  showNavigationButtons: boolean;
+  isActive?: boolean;
   showFrameButton?: boolean;
   disableFocus?: boolean;
 }
 
 export function FocusEntry({
   entry,
-  activeNode,
   onSelect,
-  showNavigationButtons,
   showFrameButton,
+  isActive,
   disableFocus
 }: FocusEntryProps) {
-  const isActive = activeNode === entry.identifier;
   const buttonVariant = isActive ? 'filled' : 'light';
 
   function onSelectEntry(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
@@ -45,30 +42,28 @@ export function FocusEntry({
       >
         <Text truncate>{entry.name}</Text>
       </Button>
-      {showNavigationButtons && (
-        <Group gap={'xs'}>
-          {showFrameButton && (
-            <NodeNavigationButton
-              type={NavigationType.Frame}
-              variant={buttonVariant}
-              identifier={entry.identifier}
-              size={'lg'}
-            />
-          )}
+      <Group gap={'xs'}>
+        {showFrameButton && (
           <NodeNavigationButton
-            type={NavigationType.Fly}
-            identifier={entry.identifier}
+            type={NavigationType.Frame}
             variant={buttonVariant}
+            identifier={entry.identifier}
             size={'lg'}
           />
-          <NodeNavigationButton
-            type={NavigationType.Jump}
-            identifier={entry.identifier}
-            variant={buttonVariant}
-            size={'lg'}
-          />
-        </Group>
-      )}
+        )}
+        <NodeNavigationButton
+          type={NavigationType.Fly}
+          identifier={entry.identifier}
+          variant={buttonVariant}
+          size={'lg'}
+        />
+        <NodeNavigationButton
+          type={NavigationType.Jump}
+          identifier={entry.identifier}
+          variant={buttonVariant}
+          size={'lg'}
+        />
+      </Group>
     </Group>
   );
 }

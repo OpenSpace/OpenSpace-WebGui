@@ -79,8 +79,7 @@ export function FocusView({
             key={anchor}
             entry={anchorNode}
             onSelect={onSelect}
-            activeNode={anchor}
-            showNavigationButtons={true} // TODO remove option
+            isActive={true}
             showFrameButton
             disableFocus={isInFlight}
           />
@@ -114,8 +113,7 @@ export function FocusView({
             key={entry.identifier}
             entry={entry}
             onSelect={onSelect}
-            activeNode={anchor}
-            showNavigationButtons={true} // TODO remove option
+            isActive={anchor === entry.identifier}
             disableFocus={isInFlight}
           />
         ))}
@@ -127,8 +125,7 @@ export function FocusView({
             key={node.identifier}
             entry={node}
             onSelect={onSelect}
-            activeNode={anchor}
-            showNavigationButtons={true} // TODO remove option
+            isActive={anchor === node.identifier}
             disableFocus={isInFlight}
           />
         )}
