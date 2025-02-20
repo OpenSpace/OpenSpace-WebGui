@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   ActionIcon,
+  Box,
   Button,
   Container,
   Divider,
@@ -96,15 +97,25 @@ export function ScreenSpaceRenderablePanel() {
           <Text>No active slides</Text>
         ) : (
           renderables.map((uri) => (
-            <Group key={uri} gap={'xs'} my={'xs'}>
+            <Group
+              key={uri}
+              gap={'xs'}
+              my={'xs'}
+              justify={'space-between'}
+              wrap={'nowrap'}
+              align={'top'}
+            >
+              <Box>
+                <PropertyOwner uri={uri} />
+              </Box>
               <ActionIcon
                 onClick={() => removeSlide(uri)}
                 color={'red'}
+                variant={'outline'}
                 aria-label={'Remove slide'}
               >
                 <MinusIcon />
               </ActionIcon>
-              <PropertyOwner uri={uri} />
             </Group>
           ))
         )}

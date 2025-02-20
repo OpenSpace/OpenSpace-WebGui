@@ -1,4 +1,4 @@
-import { React } from 'react';
+import React from 'react';
 import { Button } from '@mantine/core';
 
 import {
@@ -19,7 +19,7 @@ import {
 } from '@/icons/icons';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { TempPropertyTest } from '@/panels/Scene/TempPropertyTest';
-import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
+import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { IconSize } from '@/types/enums';
 
@@ -36,7 +36,7 @@ import {
   OriginPanel,
   Scene,
   ScreenSpaceRenderablePanel,
-  SessionRec,
+  SessionRecordingPanel,
   SettingsPanel,
   SkyBrowserPanel,
   TimePanel,
@@ -65,6 +65,7 @@ export const menuItemsData: MenuItem[] = [
       <Button
         key={key}
         onClick={onclick}
+        variant={'menubar'}
         leftSection={<TreeViewIcon size={IconSize.lg} />}
         size={'xl'}
       >
@@ -83,6 +84,7 @@ export const menuItemsData: MenuItem[] = [
       <Button
         key={key}
         onClick={onclick}
+        variant={'menubar'}
         leftSection={<SettingsIcon size={IconSize.lg} />}
         size={'xl'}
       >
@@ -120,9 +122,9 @@ export const menuItemsData: MenuItem[] = [
   {
     title: 'Session Recording',
     componentID: 'sessionRecording',
-    content: <SessionRec />,
+    content: <SessionRecordingPanel />,
     renderMenuButton: (key, onClick) => (
-      <SessionRecMenuButton key={key} onClick={onClick} />
+      <SessionRecordingMenuButton key={key} onClick={onClick} />
     ),
     renderIcon: (size) => <VideocamIcon size={size} />,
     preferredPosition: 'right',
@@ -169,7 +171,7 @@ export const menuItemsData: MenuItem[] = [
     defaultVisible: true
   },
   {
-    title: 'Sky Browser',
+    title: 'SkyBrowser',
     componentID: 'skyBrowser',
     content: <SkyBrowserPanel />,
     renderIcon: (size) => <TelescopeIcon size={size} />,

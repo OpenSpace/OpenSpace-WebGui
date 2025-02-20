@@ -1,4 +1,5 @@
 import React, { useCallback, useRef } from 'react';
+import { Title } from '@mantine/core';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
 import { Window } from '@/windowmanagement/Window/Window';
@@ -30,11 +31,15 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
     (id: string, title: string, content: React.JSX.Element): TabData => {
       return {
         id,
-        title,
+        title: (
+          <Title order={1} size={'md'} pr={3} fw={500}>
+            {title}
+          </Title>
+        ),
         content: <Window>{content}</Window>,
-        closable: true,
         cached: true,
-        group: 'regularWindow'
+        closable: true,
+        group: 'card regularWindow'
       };
     },
     []
@@ -79,7 +84,6 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
           }
           // Adds a new panel to left or right side
           else {
-            tab.group = 'regularWindow';
             const panel: PanelData = {
               tabs: [tab],
               size: SidePanelDefaultWidth
