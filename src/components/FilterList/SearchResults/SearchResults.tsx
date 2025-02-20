@@ -9,17 +9,20 @@ import { SearchResultContext } from './SearchResultContext';
 import { SearchResultsPagination } from './SearchResultsPagination';
 import { SearchResultsVirtualGrid } from './SearchResultsVirtualGrid';
 import { SearchResultsVirtualList } from './SearchResultsVirtualList';
+import { Text } from '@mantine/core';
 
 interface Props<T> extends PropsWithChildren {
   renderElement: renderFunc<T>;
   data: T[];
   matcherFunc: (data: T, searchString: string) => boolean;
+  noResultsDisplay?: React.JSX.Element;
 }
 
 export function SearchResults<T>({
   data,
   matcherFunc,
   renderElement,
+  noResultsDisplay,
   children
 }: Props<T>) {
   const { showFavorites, isLoading, searchString } = useFilterListProvider();
@@ -43,6 +46,10 @@ export function SearchResults<T>({
 
   if (isLoading) {
     return <LoadingBlocks />;
+  }
+
+  if (filteredItems.length === 0) {
+    return noResultsDisplay ?? <Text>No results found. Try another search!</Text>;
   }
 
   return (
