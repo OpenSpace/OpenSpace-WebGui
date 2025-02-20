@@ -15,7 +15,7 @@ export function FrictionMenu() {
         onChange={() => setRotation(!rotation)}
         variant={'light'}
         size={'xs'}
-        color="white"
+        color={"white"}
       >
         Rotation
       </Chip>
@@ -24,7 +24,7 @@ export function FrictionMenu() {
         onChange={() => setZoom(!zoom)}
         variant={'light'}
         size={'xs'}
-        color="white"
+        color={"white"}
       >
         Zoom
       </Chip>
@@ -33,7 +33,7 @@ export function FrictionMenu() {
         onChange={() => setRoll(!roll)}
         variant={'light'}
         size={'xs'}
-        color="white"
+        color={"white"}
       >
         Roll
       </Chip>
