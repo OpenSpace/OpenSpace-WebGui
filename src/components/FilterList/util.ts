@@ -1,6 +1,6 @@
 export function wordBeginningSubString(test: string, search: string): boolean {
-  const searchWords = search.split(' ');
-  const testWords = test.split(' ');
+  const searchWords = search.toLowerCase().split(' ');
+  const testWords = test.toLowerCase().split(' ');
 
   function containsWordAsFirst(searchWord: string) {
     return testWords.some((testWord) => testWord.indexOf(searchWord) === 0);
