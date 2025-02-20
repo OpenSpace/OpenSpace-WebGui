@@ -2,9 +2,7 @@ import {
   ActionIcon,
   Breadcrumbs,
   Button,
-  Container,
   Group,
-  ScrollArea,
   Text,
   VisuallyHidden
 } from '@mantine/core';
@@ -19,6 +17,7 @@ import { Action } from '@/types/types';
 
 import { ActionsButton } from './ActionsButton';
 import { actionsForLevel, getDisplayedActions } from './util';
+import { Layout } from '@/components/Layout/Layout';
 
 export function ActionsPanel() {
   const allActions = useAppSelector((state) => state.actions.actions);
@@ -82,8 +81,8 @@ export function ActionsPanel() {
   }
 
   return (
-    <ScrollArea h={'100%'}>
-      <Container mt={'xs'}>
+    <Layout>
+      <Layout.FixedSection>
         {!isTopLevel && (
           <Group gap={'xs'} mb={'xs'}>
             <ActionIcon onClick={goBack}>
@@ -93,6 +92,8 @@ export function ActionsPanel() {
             {pathBreadbrumbs()}
           </Group>
         )}
+      </Layout.FixedSection>
+      <Layout.GrowingSection>
         <FilterList>
           <FilterList.InputField placeHolderSearchText={'Search for an action...'} />
           <FilterList.Favorites>
@@ -131,7 +132,7 @@ export function ActionsPanel() {
             <FilterList.SearchResults.VirtualList />
           </FilterList.SearchResults>
         </FilterList>
-      </Container>
-    </ScrollArea>
+      </Layout.GrowingSection>
+    </Layout>
   );
 }
