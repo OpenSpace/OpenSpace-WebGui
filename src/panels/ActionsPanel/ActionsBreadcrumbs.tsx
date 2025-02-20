@@ -39,9 +39,8 @@ export function ActionsBreadcrumbs() {
 
   return (
     <Group gap={'xs'} mb={'xs'}>
-      <ActionIcon onClick={goBack}>
+      <ActionIcon onClick={goBack} aria-label={'Back'}>
         <BackArrowIcon />
-        <VisuallyHidden>Back</VisuallyHidden>
       </ActionIcon>
       <Breadcrumbs separatorMargin={0}>
         {paths.map((path, i) => (
