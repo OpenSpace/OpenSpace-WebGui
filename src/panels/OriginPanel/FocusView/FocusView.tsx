@@ -1,4 +1,4 @@
-import { ActionIcon, Divider, Group, Paper, Title } from '@mantine/core';
+import { Button, Divider, Group, Paper, Title } from '@mantine/core';
 
 import {
   useGetStringPropertyValue,
@@ -88,14 +88,15 @@ export function FocusView({
           <Paper py={'xs'}>
             <Group gap={'xs'} justify={'center'}>
               <RemainingFlightTimeIndicator compact={false} />
-              <ActionIcon
+              <Button
                 onClick={() => luaApi?.pathnavigation.stopPath()}
+                leftSection={<CancelIcon size={IconSize.sm} />}
                 variant={'light'}
-                size={'lg'}
+                size={'sm'}
                 color={'red'}
               >
-                <CancelIcon size={IconSize.sm} />
-              </ActionIcon>
+                Cancel
+              </Button>
             </Group>
           </Paper>
         )}

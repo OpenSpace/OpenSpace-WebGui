@@ -25,7 +25,6 @@ export function CancelFlightButton() {
       leftSection={<CancelIcon size={IconSize.lg} />}
       onClick={cancelFlight}
       size={'xl'}
-      px={'xs'}
       variant={'light'}
       color={'red'}
     >
