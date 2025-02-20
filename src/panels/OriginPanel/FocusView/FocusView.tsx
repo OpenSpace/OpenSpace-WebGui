@@ -1,4 +1,4 @@
-import { Button, Divider, Paper, Stack, Title } from '@mantine/core';
+import { ActionIcon, Divider, Group, Paper, Title } from '@mantine/core';
 
 import {
   useGetStringPropertyValue,
@@ -85,19 +85,18 @@ export function FocusView({
           />
         )}
         {isInFlight && (
-          <Paper mb={'xs'} py={'xs'}>
-            <Stack gap={'xs'} align={'center'}>
+          <Paper py={'xs'}>
+            <Group gap={'xs'} justify={'center'}>
               <RemainingFlightTimeIndicator compact={false} />
-              <Button
+              <ActionIcon
                 onClick={() => luaApi?.pathnavigation.stopPath()}
-                leftSection={<CancelIcon size={IconSize.sm} />}
                 variant={'light'}
-                size={'xs'}
+                size={'lg'}
                 color={'red'}
               >
-                Cancel Flight
-              </Button>
-            </Stack>
+                <CancelIcon size={IconSize.sm} />
+              </ActionIcon>
+            </Group>
           </Paper>
         )}
         <Divider />
