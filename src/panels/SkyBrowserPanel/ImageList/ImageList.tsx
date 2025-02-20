@@ -32,9 +32,6 @@ export const ImageList = memo(function ImageList({ imageList, noImagesDisplay }:
   const maxColumns = 10;
   const columns = Math.max(Math.min(Math.floor(width / cardWidth), maxColumns), 1);
 
-  if (imageList.length === 0) {
-    return noImagesDisplay ?? <Text>No images found, try another search!</Text>;
-  }
   return (
     <FilterList>
       <FilterList.InputField
@@ -44,6 +41,7 @@ export const ImageList = memo(function ImageList({ imageList, noImagesDisplay }:
         data={imageList}
         renderElement={renderImageCard}
         matcherFunc={matcherFunc}
+        noResultsDisplay={noImagesDisplay}
       >
         <FilterList.SearchResults.VirtualGrid gap={'sm'} columns={columns} />
       </FilterList.SearchResults>
