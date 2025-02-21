@@ -1,16 +1,12 @@
 import { Button, Divider, Group, Paper, Title } from '@mantine/core';
 
-import {
-  useGetStringPropertyValue,
-  useOpenSpaceApi,
-  useTriggerProperty
-} from '@/api/hooks';
+import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { CancelIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
 import { Identifier, PropertyOwner } from '@/types/types';
-import { NavigationAimKey, NavigationAnchorKey, RetargetAnchorKey } from '@/util/keys';
+import { NavigationAnchorKey } from '@/util/keys';
 import { sgnUri } from '@/util/propertyTreeHelpers';
 
 import { RemainingFlightTimeIndicator } from '../RemainingFlightTimeIndicator';
@@ -33,9 +29,7 @@ export function FocusView({
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const engineMode = useAppSelector((state) => state.engineMode.mode);
 
-  const [anchor, setAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
-  const [, setAim] = useGetStringPropertyValue(NavigationAimKey);
-  const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
+  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
 
   const luaApi = useOpenSpaceApi();
 
@@ -46,28 +40,9 @@ export function FocusView({
     identifier: Identifier,
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
-    // const updateViewPayload: FlightControllerData = {
-    //   type: 'updateView',
-    //   focus: '',
-    //   aim: '',
-    //   anchor: '',
-    //   resetVelocities: false,
-    //   retargetAnchor: false,
-    //   retargetAim: false
-    // };
-
-    // updateViewPayload.focus = identifier;
-    // updateViewPayload.aim = '';
-    // updateViewPayload.anchor = '';
-
-    setAnchor(identifier);
-    setAim('');
-
-    if (!event.shiftKey) {
-      triggerRetargetAnchor();
-    }
-
-    // TODO: Ctrl to not reset velocities
+    const shouldRetarget = !event.shiftKey;
+    const shouldResetVelocities = !event.ctrlKey;
+    luaApi?.navigation.setFocus(identifier, shouldRetarget, shouldResetVelocities);
   }
 
   return (

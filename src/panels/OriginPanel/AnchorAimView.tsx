@@ -48,8 +48,6 @@ export function AnchorAimView({
     if (!event.shiftKey) {
       triggerRetargetAnchor();
     }
-
-    // TODO: Ctrl to not reset velocities
   }
 
   function onSelectAim(
@@ -61,8 +59,6 @@ export function AnchorAimView({
     if (!event.shiftKey) {
       triggerRetargetAim();
     }
-
-    // TODO: Ctrl to not reset velocities
   }
 
   function listEntry(node: PropertyOwner) {
