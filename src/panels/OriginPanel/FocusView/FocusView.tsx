@@ -6,7 +6,7 @@ import { CancelIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
 import { Identifier, PropertyOwner } from '@/types/types';
-import { NavigationAnchorKey } from '@/util/keys';
+import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
 import { sgnUri } from '@/util/propertyTreeHelpers';
 
 import { RemainingFlightTimeIndicator } from '../RemainingFlightTimeIndicator';
@@ -30,11 +30,13 @@ export function FocusView({
   const engineMode = useAppSelector((state) => state.engineMode.mode);
 
   const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
+  const [aim] = useGetStringPropertyValue(NavigationAimKey);
 
   const luaApi = useOpenSpaceApi();
 
   const anchorNode = anchor ? propertyOwners[sgnUri(anchor)] : undefined;
   const isInFlight = engineMode === EngineMode.CameraPath;
+  const hasAim = aim !== '' && aim !== anchor;
 
   function onSelect(
     identifier: Identifier,
@@ -54,7 +56,7 @@ export function FocusView({
             key={anchor}
             entry={anchorNode}
             onSelect={onSelect}
-            isActive={true}
+            isActive={!hasAim}
             showFrameButton
             disableFocus={isInFlight}
           />
@@ -88,7 +90,7 @@ export function FocusView({
             key={entry.identifier}
             entry={entry}
             onSelect={onSelect}
-            isActive={anchor === entry.identifier}
+            isActive={!hasAim && anchor === entry.identifier}
             disableFocus={isInFlight}
           />
         ))}
@@ -100,7 +102,7 @@ export function FocusView({
             key={node.identifier}
             entry={node}
             onSelect={onSelect}
-            isActive={anchor === node.identifier}
+            isActive={!hasAim && anchor === node.identifier}
             disableFocus={isInFlight}
           />
         )}
