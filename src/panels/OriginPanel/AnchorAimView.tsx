@@ -1,7 +1,18 @@
-import { ActionIcon, Button, Divider, Group, Text, Title } from '@mantine/core';
+import {
+  ActionIcon,
+  Button,
+  Divider,
+  Group,
+  Kbd,
+  Space,
+  Text,
+  Title,
+  Tooltip
+} from '@mantine/core';
 
 import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
@@ -67,56 +78,83 @@ export function AnchorAimView({
         <Text flex={1} truncate pl={'xs'}>
           {node.name}
         </Text>
-        <ActionIcon
-          aria-label={'Set anchor'}
-          size={'lg'}
-          variant={node.identifier === anchor ? 'filled' : 'light'}
-          onClick={(event) => onSelectAnchor(node.identifier, event)}
-          disabled={isInFlight}
-        >
-          <AnchorIcon />
-        </ActionIcon>
-        <ActionIcon
-          aria-label={'Set aim'}
-          size={'lg'}
-          variant={node.identifier === aim ? 'filled' : 'light'}
-          onClick={(event) => onSelectAim(node.identifier, event)}
-          disabled={isInFlight}
-        >
-          <TelescopeIcon />
-        </ActionIcon>
+        <Tooltip label={'Set and target anchor'} openDelay={600}>
+          <ActionIcon
+            aria-label={'Set anchor'}
+            size={'lg'}
+            variant={node.identifier === anchor ? 'filled' : 'light'}
+            onClick={(event) => onSelectAnchor(node.identifier, event)}
+            disabled={isInFlight}
+          >
+            <AnchorIcon />
+          </ActionIcon>
+        </Tooltip>
+        <Tooltip label={'Set and target aim'} openDelay={600}>
+          <ActionIcon
+            aria-label={'Set aim'}
+            size={'lg'}
+            variant={node.identifier === aim ? 'filled' : 'light'}
+            onClick={(event) => onSelectAim(node.identifier, event)}
+            disabled={isInFlight}
+          >
+            <TelescopeIcon />
+          </ActionIcon>
+        </Tooltip>
       </Group>
     );
   }
 
+  const infoBoxContent = (
+    <>
+      <Text style={{ textWrap: 'pretty' }}>
+        Set an anchor (<AnchorIcon />) that the camera attaches to, and an aim (
+        <TelescopeIcon />) for the camera to look at. The aim will be kept in the same
+        position as time changes.
+      </Text>
+      <Space h={'xs'} />
+      <Text style={{ textWrap: 'pretty' }}>
+        When selecting the aim/anchor, the chosen node will be targetted to be centered in
+        the view. Hold <Kbd>Shift</Kbd> on-click to set anchor/aim without targetting.
+      </Text>
+    </>
+  );
+
   return (
     <FilterList heightFunc={heightFunction}>
-      <Title order={2}>Anchor / Aim</Title>
+      <Group justify={'space-between'}>
+        <Title order={2}>Anchor / Aim</Title>
+        <InfoBox text={infoBoxContent} w={300} />
+      </Group>
       <Group gap={'xs'}>
-        <Button
-          flex={1}
-          leftSection={<AnchorIcon size={IconSize.sm} />}
-          variant={'filled'}
-          onClick={(event) => onSelectAnchor(anchor!, event)}
-          disabled={isInFlight}
-          miw={100}
-        >
-          <Text truncate>{anchorNode?.name}</Text>
-        </Button>
-        <Button
-          flex={1}
-          variant={'filled'}
-          leftSection={<TelescopeIcon size={IconSize.sm} />}
-          onClick={(event) => onSelectAim(aim!, event)}
-          disabled={isInFlight || !aimNode}
-          miw={100}
-        >
-          {aimNode ? (
-            <Text truncate>{aimNode.name}</Text>
-          ) : (
-            <Text c={'dimmed'}>No aim</Text>
-          )}
-        </Button>
+        <Tooltip label={'Retarget anchor'} openDelay={600}>
+          <Button
+            flex={1}
+            leftSection={<AnchorIcon size={IconSize.sm} />}
+            variant={'filled'}
+            onClick={(event) => onSelectAnchor(anchor!, event)}
+            disabled={isInFlight}
+            miw={100}
+          >
+            <Text truncate>{anchorNode?.name}</Text>
+          </Button>
+        </Tooltip>
+
+        <Tooltip label={aimNode ? 'Retarget aim' : 'No aim is set'} openDelay={600}>
+          <Button
+            flex={1}
+            variant={'filled'}
+            leftSection={<TelescopeIcon size={IconSize.sm} />}
+            onClick={(event) => onSelectAim(aim!, event)}
+            disabled={isInFlight || !aimNode}
+            miw={100}
+          >
+            {aimNode ? (
+              <Text truncate>{aimNode.name}</Text>
+            ) : (
+              <Text c={'dimmed'}>No aim</Text>
+            )}
+          </Button>
+        </Tooltip>
       </Group>
       <Divider />
 

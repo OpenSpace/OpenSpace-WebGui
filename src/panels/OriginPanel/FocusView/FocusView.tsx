@@ -1,8 +1,19 @@
-import { Button, Divider, Group, Paper, Title } from '@mantine/core';
+import {
+  Button,
+  Container,
+  Divider,
+  Group,
+  Kbd,
+  Paper,
+  Space,
+  Text,
+  Title
+} from '@mantine/core';
 
 import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
-import { CancelIcon } from '@/icons/icons';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { CancelIcon, FocusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
 import { Identifier, PropertyOwner } from '@/types/types';
@@ -47,9 +58,27 @@ export function FocusView({
     luaApi?.navigation.setFocus(identifier, shouldRetarget, shouldResetVelocities);
   }
 
+  const infoBoxContent = (
+    <>
+      <Text>
+        Click the <FocusIcon /> button to focus/retarget object.
+      </Text>
+      <Space h={'xs'} />
+      <Text style={{ textWrap: 'pretty' }}>
+        - Hold <Kbd>Shift</Kbd> on-click to set as focus/anchor without retargetting.
+      </Text>
+      <Text style={{ textWrap: 'pretty' }}>
+        - Hold <Kbd>Ctrl</Kbd> on-click to keep current camera velocities.
+      </Text>
+    </>
+  );
+
   return (
     <FilterList heightFunc={heightFunction}>
-      <Title order={2}>Focus</Title>
+      <Group justify={'space-between'}>
+        <Title order={2}>Focus</Title>
+        <InfoBox text={infoBoxContent} w={300} />
+      </Group>
       <>
         {anchorNode && !isInFlight && (
           <FocusEntry

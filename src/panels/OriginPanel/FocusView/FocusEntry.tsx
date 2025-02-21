@@ -1,4 +1,4 @@
-import { Button, Group, Text } from '@mantine/core';
+import { Button, Group, Kbd, Text, Tooltip } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { FocusIcon } from '@/icons/icons';
@@ -42,6 +42,7 @@ export function FocusEntry({
       >
         <Text truncate>{entry.name}</Text>
       </Button>
+
       <Group gap={'xs'}>
         {showFrameButton && (
           <NodeNavigationButton
