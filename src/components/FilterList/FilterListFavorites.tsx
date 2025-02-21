@@ -16,13 +16,7 @@ export function FilterListFavorites({ children }: PropsWithChildren) {
 
   return (
     showFavorites && (
-      <ScrollArea.Autosize
-        scrollbars={'y'}
-        type={'always'}
-        offsetScrollbars
-        mah={'100%'}
-        mb={'var(--mantine-spacing-md)'}
-      >
+      <ScrollArea.Autosize scrollbars={'y'} type={'always'} offsetScrollbars mah={'100%'}>
         {children}
       </ScrollArea.Autosize>
     )
