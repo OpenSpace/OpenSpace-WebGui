@@ -88,7 +88,7 @@ export function ExoplanetsPanel() {
   }
 
   return (
-    <Container fluid my={'md'}>
+    <>
       <ResizeableContent defaultHeight={300}>
         <FilterList isLoading={allSystemNames.length === 0}>
           <FilterList.InputField placeHolderSearchText={'Star name...'} />
@@ -130,6 +130,6 @@ export function ExoplanetsPanel() {
           )
         )}
       </ScrollArea>
-    </Container>
+    </>
   );
 }

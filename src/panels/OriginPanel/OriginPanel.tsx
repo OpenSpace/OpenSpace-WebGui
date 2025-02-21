@@ -182,7 +182,7 @@ export function OriginPanel() {
             value={navigationAction}
             withItemsBorders={false}
             disabled={isInFlight}
-            my={'xs'}
+            mb={'xs'}
             onChange={(value) => setNavigationAction(value as NavigationActionState)}
             data={[
               {

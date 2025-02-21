@@ -101,66 +101,64 @@ export function UserPanelsPanel() {
 
   return (
     <ScrollArea h={'100%'}>
-      <Container>
-        <Title my={'xs'} order={2}>
-          User Panels
-        </Title>
-        <Title my={'xs'} order={3}>
-          Open Local Panel
-        </Title>
-        <Group align={'flex-end'}>
-          <Select
-            placeholder={'Select panel'}
-            data={localPanels}
-            onChange={setSelectedPanel}
-            value={selectedPanel}
-            flex={1}
-            onKeyDown={(e) => e.key === 'Enter' && addLocalPanel()}
-          />
-          <ActionIcon onClick={addLocalPanel} disabled={!selectedPanel} size={'lg'}>
-            <OpenWindowIcon />
-          </ActionIcon>
-        </Group>
-        <Divider my={'md'} />
-        <Title order={3} my={'xs'}>
-          Open from URL
-        </Title>
-        <TextInput
-          value={urlPanelTitle}
-          label={'Title (optional)'}
-          placeholder={'Input title (optional)'}
-          onChange={(e) => setUrlPanelTitle(e.target.value)}
+      <Title my={'xs'} order={2}>
+        User Panels
+      </Title>
+      <Title my={'xs'} order={3}>
+        Open Local Panel
+      </Title>
+      <Group align={'flex-end'}>
+        <Select
+          placeholder={'Select panel'}
+          data={localPanels}
+          onChange={setSelectedPanel}
+          value={selectedPanel}
+          flex={1}
+          onKeyDown={(e) => e.key === 'Enter' && addLocalPanel()}
         />
-        <Group align={'flex-end'} justify={'space-between'}>
-          <TextInput
-            value={panelURL}
-            label={'URL'}
-            placeholder={'Input URL'}
-            onChange={(e) => setPanelURL(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && addWebPanel()}
-            flex={1}
-            rightSection={
-              <ActionIcon onClick={addWebPanel} disabled={!panelURL} size={'lg'}>
-                <OpenWindowIcon />
-              </ActionIcon>
-            }
-          />
-        </Group>
-        <Title mt={'xs'} mb={'xs'} order={4}>
-          Recently Opened URLs
-        </Title>
-        {addedPanels.map((panel) => (
-          <Button
-            key={`${panel.src}${panel.title}`}
-            onClick={() => openPanel(panel.src, panel.title)}
-            fullWidth
-            mb={'xs'}
-          >
-            <Text m={'xs'}>{panel.title}</Text>
-            <OpenWindowIcon />
-          </Button>
-        ))}
-      </Container>
+        <ActionIcon onClick={addLocalPanel} disabled={!selectedPanel} size={'lg'}>
+          <OpenWindowIcon />
+        </ActionIcon>
+      </Group>
+      <Divider my={'md'} />
+      <Title order={3} my={'xs'}>
+        Open from URL
+      </Title>
+      <TextInput
+        value={urlPanelTitle}
+        label={'Title (optional)'}
+        placeholder={'Input title (optional)'}
+        onChange={(e) => setUrlPanelTitle(e.target.value)}
+      />
+      <Group align={'flex-end'} justify={'space-between'}>
+        <TextInput
+          value={panelURL}
+          label={'URL'}
+          placeholder={'Input URL'}
+          onChange={(e) => setPanelURL(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && addWebPanel()}
+          flex={1}
+          rightSection={
+            <ActionIcon onClick={addWebPanel} disabled={!panelURL} size={'lg'}>
+              <OpenWindowIcon />
+            </ActionIcon>
+          }
+        />
+      </Group>
+      <Title mt={'xs'} mb={'xs'} order={4}>
+        Recently Opened URLs
+      </Title>
+      {addedPanels.map((panel) => (
+        <Button
+          key={`${panel.src}${panel.title}`}
+          onClick={() => openPanel(panel.src, panel.title)}
+          fullWidth
+          mb={'xs'}
+        >
+          <Text m={'xs'}>{panel.title}</Text>
+          <OpenWindowIcon />
+        </Button>
+      ))}
     </ScrollArea>
   );
 }

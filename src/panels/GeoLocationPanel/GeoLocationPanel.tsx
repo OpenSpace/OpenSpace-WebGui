@@ -21,20 +21,18 @@ export function GeoLocationPanel() {
 
   return (
     <ScrollArea h={'100%'}>
-      <Container>
-        <Title order={2}>Geo Location</Title>
-        <Select
-          data={anchorOptions}
-          value={currentAnchorOption}
-          onChange={(value) => setCurrentAnchorOption(value!)}
-          allowDeselect={false}
-          label={'Select an anchor'}
-          w={'100%'}
-          my={'xs'}
-        />
-        <Divider my={'xs'} />
-        {anchorPanelContent}
-      </Container>
+      <Title order={2}>Geo Location</Title>
+      <Select
+        data={anchorOptions}
+        value={currentAnchorOption}
+        onChange={(value) => setCurrentAnchorOption(value!)}
+        allowDeselect={false}
+        label={'Select an anchor'}
+        w={'100%'}
+        my={'xs'}
+      />
+      <Divider my={'xs'} />
+      {anchorPanelContent}
     </ScrollArea>
   );
 }

@@ -71,23 +71,21 @@ export function SettingsPanel() {
 
   return (
     <ScrollArea h={'100%'}>
-      <Container>
-        <FilterList>
-          <FilterList.InputField placeHolderSearchText={'Search for a setting...'} />
-          <FilterList.Favorites>
-            {topLevelPropertyOwners.map((uri) => (
-              <PropertyOwner uri={uri} key={uri} />
-            ))}
-          </FilterList.Favorites>
-          <FilterList.SearchResults
-            data={searchData}
-            renderElement={renderfunc}
-            matcherFunc={matcher}
-          >
-            <FilterList.SearchResults.Pagination maxShownMatches={20} />
-          </FilterList.SearchResults>
-        </FilterList>
-      </Container>
+      <FilterList>
+        <FilterList.InputField placeHolderSearchText={'Search for a setting...'} />
+        <FilterList.Favorites>
+          {topLevelPropertyOwners.map((uri) => (
+            <PropertyOwner uri={uri} key={uri} />
+          ))}
+        </FilterList.Favorites>
+        <FilterList.SearchResults
+          data={searchData}
+          renderElement={renderfunc}
+          matcherFunc={matcher}
+        >
+          <FilterList.SearchResults.Pagination maxShownMatches={20} />
+        </FilterList.SearchResults>
+      </FilterList>
     </ScrollArea>
   );
 }
