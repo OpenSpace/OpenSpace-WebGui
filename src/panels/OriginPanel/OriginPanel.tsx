@@ -79,69 +79,6 @@ export function OriginPanel() {
 
   const isInFlight = engineMode === EngineMode.CameraPath;
 
-  // // TODO: anden88: @emma take a look at this. Is the flgiht controller really needed for this?
-  // function onSelect(
-  //   identifier: Identifier,
-  //   event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  // ) {
-  //   const updateViewPayload: FlightControllerData = {
-  //     type: 'updateView',
-  //     focus: '',
-  //     aim: '',
-  //     anchor: '',
-  //     resetVelocities: false,
-  //     retargetAnchor: false,
-  //     retargetAim: false
-  //   };
-
-  // switch (navigationAction) {
-  //   case NavigationActionState.Focus:
-  //     updateViewPayload.focus = identifier;
-  //     updateViewPayload.aim = '';
-  //     updateViewPayload.anchor = '';
-  //     break;
-  //   case NavigationActionState.Anchor:
-  //     if (!aim) {
-  //       updateViewPayload.aim = anchor ?? '';
-  //     }
-  //     updateViewPayload.anchor = identifier;
-  //     break;
-  //   case NavigationActionState.Aim:
-  //     updateViewPayload.aim = identifier;
-  //     updateViewPayload.anchor = anchor ?? '';
-  //     break;
-  //   default:
-  //     throw new Error(`Missing NavigationActionState case for: '${navigationAction}'`);
-  // }
-
-  // if (!event.shiftKey) {
-  //   if (navigationAction === NavigationActionState.Aim) {
-  //     triggerRetargetAim();
-  //   } else {
-  //     triggerRetargetAnchor();
-  //   }
-  // }
-
-  //   const shouldRetargetAim = !event.shiftKey && updateViewPayload.aim !== '';
-  //   const shouldRetargetAnchor = !event.shiftKey && updateViewPayload.aim === '';
-
-  //   updateViewPayload.retargetAim = shouldRetargetAim;
-  //   updateViewPayload.retargetAnchor = shouldRetargetAnchor;
-  //   updateViewPayload.resetVelocities = !event.ctrlKey;
-
-  //   dispatch(sendFlightControl(updateViewPayload));
-
-  //   if (updateViewPayload.aim) {
-  //     setAnchor(updateViewPayload.anchor);
-  //     setAim(updateViewPayload.aim);
-  //   } else if (updateViewPayload.anchor !== '') {
-  //     setAnchor(updateViewPayload.anchor);
-  //   } else {
-  //     setAnchor(updateViewPayload.focus);
-  //     setAim(updateViewPayload.aim);
-  //   }
-  // }
-
   return (
     <ScrollArea h={'100%'}>
       <Container>
