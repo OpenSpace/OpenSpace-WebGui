@@ -1,5 +1,4 @@
 import { memo, useCallback, useMemo } from 'react';
-import { Text } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';

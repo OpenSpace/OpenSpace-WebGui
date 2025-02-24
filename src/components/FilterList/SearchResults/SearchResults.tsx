@@ -1,4 +1,5 @@
 import { PropsWithChildren, useMemo } from 'react';
+import { Text } from '@mantine/core';
 
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 
@@ -9,7 +10,6 @@ import { SearchResultContext } from './SearchResultContext';
 import { SearchResultsPagination } from './SearchResultsPagination';
 import { SearchResultsVirtualGrid } from './SearchResultsVirtualGrid';
 import { SearchResultsVirtualList } from './SearchResultsVirtualList';
-import { Text } from '@mantine/core';
 
 interface Props<T> extends PropsWithChildren {
   renderElement: renderFunc<T>;
