@@ -30,9 +30,9 @@ export const ImageListWrapper = memo(function ImageListSection() {
         value={value}
         onChange={(_, option) => setValue(option.value)}
         allowDeselect={false}
-        m={'md'}
+        mb={'md'}
       />
-      <ResizeableContent defaultHeight={450} m={'md'} mb={'xs'}>
+      <ResizeableContent defaultHeight={450}>
         {value === ViewingMode.nearestImages ? (
           <NearestImages />
         ) : (

@@ -101,7 +101,7 @@ export function RecordSession() {
 
   return (
     <>
-      <Title order={2} my={'xs'}>
+      <Title order={2} mb={'xs'}>
         Record
       </Title>
       <Checkbox
