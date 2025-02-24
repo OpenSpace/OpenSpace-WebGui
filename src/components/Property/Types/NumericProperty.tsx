@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { ActionIcon, Grid, Slider } from '@mantine/core';
-import { inRange } from 'lodash';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
@@ -46,7 +45,7 @@ export function NumericProperty({
   ];
 
   // Always include zero if it exists in the range
-  if (inRange(0, min, max)) {
+  if (min <= 0 && 0 <= max) {
     marks.push({ value: 0, label: 0 });
   }
 

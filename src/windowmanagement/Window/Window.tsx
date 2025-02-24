@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Box } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
@@ -45,7 +45,7 @@ export function Window({ children }: PropsWithChildren) {
     >
       <Box h={'100%'} ref={ref} p={'xs'} style={{ overflow: 'auto' }}>
         <ErrorBoundary fallbackRender={fallbackRender} onReset={handleReset}>
-          {children}
+          <Suspense fallback={null}>{children}</Suspense>
         </ErrorBoundary>
       </Box>
     </WindowSizeContext.Provider>
