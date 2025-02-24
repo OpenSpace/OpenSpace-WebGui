@@ -10,7 +10,11 @@ import {
   Tooltip
 } from '@mantine/core';
 
-import { useGetStringPropertyValue, useTriggerProperty } from '@/api/hooks';
+import {
+  useGetStringPropertyValue,
+  useSubscribeToEngineMode,
+  useTriggerProperty
+} from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
@@ -39,7 +43,7 @@ export function AnchorAimView({
   matcherFunction
 }: Props) {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-  const engineMode = useAppSelector((state) => state.engineMode.mode);
+  const engineMode = useSubscribeToEngineMode();
 
   const [anchor, setAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
   const [aim, setAim] = useGetStringPropertyValue(NavigationAimKey);
@@ -49,6 +53,10 @@ export function AnchorAimView({
   const anchorNode = anchor ? propertyOwners[sgnUri(anchor)] : undefined;
   const aimNode = aim ? propertyOwners[sgnUri(aim)] : undefined;
   const isInFlight = engineMode === EngineMode.CameraPath;
+
+  if (anchor === undefined || aim === undefined) {
+    throw new Error('Anchor or aim property property does not exist');
+  }
 
   function onSelectAnchor(
     identifier: Identifier,
@@ -131,7 +139,7 @@ export function AnchorAimView({
             flex={1}
             leftSection={<AnchorIcon size={IconSize.sm} />}
             variant={'filled'}
-            onClick={(event) => onSelectAnchor(anchor!, event)}
+            onClick={(event) => onSelectAnchor(anchor, event)}
             disabled={isInFlight}
             miw={100}
           >
@@ -144,7 +152,7 @@ export function AnchorAimView({
             flex={1}
             variant={'filled'}
             leftSection={<TelescopeIcon size={IconSize.sm} />}
-            onClick={(event) => onSelectAim(aim!, event)}
+            onClick={(event) => onSelectAim(aim, event)}
             disabled={isInFlight || !aimNode}
             miw={100}
           >

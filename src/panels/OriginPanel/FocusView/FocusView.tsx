@@ -10,7 +10,11 @@ import {
   Title
 } from '@mantine/core';
 
-import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
+import {
+  useGetStringPropertyValue,
+  useOpenSpaceApi,
+  useSubscribeToEngineMode
+} from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { CancelIcon, FocusIcon } from '@/icons/icons';
@@ -38,7 +42,7 @@ export function FocusView({
   matcherFunction
 }: Props) {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-  const engineMode = useAppSelector((state) => state.engineMode.mode);
+  const engineMode = useSubscribeToEngineMode();
 
   const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
   const [aim] = useGetStringPropertyValue(NavigationAimKey);

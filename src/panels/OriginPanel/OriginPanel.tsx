@@ -62,7 +62,7 @@ export function OriginPanel() {
     return favorites.slice().sort((a, b) => a.name.localeCompare(b.name));
   }, [propertyOwners]);
 
-  // @TODO: Remove dependency on properties object
+  // @TODO (2025-02-24, emmbr): Remove dependency on properties object
   const sortedSearchableNodes = useMemo(() => {
     const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
     const allNodes = uris
