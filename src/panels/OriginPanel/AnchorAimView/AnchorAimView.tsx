@@ -1,14 +1,4 @@
-import {
-  ActionIcon,
-  Button,
-  Divider,
-  Group,
-  Kbd,
-  Space,
-  Text,
-  Title,
-  Tooltip
-} from '@mantine/core';
+import { Button, Divider, Group, Kbd, Space, Text, Title, Tooltip } from '@mantine/core';
 
 import {
   useGetStringPropertyValue,
@@ -28,6 +18,8 @@ import {
   RetargetAnchorKey
 } from '@/util/keys';
 import { sgnUri } from '@/util/propertyTreeHelpers';
+
+import { AnchorAimListEntry } from './AnchorAimListEntry';
 
 interface Props {
   favorites: PropertyOwner[];
@@ -78,38 +70,6 @@ export function AnchorAimView({
     if (!event.shiftKey) {
       triggerRetargetAim();
     }
-  }
-
-  function listEntry(node: PropertyOwner) {
-    return (
-      <Group gap={'xs'} key={node.identifier}>
-        <Text flex={1} truncate pl={'xs'}>
-          {node.name}
-        </Text>
-        <Tooltip label={'Set and target anchor'} openDelay={600}>
-          <ActionIcon
-            aria-label={'Set anchor'}
-            size={'lg'}
-            variant={node.identifier === anchor ? 'filled' : 'light'}
-            onClick={(event) => onSelectAnchor(node.identifier, event)}
-            disabled={isInFlight}
-          >
-            <AnchorIcon />
-          </ActionIcon>
-        </Tooltip>
-        <Tooltip label={'Set and target aim'} openDelay={600}>
-          <ActionIcon
-            aria-label={'Set aim'}
-            size={'lg'}
-            variant={node.identifier === aim ? 'filled' : 'light'}
-            onClick={(event) => onSelectAim(node.identifier, event)}
-            disabled={isInFlight}
-          >
-            <TelescopeIcon />
-          </ActionIcon>
-        </Tooltip>
-      </Group>
-    );
   }
 
   const infoBoxContent = (
@@ -171,11 +131,31 @@ export function AnchorAimView({
         showMoreButton
       />
       <FilterList.Favorites>
-        {favorites.map((entry) => listEntry(entry))}
+        {favorites.map((entry) => (
+          <AnchorAimListEntry
+            key={entry.identifier}
+            node={entry}
+            isCurrentAim={aim === entry.identifier}
+            isCurrentAnchor={anchor === entry.identifier}
+            onSelectAnchor={onSelectAnchor}
+            onSelectAim={onSelectAim}
+            disabled={isInFlight}
+          />
+        ))}
       </FilterList.Favorites>
       <FilterList.SearchResults
         data={searchableNodes}
-        renderElement={(node) => listEntry(node)}
+        renderElement={(node) => (
+          <AnchorAimListEntry
+            key={node.identifier}
+            node={node}
+            isCurrentAim={aim === node.identifier}
+            isCurrentAnchor={anchor === node.identifier}
+            onSelectAnchor={onSelectAnchor}
+            onSelectAim={onSelectAim}
+            disabled={isInFlight}
+          />
+        )}
         matcherFunc={matcherFunction}
       >
         <FilterList.SearchResults.VirtualList />

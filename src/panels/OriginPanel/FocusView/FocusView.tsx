@@ -1,14 +1,4 @@
-import {
-  Button,
-  Container,
-  Divider,
-  Group,
-  Kbd,
-  Paper,
-  Space,
-  Text,
-  Title
-} from '@mantine/core';
+import { Button, Divider, Group, Kbd, Paper, Space, Text, Title } from '@mantine/core';
 
 import {
   useGetStringPropertyValue,
