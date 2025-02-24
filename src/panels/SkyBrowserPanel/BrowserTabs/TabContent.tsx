@@ -50,7 +50,7 @@ export function TabContent({
   }
 
   function removeAllImages(): void {
-    if (!browserId) {
+    if (!browserId || !imageList) {
       return;
     }
     selectedImages?.forEach((image) =>
