@@ -17,7 +17,7 @@ export function TopMenuBar({ visibleMenuItems, setVisibleMenuItems }: TopMenuBar
     <Flex
       gap={'xs'}
       h={30}
-      bg={alpha('var(--mantine-color-dark-5)', 0.9)}
+      bg={alpha('var(--mantine-color-dark-9)', 0.9)}
       justify={'space-between'}
       style={{
         whiteSpace: 'nowrap',
