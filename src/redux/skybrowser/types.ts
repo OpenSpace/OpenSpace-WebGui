@@ -12,8 +12,8 @@ export interface SkyBrowserBrowser {
   selectedImages: number[]; // Indices of the selected images in the image list
   opacities: number[]; // Opacities of the selected images
   ratio: number; // Ratio of the browser. Computed width / height. [0, 1]
-  displayCopies: object; // The information about the sky browser screenspace renderables
-  isFacingCamera: boolean; // Are the sky browser screenspace renderables facing the camera?
-  isUsingRae: boolean; // Are the sky browser screenspace renderables using RAE?
+  displayCopies: object; // The information about the skybrowser screenspace renderables
+  isFacingCamera: boolean; // Are the skybrowser screenspace renderables facing the camera?
+  isUsingRae: boolean; // Are the skybrowser screenspace renderables using RAE?
   scale: number; // Scale of the screenspace renderables
 }

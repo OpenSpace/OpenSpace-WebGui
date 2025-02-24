@@ -1,9 +1,11 @@
+import { MantineSpacing } from '@mantine/core';
+
 import { VirtualList } from '@/components/VirtualList/VirtualList';
 
 import { useSearchResultProvider } from './hooks';
 
 interface Props {
-  gap?: number; // Gap in pixels between items
+  gap?: MantineSpacing; // Gap in pixels between items
   overscan?: number; // How many items to preload when scrolling
 }
 

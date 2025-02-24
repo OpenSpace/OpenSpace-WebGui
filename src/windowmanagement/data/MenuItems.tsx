@@ -17,28 +17,31 @@ import {
   TreeViewIcon,
   VideocamIcon
 } from '@/icons/icons';
-import { ActionsPanel } from '@/panels/ActionsPanel/ActionsPanel';
-import { ExoplanetsPanel } from '@/panels/ExoplanetsPanel/ExoplanetsPanel';
-import { FlightControlPanel } from '@/panels/FlightControlPanel/FlightControlPanel';
-import { GeoLocationPanel } from '@/panels/GeoLocationPanel/GeoLocationPanel';
-import { KeyBindsPanel } from '@/panels/KeybindsPanel/KeybindsPanel';
-import { MissionsPanel } from '@/panels/MissionsPanel/MissionsPanel';
-import { OriginPanel } from '@/panels/OriginPanel/OriginPanel';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
-import { Scene } from '@/panels/Scene/Scene';
 import { TempPropertyTest } from '@/panels/Scene/TempPropertyTest';
-import { ScreenSpaceRenderablePanel } from '@/panels/ScreenSpaceRenderablePanel/ScreenSpaceRenderablePanel';
-import { SessionRec } from '@/panels/SessionRecording/SessionRec';
-import { SessionRecMenuButton } from '@/panels/SessionRecording/SessionRecMenuButton';
-import { SettingsPanel } from '@/panels/SettingsPanel/SettingsPanel';
-import { SkyBrowserPanel } from '@/panels/SkyBrowserPanel/SkyBrowserPanel';
-import { TimePanel } from '@/panels/TimePanel/TimePanel';
+import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
-import { UserPanelsPanel } from '@/panels/UserPanelsPanel/UserPanelsPanel';
 import { IconSize } from '@/types/enums';
 
 import { FloatWindowPosition } from '../WindowLayout/types';
 import { WindowLayoutPosition } from '../WindowLayout/WindowLayout';
+
+import {
+  ActionsPanel,
+  ExoplanetsPanel,
+  FlightControlPanel,
+  GeoLocationPanel,
+  KeyBindsPanel,
+  MissionsPanel,
+  OriginPanel,
+  Scene,
+  ScreenSpaceRenderablePanel,
+  SessionRecordingPanel,
+  SettingsPanel,
+  SkyBrowserPanel,
+  TimePanel,
+  UserPanelsPanel
+} from './LazyLoads';
 
 export interface MenuItem {
   title: string; // Title of the rc-dock tab
@@ -62,6 +65,7 @@ export const menuItemsData: MenuItem[] = [
       <Button
         key={key}
         onClick={onclick}
+        variant={'menubar'}
         leftSection={<TreeViewIcon size={IconSize.lg} />}
         size={'xl'}
       >
@@ -80,6 +84,7 @@ export const menuItemsData: MenuItem[] = [
       <Button
         key={key}
         onClick={onclick}
+        variant={'menubar'}
         leftSection={<SettingsIcon size={IconSize.lg} />}
         size={'xl'}
       >
@@ -117,9 +122,9 @@ export const menuItemsData: MenuItem[] = [
   {
     title: 'Session Recording',
     componentID: 'sessionRecording',
-    content: <SessionRec />,
+    content: <SessionRecordingPanel />,
     renderMenuButton: (key, onClick) => (
-      <SessionRecMenuButton key={key} onClick={onClick} />
+      <SessionRecordingMenuButton key={key} onClick={onClick} />
     ),
     renderIcon: (size) => <VideocamIcon size={size} />,
     preferredPosition: 'right',
@@ -166,7 +171,7 @@ export const menuItemsData: MenuItem[] = [
     defaultVisible: true
   },
   {
-    title: 'Sky Browser',
+    title: 'SkyBrowser',
     componentID: 'skyBrowser',
     content: <SkyBrowserPanel />,
     renderIcon: (size) => <TelescopeIcon size={size} />,

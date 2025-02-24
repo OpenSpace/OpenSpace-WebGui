@@ -34,7 +34,7 @@ export function SkyBrowserPanel() {
 
     addWindow(content, {
       id: 'WorldWideTelescope',
-      title: 'World Wide Telescope'
+      title: 'WorldWide Telescope'
     });
   }, [addWindow]);
 

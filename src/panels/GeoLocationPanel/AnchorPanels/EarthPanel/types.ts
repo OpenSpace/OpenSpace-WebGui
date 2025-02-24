@@ -20,9 +20,10 @@ export interface Location {
   y: number;
 }
 
+// These min/max names have to be all lowercase in order to match the ArcGIS object we recieve
 export interface Extent {
-  xMax: number;
-  xMin: number;
-  yMax: number;
-  yMin: number;
+  xmax: number;
+  xmin: number;
+  ymax: number;
+  ymin: number;
 }

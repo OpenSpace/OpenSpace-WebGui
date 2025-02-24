@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { shallowEqual, useThrottledCallback } from '@mantine/hooks';
-import { throttle } from 'lodash';
 
 import {
   subscribeToCameraPath,
@@ -16,6 +15,10 @@ import {
   unsubscribeToProperty
 } from '@/redux/propertytree/properties/propertiesMiddleware';
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
+import {
+  subscribeToSessionRecording,
+  unsubscribeToSessionRecording
+} from '@/redux/sessionrecording/sessionRecordingMiddleware';
 import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
 import { ConnectionStatus } from '@/types/enums';
 import { Property, PropertyOwner, PropertyValue, Uri } from '@/types/types';
@@ -78,11 +81,11 @@ function useGetPropertyValue<T>(
   }, [dispatch, uri]);
 
   // Set function to mimic useState
-  function setValue(value: T) {
+  const setValue = useThrottledCallback((value: T) => {
     dispatch(setPropertyValue({ uri: uri, value: value as PropertyValue }));
-  }
+  }, ThrottleMs);
 
-  return [value, throttle(setValue, ThrottleMs)];
+  return [value, setValue];
 }
 
 export const useGetBoolPropertyValue = (uri: Uri) =>
@@ -225,6 +228,20 @@ export function useSubscribeToCameraPath() {
   }, [dispatch]);
 
   return cameraPath;
+}
+
+export function useSubscribeToSessionRecording() {
+  const recordingState = useAppSelector((state) => state.sessionRecording.state);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(subscribeToSessionRecording());
+    return () => {
+      dispatch(unsubscribeToSessionRecording());
+    };
+  }, [dispatch]);
+
+  return recordingState;
 }
 
 /**
