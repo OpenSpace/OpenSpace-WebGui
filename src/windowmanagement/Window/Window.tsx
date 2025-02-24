@@ -43,7 +43,7 @@ export function Window({ children }: PropsWithChildren) {
         pointerEvents: { enable: enablePointerEvents, disable: disablePointerEvents }
       }}
     >
-      <Box h={'100%'} ref={ref}>
+      <Box h={'100%'} ref={ref} p={'xs'} style={{ overflow: 'auto' }}>
         <ErrorBoundary fallbackRender={fallbackRender} onReset={handleReset}>
           <Suspense fallback={null}>{children}</Suspense>
         </ErrorBoundary>

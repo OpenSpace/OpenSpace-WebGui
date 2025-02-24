@@ -33,6 +33,7 @@ export function BrowserTabs({ openWorldWideTelescope }: Props) {
           setShowSettings(false);
         }
       }}
+      mt={'lg'}
     >
       {/* Tabs */}
       <Tabs.List>

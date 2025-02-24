@@ -1,8 +1,7 @@
-import { Container, ScrollArea } from '@mantine/core';
-
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useAppSelector } from '@/redux/hooks';
 import { Action } from '@/types/types';
@@ -26,9 +25,11 @@ export function ActionsPanel() {
   }
 
   return (
-    <ScrollArea h={'100%'}>
-      <Container mt={'xs'}>
+    <Layout>
+      <Layout.FixedSection>
         <ActionsBreadcrumbs />
+      </Layout.FixedSection>
+      <Layout.GrowingSection>
         <FilterList>
           <FilterList.InputField placeHolderSearchText={'Search for an action...'} />
           <FilterList.Favorites>
@@ -65,7 +66,7 @@ export function ActionsPanel() {
             <FilterList.SearchResults.VirtualList gap={'xs'} />
           </FilterList.SearchResults>
         </FilterList>
-      </Container>
-    </ScrollArea>
+      </Layout.GrowingSection>
+    </Layout>
   );
 }
