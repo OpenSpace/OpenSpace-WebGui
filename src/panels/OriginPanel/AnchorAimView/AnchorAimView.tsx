@@ -24,16 +24,10 @@ import { AnchorAimListEntry } from './AnchorAimListEntry';
 interface Props {
   favorites: PropertyOwner[];
   searchableNodes: PropertyOwner[];
-  heightFunction: (windowHeight: number) => number;
   matcherFunction: (node: PropertyOwner, query: string) => boolean;
 }
 
-export function AnchorAimView({
-  favorites,
-  searchableNodes,
-  heightFunction,
-  matcherFunction
-}: Props) {
+export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: Props) {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const engineMode = useSubscribeToEngineMode();
 
@@ -88,7 +82,7 @@ export function AnchorAimView({
   );
 
   return (
-    <FilterList heightFunc={heightFunction}>
+    <FilterList>
       <Group justify={'space-between'}>
         <Title order={2}>Anchor / Aim</Title>
         <InfoBox text={infoBoxContent} w={300} />

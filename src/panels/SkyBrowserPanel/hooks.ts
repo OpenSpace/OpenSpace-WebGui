@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useTransition } from 'react';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -20,7 +20,10 @@ import {
 
 import { SkyBrowserImage } from './types';
 
-export function useGetWwtImageCollection() {
+export function useGetWwtImageCollection(): [boolean, SkyBrowserImage[]] {
+  const imageList = useAppSelector((state) => state.skybrowser.imageList);
+  const [isPending, startTransition] = useTransition();
+
   const luaApi = useOpenSpaceApi();
   const dispatch = useAppDispatch();
 
@@ -43,15 +46,21 @@ export function useGetWwtImageCollection() {
     }
 
     try {
-      getWwtListOfImages();
+      // We only need to get the images if we don't have them already
+      if (imageList === null) {
+        startTransition(() => {
+          getWwtListOfImages();
+        });
+      }
     } catch (e) {
       throw Error(`Could not load image collection from OpenSpace. Error: ${e}`);
     }
-  }, [luaApi, dispatch]);
+  }, [luaApi, dispatch, imageList]);
+
+  return [isPending || imageList === null, imageList ?? []];
 }
 
 export function useGetSkyBrowserData() {
-  useGetWwtImageCollection();
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(subscribeToSkyBrowser());
@@ -72,7 +81,7 @@ export function useActiveImage(): [string, (url: string) => void] {
   return [activeImage, setImage];
 }
 
-// Below are hooks to get the values from the sky browser topic. They
+// Below are hooks to get the values from the skybrowser topic. They
 // are setup so the value from the selector only should update when
 // the value itself actually updates. TODO (ylvse 2025-01-29): rewrite
 // the topic so that most of the data are properties instead, and only

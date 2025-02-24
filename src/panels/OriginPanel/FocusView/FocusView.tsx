@@ -21,16 +21,10 @@ import { FocusEntry } from './FocusEntry';
 interface Props {
   favorites: PropertyOwner[];
   searchableNodes: PropertyOwner[];
-  heightFunction: (windowHeight: number) => number;
   matcherFunction: (node: PropertyOwner, query: string) => boolean;
 }
 
-export function FocusView({
-  favorites,
-  searchableNodes,
-  heightFunction,
-  matcherFunction
-}: Props) {
+export function FocusView({ favorites, searchableNodes, matcherFunction }: Props) {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const engineMode = useSubscribeToEngineMode();
 
@@ -68,7 +62,7 @@ export function FocusView({
   );
 
   return (
-    <FilterList heightFunc={heightFunction}>
+    <FilterList>
       <Group justify={'space-between'}>
         <Title order={2}>Focus</Title>
         <InfoBox text={infoBoxContent} w={300} />

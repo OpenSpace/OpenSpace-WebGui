@@ -1,17 +1,8 @@
 import { useMemo, useState } from 'react';
-import {
-  Box,
-  Center,
-  Container,
-  Group,
-  ScrollArea,
-  SegmentedControl,
-  Text,
-  VisuallyHidden
-} from '@mantine/core';
+import { Center, Group, SegmentedControl, Text, VisuallyHidden } from '@mantine/core';
 
-import { useComputeHeightFunction } from '@/components/FilterList/hooks';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { Layout } from '@/components/Layout/Layout';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
@@ -32,8 +23,6 @@ export function OriginPanel() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const properties = useAppSelector((state) => state.properties.properties);
   const engineMode = useAppSelector((state) => state.engineMode.mode);
-
-  const { ref, heightFunction } = useComputeHeightFunction(300, 20);
 
   const searchMatcherFunction = generateMatcherFunctionByKeys([
     'identifier',
@@ -80,46 +69,45 @@ export function OriginPanel() {
   const isInFlight = engineMode === EngineMode.CameraPath;
 
   return (
-    <ScrollArea h={'100%'}>
-      <Container>
-        <Box ref={ref}>
-          <Group justify={'space-between'} gap={'xs'} wrap={'nowrap'}>
-            <SegmentedControl
-              value={navigationMode}
-              disabled={isInFlight}
-              my={'xs'}
-              onChange={(value) => setNavigationMode(value as NavigationMode)}
-              data={[
-                {
-                  value: NavigationMode.Focus,
-                  label: (
-                    <Center h={20}>
-                      <FocusIcon size={IconSize.sm} />
-                      <VisuallyHidden>Focus mode</VisuallyHidden>
-                    </Center>
-                  )
-                },
-                {
-                  value: NavigationMode.AnchorAim,
-                  label: (
-                    <Center h={20}>
-                      <AnchorIcon />
-                      <Text c={'dimmed'} size={'sm'}>
-                        /
-                      </Text>
-                      <TelescopeIcon />
-                      <VisuallyHidden>Anchor & Aim mode</VisuallyHidden>
-                    </Center>
-                  )
-                }
-              ]}
-            />
-            <OriginSettings />
-          </Group>
-        </Box>
+    <Layout>
+      <Layout.FixedSection>
+        <Group justify={'space-between'} gap={'xs'} wrap={'nowrap'}>
+          <SegmentedControl
+            value={navigationMode}
+            disabled={isInFlight}
+            my={'xs'}
+            onChange={(value) => setNavigationMode(value as NavigationMode)}
+            data={[
+              {
+                value: NavigationMode.Focus,
+                label: (
+                  <Center h={20}>
+                    <FocusIcon size={IconSize.sm} />
+                    <VisuallyHidden>Focus mode</VisuallyHidden>
+                  </Center>
+                )
+              },
+              {
+                value: NavigationMode.AnchorAim,
+                label: (
+                  <Center h={20}>
+                    <AnchorIcon />
+                    <Text c={'dimmed'} size={'sm'}>
+                      /
+                    </Text>
+                    <TelescopeIcon />
+                    <VisuallyHidden>Anchor & Aim mode</VisuallyHidden>
+                  </Center>
+                )
+              }
+            ]}
+          />
+          <OriginSettings />
+        </Group>
+      </Layout.FixedSection>
+      <Layout.GrowingSection>
         {navigationMode === NavigationMode.Focus && (
           <FocusView
-            heightFunction={heightFunction}
             favorites={sortedDefaultList}
             searchableNodes={sortedSearchableNodes}
             matcherFunction={searchMatcherFunction}
@@ -127,13 +115,12 @@ export function OriginPanel() {
         )}
         {navigationMode === NavigationMode.AnchorAim && (
           <AnchorAimView
-            heightFunction={heightFunction}
             favorites={sortedDefaultList}
             searchableNodes={sortedSearchableNodes}
             matcherFunction={searchMatcherFunction}
           />
         )}
-      </Container>
-    </ScrollArea>
+      </Layout.GrowingSection>
+    </Layout>
   );
 }

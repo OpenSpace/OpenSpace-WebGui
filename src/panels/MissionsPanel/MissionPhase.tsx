@@ -18,7 +18,7 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
   const { width: panelWidth } = useWindowSize();
   const isMissionOverview = displayedPhase.type === DisplayType.Overview;
   const timeLineWidth = 120;
-
+  const actionButtonHeight = 80;
   if (!displayedPhase.data) {
     return <></>;
   }
@@ -82,10 +82,12 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
         {/* Show phase specific actions */}
         {!isMissionOverview &&
           displayedPhase.data?.actions?.map((uri) => (
-            <ActionsButton uri={uri} key={uri} />
+            <ActionsButton uri={uri} key={uri} height={actionButtonHeight} />
           ))}
         {/* We always want to show the actions for the whole mission */}
-        {missionOverview.actions?.map((uri) => <ActionsButton uri={uri} key={uri} />)}
+        {missionOverview.actions?.map((uri) => (
+          <ActionsButton uri={uri} key={uri} height={actionButtonHeight} />
+        ))}
       </DynamicGrid>
     </>
   );

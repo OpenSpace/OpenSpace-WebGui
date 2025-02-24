@@ -1,15 +1,5 @@
 import { useState } from 'react';
-import {
-  ActionIcon,
-  Box,
-  Button,
-  Container,
-  Divider,
-  Group,
-  ScrollArea,
-  Text,
-  TextInput
-} from '@mantine/core';
+import { ActionIcon, Box, Button, Divider, Group, Text, TextInput } from '@mantine/core';
 
 import { useGetPropertyOwner, useOpenSpaceApi } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
@@ -69,57 +59,55 @@ export function ScreenSpaceRenderablePanel() {
   }
 
   return (
-    <ScrollArea h={'100%'}>
-      <Container my={'xs'}>
-        <Group gap={'xs'} grow preventGrowOverflow={false} align={'end'}>
-          <TextInput
-            value={slideName}
-            onChange={(event) => setSlideName(event.currentTarget.value)}
-            placeholder={'Slide name'}
-            label={'Display name'}
-          />
-          <TextInput
-            value={slideURL}
-            onChange={(event) => setSlideURL(event.currentTarget.value)}
-            placeholder={'Path / URL'}
-            label={'Path or URL to slide'}
-          />
-          <Button
-            onClick={addSlide}
-            leftSection={<AddPhotoIcon size={IconSize.sm} />}
-            disabled={isButtonDisabled}
+    <>
+      <Group gap={'xs'} grow preventGrowOverflow={false} align={'end'}>
+        <TextInput
+          value={slideName}
+          onChange={(event) => setSlideName(event.currentTarget.value)}
+          placeholder={'Slide name'}
+          label={'Display name'}
+        />
+        <TextInput
+          value={slideURL}
+          onChange={(event) => setSlideURL(event.currentTarget.value)}
+          placeholder={'Path / URL'}
+          label={'Path or URL to slide'}
+        />
+        <Button
+          onClick={addSlide}
+          leftSection={<AddPhotoIcon size={IconSize.sm} />}
+          disabled={isButtonDisabled}
+        >
+          Add Slide
+        </Button>
+      </Group>
+      <Divider my={'xs'} />
+      {renderables.length === 0 ? (
+        <Text>No active slides</Text>
+      ) : (
+        renderables.map((uri) => (
+          <Group
+            key={uri}
+            gap={'xs'}
+            my={'xs'}
+            justify={'space-between'}
+            wrap={'nowrap'}
+            align={'top'}
           >
-            Add Slide
-          </Button>
-        </Group>
-        <Divider my={'xs'} />
-        {renderables.length === 0 ? (
-          <Text>No active slides</Text>
-        ) : (
-          renderables.map((uri) => (
-            <Group
-              key={uri}
-              gap={'xs'}
-              my={'xs'}
-              justify={'space-between'}
-              wrap={'nowrap'}
-              align={'top'}
+            <Box>
+              <PropertyOwner uri={uri} />
+            </Box>
+            <ActionIcon
+              onClick={() => removeSlide(uri)}
+              color={'red'}
+              variant={'outline'}
+              aria-label={'Remove slide'}
             >
-              <Box>
-                <PropertyOwner uri={uri} />
-              </Box>
-              <ActionIcon
-                onClick={() => removeSlide(uri)}
-                color={'red'}
-                variant={'outline'}
-                aria-label={'Remove slide'}
-              >
-                <MinusIcon />
-              </ActionIcon>
-            </Group>
-          ))
-        )}
-      </Container>
-    </ScrollArea>
+              <MinusIcon />
+            </ActionIcon>
+          </Group>
+        ))
+      )}
+    </>
   );
 }

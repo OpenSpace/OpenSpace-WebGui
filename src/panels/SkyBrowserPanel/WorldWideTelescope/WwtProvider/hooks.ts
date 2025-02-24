@@ -5,7 +5,7 @@ import { Messages } from '../../types';
 import { WwtContext } from './WwtContext';
 
 // This file contains the hooks necessary to set up the communication with
-// World Wide Telescope and pass it messages
+// WorldWide Telescope and pass it messages
 
 // This hook defines the messages WWT can receive and provides the ref
 // that should be attached to the iframe of WWT
@@ -145,7 +145,7 @@ export function useWwtEventListener() {
   const [wwtHasLoaded, setWwtHasLoaded] = useState(false);
   const [imageCollectionLoaded, setImageCollectionLoaded] = useState(false);
 
-  // Add event listeners for World Wide Telescope responses
+  // Add event listeners for WorldWide Telescope responses
   useEffect(() => {
     function handleCallbackMessage(event: MessageEvent) {
       // We got the first response from wwt
@@ -178,7 +178,7 @@ export function useStartPingingWwt(
 ) {
   const setSetupWwtFunc = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Start send messages to World Wide Telescope to trigger a response
+  // Start send messages to WorldWide Telescope to trigger a response
   useEffect(() => {
     if (shouldConnect) {
       // Send aim messages to WorldWide Telescope to prompt it to reply with a message
