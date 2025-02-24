@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Button, Image, Loader, ScrollArea, Stack, Text } from '@mantine/core';
+import { Button, Image, Loader, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { PlusIcon } from '@/icons/icons';
@@ -80,9 +80,9 @@ export function SkyBrowserPanel() {
   }
 
   return (
-    <ScrollArea dir={'y'} h={'100%'}>
+    <>
       <ImageListWrapper />
       <BrowserTabs openWorldWideTelescope={openWorldWideTelescope} />
-    </ScrollArea>
+    </>
   );
 }

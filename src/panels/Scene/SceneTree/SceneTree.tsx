@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActionIcon,
+  Box,
   getTreeExpandedState,
   Group,
   Tooltip,
@@ -111,18 +112,22 @@ export function SceneTree() {
       </Group>
 
       <FilterList.Favorites>
-        <Group gap={0} pos={'absolute'} top={0} right={0}>
-          <Tooltip label={'Collapse all'} position={'top'}>
-            <ActionIcon variant={'subtle'} onClick={tree.collapseAllNodes}>
-              <ChevronsUpIcon />
-            </ActionIcon>
-          </Tooltip>
-          <Tooltip label={'Expand all'} position={'top'}>
-            <ActionIcon variant={'subtle'} onClick={tree.expandAllNodes}>
-              <ChevronsDownIcon />
-            </ActionIcon>
-          </Tooltip>
-        </Group>
+        {/* This box exists to ensure the absolute positioned chevrons end up in the
+        right place */}
+        <Box pos={'relative'}>
+          <Group gap={0} pos={'absolute'} top={0} right={0}>
+            <Tooltip label={'Collapse all'} position={'top'}>
+              <ActionIcon variant={'subtle'} onClick={tree.collapseAllNodes}>
+                <ChevronsUpIcon />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip label={'Expand all'} position={'top'}>
+              <ActionIcon variant={'subtle'} onClick={tree.expandAllNodes}>
+                <ChevronsDownIcon />
+              </ActionIcon>
+            </Tooltip>
+          </Group>
+        </Box>
         <Tree
           data={treeData}
           tree={tree}

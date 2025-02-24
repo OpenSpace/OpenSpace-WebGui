@@ -31,11 +31,7 @@ export function VirtualList<T>({
 
   const items = virtualizer.getVirtualItems();
 
-  // @TODO 2024-12-06 ylvse: style the scrollbar. Mantines scrollbar has a
-  // completely separate component for the actual scrollbar which is not exported.
-  // We could copy the source code but leaving this as is for now.
-  // ScrollArea doesn't work with the virtual list and its a pretty
-  // complex component so it's hard to just copy the styles
+  // @TODO 2024-12-06 ylvse: style the scrollbar.
   return (
     <>
       {/* The scrollable element for your list */}

@@ -10,6 +10,7 @@ import {
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { Layout } from '@/components/Layout/Layout';
 import { BackArrowIcon, FolderIcon } from '@/icons/icons';
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -17,7 +18,6 @@ import { Action } from '@/types/types';
 
 import { ActionsButton } from './ActionsButton';
 import { actionsForLevel, getDisplayedActions } from './util';
-import { Layout } from '@/components/Layout/Layout';
 
 export function ActionsPanel() {
   const allActions = useAppSelector((state) => state.actions.actions);

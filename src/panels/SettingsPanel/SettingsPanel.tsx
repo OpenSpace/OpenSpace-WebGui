@@ -1,5 +1,4 @@
 import { useCallback, useMemo } from 'react';
-import { Container, ScrollArea } from '@mantine/core';
 
 import { useGetOptionPropertyValue } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -70,7 +69,7 @@ export function SettingsPanel() {
   }, []);
 
   return (
-    <ScrollArea h={'100%'}>
+    <>
       <FilterList>
         <FilterList.InputField placeHolderSearchText={'Search for a setting...'} />
         <FilterList.Favorites>
@@ -86,6 +85,6 @@ export function SettingsPanel() {
           <FilterList.SearchResults.Pagination maxShownMatches={20} />
         </FilterList.SearchResults>
       </FilterList>
-    </ScrollArea>
+    </>
   );
 }

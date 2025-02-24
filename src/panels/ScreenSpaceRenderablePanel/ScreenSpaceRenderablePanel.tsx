@@ -1,15 +1,5 @@
 import { useState } from 'react';
-import {
-  ActionIcon,
-  Box,
-  Button,
-  Container,
-  Divider,
-  Group,
-  ScrollArea,
-  Text,
-  TextInput
-} from '@mantine/core';
+import { ActionIcon, Box, Button, Divider, Group, Text, TextInput } from '@mantine/core';
 
 import { useGetPropertyOwner, useOpenSpaceApi } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
@@ -69,7 +59,7 @@ export function ScreenSpaceRenderablePanel() {
   }
 
   return (
-    <ScrollArea h={'100%'}>
+    <>
       <Group gap={'xs'} grow preventGrowOverflow={false} align={'end'}>
         <TextInput
           value={slideName}
@@ -118,6 +108,6 @@ export function ScreenSpaceRenderablePanel() {
           </Group>
         ))
       )}
-    </ScrollArea>
+    </>
   );
 }

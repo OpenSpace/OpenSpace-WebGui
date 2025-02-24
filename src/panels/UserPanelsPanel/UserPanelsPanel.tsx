@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react';
 import {
   ActionIcon,
   Button,
-  Container,
   Divider,
   Group,
-  ScrollArea,
   Select,
   Text,
   TextInput,
@@ -100,7 +98,7 @@ export function UserPanelsPanel() {
   }
 
   return (
-    <ScrollArea h={'100%'}>
+    <>
       <Title my={'xs'} order={2}>
         User Panels
       </Title>
@@ -159,6 +157,6 @@ export function UserPanelsPanel() {
           <OpenWindowIcon />
         </Button>
       ))}
-    </ScrollArea>
+    </>
   );
 }

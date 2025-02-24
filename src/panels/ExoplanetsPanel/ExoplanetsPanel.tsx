@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Container, Divider, ScrollArea, Text, Title } from '@mantine/core';
+import { Divider, Text, Title } from '@mantine/core';
 
 import { useGetStringPropertyValue, useOpenSpaceApi } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
@@ -115,21 +115,19 @@ export function ExoplanetsPanel() {
       </Collapsable>
       <Divider my={'xs'}></Divider>
       <Title order={3}>Added Systems</Title>
-      <ScrollArea my={'md'}>
-        {addedSystems.length === 0 ? (
-          <Text>No active systems</Text>
-        ) : (
-          addedSystems.map(
-            (hostStar) =>
-              hostStar && (
-                <SceneGraphNodeHeader
-                  key={hostStar.identifier}
-                  uri={sgnUri(hostStar.identifier)}
-                />
-              )
-          )
-        )}
-      </ScrollArea>
+      {addedSystems.length === 0 ? (
+        <Text>No active systems</Text>
+      ) : (
+        addedSystems.map(
+          (hostStar) =>
+            hostStar && (
+              <SceneGraphNodeHeader
+                key={hostStar.identifier}
+                uri={sgnUri(hostStar.identifier)}
+              />
+            )
+        )
+      )}
     </>
   );
 }

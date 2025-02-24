@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, Divider, ScrollArea, Select, Text, Title } from '@mantine/core';
+import { Divider, Select, Text, Title } from '@mantine/core';
 
 import { EarthPanel } from './AnchorPanels/EarthPanel/EarthPanel';
 
@@ -20,7 +20,7 @@ export function GeoLocationPanel() {
   }
 
   return (
-    <ScrollArea h={'100%'}>
+    <>
       <Title order={2}>Geo Location</Title>
       <Select
         data={anchorOptions}
@@ -33,6 +33,6 @@ export function GeoLocationPanel() {
       />
       <Divider my={'xs'} />
       {anchorPanelContent}
-    </ScrollArea>
+    </>
   );
 }

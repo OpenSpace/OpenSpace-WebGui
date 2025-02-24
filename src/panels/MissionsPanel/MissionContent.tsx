@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Button, Group, ScrollArea, Switch, Text, Title } from '@mantine/core';
+import { Box, Button, Group, Switch, Text, Title } from '@mantine/core';
 
 import { useSubscribeToTime } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
@@ -111,7 +111,7 @@ export function MissionContent({ missionOverview }: Props) {
         missionOverview={missionOverview}
         setDisplayedPhase={setPhaseManually}
       />
-      <ScrollArea px={'md'} h={'100%'}>
+      <Box px={'md'} h={'100%'} style={{ overflow: 'auto' }}>
         <Group justify={'space-between'} mb={'md'}>
           <Title order={2}>{missionOverview.name}</Title>
           <Button
@@ -139,7 +139,7 @@ export function MissionContent({ missionOverview }: Props) {
         ) : (
           'No data for the current time range'
         )}
-      </ScrollArea>
+      </Box>
     </Group>
   );
 }

@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import { ScrollArea } from '@mantine/core';
+import { Box } from '@mantine/core';
 
 import { LoadingBlocks } from '../LoadingBlocks/LoadingBlocks';
 
@@ -16,9 +16,9 @@ export function FilterListFavorites({ children }: PropsWithChildren) {
 
   return (
     showFavorites && (
-      <ScrollArea.Autosize scrollbars={'y'} type={'always'} offsetScrollbars mah={'100%'}>
+      <Box style={{ overflow: 'auto' }} mah={'100%'}>
         {children}
-      </ScrollArea.Autosize>
+      </Box>
     )
   );
 }

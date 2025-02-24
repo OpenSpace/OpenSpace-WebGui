@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
   Badge,
   Code,
-  Container,
   Divider,
   Grid,
   Group,
@@ -24,7 +23,7 @@ export function KeyBindsPanel() {
 
   const hasSelectedKeys = selectedKey !== '' || activeModifiers.length > 0;
   return (
-    <Container maw={'none'}>
+    <>
       <Title order={2}>Keybinds</Title>
       <FullKeyboard
         setSelectedActions={setSelectedActions}
@@ -84,6 +83,6 @@ export function KeyBindsPanel() {
             : 'No key selected. Select a key to see its action.'}
         </Text>
       )}
-    </Container>
+    </>
   );
 }
