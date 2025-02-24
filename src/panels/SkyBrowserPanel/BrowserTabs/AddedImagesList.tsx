@@ -37,7 +37,7 @@ export function AddedImagesList({ id }: Props) {
 
   const renderFunc = useCallback(
     (image: number, i: number) => {
-      if (opacities === undefined || imageList === null) {
+      if (!opacities || !imageList) {
         return <></>;
       }
       return (
@@ -54,7 +54,7 @@ export function AddedImagesList({ id }: Props) {
 
   const keyFunc = useCallback((item: number) => imageList![item].url, [imageList]);
 
-  if (imageList === null || selectedImages === undefined || opacities === undefined) {
+  if (!imageList || !selectedImages || !opacities) {
     return <LoadingBlocks mt={'md'} />;
   }
 
