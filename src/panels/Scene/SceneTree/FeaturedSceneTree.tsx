@@ -1,4 +1,4 @@
-import { Divider, Tree, TreeNodeData } from '@mantine/core';
+import { Tree, TreeNodeData } from '@mantine/core';
 
 import { useGetStringPropertyValue } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
@@ -52,12 +52,9 @@ export function FeaturedSceneTree() {
   }
 
   return (
-    <>
-      <Tree
-        data={featuredTreeData}
-        renderNode={(payload) => <SceneTreeNode {...payload} />}
-      />
-      <Divider pt={'lg'} />
-    </>
+    <Tree
+      data={featuredTreeData}
+      renderNode={(payload) => <SceneTreeNode {...payload} />}
+    />
   );
 }

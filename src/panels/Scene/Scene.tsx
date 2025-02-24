@@ -1,4 +1,4 @@
-import { Container } from '@mantine/core';
+import { Container, Divider, Space } from '@mantine/core';
 
 import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
@@ -24,6 +24,9 @@ export function Scene() {
     <Layout>
       <Layout.FixedSection>
         <FeaturedSceneTree />
+        <Space h={'xs'} />
+        <Divider />
+        <Space h={'xs'} />
       </Layout.FixedSection>
       <Layout.GrowingSection>
         <SceneTree />
