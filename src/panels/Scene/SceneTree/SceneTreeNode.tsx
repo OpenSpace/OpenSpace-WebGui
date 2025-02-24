@@ -66,8 +66,7 @@ export function SceneTreeNode({
   useWindowEvent('keydown', (event) => {
     const parentElement = nodeRef?.current?.parentElement;
     const isFocused = parentElement && parentElement === document.activeElement;
-
-    if (event.code === 'Enter' && isFocused) {
+    if (event.key === 'Enter' && isFocused) {
       if (isGroupNode(node)) {
         tree.toggleExpanded(node.value);
       } else {

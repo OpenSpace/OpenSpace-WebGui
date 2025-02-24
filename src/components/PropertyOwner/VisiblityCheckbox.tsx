@@ -35,8 +35,8 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
     if (event.key === 'Shift') {
       setIsImmediate(true);
     }
-    // Set the value when the user presses enter or space
-    if (event.key === 'Enter' || event.key === ' ') {
+    // Set the value when the user presses enter
+    if (event.key === 'Enter') {
       updateValue(!event.currentTarget.checked, isImmediate);
     }
   }
