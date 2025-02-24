@@ -6,6 +6,7 @@ import {
   DragReorderList,
   OnDragEndProps
 } from '@/components/DragReorderList/DragReorderList';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useAppSelector } from '@/redux/hooks';
 
 import { useOpacities, useSelectedImages } from '../hooks';
@@ -36,7 +37,7 @@ export function AddedImagesList({ id }: Props) {
 
   const renderFunc = useCallback(
     (image: number, i: number) => {
-      if (opacities === undefined) {
+      if (!opacities || !imageList) {
         return <></>;
       }
       return (
@@ -51,10 +52,10 @@ export function AddedImagesList({ id }: Props) {
     [imageList, opacities, activeImage]
   );
 
-  const keyFunc = useCallback((item: number) => imageList[item].url, [imageList]);
+  const keyFunc = useCallback((item: number) => imageList![item].url, [imageList]);
 
-  if (imageList.length === 0 || selectedImages === undefined || opacities === undefined) {
-    return <></>;
+  if (!imageList || !selectedImages || !opacities) {
+    return <LoadingBlocks mt={'md'} />;
   }
 
   return (
