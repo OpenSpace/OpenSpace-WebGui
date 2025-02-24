@@ -2,8 +2,8 @@ import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
-import { useAppSelector } from '@/redux/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
+import { useAppSelector } from '@/redux/hooks';
 import { Action } from '@/types/types';
 
 import { ActionsBreadcrumbs } from './ActionsBreadcrumbs';
