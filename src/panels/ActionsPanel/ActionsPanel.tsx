@@ -9,6 +9,7 @@ import { Action } from '@/types/types';
 import { ActionsBreadcrumbs } from './ActionsBreadcrumbs';
 import { ActionsButton } from './ActionsButton';
 import { ActionsFolder } from './ActionsFolder';
+import { ActionsSearchInputField } from './ActionsSearchInputField';
 import { useActionsForLevel, useActionsInPath } from './hooks';
 
 export function ActionsPanel() {
@@ -31,7 +32,8 @@ export function ActionsPanel() {
       </Layout.FixedSection>
       <Layout.GrowingSection>
         <FilterList>
-          <FilterList.InputField placeHolderSearchText={'Search for an action...'} />
+          {/* This is a custom variant of the FilterList input field */}
+          <ActionsSearchInputField placeHolderSearchText={'Search for an action...'} />
           <FilterList.Favorites>
             <DynamicGrid spacing={'xs'} verticalSpacing={'xs'} minChildSize={170}>
               {actionLevel.folders.sort().map((folder) => (
