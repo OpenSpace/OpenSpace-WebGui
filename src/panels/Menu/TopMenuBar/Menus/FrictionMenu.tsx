@@ -59,8 +59,8 @@ export function FrictionMenu() {
               Friction controls:
             </Text>
             <Text>
-              Enable or disable rotation , zoom , and roll friction respectively. If
-              checked, applies friction to camera movement.
+              Enable or disable rotation, zoom, and roll friction. If checked, applies
+              friction to camera movement.
             </Text>
             <Stack gap={'xs'}>
               {rotationKeybind && (
