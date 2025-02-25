@@ -9,7 +9,7 @@ export function dateToOpenSpaceTimeString(date: Date): string {
   // abbreviation of 1969-1999, we assume people mean the actual year so we send the date
   // with an epoch as well. see: https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/str2et_c.html
   // for further details
-  if (year >= 0 && year < 100) {
+  if (year > 0 && year < 100) {
     const [utcYear, month, rest] = date.toJSON().replace('Z', '').split('-');
     // With the format YYYY A.D. MM DD HH:MM:SS we can't have the 'T' token
     const [day, time] = rest.split('T');
@@ -18,15 +18,18 @@ export function dateToOpenSpaceTimeString(date: Date): string {
 
   // For negative years we have to parse the string in B.C. epoch format for spice
   // see: https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/str2et_c.html
-  if (year < 0) {
+  if (year <= 0) {
     // Convert date to UTC time and replace Z as always, we also remove the preceding '-'
     // since we set the date using B.C epoch
     const utcDate = date.toJSON().replace('Z', '').substring(1);
     const [utcYear, month, rest] = utcDate.split('-');
+    // A.D - B.C years does not have year 0 so we shift B.C by one. From str2et_c exmaples:
+    // The following date: 18 B.C. Jun 3, 12:29:28.291 becomes -017 Jun  03  12  29  28.291
+    const shiftedUtcYear = parseInt(utcYear) + 1;
     // With the format YYYY B.C. MM DD HH:MM:SS we can't have the 'T' token
     const [day, time] = rest.split('T');
 
-    return `${utcYear} B.C. ${month} ${day} ${time}`;
+    return `${shiftedUtcYear} B.C. ${month} ${day} ${time}`;
   }
 
   // For years > 10 000 the JSON string includes a '+' which mess up the OpenSpace
