@@ -39,10 +39,10 @@ export function FocusView({ favorites, searchableNodes, matcherFunction }: Props
 
   function onSelect(
     identifier: Identifier,
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    modifiers: { shiftKey: boolean; ctrlKey: boolean }
   ) {
-    const shouldRetarget = !event.shiftKey;
-    const shouldResetVelocities = !event.ctrlKey;
+    const shouldRetarget = !modifiers.shiftKey;
+    const shouldResetVelocities = !modifiers.ctrlKey;
     luaApi?.navigation.setFocus(identifier, shouldRetarget, shouldResetVelocities);
   }
 
@@ -52,10 +52,10 @@ export function FocusView({ favorites, searchableNodes, matcherFunction }: Props
         Click the <FocusIcon /> button to focus/retarget object.
       </Text>
       <Text style={{ textWrap: 'pretty' }} mt={'xs'}>
-        - Hold <Kbd>Shift</Kbd> on-click to set as focus/anchor without retargetting.
+        - Hold <Kbd>Shift</Kbd> when clicking to set as focus/anchor without retargetting.
       </Text>
       <Text style={{ textWrap: 'pretty' }}>
-        - Hold <Kbd>Ctrl</Kbd> on-click to keep current camera velocities.
+        - Hold <Kbd>Ctrl</Kbd> when clicking to keep current camera velocities.
       </Text>
     </>
   );

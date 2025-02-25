@@ -9,7 +9,7 @@ interface FocusEntryProps {
   entry: PropertyOwner;
   onSelect: (
     identifier: Identifier,
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    modifiers: { shiftKey: boolean; ctrlKey: boolean }
   ) => void;
   isActive?: boolean;
   showFrameButton?: boolean;
@@ -26,7 +26,7 @@ export function FocusEntry({
   const buttonVariant = isActive ? 'filled' : 'light';
 
   function onSelectEntry(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    onSelect(entry.identifier, event);
+    onSelect(entry.identifier, { shiftKey: event.shiftKey, ctrlKey: event.ctrlKey });
   }
 
   return (
