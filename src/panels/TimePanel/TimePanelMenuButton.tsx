@@ -10,13 +10,13 @@ interface TimePanelMenuButtonProps {
 }
 export function TimePanelMenuButton({ onClick }: TimePanelMenuButtonProps) {
   const dispatch = useAppDispatch();
-  const time = useAppSelector((state) => state.time.time);
+  const timeCapped = useAppSelector((state) => state.time.timeCapped);
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime);
   const isPaused = useAppSelector((state) => state.time.isPaused);
 
-  const isReady = time !== undefined;
+  const isReady = timeCapped !== undefined;
 
-  const date = new Date(time ?? '');
+  const date = new Date(timeCapped ?? '');
   const isValiDate = isDateValid(date);
 
   const timeLabel = isValiDate ? date.toUTCString() : 'Date out of range';
