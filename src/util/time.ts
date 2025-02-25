@@ -3,7 +3,7 @@ export function dateToOpenSpaceTimeString(date: Date): string {
   // ISO 8601-style time zones (the Z). It does, however, always assume that UTC
   // is given.
 
-  const year = date.getFullYear();
+  const year = date.getUTCFullYear();
 
   // Spice assumes that years between 0-68 are abbreviation of 2000-2068 and 69-99 are
   // abbreviation of 1969-1999, we assume people mean the actual year so we send the date
@@ -25,7 +25,14 @@ export function dateToOpenSpaceTimeString(date: Date): string {
     const [utcYear, month, rest] = utcDate.split('-');
     // A.D - B.C years does not have year 0 so we shift B.C by one. From str2et_c exmaples:
     // The following date: 18 B.C. Jun 3, 12:29:28.291 becomes -017 Jun  03  12  29  28.291
-    const shiftedUtcYear = parseInt(utcYear) + 1;
+    const parsedUtcYear = parseInt(utcYear);
+    // TODO: * Something * happens between 999 and 1001 BC where Spice maps 1000 BC to 999 BC
+    // and 1001 BC to 1001 BC. This change in behaviour also means that stepping up and down
+    // with the buttons would increment/decrement by 2. So then we don't want to add the
+    // shift. This however leads to not being able to shift-click the increment at year 1001 BC
+    const shiftBCYear = parsedUtcYear <= 1000 ? 1 : 0;
+    const shiftedUtcYear = parsedUtcYear + shiftBCYear;
+
     // With the format YYYY B.C. MM DD HH:MM:SS we can't have the 'T' token
     const [day, time] = rest.split('T');
 
