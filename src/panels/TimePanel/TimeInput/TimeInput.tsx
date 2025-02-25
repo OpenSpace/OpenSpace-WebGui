@@ -18,6 +18,7 @@ export function TimeInput() {
   const [isHoldingShift, setIsHoldingShift] = useState(false);
 
   const cappedTime = useAppSelector((state) => state.time.timeCapped);
+  const backupTimeString = useAppSelector((state) => state.time.backupTimeString);
   const luaApi = useOpenSpaceApi();
   const { setTime, interpolateTime } = useSetOpenSpaceTime();
   useSubscribeToTime();
@@ -161,8 +162,9 @@ export function TimeInput() {
 
   if (cappedTime === undefined) {
     return (
-      <Center p={'xl'}>
-        <Text>Date out of range</Text>
+      <Center p={'xl'} style={{ flexDirection: 'column' }}>
+        <Text>{backupTimeString}</Text>
+        <Text c={'red'}>Can't interact with dates outside +-270.000 years</Text>
       </Center>
     );
   }

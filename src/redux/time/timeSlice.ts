@@ -14,6 +14,7 @@ export interface TimeState {
   nextDeltaTimeStep?: number;
   prevDeltaTimeStep?: number;
   deltaTimeSteps?: number[];
+  backupTimeString?: string;
 }
 
 // We could leave this as empty but better to be explicit that they
@@ -68,6 +69,7 @@ export const time = createSlice({
           // but if we give it undefined we can handle it easier in code and display other text eg.
           state.time = undefined;
           state.timeCapped = undefined;
+          state.backupTimeString = newTime;
         }
       }
       if (deltaTime !== undefined) {
