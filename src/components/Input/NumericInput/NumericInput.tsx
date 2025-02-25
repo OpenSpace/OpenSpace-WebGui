@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { NumberInput, NumberInputProps } from '@mantine/core';
 
 import { usePropListeningState } from '@/api/hooks';
@@ -29,9 +29,11 @@ export function NumericInput({
   step,
   ...props
 }: Props) {
-  const { value: storedValue, set: setStoredValue } = usePropListeningState<
-    number | undefined
-  >(value);
+  const {
+    value: storedValue,
+    setValue: setStoredValue,
+    setIsEditing
+  } = usePropListeningState<number | undefined>(value);
 
   const shouldClamp = props.clampBehavior === 'strict';
   const shouldClampMin = shouldClamp && min !== undefined;
@@ -65,6 +67,7 @@ export function NumericInput({
       resetValue();
     }
     shouldResetOnBlurRef.current = true;
+    setIsEditing(false);
   }
 
   function onStep(change: number) {
@@ -86,7 +89,10 @@ export function NumericInput({
       value={storedValue === undefined ? '' : storedValue}
       onKeyUp={onKeyUp}
       onBlur={onBlur}
-      onValueChange={(newValue) => setStoredValue(newValue.floatValue)}
+      onValueChange={(newValue) => {
+        setStoredValue(newValue.floatValue);
+      }}
+      onChange={() => setIsEditing(true)}
       disabled={disabled}
       label={label}
       min={min}
