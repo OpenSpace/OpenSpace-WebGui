@@ -1,4 +1,4 @@
-import { Button, Divider, Group, Kbd, Space, Text, Title, Tooltip } from '@mantine/core';
+import { Button, Divider, Group, Kbd, Text, Title, Tooltip } from '@mantine/core';
 
 import {
   useGetStringPropertyValue,
@@ -73,8 +73,7 @@ export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: P
         <TelescopeIcon />) for the camera to look at. The aim will be kept in the same
         position as time changes.
       </Text>
-      <Space h={'xs'} />
-      <Text style={{ textWrap: 'pretty' }}>
+      <Text style={{ textWrap: 'pretty' }} mt={'xs'}>
         When selecting the aim/anchor, the chosen node will be targetted to be centered in
         the view. Hold <Kbd>Shift</Kbd> on-click to set anchor/aim without targetting.
       </Text>

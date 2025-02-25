@@ -30,7 +30,7 @@ export function CancelFlightButton() {
     >
       <Stack gap={5} ta={'left'}>
         Cancel
-        <Text size={'xs'} opacity={0.5} truncate maw={130}>
+        <Text size={'xs'} opacity={0.8} truncate maw={130}>
           <AnchorIcon /> {anchorName}
         </Text>
       </Stack>

@@ -166,7 +166,7 @@ export function NodeNavigationButton({
       content.icon = <FocusIcon />;
       content.tooltip = (
         <span>
-          Focus the object (set as anchor). Hold <Kbd>Shift</Kbd> on-click to focus
+          Focus the object (set as anchor). Hold <Kbd>Shift</Kbd> when clicking to focus
           without retargeting
         </span>
       );
@@ -177,7 +177,7 @@ export function NodeNavigationButton({
       content.icon = <AirplaneIcon />;
       content.tooltip = (
         <span>
-          Trigger a flight to the object. Hold <Kbd>Shift</Kbd> on-click to instantly
+          Trigger a flight to the object. Hold <Kbd>Shift</Kbd> when clicking to instantly
           teleport/jump
         </span>
       );
@@ -188,8 +188,8 @@ export function NodeNavigationButton({
       content.icon = <AirplaneIcon />;
       content.tooltip = (
         <span>
-          Trigger a flight to the position. Hold <Kbd>Shift</Kbd> on-click to instantly
-          teleport/jump
+          Trigger a flight to the position. Hold <Kbd>Shift</Kbd> when clicking to
+          instantly teleport/jump
         </span>
       );
       break;
@@ -200,7 +200,7 @@ export function NodeNavigationButton({
       content.tooltip = (
         <span>
           Frame the object by moving the camera in a straigt line and rotate towards it.
-          Hold <Kbd>Shift</Kbd> on-click to do it instantaneously
+          Hold <Kbd>Shift</Kbd> when clicking to do it instantaneously
         </span>
       );
       break;

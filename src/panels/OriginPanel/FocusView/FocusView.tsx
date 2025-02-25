@@ -1,4 +1,4 @@
-import { Button, Divider, Group, Kbd, Paper, Space, Text, Title } from '@mantine/core';
+import { Button, Divider, Group, Kbd, Paper, Text, Title } from '@mantine/core';
 
 import {
   useGetStringPropertyValue,
@@ -51,8 +51,7 @@ export function FocusView({ favorites, searchableNodes, matcherFunction }: Props
       <Text>
         Click the <FocusIcon /> button to focus/retarget object.
       </Text>
-      <Space h={'xs'} />
-      <Text style={{ textWrap: 'pretty' }}>
+      <Text style={{ textWrap: 'pretty' }} mt={'xs'}>
         - Hold <Kbd>Shift</Kbd> on-click to set as focus/anchor without retargetting.
       </Text>
       <Text style={{ textWrap: 'pretty' }}>

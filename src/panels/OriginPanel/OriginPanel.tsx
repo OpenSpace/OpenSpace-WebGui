@@ -24,13 +24,6 @@ export function OriginPanel() {
   const properties = useAppSelector((state) => state.properties.properties);
   const engineMode = useAppSelector((state) => state.engineMode.mode);
 
-  const searchMatcherFunction = generateMatcherFunctionByKeys([
-    'identifier',
-    'name',
-    'uri',
-    'tags'
-  ]);
-
   const shouldStartInAnchorAim = useAppSelector((state) => {
     const aimProp = state.properties.properties[NavigationAimKey];
     const anchorProp = state.properties.properties[NavigationAnchorKey];
@@ -65,6 +58,13 @@ export function OriginPanel() {
 
     return searchableNodes.slice().sort((a, b) => a.name.localeCompare(b.name));
   }, [properties, propertyOwners]);
+
+  const searchMatcherFunction = generateMatcherFunctionByKeys([
+    'identifier',
+    'name',
+    'uri',
+    'tags'
+  ]);
 
   const isInFlight = engineMode === EngineMode.CameraPath;
 
