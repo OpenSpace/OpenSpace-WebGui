@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ActionIcon, Button, Center, Group, Stack, Text } from '@mantine/core';
+import { ActionIcon, Alert, Button, Center, Group, Stack, Text } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
 import { useOpenSpaceApi, useSetOpenSpaceTime, useSubscribeToTime } from '@/api/hooks';
@@ -16,6 +16,7 @@ export function TimeInput() {
   const [useLock, setUseLock] = useState(false);
   const [pendingTime, setPendingTime] = useState(new Date());
   const [isHoldingShift, setIsHoldingShift] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const cappedTime = useAppSelector((state) => state.time.timeCapped);
   const backupTimeString = useAppSelector((state) => state.time.backupTimeString);
@@ -160,11 +161,26 @@ export function TimeInput() {
     });
   }
 
+  function validateYear(value: number | string): void {
+    if (typeof value === 'string') {
+      return;
+    }
+
+    const newTime = new Date(timeRef.current);
+    const ms = newTime.setUTCFullYear(value);
+
+    if (isNaN(ms)) {
+      setErrorMessage(`Year '${value}' is outside allowed year range (-271821, 275760)`);
+    } else {
+      setErrorMessage('');
+    }
+  }
+
   if (cappedTime === undefined) {
     return (
       <Center p={'xl'} style={{ flexDirection: 'column' }}>
         <Text>{backupTimeString}</Text>
-        <Text c={'red'}>Can't interact with dates outside +-270.000 years</Text>
+        <Text c={'red'}>Can't interact with dates outside ±270.000 years</Text>
       </Center>
     );
   }
@@ -184,8 +200,14 @@ export function TimeInput() {
         <Group gap={5} wrap={'nowrap'}>
           <TimeIncrementInput
             value={time.getUTCFullYear()}
-            onInputChange={(value) => onTimeInput(TimePart.Years, value)}
+            onInputEnter={(value) => onTimeInput(TimePart.Years, value)}
             onInputChangeStep={(change) => onTimeInputRelative(TimePart.Years, change)}
+            onInputChange={validateYear}
+            onInputBlur={() => {
+              if (errorMessage) {
+                setErrorMessage('');
+              }
+            }}
             w={65}
           />
           <MonthInput
@@ -197,7 +219,7 @@ export function TimeInput() {
 
           <TimeIncrementInput
             value={time.getUTCDate()}
-            onInputChange={(value) => onTimeInput(TimePart.Days, value)}
+            onInputEnter={(value) => onTimeInput(TimePart.Days, value)}
             onInputChangeStep={(change) => onTimeInputRelative(TimePart.Days, change)}
             min={1}
             max={31}
@@ -207,7 +229,7 @@ export function TimeInput() {
         <Group gap={5} wrap={'nowrap'}>
           <TimeIncrementInput
             value={time.getUTCHours()}
-            onInputChange={(value) => onTimeInput(TimePart.Hours, value)}
+            onInputEnter={(value) => onTimeInput(TimePart.Hours, value)}
             onInputChangeStep={(change) => onTimeInputRelative(TimePart.Hours, change)}
             min={0}
             max={24}
@@ -215,7 +237,7 @@ export function TimeInput() {
           />
           <TimeIncrementInput
             value={time.getUTCMinutes()}
-            onInputChange={(value) => onTimeInput(TimePart.Minutes, value)}
+            onInputEnter={(value) => onTimeInput(TimePart.Minutes, value)}
             onInputChangeStep={(change) => onTimeInputRelative(TimePart.Minutes, change)}
             min={0}
             max={60}
@@ -223,7 +245,7 @@ export function TimeInput() {
           />
           <TimeIncrementInput
             value={time.getUTCSeconds()}
-            onInputChange={(value) => onTimeInput(TimePart.Seconds, value)}
+            onInputEnter={(value) => onTimeInput(TimePart.Seconds, value)}
             onInputChangeStep={(change) => onTimeInputRelative(TimePart.Seconds, change)}
             min={0}
             max={60}
@@ -231,6 +253,7 @@ export function TimeInput() {
           />
         </Group>
       </Group>
+      {errorMessage && <Alert color={"red"}>{errorMessage}</Alert>}
       {useLock && (
         <Group gap={'xs'} grow>
           <Button

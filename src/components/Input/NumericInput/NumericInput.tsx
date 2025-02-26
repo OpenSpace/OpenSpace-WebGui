@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { NumberInput, NumberInputProps } from '@mantine/core';
 
 import { usePropListeningState } from '@/api/hooks';
@@ -23,6 +23,8 @@ export function NumericInput({
   disabled = false,
   hideControls,
   onEnter = () => {},
+  onChange,
+  onBlur,
   value,
   min,
   max,
@@ -62,12 +64,13 @@ export function NumericInput({
     }
   }
 
-  function onBlur() {
+  function _onBlur(event: React.FocusEvent<HTMLInputElement, Element>) {
     if (shouldResetOnBlurRef.current === true) {
       resetValue();
     }
     shouldResetOnBlurRef.current = true;
     setIsEditing(false);
+    onBlur?.(event);
   }
 
   function onStep(change: number) {
@@ -84,15 +87,20 @@ export function NumericInput({
     onEnter(newValue);
   }
 
+  function _onChange(value: number | string): void {
+    setIsEditing(true);
+    onChange?.(value);
+  }
+
   return (
     <NumberInput
       value={storedValue === undefined ? '' : storedValue}
       onKeyUp={onKeyUp}
-      onBlur={onBlur}
+      onBlur={_onBlur}
       onValueChange={(newValue) => {
         setStoredValue(newValue.floatValue);
       }}
-      onChange={() => setIsEditing(true)}
+      onChange={_onChange}
       disabled={disabled}
       label={label}
       min={min}

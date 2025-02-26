@@ -9,24 +9,30 @@ interface Props extends MantineStyleProps {
   min?: number;
   max?: number;
   step?: number;
-  onInputChange: (value: number) => void;
+  onInputEnter: (value: number) => void;
   onInputChangeStep: (change: number) => void;
+  onInputChange?: (value: number | string) => void;
+  onInputBlur?: (event: React.FocusEvent<HTMLInputElement, Element>) => void;
 }
 
 export function TimeIncrementInput({
   value,
-  onInputChange,
+  onInputEnter,
   onInputChangeStep,
+  onInputChange,
+  onInputBlur,
   min,
   max,
   step,
   ...styleProps
 }: Props) {
   return (
-    <StackedStepControls onChange={(value) => onInputChangeStep(value)} step={step}>
+    <StackedStepControls onChange={onInputChangeStep} step={step}>
       <NumericInput
         value={value}
-        onEnter={(newValue) => onInputChange(newValue)}
+        onEnter={onInputEnter}
+        onChange={onInputChange}
+        onBlur={onInputBlur}
         clampBehavior={'strict'}
         hideControls
         min={min}
