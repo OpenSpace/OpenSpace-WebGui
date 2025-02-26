@@ -37,8 +37,6 @@ export function GlobeLayerGroup({ uri, globe, icon }: Props) {
         .length
   );
 
-  const nLayers = layers.length;
-
   return (
     <Collapsable
       title={
@@ -54,7 +52,7 @@ export function GlobeLayerGroup({ uri, globe, icon }: Props) {
               )}
               <Text size={'xs'} span c={'dimmed'}>
                 {nActiveLayers > 0 && `/`}
-                {nLayers}
+                {layers.length}
               </Text>
             </Badge>
           </Group>
