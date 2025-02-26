@@ -1,17 +1,11 @@
 import { Badge, Box, Group, Paper, Space, Text } from '@mantine/core';
-import { divide } from 'lodash';
 
 import { useGetPropertyOwner } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { Property } from '@/components/Property/Property';
 import { useAppSelector } from '@/redux/hooks';
 import { Identifier, Uri } from '@/types/types';
-import {
-  displayName,
-  isPropertyOwnerActive,
-  isPropertyOwnerVisible,
-  isPropertyVisible
-} from '@/util/propertyTreeHelpers';
+import { displayName, isPropertyOwnerActive } from '@/util/propertyTreeHelpers';
 
 import { LayerList } from './LayersList';
 
