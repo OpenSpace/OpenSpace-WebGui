@@ -9,7 +9,7 @@ export function ActionsBreadcrumbs() {
   const dispatch = useAppDispatch();
 
   const isTopLevel = navigationPath === '/';
-  const paths = navigationPath.split('/');
+  const paths = isTopLevel ? [''] : navigationPath.split('/');
 
   function goBack(): void {
     let newPath = navigationPath.substring(0, navigationPath.lastIndexOf('/'));
@@ -20,26 +20,15 @@ export function ActionsBreadcrumbs() {
   }
 
   function goToPath(path: string): void {
-    const index = navigationPath.indexOf(path);
-    // If we don't find the path e.g., when '...' is displayed go back one step
-    if (index === -1) {
-      goBack();
-      return;
-    }
-    let navPath = navigationPath.substring(0, index + path.length);
-    if (navPath.length === 0) {
-      navPath = '/';
-    }
-    dispatch(setActionsPath(navPath));
-  }
-
-  if (isTopLevel) {
-    return <></>;
+    const destinationIndex = paths.indexOf(path);
+    const navPath = paths.slice(0, destinationIndex + 1).join('/');
+    const newPath = navPath === '' ? '/' : navPath;
+    dispatch(setActionsPath(newPath));
   }
 
   return (
     <Group gap={'xs'} mb={'xs'}>
-      <ActionIcon onClick={goBack} aria-label={'Back'}>
+      <ActionIcon onClick={goBack} aria-label={'Back'} disabled={isTopLevel}>
         <BackArrowIcon />
       </ActionIcon>
       <Breadcrumbs separatorMargin={0}>
