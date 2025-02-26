@@ -33,8 +33,6 @@ export function getFolders(path: string): string[] {
   if (path === '/') {
     return [''];
   }
-  // When splitting, we get an empty string before the first slash.
-  // Remove this empty string by removing the first slash with substring before we split.
   return prunePath(path).split('/');
 }
 
