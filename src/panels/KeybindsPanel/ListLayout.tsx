@@ -3,6 +3,7 @@ import { Button, Text } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { Layout } from '@/components/Layout/Layout';
 import { useAppSelector } from '@/redux/hooks';
 import { Action } from '@/types/types';
 
@@ -33,38 +34,42 @@ export function ListLayout() {
     });
 
   return (
-    <>
-      <FilterList height={500}>
-        <FilterList.InputField placeHolderSearchText={'Search for a keybind'} />
-        <FilterList.SearchResults
-          data={keybindInfo}
-          renderElement={(node) => (
-            <Button
-              onClick={() => {
-                setSelectedAction(node);
-              }}
-              size={'md'}
-              variant={'light'}
-              fullWidth
-              rightSection={
-                <KeybindButtons modifiers={node.modifiers} selectedKey={node.key} />
-              }
-              justify={'space-between'}
-            >
-              <Text truncate>{node.name}</Text>
-            </Button>
-          )}
-          matcherFunc={generateMatcherFunctionByKeys([
-            'name',
-            'key',
-            'modifiers',
-            'documentation'
-          ])}
-        >
-          <FilterList.SearchResults.VirtualList gap={'xs'} />
-        </FilterList.SearchResults>
-      </FilterList>
-      {selectedAction && <KeybindInfo selectedAction={selectedAction} />}
-    </>
+    <Layout>
+      <Layout.GrowingSection pb={'md'}>
+        <FilterList>
+          <FilterList.InputField placeHolderSearchText={'Search for a keybind'} />
+          <FilterList.SearchResults
+            data={keybindInfo}
+            renderElement={(node) => (
+              <Button
+                onClick={() => {
+                  setSelectedAction(node);
+                }}
+                size={'md'}
+                variant={'light'}
+                fullWidth
+                rightSection={
+                  <KeybindButtons modifiers={node.modifiers} selectedKey={node.key} />
+                }
+                justify={'space-between'}
+              >
+                <Text truncate>{node.name}</Text>
+              </Button>
+            )}
+            matcherFunc={generateMatcherFunctionByKeys([
+              'name',
+              'key',
+              'modifiers',
+              'documentation'
+            ])}
+          >
+            <FilterList.SearchResults.VirtualList gap={'xs'} />
+          </FilterList.SearchResults>
+        </FilterList>
+      </Layout.GrowingSection>
+      <Layout.FixedSection>
+        {selectedAction && <KeybindInfo selectedAction={selectedAction} />}
+      </Layout.FixedSection>
+    </Layout>
   );
 }
