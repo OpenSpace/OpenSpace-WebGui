@@ -55,65 +55,61 @@ export function DeltaTimeStepsControl() {
   }
 
   return (
-    <Stack>
-      <Group grow gap={'xs'} align={'flex-start'}>
-        <Stack gap={0} flex={3}>
-          <ActionIcon
-            onClick={setPrevDeltaTimeStep}
-            disabled={!hasPrevDeltaTimeStep}
-            size={'lg'}
-            style={{ width: '100%' }}
-          >
-            <FastRewindIcon size={IconSize.md} />
-          </ActionIcon>
-          <Text c={'dimmed'}>
-            {hasPrevDeltaTimeStep ? (
-              <NumberFormatter
-                value={nextDecrement}
-                prefix={prevSign}
-                suffix={prevLabel}
-                decimalScale={0}
-                allowNegative={false}
-              />
-            ) : (
-              'None'
-            )}
-          </Text>
-        </Stack>
-
+    <Group gap={'xs'} align={'flex-start'}>
+      <Stack gap={0} flex={3}>
         <ActionIcon
-          onClick={togglePause}
+          onClick={setPrevDeltaTimeStep}
+          disabled={!hasPrevDeltaTimeStep}
           size={'lg'}
-          flex={2}
-          aria-label={isPaused ? 'play' : 'pause'}
+          w={'100%'}
         >
-          {isPaused ? <PlayIcon size={IconSize.md} /> : <PauseIcon size={IconSize.md} />}
+          <FastRewindIcon size={IconSize.md} />
         </ActionIcon>
-
-        <Stack gap={0} flex={3}>
-          <ActionIcon
-            onClick={setNextDeltaTimeStep}
-            disabled={!hasNextDeltaTimeStep}
-            size={'lg'}
-            style={{ width: '100%' }}
-          >
-            <FastForwardIcon size={IconSize.md} />
-          </ActionIcon>
-          <Text c={'dimmed'}>
-            {hasNextDeltaTimeStep ? (
-              <NumberFormatter
-                value={nextIncrement}
-                prefix={nextSign}
-                suffix={nextLabel}
-                decimalScale={0}
-                allowNegative={false}
-              />
-            ) : (
-              'None'
-            )}
-          </Text>
-        </Stack>
-      </Group>
-    </Stack>
+        <Text c={'dimmed'}>
+          {hasPrevDeltaTimeStep ? (
+            <NumberFormatter
+              value={nextDecrement}
+              prefix={prevSign}
+              suffix={prevLabel}
+              decimalScale={0}
+              allowNegative={false}
+            />
+          ) : (
+            'None'
+          )}
+        </Text>
+      </Stack>
+      <ActionIcon
+        onClick={togglePause}
+        size={'lg'}
+        aria-label={isPaused ? 'play' : 'pause'}
+        flex={2}
+      >
+        {isPaused ? <PlayIcon size={IconSize.md} /> : <PauseIcon size={IconSize.md} />}
+      </ActionIcon>
+      <Stack gap={0} flex={3}>
+        <ActionIcon
+          onClick={setNextDeltaTimeStep}
+          disabled={!hasNextDeltaTimeStep}
+          size={'lg'}
+          w={'100%'}
+        >
+          <FastForwardIcon size={IconSize.md} />
+        </ActionIcon>
+        <Text c={'dimmed'}>
+          {hasNextDeltaTimeStep ? (
+            <NumberFormatter
+              value={nextIncrement}
+              prefix={nextSign}
+              suffix={nextLabel}
+              decimalScale={0}
+              allowNegative={false}
+            />
+          ) : (
+            'None'
+          )}
+        </Text>
+      </Stack>
+    </Group>
   );
 }
