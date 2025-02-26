@@ -46,12 +46,12 @@ export function GlobeLayerGroup({ uri, globe, icon }: Props) {
             {displayName(propertyOwner)}
             <Badge size={'sm'} variant={'default'}>
               {nActiveLayers > 0 && (
-                <Text size={'xs'} span c={'green'}>
+                <Text fw={'bold'} size={'xs'} span c={'green'}>
                   {nActiveLayers}
                 </Text>
               )}
-              <Text size={'xs'} span c={'dimmed'}>
-                {nActiveLayers > 0 && `/`}
+              <Text size={'xs'} span c={'dark.1'}>
+                {nActiveLayers > 0 && ` / `}
                 {layers.length}
               </Text>
             </Badge>
