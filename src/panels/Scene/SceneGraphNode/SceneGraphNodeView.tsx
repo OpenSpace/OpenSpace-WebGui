@@ -1,4 +1,4 @@
-import { Box, ScrollArea, Tabs, Text, Tooltip } from '@mantine/core';
+import { Box, Tabs, Text, Tooltip } from '@mantine/core';
 
 import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
@@ -60,7 +60,7 @@ export function SceneGraphNodeView({ uri }: Props) {
   const hasOther = visibleProperties.length > 0;
 
   return (
-    <ScrollArea h={'100%'} m={'xs'}>
+    <>
       <SceneGraphNodeHeader uri={uri} />
       <Tabs mt={'xs'} variant={'outline'} defaultValue={defaultTab}>
         <Tabs.List>
@@ -125,6 +125,6 @@ export function SceneGraphNodeView({ uri }: Props) {
           <SceneGraphNodeMetaInfo uri={uri} />
         </Tabs.Panel>
       </Tabs>
-    </ScrollArea>
+    </>
   );
 }

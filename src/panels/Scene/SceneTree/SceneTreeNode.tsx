@@ -33,8 +33,6 @@ export function SceneTreeNodeContent({ node, expanded }: Props) {
   ) : (
     <Box
       ml={'xs'}
-      p={2}
-      mt={5}
       bd={isCurrentNode ? '3px solid var(--mantine-primary-color-filled)' : 'none'}
     >
       <SceneGraphNodeHeader

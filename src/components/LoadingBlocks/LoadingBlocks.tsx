@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import { Skeleton, Stack } from '@mantine/core';
+import { MantineStyleProps, Skeleton, Stack } from '@mantine/core';
 
-interface Props {
+interface Props extends MantineStyleProps {
   n?: number;
 }
 
-export function LoadingBlocks({ n = 4 }: Props) {
+export function LoadingBlocks({ n = 4, ...styleProps }: Props) {
   const widths = useMemo(
     () =>
       [...Array(n)].map(() => {
@@ -16,7 +16,7 @@ export function LoadingBlocks({ n = 4 }: Props) {
     [n]
   );
   return (
-    <Stack>
+    <Stack {...styleProps}>
       {widths.map((width, i) => (
         <Skeleton key={i} height={16} width={width} />
       ))}

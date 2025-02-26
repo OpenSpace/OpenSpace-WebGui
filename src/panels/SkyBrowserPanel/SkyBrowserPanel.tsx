@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Button, Image, Loader, ScrollArea, Stack, Text } from '@mantine/core';
+import { useCallback, useEffect } from 'react';
+import { Button, Image, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { PlusIcon } from '@/icons/icons';
@@ -13,7 +13,6 @@ import { WwtProvider } from './WorldWideTelescope/WwtProvider/WwtProvider';
 import { useGetSkyBrowserData } from './hooks';
 
 export function SkyBrowserPanel() {
-  const [waitingForData, setWaitingForData] = useState(false);
   const isInitialized = useAppSelector((state) => state.skybrowser.isInitialized);
   const cameraInSolarSystem = useAppSelector(
     (state) => state.skybrowser.cameraInSolarSystem
@@ -42,18 +41,9 @@ export function SkyBrowserPanel() {
   useEffect(() => {
     if (nBrowsers > 0) {
       openWorldWideTelescope();
-      setWaitingForData(false);
     }
-  }, [openWorldWideTelescope, nBrowsers, setWaitingForData]);
+  }, [openWorldWideTelescope, nBrowsers]);
 
-  if (!isInitialized || !luaApi || waitingForData) {
-    return (
-      <Stack align={'center'}>
-        <Text>Loading Sky Browser...</Text>
-        <Loader />
-      </Stack>
-    );
-  }
   if (!cameraInSolarSystem) {
     return <Text m={'lg'}>Camera has to be in solar system for Sky Browser to work</Text>;
   }
@@ -62,12 +52,12 @@ export function SkyBrowserPanel() {
       <Stack h={'100%'} w={'100%'} align={'center'} p={'lg'}>
         <Button
           onClick={() => {
-            luaApi.skybrowser.createTargetBrowserPair();
-            setWaitingForData(true);
+            luaApi?.skybrowser.createTargetBrowserPair();
           }}
           my={'lg'}
           leftSection={<PlusIcon />}
           size={'lg'}
+          loading={!luaApi || !isInitialized}
         >
           Add browser
         </Button>
@@ -80,9 +70,9 @@ export function SkyBrowserPanel() {
   }
 
   return (
-    <ScrollArea dir={'y'} h={'100%'}>
+    <>
       <ImageListWrapper />
       <BrowserTabs openWorldWideTelescope={openWorldWideTelescope} />
-    </ScrollArea>
+    </>
   );
 }
