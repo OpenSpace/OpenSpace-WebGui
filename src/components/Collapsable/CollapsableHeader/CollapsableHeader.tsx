@@ -1,4 +1,4 @@
-import { ActionIcon, Group, Text, UnstyledButton } from '@mantine/core';
+import { ActionIcon, Group, UnstyledButton } from '@mantine/core';
 
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { ChevronDownIcon, ChevronRightIcon } from '@/icons/icons';
@@ -31,7 +31,7 @@ export function CollapsableHeader({
       <ThreePartHeader
         title={
           <UnstyledButton onClick={toggle} tabIndex={-1}>
-            <Text style={{ textWrap: 'pretty' }}>{title}</Text>
+            {title}
           </UnstyledButton>
         }
         leftSection={leftSection}
