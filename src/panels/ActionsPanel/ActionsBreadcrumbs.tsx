@@ -3,7 +3,8 @@ import { ActionIcon, Breadcrumbs, Button, Group } from '@mantine/core';
 import { HomeIcon, UpArrowIcon } from '@/icons/icons';
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { calculateLevelDepth, getFolders } from './utils';
+
+import { calculateLevelDepth, createPath, getFolders } from './utils';
 
 export function ActionsBreadcrumbs() {
   const navigationPath = useAppSelector((state) => state.actions.navigationPath);
@@ -21,10 +22,8 @@ export function ActionsBreadcrumbs() {
     }
     // Add 1 as slice doesn't include the i:th element
     const newFolders = folders.slice(0, i + 1);
-    console.log(folders, newFolders, i);
-    // Create the new navigation path string
-    const newPath = `${newFolders.join('/')}`;
-    dispatch(setActionsPath(newPath));
+
+    dispatch(setActionsPath(createPath(newFolders)));
   }
 
   return (

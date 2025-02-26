@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 
+import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Action } from '@/types/types';
-import { calculateLevelDepth, getFolders, prunePath } from './utils';
-import { setActionsPath } from '@/redux/actions/actionsSlice';
+
+import { calculateLevelDepth, createPath, getFolders, prunePath } from './utils';
 
 export interface ActionFolderContent {
   actions: Action[];
@@ -78,6 +79,6 @@ export function useGoToFolder() {
   return function goToFolder(folder: string): void {
     const newPath = getFolders(navigationPath);
     newPath.push(folder);
-    dispatch(setActionsPath(prunePath(newPath.join('/'))));
+    dispatch(setActionsPath(createPath(newPath)));
   };
 }

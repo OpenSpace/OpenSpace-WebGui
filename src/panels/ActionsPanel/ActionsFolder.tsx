@@ -1,6 +1,7 @@
 import { Button, Text } from '@mantine/core';
 
 import { FolderIcon } from '@/icons/icons';
+
 import { useGoToFolder } from './hooks';
 
 interface Props {

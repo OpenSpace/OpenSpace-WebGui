@@ -37,3 +37,7 @@ export function getFolders(path: string): string[] {
   // Remove this empty string by removing the first slash with substring before we split.
   return prunePath(path).split('/');
 }
+
+export function createPath(folders: string[]): string {
+  return prunePath(folders.join('/'));
+}
