@@ -8,6 +8,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
 
 import { TimePart } from '../types';
+import { maxDaysInMonth } from '../util';
 
 import { MonthInput } from './MonthInput';
 import { TimeIncrementInput } from './TimeIncrementInput';
@@ -107,12 +108,31 @@ export function TimeInput() {
       case TimePart.Days:
         newTime.setUTCDate(newTime.getUTCDate() + change);
         break;
-      case TimePart.Months:
+      case TimePart.Months: {
+        // Get the max days in the new month
+        const maxDaysInNextMonth = maxDaysInMonth(
+          newTime.getUTCFullYear(),
+          newTime.getUTCMonth() + change
+        );
+        // Clamp days for next month
+        newTime.setUTCDate(Math.min(maxDaysInNextMonth, newTime.getUTCDate()));
+        // Update month
         newTime.setUTCMonth(newTime.getUTCMonth() + change);
         break;
-      case TimePart.Years:
+      }
+      case TimePart.Years: {
+        // We want to handle february leap years in the same way we do with each month
+        // Get the max days in the new month
+        const maxDaysInNextMonth = maxDaysInMonth(
+          newTime.getUTCFullYear() + change,
+          newTime.getUTCMonth()
+        );
+        // Clamp days for next month
+        newTime.setUTCDate(Math.min(maxDaysInNextMonth, newTime.getUTCDate()));
+
         newTime.setUTCFullYear(newTime.getUTCFullYear() + change);
         break;
+      }
       default:
         throw Error(`Unhandled 'TimePart' case: ${timePart}`);
     }
@@ -143,11 +163,24 @@ export function TimeInput() {
       case TimePart.Days:
         newTime.setUTCDate(value);
         break;
-      case TimePart.Months:
+      case TimePart.Months: {
+        // Get the max days in the new month
+        const maxDaysInNextMonth = maxDaysInMonth(newTime.getUTCFullYear(), value);
+        // Clamp days for next month
+        newTime.setUTCDate(Math.min(maxDaysInNextMonth, newTime.getUTCDate()));
+        // Update month
         newTime.setUTCMonth(value);
         break;
+      }
       case TimePart.Years:
-        newTime.setUTCFullYear(value);
+        {
+          // We want to handle february leap years in the same way we do with each month
+          // Get the max days in the new month
+          const maxDaysInNextMonth = maxDaysInMonth(value, newTime.getUTCMonth());
+          // Clamp days for next month
+          newTime.setUTCDate(Math.min(maxDaysInNextMonth, newTime.getUTCDate()));
+          newTime.setUTCFullYear(value);
+        }
         break;
       default:
         throw Error(`Unhandled 'TimePart' case: ${timePart}`);
@@ -208,6 +241,7 @@ export function TimeInput() {
                 setErrorMessage('');
               }
             }}
+            error={errorMessage !== ''}
             w={65}
           />
           <MonthInput
@@ -222,7 +256,7 @@ export function TimeInput() {
             onInputEnter={(value) => onTimeInput(TimePart.Days, value)}
             onInputChangeStep={(change) => onTimeInputRelative(TimePart.Days, change)}
             min={1}
-            max={31}
+            max={maxDaysInMonth(time.getUTCFullYear(), time.getUTCMonth())}
             w={40}
           />
         </Group>

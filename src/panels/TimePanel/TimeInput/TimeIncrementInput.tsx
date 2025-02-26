@@ -1,10 +1,10 @@
-import { MantineStyleProps } from '@mantine/core';
+import { MantineStyleProps, NumberInputProps } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 
 import { StackedStepControls } from './StackedStepControls';
 
-interface Props extends MantineStyleProps {
+interface Props extends MantineStyleProps, NumberInputProps {
   value: number;
   min?: number;
   max?: number;
@@ -24,7 +24,7 @@ export function TimeIncrementInput({
   min,
   max,
   step,
-  ...styleProps
+  ...props
 }: Props) {
   return (
     <StackedStepControls onChange={onInputChangeStep} step={step}>
@@ -38,7 +38,7 @@ export function TimeIncrementInput({
         min={min}
         max={max}
         step={step}
-        {...styleProps}
+        {...props}
       />
     </StackedStepControls>
   );
