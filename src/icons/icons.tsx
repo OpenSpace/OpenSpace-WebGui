@@ -28,6 +28,7 @@ export {
   MdOutlineAirplanemodeActive as AirplaneIcon,
   MdAnchor as AnchorIcon,
   MdArrowBack as BackArrowIcon,
+  MdArrowUpward as UpArrowIcon,
   MdCalendarMonth as CalendarIcon,
   MdCancel as CancelIcon,
   MdExpandMore as ChevronDownIcon,

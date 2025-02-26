@@ -1,6 +1,6 @@
 import { ActionIcon, Breadcrumbs, Button, Group } from '@mantine/core';
 
-import { BackArrowIcon, HomeIcon } from '@/icons/icons';
+import { HomeIcon, UpArrowIcon } from '@/icons/icons';
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
@@ -11,7 +11,7 @@ export function ActionsBreadcrumbs() {
   const isTopLevel = navigationPath === '/';
   const paths = isTopLevel ? [''] : navigationPath.split('/');
 
-  function goBack(): void {
+  function goUp(): void {
     let newPath = navigationPath.substring(0, navigationPath.lastIndexOf('/'));
     if (newPath.length === 0) {
       newPath = '/';
@@ -28,8 +28,8 @@ export function ActionsBreadcrumbs() {
 
   return (
     <Group gap={'xs'} mb={'xs'}>
-      <ActionIcon onClick={goBack} aria-label={'Back'} disabled={isTopLevel}>
-        <BackArrowIcon />
+      <ActionIcon onClick={goUp} aria-label={'Back'} disabled={isTopLevel}>
+        <UpArrowIcon />
       </ActionIcon>
       <Breadcrumbs separatorMargin={0}>
         {paths.map((path, i) => (
