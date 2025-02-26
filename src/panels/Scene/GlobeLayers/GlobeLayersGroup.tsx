@@ -1,10 +1,17 @@
-import { Group, Paper, Space } from '@mantine/core';
+import { Badge, Box, Group, Paper, Space, Text } from '@mantine/core';
+import { divide } from 'lodash';
 
 import { useGetPropertyOwner } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { Property } from '@/components/Property/Property';
+import { useAppSelector } from '@/redux/hooks';
 import { Identifier, Uri } from '@/types/types';
-import { displayName } from '@/util/propertyTreeHelpers';
+import {
+  displayName,
+  isPropertyOwnerActive,
+  isPropertyOwnerVisible,
+  isPropertyVisible
+} from '@/util/propertyTreeHelpers';
 
 import { LayerList } from './LayersList';
 
@@ -24,12 +31,33 @@ export function GlobeLayerGroup({ uri, globe, icon }: Props) {
   const { properties, subowners } = propertyOwner;
   const layers = subowners;
 
+  const nActiveLayers = useAppSelector(
+    (state) =>
+      layers.filter((layer) => isPropertyOwnerActive(layer, state.properties.properties))
+        .length
+  );
+
+  const nLayers = layers.length;
+
   return (
     <Collapsable
       title={
-        <Group gap={'xs'}>
-          {icon && icon}
-          {displayName(propertyOwner)}
+        <Group gap={'xs'} wrap={'nowrap'}>
+          <Box flex={'0 0 auto'}>{icon}</Box>
+          <Group gap={'xs'}>
+            {displayName(propertyOwner)}
+            <Badge size={'sm'} variant={'default'}>
+              {nActiveLayers > 0 && (
+                <Text size={'xs'} span c={'green'}>
+                  {nActiveLayers}
+                </Text>
+              )}
+              <Text size={'xs'} span c={'dimmed'}>
+                {nActiveLayers > 0 && `/`}
+                {nLayers}
+              </Text>
+            </Badge>
+          </Group>
         </Group>
       }
       noTransition

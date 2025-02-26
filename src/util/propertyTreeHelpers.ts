@@ -138,8 +138,12 @@ export function isPropertyOwnerHidden(uri: Uri, properties: Properties) {
 
 export function isSceneGraphNodeVisible(uri: Uri, properties: Properties): boolean {
   const renderableUri = sgnRenderableUri(uri);
-  const enabledValue = properties[enabledPropertyUri(renderableUri)]?.value as boolean;
-  const fadeValue = properties[fadePropertyUri(renderableUri)]?.value as number;
+  return isPropertyOwnerActive(renderableUri, properties);
+}
+
+export function isPropertyOwnerActive(uri: Uri, properties: Properties): boolean {
+  const enabledValue = properties[enabledPropertyUri(uri)]?.value as boolean;
+  const fadeValue = properties[fadePropertyUri(uri)]?.value as number;
   return checkVisiblity(enabledValue, fadeValue) || false;
 }
 
