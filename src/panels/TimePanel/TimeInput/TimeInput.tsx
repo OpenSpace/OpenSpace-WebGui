@@ -253,7 +253,7 @@ export function TimeInput() {
           />
         </Group>
       </Group>
-      {errorMessage && <Alert color={"red"}>{errorMessage}</Alert>}
+      {errorMessage && <Alert color={'red'}>{errorMessage}</Alert>}
       {useLock && (
         <Group gap={'xs'} grow>
           <Button

@@ -5,25 +5,30 @@ import { FastForwardIcon, FastRewindIcon, PauseIcon, PlayIcon } from '@/icons/ic
 import { useAppSelector } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';
 
-import { Decimals, StepSizes, TimePart } from './types';
+import { formatDeltaTime } from './util';
 
-interface DeltaTimeStepsControlProps {
-  stepSize: TimePart;
-}
-
-export function DeltaTimeStepsControl({ stepSize }: DeltaTimeStepsControlProps) {
+export function DeltaTimeStepsControl() {
   const luaApi = useOpenSpaceApi();
-  const nextDeltaTimeStep =
-    (useAppSelector((state) => state.time.nextDeltaTimeStep) ?? 0) / StepSizes[stepSize];
-  const prevDeltaTimeStep =
-    (useAppSelector((state) => state.time.prevDeltaTimeStep) ?? 0) / StepSizes[stepSize];
+  const nextDeltaTimeStep = useAppSelector((state) => state.time.nextDeltaTimeStep) ?? 0;
+  const prevDeltaTimeStep = useAppSelector((state) => state.time.prevDeltaTimeStep) ?? 0;
   const isPaused = useAppSelector((state) => state.time.isPaused);
 
   const hasNextDeltaTimeStep = useAppSelector((state) => state.time.hasNextDeltaTimeStep);
   const hasPrevDeltaTimeStep = useAppSelector((state) => state.time.hasPrevDeltaTimeStep);
 
-  const nextLabel = ` ${stepSize} / second`;
-  const prevLabel = ` ${stepSize} / second`;
+  const {
+    increment: nextIncrement,
+    unit: nextUnit,
+    sign: nextSign
+  } = formatDeltaTime(nextDeltaTimeStep);
+  const {
+    increment: nextDecrement,
+    unit: prevUnit,
+    sign: prevSign
+  } = formatDeltaTime(prevDeltaTimeStep);
+
+  const nextLabel = ` ${nextUnit} / second`;
+  const prevLabel = ` ${prevUnit} / second`;
 
   function setPrevDeltaTimeStep(event: React.MouseEvent<HTMLElement>) {
     if (event.shiftKey) {
@@ -64,9 +69,11 @@ export function DeltaTimeStepsControl({ stepSize }: DeltaTimeStepsControlProps) 
           <Text c={'dimmed'}>
             {hasPrevDeltaTimeStep ? (
               <NumberFormatter
-                value={prevDeltaTimeStep}
-                decimalScale={Decimals[stepSize]}
+                value={nextDecrement}
+                prefix={prevSign}
                 suffix={prevLabel}
+                decimalScale={0}
+                allowNegative={false}
               />
             ) : (
               'None'
@@ -74,7 +81,12 @@ export function DeltaTimeStepsControl({ stepSize }: DeltaTimeStepsControlProps) 
           </Text>
         </Stack>
 
-        <ActionIcon onClick={togglePause} size={'lg'} flex={2}>
+        <ActionIcon
+          onClick={togglePause}
+          size={'lg'}
+          flex={2}
+          aria-label={isPaused ? 'play' : 'pause'}
+        >
           {isPaused ? <PlayIcon size={IconSize.md} /> : <PauseIcon size={IconSize.md} />}
         </ActionIcon>
 
@@ -89,13 +101,13 @@ export function DeltaTimeStepsControl({ stepSize }: DeltaTimeStepsControlProps) 
           </ActionIcon>
           <Text c={'dimmed'}>
             {hasNextDeltaTimeStep ? (
-              <>
-                <NumberFormatter
-                  value={nextDeltaTimeStep}
-                  decimalScale={Decimals[stepSize]}
-                />
-                {nextLabel}
-              </>
+              <NumberFormatter
+                value={nextIncrement}
+                prefix={nextSign}
+                suffix={nextLabel}
+                decimalScale={0}
+                allowNegative={false}
+              />
             ) : (
               'None'
             )}
