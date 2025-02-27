@@ -20,7 +20,7 @@ export function TimeInput() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const cappedTime = useAppSelector((state) => state.time.timeCapped);
-  const backupTimeString = useAppSelector((state) => state.time.backupTimeString);
+  const backupTimeString = useAppSelector((state) => state.time.timeString);
   const luaApi = useOpenSpaceApi();
   const { setTime, interpolateTime } = useSetOpenSpaceTime();
   useSubscribeToTime();
@@ -109,7 +109,13 @@ export function TimeInput() {
         newTime.setUTCDate(newTime.getUTCDate() + change);
         break;
       case TimePart.Months: {
-        // Get the max days in the new month
+        // Adjust the day when transitioning from a month with 31 days to a month with
+        // fewer days. If the current day is 31 and the next month has only 30 ( or fewer)
+        // days, the Date object would interpret this as rolling over into the next month
+        // e.g., March 31 -> April 30 + 1 -> May 1. To prevent this, we clamp the day to
+        // the maximum valid day in the next month
+
+        // Determine the maximum number of days in the target month
         const maxDaysInNextMonth = maxDaysInMonth(
           newTime.getUTCFullYear(),
           newTime.getUTCMonth() + change
@@ -129,7 +135,7 @@ export function TimeInput() {
         );
         // Clamp days for next month
         newTime.setUTCDate(Math.min(maxDaysInNextMonth, newTime.getUTCDate()));
-
+        // Update year
         newTime.setUTCFullYear(newTime.getUTCFullYear() + change);
         break;
       }
@@ -164,7 +170,13 @@ export function TimeInput() {
         newTime.setUTCDate(value);
         break;
       case TimePart.Months: {
-        // Get the max days in the new month
+        // Adjust the day when transitioning from a month with 31 days to a month with
+        // fewer days. If the current day is 31 and the next month has only 30 ( or fewer)
+        // days, the Date object would interpret this as rolling over into the next month
+        // e.g., March 31 -> April 30 + 1 -> May 1. To prevent this, we clamp the day to
+        // the maximum valid day in the next month
+
+        // Determine the maximum number of days in the target month
         const maxDaysInNextMonth = maxDaysInMonth(newTime.getUTCFullYear(), value);
         // Clamp days for next month
         newTime.setUTCDate(Math.min(maxDaysInNextMonth, newTime.getUTCDate()));
@@ -172,16 +184,16 @@ export function TimeInput() {
         newTime.setUTCMonth(value);
         break;
       }
-      case TimePart.Years:
-        {
-          // We want to handle february leap years in the same way we do with each month
-          // Get the max days in the new month
-          const maxDaysInNextMonth = maxDaysInMonth(value, newTime.getUTCMonth());
-          // Clamp days for next month
-          newTime.setUTCDate(Math.min(maxDaysInNextMonth, newTime.getUTCDate()));
-          newTime.setUTCFullYear(value);
-        }
+      case TimePart.Years: {
+        // We want to handle february leap years in the same way we do with each month
+        // Get the max days in the new month
+        const maxDaysInNextMonth = maxDaysInMonth(value, newTime.getUTCMonth());
+        // Clamp days for next month
+        newTime.setUTCDate(Math.min(maxDaysInNextMonth, newTime.getUTCDate()));
+        // Update year
+        newTime.setUTCFullYear(value);
         break;
+      }
       default:
         throw Error(`Unhandled 'TimePart' case: ${timePart}`);
     }
@@ -194,11 +206,14 @@ export function TimeInput() {
     });
   }
 
-  function validateYear(value: number | string): void {
+  function onChange(value: number | string): void {
+    // Mantine's NumberInput can return either a string or a number.
+    // Since our wrapper does not handle string values, we ignore them.
     if (typeof value === 'string') {
       return;
     }
 
+    // Validate the new date to ensure the year is within the valid JavaScript Date range
     const newTime = new Date(timeRef.current);
     const ms = newTime.setUTCFullYear(value);
 
@@ -235,7 +250,7 @@ export function TimeInput() {
             value={time.getUTCFullYear()}
             onInputEnter={(value) => onTimeInput(TimePart.Years, value)}
             onInputChangeStep={(change) => onTimeInputRelative(TimePart.Years, change)}
-            onInputChange={validateYear}
+            onInputChange={onChange}
             onInputBlur={() => {
               if (errorMessage) {
                 setErrorMessage('');

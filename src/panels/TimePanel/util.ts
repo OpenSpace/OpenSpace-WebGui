@@ -1,10 +1,17 @@
+/**
+ * Converts delta time (in seconds) into a unit friendly format (seconds, min, hours, etc)
+ * @param deltaSeconds The delta in seconds, can be positive or negative
+ * @returns An object containing:
+ * - `increment`: The numerical value in the chosen unit.
+ * - `unit`: The corresponding time unit e.g., "minute", "hour", "day".
+ * - `isNegative`: Wheter the original delta was negative.
+ */
 export function formatDeltaTime(deltaSeconds: number): {
   increment: number;
   unit: string;
-  sign: string;
+  isNegative: boolean;
 } {
-  const isNegative = Math.sign(deltaSeconds) === -1;
-  const sign = isNegative ? '-' : '';
+  const isNegative = deltaSeconds < 0;
   let unit = 'second';
   let increment = Math.abs(deltaSeconds);
 
@@ -15,9 +22,10 @@ export function formatDeltaTime(deltaSeconds: number): {
     { limit: 60 * 2, factor: 60, unit: 'hour' },
     { limit: 24 * 2, factor: 24, unit: 'day' },
     { limit: (365 / 12) * 2, factor: 365 / 12, unit: 'month' },
-    { limit: 12, factor: 12, unit: 'year' }
+    { limit: 12, factor: 12, unit: 'year' } //
   ];
 
+  // Find the most appropriate unit
   for (const { limit, factor, unit: nextUnit } of timeUnits) {
     if (increment < limit) {
       break;
@@ -26,11 +34,13 @@ export function formatDeltaTime(deltaSeconds: number): {
     unit = nextUnit;
   }
 
-  return { increment, unit, sign };
+  return { increment, unit, isNegative };
 }
 
 /**
- * Returns the max days of the month given a specific date
+ * @param year Year
+ * @param month 0-indexed month
+ * @returns The max days of the month given a specific date
  */
 export function maxDaysInMonth(year: number, month: number): number {
   // Month in JavaScript is 0-indexed (January is 0, February is 1, etc),

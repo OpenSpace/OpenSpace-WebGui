@@ -19,12 +19,12 @@ export function DeltaTimeStepsControl() {
   const {
     increment: nextIncrement,
     unit: nextUnit,
-    sign: nextSign
+    isNegative: isNextStepNegative
   } = formatDeltaTime(nextDeltaTimeStep);
   const {
     increment: nextDecrement,
     unit: prevUnit,
-    sign: prevSign
+    isNegative: isPrevStepNegative
   } = formatDeltaTime(prevDeltaTimeStep);
 
   const nextLabel = ` ${nextUnit} / second`;
@@ -66,16 +66,14 @@ export function DeltaTimeStepsControl() {
           <FastRewindIcon size={IconSize.md} />
         </ActionIcon>
         <Text c={'dimmed'}>
-          {hasPrevDeltaTimeStep ? (
+          {hasPrevDeltaTimeStep && (
             <NumberFormatter
               value={nextDecrement}
-              prefix={prevSign}
+              prefix={isPrevStepNegative ? '-' : ''}
               suffix={prevLabel}
               decimalScale={0}
               allowNegative={false}
             />
-          ) : (
-            'None'
           )}
         </Text>
       </Stack>
@@ -97,16 +95,14 @@ export function DeltaTimeStepsControl() {
           <FastForwardIcon size={IconSize.md} />
         </ActionIcon>
         <Text c={'dimmed'}>
-          {hasNextDeltaTimeStep ? (
+          {hasNextDeltaTimeStep && (
             <NumberFormatter
               value={nextIncrement}
-              prefix={nextSign}
+              prefix={isNextStepNegative ? '-' : ''}
               suffix={nextLabel}
               decimalScale={0}
               allowNegative={false}
             />
-          ) : (
-            'None'
           )}
         </Text>
       </Stack>

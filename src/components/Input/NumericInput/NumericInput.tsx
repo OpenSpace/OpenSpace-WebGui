@@ -64,7 +64,7 @@ export function NumericInput({
     }
   }
 
-  function _onBlur(event: React.FocusEvent<HTMLInputElement, Element>) {
+  function handleBlur(event: React.FocusEvent<HTMLInputElement, Element>) {
     if (shouldResetOnBlurRef.current === true) {
       resetValue();
     }
@@ -87,7 +87,7 @@ export function NumericInput({
     onEnter(newValue);
   }
 
-  function _onChange(value: number | string): void {
+  function handleChange(value: number | string): void {
     setIsEditing(true);
     onChange?.(value);
   }
@@ -96,11 +96,11 @@ export function NumericInput({
     <NumberInput
       value={storedValue === undefined ? '' : storedValue}
       onKeyUp={onKeyUp}
-      onBlur={_onBlur}
+      onBlur={handleBlur}
       onValueChange={(newValue) => {
         setStoredValue(newValue.floatValue);
       }}
-      onChange={_onChange}
+      onChange={handleChange}
       disabled={disabled}
       label={label}
       min={min}

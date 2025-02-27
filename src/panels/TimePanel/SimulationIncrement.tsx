@@ -11,11 +11,11 @@ import { QuickAdjustSlider } from './QuickAdjustSlider';
 import { Decimals, StepSizes, TimePart } from './types';
 
 export function SimulationIncrement() {
-  const updateDeltaTime = useThrottledCallback(updateDeltaTimeNow, 50);
+  const luaApi = useOpenSpaceApi();
   const [stepSize, setStepSize] = useState<TimePart>(TimePart.Seconds);
 
-  const luaApi = useOpenSpaceApi();
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime) ?? 1;
+  const updateDeltaTime = useThrottledCallback(updateDeltaTimeNow, 50);
 
   // Remove Milliseconds as an option to select
   const selectableData = Object.values(TimePart).filter(
