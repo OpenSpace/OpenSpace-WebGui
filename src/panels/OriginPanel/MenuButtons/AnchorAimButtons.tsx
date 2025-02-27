@@ -25,20 +25,24 @@ export function AnchorAimButtons({
       variant={'menubar'}
     >
       <Group>
-        <>
-          <AnchorIcon size={IconSize.lg} />
+        <Group gap={5} align={'center'}>
+          <AnchorIcon size={IconSize.md} />
           <Stack gap={0} maw={130} ta={'start'}>
             <Text truncate>{anchorName}</Text>
-            <Text>Anchor</Text>
+            <Text fw={500} size={'xs'} c={'dimmed'}>
+              Anchor
+            </Text>
           </Stack>
-        </>
-        <>
-          <TelescopeIcon size={IconSize.lg} />
+        </Group>
+        <Group gap={5}>
+          <TelescopeIcon size={IconSize.md} />
           <Stack gap={0} maw={130} ta={'start'}>
             <Text truncate>{aimName}</Text>
-            <Text>Aim</Text>
+            <Text fw={500} size={'xs'} c={'dimmed'}>
+              Aim
+            </Text>
           </Stack>
-        </>
+        </Group>
       </Group>
     </Button>
   );
