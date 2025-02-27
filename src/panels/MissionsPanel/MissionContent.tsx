@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Box, Button, Group, Switch, Text, Title } from '@mantine/core';
+import { Box, Button, Checkbox, Group, Text, Title } from '@mantine/core';
 
 import { useSubscribeToTime } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
@@ -123,7 +123,7 @@ export function MissionContent({ missionOverview }: Props) {
           </Button>
         </Group>
         <Group mb={'xs'} gap={'xs'} wrap={'nowrap'}>
-          <Switch checked={displayCurrentPhase} onClick={toggleCurrentPhase} />
+          <Checkbox checked={displayCurrentPhase} onClick={toggleCurrentPhase} />
           <Text>Display current phase</Text>
           <InfoBox
             text={
