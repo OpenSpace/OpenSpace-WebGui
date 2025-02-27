@@ -43,10 +43,14 @@ export function ListLayout() {
             renderElement={(node) => (
               <Button
                 onClick={() => {
-                  setSelectedAction(node);
+                  node.identifier === selectedAction?.identifier
+                    ? setSelectedAction(null)
+                    : setSelectedAction(node);
                 }}
                 size={'md'}
-                variant={'light'}
+                variant={
+                  node.identifier === selectedAction?.identifier ? 'filled' : 'light'
+                }
                 fullWidth
                 rightSection={
                   <KeybindButtons modifiers={node.modifiers} selectedKey={node.key} />
