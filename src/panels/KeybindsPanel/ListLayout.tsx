@@ -54,17 +54,24 @@ export function ListLayout() {
             <FilterList.InputField
               placeHolderSearchText={'Search for a keybind'}
               flex={1}
-              miw={150}
+              miw={200}
             />
-            <Chip.Group
-              multiple
-              onChange={(value) => setModifiersFilter(value as KeybindModifiers)}
-            >
-              <Chip value={'shift'}>Shift</Chip>
-              <Chip value={'control'}>Ctrl</Chip>
-              <Chip value={'alt'}>Alt</Chip>
-              <Chip value={'super'}>Super</Chip>
-            </Chip.Group>
+            <Group gap={5}>
+              <Chip.Group
+                multiple
+                onChange={(value) => setModifiersFilter(value as KeybindModifiers)}
+              >
+                <Chip value={'shift'} size="xs">
+                  Shift
+                </Chip>
+                <Chip value={'control'} size="xs">
+                  Ctrl
+                </Chip>
+                <Chip value={'alt'} size="xs">
+                  Alt
+                </Chip>
+              </Chip.Group>
+            </Group>
           </Group>
           <FilterList.SearchResults
             data={keybindInfo}
