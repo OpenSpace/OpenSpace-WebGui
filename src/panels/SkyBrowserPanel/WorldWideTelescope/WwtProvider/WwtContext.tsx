@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 export interface ProviderProps {
-  ref: React.RefObject<HTMLIFrameElement>;
+  ref: React.RefObject<HTMLIFrameElement | null>;
   setAim: (
     ra: number | undefined,
     dec: number | undefined,
