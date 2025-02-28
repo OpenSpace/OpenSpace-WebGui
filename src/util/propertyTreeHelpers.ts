@@ -136,15 +136,15 @@ export function isPropertyOwnerHidden(uri: Uri, properties: Properties) {
   return isHidden || false;
 }
 
+export function isPropertyOwnerActive(uri: Uri, properties: Properties): boolean {
+  const enabledValue = properties[enabledPropertyUri(uri)]?.value as boolean | undefined;
+  const fadeValue = properties[fadePropertyUri(uri)]?.value as number | undefined;
+  return checkVisiblity(enabledValue, fadeValue) || false;
+}
+
 export function isSceneGraphNodeVisible(uri: Uri, properties: Properties): boolean {
   const renderableUri = sgnRenderableUri(uri);
   return isPropertyOwnerActive(renderableUri, properties);
-}
-
-export function isPropertyOwnerActive(uri: Uri, properties: Properties): boolean {
-  const enabledValue = properties[enabledPropertyUri(uri)]?.value as boolean;
-  const fadeValue = properties[fadePropertyUri(uri)]?.value as number;
-  return checkVisiblity(enabledValue, fadeValue) || false;
 }
 
 // Visible means that the object is enabled, based on the values of its enabled and fade
