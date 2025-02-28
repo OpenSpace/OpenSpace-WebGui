@@ -1,285 +1,126 @@
-import { useState } from 'react';
-import {
-  Box,
-  Button,
-  Center,
-  Container,
-  Group,
-  Paper,
-  ScrollArea,
-  SegmentedControl,
-  VisuallyHidden
-} from '@mantine/core';
+import { useMemo, useState } from 'react';
+import { Center, Group, SegmentedControl, Text, VisuallyHidden } from '@mantine/core';
 
-import {
-  useGetStringPropertyValue,
-  useOpenSpaceApi,
-  useTriggerProperty
-} from '@/api/hooks';
-import { FilterList } from '@/components/FilterList/FilterList';
-import { useComputeHeightFunction } from '@/components/FilterList/hooks';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
-import { AirplaneCancelIcon, AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
-import { FlightControllerData } from '@/panels/FlightControlPanel/types';
-import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { Layout } from '@/components/Layout/Layout';
+import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
+import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
-import { Identifier, Uri } from '@/types/types';
-import {
-  NavigationAimKey,
-  NavigationAnchorKey,
-  RetargetAimKey,
-  RetargetAnchorKey
-} from '@/util/keys';
+import { Uri } from '@/types/types';
+import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
 import { hasInterestingTag, isPropertyOwnerHidden } from '@/util/propertyTreeHelpers';
 
-import { FocusEntry } from './FocusEntry';
+import { AnchorAimView } from './AnchorAimView/AnchorAimView';
+import { FocusView } from './FocusView/FocusView';
 import { OriginSettings } from './OriginSettings';
-import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
-enum NavigationActionState {
+enum NavigationMode {
   Focus = 'Focus',
-  Anchor = 'Anchor',
-  Aim = 'Aim'
+  AnchorAim = 'Anchor & Aim'
 }
 
 export function OriginPanel() {
-  const luaApi = useOpenSpaceApi();
-
-  const [navigationAction, setNavigationAction] = useState(NavigationActionState.Focus);
-
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const properties = useAppSelector((state) => state.properties.properties);
   const engineMode = useAppSelector((state) => state.engineMode.mode);
 
-  const [anchor, setAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
-  const [aim, setAim] = useGetStringPropertyValue(NavigationAimKey);
-  const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
-  const triggerRetargetAim = useTriggerProperty(RetargetAimKey);
-
-  const { ref, heightFunction } = useComputeHeightFunction(300, 20);
-
-  const dispatch = useAppDispatch();
-
-  const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
-  const allNodes = uris
-    .map((uri) => propertyOwners[uri])
-    .filter((po) => po !== undefined);
-
-  const urisWithTags = uris.filter((uri) => hasInterestingTag(uri, propertyOwners));
-  const favorites = urisWithTags
-    .map((uri) => propertyOwners[uri])
-    .filter((po) => po !== undefined);
-
-  const defaultList = favorites.slice();
-
-  // Make sure current anchor is in default list
-  if (anchor && !defaultList.find((owner) => owner.identifier === anchor)) {
-    const anchorNode = allNodes.find((node) => node.identifier === anchor);
-    if (anchorNode) {
-      defaultList.push(anchorNode);
-    }
-  }
-
-  // Make sure current aim is in the default list
-  if (hasDistinctAim() && !defaultList.find((owner) => owner.identifier === aim)) {
-    const aimNode = allNodes.find((node) => node.identifier === aim);
-    if (aimNode) {
-      defaultList.push(aimNode);
-    }
-  }
-
-  // Searchable nodes are all nodes that are not hidden in the GUI
-  const searchableNodes = allNodes.filter((node) => {
-    return !isPropertyOwnerHidden(node.uri, properties);
+  const shouldStartInAnchorAim = useAppSelector((state) => {
+    const aimProp = state.properties.properties[NavigationAimKey];
+    const anchorProp = state.properties.properties[NavigationAnchorKey];
+    return aimProp?.value !== anchorProp?.value && aimProp?.value !== '';
   });
+  const [navigationMode, setNavigationMode] = useState(
+    shouldStartInAnchorAim ? NavigationMode.AnchorAim : NavigationMode.Focus
+  );
 
-  const sortedDefaultList = defaultList
-    .slice()
-    .sort((a, b) => a.name.localeCompare(b.name));
-  const sortedNodes = searchableNodes
-    .slice()
-    .sort((a, b) => a.name.localeCompare(b.name));
+  const sortedDefaultList = useMemo(() => {
+    const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
+    const markedInterestingNodeUris = uris.filter((uri) =>
+      hasInterestingTag(uri, propertyOwners)
+    );
+    const favorites = markedInterestingNodeUris
+      .map((uri) => propertyOwners[uri])
+      .filter((po) => po !== undefined);
+    return favorites.slice().sort((a, b) => a.name.localeCompare(b.name));
+  }, [propertyOwners]);
 
-  const searchPlaceholderText = {
-    Focus: 'Search for a new focus...',
-    Anchor: 'Search for a new anchor...',
-    Aim: 'Search for a new aim...'
-  }[navigationAction];
+  // @TODO (2025-02-24, emmbr): Remove dependency on properties object
+  const sortedSearchableNodes = useMemo(() => {
+    const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
+    const allNodes = uris
+      .map((uri) => propertyOwners[uri])
+      .filter((po) => po !== undefined);
 
-  const isInFocusMode = navigationAction === NavigationActionState.Focus;
-  // We'll highlight the anchor node in both Focus and Anchor state otherwise aim node
-  const activeNode = navigationAction === NavigationActionState.Aim ? aim : anchor;
+    // Searchable nodes are all nodes that are not hidden in the GUI
+    const searchableNodes = allNodes.filter((node) => {
+      return !isPropertyOwnerHidden(node.uri, properties);
+    });
+
+    return searchableNodes.slice().sort((a, b) => a.name.localeCompare(b.name));
+  }, [properties, propertyOwners]);
+
+  const searchMatcherFunction = generateMatcherFunctionByKeys([
+    'identifier',
+    'name',
+    'uri',
+    'tags'
+  ]);
+
   const isInFlight = engineMode === EngineMode.CameraPath;
 
-  function hasDistinctAim() {
-    return aim !== '' && aim !== anchor;
-  }
-
-  // TODO: anden88: @emma take a look at this. Is the flgiht controller really needed for this?
-  function onSelect(
-    identifier: Identifier,
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
-    const updateViewPayload: FlightControllerData = {
-      type: 'updateView',
-      focus: '',
-      aim: '',
-      anchor: '',
-      resetVelocities: false,
-      retargetAnchor: false,
-      retargetAim: false
-    };
-
-    switch (navigationAction) {
-      case NavigationActionState.Focus:
-        updateViewPayload.focus = identifier;
-        updateViewPayload.aim = '';
-        updateViewPayload.anchor = '';
-        break;
-      case NavigationActionState.Anchor:
-        if (!aim) {
-          updateViewPayload.aim = anchor ?? '';
-        }
-        updateViewPayload.anchor = identifier;
-        break;
-      case NavigationActionState.Aim:
-        updateViewPayload.aim = identifier;
-        updateViewPayload.anchor = anchor ?? '';
-        break;
-      default:
-        throw new Error(`Missing NavigationActionState case for: '${navigationAction}'`);
-    }
-
-    if (!event.shiftKey) {
-      if (navigationAction === NavigationActionState.Aim) {
-        triggerRetargetAim();
-      } else {
-        triggerRetargetAnchor();
-      }
-    }
-
-    const shouldRetargetAim = !event.shiftKey && updateViewPayload.aim !== '';
-    const shouldRetargetAnchor = !event.shiftKey && updateViewPayload.aim === '';
-
-    updateViewPayload.retargetAim = shouldRetargetAim;
-    updateViewPayload.retargetAnchor = shouldRetargetAnchor;
-    updateViewPayload.resetVelocities = !event.ctrlKey;
-
-    dispatch(sendFlightControl(updateViewPayload));
-
-    if (updateViewPayload.aim) {
-      setAnchor(updateViewPayload.anchor);
-      setAim(updateViewPayload.aim);
-    } else if (updateViewPayload.anchor !== '') {
-      setAnchor(updateViewPayload.anchor);
-    } else {
-      setAnchor(updateViewPayload.focus);
-      setAim(updateViewPayload.aim);
-    }
-  }
-
   return (
-    <ScrollArea h={'100%'}>
-      <Container>
-        <Box ref={ref}>
-          <Group justify={'space-between'}>
-            <SegmentedControl
-              value={navigationAction}
-              withItemsBorders={false}
-              disabled={isInFlight}
-              my={'xs'}
-              onChange={(value) => setNavigationAction(value as NavigationActionState)}
-              data={[
-                {
-                  value: NavigationActionState.Focus,
-                  label: (
-                    <>
-                      <FocusIcon size={IconSize.sm} style={{ display: 'block' }} />
-                      <VisuallyHidden>Set focus</VisuallyHidden>
-                    </>
-                  )
-                },
-                {
-                  value: NavigationActionState.Anchor,
-                  label: (
-                    <>
-                      <AnchorIcon size={IconSize.sm} style={{ display: 'block' }} />
-                      <VisuallyHidden>Set anchor</VisuallyHidden>
-                    </>
-                  )
-                },
-                {
-                  value: NavigationActionState.Aim,
-                  label: (
-                    <>
-                      <TelescopeIcon size={IconSize.sm} style={{ display: 'block' }} />
-                      <VisuallyHidden>Set aim</VisuallyHidden>
-                    </>
-                  )
-                }
-              ]}
-            />
-            <OriginSettings />
-          </Group>
-          {isInFlight && (
-            <Paper mb={'xs'} py={'xs'}>
-              <Center>
-                <Group gap={'xs'}>
-                  <RemainingFlightTimeIndicator compact={false} />
-                  <Button
-                    onClick={() => luaApi?.pathnavigation.stopPath()}
-                    leftSection={<AirplaneCancelIcon size={IconSize.md} />}
-                    variant={'outline'}
-                    color={'red'}
-                  >
-                    Cancel Flight
-                  </Button>
-                </Group>
-              </Center>
-            </Paper>
-          )}
-        </Box>
-        <FilterList heightFunc={heightFunction}>
-          <FilterList.InputField
-            placeHolderSearchText={searchPlaceholderText}
-            showMoreButton
+    <Layout>
+      <Layout.FixedSection>
+        <Group justify={'space-between'} gap={'xs'} wrap={'nowrap'}>
+          <SegmentedControl
+            value={navigationMode}
+            disabled={isInFlight}
+            my={'xs'}
+            onChange={(value) => setNavigationMode(value as NavigationMode)}
+            data={[
+              {
+                value: NavigationMode.Focus,
+                label: (
+                  <Center h={20}>
+                    <FocusIcon size={IconSize.sm} />
+                    <VisuallyHidden>Focus mode</VisuallyHidden>
+                  </Center>
+                )
+              },
+              {
+                value: NavigationMode.AnchorAim,
+                label: (
+                  <Center h={20}>
+                    <AnchorIcon />
+                    <Text c={'dimmed'} size={'sm'}>
+                      /
+                    </Text>
+                    <TelescopeIcon />
+                    <VisuallyHidden>Anchor & Aim mode</VisuallyHidden>
+                  </Center>
+                )
+              }
+            ]}
           />
-          <FilterList.Favorites>
-            {sortedDefaultList.map((entry) => (
-              <FocusEntry
-                key={entry.identifier}
-                entry={entry}
-                onSelect={onSelect}
-                activeNode={activeNode}
-                showNavigationButtons={isInFocusMode}
-                disableFocus={isInFlight}
-              />
-            ))}
-          </FilterList.Favorites>
-          <FilterList.SearchResults
-            data={sortedNodes}
-            renderElement={(node) => (
-              <FocusEntry
-                key={node.identifier}
-                entry={node}
-                onSelect={onSelect}
-                activeNode={activeNode}
-                showNavigationButtons={isInFocusMode}
-                disableFocus={isInFlight}
-              />
-            )}
-            matcherFunc={generateMatcherFunctionByKeys([
-              'identifier',
-              'name',
-              'uri',
-              'tags'
-            ])}
-          >
-            <FilterList.SearchResults.VirtualList />
-          </FilterList.SearchResults>
-        </FilterList>
-      </Container>
-    </ScrollArea>
+          <OriginSettings />
+        </Group>
+      </Layout.FixedSection>
+      <Layout.GrowingSection>
+        {navigationMode === NavigationMode.Focus && (
+          <FocusView
+            favorites={sortedDefaultList}
+            searchableNodes={sortedSearchableNodes}
+            matcherFunction={searchMatcherFunction}
+          />
+        )}
+        {navigationMode === NavigationMode.AnchorAim && (
+          <AnchorAimView
+            favorites={sortedDefaultList}
+            searchableNodes={sortedSearchableNodes}
+            matcherFunction={searchMatcherFunction}
+          />
+        )}
+      </Layout.GrowingSection>
+    </Layout>
   );
 }

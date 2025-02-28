@@ -36,9 +36,7 @@ export function SceneTreeNodeContent({ node, expanded }: Props) {
     <Box
       ml={5}
       mt={5}
-      style={{
-        outline: isCurrentNode ? '3px solid var(--mantine-primary-color-filled)' : 'none'
-      }}
+      bd={isCurrentNode ? '3px solid var(--mantine-primary-color-filled)' : 'none'}
     >
       <SceneGraphNodeHeader
         uri={node.value}
@@ -69,8 +67,7 @@ export function SceneTreeNode({
   useWindowEvent('keydown', (event) => {
     const parentElement = nodeRef?.current?.parentElement;
     const isFocused = parentElement && parentElement === document.activeElement;
-
-    if (event.code === 'Enter' && isFocused) {
+    if (event.key === 'Enter' && isFocused) {
       if (isGroupNode(node)) {
         tree.toggleExpanded(node.value);
       } else {

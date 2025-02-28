@@ -1,8 +1,7 @@
-import { Container, ScrollArea } from '@mantine/core';
-
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useAppSelector } from '@/redux/hooks';
 import { Action } from '@/types/types';
@@ -10,6 +9,7 @@ import { Action } from '@/types/types';
 import { ActionsBreadcrumbs } from './ActionsBreadcrumbs';
 import { ActionsButton } from './ActionsButton';
 import { ActionsFolder } from './ActionsFolder';
+import { ActionsSearchInputField } from './ActionsSearchInputField';
 import { useActionsForLevel, useActionsInPath } from './hooks';
 
 export function ActionsPanel() {
@@ -26,11 +26,14 @@ export function ActionsPanel() {
   }
 
   return (
-    <ScrollArea h={'100%'}>
-      <Container mt={'xs'}>
+    <Layout>
+      <Layout.FixedSection>
         <ActionsBreadcrumbs />
+      </Layout.FixedSection>
+      <Layout.GrowingSection>
         <FilterList>
-          <FilterList.InputField placeHolderSearchText={'Search for an action...'} />
+          {/* This is a custom variant of the FilterList input field */}
+          <ActionsSearchInputField placeHolderSearchText={'Search for an action...'} />
           <FilterList.Favorites>
             <DynamicGrid spacing={'xs'} verticalSpacing={'xs'} minChildSize={170}>
               {actionLevel.folders.sort().map((folder) => (
@@ -65,7 +68,7 @@ export function ActionsPanel() {
             <FilterList.SearchResults.VirtualList gap={'xs'} />
           </FilterList.SearchResults>
         </FilterList>
-      </Container>
-    </ScrollArea>
+      </Layout.GrowingSection>
+    </Layout>
   );
 }

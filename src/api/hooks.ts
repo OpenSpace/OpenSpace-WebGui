@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useThrottledCallback } from '@mantine/hooks';
 
 import {
@@ -326,11 +326,18 @@ export function useSetOpenSpaceTime() {
  * Hook that listens to a prop and updates the local state when the prop changes.
  */
 export function usePropListeningState<T>(prop: T) {
-  const [value, set] = useState<T>(prop);
+  const [value, setValue] = useState<T>(prop);
+  const isEditing = useRef(false);
 
   useEffect(() => {
-    set(prop);
-  }, [prop]);
+    if (!isEditing.current) {
+      setValue(prop);
+    }
+  }, [prop, isEditing]);
 
-  return { value, set };
+  function setIsEditing(value: boolean): void {
+    isEditing.current = value;
+  }
+
+  return { value, setValue, setIsEditing };
 }

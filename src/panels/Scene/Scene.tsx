@@ -1,6 +1,6 @@
-import { Box, Container, Divider } from '@mantine/core';
+import { Container, Divider } from '@mantine/core';
 
-import { useComputeHeightFunction } from '@/components/FilterList/hooks';
+import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { SceneTree } from '@/panels/Scene/SceneTree/SceneTree';
 import { useAppSelector } from '@/redux/hooks';
@@ -12,8 +12,6 @@ export function Scene() {
     (state) => Object.keys(state.propertyOwners.propertyOwners).length > 0
   );
 
-  const { ref, heightFunction } = useComputeHeightFunction(100, 10);
-
   if (!hasLoadedScene) {
     return (
       <Container mt={'md'}>
@@ -23,12 +21,14 @@ export function Scene() {
   }
 
   return (
-    <Container>
-      <Box ref={ref}>
+    <Layout>
+      <Layout.FixedSection>
         <FeaturedSceneTree />
-        <Divider my={'xs'} />
-      </Box>
-      <SceneTree heightFunction={heightFunction} />
-    </Container>
+        <Divider mt={'lg'} />
+      </Layout.FixedSection>
+      <Layout.GrowingSection pt={'md'}>
+        <SceneTree />
+      </Layout.GrowingSection>
+    </Layout>
   );
 }

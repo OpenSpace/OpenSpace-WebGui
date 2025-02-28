@@ -1,4 +1,4 @@
-import { ActionIcon, Menu } from '@mantine/core';
+import { ActionIcon, Container, Menu } from '@mantine/core';
 
 import { Property } from '@/components/Property/Property';
 import { SettingsIcon } from '@/icons/icons';
@@ -19,10 +19,12 @@ export function OriginSettings() {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Label>Camera Path Settings</Menu.Label>
-        <Property uri={CameraPathSpeedFactorKey} />
-        <Property uri={CameraPathArrivalDistanceFactorKey} />
-        <Property uri={ApplyIdleBehaviorOnPathFinishKey} />
-        <Property uri={JumpToFadeDurationKey} />
+        <Container>
+          <Property uri={CameraPathSpeedFactorKey} />
+          <Property uri={CameraPathArrivalDistanceFactorKey} />
+          <Property uri={ApplyIdleBehaviorOnPathFinishKey} />
+          <Property uri={JumpToFadeDurationKey} />
+        </Container>
       </Menu.Dropdown>
     </Menu>
   );

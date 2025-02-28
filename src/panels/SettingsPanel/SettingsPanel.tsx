@@ -1,5 +1,4 @@
 import { useCallback, useMemo } from 'react';
-import { Container, ScrollArea } from '@mantine/core';
 
 import { useGetOptionPropertyValue } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -70,28 +69,20 @@ export function SettingsPanel() {
   }, []);
 
   return (
-    <ScrollArea h={'100%'}>
-      <Container>
-        <FilterList>
-          <FilterList.InputField
-            m={'xs'}
-            mb={0}
-            placeHolderSearchText={'Search for a setting...'}
-          />
-          <FilterList.Favorites>
-            {topLevelPropertyOwners.map((uri) => (
-              <PropertyOwner uri={uri} key={uri} />
-            ))}
-          </FilterList.Favorites>
-          <FilterList.SearchResults
-            data={searchData}
-            renderElement={renderfunc}
-            matcherFunc={matcher}
-          >
-            <FilterList.SearchResults.Pagination maxShownMatches={20} />
-          </FilterList.SearchResults>
-        </FilterList>
-      </Container>
-    </ScrollArea>
+    <FilterList>
+      <FilterList.InputField placeHolderSearchText={'Search for a setting...'} />
+      <FilterList.Favorites>
+        {topLevelPropertyOwners.map((uri) => (
+          <PropertyOwner uri={uri} key={uri} />
+        ))}
+      </FilterList.Favorites>
+      <FilterList.SearchResults
+        data={searchData}
+        renderElement={renderfunc}
+        matcherFunc={matcher}
+      >
+        <FilterList.SearchResults.Pagination maxShownMatches={20} />
+      </FilterList.SearchResults>
+    </FilterList>
   );
 }

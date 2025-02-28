@@ -72,6 +72,7 @@ export {
   MdStop as StopIcon,
   MdTimer as TimerIcon,
   MdOutlineCategory as TreeViewIcon,
+  MdArrowUpward as UpArrowIcon,
   MdVideocam as VideocamIcon,
   MdOutlineVisibility as VisibilityIcon,
   MdWater as WaterIcon,

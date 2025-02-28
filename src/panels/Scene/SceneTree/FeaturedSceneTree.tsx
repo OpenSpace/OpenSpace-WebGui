@@ -1,4 +1,4 @@
-import { Box, Tree, TreeNodeData } from '@mantine/core';
+import { Tree, TreeNodeData } from '@mantine/core';
 
 import { useGetStringPropertyValue } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
@@ -52,11 +52,10 @@ export function FeaturedSceneTree() {
   }
 
   return (
-    <Box>
-      <Tree
-        data={featuredTreeData}
-        renderNode={(payload) => <SceneTreeNode {...payload} />}
-      />
-    </Box>
+    // @TODO: There wa a Box here. Why?
+    <Tree
+      data={featuredTreeData}
+      renderNode={(payload) => <SceneTreeNode {...payload} />}
+    />
   );
 }

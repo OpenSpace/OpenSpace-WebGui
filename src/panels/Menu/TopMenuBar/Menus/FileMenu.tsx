@@ -36,11 +36,7 @@ export function FileMenu() {
         Toggle Console
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item
-        onClick={toggleShutdown}
-        leftSection={<ExitAppIcon />}
-        rightSection={<Kbd>Esc</Kbd>}
-      >
+      <Menu.Item onClick={toggleShutdown} leftSection={<ExitAppIcon />}>
         Quit OpenSpace
       </Menu.Item>
     </TopBarMenuWrapper>

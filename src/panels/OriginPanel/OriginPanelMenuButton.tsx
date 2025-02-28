@@ -9,8 +9,8 @@ import { EngineMode } from '@/types/enums';
 import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
 
 import { AnchorAimButtons } from './MenuButtons/AnchorAimButtons';
+import { CancelFlightButton } from './MenuButtons/CancelFlightButton';
 import { FocusButton } from './MenuButtons/FocusButton';
-import { CancelFlightButton } from './CancelFlightButton';
 import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
 interface OriginPanelMenuButtonProps {
@@ -35,8 +35,8 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
   if (isInFlight) {
     return (
       <Group>
-        <CancelFlightButton />
         <RemainingFlightTimeIndicator />
+        <CancelFlightButton />
       </Group>
     );
   }
