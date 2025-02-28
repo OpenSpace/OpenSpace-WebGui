@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
 import { MantineStyleProps, NumberFormatter, Slider } from '@mantine/core';
 import { scalePow } from 'd3';
+
+import { usePropListeningState } from '@/api/hooks';
 
 interface Props extends MantineStyleProps {
   disabled: boolean;
@@ -23,15 +24,11 @@ export function NumericPropertySlider({
   ...props
 }: Props) {
   // Note that this value does not take the slider scale into account
-  const [currentValue, setCurrentValue] = useState(value);
-  const [isEditingSlider, setIsEditingSlider] = useState(false);
-
-  useEffect(() => {
-    // Only update the current value if the value is not currently being edited
-    if (!isEditingSlider) {
-      setCurrentValue(value);
-    }
-  }, [isEditingSlider, value]);
+  const {
+    value: currentValue,
+    setValue: setCurrentValue,
+    setIsEditing: setIsEditingSlider
+  } = usePropListeningState<number>(value);
 
   const scale = scalePow().exponent(exponent).domain([min, max]).range([min, max]);
   const decimalPlaces = Math.max(0, -Math.floor(Math.log10(step)));
