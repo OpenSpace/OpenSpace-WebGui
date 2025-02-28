@@ -4,7 +4,7 @@ import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Action } from '@/types/types';
 
-import { calculateLevelDepth, createPath, getFolders, prunePath } from './utils';
+import { calculateLevelDepth, createPath, formatPath,getFolders } from './util';
 
 export interface ActionFolderContent {
   actions: Action[];
@@ -14,7 +14,7 @@ export interface ActionFolderContent {
 export function useActionsForLevel(): ActionFolderContent {
   const actions = useAppSelector((state) => state.actions.actions);
   const navigationPath = useAppSelector((state) =>
-    prunePath(state.actions.navigationPath)
+    formatPath(state.actions.navigationPath)
   );
 
   // If we are at home, this will be 0. If we are at /folder1/folder2, this will be 2.
@@ -26,7 +26,7 @@ export function useActionsForLevel(): ActionFolderContent {
 
     actions.forEach((action) => {
       // We want to make sure all paths are in the same format. Prune it.
-      const guiPath = prunePath(action.guiPath);
+      const guiPath = formatPath(action.guiPath);
 
       // Is it the current path? Add it to actions
       if (guiPath === navigationPath) {

@@ -1,4 +1,4 @@
-export function prunePath(path: string): string {
+export function formatPath(path: string): string {
   let guiPath = path;
   if (path === '/') {
     return path;
@@ -22,8 +22,10 @@ export function calculateLevelDepth(navigationPath: string): number {
   if (navigationPath === '/') {
     return 0;
   }
-  const noOfSlashes = (navigationPath.match(new RegExp('/', 'g')) || []).length;
-  return noOfSlashes;
+  // Create an array of characters and count the number of slashes
+  const charArray = navigationPath.split('');
+  const nSlashes = charArray.filter((char) => char === '/').length;
+  return nSlashes;
 }
 
 // Returns an array of folders from a path. If path is /, the array is [''].
@@ -33,9 +35,9 @@ export function getFolders(path: string): string[] {
   if (path === '/') {
     return [''];
   }
-  return prunePath(path).split('/');
+  return formatPath(path).split('/');
 }
 
 export function createPath(folders: string[]): string {
-  return prunePath(folders.join('/'));
+  return formatPath(folders.join('/'));
 }
