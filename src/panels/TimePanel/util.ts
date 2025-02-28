@@ -1,3 +1,11 @@
+import { StepSizes, TimePart } from './types';
+
+const Second = StepSizes[TimePart.Seconds];
+const Minute = StepSizes[TimePart.Minutes];
+const Hour = StepSizes[TimePart.Hours];
+const Month = StepSizes[TimePart.Months];
+const Day = StepSizes[TimePart.Days];
+const Year = StepSizes[TimePart.Years];
 /**
  * Converts delta time (in seconds) into a unit friendly format (seconds, min, hours, etc)
  * @param deltaSeconds The delta in seconds, can be positive or negative
@@ -12,29 +20,34 @@ export function formatDeltaTime(deltaSeconds: number): {
   isNegative: boolean;
 } {
   const isNegative = deltaSeconds < 0;
-  let unit = 'second';
-  let increment = Math.abs(deltaSeconds);
+  const dSeconds = Math.abs(deltaSeconds);
 
-  // Limit: the threshold to check if we should switch to the next unit
-  // Factor: value to divide when moving to the new unit
-  const timeUnits = [
-    { limit: 60 * 2, factor: 60, unit: 'minute' },
-    { limit: 60 * 2, factor: 60, unit: 'hour' },
-    { limit: 24 * 2, factor: 24, unit: 'day' },
-    { limit: (365 / 12) * 2, factor: 365 / 12, unit: 'month' },
-    { limit: 12, factor: 12, unit: 'year' } //
+  // Define the units and their limits.
+  // E.g. if the delta time is below 2 hours, we display it in minutes.
+  // Or if the delta time is below 2 minutes, we display it in seconds.
+  const units = [
+    { limit: Minute * 2, unit: { label: 'second', factor: Second } },
+    { limit: Hour * 2, unit: { label: 'minute', factor: Minute } },
+    { limit: Day * 2, unit: { label: 'hour', factor: Hour } },
+    { limit: Month * 2, unit: { label: 'day', factor: Day } },
+    { limit: Year * 2, unit: { label: 'month', factor: Month } },
+    { limit: Infinity, unit: { label: 'year', factor: Year } }
   ];
 
-  // Find the most appropriate unit
-  for (const { limit, factor, unit: nextUnit } of timeUnits) {
-    if (increment < limit) {
-      break;
-    }
-    increment /= factor;
-    unit = nextUnit;
+  const result = units.find(({ limit }) => dSeconds < limit);
+
+  if (!result) {
+    throw new Error('Invalid delta time');
   }
 
-  return { increment, unit, isNegative };
+  const { unit } = result;
+
+  // Convert the seconds to the new unit
+  const dSecondsInUnit = dSeconds / unit.factor;
+
+  // Pluralize label if the time in the new unit is greater than 1
+  const label = dSecondsInUnit === 1 ? unit.label : `${unit.label}s`;
+  return { increment: dSecondsInUnit, unit: label, isNegative };
 }
 
 /**
