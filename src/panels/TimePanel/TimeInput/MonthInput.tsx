@@ -32,7 +32,7 @@ export function MonthInput({
   onInputChangeStep,
   ...styleProps
 }: Props) {
-  const { value: storedMonth, set: setStoredMonth } = usePropListeningState(month);
+  const { value: storedMonth, setValue: setStoredMonth } = usePropListeningState(month);
 
   function onInput(newValue: string): void {
     const monthIndex = parseMonthTextInput(newValue);

@@ -1,34 +1,28 @@
-import { useEffect } from 'react';
 import { Button, Skeleton, Stack, Text } from '@mantine/core';
 
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
+import { useSubscribeToTime } from '@/api/hooks';
+import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
+
+import { formatDeltaTime } from './util';
 
 interface TimePanelMenuButtonProps {
   onClick: () => void;
 }
 export function TimePanelMenuButton({ onClick }: TimePanelMenuButtonProps) {
-  const dispatch = useAppDispatch();
-  const time = useAppSelector((state) => state.time.time);
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime);
   const isPaused = useAppSelector((state) => state.time.isPaused);
+  const timeString = useAppSelector((state) => state.time.timeString);
 
-  const isReady = time !== undefined;
+  const timeCapped = useSubscribeToTime();
 
-  const date = new Date(time ?? '');
-  const isValiDate = isDateValid(date);
+  const isReady = timeCapped !== undefined || timeString !== undefined;
 
-  const timeLabel = isValiDate ? date.toUTCString() : 'Date out of range';
+  const date = new Date(timeCapped ?? '');
+  const isValidDate = isDateValid(date);
+
+  const timeLabel = isValidDate ? date.toUTCString() : 'Date out of range';
   const speedLabel = getFormattedSpeedLabel();
-
-  useEffect(() => {
-    dispatch(subscribeToTime());
-
-    return () => {
-      dispatch(unsubscribeToTime());
-    };
-  }, [dispatch]);
 
   function getFormattedSpeedLabel() {
     if (targetDeltaTime === undefined) {
@@ -39,39 +33,12 @@ export function TimePanelMenuButton({ onClick }: TimePanelMenuButtonProps) {
       return `Realtime ${isPaused ? '(Paused)' : ''}`;
     }
 
-    const isNegative = Math.sign(targetDeltaTime) === -1;
-    const sign = isNegative ? '-' : '';
-
-    const { increment, unit } = formatDeltaTime(Math.abs(targetDeltaTime));
+    const { increment, unit, isNegative } = formatDeltaTime(Math.abs(targetDeltaTime));
     const roundedIncrement = Math.round(increment);
     const pluralSuffix = roundedIncrement !== 1 ? 's' : '';
+    const sign = isNegative ? '-' : '';
 
     return `${sign}${roundedIncrement} ${unit}${pluralSuffix} / second ${isPaused ? '(Paused)' : ''}`;
-  }
-
-  function formatDeltaTime(absDeltaSeconds: number): { increment: number; unit: string } {
-    let unit = 'second';
-    let increment = absDeltaSeconds;
-
-    // Limit: the threshold to check if we should switch to the next unit
-    // Factor: value to divide when moving to the new unit
-    const timeUnits = [
-      { limit: 60 * 2, factor: 60, unit: 'minute' },
-      { limit: 60 * 2, factor: 60, unit: 'hour' },
-      { limit: 24 * 2, factor: 24, unit: 'day' },
-      { limit: (365 / 12) * 2, factor: 365 / 12, unit: 'month' },
-      { limit: 12, factor: 12, unit: 'year' }
-    ];
-
-    for (const { limit, factor, unit: nextUnit } of timeUnits) {
-      if (increment < limit) {
-        break;
-      }
-      increment /= factor;
-      unit = nextUnit;
-    }
-
-    return { increment, unit };
   }
 
   return (
@@ -79,7 +46,7 @@ export function TimePanelMenuButton({ onClick }: TimePanelMenuButtonProps) {
       <Stack gap={0} align={'flex-start'}>
         {isReady ? (
           <>
-            <Text size={'lg'}>{timeLabel}</Text>
+            <Text size={'lg'}>{isValidDate ? timeLabel : timeString}</Text>
             <Text>{speedLabel}</Text>
           </>
         ) : (
