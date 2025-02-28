@@ -31,7 +31,7 @@ import {
   ExoplanetsPanel,
   FlightControlPanel,
   GeoLocationPanel,
-  KeyBindsPanel,
+  KeybindsPanel,
   MissionsPanel,
   OriginPanel,
   Scene,
@@ -197,7 +197,7 @@ export const menuItemsData: MenuItem[] = [
   {
     title: 'Keybindings Layout',
     componentID: 'keybindingsLayout',
-    content: <KeyBindsPanel />,
+    content: <KeybindsPanel />,
     renderIcon: (size) => <KeyboardIcon size={size} />,
     preferredPosition: 'float',
     floatPosition: { offsetY: 150, offsetX: 350, width: 1050, height: 680 },

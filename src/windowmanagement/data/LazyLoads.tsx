@@ -21,9 +21,9 @@ export const GeoLocationPanel = lazy(() =>
     default: module.GeoLocationPanel
   }))
 );
-export const KeyBindsPanel = lazy(() =>
+export const KeybindsPanel = lazy(() =>
   import('@/panels/KeybindsPanel/KeybindsPanel').then((module) => ({
-    default: module.KeyBindsPanel
+    default: module.KeybindsPanel
   }))
 );
 export const MissionsPanel = lazy(() =>
