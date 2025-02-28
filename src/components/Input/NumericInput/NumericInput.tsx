@@ -89,6 +89,7 @@ export function NumericInput({
       value={storedValue === undefined ? '' : storedValue}
       onKeyUp={onKeyUp}
       onBlur={onBlur}
+      onFocus={() => setIsEditing(true)}
       onValueChange={(newValue) => {
         setStoredValue(newValue.floatValue);
       }}
