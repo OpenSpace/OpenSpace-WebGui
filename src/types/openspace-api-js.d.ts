@@ -1508,6 +1508,14 @@ By default, the reference frame will be picked based on whether the orbital navi
    */
   setAxisDeadZone: (joystickName: string, axis: integer, deadzone: number) => Promise<void>
   /**
+   * Set the current focus node for the navigation, or re-focus on it if it was already the focus node.
+
+Per default, the camera will retarget to center the focus node in the view. The velocities will also be reset so that the camera stops moving after any retargetting is done. However, both of these behaviors may be skipped using the optional arguments.
+
+\\param identifier The identifier of the scene graph node to focus \\param shouldRetarget If true, retarget the camera to look at the focus node \\param shouldResetVelocities If true, reset the camera velocities so that the camera stops after its done retargetting (or immediately if retargetting is not done)
+   */
+  setFocus: (identifier: string, shouldRetarget?: boolean, shouldResetVelocities?: boolean) => Promise<void>
+  /**
    * Set the camera position from a provided [NavigationState](#core_navigation_state).
 
 \\param navigationState a table describing the NavigationState to set \\param useTimeStamp if true, and the provided NavigationState includes a timestamp, the time will be set as well

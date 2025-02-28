@@ -5,13 +5,14 @@ import {
   useGetStringPropertyValue,
   useOpenSpaceApi
 } from '@/api/hooks';
-import { AirplaneCancelIcon, AnchorIcon } from '@/icons/icons';
+import { AnchorIcon, CancelIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
-import { NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
+import { NavigationAnchorKey } from '@/util/keys';
+import { sgnUri } from '@/util/propertyTreeHelpers';
 
 export function CancelFlightButton() {
   const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
-  const anchorName = useGetPropertyOwner(`${ScenePrefixKey}${anchor}`)?.name ?? anchor;
+  const anchorName = useGetPropertyOwner(sgnUri(anchor))?.name ?? anchor;
 
   const luaApi = useOpenSpaceApi();
 
@@ -21,15 +22,15 @@ export function CancelFlightButton() {
 
   return (
     <Button
-      leftSection={<AirplaneCancelIcon size={IconSize.lg} />}
+      leftSection={<CancelIcon size={IconSize.lg} />}
       onClick={cancelFlight}
       size={'xl'}
-      variant={'filled'}
+      variant={'light'}
       color={'red'}
     >
-      <Stack gap={0} ta={'start'}>
+      <Stack gap={5} ta={'left'}>
         Cancel
-        <Text truncate maw={130}>
+        <Text size={'xs'} opacity={0.8} truncate maw={130}>
           <AnchorIcon /> {anchorName}
         </Text>
       </Stack>

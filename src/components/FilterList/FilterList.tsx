@@ -13,7 +13,7 @@ interface Props extends PropsWithChildren {
 
 export function FilterList({ height = '100%', isLoading, children }: Props) {
   return (
-    <Stack style={{ height }}>
+    <Stack style={{ height }} gap={'xs'}>
       <FilterListProvider isLoading={isLoading}>{children}</FilterListProvider>
     </Stack>
   );
