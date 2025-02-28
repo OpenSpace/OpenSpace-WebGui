@@ -14,7 +14,7 @@ export function KeyboardLayout() {
 
   const hasSelectedKeys = selectedKey !== '' || activeModifiers.length > 0;
   return (
-    <Container maw={'none'}>
+    <Container maw={'none'} pt={'xs'}>
       <Title order={2}>Keybinds</Title>
       <FullKeyboard
         setSelectedActions={setSelectedActions}

@@ -24,19 +24,17 @@ export function ListLayout() {
     .map((keybind) => {
       const action = actions.find((action) => action.identifier === keybind.action);
 
-      if (action === undefined) {
+      if (!action) {
         return undefined;
       }
-
+      // Combine the keybind and action data to one object
       return {
         ...keybind,
         ...action
       };
     })
     .filter((info) => !!info) // Filter any undefined objects
-    .sort((a, b) => {
-      return a.key > b.key ? 1 : -1;
-    });
+    .sort((a, b) => (a.key > b.key ? 1 : -1));
 
   function onClick(action: Action): void {
     if (action.identifier === selectedAction?.identifier) {
@@ -47,8 +45,8 @@ export function ListLayout() {
   }
 
   return (
-    <Layout>
-      <Layout.GrowingSection pb={'md'}>
+    <Layout pb={'xs'}>
+      <Layout.GrowingSection py={'md'}>
         <FilterList>
           <Group gap={'xs'}>
             <FilterList.InputField
@@ -61,13 +59,13 @@ export function ListLayout() {
                 multiple
                 onChange={(value) => setModifiersFilter(value as KeybindModifiers)}
               >
-                <Chip value={'shift'} size="xs">
+                <Chip value={'shift'} size={"xs"}>
                   Shift
                 </Chip>
-                <Chip value={'control'} size="xs">
+                <Chip value={'control'} size={"xs"}>
                   Ctrl
                 </Chip>
-                <Chip value={'alt'} size="xs">
+                <Chip value={'alt'} size={"xs"}>
                   Alt
                 </Chip>
               </Chip.Group>
