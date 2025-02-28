@@ -77,7 +77,7 @@ export function ListProperty({
       const splitInput = inputString
         .split(',')
         .map((item) => item.trim())
-        .filter((item) => item.length > 0);
+        .filter((item) => item !== "");
 
       let typedInput: ListValueType[] = splitInput;
       if (valueType === 'float') {

@@ -50,7 +50,7 @@ export function ColorEdit({ color, onChange, withAlpha }: Props) {
     <Stack gap={'xs'}>
       <MantineColorPicker
         value={value}
-        // We don't use the selected format here, since changin the format would then
+        // We don't use the selected format here, since changing the format would 
         // lead to the value changing, which would then trigger the onChange event
         format={withAlpha ? 'rgba' : 'rgb'}
         onChange={onColorChange}
