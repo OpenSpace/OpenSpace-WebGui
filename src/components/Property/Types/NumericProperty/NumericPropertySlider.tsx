@@ -36,7 +36,10 @@ export function NumericPropertySlider({
   const scale = scalePow().exponent(exponent).domain([min, max]).range([min, max]);
   const decimalPlaces = Math.max(0, -Math.floor(Math.log10(step)));
 
-  function markLabel(value: number, largeValuePrecision?: number): JSX.Element | string {
+  function markLabel(
+    value: number,
+    largeValuePrecision?: number
+  ): React.JSX.Element | string {
     return value < 100000 && value > 0.0001 ? (
       <NumberFormatter value={value} decimalScale={decimalPlaces} />
     ) : (

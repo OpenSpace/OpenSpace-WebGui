@@ -10,7 +10,7 @@ export function MinMaxRange({
   value,
   additionalData
 }: VectorPropertyProps) {
-  const { value: currentValue, set: setCurrentValue } = usePropListeningState<
+  const { value: currentValue, setValue: setCurrentValue } = usePropListeningState<
     [number, number]
   >([value[0], value[1]]);
 

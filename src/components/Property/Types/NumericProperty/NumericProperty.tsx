@@ -29,7 +29,7 @@ export function NumericProperty({
   value,
   additionalData
 }: Props) {
-  const { value: currentValue, set: setCurrentValue } =
+  const { value: currentValue, setValue: setCurrentValue } =
     usePropListeningState<number>(value);
 
   const min = additionalData.MinimumValue;
