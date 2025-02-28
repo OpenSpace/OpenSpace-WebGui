@@ -1,14 +1,14 @@
 import { memo } from 'react';
 import { Box } from '@mantine/core';
 
-import { useSubscribeToProperty } from '@/api/hooks';
-import { useAppSelector } from '@/redux/hooks';
+import { useGetProperty, useSubscribeToProperty } from '@/api/hooks';
 import { Uri } from '@/types/types';
 
-import { ListProperty } from './/Types/ListProperty';
 import { BoolProperty } from './Types/BoolProperty';
+import { FloatingNumberListProperty } from './Types/ListProperty/FloatingNumberListProperty';
+import { ListProperty } from './Types/ListProperty/ListProperty';
 import { MatrixProperty } from './Types/MatrixProperty';
-import { NumericProperty } from './Types/NumericProperty';
+import { NumericProperty } from './Types/NumericProperty/NumericProperty';
 import { OptionProperty } from './Types/OptionProperty';
 import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';
@@ -23,11 +23,8 @@ const concreteProperties: { [key: string]: any } = {
   TriggerProperty,
   StringProperty,
 
-  // TODO: The numerical lists have to be fixed, still. There is no DoubleListProperty
-  // in use anywhere, and the only IntListProperty I could find did not work in the existing
-  // UI
-  // DoubleListProperty: ListProperty,
-  // IntListProperty: ListProperty,
+  DoubleListProperty: FloatingNumberListProperty,
+  IntListProperty: FloatingNumberListProperty,
   StringListProperty: ListProperty,
 
   SelectionProperty,
@@ -71,24 +68,20 @@ interface Props {
 }
 
 export const Property = memo(({ uri }: Props) => {
-  const description = useAppSelector(
-    (state) => state.properties.properties[uri]?.description
-  );
-
-  const value = useAppSelector((state) => state.properties.properties[uri]?.value);
-
+  const property = useGetProperty(uri);
   const setPropertyValue = useSubscribeToProperty(uri);
 
+  const description = property?.description;
+  const value = property?.value;
+
   if (!description || value === undefined) {
-    return null;
+    return <></>;
   }
 
   const ConcreteProperty = concreteProperties[description.type];
 
   if (!ConcreteProperty) {
-    // TODO: Bring back once all types are implemented
-    // console.error('Missing property type', property.description.type);
-    return null;
+    throw Error(`Missing property type: '${property.description.type}'`);
   }
 
   // console.log(property);
@@ -96,7 +89,7 @@ export const Property = memo(({ uri }: Props) => {
   return (
     // All the property types get all informaiton, and then they may do whatever they
     // want with it (like ignore certain parts)
-    <Box pb={'xs'}>
+    <Box mb={'md'}>
       <ConcreteProperty
         key={description.identifier}
         disabled={description.metaData.isReadOnly}

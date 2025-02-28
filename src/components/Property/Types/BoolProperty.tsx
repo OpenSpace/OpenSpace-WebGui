@@ -1,6 +1,6 @@
 import { Checkbox, Group } from '@mantine/core';
 
-import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { PropertyLabel } from '../PropertyLabel';
 
 interface Props {
   name: string;
@@ -24,9 +24,8 @@ export function BoolProperty({
         onChange={(event) => setPropertyValue(event.currentTarget.checked)}
         onKeyDown={(event) => event.key === 'Enter' && setPropertyValue(!value)}
         disabled={disabled}
-        label={name}
+        label={<PropertyLabel label={name} tip={description} />}
       />
-      <InfoBox text={description} />
     </Group>
   );
 }

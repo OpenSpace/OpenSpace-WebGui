@@ -39,7 +39,7 @@ export function MatrixProperty({
   return (
     <>
       <PropertyLabel label={name} tip={description} />
-      <Grid>
+      <Grid gutter={'xs'}>
         {value.map((v, i) => (
           <Grid.Col key={i} span={12 / matrixSize}>
             <NumericInput

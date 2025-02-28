@@ -52,6 +52,7 @@ export function FeaturedSceneTree() {
   }
 
   return (
+    // @TODO: There wa a Box here. Why?
     <Tree
       data={featuredTreeData}
       renderNode={(payload) => <SceneTreeNode {...payload} />}

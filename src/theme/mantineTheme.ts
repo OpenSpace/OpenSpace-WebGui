@@ -4,10 +4,14 @@ import {
   Button,
   createTheme,
   defaultVariantColorsResolver,
+  RangeSlider,
+  Slider,
   ThemeIcon,
   Tooltip,
   VariantColorsResolver
 } from '@mantine/core';
+
+import sliderClasses from './styles/Slider.module.css';
 
 /**
  * This functions resolves colors for different variants, and adds new variants, for
@@ -46,6 +50,12 @@ export const theme = createTheme({
       defaultProps: {
         variant: 'default'
       }
+    }),
+    RangeSlider: RangeSlider.extend({
+      classNames: sliderClasses
+    }),
+    Slider: Slider.extend({
+      classNames: sliderClasses
     }),
     ThemeIcon: ThemeIcon.extend({
       defaultProps: {

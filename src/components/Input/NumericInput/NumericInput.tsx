@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { NumberInput, NumberInputProps } from '@mantine/core';
 
 import { usePropListeningState } from '@/api/hooks';
@@ -84,6 +84,7 @@ export function NumericInput({
     onEnter(newValue);
   }
 
+  // @TODO (2025-02-18, emmbr): This input type does not support scientific notation...
   return (
     <NumberInput
       value={storedValue === undefined ? '' : storedValue}

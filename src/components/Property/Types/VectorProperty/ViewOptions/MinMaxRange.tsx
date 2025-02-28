@@ -1,21 +1,18 @@
-import { useState } from 'react';
-import { RangeSlider } from '@mantine/core';
+import { Group, RangeSlider, Stack } from '@mantine/core';
 
-import { PropertyLabel } from '@/components/Property/PropertyLabel';
+import { usePropListeningState } from '@/api/hooks';
+import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { VectorPropertyProps } from '@/components/Property/Types/VectorProperty/VectorProperty';
 
 export function MinMaxRange({
-  name,
-  description,
   disabled,
   setPropertyValue,
   value,
   additionalData
 }: VectorPropertyProps) {
-  const [currentValue, setCurrentValue] = useState<[number, number]>([
-    value[0],
-    value[1]
-  ]);
+  const { value: currentValue, setValue: setCurrentValue } = usePropListeningState<
+    [number, number]
+  >([value[0], value[1]]);
 
   if (value.length !== 2) {
     throw Error('Invalid use of MinMaxRange view option!');
@@ -25,24 +22,40 @@ export function MinMaxRange({
   const [max] = additionalData.MaximumValue;
   const [step] = additionalData.SteppingValue;
 
+  const marks = [
+    { value: min, label: min },
+    { value: max, label: max }
+  ];
+
   function onValueChange(newValue: [number, number]) {
     setCurrentValue(newValue);
     setPropertyValue(newValue);
   }
 
-  // TODO: Add a way to edit the values using NumericInputs
+  const commonProps = { disabled, min, max, step };
+
+  // @TODO: Prevent entering numeric values where e.g. max < min? Or at least provide a
+  // warning?
   return (
-    <>
-      <PropertyLabel label={name} tip={description} />
+    <Stack gap={'xs'} mb={'xs'}>
+      <Group grow>
+        <NumericInput
+          value={currentValue[0]}
+          onEnter={(newFirst) => onValueChange([newFirst, currentValue[1]])}
+          {...commonProps}
+        />
+        <NumericInput
+          value={currentValue[1]}
+          onEnter={(newSecond) => onValueChange([currentValue[0], newSecond])}
+          {...commonProps}
+        />
+      </Group>
       <RangeSlider
-        disabled={disabled}
         value={currentValue}
-        min={min}
-        max={max}
-        step={step}
-        // marks={marks} // TODO: Something clever
+        marks={marks}
         onChange={onValueChange}
+        {...commonProps}
       />
-    </>
+    </Stack>
   );
 }

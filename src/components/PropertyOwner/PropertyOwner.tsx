@@ -1,4 +1,4 @@
-import { Group } from '@mantine/core';
+import { Box, Group } from '@mantine/core';
 
 import { useGetPropertyOwner, useHasVisibleChildren } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
@@ -42,7 +42,9 @@ export function PropertyOwner({ uri, expandedOnDefault = false }: Props) {
       defaultOpen={expandedOnDefault}
       noTransition
     >
-      <PropertyOwnerContent uri={uri} />
+      <Box style={{ borderLeft: '2px solid var(--mantine-color-gray-8)' }}>
+        <PropertyOwnerContent uri={uri} />
+      </Box>
     </Collapsable>
   );
 }
