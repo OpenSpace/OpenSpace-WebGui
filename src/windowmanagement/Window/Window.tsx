@@ -1,10 +1,10 @@
 import { PropsWithChildren, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+import { BoxProps } from '@mantine/core';
 
 import { fallbackRender } from '@/components/ErrorFallback/fallbackRender';
 
 import { WindowSizeProvider } from './WindowSizeProvider';
-import { BoxProps } from '@mantine/core';
 
 export function Window({ children, ...props }: PropsWithChildren & BoxProps) {
   // TODO (ylvse 2025-01-21): This could probably be handled in a smarter way
