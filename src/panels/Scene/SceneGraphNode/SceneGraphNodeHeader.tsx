@@ -42,8 +42,13 @@ export function SceneGraphNodeHeader({ uri, label, onClick, leftSection }: Props
       p={0}
       size={'compact-sm'}
       onClick={onClick}
+      justify={'start'}
     >
-      <Text mah={'80px'} ta={'left'} style={{ textWrap: 'pretty' }}>
+      <Text
+        mah={'80px'}
+        ta={'left'}
+        style={{ textWrap: 'pretty', overflowWrap: 'anywhere' }}
+      >
         {name}
       </Text>
     </Button>

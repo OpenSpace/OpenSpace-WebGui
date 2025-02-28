@@ -53,7 +53,7 @@ export function displayName(propertyOwner: PropertyOwner): string {
   return propertyOwner.name ?? propertyOwner.identifier ?? propertyOwner.uri;
 }
 
-export function sgnUri(identifier: Identifier): Uri {
+export function sgnUri(identifier: Identifier | undefined): Uri {
   return `${ScenePrefixKey}${identifier}`;
 }
 

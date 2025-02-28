@@ -16,7 +16,7 @@ export function collectSearchableItems(
   owners: Uri[],
   allPropertyOwners: PropertyOwners
 ): [Uri[], Uri[]] {
-  let collectedOwners: Uri[] = [];
+  let collectedOwners: Uri[] = [...owners];
   let collectedProperties: Uri[] = [];
   let queue: Uri[] = [...owners];
 

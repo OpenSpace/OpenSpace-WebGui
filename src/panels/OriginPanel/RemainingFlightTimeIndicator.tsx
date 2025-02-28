@@ -1,9 +1,11 @@
-import { Box, Group, Text } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 
 import { useGetPropertyOwner, useSubscribeToCameraPath } from '@/api/hooks';
 import { AirplaneIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
-import { ScenePrefixKey } from '@/util/keys';
+import { sgnUri } from '@/util/propertyTreeHelpers';
+
+import classes from './RemainingFlightTimeIndicator.module.css';
 
 interface Props {
   compact?: boolean;
@@ -14,23 +16,19 @@ export function RemainingFlightTimeIndicator({ compact = true }: Props) {
     useSubscribeToCameraPath();
 
   const pathTargetNodeName =
-    useGetPropertyOwner(`${ScenePrefixKey}${pathTargetNode}`)?.name ?? pathTargetNode;
+    useGetPropertyOwner(sgnUri(pathTargetNode))?.name ?? pathTargetNode;
 
-  return compact ? (
-    <Group wrap={'nowrap'} pr={'xs'}>
-      <AirplaneIcon size={IconSize.lg} />
-      <Box>
+  return (
+    <Group className={classes.blinking} wrap={'nowrap'} gap={'xs'} p={'xs'}>
+      <AirplaneIcon style={{ flexShrink: 0 }} size={IconSize.lg} />
+      {compact ? (
         <Text truncate maw={130}>
           {pathTargetNodeName}
         </Text>
-        <Text>{remainingTimeForPath} s</Text>
-      </Box>
-    </Group>
-  ) : (
-    <Group gap={'xs'}>
-      <AirplaneIcon size={IconSize.md} />
-      <Text>Flying to {pathTargetNodeName}</Text>
-      <Text>{remainingTimeForPath} s</Text>
+      ) : (
+        <Text ta={'center'}>Flying to {pathTargetNodeName}</Text>
+      )}
+      <Text style={{ textWrap: 'nowrap' }}>{remainingTimeForPath} s</Text>
     </Group>
   );
 }

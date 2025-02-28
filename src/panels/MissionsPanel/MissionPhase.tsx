@@ -78,6 +78,10 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
       <Title order={3} my={'md'}>
         Actions
       </Title>
+      {displayedPhase.data?.actions?.length === 0 &&
+        displayedPhase.data.actions.length === 0 && (
+          <Text c={'dimmed'}>This mission has no actions.</Text>
+        )}
       <DynamicGrid minChildSize={170} gridWidth={panelWidth - timeLineWidth}>
         {/* Show phase specific actions */}
         {!isMissionOverview &&

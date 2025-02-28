@@ -1,8 +1,14 @@
 import React from 'react';
-import { ActionIcon, ActionIconProps, Button, ButtonProps, Group } from '@mantine/core';
+import {
+  ActionIcon,
+  ActionIconProps,
+  Button,
+  ButtonProps,
+  Kbd,
+  Tooltip
+} from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { InfoBox } from '@/components/InfoBox/InfoBox';
 import {
   AirplaneIcon,
   FocusIcon,
@@ -52,7 +58,7 @@ interface ButtonContent {
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   icon: React.JSX.Element;
   title: string;
-  info?: string;
+  tooltip: React.JSX.Element | string;
 }
 
 export function NodeNavigationButton({
@@ -137,7 +143,8 @@ export function NodeNavigationButton({
   const content: ButtonContent = {
     onClick: () => {},
     icon: <></>,
-    title: ''
+    title: '',
+    tooltip: ''
   };
 
   switch (type) {
@@ -145,33 +152,57 @@ export function NodeNavigationButton({
       content.onClick = fadeTo;
       content.title = 'Jump to';
       content.icon = <LightningFlashIcon />;
+      content.tooltip = 'Teleport to object using a fade transition';
       break;
     case NavigationType.JumpGeo:
       content.onClick = jumpToGeo;
       content.title = 'Jump to Geo';
       content.icon = <LightningFlashIcon />;
+      content.tooltip = 'Teleport to position using a fade transition';
       break;
     case NavigationType.Focus:
       content.onClick = focus;
       content.title = 'Focus';
       content.icon = <FocusIcon />;
+      content.tooltip = (
+        <span>
+          Focus the object (set as anchor). Hold <Kbd>Shift</Kbd> when clicking to focus
+          without retargeting
+        </span>
+      );
       break;
     case NavigationType.Fly:
       content.onClick = flyTo;
       content.title = 'Fly to';
       content.icon = <AirplaneIcon />;
+      content.tooltip = (
+        <span>
+          Trigger a flight to the object. Hold <Kbd>Shift</Kbd> when clicking to instantly
+          teleport/jump
+        </span>
+      );
       break;
     case NavigationType.FlyGeo:
       content.onClick = flyToGeo;
       content.title = 'Fly to Geo';
       content.icon = <AirplaneIcon />;
+      content.tooltip = (
+        <span>
+          Trigger a flight to the position. Hold <Kbd>Shift</Kbd> when clicking to
+          instantly teleport/jump
+        </span>
+      );
       break;
     case NavigationType.Frame:
       content.onClick = zoomToFocus;
       content.title = 'Zoom to / Frame';
       content.icon = <FrameFocusIcon />;
-      content.info = `Focus on the target object by moving the camera in a straigt line
-        and rotate towards the object`;
+      content.tooltip = (
+        <span>
+          Frame the object by moving the camera in a straigt line and rotate towards it.
+          Hold <Kbd>Shift</Kbd> when clicking to do it instantaneously
+        </span>
+      );
       break;
 
     default:
@@ -179,22 +210,19 @@ export function NodeNavigationButton({
   }
 
   return (
-    <>
+    <Tooltip label={content.tooltip} multiline maw={200} openDelay={600}>
       {showLabel ? (
-        <Group>
-          <Button
-            onClick={content.onClick}
-            leftSection={content.icon}
-            size={size}
-            style={style}
-            justify={justify}
-            disabled={disabled}
-            variant={variant ?? 'filled'}
-          >
-            {showLabel && content.title}
-          </Button>
-          {content.info && <InfoBox text={content.info} />}
-        </Group>
+        <Button
+          onClick={content.onClick}
+          leftSection={content.icon}
+          size={size}
+          style={style}
+          justify={justify}
+          disabled={disabled}
+          variant={variant ?? 'filled'}
+        >
+          {showLabel && content.title}
+        </Button>
       ) : (
         <ActionIcon
           onClick={content.onClick}
@@ -206,6 +234,6 @@ export function NodeNavigationButton({
           {content.icon}
         </ActionIcon>
       )}
-    </>
+    </Tooltip>
   );
 }
