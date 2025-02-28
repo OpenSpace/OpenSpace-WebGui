@@ -8,8 +8,6 @@
   background-color: var(--mantine-color-gray-4);
   border: none;
   width: 2px;
-  /* This makes the mark centered on the actual value */
-  transform: translateX(100%);
 }
 
 .markLabel {
