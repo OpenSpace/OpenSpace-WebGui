@@ -6,13 +6,16 @@ import { Uri } from '@/types/types';
 
 import { BoolProperty } from './Types/BoolProperty';
 import { FloatingNumberListProperty } from './Types/ListProperty/FloatingNumberListProperty';
+import { IntNumberListProperty } from './Types/ListProperty/IntNumberListProperty';
 import { ListProperty } from './Types/ListProperty/ListProperty';
 import { MatrixProperty } from './Types/MatrixProperty';
+import { IntNumericProperty } from './Types/NumericProperty/IntNumericProperty';
 import { NumericProperty } from './Types/NumericProperty/NumericProperty';
 import { OptionProperty } from './Types/OptionProperty';
 import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';
 import { TriggerProperty } from './Types/TriggerProperty';
+import { IntVectorProperty } from './Types/VectorProperty/IntVectorProperty';
 import { VectorProperty } from './Types/VectorProperty/VectorProperty';
 
 // (2024-10-21, emmbr) I don't know how to efficiently get rid of "any" in this case
@@ -24,7 +27,7 @@ const concreteProperties: { [key: string]: any } = {
   StringProperty,
 
   DoubleListProperty: FloatingNumberListProperty,
-  IntListProperty: FloatingNumberListProperty,
+  IntListProperty: IntNumberListProperty,
   StringListProperty: ListProperty,
 
   SelectionProperty,
@@ -33,8 +36,8 @@ const concreteProperties: { [key: string]: any } = {
   DoubleProperty: NumericProperty,
   LongProperty: NumericProperty,
   ULongProperty: NumericProperty,
-  IntProperty: NumericProperty,
-  UIntProperty: NumericProperty,
+  IntProperty: IntNumericProperty,
+  UIntProperty: IntNumericProperty,
   ShortProperty: NumericProperty,
   UShortProperty: NumericProperty,
 
@@ -42,13 +45,13 @@ const concreteProperties: { [key: string]: any } = {
   Vec3Property: VectorProperty,
   Vec4Property: VectorProperty,
 
-  IVec2Property: VectorProperty,
-  IVec3Property: VectorProperty,
-  IVec4Property: VectorProperty,
+  IVec2Property: IntVectorProperty,
+  IVec3Property: IntVectorProperty,
+  IVec4Property: IntVectorProperty,
 
-  UVec2Property: VectorProperty,
-  UVec3Property: VectorProperty,
-  UVec4Property: VectorProperty,
+  UVec2Property: IntVectorProperty,
+  UVec3Property: IntVectorProperty,
+  UVec4Property: IntVectorProperty,
 
   DVec2Property: VectorProperty,
   DVec3Property: VectorProperty,

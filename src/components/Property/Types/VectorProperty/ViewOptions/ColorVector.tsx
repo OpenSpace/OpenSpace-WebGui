@@ -6,12 +6,12 @@ import { VectorPropertyProps } from '@/components/Property/Types/VectorProperty/
 import { ValueList } from './DefaultValueList';
 
 export function ColorVector(props: VectorPropertyProps) {
-  const { disabled, setPropertyValue, value } = props;
-  const hasAlpha = value.length === 4;
+  const { disabled, setPropertyValue, value, isInt } = props;
 
-  function setValue(newValue: number[]) {
-    setPropertyValue(newValue);
+  if (value.length < 3 || value.length > 4 || isInt) {
+    throw Error('Invalid use of Color view option!');
   }
+  const hasAlpha = value.length === 4;
 
   return (
     <Flex gap={'xs'} align={'center'}>
@@ -30,7 +30,7 @@ export function ColorVector(props: VectorPropertyProps) {
           if (hasAlpha) {
             newValue.push(rgbaColor.a);
           }
-          setValue(newValue);
+          setPropertyValue(newValue);
         }}
       />
     </Flex>

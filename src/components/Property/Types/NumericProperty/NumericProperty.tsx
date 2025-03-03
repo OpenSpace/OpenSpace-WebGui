@@ -6,7 +6,7 @@ import { PropertyLabel } from '@/components/Property/PropertyLabel';
 
 import { NumericPropertySlider } from './NumericPropertySlider';
 
-interface Props {
+export interface NumericPropertyProps {
   name: string;
   description: string;
   disabled: boolean;
@@ -18,7 +18,7 @@ interface Props {
     MinimumValue: number;
     SteppingValue: number;
   };
-  // TODO: view options in metadata
+  isInt?: boolean;
 }
 
 export function NumericProperty({
@@ -27,8 +27,9 @@ export function NumericProperty({
   disabled,
   setPropertyValue,
   value,
-  additionalData
-}: Props) {
+  additionalData,
+  isInt = false
+}: NumericPropertyProps) {
   const { value: currentValue, setValue: setCurrentValue } =
     usePropListeningState<number>(value);
 
@@ -36,8 +37,6 @@ export function NumericProperty({
   const max = additionalData.MaximumValue;
   const step = additionalData.SteppingValue;
   const exponent = additionalData.Exponent;
-
-  const isInt = step >= 1;
 
   // When no min/max is set, the marks for the slider cannot be nicely computed
   const hasNiceMinMax = isFinite(max - min);

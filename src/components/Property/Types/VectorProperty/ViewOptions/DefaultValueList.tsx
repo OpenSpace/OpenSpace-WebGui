@@ -7,13 +7,12 @@ export function ValueList({
   disabled,
   setPropertyValue,
   value,
-  additionalData
+  additionalData,
+  isInt
 }: VectorPropertyProps) {
   const min = additionalData.MinimumValue;
   const max = additionalData.MaximumValue;
   const step = additionalData.SteppingValue;
-
-  const isInt = step.every((s) => s >= 1);
 
   function setValue(index: number, newValue: number) {
     const v = [...value];

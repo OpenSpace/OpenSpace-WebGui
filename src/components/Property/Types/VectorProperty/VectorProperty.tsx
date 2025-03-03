@@ -20,27 +20,34 @@ export interface VectorPropertyProps {
     Color?: boolean;
     MinMaxRange?: boolean;
   };
+  isInt?: boolean;
 }
 
 export function VectorProperty(props: VectorPropertyProps) {
-  const { value, viewOptions, name, description } = props;
+  const { viewOptions, name, description } = props;
 
-  const isColor = (value.length === 3 || value.length === 4) && viewOptions.Color;
-  const isMinMaxRange = value.length === 2 && viewOptions.MinMaxRange;
+  if (viewOptions.Color) {
+    return (
+      <>
+        <PropertyLabel label={name} tip={description} />
+        <ColorVector {...props} />
+      </>
+    );
+  }
 
-  let view;
-  if (isColor) {
-    view = <ColorVector {...props} />;
-  } else if (isMinMaxRange) {
-    view = <MinMaxRange {...props} />;
-  } else {
-    view = <ValueList {...props} />;
+  if (viewOptions.MinMaxRange) {
+    return (
+      <>
+        <PropertyLabel label={name} tip={description} />
+        <MinMaxRange {...props} />
+      </>
+    );
   }
 
   return (
     <>
       <PropertyLabel label={name} tip={description} />
-      {view}
+      <ValueList {...props} />
     </>
   );
 }
