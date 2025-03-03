@@ -64,8 +64,18 @@ type InterpolationFinishedEvent = {
   Property: Uri;
 };
 
+type MissionAddedEvent = {
+  Event: 'MissionAdded';
+  MissionName: string;
+};
+
 type MissionEventReachedEvent = {
   Event: 'MissionEventReached';
+};
+
+type MissionRemovedEvent = {
+  Event: 'MissionRemoved';
+  MissionName: string;
 };
 
 type ParallelConnectionEvent = {
@@ -134,7 +144,9 @@ export type EventData =
   | FocusNodeChangedEvent
   | GuiTreeUpdatedEvent
   | InterpolationFinishedEvent
+  | MissionAddedEvent
   | MissionEventReachedEvent
+  | MissionRemovedEvent
   | ParallelConnectionEvent
   | PlanetEclipsedEvent
   | PointSpacecraftEvent

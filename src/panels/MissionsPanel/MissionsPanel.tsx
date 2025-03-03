@@ -1,13 +1,41 @@
-import { Stack, Text, ThemeIcon, Title } from '@mantine/core';
+import { Box, Select, Stack, Text, ThemeIcon, Title } from '@mantine/core';
 
+import { useOpenSpaceApi } from '@/api/hooks';
 import { RocketLaunchIcon } from '@/icons/icons';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setSelectedMission } from '@/redux/missions/missionsSlice';
 
 import { MissionContent } from './MissionContent';
 
 export function MissionsPanel() {
-  const hasMission = useAppSelector((state) => state.missions.isInitialized);
-  const mission = useAppSelector((state) => state.missions.data.missions[0]);
+  const {
+    isInitialized: hasMission,
+    data,
+    selectedMissionIdentifier
+  } = useAppSelector((state) => state.missions);
+
+  const luaApi = useOpenSpaceApi();
+  const dispatch = useAppDispatch();
+
+  let [mission] = data.missions;
+  // If a new missions is added, the missions order might have changed so we try to find
+  // the last one viewed
+  if (hasMission && selectedMissionIdentifier) {
+    const selectedMission = data.missions.find(
+      (_mission) => _mission.identifier === selectedMissionIdentifier
+    );
+    if (selectedMission) {
+      mission = selectedMission;
+    }
+  }
+
+  function onMissionSelected(identifier: string | null) {
+    if (!identifier) {
+      return;
+    }
+    dispatch(setSelectedMission(identifier));
+    luaApi?.setCurrentMission(identifier);
+  }
 
   if (!hasMission) {
     return (
@@ -23,5 +51,22 @@ export function MissionsPanel() {
     );
   }
 
-  return <MissionContent missionOverview={mission} />;
+  return (
+    <Box>
+      {data.missions.length > 1 && (
+        <Select
+          label={'Selected mission'}
+          placeholder={'Select a mission'}
+          data={data.missions.map((_mission) => {
+            return { value: _mission.identifier, label: _mission.name };
+          })}
+          value={selectedMissionIdentifier}
+          onChange={onMissionSelected}
+          my={'xs'}
+          allowDeselect={false}
+        />
+      )}
+      <MissionContent missionOverview={mission} />
+    </Box>
+  );
 }
