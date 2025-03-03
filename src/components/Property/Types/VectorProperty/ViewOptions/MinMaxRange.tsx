@@ -14,7 +14,7 @@ export function MinMaxRange({
     value: currentValue,
     setValue: setCurrentValue,
     setIsEditing: setIsEditingSlider
-  } = usePropListeningState<[number, number]>([value[0], value[1]]);
+  } = usePropListeningState<number[]>(value);
 
   if (value.length !== 2) {
     throw Error('Invalid use of MinMaxRange view option!');
@@ -53,7 +53,7 @@ export function MinMaxRange({
         />
       </Group>
       <RangeSlider
-        value={currentValue}
+        value={[currentValue[0], currentValue[1]]}
         marks={marks}
         onChange={(newValue) => {
           onValueChange(newValue);
