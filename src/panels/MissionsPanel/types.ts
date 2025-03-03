@@ -17,6 +17,8 @@ export interface Phase {
   link: string;
   milestones: Milestone[];
   capturetimes: string[];
+  identifier: string; // TOOD anden88 2025-03-03: The identifier only exists on the outermost
+  // phase object, refactor the phase Object into a Mission type that includes the phases and captureTimes?
 }
 
 export type DisplayedPhase =
