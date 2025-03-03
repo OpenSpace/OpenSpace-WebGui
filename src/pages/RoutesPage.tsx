@@ -37,13 +37,6 @@ export function RoutesPage() {
           description={'Actions panel opened up as a page'}
           leftSection={<DashboardIcon />}
         />
-
-        <NavLink
-          href={'/documentation'}
-          label={'Local documentation'}
-          description={'The local documentation for this particular run of OpenSpace'}
-          leftSection={<DashboardIcon />}
-        />
       </AppShell.Navbar>
 
       <AppShell.Main></AppShell.Main>
