@@ -1,7 +1,9 @@
-import { Group, RangeSlider, Stack } from '@mantine/core';
+import { Group, NumberFormatter, RangeSlider, Stack } from '@mantine/core';
 
 import { usePropListeningState } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
+import { useSliderScale } from '@/components/Property/SliderUtil/hook';
+import { SliderMinMaxLabels } from '@/components/Property/SliderUtil/SliderMinMaxLabels';
 import { VectorPropertyProps } from '@/components/Property/Types/VectorProperty/VectorProperty';
 
 export function MinMaxRange({
@@ -20,18 +22,30 @@ export function MinMaxRange({
     throw Error('Invalid use of MinMaxRange view option!');
   }
 
+  const exponent = additionalData.Exponent;
   const [min] = additionalData.MinimumValue;
   const [max] = additionalData.MaximumValue;
   const [step] = additionalData.SteppingValue;
 
-  const marks = [
-    { value: min, label: min },
-    { value: max, label: max }
-  ];
+  const { scale, scaledMarks, valueToSliderValue, sliderValueToValue } = useSliderScale(
+    exponent,
+    min,
+    max
+  );
 
   function onValueChange(newValue: [number, number]) {
     setCurrentValue(newValue);
     setPropertyValue(newValue);
+  }
+
+  function onSliderInput(newValue: [number, number]) {
+    setIsEditingSlider(true);
+    const newCombinedValue: [number, number] = [
+      sliderValueToValue(newValue[0]),
+      sliderValueToValue(newValue[1])
+    ];
+    setCurrentValue(newCombinedValue);
+    onValueChange(newCombinedValue);
   }
 
   const commonProps = { disabled, min, max, step };
@@ -52,16 +66,22 @@ export function MinMaxRange({
           {...commonProps}
         />
       </Group>
-      <RangeSlider
-        value={[currentValue[0], currentValue[1]]}
-        marks={marks}
-        onChange={(newValue) => {
-          onValueChange(newValue);
-          setIsEditingSlider(true);
-        }}
-        onChangeEnd={() => setIsEditingSlider(false)}
-        {...commonProps}
-      />
+      <Stack gap={0}>
+        <RangeSlider
+          label={(v) => <NumberFormatter value={v} />}
+          value={[
+            valueToSliderValue(currentValue[0]),
+            valueToSliderValue(currentValue[1])
+          ]}
+          marks={scaledMarks}
+          scale={(v) => scale(v)}
+          onChange={onSliderInput}
+          onChangeEnd={() => setIsEditingSlider(false)}
+          opacity={disabled ? 0.5 : 1}
+          {...commonProps}
+        />
+        <SliderMinMaxLabels min={min} max={max} />
+      </Stack>
     </Stack>
   );
 }

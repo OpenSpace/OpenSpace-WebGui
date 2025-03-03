@@ -61,7 +61,6 @@ export function NumericProperty({
           step={step}
           exponent={exponent}
           onInput={onValueChange}
-          isInt={isInt}
         />
       )}
       <Flex flex={1} miw={100}>
