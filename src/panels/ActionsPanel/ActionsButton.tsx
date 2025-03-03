@@ -4,6 +4,7 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { useAppSelector } from '@/redux/hooks';
 import { Action } from '@/types/types';
+
 import { KeybindButtons } from '../KeybindsPanel/KeybindButtons';
 
 interface Props {
