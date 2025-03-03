@@ -11,8 +11,6 @@ import {
   VariantColorsResolver
 } from '@mantine/core';
 
-import sliderClasses from './styles/Slider.module.css';
-
 /**
  * This functions resolves colors for different variants, and adds new variants, for
  * Mantine components.
@@ -52,10 +50,28 @@ export const theme = createTheme({
       }
     }),
     RangeSlider: RangeSlider.extend({
-      classNames: sliderClasses
+      styles: {
+        mark: {
+          backgroundColor: 'var(--mantine-color-gray-5)'
+        },
+        thumb: {
+          backgroundColor: 'var(--mantine-color-gray-2)',
+          outline: 'none',
+          border: 'none'
+        }
+      }
     }),
     Slider: Slider.extend({
-      classNames: sliderClasses
+      styles: {
+        mark: {
+          backgroundColor: 'var(--mantine-color-gray-4)'
+        },
+        thumb: {
+          backgroundColor: 'var(--mantine-color-gray-2)',
+          outline: 'none',
+          border: 'none'
+        }
+      }
     }),
     ThemeIcon: ThemeIcon.extend({
       defaultProps: {
