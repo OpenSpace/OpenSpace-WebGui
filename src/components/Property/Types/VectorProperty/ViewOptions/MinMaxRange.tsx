@@ -10,9 +10,11 @@ export function MinMaxRange({
   value,
   additionalData
 }: VectorPropertyProps) {
-  const { value: currentValue, setValue: setCurrentValue } = usePropListeningState<
-    [number, number]
-  >([value[0], value[1]]);
+  const {
+    value: currentValue,
+    setValue: setCurrentValue,
+    setIsEditing: setIsEditingSlider
+  } = usePropListeningState<[number, number]>([value[0], value[1]]);
 
   if (value.length !== 2) {
     throw Error('Invalid use of MinMaxRange view option!');
@@ -53,7 +55,11 @@ export function MinMaxRange({
       <RangeSlider
         value={currentValue}
         marks={marks}
-        onChange={onValueChange}
+        onChange={(newValue) => {
+          onValueChange(newValue);
+          setIsEditingSlider(true);
+        }}
+        onChangeEnd={() => setIsEditingSlider(false)}
         {...commonProps}
       />
     </Stack>
