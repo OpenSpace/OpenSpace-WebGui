@@ -18,6 +18,9 @@ export interface NumericPropertyProps {
     MinimumValue: number;
     SteppingValue: number;
   };
+}
+
+interface Props extends NumericPropertyProps {
   isInt?: boolean;
 }
 
@@ -29,7 +32,7 @@ export function NumericProperty({
   value,
   additionalData,
   isInt = false
-}: NumericPropertyProps) {
+}: Props) {
   const { value: currentValue, setValue: setCurrentValue } =
     usePropListeningState<number>(value);
 

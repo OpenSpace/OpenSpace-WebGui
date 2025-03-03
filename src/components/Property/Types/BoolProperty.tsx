@@ -1,11 +1,9 @@
 import { Checkbox, Group } from '@mantine/core';
 
 import { PropertyLabel } from '../PropertyLabel';
+import { ConcretePropertyBaseProps } from '../types';
 
-interface Props {
-  name: string;
-  description: string;
-  disabled: boolean;
+interface Props extends ConcretePropertyBaseProps {
   setPropertyValue: (newValue: boolean) => void;
   value: boolean;
 }

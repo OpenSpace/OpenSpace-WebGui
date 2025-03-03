@@ -3,10 +3,9 @@ import { Grid } from '@mantine/core';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
 
-interface Props {
-  name: string;
-  description: string;
-  disabled: boolean;
+import { ConcretePropertyBaseProps } from '../types';
+
+interface Props extends ConcretePropertyBaseProps {
   setPropertyValue: (newValue: number[]) => void;
   value: number[];
   additionalData: {

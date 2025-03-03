@@ -1,13 +1,11 @@
 import { PropertyLabel } from '../../PropertyLabel';
+import { ConcretePropertyBaseProps } from '../../types';
 
 import { ColorVector } from './ViewOptions/ColorVector';
 import { ValueList } from './ViewOptions/DefaultValueList';
 import { MinMaxRange } from './ViewOptions/MinMaxRange';
 
-export interface VectorPropertyProps {
-  name: string;
-  description: string;
-  disabled: boolean;
+export interface VectorPropertyProps extends ConcretePropertyBaseProps {
   setPropertyValue: (newValue: number[]) => void;
   value: number[];
   additionalData: {
@@ -20,6 +18,7 @@ export interface VectorPropertyProps {
     Color?: boolean;
     MinMaxRange?: boolean;
   };
+  // Not part of the data from OpenSpace
   isInt?: boolean;
 }
 

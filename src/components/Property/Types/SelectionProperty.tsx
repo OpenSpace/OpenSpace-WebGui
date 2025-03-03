@@ -2,10 +2,9 @@ import { MultiSelect } from '@mantine/core';
 
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
 
-interface Props {
-  name: string;
-  description: string;
-  disabled: boolean;
+import { ConcretePropertyBaseProps } from '../types';
+
+interface Props extends ConcretePropertyBaseProps {
   setPropertyValue: (newValue: string[]) => void;
   additionalData: {
     Options: string[];

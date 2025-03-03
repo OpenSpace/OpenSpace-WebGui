@@ -2,14 +2,13 @@ import { Select } from '@mantine/core';
 
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
 
+import { ConcretePropertyBaseProps } from '../types';
+
 interface Option {
   [key: string]: string; // OBS! The key is a number, but will always be converted to a string...
 }
 
-interface Props {
-  name: string;
-  description: string;
-  disabled: boolean;
+interface Props extends ConcretePropertyBaseProps {
   setPropertyValue: (newValue: number) => void;
   value: number;
   additionalData: {
