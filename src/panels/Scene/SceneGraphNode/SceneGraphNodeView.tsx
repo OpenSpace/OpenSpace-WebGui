@@ -61,7 +61,9 @@ export function SceneGraphNodeView({ uri }: Props) {
 
   return (
     <>
-      <SceneGraphNodeHeader uri={uri} />
+      <Box mt={'xs'} mb={'xs'}>
+        <SceneGraphNodeHeader uri={uri} />
+      </Box>{' '}
       <Tabs mt={'xs'} variant={'outline'} defaultValue={defaultTab}>
         <Tabs.List>
           <Tooltip
@@ -99,7 +101,7 @@ export function SceneGraphNodeView({ uri }: Props) {
           )}
         </Tabs.Panel>
 
-        <Tabs.Panel value={TabKeys.Transform}>
+        <Tabs.Panel value={TabKeys.Transform} mt={'xs'}>
           {transforms.length > 0 ? (
             transforms.map((subowner) => (
               <PropertyOwner
