@@ -20,6 +20,7 @@ export default defineConfig({
   server: {
     port: 4670
   },
+  base: './',
   build: {
     rollupOptions: {
       output: {
