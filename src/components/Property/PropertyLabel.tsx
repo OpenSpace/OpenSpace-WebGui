@@ -10,7 +10,7 @@ interface Props {
 export function PropertyLabel({ label, tip }: Props) {
   return (
     <Group wrap={'nowrap'}>
-      <InputLabel>{label}</InputLabel>
+      <InputLabel fw={'normal'}>{label}</InputLabel>
       {tip && <InfoBox text={tip} />}
     </Group>
   );
