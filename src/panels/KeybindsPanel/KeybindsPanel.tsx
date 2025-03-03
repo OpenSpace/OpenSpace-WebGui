@@ -1,88 +1,30 @@
-import { useState } from 'react';
-import {
-  Badge,
-  Code,
-  Divider,
-  Grid,
-  Group,
-  Paper,
-  Table,
-  Text,
-  Title
-} from '@mantine/core';
+import { Container, Tabs } from '@mantine/core';
+import { useElementSize } from '@mantine/hooks';
 
-import { Action } from '@/types/types';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
-import { FullKeyboard } from './FullKeyboard/FullKeyboard';
-import { KeybindButtons } from './KeybindButtons';
+import { KeyboardLayout } from './KeyboardLayout';
+import { ListLayout } from './ListLayout';
 
-export function KeyBindsPanel() {
-  const [selectedActions, setSelectedActions] = useState<Action[]>([]);
-  const [activeModifiers, setActiveModifiers] = useState<string[]>([]);
-  const [selectedKey, setSelectedKey] = useState<string>('');
+export function KeybindsPanel() {
+  const { height: windowHeight } = useWindowSize();
+  const { ref, height: tabsHeight } = useElementSize();
 
-  const hasSelectedKeys = selectedKey !== '' || activeModifiers.length > 0;
   return (
-    <>
-      <Title order={2}>Keybinds</Title>
-      <FullKeyboard
-        setSelectedActions={setSelectedActions}
-        setActiveModifiers={setActiveModifiers}
-        setSelectedKey={setSelectedKey}
-        selectedKey={selectedKey}
-        activeModifiers={activeModifiers}
-      />
-      <Group my={'md'}>
-        <Text size={'lg'} fw={500}>
-          Selected keybind:
-        </Text>
-        <KeybindButtons selectedKey={selectedKey} modifiers={activeModifiers} />
-      </Group>
-      <Divider />
-      <Title order={3} my={'md'}>
-        Mapped actions
-      </Title>
-      {selectedActions.length > 0 ? (
-        <Grid mx={'xs'}>
-          {selectedActions.map((selectedAction) => (
-            <Paper key={selectedAction.identifier} p={'md'}>
-              <Title order={4} mb={'md'}>
-                {selectedAction.name}
-              </Title>
-              <Table>
-                <Table.Tbody>
-                  <Table.Tr>
-                    <Table.Td>Description:</Table.Td>
-                    <Table.Td>{selectedAction.documentation}</Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>Is Local:</Table.Td>
-                    <Table.Td>
-                      {selectedAction.synchronization ? (
-                        <Badge variant={'filled'}>Yes</Badge>
-                      ) : (
-                        <Badge variant={'outline'}>No</Badge>
-                      )}
-                    </Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>GUI Path:</Table.Td>
-                    <Table.Td>
-                      <Code>{selectedAction.guiPath}</Code>
-                    </Table.Td>
-                  </Table.Tr>
-                </Table.Tbody>
-              </Table>
-            </Paper>
-          ))}
-        </Grid>
-      ) : (
-        <Text>
-          {hasSelectedKeys
-            ? 'No action is associated with this keybind.'
-            : 'No key selected. Select a key to see its action.'}
-        </Text>
-      )}
-    </>
+    <Container fluid>
+      <Tabs variant={'outline'} radius={'md'} defaultValue={'keyboardLayout'}>
+        <Tabs.List ref={ref}>
+          <Tabs.Tab value={'keyboardLayout'}>Keyboard View</Tabs.Tab>
+          <Tabs.Tab value={'listLayout'}>List View</Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Panel value={'keyboardLayout'}>
+          <KeyboardLayout />
+        </Tabs.Panel>
+        <Tabs.Panel value={'listLayout'} h={windowHeight - tabsHeight}>
+          <ListLayout />
+        </Tabs.Panel>
+      </Tabs>
+    </Container>
   );
 }
