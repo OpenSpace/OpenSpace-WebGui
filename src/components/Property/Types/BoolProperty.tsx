@@ -16,7 +16,7 @@ export function BoolProperty({
   value
 }: Props) {
   return (
-    <Group gap={'xs'}>
+    <Group gap={'xs'} wrap={'nowrap'}>
       <Checkbox
         checked={value}
         onChange={(event) => setPropertyValue(event.currentTarget.checked)}
