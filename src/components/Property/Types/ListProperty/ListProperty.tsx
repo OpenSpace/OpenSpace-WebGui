@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Pill, PillsInput } from '@mantine/core';
+import { Pill, PillsInput, ScrollArea } from '@mantine/core';
 
 import { ConcretePropertyBaseProps } from '../../types';
 
@@ -134,7 +134,7 @@ export function ListProperty({
       onBlur={() => stopEditing()}
       aria-label={`List input for ${name}`}
     >
-      <Pill.Group>
+      <Pill.Group mah={100} style={{ overflowY: 'auto' }}>
         {shownValues.map((v, i) => (
           <Pill
             key={`pill-${i}`}
