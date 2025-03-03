@@ -4,7 +4,7 @@ import { usePropListeningState } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
 
-import { NumericPropertySlider } from './NumericPropertySlider';
+import { NumericPropertySlider } from './Slider/NumericPropertySlider';
 
 export interface NumericPropertyProps {
   name: string;

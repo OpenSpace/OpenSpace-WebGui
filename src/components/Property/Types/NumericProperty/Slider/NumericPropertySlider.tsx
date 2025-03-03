@@ -3,6 +3,8 @@ import { scalePow } from 'd3';
 
 import { usePropListeningState } from '@/api/hooks';
 
+import { SliderMarkLabel } from './SliderMarkLabel';
+
 interface Props extends MantineStyleProps {
   disabled: boolean;
   value: number;
@@ -35,17 +37,6 @@ export function NumericPropertySlider({
   const scale = scalePow().exponent(exponent).domain([min, max]).range([min, max]);
   const decimalPlaces = Math.max(0, -Math.floor(Math.log10(step)));
 
-  function markLabel(
-    value: number,
-    largeValuePrecision?: number
-  ): React.JSX.Element | string {
-    return value < 100000 && value > 0.0001 ? (
-      <NumberFormatter value={value} decimalScale={decimalPlaces} />
-    ) : (
-      value.toPrecision(largeValuePrecision || 1)
-    );
-  }
-
   function computeMarks() {
     const extent = max - min;
 
@@ -65,11 +56,17 @@ export function NumericPropertySlider({
     const halfWay = extent > 2 ? Math.round(extent / 2) : extent / 2;
 
     return [
-      { value: min, label: markLabel(min) },
+      {
+        value: min,
+        label: <SliderMarkLabel value={min} decimalPlaces={decimalPlaces} />
+      },
       { value: min + 1 * marksStep },
-      { value: halfWay, label: markLabel(halfWay) },
+      {
+        value: halfWay,
+        label: <SliderMarkLabel value={halfWay} decimalPlaces={decimalPlaces} />
+      },
       { value: min + 3 * marksStep },
-      { value: max, label: markLabel(max) }
+      { value: max, label: <SliderMarkLabel value={max} decimalPlaces={decimalPlaces} /> }
     ];
   }
 

@@ -87,10 +87,8 @@ export const Property = memo(({ uri }: Props) => {
     throw Error(`Missing property type: '${property.description.type}'`);
   }
 
-  // console.log(property);
-
   return (
-    // All the property types get all informaiton, and then they may do whatever they
+    // All the property types get all information, and then they may do whatever they
     // want with it (like ignore certain parts)
     <Box mb={'md'}>
       <ConcreteProperty
