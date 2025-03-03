@@ -11,6 +11,7 @@ interface Props extends MantineStyleProps {
   step: number;
   onInput: (newValue: number) => void;
   exponent?: number;
+  isInt?: boolean;
 }
 
 export function NumericPropertySlider({
@@ -21,6 +22,7 @@ export function NumericPropertySlider({
   step,
   onInput,
   exponent = 1,
+  isInt,
   ...props
 }: Props) {
   // Note that this value does not take the slider scale into account
@@ -45,7 +47,6 @@ export function NumericPropertySlider({
   }
 
   function computeMarks() {
-    const isInt = step >= 1;
     const extent = max - min;
 
     // When no min/max is set, the marks for the slider cannot be nicely computed
