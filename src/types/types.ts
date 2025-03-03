@@ -50,10 +50,11 @@ export interface PropertyDetails {
   description: string;
 }
 
-export type PropertyValue = string | number | number[] | boolean | null;
+export type PropertyValue = string | string[] | number | number[] | boolean | null;
+
 export interface Property {
   description: PropertyDetails;
-  value: PropertyValue; // TODO: investigate if these are all the values we can have
+  value: PropertyValue;
   uri: Uri;
 }
 
