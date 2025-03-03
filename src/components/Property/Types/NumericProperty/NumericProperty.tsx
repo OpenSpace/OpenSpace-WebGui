@@ -54,7 +54,7 @@ export function NumericProperty({
   // @TODO warn if out of bounds?
   return (
     <>
-      <PropertyLabel label={name} tip={description} />
+      <PropertyLabel label={name} tip={description} isReadOnly={disabled} />
       <Group align={'bottom'}>
         {hasNiceMinMax && (
           <NumericPropertySlider

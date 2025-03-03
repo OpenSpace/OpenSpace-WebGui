@@ -136,7 +136,7 @@ export function ListProperty({
     <PillsInput
       disabled={disabled}
       onBlur={() => stopEditing()}
-      label={<PropertyLabel label={name} tip={description} />}
+      label={<PropertyLabel label={name} tip={description} isReadOnly={disabled} />}
     >
       <Pill.Group>
         {shownValues.map((v, i) => (

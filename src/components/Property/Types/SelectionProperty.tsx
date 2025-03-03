@@ -23,7 +23,7 @@ export function SelectionProperty({
   const options = additionalData.Options;
   return (
     <MultiSelect
-      label={<PropertyLabel label={name} tip={description} />}
+      label={<PropertyLabel label={name} tip={description} isReadOnly={disabled} />}
       disabled={disabled}
       data={options}
       value={value}

@@ -23,12 +23,12 @@ export interface VectorPropertyProps extends ConcretePropertyBaseProps {
 }
 
 export function VectorProperty(props: VectorPropertyProps) {
-  const { viewOptions, name, description } = props;
+  const { disabled, viewOptions, name, description } = props;
 
   if (viewOptions.Color) {
     return (
       <>
-        <PropertyLabel label={name} tip={description} />
+        <PropertyLabel label={name} tip={description} isReadOnly={disabled} />
         <ColorVector {...props} />
       </>
     );
@@ -37,7 +37,7 @@ export function VectorProperty(props: VectorPropertyProps) {
   if (viewOptions.MinMaxRange) {
     return (
       <>
-        <PropertyLabel label={name} tip={description} />
+        <PropertyLabel label={name} tip={description} isReadOnly={disabled} />
         <MinMaxRange {...props} />
       </>
     );
@@ -45,7 +45,7 @@ export function VectorProperty(props: VectorPropertyProps) {
 
   return (
     <>
-      <PropertyLabel label={name} tip={description} />
+      <PropertyLabel label={name} tip={description} isReadOnly={disabled} />
       <ValueList {...props} />
     </>
   );

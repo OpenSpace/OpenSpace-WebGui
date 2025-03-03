@@ -50,7 +50,7 @@ export function OptionProperty({
 
   return (
     <Select
-      label={<PropertyLabel label={name} tip={description} />}
+      label={<PropertyLabel label={name} tip={description} isReadOnly={disabled} />}
       placeholder={'Choose an option'}
       disabled={disabled}
       data={Object.keys(options)}

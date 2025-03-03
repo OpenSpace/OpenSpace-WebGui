@@ -20,7 +20,7 @@ export function StringProperty({
       disabled={disabled}
       onEnter={setPropertyValue}
       value={value}
-      label={<PropertyLabel label={name} tip={description} />}
+      label={<PropertyLabel label={name} tip={description} isReadOnly={disabled} />}
     />
   );
 }

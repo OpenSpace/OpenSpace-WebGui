@@ -24,7 +24,7 @@ export function BoolProperty({
         disabled={disabled}
         aria-label={`Toggle ${name}`}
       />
-      <PropertyLabel label={name} tip={description} />
+      <PropertyLabel label={name} tip={description} isReadOnly={disabled} />
     </Group>
   );
 }
