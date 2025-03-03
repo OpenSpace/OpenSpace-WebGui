@@ -1,7 +1,6 @@
 import { Grid } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-import { PropertyLabel } from '@/components/Property/PropertyLabel';
 
 import { ConcretePropertyBaseProps } from '../types';
 
@@ -17,8 +16,6 @@ interface Props extends ConcretePropertyBaseProps {
 }
 
 export function MatrixProperty({
-  name,
-  description,
   disabled,
   setPropertyValue,
   value,
@@ -36,22 +33,19 @@ export function MatrixProperty({
   }
 
   return (
-    <>
-      <PropertyLabel label={name} tip={description} isReadOnly={disabled} />
-      <Grid gutter={'xs'}>
-        {value.map((v, i) => (
-          <Grid.Col key={i} span={12 / matrixSize}>
-            <NumericInput
-              value={v}
-              min={min[i]}
-              max={max[i]}
-              step={step[i]}
-              onEnter={(newValue) => setValue(i, newValue)}
-              disabled={disabled}
-            />
-          </Grid.Col>
-        ))}
-      </Grid>
-    </>
+    <Grid gutter={'xs'}>
+      {value.map((v, i) => (
+        <Grid.Col key={i} span={12 / matrixSize}>
+          <NumericInput
+            value={v}
+            min={min[i]}
+            max={max[i]}
+            step={step[i]}
+            onEnter={(newValue) => setValue(i, newValue)}
+            disabled={disabled}
+          />
+        </Grid.Col>
+      ))}
+    </Grid>
   );
 }

@@ -1,14 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Pill, PillsInput } from '@mantine/core';
 
-import { PropertyLabel } from '@/components/Property/PropertyLabel';
+import { ConcretePropertyBaseProps } from '../../types';
 
 type ListValueType = string | number;
 
-export interface ListPropertyProps {
-  name: string;
-  description: string;
-  disabled: boolean;
+export interface ListPropertyProps extends ConcretePropertyBaseProps {
   setPropertyValue: (newValue: ListValueType[]) => void;
   value: ListValueType[];
 }
@@ -19,7 +16,6 @@ interface Props extends ListPropertyProps {
 
 export function ListProperty({
   name,
-  description,
   disabled,
   setPropertyValue,
   value,
@@ -136,7 +132,7 @@ export function ListProperty({
     <PillsInput
       disabled={disabled}
       onBlur={() => stopEditing()}
-      label={<PropertyLabel label={name} tip={description} isReadOnly={disabled} />}
+      aria-label={`List input for ${name}`}
     >
       <Pill.Group>
         {shownValues.map((v, i) => (

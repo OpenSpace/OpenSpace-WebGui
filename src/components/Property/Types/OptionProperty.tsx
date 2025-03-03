@@ -1,7 +1,5 @@
 import { Select } from '@mantine/core';
 
-import { PropertyLabel } from '@/components/Property/PropertyLabel';
-
 import { ConcretePropertyBaseProps } from '../types';
 
 interface Option {
@@ -18,7 +16,6 @@ interface Props extends ConcretePropertyBaseProps {
 
 export function OptionProperty({
   name,
-  description,
   disabled,
   setPropertyValue,
   value,
@@ -50,7 +47,7 @@ export function OptionProperty({
 
   return (
     <Select
-      label={<PropertyLabel label={name} tip={description} isReadOnly={disabled} />}
+      aria-label={`${name} option input`}
       placeholder={'Choose an option'}
       disabled={disabled}
       data={Object.keys(options)}

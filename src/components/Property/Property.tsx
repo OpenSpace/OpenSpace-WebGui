@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Box } from '@mantine/core';
+import { Stack } from '@mantine/core';
 
 import { useGetProperty, useSubscribeToProperty } from '@/api/hooks';
 import { Uri } from '@/types/types';
@@ -17,6 +17,7 @@ import { StringProperty } from './Types/StringProperty';
 import { TriggerProperty } from './Types/TriggerProperty';
 import { IntVectorProperty } from './Types/VectorProperty/IntVectorProperty';
 import { VectorProperty } from './Types/VectorProperty/VectorProperty';
+import { PropertyLabel } from './PropertyLabel';
 
 // (2024-10-21, emmbr) I don't know how to efficiently get rid of "any" in this case
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -87,10 +88,22 @@ export const Property = memo(({ uri }: Props) => {
     throw Error(`Missing property type: '${property.description.type}'`);
   }
 
+  // In most cases we want to show the label on top of the property input, but some types
+  // have a custom label built in in the input type. Keep track of which that is
+  const hasBuiltInLabel =
+    ConcreteProperty === BoolProperty || ConcreteProperty === TriggerProperty;
+
+  // All the property types get all information, and then they may do whatever they
+  // want with it (like ignore certain parts)
   return (
-    // All the property types get all information, and then they may do whatever they
-    // want with it (like ignore certain parts)
-    <Box mb={'md'}>
+    <Stack mb={'md'} gap={5}>
+      {!hasBuiltInLabel && (
+        <PropertyLabel
+          label={description.name}
+          tip={description.description}
+          isReadOnly={description.metaData.isReadOnly}
+        />
+      )}
       <ConcreteProperty
         key={description.identifier}
         disabled={description.metaData.isReadOnly}
@@ -101,6 +114,6 @@ export const Property = memo(({ uri }: Props) => {
         viewOptions={description.metaData.ViewOptions}
         additionalData={description.additionalData}
       />
-    </Box>
+    </Stack>
   );
 });

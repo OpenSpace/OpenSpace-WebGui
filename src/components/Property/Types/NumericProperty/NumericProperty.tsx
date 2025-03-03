@@ -2,14 +2,12 @@ import { Flex, Group } from '@mantine/core';
 
 import { usePropListeningState } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-import { PropertyLabel } from '@/components/Property/PropertyLabel';
+
+import { ConcretePropertyBaseProps } from '../../types';
 
 import { NumericPropertySlider } from './Slider/NumericPropertySlider';
 
-export interface NumericPropertyProps {
-  name: string;
-  description: string;
-  disabled: boolean;
+export interface NumericPropertyProps extends ConcretePropertyBaseProps {
   setPropertyValue: (newValue: number) => void;
   value: number;
   additionalData: {
@@ -25,8 +23,6 @@ interface Props extends NumericPropertyProps {
 }
 
 export function NumericProperty({
-  name,
-  description,
   disabled,
   setPropertyValue,
   value,
@@ -53,35 +49,32 @@ export function NumericProperty({
 
   // @TODO warn if out of bounds?
   return (
-    <>
-      <PropertyLabel label={name} tip={description} isReadOnly={disabled} />
-      <Group align={'bottom'}>
-        {hasNiceMinMax && (
-          <NumericPropertySlider
-            value={currentValue}
-            flex={2}
-            miw={100}
-            disabled={disabled}
-            min={min}
-            max={max}
-            step={step}
-            exponent={exponent}
-            onInput={onValueChange}
-            isInt={isInt}
-          />
-        )}
-        <Flex flex={1} miw={100}>
-          <NumericInput
-            value={currentValue}
-            disabled={disabled}
-            min={min}
-            max={max}
-            step={step}
-            allowDecimal={!isInt}
-            onEnter={onValueChange}
-          />
-        </Flex>
-      </Group>
-    </>
+    <Group align={'bottom'}>
+      {hasNiceMinMax && (
+        <NumericPropertySlider
+          value={currentValue}
+          flex={2}
+          miw={100}
+          disabled={disabled}
+          min={min}
+          max={max}
+          step={step}
+          exponent={exponent}
+          onInput={onValueChange}
+          isInt={isInt}
+        />
+      )}
+      <Flex flex={1} miw={100}>
+        <NumericInput
+          value={currentValue}
+          disabled={disabled}
+          min={min}
+          max={max}
+          step={step}
+          allowDecimal={!isInt}
+          onEnter={onValueChange}
+        />
+      </Flex>
+    </Group>
   );
 }

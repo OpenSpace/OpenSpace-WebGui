@@ -1,4 +1,3 @@
-import { PropertyLabel } from '../../PropertyLabel';
 import { ConcretePropertyBaseProps } from '../../types';
 
 import { ColorVector } from './ViewOptions/ColorVector';
@@ -23,30 +22,15 @@ export interface VectorPropertyProps extends ConcretePropertyBaseProps {
 }
 
 export function VectorProperty(props: VectorPropertyProps) {
-  const { disabled, viewOptions, name, description } = props;
+  const { viewOptions } = props;
 
   if (viewOptions.Color) {
-    return (
-      <>
-        <PropertyLabel label={name} tip={description} isReadOnly={disabled} />
-        <ColorVector {...props} />
-      </>
-    );
+    return <ColorVector {...props} />;
   }
 
   if (viewOptions.MinMaxRange) {
-    return (
-      <>
-        <PropertyLabel label={name} tip={description} isReadOnly={disabled} />
-        <MinMaxRange {...props} />
-      </>
-    );
+    return <MinMaxRange {...props} />;
   }
 
-  return (
-    <>
-      <PropertyLabel label={name} tip={description} isReadOnly={disabled} />
-      <ValueList {...props} />
-    </>
-  );
+  return <ValueList {...props} />;
 }
