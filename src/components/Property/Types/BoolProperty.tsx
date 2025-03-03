@@ -16,14 +16,15 @@ export function BoolProperty({
   value
 }: Props) {
   return (
-    <Group>
+    <Group gap={'xs'}>
       <Checkbox
         checked={value}
         onChange={(event) => setPropertyValue(event.currentTarget.checked)}
         onKeyDown={(event) => event.key === 'Enter' && setPropertyValue(!value)}
         disabled={disabled}
-        label={<PropertyLabel label={name} tip={description} />}
+        aria-label={`Toggle ${name}`}
       />
+      <PropertyLabel label={name} tip={description} />
     </Group>
   );
 }
