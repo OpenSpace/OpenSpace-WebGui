@@ -1,5 +1,3 @@
-import { TreeNodeData } from '@mantine/core';
-
 import { CustomGroupOrdering, Properties, PropertyOwners, Uri } from '@/types/types';
 import {
   guiOrderingNumber,
@@ -7,6 +5,7 @@ import {
   isSceneGraphNodeVisible
 } from '@/util/propertyTreeHelpers';
 import { isGroupNode, SceneTreeGroupPrefixKey } from '@/util/sceneTreeGroupsHelper';
+
 import { SceneTreeNodeData } from './types';
 
 /****************************************************************************************

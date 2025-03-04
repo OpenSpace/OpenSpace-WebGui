@@ -1,8 +1,7 @@
-import { TreeNodeData } from '@mantine/core';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { SceneTreeNodeData } from '@/panels/Scene/SceneTree/types';
 import { CustomGroupOrdering, Groups } from '@/types/types';
-import { SceneTreeNodeData } from '@/panels/Scene/SceneTree/treeUtil';
 
 export interface GroupsState {
   customGroupOrdering: CustomGroupOrdering;
