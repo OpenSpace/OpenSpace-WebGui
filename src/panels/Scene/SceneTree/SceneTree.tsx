@@ -6,7 +6,6 @@ import {
   Group,
   Tooltip,
   Tree,
-  TreeNodeData,
   useTree
 } from '@mantine/core';
 
@@ -27,6 +26,7 @@ import {
   SceneTreeFilterSettings,
   sortTreeData
 } from './treeUtil';
+import { SceneTreeNodeData } from './types';
 
 export function SceneTree() {
   const [filter, setFilter] = useState<SceneTreeFilterSettings>({
@@ -98,7 +98,7 @@ export function SceneTree() {
 
   // @TODO (2025-01-13 emmbr): Would be nice to sort the results by some type of
   // "relevance", but for now we just sort alphabetically
-  flatTreeData.sort((a: TreeNodeData, b: TreeNodeData) => {
+  flatTreeData.sort((a: SceneTreeNodeData, b: SceneTreeNodeData) => {
     const nameA = a.label as string;
     const nameB = b.label as string;
     return nameA.toLocaleLowerCase().localeCompare(nameB.toLocaleLowerCase());
@@ -137,10 +137,10 @@ export function SceneTree() {
 
       <FilterList.SearchResults
         data={flatTreeData}
-        renderElement={(node: TreeNodeData) => (
+        renderElement={(node: SceneTreeNodeData) => (
           <SceneTreeNodeContent key={node.value} node={node} expanded={false} />
         )}
-        matcherFunc={generateMatcherFunctionByKeys(['label'])} // For now we just use the name
+        matcherFunc={generateMatcherFunctionByKeys(['label', 'guiPath'])} // For now we just use the name
       >
         <FilterList.SearchResults.VirtualList />
       </FilterList.SearchResults>
