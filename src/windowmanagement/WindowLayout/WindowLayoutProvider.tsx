@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { Title } from '@mantine/core';
+import { Title, UnstyledButton } from '@mantine/core';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
 import { Window } from '@/windowmanagement/Window/Window';
@@ -32,9 +32,11 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
       return {
         id,
         title: (
-          <Title order={1} size={'md'} pr={3} fw={500}>
-            {title}
-          </Title>
+          <UnstyledButton autoFocus>
+            <Title size={'md'} pr={3} fw={500}>
+              {title}
+            </Title>
+          </UnstyledButton>
         ),
         content: <Window>{content}</Window>,
         cached: true,
