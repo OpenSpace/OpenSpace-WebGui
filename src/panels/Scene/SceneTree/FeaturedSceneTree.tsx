@@ -1,4 +1,4 @@
-import { Tree, TreeNodeData } from '@mantine/core';
+import { Tree } from '@mantine/core';
 
 import { useGetStringPropertyValue } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
@@ -10,6 +10,7 @@ import {
 } from '@/util/sceneTreeGroupsHelper';
 
 import { SceneTreeNode } from './SceneTreeNode';
+import { SceneTreeNodeData } from './types';
 
 /**
  * This component displays the current focus and aim of the camera, as well as the list of
@@ -21,7 +22,7 @@ export function FeaturedSceneTree() {
   const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
   const [aim] = useGetStringPropertyValue(NavigationAimKey);
 
-  const featuredTreeData: TreeNodeData[] = [];
+  const featuredTreeData: SceneTreeNodeData[] = [];
 
   if (anchor) {
     const anchorData = treeDataForSceneGraphNode(sgnUri(anchor), propertyOwners);
@@ -35,7 +36,7 @@ export function FeaturedSceneTree() {
     featuredTreeData.push(aimData);
   }
 
-  const interestingNodes: TreeNodeData[] = [];
+  const interestingNodes: SceneTreeNodeData[] = [];
   const propertyOwnersScene = propertyOwners.Scene?.subowners ?? [];
   propertyOwnersScene.forEach((uri) => {
     if (hasInterestingTag(uri, propertyOwners)) {
