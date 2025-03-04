@@ -1,4 +1,4 @@
-import { ActionsPanel } from '@/panels/ActionsPanel/ActionsPanel';
+import { ActionsPanel } from '@/windowmanagement/data/LazyLoads';
 import { Window } from '@/windowmanagement/Window/Window';
 
 export function ActionsPage() {
