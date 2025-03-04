@@ -59,13 +59,13 @@ export function ListLayout() {
                 multiple
                 onChange={(value) => setModifiersFilter(value as KeybindModifiers)}
               >
-                <Chip value={'shift'} size={"xs"}>
+                <Chip value={'shift'} size={'xs'}>
                   Shift
                 </Chip>
-                <Chip value={'control'} size={"xs"}>
+                <Chip value={'control'} size={'xs'}>
                   Ctrl
                 </Chip>
-                <Chip value={'alt'} size={"xs"}>
+                <Chip value={'alt'} size={'xs'}>
                   Alt
                 </Chip>
               </Chip.Group>
