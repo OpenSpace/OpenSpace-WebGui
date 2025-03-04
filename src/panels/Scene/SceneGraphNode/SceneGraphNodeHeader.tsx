@@ -36,19 +36,15 @@ export function SceneGraphNodeHeader({ uri, label, onClick, leftSection }: Props
   // the header is resized.
   const titleButton = (
     <Button
-      flex={1}
       h={'fit-content'}
-      variant={'transparent'}
+      variant={'subtle'}
       p={0}
       size={'compact-sm'}
       onClick={onClick}
       justify={'start'}
+      flex={1}
     >
-      <Text
-        mah={'80px'}
-        ta={'left'}
-        style={{ textWrap: 'pretty', overflowWrap: 'anywhere' }}
-      >
+      <Text mah={80} ta={'left'} style={{ textWrap: 'pretty', wordBreak: 'break-word' }}>
         {name}
       </Text>
     </Button>
@@ -62,10 +58,11 @@ export function SceneGraphNodeHeader({ uri, label, onClick, leftSection }: Props
         (hasRenderable && <PropertyOwnerVisibilityCheckbox uri={renderableUri} />)
       }
       rightSection={
-        <Group wrap={'nowrap'} gap={4}>
+        <Group wrap={'nowrap'} gap={'xs'}>
           <NodeNavigationButton
             size={'sm'}
             type={NavigationType.Focus}
+            variant={'subtle'}
             identifier={propertyOwner.identifier}
           />
           <SceneGraphNodeMoreMenu uri={uri} />

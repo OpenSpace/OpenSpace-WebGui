@@ -2,10 +2,9 @@ import { Button, Group } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 
-interface Props {
-  name: string;
-  description: string;
-  disabled: boolean;
+import { ConcretePropertyBaseProps } from '../types';
+
+interface Props extends ConcretePropertyBaseProps {
   setPropertyValue: (newValue: null) => void;
 }
 
