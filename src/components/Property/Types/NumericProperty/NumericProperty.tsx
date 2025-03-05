@@ -38,7 +38,10 @@ export function NumericProperty({
   const exponent = additionalData.Exponent;
 
   // When no min/max is set, the marks for the slider cannot be nicely computed
-  const hasNiceMinMax = isFinite(max - min);
+  const extent = max - min;
+  // @TODO (202503-03, emmbr) This should be handled a better way...
+  const maxAllowedExtentForSlider = 10e12;
+  const shouldShowSlider = isFinite(extent) && extent < maxAllowedExtentForSlider;
 
   // @TODO There still seems to be a bit of a stutter when dragging the slider.
   // nvestigate. Is there somethign we could memo to make it better?
@@ -50,7 +53,7 @@ export function NumericProperty({
   // @TODO warn if out of bounds?
   return (
     <Group align={'bottom'}>
-      {hasNiceMinMax && (
+      {shouldShowSlider && (
         <NumericPropertySlider
           value={currentValue}
           flex={2}
