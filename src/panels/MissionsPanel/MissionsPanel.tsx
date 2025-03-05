@@ -1,13 +1,27 @@
-import { Stack, Text, ThemeIcon, Title } from '@mantine/core';
+import { Box, Select, Stack, Text, ThemeIcon, Title } from '@mantine/core';
 
+import { useOpenSpaceApi } from '@/api/hooks';
 import { RocketLaunchIcon } from '@/icons/icons';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setSelectedMission } from '@/redux/missions/missionsSlice';
 
+import { useSelectedMission } from './hooks';
 import { MissionContent } from './MissionContent';
 
 export function MissionsPanel() {
-  const hasMission = useAppSelector((state) => state.missions.isInitialized);
-  const mission = useAppSelector((state) => state.missions.data.missions[0]);
+  const { data, selectedMissionIdentifier } = useAppSelector((state) => state.missions);
+
+  const luaApi = useOpenSpaceApi();
+  const { hasMission, mission } = useSelectedMission();
+  const dispatch = useAppDispatch();
+
+  function onMissionSelected(identifier: string | null) {
+    if (!identifier) {
+      return;
+    }
+    dispatch(setSelectedMission(identifier));
+    luaApi?.setCurrentMission(identifier);
+  }
 
   if (!hasMission) {
     return (
@@ -23,5 +37,22 @@ export function MissionsPanel() {
     );
   }
 
-  return <MissionContent missionOverview={mission} />;
+  return (
+    <Box>
+      {data.missions.length > 1 && (
+        <Select
+          label={'Selected mission'}
+          placeholder={'Select a mission'}
+          data={data.missions.map((mission) => {
+            return { value: mission.identifier, label: mission.name };
+          })}
+          value={selectedMissionIdentifier}
+          onChange={onMissionSelected}
+          my={'xs'}
+          allowDeselect={false}
+        />
+      )}
+      <MissionContent missionOverview={mission!} />
+    </Box>
+  );
 }
