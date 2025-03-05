@@ -40,7 +40,8 @@ import {
   SettingsPanel,
   SkyBrowserPanel,
   TimePanel,
-  UserPanelsPanel
+  UserPanelsPanel,
+  GettingStartedPanel
 } from './LazyLoads';
 
 export interface MenuItem {
@@ -202,6 +203,15 @@ export const menuItemsData: MenuItem[] = [
     preferredPosition: 'float',
     floatPosition: { offsetY: 150, offsetX: 350, width: 1050, height: 680 },
     defaultVisible: false
+  },
+  {
+    title: 'Getting Started Tour',
+    componentID: 'gettingStartedTour',
+    content: <GettingStartedPanel />,
+    renderIcon: (size) => <KeyboardIcon size={size} />,
+    preferredPosition: 'float',
+    floatPosition: { offsetY: 150, offsetX: 350, width: 1050, height: 680 },
+    defaultVisible: true
   },
   {
     title: 'Property Test (TEMP)',

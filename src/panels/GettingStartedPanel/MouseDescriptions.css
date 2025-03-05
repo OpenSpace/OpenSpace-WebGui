@@ -1,0 +1,33 @@
+@keyframes blinkAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes positionAnimation {
+  0% {
+    transform: translate(0, 0px);
+  }
+
+  100% {
+    transform: translate(0, -8px);
+  }
+}
+
+.arrowAnimation {
+  animation:
+    positionAnimation 2s infinite,
+    blinkAnimation 2s infinite;
+}
+
+.mouseAnimation {
+  animation: blinkAnimation 2s infinite;
+}

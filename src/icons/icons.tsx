@@ -80,6 +80,11 @@ export {
   MdZoomOut as ZoomOutIcon,
   MdZoomOutMap as ZoomOutMapIcon
 } from 'react-icons/md';
-export { PiBookOpenText as BookIcon } from 'react-icons/pi';
+export {
+  PiBookOpenText as BookIcon,
+  PiMouseRightClickFill as RightClickMouseIcon,
+  PiMouseLeftClickFill as LeftClickMouseIcon,
+  PiMouseMiddleClickFill as ScrollClickMouseIcon
+} from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
 export { VscFeedback as FeedbackIcon } from 'react-icons/vsc';
