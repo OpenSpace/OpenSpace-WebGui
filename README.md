@@ -53,13 +53,27 @@ We are using a component library called [Mantine](https://mantine.dev). These co
 We apply a custom theme to the Mantine components, if you are building a separate webpage and want the same styling, copy the theme at `src/app/theme/mantineTheme.ts`.
 
 ## Guidlines
- - Make sure the code adheres to ESLint rules and Prettier - Run the necessary commands (see Additional Scripts) before pushing code.
- - If you need to disable an ESLint or Prettier rules, there needs to be a comment explaining why
+ - Make sure the code adheres to ESLint and Prettier rules - Run the necessary commands (see Additional Scripts) before pushing code.
+ - If you need to disable an ESLint or Prettier rule, there needs to be a comment explaining why
  - Do not use type `any` unless absolutely necessary, add a comment explaining why `any` is used over a specified type
  - Prefer default styling as much as possbile when using Mantine components.
  - Use `Props` over `Style` object when adding custom styling to components.
  - Import using the `@` notation e.g., `import { InfoBox } from '@/components/InfoBox/InfoBox'` as much as possible. Relative paths can be used for child or sibling components e.g., `import { PlayBackButton } from './PlayBack/PlayBackButton'`
+ - Follow the Hooks Order as much as possible.
 
+### Hooks Order
+ - For cleaner code, we adhere to the following hooks order whenever possible. In some situations a hook is derived by a "lower order" hook, in which case the order can be swapped.
+ - Order:
+   - useContext
+   - useRef
+   - useState
+   - useAppDispatch
+   - useAppSelector
+   - customHooks (useOpenSpaceApi, etc)
+   - useMemo, useCallback
+   - Derived state
+   - useEffect
+   - functions
 
 ## OpenSpace JavaScript API
 we now support a TypeScript version of our [JavaScript API](https://github.com/OpenSpace/openspace-api-js), since the API updates quite frequently with new OpenSpace Lua functions we've decided to keep a manual copy of the TypeScript API in this repository. As such, we need to manually update the API declaration file from time to time, to get correct and proper syntax highlighting when calling Lua functions.
