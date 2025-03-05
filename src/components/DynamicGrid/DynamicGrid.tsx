@@ -16,7 +16,7 @@ export function DynamicGrid({ minChildSize, gridWidth, children, ...props }: Pro
     const width = gridWidth ?? panelWidth;
     //
     const childrenPerRow = Math.max(Math.floor(width / minChildSize), 1);
-    return Math.min(childrenPerRow, 6);
+    return childrenPerRow;
   }
 
   return (
