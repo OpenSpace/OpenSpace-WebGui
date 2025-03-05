@@ -18,10 +18,12 @@ import { timeReducer } from './time/timeSlice';
 import { userPanelsReducer } from './userpanels/userPanelsSlice';
 import { versionReducer } from './version/versionSlice';
 import { listenerMiddleware } from './listenerMiddleware';
+import { cameraReducer } from './camera/cameraSlice';
 
 export const store = configureStore({
   reducer: {
     actions: actionsReducer,
+    camera: cameraReducer,
     cameraPath: cameraPathReducer,
     connection: connectionReducer,
     documentation: documentationReducer,

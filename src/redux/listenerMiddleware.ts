@@ -16,6 +16,7 @@ import { addSkyBrowserListener } from './skybrowser/skybrowserMiddleware';
 import { addTimeListener } from './time/timeMiddleware';
 import { addVersionListener } from './version/versionMiddleware';
 import type { AppDispatch, RootState } from './store';
+import { addCameraListener } from './camera/cameraMiddleware';
 
 export const listenerMiddleware = createListenerMiddleware();
 export type AppStartListening = TypedStartListening<RootState, AppDispatch>;
@@ -23,6 +24,7 @@ export type AppStartListening = TypedStartListening<RootState, AppDispatch>;
 const startAppListening = listenerMiddleware.startListening as AppStartListening;
 
 addActionsListener(startAppListening);
+addCameraListener(startAppListening);
 addCameraPathListener(startAppListening);
 addConnectionListener(startAppListening);
 addDocumentationListener(startAppListening);
