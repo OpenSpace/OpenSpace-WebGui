@@ -1,6 +1,8 @@
 # OpenSpace WebGUI Module
 
-The new WebGui is written in React TypeScript. We're using Prettier and ESLint to format the code.
+This is the repository for the new WebGui User Interface for OpenSpace, which replaces the one in [this repository](https://github.com/OpenSpace/OpenSpace-WebGuiFrontend)
+
+It is built using [Vite](https:://vite.dev/) and written in React TypeScript. We're using Prettier and ESLint for code formatting.
 
 ## Develop
 
@@ -19,6 +21,10 @@ open http://localhost:4670
  # build frontend
  npm run build
  ... TODO additional steps
+
+ # test the built version of the frontend locally
+ npm run build
+ npm run preview
  ```
 
  Format code using Prettier and EsLint
@@ -53,6 +59,12 @@ We apply a custom theme to the Mantine components, if you are building a separat
  - Prefer default styling as much as possbile when using Mantine components.
  - Use `Props` over `Style` object when adding custom styling to components.
  - Import using the `@` notation e.g., `import { InfoBox } from '@/components/InfoBox/InfoBox'` as much as possible. Relative paths can be used for child or sibling components e.g., `import { PlayBackButton } from './PlayBack/PlayBackButton'`
+
+
+## OpenSpace JavaScript API
+we now support a TypeScript version of our [JavaScript API](https://github.com/OpenSpace/openspace-api-js), since the API updates quite frequently with new OpenSpace Lua functions we've decided to keep a manual copy of the TypeScript API in this repository. As such, we need to manually update the API declaration file from time to time, to get correct and proper syntax highlighting when calling Lua functions.
+
+Follow the steps here (TODO: link to api-js readme describing steps to generate file)
 
 
  ## Deploy
