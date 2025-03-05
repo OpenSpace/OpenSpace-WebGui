@@ -5,29 +5,15 @@ import { RocketLaunchIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setSelectedMission } from '@/redux/missions/missionsSlice';
 
+import { useSelectedMission } from './hooks';
 import { MissionContent } from './MissionContent';
 
 export function MissionsPanel() {
-  const {
-    isInitialized: hasMission,
-    data,
-    selectedMissionIdentifier
-  } = useAppSelector((state) => state.missions);
+  const { data, selectedMissionIdentifier } = useAppSelector((state) => state.missions);
 
   const luaApi = useOpenSpaceApi();
+  const { hasMission, mission } = useSelectedMission();
   const dispatch = useAppDispatch();
-
-  let [mission] = data.missions;
-  // If a new missions is added, the missions order might have changed so we try to find
-  // the last one viewed
-  if (hasMission && selectedMissionIdentifier) {
-    const selectedMission = data.missions.find(
-      (_mission) => _mission.identifier === selectedMissionIdentifier
-    );
-    if (selectedMission) {
-      mission = selectedMission;
-    }
-  }
 
   function onMissionSelected(identifier: string | null) {
     if (!identifier) {
@@ -57,8 +43,8 @@ export function MissionsPanel() {
         <Select
           label={'Selected mission'}
           placeholder={'Select a mission'}
-          data={data.missions.map((_mission) => {
-            return { value: _mission.identifier, label: _mission.name };
+          data={data.missions.map((mission) => {
+            return { value: mission.identifier, label: mission.name };
           })}
           value={selectedMissionIdentifier}
           onChange={onMissionSelected}
@@ -66,7 +52,7 @@ export function MissionsPanel() {
           allowDeselect={false}
         />
       )}
-      <MissionContent missionOverview={mission} />
+      <MissionContent missionOverview={mission!} />
     </Box>
   );
 }

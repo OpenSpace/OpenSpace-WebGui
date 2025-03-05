@@ -23,6 +23,7 @@ export function MissionContent({ missionOverview }: Props) {
     data: undefined
   });
 
+  // Reset phases when selected mission is changed
   useEffect(() => {
     // When the mission is changed, display overview again
     setDisplayedPhase({
