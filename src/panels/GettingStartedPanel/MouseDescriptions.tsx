@@ -18,7 +18,7 @@ function Arrows({ dir: direction }: Props) {
 
 export function MouseDescription() {
   return (
-    <Stack gap={0} align="center">
+    <Stack gap={0} align="center" m={'lg'}>
       <Arrows dir="up" />
       <RightClickMouseIcon size={'90px'} />
       <Arrows dir="down" />

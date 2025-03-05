@@ -4,7 +4,7 @@ export interface CameraState {
   latitude: number | undefined;
   longitude: number | undefined;
   altitude: number | undefined;
-  altitudeUnit: number | undefined;
+  altitudeUnit: string | undefined;
 }
 
 const initialState: CameraState = {
