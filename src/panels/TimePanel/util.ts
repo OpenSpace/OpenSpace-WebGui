@@ -6,6 +6,7 @@ const Hour = StepSizes[TimePart.Hours];
 const Month = StepSizes[TimePart.Months];
 const Day = StepSizes[TimePart.Days];
 const Year = StepSizes[TimePart.Years];
+
 /**
  * Converts delta time (in seconds) into a unit friendly format (seconds, min, hours, etc)
  * @param deltaSeconds The delta in seconds, can be positive or negative
@@ -51,9 +52,9 @@ export function formatDeltaTime(deltaSeconds: number): {
 }
 
 /**
- * @param year Year
+ * @param year Year to check the number of days (needed due to leap years)
  * @param month 0-indexed month
- * @returns The max days of the month given a specific date
+ * @returns The max days of the month for the specific year
  */
 export function maxDaysInMonth(year: number, month: number): number {
   // Month in JavaScript is 0-indexed (January is 0, February is 1, etc),

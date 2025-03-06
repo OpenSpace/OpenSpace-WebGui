@@ -1,5 +1,5 @@
 export function dateToOpenSpaceTimeString(date: Date): string {
-  // Spice, that is handling the time parsing in OpenSpace does not support
+  // Spice, which is handling the time parsing in OpenSpace does not support
   // ISO 8601-style time zones (the Z). It does, however, always assume that UTC
   // is given.
 
@@ -33,14 +33,14 @@ export function dateToOpenSpaceTimeString(date: Date): string {
       // (year <= 0)
       const parsedUtcYear = parseInt(utcYear);
 
-      // A.D - B.C years does not have year 0 so we shift B.C by one. From str2et_c exmaples:
+      // A.D - B.C years does not have year 0 so we shift B.C by one. From str2et_c examples:
       // The following date: 18 B.C. Jun 3, 12:29:28.291 becomes -017 Jun 03 12 29 28.291
 
-      // TODO anden88 2025-02-27: * Something * happens between 999 and 1001 BC where
-      // Spice maps 1000 BC to 999 BC and 1001 BC to 1001 BC. This change in behaviour
-      // also means that stepping up and down  with the buttons would increment/decrement
-      // by 2. So then we don't want to add the shift. This however leads to not being
-      // able to shift-click the increment at year 1001 BC
+      // @TODO (anden88 2025-02-27): *Something* happens between 999 and 1001 BC where
+      // Spice maps 1000 BC to 999 BC and 1001 BC to 1001 BC. This change in behaviour also
+      // means that stepping up and down  with the buttons would increment/decrement by 2.
+      // So then we don't want to add the shift. This however leads to not being able to
+      // shift-click the increment at year 1001 BC
       const shouldShift = parsedUtcYear <= 1000;
       const shiftedUtcYear = shouldShift ? parsedUtcYear + 1 : parsedUtcYear;
 

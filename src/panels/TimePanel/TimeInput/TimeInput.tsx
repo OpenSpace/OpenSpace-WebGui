@@ -110,7 +110,7 @@ export function TimeInput() {
         break;
       case TimePart.Months: {
         // Adjust the day when transitioning from a month with 31 days to a month with
-        // fewer days. If the current day is 31 and the next month has only 30 ( or fewer)
+        // fewer days. If the current day is 31 and the next month has only 30 (or fewer)
         // days, the Date object would interpret this as rolling over into the next month
         // e.g., March 31 -> April 30 + 1 -> May 1. To prevent this, we clamp the day to
         // the maximum valid day in the next month
@@ -143,6 +143,16 @@ export function TimeInput() {
         throw Error(`Unhandled 'TimePart' case: ${timePart}`);
     }
 
+    if (!isDateValid(newTime)) {
+      setErrorMessage(
+        'New date is outside range (April 20, 271821 BC, Sep 13, 275760 AD)'
+      );
+    } else {
+      if (errorMessage) {
+        setErrorMessage('');
+      }
+    }
+
     updateTime({
       time: newTime,
       immediate: isHoldingShift,
@@ -171,7 +181,7 @@ export function TimeInput() {
         break;
       case TimePart.Months: {
         // Adjust the day when transitioning from a month with 31 days to a month with
-        // fewer days. If the current day is 31 and the next month has only 30 ( or fewer)
+        // fewer days. If the current day is 31 and the next month has only 30 (or fewer)
         // days, the Date object would interpret this as rolling over into the next month
         // e.g., March 31 -> April 30 + 1 -> May 1. To prevent this, we clamp the day to
         // the maximum valid day in the next month
@@ -198,6 +208,16 @@ export function TimeInput() {
         throw Error(`Unhandled 'TimePart' case: ${timePart}`);
     }
 
+    if (!isDateValid(newTime)) {
+      setErrorMessage(
+        'New date is outside range (April 20, 271821 BC, Sep 13, 275760 AD)'
+      );
+    } else {
+      if (errorMessage) {
+        setErrorMessage('');
+      }
+    }
+
     updateTime({
       time: newTime,
       immediate: true,
@@ -206,7 +226,7 @@ export function TimeInput() {
     });
   }
 
-  function onChange(value: number | string): void {
+  function onYearChange(value: number | string): void {
     // Mantine's NumberInput can return either a string or a number.
     // Since our wrapper does not handle string values, we ignore them.
     if (typeof value === 'string') {
@@ -214,22 +234,28 @@ export function TimeInput() {
     }
 
     // Validate the new date to ensure the year is within the valid JavaScript Date range
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
     const newTime = new Date(timeRef.current);
-    const ms = newTime.setUTCFullYear(value);
+    newTime.setUTCFullYear(value);
 
-    if (isNaN(ms)) {
-      setErrorMessage(`Year '${value}' is outside allowed year range (-271821, 275760)`);
-    } else {
+    if (isDateValid(newTime)) {
       setErrorMessage('');
+    } else {
+      setErrorMessage(
+        `Year '${value}' is outside allowed year range (April 20, 271821 BC, Sep 13, 275760 AD)`
+      );
     }
   }
 
   if (cappedTime === undefined) {
     return (
-      <Center p={'xl'} style={{ flexDirection: 'column' }}>
+      <Stack align="center" gap={2} pb={'xs'}>
         <Text>{backupTimeString}</Text>
-        <Text c={'red'}>Can't interact with dates outside ±270.000 years</Text>
-      </Center>
+        <Text c={'red'}>
+          Can't interact with dates outside the range April 20, 271821 BC to Sep 13,
+          275760 AD.
+        </Text>
+      </Stack>
     );
   }
 
@@ -250,7 +276,7 @@ export function TimeInput() {
             value={time.getUTCFullYear()}
             onInputEnter={(value) => onTimeInput(TimePart.Years, value)}
             onInputChangeStep={(change) => onTimeInputRelative(TimePart.Years, change)}
-            onInputChange={onChange}
+            onInputChange={onYearChange}
             onInputBlur={() => {
               if (errorMessage) {
                 setErrorMessage('');
