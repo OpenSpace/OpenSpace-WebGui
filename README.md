@@ -20,7 +20,6 @@ The following steps create a build that will be placed in a folder `dist` which 
 ```sh
 # build frontend
 npm run build
-... TODO additional steps
 
 # test the built version of the frontend locally
 npm run build
