@@ -101,6 +101,7 @@ export function NumericInput({
         setStoredValue(newValue.floatValue);
       }}
       onChange={handleChange}
+      onFocus={() => setIsEditing(true)}
       disabled={disabled}
       label={label}
       min={min}

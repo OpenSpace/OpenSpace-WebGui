@@ -1,10 +1,11 @@
+import React from 'react';
 import { AspectRatio, Image, ImageProps, ThemeIcon, UnstyledButton } from '@mantine/core';
 
 import styles from './IconImage.module.css';
 
 interface Props extends ImageProps {
   onClick: () => void;
-  icon: JSX.Element;
+  icon: React.JSX.Element;
   url: string;
   h?: number | string;
   w?: number | string;

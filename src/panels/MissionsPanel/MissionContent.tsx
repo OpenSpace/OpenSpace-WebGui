@@ -122,7 +122,7 @@ export function MissionContent({ missionOverview }: Props) {
             Overview
           </Button>
         </Group>
-        <Group m={'xs'}>
+        <Group mb={'xs'} gap={'xs'} wrap={'nowrap'}>
           <Switch checked={displayCurrentPhase} onClick={toggleCurrentPhase} />
           <Text>Display current phase</Text>
           <InfoBox

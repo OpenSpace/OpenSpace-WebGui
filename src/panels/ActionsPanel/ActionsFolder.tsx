@@ -1,8 +1,8 @@
 import { Button, Text } from '@mantine/core';
 
 import { FolderIcon } from '@/icons/icons';
-import { setActionsPath } from '@/redux/actions/actionsSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+
+import { useGoToFolder } from './hooks';
 
 interface Props {
   folder: string;
@@ -10,19 +10,12 @@ interface Props {
 }
 
 export function ActionsFolder({ folder, height }: Props) {
-  const navigationPath = useAppSelector((state) => state.actions.navigationPath);
-
-  const dispatch = useAppDispatch();
-
-  function addNavPath(path: string): void {
-    const newPath = `${navigationPath}/${path}`.replace('//', '/');
-    dispatch(setActionsPath(newPath));
-  }
+  const goToPath = useGoToFolder();
 
   return (
     <Button
       leftSection={<FolderIcon />}
-      onClick={() => addNavPath(folder)}
+      onClick={() => goToPath(folder)}
       variant={'default'}
       fullWidth
       h={height}
