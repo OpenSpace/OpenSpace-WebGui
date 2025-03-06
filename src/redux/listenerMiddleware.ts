@@ -1,6 +1,7 @@
 import { createListenerMiddleware, type TypedStartListening } from '@reduxjs/toolkit';
 
 import { addActionsListener } from './actions/actionsMiddleware';
+import { addCameraListener } from './camera/cameraMiddleware';
 import { addCameraPathListener } from './camerapath/cameraPathMiddleware';
 import { addConnectionListener } from './connection/connectionMiddleware';
 import { addDocumentationListener } from './documentation/documentationMiddleware';
@@ -16,7 +17,6 @@ import { addSkyBrowserListener } from './skybrowser/skybrowserMiddleware';
 import { addTimeListener } from './time/timeMiddleware';
 import { addVersionListener } from './version/versionMiddleware';
 import type { AppDispatch, RootState } from './store';
-import { addCameraListener } from './camera/cameraMiddleware';
 
 export const listenerMiddleware = createListenerMiddleware();
 export type AppStartListening = TypedStartListening<RootState, AppDispatch>;

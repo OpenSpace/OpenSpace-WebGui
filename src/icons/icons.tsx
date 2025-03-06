@@ -68,10 +68,11 @@ export {
   MdPlayArrow as PlayIcon,
   MdFiberManualRecord as RecordIcon,
   MdRocketLaunch as RocketLaunchIcon,
+  MdOutlineCategory as SceneIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
+  MdSunny as SunIcon,
   MdTimer as TimerIcon,
-  MdOutlineCategory as TreeViewIcon,
   MdArrowUpward as UpArrowIcon,
   MdVideocam as VideocamIcon,
   MdOutlineVisibility as VisibilityIcon,
@@ -82,9 +83,9 @@ export {
 } from 'react-icons/md';
 export {
   PiBookOpenText as BookIcon,
-  PiMouseRightClickFill as RightClickMouseIcon,
-  PiMouseLeftClickFill as LeftClickMouseIcon,
-  PiMouseMiddleClickFill as ScrollClickMouseIcon
+  PiMouseLeftClickThin as LeftClickMouseIcon,
+  PiMouseRightClickThin as RightClickMouseIcon,
+  PiMouseMiddleClickThin as ScrollClickMouseIcon
 } from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
 export { VscFeedback as FeedbackIcon } from 'react-icons/vsc';

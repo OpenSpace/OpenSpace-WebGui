@@ -27,6 +27,7 @@ import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelper
 import { dateToOpenSpaceTimeString } from '@/util/time';
 
 import { LuaApiContext } from './LuaApiContext';
+import { subscribeToCamera, unsubscribeToCamera } from '@/redux/camera/cameraMiddleware';
 // Hook to make it easier to get the api
 export function useOpenSpaceApi() {
   const api = useContext(LuaApiContext);
@@ -340,4 +341,14 @@ export function usePropListeningState<T>(prop: T) {
   }
 
   return { value, setValue, setIsEditing };
+}
+
+export function useSubscribeToCamera() {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(subscribeToCamera());
+    return () => {
+      dispatch(unsubscribeToCamera());
+    };
+  }, [dispatch]);
 }

@@ -12,9 +12,9 @@ import {
   KeyboardIcon,
   LocationPinIcon,
   RocketLaunchIcon,
+  SceneIcon,
   SettingsIcon,
   TelescopeIcon,
-  TreeViewIcon,
   VideocamIcon
 } from '@/icons/icons';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
@@ -31,6 +31,7 @@ import {
   ExoplanetsPanel,
   FlightControlPanel,
   GeoLocationPanel,
+  GettingStartedPanel,
   KeybindsPanel,
   MissionsPanel,
   OriginPanel,
@@ -40,8 +41,7 @@ import {
   SettingsPanel,
   SkyBrowserPanel,
   TimePanel,
-  UserPanelsPanel,
-  GettingStartedPanel
+  UserPanelsPanel
 } from './LazyLoads';
 
 export interface MenuItem {
@@ -67,13 +67,13 @@ export const menuItemsData: MenuItem[] = [
         key={key}
         onClick={onclick}
         variant={'menubar'}
-        leftSection={<TreeViewIcon size={IconSize.lg} />}
+        leftSection={<SceneIcon size={IconSize.lg} />}
         size={'xl'}
       >
         Scene
       </Button>
     ),
-    renderIcon: (size) => <TreeViewIcon size={size} />,
+    renderIcon: (size) => <SceneIcon size={size} />,
     preferredPosition: 'left',
     defaultVisible: true
   },
