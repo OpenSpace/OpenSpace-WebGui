@@ -1,18 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Phase } from '@/panels/MissionsPanel/types';
+import { Missions, Phase } from '@/panels/MissionsPanel/types';
 
 export interface MissionState {
   isInitialized: boolean;
-  data: { missions: Phase[] };
+  missions: Missions;
   selectedMissionIdentifier: string;
 }
 
 const initialState: MissionState = {
   isInitialized: false,
-  data: {
-    missions: []
-  },
+  missions: {},
   selectedMissionIdentifier: ''
 };
 
@@ -43,23 +41,27 @@ export const missionsSlice = createSlice({
   name: 'missions',
   initialState,
   reducers: {
-    initializeMissions: (state, action: PayloadAction<{ missions: Phase[] }>) => {
+    initializeMissions: (state, action: PayloadAction<Missions>) => {
+      // Empty the existing map so that we don't keep removed missions in redux state
+      state.missions = {};
       state.isInitialized = true;
-      state.data.missions = action.payload.missions.map(convertPhaseToUTC);
+
+      Object.entries(action.payload).map(([identifier, mission]) => {
+        state.missions[identifier] = convertPhaseToUTC(mission);
+      });
 
       // If no mission was loaded or if the previously selected mission was removed,
-      // automatically select first available mission from the updated list
-      const isSelectedMissionLoaded = state.data.missions.some(
-        (mission) => mission.identifier === state.selectedMissionIdentifier
-      );
+      // automatically select first available mission from the updated list if one exists
+      const isSelectedMissionLoaded = state.selectedMissionIdentifier in state.missions;
       if (!isSelectedMissionLoaded) {
-        state.selectedMissionIdentifier = action.payload.missions[0].identifier;
+        state.selectedMissionIdentifier = Object.keys(state.missions)[0] ?? '';
       }
+
       return state;
     },
     clearMissions: (state) => {
       state.isInitialized = false;
-      state.data.missions = [];
+      state.missions = {};
       state.selectedMissionIdentifier = '';
       return state;
     },
