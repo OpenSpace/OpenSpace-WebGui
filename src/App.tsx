@@ -1,14 +1,16 @@
-import 'rc-dock/dist/rc-dock-dark.css';
-import { MantineProvider } from '@mantine/core';
 import { StrictMode } from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Routes, Route } from 'react-router';
+import { BrowserRouter, Route,Routes } from 'react-router';
+import { MantineProvider } from '@mantine/core';
+
 import { LuaApiProvider } from './api/LuaApiProvider';
 import { ActionsPage } from './pages/ActionsPage';
+import { GuiPage } from './pages/GuiPage';
 import { RoutesPage } from './pages/RoutesPage';
 import { store } from './redux/store';
 import { theme } from './theme/mantineTheme';
-import { GuiPage } from './pages/GuiPage';
+
+import 'rc-dock/dist/rc-dock-dark.css';
 
 function App() {
   return (

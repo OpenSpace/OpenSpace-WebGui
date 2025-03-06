@@ -1,8 +1,9 @@
+import { ErrorBoundary } from 'react-error-boundary';
+import { ModalsProvider } from '@mantine/modals';
+
 import { fallbackRender } from '@/components/ErrorFallback/fallbackRender';
 import { WindowLayout } from '@/windowmanagement/WindowLayout/WindowLayout';
 import { WindowLayoutProvider } from '@/windowmanagement/WindowLayout/WindowLayoutProvider';
-import { ModalsProvider } from '@mantine/modals';
-import { ErrorBoundary } from 'react-error-boundary';
 
 export function GuiPage() {
   return (

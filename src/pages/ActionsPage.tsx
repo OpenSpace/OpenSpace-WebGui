@@ -1,9 +1,10 @@
+import { ErrorBoundary } from 'react-error-boundary';
+import { ModalsProvider } from '@mantine/modals';
+
 import { fallbackRender } from '@/components/ErrorFallback/fallbackRender';
 import { ConnectionErrorOverlay } from '@/windowmanagement/ConnectionErrorOverlay';
 import { ActionsPanel } from '@/windowmanagement/data/LazyLoads';
 import { Window } from '@/windowmanagement/Window/Window';
-import { ModalsProvider } from '@mantine/modals';
-import { ErrorBoundary } from 'react-error-boundary';
 
 export function ActionsPage() {
   return (
