@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useThrottledCallback } from '@mantine/hooks';
 
+import { subscribeToCamera, unsubscribeToCamera } from '@/redux/camera/cameraMiddleware';
 import {
   subscribeToCameraPath,
   unsubscribeToCameraPath
@@ -27,7 +28,6 @@ import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelper
 import { dateToOpenSpaceTimeString } from '@/util/time';
 
 import { LuaApiContext } from './LuaApiContext';
-import { subscribeToCamera, unsubscribeToCamera } from '@/redux/camera/cameraMiddleware';
 // Hook to make it easier to get the api
 export function useOpenSpaceApi() {
   const api = useContext(LuaApiContext);
