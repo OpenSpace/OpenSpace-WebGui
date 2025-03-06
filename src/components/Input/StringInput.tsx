@@ -59,6 +59,7 @@ export function StringInput({ onEnter, value, errorCheck, ...props }: Props) {
       value={storedValue}
       onChange={(event) => onChange(event.currentTarget.value)}
       onKeyUp={onKeyUp}
+      onFocus={() => setIsEditing(true)}
       onBlur={onBlur}
       error={errorCheck ? errorCheck(storedValue) : false}
       {...props}

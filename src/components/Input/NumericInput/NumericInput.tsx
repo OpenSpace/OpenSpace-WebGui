@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { NumberInput, NumberInputProps } from '@mantine/core';
 
 import { usePropListeningState } from '@/api/hooks';
@@ -89,6 +89,7 @@ export function NumericInput({
       value={storedValue === undefined ? '' : storedValue}
       onKeyUp={onKeyUp}
       onBlur={onBlur}
+      onFocus={() => setIsEditing(true)}
       onValueChange={(newValue) => {
         setStoredValue(newValue.floatValue);
       }}

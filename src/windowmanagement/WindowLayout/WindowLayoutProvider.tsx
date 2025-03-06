@@ -39,7 +39,9 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
         content: <Window>{content}</Window>,
         cached: true,
         closable: true,
-        group: 'card regularWindow'
+        group: 'card regularWindow',
+        minWidth: 150,
+        minHeight: 50
       };
     },
     []
