@@ -23,7 +23,7 @@ export function MissionsPanel() {
     luaApi?.setCurrentMission(identifier);
   }
 
-  if (!hasMission) {
+  if (!hasMission || !mission) {
     return (
       <Stack h={'100%'} w={'100%'} ta={'center'} align={'center'} p={'lg'}>
         <Title order={2}>No mission loaded</Title>
@@ -52,7 +52,7 @@ export function MissionsPanel() {
           allowDeselect={false}
         />
       )}
-      <MissionContent missionOverview={mission!} />
+      <MissionContent missionOverview={mission} />
     </Box>
   );
 }
