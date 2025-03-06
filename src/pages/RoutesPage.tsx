@@ -18,6 +18,7 @@ export function RoutesPage() {
             src={'openspace-logo.png'}
             alt={'OpenSpace logo'}
             h={30}
+            w={40}
             fit={'contain'}
           />
           <Title>OpenSpace Routes</Title>
