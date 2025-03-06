@@ -19,6 +19,7 @@ export function ClearSkyButton() {
     );
     setVisibleBlueMarble(true);
   }
+
   return (
     <Group>
       <Text>Is it hard to find? Try clearing the sky:</Text>

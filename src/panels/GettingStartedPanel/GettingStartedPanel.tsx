@@ -1,10 +1,14 @@
 import { useState } from 'react';
-import { Button, Group, Progress, Stack } from '@mantine/core';
+import { Button, Group, Progress, Stack, Stepper } from '@mantine/core';
 
 import { Layout } from '@/components/Layout/Layout';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { GettingStartedSteps } from './GettingStartedSteps';
+import { active } from 'd3';
+import { FocusIcon, LeftClickMouseIcon, SceneIcon, TimerIcon } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
+
 export function GettingStartedPanel() {
   const [step, setStep] = useState(0);
   const { closeWindow } = useWindowLayoutProvider();
@@ -37,7 +41,23 @@ export function GettingStartedPanel() {
             {isLastStep ? 'Finish' : 'Next'}
           </Button>
         </Group>
+
         <Progress value={progress} mt={'md'}></Progress>
+        <Stepper iconSize={''} active={0} mt={'md'} onStepClick={() => {}}>
+          <Stepper.Step
+            label="Navigation"
+            icon={<LeftClickMouseIcon size={IconSize.md} />}
+          ></Stepper.Step>
+          <Stepper.Step
+            label="Time"
+            icon={<TimerIcon size={IconSize.md} />}
+          ></Stepper.Step>
+          <Stepper.Step
+            label="Content"
+            icon={<SceneIcon size={IconSize.md} />}
+          ></Stepper.Step>
+          <Stepper.Completed>Fin</Stepper.Completed>
+        </Stepper>
       </Layout.FixedSection>
     </Layout>
   );

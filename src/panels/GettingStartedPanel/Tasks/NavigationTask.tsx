@@ -1,8 +1,7 @@
-import { Checkbox } from '@mantine/core';
-
 import { useGetStringPropertyValue, useSubscribeToCamera } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { NavigationAnchorKey } from '@/util/keys';
+import { TaskCheckbox } from './Components/TaskCheckbox';
 
 interface Props {
   anchor: string;
@@ -14,7 +13,7 @@ function isWithinRange(value: number | undefined, range: { min: number; max: num
   if (value === undefined) {
     return false;
   }
-  return value <= range.max && value >= range.min;
+  return value >= range.min && value <= range.max;
 }
 
 export function NavigationTask({ anchor, lat, long }: Props) {
@@ -37,16 +36,9 @@ export function NavigationTask({ anchor, lat, long }: Props) {
   const longLabel = long?.value ? `longitude: ${long.value}` : '';
 
   return (
-    <>
-      <Checkbox
-        size={'lg'}
-        c={'orange'}
-        color={'green'}
-        checked={taskCompleted}
-        onChange={() => {}}
-        label={`Task: Go to ${latLabel} ${longLabel}`}
-        style={{ cursor: 'default' }}
-      />
-    </>
+    <TaskCheckbox
+      taskCompleted={taskCompleted}
+      label={`Go to ${latLabel} ${longLabel}`}
+    />
   );
 }

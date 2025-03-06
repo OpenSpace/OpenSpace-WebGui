@@ -9,7 +9,7 @@ export function CurrentLatLong() {
 
   return (
     <Text>
-      Current position (lat, long): (
+      Current position (latitude, longitude): (
       <NumberFormatter value={currentLat} decimalScale={2} />,{' '}
       <NumberFormatter value={currentLong} decimalScale={2} />)
     </Text>

@@ -1,10 +1,9 @@
-import { Checkbox } from '@mantine/core';
-
 import { useGetStringPropertyValue, useSubscribeToCamera } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { NavigationAnchorKey } from '@/util/keys';
 
 import { compareAltitude } from './util';
+import { TaskCheckbox } from './Components/TaskCheckbox';
 
 interface Props {
   anchor: string;
@@ -27,14 +26,9 @@ export function AltitudeTask({ anchor, unit, altitude, compare }: Props) {
   useSubscribeToCamera();
 
   return (
-    <Checkbox
-      size={'lg'}
-      c={'orange'}
-      color={'green'}
-      checked={taskCompleted}
-      onChange={() => {}}
-      label={`Task: Go to an altitude ${compare} than ${altitude} ${unit} on ${anchor}!`}
-      style={{ cursor: 'default' }}
+    <TaskCheckbox
+      taskCompleted={taskCompleted}
+      label={`Go to an altitude ${compare} than ${altitude} ${unit} on ${anchor}!`}
     />
   );
 }

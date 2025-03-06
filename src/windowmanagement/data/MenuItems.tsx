@@ -12,6 +12,7 @@ import {
   KeyboardIcon,
   LocationPinIcon,
   RocketLaunchIcon,
+  RouteIcon,
   SceneIcon,
   SettingsIcon,
   TelescopeIcon,
@@ -208,9 +209,9 @@ export const menuItemsData: MenuItem[] = [
     title: 'Getting Started Tour',
     componentID: 'gettingStartedTour',
     content: <GettingStartedPanel />,
-    renderIcon: (size) => <KeyboardIcon size={size} />,
+    renderIcon: (size) => <RouteIcon size={size} />,
     preferredPosition: 'float',
-    floatPosition: { offsetY: 150, offsetX: 350, width: 1050, height: 680 },
+    floatPosition: { offsetY: 150, offsetX: 350, width: 600, height: 500 },
     defaultVisible: true
   },
   {
