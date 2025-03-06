@@ -20,7 +20,7 @@ export function RoutesPage() {
             h={30}
             fit={'contain'}
           />
-          <Title>OpenSpace routes</Title>
+          <Title>OpenSpace Routes</Title>
         </Group>
       </AppShell.Header>
 
@@ -38,8 +38,9 @@ export function RoutesPage() {
           leftSection={<DashboardIcon />}
         />
       </AppShell.Navbar>
-
-      <AppShell.Main></AppShell.Main>
+      <AppShell.Main>
+        This page displays the different routes that are available in OpenSpace.
+      </AppShell.Main>
     </AppShell>
   );
 }

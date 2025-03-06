@@ -1,21 +1,19 @@
 import { fallbackRender } from '@/components/ErrorFallback/fallbackRender';
-import { ConnectionErrorOverlay } from '@/windowmanagement/ConnectionErrorOverlay';
-import { ActionsPanel } from '@/windowmanagement/data/LazyLoads';
-import { Window } from '@/windowmanagement/Window/Window';
+import { WindowLayout } from '@/windowmanagement/WindowLayout/WindowLayout';
+import { WindowLayoutProvider } from '@/windowmanagement/WindowLayout/WindowLayoutProvider';
 import { ModalsProvider } from '@mantine/modals';
 import { ErrorBoundary } from 'react-error-boundary';
 
-export function ActionsPage() {
+export function GuiPage() {
   return (
     <ErrorBoundary
       fallbackRender={fallbackRender}
       onReset={() => window.location.reload()}
     >
       <ModalsProvider>
-        <ConnectionErrorOverlay />
-        <Window h={'100vh'} w={'100vw'}>
-          <ActionsPanel />
-        </Window>
+        <WindowLayoutProvider>
+          <WindowLayout />
+        </WindowLayoutProvider>
       </ModalsProvider>
     </ErrorBoundary>
   );
