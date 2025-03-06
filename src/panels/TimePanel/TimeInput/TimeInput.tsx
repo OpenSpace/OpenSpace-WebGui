@@ -143,14 +143,12 @@ export function TimeInput() {
         throw Error(`Unhandled 'TimePart' case: ${timePart}`);
     }
 
-    if (!isDateValid(newTime)) {
+    if (isDateValid(newTime)) {
+      setErrorMessage('');
+    } else {
       setErrorMessage(
         'New date is outside range (April 20, 271821 BC, Sep 13, 275760 AD)'
       );
-    } else {
-      if (errorMessage) {
-        setErrorMessage('');
-      }
     }
 
     updateTime({
@@ -208,14 +206,12 @@ export function TimeInput() {
         throw Error(`Unhandled 'TimePart' case: ${timePart}`);
     }
 
-    if (!isDateValid(newTime)) {
+    if (isDateValid(newTime)) {
+      setErrorMessage('');
+    } else {
       setErrorMessage(
         'New date is outside range (April 20, 271821 BC, Sep 13, 275760 AD)'
       );
-    } else {
-      if (errorMessage) {
-        setErrorMessage('');
-      }
     }
 
     updateTime({
