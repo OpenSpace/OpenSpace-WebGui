@@ -21,8 +21,9 @@ export function FocusEntry({
   onSelect,
   showFrameButton,
   isActive,
-  disableFocus
-}: FocusEntryProps) {
+  disableFocus,
+  ...props
+}: Props) {
   const buttonVariant = isActive ? 'filled' : 'light';
 
   function onSelectEntry(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
