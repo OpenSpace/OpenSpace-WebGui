@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Group, Select } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
 
@@ -11,15 +11,11 @@ import { QuickAdjustSlider } from './QuickAdjustSlider';
 import { Decimals, StepSizes, TimePart } from './types';
 
 export function SimulationIncrement() {
-  const updateDeltaTime = useThrottledCallback(updateDeltaTimeNow, 50);
+  const luaApi = useOpenSpaceApi();
   const [stepSize, setStepSize] = useState<TimePart>(TimePart.Seconds);
 
-  const luaApi = useOpenSpaceApi();
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime) ?? 1;
-
-  // We use a ref for the delta time to avoid stale closure in the `setDeltaTime` callback
-  const deltaTimeRef = useRef(targetDeltaTime);
-  deltaTimeRef.current = targetDeltaTime;
+  const updateDeltaTime = useThrottledCallback(updateDeltaTimeNow, 50);
 
   // Remove Milliseconds as an option to select
   const selectableData = Object.values(TimePart).filter(
@@ -30,11 +26,10 @@ export function SimulationIncrement() {
     luaApi?.time.interpolateDeltaTime(value);
   }
 
-  function setDeltaTime(value: number, relative: boolean) {
+  function setDeltaTime(value: number) {
     const deltaTime = value * StepSizes[stepSize];
-    const newDeltaTime = relative ? deltaTimeRef.current + deltaTime : deltaTime;
 
-    updateDeltaTime(newDeltaTime);
+    updateDeltaTime(deltaTime);
   }
 
   function onQuickAdjust(value: number) {
@@ -55,7 +50,7 @@ export function SimulationIncrement() {
         <NumericInput
           label={`${stepSize} / second`}
           value={targetDeltaTime / StepSizes[stepSize]}
-          onEnter={(newValue) => setDeltaTime(newValue, false)}
+          onEnter={(newValue) => setDeltaTime(newValue)}
           step={1}
           decimalScale={Decimals[stepSize]}
         />
@@ -64,7 +59,7 @@ export function SimulationIncrement() {
         onChange={onQuickAdjust}
         onEnd={() => updateDeltaTime(targetDeltaTime)}
       />
-      <DeltaTimeStepsControl stepSize={stepSize} />
+      <DeltaTimeStepsControl />
     </>
   );
 }
