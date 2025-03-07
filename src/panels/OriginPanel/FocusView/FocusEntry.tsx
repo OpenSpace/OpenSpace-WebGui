@@ -1,11 +1,11 @@
-import { Button, Group, Text } from '@mantine/core';
+import { Button, Group, MantineStyleProps, Text } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { FocusIcon } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Identifier, PropertyOwner } from '@/types/types';
 
-interface FocusEntryProps {
+interface Props extends MantineStyleProps {
   entry: PropertyOwner;
   onSelect: (
     identifier: Identifier,
@@ -30,7 +30,7 @@ export function FocusEntry({
   }
 
   return (
-    <Group justify={'space-between'} gap={'xs'} w={'100%'}>
+    <Group justify={'space-between'} gap={'xs'} w={'100%'} {...props}>
       <Button
         onClick={onSelectEntry}
         justify={'left'}
@@ -49,20 +49,20 @@ export function FocusEntry({
             type={NavigationType.Frame}
             variant={buttonVariant}
             identifier={entry.identifier}
-            size={'lg'}
+            size={'input-sm'}
           />
         )}
         <NodeNavigationButton
           type={NavigationType.Fly}
           identifier={entry.identifier}
           variant={buttonVariant}
-          size={'lg'}
+          size={'input-sm'}
         />
         <NodeNavigationButton
           type={NavigationType.Jump}
           identifier={entry.identifier}
           variant={buttonVariant}
-          size={'lg'}
+          size={'input-sm'}
         />
       </Group>
     </Group>

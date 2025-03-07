@@ -108,6 +108,7 @@ export function FocusView({ favorites, searchableNodes, matcherFunction }: Props
             onSelect={onSelect}
             isActive={!hasAim && anchor === entry.identifier}
             disableFocus={isInFlight}
+            mb={3}
           />
         ))}
       </FilterList.Favorites>
@@ -124,7 +125,7 @@ export function FocusView({ favorites, searchableNodes, matcherFunction }: Props
         )}
         matcherFunc={matcherFunction}
       >
-        <FilterList.SearchResults.VirtualList />
+        <FilterList.SearchResults.VirtualList gap={3} />
       </FilterList.SearchResults>
     </FilterList>
   );
