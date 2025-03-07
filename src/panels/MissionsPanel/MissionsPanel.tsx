@@ -1,15 +1,33 @@
-import { Stack, Text, ThemeIcon, Title } from '@mantine/core';
+import { Box, Select, Stack, Text, ThemeIcon, Title } from '@mantine/core';
 
+import { useOpenSpaceApi } from '@/api/hooks';
 import { RocketLaunchIcon } from '@/icons/icons';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setSelectedMission } from '@/redux/missions/missionsSlice';
 
 import { MissionContent } from './MissionContent';
 
 export function MissionsPanel() {
-  const hasMission = useAppSelector((state) => state.missions.isInitialized);
-  const mission = useAppSelector((state) => state.missions.data.missions[0]);
+  const { isInitialized, missions, selectedMissionIdentifier } = useAppSelector(
+    (state) => state.missions
+  );
 
-  if (!hasMission) {
+  const luaApi = useOpenSpaceApi();
+  const dispatch = useAppDispatch();
+
+  // Grab the mission last viewed or if it does not exist anymore, take the first one
+  const mission = missions[selectedMissionIdentifier] ?? Object.values(missions)[0];
+  const hasMission = isInitialized && mission !== undefined;
+
+  function onMissionSelected(identifier: string | null) {
+    if (!identifier) {
+      return;
+    }
+    dispatch(setSelectedMission(identifier));
+    luaApi?.setCurrentMission(identifier);
+  }
+
+  if (!hasMission || !mission) {
     return (
       <Stack h={'100%'} w={'100%'} ta={'center'} align={'center'} p={'lg'}>
         <Title order={2}>No mission loaded</Title>
@@ -23,5 +41,22 @@ export function MissionsPanel() {
     );
   }
 
-  return <MissionContent missionOverview={mission} />;
+  return (
+    <Box>
+      {Object.keys(missions).length > 1 && (
+        <Select
+          label={'Selected mission'}
+          placeholder={'Select a mission'}
+          data={Object.entries(missions).map(([identifier, mission]) => {
+            return { value: identifier, label: mission.name };
+          })}
+          value={selectedMissionIdentifier}
+          onChange={onMissionSelected}
+          my={'xs'}
+          allowDeselect={false}
+        />
+      )}
+      <MissionContent missionOverview={mission} />
+    </Box>
+  );
 }
