@@ -1,54 +1,23 @@
 import { PropsWithChildren, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { Box } from '@mantine/core';
-import { useElementSize } from '@mantine/hooks';
+import { BoxProps } from '@mantine/core';
 
 import { fallbackRender } from '@/components/ErrorFallback/fallbackRender';
 
-import { WindowSizeContext } from './WindowSizeContext';
+import { WindowSizeProvider } from './WindowSizeProvider';
 
-export function Window({ children }: PropsWithChildren) {
-  const { ref, width, height } = useElementSize();
-
+export function Window({ children, ...props }: PropsWithChildren & BoxProps) {
   // TODO (ylvse 2025-01-21): This could probably be handled in a smarter way
   // Depending on panel for example, we could reload different things
   function handleReset() {
     window.location.reload();
   }
 
-  function disablePointerEvents(): void {
-    if (!ref.current) {
-      return;
-    }
-    ref.current.style.pointerEvents = 'none';
-    ref.current.style.userSelect = 'none';
-  }
-
-  function enablePointerEvents(): void {
-    if (!ref.current) {
-      return;
-    }
-    ref.current.style.removeProperty('user-select');
-    ref.current.style.removeProperty('pointer-events');
-  }
-
   return (
-    <WindowSizeContext.Provider
-      value={{
-        // Sometimes these values are 0 just when opening a window which can lead to strange
-        // behaviour if there are calculations depending on these values. Mitigating this with
-        // a dummy value
-        width: width === 0 ? 300 : width,
-        height: height === 0 ? 300 : height,
-        pointerEvents: { enable: enablePointerEvents, disable: disablePointerEvents }
-      }}
-    >
-      <Box h={'100%'} ref={ref} p={'xs'} style={{ overflow: 'auto' }}>
-        <ErrorBoundary fallbackRender={fallbackRender} onReset={handleReset}>
-          <Suspense fallback={null}>{children}</Suspense>
-        </ErrorBoundary>
-      </Box>
-    </WindowSizeContext.Provider>
+    <WindowSizeProvider {...props}>
+      <ErrorBoundary fallbackRender={fallbackRender} onReset={handleReset}>
+        <Suspense fallback={null}>{children}</Suspense>
+      </ErrorBoundary>
+    </WindowSizeProvider>
   );
 }
-export { WindowSizeContext };
