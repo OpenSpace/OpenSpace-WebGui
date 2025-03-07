@@ -41,7 +41,8 @@ function parseBCYears(date: string) {
   // If we are unable to get month and day from the string chances are that the date is
   // very far back in the past and that the month, day, and time is kind of meaningless
   // We build a fake date that atleast uses the correct year to display *something*
-  const [, unsignedYear, month, day] = date.split(' ');
+  const [, unsignedYear, month, day, time] = date.split(' ');
+  const [hours, minutes, seconds, milliseconds] = time.split(/[:.]/);
   if (!unsignedYear) {
     // We failed to parse the year, return an invalid date
     return '';
@@ -52,7 +53,11 @@ function parseBCYears(date: string) {
   const dd = day ?? '01';
   // Build the string to correct format ignoring the time since that information might
   // be broken anyways.
-  return `${filledYear}-${monthNumber}-${dd}T00:00:00.000`;
+  const hh = hours ?? '00';
+  const mm = minutes ?? '00';
+  const ss = seconds ?? '00';
+  const ms = milliseconds ?? '00';
+  return `${filledYear}-${monthNumber}-${dd}T${hh}:${mm}:${ss}.${ms}`;
 }
 
 function parseJ2000Date(date: string, yearIndex: number) {
@@ -69,7 +74,7 @@ function parseLargeADYears(date: string) {
   // The string is only 24 characters long. With large years, the end of the string will disappear.
   // Therefore we cannot guarantee that there is a valid time or day, hence the undefined checks later
   const [year, month, day, time] = date.split(' ');
-  const [hours, minutes, seconds] = time.split(/[:.]/);
+  const [hours, minutes, seconds, milliseconds] = time.split(/[:.]/);
   const monthNumber = monthToNumber(month);
   // For `Date` to correctly parse we need to append '+' and leading zeros
   const filledYear = year.padStart(6, '0');
@@ -78,9 +83,10 @@ function parseLargeADYears(date: string) {
   const dd = day ?? '01';
   const mm = minutes ?? '00';
   const ss = seconds ?? '00';
+  const ms = milliseconds ?? '00';
 
   // We ignore milliseconds as those are most likely cut anyways
-  return `+${filledYear}-${monthNumber}-${dd}T${hh}:${mm}:${ss}.000`;
+  return `+${filledYear}-${monthNumber}-${dd}T${hh}:${mm}:${ss}.${ms}`;
 }
 
 // Using this hack to parse times
