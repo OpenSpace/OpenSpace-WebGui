@@ -67,3 +67,8 @@ export const UserPanelsPanel = lazy(() =>
     default: module.UserPanelsPanel
   }))
 );
+export const GettingStartedPanel = lazy(() =>
+  import('@/panels/GettingStartedPanel/GettingStartedPanel').then((module) => ({
+    default: module.GettingStartedPanel
+  }))
+);
