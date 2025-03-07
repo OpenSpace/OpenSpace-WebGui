@@ -17,13 +17,13 @@ export function AltitudeTask({ anchor, unit, altitude, compare }: Props) {
   const currentUnit = useAppSelector((state) => state.camera.altitudeUnit);
   const [currentAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
 
+  useSubscribeToCamera();
+
   const hasCorrectNode =
     currentAnchor !== undefined && currentAnchor !== '' && currentAnchor === anchor;
   const hasCorrectUnit = currentUnit === unit;
   const hasCorrectAltitude = compareAltitude(currentAltitude, altitude, compare);
   const taskCompleted = hasCorrectAltitude && hasCorrectNode && hasCorrectUnit;
-
-  useSubscribeToCamera();
 
   return (
     <TaskCheckbox
