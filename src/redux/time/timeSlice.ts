@@ -52,7 +52,7 @@ export const time = createSlice({
       if (newTime) {
         // We store the number of milliseconds for this date since the Date obj itself is
         // not serializable in redux
-        const ztime = new Date(parseTimeStringToUTCString(newTime));
+        const ztime = new Date(parseTimeStringToUTCString(newTime.replace('\0','')));
         if (isDateValid(ztime)) {
           state.time = ztime.valueOf();
           // Make optimized time that only updates every second
@@ -70,7 +70,7 @@ export const time = createSlice({
           // text eg.
           state.time = undefined;
           state.timeCapped = undefined;
-          state.timeString = newTime;
+          state.timeString = newTime.replace('\0','');
         }
       }
       if (deltaTime !== undefined) {
