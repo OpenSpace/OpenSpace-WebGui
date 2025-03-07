@@ -2,12 +2,15 @@ import { useGetStringPropertyValue, useSubscribeToCamera } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { NavigationAnchorKey } from '@/util/keys';
 import { TaskCheckbox } from './Components/TaskCheckbox';
+import { RequireAtLeastOne } from '@/types/helpers';
 
 interface Props {
   anchor: string;
   lat?: { value: number; min: number; max: number };
   long?: { value: number; min: number; max: number };
 }
+
+type RequiredProps = RequireAtLeastOne<Props, 'lat' | 'long'>;
 
 function isWithinRange(value: number | undefined, range: { min: number; max: number }) {
   if (value === undefined) {
@@ -16,7 +19,7 @@ function isWithinRange(value: number | undefined, range: { min: number; max: num
   return value >= range.min && value <= range.max;
 }
 
-export function NavigationTask({ anchor, lat, long }: Props) {
+export function NavigationTask({ anchor, lat, long }: RequiredProps) {
   const { latitude: currentLat, longitude: currentLong } = useAppSelector(
     (state) => state.camera
   );
