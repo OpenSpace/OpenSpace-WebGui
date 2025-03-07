@@ -1,54 +1,47 @@
 import { ActionIcon, Breadcrumbs, Button, Group } from '@mantine/core';
 
-import { BackArrowIcon, HomeIcon } from '@/icons/icons';
+import { HomeIcon, UpArrowIcon } from '@/icons/icons';
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+
+import { calculateLevelDepth, createPath, getFolders } from './util';
 
 export function ActionsBreadcrumbs() {
   const navigationPath = useAppSelector((state) => state.actions.navigationPath);
   const dispatch = useAppDispatch();
 
-  const isTopLevel = navigationPath === '/';
-  const paths = navigationPath.split('/');
+  const currentLevel = calculateLevelDepth(navigationPath);
+  const folders = getFolders(navigationPath);
+  const isTopLevel = currentLevel === 0;
 
-  function goBack(): void {
-    let newPath = navigationPath.substring(0, navigationPath.lastIndexOf('/'));
-    if (newPath.length === 0) {
-      newPath = '/';
-    }
-    dispatch(setActionsPath(newPath));
-  }
-
-  function goToPath(path: string): void {
-    const index = navigationPath.indexOf(path);
-    // If we don't find the path e.g., when '...' is displayed go back one step
-    if (index === -1) {
-      goBack();
+  function goToLevel(i: number): void {
+    // If we are at the top level, we should go to the home page
+    if (i === 0) {
+      dispatch(setActionsPath('/'));
       return;
     }
-    let navPath = navigationPath.substring(0, index + path.length);
-    if (navPath.length === 0) {
-      navPath = '/';
-    }
-    dispatch(setActionsPath(navPath));
-  }
+    // Add 1 as slice doesn't include the i:th element
+    const newFolders = folders.slice(0, i + 1);
 
-  if (isTopLevel) {
-    return <></>;
+    dispatch(setActionsPath(createPath(newFolders)));
   }
 
   return (
     <Group gap={'xs'} mb={'xs'}>
-      <ActionIcon onClick={goBack} aria-label={'Back'}>
-        <BackArrowIcon />
+      <ActionIcon
+        onClick={() => goToLevel(currentLevel - 1)}
+        aria-label={'Back'}
+        disabled={isTopLevel}
+      >
+        <UpArrowIcon />
       </ActionIcon>
       <Breadcrumbs separatorMargin={0}>
-        {paths.map((path, i) => (
+        {folders.map((path, i) => (
           <Button
             key={`${path}_${i}`}
             p={2}
             variant={'subtle'}
-            onClick={() => goToPath(path)}
+            onClick={() => goToLevel(i)}
           >
             {path === '' ? <HomeIcon /> : path}
           </Button>

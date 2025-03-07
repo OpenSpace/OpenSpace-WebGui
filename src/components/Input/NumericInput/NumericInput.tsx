@@ -23,15 +23,19 @@ export function NumericInput({
   disabled = false,
   hideControls,
   onEnter = () => {},
+  onChange,
+  onBlur,
   value,
   min,
   max,
   step,
   ...props
 }: Props) {
-  const { value: storedValue, set: setStoredValue } = usePropListeningState<
-    number | undefined
-  >(value);
+  const {
+    value: storedValue,
+    setValue: setStoredValue,
+    setIsEditing
+  } = usePropListeningState<number | undefined>(value);
 
   const shouldClamp = props.clampBehavior === 'strict';
   const shouldClampMin = shouldClamp && min !== undefined;
@@ -60,11 +64,13 @@ export function NumericInput({
     }
   }
 
-  function onBlur() {
+  function handleBlur(event: React.FocusEvent<HTMLInputElement, Element>) {
     if (shouldResetOnBlurRef.current === true) {
       resetValue();
     }
     shouldResetOnBlurRef.current = true;
+    setIsEditing(false);
+    onBlur?.(event);
   }
 
   function onStep(change: number) {
@@ -81,12 +87,21 @@ export function NumericInput({
     onEnter(newValue);
   }
 
+  function handleChange(value: number | string): void {
+    setIsEditing(true);
+    onChange?.(value);
+  }
+
   return (
     <NumberInput
       value={storedValue === undefined ? '' : storedValue}
       onKeyUp={onKeyUp}
-      onBlur={onBlur}
-      onValueChange={(newValue) => setStoredValue(newValue.floatValue)}
+      onBlur={handleBlur}
+      onValueChange={(newValue) => {
+        setStoredValue(newValue.floatValue);
+      }}
+      onChange={handleChange}
+      onFocus={() => setIsEditing(true)}
       disabled={disabled}
       label={label}
       min={min}
