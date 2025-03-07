@@ -23,7 +23,11 @@ export function TimeIncrementInput({
   ...styleProps
 }: Props) {
   return (
-    <StackedStepControls onChange={(value) => onInputChangeStep(value)} step={step}>
+    <StackedStepControls
+      onChange={(value) => onInputChangeStep(value)}
+      step={step}
+      {...styleProps}
+    >
       <NumericInput
         value={value}
         onEnter={(newValue) => onInputChange(newValue)}
