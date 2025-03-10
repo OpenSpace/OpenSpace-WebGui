@@ -6,7 +6,8 @@ import {
   List,
   Stack,
   Text,
-  Title} from '@mantine/core';
+  Title
+} from '@mantine/core';
 
 import { ChevronRightIcon, FocusIcon, SceneIcon } from '@/icons/icons';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
@@ -99,7 +100,7 @@ export const ContentSteps = [
     </Text>
     <Text>
       For more in-depth knowledge about maps, please refer to the{' '}
-      <Anchor href={'https://docs.openspaceproject.com/'} target={"_blank"}></Anchor>
+      <Anchor href={'https://docs.openspaceproject.com/'} target={'_blank'}></Anchor>
       documentation.
     </Text>
   </>,
