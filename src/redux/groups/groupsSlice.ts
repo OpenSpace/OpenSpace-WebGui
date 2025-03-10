@@ -1,12 +1,12 @@
-import { TreeNodeData } from '@mantine/core';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { SceneTreeNodeData } from '@/panels/Scene/SceneTree/types';
 import { CustomGroupOrdering, Groups } from '@/types/types';
 
 export interface GroupsState {
   customGroupOrdering: CustomGroupOrdering;
   groups: Groups;
-  sceneTreeData: TreeNodeData[];
+  sceneTreeData: SceneTreeNodeData[];
   tags: string[];
 }
 
@@ -25,7 +25,7 @@ export const groupsSlice = createSlice({
       state.groups = action.payload;
       return state;
     },
-    setSceneTreeData: (state, action: PayloadAction<TreeNodeData[]>) => {
+    setSceneTreeData: (state, action: PayloadAction<SceneTreeNodeData[]>) => {
       state.sceneTreeData = action.payload;
       return state;
     },

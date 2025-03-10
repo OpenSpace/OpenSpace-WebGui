@@ -1,5 +1,4 @@
-import { TreeNodeData } from '@mantine/core';
-
+import { SceneTreeNodeData } from '@/panels/Scene/SceneTree/types';
 import { Group, Groups, Properties, PropertyOwners, Uri } from '@/types/types';
 
 import { getGuiPath, isSceneGraphNode } from './propertyTreeHelpers';
@@ -16,7 +15,7 @@ function emptyGroup(): Group {
  * Check if a node in the Scene tree is a group node, meaning that its identifiing value
  * starts with the specified prefix.
  */
-export function isGroupNode(node: TreeNodeData): boolean {
+export function isGroupNode(node: SceneTreeNodeData): boolean {
   return node.value.startsWith(SceneTreeGroupPrefixKey);
 }
 
@@ -69,12 +68,14 @@ export function computeGroups(
  */
 export function treeDataForSceneGraphNode(
   uri: Uri,
-  propertyOwners: PropertyOwners
-): TreeNodeData {
+  propertyOwners: PropertyOwners,
+  path?: string
+): SceneTreeNodeData {
   const propertyOwner = propertyOwners[uri];
   return {
     label: propertyOwner?.name || '',
-    value: uri
+    value: uri,
+    guiPath: path?.split('/') ?? []
   };
 }
 
@@ -84,8 +85,8 @@ export function treeDataForSceneGraphNode(
 export function sceneTreeDataFromGroups(
   groups: Groups,
   propertyOwners: PropertyOwners
-): TreeNodeData[] {
-  const treeData: TreeNodeData[] = [];
+): SceneTreeNodeData[] {
+  const treeData: SceneTreeNodeData[] = [];
 
   const topLevelGroupsPaths = Object.keys(groups).filter((path) => {
     // Get the number of slashes in the path
@@ -98,10 +99,11 @@ export function sceneTreeDataFromGroups(
     const splitPath = path.split('/');
     const name = splitPath.length > 1 ? splitPath.pop() : 'Untitled';
 
-    const groupNodeData: TreeNodeData = {
+    const groupNodeData: SceneTreeNodeData = {
       value: SceneTreeGroupPrefixKey + path,
       label: name,
-      children: []
+      children: [],
+      guiPath: path.split('/')
     };
 
     const groupData = groups[path];
@@ -113,7 +115,7 @@ export function sceneTreeDataFromGroups(
 
     // Add property owners, also recursively
     groupData.propertyOwners.forEach((uri) => {
-      groupNodeData.children?.push(treeDataForSceneGraphNode(uri, propertyOwners));
+      groupNodeData.children?.push(treeDataForSceneGraphNode(uri, propertyOwners, path));
     });
 
     return groupNodeData;

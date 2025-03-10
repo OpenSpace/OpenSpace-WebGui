@@ -1,5 +1,3 @@
-import { TreeNodeData } from '@mantine/core';
-
 import { CustomGroupOrdering, Properties, PropertyOwners, Uri } from '@/types/types';
 import {
   guiOrderingNumber,
@@ -7,6 +5,8 @@ import {
   isSceneGraphNodeVisible
 } from '@/util/propertyTreeHelpers';
 import { isGroupNode, SceneTreeGroupPrefixKey } from '@/util/sceneTreeGroupsHelper';
+
+import { SceneTreeNodeData } from './types';
 
 /****************************************************************************************
  * FILTERING
@@ -19,11 +19,11 @@ export interface SceneTreeFilterSettings {
 }
 
 export function filterTreeData(
-  nodes: TreeNodeData[],
+  nodes: SceneTreeNodeData[],
   filter: SceneTreeFilterSettings,
   properties: Properties,
   propertyOwners: PropertyOwners
-): TreeNodeData[] {
+): SceneTreeNodeData[] {
   // Should the scene graph node be shown based on the current filter settings?
   function shouldShowSceneGraphNode(uri: Uri) {
     let shouldShow = true;
@@ -42,7 +42,7 @@ export function filterTreeData(
   // Recursively apply filtering to one node in the tree. That is, if the node is a group,
   // filter its children. Set the nodes that should be filtered out to null, so that the
   // filtering can be done in a separate step.
-  function recursivelyFilterSubTree(node: TreeNodeData): TreeNodeData | null {
+  function recursivelyFilterSubTree(node: SceneTreeNodeData): SceneTreeNodeData | null {
     const newNode = { ...node };
     if (isGroupNode(newNode)) {
       // Groups => filter children
@@ -87,13 +87,13 @@ interface TreeSortingInfo {
 }
 
 export function createTreeSortingInformation(
-  treeData: TreeNodeData[],
+  treeData: SceneTreeNodeData[],
   properties: Properties
 ): TreeSortingInfo {
   const result: TreeSortingInfo = {};
 
   // Recursively add the sorting information for a node in the tree
-  function addNode(node: TreeNodeData) {
+  function addNode(node: SceneTreeNodeData) {
     if (isGroupNode(node)) {
       const groupPath = node.value.replace(SceneTreeGroupPrefixKey, '');
       result[node.value] = {
@@ -129,16 +129,16 @@ export function createTreeSortingInformation(
  * multiple alternative ways to specify the order.
  */
 export function sortTreeLevel(
-  treeListToSort: TreeNodeData[],
+  treeListToSort: SceneTreeNodeData[],
   treeSortingInfo: TreeSortingInfo,
   customOrderNamesList: string[] | undefined
-): TreeNodeData[] {
+): SceneTreeNodeData[] {
   // Split the list up into three: 1) Any custom sorted objects, 2) numerically sorted
   // objects, and 3) alphabetically sorted. In most cases, all will be alphabetical.
 
-  const customOrder: TreeNodeData[] = [];
-  const numericalOrder: TreeNodeData[] = [];
-  const alphabeticalOrder: TreeNodeData[] = [];
+  const customOrder: SceneTreeNodeData[] = [];
+  const numericalOrder: SceneTreeNodeData[] = [];
+  const alphabeticalOrder: SceneTreeNodeData[] = [];
 
   // In most cases there will be no custom ordering, so just use an empty array
   const orderedNames = customOrderNamesList || [];
@@ -213,10 +213,10 @@ export function sortTreeLevel(
 }
 
 export function sortTreeData(
-  treeData: TreeNodeData[],
+  treeData: SceneTreeNodeData[],
   customGuiOrderingMap: CustomGroupOrdering,
   properties: Properties
-): TreeNodeData[] {
+): SceneTreeNodeData[] {
   const treeSortingInfo = createTreeSortingInformation(treeData, properties);
 
   // Start with sorting the top level groups in the tree
@@ -225,7 +225,7 @@ export function sortTreeData(
 
   // Then sort the children of each group, recursively
   function resursiveSortChildren(
-    nodes: TreeNodeData[],
+    nodes: SceneTreeNodeData[],
     treeSortingInfo: TreeSortingInfo
   ) {
     return nodes.map((node) => {
@@ -250,10 +250,10 @@ export function sortTreeData(
  * The searching requires a flat list of all nodes in the tree. This function flattens the
  * tree data structure into a list of nodes.
  */
-export function flattenTreeData(treeData: TreeNodeData[]): TreeNodeData[] {
-  const flatData: TreeNodeData[] = [];
+export function flattenTreeData(treeData: SceneTreeNodeData[]): SceneTreeNodeData[] {
+  const flatData: SceneTreeNodeData[] = [];
 
-  function flatten(nodes: TreeNodeData[]) {
+  function flatten(nodes: SceneTreeNodeData[]) {
     nodes.forEach((node) => {
       if (node.children) {
         flatten(node.children);
