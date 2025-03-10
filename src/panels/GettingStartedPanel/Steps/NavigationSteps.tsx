@@ -1,5 +1,5 @@
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
-import { Title, Group, Kbd, Center, Text } from '@mantine/core';
+import { Title, Group, Kbd, Center, Text, Stack, List, Image } from '@mantine/core';
 import { AltitudeMouse } from '../MouseDescriptions/AltitudeMouse';
 import { Mouse } from '../MouseDescriptions/Mouse';
 import { MouseWithModifier } from '../MouseDescriptions/MouseWithModifier';
@@ -13,6 +13,10 @@ import { FocusTask } from '../Tasks/FocusTask';
 import { NavigationTask } from '../Tasks/NavigationTask';
 
 export const NavigationSteps: React.JSX.Element[] = [
+  <>
+    <Title>Navigation</Title>
+    In this chapter we will learn about navigating in OpenSpace.
+  </>,
   <>
     <Title order={2}>Let's go closer to Earth!</Title>
     <AltitudeTask anchor={'Earth'} altitude={3500} unit={'km'} compare={'lower'} />
@@ -68,5 +72,8 @@ export const NavigationSteps: React.JSX.Element[] = [
     <AltitudeTask anchor={'Moon'} altitude={3500} unit={'km'} compare={'lower'} />
     <CurrentFocus />
     <CurrentAltitude />
+  </>,
+  <>
+    Great! Now you now how to navigate in OpenSpace. Let's move on to changing the time!
   </>
 ];

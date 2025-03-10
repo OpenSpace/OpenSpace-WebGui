@@ -1,3 +1,4 @@
+import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { AltitudeTask } from '../Tasks/AltitudeTask';
 import { ChangeDeltaTimeTask } from '../Tasks/ChangeDeltaTimeTask';
 import { ChangeYearTask } from '../Tasks/ChangeYearTask';
@@ -7,9 +8,17 @@ import { CurrentLatLong } from '../Tasks/Components/CurrentLatLong';
 import { FocusTask } from '../Tasks/FocusTask';
 import { NavigationTask } from '../Tasks/NavigationTask';
 import { PauseTimeTask } from '../Tasks/PauseTimeTask';
-import { Text } from '@mantine/core';
+import { ActionIcon, Group, Text, Title } from '@mantine/core';
+import { FastForwardIcon, FastRewindIcon, PauseIcon } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
+import { TimeIncrementInput } from '@/panels/TimePanel/TimeInput/TimeIncrementInput';
 
 export const TimeSteps = [
+  <>
+    <Title>Time</Title>
+    In this chapter we will learn how to change the time OpenSpace.
+  </>,
+  ,
   <>
     <Text>Let's take a look at the Solar System from above.</Text>
     <FocusTask anchor={'Sun'} />
@@ -25,6 +34,17 @@ export const TimeSteps = [
   <>
     <Text>You can view the past as well as the future.</Text>
     <ChangeYearTask />
+    <Text>To open the Time Panel, click on the following icon in the taskbar:</Text>
+    <TimePanelMenuButton onClick={() => {}} />
+    <Group>
+      <Text>Change the year by changing the value of the year in the time input:</Text>
+      <TimeIncrementInput
+        value={new Date().getFullYear()}
+        onInputChange={() => {}}
+        onInputChangeStep={() => {}}
+        w={65}
+      />
+    </Group>
     <Text c={'dimmed'} fs={'italic'}>
       You can reset the time by pressing "Now"
     </Text>
@@ -32,15 +52,35 @@ export const TimeSteps = [
   <>
     <Text>You can also change how fast time is playing.</Text>
     <ChangeDeltaTimeTask />
+    <Text>In the Time Panel:</Text>
+    <Group>
+      <Text>Click on the buttons that adjust delta time:</Text>
+      <ActionIcon size={'lg'}>
+        <FastRewindIcon size={IconSize.md} />
+      </ActionIcon>
+      <ActionIcon size={'lg'}>
+        <FastForwardIcon size={IconSize.md} />
+      </ActionIcon>
+    </Group>
     <Text c={'dimmed'} fs={'italic'}>
       You can reset the simulation speed by pressing "Real Time"
     </Text>
   </>,
   <>
-    <Text>You can pause the time.</Text>
+    <Text>You can also pause the time.</Text>
     <PauseTimeTask />
+    <Text>
+      In the time panel, click on the pause icon:{' '}
+      <ActionIcon size={IconSize.lg}>
+        <PauseIcon />
+      </ActionIcon>{' '}
+      to pause time.
+    </Text>
     <Text c={'dimmed'} fs={'italic'}>
       Note: simulation speed is not set to 0 when you pause.
     </Text>
-  </>
+  </>,
+  <Text>
+    Fantastic! Now you can move around in both space and time. Let's look at some content!
+  </Text>
 ];

@@ -1,6 +1,6 @@
 import { SceneIcon, FocusIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
-import { Group } from '@mantine/core';
+import { ActionIcon, Anchor, Checkbox, Group, List, Stack, Title } from '@mantine/core';
 import { AltitudeMouse } from '../MouseDescriptions/AltitudeMouse';
 import { MouseWithModifier } from '../MouseDescriptions/MouseWithModifier';
 import { AltitudeTask } from '../Tasks/AltitudeTask';
@@ -8,18 +8,36 @@ import { SetBoolPropertyTask } from '../Tasks/ChangePropertyTask';
 import { FocusTask } from '../Tasks/FocusTask';
 import { MarsTrailColorTask } from '../Tasks/MarsTrailColorTask';
 import { Text } from '@mantine/core';
+import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 
 export const ContentSteps = [
   <>
-    <Text>All the content in OpenSpace can be found in the Scene menu.</Text>
+    <Title>Content</Title>
+    In this chapter we will learn about the objects we can see in OpenSpace.
+  </>,
+  <Stack gap={'md'}>
     <Group>
-      <SceneIcon size={IconSize.lg} /> Scene
+      <Text>All the content in OpenSpace can be found in the Scene menu:</Text>
+      <Group>
+        <SceneIcon size={IconSize.lg} /> Scene
+      </Group>
     </Group>
     <Text>
-      You can search for objects in the top search bar and focus on objects by clicking
-      the focus icon <FocusIcon />.
+      You can search for objects in the top search bar. The results are going to look like
+      this:
     </Text>
-  </>,
+    <SceneGraphNodeHeader uri={'Scene.Earth'} />
+    <Group>
+      <Text>You can focus on objects by clicking the focus icon: </Text>
+      <ActionIcon size={'sm'}>
+        <FocusIcon size={IconSize.xs} />
+      </ActionIcon>{' '}
+    </Group>
+    <Group>
+      <Text>To toggle the visibility, click on the checkmark:</Text>{' '}
+      <Checkbox checked onChange={() => {}} />
+    </Group>
+  </Stack>,
   <>
     You can turn on and off content by checking and unchecking their corresponding
     checkboxes.
@@ -28,11 +46,16 @@ export const ContentSteps = [
       finalValue={false}
       label={'Turn off the trail of Earth'}
     />
+    <Group>
+      <Text>To toggle the visibility, click on the checkmark:</Text>{' '}
+      <Checkbox checked onChange={() => {}} />
+    </Group>
   </>,
   <>
     All objects have properties, which make it possible to alter the behavior or
     appearance of an object.
     <MarsTrailColorTask />
+    <Text>These properties can include size, color, opacity, etc.</Text>
   </>,
   <>
     <Text>Let's take a look at the surface of Mars.</Text>
@@ -50,6 +73,15 @@ export const ContentSteps = [
       instrument on a satellite that captured the map. The name [Utah] or [Sweden] states
       on which server the map is located. It is usually faster to choose the server
       closest to you.
+    </Text>
+    <Text>
+      For more in-depth knowledge about maps, please refer to the{' '}
+      <Anchor
+        href="https://docs.openspaceproject.com/"
+        target="_nla
+blank"
+      ></Anchor>
+      documentation.
     </Text>
   </>,
   <>
@@ -77,11 +109,37 @@ export const ContentSteps = [
       finalValue={true}
       label={'Turn on Constellation Lines'}
     />
+    <Text>You might want to take a look around to look at the constellations!</Text>
     <Group>
       <Text flex={1} c={'dimmed'} fs={'italic'}>
         Left click and drag + ctrl to look around freely
       </Text>
       <MouseWithModifier mouseClick={'left'} arrowDir={'horizontal'} modifier={'ctrl'} />
     </Group>
+  </>,
+  <>
+    <Text>
+      Well done! Now you are ready to explore the Universe on your own. Some ideas to get
+      you started:
+    </Text>
+    <List>
+      <List.Item>Go to your home town</List.Item>
+      <List.Item>Go to the end of the Universe</List.Item>
+      <List.Item>Turn on the Sun's orbit in the Milky Way</List.Item>
+    </List>
+    <Text>
+      You can also browser more in-depth tutorials{' '}
+      <Anchor
+        href={'https://www.youtube.com/playlist?list=PLzXWit_1TXsu23I8Nh2WZhN9msWG_ZbnV'}
+        target={'_blank'}
+      >
+        here
+      </Anchor>{' '}
+      and view the documentation{' '}
+      <Anchor href={'https://docs.openspaceproject.com/'} target={'_blank'}>
+        here
+      </Anchor>
+      .
+    </Text>
   </>
 ];

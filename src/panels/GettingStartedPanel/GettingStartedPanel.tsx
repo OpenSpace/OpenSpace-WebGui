@@ -1,20 +1,36 @@
 import { useState } from 'react';
-import { Button, Group, Progress, Stack, Stepper } from '@mantine/core';
+import { Button, Group, Stack } from '@mantine/core';
 
 import { Layout } from '@/components/Layout/Layout';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
-import { GettingStartedSteps } from './GettingStartedSteps';
-import { active } from 'd3';
-import { FocusIcon, LeftClickMouseIcon, SceneIcon, TimerIcon } from '@/icons/icons';
-import { IconSize } from '@/types/enums';
+import { IntroductionSteps } from './Steps/IntroductionSteps';
+import { TimeSteps } from './Steps/TimeSteps';
+import { ContentSteps } from './Steps/ContentSteps';
+import { NavigationSteps } from './Steps/NavigationSteps';
+import { Chapters } from './Chapters';
 
 export function GettingStartedPanel() {
   const [step, setStep] = useState(0);
   const { closeWindow } = useWindowLayoutProvider();
+  const Sections = [IntroductionSteps, NavigationSteps, TimeSteps, ContentSteps];
+  const steps = Sections.flat();
 
-  const progress = (step / (GettingStartedSteps.length - 1)) * 100;
-  const isLastStep = step == GettingStartedSteps.length - 1;
+  const sectionBreaks = Sections.map((section) =>
+    section[0] ? steps.indexOf(section[0]) : -1
+  );
+
+  const section = sectionBreaks.findIndex((breakpoint, index) => {
+    const nextBreakpoint = sectionBreaks[index + 1] ?? steps.length;
+    return step >= breakpoint && step < nextBreakpoint;
+  });
+
+  const isFirstStep = step === 0;
+  const isLastStep = step === steps.length - 1;
+
+  function setSection(section: number) {
+    setStep(sectionBreaks[section] ?? 0);
+  }
 
   function onClickNext() {
     if (isLastStep) {
@@ -24,40 +40,30 @@ export function GettingStartedPanel() {
     }
   }
 
+  function onClickPrev() {
+    setStep(step - 1);
+  }
+
   return (
     <Layout>
       <Layout.GrowingSection>
         <Stack gap={'xs'} h={'100%'} style={{ overflowY: 'auto' }} p={'md'}>
-          {GettingStartedSteps[step]}
+          <Chapters
+            section={isLastStep ? Sections.length : section}
+            setSection={setSection}
+          />
+          {steps[step]}
         </Stack>
       </Layout.GrowingSection>
-
       <Layout.FixedSection>
         <Group justify={'space-between'}>
-          <Button onClick={() => setStep(step - 1)} disabled={step == 0}>
+          <Button onClick={onClickPrev} disabled={isFirstStep}>
             Previous
           </Button>
           <Button onClick={onClickNext} variant={'filled'}>
             {isLastStep ? 'Finish' : 'Next'}
           </Button>
         </Group>
-
-        <Progress value={progress} mt={'md'}></Progress>
-        <Stepper iconSize={''} active={0} mt={'md'} onStepClick={() => {}}>
-          <Stepper.Step
-            label="Navigation"
-            icon={<LeftClickMouseIcon size={IconSize.md} />}
-          ></Stepper.Step>
-          <Stepper.Step
-            label="Time"
-            icon={<TimerIcon size={IconSize.md} />}
-          ></Stepper.Step>
-          <Stepper.Step
-            label="Content"
-            icon={<SceneIcon size={IconSize.md} />}
-          ></Stepper.Step>
-          <Stepper.Completed>Fin</Stepper.Completed>
-        </Stepper>
       </Layout.FixedSection>
     </Layout>
   );
