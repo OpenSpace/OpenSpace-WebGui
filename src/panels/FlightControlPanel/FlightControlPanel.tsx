@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import {
+  Checkbox,
   Chip,
   Container,
   Group,
   List,
   Slider,
   Space,
-  Switch,
   Text,
   Title
 } from '@mantine/core';
@@ -83,7 +83,7 @@ export function FlightControlPanel() {
     <>
       <Title order={2}>Flight Control</Title>
       <Group justify={'space-between'} my={'xs'} wrap={'nowrap'} align={'start'}>
-        <Switch
+        <Checkbox
           label={'Toggle flight control'}
           defaultChecked={isControllerEnabled}
           checked={isControllerEnabled}
@@ -94,13 +94,25 @@ export function FlightControlPanel() {
       <Title order={3}>Settings</Title>
       <Text>Friction control</Text>
       <Group gap={2} preventGrowOverflow={false} mb={'xs'}>
-        <Chip onClick={toggleRotation} disabled={!isControllerEnabled}>
+        <Chip
+          onClick={toggleRotation}
+          checked={rotationFrictionProperty}
+          disabled={!isControllerEnabled}
+        >
           Rotation
         </Chip>
-        <Chip onClick={toggleZoom} disabled={!isControllerEnabled}>
+        <Chip
+          onClick={toggleZoom}
+          checked={zoomFrictionProperty}
+          disabled={!isControllerEnabled}
+        >
           Zoom
         </Chip>
-        <Chip onClick={toggleRoll} disabled={!isControllerEnabled}>
+        <Chip
+          onClick={toggleRoll}
+          checked={rollFrictionProperty}
+          disabled={!isControllerEnabled}
+        >
           Roll
         </Chip>
       </Group>

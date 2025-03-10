@@ -1,9 +1,9 @@
-import { ActionIcon, Group, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Group, MantineStyleProps, Text, Tooltip } from '@mantine/core';
 
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
 import { Identifier, PropertyOwner } from '@/types/types';
 
-interface Props {
+interface Props extends MantineStyleProps {
   node: PropertyOwner;
   disabled: boolean;
   isCurrentAnchor: boolean;
@@ -24,10 +24,11 @@ export function AnchorAimListEntry({
   isCurrentAnchor,
   isCurrentAim,
   onSelectAnchor,
-  onSelectAim
+  onSelectAim,
+  ...props
 }: Props) {
   return (
-    <Group gap={'xs'} key={node.identifier}>
+    <Group gap={'xs'} key={node.identifier} {...props}>
       <Text flex={1} truncate pl={'xs'}>
         {node.name}
       </Text>

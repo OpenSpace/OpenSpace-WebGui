@@ -12,7 +12,7 @@ export function WindowsMenu() {
   return (
     <TopBarMenuWrapper closeOnItemClick={false} targetTitle={'Windows'}>
       <Menu.Label>Add New Window</Menu.Label>
-      {menuItemsData.map((item) => (
+      {Object.values(menuItemsData).map((item) => (
         <Menu.Item
           key={item.componentID}
           leftSection={item.renderIcon?.(IconSize.xs)}

@@ -1,15 +1,11 @@
-import { useEffect, useState } from 'react';
 import { CloseButton, Stack } from '@mantine/core';
 import DockLayout, { DockContext, LayoutData, PanelData, TabGroup } from 'rc-dock';
 
-import { useGetBoolPropertyValue } from '@/api/hooks';
 import { FlightController } from '@/panels/FlightControlPanel/FlightController';
 import { TaskBar } from '@/panels/Menu/TaskBar/TaskBar';
 import { TopMenuBar } from '@/panels/Menu/TopMenuBar/TopMenuBar';
-import { useAppSelector } from '@/redux/hooks';
 
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
-import { menuItemsData } from '../data/MenuItems';
 
 import { useWindowLayoutProvider } from './hooks';
 import { FloatWindowPosition } from './types';
@@ -55,11 +51,6 @@ function createDefaultLayout(): LayoutData {
 
 export function WindowLayout() {
   const { ref } = useWindowLayoutProvider();
-  const [visibleMenuItems, setVisibleMenuItems] = useState<string[]>([]);
-
-  const hasMission = useAppSelector((state) => state.missions.isInitialized);
-  const [isExoplanetsEnabled] = useGetBoolPropertyValue('Modules.Exoplanets.Enabled');
-  const [isSkyBrowserEnabled] = useGetBoolPropertyValue('Modules.SkyBrowser.Enabled');
 
   const groups: { [key: string]: TabGroup } = {
     // This is the rc-dock group configuration we use for the transparent window in the
@@ -86,28 +77,6 @@ export function WindowLayout() {
     }
   };
 
-  // Populate default visible items for taskbar
-  useEffect(() => {
-    //We don't want to include the following modules unless they are loaded/enabled
-    const modules = [
-      { name: 'mission', enabled: hasMission },
-      { name: 'exoplanets', enabled: isExoplanetsEnabled },
-      { name: 'skyBrowser', enabled: isSkyBrowserEnabled }
-    ];
-
-    const defaultVisibleMenuItems = menuItemsData
-      .filter((item) => {
-        const module = modules.find((_module) => _module.name === item.componentID);
-        if (module) {
-          return module.enabled;
-        }
-        return item.defaultVisible;
-      })
-      .map((item) => item.componentID);
-
-    setVisibleMenuItems(defaultVisibleMenuItems);
-  }, [hasMission, isSkyBrowserEnabled, isExoplanetsEnabled]);
-
   return (
     <>
       <ConnectionErrorOverlay />
@@ -117,10 +86,7 @@ export function WindowLayout() {
           height: '100vh'
         }}
       >
-        <TopMenuBar
-          visibleMenuItems={visibleMenuItems}
-          setVisibleMenuItems={setVisibleMenuItems}
-        />
+        <TopMenuBar />
         <div
           style={{
             flexGrow: 1, // DockLayout takes up remaining space
@@ -141,7 +107,7 @@ export function WindowLayout() {
           />
         </div>
 
-        <TaskBar visibleMenuItems={visibleMenuItems}></TaskBar>
+        <TaskBar />
       </Stack>
     </>
   );
