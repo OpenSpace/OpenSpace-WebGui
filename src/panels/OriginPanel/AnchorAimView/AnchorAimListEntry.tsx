@@ -36,7 +36,7 @@ export function AnchorAimListEntry({
         <ActionIcon
           aria-label={'Set anchor'}
           size={'lg'}
-          variant={isCurrentAnchor ? 'filled' : 'light'}
+          variant={isCurrentAnchor ? 'filled' : 'default'}
           onClick={(event) => onSelectAnchor(node.identifier, event)}
           disabled={disabled}
         >
@@ -47,7 +47,7 @@ export function AnchorAimListEntry({
         <ActionIcon
           aria-label={'Set aim'}
           size={'lg'}
-          variant={isCurrentAim ? 'filled' : 'light'}
+          variant={isCurrentAim ? 'filled' : 'default'}
           onClick={(event) => onSelectAim(node.identifier, event)}
           disabled={disabled}
         >

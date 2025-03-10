@@ -24,8 +24,6 @@ export function FocusEntry({
   disableFocus,
   ...props
 }: Props) {
-  const buttonVariant = isActive ? 'filled' : 'light';
-
   function onSelectEntry(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     onSelect(entry.identifier, { shiftKey: event.shiftKey, ctrlKey: event.ctrlKey });
   }
@@ -37,7 +35,7 @@ export function FocusEntry({
         justify={'left'}
         flex={1}
         leftSection={<FocusIcon size={IconSize.sm} />}
-        variant={buttonVariant}
+        variant={isActive ? 'filled' : 'default'}
         disabled={disableFocus}
         miw={70}
       >
@@ -48,7 +46,6 @@ export function FocusEntry({
         {showFrameButton && (
           <NodeNavigationButton
             type={NavigationType.Frame}
-            variant={buttonVariant}
             identifier={entry.identifier}
             size={'input-sm'}
           />
@@ -56,13 +53,11 @@ export function FocusEntry({
         <NodeNavigationButton
           type={NavigationType.Fly}
           identifier={entry.identifier}
-          variant={buttonVariant}
           size={'input-sm'}
         />
         <NodeNavigationButton
           type={NavigationType.Jump}
           identifier={entry.identifier}
-          variant={buttonVariant}
           size={'input-sm'}
         />
       </Group>
