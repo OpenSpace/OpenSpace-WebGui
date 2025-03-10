@@ -24,10 +24,11 @@ export function TimeIncrementInput({
   min,
   max,
   step,
+  style,
   ...props
 }: Props) {
   return (
-    <StackedStepControls onChange={onInputChangeStep} step={step}>
+    <StackedStepControls onChange={onInputChangeStep} step={step} {...style}>
       <NumericInput
         value={value}
         onEnter={onInputEnter}

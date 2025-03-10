@@ -10,6 +10,8 @@ import {
   OpenInBrowserIcon,
   RouteIcon
 } from '@/icons/icons';
+import { GettingStartedPanel } from '@/panels/GettingStartedPanel/GettingStartedPanel';
+import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
@@ -18,6 +20,7 @@ export function HelpMenu() {
 
   const [portProperty] = useGetIntPropertyValue('Modules.WebGui.Port');
   const [addressProperty] = useGetStringPropertyValue('Modules.WebGui.Address');
+  const { addWindow } = useWindowLayoutProvider();
 
   function openGuiInBrowser() {
     const port = portProperty ?? 4680;
@@ -25,6 +28,14 @@ export function HelpMenu() {
 
     const link = `http://${address}:${port}`;
     window.open(link, '_blank');
+  }
+
+  function openGettingStartedTour() {
+    addWindow(<GettingStartedPanel />, {
+      id: 'gettingStartedTour',
+      title: 'Getting Started Tour',
+      floatPosition: { offsetY: 150, offsetX: 350, width: 600, height: 500 }
+    });
   }
 
   return (
@@ -42,7 +53,10 @@ export function HelpMenu() {
         >
           Open Web Tutorials
         </Menu.Item>
-        <Menu.Item leftSection={<RouteIcon style={{ transform: 'scale(-1)' }} />}>
+        <Menu.Item
+          leftSection={<RouteIcon style={{ transform: 'scale(-1)' }} />}
+          onClick={openGettingStartedTour}
+        >
           Open Getting Started Tour
         </Menu.Item>
         <Menu.Divider />

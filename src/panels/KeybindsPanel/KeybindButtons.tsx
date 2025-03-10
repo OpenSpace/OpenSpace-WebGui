@@ -1,15 +1,19 @@
 import { Fragment } from 'react/jsx-runtime';
-import { Group, Kbd, Text } from '@mantine/core';
+import { Group, Kbd, MantineStyleProps, Text } from '@mantine/core';
 
 import { KeyboardDisplayNames } from './FullKeyboard/data';
 import { keyToOpenSpaceKey } from './FullKeyboard/util';
 
-interface KeybindButtonsProps {
-  modifiers: string[];
-  selectedKey: string;
+interface KeybindButtonsProps extends MantineStyleProps {
+  modifiers?: string[];
+  selectedKey?: string;
 }
 
-export function KeybindButtons({ modifiers, selectedKey }: KeybindButtonsProps) {
+export function KeybindButtons({
+  modifiers = [],
+  selectedKey = '',
+  ...styleProps
+}: KeybindButtonsProps) {
   // Get the display version of the simple-keyboard input key
   const displayKey =
     selectedKey in KeyboardDisplayNames
@@ -20,7 +24,7 @@ export function KeybindButtons({ modifiers, selectedKey }: KeybindButtonsProps) 
   const allKeys = [...modifiers, displayKey].filter((kbd) => kbd);
 
   return (
-    <Group wrap={'nowrap'}>
+    <Group wrap={'nowrap'} {...styleProps}>
       {allKeys.map((kbd, i) => (
         <Fragment key={kbd}>
           {i !== 0 && <Text c={'white'}> + </Text>}
