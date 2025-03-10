@@ -4,6 +4,8 @@ import {
   Button,
   createTheme,
   defaultVariantColorsResolver,
+  RangeSlider,
+  Slider,
   ThemeIcon,
   Tooltip,
   VariantColorsResolver
@@ -45,6 +47,30 @@ export const theme = createTheme({
     Button: Button.extend({
       defaultProps: {
         variant: 'default'
+      }
+    }),
+    RangeSlider: RangeSlider.extend({
+      styles: {
+        mark: {
+          backgroundColor: 'var(--mantine-color-gray-5)'
+        },
+        thumb: {
+          backgroundColor: 'var(--mantine-color-gray-2)',
+          outline: 'none',
+          border: 'none'
+        }
+      }
+    }),
+    Slider: Slider.extend({
+      styles: {
+        mark: {
+          backgroundColor: 'var(--mantine-color-gray-4)'
+        },
+        thumb: {
+          backgroundColor: 'var(--mantine-color-gray-2)',
+          outline: 'none',
+          border: 'none'
+        }
       }
     }),
     ThemeIcon: ThemeIcon.extend({
