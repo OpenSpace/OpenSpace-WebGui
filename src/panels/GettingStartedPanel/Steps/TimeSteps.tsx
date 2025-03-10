@@ -46,6 +46,7 @@ export const TimeSteps = [
         value={new Date().getFullYear()}
         onInputChange={() => {}}
         onInputChangeStep={() => {}}
+        onInputEnter={() => {}}
         w={65}
       />
     </Group>
