@@ -15,9 +15,7 @@ export function MissionsPanel() {
   const luaApi = useOpenSpaceApi();
   const dispatch = useAppDispatch();
 
-  // Grab the mission last viewed or if it does not exist anymore, take the first one
-  const mission = missions[selectedMissionIdentifier] ?? Object.values(missions)[0];
-  const hasMission = isInitialized && mission !== undefined;
+  const hasMission = isInitialized && Object.values(missions).length > 0;
 
   function onMissionSelected(identifier: string | null) {
     if (!identifier) {
@@ -27,7 +25,7 @@ export function MissionsPanel() {
     luaApi?.setCurrentMission(identifier);
   }
 
-  if (!hasMission || !mission) {
+  if (!hasMission) {
     return (
       <Stack h={'100%'} w={'100%'} ta={'center'} align={'center'} p={'lg'}>
         <Title order={2}>No mission loaded</Title>
@@ -40,6 +38,9 @@ export function MissionsPanel() {
       </Stack>
     );
   }
+
+  // Grab the mission last viewed or if it does not exist anymore, take the first one
+  const mission = missions[selectedMissionIdentifier] ?? Object.values(missions)[0];
 
   return (
     <Box>

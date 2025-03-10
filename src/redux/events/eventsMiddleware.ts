@@ -45,8 +45,6 @@ export const setupEventsSubscription = createAsyncThunk(
           thunkAPI.dispatch(removeAction(data.Uri));
           break;
         case 'MissionAdded':
-          thunkAPI.dispatch(refreshMissions());
-          break;
         case 'MissionRemoved':
           thunkAPI.dispatch(refreshMissions());
           break;
