@@ -1,6 +1,15 @@
-import { SceneIcon, FocusIcon } from '@/icons/icons';
+import { SceneIcon, FocusIcon, ChevronRightIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
-import { ActionIcon, Anchor, Checkbox, Group, List, Stack, Title } from '@mantine/core';
+import {
+  ActionIcon,
+  Anchor,
+  Checkbox,
+  Group,
+  List,
+  Stack,
+  ThemeIcon,
+  Title
+} from '@mantine/core';
 import { AltitudeMouse } from '../MouseDescriptions/AltitudeMouse';
 import { MouseWithModifier } from '../MouseDescriptions/MouseWithModifier';
 import { AltitudeTask } from '../Tasks/AltitudeTask';
@@ -56,10 +65,20 @@ export const ContentSteps = [
   <>
     <Text>
       All objects have <span style={{ fontStyle: 'italic' }}>properties</span>, which make
-      it possible to alter the behavior or appearance of an object.
+      it possible to alter the behavior or appearance of an object. These properties can
+      include size, color, opacity, etc.
     </Text>
     <MarsTrailColorTask />
-    <Text>These properties can include size, color, opacity, etc.</Text>
+    <Text>Go to:</Text>
+    <Text style={{ display: 'flex', alignItems: 'center' }}>
+      <SceneIcon size={IconSize.sm} style={{ margin: '0 4px' }} />
+      Scene <ChevronRightIcon size={IconSize.sm} style={{ margin: '0 4px' }} />
+      Mars Trail
+      <ChevronRightIcon size={IconSize.sm} style={{ margin: '0 4px' }} /> Renderable
+      <ChevronRightIcon size={IconSize.sm} style={{ margin: '0 4px' }} /> Appearance
+      <ChevronRightIcon size={IconSize.sm} style={{ margin: '0 4px' }} /> Color
+    </Text>
+    <Text>to change the color of the trail.</Text>
   </>,
   <>
     <Text>Let's take a look at the surface of Mars.</Text>
