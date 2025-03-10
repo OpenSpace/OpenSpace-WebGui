@@ -56,8 +56,8 @@ export interface MenuItem {
   visible?: boolean; // TODO: investigate whether this is needed (as of 2024-10-23 its not being used)
 }
 
-export const menuItemsData: MenuItem[] = [
-  {
+export const menuItemsData: Record<string, MenuItem> = {
+  scene: {
     title: 'Scene',
     componentID: 'scene',
     content: <Scene />,
@@ -76,7 +76,7 @@ export const menuItemsData: MenuItem[] = [
     preferredPosition: 'left',
     defaultVisible: true
   },
-  {
+  settings: {
     title: 'Settings',
     componentID: 'settings',
     content: <SettingsPanel />,
@@ -95,7 +95,7 @@ export const menuItemsData: MenuItem[] = [
     preferredPosition: 'left',
     defaultVisible: false
   },
-  {
+  navigation: {
     title: 'Navigation',
     componentID: 'navigation',
     content: <OriginPanel />,
@@ -107,7 +107,7 @@ export const menuItemsData: MenuItem[] = [
     floatPosition: { offsetY: 100, offsetX: 320, width: 400, height: 440 },
     defaultVisible: true
   },
-  {
+  datePanel: {
     title: 'Date Panel',
     componentID: 'datePanel',
     content: <TimePanel />,
@@ -119,7 +119,7 @@ export const menuItemsData: MenuItem[] = [
     floatPosition: { offsetY: 100, offsetX: 370, width: 410, height: 520 },
     defaultVisible: true
   },
-  {
+  sessionRecording: {
     title: 'Session Recording',
     componentID: 'sessionRecording',
     content: <SessionRecordingPanel />,
@@ -130,7 +130,7 @@ export const menuItemsData: MenuItem[] = [
     preferredPosition: 'right',
     defaultVisible: true
   },
-  {
+  geoLocation: {
     title: 'Geo Location',
     componentID: 'geoLocation',
     content: <GeoLocationPanel />,
@@ -138,7 +138,7 @@ export const menuItemsData: MenuItem[] = [
     preferredPosition: 'right',
     defaultVisible: true
   },
-  {
+  screenSpaceRenderables: {
     title: 'Screenspace Renderables',
     componentID: 'screenSpaceRenderables',
     content: <ScreenSpaceRenderablePanel />,
@@ -146,7 +146,7 @@ export const menuItemsData: MenuItem[] = [
     preferredPosition: 'right',
     defaultVisible: true
   },
-  {
+  exoplanets: {
     title: 'Exoplanets',
     componentID: 'exoplanets',
     content: <ExoplanetsPanel />,
@@ -154,7 +154,7 @@ export const menuItemsData: MenuItem[] = [
     preferredPosition: 'right',
     defaultVisible: true
   },
-  {
+  userPanels: {
     title: 'User Panels',
     componentID: 'userPanels',
     content: <UserPanelsPanel />,
@@ -162,7 +162,7 @@ export const menuItemsData: MenuItem[] = [
     preferredPosition: 'right',
     defaultVisible: true
   },
-  {
+  actions: {
     title: 'Actions',
     componentID: 'actions',
     content: <ActionsPanel />,
@@ -170,7 +170,7 @@ export const menuItemsData: MenuItem[] = [
     preferredPosition: 'right',
     defaultVisible: true
   },
-  {
+  skyBrowser: {
     title: 'SkyBrowser',
     componentID: 'skyBrowser',
     content: <SkyBrowserPanel />,
@@ -178,7 +178,7 @@ export const menuItemsData: MenuItem[] = [
     preferredPosition: 'right',
     defaultVisible: true
   },
-  {
+  mission: {
     title: 'Mission',
     componentID: 'mission',
     content: <MissionsPanel />,
@@ -186,7 +186,7 @@ export const menuItemsData: MenuItem[] = [
     preferredPosition: 'right',
     defaultVisible: true
   },
-  {
+  flightControl: {
     title: 'Flight Control',
     componentID: 'flightControl',
     content: <FlightControlPanel />,
@@ -194,7 +194,7 @@ export const menuItemsData: MenuItem[] = [
     preferredPosition: 'right',
     defaultVisible: false
   },
-  {
+  keybindingsLayout: {
     title: 'Keybindings Layout',
     componentID: 'keybindingsLayout',
     content: <KeybindsPanel />,
@@ -203,11 +203,11 @@ export const menuItemsData: MenuItem[] = [
     floatPosition: { offsetY: 150, offsetX: 350, width: 1050, height: 680 },
     defaultVisible: false
   },
-  {
+  propertyTest: {
     title: 'Property Test (TEMP)',
     componentID: 'propertyTest',
     content: <TempPropertyTest />,
     preferredPosition: 'left',
     defaultVisible: false
   }
-];
+};
