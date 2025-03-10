@@ -23,6 +23,8 @@ export function NumericInput({
   disabled = false,
   hideControls,
   onEnter = () => {},
+  onChange,
+  onBlur,
   value,
   min,
   max,
@@ -62,12 +64,13 @@ export function NumericInput({
     }
   }
 
-  function onBlur() {
+  function handleBlur(event: React.FocusEvent<HTMLInputElement, Element>) {
     if (shouldResetOnBlurRef.current === true) {
       resetValue();
     }
     shouldResetOnBlurRef.current = true;
     setIsEditing(false);
+    onBlur?.(event);
   }
 
   function onStep(change: number) {
@@ -84,17 +87,22 @@ export function NumericInput({
     onEnter(newValue);
   }
 
+  function handleChange(value: number | string): void {
+    setIsEditing(true);
+    onChange?.(value);
+  }
+
   // @TODO (2025-02-18, emmbr): This input type does not support scientific notation...
   return (
     <NumberInput
       value={storedValue === undefined ? '' : storedValue}
       onKeyUp={onKeyUp}
-      onBlur={onBlur}
-      onFocus={() => setIsEditing(true)}
+      onBlur={handleBlur}
       onValueChange={(newValue) => {
         setStoredValue(newValue.floatValue);
       }}
-      onChange={() => setIsEditing(true)}
+      onChange={handleChange}
+      onFocus={() => setIsEditing(true)}
       disabled={disabled}
       label={label}
       min={min}

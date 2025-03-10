@@ -14,6 +14,7 @@ export interface TimeState {
   nextDeltaTimeStep?: number;
   prevDeltaTimeStep?: number;
   deltaTimeSteps?: number[];
+  timeString?: string; // This is the raw OpenSpace time string we receive, can be used as backup if parsing fails.
 }
 
 // We could leave this as empty but better to be explicit that they
@@ -65,9 +66,11 @@ export const time = createSlice({
         } else {
           // If the ztime is undefined we need to decide what to do. If we let it
           // be then time will be "stuck" on whatever was the latest working date
-          // but if we give it undefined we can handle it easier in code and display other text eg.
+          // but if we give it undefined we can handle it easier in code and display other
+          // text eg.
           state.time = undefined;
           state.timeCapped = undefined;
+          state.timeString = newTime;
         }
       }
       if (deltaTime !== undefined) {

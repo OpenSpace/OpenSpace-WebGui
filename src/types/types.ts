@@ -13,10 +13,12 @@ export interface Action {
   documentation: string;
 }
 
+export type KeybindModifiers = ('super' | 'alt' | 'shift' | 'control')[];
+
 export interface Keybind {
   action: string;
   key: string;
-  modifiers: ('super' | 'alt' | 'shift' | 'control')[];
+  modifiers: KeybindModifiers;
 }
 
 export type ActionOrKeybind = Action | Keybind;
