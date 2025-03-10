@@ -1,3 +1,5 @@
+import { Identifier } from '@/types/types';
+
 export interface Milestone {
   date: string; // Date as an UTC ISO8601 string
   name: string;
@@ -18,6 +20,8 @@ export interface Phase {
   milestones: Milestone[];
   capturetimes: string[];
 }
+
+export type Missions = Record<Identifier, Phase>;
 
 export type DisplayedPhase =
   | { type: DisplayType.Phase; data: Phase }
