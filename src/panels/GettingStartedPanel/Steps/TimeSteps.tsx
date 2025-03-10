@@ -1,4 +1,10 @@
+import { ActionIcon, Group, Text, Title } from '@mantine/core';
+
+import { FastForwardIcon, FastRewindIcon, PauseIcon } from '@/icons/icons';
+import { TimeIncrementInput } from '@/panels/TimePanel/TimeInput/TimeIncrementInput';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
+import { IconSize } from '@/types/enums';
+
 import { AltitudeTask } from '../Tasks/AltitudeTask';
 import { ChangeDeltaTimeTask } from '../Tasks/ChangeDeltaTimeTask';
 import { ChangeYearTask } from '../Tasks/ChangeYearTask';
@@ -8,17 +14,12 @@ import { CurrentLatLong } from '../Tasks/Components/CurrentLatLong';
 import { FocusTask } from '../Tasks/FocusTask';
 import { NavigationTask } from '../Tasks/NavigationTask';
 import { PauseTimeTask } from '../Tasks/PauseTimeTask';
-import { ActionIcon, Group, Text, Title } from '@mantine/core';
-import { FastForwardIcon, FastRewindIcon, PauseIcon } from '@/icons/icons';
-import { IconSize } from '@/types/enums';
-import { TimeIncrementInput } from '@/panels/TimePanel/TimeInput/TimeIncrementInput';
 
 export const TimeSteps = [
   <>
     <Title>Time</Title>
     In this chapter we will learn how to change the time OpenSpace.
   </>,
-  ,
   <>
     <Text>
       But first, let's go to a good viewing point. Let's take a look at the Solar System

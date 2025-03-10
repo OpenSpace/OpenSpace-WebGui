@@ -10,10 +10,10 @@ import {
   OpenInBrowserIcon,
   RouteIcon
 } from '@/icons/icons';
+import { GettingStartedPanel } from '@/panels/GettingStartedPanel/GettingStartedPanel';
+import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
-import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
-import { GettingStartedPanel } from '@/panels/GettingStartedPanel/GettingStartedPanel';
 
 export function HelpMenu() {
   const [showAbout, { open, close }] = useDisclosure(false);

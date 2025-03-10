@@ -4,10 +4,10 @@ import { Button, Group, Stack } from '@mantine/core';
 import { Layout } from '@/components/Layout/Layout';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
-import { IntroductionSteps } from './Steps/IntroductionSteps';
-import { TimeSteps } from './Steps/TimeSteps';
 import { ContentSteps } from './Steps/ContentSteps';
+import { IntroductionSteps } from './Steps/IntroductionSteps';
 import { NavigationSteps } from './Steps/NavigationSteps';
+import { TimeSteps } from './Steps/TimeSteps';
 import { Chapters } from './Chapters';
 
 export function GettingStartedPanel() {

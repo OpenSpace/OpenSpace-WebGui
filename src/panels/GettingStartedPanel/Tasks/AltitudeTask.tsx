@@ -2,8 +2,8 @@ import { useGetStringPropertyValue, useSubscribeToCamera } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { NavigationAnchorKey } from '@/util/keys';
 
-import { compareAltitude } from './util';
 import { TaskCheckbox } from './Components/TaskCheckbox';
+import { compareAltitude } from './util';
 
 interface Props {
   anchor: string;

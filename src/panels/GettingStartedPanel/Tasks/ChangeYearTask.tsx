@@ -1,7 +1,7 @@
 import { useSubscribeToTime } from '@/api/hooks';
 
-import { useTrackChange } from './hooks';
 import { TaskCheckbox } from './Components/TaskCheckbox';
+import { useTrackChange } from './hooks';
 
 export function ChangeYearTask() {
   const now = useSubscribeToTime();

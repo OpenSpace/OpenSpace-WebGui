@@ -1,5 +1,5 @@
-import { Checkbox } from '@mantine/core';
 import { useRef } from 'react';
+import { Checkbox } from '@mantine/core';
 
 interface Props {
   taskCompleted: boolean;

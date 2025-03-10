@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, List, Stack, Text } from '@mantine/core';
+
 import { TaskCheckbox } from '../Tasks/Components/TaskCheckbox';
 
 export const IntroductionSteps: React.JSX.Element[] = [
@@ -21,8 +22,8 @@ export const IntroductionSteps: React.JSX.Element[] = [
       OpenSpace. Once you have fulfilled the task, the checkbox will be marked as
       completed.
     </Text>
-    <TaskCheckbox taskCompleted={false} label="This is a task!" />
-    <TaskCheckbox taskCompleted={true} label="This is a completed task!" />
+    <TaskCheckbox taskCompleted={false} label={'This is a task!'} />
+    <TaskCheckbox taskCompleted={true} label={'This is a completed task!'} />
   </>,
   <>Let's dive right in!</>
 ];

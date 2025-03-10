@@ -1,5 +1,3 @@
-import { SceneIcon, FocusIcon, ChevronRightIcon } from '@/icons/icons';
-import { IconSize } from '@/types/enums';
 import {
   ActionIcon,
   Anchor,
@@ -7,17 +5,19 @@ import {
   Group,
   List,
   Stack,
-  ThemeIcon,
-  Title
-} from '@mantine/core';
+  Text,
+  Title} from '@mantine/core';
+
+import { ChevronRightIcon, FocusIcon, SceneIcon } from '@/icons/icons';
+import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
+import { IconSize } from '@/types/enums';
+
 import { AltitudeMouse } from '../MouseDescriptions/AltitudeMouse';
 import { MouseWithModifier } from '../MouseDescriptions/MouseWithModifier';
 import { AltitudeTask } from '../Tasks/AltitudeTask';
 import { SetBoolPropertyTask } from '../Tasks/ChangePropertyTask';
 import { FocusTask } from '../Tasks/FocusTask';
 import { MarsTrailColorTask } from '../Tasks/MarsTrailColorTask';
-import { Text } from '@mantine/core';
-import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 
 export const ContentSteps = [
   <>
@@ -99,11 +99,7 @@ export const ContentSteps = [
     </Text>
     <Text>
       For more in-depth knowledge about maps, please refer to the{' '}
-      <Anchor
-        href="https://docs.openspaceproject.com/"
-        target="_nla
-blank"
-      ></Anchor>
+      <Anchor href={'https://docs.openspaceproject.com/'} target={"_blank"}></Anchor>
       documentation.
     </Text>
   </>,

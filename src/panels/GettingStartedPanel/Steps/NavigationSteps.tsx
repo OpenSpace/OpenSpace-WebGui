@@ -1,5 +1,7 @@
+import { Center, Group, Kbd, List, Text, Title } from '@mantine/core';
+
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
-import { Title, Group, Kbd, Center, Text, Stack, List, Image } from '@mantine/core';
+
 import { AltitudeMouse } from '../MouseDescriptions/AltitudeMouse';
 import { Mouse } from '../MouseDescriptions/Mouse';
 import { MouseWithModifier } from '../MouseDescriptions/MouseWithModifier';
@@ -36,7 +38,7 @@ export const NavigationSteps: React.JSX.Element[] = [
   </>,
   <>
     <Text>You have two options for rolling the camera:</Text>
-    <List type="ordered" withPadding w={'100%'}>
+    <List type={'ordered'} withPadding w={'100%'}>
       <List.Item>
         <Group justify={'space-between'}>
           <Text fs={'italic'} flex={1}>

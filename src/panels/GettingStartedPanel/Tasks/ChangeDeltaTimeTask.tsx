@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/redux/hooks';
 
-import { useTrackChange } from './hooks';
 import { TaskCheckbox } from './Components/TaskCheckbox';
+import { useTrackChange } from './hooks';
 
 export function ChangeDeltaTimeTask() {
   const deltaTime = useAppSelector((state) => state.time.deltaTime);

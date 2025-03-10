@@ -1,6 +1,7 @@
-import { LeftClickMouseIcon, TimerIcon, SceneIcon, AirplaneIcon } from '@/icons/icons';
-import { IconSize } from '@/types/enums';
 import { Stepper } from '@mantine/core';
+
+import { AirplaneIcon, SceneIcon, TimerIcon } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
 
 export function Chapters({
   section,
@@ -33,18 +34,18 @@ export function Chapters({
         }
       }}
     >
-      <Stepper.Step label="Introduction"></Stepper.Step>
+      <Stepper.Step label={'Introduction'}></Stepper.Step>
       <Stepper.Step
-        label="Navigation"
+        label={'Navigation'}
         icon={<AirplaneIcon size={IconSize.md} />}
       ></Stepper.Step>
       <Stepper.Step
-        label="Time"
+        label={'Time'}
         icon={<TimerIcon size={IconSize.md} />}
         h={'100%'}
       ></Stepper.Step>
       <Stepper.Step
-        label="Content"
+        label={'Content'}
         icon={<SceneIcon size={IconSize.md} />}
         h={'100%'}
       ></Stepper.Step>
