@@ -36,18 +36,28 @@ export const NavigationSteps: React.JSX.Element[] = [
   </>,
   <>
     <Text>You have two options for rolling the camera:</Text>
-    <Group justify={'space-between'}>
-      <Text c={'dimmed'} fs={'italic'}>
-        Scroll click and drag
-      </Text>
-      <Mouse mouseClick={'scroll'} arrowDir={'horizontal'} m={'lg'} />
-    </Group>
-    <Group>
-      <Text flex={1} c={'dimmed'} fs={'italic'}>
-        Left click and drag + shift
-      </Text>
-      <MouseWithModifier mouseClick={'left'} arrowDir={'horizontal'} modifier={'shift'} />
-    </Group>
+    <List type="ordered" withPadding w={'100%'}>
+      <List.Item>
+        <Group justify={'space-between'}>
+          <Text fs={'italic'} flex={1}>
+            Scroll click and drag
+          </Text>
+          <Mouse mouseClick={'scroll'} arrowDir={'horizontal'} m={'lg'} />
+        </Group>
+      </List.Item>
+      <List.Item>
+        <Group>
+          <Text flex={1} fs={'italic'}>
+            Left click and drag + shift
+          </Text>
+          <MouseWithModifier
+            mouseClick={'left'}
+            arrowDir={'horizontal'}
+            modifier={'shift'}
+          />
+        </Group>
+      </List.Item>
+    </List>
   </>,
   <>
     <Text>

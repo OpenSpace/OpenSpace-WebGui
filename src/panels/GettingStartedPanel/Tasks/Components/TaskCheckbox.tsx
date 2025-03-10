@@ -1,4 +1,5 @@
 import { Checkbox } from '@mantine/core';
+import { useRef } from 'react';
 
 interface Props {
   taskCompleted: boolean;
@@ -6,13 +7,17 @@ interface Props {
 }
 
 export function TaskCheckbox({ taskCompleted, label }: Props) {
+  const hasEverBeenCompleted = useRef<boolean>(false);
+  if (taskCompleted) {
+    hasEverBeenCompleted.current = true;
+  }
   return (
     <Checkbox
       size={'lg'}
       c={'orange'}
       color={'green'}
-      checked={taskCompleted}
-      onChange={() => {}}
+      checked={hasEverBeenCompleted.current}
+      readOnly
       label={`Task: ${label}`}
     />
   );

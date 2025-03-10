@@ -17,7 +17,7 @@ export function MouseWithModifier({
   return (
     <Group wrap={'nowrap'} justify={'right'}>
       <Kbd size={'lg'}>{modifier}</Kbd>
-      <Mouse mouseClick={mouseClick} arrowDir={arrowDir} m={'lg'} />
+      <Mouse mouseClick={mouseClick} arrowDir={arrowDir} m={'lg'} ml={'xs'} />
     </Group>
   );
 }

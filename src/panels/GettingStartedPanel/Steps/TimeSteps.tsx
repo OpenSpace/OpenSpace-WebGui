@@ -20,7 +20,10 @@ export const TimeSteps = [
   </>,
   ,
   <>
-    <Text>Let's take a look at the Solar System from above.</Text>
+    <Text>
+      But first, let's go to a good viewing point. Let's take a look at the Solar System
+      from above.
+    </Text>
     <FocusTask anchor={'Sun'} />
     <AltitudeTask anchor={'Sun'} altitude={1} unit={'Lighthours'} compare={'higher'} />
     <NavigationTask anchor={'Sun'} lat={{ value: 80, min: 60, max: 100 }} />

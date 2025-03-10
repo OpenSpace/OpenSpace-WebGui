@@ -27,7 +27,3 @@
     positionAnimation 2s infinite,
     blinkAnimation 2s infinite;
 }
-
-.mouseAnimation {
-  animation: blinkAnimation 2s infinite;
-}

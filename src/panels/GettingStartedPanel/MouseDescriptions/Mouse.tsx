@@ -9,7 +9,7 @@ import {
 
 import { DragDirection, MouseInteraction } from './types';
 
-import './Mouse.css';
+import styles from './Mouse.module.css';
 
 interface Props {
   dir: 'up' | 'down' | 'left' | 'right';
@@ -28,7 +28,7 @@ function Arrows({ dir }: Props) {
       gap={0}
       align={'center'}
       style={{ rotate: rotations[dir] }}
-      className={'arrowAnimation'}
+      className={styles.arrowAnimation}
     >
       <ChevronUpIcon size={'30px'} />
       <ChevronUpIcon size={'50px'} />
@@ -66,7 +66,7 @@ export function Mouse({ mouseClick, arrowDir, ...style }: MouseDescriptionProps)
     );
   } else {
     return (
-      <Group wrap={'nowrap'} {...style} px={'lg'}>
+      <Group wrap={'nowrap'} px={'lg'} {...style}>
         <Arrows dir={'right'} />
         <MouseBase mouseClick={mouseClick} />
         <Arrows dir={'left'} />

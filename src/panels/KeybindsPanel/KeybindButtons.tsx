@@ -12,7 +12,7 @@ interface KeybindButtonsProps extends MantineStyleProps {
 export function KeybindButtons({
   modifiers = [],
   selectedKey = '',
-  ...style
+  ...styleProps
 }: KeybindButtonsProps) {
   // Get the display version of the simple-keyboard input key
   const displayKey =
@@ -24,7 +24,7 @@ export function KeybindButtons({
   const allKeys = [...modifiers, displayKey].filter((kbd) => kbd);
 
   return (
-    <Group wrap={'nowrap'} {...style}>
+    <Group wrap={'nowrap'} {...styleProps}>
       {allKeys.map((kbd, i) => (
         <Fragment key={kbd}>
           {i !== 0 && <Text c={'white'}> + </Text>}

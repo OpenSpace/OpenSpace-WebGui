@@ -39,8 +39,10 @@ export const ContentSteps = [
     </Group>
   </Stack>,
   <>
-    You can turn on and off content by checking and unchecking their corresponding
-    checkboxes.
+    <Text>
+      You can turn on and off content by checking and unchecking their corresponding
+      checkboxes.
+    </Text>
     <SetBoolPropertyTask
       uri={'Scene.EarthTrail.Renderable.Enabled'}
       finalValue={false}
@@ -52,8 +54,10 @@ export const ContentSteps = [
     </Group>
   </>,
   <>
-    All objects have properties, which make it possible to alter the behavior or
-    appearance of an object.
+    <Text>
+      All objects have <span style={{ fontStyle: 'italic' }}>properties</span>, which make
+      it possible to alter the behavior or appearance of an object.
+    </Text>
     <MarsTrailColorTask />
     <Text>These properties can include size, color, opacity, etc.</Text>
   </>,
@@ -69,7 +73,7 @@ export const ContentSteps = [
       maps, which show elevation. Different maps can have different resolutions.
     </Text>
     <Text>
-      All the default layers in OpenSpace are usually named after the satellite or
+      The default layers in OpenSpace are generally named after the satellite or
       instrument on a satellite that captured the map. The name [Utah] or [Sweden] states
       on which server the map is located. It is usually faster to choose the server
       closest to you.
