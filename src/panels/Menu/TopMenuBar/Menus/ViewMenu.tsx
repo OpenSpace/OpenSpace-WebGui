@@ -1,32 +1,21 @@
-import { Dispatch, SetStateAction } from 'react';
 import { CheckboxIndicator, Container, Group, Menu } from '@mantine/core';
 
+import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { Property } from '@/components/Property/Property';
 import { ChevronRightIcon, SaveIcon, TaskBarIcon, VisibilityIcon } from '@/icons/icons';
+import { useAppDispatch } from '@/redux/hooks';
+import { updateMenuItemsOrder } from '@/redux/local/localSlice';
 import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
+import { useMenuItems } from '../../hooks';
+import { TaskbarItemConfig } from '../../types';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
-interface Props {
-  visibleMenuItems: string[];
-  setVisibleMenuItems: Dispatch<SetStateAction<string[]>>;
-}
+export function ViewMenu() {
+  const { menuItems, setMenuItemVisible } = useMenuItems();
 
-export function ViewMenu({ visibleMenuItems, setVisibleMenuItems }: Props) {
-  function toggleMenuItem(id: string): void {
-    setVisibleMenuItems((prevstate) => {
-      const index = prevstate.indexOf(id);
-      const isChecked = index !== -1;
-
-      if (isChecked) {
-        prevstate.splice(index, 1);
-        return [...prevstate];
-      } else {
-        return [...prevstate, id];
-      }
-    });
-  }
+  const dispatch = useAppDispatch();
 
   return (
     <TopBarMenuWrapper targetTitle={'View'}>
@@ -44,18 +33,28 @@ export function ViewMenu({ visibleMenuItems, setVisibleMenuItems }: Props) {
         closeOnItemClick={false}
       >
         <Menu.Label>Toggle Task Bar Items</Menu.Label>
-        {menuItemsData.map((item) => (
-          <Menu.Item
-            key={item.componentID}
-            leftSection={item.renderIcon?.(IconSize.xs)}
-            rightSection={
-              <CheckboxIndicator checked={visibleMenuItems.includes(item.componentID)} />
-            }
-            onClick={() => toggleMenuItem(item.componentID)}
-          >
-            {item.title}
-          </Menu.Item>
-        ))}
+        <DragReorderList<TaskbarItemConfig>
+          onDragEnd={({ updatedData }) => {
+            dispatch(updateMenuItemsOrder(updatedData));
+          }}
+          data={menuItems}
+          id={'viewMenu'}
+          renderFunc={(itemConfig) => {
+            const item = menuItemsData[itemConfig.id];
+            return (
+              <Menu.Item
+                key={item.componentID}
+                leftSection={item.renderIcon?.(IconSize.xs)}
+                rightSection={<CheckboxIndicator checked={itemConfig.visible} />}
+                onClick={() => setMenuItemVisible(itemConfig.id, !itemConfig.visible)}
+              >
+                {item.title}
+              </Menu.Item>
+            );
+          }}
+          keyFunc={(item) => item.id}
+          gap={0}
+        />
       </TopBarMenuWrapper>
 
       <Menu.Item leftSection={<SaveIcon />}>Load/Save Layout</Menu.Item>
