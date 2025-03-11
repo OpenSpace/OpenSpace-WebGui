@@ -108,8 +108,8 @@ export const menuItemsData: MenuItem[] = [
     defaultVisible: true
   },
   {
-    title: 'Date Panel',
-    componentID: 'datePanel',
+    title: 'Time Panel',
+    componentID: 'timePanel',
     content: <TimePanel />,
     renderMenuButton: (key, onClick) => (
       <TimePanelMenuButton key={key} onClick={onClick} />
