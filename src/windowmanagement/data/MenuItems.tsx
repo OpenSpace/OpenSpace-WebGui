@@ -211,3 +211,13 @@ export const menuItemsData: Record<string, MenuItem> = {
     defaultVisible: false
   }
 };
+
+if (import.meta.env.DEV) {
+  Object.entries(menuItemsData).forEach(([key, value]) => {
+    if (key !== value.componentID) {
+      throw Error(
+        `Menu item key '${key}' does not match componentID '${value.componentID}'`
+      );
+    }
+  });
+}
