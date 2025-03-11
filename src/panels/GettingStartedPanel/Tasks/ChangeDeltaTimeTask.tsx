@@ -7,5 +7,10 @@ export function ChangeDeltaTimeTask() {
   const deltaTime = useAppSelector((state) => state.time.deltaTime);
   const taskCompleted = useTrackChange(deltaTime);
 
-  return <TaskCheckbox taskCompleted={taskCompleted} label={'Change the delta time'} />;
+  return (
+    <TaskCheckbox
+      taskCompleted={taskCompleted}
+      label={'Change the delta time for the simulation speed'}
+    />
+  );
 }

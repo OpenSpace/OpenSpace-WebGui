@@ -55,11 +55,21 @@ export const TimeSteps = [
     </Text>
   </>,
   <>
-    <Text>You can also change how fast time is playing.</Text>
+    <Text>
+      You can also change how fast time is playing. This is known as the{' '}
+      <Text fs={'italic'} span>
+        simulation speed{' '}
+      </Text>
+      of the application, and the time increment is called the{' '}
+      <Text fs={'italic'} span>
+        delta time
+      </Text>
+      .
+    </Text>
     <ChangeDeltaTimeTask />
     <Text>In the Time Panel:</Text>
     <Group>
-      <Text>Click on the buttons that adjust delta time:</Text>
+      <Text>Click on the buttons that adjust the delta time:</Text>
       <ActionIcon size={'lg'}>
         <FastRewindIcon size={IconSize.md} />
       </ActionIcon>
