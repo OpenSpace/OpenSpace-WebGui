@@ -245,7 +245,7 @@ export function TimeInput() {
 
   if (cappedTime === undefined) {
     return (
-      <Stack align="center" gap={2} pb={'xs'}>
+      <Stack align={"center"} gap={2} pb={'xs'}>
         <Text>{backupTimeString}</Text>
         <Text c={'red'}>
           Can't interact with dates outside the range April 20, 271821 BC to Sep 13,

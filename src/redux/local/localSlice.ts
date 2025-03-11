@@ -9,9 +9,7 @@ export interface LocalState {
     expandedGroups: string[];
     currentlySelectedNode: Uri | null;
   };
-  menu: {
-    items: TaskbarItemConfig[];
-  };
+  taskbarItems: TaskbarItemConfig[];
 }
 
 const initialState: LocalState = {
@@ -19,11 +17,9 @@ const initialState: LocalState = {
     expandedGroups: [],
     currentlySelectedNode: null
   },
-  menu: {
-    items: Object.values(menuItemsData).map((item) => {
-      return { id: item.componentID, visible: item.defaultVisible, enabled: true };
-    })
-  }
+  taskbarItems: Object.values(menuItemsData).map((item) => {
+    return { id: item.componentID, visible: item.defaultVisible, enabled: true };
+  })
 };
 
 export const localSlice = createSlice({
@@ -38,28 +34,28 @@ export const localSlice = createSlice({
       state.sceneTree.currentlySelectedNode = action.payload;
       return state;
     },
-    setVisibleMenuItems: (
+    setVisibleMenuItem: (
       state,
       action: PayloadAction<{ id: string; visible: boolean }>
     ) => {
-      const item = state.menu.items.find((item) => item.id === action.payload.id);
+      const item = state.taskbarItems.find((item) => item.id === action.payload.id);
       if (item) {
         item.visible = action.payload.visible;
       }
       return state;
     },
-    setEnabledMenuItems: (
+    setEnabledMenuItem: (
       state,
       action: PayloadAction<{ id: string; enabled: boolean }>
     ) => {
-      const item = state.menu.items.find((item) => item.id === action.payload.id);
+      const item = state.taskbarItems.find((item) => item.id === action.payload.id);
       if (item) {
         item.enabled = action.payload.enabled;
       }
       return state;
     },
-    updateMenuItemsOrder: (state, action: PayloadAction<TaskbarItemConfig[]>) => {
-      state.menu.items = action.payload;
+    setMenuItemsOrder: (state, action: PayloadAction<TaskbarItemConfig[]>) => {
+      state.taskbarItems = action.payload;
       return state;
     }
   }
@@ -69,8 +65,8 @@ export const localSlice = createSlice({
 export const {
   storeSceneTreeNodeExpanded,
   setSceneTreeSelectedNode,
-  setVisibleMenuItems,
-  setEnabledMenuItems,
-  updateMenuItemsOrder
+  setVisibleMenuItem,
+  setEnabledMenuItem,
+  setMenuItemsOrder
 } = localSlice.actions;
 export const localReducer = localSlice.reducer;

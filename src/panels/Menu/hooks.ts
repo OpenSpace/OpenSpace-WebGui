@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { useGetBoolPropertyValue } from '@/api/hooks';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setEnabledMenuItems, setVisibleMenuItems } from '@/redux/local/localSlice';
+import { setEnabledMenuItem, setVisibleMenuItem } from '@/redux/local/localSlice';
 
 export function useMenuItems() {
-  const menuItems = useAppSelector((state) => state.local.menu.items);
+  const menuItems = useAppSelector((state) => state.local.taskbarItems);
   const hasMission = useAppSelector((state) => state.missions.isInitialized);
   const [isExoplanetsEnabled] = useGetBoolPropertyValue('Modules.Exoplanets.Enabled');
   const [isSkyBrowserEnabled] = useGetBoolPropertyValue('Modules.SkyBrowser.Enabled');
@@ -20,31 +20,28 @@ export function useMenuItems() {
   // automatically shown or hidden in the taskbar.
   // @TODO: (anden88 2025-03-10): Investigate if SkyBrowser & Exoplanets still need the
   //  enabled property
-  useEffect(() => {
-    dispatch(setEnabledMenuItems({ id: 'mission', enabled: hasMission }));
-    dispatch(setVisibleMenuItems({ id: 'mission', visible: hasMission }));
-  }, [hasMission]);
+  const enablePanel = useCallback(
+    (id: string, value: boolean) => {
+      dispatch(setEnabledMenuItem({ id: id, enabled: value }));
+      dispatch(setVisibleMenuItem({ id: id, visible: value }));
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
-    dispatch(
-      setEnabledMenuItems({ id: 'exoplanets', enabled: isExoplanetsEnabled ?? false })
-    );
-    dispatch(
-      setVisibleMenuItems({ id: 'exoplanets', visible: isExoplanetsEnabled ?? false })
-    );
-  }, [isExoplanetsEnabled]);
+    enablePanel('mission', hasMission);
+  }, [hasMission, enablePanel]);
 
   useEffect(() => {
-    dispatch(
-      setEnabledMenuItems({ id: 'skyBrowser', enabled: isSkyBrowserEnabled ?? false })
-    );
-    dispatch(
-      setVisibleMenuItems({ id: 'skyBrowser', visible: isSkyBrowserEnabled ?? false })
-    );
-  }, [isSkyBrowserEnabled]);
+    enablePanel('exoplanets', isExoplanetsEnabled ?? false);
+  }, [isExoplanetsEnabled, enablePanel]);
+
+  useEffect(() => {
+    enablePanel('skyBrowser', isSkyBrowserEnabled ?? false);
+  }, [isSkyBrowserEnabled, enablePanel]);
 
   function setMenuItemVisible(id: string, value: boolean) {
-    dispatch(setVisibleMenuItems({ id, visible: value }));
+    dispatch(setVisibleMenuItem({ id, visible: value }));
   }
 
   return { menuItems, filteredMenuItems, setMenuItemVisible };

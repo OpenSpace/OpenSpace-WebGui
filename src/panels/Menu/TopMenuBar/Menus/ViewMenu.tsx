@@ -4,12 +4,11 @@ import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { Property } from '@/components/Property/Property';
 import { ChevronRightIcon, SaveIcon, TaskBarIcon, VisibilityIcon } from '@/icons/icons';
 import { useAppDispatch } from '@/redux/hooks';
-import { updateMenuItemsOrder } from '@/redux/local/localSlice';
+import { setMenuItemsOrder } from '@/redux/local/localSlice';
 import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { useMenuItems } from '../../hooks';
-import { TaskbarItemConfig } from '../../types';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function ViewMenu() {
@@ -33,26 +32,31 @@ export function ViewMenu() {
         closeOnItemClick={false}
       >
         <Menu.Label>Toggle Task Bar Items</Menu.Label>
-        <DragReorderList<TaskbarItemConfig>
-          onDragEnd={({ updatedData }) => {
-            dispatch(updateMenuItemsOrder(updatedData));
-          }}
-          data={menuItems}
+        <DragReorderList
           id={'viewMenu'}
+          data={menuItems}
+          dragHandlePosition={'right'}
+          keyFunc={(item) => item.id}
+          onDragEnd={({ updatedData }) => {
+            dispatch(setMenuItemsOrder(updatedData));
+          }}
           renderFunc={(itemConfig) => {
             const item = menuItemsData[itemConfig.id];
             return (
               <Menu.Item
                 key={item.componentID}
-                leftSection={item.renderIcon?.(IconSize.xs)}
-                rightSection={<CheckboxIndicator checked={itemConfig.visible} />}
+                leftSection={
+                  <Group>
+                    <CheckboxIndicator checked={itemConfig.visible} />
+                    {item.renderIcon?.(IconSize.xs)}
+                  </Group>
+                }
                 onClick={() => setMenuItemVisible(itemConfig.id, !itemConfig.visible)}
               >
                 {item.title}
               </Menu.Item>
             );
           }}
-          keyFunc={(item) => item.id}
           gap={0}
         />
       </TopBarMenuWrapper>
