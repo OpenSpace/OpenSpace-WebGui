@@ -1,15 +1,19 @@
-import { Button, Skeleton, Stack, Text } from '@mantine/core';
+import { Skeleton, Stack, Text } from '@mantine/core';
 
 import { useSubscribeToTime } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
+import { MenuItemEventHandlers } from '@/types/types';
+
+import { TaskBarMenuButton } from '../Menu/TaskBar/TaskBarMenuButton';
 
 import { formatDeltaTime } from './util';
 
-interface TimePanelMenuButtonProps {
-  onClick: () => void;
+interface Props {
+  eventHandlers: MenuItemEventHandlers;
 }
-export function TimePanelMenuButton({ onClick }: TimePanelMenuButtonProps) {
+
+export function TimePanelMenuButton({ eventHandlers }: Props) {
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime);
   const isPaused = useAppSelector((state) => state.time.isPaused);
   const timeString = useAppSelector((state) => state.time.timeString);
@@ -42,7 +46,7 @@ export function TimePanelMenuButton({ onClick }: TimePanelMenuButtonProps) {
   }
 
   return (
-    <Button onClick={onClick} size={'xl'} variant={'menubar'} disabled={!isReady}>
+    <TaskBarMenuButton {...eventHandlers} disabled={!isReady} aria-label={'Time Panel'}>
       <Stack gap={0} align={'flex-start'}>
         {isReady ? (
           <>
@@ -56,6 +60,6 @@ export function TimePanelMenuButton({ onClick }: TimePanelMenuButtonProps) {
           </>
         )}
       </Stack>
-    </Button>
+    </TaskBarMenuButton>
   );
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from '@mantine/core';
 
 import {
   BrowserIcon,
@@ -17,11 +16,13 @@ import {
   TreeViewIcon,
   VideocamIcon
 } from '@/icons/icons';
+import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { TempPropertyTest } from '@/panels/Scene/TempPropertyTest';
 import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { IconSize } from '@/types/enums';
+import { MenuItemEventHandlers } from '@/types/types';
 
 import { FloatWindowPosition } from '../WindowLayout/types';
 import { WindowLayoutPosition } from '../WindowLayout/WindowLayout';
@@ -47,7 +48,7 @@ export interface MenuItem {
   title: string; // Title of the rc-dock tab
   componentID: string; // Unqiue ID to identify this component among the rc-dock tabs
   content: React.JSX.Element; // Content to render inside the rc-dock tab
-  renderMenuButton?: (key: string, onClick: () => void) => React.JSX.Element; // Custom menu button to render
+  renderMenuButton?: (eventHandlers: MenuItemEventHandlers) => React.JSX.Element; // Custom menu button to render
   renderIcon?: (size: IconSize) => React.JSX.Element; // Custom icon to render
   preferredPosition: WindowLayoutPosition; // Where this panel is instantiated
   floatPosition?: FloatWindowPosition; // Preferred position and size of a floating window given in px,
@@ -61,16 +62,13 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Scene',
     componentID: 'scene',
     content: <Scene />,
-    renderMenuButton: (key, onclick) => (
-      <Button
-        key={key}
-        onClick={onclick}
-        variant={'menubar'}
+    renderMenuButton: (eventHandlers) => (
+      <TaskBarMenuButton
+        {...eventHandlers}
         leftSection={<TreeViewIcon size={IconSize.lg} />}
-        size={'xl'}
       >
         Scene
-      </Button>
+      </TaskBarMenuButton>
     ),
     renderIcon: (size) => <TreeViewIcon size={size} />,
     preferredPosition: 'left',
@@ -80,16 +78,13 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Settings',
     componentID: 'settings',
     content: <SettingsPanel />,
-    renderMenuButton: (key, onclick) => (
-      <Button
-        key={key}
-        onClick={onclick}
-        variant={'menubar'}
+    renderMenuButton: (eventHandlers) => (
+      <TaskBarMenuButton
+        {...eventHandlers}
         leftSection={<SettingsIcon size={IconSize.lg} />}
-        size={'xl'}
       >
         Settings
-      </Button>
+      </TaskBarMenuButton>
     ),
     renderIcon: (size) => <SettingsIcon size={size} />,
     preferredPosition: 'left',
@@ -99,8 +94,8 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Navigation',
     componentID: 'navigation',
     content: <OriginPanel />,
-    renderMenuButton: (key, onClick) => (
-      <OriginPanelMenuButton key={key} onClick={onClick} />
+    renderMenuButton: (eventHandlers) => (
+      <OriginPanelMenuButton eventHandlers={eventHandlers} />
     ),
     renderIcon: (size) => <FocusIcon size={size} />,
     preferredPosition: 'float',
@@ -111,8 +106,8 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Date Panel',
     componentID: 'datePanel',
     content: <TimePanel />,
-    renderMenuButton: (key, onClick) => (
-      <TimePanelMenuButton key={key} onClick={onClick} />
+    renderMenuButton: (eventHandlers) => (
+      <TimePanelMenuButton eventHandlers={eventHandlers} />
     ),
     renderIcon: (size) => <CalendarIcon size={size} />,
     preferredPosition: 'float',
@@ -123,8 +118,8 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Session Recording',
     componentID: 'sessionRecording',
     content: <SessionRecordingPanel />,
-    renderMenuButton: (key, onClick) => (
-      <SessionRecordingMenuButton key={key} onClick={onClick} />
+    renderMenuButton: (eventHandlers) => (
+      <SessionRecordingMenuButton eventHandlers={eventHandlers} />
     ),
     renderIcon: (size) => <VideocamIcon size={size} />,
     preferredPosition: 'right',

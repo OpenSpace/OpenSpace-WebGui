@@ -94,3 +94,10 @@ export type CustomGroupOrdering = {
   // The value is a list of node names in the order they should be displayed
   [key: string]: string[] | undefined;
 };
+
+export interface MenuItemEventHandlers {
+  onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onRightClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  // onTouchStart: (event: React.TouchEvent<HTMLButtonElement>) => void;
+  // onTouchEnd: (event: React.TouchEvent<HTMLButtonElement>) => void;
+}
