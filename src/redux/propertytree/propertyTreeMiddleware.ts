@@ -34,9 +34,18 @@ export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(
 export const addUriToPropertyTree = createAsyncThunk(
   'propertyTree/addUri',
   async (uri: Uri) => {
-    const response = (await api.getProperty(uri)) as
+    let uriToFetch = uri;
+    // If the uri is to a layer, we want to get the parent property owner.
+    // This is to preserve the order of the layers.
+    if (uri.includes('.Renderable.Layers.')) {
+      uriToFetch = uri.substring(0, uri.lastIndexOf('.'));
+    }
+
+    const response = (await api.getProperty(uriToFetch)) as
       | OpenSpaceProperty
       | OpenSpacePropertyOwner;
+
+    // Property Owner
     if ('properties' in response) {
       const { properties, propertyOwners } = flattenPropertyTree(response);
       const propertiesMap: Properties = {};
@@ -52,6 +61,7 @@ export const addUriToPropertyTree = createAsyncThunk(
         propertyOwners: propertyOwnerMap
       };
     } else {
+      // Property
       const result = [convertOsPropertyToProperty(response)];
       const propertiesMap: Properties = {};
       result.forEach((p) => {
