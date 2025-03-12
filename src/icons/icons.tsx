@@ -30,6 +30,8 @@ export {
   MdArrowBack as BackArrowIcon,
   MdCalendarMonth as CalendarIcon,
   MdCancel as CancelIcon,
+  MdCheckBox as CheckBoxCheckedIcon,
+  MdCheckBoxOutlineBlank as CheckBoxUncheckedIcon,
   MdExpandMore as ChevronDownIcon,
   MdChevronLeft as ChevronLeftIcon,
   MdChevronRight as ChevronRightIcon,
@@ -79,10 +81,7 @@ export {
   MdWater as WaterIcon,
   MdZoomIn as ZoomInIcon,
   MdZoomOut as ZoomOutIcon,
-  MdZoomOutMap as ZoomOutMapIcon,
-  MdCheckBox as CheckBoxCheckedIcon,
-  MdCheckBoxOutlineBlank as CheckBoxUncheckedIcon
-} from 'react-icons/md';
+  MdZoomOutMap as ZoomOutMapIcon} from 'react-icons/md';
 export {
   PiBookOpenText as BookIcon,
   PiMouseLeftClickThin as LeftClickMouseIcon,

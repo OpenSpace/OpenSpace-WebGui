@@ -1,6 +1,7 @@
+import { Text } from '@mantine/core';
+
 import { ChevronRightIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
-import { Text } from '@mantine/core';
 
 interface Props {
   path: (React.JSX.Element | string)[];

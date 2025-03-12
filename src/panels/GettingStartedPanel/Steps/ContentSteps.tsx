@@ -9,6 +9,7 @@ import {
   Title
 } from '@mantine/core';
 
+import { FolderPath } from '@/components/FolderPath/FolderPath';
 import { FocusIcon, SceneIcon } from '@/icons/icons';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { IconSize } from '@/types/enums';
@@ -19,7 +20,6 @@ import { AltitudeTask } from '../Tasks/AltitudeTask';
 import { SetBoolPropertyTask } from '../Tasks/ChangePropertyTask';
 import { FocusTask } from '../Tasks/FocusTask';
 import { MarsTrailColorTask } from '../Tasks/MarsTrailColorTask';
-import { FolderPath } from '@/components/FolderPath/FolderPath';
 
 export const ContentSteps = [
   <>
@@ -76,7 +76,7 @@ export const ContentSteps = [
       path={[
         <>
           <SceneIcon size={IconSize.sm} />
-          <Text ml={'xs'}>{'Scene'}</Text>
+          <Text ml={'xs'}>Scene</Text>
         </>,
         'Mars Trail',
         'Renderable',
