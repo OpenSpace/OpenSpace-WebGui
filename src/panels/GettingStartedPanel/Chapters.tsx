@@ -40,15 +40,10 @@ export function Chapters({
         label={'Navigation'}
         icon={<AirplaneIcon size={IconSize.md} />}
       ></Stepper.Step>
-      <Stepper.Step
-        label={'Time'}
-        icon={<TimerIcon size={IconSize.md} />}
-        h={'100%'}
-      ></Stepper.Step>
+      <Stepper.Step label={'Time'} icon={<TimerIcon size={IconSize.md} />}></Stepper.Step>
       <Stepper.Step
         label={'Content'}
         icon={<SceneIcon size={IconSize.md} />}
-        h={'100%'}
       ></Stepper.Step>
     </Stepper>
   );
