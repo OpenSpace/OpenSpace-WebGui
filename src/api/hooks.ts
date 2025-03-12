@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useThrottledCallback } from '@mantine/hooks';
 
+import { subscribeToCamera, unsubscribeToCamera } from '@/redux/camera/cameraMiddleware';
 import {
   subscribeToCameraPath,
   unsubscribeToCameraPath
@@ -340,4 +341,14 @@ export function usePropListeningState<T>(prop: T) {
   }
 
   return { value, setValue, setIsEditing };
+}
+
+export function useSubscribeToCamera() {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(subscribeToCamera());
+    return () => {
+      dispatch(unsubscribeToCamera());
+    };
+  }, [dispatch]);
 }

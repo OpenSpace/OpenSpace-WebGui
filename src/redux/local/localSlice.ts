@@ -34,7 +34,7 @@ export const localSlice = createSlice({
       state.sceneTree.currentlySelectedNode = action.payload;
       return state;
     },
-    setVisibleMenuItem: (
+    setMenuItemVisible: (
       state,
       action: PayloadAction<{ id: string; visible: boolean }>
     ) => {
@@ -44,7 +44,7 @@ export const localSlice = createSlice({
       }
       return state;
     },
-    setEnabledMenuItem: (
+    setMenuItemEnabled: (
       state,
       action: PayloadAction<{ id: string; enabled: boolean }>
     ) => {
@@ -65,8 +65,8 @@ export const localSlice = createSlice({
 export const {
   storeSceneTreeNodeExpanded,
   setSceneTreeSelectedNode,
-  setVisibleMenuItem,
-  setEnabledMenuItem,
+  setMenuItemVisible,
+  setMenuItemEnabled,
   setMenuItemsOrder
 } = localSlice.actions;
 export const localReducer = localSlice.reducer;

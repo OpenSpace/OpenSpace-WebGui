@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 
 import { useGetBoolPropertyValue } from '@/api/hooks';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setEnabledMenuItem, setVisibleMenuItem } from '@/redux/local/localSlice';
+import { setMenuItemEnabled, setMenuItemVisible } from '@/redux/local/localSlice';
 
 export function useMenuItems() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);
@@ -22,8 +22,8 @@ export function useMenuItems() {
   //  enabled property
   const enablePanel = useCallback(
     (id: string, value: boolean) => {
-      dispatch(setEnabledMenuItem({ id: id, enabled: value }));
-      dispatch(setVisibleMenuItem({ id: id, visible: value }));
+      dispatch(setMenuItemEnabled({ id: id, enabled: value }));
+      dispatch(setMenuItemVisible({ id: id, visible: value }));
     },
     [dispatch]
   );
@@ -41,7 +41,7 @@ export function useMenuItems() {
   }, [isSkyBrowserEnabled, enablePanel]);
 
   function setMenuItemVisible(id: string, value: boolean) {
-    dispatch(setVisibleMenuItem({ id, visible: value }));
+    dispatch(setMenuItemVisible({ id, visible: value }));
   }
 
   return { menuItems, filteredMenuItems, setMenuItemVisible };

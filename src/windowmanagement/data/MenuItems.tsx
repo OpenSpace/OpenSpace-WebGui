@@ -11,9 +11,10 @@ import {
   KeyboardIcon,
   LocationPinIcon,
   RocketLaunchIcon,
+  RouteIcon,
+  SceneIcon,
   SettingsIcon,
   TelescopeIcon,
-  TreeViewIcon,
   VideocamIcon
 } from '@/icons/icons';
 import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
@@ -32,6 +33,7 @@ import {
   ExoplanetsPanel,
   FlightControlPanel,
   GeoLocationPanel,
+  GettingStartedPanel,
   KeybindsPanel,
   MissionsPanel,
   OriginPanel,
@@ -65,12 +67,12 @@ export const menuItemsData: Record<string, MenuItem> = {
     renderMenuButton: (eventHandlers) => (
       <TaskBarMenuButton
         {...eventHandlers}
-        leftSection={<TreeViewIcon size={IconSize.lg} />}
+        leftSection={<SceneIcon size={IconSize.lg} />}
       >
         Scene
       </TaskBarMenuButton>
     ),
-    renderIcon: (size) => <TreeViewIcon size={size} />,
+    renderIcon: (size) => <SceneIcon size={size} />,
     preferredPosition: 'left',
     defaultVisible: true
   },
@@ -102,9 +104,9 @@ export const menuItemsData: Record<string, MenuItem> = {
     floatPosition: { offsetY: 100, offsetX: 320, width: 400, height: 440 },
     defaultVisible: true
   },
-  datePanel: {
-    title: 'Date Panel',
-    componentID: 'datePanel',
+  timePanel: {
+    title: 'Time Panel',
+    componentID: 'timePanel',
     content: <TimePanel />,
     renderMenuButton: (eventHandlers) => (
       <TimePanelMenuButton eventHandlers={eventHandlers} />
@@ -197,6 +199,15 @@ export const menuItemsData: Record<string, MenuItem> = {
     preferredPosition: 'float',
     floatPosition: { offsetY: 150, offsetX: 350, width: 1050, height: 680 },
     defaultVisible: false
+  },
+  gettingStartedTour: {
+    title: 'Getting Started Tour',
+    componentID: 'gettingStartedTour',
+    content: <GettingStartedPanel />,
+    renderIcon: (size) => <RouteIcon size={size} />,
+    preferredPosition: 'float',
+    floatPosition: { offsetY: 150, offsetX: 350, width: 600, height: 500 },
+    defaultVisible: true
   },
   propertyTest: {
     title: 'Property Test (TEMP)',

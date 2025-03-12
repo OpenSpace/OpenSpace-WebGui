@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ActionIcon, Alert, Button, Center, Group, Stack, Text } from '@mantine/core';
+import { ActionIcon, Alert, Button, Group, Stack, Text } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
 import { useOpenSpaceApi, useSetOpenSpaceTime, useSubscribeToTime } from '@/api/hooks';
@@ -245,7 +245,7 @@ export function TimeInput() {
 
   if (cappedTime === undefined) {
     return (
-      <Stack align={"center"} gap={2} pb={'xs'}>
+      <Stack align={'center'} gap={2} pb={'xs'}>
         <Text>{backupTimeString}</Text>
         <Text c={'red'}>
           Can't interact with dates outside the range April 20, 271821 BC to Sep 13,
