@@ -8,7 +8,7 @@ interface Props extends BoxProps, PropsWithChildren {
   direction?: 'vertical' | 'horizontal' | 'both';
 }
 
-export function ScrollBox({ ref, direction = 'both', children, ...props }: Props) {
+export function ScrollBox({ ref, direction = 'vertical', children, ...props }: Props) {
   const vertical = direction === 'vertical' || direction === 'both';
   const horizontal = direction === 'horizontal' || direction === 'both';
   return (
@@ -20,7 +20,7 @@ export function ScrollBox({ ref, direction = 'both', children, ...props }: Props
       }}
       className={styles.scroller}
       onWheel={(event) => {
-        if (horizontal) {
+        if (direction === 'horizontal') {
           event.currentTarget.scrollLeft += event.deltaY;
         }
       }}
