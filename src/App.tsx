@@ -15,9 +15,9 @@ import 'rc-dock/dist/rc-dock-dark.css';
 function App() {
   return (
     <Provider store={store}>
-      {/* We want to place the lua api provider here as it creates a socket connection.
-      We want this to be outside of the strict mode, which calls useEffects twice. 
-      The socket doesn't handle this well.*/}
+      {/* We want to place the Lua API provider outside the StrictMode as it creates a 
+      socket connection. Strict mode calls useEffects twice and the socket does not 
+      handle this well.*/}
       <LuaApiProvider>
         <StrictMode>
           <MantineProvider theme={theme} defaultColorScheme={'dark'}>
