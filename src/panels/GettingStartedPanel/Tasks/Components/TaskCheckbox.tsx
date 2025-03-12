@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Checkbox } from '@mantine/core';
+import { Checkbox, Group, Text } from '@mantine/core';
 
 interface Props {
   taskCompleted: boolean;
@@ -12,13 +12,16 @@ export function TaskCheckbox({ taskCompleted, label }: Props) {
     hasEverBeenCompleted.current = true;
   }
   return (
-    <Checkbox
-      size={'lg'}
-      c={'orange'}
-      color={'green'}
-      checked={hasEverBeenCompleted.current}
-      readOnly
-      label={`Task: ${label}`}
-    />
+    <Group>
+      <Checkbox.Indicator
+        size={'lg'}
+        color={'green'}
+        checked={hasEverBeenCompleted.current}
+        style={{ cursor: 'default' }}
+      />
+      <Text c={'orange'} size="lg">
+        {label}
+      </Text>
+    </Group>
   );
 }
