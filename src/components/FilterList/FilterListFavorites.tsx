@@ -1,10 +1,9 @@
 import { PropsWithChildren } from 'react';
-import { Box } from '@mantine/core';
 
 import { LoadingBlocks } from '../LoadingBlocks/LoadingBlocks';
+import { ScrollBox } from '../ScrollBox/ScrollBox';
 
 import { useFilterListProvider } from './hooks';
-import { ScrollBox } from '../ScrollBox/ScrollBox';
 
 export const FilterListFavoritesDisplayName = 'FilterListFavorites';
 

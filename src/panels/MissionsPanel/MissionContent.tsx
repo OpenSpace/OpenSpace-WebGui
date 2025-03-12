@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react';
-import { Box, Button, Group, Switch, Text, Title } from '@mantine/core';
+import { Button, Group, Switch, Text, Title } from '@mantine/core';
 
 import { useSubscribeToTime } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 
 import { TimeLine } from './TimeLine/TimeLine';
 import { MissionPhase } from './MissionPhase';
 import { DisplayedPhase, DisplayType, Phase } from './types';
-import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 
 interface Props {
   missionOverview: Phase;

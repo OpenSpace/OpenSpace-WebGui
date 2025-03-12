@@ -1,9 +1,9 @@
 import { alpha, Box, Flex } from '@mantine/core';
 
+import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { TaskBarMenuButton } from './TaskBarMenuButton';
-import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 
 interface Props {
   visibleMenuItems: string[];

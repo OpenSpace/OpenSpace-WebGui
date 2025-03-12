@@ -1,12 +1,11 @@
 import { PropsWithChildren, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { Box } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
 
 import { fallbackRender } from '@/components/ErrorFallback/fallbackRender';
+import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 
 import { WindowSizeContext } from './WindowSizeContext';
-import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 
 export function Window({ children }: PropsWithChildren) {
   const { ref, width, height } = useElementSize();

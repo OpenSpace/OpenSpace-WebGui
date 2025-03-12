@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { Box, MantineSpacing } from '@mantine/core';
 import { useVirtualizer } from '@tanstack/react-virtual';
+
 import { ScrollBox } from '../ScrollBox/ScrollBox';
 
 export interface VirtualListProps<T> {
