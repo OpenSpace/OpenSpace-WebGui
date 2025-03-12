@@ -25,6 +25,7 @@ import {
   clearPropertyOwners,
   removePropertyOwners
 } from './propertyowner/propertyOwnerSlice';
+import { removeLastWordFromUri } from '@/util/propertyTreeHelpers';
 
 export const reloadPropertyTree = createAction<void>('propertyTree/reload');
 export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(
@@ -38,7 +39,7 @@ export const addUriToPropertyTree = createAsyncThunk(
     // If the uri is to a layer, we want to get the parent property owner.
     // This is to preserve the order of the layers.
     if (uri.includes('.Renderable.Layers.')) {
-      uriToFetch = uri.substring(0, uri.lastIndexOf('.'));
+      uriToFetch = removeLastWordFromUri(uri);
     }
 
     const response = (await api.getProperty(uriToFetch)) as
