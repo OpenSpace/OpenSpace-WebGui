@@ -35,7 +35,7 @@ export function TaskBar() {
               borderTopRightRadius: isLastItem ? 'var(--mantine-radius-md)' : undefined
             }}
           >
-            <TaskBarMenuButton item={item} disabled={!itemConfig.enabled} />
+            <TaskBarMenuButton item={item} />
           </Box>
         );
       })}
