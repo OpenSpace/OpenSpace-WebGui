@@ -3,8 +3,6 @@ import { useCallback, useEffect } from 'react';
 import { useGetBoolPropertyValue } from '@/api/hooks';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setEnabledMenuItem, setVisibleMenuItem } from '@/redux/local/localSlice';
-import { MenuItem } from '@/windowmanagement/data/MenuItems';
-import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 export function useMenuItems() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);
@@ -47,33 +45,4 @@ export function useMenuItems() {
   }
 
   return { menuItems, filteredMenuItems, setMenuItemVisible };
-}
-
-export function useMenuButtonEventHandlers(item: MenuItem) {
-  const { addWindow, closeWindow } = useWindowLayoutProvider();
-
-  function onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    if (event.shiftKey) {
-      addWindow(item.content, {
-        title: item.title,
-        position: item.preferredPosition,
-        id: item.componentID,
-        floatPosition: item.floatPosition
-      });
-    } else {
-      closeWindow(item.componentID);
-    }
-  }
-
-  function onRightClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    closeWindow(item.componentID);
-  }
-
-  return {
-    onClick,
-    onRightClick
-  };
-  // onRightClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  // onTouchStart: (event: React.TouchEvent<HTMLButtonElement>) => void;
-  // onTouchEnd: (event: React.TouchEvent<HTMLButtonElement>) => void;
 }

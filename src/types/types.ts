@@ -98,6 +98,4 @@ export type CustomGroupOrdering = {
 export interface MenuItemEventHandlers {
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   onRightClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  // onTouchStart: (event: React.TouchEvent<HTMLButtonElement>) => void;
-  // onTouchEnd: (event: React.TouchEvent<HTMLButtonElement>) => void;
 }

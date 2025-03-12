@@ -1,9 +1,8 @@
-import { PropsWithChildren } from 'react';
 import { Button, ButtonProps } from '@mantine/core';
 
 import { MenuItemEventHandlers } from '@/types/types';
 
-interface Props extends PropsWithChildren, MenuItemEventHandlers, ButtonProps {}
+interface Props extends MenuItemEventHandlers, ButtonProps {}
 
 export function TaskBarMenuButton({ onClick, onRightClick, children, ...props }: Props) {
   return (
