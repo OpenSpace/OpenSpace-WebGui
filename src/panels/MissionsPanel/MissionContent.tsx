@@ -7,6 +7,7 @@ import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { TimeLine } from './TimeLine/TimeLine';
 import { MissionPhase } from './MissionPhase';
 import { DisplayedPhase, DisplayType, Phase } from './types';
+import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 
 interface Props {
   missionOverview: Phase;
@@ -111,7 +112,7 @@ export function MissionContent({ missionOverview }: Props) {
         missionOverview={missionOverview}
         setDisplayedPhase={setPhaseManually}
       />
-      <Box px={'md'} h={'100%'} style={{ overflow: 'auto' }}>
+      <ScrollBox px={'md'} h={'100%'}>
         <Group justify={'space-between'} mb={'md'}>
           <Title order={2}>{missionOverview.name}</Title>
           <Button
@@ -139,7 +140,7 @@ export function MissionContent({ missionOverview }: Props) {
         ) : (
           'No data for the current time range'
         )}
-      </Box>
+      </ScrollBox>
     </Group>
   );
 }

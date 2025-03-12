@@ -19,6 +19,7 @@ export function TopMenuBar({ visibleMenuItems, setVisibleMenuItems }: TopMenuBar
       h={30}
       bg={alpha('var(--mantine-color-dark-9)', 0.9)}
       justify={'space-between'}
+      pb={'md'}
       style={{
         whiteSpace: 'nowrap',
         overflowX: 'auto',

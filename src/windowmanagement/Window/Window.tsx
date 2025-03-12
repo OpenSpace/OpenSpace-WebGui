@@ -6,6 +6,7 @@ import { useElementSize } from '@mantine/hooks';
 import { fallbackRender } from '@/components/ErrorFallback/fallbackRender';
 
 import { WindowSizeContext } from './WindowSizeContext';
+import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 
 export function Window({ children }: PropsWithChildren) {
   const { ref, width, height } = useElementSize();
@@ -43,11 +44,11 @@ export function Window({ children }: PropsWithChildren) {
         pointerEvents: { enable: enablePointerEvents, disable: disablePointerEvents }
       }}
     >
-      <Box h={'100%'} ref={ref} p={'xs'} style={{ overflow: 'auto' }}>
+      <ScrollBox h={'100%'} ref={ref} p={'xs'}>
         <ErrorBoundary fallbackRender={fallbackRender} onReset={handleReset}>
           <Suspense fallback={null}>{children}</Suspense>
         </ErrorBoundary>
-      </Box>
+      </ScrollBox>
     </WindowSizeContext.Provider>
   );
 }

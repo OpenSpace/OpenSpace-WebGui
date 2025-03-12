@@ -1,0 +1,21 @@
+.scroller::-webkit-scrollbar {
+  width: 13px;
+  background-color: transparent;
+  border-radius: 100px;
+}
+
+.scroller::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  background-color: var(--mantine-color-gray-5);
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+.scroller:hover::-webkit-scrollbar {
+  background-color: var(--mantine-color-gray-9);
+}
+
+.scroller:hover::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  background-color: var(--mantine-color-gray-2);
+}
