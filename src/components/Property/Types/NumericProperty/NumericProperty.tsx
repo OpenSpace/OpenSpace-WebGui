@@ -1,4 +1,4 @@
-import { Flex, Group } from '@mantine/core';
+import { Flex, Group, Paper, Text } from '@mantine/core';
 
 import { usePropListeningState } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
@@ -67,15 +67,21 @@ export function NumericProperty({
         />
       )}
       <Flex flex={1} miw={100}>
-        <NumericInput
-          value={currentValue}
-          disabled={disabled}
-          min={min}
-          max={max}
-          step={step}
-          allowDecimal={!isInt}
-          onEnter={onValueChange}
-        />
+        {disabled ? (
+          <Paper px={'sm'} py={5} flex={1}>
+            <Text size={'sm'}>{value}</Text>
+          </Paper>
+        ) : (
+          <NumericInput
+            value={currentValue}
+            disabled={disabled}
+            min={min}
+            max={max}
+            step={step}
+            allowDecimal={!isInt}
+            onEnter={onValueChange}
+          />
+        )}
       </Flex>
     </Group>
   );

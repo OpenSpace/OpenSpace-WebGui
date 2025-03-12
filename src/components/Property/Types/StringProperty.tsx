@@ -1,3 +1,5 @@
+import { Paper, Text } from '@mantine/core';
+
 import { StringInput } from '@/components/Input/StringInput';
 
 import { ConcretePropertyBaseProps } from '../types';
@@ -8,6 +10,13 @@ interface Props extends ConcretePropertyBaseProps {
 }
 
 export function StringProperty({ name, disabled, setPropertyValue, value }: Props) {
+  if (disabled) {
+    return (
+      <Paper px={'sm'} py={5}>
+        <Text size={'sm'}>{value}</Text>
+      </Paper>
+    );
+  }
   return (
     <StringInput
       disabled={disabled}
