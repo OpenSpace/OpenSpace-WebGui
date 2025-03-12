@@ -1,5 +1,6 @@
 .scroller::-webkit-scrollbar {
   width: 13px;
+  height: 13px;
   background-color: transparent;
   border-radius: 100px;
 }

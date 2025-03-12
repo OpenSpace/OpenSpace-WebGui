@@ -17,8 +17,13 @@ export function ScrollBox({ ref, direction = 'both', children, ...props }: Props
         overflowX: horizontal ? 'auto' : 'hidden',
         overflowY: vertical ? 'auto' : 'hidden'
       }}
-      {...props}
       className={styles.scroller}
+      onWheel={(event) => {
+        if (horizontal) {
+          event.currentTarget.scrollLeft += event.deltaY;
+        }
+      }}
+      {...props}
     >
       {children}
     </Box>
