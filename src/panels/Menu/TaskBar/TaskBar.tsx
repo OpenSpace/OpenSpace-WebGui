@@ -2,16 +2,12 @@ import { alpha, Box, Flex } from '@mantine/core';
 
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
+import { useMenuItems } from '../hooks';
+
 import { TaskBarMenuButton } from './TaskBarMenuButton';
 
-interface Props {
-  visibleMenuItems: string[];
-}
-
-export function TaskBar({ visibleMenuItems }: Props) {
-  const visibleTaskBarButtons = menuItemsData.filter((item) => {
-    return visibleMenuItems.includes(item.componentID);
-  });
+export function TaskBar() {
+  const { filteredMenuItems } = useMenuItems();
 
   return (
     <Flex
@@ -24,8 +20,9 @@ export function TaskBar({ visibleMenuItems }: Props) {
         event.currentTarget.scrollLeft += event.deltaY;
       }}
     >
-      {visibleTaskBarButtons.map((item, i) => {
-        const isLastItem = i === visibleTaskBarButtons.length - 1;
+      {filteredMenuItems.map((itemConfig, i) => {
+        const isLastItem = i === filteredMenuItems.length - 1;
+        const item = menuItemsData[itemConfig.id];
         return (
           // The wrapper box is needed here so custom menu buttons like the play/pause,
           // are playing nicely with the rest of the buttons. For example the
