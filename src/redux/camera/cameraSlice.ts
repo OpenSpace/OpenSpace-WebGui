@@ -14,8 +14,10 @@ const initialState: CameraState = {
   altitudeUnit: undefined
 };
 
+// @TODO: (ylvse 2024-10-14) - This topic should be called something more specific.
+// Refer to @emmbr for more details
 export const cameraSlice = createSlice({
-  name: 'connection',
+  name: 'camera',
   initialState,
   reducers: {
     updateCamera: (state, action: PayloadAction<CameraState>) => {
