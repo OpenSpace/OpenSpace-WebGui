@@ -79,7 +79,9 @@ export {
   MdWater as WaterIcon,
   MdZoomIn as ZoomInIcon,
   MdZoomOut as ZoomOutIcon,
-  MdZoomOutMap as ZoomOutMapIcon
+  MdZoomOutMap as ZoomOutMapIcon,
+  MdCheckBox as CheckBoxCheckedIcon,
+  MdCheckBoxOutlineBlank as CheckBoxUncheckedIcon
 } from 'react-icons/md';
 export {
   PiBookOpenText as BookIcon,

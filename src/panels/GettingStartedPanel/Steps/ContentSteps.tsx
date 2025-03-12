@@ -9,7 +9,7 @@ import {
   Title
 } from '@mantine/core';
 
-import { ChevronRightIcon, FocusIcon, SceneIcon } from '@/icons/icons';
+import { FocusIcon, SceneIcon } from '@/icons/icons';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { IconSize } from '@/types/enums';
 
@@ -19,6 +19,7 @@ import { AltitudeTask } from '../Tasks/AltitudeTask';
 import { SetBoolPropertyTask } from '../Tasks/ChangePropertyTask';
 import { FocusTask } from '../Tasks/FocusTask';
 import { MarsTrailColorTask } from '../Tasks/MarsTrailColorTask';
+import { FolderPath } from '@/components/FolderPath/FolderPath';
 
 export const ContentSteps = [
   <>
@@ -71,14 +72,18 @@ export const ContentSteps = [
     </Text>
     <MarsTrailColorTask />
     <Text>Go to:</Text>
-    <Text style={{ display: 'flex', alignItems: 'center' }}>
-      <SceneIcon size={IconSize.sm} style={{ margin: '0 4px' }} />
-      Scene <ChevronRightIcon size={IconSize.sm} style={{ margin: '0 4px' }} />
-      Mars Trail
-      <ChevronRightIcon size={IconSize.sm} style={{ margin: '0 4px' }} /> Renderable
-      <ChevronRightIcon size={IconSize.sm} style={{ margin: '0 4px' }} /> Appearance
-      <ChevronRightIcon size={IconSize.sm} style={{ margin: '0 4px' }} /> Color
-    </Text>
+    <FolderPath
+      path={[
+        <>
+          <SceneIcon size={IconSize.sm} />
+          <Text ml={'xs'}>{'Scene'}</Text>
+        </>,
+        'Mars Trail',
+        'Renderable',
+        'Appearance',
+        'Color'
+      ]}
+    />
     <Text>to change the color of the trail.</Text>
   </>,
   <>
@@ -88,6 +93,11 @@ export const ContentSteps = [
     <AltitudeMouse />
   </>,
   <>
+    <Text fw={'bold'}>GlobeBrowsing</Text>
+    <Text>
+      The feature that enables us to look at maps on planets is called{' '}
+      <span style={{ fontStyle: 'italic' }}>GlobeBrowsing</span>.
+    </Text>
     <Text>
       Planets can have multiple maps which show different data. Planets also have height
       maps, which show elevation. Different maps can have different resolutions.
@@ -98,15 +108,24 @@ export const ContentSteps = [
       on which server the map is located. It is usually faster to choose the server
       closest to you.
     </Text>
-    <Text>
-      For more in-depth knowledge about maps, please refer to the{' '}
-      <Anchor href={'https://docs.openspaceproject.com/'} target={'_blank'}></Anchor>
-      documentation.
-    </Text>
   </>,
   <>
+    <Text>Go to the Mars layers:</Text>
+    <FolderPath
+      path={[
+        <>
+          <SceneIcon size={IconSize.sm} />
+          <Text ml={'xs'}>Scene</Text>
+        </>,
+        'Mars',
+        'Renderable',
+        'Layers',
+        'Color Layers'
+      ]}
+    />
     <Text>
-      The layers are ordered, and the layer furthest down in the menu is shown at the top.
+      The layers are ordered, and the layer furthest down in the menu is shown at the top
+      of the globe.
     </Text>
     <FocusTask anchor={'Mars'} />
     <SetBoolPropertyTask
@@ -114,6 +133,7 @@ export const ContentSteps = [
       finalValue={true}
       label={"Turn on the ColorLayer 'CTX Mosaic [Sweden]'"}
     />
+
     <Text c={'dimmed'} fs={'italic'}>
       You need access to the internet to display the maps. They might need a few seconds
       to load.
@@ -161,5 +181,6 @@ export const ContentSteps = [
       </Anchor>
       .
     </Text>
+    <Text>Happy exploring!</Text>
   </>
 ];

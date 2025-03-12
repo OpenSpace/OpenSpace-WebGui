@@ -1,4 +1,4 @@
-import { ActionIcon, Group, Text, Title } from '@mantine/core';
+import { ActionIcon, Box, Group, Text, Title } from '@mantine/core';
 
 import { FastForwardIcon, FastRewindIcon, PauseIcon } from '@/icons/icons';
 import { TimeIncrementInput } from '@/panels/TimePanel/TimeInput/TimeIncrementInput';
@@ -39,7 +39,9 @@ export const TimeSteps = [
     <Text>You can view the past as well as the future.</Text>
     <ChangeYearTask />
     <Text>To open the Time Panel, click on the following icon in the taskbar:</Text>
-    <TimePanelMenuButton onClick={() => {}} />
+    <Box my={'xs'}>
+      <TimePanelMenuButton onClick={() => {}} />
+    </Box>
     <Group>
       <Text>Change the year by changing the value of the year in the time input:</Text>
       <TimeIncrementInput

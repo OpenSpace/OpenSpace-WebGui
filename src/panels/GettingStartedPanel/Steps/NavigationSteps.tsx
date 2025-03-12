@@ -20,13 +20,13 @@ export const NavigationSteps: React.JSX.Element[] = [
     In this chapter we will learn about navigating in OpenSpace.
   </>,
   <>
-    <Title order={2}>Let's go closer to Earth!</Title>
+    <Text>Let's go closer to Earth!</Text>
     <AltitudeTask anchor={'Earth'} altitude={3500} unit={'km'} compare={'lower'} />
     <CurrentAltitude />
     <AltitudeMouse />
   </>,
   <>
-    <Title order={2}>Let's go to Greenland!</Title>
+    <Text>Let's go to Greenland!</Text>
     <NavigationTask
       anchor={'Earth'}
       lat={{ value: 72, min: 55, max: 110 }}
@@ -70,7 +70,7 @@ export const NavigationSteps: React.JSX.Element[] = [
     </Center>
   </>,
   <>
-    <Title order={2}>Now it's time to look around in space!</Title>
+    <Text>Now it's time to look around in space!</Text>
     <FocusTask anchor={'Moon'} />
     <CurrentFocus />
     <Text>
@@ -80,7 +80,7 @@ export const NavigationSteps: React.JSX.Element[] = [
     </Text>
   </>,
   <>
-    <Title order={2}>Let's go closer to the Moon!</Title>
+    <Text>Let's go closer to the Moon!</Text>
     <AltitudeTask anchor={'Moon'} altitude={3500} unit={'km'} compare={'lower'} />
     <CurrentFocus />
     <CurrentAltitude />

@@ -14,6 +14,7 @@ export function Chapters({
     <Stepper
       active={section}
       onStepClick={setSection}
+      mb={'md'}
       styles={{
         stepBody: {
           display: 'none'

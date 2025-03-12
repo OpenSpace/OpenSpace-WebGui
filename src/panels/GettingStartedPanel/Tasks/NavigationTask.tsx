@@ -1,6 +1,6 @@
 import { useGetStringPropertyValue, useSubscribeToCamera } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
-import { RequireAtLeastOne } from '@/types/helpers';
+import { RequireAtLeastOne } from '@/types/types';
 import { NavigationAnchorKey } from '@/util/keys';
 
 import { TaskCheckbox } from './Components/TaskCheckbox';
