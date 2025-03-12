@@ -43,6 +43,8 @@ export function generateMatcherFunctionByKeys<T extends object>(keys: (keyof T)[
         return obj;
       }, {} as Partial<T>);
 
-    return objectWordBeginningSubstring(filtered, search);
+    return search
+      .split(' ')
+      .every((word) => objectWordBeginningSubstring(filtered, word));
   };
 }
