@@ -12,9 +12,10 @@ import {
   KeyboardIcon,
   LocationPinIcon,
   RocketLaunchIcon,
+  RouteIcon,
+  SceneIcon,
   SettingsIcon,
   TelescopeIcon,
-  TreeViewIcon,
   VideocamIcon
 } from '@/icons/icons';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
@@ -31,6 +32,7 @@ import {
   ExoplanetsPanel,
   FlightControlPanel,
   GeoLocationPanel,
+  GettingStartedPanel,
   KeybindsPanel,
   MissionsPanel,
   OriginPanel,
@@ -66,13 +68,13 @@ export const menuItemsData: MenuItem[] = [
         key={key}
         onClick={onclick}
         variant={'menubar'}
-        leftSection={<TreeViewIcon size={IconSize.lg} />}
+        leftSection={<SceneIcon size={IconSize.lg} />}
         size={'xl'}
       >
         Scene
       </Button>
     ),
-    renderIcon: (size) => <TreeViewIcon size={size} />,
+    renderIcon: (size) => <SceneIcon size={size} />,
     preferredPosition: 'left',
     defaultVisible: true
   },
@@ -108,8 +110,8 @@ export const menuItemsData: MenuItem[] = [
     defaultVisible: true
   },
   {
-    title: 'Date Panel',
-    componentID: 'datePanel',
+    title: 'Time Panel',
+    componentID: 'timePanel',
     content: <TimePanel />,
     renderMenuButton: (key, onClick) => (
       <TimePanelMenuButton key={key} onClick={onClick} />
@@ -202,6 +204,15 @@ export const menuItemsData: MenuItem[] = [
     preferredPosition: 'float',
     floatPosition: { offsetY: 150, offsetX: 350, width: 1050, height: 680 },
     defaultVisible: false
+  },
+  {
+    title: 'Getting Started Tour',
+    componentID: 'gettingStartedTour',
+    content: <GettingStartedPanel />,
+    renderIcon: (size) => <RouteIcon size={size} />,
+    preferredPosition: 'float',
+    floatPosition: { offsetY: 150, offsetX: 350, width: 600, height: 500 },
+    defaultVisible: true
   },
   {
     title: 'Property Test (TEMP)',

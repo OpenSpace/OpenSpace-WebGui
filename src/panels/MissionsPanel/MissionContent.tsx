@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Box, Button, Checkbox, Group, Text, Title } from '@mantine/core';
 
 import { useSubscribeToTime } from '@/api/hooks';
@@ -22,6 +22,21 @@ export function MissionContent({ missionOverview }: Props) {
     type: undefined,
     data: undefined
   });
+
+  // Reset phases when selected mission is changed
+  useEffect(() => {
+    // When the mission is changed, display overview again
+    setDisplayedPhase({
+      type: DisplayType.Overview,
+      data: missionOverview
+    });
+    // Avoid potentially showing information from a previous mission
+    setLastDisplayedPhase({
+      type: DisplayType.Overview,
+      data: missionOverview
+    });
+    setDisplayCurrentPhase(false);
+  }, [missionOverview]);
 
   const now = useSubscribeToTime();
 
@@ -104,14 +119,14 @@ export function MissionContent({ missionOverview }: Props) {
   }
 
   return (
-    <Group wrap={'nowrap'} align={'start'} h={'100%'} gap={0}>
+    <Group wrap={'nowrap'} align={'start'} gap={'xs'}>
       <TimeLine
         allPhasesNested={allPhasesNested}
         displayedPhase={displayedPhase}
         missionOverview={missionOverview}
         setDisplayedPhase={setPhaseManually}
       />
-      <Box px={'md'} h={'100%'} style={{ overflow: 'auto' }}>
+      <Box flex={1}>
         <Group justify={'space-between'} mb={'md'}>
           <Title order={2}>{missionOverview.name}</Title>
           <Button
