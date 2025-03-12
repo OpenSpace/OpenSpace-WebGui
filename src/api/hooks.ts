@@ -339,5 +339,5 @@ export function usePropListeningState<T>(prop: T) {
     isEditing.current = value;
   }
 
-  return { value, setValue, setIsEditing };
+  return { value, setValue, setIsEditing, isEditing: isEditing.current };
 }

@@ -80,7 +80,10 @@ export function NumericProperty({
           </Paper>
         ) : (
           <NumericInput
-            value={roundNumberToDecimalPlaces(currentValue, decimalPlaces)}
+            value={currentValue}
+            valueLabel={(v) =>
+              v !== undefined ? roundNumberToDecimalPlaces(v, decimalPlaces) : ''
+            }
             disabled={disabled}
             min={min}
             max={max}
