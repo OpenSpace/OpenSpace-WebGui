@@ -109,7 +109,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     floatPosition: { offsetY: 100, offsetX: 320, width: 400, height: 440 },
     defaultVisible: true
   },
-  datePanel: {
+  timePanel: {
     title: 'Time Panel',
     componentID: 'timePanel',
     content: <TimePanel />,
@@ -205,7 +205,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     floatPosition: { offsetY: 150, offsetX: 350, width: 1050, height: 680 },
     defaultVisible: false
   },
-  gettingStartTour: {
+  gettingStartedTour: {
     title: 'Getting Started Tour',
     componentID: 'gettingStartedTour',
     content: <GettingStartedPanel />,
