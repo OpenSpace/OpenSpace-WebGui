@@ -1,29 +1,37 @@
-import { ErrorBoundary } from 'react-error-boundary';
+import { StrictMode } from 'react';
+import { Provider } from 'react-redux';
+import { BrowserRouter, Route,Routes } from 'react-router';
 import { MantineProvider } from '@mantine/core';
-import { ModalsProvider } from '@mantine/modals';
 
-import { fallbackRender } from './components/ErrorFallback/fallbackRender';
+import { LuaApiProvider } from './api/LuaApiProvider';
+import { ActionsPage } from './pages/ActionsPage';
+import { GuiPage } from './pages/GuiPage';
+import { RoutesPage } from './pages/RoutesPage';
+import { store } from './redux/store';
 import { theme } from './theme/mantineTheme';
-import { WindowLayout } from './windowmanagement/WindowLayout/WindowLayout';
-import { WindowLayoutProvider } from './windowmanagement/WindowLayout/WindowLayoutProvider';
 
 import 'rc-dock/dist/rc-dock-dark.css';
-import '@mantine/core/styles.css';
 
 function App() {
   return (
-    <ErrorBoundary
-      fallbackRender={fallbackRender}
-      onReset={() => window.location.reload()}
-    >
-      <MantineProvider theme={theme} defaultColorScheme={'dark'}>
-        <ModalsProvider>
-          <WindowLayoutProvider>
-            <WindowLayout />
-          </WindowLayoutProvider>
-        </ModalsProvider>
-      </MantineProvider>
-    </ErrorBoundary>
+    <Provider store={store}>
+      {/* We want to place the Lua API provider outside the StrictMode as it creates a 
+      socket connection. Strict mode calls useEffects twice and the socket does not 
+      handle this well.*/}
+      <LuaApiProvider>
+        <StrictMode>
+          <MantineProvider theme={theme} defaultColorScheme={'dark'}>
+            <BrowserRouter>
+              <Routes>
+                <Route index element={<RoutesPage />} />
+                <Route path={'/frontend'} element={<GuiPage />} />
+                <Route path={'/actions'} element={<ActionsPage />} />
+              </Routes>
+            </BrowserRouter>
+          </MantineProvider>
+        </StrictMode>
+      </LuaApiProvider>
+    </Provider>
   );
 }
 
