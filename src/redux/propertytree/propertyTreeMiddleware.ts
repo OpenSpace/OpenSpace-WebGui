@@ -14,6 +14,7 @@ import {
   Uri
 } from '@/types/types';
 import { rootOwnerKey } from '@/util/keys';
+import { isGlobeLayer, removeLastWordFromUri } from '@/util/propertyTreeHelpers';
 
 import {
   addProperties,
@@ -25,7 +26,6 @@ import {
   clearPropertyOwners,
   removePropertyOwners
 } from './propertyowner/propertyOwnerSlice';
-import { removeLastWordFromUri } from '@/util/propertyTreeHelpers';
 
 export const reloadPropertyTree = createAction<void>('propertyTree/reload');
 export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(
@@ -38,7 +38,7 @@ export const addUriToPropertyTree = createAsyncThunk(
     let uriToFetch = uri;
     // If the uri is to a layer, we want to get the parent property owner.
     // This is to preserve the order of the layers.
-    if (uri.includes('.Renderable.Layers.')) {
+    if (isGlobeLayer(uri)) {
       uriToFetch = removeLastWordFromUri(uri);
     }
 
