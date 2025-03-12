@@ -1,9 +1,10 @@
-import { MantineStyleProps, NumberFormatter, Slider, Stack } from '@mantine/core';
+import { MantineStyleProps, Slider, Stack } from '@mantine/core';
 
 import { usePropListeningState } from '@/api/hooks';
 import { useSliderScale } from '@/components/Property/SliderUtil/hook';
 
 import { SliderMinMaxLabels } from '../../../SliderUtil/SliderMinMaxLabels';
+import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from '../util';
 
 interface Props extends MantineStyleProps {
   disabled: boolean;
@@ -38,7 +39,7 @@ export function NumericPropertySlider({
     max
   );
 
-  const decimalPlaces = Math.max(0, -Math.floor(Math.log10(step)));
+  const decimalPlaces = stepToDecimalPlaces(step);
 
   function onSliderInput(newValue: number) {
     setIsEditingSlider(true);
@@ -53,7 +54,7 @@ export function NumericPropertySlider({
   return (
     <Stack gap={0} {...styleProps}>
       <Slider
-        label={(v) => <NumberFormatter value={v} decimalScale={decimalPlaces} />}
+        label={(v) => roundNumberToDecimalPlaces(v, decimalPlaces)}
         disabled={disabled}
         value={valueToSliderValue(currentValue)}
         min={min}

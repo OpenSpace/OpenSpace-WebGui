@@ -1,4 +1,4 @@
-import { Flex, Group, Paper, Text } from '@mantine/core';
+import { Flex, Group, NumberFormatter, Paper, Text } from '@mantine/core';
 
 import { usePropListeningState } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
@@ -6,6 +6,7 @@ import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { ConcretePropertyBaseProps } from '../../types';
 
 import { NumericPropertySlider } from './Slider/NumericPropertySlider';
+import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from './util';
 
 export interface NumericPropertyProps extends ConcretePropertyBaseProps {
   setPropertyValue: (newValue: number) => void;
@@ -43,6 +44,8 @@ export function NumericProperty({
   const maxAllowedExtentForSlider = 10e12;
   const shouldShowSlider = isFinite(extent) && extent < maxAllowedExtentForSlider;
 
+  const decimalPlaces = stepToDecimalPlaces(step);
+
   // @TODO There still seems to be a bit of a stutter when dragging the slider.
   // nvestigate. Is there somethign we could memo to make it better?
   function onValueChange(newValue: number) {
@@ -69,17 +72,22 @@ export function NumericProperty({
       <Flex flex={1} miw={100}>
         {disabled ? (
           <Paper px={'sm'} py={5} flex={1}>
-            <Text size={'sm'}>{value}</Text>
+            <Text size={'sm'}>
+              <NumberFormatter
+                value={roundNumberToDecimalPlaces(currentValue, decimalPlaces)}
+              />
+            </Text>
           </Paper>
         ) : (
           <NumericInput
-            value={currentValue}
+            value={roundNumberToDecimalPlaces(currentValue, decimalPlaces)}
             disabled={disabled}
             min={min}
             max={max}
             step={step}
             allowDecimal={!isInt}
             onEnter={onValueChange}
+            flex={1}
           />
         )}
       </Flex>
