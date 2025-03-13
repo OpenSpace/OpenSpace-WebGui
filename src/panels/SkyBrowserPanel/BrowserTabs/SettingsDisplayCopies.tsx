@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Fragment,useState } from 'react';
 import { Button, Group, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -65,10 +65,10 @@ export function SettingsDisplayCopies({ id }: Props) {
         Added Display Copies
       </Title>
       {Object.entries(displayCopies).map(([key, entry]) => (
-        <>
+        <Fragment key={key}>
           <Property uri={`ScreenSpace.${id}.${entry.idShowProperty}`} />
           <Property uri={`ScreenSpace.${id}.${key}`} />
-        </>
+        </Fragment>
       ))}
     </>
   );

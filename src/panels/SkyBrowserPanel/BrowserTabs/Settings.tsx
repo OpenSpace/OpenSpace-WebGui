@@ -13,7 +13,8 @@ import {
   SkyBrowserInverseZoomDirectionKey,
   SkyBrowserShowTitleInBrowserKey,
   SkyBrowserSpaceCraftAnimationTimeKey,
-  SkyBrowserTargetAnimationSpeedKey} from '@/util/keys';
+  SkyBrowserTargetAnimationSpeedKey
+} from '@/util/keys';
 
 import {
   useBrowserColorString,
@@ -64,6 +65,14 @@ export function Settings({ id }: Props) {
   return (
     <Stack gap={5} my={'lg'}>
       <Title order={2}>Settings</Title>
+      <NumericInput value={radius} label={'Border Radius'} onEnter={setBorderRadius} />
+      <ColorInput
+        label={'Color'}
+        placeholder={'Set browser color...'}
+        format={'rgb'}
+        defaultValue={color}
+        onChange={setColor}
+      />
       <NumericInput
         value={fov}
         label={'Vertical field of view'}
@@ -85,20 +94,12 @@ export function Settings({ id }: Props) {
         max={90}
         onEnter={setDeclination}
       />
-      <ColorInput
-        label={'Color'}
-        placeholder={'Set browser color...'}
-        format={'rgb'}
-        defaultValue={color}
-        onChange={setColor}
-      />
       <Property uri={`Scene.${targetId}.Renderable.ApplyRoll`} />
       <Property uri={`ScreenSpace.${id}.PointSpacecraft`} />
       <Collapsable title={'Display Copies'}>
         <SettingsDisplayCopies id={id} />
       </Collapsable>
       <Collapsable title={'General Settings'}>
-        <NumericInput value={radius} label={'Border Radius'} onEnter={setBorderRadius} />
         <Property uri={SkyBrowserShowTitleInBrowserKey} />
         <Property uri={SkyBrowserAllowCameraRotationKey} />
         <Property uri={SkyBrowserCameraRotationSpeedKey} />

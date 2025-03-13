@@ -109,11 +109,11 @@ export function useBrowserRadius(id: string): number {
 export function useBrowserCoords(id: string) {
   const ra = useAppSelector(
     (state) => state.skybrowser.browsers[id]?.ra,
-    customPrecisionEqualFunc(1e-6)
+    customPrecisionEqualFunc(1e-8)
   );
   const dec = useAppSelector(
     (state) => state.skybrowser.browsers[id]?.dec,
-    customPrecisionEqualFunc(1e-6)
+    customPrecisionEqualFunc(1e-8)
   );
 
   const roll = useAppSelector(
