@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import { alpha, Box, Flex, Group } from '@mantine/core';
 
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
@@ -9,12 +8,7 @@ import { HelpMenu } from './Menus/HelpMenu';
 import { ViewMenu } from './Menus/ViewMenu';
 import { WindowsMenu } from './Menus/WindowsMenu';
 
-interface TopMenuBarProps {
-  visibleMenuItems: string[];
-  setVisibleMenuItems: Dispatch<SetStateAction<string[]>>;
-}
-
-export function TopMenuBar({ visibleMenuItems, setVisibleMenuItems }: TopMenuBarProps) {
+export function TopMenuBar() {
   return (
     <ScrollBox direction={'horizontal'}>
       <Flex
@@ -30,10 +24,7 @@ export function TopMenuBar({ visibleMenuItems, setVisibleMenuItems }: TopMenuBar
         <Group flex={'0 0 auto'}>
           <FileMenu />
           <WindowsMenu />
-          <ViewMenu
-            visibleMenuItems={visibleMenuItems}
-            setVisibleMenuItems={setVisibleMenuItems}
-          />
+          <ViewMenu />
           <HelpMenu />
         </Group>
 
