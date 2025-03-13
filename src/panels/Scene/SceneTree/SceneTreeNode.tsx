@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Box, RenderTreeNodePayload, TreeNodeData } from '@mantine/core';
+import { Box, RenderTreeNodePayload } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
 import { CollapsableHeader } from '@/components/Collapsable/CollapsableHeader/CollapsableHeader';
@@ -11,9 +11,10 @@ import { useOpenCurrentSceneNodeWindow } from '../hooks';
 import { SceneGraphNodeHeader } from '../SceneGraphNode/SceneGraphNodeHeader';
 
 import { CurrentNodeView } from './CurrentNodeView';
+import { SceneTreeNodeData } from './types';
 
 interface Props {
-  node: TreeNodeData;
+  node: SceneTreeNodeData;
   expanded: boolean;
 }
 

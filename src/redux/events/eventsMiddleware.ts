@@ -12,6 +12,8 @@ import {
 } from '@/redux/propertytree/propertyTreeMiddleware';
 import { ConnectionStatus } from '@/types/enums';
 
+import { refreshMissions } from '../missions/missionsMiddleware';
+
 import { EventData } from './types';
 
 let eventTopic: Topic;
@@ -41,6 +43,10 @@ export const setupEventsSubscription = createAsyncThunk(
           break;
         case 'ActionRemoved':
           thunkAPI.dispatch(removeAction(data.Uri));
+          break;
+        case 'MissionAdded':
+        case 'MissionRemoved':
+          thunkAPI.dispatch(refreshMissions());
           break;
         default:
           break;
