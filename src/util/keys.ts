@@ -43,3 +43,18 @@ export const RenderableKey = 'Renderable';
 export const ScaleKey = 'Scale';
 export const TranslationKey = 'Translation';
 export const RotationKey = 'Rotation';
+
+// Sky browser properties
+export const SkyBrowserShowTitleInBrowserKey = 'Modules.SkyBrowser.ShowTitleInGuiBrowser';
+export const SkyBrowserAllowCameraRotationKey = 'Modules.SkyBrowser.AllowCameraRotation';
+export const SkyBrowserCameraRotationSpeedKey = 'Modules.SkyBrowser.CameraRotationSpeed';
+export const SkyBrowserTargetAnimationSpeedKey =
+  'Modules.SkyBrowser.TargetAnimationSpeed';
+export const SkyBrowserBrowserAnimationSpeedKey =
+  'Modules.SkyBrowser.BrowserAnimationSpeed';
+export const SkyBrowserHideTargetsBrowsersWithGuiKey =
+  'Modules.SkyBrowser.HideTargetsBrowsersWithGui';
+export const SkyBrowserInverseZoomDirectionKey =
+  'Modules.SkyBrowser.InverseZoomDirection';
+export const SkyBrowserSpaceCraftAnimationTimeKey =
+  'Modules.SkyBrowser.SpaceCraftAnimationTime';

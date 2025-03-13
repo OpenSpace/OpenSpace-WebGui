@@ -99,7 +99,7 @@ export function useBrowserColorString(id: string): string | undefined {
   return color ? (`rgb(${color.join(',')})` as string) : undefined;
 }
 
-export function useBrowserRadius(id: string): number | undefined {
+export function useBrowserRadius(id: string): number {
   return useAppSelector(
     (state) => state.skybrowser.browsers[id]?.borderRadius,
     lowPrecisionEqual
