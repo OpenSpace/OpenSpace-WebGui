@@ -4,6 +4,8 @@ import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { ChevronDownIcon, ChevronRightIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
+import classes from './CollapsableHeader.module.css';
+
 interface Props {
   expanded: boolean;
   title: React.ReactNode;
@@ -20,7 +22,7 @@ export function CollapsableHeader({
   rightSection
 }: Props) {
   return (
-    <Group wrap={'nowrap'} gap={0}>
+    <Group wrap={'nowrap'} gap={0} className={classes.header}>
       <ActionIcon variant={'transparent'} onClick={toggle}>
         {expanded ? (
           <ChevronDownIcon size={IconSize.xs} />
