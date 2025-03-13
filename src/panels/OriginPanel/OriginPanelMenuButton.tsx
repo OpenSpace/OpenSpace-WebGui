@@ -6,6 +6,7 @@ import {
   useSubscribeToEngineMode
 } from '@/api/hooks';
 import { EngineMode } from '@/types/enums';
+import { MenuItemEventHandlers } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
 
 import { AnchorAimButtons } from './MenuButtons/AnchorAimButtons';
@@ -13,11 +14,11 @@ import { CancelFlightButton } from './MenuButtons/CancelFlightButton';
 import { FocusButton } from './MenuButtons/FocusButton';
 import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
-interface OriginPanelMenuButtonProps {
-  onClick: () => void;
+interface Props {
+  eventHandlers: MenuItemEventHandlers;
 }
 
-export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
+export function OriginPanelMenuButton({ eventHandlers }: Props) {
   const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
   const [aim] = useGetStringPropertyValue(NavigationAimKey);
   const anchorName = useGetPropertyOwner(`${ScenePrefixKey}${anchor}`)?.name ?? anchor;
@@ -46,9 +47,13 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
       anchorName={anchorName}
       aimName={aimName}
       isOpenSpaceReady={isReady}
-      onClick={onClick}
+      eventHandlers={eventHandlers}
     />
   ) : (
-    <FocusButton anchorName={anchorName} isOpenSpaceReady={isReady} onClick={onClick} />
+    <FocusButton
+      anchorName={anchorName}
+      isOpenSpaceReady={isReady}
+      eventHandlers={eventHandlers}
+    />
   );
 }

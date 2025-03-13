@@ -95,6 +95,11 @@ export type CustomGroupOrdering = {
   [key: string]: string[] | undefined;
 };
 
+export interface MenuItemEventHandlers {
+  onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onRightClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+
 // This type makes it possible to require that at least one (or all) of
 // the optional properties in an interface are required.
 // Code found here:
