@@ -50,7 +50,7 @@ export function ColorEdit({ color, onChange, withAlpha }: Props) {
     <Stack gap={'xs'}>
       <MantineColorPicker
         value={value}
-        // We don't use the selected format here, since changing the format would 
+        // We don't use the selected format here, since changing the format would
         // lead to the value changing, which would then trigger the onChange event
         format={withAlpha ? 'rgba' : 'rgb'}
         onChange={onColorChange}
@@ -60,7 +60,7 @@ export function ColorEdit({ color, onChange, withAlpha }: Props) {
         withEyeDropper={false}
         withPicker={false}
         onKeyDown={(event) => {
-          if (event.nativeEvent.code === 'Enter') {
+          if (event.key === 'Enter') {
             event.currentTarget.blur();
             if (isColorValid(textEditValue)) {
               onColorChange(textEditValue);

@@ -25,6 +25,7 @@ export function SelectionProperty({
       data={options}
       value={value}
       onChange={(_value) => setPropertyValue(_value)}
+      placeholder={value.length === 0 ? 'No selection' : ''}
       searchable
       clearable
     />
