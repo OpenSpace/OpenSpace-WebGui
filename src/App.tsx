@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route,Routes } from 'react-router';
+import { BrowserRouter, Route, Routes } from 'react-router';
 import { MantineProvider } from '@mantine/core';
 
 import { LuaApiProvider } from './api/LuaApiProvider';

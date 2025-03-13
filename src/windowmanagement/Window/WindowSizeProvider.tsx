@@ -1,9 +1,10 @@
 import { PropsWithChildren } from 'react';
-import { Box, BoxProps } from '@mantine/core';
+import { BoxProps } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
 
-import { WindowSizeContext } from './WindowSizeContext';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
+
+import { WindowSizeContext } from './WindowSizeContext';
 
 export function WindowSizeProvider({ children, ...props }: PropsWithChildren & BoxProps) {
   const { ref, width, height } = useElementSize();

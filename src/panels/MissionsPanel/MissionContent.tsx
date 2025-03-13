@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Box, Button, Group, Switch, Text, Title } from '@mantine/core';
+import { Button, Group, Switch, Text, Title } from '@mantine/core';
 
 import { useSubscribeToTime } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';

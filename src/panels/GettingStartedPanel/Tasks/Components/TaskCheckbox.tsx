@@ -19,7 +19,7 @@ export function TaskCheckbox({ taskCompleted, label }: Props) {
         checked={hasEverBeenCompleted.current}
         style={{ cursor: 'default' }}
       />
-      <Text c={'orange'} size={"lg"}>
+      <Text c={'orange'} size={'lg'}>
         {label}
       </Text>
     </Group>
