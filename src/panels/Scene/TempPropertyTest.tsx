@@ -40,7 +40,7 @@ export function TempPropertyTest() {
         <h3>Int:</h3>
         <Property uri={'Scene.EclipticLine.Renderable.CircleSegments'} />
 
-        <h2>Vector Property:</h2>
+        <h2 style={styleUnfinished}>Vector Property:</h2>
         <h3>Colors</h3>
         <Property uri={'Scene.1ldGrid.Renderable.Color'} />
         <Property uri={'RenderEngine.EnabledFontColor'} />
@@ -51,7 +51,7 @@ export function TempPropertyTest() {
         <h3>TODO: More variants</h3>
         <h2 style={styleUnfinished}>Matrix Property:</h2>
         <Property uri={'Scene.ISS.Renderable.ModelTransform'} />
-        <h3 style={styleUnfinished}>A full property owner!</h3>
+        <h2>A full property owner!</h2>
         <PropertyOwner uri={'Scene.Earth'} />
       </Container>
     </ScrollArea>
