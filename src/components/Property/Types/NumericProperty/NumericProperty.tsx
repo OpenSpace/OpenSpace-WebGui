@@ -40,8 +40,9 @@ export function NumericProperty({
 
   // When no min/max is set, the marks for the slider cannot be nicely computed
   const extent = max - min;
-  // @TODO (202503-03, emmbr) This should be handled a better way...
-  const maxAllowedExtentForSlider = 10e12;
+  // @TODO (202503-03, emmbr) This should be handled a better way... This is a bit of a
+  // hack and the max value is just arbitrarily chosen
+  const maxAllowedExtentForSlider = 1e12;
   const shouldShowSlider = isFinite(extent) && extent < maxAllowedExtentForSlider;
 
   const decimalPlaces = stepToDecimalPlaces(step);

@@ -1,5 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Pill, PillsInput, ScrollArea } from '@mantine/core';
+import { useMemo, useRef, useState } from 'react';
+import { Pill, PillsInput } from '@mantine/core';
+
+import { usePropListeningState } from '@/api/hooks';
 
 import { ConcretePropertyBaseProps } from '../../types';
 
@@ -27,16 +29,14 @@ export function ListProperty({
   const [inputString, setInputString] = useState('');
 
   // The values to shown as a list of pills in the input
-  const [shownValues, setShownValues] = useState(value);
+  const {
+    value: shownValues,
+    setValue: setShownValues,
+    setIsEditing,
+    isEditing
+  } = usePropListeningState(value);
 
-  const [isEditing, setIsEditing] = useState(false);
   const [clickedItemIndex, setClickedItemIndex] = useState<number | undefined>(undefined);
-
-  const inputFieldRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    setShownValues(value);
-  }, [value]);
 
   const placeHolderText = useMemo(() => {
     switch (valueType) {
@@ -50,13 +50,6 @@ export function ListProperty({
         throw new Error('Invalid value type');
     }
   }, [valueType]);
-
-  useEffect(() => {
-    const inputIsFocused = inputFieldRef.current === document.activeElement;
-    if (inputIsFocused) {
-      setPlaceholderText(placeHolderText);
-    }
-  }, [placeHolderText]);
 
   function parseInput(input: string): ListValueType[] {
     const splitInput = input
@@ -147,7 +140,6 @@ export function ListProperty({
           </Pill>
         ))}
         <PillsInput.Field
-          ref={inputFieldRef}
           placeholder={placeholderText}
           value={inputString}
           onFocus={() => setPlaceholderText(placeHolderText)}

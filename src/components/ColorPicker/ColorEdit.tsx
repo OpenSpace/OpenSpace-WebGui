@@ -77,9 +77,7 @@ export function ColorEdit({ color, onChange, withAlpha }: Props) {
         data={formats.map((value) => ({ value, label: value.toUpperCase() }))}
         value={format}
         allowDeselect={false}
-        onChange={(value) => {
-          setFormat(value === null ? undefined : (value as ColorFormat));
-        }}
+        onChange={(value) => setFormat(value! as ColorFormat)}
         // This prevents the menu from closing when selecting a format
         comboboxProps={{ withinPortal: false }}
       />

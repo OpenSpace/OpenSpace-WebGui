@@ -2,8 +2,8 @@ import { MantineStyleProps, Slider, Stack } from '@mantine/core';
 
 import { usePropListeningState } from '@/api/hooks';
 import { useSliderScale } from '@/components/Property/SliderUtil/hook';
+import { SliderMinMaxLabels } from '@/components/Property/SliderUtil/SliderMinMaxLabels';
 
-import { SliderMinMaxLabels } from '../../../SliderUtil/SliderMinMaxLabels';
 import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from '../util';
 
 interface Props extends MantineStyleProps {

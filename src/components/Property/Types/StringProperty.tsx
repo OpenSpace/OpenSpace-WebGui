@@ -18,11 +18,6 @@ export function StringProperty({ name, disabled, setPropertyValue, value }: Prop
     );
   }
   return (
-    <StringInput
-      disabled={disabled}
-      onEnter={setPropertyValue}
-      value={value}
-      aria-label={`${name} input`}
-    />
+    <StringInput onEnter={setPropertyValue} value={value} aria-label={`${name} input`} />
   );
 }
