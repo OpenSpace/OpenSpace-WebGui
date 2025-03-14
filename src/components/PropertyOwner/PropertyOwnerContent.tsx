@@ -1,4 +1,4 @@
-import { Paper } from '@mantine/core';
+import { Box } from '@mantine/core';
 
 import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { Property } from '@/components/Property/Property';
@@ -34,21 +34,21 @@ export function PropertyOwnerContent({ uri, hideSubowners = false }: Props) {
   }
 
   return (
-    <>
-      {!hideSubowners && (
-        <>
+    <Box>
+      {!hideSubowners && subowners.length > 0 && (
+        <Box>
           {subowners.map((subowner) => (
             <PropertyOwner key={subowner} uri={subowner} />
           ))}
-        </>
+        </Box>
       )}
       {visibleProperties.length > 0 && (
-        <Paper p={'xs'} mt={subowners.length > 0 ? 'xs' : undefined}>
+        <Box ml={'xs'} mt={'xs'}>
           {visibleProperties.map((property) => (
             <Property key={property} uri={property} />
           ))}
-        </Paper>
+        </Box>
       )}
-    </>
+    </Box>
   );
 }

@@ -1,11 +1,8 @@
 import { MultiSelect } from '@mantine/core';
 
-import { PropertyLabel } from '@/components/Property/PropertyLabel';
+import { ConcretePropertyBaseProps } from '../types';
 
-interface Props {
-  name: string;
-  description: string;
-  disabled: boolean;
+interface Props extends ConcretePropertyBaseProps {
   setPropertyValue: (newValue: string[]) => void;
   additionalData: {
     Options: string[];
@@ -15,7 +12,6 @@ interface Props {
 
 export function SelectionProperty({
   name,
-  description,
   disabled,
   setPropertyValue,
   value,
@@ -24,11 +20,12 @@ export function SelectionProperty({
   const options = additionalData.Options;
   return (
     <MultiSelect
-      label={<PropertyLabel label={name} tip={description} />}
+      aria-label={`${name} multi-select`}
       disabled={disabled}
       data={options}
       value={value}
       onChange={(_value) => setPropertyValue(_value)}
+      placeholder={value.length === 0 ? 'No selection' : ''}
       searchable
       clearable
     />

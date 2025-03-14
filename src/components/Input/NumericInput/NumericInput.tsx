@@ -11,6 +11,9 @@ interface Props extends NumberInputProps {
   // The value of the input. In contrast to the original NumberInput, we here only allow
   // numbers, not strings
   value: number;
+  // An function that based on the current value can be used to display and alternative
+  // string. Only applied when the value is not being edited
+  valueLabel?: (value: number | undefined) => string;
 }
 
 /**
@@ -29,12 +32,14 @@ export function NumericInput({
   min,
   max,
   step,
+  valueLabel,
   ...props
 }: Props) {
   const {
     value: storedValue,
     setValue: setStoredValue,
-    setIsEditing
+    setIsEditing,
+    isEditing
   } = usePropListeningState<number | undefined>(value);
 
   const shouldClamp = props.clampBehavior === 'strict';
@@ -92,9 +97,17 @@ export function NumericInput({
     onChange?.(value);
   }
 
+  function displayValue() {
+    if (!isEditing && valueLabel) {
+      return valueLabel(storedValue);
+    }
+    return storedValue === undefined ? '' : storedValue;
+  }
+
+  // @TODO (2025-02-18, emmbr): This input type does not support scientific notation...
   return (
     <NumberInput
-      value={storedValue === undefined ? '' : storedValue}
+      value={displayValue()}
       onKeyUp={onKeyUp}
       onBlur={handleBlur}
       onValueChange={(newValue) => {
