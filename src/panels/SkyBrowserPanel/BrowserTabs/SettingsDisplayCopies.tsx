@@ -1,13 +1,13 @@
 import { Fragment, useState } from 'react';
-import { Button, Group, Title, Text } from '@mantine/core';
+import { Button, Group, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { Property } from '@/components/Property/Property';
 import { ValueList } from '@/components/Property/Types/VectorProperty/ViewOptions/DefaultValueList';
-import { useAppSelector } from '@/redux/hooks';
 import { MinusIcon, PlusIcon } from '@/icons/icons';
+import { useAppSelector } from '@/redux/hooks';
 
 interface Props {
   id: string;

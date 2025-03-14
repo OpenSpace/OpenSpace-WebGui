@@ -11,7 +11,6 @@ import {
   SkyBrowserCameraRotationSpeedKey,
   SkyBrowserHideTargetsBrowsersWithGuiKey,
   SkyBrowserInverseZoomDirectionKey,
-  SkyBrowserShowTitleInBrowserKey,
   SkyBrowserSpaceCraftAnimationTimeKey,
   SkyBrowserTargetAnimationSpeedKey
 } from '@/util/keys';
@@ -71,7 +70,7 @@ export function Settings({ id }: Props) {
         min={0}
         max={1}
         step={0.01}
-        clampBehavior="strict"
+        clampBehavior={'strict'}
         onEnter={setBorderRadius}
       />
       <ColorInput
@@ -86,7 +85,7 @@ export function Settings({ id }: Props) {
         label={'Vertical field of view'}
         min={0.01}
         max={70.0}
-        clampBehavior="strict"
+        clampBehavior={'strict'}
         onEnter={setVerticalFov}
       />
       <NumericInput
@@ -94,7 +93,7 @@ export function Settings({ id }: Props) {
         label={'Right Ascension'}
         min={0}
         max={360}
-        clampBehavior="strict"
+        clampBehavior={'strict'}
         onEnter={setRightAscension}
       />
       <NumericInput
@@ -102,7 +101,7 @@ export function Settings({ id }: Props) {
         label={'Declination'}
         min={-90}
         max={90}
-        clampBehavior="strict"
+        clampBehavior={'strict'}
         onEnter={setDeclination}
       />
       <Property uri={`Scene.${targetId}.Renderable.ApplyRoll`} />

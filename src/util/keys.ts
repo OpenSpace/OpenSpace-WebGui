@@ -45,7 +45,6 @@ export const TranslationKey = 'Translation';
 export const RotationKey = 'Rotation';
 
 // Sky browser properties
-export const SkyBrowserShowTitleInBrowserKey = 'Modules.SkyBrowser.ShowTitleInGuiBrowser';
 export const SkyBrowserAllowCameraRotationKey = 'Modules.SkyBrowser.AllowCameraRotation';
 export const SkyBrowserCameraRotationSpeedKey = 'Modules.SkyBrowser.CameraRotationSpeed';
 export const SkyBrowserTargetAnimationSpeedKey =
