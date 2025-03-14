@@ -12,6 +12,7 @@ import {
 } from '@mantine/core';
 
 import styles from './mantineTheme.module.css';
+
 /**
  * This functions resolves colors for different variants, and adds new variants, for
  * Mantine components.
