@@ -125,7 +125,7 @@ export function ListProperty({
       aria-label={`List input for ${name}`}
     >
       <Pill.Group mah={100} style={{ overflowY: 'auto' }}>
-        {shownValues.map((v, i) => (
+        {shownValues.map((item, i) => (
           <Pill
             key={`pill-${i}`}
             style={disabled ? {} : { cursor: 'pointer' }}
@@ -133,7 +133,7 @@ export function ListProperty({
             onRemove={() => deleteItem(i)}
             onClick={() => onItemClick(i)}
           >
-            {v}
+            {item}
           </Pill>
         ))}
         <PillsInput.Field

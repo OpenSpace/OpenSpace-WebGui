@@ -37,6 +37,7 @@ export function ColorEdit({ color, onChange, withAlpha }: Props) {
   }
 
   function onColorChange(c: string) {
+    //@TODO (emmbr, 2025-03-14) Verify that the color is valid
     setValue(c);
     setTextEditToCurrentFormat(c);
     if (onChange) {
@@ -44,6 +45,7 @@ export function ColorEdit({ color, onChange, withAlpha }: Props) {
     }
   }
 
+  //@TODO (emmbr, 2025-03-14) This does not seem to check for
   const warnAboutInvalidColor = !isColorValid(textEditValue);
 
   return (

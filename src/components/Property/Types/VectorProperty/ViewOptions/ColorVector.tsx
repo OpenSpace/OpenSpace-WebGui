@@ -8,7 +8,7 @@ import { ValueList } from './DefaultValueList';
 export function ColorVector(props: VectorPropertyProps) {
   const { disabled, setPropertyValue, value, isInt } = props;
 
-  if (value.length < 3 || value.length > 4 || isInt) {
+  if ((value.length !== 3 && value.length !== 4) || isInt) {
     throw Error('Invalid use of Color view option!');
   }
   const hasAlpha = value.length === 4;
@@ -30,6 +30,8 @@ export function ColorVector(props: VectorPropertyProps) {
           if (hasAlpha) {
             newValue.push(rgbaColor.a);
           }
+          // @TODO (emmbr26, 2025-03-14) Check for min max values. color values should be
+          // between 0 and 1.
           setPropertyValue(newValue);
         }}
       />

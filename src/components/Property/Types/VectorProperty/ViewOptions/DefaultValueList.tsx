@@ -22,11 +22,11 @@ export function ValueList({
 
   return (
     <Flex gap={'xs'}>
-      {value.map((v, i) => (
+      {value.map((item, i) => (
         <NumericInput
           miw={40}
           key={i}
-          value={v}
+          value={item}
           disabled={disabled}
           min={min[i]}
           max={max[i]}

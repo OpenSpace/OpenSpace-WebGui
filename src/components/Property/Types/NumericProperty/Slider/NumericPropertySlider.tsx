@@ -54,14 +54,14 @@ export function NumericPropertySlider({
   return (
     <Stack gap={0} {...styleProps}>
       <Slider
-        label={(v) => roundNumberToDecimalPlaces(v, decimalPlaces)}
+        label={(scaledValue) => roundNumberToDecimalPlaces(scaledValue, decimalPlaces)}
         disabled={disabled}
         value={valueToSliderValue(currentValue)}
         min={min}
         max={max}
         step={step}
         marks={scaledMarks}
-        scale={(v) => scale(v)}
+        scale={scale}
         onChange={onSliderInput}
         onChangeEnd={() => setIsEditingSlider(false)}
         opacity={disabled ? 0.5 : 1}

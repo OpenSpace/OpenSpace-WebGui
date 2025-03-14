@@ -40,21 +40,20 @@ export function NumericProperty({
 
   // When no min/max is set, the marks for the slider cannot be nicely computed
   const extent = max - min;
-  // @TODO (202503-03, emmbr) This should be handled a better way... This is a bit of a
+  // @TODO (2025-03-03, emmbr) This should be handled a better way... This is a bit of a
   // hack and the max value is just arbitrarily chosen
   const maxAllowedExtentForSlider = 1e12;
   const shouldShowSlider = isFinite(extent) && extent < maxAllowedExtentForSlider;
 
   const decimalPlaces = stepToDecimalPlaces(step);
 
-  // @TODO There still seems to be a bit of a stutter when dragging the slider.
-  // nvestigate. Is there somethign we could memo to make it better?
+  // @TODO (2025-03-14, emmbr) There still seems to be a bit of a stutter when dragging
+  // the slider. Investigate.
   function onValueChange(newValue: number) {
     setCurrentValue(newValue);
     setPropertyValue(newValue);
   }
 
-  // @TODO warn if out of bounds?
   return (
     <Group align={'bottom'}>
       {shouldShowSlider && (
@@ -82,8 +81,10 @@ export function NumericProperty({
         ) : (
           <NumericInput
             value={currentValue}
-            valueLabel={(v) =>
-              v !== undefined ? roundNumberToDecimalPlaces(v, decimalPlaces) : ''
+            valueLabel={(numberValue) =>
+              numberValue !== undefined
+                ? roundNumberToDecimalPlaces(numberValue, decimalPlaces)
+                : ''
             }
             disabled={disabled}
             min={min}

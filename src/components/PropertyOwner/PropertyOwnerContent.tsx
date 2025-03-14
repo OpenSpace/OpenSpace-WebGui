@@ -42,7 +42,7 @@ export function PropertyOwnerContent({ uri, hideSubowners = false }: Props) {
           ))}
         </Box>
       )}
-      {visibleProperties.length > 0 && ( // TODO: Not nice with the hardcoded margin here
+      {visibleProperties.length > 0 && (
         <Box ml={'xs'} mt={'xs'}>
           {visibleProperties.map((property) => (
             <Property key={property} uri={property} />

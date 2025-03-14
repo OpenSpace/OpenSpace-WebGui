@@ -34,10 +34,10 @@ export function MatrixProperty({
 
   return (
     <Grid gutter={'xs'}>
-      {value.map((v, i) => (
+      {value.map((item, i) => (
         <Grid.Col key={i} span={12 / matrixSize}>
           <NumericInput
-            value={v}
+            value={item}
             min={min[i]}
             max={max[i]}
             step={step[i]}

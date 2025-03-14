@@ -50,8 +50,8 @@ export function MinMaxRange({
 
   const commonProps = { disabled, min, max, step };
 
-  // @TODO: Prevent entering numeric values where e.g. max < min? Or at least provide a
-  // warning?
+  // @TODO (2025-03-14, emmbr): Prevent entering numeric values where e.g. max < min?
+  // Or at least provide a warning?
   return (
     <Stack gap={'xs'} mb={'xs'}>
       <Group grow>
@@ -68,13 +68,13 @@ export function MinMaxRange({
       </Group>
       <Stack gap={0}>
         <RangeSlider
-          label={(v) => <NumberFormatter value={v} />}
+          label={(number) => <NumberFormatter value={number} />}
           value={[
             valueToSliderValue(currentValue[0]),
             valueToSliderValue(currentValue[1])
           ]}
           marks={scaledMarks}
-          scale={(v) => scale(v)}
+          scale={scale}
           onChange={onSliderInput}
           onChangeEnd={() => setIsEditingSlider(false)}
           opacity={disabled ? 0.5 : 1}
