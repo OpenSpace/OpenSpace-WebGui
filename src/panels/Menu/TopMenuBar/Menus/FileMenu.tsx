@@ -2,7 +2,7 @@ import { Kbd, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
 import { useGetBoolPropertyValue, useOpenSpaceApi } from '@/api/hooks';
-import { AddFileIcon, ConsoleIcon, ExitAppIcon } from '@/icons/icons';
+import { ConsoleIcon, ExitAppIcon } from '@/icons/icons';
 
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
@@ -27,7 +27,6 @@ export function FileMenu() {
   }
   return (
     <TopBarMenuWrapper targetTitle={'File'}>
-      <Menu.Item leftSection={<AddFileIcon />}>Add Asset</Menu.Item>
       <Menu.Item
         onClick={toggleLuaConsole}
         leftSection={<ConsoleIcon />}
