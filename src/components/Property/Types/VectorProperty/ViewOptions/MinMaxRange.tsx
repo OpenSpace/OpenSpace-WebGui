@@ -2,7 +2,7 @@ import { Group, NumberFormatter, RangeSlider, Stack } from '@mantine/core';
 
 import { usePropListeningState } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-import { useSliderScale } from '@/components/Property/SliderUtil/hook';
+import { useSliderScale } from '@/components/Property/SliderUtil/hooks';
 import { SliderMinMaxLabels } from '@/components/Property/SliderUtil/SliderMinMaxLabels';
 import { VectorPropertyProps } from '@/components/Property/Types/VectorProperty/VectorProperty';
 

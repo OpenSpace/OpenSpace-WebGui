@@ -1,7 +1,9 @@
 export function stepToDecimalPlaces(step: number): number {
   const stepStr = step.toString();
-  const decimalPlaces = stepStr.includes('.') ? stepStr.split('.')[1].length : 0;
-  return decimalPlaces;
+  if (!stepStr.includes('.')) {
+    return 0;
+  }
+  return stepStr.split('.').pop()?.length ?? 0;
 }
 
 export function roundNumberToDecimalPlaces(num: number, decimalPlaces: number): string {
