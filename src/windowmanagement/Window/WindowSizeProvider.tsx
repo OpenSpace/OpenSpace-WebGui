@@ -1,6 +1,8 @@
 import { PropsWithChildren } from 'react';
-import { Box, BoxProps } from '@mantine/core';
+import { BoxProps } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
+
+import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 
 import { WindowSizeContext } from './WindowSizeContext';
 
@@ -34,9 +36,9 @@ export function WindowSizeProvider({ children, ...props }: PropsWithChildren & B
         pointerEvents: { enable: enablePointerEvents, disable: disablePointerEvents }
       }}
     >
-      <Box h={'100%'} ref={ref} p={'xs'} style={{ overflow: 'auto' }} {...props}>
+      <ScrollBox h={'100%'} ref={ref} p={'xs'} {...props}>
         {children}
-      </Box>
+      </ScrollBox>
     </WindowSizeContext.Provider>
   );
 }
