@@ -1,5 +1,5 @@
-import { Fragment,useState } from 'react';
-import { Button, Group, Title } from '@mantine/core';
+import { Fragment, useState } from 'react';
+import { Button, Group, Title, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
@@ -7,6 +7,7 @@ import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { Property } from '@/components/Property/Property';
 import { ValueList } from '@/components/Property/Types/VectorProperty/ViewOptions/DefaultValueList';
 import { useAppSelector } from '@/redux/hooks';
+import { MinusIcon, PlusIcon } from '@/icons/icons';
 
 interface Props {
   id: string;
@@ -24,7 +25,10 @@ export function SettingsDisplayCopies({ id }: Props) {
       <Property uri={`ScreenSpace.${id}.Scale`} />
       <Property uri={`ScreenSpace.${id}.FaceCamera`} />
       <Property uri={`ScreenSpace.${id}.UseRadiusAzimuthElevation`} />
-      <Collapsable title={'Add New Display Copy Settings'}>
+      <Collapsable
+        title={<Title order={4}>Add New Display Copy Settings</Title>}
+        my={'md'}
+      >
         <NumericInput value={noOfCopies} onEnter={setNoOfCopies} />
         <ValueList
           value={newPosition}
@@ -43,12 +47,12 @@ export function SettingsDisplayCopies({ id }: Props) {
           viewOptions={{}}
         />
       </Collapsable>
-      <Group w={'100%'}>
+      <Group grow>
         <Button
           onClick={() => {
             luaApi?.skybrowser.addDisplayCopy(id, noOfCopies, newPosition);
           }}
-          flex={1}
+          leftSection={<PlusIcon />}
         >
           Add
         </Button>
@@ -56,14 +60,15 @@ export function SettingsDisplayCopies({ id }: Props) {
           onClick={() => {
             luaApi?.skybrowser.removeDisplayCopy(id);
           }}
-          flex={1}
+          leftSection={<MinusIcon />}
         >
           Remove
         </Button>
       </Group>
-      <Title order={2} mt={'md'} mb={'sm'}>
+      <Title order={4} mt={'md'} mb={'sm'}>
         Added Display Copies
       </Title>
+      {Object.keys(displayCopies).length === 0 && <Text>No copies added</Text>}
       {Object.entries(displayCopies).map(([key, entry]) => (
         <Fragment key={key}>
           <Property uri={`ScreenSpace.${id}.${entry.idShowProperty}`} />
