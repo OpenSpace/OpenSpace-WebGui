@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { NumberInput, NumberInputProps } from '@mantine/core';
 
 import { usePropListeningState } from '@/api/hooks';
@@ -97,17 +97,12 @@ export function NumericInput({
     onChange?.(value);
   }
 
-  function displayValue() {
-    if (!isEditing && valueLabel) {
-      return valueLabel(storedValue);
-    }
-    return storedValue === undefined ? '' : storedValue;
-  }
+  const shouldFormatValue = !isEditing && valueLabel !== undefined;
 
   // @TODO (2025-02-18, emmbr): This input type does not support scientific notation...
   return (
     <NumberInput
-      value={displayValue()}
+      value={shouldFormatValue ? valueLabel(value) : storedValue}
       onKeyUp={onKeyUp}
       onBlur={handleBlur}
       onValueChange={(newValue) => {

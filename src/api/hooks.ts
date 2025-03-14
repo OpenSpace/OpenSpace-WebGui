@@ -328,19 +328,15 @@ export function useSetOpenSpaceTime() {
  */
 export function usePropListeningState<T>(prop: T) {
   const [value, setValue] = useState<T>(prop);
-  const isEditing = useRef(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    if (!isEditing.current) {
+    if (!isEditing) {
       setValue(prop);
     }
   }, [prop, isEditing]);
 
-  function setIsEditing(value: boolean): void {
-    isEditing.current = value;
-  }
-
-  return { value, setValue, setIsEditing, isEditing: isEditing.current };
+  return { value, setValue, setIsEditing, isEditing: isEditing };
 }
 
 export function useSubscribeToCamera() {
