@@ -5,9 +5,9 @@ import { useGetProperty, useSubscribeToProperty } from '@/api/hooks';
 import { Uri } from '@/types/types';
 
 import { BoolProperty } from './Types/BoolProperty';
-import { FloatingNumberListProperty } from './Types/ListProperty/FloatingNumberListProperty';
-import { IntNumberListProperty } from './Types/ListProperty/IntNumberListProperty';
-import { ListProperty } from './Types/ListProperty/ListProperty';
+import { FloatListProperty } from './Types/ListProperty/FloatListProperty';
+import { IntListProperty } from './Types/ListProperty/IntListProperty';
+import { StringListProperty } from './Types/ListProperty/StringListProperty';
 import { MatrixProperty } from './Types/MatrixProperty';
 import { IntNumericProperty } from './Types/NumericProperty/IntNumericProperty';
 import { NumericProperty } from './Types/NumericProperty/NumericProperty';
@@ -27,9 +27,9 @@ const concreteProperties: { [key: string]: any } = {
   TriggerProperty,
   StringProperty,
 
-  DoubleListProperty: FloatingNumberListProperty,
-  IntListProperty: IntNumberListProperty,
-  StringListProperty: ListProperty,
+  DoubleListProperty: FloatListProperty,
+  IntListProperty,
+  StringListProperty,
 
   SelectionProperty,
 

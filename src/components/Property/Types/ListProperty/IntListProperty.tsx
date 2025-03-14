@@ -1,5 +1,5 @@
 import { ListProperty, ListPropertyProps } from './ListProperty';
 
-export function IntNumberListProperty(props: ListPropertyProps) {
+export function IntListProperty(props: ListPropertyProps) {
   return <ListProperty {...props} valueType={'int'} />;
 }

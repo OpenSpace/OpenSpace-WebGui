@@ -13,7 +13,7 @@ interface Props extends NumberInputProps {
   value: number;
   // An function that based on the current value can be used to display and alternative
   // string. Only applied when the value is not being edited
-  valueLabel: (value: number | undefined) => string;
+  valueLabel?: (value: number | undefined) => string;
 }
 
 /**

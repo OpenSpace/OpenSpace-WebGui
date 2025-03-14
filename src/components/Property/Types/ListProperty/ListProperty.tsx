@@ -13,7 +13,7 @@ export interface ListPropertyProps extends ConcretePropertyBaseProps {
 }
 
 interface Props extends ListPropertyProps {
-  valueType?: 'string' | 'int' | 'float';
+  valueType: 'string' | 'int' | 'float';
 }
 
 export function ListProperty({
@@ -21,22 +21,19 @@ export function ListProperty({
   disabled,
   setPropertyValue,
   value,
-  valueType = 'string'
+  valueType
 }: Props) {
-  const [placeholderText, setPlaceholderText] = useState('');
-
-  // The input string that the user is typing
+  const [clickedItemIndex, setClickedItemIndex] = useState<number | undefined>(undefined);
+  const [placeholder, setPlaceholder] = useState('');
   const [inputString, setInputString] = useState('');
 
-  // The values to shown as a list of pills in the input
+  // The values to shown as a list of pills in the input.
   const {
     value: shownValues,
     setValue: setShownValues,
-    setIsEditing,
-    isEditing
+    isEditing,
+    setIsEditing
   } = usePropListeningState(value);
-
-  const [clickedItemIndex, setClickedItemIndex] = useState<number | undefined>(undefined);
 
   const placeHolderText = useMemo(() => {
     switch (valueType) {
@@ -124,7 +121,7 @@ export function ListProperty({
   return (
     <PillsInput
       disabled={disabled}
-      onBlur={() => stopEditing()}
+      onBlur={stopEditing}
       aria-label={`List input for ${name}`}
     >
       <Pill.Group mah={100} style={{ overflowY: 'auto' }}>
@@ -140,10 +137,10 @@ export function ListProperty({
           </Pill>
         ))}
         <PillsInput.Field
-          placeholder={placeholderText}
+          placeholder={placeholder}
           value={inputString}
-          onFocus={() => setPlaceholderText(placeHolderText)}
-          onBlur={() => setPlaceholderText('')}
+          onFocus={() => setPlaceholder(placeHolderText)}
+          onBlur={() => setPlaceholder('')}
           onChange={(event) => setInputString(event.currentTarget.value)}
           onKeyUp={(event) => onInputKeyUp(event)}
         />

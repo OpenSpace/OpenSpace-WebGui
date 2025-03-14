@@ -22,7 +22,7 @@ export function ColorEdit({ color, onChange, withAlpha }: Props) {
   const formats = withAlpha ? ['rgba', 'hexa', 'hsla'] : ['rgb', 'hex', 'hsl'];
   const defaultFormat = withAlpha ? 'rgba' : 'rgb';
 
-  const [format, setFormat] = useState<ColorFormat | undefined>(defaultFormat);
+  const [format, setFormat] = useState<ColorFormat>(defaultFormat);
   const [value, setValue] = useState(rgbaToColor(color, withAlpha));
   const [textEditValue, setTextEditValue] = useState(rgbaToColor(color, withAlpha));
 
@@ -57,6 +57,7 @@ export function ColorEdit({ color, onChange, withAlpha }: Props) {
       />
       <ColorInput
         value={textEditValue}
+        // Disable eye dropper as this will not work when running the UI in OpenSpace
         withEyeDropper={false}
         withPicker={false}
         onKeyDown={(event) => {
