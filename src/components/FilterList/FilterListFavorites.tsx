@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
-import { Box } from '@mantine/core';
 
 import { LoadingBlocks } from '../LoadingBlocks/LoadingBlocks';
+import { ScrollBox } from '../ScrollBox/ScrollBox';
 
 import { useFilterListProvider } from './hooks';
 
@@ -14,13 +14,7 @@ export function FilterListFavorites({ children }: PropsWithChildren) {
     return <LoadingBlocks />;
   }
 
-  return (
-    showFavorites && (
-      <Box style={{ overflow: 'auto' }} mah={'100%'}>
-        {children}
-      </Box>
-    )
-  );
+  return showFavorites && <ScrollBox mah={'100%'}>{children}</ScrollBox>;
 }
 
 FilterListFavorites.displayName = FilterListFavoritesDisplayName;

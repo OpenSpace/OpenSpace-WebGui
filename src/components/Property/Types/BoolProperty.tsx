@@ -1,11 +1,9 @@
 import { Checkbox, Group } from '@mantine/core';
 
-import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { PropertyLabel } from '../PropertyLabel';
+import { ConcretePropertyBaseProps } from '../types';
 
-interface Props {
-  name: string;
-  description: string;
-  disabled: boolean;
+interface Props extends ConcretePropertyBaseProps {
   setPropertyValue: (newValue: boolean) => void;
   value: boolean;
 }
@@ -18,15 +16,15 @@ export function BoolProperty({
   value
 }: Props) {
   return (
-    <Group>
+    <Group gap={'xs'} wrap={'nowrap'}>
       <Checkbox
         checked={value}
         onChange={(event) => setPropertyValue(event.currentTarget.checked)}
         onKeyDown={(event) => event.key === 'Enter' && setPropertyValue(!value)}
         disabled={disabled}
-        label={name}
+        aria-label={`Toggle ${name}`}
       />
-      <InfoBox text={description} />
+      <PropertyLabel label={name} tip={description} isReadOnly={disabled} />
     </Group>
   );
 }
