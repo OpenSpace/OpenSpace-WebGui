@@ -7,7 +7,7 @@ import {
 } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 
-import { PropertyProps } from '../../types';
+import { AdditionalDataNumber, PropertyProps } from '../../types';
 
 import { NumericPropertySlider } from './Slider/NumericPropertySlider';
 import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from './util';
@@ -23,13 +23,6 @@ const propertyTypes = [
   'UIntProperty'
 ];
 
-type AdditionalData = {
-  Exponent: number;
-  MaximumValue: number;
-  MinimumValue: number;
-  SteppingValue: number;
-};
-
 interface Props extends PropertyProps {
   isInt?: boolean;
 }
@@ -43,12 +36,12 @@ export function NumericProperty({ uri, isInt = false }: Props) {
 
   const description = useGetPropertyDescription(uri);
 
-  if (!description || currentValue === undefined) {
+  if (!description || currentValue === undefined || value === undefined) {
     return <></>;
   }
 
   const disabled = description?.metaData.isReadOnly;
-  const { additionalData } = description as { additionalData: AdditionalData };
+  const { additionalData } = description as { additionalData: AdditionalDataNumber };
   const {
     MinimumValue: min,
     MaximumValue: max,
@@ -76,7 +69,7 @@ export function NumericProperty({ uri, isInt = false }: Props) {
     <Group align={'bottom'}>
       {shouldShowSlider && (
         <NumericPropertySlider
-          value={currentValue}
+          value={value}
           flex={2}
           miw={100}
           disabled={disabled}

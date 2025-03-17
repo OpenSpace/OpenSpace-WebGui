@@ -6,14 +6,7 @@ import { ColorPicker } from '@/components/ColorPicker/ColorPicker';
 import { PropertyProps } from '../../types';
 
 import { MinMaxRange } from './ViewOptions/MinMaxRange';
-import { ValueList } from './ViewOptions/ValueList';
-
-export type AdditionalData = {
-  Exponent: number; // TODO: handle the exponent
-  MaximumValue: number[];
-  MinimumValue: number[];
-  SteppingValue: number[];
-};
+import { DefaultVectorProperty } from './ViewOptions/DefaultVectorProperty';
 
 const vectorPropertyTypes = [
   'Vec2Property',
@@ -43,8 +36,8 @@ export function VectorProperty({ uri, isInt }: Props) {
   }
 
   const viewOptions = description.metaData.ViewOptions;
-  const {additionalData} = description;
-  const {isReadOnly} = description.metaData;
+  const { additionalData } = description;
+  const { isReadOnly } = description.metaData;
 
   if (viewOptions.Color) {
     if ((value.length !== 3 && value.length !== 4) || isInt) {
@@ -54,7 +47,7 @@ export function VectorProperty({ uri, isInt }: Props) {
 
     return (
       <Flex gap={'xs'} align={'center'}>
-        <ValueList
+        <DefaultVectorProperty
           disabled={isReadOnly}
           setPropertyValue={setPropertyValue}
           value={value}
@@ -99,7 +92,7 @@ export function VectorProperty({ uri, isInt }: Props) {
   }
 
   return (
-    <ValueList
+    <DefaultVectorProperty
       disabled={isReadOnly}
       setPropertyValue={setPropertyValue}
       value={value}

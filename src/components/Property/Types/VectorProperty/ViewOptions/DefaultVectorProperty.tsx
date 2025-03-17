@@ -1,23 +1,26 @@
 import { Flex } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-import { AdditionalData } from '@/components/Property/Types/VectorProperty/VectorProperty';
+import { usePropListeningState } from '@/api/hooks';
+import { AdditionalDataVectorMatrix } from '@/components/Property/types';
 
 interface Props {
   disabled: boolean;
   setPropertyValue: (value: number[]) => void;
   value: number[];
-  additionalData: AdditionalData;
+  additionalData: AdditionalDataVectorMatrix;
   isInt?: boolean;
 }
 
-export function ValueList({
+export function DefaultVectorProperty({
   disabled,
   setPropertyValue,
   value,
   additionalData,
   isInt
 }: Props) {
+  const { value: shownValue } = usePropListeningState<number[]>(value);
+
   const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
 
   function setValue(index: number, newValue: number) {
@@ -28,7 +31,7 @@ export function ValueList({
 
   return (
     <Flex gap={'xs'}>
-      {value.map((item, i) => (
+      {shownValue.map((item, i) => (
         <NumericInput
           miw={40}
           key={i}

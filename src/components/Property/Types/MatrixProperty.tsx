@@ -3,14 +3,7 @@ import { Grid } from '@mantine/core';
 import { useGetPropertyDescription, useProperty } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 
-import { PropertyProps } from '../types';
-
-type AdditionalData = {
-  Exponent: number; // TODO: handle the exponent
-  MaximumValue: number[];
-  MinimumValue: number[];
-  SteppingValue: number[];
-};
+import { AdditionalDataVectorMatrix, PropertyProps } from '../types';
 
 const matrixTypes = [
   'Mat2Property',
@@ -29,7 +22,9 @@ export function MatrixProperty({ uri }: PropertyProps) {
     return <></>;
   }
 
-  const { additionalData } = description as { additionalData: AdditionalData };
+  const { additionalData } = description as {
+    additionalData: AdditionalDataVectorMatrix;
+  };
   const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
   const disabled = description.metaData.isReadOnly;
   const matrixSize = Math.sqrt(value.length);

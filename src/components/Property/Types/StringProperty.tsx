@@ -9,7 +9,7 @@ export function StringProperty({ uri }: PropertyProps) {
   const [value, setValue] = useGetStringPropertyValue(uri);
   const description = useGetPropertyDescription(uri);
 
-  if (!value || !description) {
+  if (value === undefined || !description) {
     return <></>;
   }
 

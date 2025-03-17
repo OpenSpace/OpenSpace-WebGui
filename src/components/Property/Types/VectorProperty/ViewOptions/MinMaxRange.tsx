@@ -4,13 +4,13 @@ import { usePropListeningState } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useSliderScale } from '@/components/Property/SliderUtil/hooks';
 import { SliderMinMaxLabels } from '@/components/Property/SliderUtil/SliderMinMaxLabels';
-import { AdditionalData } from '@/components/Property/Types/VectorProperty/VectorProperty';
+import { AdditionalDataVectorMatrix } from '@/components/Property/types';
 
 interface Props {
   disabled: boolean;
   setPropertyValue: (value: number[]) => void;
   value: number[];
-  additionalData: AdditionalData;
+  additionalData: AdditionalDataVectorMatrix;
 }
 
 export function MinMaxRange({
