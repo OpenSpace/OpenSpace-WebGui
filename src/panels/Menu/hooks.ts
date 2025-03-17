@@ -72,7 +72,7 @@ export function useStoredLayout() {
   useLayoutEffect(() => {
     async function getSavedFile() {
       /* eslint-disable no-template-curly-in-string */
-      const layoutPath = await luaApi?.absPath('${USER_UI_TASKBAR}');
+      const layoutPath = await luaApi?.absPath('${USER_UI_TASKBAR}' + '/layout.json');
       if (!layoutPath) {
         return;
       }
