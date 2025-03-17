@@ -3,7 +3,7 @@ import { Grid } from '@mantine/core';
 import { useGetPropertyDescription, useProperty } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 
-import { AdditionalDataVectorMatrix, PropertyProps } from '../types';
+import { AdditionalDataVectorMatrix, PropertyProps } from '@/components/Property/types';
 
 const matrixTypes = [
   'Mat2Property',

@@ -1,7 +1,7 @@
 import { useGetPropertyDescription, useGetStringListPropertyValue } from '@/api/hooks';
 
-import { Pills } from '../../../Pills/Pills';
-import { PropertyProps } from '../../types';
+import { Pills } from '@/components/Pills/Pills';
+import { PropertyProps } from '@/components/Property/types';
 
 export function StringListProperty({ uri }: PropertyProps) {
   const [value, setValue] = useGetStringListPropertyValue(uri);
@@ -17,7 +17,7 @@ export function StringListProperty({ uri }: PropertyProps) {
       value={value}
       setValue={setValue}
       placeHolderText={'item1, item2, ...'}
-      isDisabled={isReadOnly}
+      disabled={isReadOnly}
     />
   );
 }

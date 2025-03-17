@@ -12,14 +12,15 @@ interface Props {
   isInt?: boolean;
 }
 
-export function DefaultVectorProperty({
+export function DefaultView({
   disabled,
   setPropertyValue,
   value,
   additionalData,
-  isInt
+  isInt = false
 }: Props) {
-  const { value: shownValue } = usePropListeningState<number[]>(value);
+  const { value: currentValue, setValue: setCurrentValue } =
+    usePropListeningState<number[]>(value);
 
   const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
 
@@ -27,11 +28,12 @@ export function DefaultVectorProperty({
     const v = [...value];
     v[index] = newValue;
     setPropertyValue(v);
+    setCurrentValue(v);
   }
 
   return (
     <Flex gap={'xs'}>
-      {shownValue.map((item, i) => (
+      {currentValue.map((item, i) => (
         <NumericInput
           miw={40}
           key={i}

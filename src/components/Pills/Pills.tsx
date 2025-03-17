@@ -7,10 +7,10 @@ interface Props {
   value: string[];
   setValue: (value: string[]) => void;
   placeHolderText: string;
-  isDisabled: boolean;
+  disabled: boolean;
 }
 
-export function Pills({ value, setValue, placeHolderText, isDisabled }: Props) {
+export function Pills({ value, setValue, placeHolderText, disabled }: Props) {
   const [clickedItemIndex, setClickedItemIndex] = useState<number | undefined>(undefined);
   const [placeholder, setPlaceholder] = useState('');
   const [inputString, setInputString] = useState('');
@@ -70,7 +70,7 @@ export function Pills({ value, setValue, placeHolderText, isDisabled }: Props) {
   }
 
   function onItemClick(index: number) {
-    if (isDisabled) {
+    if (disabled) {
       return;
     }
     const isCurrent = clickedItemIndex === index;
@@ -79,7 +79,7 @@ export function Pills({ value, setValue, placeHolderText, isDisabled }: Props) {
 
   return (
     <PillsInput
-      disabled={isDisabled}
+      disabled={disabled}
       onBlur={stopEditing}
       aria-label={`List input for ${name}`}
     >
@@ -87,7 +87,7 @@ export function Pills({ value, setValue, placeHolderText, isDisabled }: Props) {
         {shownValues.map((item, i) => (
           <Pill
             key={`pill-${i}`}
-            style={isDisabled ? {} : { cursor: 'pointer' }}
+            style={disabled ? {} : { cursor: 'pointer' }}
             withRemoveButton={clickedItemIndex === i}
             onRemove={() => deleteItem(i)}
             onClick={() => onItemClick(i)}

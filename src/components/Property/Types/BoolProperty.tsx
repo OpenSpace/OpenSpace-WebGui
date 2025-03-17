@@ -2,8 +2,8 @@ import { Checkbox, Group } from '@mantine/core';
 
 import { useGetBoolPropertyValue, useGetPropertyDescription } from '@/api/hooks';
 
-import { PropertyLabel } from '../PropertyLabel';
-import { PropertyProps } from '../types';
+import { PropertyLabel } from '@/components/Property/PropertyLabel';
+import { PropertyProps } from '@/components/Property/types';
 
 export function BoolProperty({ uri }: PropertyProps) {
   const [value, setValue] = useGetBoolPropertyValue(uri);

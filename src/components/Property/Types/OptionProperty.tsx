@@ -2,7 +2,7 @@ import { Select } from '@mantine/core';
 
 import { useGetOptionPropertyValue, useGetPropertyDescription } from '@/api/hooks';
 
-import { PropertyProps } from '../types';
+import { PropertyProps } from '@/components/Property/types';
 
 // In OpenSpace the options are represented like so:
 // { 0 : "Option 1"}, { 1: "Option 2"}

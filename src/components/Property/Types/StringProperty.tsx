@@ -3,7 +3,7 @@ import { Paper, Text } from '@mantine/core';
 import { useGetPropertyDescription, useGetStringPropertyValue } from '@/api/hooks';
 import { StringInput } from '@/components/Input/StringInput';
 
-import { PropertyProps } from '../types';
+import { PropertyProps } from '@/components/Property/types';
 
 export function StringProperty({ uri }: PropertyProps) {
   const [value, setValue] = useGetStringPropertyValue(uri);

@@ -1,7 +1,7 @@
 import { useGetDoubleListPropertyValue, useGetPropertyDescription } from '@/api/hooks';
 
-import { Pills } from '../../../Pills/Pills';
-import { PropertyProps } from '../../types';
+import { Pills } from '@/components/Pills/Pills';
+import { PropertyProps } from '@/components/Property/types';
 
 export function DoubleListProperty({ uri }: PropertyProps) {
   const [value, setValue] = useGetDoubleListPropertyValue(uri);
@@ -22,7 +22,7 @@ export function DoubleListProperty({ uri }: PropertyProps) {
       value={value.map((v) => v.toString())}
       setValue={setValueString}
       placeHolderText={'number1, number2, ...'}
-      isDisabled={isReadOnly}
+      disabled={isReadOnly}
     />
   );
 }

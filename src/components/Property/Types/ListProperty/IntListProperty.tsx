@@ -1,7 +1,7 @@
 import { useGetIntListPropertyValue, useGetPropertyDescription } from '@/api/hooks';
 
-import { Pills } from '../../../Pills/Pills';
-import { PropertyProps } from '../../types';
+import { Pills } from '@/components/Pills/Pills';
+import { PropertyProps } from '@/components/Property/types';
 
 export function IntListProperty({ uri }: PropertyProps) {
   const [value, setValue] = useGetIntListPropertyValue(uri);
@@ -22,7 +22,7 @@ export function IntListProperty({ uri }: PropertyProps) {
       value={value.map((v) => v.toString())}
       setValue={setValueString}
       placeHolderText={'integer1, integer2, ...'}
-      isDisabled={isReadOnly}
+      disabled={isReadOnly}
     />
   );
 }

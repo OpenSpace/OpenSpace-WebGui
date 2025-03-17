@@ -3,9 +3,9 @@ import { Flex, RGBA } from '@mantine/core';
 import { useGetPropertyDescription, useProperty } from '@/api/hooks';
 import { ColorPicker } from '@/components/ColorPicker/ColorPicker';
 
-import { PropertyProps } from '../../types';
+import { AdditionalDataVectorMatrix, PropertyProps } from '@/components/Property/types';
 
-import { DefaultVectorProperty } from './ViewOptions/DefaultVectorProperty';
+import { DefaultView } from './ViewOptions/DefaultView';
 import { MinMaxRange } from './ViewOptions/MinMaxRange';
 
 const vectorPropertyTypes = [
@@ -36,7 +36,7 @@ export function VectorProperty({ uri, isInt }: Props) {
   }
 
   const viewOptions = description.metaData.ViewOptions;
-  const { additionalData } = description;
+  const additionalData = description.additionalData as AdditionalDataVectorMatrix;
   const { isReadOnly } = description.metaData;
 
   if (viewOptions.Color) {
@@ -47,12 +47,11 @@ export function VectorProperty({ uri, isInt }: Props) {
 
     return (
       <Flex gap={'xs'} align={'center'}>
-        <DefaultVectorProperty
+        <DefaultView
           disabled={isReadOnly}
           setPropertyValue={setPropertyValue}
           value={value}
           additionalData={additionalData}
-          isInt={isInt}
         />
         <ColorPicker
           disabled={isReadOnly}
@@ -92,7 +91,7 @@ export function VectorProperty({ uri, isInt }: Props) {
   }
 
   return (
-    <DefaultVectorProperty
+    <DefaultView
       disabled={isReadOnly}
       setPropertyValue={setPropertyValue}
       value={value}

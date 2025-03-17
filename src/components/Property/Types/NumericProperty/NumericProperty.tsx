@@ -7,7 +7,7 @@ import {
 } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 
-import { AdditionalDataNumber, PropertyProps } from '../../types';
+import { AdditionalDataNumber, PropertyProps } from '@/components/Property/types';
 
 import { NumericPropertySlider } from './Slider/NumericPropertySlider';
 import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from './util';
@@ -77,7 +77,7 @@ export function NumericProperty({ uri, isInt = false }: Props) {
           max={max}
           step={step}
           exponent={exponent}
-          onInput={onValueChange}
+          onInput={setPropertyValue}
         />
       )}
       <Flex flex={1} miw={100}>
@@ -97,7 +97,6 @@ export function NumericProperty({ uri, isInt = false }: Props) {
                 ? roundNumberToDecimalPlaces(numberValue, decimalPlaces)
                 : ''
             }
-            disabled={disabled}
             min={min}
             max={max}
             step={step}

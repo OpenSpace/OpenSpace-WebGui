@@ -17,7 +17,7 @@ import { VectorProperty } from './Types/VectorProperty/VectorProperty';
 import { PropertyLabel } from './PropertyLabel';
 import { PropertyProps } from './types';
 
-const renderProperty = (type: string, uri: string) => {
+function renderProperty(type: string, uri: string): React.JSX.Element {
   switch (type) {
     case 'BoolProperty':
       return <BoolProperty uri={uri} />;
@@ -69,7 +69,7 @@ const renderProperty = (type: string, uri: string) => {
     default:
       throw new Error(`Missing property type: '${type}'`);
   }
-};
+}
 
 export const Property = memo(({ uri }: PropertyProps) => {
   const propertyType = useAppSelector(
@@ -80,13 +80,13 @@ export const Property = memo(({ uri }: PropertyProps) => {
     return <></>;
   }
 
-  const hasLabel = !(
+  const showLabel = !(
     propertyType === 'BoolProperty' || propertyType === 'TriggerProperty'
   );
 
   return (
     <Stack mb={'md'} gap={5}>
-      {hasLabel && <PropertyLabel uri={uri} />}
+      {showLabel && <PropertyLabel uri={uri} />}
       {renderProperty(propertyType, uri)}
     </Stack>
   );
