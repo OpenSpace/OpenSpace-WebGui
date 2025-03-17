@@ -37,7 +37,14 @@ export function SceneTreeNodeContent({ node, expanded }: Props) {
     <Box
       px={'xs'}
       py={2}
-      bd={isCurrentNode ? '3px solid var(--mantine-primary-color-filled)' : 'none'}
+      style={
+        isCurrentNode
+          ? {
+              borderLeft: '3px solid var(--mantine-primary-color-filled)',
+              backgroundColor: 'var(--mantine-color-dark-7)'
+            }
+          : undefined
+      }
     >
       <SceneGraphNodeHeader
         uri={node.value}
