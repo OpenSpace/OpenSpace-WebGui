@@ -5,8 +5,8 @@ import { ColorPicker } from '@/components/ColorPicker/ColorPicker';
 
 import { PropertyProps } from '../../types';
 
-import { MinMaxRange } from './ViewOptions/MinMaxRange';
 import { DefaultVectorProperty } from './ViewOptions/DefaultVectorProperty';
+import { MinMaxRange } from './ViewOptions/MinMaxRange';
 
 const vectorPropertyTypes = [
   'Vec2Property',

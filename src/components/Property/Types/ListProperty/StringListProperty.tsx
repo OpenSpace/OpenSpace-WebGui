@@ -16,7 +16,7 @@ export function StringListProperty({ uri }: PropertyProps) {
     <Pills
       value={value}
       setValue={setValue}
-      placeHolderText={"item1, item2, ..."}
+      placeHolderText={'item1, item2, ...'}
       isDisabled={isReadOnly}
     />
   );

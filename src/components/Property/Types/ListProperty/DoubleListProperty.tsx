@@ -11,7 +11,7 @@ export function DoubleListProperty({ uri }: PropertyProps) {
     return <></>;
   }
 
-  const {isReadOnly} = description.metaData;
+  const { isReadOnly } = description.metaData;
 
   function setValueString(value: string[]) {
     setValue(value.map((item) => parseFloat(item)).filter((item) => !isNaN(item)));
@@ -21,7 +21,7 @@ export function DoubleListProperty({ uri }: PropertyProps) {
     <Pills
       value={value.map((v) => v.toString())}
       setValue={setValueString}
-      placeHolderText={"number1, number2, ..."}
+      placeHolderText={'number1, number2, ...'}
       isDisabled={isReadOnly}
     />
   );
