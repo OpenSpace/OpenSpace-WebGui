@@ -15,10 +15,14 @@
     background-color: var(--mantine-color-dark-3);
     border: 3px solid transparent;
     background-clip: content-box;
+    transition: border 0.5s linear;
   }
 
   .scroller:hover::-webkit-scrollbar-thumb {
-    border-radius: 100px;
     background-color: var(--mantine-color-dark-1);
+  }
+
+  .scroller::-webkit-scrollbar-thumb:hover {
+    border: 0px solid transparent;
   }
 }
