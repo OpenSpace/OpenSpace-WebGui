@@ -1,30 +1,27 @@
 import { Checkbox, Group } from '@mantine/core';
 
 import { PropertyLabel } from '../PropertyLabel';
-import { ConcretePropertyBaseProps } from '../types';
+import { PropertyProps } from '../types';
+import { useGetBoolPropertyValue, useGetPropertyDescription } from '@/api/hooks';
 
-interface Props extends ConcretePropertyBaseProps {
-  setPropertyValue: (newValue: boolean) => void;
-  value: boolean;
-}
+export function BoolProperty({ uri }: PropertyProps) {
+  const [value, setValue] = useGetBoolPropertyValue(uri);
+  const description = useGetPropertyDescription(uri);
 
-export function BoolProperty({
-  name,
-  description,
-  disabled,
-  setPropertyValue,
-  value
-}: Props) {
+  if (!description || value === undefined) {
+    return <></>;
+  }
+
   return (
     <Group gap={'xs'} wrap={'nowrap'}>
       <Checkbox
         checked={value}
-        onChange={(event) => setPropertyValue(event.currentTarget.checked)}
-        onKeyDown={(event) => event.key === 'Enter' && setPropertyValue(!value)}
-        disabled={disabled}
+        onChange={(event) => setValue(event.currentTarget.checked)}
+        onKeyDown={(event) => event.key === 'Enter' && setValue(!value)}
+        disabled={description.metaData.isReadOnly}
         aria-label={`Toggle ${name}`}
       />
-      <PropertyLabel label={name} tip={description} isReadOnly={disabled} />
+      <PropertyLabel uri={uri} />
     </Group>
   );
 }

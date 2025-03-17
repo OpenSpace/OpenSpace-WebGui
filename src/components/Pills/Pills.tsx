@@ -1,28 +1,15 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Pill, PillsInput } from '@mantine/core';
-
 import { usePropListeningState } from '@/api/hooks';
 
-import { ConcretePropertyBaseProps } from '../../types';
-
-type ListValueType = string | number;
-
-export interface ListPropertyProps extends ConcretePropertyBaseProps {
-  setPropertyValue: (newValue: ListValueType[]) => void;
-  value: ListValueType[];
+interface Props {
+  value: string[];
+  setValue: (value: string[]) => void;
+  placeHolderText: string;
+  isDisabled: boolean;
 }
 
-interface Props extends ListPropertyProps {
-  valueType: 'string' | 'int' | 'float';
-}
-
-export function ListProperty({
-  name,
-  disabled,
-  setPropertyValue,
-  value,
-  valueType
-}: Props) {
+export function Pills({ value, setValue, placeHolderText, isDisabled }: Props) {
   const [clickedItemIndex, setClickedItemIndex] = useState<number | undefined>(undefined);
   const [placeholder, setPlaceholder] = useState('');
   const [inputString, setInputString] = useState('');
@@ -35,46 +22,17 @@ export function ListProperty({
     setIsEditing
   } = usePropListeningState(value);
 
-  const placeHolderText = useMemo(() => {
-    switch (valueType) {
-      case 'float':
-        return `number1, number2, ...`;
-      case 'int':
-        return `integer1, integer2, ...`;
-      case 'string':
-        return `item1, item2, ...`;
-      default:
-        throw new Error('Invalid value type');
-    }
-  }, [valueType]);
-
-  function parseInput(input: string): ListValueType[] {
-    const splitInput = input
-      .split(',')
-      .map((item) => item.trim())
-      .filter((item) => item !== '');
-
-    switch (valueType) {
-      case 'float':
-        return splitInput.map((item) => parseFloat(item)).filter((item) => !isNaN(item));
-      case 'int':
-        return splitInput.map((item) => parseInt(item)).filter((item) => !isNaN(item));
-      case 'string':
-        return splitInput;
-      default:
-        throw new Error('Invalid value type');
-    }
-  }
-
   function onInputKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
     const shouldEditOnBackSpace =
       (!isEditing || inputString.length === 0) && !(shownValues.length === 0);
-
     if (event.key === 'Enter') {
-      const inputValues = parseInput(inputString);
+      const inputValues = inputString
+        .split(',')
+        .map((item) => item.trim())
+        .filter((item) => item !== '');
       const newValues = [...shownValues, ...inputValues];
       setShownValues(newValues);
-      setPropertyValue(newValues);
+      setValue(newValues);
       stopEditing();
       if (newValues.length === 0) {
         event.currentTarget.blur();
@@ -104,14 +62,14 @@ export function ListProperty({
     const newValues = [...value];
     newValues.splice(index, 1);
 
-    setPropertyValue(newValues);
+    setValue(newValues);
     setShownValues(newValues);
 
     setClickedItemIndex(undefined);
   }
 
   function onItemClick(index: number) {
-    if (disabled) {
+    if (isDisabled) {
       return;
     }
     const isCurrent = clickedItemIndex === index;
@@ -120,7 +78,7 @@ export function ListProperty({
 
   return (
     <PillsInput
-      disabled={disabled}
+      disabled={isDisabled}
       onBlur={stopEditing}
       aria-label={`List input for ${name}`}
     >
@@ -128,7 +86,7 @@ export function ListProperty({
         {shownValues.map((item, i) => (
           <Pill
             key={`pill-${i}`}
-            style={disabled ? {} : { cursor: 'pointer' }}
+            style={isDisabled ? {} : { cursor: 'pointer' }}
             withRemoveButton={clickedItemIndex === i}
             onRemove={() => deleteItem(i)}
             onClick={() => onItemClick(i)}

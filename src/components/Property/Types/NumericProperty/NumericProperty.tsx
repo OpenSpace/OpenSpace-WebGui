@@ -1,42 +1,59 @@
 import { Flex, Group, NumberFormatter, Paper, Text } from '@mantine/core';
 
-import { usePropListeningState } from '@/api/hooks';
+import {
+  useGetPropertyDescription,
+  useProperty,
+  usePropListeningState
+} from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-
-import { ConcretePropertyBaseProps } from '../../types';
 
 import { NumericPropertySlider } from './Slider/NumericPropertySlider';
 import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from './util';
+import { PropertyProps } from '../../types';
 
-export interface NumericPropertyProps extends ConcretePropertyBaseProps {
-  setPropertyValue: (newValue: number) => void;
-  value: number;
-  additionalData: {
-    Exponent: number;
-    MaximumValue: number;
-    MinimumValue: number;
-    SteppingValue: number;
-  };
-}
+const propertyTypes = [
+  'FloatProperty',
+  'DoubleProperty',
+  'ShortProperty',
+  'UShortProperty',
+  'LongProperty',
+  'ULongProperty',
+  'IntProperty',
+  'UIntProperty'
+];
 
-interface Props extends NumericPropertyProps {
+type AdditionalData = {
+  Exponent: number;
+  MaximumValue: number;
+  MinimumValue: number;
+  SteppingValue: number;
+};
+
+interface Props extends PropertyProps {
   isInt?: boolean;
 }
 
-export function NumericProperty({
-  disabled,
-  setPropertyValue,
-  value,
-  additionalData,
-  isInt = false
-}: Props) {
-  const { value: currentValue, setValue: setCurrentValue } =
-    usePropListeningState<number>(value);
+export function NumericProperty({ uri, isInt = false }: Props) {
+  const [value, setPropertyValue] = useProperty<number>(uri, propertyTypes);
 
-  const min = additionalData.MinimumValue;
-  const max = additionalData.MaximumValue;
-  const step = additionalData.SteppingValue;
-  const exponent = additionalData.Exponent;
+  const { value: currentValue, setValue: setCurrentValue } = usePropListeningState<
+    number | undefined
+  >(value);
+
+  const description = useGetPropertyDescription(uri);
+
+  if (!description || currentValue === undefined) {
+    return <></>;
+  }
+
+  const disabled = description?.metaData.isReadOnly;
+  const { additionalData } = description as { additionalData: AdditionalData };
+  const {
+    MinimumValue: min,
+    MaximumValue: max,
+    SteppingValue: step,
+    Exponent: exponent
+  } = additionalData;
 
   // When no min/max is set, the marks for the slider cannot be nicely computed
   const extent = max - min;

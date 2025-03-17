@@ -1,7 +1,15 @@
 import { Flex } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-import { VectorPropertyProps } from '@/components/Property/Types/VectorProperty/VectorProperty';
+import { AdditionalData } from '@/components/Property/Types/VectorProperty/VectorProperty';
+
+interface Props {
+  disabled: boolean;
+  setPropertyValue: (value: number[]) => void;
+  value: number[];
+  additionalData: AdditionalData;
+  isInt?: boolean;
+}
 
 export function ValueList({
   disabled,
@@ -9,10 +17,8 @@ export function ValueList({
   value,
   additionalData,
   isInt
-}: VectorPropertyProps) {
-  const min = additionalData.MinimumValue;
-  const max = additionalData.MaximumValue;
-  const step = additionalData.SteppingValue;
+}: Props) {
+  const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
 
   function setValue(index: number, newValue: number) {
     const v = [...value];

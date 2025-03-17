@@ -1,30 +1,25 @@
 import { MultiSelect } from '@mantine/core';
 
-import { ConcretePropertyBaseProps } from '../types';
+import { PropertyProps } from '../types';
+import { useGetPropertyDescription, useGetSelectionPropertyValue } from '@/api/hooks';
 
-interface Props extends ConcretePropertyBaseProps {
-  setPropertyValue: (newValue: string[]) => void;
-  additionalData: {
-    Options: string[];
-  };
-  value: string[];
-}
+export function SelectionProperty({ uri }: PropertyProps) {
+  const [value, setValue] = useGetSelectionPropertyValue(uri);
+  const description = useGetPropertyDescription(uri);
 
-export function SelectionProperty({
-  name,
-  disabled,
-  setPropertyValue,
-  value,
-  additionalData
-}: Props) {
-  const options = additionalData.Options;
+  if (!value || !description) {
+    return <></>;
+  }
+
+  const options = description.additionalData.Options as string[];
+
   return (
     <MultiSelect
       aria-label={`${name} multi-select`}
-      disabled={disabled}
+      disabled={description.additionalData.isReadOnly}
       data={options}
       value={value}
-      onChange={(_value) => setPropertyValue(_value)}
+      onChange={setValue}
       placeholder={value.length === 0 ? 'No selection' : ''}
       searchable
       clearable

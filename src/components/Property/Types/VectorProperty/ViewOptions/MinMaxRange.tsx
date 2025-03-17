@@ -4,23 +4,26 @@ import { usePropListeningState } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useSliderScale } from '@/components/Property/SliderUtil/hooks';
 import { SliderMinMaxLabels } from '@/components/Property/SliderUtil/SliderMinMaxLabels';
-import { VectorPropertyProps } from '@/components/Property/Types/VectorProperty/VectorProperty';
+import { AdditionalData } from '@/components/Property/Types/VectorProperty/VectorProperty';
+
+interface Props {
+  disabled: boolean;
+  setPropertyValue: (value: number[]) => void;
+  value: number[];
+  additionalData: AdditionalData;
+}
 
 export function MinMaxRange({
   disabled,
   setPropertyValue,
   value,
   additionalData
-}: VectorPropertyProps) {
+}: Props) {
   const {
     value: currentValue,
     setValue: setCurrentValue,
     setIsEditing: setIsEditingSlider
   } = usePropListeningState<number[]>(value);
-
-  if (value.length !== 2) {
-    throw Error('Invalid use of MinMaxRange view option!');
-  }
 
   const exponent = additionalData.Exponent;
   const [min] = additionalData.MinimumValue;

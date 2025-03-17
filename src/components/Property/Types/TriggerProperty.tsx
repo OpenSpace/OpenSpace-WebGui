@@ -2,24 +2,23 @@ import { Button, Group } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 
-import { ConcretePropertyBaseProps } from '../types';
+import { PropertyProps } from '../types';
+import { useGetPropertyDescription, useTriggerProperty } from '@/api/hooks';
 
-interface Props extends ConcretePropertyBaseProps {
-  setPropertyValue: (newValue: null) => void;
-}
+export function TriggerProperty({ uri }: PropertyProps) {
+  const triggerFunc = useTriggerProperty(uri);
+  const description = useGetPropertyDescription(uri);
 
-export function TriggerProperty({
-  name,
-  description,
-  disabled,
-  setPropertyValue
-}: Props) {
+  if (!description) {
+    return <></>;
+  }
+
   return (
     <Group>
-      <Button onClick={() => setPropertyValue(null)} disabled={disabled}>
-        {name}
+      <Button onClick={triggerFunc} disabled={description.metaData.isReadOnly}>
+        {description.name}
       </Button>
-      <InfoBox text={description} />
+      <InfoBox text={description.description} />
     </Group>
   );
 }

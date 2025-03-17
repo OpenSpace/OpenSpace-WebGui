@@ -1,21 +1,25 @@
 import { Group, InputLabel, Text, Tooltip } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { useGetPropertyDescription } from '@/api/hooks';
+import { PropertyProps } from './types';
 
-interface Props {
-  label: string;
-  tip?: string;
-  isReadOnly: boolean;
-}
+export function PropertyLabel({ uri }: PropertyProps) {
+  const description = useGetPropertyDescription(uri);
 
-export function PropertyLabel({ label, tip, isReadOnly }: Props) {
+  if (!description) {
+    return <></>;
+  }
+
+  const { name, description: tip } = description;
+
   return (
     <Group wrap={'nowrap'}>
       <InputLabel fw={'normal'}>
         <Text span size={'sm'}>
-          {label}
+          {name}
         </Text>
-        {isReadOnly && (
+        {description.metaData.isReadOnly && (
           <Tooltip
             maw={200}
             multiline

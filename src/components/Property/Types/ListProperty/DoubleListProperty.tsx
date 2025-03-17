@@ -1,9 +1,9 @@
-import { useGetIntListPropertyValue, useGetPropertyDescription } from '@/api/hooks';
+import { useGetDoubleListPropertyValue, useGetPropertyDescription } from '@/api/hooks';
 import { PropertyProps } from '../../types';
 import { Pills } from '../../../Pills/Pills';
 
-export function IntListProperty({ uri }: PropertyProps) {
-  const [value, setValue] = useGetIntListPropertyValue(uri);
+export function DoubleListProperty({ uri }: PropertyProps) {
+  const [value, setValue] = useGetDoubleListPropertyValue(uri);
   const description = useGetPropertyDescription(uri);
 
   if (!description || value === undefined) {
@@ -13,14 +13,14 @@ export function IntListProperty({ uri }: PropertyProps) {
   const isReadOnly = description.metaData.isReadOnly;
 
   function setValueString(value: string[]) {
-    setValue(value.map((v) => parseInt(v)).filter((item) => !isNaN(item)));
+    setValue(value.map((item) => parseFloat(item)).filter((item) => !isNaN(item)));
   }
 
   return (
     <Pills
       value={value.map((v) => v.toString())}
       setValue={setValueString}
-      placeHolderText="integer1, integer2, ..."
+      placeHolderText="number1, number2, ..."
       isDisabled={isReadOnly}
     />
   );

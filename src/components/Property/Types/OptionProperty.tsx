@@ -1,37 +1,31 @@
 import { Select } from '@mantine/core';
 
-import { ConcretePropertyBaseProps } from '../types';
+import { PropertyProps } from '../types';
+import { useGetOptionPropertyValue, useGetPropertyDescription } from '@/api/hooks';
 
 interface Option {
   [key: string]: string; // OBS! The key is a number, but will always be converted to a string...
 }
 
-interface Props extends ConcretePropertyBaseProps {
-  setPropertyValue: (newValue: number) => void;
-  value: number;
-  additionalData: {
-    Options: Option[];
-  };
-}
+export function OptionProperty({ uri }: PropertyProps) {
+  const [value, setValue] = useGetOptionPropertyValue(uri);
+  const description = useGetPropertyDescription(uri);
 
-export function OptionProperty({
-  name,
-  disabled,
-  setPropertyValue,
-  value,
-  additionalData
-}: Props) {
-  const data = additionalData.Options;
+  if (!description || value === undefined) {
+    return <></>;
+  }
+
+  const data = description.additionalData.Options;
 
   // TODO: This is a bit nasty... Only gets the first value. We should consider simplifying
   // the data structure to not be an array. I ended up doing this and flipping the data
   // structure to make  it easier to get the correpsonding value for a given string
-  const options: { [key: string]: number } = {};
-  data.forEach((option: Option) => {
+  const options = data.reduce((acc: { [key: string]: number }, option: Option) => {
     const [key] = Object.values(option); // Gets the first value in the object
     const value = parseInt(Object.keys(option)[0]);
-    options[key] = value;
-  });
+    acc[key] = value;
+    return acc;
+  }, {});
 
   // Value will be an integer number. We need to find the string version to use in the
   // select component
@@ -41,7 +35,7 @@ export function OptionProperty({
 
   function onChange(option: string | null) {
     if (option) {
-      setPropertyValue(options[option]);
+      setValue(options[option]);
     }
   }
 
@@ -49,10 +43,10 @@ export function OptionProperty({
     <Select
       aria-label={`${name} option input`}
       placeholder={'Choose an option'}
-      disabled={disabled}
+      disabled={description.additionalData.isReadOnly}
       data={Object.keys(options)}
       value={valueToString(value)}
-      onChange={(_value) => onChange(_value)}
+      onChange={onChange}
       allowDeselect={false}
     />
   );
