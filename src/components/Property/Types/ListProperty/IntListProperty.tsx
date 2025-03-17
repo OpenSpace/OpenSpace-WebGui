@@ -1,5 +1,4 @@
 import { useGetIntListPropertyValue, useGetPropertyDescription } from '@/api/hooks';
-
 import { Pills } from '@/components/Pills/Pills';
 import { PropertyProps } from '@/components/Property/types';
 

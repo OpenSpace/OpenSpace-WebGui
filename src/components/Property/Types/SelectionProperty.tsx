@@ -5,7 +5,6 @@ import {
   useGetSelectionPropertyValue,
   usePropListeningState
 } from '@/api/hooks';
-
 import { PropertyProps } from '@/components/Property/types';
 
 export function SelectionProperty({ uri }: PropertyProps) {

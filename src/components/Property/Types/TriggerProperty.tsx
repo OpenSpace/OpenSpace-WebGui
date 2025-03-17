@@ -2,7 +2,6 @@ import { Button, Group } from '@mantine/core';
 
 import { useGetPropertyDescription, useTriggerProperty } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-
 import { PropertyProps } from '@/components/Property/types';
 
 export function TriggerProperty({ uri }: PropertyProps) {

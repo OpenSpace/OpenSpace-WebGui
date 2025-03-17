@@ -6,7 +6,6 @@ import {
   usePropListeningState
 } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-
 import { AdditionalDataNumber, PropertyProps } from '@/components/Property/types';
 
 import { NumericPropertySlider } from './Slider/NumericPropertySlider';
