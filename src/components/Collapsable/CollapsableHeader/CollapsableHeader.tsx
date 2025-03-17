@@ -32,7 +32,7 @@ export function CollapsableHeader({
       </ActionIcon>
       <ThreePartHeader
         title={
-          <UnstyledButton onClick={toggle} tabIndex={-1}>
+          <UnstyledButton onClick={toggle} tabIndex={-1} flex={1}>
             {title}
           </UnstyledButton>
         }

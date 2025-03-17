@@ -94,7 +94,7 @@ export function ScreenSpaceRenderablePanel() {
             wrap={'nowrap'}
             align={'top'}
           >
-            <Box>
+            <Box flex={1}>
               <PropertyOwner uri={uri} />
             </Box>
             <ActionIcon
