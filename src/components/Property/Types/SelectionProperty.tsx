@@ -1,7 +1,8 @@
 import { MultiSelect } from '@mantine/core';
 
-import { PropertyProps } from '../types';
 import { useGetPropertyDescription, useGetSelectionPropertyValue } from '@/api/hooks';
+
+import { PropertyProps } from '../types';
 
 export function SelectionProperty({ uri }: PropertyProps) {
   const [value, setValue] = useGetSelectionPropertyValue(uri);

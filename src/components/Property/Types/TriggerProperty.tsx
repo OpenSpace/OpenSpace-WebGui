@@ -1,9 +1,9 @@
 import { Button, Group } from '@mantine/core';
 
+import { useGetPropertyDescription, useTriggerProperty } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 
 import { PropertyProps } from '../types';
-import { useGetPropertyDescription, useTriggerProperty } from '@/api/hooks';
 
 export function TriggerProperty({ uri }: PropertyProps) {
   const triggerFunc = useTriggerProperty(uri);

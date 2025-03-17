@@ -1,7 +1,8 @@
 import { Select } from '@mantine/core';
 
-import { PropertyProps } from '../types';
 import { useGetOptionPropertyValue, useGetPropertyDescription } from '@/api/hooks';
+
+import { PropertyProps } from '../types';
 
 interface Option {
   [key: string]: string; // OBS! The key is a number, but will always be converted to a string...

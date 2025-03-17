@@ -1,7 +1,12 @@
 import { memo } from 'react';
+import { Stack } from '@mantine/core';
+
+import { useAppSelector } from '@/redux/hooks';
 
 import { BoolProperty } from './Types/BoolProperty';
-
+import { DoubleListProperty } from './Types/ListProperty/DoubleListProperty';
+import { IntListProperty } from './Types/ListProperty/IntListProperty';
+import { StringListProperty } from './Types/ListProperty/StringListProperty';
 import { MatrixProperty } from './Types/MatrixProperty';
 import { NumericProperty } from './Types/NumericProperty/NumericProperty';
 import { OptionProperty } from './Types/OptionProperty';
@@ -9,13 +14,8 @@ import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';
 import { TriggerProperty } from './Types/TriggerProperty';
 import { VectorProperty } from './Types/VectorProperty/VectorProperty';
-import { useAppSelector } from '@/redux/hooks';
-import { DoubleListProperty } from './Types/ListProperty/DoubleListProperty';
-import { IntListProperty } from './Types/ListProperty/IntListProperty';
-import { StringListProperty } from './Types/ListProperty/StringListProperty';
-import { PropertyProps } from './types';
 import { PropertyLabel } from './PropertyLabel';
-import { Stack } from '@mantine/core';
+import { PropertyProps } from './types';
 
 const renderProperty = (type: string, uri: string) => {
   switch (type) {

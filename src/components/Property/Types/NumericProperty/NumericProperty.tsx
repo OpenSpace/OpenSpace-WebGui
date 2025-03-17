@@ -7,9 +7,10 @@ import {
 } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 
+import { PropertyProps } from '../../types';
+
 import { NumericPropertySlider } from './Slider/NumericPropertySlider';
 import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from './util';
-import { PropertyProps } from '../../types';
 
 const propertyTypes = [
   'FloatProperty',

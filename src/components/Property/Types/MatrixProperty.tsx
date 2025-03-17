@@ -1,9 +1,9 @@
 import { Grid } from '@mantine/core';
 
+import { useGetPropertyDescription, useProperty } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 
 import { PropertyProps } from '../types';
-import { useGetPropertyDescription, useProperty } from '@/api/hooks';
 
 type AdditionalData = {
   Exponent: number; // TODO: handle the exponent

@@ -1,10 +1,12 @@
+import { Flex, RGBA } from '@mantine/core';
+
 import { useGetPropertyDescription, useProperty } from '@/api/hooks';
+import { ColorPicker } from '@/components/ColorPicker/ColorPicker';
+
 import { PropertyProps } from '../../types';
 
-import { ValueList } from './ViewOptions/ValueList';
 import { MinMaxRange } from './ViewOptions/MinMaxRange';
-import { Flex, RGBA } from '@mantine/core';
-import { ColorPicker } from '@/components/ColorPicker/ColorPicker';
+import { ValueList } from './ViewOptions/ValueList';
 
 export type AdditionalData = {
   Exponent: number; // TODO: handle the exponent
@@ -41,8 +43,8 @@ export function VectorProperty({ uri, isInt }: Props) {
   }
 
   const viewOptions = description.metaData.ViewOptions;
-  const additionalData: AdditionalData = description.additionalData;
-  const isReadOnly = description.metaData.isReadOnly;
+  const {additionalData} = description;
+  const {isReadOnly} = description.metaData;
 
   if (viewOptions.Color) {
     if ((value.length !== 3 && value.length !== 4) || isInt) {

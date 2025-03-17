@@ -1,7 +1,8 @@
 import { Group, InputLabel, Text, Tooltip } from '@mantine/core';
 
-import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { useGetPropertyDescription } from '@/api/hooks';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
+
 import { PropertyProps } from './types';
 
 export function PropertyLabel({ uri }: PropertyProps) {
