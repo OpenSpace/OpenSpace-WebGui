@@ -4,8 +4,11 @@ import { useGetOptionPropertyValue, useGetPropertyDescription } from '@/api/hook
 
 import { PropertyProps } from '../types';
 
+// In OpenSpace the options are represented like so:
+// { 0 : "Option 1"}, { 1: "Option 2"}
+// The key is a number but in a string format.
 interface Option {
-  [key: string]: string; // OBS! The key is a number, but will always be converted to a string...
+  [key: string]: string;
 }
 
 export function OptionProperty({ uri }: PropertyProps) {
@@ -15,28 +18,17 @@ export function OptionProperty({ uri }: PropertyProps) {
   if (!description || value === undefined) {
     return <></>;
   }
+  const data: Option[] = description.additionalData.Options;
 
-  const data = description.additionalData.Options;
-
-  // TODO: This is a bit nasty... Only gets the first value. We should consider simplifying
-  // the data structure to not be an array. I ended up doing this and flipping the data
-  // structure to make  it easier to get the correpsonding value for a given string
-  const options = data.reduce((acc: { [key: string]: number }, option: Option) => {
-    const [key] = Object.values(option); // Gets the first value in the object
-    const value = parseInt(Object.keys(option)[0]);
-    acc[key] = value;
-    return acc;
-  }, {});
-
-  // Value will be an integer number. We need to find the string version to use in the
-  // select component
-  function valueToString(value: number): string | undefined {
-    return Object.keys(options).find((key) => options[key] === value);
-  }
+  // Get the name of the option, e.g. "Option 1"
+  const optionsStrings = data.map((option) => Object.values(option)[0]);
 
   function onChange(option: string | null) {
-    if (option) {
-      setValue(options[option]);
+    if (option && optionsStrings.indexOf(option) !== -1) {
+      // Now we need to find the number key of the option
+      // which is the same as its index in the optionsStrings array
+      const index = optionsStrings.indexOf(option);
+      setValue(index);
     }
   }
 
@@ -45,8 +37,8 @@ export function OptionProperty({ uri }: PropertyProps) {
       aria-label={`${name} option input`}
       placeholder={'Choose an option'}
       disabled={description.additionalData.isReadOnly}
-      data={Object.keys(options)}
-      value={valueToString(value)}
+      data={optionsStrings}
+      value={optionsStrings[value]}
       onChange={onChange}
       allowDeselect={false}
     />
