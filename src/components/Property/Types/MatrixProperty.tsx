@@ -13,7 +13,7 @@ const matrixTypes = [
   'DMat4Property'
 ];
 
-export function MatrixProperty({ uri }: PropertyProps) {
+export function MatrixProperty({ uri, readOnly }: PropertyProps) {
   const [value, setPropertyValue] = useProperty<number[]>(uri, matrixTypes);
   const description = useGetPropertyDescription(uri);
 
@@ -21,11 +21,9 @@ export function MatrixProperty({ uri }: PropertyProps) {
     return <></>;
   }
 
-  const { additionalData } = description as {
-    additionalData: AdditionalDataVectorMatrix;
-  };
+  const additionalData = description.additionalData as AdditionalDataVectorMatrix;
+
   const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
-  const disabled = description.metaData.isReadOnly;
   const matrixSize = Math.sqrt(value.length);
 
   function setValue(index: number, newValue: number) {
@@ -47,7 +45,7 @@ export function MatrixProperty({ uri }: PropertyProps) {
             max={max[i]}
             step={step[i]}
             onEnter={(newValue) => setValue(i, newValue)}
-            disabled={disabled}
+            disabled={readOnly}
           />
         </Grid.Col>
       ))}

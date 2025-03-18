@@ -39,7 +39,7 @@ export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
     return <></>;
   }
 
-  const { additionalData } = description as { additionalData: AdditionalDataNumber };
+  const additionalData = description.additionalData as AdditionalDataNumber;
   const {
     MinimumValue: min,
     MaximumValue: max,

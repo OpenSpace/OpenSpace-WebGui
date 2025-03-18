@@ -20,7 +20,7 @@ import { useGetPropertyDescription } from '@/api/hooks';
 
 // The readOnly prop sent to each component are meant to enforce each
 // Property component to have to handle the readOnly state. This can
-// easily be forgotten otherwise
+// easily be forgotten otherwise.
 function renderProperty(type: string, uri: string, readOnly: boolean): React.JSX.Element {
   switch (type) {
     case 'BoolProperty':

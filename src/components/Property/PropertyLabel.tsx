@@ -6,13 +6,13 @@ import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyProps } from './types';
 
 export function PropertyLabel({ uri, readOnly }: PropertyProps) {
-  const description = useGetPropertyDescription(uri);
+  const details = useGetPropertyDescription(uri);
 
-  if (!description) {
+  if (!details) {
     return <></>;
   }
 
-  const { name, description: tip } = description;
+  const { name, description } = details;
 
   return (
     <Group wrap={'nowrap'}>
@@ -32,7 +32,7 @@ export function PropertyLabel({ uri, readOnly }: PropertyProps) {
           </Tooltip>
         )}
       </InputLabel>
-      {tip && <InfoBox text={tip} />}
+      {description && <InfoBox text={description} />}
     </Group>
   );
 }

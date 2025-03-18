@@ -13,12 +13,15 @@ interface Props {
   additionalData: AdditionalDataVectorMatrix;
 }
 
-export function MinMaxRange({
+export function MinMaxRangeView({
   disabled,
   setPropertyValue,
   value,
   additionalData
 }: Props) {
+  if (value.length !== 2) {
+    throw Error('Invalid use of MinMaxRange view option!');
+  }
   const {
     value: currentValue,
     setValue: setCurrentValue,

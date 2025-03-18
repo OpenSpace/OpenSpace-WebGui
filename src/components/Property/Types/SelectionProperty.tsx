@@ -7,6 +7,10 @@ import {
 } from '@/api/hooks';
 import { PropertyProps } from '@/components/Property/types';
 
+export interface AdditionalDataSelection {
+  Options: string[];
+}
+
 export function SelectionProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue] = useGetSelectionPropertyValue(uri);
   const { value: currentValue, setValue: setCurrentValue } = usePropListeningState<
@@ -19,7 +23,7 @@ export function SelectionProperty({ uri, readOnly }: PropertyProps) {
     return <></>;
   }
 
-  const options = description.additionalData.Options as string[];
+  const { Options: options } = description.additionalData as AdditionalDataSelection;
 
   function handleChange(newValue: string[]) {
     setValue(newValue);
@@ -28,7 +32,7 @@ export function SelectionProperty({ uri, readOnly }: PropertyProps) {
 
   return (
     <MultiSelect
-      aria-label={`${name} multi-select`}
+      aria-label={`${description.name} multi-select`}
       disabled={readOnly}
       data={options}
       value={currentValue}

@@ -1,6 +1,12 @@
 import { Property } from '@/components/Property/Property';
 
 import { PropertyVisibilityNumber } from './enums';
+import {
+  AdditionalDataNumber,
+  AdditionalDataVectorMatrix
+} from '@/components/Property/types';
+import { AdditionalDataOptions } from '@/components/Property/Types/OptionProperty';
+import { AdditionalDataSelection } from '@/components/Property/Types/SelectionProperty';
 
 export type Uri = string;
 export type Identifier = string;
@@ -41,10 +47,14 @@ export interface PropertyMetaData {
   needsConfirmation: boolean;
 }
 
+export type AdditionalData =
+  | AdditionalDataNumber
+  | AdditionalDataVectorMatrix
+  | AdditionalDataOptions
+  | AdditionalDataSelection;
+
 export interface PropertyDetails {
-  // TODO: ylvse (2025-02-17): create the type for additionalData
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  additionalData: any;
+  additionalData: AdditionalData;
   identifier: Identifier;
   metaData: PropertyMetaData;
   name: string;

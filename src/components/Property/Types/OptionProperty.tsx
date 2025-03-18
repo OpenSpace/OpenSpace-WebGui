@@ -10,6 +10,10 @@ interface Option {
   [key: string]: string;
 }
 
+export interface AdditionalDataOptions {
+  Options: Option[];
+}
+
 export function OptionProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue] = useGetOptionPropertyValue(uri);
   const description = useGetPropertyDescription(uri);
@@ -17,27 +21,30 @@ export function OptionProperty({ uri, readOnly }: PropertyProps) {
   if (!description || value === undefined) {
     return <></>;
   }
-  const data: Option[] = description.additionalData.Options;
+
+  const { Options: data } = description.additionalData as AdditionalDataOptions;
 
   // Get the name of the option, e.g. "Option 1"
-  const optionsStrings = data.map((option) => Object.values(option)[0]);
+  // Flatten the array as otherwise each element is an array
+  // @TODO (ylvse 2025-03-18): Change the property format
+  const options = data.map((option) => Object.values(option)).flat();
 
   function onChange(option: string | null) {
-    if (option && optionsStrings.indexOf(option) !== -1) {
+    if (option && options.indexOf(option) !== -1) {
       // Now we need to find the number key of the option
       // which is the same as its index in the optionsStrings array
-      const index = optionsStrings.indexOf(option);
+      const index = options.indexOf(option);
       setValue(index);
     }
   }
 
   return (
     <Select
-      aria-label={`${name} option input`}
+      aria-label={`${description.name} option input`}
       placeholder={'Choose an option'}
       disabled={readOnly}
-      data={optionsStrings}
-      value={optionsStrings[value]}
+      data={options}
+      value={options[value]}
       onChange={onChange}
       allowDeselect={false}
     />
