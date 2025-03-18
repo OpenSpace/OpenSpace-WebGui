@@ -56,10 +56,6 @@ export const useTriggerProperty = (uri: Uri) => {
   return trigger;
 };
 
-export function useGetProperty(uri: Uri): Property | undefined {
-  return useAppSelector((state) => state.properties.properties[uri]);
-}
-
 export function useGetPropertyDescription(uri: Uri): PropertyDetails | undefined {
   return useAppSelector((state) => state.properties.properties[uri]?.description);
 }
