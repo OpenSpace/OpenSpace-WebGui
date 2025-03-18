@@ -10,7 +10,7 @@ interface Option {
   [key: string]: string;
 }
 
-export function OptionProperty({ uri }: PropertyProps) {
+export function OptionProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue] = useGetOptionPropertyValue(uri);
   const description = useGetPropertyDescription(uri);
 
@@ -35,7 +35,7 @@ export function OptionProperty({ uri }: PropertyProps) {
     <Select
       aria-label={`${name} option input`}
       placeholder={'Choose an option'}
-      disabled={description.additionalData.isReadOnly}
+      disabled={readOnly}
       data={optionsStrings}
       value={optionsStrings[value]}
       onChange={onChange}

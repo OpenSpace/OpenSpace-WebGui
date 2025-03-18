@@ -5,7 +5,7 @@ import { InfoBox } from '@/components/InfoBox/InfoBox';
 
 import { PropertyProps } from './types';
 
-export function PropertyLabel({ uri }: PropertyProps) {
+export function PropertyLabel({ uri, readOnly }: PropertyProps) {
   const description = useGetPropertyDescription(uri);
 
   if (!description) {
@@ -20,7 +20,7 @@ export function PropertyLabel({ uri }: PropertyProps) {
         <Text span size={'sm'}>
           {name}
         </Text>
-        {description.metaData.isReadOnly && (
+        {readOnly && (
           <Tooltip
             maw={200}
             multiline

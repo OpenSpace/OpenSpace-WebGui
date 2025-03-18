@@ -16,56 +16,60 @@ import { TriggerProperty } from './Types/TriggerProperty';
 import { VectorProperty } from './Types/VectorProperty/VectorProperty';
 import { PropertyLabel } from './PropertyLabel';
 import { PropertyProps } from './types';
+import { useGetPropertyDescription } from '@/api/hooks';
 
-function renderProperty(type: string, uri: string): React.JSX.Element {
+// The readOnly prop sent to each component are meant to enforce each
+// Property component to have to handle the readOnly state. This can
+// easily be forgotten otherwise
+function renderProperty(type: string, uri: string, readOnly: boolean): React.JSX.Element {
   switch (type) {
     case 'BoolProperty':
-      return <BoolProperty uri={uri} />;
+      return <BoolProperty uri={uri} readOnly={readOnly} />;
     case 'OptionProperty':
-      return <OptionProperty uri={uri} />;
+      return <OptionProperty uri={uri} readOnly={readOnly} />;
     case 'TriggerProperty':
-      return <TriggerProperty uri={uri} />;
+      return <TriggerProperty uri={uri} readOnly={readOnly} />;
     case 'StringProperty':
-      return <StringProperty uri={uri} />;
+      return <StringProperty uri={uri} readOnly={readOnly} />;
     case 'DoubleListProperty':
-      return <DoubleListProperty uri={uri} />;
+      return <DoubleListProperty uri={uri} readOnly={readOnly} />;
     case 'IntListProperty':
-      return <IntListProperty uri={uri} />;
+      return <IntListProperty uri={uri} readOnly={readOnly} />;
     case 'StringListProperty':
-      return <StringListProperty uri={uri} />;
+      return <StringListProperty uri={uri} readOnly={readOnly} />;
     case 'SelectionProperty':
-      return <SelectionProperty uri={uri} />;
+      return <SelectionProperty uri={uri} readOnly={readOnly} />;
     case 'FloatProperty':
     case 'DoubleProperty':
     case 'ShortProperty':
     case 'UShortProperty':
-      return <NumericProperty uri={uri} />;
+      return <NumericProperty uri={uri} readOnly={readOnly} />;
     case 'LongProperty':
     case 'ULongProperty':
     case 'IntProperty':
     case 'UIntProperty':
-      return <NumericProperty isInt uri={uri} />;
+      return <NumericProperty isInt uri={uri} readOnly={readOnly} />;
     case 'Vec2Property':
     case 'Vec3Property':
     case 'Vec4Property':
     case 'DVec2Property':
     case 'DVec3Property':
     case 'DVec4Property':
-      return <VectorProperty uri={uri} />;
+      return <VectorProperty uri={uri} readOnly={readOnly} />;
     case 'IVec2Property':
     case 'IVec3Property':
     case 'IVec4Property':
     case 'UVec2Property':
     case 'UVec3Property':
     case 'UVec4Property':
-      return <VectorProperty uri={uri} isInt />;
+      return <VectorProperty uri={uri} isInt readOnly={readOnly} />;
     case 'Mat2Property':
     case 'Mat3Property':
     case 'Mat4Property':
     case 'DMat2Property':
     case 'DMat3Property':
     case 'DMat4Property':
-      return <MatrixProperty uri={uri} />;
+      return <MatrixProperty uri={uri} readOnly={readOnly} />;
     default:
       throw new Error(`Missing property type: '${type}'`);
   }
@@ -75,8 +79,9 @@ export const Property = memo(({ uri }: PropertyProps) => {
   const propertyType = useAppSelector(
     (state) => state.properties.properties[uri]?.description.type
   );
+  const readOnly = useGetPropertyDescription(uri)?.metaData.isReadOnly;
 
-  if (!propertyType) {
+  if (!propertyType || readOnly === undefined) {
     return <></>;
   }
 
@@ -86,8 +91,8 @@ export const Property = memo(({ uri }: PropertyProps) => {
 
   return (
     <Stack mb={'md'} gap={5}>
-      {showLabel && <PropertyLabel uri={uri} />}
-      {renderProperty(propertyType, uri)}
+      {showLabel && <PropertyLabel uri={uri} readOnly={readOnly} />}
+      {renderProperty(propertyType, uri, readOnly)}
     </Stack>
   );
 });

@@ -26,7 +26,7 @@ interface Props extends PropertyProps {
   isInt?: boolean;
 }
 
-export function VectorProperty({ uri, isInt }: Props) {
+export function VectorProperty({ uri, isInt = false, readOnly }: Props) {
   const [value, setPropertyValue] = useProperty<number[]>(uri, vectorPropertyTypes);
   const description = useGetPropertyDescription(uri);
 
@@ -36,7 +36,6 @@ export function VectorProperty({ uri, isInt }: Props) {
 
   const viewOptions = description.metaData.ViewOptions;
   const additionalData = description.additionalData as AdditionalDataVectorMatrix;
-  const { isReadOnly } = description.metaData;
 
   if (viewOptions.Color) {
     if ((value.length !== 3 && value.length !== 4) || isInt) {
@@ -47,13 +46,13 @@ export function VectorProperty({ uri, isInt }: Props) {
     return (
       <Flex gap={'xs'} align={'center'}>
         <DefaultView
-          disabled={isReadOnly}
+          disabled={readOnly}
           setPropertyValue={setPropertyValue}
           value={value}
           additionalData={additionalData}
         />
         <ColorPicker
-          disabled={isReadOnly}
+          disabled={readOnly}
           withAlpha={hasAlpha}
           color={{
             r: Math.round(255 * value[0]),
@@ -84,14 +83,14 @@ export function VectorProperty({ uri, isInt }: Props) {
         value={value}
         setPropertyValue={setPropertyValue}
         additionalData={additionalData}
-        disabled={isReadOnly}
+        disabled={readOnly}
       />
     );
   }
 
   return (
     <DefaultView
-      disabled={isReadOnly}
+      disabled={readOnly}
       setPropertyValue={setPropertyValue}
       value={value}
       additionalData={additionalData}

@@ -26,7 +26,7 @@ interface Props extends PropertyProps {
   isInt?: boolean;
 }
 
-export function NumericProperty({ uri, isInt = false }: Props) {
+export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
   const [value, setPropertyValue] = useProperty<number>(uri, propertyTypes);
 
   const { value: currentValue, setValue: setCurrentValue } = usePropListeningState<
@@ -39,7 +39,6 @@ export function NumericProperty({ uri, isInt = false }: Props) {
     return <></>;
   }
 
-  const disabled = description?.metaData.isReadOnly;
   const { additionalData } = description as { additionalData: AdditionalDataNumber };
   const {
     MinimumValue: min,
@@ -71,7 +70,7 @@ export function NumericProperty({ uri, isInt = false }: Props) {
           value={value}
           flex={2}
           miw={100}
-          disabled={disabled}
+          disabled={readOnly}
           min={min}
           max={max}
           step={step}
@@ -80,7 +79,7 @@ export function NumericProperty({ uri, isInt = false }: Props) {
         />
       )}
       <Flex flex={1} miw={100}>
-        {disabled ? (
+        {readOnly ? (
           <Paper px={'sm'} py={5} flex={1}>
             <Text size={'sm'}>
               <NumberFormatter

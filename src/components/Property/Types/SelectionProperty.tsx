@@ -7,7 +7,7 @@ import {
 } from '@/api/hooks';
 import { PropertyProps } from '@/components/Property/types';
 
-export function SelectionProperty({ uri }: PropertyProps) {
+export function SelectionProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue] = useGetSelectionPropertyValue(uri);
   const { value: currentValue, setValue: setCurrentValue } = usePropListeningState<
     string[] | undefined
@@ -29,7 +29,7 @@ export function SelectionProperty({ uri }: PropertyProps) {
   return (
     <MultiSelect
       aria-label={`${name} multi-select`}
-      disabled={description.additionalData.isReadOnly}
+      disabled={readOnly}
       data={options}
       value={currentValue}
       onChange={handleChange}
