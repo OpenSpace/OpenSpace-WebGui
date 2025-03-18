@@ -8,15 +8,21 @@ interface Props {
 
 export function ThreePartHeader({ title, leftSection, rightSection }: Props) {
   return (
-    <Group justify={'space-between'} gap={'xs'} wrap={'nowrap'} w={'100%'}>
+    <Group justify={'space-between'} gap={'xs'} wrap={'nowrap'}>
       {leftSection}
-      {typeof title === 'string' ? (
-        <Text truncate flex={1}>
-          {title}
-        </Text>
-      ) : (
-        <Flex flex={1}>{title}</Flex>
-      )}
+      <Flex flex={1}>
+        {typeof title === 'string' ? (
+          <Text
+            ta={'left'}
+            style={{ textWrap: 'pretty', overflowWrap: 'anywhere' }}
+            lineClamp={1}
+          >
+            {title}
+          </Text>
+        ) : (
+          title
+        )}
+      </Flex>
       {rightSection}
     </Group>
   );

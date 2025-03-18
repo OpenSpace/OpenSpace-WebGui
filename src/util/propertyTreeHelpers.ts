@@ -108,6 +108,12 @@ export function isRenderable(uri: Uri): boolean {
   return uri.endsWith('.Renderable');
 }
 
+export function isTransform(uri: Uri): boolean {
+  return (
+    uri.endsWith(ScaleKey) || uri.endsWith(TranslationKey) || uri.endsWith(RotationKey)
+  );
+}
+
 export function isTopLevelPropertyOwner(uri: Uri): boolean {
   return !uri.includes('.');
 }

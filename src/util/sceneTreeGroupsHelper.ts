@@ -1,5 +1,5 @@
 import { SceneTreeNodeData } from '@/panels/Scene/SceneTree/types';
-import { Group, Groups, Properties, PropertyOwners, Uri } from '@/types/types';
+import { Group, Groups, Properties, PropertyOwners } from '@/types/types';
 
 import { getGuiPath, isSceneGraphNode } from './propertyTreeHelpers';
 
@@ -67,13 +67,12 @@ export function computeGroups(
  * Create the data for a Scene tree node representing a scene graph node.
  */
 export function treeDataForSceneGraphNode(
-  uri: Uri,
-  propertyOwners: PropertyOwners,
+  name: string,
+  uri: string,
   path?: string
 ): SceneTreeNodeData {
-  const propertyOwner = propertyOwners[uri];
   return {
-    label: propertyOwner?.name || '',
+    label: name || '',
     value: uri,
     guiPath: path?.split('/') ?? []
   };
@@ -115,7 +114,13 @@ export function sceneTreeDataFromGroups(
 
     // Add property owners, also recursively
     groupData.propertyOwners.forEach((uri) => {
-      groupNodeData.children?.push(treeDataForSceneGraphNode(uri, propertyOwners, path));
+      const owner = propertyOwners[uri];
+      if (owner === undefined) {
+        return;
+      }
+      groupNodeData.children?.push(
+        treeDataForSceneGraphNode(owner.name, owner.uri, path)
+      );
     });
 
     return groupNodeData;
@@ -128,7 +133,11 @@ export function sceneTreeDataFromGroups(
   // Add the nodes without any group to the top level
   const nodesWithoutGroup = groups['/']?.propertyOwners || [];
   nodesWithoutGroup.forEach((uri) => {
-    treeData.push(treeDataForSceneGraphNode(uri, propertyOwners));
+    const owner = propertyOwners[uri];
+    if (owner === undefined) {
+      return;
+    }
+    treeData.push(treeDataForSceneGraphNode(owner.name, owner.uri));
   });
 
   return treeData;

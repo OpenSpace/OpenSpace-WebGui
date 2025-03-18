@@ -108,7 +108,7 @@ export function SceneTree() {
     <FilterList>
       <Group justify={'space-between'} gap={'xs'} mr={'xs'}>
         <FilterList.InputField placeHolderSearchText={'Search for a node...'} flex={1} />
-        <SceneTreeFilters onFilterChange={setFilter} />
+        <SceneTreeFilters setFilter={setFilter} filter={filter} />
       </Group>
 
       <FilterList.Favorites>
