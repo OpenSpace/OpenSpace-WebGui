@@ -19,7 +19,7 @@ export function ColorView({
   isInt
 }: Props) {
   if ((value.length !== 3 && value.length !== 4) || isInt) {
-    throw Error('Invalid use of Color View option!');
+    throw Error('Invalid use of Color view option!');
   }
   const hasAlpha = value.length === 4;
 
