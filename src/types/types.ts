@@ -1,12 +1,10 @@
 import { Property } from '@/components/Property/Property';
-
-import { PropertyVisibilityNumber } from './enums';
-import {
-  AdditionalDataNumber,
-  AdditionalDataVectorMatrix
-} from '@/components/Property/types';
+import { AdditionalDataVectorMatrix } from '@/components/Property/types';
+import { AdditionalDataNumber } from '@/components/Property/Types/NumericProperty/NumericProperty';
 import { AdditionalDataOptions } from '@/components/Property/Types/OptionProperty';
 import { AdditionalDataSelection } from '@/components/Property/Types/SelectionProperty';
+
+import { PropertyVisibilityNumber } from './enums';
 
 export type Uri = string;
 export type Identifier = string;

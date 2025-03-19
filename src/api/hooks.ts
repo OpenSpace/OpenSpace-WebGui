@@ -22,13 +22,7 @@ import {
 } from '@/redux/sessionrecording/sessionRecordingMiddleware';
 import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
 import { ConnectionStatus } from '@/types/enums';
-import {
-  Property,
-  PropertyDetails,
-  PropertyOwner,
-  PropertyValue,
-  Uri
-} from '@/types/types';
+import { PropertyDetails, PropertyOwner, PropertyValue, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
 import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelpers';
 import { dateToOpenSpaceTimeString } from '@/util/time';

@@ -6,7 +6,7 @@ import {
   usePropListeningState
 } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-import { AdditionalDataNumber, PropertyProps } from '@/components/Property/types';
+import { PropertyProps } from '@/components/Property/types';
 
 import { NumericPropertySlider } from './Slider/NumericPropertySlider';
 import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from './util';
@@ -21,6 +21,13 @@ const propertyTypes = [
   'IntProperty',
   'UIntProperty'
 ];
+
+export interface AdditionalDataNumber {
+  Exponent: number;
+  MaximumValue: number;
+  MinimumValue: number;
+  SteppingValue: number;
+}
 
 interface Props extends PropertyProps {
   isInt?: boolean;

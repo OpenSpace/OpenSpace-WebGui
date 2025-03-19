@@ -4,13 +4,6 @@ export interface PropertyProps {
   readOnly: boolean;
 }
 
-export interface AdditionalDataNumber {
-  Exponent: number;
-  MaximumValue: number;
-  MinimumValue: number;
-  SteppingValue: number;
-}
-
 export interface AdditionalDataVectorMatrix {
   Exponent: number; // TODO: handle the exponent
   MaximumValue: number[];

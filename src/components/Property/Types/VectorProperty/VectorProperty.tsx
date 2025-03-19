@@ -1,9 +1,9 @@
 import { useGetPropertyDescription, useProperty } from '@/api/hooks';
 import { AdditionalDataVectorMatrix, PropertyProps } from '@/components/Property/types';
 
+import { ColorView } from './ViewOptions/ColorView';
 import { DefaultView } from './ViewOptions/DefaultView';
 import { MinMaxRangeView } from './ViewOptions/MinMaxRange';
-import { ColorView } from './ViewOptions/ColorView';
 
 const vectorPropertyTypes = [
   'Vec2Property',

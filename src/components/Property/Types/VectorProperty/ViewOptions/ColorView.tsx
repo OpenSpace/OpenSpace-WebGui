@@ -1,7 +1,9 @@
 import { Flex, RGBA } from '@mantine/core';
-import { DefaultView } from './DefaultView';
-import { AdditionalDataVectorMatrix } from '@/components/Property/types';
+
 import { ColorPicker } from '@/components/ColorPicker/ColorPicker';
+import { AdditionalDataVectorMatrix } from '@/components/Property/types';
+
+import { DefaultView } from './DefaultView';
 
 interface Props {
   setPropertyValue: (value: number[]) => void;

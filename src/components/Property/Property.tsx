@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Stack } from '@mantine/core';
 
+import { useGetPropertyDescription } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 
 import { BoolProperty } from './Types/BoolProperty';
@@ -16,7 +17,6 @@ import { TriggerProperty } from './Types/TriggerProperty';
 import { VectorProperty } from './Types/VectorProperty/VectorProperty';
 import { PropertyLabel } from './PropertyLabel';
 import { PropertyProps } from './types';
-import { useGetPropertyDescription } from '@/api/hooks';
 
 // The readOnly prop sent to each component are meant to enforce each
 // Property component to have to handle the readOnly state. This can
