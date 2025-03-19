@@ -1,16 +1,14 @@
 import { Tree } from '@mantine/core';
 
+import { SceneTreeGroupPrefixKey } from '@/util/groupsHelpers';
 import {
   useGetAimNode,
   useGetAnchorNode,
   useGetInterestingTagOwners
 } from '@/util/propertyTreeHooks';
-import {
-  SceneTreeGroupPrefixKey,
-  treeDataForSceneGraphNode
-} from '@/util/sceneTreeGroupsHelper';
 
 import { SceneTreeNode } from './SceneTreeNode';
+import { treeDataForSceneGraphNode } from './treeUtils';
 import { SceneTreeNodeData } from './types';
 
 /**

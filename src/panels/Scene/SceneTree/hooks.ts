@@ -1,24 +1,93 @@
-import { CustomGroupOrdering, Properties, PropertyOwners, Uri } from '@/types/types';
+import { useMemo } from 'react';
+
+import { useAppSelector } from '@/redux/hooks';
+import {
+  CustomGroupOrdering,
+  Groups,
+  Properties,
+  PropertyOwners,
+  Uri
+} from '@/types/types';
+import { isGroupNode, SceneTreeGroupPrefixKey } from '@/util/groupsHelpers';
 import {
   guiOrderingNumber,
   isPropertyOwnerHidden,
   isSceneGraphNodeVisible
 } from '@/util/propertyTreeHelpers';
-import { isGroupNode, SceneTreeGroupPrefixKey } from '@/util/sceneTreeGroupsHelper';
 
-import { SceneTreeNodeData } from './types';
+import { treeDataForSceneGraphNode } from './treeUtils';
+import { SceneTreeFilterSettings, SceneTreeNodeData } from './types';
+
+/**
+ * Create the data for the Scene tree from the groups information.
+ */
+function sceneTreeDataFromGroups(
+  groups: Groups,
+  propertyOwners: PropertyOwners
+): SceneTreeNodeData[] {
+  const treeData: SceneTreeNodeData[] = [];
+
+  const topLevelGroupsPaths = Object.keys(groups).filter((path) => {
+    // Get the number of slashes in the path
+    const depth = (path.match(/\//g) || []).length;
+    return depth === 1 && path !== '/';
+  });
+
+  // Build the data structure for the tree
+  function generateGroupData(path: string) {
+    const splitPath = path.split('/');
+    const name = splitPath.length > 1 ? splitPath.pop() : 'Untitled';
+
+    const groupNodeData: SceneTreeNodeData = {
+      value: SceneTreeGroupPrefixKey + path,
+      label: name,
+      children: [],
+      guiPath: path.split('/')
+    };
+
+    const groupData = groups[path];
+
+    // Add subgroups, recursively
+    groupData.subgroups.forEach((subGroupPath) =>
+      groupNodeData.children?.push(generateGroupData(subGroupPath))
+    );
+
+    // Add property owners, also recursively
+    groupData.propertyOwners.forEach((uri) => {
+      const owner = propertyOwners[uri];
+      if (owner === undefined) {
+        return;
+      }
+      groupNodeData.children?.push(
+        treeDataForSceneGraphNode(owner.name, owner.uri, path)
+      );
+    });
+
+    return groupNodeData;
+  }
+
+  topLevelGroupsPaths.forEach((path) => {
+    treeData.push(generateGroupData(path));
+  });
+
+  // Add the nodes without any group to the top level
+  const nodesWithoutGroup = groups['/']?.propertyOwners || [];
+  nodesWithoutGroup.forEach((uri) => {
+    const owner = propertyOwners[uri];
+    if (owner === undefined) {
+      return;
+    }
+    treeData.push(treeDataForSceneGraphNode(owner.name, owner.uri));
+  });
+
+  return treeData;
+}
 
 /****************************************************************************************
  * FILTERING
  ****************************************************************************************/
 
-export interface SceneTreeFilterSettings {
-  showOnlyVisible: boolean;
-  showHiddenNodes: boolean;
-  tags: string[];
-}
-
-export function filterTreeData(
+function filterTreeData(
   nodes: SceneTreeNodeData[],
   filter: SceneTreeFilterSettings,
   properties: Properties,
@@ -86,7 +155,7 @@ interface TreeSortingInfo {
   [key: string]: TreeSortingInfoEntry;
 }
 
-export function createTreeSortingInformation(
+function createTreeSortingInformation(
   treeData: SceneTreeNodeData[],
   properties: Properties
 ): TreeSortingInfo {
@@ -128,7 +197,7 @@ export function createTreeSortingInformation(
  * Sort a list of items in the scene menu tree. This is a bit complicated, since there are
  * multiple alternative ways to specify the order.
  */
-export function sortTreeLevel(
+function sortTreeLevel(
   treeListToSort: SceneTreeNodeData[],
   treeSortingInfo: TreeSortingInfo,
   customOrderNamesList: string[] | undefined
@@ -212,7 +281,7 @@ export function sortTreeLevel(
   return customOrder.concat(numericalOrder).concat(alphabeticalOrder);
 }
 
-export function sortTreeData(
+function sortTreeData(
   treeData: SceneTreeNodeData[],
   customGuiOrderingMap: CustomGroupOrdering,
   properties: Properties
@@ -250,7 +319,7 @@ export function sortTreeData(
  * The searching requires a flat list of all nodes in the tree. This function flattens the
  * tree data structure into a list of nodes.
  */
-export function flattenTreeData(treeData: SceneTreeNodeData[]): SceneTreeNodeData[] {
+function flattenTreeData(treeData: SceneTreeNodeData[]): SceneTreeNodeData[] {
   const flatData: SceneTreeNodeData[] = [];
 
   function flatten(nodes: SceneTreeNodeData[]) {
@@ -269,4 +338,44 @@ export function flattenTreeData(treeData: SceneTreeNodeData[]): SceneTreeNodeDat
   flatten(treeData);
 
   return flatData;
+}
+
+// Creates a tree data structure from the groups and a list of searchable nodes
+// This is used to create the tree data for the SceneTree component
+export function useSceneTreeData(filter: SceneTreeFilterSettings) {
+  const properties = useAppSelector((state) => state.properties.properties);
+  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+  const groups = useAppSelector((state) => state.groups.groups);
+  const customGuiOrdering = useAppSelector((state) => state.groups.customGroupOrdering);
+
+  // Create the tree data from the groups
+  const sceneTreeData = useMemo(
+    () => sceneTreeDataFromGroups(groups, propertyOwners),
+    [groups, propertyOwners]
+  );
+
+  // Filter the tree data based on the filter settings
+  const filteredTreeData = useMemo(() => {
+    return filterTreeData(sceneTreeData, filter, properties, propertyOwners);
+  }, [sceneTreeData, filter, properties, propertyOwners]);
+
+  // Sort the tree data based on the custom GUI ordering
+  const sortedTreeData = useMemo(() => {
+    return sortTreeData(filteredTreeData, customGuiOrdering, properties);
+  }, [filteredTreeData, customGuiOrdering, properties]);
+
+  // Create a flat list of all leaf nodes, that we can use for searching
+  const flatTreeData = useMemo(() => {
+    const flatTreeData = flattenTreeData(filteredTreeData);
+
+    // @TODO (2025-01-13 emmbr): Would be nice to sort the results by some type of
+    // "relevance", but for now we just sort alphabetically
+    return flatTreeData.sort((a: SceneTreeNodeData, b: SceneTreeNodeData) => {
+      const nameA = a.label as string;
+      const nameB = b.label as string;
+      return nameA.toLocaleLowerCase().localeCompare(nameB.toLocaleLowerCase());
+    });
+  }, [filteredTreeData]);
+
+  return { sceneTreeData: sortedTreeData, flatTreeData };
 }

@@ -5,7 +5,7 @@ import { useWindowEvent } from '@mantine/hooks';
 import { CollapsableHeader } from '@/components/Collapsable/CollapsableHeader/CollapsableHeader';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
-import { isGroupNode } from '@/util/sceneTreeGroupsHelper';
+import { isGroupNode } from '@/util/groupsHelpers';
 
 import { useOpenCurrentSceneNodeWindow } from '../hooks';
 import { SceneGraphNodeHeader } from '../SceneGraphNode/SceneGraphNodeHeader';

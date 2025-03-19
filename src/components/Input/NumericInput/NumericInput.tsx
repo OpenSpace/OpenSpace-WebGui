@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { NumberInput, NumberInputProps } from '@mantine/core';
 
 import { usePropListeningState } from '@/api/hooks';

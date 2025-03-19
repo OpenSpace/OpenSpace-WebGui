@@ -12,7 +12,7 @@ import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { FilterIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
-import { SceneTreeFilterSettings } from './treeUtil';
+import { SceneTreeFilterSettings } from './types';
 
 interface Props {
   setFilter: (filter: SceneTreeFilterSettings) => void;

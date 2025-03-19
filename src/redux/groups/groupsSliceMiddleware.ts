@@ -4,9 +4,9 @@ import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { addUriToPropertyTree } from '@/redux/propertytree/propertyTreeMiddleware';
 import { RootState } from '@/redux/store';
 import { PropertyOwners } from '@/types/types';
-import { computeGroups, sceneTreeDataFromGroups } from '@/util/sceneTreeGroupsHelper';
+import { computeGroups } from '@/util/groupsHelpers';
 
-import { setGroups, setSceneTreeData, setTags } from './groupsSlice';
+import { setGroups, setTags } from './groupsSlice';
 
 export const refreshGroups = createAction<void>('groups/refresh');
 
@@ -35,12 +35,6 @@ export const addGroupsListener = (startListening: AppStartListening) => {
         state.properties.properties
       );
       listenerApi.dispatch(setGroups(newGroups));
-
-      const newSceneTreeData = sceneTreeDataFromGroups(
-        newGroups,
-        state.propertyOwners.propertyOwners
-      );
-      listenerApi.dispatch(setSceneTreeData(newSceneTreeData));
 
       const newTags = collectExistingTags(state.propertyOwners.propertyOwners);
       listenerApi.dispatch(setTags(newTags));
