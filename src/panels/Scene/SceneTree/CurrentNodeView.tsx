@@ -1,20 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Box, Overlay, Transition } from '@mantine/core';
 
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
+import { useAppSelector } from '@/redux/hooks';
 
 import { SceneGraphNodeView } from '../SceneGraphNode/SceneGraphNodeView';
 
 export function CurrentNodeView() {
-  const [isMounted, setIsMounted] = useState(false);
   const [showHighlight, setShowHiglight] = useState(true);
 
   const currentNode = useAppSelector(
     (state) => state.local.sceneTree.currentlySelectedNode
   );
-
-  const dispatch = useAppDispatch();
 
   // Show visual highlight when the current node changes
   useEffect(() => {
@@ -28,16 +24,6 @@ export function CurrentNodeView() {
       setShowHiglight(false);
     };
   }, [currentNode]);
-
-  // Reset selected node when the component unmounts
-  useEffect(() => {
-    setIsMounted(true);
-    return () => {
-      if (isMounted) {
-        dispatch(setSceneTreeSelectedNode(null));
-      }
-    };
-  }, [dispatch, isMounted]);
 
   return (
     currentNode && (
