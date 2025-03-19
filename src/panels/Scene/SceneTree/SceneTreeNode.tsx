@@ -1,33 +1,26 @@
-import { useRef } from 'react';
+import { PropsWithChildren, useRef } from 'react';
 import { Box, RenderTreeNodePayload } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
 import { CollapsableHeader } from '@/components/Collapsable/CollapsableHeader/CollapsableHeader';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
 import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
 
-import { useOpenCurrentSceneNodeWindow } from '../hooks';
 import { SceneGraphNodeHeader } from '../SceneGraphNode/SceneGraphNodeHeader';
 
-import { CurrentNodeView } from './CurrentNodeView';
 import { isGroupNode } from './treeUtils';
 import { SceneTreeNodeData } from './types';
 
 interface Props {
   node: SceneTreeNodeData;
   expanded: boolean;
+  onClick: () => void;
+  isCurrentNode: boolean;
 }
 
 // This component adds the content for each node in the tree, without any styling. Used
 // to render the content for the leaf nodes when searching for a node
-export function SceneTreeNodeContent({ node, expanded }: Props) {
-  const { openCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
-  const dispatch = useAppDispatch();
-
-  const isCurrentNode = useAppSelector(
-    (state) => node.value === state.local.sceneTree.currentlySelectedNode
-  );
-
+export function SceneEntry({ node, expanded, isCurrentNode, onClick }: Props) {
   // @TODO: Make the text in this component look more clickable, e.g. using hover effects
   return isGroupNode(node) ? (
     <Box>
@@ -42,10 +35,7 @@ export function SceneTreeNodeContent({ node, expanded }: Props) {
       <SceneGraphNodeHeader
         uri={node.value}
         label={node.label as string}
-        onClick={() => {
-          dispatch(setSceneTreeSelectedNode(node.value));
-          openCurrentNodeWindow(<CurrentNodeView />);
-        }}
+        onClick={onClick}
       />
     </Box>
   );
@@ -55,11 +45,10 @@ export function SceneTreeNodeContent({ node, expanded }: Props) {
 // (indentation at each tree level) and event handling
 export function SceneTreeNode({
   node,
-  expanded,
   elementProps,
-  tree
-}: RenderTreeNodePayload) {
-  const { openCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
+  tree,
+  children
+}: RenderTreeNodePayload & PropsWithChildren) {
   const dispatch = useAppDispatch();
 
   const nodeRef = useRef<HTMLDivElement>(null);
@@ -73,14 +62,13 @@ export function SceneTreeNode({
         tree.toggleExpanded(node.value);
       } else {
         dispatch(setSceneTreeSelectedNode(node.value));
-        openCurrentNodeWindow(<CurrentNodeView />);
       }
     }
   });
 
   return (
     <Box {...elementProps} ref={nodeRef}>
-      <SceneTreeNodeContent node={node} expanded={expanded} />
+      {children}
     </Box>
   );
 }

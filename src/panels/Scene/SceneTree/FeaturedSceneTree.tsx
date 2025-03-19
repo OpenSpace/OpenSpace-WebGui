@@ -1,12 +1,14 @@
 import { Tree } from '@mantine/core';
 
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
 import {
   useGetAimNode,
   useGetAnchorNode,
   useGetInterestingTagOwners
 } from '@/util/propertyTreeHooks';
 
-import { SceneTreeNode } from './SceneTreeNode';
+import { SceneEntry, SceneTreeNode } from './SceneTreeNode';
 import { SceneTreeGroupPrefixKey, treeDataForSceneGraphNode } from './treeUtils';
 import { SceneTreeNodeData } from './types';
 
@@ -18,6 +20,16 @@ export function FeaturedSceneTree() {
   const interestingOwners = useGetInterestingTagOwners();
   const anchorNode = useGetAnchorNode();
   const aimNode = useGetAimNode();
+
+  const currentlySelectedNode = useAppSelector(
+    (state) => state.local.sceneTree.currentlySelectedNode
+  );
+
+  const dispatch = useAppDispatch();
+
+  function setCurrentlySelectedNode(node: string) {
+    dispatch(setSceneTreeSelectedNode(node));
+  }
 
   const featuredTreeData: SceneTreeNodeData[] = [];
 
@@ -47,24 +59,15 @@ export function FeaturedSceneTree() {
     <>
       <Tree
         data={featuredTreeData}
-        renderNode={({
-          node,
-          expanded,
-          elementProps,
-          tree,
-          level,
-          hasChildren,
-          selected
-        }) => (
-          <SceneTreeNode
-            node={node}
-            expanded={expanded}
-            elementProps={elementProps}
-            tree={tree}
-            level={level}
-            hasChildren={hasChildren}
-            selected={selected}
-          />
+        renderNode={({ node, expanded, ...payload }) => (
+          <SceneTreeNode node={node} expanded={expanded} {...payload}>
+            <SceneEntry
+              node={node}
+              expanded={expanded}
+              isCurrentNode={node.value === currentlySelectedNode}
+              onClick={() => setCurrentlySelectedNode(node.value)}
+            />
+          </SceneTreeNode>
         )}
       />
     </>

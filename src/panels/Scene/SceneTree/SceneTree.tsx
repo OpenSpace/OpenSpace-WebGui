@@ -13,13 +13,14 @@ import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ChevronsDownIcon, ChevronsUpIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { storeSceneTreeNodeExpanded } from '@/redux/local/localSlice';
-
-import { useOpenCurrentSceneNodeWindow } from '../hooks';
+import {
+  setSceneTreeSelectedNode,
+  storeSceneTreeNodeExpanded
+} from '@/redux/local/localSlice';
 
 import { useSceneTreeData } from './hooks';
 import { SceneTreeFilters } from './SceneTreeFilters';
-import { SceneTreeNode, SceneTreeNodeContent } from './SceneTreeNode';
+import { SceneEntry, SceneTreeNode } from './SceneTreeNode';
 import { SceneTreeGroupPrefixKey } from './treeUtils';
 import { SceneTreeFilterSettings, SceneTreeNodeData } from './types';
 
@@ -31,8 +32,10 @@ export function SceneTree() {
   });
 
   const { sceneTreeData, flatTreeData } = useSceneTreeData(filter);
-  const { closeCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
 
+  const currentlySelectedNode = useAppSelector(
+    (state) => state.local.sceneTree.currentlySelectedNode
+  );
   const initialExpandedNodes = useAppSelector(
     (state) => state.local.sceneTree.expandedGroups
   );
@@ -56,12 +59,9 @@ export function SceneTree() {
     };
   }, [dispatch, tree.expandedState]);
 
-  // This will only be run on unmount to close the window of the opened node
-  useEffect(() => {
-    return () => {
-      closeCurrentNodeWindow();
-    };
-  }, [closeCurrentNodeWindow]);
+  function setCurrentlySelectedNode(node: string) {
+    dispatch(setSceneTreeSelectedNode(node));
+  }
 
   return (
     <FilterList>
@@ -90,14 +90,29 @@ export function SceneTree() {
         <Tree
           data={sceneTreeData}
           tree={tree}
-          renderNode={(payload) => <SceneTreeNode {...payload} />}
+          renderNode={({ node, expanded, ...payload }) => (
+            <SceneTreeNode node={node} expanded={expanded} {...payload}>
+              <SceneEntry
+                node={node}
+                expanded={expanded}
+                isCurrentNode={node.value === currentlySelectedNode}
+                onClick={() => setCurrentlySelectedNode(node.value)}
+              />
+            </SceneTreeNode>
+          )}
         />
       </FilterList.Favorites>
 
       <FilterList.SearchResults
         data={flatTreeData}
         renderElement={(node: SceneTreeNodeData) => (
-          <SceneTreeNodeContent key={node.value} node={node} expanded={false} />
+          <SceneEntry
+            key={node.value}
+            node={node}
+            expanded={false}
+            isCurrentNode={node.value === currentlySelectedNode}
+            onClick={() => setCurrentlySelectedNode(node.value)}
+          />
         )}
         matcherFunc={generateMatcherFunctionByKeys(['label', 'guiPath'])} // For now we just use the name
       >
