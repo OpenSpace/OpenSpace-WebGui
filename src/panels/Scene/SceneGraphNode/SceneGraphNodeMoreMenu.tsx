@@ -1,21 +1,17 @@
 import { ActionIcon, Button, Divider, Group, Menu, Stack, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
-import {
-  useGetPropertyOwner,
-  useGetStringPropertyValue,
-  useOpenSpaceApi
-} from '@/api/hooks';
+import { useGetPropertyOwner, useOpenSpaceApi } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { DeleteIcon, OpenInNewIcon, VerticalDotsIcon } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
-import { NavigationAnchorKey } from '@/util/keys';
 import { displayName, identifierFromUri } from '@/util/propertyTreeHelpers';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { SceneGraphNodeView } from './SceneGraphNodeView';
+import { useGetAnchorNode } from '@/util/propertyTreeHooks';
 
 interface Props {
   uri: Uri;
@@ -23,7 +19,7 @@ interface Props {
 
 export function SceneGraphNodeMoreMenu({ uri }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
-  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
+  const anchorNode = useGetAnchorNode();
   const luaApi = useOpenSpaceApi();
 
   const { addWindow } = useWindowLayoutProvider();
@@ -109,7 +105,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
         <Group>
           <Button
             size={'sm'}
-            disabled={anchor === propertyOwner.identifier}
+            disabled={anchorNode?.identifier === propertyOwner.identifier}
             onClick={onRemove}
             color={'red'}
             variant={'outline'}
@@ -118,7 +114,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
             Delete
           </Button>
           <>
-            {anchor === propertyOwner.identifier ? (
+            {anchorNode?.identifier === propertyOwner.identifier ? (
               <Text size={'sm'} c={'dimmed'} w={'100px'}>
                 Cannot delete the current focus node
               </Text>
