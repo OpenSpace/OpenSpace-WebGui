@@ -1,22 +1,9 @@
-import { SceneTreeNodeData } from '@/panels/Scene/SceneTree/types';
 import { Group, Groups, Properties, PropertyOwners } from '@/types/types';
 
 import { getGuiPath, isSceneGraphNode } from './propertyTreeHelpers';
 
-// This key is added to the group path values in the tree data structure, to mark which
-// tree nodes correspond to groups (as opposed to scene graph nodes).
-export const SceneTreeGroupPrefixKey = '/groups/';
-
 function emptyGroup(): Group {
   return { subgroups: [], propertyOwners: [] };
-}
-
-/**
- * Check if a node in the Scene tree is a group node, meaning that its identifiing value
- * starts with the specified prefix.
- */
-export function isGroupNode(node: SceneTreeNodeData): boolean {
-  return node.value.startsWith(SceneTreeGroupPrefixKey);
 }
 
 /**

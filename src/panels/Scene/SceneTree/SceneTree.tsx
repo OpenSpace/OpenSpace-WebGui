@@ -14,7 +14,6 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ChevronsDownIcon, ChevronsUpIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { storeSceneTreeNodeExpanded } from '@/redux/local/localSlice';
-import { SceneTreeGroupPrefixKey } from '@/util/groupsHelpers';
 
 import { useOpenCurrentSceneNodeWindow } from '../hooks';
 
@@ -22,6 +21,7 @@ import { useSceneTreeData } from './hooks';
 import { SceneTreeFilters } from './SceneTreeFilters';
 import { SceneTreeNode, SceneTreeNodeContent } from './SceneTreeNode';
 import { SceneTreeFilterSettings, SceneTreeNodeData } from './types';
+import { SceneTreeGroupPrefixKey } from './treeUtils';
 
 export function SceneTree() {
   const [filter, setFilter] = useState<SceneTreeFilterSettings>({

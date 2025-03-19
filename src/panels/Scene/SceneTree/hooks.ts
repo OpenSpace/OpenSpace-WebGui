@@ -8,14 +8,17 @@ import {
   PropertyOwners,
   Uri
 } from '@/types/types';
-import { isGroupNode, SceneTreeGroupPrefixKey } from '@/util/groupsHelpers';
 import {
   guiOrderingNumber,
   isPropertyOwnerHidden,
   isSceneGraphNodeVisible
 } from '@/util/propertyTreeHelpers';
 
-import { treeDataForSceneGraphNode } from './treeUtils';
+import {
+  isGroupNode,
+  SceneTreeGroupPrefixKey,
+  treeDataForSceneGraphNode
+} from './treeUtils';
 import { SceneTreeFilterSettings, SceneTreeNodeData } from './types';
 
 /**

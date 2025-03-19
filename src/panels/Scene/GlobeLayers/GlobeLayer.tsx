@@ -1,14 +1,12 @@
 import { Group, Text } from '@mantine/core';
 
-import { useGetPropertyOwner } from '@/api/hooks';
+import { useGetPropertyOwner, usePropertyOwnerVisibility } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
-
-import { usePropertyOwnerVisibility } from '../hooks';
 
 interface Props {
   uri: Uri;
