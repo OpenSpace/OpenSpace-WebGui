@@ -4,6 +4,7 @@ import { BoxData, PanelData, TabData } from 'rc-dock';
 import {
   useGetBoolPropertyValue,
   useGetFloatPropertyValue,
+  useGetPropertyOwner,
   useOpenSpaceApi
 } from '@/api/hooks';
 import { Uri } from '@/types/types';
@@ -94,5 +95,27 @@ export function usePropertyOwnerVisibility(uri: Uri) {
   return {
     isVisible,
     setVisiblity
+  };
+}
+
+export function useTimeFrame(uri: Uri) {
+  const timeFrame = useGetPropertyOwner(`${uri}.TimeFrame`);
+  const isInTimeFrame = useGetBoolPropertyValue(`${uri}.TimeFrame.IsInTimeFrame`);
+
+  return {
+    timeFrame,
+    isInTimeFrame
+  };
+}
+
+export function useSgnTransforms(sgnUri: Uri) {
+  const scale = useGetPropertyOwner(`${sgnUri}.Scale`);
+  const translation = useGetPropertyOwner(`${sgnUri}.Translation`);
+  const rotation = useGetPropertyOwner(`${sgnUri}.Rotation`);
+
+  return {
+    scale,
+    translation,
+    rotation
   };
 }

@@ -3,14 +3,10 @@ import { Box, Divider, Tabs, Text, Tooltip } from '@mantine/core';
 import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
-import { useAppSelector } from '@/redux/hooks';
-import { TransformType } from '@/types/enums';
 import { Uri } from '@/types/types';
-import {
-  getSgnRenderable,
-  getSgnTimeframe,
-  getSgnTransform
-} from '@/util/propertyTreeHelpers';
+import { sgnRenderableUri } from '@/util/propertyTreeHelpers';
+
+import { useSgnTransforms, useTimeFrame } from '../hooks';
 
 import { SceneGraphNodeHeader } from './SceneGraphNodeHeader';
 import { SceneGraphNodeMetaInfo } from './SceneGraphNodeMetaInfo';
@@ -21,7 +17,13 @@ interface Props {
 
 export function SceneGraphNodeView({ uri }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+
+  // We know that all scene graph nodes have the same subowners. However, not all of them
+  // are guaranteed to exist, so each of these may be undefined
+  const renderable = useGetPropertyOwner(sgnRenderableUri(uri));
+  const { scale, translation, rotation } = useSgnTransforms(uri);
+
+  const { timeFrame } = useTimeFrame(uri);
 
   // The SGN properties that are visible under the current user level setting
   const visibleProperties = useGetVisibleProperties(propertyOwner);
@@ -37,22 +39,9 @@ export function SceneGraphNodeView({ uri }: Props) {
     );
   }
 
-  // We know that all scene graph nodes have the same subowners. However, not all of them
-  // are guaranteed to exist, so each of these may be undefined
-  const renderable = getSgnRenderable(propertyOwner, propertyOwners);
-  const scale = getSgnTransform(propertyOwner, TransformType.Scale, propertyOwners);
-  const translation = getSgnTransform(
-    propertyOwner,
-    TransformType.Translation,
-    propertyOwners
-  );
-  const rotation = getSgnTransform(propertyOwner, TransformType.Rotation, propertyOwners);
-
   // Group the transforms under one tab, in the following order. Only show the transforms
   // that are actually present
   const transforms = [scale, translation, rotation].filter((t) => t !== undefined);
-
-  const timeFrame = getSgnTimeframe(propertyOwner, propertyOwners);
 
   enum TabKeys {
     Renderable = 'renderable',
@@ -107,7 +96,9 @@ export function SceneGraphNodeView({ uri }: Props) {
 
         <Tabs.Panel value={TabKeys.Renderable}>
           {renderable ? (
-            <PropertyOwnerContent uri={renderable.uri} />
+            <Box mt={'xs'}>
+              <PropertyOwnerContent uri={renderable.uri} />
+            </Box>
           ) : (
             <Text m={'xs'}>This scene graph node has no renderable.</Text>
           )}

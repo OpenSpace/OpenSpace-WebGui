@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { shallowEqual, useThrottledCallback } from '@mantine/hooks';
 
 import { subscribeToCamera, unsubscribeToCamera } from '@/redux/camera/cameraMiddleware';
