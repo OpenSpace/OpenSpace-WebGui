@@ -8,10 +8,10 @@ import { DeleteIcon, OpenInNewIcon, VerticalDotsIcon } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { displayName, identifierFromUri } from '@/util/propertyTreeHelpers';
+import { useGetAnchorNode } from '@/util/propertyTreeHooks';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { SceneGraphNodeView } from './SceneGraphNodeView';
-import { useGetAnchorNode } from '@/util/propertyTreeHooks';
 
 interface Props {
   uri: Uri;

@@ -2,12 +2,12 @@ import { Group } from '@mantine/core';
 
 import { useSubscribeToEngineMode } from '@/api/hooks';
 import { EngineMode } from '@/types/enums';
+import { useGetAimNode, useGetAnchorNode } from '@/util/propertyTreeHooks';
 
 import { AnchorAimButtons } from './MenuButtons/AnchorAimButtons';
 import { CancelFlightButton } from './MenuButtons/CancelFlightButton';
 import { FocusButton } from './MenuButtons/FocusButton';
 import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
-import { useGetAimNode, useGetAnchorNode } from '@/util/propertyTreeHooks';
 
 interface OriginPanelMenuButtonProps {
   onClick: () => void;

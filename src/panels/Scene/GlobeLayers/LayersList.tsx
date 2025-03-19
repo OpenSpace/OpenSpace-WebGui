@@ -34,7 +34,7 @@ export function LayerList({ globe, layerGroup, layers }: Props) {
       data={layers}
       keyFunc={(id) => id}
       id={`${globe}${layerGroup}`}
-      dragHandlePosition={"right"}
+      dragHandlePosition={'right'}
     />
   );
 }

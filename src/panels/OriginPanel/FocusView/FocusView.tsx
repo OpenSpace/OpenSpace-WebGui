@@ -11,11 +11,11 @@ import { CancelIcon, FocusIcon } from '@/icons/icons';
 import { EngineMode, IconSize } from '@/types/enums';
 import { Identifier, PropertyOwner } from '@/types/types';
 import { NavigationAimKey } from '@/util/keys';
+import { useGetAnchorNode } from '@/util/propertyTreeHooks';
 
 import { RemainingFlightTimeIndicator } from '../RemainingFlightTimeIndicator';
 
 import { FocusEntry } from './FocusEntry';
-import { useGetAnchorNode } from '@/util/propertyTreeHooks';
 
 interface Props {
   favorites: PropertyOwner[];
