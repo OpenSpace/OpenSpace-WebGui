@@ -1,4 +1,4 @@
-import { Box, Tabs, Text, Tooltip } from '@mantine/core';
+import { Box, Divider, Tabs, Text, Tooltip } from '@mantine/core';
 
 import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
@@ -6,7 +6,11 @@ import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerCo
 import { useAppSelector } from '@/redux/hooks';
 import { TransformType } from '@/types/enums';
 import { Uri } from '@/types/types';
-import { getSgnRenderable, getSgnTransform } from '@/util/propertyTreeHelpers';
+import {
+  getSgnRenderable,
+  getSgnTimeframe,
+  getSgnTransform
+} from '@/util/propertyTreeHelpers';
 
 import { SceneGraphNodeHeader } from './SceneGraphNodeHeader';
 import { SceneGraphNodeMetaInfo } from './SceneGraphNodeMetaInfo';
@@ -48,15 +52,17 @@ export function SceneGraphNodeView({ uri }: Props) {
   // that are actually present
   const transforms = [scale, translation, rotation].filter((t) => t !== undefined);
 
+  const timeFrame = getSgnTimeframe(propertyOwner, propertyOwners);
+
   enum TabKeys {
     Renderable = 'renderable',
     Transform = 'transform',
     Other = 'other',
-    Info = 'info'
+    Info = 'info',
+    TimeFrame = 'timeframe'
   }
 
-  const hasRenderable = renderable !== undefined;
-  const defaultTab = hasRenderable ? TabKeys.Renderable : TabKeys.Transform;
+  const defaultTab = renderable ? TabKeys.Renderable : TabKeys.Transform;
   const hasOther = visibleProperties.length > 0;
 
   return (
@@ -68,12 +74,12 @@ export function SceneGraphNodeView({ uri }: Props) {
         <Tabs.List>
           <Tooltip
             label={
-              hasRenderable
+              renderable
                 ? 'Properties that control the visuals of this object'
                 : 'This scene graph node has no renderable'
             }
           >
-            <Tabs.Tab value={TabKeys.Renderable} disabled={!hasRenderable}>
+            <Tabs.Tab value={TabKeys.Renderable} disabled={!renderable}>
               Renderable
             </Tabs.Tab>
           </Tooltip>
@@ -82,19 +88,25 @@ export function SceneGraphNodeView({ uri }: Props) {
             <Tabs.Tab value={TabKeys.Transform}>Transform</Tabs.Tab>
           </Tooltip>
 
+          <Tooltip label={'Information about the scene graph node and its asset'}>
+            <Tabs.Tab value={TabKeys.Info}>Info</Tabs.Tab>
+          </Tooltip>
+
+          {timeFrame && (
+            <Tooltip label={'The time frame of the scene graph node'}>
+              <Tabs.Tab value={TabKeys.TimeFrame}>Time Frame</Tabs.Tab>
+            </Tooltip>
+          )}
+
           {hasOther && (
             <Tooltip label={'Other properties of the scene graph node'}>
               <Tabs.Tab value={TabKeys.Other}>Other</Tabs.Tab>
             </Tooltip>
           )}
-
-          <Tooltip label={'Information about the scene graph node and its asset'}>
-            <Tabs.Tab value={TabKeys.Info}>Info</Tabs.Tab>
-          </Tooltip>
         </Tabs.List>
 
         <Tabs.Panel value={TabKeys.Renderable}>
-          {hasRenderable ? (
+          {renderable ? (
             <PropertyOwnerContent uri={renderable.uri} />
           ) : (
             <Text m={'xs'}>This scene graph node has no renderable.</Text>
@@ -114,6 +126,21 @@ export function SceneGraphNodeView({ uri }: Props) {
             <Text m={'xs'}>This scene graph node has no transform</Text>
           )}
         </Tabs.Panel>
+
+        {/* @TODO (2025-03-19, emmbr): Add a way to display the different intervals that
+            the time frame, as human readable time stamps */}
+        {timeFrame && (
+          <Tabs.Panel value={TabKeys.TimeFrame}>
+            <Box p={'xs'}>
+              <Text>
+                This object will only be visible during the time frame for which it is
+                active.
+              </Text>
+            </Box>
+            <Divider my={'xs'} />
+            <PropertyOwner uri={timeFrame.uri} />
+          </Tabs.Panel>
+        )}
 
         {hasOther && (
           <Tabs.Panel value={TabKeys.Other}>

@@ -85,6 +85,13 @@ export function getSgnTransform(
   }
 }
 
+export function getSgnTimeframe(
+  sceneGraphNode: PropertyOwner,
+  propertyOwners: PropertyOwners
+): PropertyOwner | undefined {
+  return propertyOwners[`${sceneGraphNode.uri}.TimeFrame`];
+}
+
 export function hasInterestingTag(
   uri: Uri,
   propertyOwners: PropertyOwners
