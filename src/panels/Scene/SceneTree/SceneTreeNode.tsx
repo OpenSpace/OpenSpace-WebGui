@@ -16,11 +16,12 @@ interface Props {
   expanded: boolean;
   onClick: () => void;
   isCurrentNode: boolean;
+  className?: string;
 }
 
 // This component adds the content for each node in the tree, without any styling. Used
 // to render the content for the leaf nodes when searching for a node
-export function SceneEntry({ node, expanded, isCurrentNode, onClick }: Props) {
+export function SceneEntry({ node, expanded, isCurrentNode, onClick, className }: Props) {
   // @TODO: Make the text in this component look more clickable, e.g. using hover effects
   return isGroupNode(node) ? (
     <Box>
@@ -31,6 +32,7 @@ export function SceneEntry({ node, expanded, isCurrentNode, onClick }: Props) {
       px={'xs'}
       py={2}
       bd={isCurrentNode ? '3px solid var(--mantine-primary-color-filled)' : 'none'}
+      className={className}
     >
       <SceneGraphNodeHeader
         uri={node.value}

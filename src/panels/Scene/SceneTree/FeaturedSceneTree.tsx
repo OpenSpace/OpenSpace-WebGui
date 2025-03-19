@@ -1,4 +1,4 @@
-import { Tree } from '@mantine/core';
+import { Box, Tree } from '@mantine/core';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
@@ -12,6 +12,7 @@ import { SceneEntry, SceneTreeNode } from './SceneTreeNode';
 import { SceneTreeGroupPrefixKey, treeDataForSceneGraphNode } from './treeUtils';
 import { SceneTreeNodeData } from './types';
 
+import styles from './FeaturedSceneTree.module.css';
 /**
  * This component displays the current focus and aim of the camera, as well as the list of
  * nodes marked as interesting.
@@ -31,20 +32,15 @@ export function FeaturedSceneTree() {
     dispatch(setSceneTreeSelectedNode(node));
   }
 
+  const anchorData = anchorNode
+    ? treeDataForSceneGraphNode('Current Focus: ' + anchorNode.name, anchorNode.uri)
+    : undefined;
+
+  const aimData = aimNode
+    ? treeDataForSceneGraphNode('Current Aim: ' + aimNode.name, aimNode.uri)
+    : undefined;
+
   const featuredTreeData: SceneTreeNodeData[] = [];
-
-  if (anchorNode) {
-    const anchorData = treeDataForSceneGraphNode(anchorNode.name, anchorNode.uri);
-    anchorData.label = 'Current Focus: ' + anchorData.label;
-    featuredTreeData.push(anchorData);
-  }
-
-  if (aimNode) {
-    const aimData = treeDataForSceneGraphNode(aimNode.name, aimNode.uri);
-    aimData.label = 'Current Aim: ' + aimData.label;
-    featuredTreeData.push(aimData);
-  }
-
   if (interestingOwners.length > 0) {
     featuredTreeData.push({
       label: 'Quick Access',
@@ -57,6 +53,30 @@ export function FeaturedSceneTree() {
 
   return (
     <>
+      {anchorNode && (
+        // The key here is necessary to make sure that the component is re-rendered when the
+        // anchor node changes, to trigger the animation
+        <Box key={anchorNode.uri} className={styles.highlight}>
+          <SceneEntry
+            node={anchorData!}
+            isCurrentNode={anchorData!.value === currentlySelectedNode}
+            onClick={() => setCurrentlySelectedNode(anchorData!.value)}
+            expanded={false}
+          />
+        </Box>
+      )}
+      {aimNode && (
+        // The key here is necessary to make sure that the component is re-rendered when the
+        // anchor node changes, to trigger the animation
+        <Box key={`${aimNode.uri}aim`} className={styles.highlight}>
+          <SceneEntry
+            node={aimData!}
+            isCurrentNode={aimData!.value === currentlySelectedNode}
+            onClick={() => setCurrentlySelectedNode(aimData!.value)}
+            expanded={false}
+          />
+        </Box>
+      )}
       <Tree
         data={featuredTreeData}
         renderNode={({ node, expanded, ...payload }) => (

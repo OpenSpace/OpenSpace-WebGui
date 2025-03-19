@@ -2,13 +2,14 @@ import { Layout } from '@/components/Layout/Layout';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { useAppSelector } from '@/redux/hooks';
 
-import { CurrentNodeView } from './SceneTree/CurrentNodeView';
+import { SceneGraphNodeView } from './SceneGraphNode/SceneGraphNodeView';
 import { Scene } from './Scene';
 
 export function ScenePanel() {
   const currentlySelectedNode = useAppSelector(
     (state) => state.local.sceneTree.currentlySelectedNode
   );
+
   if (currentlySelectedNode) {
     return (
       <Layout>
@@ -18,7 +19,7 @@ export function ScenePanel() {
           </ResizeableContent>
         </Layout.FixedSection>
         <Layout.GrowingSection>
-          <CurrentNodeView />
+          <SceneGraphNodeView uri={currentlySelectedNode} />
         </Layout.GrowingSection>
       </Layout>
     );
