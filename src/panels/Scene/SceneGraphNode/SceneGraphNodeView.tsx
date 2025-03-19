@@ -1,6 +1,18 @@
-import { Badge, Box, Divider, Tabs, Text, Tooltip } from '@mantine/core';
+import {
+  Badge,
+  Box,
+  CloseIcon,
+  Divider,
+  Flex,
+  Group,
+  Indicator,
+  Tabs,
+  Text,
+  Tooltip
+} from '@mantine/core';
 
 import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { ClockIcon, ClockOffIcon } from '@/icons/icons';
@@ -81,7 +93,16 @@ export function SceneGraphNodeView({ uri }: Props) {
 
           {timeFrame && (
             <Tooltip label={'The time frame of the scene graph node'}>
-              <Tabs.Tab value={TabKeys.TimeFrame}>Time Frame</Tabs.Tab>
+              <Tabs.Tab value={TabKeys.TimeFrame}>
+                <Group gap={5}>
+                  Time
+                  {isInTimeFrame ? (
+                    <ClockIcon size={IconSize.xs} />
+                  ) : (
+                    <ClockOffIcon size={IconSize.xs} />
+                  )}
+                </Group>
+              </Tabs.Tab>
             </Tooltip>
           )}
 
@@ -125,30 +146,43 @@ export function SceneGraphNodeView({ uri }: Props) {
         {timeFrame && (
           <Tabs.Panel value={TabKeys.TimeFrame}>
             <Box p={'xs'}>
-              <Text>
-                This object has an attached time frame and will only be visible during the
-                time for which it is active. Note that the active time depends on the type
-                of time frame used.
+              <Group justify={'space-between'} gap={'xs'}>
+                <Group gap={'xs'}>
+                  <Text size={'sm'}>Current state:</Text>
+                  <InfoBox
+                    text={`This object has an attached time frame and will only be visible
+                    during the time for which it is active. Note that the active time
+                    depends on the type of time frame used.`}
+                  />
+                </Group>
+                <Tooltip
+                  label={
+                    isInTimeFrame
+                      ? 'This object is currently active and will be visible'
+                      : 'This object is currently inactive and will not be visible'
+                  }
+                >
+                  <Badge
+                    size={'lg'}
+                    rightSection={
+                      isInTimeFrame ? (
+                        <ClockIcon size={IconSize.xs} />
+                      ) : (
+                        <ClockOffIcon size={IconSize.xs} />
+                      )
+                    }
+                    variant={'outline'}
+                    color={isInTimeFrame ? 'cyan' : 'red'}
+                  >
+                    {isInTimeFrame ? 'Active' : 'Inactive'}
+                  </Badge>
+                </Tooltip>
+              </Group>
+              <Text my={'xs'} size={'sm'} c={'dimmed'}>
+                Note that the object will not be visible outside the time range specified
+                below
               </Text>
-
-              <Badge
-                size={'lg'}
-                leftSection={
-                  isInTimeFrame ? (
-                    <ClockIcon size={IconSize.xs} />
-                  ) : (
-                    <ClockOffIcon size={IconSize.xs} />
-                  )
-                }
-                variant={'outline'}
-                color={isInTimeFrame ? 'green' : 'red'}
-                mt={'xs'}
-              >
-                {isInTimeFrame ? 'Active' : 'Inactive'}
-              </Badge>
             </Box>
-
-            <Divider my={'xs'} />
             <PropertyOwner uri={timeFrame.uri} />
           </Tabs.Panel>
         )}
