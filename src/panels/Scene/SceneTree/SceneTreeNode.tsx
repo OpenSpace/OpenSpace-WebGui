@@ -10,8 +10,8 @@ import { useOpenCurrentSceneNodeWindow } from '../hooks';
 import { SceneGraphNodeHeader } from '../SceneGraphNode/SceneGraphNodeHeader';
 
 import { CurrentNodeView } from './CurrentNodeView';
-import { SceneTreeNodeData } from './types';
 import { isGroupNode } from './treeUtils';
+import { SceneTreeNodeData } from './types';
 
 interface Props {
   node: SceneTreeNodeData;

@@ -20,8 +20,8 @@ import { useOpenCurrentSceneNodeWindow } from '../hooks';
 import { useSceneTreeData } from './hooks';
 import { SceneTreeFilters } from './SceneTreeFilters';
 import { SceneTreeNode, SceneTreeNodeContent } from './SceneTreeNode';
-import { SceneTreeFilterSettings, SceneTreeNodeData } from './types';
 import { SceneTreeGroupPrefixKey } from './treeUtils';
+import { SceneTreeFilterSettings, SceneTreeNodeData } from './types';
 
 export function SceneTree() {
   const [filter, setFilter] = useState<SceneTreeFilterSettings>({
