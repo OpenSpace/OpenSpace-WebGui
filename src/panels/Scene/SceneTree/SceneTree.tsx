@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   ActionIcon,
   Box,
@@ -49,27 +49,12 @@ export function SceneTree() {
     (state) => state.local.sceneTree.expandedGroups
   );
 
-  // Ref to keep track of which groups are currently expanded. The reason it is a ref is
-  // since we need this object to exist for the entire lifetime of the component,
-  // including on unmount
-  const expandedGroups = useRef<string[]>(initialExpandedNodes);
-
   function isGroup(value: string): boolean {
     return value.startsWith(SceneTreeGroupPrefixKey);
   }
 
   const tree = useTree({
-    initialExpandedState: getTreeExpandedState(sceneTreeData, initialExpandedNodes),
-    onNodeExpand: (value) => {
-      if (isGroup(value) && !expandedGroups.current.includes(value)) {
-        expandedGroups.current = [...expandedGroups.current, value];
-      }
-    },
-    onNodeCollapse: (value: string) => {
-      if (isGroup(value)) {
-        expandedGroups.current = expandedGroups.current.filter((v) => v !== value);
-      }
-    }
+    initialExpandedState: getTreeExpandedState(sceneTreeData, initialExpandedNodes)
   });
 
   const dispatch = useAppDispatch();
@@ -77,12 +62,17 @@ export function SceneTree() {
   // This will only be run on unmount
   useEffect(() => {
     return () => {
-      // Save expanded state on unmount
-      dispatch(storeSceneTreeNodeExpanded(expandedGroups.current));
+      // Convert the map to a list of strings with keys of the
+      // expanded groups
+      const expandedGroups = Object.entries(tree.expandedState)
+        .filter(([key, isOpen]) => isGroup(key) && isOpen)
+        .map(([key]) => key); // Save expanded state on unmount
+
+      dispatch(storeSceneTreeNodeExpanded(expandedGroups));
       // Also close the "current node" window
       closeCurrentNodeWindow();
     };
-  }, [dispatch, closeCurrentNodeWindow]);
+  }, [dispatch, closeCurrentNodeWindow, tree.expandedState]);
 
   // If the sorting is not wrapped in an useMemo, the component will rerender constantly,
   // for some reason
