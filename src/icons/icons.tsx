@@ -90,4 +90,5 @@ export {
   PiMouseMiddleClickThin as ScrollClickMouseIcon
 } from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
+export { TbClock as ClockIcon, TbClockX as ClockOffIcon } from 'react-icons/tb';
 export { VscFeedback as FeedbackIcon } from 'react-icons/vsc';

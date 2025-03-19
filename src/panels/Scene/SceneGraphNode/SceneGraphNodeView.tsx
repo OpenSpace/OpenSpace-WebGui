@@ -1,8 +1,10 @@
-import { Box, Divider, Tabs, Text, Tooltip } from '@mantine/core';
+import { Badge, Box, Divider, Tabs, Text, Tooltip } from '@mantine/core';
 
 import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
+import { ClockIcon, ClockOffIcon } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { sgnRenderableUri } from '@/util/propertyTreeHelpers';
 
@@ -23,7 +25,7 @@ export function SceneGraphNodeView({ uri }: Props) {
   const renderable = useGetPropertyOwner(sgnRenderableUri(uri));
   const { scale, translation, rotation } = useSgnTransforms(uri);
 
-  const { timeFrame } = useTimeFrame(uri);
+  const { timeFrame, isInTimeFrame } = useTimeFrame(uri);
 
   // The SGN properties that are visible under the current user level setting
   const visibleProperties = useGetVisibleProperties(propertyOwner);
@@ -77,15 +79,15 @@ export function SceneGraphNodeView({ uri }: Props) {
             <Tabs.Tab value={TabKeys.Transform}>Transform</Tabs.Tab>
           </Tooltip>
 
-          <Tooltip label={'Information about the scene graph node and its asset'}>
-            <Tabs.Tab value={TabKeys.Info}>Info</Tabs.Tab>
-          </Tooltip>
-
           {timeFrame && (
             <Tooltip label={'The time frame of the scene graph node'}>
               <Tabs.Tab value={TabKeys.TimeFrame}>Time Frame</Tabs.Tab>
             </Tooltip>
           )}
+
+          <Tooltip label={'Information about the scene graph node and its asset'}>
+            <Tabs.Tab value={TabKeys.Info}>Info</Tabs.Tab>
+          </Tooltip>
 
           {hasOther && (
             <Tooltip label={'Other properties of the scene graph node'}>
@@ -124,10 +126,28 @@ export function SceneGraphNodeView({ uri }: Props) {
           <Tabs.Panel value={TabKeys.TimeFrame}>
             <Box p={'xs'}>
               <Text>
-                This object will only be visible during the time frame for which it is
-                active.
+                This object has an attached time frame and will only be visible during the
+                time for which it is active. Note that the active time depends on the type
+                of time frame used.
               </Text>
+
+              <Badge
+                size={'lg'}
+                leftSection={
+                  isInTimeFrame ? (
+                    <ClockIcon size={IconSize.xs} />
+                  ) : (
+                    <ClockOffIcon size={IconSize.xs} />
+                  )
+                }
+                variant={'outline'}
+                color={isInTimeFrame ? 'green' : 'red'}
+                mt={'xs'}
+              >
+                {isInTimeFrame ? 'Active' : 'Inactive'}
+              </Badge>
             </Box>
+
             <Divider my={'xs'} />
             <PropertyOwner uri={timeFrame.uri} />
           </Tabs.Panel>

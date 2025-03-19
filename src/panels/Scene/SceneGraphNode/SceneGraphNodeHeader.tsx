@@ -1,13 +1,16 @@
-import { Button, Group, Text } from '@mantine/core';
+import { Button, Group, Text, Tooltip } from '@mantine/core';
 
 import { useGetPropertyOwner } from '@/api/hooks';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
+import { ClockOffIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { displayName, sgnRenderableUri } from '@/util/propertyTreeHelpers';
+
+import { useTimeFrame } from '../hooks';
 
 import { SceneGraphNodeMoreMenu } from './SceneGraphNodeMoreMenu';
 
@@ -20,6 +23,7 @@ interface Props {
 
 export function SceneGraphNodeHeader({ uri, label, onClick, leftSection }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
+  const { timeFrame, isInTimeFrame } = useTimeFrame(uri);
 
   const renderableUri = sgnRenderableUri(uri);
   const hasRenderable = useAppSelector((state) => {
@@ -50,13 +54,28 @@ export function SceneGraphNodeHeader({ uri, label, onClick, leftSection }: Props
     </Button>
   );
 
+  // TODO: Make sure that the timeframe information is accessible
+  const visibilityControl = hasRenderable && (
+    <Group gap={'xs'}>
+      <PropertyOwnerVisibilityCheckbox uri={renderableUri} />
+      {timeFrame && !isInTimeFrame && (
+        <Tooltip
+          label={`This node is currently hidden since the time is outside its specified
+            time frame. It will not be visible even if enabled.`}
+          w={300}
+          multiline
+          position={'top'}
+        >
+          <ClockOffIcon />
+        </Tooltip>
+      )}
+    </Group>
+  );
+
   return (
     <ThreePartHeader
       title={onClick ? titleButton : name}
-      leftSection={
-        leftSection ??
-        (hasRenderable && <PropertyOwnerVisibilityCheckbox uri={renderableUri} />)
-      }
+      leftSection={leftSection ?? visibilityControl}
       rightSection={
         <Group wrap={'nowrap'} gap={'xs'}>
           <NodeNavigationButton
