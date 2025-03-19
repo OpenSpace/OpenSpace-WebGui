@@ -4,7 +4,7 @@ import { useGetOptionPropertyValue, useGetPropertyDescription } from '@/api/hook
 import { PropertyProps } from '@/components/Property/types';
 
 // In OpenSpace the options are represented like so:
-// { 0 : "Option 1"}, { 1: "Option 2"}
+// { 0: "Option 1"}, { 1: "Option 2"}
 // The key is a number but in a string format.
 interface Option {
   [key: string]: string;
