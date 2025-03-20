@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useLayoutEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
-import { useGetBoolPropertyValue, useOpenSpaceApi } from '@/api/hooks';
+import { useGetBoolPropertyValue } from '@/api/hooks';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   setMenuItemEnabled,
   setMenuItemVisible as setMenuItemVisibleRedux
 } from '@/redux/local/localSlice';
-import { saveFileFromPicker, useLoadJsonFile } from '@/util/fileIO';
+import { saveJsonFile, useLoadJsonFile } from '@/util/fileIO';
 
 import { TaskbarItemConfig } from './types';
 
@@ -55,45 +55,16 @@ export function useMenuItems() {
 
 export function useStoredLayout() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);
-  const luaApi = useOpenSpaceApi();
 
   const { openLoadFileDialog } = useLoadJsonFile(handlePickedFile);
 
   const dispatch = useAppDispatch();
 
-  const setNewLayout = useCallback(
-    (newLayout: TaskbarItemConfig[]) => {
-      for (const item of newLayout) {
-        dispatch(setMenuItemVisibleRedux({ id: item.id, visible: item.visible }));
-      }
-    },
-    [dispatch]
-  );
-
-  // Before first render, get the settings we have for the taskbar items.
-  useLayoutEffect(() => {
-    async function getSavedFile() {
-      /* eslint-disable no-template-curly-in-string */
-      const layoutPath = await luaApi?.absPath('${USER_UI_TASKBAR}' + '/layout.json');
-      if (!layoutPath) {
-        return;
-      }
-      const fileExists = await luaApi?.fileExists(layoutPath);
-      if (!fileExists) {
-        return;
-      }
-      const result = await luaApi?.loadJson(layoutPath);
-      if (result) {
-        setNewLayout(Object.values(result) as TaskbarItemConfig[]);
-      }
-    }
-    if (luaApi) {
-      getSavedFile();
-    }
-  }, [luaApi, dispatch, setNewLayout]);
-
   function handlePickedFile(content: JSON) {
-    setNewLayout(Object.values(content) as TaskbarItemConfig[]);
+    const newLayout = Object.values(content) as TaskbarItemConfig[];
+    for (const item of newLayout) {
+      dispatch(setMenuItemVisibleRedux({ id: item.id, visible: item.visible }));
+    }
   }
 
   async function saveLayout() {
@@ -106,7 +77,8 @@ export function useStoredLayout() {
       },
       {}
     );
-    saveFileFromPicker(JSON.stringify(object));
+    const content = JSON.parse(JSON.stringify(object));
+    saveJsonFile(content);
   }
 
   return { saveLayout, loadLayout: openLoadFileDialog };
