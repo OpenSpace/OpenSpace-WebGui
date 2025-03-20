@@ -46,6 +46,8 @@ export async function saveJsonFile(contents: JSON) {
         }
       ]
     };
+    // For some reason typescript doesn't recognize this as a function
+    // It is an experimental feature of the chromium browser
     const fileHandle = await window.showSaveFilePicker(options);
 
     // Create a FileSystemWritableFileStream to write to.
@@ -59,8 +61,7 @@ export async function saveJsonFile(contents: JSON) {
   } else {
     // This is the fallback code if showSaveFilePicker is not available
     // (Firefox for example).
-    // Will download the file to Downloads.
-    // Kinda hacky but it works ¯\_(ツ)_/¯
+    // Will download the file to Downloads. Kinda hacky but it works ¯\_(ツ)_/¯
     const blob = new Blob([contentsString], {
       type: 'application/json'
     });
