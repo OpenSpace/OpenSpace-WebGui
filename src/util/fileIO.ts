@@ -1,11 +1,34 @@
-export async function loadFileFromPicker(): Promise<string> {
-  if (!('showOpenFilePicker' in self)) {
-    throw new Error('File picker not supported in this browser');
+import { useFileDialog } from '@mantine/hooks';
+
+export function useLoadJsonFile(onFileOpened: (content: JSON) => void): {
+  openLoadFileDialog: () => void;
+} {
+  const fileDialog = useFileDialog({
+    multiple: false,
+    accept: '.json',
+    resetOnOpen: true,
+    onChange: readOpenedLayout
+  });
+
+  async function readOpenedLayout(contents: FileList | null) {
+    try {
+      const content = await contents?.[0]?.text();
+      if (!content) {
+        return;
+      }
+      const json = JSON.parse(content);
+      onFileOpened(json);
+    } catch (e) {
+      // TODO: do we want to throw here?
+      console.error('Error parsing file', e);
+    }
   }
-  const [fileHandle] = await window.showOpenFilePicker();
-  const file = await fileHandle.getFile();
-  const contents = await file.text();
-  return contents as string;
+
+  function openLoadFileDialog() {
+    fileDialog.open();
+  }
+
+  return { openLoadFileDialog };
 }
 
 export async function saveFileFromPicker(contents: string) {

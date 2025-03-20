@@ -6,9 +6,10 @@ import {
   setMenuItemEnabled,
   setMenuItemVisible as setMenuItemVisibleRedux
 } from '@/redux/local/localSlice';
-import { loadFileFromPicker, saveFileFromPicker } from '@/util/fileIO';
+import { loadFileFromPicker, saveFileFromPicker, useLoadJsonFile } from '@/util/fileIO';
 
 import { TaskbarItemConfig } from './types';
+import { useFileDialog } from '@mantine/hooks';
 
 export function useMenuItems() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);
@@ -55,8 +56,10 @@ export function useMenuItems() {
 
 export function useStoredLayout() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);
-
   const luaApi = useOpenSpaceApi();
+
+  const { openLoadFileDialog } = useLoadJsonFile(handlePickedFile);
+
   const dispatch = useAppDispatch();
 
   const setNewLayout = useCallback(
@@ -90,15 +93,8 @@ export function useStoredLayout() {
     }
   }, [luaApi, dispatch, setNewLayout]);
 
-  async function loadLayout() {
-    const contents = await loadFileFromPicker();
-    try {
-      const parsedFile = Object.values(JSON.parse(contents)) as TaskbarItemConfig[];
-      setNewLayout(parsedFile);
-    } catch (e) {
-      // TODO: do we want to throw here?
-      console.error('Error parsing file', e);
-    }
+  function handlePickedFile(content: JSON) {
+    setNewLayout(Object.values(content) as TaskbarItemConfig[]);
   }
 
   async function saveLayout() {
@@ -114,5 +110,5 @@ export function useStoredLayout() {
     saveFileFromPicker(JSON.stringify(object));
   }
 
-  return { saveLayout, loadLayout };
+  return { saveLayout, loadLayout: openLoadFileDialog };
 }
