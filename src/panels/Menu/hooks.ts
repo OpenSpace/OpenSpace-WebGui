@@ -6,7 +6,7 @@ import {
   setMenuItemEnabled,
   setMenuItemVisible as setMenuItemVisibleRedux
 } from '@/redux/local/localSlice';
-import { saveJsonFile, useLoadJsonFile } from '@/util/fileIO';
+import { useSaveLoadJsonFiles } from '@/util/fileIOhooks';
 
 import { TaskbarItemConfig } from './types';
 
@@ -56,7 +56,8 @@ export function useMenuItems() {
 export function useStoredLayout() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);
 
-  const { openLoadFileDialog } = useLoadJsonFile(handlePickedFile);
+  const { openSaveFileDialog, openLoadFileDialog } =
+    useSaveLoadJsonFiles(handlePickedFile);
 
   const dispatch = useAppDispatch();
 
@@ -78,7 +79,7 @@ export function useStoredLayout() {
       {}
     );
     const content = JSON.parse(JSON.stringify(object));
-    saveJsonFile(content);
+    openSaveFileDialog(content);
   }
 
   return { saveLayout, loadLayout: openLoadFileDialog };

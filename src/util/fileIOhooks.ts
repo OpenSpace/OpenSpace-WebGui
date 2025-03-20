@@ -1,6 +1,6 @@
 import { useFileDialog } from '@mantine/hooks';
 
-export function useLoadJsonFile(onFileOpened: (content: JSON) => void): {
+function useLoadJsonFile(handlePickedFile: (content: JSON) => void): {
   openLoadFileDialog: () => void;
 } {
   const fileDialog = useFileDialog({
@@ -17,7 +17,7 @@ export function useLoadJsonFile(onFileOpened: (content: JSON) => void): {
         return;
       }
       const json = JSON.parse(content);
-      onFileOpened(json);
+      handlePickedFile(json);
     } catch (e) {
       // TODO: do we want to throw here?
       console.error('Error parsing file', e);
@@ -33,7 +33,7 @@ export function useLoadJsonFile(onFileOpened: (content: JSON) => void): {
 
 // For documentation about these features please read this article:
 // https://developer.chrome.com/docs/capabilities/browser-fs-access#opening_files_2
-export async function saveJsonFile(contents: JSON) {
+async function openSaveFileDialog(contents: JSON) {
   const contentsString = JSON.stringify(contents, null, 2);
 
   const supportsSaveDialog = 'showSaveFilePicker' in self;
@@ -76,4 +76,12 @@ export async function saveJsonFile(contents: JSON) {
     });
     a.click();
   }
+}
+
+// Exporting these as a hook as they seem to belong in the same file,
+// even though only on of them is a hook
+export function useSaveLoadJsonFiles(handlePickedFile: (content: JSON) => void) {
+  const { openLoadFileDialog } = useLoadJsonFile(handlePickedFile);
+
+  return { openSaveFileDialog, openLoadFileDialog };
 }
