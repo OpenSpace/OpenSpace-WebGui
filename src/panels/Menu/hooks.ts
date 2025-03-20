@@ -6,10 +6,9 @@ import {
   setMenuItemEnabled,
   setMenuItemVisible as setMenuItemVisibleRedux
 } from '@/redux/local/localSlice';
-import { loadFileFromPicker, saveFileFromPicker, useLoadJsonFile } from '@/util/fileIO';
+import { saveFileFromPicker, useLoadJsonFile } from '@/util/fileIO';
 
 import { TaskbarItemConfig } from './types';
-import { useFileDialog } from '@mantine/hooks';
 
 export function useMenuItems() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);

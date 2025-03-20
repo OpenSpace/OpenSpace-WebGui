@@ -31,30 +31,45 @@ export function useLoadJsonFile(onFileOpened: (content: JSON) => void): {
   return { openLoadFileDialog };
 }
 
-export async function saveFileFromPicker(contents: string) {
-  // TODO handle this better? What do we want to happen in
-  // unsupported browsers?
-  if (!('showSaveFilePicker' in self)) {
-    throw new Error('File picker not supported in this browser');
-  }
-  const options = {
-    types: [
-      {
-        description: 'Text Files',
-        accept: {
-          'text/plain': ['.json']
+export async function saveJsonFile(contents: JSON) {
+  const contentsString = JSON.stringify(contents, null, 2);
+
+  const supportsSaveDialog = 'showSaveFilePicker' in self;
+  if (supportsSaveDialog) {
+    const options = {
+      types: [
+        {
+          description: 'Text Files',
+          accept: {
+            'text/plain': ['.json']
+          }
         }
-      }
-    ]
-  };
-  const fileHandle = await window.showSaveFilePicker(options);
+      ]
+    };
+    const fileHandle = await window.showSaveFilePicker(options);
 
-  // Create a FileSystemWritableFileStream to write to.
-  const writable = await fileHandle.createWritable();
+    // Create a FileSystemWritableFileStream to write to.
+    const writable = await fileHandle.createWritable();
 
-  // Write the contents of the file to the stream.
-  await writable.write(contents);
+    // Write the contents of the file to the stream.
+    await writable.write(contentsString);
 
-  // Close the file and write the contents to disk.
-  await writable.close();
+    // Close the file and write the contents to disk.
+    await writable.close();
+  } else {
+    // This is the fallback code if showSaveFilePicker is not available
+    // (Firefox for example).
+    // Will download the file to Downloads.
+    // Kinda hacky but it works ¯\_(ツ)_/¯
+    const blob = new Blob([contentsString], {
+      type: 'application/json'
+    });
+    const a = document.createElement('a');
+    a.download = 'layout.json';
+    a.href = URL.createObjectURL(blob);
+    a.addEventListener('click', (e) => {
+      setTimeout(() => URL.revokeObjectURL(a.href), 30 * 1000);
+    });
+    a.click();
+  }
 }
