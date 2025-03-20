@@ -31,6 +31,8 @@ export function useLoadJsonFile(onFileOpened: (content: JSON) => void): {
   return { openLoadFileDialog };
 }
 
+// For documentation about these features please read this article:
+// https://developer.chrome.com/docs/capabilities/browser-fs-access#opening_files_2
 export async function saveJsonFile(contents: JSON) {
   const contentsString = JSON.stringify(contents, null, 2);
 
@@ -61,7 +63,8 @@ export async function saveJsonFile(contents: JSON) {
   } else {
     // This is the fallback code if showSaveFilePicker is not available
     // (Firefox for example).
-    // Will download the file to Downloads. Kinda hacky but it works ¯\_(ツ)_/¯
+    // Will download the file to Downloads. Looks hacky but it seems endorsed by chromium ¯\_(ツ)_/¯
+    // https://developer.chrome.com/docs/capabilities/browser-fs-access#saving_rather_downloading_files
     const blob = new Blob([contentsString], {
       type: 'application/json'
     });
