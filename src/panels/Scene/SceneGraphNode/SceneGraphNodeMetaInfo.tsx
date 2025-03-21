@@ -13,7 +13,7 @@ import {
 
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 import { useStringProperty } from '@/hooks/properties';
-import { useGetPropertyOwner } from '@/hooks/propertyOwner';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
 import { identifierFromUri } from '@/util/propertyTreeHelpers';
@@ -23,7 +23,7 @@ interface Props {
 }
 
 export function SceneGraphNodeMetaInfo({ uri }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
+  const propertyOwner = usePropertyOwner(uri);
   const [guiPath] = useStringProperty(`${uri}.GuiPath`);
 
   const [description] = useStringProperty(`${uri}.GuiDescription`);

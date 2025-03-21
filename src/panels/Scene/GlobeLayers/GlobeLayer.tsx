@@ -4,7 +4,7 @@ import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
-import { useGetPropertyOwner } from '@/hooks/propertyOwner';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
 
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function GlobeLayer({ uri }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
+  const propertyOwner = usePropertyOwner(uri);
 
   const { isVisible } = usePropertyOwnerVisibility(uri);
 

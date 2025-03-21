@@ -7,7 +7,7 @@ import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelper
 
 import { useOptionProperty } from './properties';
 
-export function useGetPropertyOwner(uri: Uri): PropertyOwner | undefined {
+export function usePropertyOwner(uri: Uri): PropertyOwner | undefined {
   return useAppSelector((state) => state.propertyOwners.propertyOwners[uri]);
 }
 

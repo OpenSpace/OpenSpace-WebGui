@@ -3,7 +3,7 @@ import { Button, Group, Text } from '@mantine/core';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
-import { useGetPropertyOwner } from '@/hooks/propertyOwner';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
@@ -19,7 +19,7 @@ interface Props {
 }
 
 export function SceneGraphNodeHeader({ uri, label, onClick, leftSection }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
+  const propertyOwner = usePropertyOwner(uri);
 
   const renderableUri = sgnRenderableUri(uri);
   const hasRenderable = useAppSelector((state) => {

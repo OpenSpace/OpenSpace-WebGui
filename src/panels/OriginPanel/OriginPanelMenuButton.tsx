@@ -1,7 +1,7 @@
 import { Group } from '@mantine/core';
 
 import { useStringProperty } from '@/hooks/properties';
-import { useGetPropertyOwner } from '@/hooks/propertyOwner';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { EngineMode } from '@/types/enums';
 import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
@@ -18,8 +18,8 @@ interface OriginPanelMenuButtonProps {
 export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
   const [anchor] = useStringProperty(NavigationAnchorKey);
   const [aim] = useStringProperty(NavigationAimKey);
-  const anchorName = useGetPropertyOwner(`${ScenePrefixKey}${anchor}`)?.name ?? anchor;
-  const aimName = useGetPropertyOwner(`${ScenePrefixKey}${aim}`)?.name ?? aim;
+  const anchorName = usePropertyOwner(`${ScenePrefixKey}${anchor}`)?.name ?? anchor;
+  const aimName = usePropertyOwner(`${ScenePrefixKey}${aim}`)?.name ?? aim;
   const engineMode = useSubscribeToEngineMode();
 
   function hasDistinctAim() {

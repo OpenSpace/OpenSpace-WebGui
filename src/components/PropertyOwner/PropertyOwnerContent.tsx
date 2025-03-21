@@ -1,7 +1,7 @@
 import { Box } from '@mantine/core';
 
 import { Property } from '@/components/Property/Property';
-import { useGetPropertyOwner, useGetVisibleProperties } from '@/hooks/propertyOwner';
+import { usePropertyOwner, useGetVisibleProperties } from '@/hooks/propertyOwner';
 import { GlobeLayersPropertyOwner } from '@/panels/Scene/GlobeLayers/GlobeLayersPropertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function PropertyOwnerContent({ uri, hideSubowners = false }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
+  const propertyOwner = usePropertyOwner(uri);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);

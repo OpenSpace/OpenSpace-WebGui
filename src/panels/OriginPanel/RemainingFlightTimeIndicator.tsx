@@ -1,6 +1,6 @@
 import { Group, Text } from '@mantine/core';
 
-import { useGetPropertyOwner } from '@/hooks/propertyOwner';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useSubscribeToCameraPath } from '@/hooks/topicSubscriptions';
 import { AirplaneIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
@@ -17,7 +17,7 @@ export function RemainingFlightTimeIndicator({ compact = true }: Props) {
     useSubscribeToCameraPath();
 
   const pathTargetNodeName =
-    useGetPropertyOwner(sgnUri(pathTargetNode))?.name ?? pathTargetNode;
+    usePropertyOwner(sgnUri(pathTargetNode))?.name ?? pathTargetNode;
 
   return (
     <Group className={classes.blinking} wrap={'nowrap'} gap={'xs'} p={'xs'}>

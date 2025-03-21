@@ -2,7 +2,7 @@ import { Badge, Box, Card, Group, Text } from '@mantine/core';
 
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { Property } from '@/components/Property/Property';
-import { useGetPropertyOwner } from '@/hooks/propertyOwner';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { Identifier, Uri } from '@/types/types';
 import { displayName, isPropertyOwnerActive } from '@/util/propertyTreeHelpers';
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export function GlobeLayerGroup({ uri, globe, icon }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
+  const propertyOwner = usePropertyOwner(uri);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);

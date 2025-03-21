@@ -5,7 +5,7 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { useStringProperty } from '@/hooks/properties';
-import { useGetPropertyOwner } from '@/hooks/propertyOwner';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { DeleteIcon, OpenInNewIcon, VerticalDotsIcon } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
@@ -20,7 +20,7 @@ interface Props {
 }
 
 export function SceneGraphNodeMoreMenu({ uri }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
+  const propertyOwner = usePropertyOwner(uri);
   const [anchor] = useStringProperty(NavigationAnchorKey);
   const luaApi = useOpenSpaceApi();
 

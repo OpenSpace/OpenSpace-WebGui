@@ -2,7 +2,7 @@ import { Box, Group } from '@mantine/core';
 
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { useGetPropertyOwner, useHasVisibleChildren } from '@/hooks/propertyOwner';
+import { usePropertyOwner, useHasVisibleChildren } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
 
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export function PropertyOwner({ uri, expandedOnDefault = false }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
+  const propertyOwner = usePropertyOwner(uri);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);
