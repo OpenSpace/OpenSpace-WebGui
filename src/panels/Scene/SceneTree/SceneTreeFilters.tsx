@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
   ActionIcon,
   Button,
@@ -13,35 +12,26 @@ import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { FilterIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
-import { SceneTreeFilterSettings } from './treeUtil';
+import { SceneTreeFilterSettings } from './types';
 
 interface Props {
-  onFilterChange: (filter: SceneTreeFilterSettings) => void;
+  setFilter: (
+    statePartial:
+      | Partial<SceneTreeFilterSettings>
+      | ((currentState: SceneTreeFilterSettings) => Partial<SceneTreeFilterSettings>)
+  ) => void;
+  filter: SceneTreeFilterSettings;
 }
 
-export function SceneTreeFilters({ onFilterChange }: Props) {
-  const [showOnlyVisible, setshowOnlyVisible] = useState(false);
-  const [showHiddenNodes, setShowHiddenNodes] = useState(false);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
+export function SceneTreeFilters({ setFilter, filter }: Props) {
   const tags = useAppSelector((state) => state.groups.tags);
 
   const sortedTags = Array.from(tags).sort();
-  const hasFilters = showOnlyVisible || showHiddenNodes || selectedTags.length > 0;
-
-  // Trigger callback when the filter changes
-  useEffect(() => {
-    onFilterChange({
-      showOnlyVisible,
-      showHiddenNodes,
-      tags: selectedTags
-    });
-  }, [onFilterChange, selectedTags, showHiddenNodes, showOnlyVisible]);
+  const hasFilters =
+    filter.showOnlyVisible || filter.showHiddenNodes || filter.tags.length > 0;
 
   function clearFilters() {
-    setshowOnlyVisible(false);
-    setShowHiddenNodes(false);
-    setSelectedTags([]);
+    setFilter({ showOnlyVisible: false, showHiddenNodes: false, tags: [] });
   }
 
   return (
@@ -61,16 +51,20 @@ export function SceneTreeFilters({ onFilterChange }: Props) {
           <Group>
             <Checkbox
               label={'Show only visible'}
-              checked={showOnlyVisible}
-              onChange={(event) => setshowOnlyVisible(event.currentTarget.checked)}
+              checked={filter.showOnlyVisible}
+              onChange={(event) =>
+                setFilter({ showOnlyVisible: event.currentTarget.checked })
+              }
             />
             <InfoBox text={'Visible = Enabled and not faded out'} />
           </Group>
           <Group>
             <Checkbox
               label={'Show objects with GUI hidden flag'}
-              checked={showHiddenNodes}
-              onChange={(event) => setShowHiddenNodes(event.currentTarget.checked)}
+              checked={filter.showHiddenNodes}
+              onChange={(event) =>
+                setFilter({ showHiddenNodes: event.currentTarget.checked })
+              }
             />
             <InfoBox
               text={
@@ -82,8 +76,8 @@ export function SceneTreeFilters({ onFilterChange }: Props) {
           <Title order={3}>Tags</Title>
           <MultiSelect
             data={sortedTags}
-            value={selectedTags}
-            onChange={setSelectedTags}
+            value={filter.tags}
+            onChange={(newTags) => setFilter({ tags: newTags })}
             clearable
             searchable
           />
