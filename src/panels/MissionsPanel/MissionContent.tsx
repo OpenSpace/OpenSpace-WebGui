@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Box, Button, Checkbox, Group, Text, Title } from '@mantine/core';
+import { Button, Checkbox, Group, Text, Title } from '@mantine/core';
 
 import { useSubscribeToTime } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 
 import { TimeLine } from './TimeLine/TimeLine';
 import { MissionPhase } from './MissionPhase';
@@ -126,7 +127,7 @@ export function MissionContent({ missionOverview }: Props) {
         missionOverview={missionOverview}
         setDisplayedPhase={setPhaseManually}
       />
-      <Box flex={1}>
+      <ScrollBox px={'md'} h={'100%'}>
         <Group justify={'space-between'} mb={'md'}>
           <Title order={2}>{missionOverview.name}</Title>
           <Button
@@ -154,7 +155,7 @@ export function MissionContent({ missionOverview }: Props) {
         ) : (
           'No data for the current time range'
         )}
-      </Box>
+      </ScrollBox>
     </Group>
   );
 }

@@ -17,9 +17,6 @@ export const JumpToFadeDurationKey = 'NavigationHandler.JumpToFadeDuration';
 // To get any scene graph node you need ScenePrefix+NodeIdentifier
 export const ScenePrefixKey = 'Scene.';
 
-export const RenderableSuffixKey = '.Renderable';
-export const LayersSuffixKey = '.Layers';
-
 export const InterestingTagKey = 'GUI.Interesting';
 export const rootOwnerKey = '__rootOwner';
 export const GeoLocationGroupKey = '/GeoLocation';

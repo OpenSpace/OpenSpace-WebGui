@@ -2,6 +2,8 @@ import { useRef } from 'react';
 import { Box, MantineSpacing } from '@mantine/core';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
+import { ScrollBox } from '../ScrollBox/ScrollBox';
+
 export interface VirtualListProps<T> {
   data: T[];
   renderElement: (data: T, i: number) => React.ReactNode;
@@ -35,15 +37,7 @@ export function VirtualList<T>({
   return (
     <>
       {/* The scrollable element for your list */}
-      <Box
-        ref={parentRef}
-        h={'100%'}
-        w={'100%'}
-        style={{
-          overflow: 'auto'
-        }}
-        pr={'xs'}
-      >
+      <ScrollBox ref={parentRef} h={'100%'} w={'100%'}>
         {/* The large inner element to hold all of the items */}
         <Box h={`${virtualizer.getTotalSize()}px`} pos={'relative'} w={'100%'}>
           <Box
@@ -68,7 +62,7 @@ export function VirtualList<T>({
             ))}
           </Box>
         </Box>
-      </Box>
+      </ScrollBox>
     </>
   );
 }
