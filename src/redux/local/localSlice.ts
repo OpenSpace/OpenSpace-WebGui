@@ -4,6 +4,9 @@ import { TaskbarItemConfig } from '@/panels/Menu/types';
 import { Uri } from '@/types/types';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
+import { getProfile } from '../profile/profileMiddleware';
+import { ProfileState } from '../profile/profileSlice';
+
 export interface LocalState {
   sceneTree: {
     expandedGroups: string[];
@@ -63,6 +66,21 @@ export const localSlice = createSlice({
       state.taskbarItems = action.payload;
       return state;
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(
+      getProfile.fulfilled,
+      (state, action: PayloadAction<ProfileState>) => {
+        Object.entries(action.payload.uiPanelVisibility).forEach(([key, value]) => {
+          const item = state.taskbarItems.find((item) => item.id === key);
+          if (item) {
+            item.visible = value;
+          }
+          return state;
+        });
+        return state;
+      }
+    );
   }
 });
 
