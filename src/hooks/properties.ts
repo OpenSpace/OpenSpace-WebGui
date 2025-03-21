@@ -79,59 +79,42 @@ export const useSelectionProperty = (uri: Uri) =>
 export const useOptionProperty = (uri: Uri) => useProperty<number>(uri, 'OptionProperty');
 
 // Vectors
+export const useVec2Property = (uri: Uri) => useProperty<number[]>(uri, 'Vec2Property');
+export const useVec3Property = (uri: Uri) => useProperty<number[]>(uri, 'Vec3Property');
+export const useVec4Property = (uri: Uri) => useProperty<number[]>(uri, 'Vec4Property');
+
 export const useDVec2Property = (uri: Uri) => useProperty<number[]>(uri, 'DVec2Property');
-
 export const useDVec3Property = (uri: Uri) => useProperty<number[]>(uri, 'DVec3Property');
-
 export const useDVec4Property = (uri: Uri) => useProperty<number[]>(uri, 'DVec4Property');
 
 export const useIVec2Property = (uri: Uri) => useProperty<number[]>(uri, 'IVec2Property');
-// Vectors
 export const useIVec3Property = (uri: Uri) => useProperty<number[]>(uri, 'IVec3Property');
-
 export const useIVec4Property = (uri: Uri) => useProperty<number[]>(uri, 'IVec4Property');
 
 export const useUVec2Property = (uri: Uri) => useProperty<number[]>(uri, 'UVec2Property');
-
 export const useUVec3Property = (uri: Uri) => useProperty<number[]>(uri, 'UVec3Property');
-
 export const useUVec4Property = (uri: Uri) => useProperty<number[]>(uri, 'UVec4Property');
-
-export const useVec2Property = (uri: Uri) => useProperty<number[]>(uri, 'Vec2Property');
-
-export const useVec3Property = (uri: Uri) => useProperty<number[]>(uri, 'Vec3Property');
-
-export const useVec4Property = (uri: Uri) => useProperty<number[]>(uri, 'Vec4Property');
 
 // Scalars
 export const useDoubleProperty = (uri: Uri) => useProperty<number>(uri, 'DoubleProperty');
-
 export const useFloatProperty = (uri: Uri) => useProperty<number>(uri, 'FloatProperty');
 
 export const useIntProperty = (uri: Uri) => useProperty<number>(uri, 'IntProperty');
-
 export const useLongProperty = (uri: Uri) => useProperty<number>(uri, 'LongProperty');
-
 export const useShortProperty = (uri: Uri) => useProperty<number>(uri, 'ShortProperty');
 
 export const useUIntProperty = (uri: Uri) => useProperty<number>(uri, 'UIntProperty');
-
 export const useULongProperty = (uri: Uri) => useProperty<number>(uri, 'ULongProperty');
-
 export const useUShortProperty = (uri: Uri) => useProperty<number>(uri, 'UShortProperty');
 
 // Matrices
-export const useDMat2Property = (uri: Uri) => useProperty<number[]>(uri, 'DMat2Property');
-
-export const useDMat3Property = (uri: Uri) => useProperty<number[]>(uri, 'DMat3Property');
-
-export const useDMat4Property = (uri: Uri) => useProperty<number[]>(uri, 'DMat4Property');
-
 export const useMat2Property = (uri: Uri) => useProperty<number[]>(uri, 'Mat2Property');
-
 export const useMat3Property = (uri: Uri) => useProperty<number[]>(uri, 'Mat3Property');
-
 export const useMat4Property = (uri: Uri) => useProperty<number[]>(uri, 'Mat4Property');
+
+export const useDMat2Property = (uri: Uri) => useProperty<number[]>(uri, 'DMat2Property');
+export const useDMat3Property = (uri: Uri) => useProperty<number[]>(uri, 'DMat3Property');
+export const useDMat4Property = (uri: Uri) => useProperty<number[]>(uri, 'DMat4Property');
 
 // Lists
 export const useDoubleListProperty = (uri: Uri) =>
@@ -144,7 +127,11 @@ export const useStringListProperty = (uri: Uri) =>
   useProperty<string[]>(uri, 'StringListProperty');
 
 // Generic properties
-// IMPORTANT: These should not be used other than in the generic property component!!
+/**
+ * IMPORTANT: This should not be used other than in the generic property component!!
+ * @param uri 
+ * @returns 
+ */
 export const useGenericVectorProperty = (uri: Uri) =>
   useProperty<number[]>(uri, [
     'Vec2Property',
@@ -161,6 +148,11 @@ export const useGenericVectorProperty = (uri: Uri) =>
     'UVec4Property'
   ]);
 
+/**
+ * IMPORTANT: This should not be used other than in the generic property component!!
+ * @param uri 
+ * @returns 
+ */
 export const useGenericMatrixProperty = (uri: Uri) =>
   useProperty<number[]>(uri, [
     'Mat2Property',
@@ -171,6 +163,11 @@ export const useGenericMatrixProperty = (uri: Uri) =>
     'DMat4Property'
   ]);
 
+/**
+ * IMPORTANT: This should not be used other than in the generic property component!!
+ * @param uri 
+ * @returns 
+ */
 export const useGenericNumericProperty = (uri: Uri) =>
   useProperty<number>(uri, [
     'FloatProperty',
