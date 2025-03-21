@@ -25,7 +25,6 @@ export function usePropertyDescription(uri: Uri): PropertyDetails | undefined {
   return useAppSelector((state) => state.properties.properties[uri]?.description);
 }
 
-// TODO: rename all these functions to just use - now its a get / set function
 function useProperty<T>(
   uri: Uri,
   propertyType: string | string[]
