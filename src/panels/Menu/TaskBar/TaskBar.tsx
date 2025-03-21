@@ -1,9 +1,9 @@
 import { alpha, Box, Flex } from '@mantine/core';
 
+import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { IconSize } from '@/types/enums';
 import { MenuItem, menuItemsData } from '@/windowmanagement/data/MenuItems';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
-import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 
 import { useMenuItems } from '../hooks';
 
