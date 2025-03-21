@@ -5,7 +5,7 @@ import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyProps } from '@/components/Property/types';
 
 export function TriggerProperty({ uri, readOnly }: PropertyProps) {
-  const triggerFunc = useTriggerProperty(uri);
+  const triggerFunction = useTriggerProperty(uri);
   const description = useGetPropertyDescription(uri);
 
   if (!description) {
@@ -14,7 +14,7 @@ export function TriggerProperty({ uri, readOnly }: PropertyProps) {
 
   return (
     <Group>
-      <Button onClick={triggerFunc} disabled={readOnly}>
+      <Button onClick={triggerFunction} disabled={readOnly}>
         {description.name}
       </Button>
       <InfoBox text={description.description} />

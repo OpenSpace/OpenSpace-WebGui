@@ -69,13 +69,12 @@ export function useProperty<T>(
     // Validate the props type
     if (prop) {
       if (Array.isArray(propertyType) && !propertyType.includes(prop.description.type)) {
-        console.log(propertyType[0], prop.description.type);
         throw Error(
           `Requested one of the following properties: ${propertyType.join(', ')} but got a ${prop.description.type}`
         );
       } else if (
         typeof propertyType === 'string' &&
-        prop?.description.type !== propertyType
+        prop.description.type !== propertyType
       ) {
         throw Error(`Requested a ${propertyType} but got a ${prop.description.type}`);
       }

@@ -22,7 +22,6 @@ export function MatrixProperty({ uri, readOnly }: PropertyProps) {
   }
 
   const additionalData = description.additionalData as AdditionalDataVectorMatrix;
-
   const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
   const matrixSize = Math.sqrt(value.length);
 

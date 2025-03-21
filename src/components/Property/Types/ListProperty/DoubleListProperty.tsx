@@ -9,8 +9,8 @@ export function DoubleListProperty({ uri, readOnly }: PropertyProps) {
     return <></>;
   }
 
-  function setValueString(value: string[]) {
-    setValue(value.map((item) => parseFloat(item)).filter((item) => !isNaN(item)));
+  function setValueString(values: string[]) {
+    setValue(values.map((value) => parseFloat(value)).filter((value) => !isNaN(value)));
   }
 
   return (
