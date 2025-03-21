@@ -11,6 +11,7 @@ import { flightControllerReducer } from './flightcontroller/flightControllerSlic
 import { groupsReducer } from './groups/groupsSlice';
 import { localReducer } from './local/localSlice';
 import { missionsReducer } from './missions/missionsSlice';
+import { profileReducer } from './profile/profileSlice';
 import { propertiesReducer } from './propertytree/properties/propertiesSlice';
 import { propertyOwnersReducer } from './propertytree/propertyowner/propertyOwnerSlice';
 import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
@@ -39,7 +40,8 @@ export const store = configureStore({
     skybrowser: skyBrowserReducer,
     time: timeReducer,
     userPanels: userPanelsReducer,
-    version: versionReducer
+    version: versionReducer,
+    profile: profileReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([listenerMiddleware.middleware]),

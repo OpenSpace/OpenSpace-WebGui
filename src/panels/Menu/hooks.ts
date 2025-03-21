@@ -6,6 +6,9 @@ import {
   setMenuItemEnabled,
   setMenuItemVisible as setMenuItemVisibleRedux
 } from '@/redux/local/localSlice';
+import { useSaveLoadJsonFiles } from '@/util/fileIOhooks';
+
+import { TaskbarItemConfig } from './types';
 
 export function useMenuItems() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);
@@ -48,4 +51,36 @@ export function useMenuItems() {
   }
 
   return { menuItems, filteredMenuItems, setMenuItemVisible };
+}
+
+export function useStoredLayout() {
+  const menuItems = useAppSelector((state) => state.local.taskbarItems);
+
+  const { openSaveFileDialog, openLoadFileDialog } =
+    useSaveLoadJsonFiles(handlePickedFile);
+
+  const dispatch = useAppDispatch();
+
+  function handlePickedFile(content: JSON) {
+    const newLayout = Object.values(content) as TaskbarItemConfig[];
+    for (const item of newLayout) {
+      dispatch(setMenuItemVisibleRedux({ id: item.id, visible: item.visible }));
+    }
+  }
+
+  async function saveLayout() {
+    // Our lua function can't read the object if it is an array so
+    // we need to convert it to an object
+    const object = menuItems.reduce<Record<string, TaskbarItemConfig>>(
+      (acc, item, index) => {
+        acc[index.toString()] = item;
+        return acc;
+      },
+      {}
+    );
+    const content = JSON.parse(JSON.stringify(object));
+    openSaveFileDialog(content);
+  }
+
+  return { saveLayout, loadLayout: openLoadFileDialog };
 }

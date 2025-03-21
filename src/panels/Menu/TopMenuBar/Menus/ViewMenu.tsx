@@ -2,19 +2,26 @@ import { CheckboxIndicator, Container, Group, Menu } from '@mantine/core';
 
 import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { Property } from '@/components/Property/Property';
-import { ChevronRightIcon, SaveIcon, TaskBarIcon, VisibilityIcon } from '@/icons/icons';
+import {
+  ChevronRightIcon,
+  SaveIcon,
+  TaskBarIcon,
+  UpArrowIcon,
+  VisibilityIcon
+} from '@/icons/icons';
 import { useAppDispatch } from '@/redux/hooks';
 import { setMenuItemsOrder } from '@/redux/local/localSlice';
 import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
-import { useMenuItems } from '../../hooks';
+import { useMenuItems, useStoredLayout } from '../../hooks';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function ViewMenu() {
   const { menuItems, setMenuItemVisible } = useMenuItems();
-
   const dispatch = useAppDispatch();
+
+  const { loadLayout, saveLayout } = useStoredLayout();
 
   return (
     <TopBarMenuWrapper targetTitle={'View'}>
@@ -61,7 +68,12 @@ export function ViewMenu() {
         />
       </TopBarMenuWrapper>
 
-      <Menu.Item leftSection={<SaveIcon />}>Load/Save Layout</Menu.Item>
+      <Menu.Item leftSection={<UpArrowIcon />} onClick={loadLayout}>
+        Load Task Bar Settings
+      </Menu.Item>
+      <Menu.Item leftSection={<SaveIcon />} onClick={saveLayout}>
+        Save Task Bar Settings
+      </Menu.Item>
       <Menu.Divider />
       <Menu.Label>
         <Group>
