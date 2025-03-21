@@ -1,4 +1,4 @@
-import { ActionIcon, Group, Tooltip } from '@mantine/core';
+import { ActionIcon, CloseIcon, Group, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import {
@@ -12,7 +12,7 @@ import {
 } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
-import { useBrowserFov, useSelectedImages } from '../hooks';
+import { useBrowserFov, useSelectedImages, useSkyBrowserIds } from '../hooks';
 
 import { AddedImagesList } from './AddedImagesList';
 import { Settings } from './Settings';
@@ -33,6 +33,8 @@ export function TabContent({
   const selectedImages = useSelectedImages(browserId);
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
   const fov = useBrowserFov(browserId);
+  const browserIds = useSkyBrowserIds();
+
   const luaApi = useOpenSpaceApi();
   const zoomStep = 5;
 
@@ -56,6 +58,18 @@ export function TabContent({
     selectedImages?.forEach((image) =>
       luaApi?.skybrowser.removeSelectedImageInBrowser(browserId, imageList[image].url)
     );
+  }
+
+  function deleteBrowser() {
+    if (!browserId) {
+      return;
+    }
+    // If there are more browsers, select another browser
+    if (browserIds.length > 1) {
+      const otherBrowsers = browserIds.filter((b) => b !== browserId);
+      luaApi?.skybrowser.setSelectedBrowser(otherBrowsers[0]);
+    }
+    luaApi?.skybrowser.removeTargetBrowserPair(browserId);
   }
 
   return (
@@ -95,15 +109,21 @@ export function TabContent({
             </ActionIcon>
           </Tooltip>
         </ActionIcon.Group>
-
-        <Tooltip label={'Settings'}>
-          <ActionIcon
-            onClick={() => setShowSettings((old) => !old)}
-            variant={showSettings ? 'filled' : 'default'}
-          >
-            <SettingsIcon />
-          </ActionIcon>
-        </Tooltip>
+        <Group>
+          <Tooltip label={'Settings'}>
+            <ActionIcon
+              onClick={() => setShowSettings((old) => !old)}
+              variant={showSettings ? 'filled' : 'default'}
+            >
+              <SettingsIcon />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label={'Delete browser'}>
+            <ActionIcon onClick={deleteBrowser} color={'red'} variant={'light'}>
+              <CloseIcon />
+            </ActionIcon>
+          </Tooltip>
+        </Group>
       </Group>
       {showSettings ? <Settings id={browserId} /> : <AddedImagesList id={browserId} />}
     </>
