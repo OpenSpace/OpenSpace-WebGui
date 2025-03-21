@@ -127,6 +127,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
                 text={
                   'Remove this scene graph node (and all its child nodes) from the scene'
                 }
+                uri={uri}
               />
             )}
           </>

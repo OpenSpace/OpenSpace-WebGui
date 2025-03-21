@@ -35,7 +35,9 @@ export function PropertyOwner({ uri, expandedOnDefault = false }: Props) {
       title={
         <Group gap={'xs'}>
           {displayName(propertyOwner)}
-          {propertyOwner.description && <InfoBox text={propertyOwner.description} />}
+          {propertyOwner.description && (
+            <InfoBox text={propertyOwner.description} uri={uri} />
+          )}
         </Group>
       }
       leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}

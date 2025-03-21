@@ -1,33 +1,47 @@
 import { useState } from 'react';
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { ActionIcon, Code, Group, Popover } from '@mantine/core';
 
 import { InformationIcon } from '@/icons/icons';
 
+import { CopyToClipboardButton } from '../CopyToClipboardButton/CopyToClipboardButton';
+
 interface Props {
   text: React.ReactNode;
+  uri?: string;
   w?: number;
 }
 
-export function InfoBox({ text, w = 220 }: Props) {
+export function InfoBox({ text, uri, w = 220 }: Props) {
   const [opened, setOpened] = useState(false);
 
   return (
-    <Tooltip
-      label={text}
-      multiline
-      maw={w}
-      offset={{ mainAxis: 5, crossAxis: 100 }}
+    <Popover
       opened={opened}
-      transitionProps={{ duration: 0, enterDelay: 0 }}
+      onDismiss={() => setOpened(false)}
+      position={"top"}
+      withArrow
+      offset={{ mainAxis: 5, crossAxis: 100 }}
     >
-      <ActionIcon
-        radius={'xl'}
-        size={'xs'}
-        aria-label={"More information"}
-        onClick={() => setOpened(!opened)}
-      >
-        <InformationIcon />
-      </ActionIcon>
-    </Tooltip>
+      <Popover.Target>
+        <ActionIcon
+          radius={'xl'}
+          size={'xs'}
+          aria-label={'More information'}
+          onClick={() => setOpened(!opened)}
+        >
+          <InformationIcon />
+        </ActionIcon>
+      </Popover.Target>
+
+      <Popover.Dropdown maw={w}>
+        {text}
+        {uri && (
+          <Group pt={'sm'}>
+            <Code>Copy URI:</Code>
+            <CopyToClipboardButton value={uri} />
+          </Group>
+        )}
+      </Popover.Dropdown>
+    </Popover>
   );
 }

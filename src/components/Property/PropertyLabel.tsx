@@ -32,7 +32,7 @@ export function PropertyLabel({ uri, readOnly }: PropertyProps) {
           </Tooltip>
         )}
       </InputLabel>
-      {description && <InfoBox text={description} />}
+      {description && <InfoBox text={description} uri={uri} />}
     </Group>
   );
 }
