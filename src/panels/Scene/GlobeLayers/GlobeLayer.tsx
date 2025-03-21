@@ -33,7 +33,7 @@ export function GlobeLayer({ uri }: Props) {
       leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
       rightSection={
         <Group wrap={'nowrap'}>
-          <InfoBox text={propertyOwner.description || 'No information'} />
+          <InfoBox text={propertyOwner.description || 'No information'} uri={uri} />
         </Group>
       }
       noTransition

@@ -55,6 +55,7 @@ export function ActionsButton({ uri, action: _action, height }: Props) {
                   )}
                 </Stack>
               }
+              uri={uri}
             />
           )}
           {isLocal && (

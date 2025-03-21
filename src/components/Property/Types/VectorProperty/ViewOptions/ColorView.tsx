@@ -1,13 +1,25 @@
 import { Flex, RGBA } from '@mantine/core';
 
 import { ColorPicker } from '@/components/ColorPicker/ColorPicker';
-import { VectorPropertyProps } from '@/components/Property/Types/VectorProperty/VectorProperty';
+import { AdditionalDataVectorMatrix } from '@/components/Property/types';
 
-import { ValueList } from './DefaultValueList';
+import { DefaultView } from './DefaultView';
 
-export function ColorVector(props: VectorPropertyProps) {
-  const { disabled, setPropertyValue, value, isInt } = props;
+interface Props {
+  setPropertyValue: (value: number[]) => void;
+  value: number[];
+  additionalData: AdditionalDataVectorMatrix;
+  readOnly: boolean;
+  isInt: boolean;
+}
 
+export function ColorView({
+  readOnly,
+  setPropertyValue,
+  value,
+  additionalData,
+  isInt
+}: Props) {
   if ((value.length !== 3 && value.length !== 4) || isInt) {
     throw Error('Invalid use of Color view option!');
   }
@@ -15,9 +27,14 @@ export function ColorVector(props: VectorPropertyProps) {
 
   return (
     <Flex gap={'xs'} align={'center'}>
-      <ValueList {...props} />
+      <DefaultView
+        disabled={readOnly}
+        setPropertyValue={setPropertyValue}
+        value={value}
+        additionalData={additionalData}
+      />
       <ColorPicker
-        disabled={disabled}
+        disabled={readOnly}
         withAlpha={hasAlpha}
         color={{
           r: Math.round(255 * value[0]),
