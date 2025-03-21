@@ -1,6 +1,9 @@
 import { Select } from '@mantine/core';
+import {
+  useGetOptionPropertyValue,
+  useGetPropertyDescription
+} from 'src/hooks/properties';
 
-import { useGetOptionPropertyValue, useGetPropertyDescription } from '@/api/hooks';
 import { AdditionalDataOptions, PropertyProps } from '@/components/Property/types';
 
 export function OptionProperty({ uri, readOnly }: PropertyProps) {

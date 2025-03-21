@@ -1,6 +1,6 @@
 import { Group, NumberFormatter, RangeSlider, Stack } from '@mantine/core';
+import { usePropListeningState } from 'src/hooks/util';
 
-import { usePropListeningState } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useSliderScale } from '@/components/Property/SliderUtil/hooks';
 import { SliderMinMaxLabels } from '@/components/Property/SliderUtil/SliderMinMaxLabels';

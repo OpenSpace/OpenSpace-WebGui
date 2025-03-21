@@ -1,6 +1,6 @@
 import { Checkbox, Group } from '@mantine/core';
+import { useGetBoolPropertyValue, useGetPropertyDescription } from 'src/hooks/properties';
 
-import { useGetBoolPropertyValue, useGetPropertyDescription } from '@/api/hooks';
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
 import { PropertyProps } from '@/components/Property/types';
 

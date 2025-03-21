@@ -1,10 +1,10 @@
 import { Flex, Group, NumberFormatter, Paper, Text } from '@mantine/core';
-
 import {
   useGetGenericNumericPropertyValue,
-  useGetPropertyDescription,
-  usePropListeningState
-} from '@/api/hooks';
+  useGetPropertyDescription
+} from 'src/hooks/properties';
+import { usePropListeningState } from 'src/hooks/util';
+
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { AdditionalDataNumber, PropertyProps } from '@/components/Property/types';
 

@@ -1,6 +1,9 @@
 import { Grid } from '@mantine/core';
+import {
+  useGetGenericMatrixPropertyValue,
+  useGetPropertyDescription
+} from 'src/hooks/properties';
 
-import { useGetGenericMatrixPropertyValue, useGetPropertyDescription } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { AdditionalDataVectorMatrix, PropertyProps } from '@/components/Property/types';
 

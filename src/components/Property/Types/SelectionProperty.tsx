@@ -1,10 +1,9 @@
 import { MultiSelect } from '@mantine/core';
-
 import {
   useGetPropertyDescription,
-  useGetSelectionPropertyValue,
-  usePropListeningState
-} from '@/api/hooks';
+  useGetSelectionPropertyValue} from 'src/hooks/properties';
+import { usePropListeningState } from 'src/hooks/util';
+
 import { AdditionalDataSelection, PropertyProps } from '@/components/Property/types';
 
 export function SelectionProperty({ uri, readOnly }: PropertyProps) {

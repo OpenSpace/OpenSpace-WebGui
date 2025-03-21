@@ -1,4 +1,8 @@
-import { useGetGenericVectorPropertyValue, useGetPropertyDescription } from '@/api/hooks';
+import {
+  useGetGenericVectorPropertyValue,
+  useGetPropertyDescription
+} from 'src/hooks/properties';
+
 import {
   AdditionalDataVectorMatrix,
   PropertyProps,
