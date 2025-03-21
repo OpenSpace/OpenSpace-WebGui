@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
-import { useGetBoolPropertyValue } from '@/api/hooks';
+import { useBoolProperty } from '@/hooks/properties';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   setMenuItemEnabled,
@@ -10,8 +10,8 @@ import {
 export function useMenuItems() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);
   const hasMission = useAppSelector((state) => state.missions.isInitialized);
-  const [isExoplanetsEnabled] = useGetBoolPropertyValue('Modules.Exoplanets.Enabled');
-  const [isSkyBrowserEnabled] = useGetBoolPropertyValue('Modules.SkyBrowser.Enabled');
+  const [isExoplanetsEnabled] = useBoolProperty('Modules.Exoplanets.Enabled');
+  const [isSkyBrowserEnabled] = useBoolProperty('Modules.SkyBrowser.Enabled');
 
   const filteredMenuItems = menuItems.filter((item) => item.visible);
 

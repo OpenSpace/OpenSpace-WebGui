@@ -1,13 +1,9 @@
 import {
-  useGetGenericVectorPropertyValue,
-  useGetPropertyDescription
-} from 'src/hooks/properties';
-
-import {
   AdditionalDataVectorMatrix,
   PropertyProps,
   ViewOptionsVector
 } from '@/components/Property/types';
+import { useGenericVectorProperty, usePropertyDescription } from '@/hooks/properties';
 
 import { ColorView } from './ViewOptions/ColorView';
 import { DefaultView } from './ViewOptions/DefaultView';
@@ -18,8 +14,8 @@ interface Props extends PropertyProps {
 }
 
 export function VectorProperty({ uri, isInt = false, readOnly }: Props) {
-  const [value, setPropertyValue] = useGetGenericVectorPropertyValue(uri);
-  const description = useGetPropertyDescription(uri);
+  const [value, setPropertyValue] = useGenericVectorProperty(uri);
+  const description = usePropertyDescription(uri);
 
   if (!description || !value) {
     return <></>;

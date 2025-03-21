@@ -13,7 +13,8 @@
       "@/redux/*": ["./src/redux/*"],
       "@/types/*": ["./src/types/*"],
       "@/util/*": ["./src/util/*"],
-      "@/windowmanagement/*": ["./src/windowmanagement/*"]
+      "@/windowmanagement/*": ["./src/windowmanagement/*"],
+      "@/hooks/*": ["./src/hooks/*"]
     },
 
     /* Bundler mode */

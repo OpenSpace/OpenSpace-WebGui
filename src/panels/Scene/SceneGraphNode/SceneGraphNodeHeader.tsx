@@ -1,9 +1,9 @@
 import { Button, Group, Text } from '@mantine/core';
 
-import { useGetPropertyOwner } from '@/api/hooks';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
+import { useGetPropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';

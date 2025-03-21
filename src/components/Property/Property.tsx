@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Stack } from '@mantine/core';
 
-import { useGetPropertyDescription } from '@/api/hooks';
+import { usePropertyDescription } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
 
@@ -83,7 +83,7 @@ export const Property = memo(({ uri }: Props) => {
   const propertyType = useAppSelector(
     (state) => state.properties.properties[uri]?.description.type
   );
-  const readOnly = useGetPropertyDescription(uri)?.metaData.isReadOnly;
+  const readOnly = usePropertyDescription(uri)?.metaData.isReadOnly;
 
   if (!propertyType || readOnly === undefined) {
     return <></>;

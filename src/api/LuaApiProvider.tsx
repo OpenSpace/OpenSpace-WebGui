@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
-import { useIsConnectionStatus } from 'src/hooks/util';
 
 import { api } from '@/api/api';
+import { useIsConnectionStatus } from '@/hooks/util';
 import { closeConnection } from '@/redux/connection/connectionMiddleware';
 import { startConnection } from '@/redux/connection/connectionSlice';
 import { updateCustomGroupOrdering } from '@/redux/groups/groupsSlice';

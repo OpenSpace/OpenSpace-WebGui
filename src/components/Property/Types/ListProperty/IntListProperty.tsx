@@ -1,9 +1,9 @@
-import { useGetIntListPropertyValue } from '@/api/hooks';
 import { Pills } from '@/components/Pills/Pills';
 import { PropertyProps } from '@/components/Property/types';
+import { useIntListProperty } from '@/hooks/properties';
 
 export function IntListProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setValue] = useGetIntListPropertyValue(uri);
+  const [value, setValue] = useIntListProperty(uri);
 
   if (value === undefined) {
     return <></>;

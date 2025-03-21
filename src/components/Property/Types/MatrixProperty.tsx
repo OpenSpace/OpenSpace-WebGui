@@ -1,15 +1,12 @@
 import { Grid } from '@mantine/core';
-import {
-  useGetGenericMatrixPropertyValue,
-  useGetPropertyDescription
-} from 'src/hooks/properties';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { AdditionalDataVectorMatrix, PropertyProps } from '@/components/Property/types';
+import { useGenericMatrixProperty, usePropertyDescription } from '@/hooks/properties';
 
 export function MatrixProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setPropertyValue] = useGetGenericMatrixPropertyValue(uri);
-  const description = useGetPropertyDescription(uri);
+  const [value, setPropertyValue] = useGenericMatrixProperty(uri);
+  const description = usePropertyDescription(uri);
 
   if (!description || !value) {
     return <></>;

@@ -1,12 +1,10 @@
 import { Button, Divider, Group, Kbd, Paper, Text, Title } from '@mantine/core';
 
-import {
-  useGetStringPropertyValue,
-  useOpenSpaceApi,
-  useSubscribeToEngineMode
-} from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { useStringProperty } from '@/hooks/properties';
+import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { CancelIcon, FocusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
@@ -28,8 +26,8 @@ export function FocusView({ favorites, searchableNodes, matcherFunction }: Props
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const engineMode = useSubscribeToEngineMode();
 
-  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
-  const [aim] = useGetStringPropertyValue(NavigationAimKey);
+  const [anchor] = useStringProperty(NavigationAnchorKey);
+  const [aim] = useStringProperty(NavigationAimKey);
 
   const luaApi = useOpenSpaceApi();
 

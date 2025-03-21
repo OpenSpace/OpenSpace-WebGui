@@ -1,15 +1,15 @@
 import { Chip, Group, Stack, Text } from '@mantine/core';
 
-import { useGetBoolPropertyValue } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { useBoolProperty } from '@/hooks/properties';
 import { KeybindButtons } from '@/panels/KeybindsPanel/KeybindButtons';
 import { useAppSelector } from '@/redux/hooks';
 import { RollFrictionKey, RotationalFrictionKey, ZoomFrictionKey } from '@/util/keys';
 
 export function FrictionMenu() {
-  const [rotation, setRotation] = useGetBoolPropertyValue(RotationalFrictionKey);
-  const [zoom, setZoom] = useGetBoolPropertyValue(ZoomFrictionKey);
-  const [roll, setRoll] = useGetBoolPropertyValue(RollFrictionKey);
+  const [rotation, setRotation] = useBoolProperty(RotationalFrictionKey);
+  const [zoom, setZoom] = useBoolProperty(ZoomFrictionKey);
+  const [roll, setRoll] = useBoolProperty(RollFrictionKey);
 
   const keybinds = useAppSelector((state) => state.actions.keybinds);
 

@@ -1,6 +1,6 @@
 import { Tree } from '@mantine/core';
 
-import { useGetStringPropertyValue } from '@/api/hooks';
+import { useStringProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
 import { hasInterestingTag, sgnUri } from '@/util/propertyTreeHelpers';
@@ -19,8 +19,8 @@ import { SceneTreeNodeData } from './types';
 export function FeaturedSceneTree() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
 
-  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
-  const [aim] = useGetStringPropertyValue(NavigationAimKey);
+  const [anchor] = useStringProperty(NavigationAnchorKey);
+  const [aim] = useStringProperty(NavigationAimKey);
 
   const featuredTreeData: SceneTreeNodeData[] = [];
 

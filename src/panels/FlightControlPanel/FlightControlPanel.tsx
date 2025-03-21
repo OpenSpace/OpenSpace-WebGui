@@ -11,8 +11,8 @@ import {
   Title
 } from '@mantine/core';
 
-import { useGetBoolPropertyValue } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { useBoolProperty } from '@/hooks/properties';
 import {
   setFlightControllerEnabled,
   setFlightControllerInputScaleFactor
@@ -29,13 +29,13 @@ export function FlightControlPanel() {
   );
 
   const [rotationFrictionProperty, setRotationFrictionProperty] =
-    useGetBoolPropertyValue(RotationalFrictionKey) ?? false;
+    useBoolProperty(RotationalFrictionKey) ?? false;
 
   const [zoomFrictionProperty, setZoomFrictionProperty] =
-    useGetBoolPropertyValue(ZoomFrictionKey) ?? false;
+    useBoolProperty(ZoomFrictionKey) ?? false;
 
   const [rollFrictionProperty, setRollFrictionProperty] =
-    useGetBoolPropertyValue(RollFrictionKey) ?? false;
+    useBoolProperty(RollFrictionKey) ?? false;
 
   useEffect(() => {
     return () => {

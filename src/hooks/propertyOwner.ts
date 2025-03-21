@@ -1,18 +1,18 @@
 import { shallowEqual } from '@mantine/hooks';
 
 import { useAppSelector } from '@/redux/hooks';
-import { PropertyOwner,Uri } from '@/types/types';
+import { PropertyOwner, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
 import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelpers';
 
-import { useGetOptionPropertyValue } from './properties';
+import { useOptionProperty } from './properties';
 
 export function useGetPropertyOwner(uri: Uri): PropertyOwner | undefined {
   return useAppSelector((state) => state.propertyOwners.propertyOwners[uri]);
 }
 
 export const useHasVisibleChildren = (propertyOwnerUri: Uri): boolean => {
-  const [visiblityLevelSetting] = useGetOptionPropertyValue(EnginePropertyVisibilityKey);
+  const [visiblityLevelSetting] = useOptionProperty(EnginePropertyVisibilityKey);
 
   return useAppSelector((state) => {
     return hasVisibleChildren(
@@ -29,7 +29,7 @@ export const useHasVisibleChildren = (propertyOwnerUri: Uri): boolean => {
  * current visiblitity level setting. Also subscribe to changes for the visiblity level.
  */
 export const useGetVisibleProperties = (propertyOwner: PropertyOwner | undefined) => {
-  const [visiblityLevelSetting] = useGetOptionPropertyValue(EnginePropertyVisibilityKey);
+  const [visiblityLevelSetting] = useOptionProperty(EnginePropertyVisibilityKey);
 
   // @TODO (emmbr, 2024-12-03) Would be nicer if we didn't have to do the filtering as
   // part of the selector, but instead just get the state.properties.properties object

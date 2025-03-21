@@ -1,8 +1,8 @@
 import { Box, Tabs, Text, Tooltip } from '@mantine/core';
 
-import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
+import { useGetPropertyOwner, useGetVisibleProperties } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { TransformType } from '@/types/enums';
 import { Uri } from '@/types/types';

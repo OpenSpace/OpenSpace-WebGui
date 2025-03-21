@@ -1,7 +1,7 @@
 import { Box } from '@mantine/core';
 
-import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { Property } from '@/components/Property/Property';
+import { useGetPropertyOwner, useGetVisibleProperties } from '@/hooks/propertyOwner';
 import { GlobeLayersPropertyOwner } from '@/panels/Scene/GlobeLayers/GlobeLayersPropertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';

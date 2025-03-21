@@ -14,7 +14,8 @@ export default defineConfig({
       '@/redux': '/src/redux',
       '@/types': '/src/types',
       '@/util': '/src/util',
-      '@/windowmanagement': '/src/windowmanagement'
+      '@/windowmanagement': '/src/windowmanagement',
+      '@/hooks': '/src/hooks'
     }
   },
   server: {

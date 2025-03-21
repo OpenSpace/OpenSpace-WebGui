@@ -1,10 +1,10 @@
 import { Group, NumberFormatter, RangeSlider, Stack } from '@mantine/core';
-import { usePropListeningState } from 'src/hooks/util';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useSliderScale } from '@/components/Property/SliderUtil/hooks';
 import { SliderMinMaxLabels } from '@/components/Property/SliderUtil/SliderMinMaxLabels';
 import { AdditionalDataVectorMatrix } from '@/components/Property/types';
+import { usePropListeningState } from '@/hooks/util';
 
 interface Props {
   disabled: boolean;

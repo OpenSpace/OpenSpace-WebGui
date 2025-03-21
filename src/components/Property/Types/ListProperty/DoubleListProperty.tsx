@@ -1,9 +1,9 @@
-import { useGetDoubleListPropertyValue } from '@/api/hooks';
 import { Pills } from '@/components/Pills/Pills';
 import { PropertyProps } from '@/components/Property/types';
+import { useDoubleListProperty } from '@/hooks/properties';
 
 export function DoubleListProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setValue] = useGetDoubleListPropertyValue(uri);
+  const [value, setValue] = useDoubleListProperty(uri);
 
   if (value === undefined) {
     return <></>;

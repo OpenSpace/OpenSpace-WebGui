@@ -10,7 +10,7 @@ import {
   zoomTransform
 } from 'd3';
 
-import { useSubscribeToTime } from '@/api/hooks';
+import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { ZoomInIcon, ZoomOutIcon, ZoomOutMapIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';

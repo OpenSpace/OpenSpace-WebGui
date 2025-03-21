@@ -1,6 +1,7 @@
 import { Group, Text } from '@mantine/core';
 
-import { useGetPropertyOwner, useSubscribeToCameraPath } from '@/api/hooks';
+import { useGetPropertyOwner } from '@/hooks/propertyOwner';
+import { useSubscribeToCameraPath } from '@/hooks/topicSubscriptions';
 import { AirplaneIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { sgnUri } from '@/util/propertyTreeHelpers';

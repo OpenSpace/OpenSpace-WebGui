@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { ActionIcon, Box, Button, Divider, Group, Text, TextInput } from '@mantine/core';
 
-import { useGetPropertyOwner, useOpenSpaceApi } from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { useGetPropertyOwner } from '@/hooks/propertyOwner';
 import { AddPhotoIcon, MinusIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { Identifier, Uri } from '@/types/types';

@@ -1,8 +1,8 @@
 import { Badge, Box, Card, Group, Text } from '@mantine/core';
 
-import { useGetPropertyOwner } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { Property } from '@/components/Property/Property';
+import { useGetPropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { Identifier, Uri } from '@/types/types';
 import { displayName, isPropertyOwnerActive } from '@/util/propertyTreeHelpers';

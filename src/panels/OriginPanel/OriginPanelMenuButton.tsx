@@ -1,10 +1,8 @@
 import { Group } from '@mantine/core';
 
-import {
-  useGetPropertyOwner,
-  useGetStringPropertyValue,
-  useSubscribeToEngineMode
-} from '@/api/hooks';
+import { useStringProperty } from '@/hooks/properties';
+import { useGetPropertyOwner } from '@/hooks/propertyOwner';
+import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { EngineMode } from '@/types/enums';
 import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
 
@@ -18,8 +16,8 @@ interface OriginPanelMenuButtonProps {
 }
 
 export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
-  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
-  const [aim] = useGetStringPropertyValue(NavigationAimKey);
+  const [anchor] = useStringProperty(NavigationAnchorKey);
+  const [aim] = useStringProperty(NavigationAimKey);
   const anchorName = useGetPropertyOwner(`${ScenePrefixKey}${anchor}`)?.name ?? anchor;
   const aimName = useGetPropertyOwner(`${ScenePrefixKey}${aim}`)?.name ?? aim;
   const engineMode = useSubscribeToEngineMode();

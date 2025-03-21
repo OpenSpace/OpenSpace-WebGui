@@ -1,11 +1,8 @@
 import React, { useCallback } from 'react';
 import { BoxData, PanelData, TabData } from 'rc-dock';
 
-import {
-  useGetBoolPropertyValue,
-  useGetFloatPropertyValue,
-  useOpenSpaceApi
-} from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
+import { useBoolProperty, useFloatProperty } from '@/hooks/properties';
 import { Uri } from '@/types/types';
 import {
   checkVisiblity,
@@ -72,10 +69,10 @@ export function useOpenCurrentSceneNodeWindow() {
 export function usePropertyOwnerVisibility(uri: Uri) {
   const luaApi = useOpenSpaceApi();
 
-  const [enabledPropertyValue, setEnabledProperty] = useGetBoolPropertyValue(
+  const [enabledPropertyValue, setEnabledProperty] = useBoolProperty(
     enabledPropertyUri(uri)
   );
-  const [fadePropertyValue] = useGetFloatPropertyValue(fadePropertyUri(uri));
+  const [fadePropertyValue] = useFloatProperty(fadePropertyUri(uri));
   const isFadeable = fadePropertyValue !== undefined;
 
   const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);

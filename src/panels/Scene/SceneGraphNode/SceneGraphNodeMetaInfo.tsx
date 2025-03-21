@@ -11,8 +11,9 @@ import {
   Title
 } from '@mantine/core';
 
-import { useGetPropertyOwner, useGetStringPropertyValue } from '@/api/hooks';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
+import { useStringProperty } from '@/hooks/properties';
+import { useGetPropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
 import { identifierFromUri } from '@/util/propertyTreeHelpers';
@@ -23,9 +24,9 @@ interface Props {
 
 export function SceneGraphNodeMetaInfo({ uri }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
-  const [guiPath] = useGetStringPropertyValue(`${uri}.GuiPath`);
+  const [guiPath] = useStringProperty(`${uri}.GuiPath`);
 
-  const [description] = useGetStringPropertyValue(`${uri}.GuiDescription`);
+  const [description] = useStringProperty(`${uri}.GuiDescription`);
   if (description) {
     description.replace(/\\n/g, '').replace(/<br>/g, '');
   }

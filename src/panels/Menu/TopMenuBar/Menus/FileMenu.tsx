@@ -1,7 +1,8 @@
 import { Kbd, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
-import { useGetBoolPropertyValue, useOpenSpaceApi } from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
+import { useBoolProperty } from '@/hooks/properties';
 import { AddFileIcon, ConsoleIcon, ExitAppIcon } from '@/icons/icons';
 
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
@@ -9,8 +10,7 @@ import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 export function FileMenu() {
   const luaApi = useOpenSpaceApi();
 
-  const [isConsoleVisible, setIsConsoleVisible] =
-    useGetBoolPropertyValue('LuaConsole.IsVisible');
+  const [isConsoleVisible, setIsConsoleVisible] = useBoolProperty('LuaConsole.IsVisible');
 
   function toggleLuaConsole() {
     setIsConsoleVisible(!isConsoleVisible);

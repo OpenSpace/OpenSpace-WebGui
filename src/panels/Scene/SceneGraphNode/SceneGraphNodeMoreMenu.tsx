@@ -1,13 +1,11 @@
 import { ActionIcon, Button, Divider, Group, Menu, Stack, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
-import {
-  useGetPropertyOwner,
-  useGetStringPropertyValue,
-  useOpenSpaceApi
-} from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
+import { useStringProperty } from '@/hooks/properties';
+import { useGetPropertyOwner } from '@/hooks/propertyOwner';
 import { DeleteIcon, OpenInNewIcon, VerticalDotsIcon } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
@@ -23,7 +21,7 @@ interface Props {
 
 export function SceneGraphNodeMoreMenu({ uri }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
-  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
+  const [anchor] = useStringProperty(NavigationAnchorKey);
   const luaApi = useOpenSpaceApi();
 
   const { addWindow } = useWindowLayoutProvider();

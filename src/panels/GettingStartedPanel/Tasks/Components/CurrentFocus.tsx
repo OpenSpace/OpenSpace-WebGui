@@ -1,10 +1,10 @@
 import { Text } from '@mantine/core';
 
-import { useGetStringPropertyValue } from '@/api/hooks';
+import { useStringProperty } from '@/hooks/properties';
 import { NavigationAnchorKey } from '@/util/keys';
 
 export function CurrentFocus() {
-  const [currentAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
+  const [currentAnchor] = useStringProperty(NavigationAnchorKey);
 
   return <Text>Current focus: {currentAnchor ? currentAnchor : 'None'}</Text>;
 }
