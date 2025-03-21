@@ -8,14 +8,14 @@ export default defineConfig({
     alias: {
       '@/api': '/src/api',
       '@/components': '/src/components',
+      '@/hooks': '/src/hooks',
       '@/icons': '/src/icons',
       '@/panels': '/src/panels',
       '@/public': '/public',
       '@/redux': '/src/redux',
       '@/types': '/src/types',
       '@/util': '/src/util',
-      '@/windowmanagement': '/src/windowmanagement',
-      '@/hooks': '/src/hooks'
+      '@/windowmanagement': '/src/windowmanagement'
     }
   },
   server: {
