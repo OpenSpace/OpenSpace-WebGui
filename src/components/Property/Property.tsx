@@ -75,7 +75,11 @@ function renderProperty(type: string, uri: string, readOnly: boolean): React.JSX
   }
 }
 
-export const Property = memo(({ uri }: PropertyProps) => {
+interface Props {
+  uri: string;
+}
+
+export const Property = memo(({ uri }: Props) => {
   const propertyType = useAppSelector(
     (state) => state.properties.properties[uri]?.description.type
   );
