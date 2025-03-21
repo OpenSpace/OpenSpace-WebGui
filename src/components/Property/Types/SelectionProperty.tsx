@@ -5,11 +5,7 @@ import {
   useGetSelectionPropertyValue,
   usePropListeningState
 } from '@/api/hooks';
-import { PropertyProps } from '@/components/Property/types';
-
-export interface AdditionalDataSelection {
-  Options: string[];
-}
+import { AdditionalDataSelection, PropertyProps } from '@/components/Property/types';
 
 export function SelectionProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue] = useGetSelectionPropertyValue(uri);

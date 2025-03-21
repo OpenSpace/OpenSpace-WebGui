@@ -1,8 +1,10 @@
 import { Property } from '@/components/Property/Property';
-import { AdditionalDataVectorMatrix } from '@/components/Property/types';
-import { AdditionalDataNumber } from '@/components/Property/Types/NumericProperty/NumericProperty';
-import { AdditionalDataOptions } from '@/components/Property/Types/OptionProperty';
-import { AdditionalDataSelection } from '@/components/Property/Types/SelectionProperty';
+import {
+  AdditionalDataNumber,
+  AdditionalDataOptions,
+  AdditionalDataSelection,
+  AdditionalDataVectorMatrix
+} from '@/components/Property/types';
 
 import { PropertyVisibilityNumber } from './enums';
 

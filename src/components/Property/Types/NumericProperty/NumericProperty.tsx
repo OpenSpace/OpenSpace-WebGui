@@ -3,21 +3,13 @@ import { Flex, Group, NumberFormatter, Paper, Text } from '@mantine/core';
 import {
   useGetGenericNumericPropertyValue,
   useGetPropertyDescription,
-  useProperty,
   usePropListeningState
 } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-import { PropertyProps } from '@/components/Property/types';
+import { AdditionalDataNumber, PropertyProps } from '@/components/Property/types';
 
 import { NumericPropertySlider } from './Slider/NumericPropertySlider';
 import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from './util';
-
-export interface AdditionalDataNumber {
-  Exponent: number;
-  MaximumValue: number;
-  MinimumValue: number;
-  SteppingValue: number;
-}
 
 interface Props extends PropertyProps {
   isInt?: boolean;
