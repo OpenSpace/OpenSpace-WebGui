@@ -5,6 +5,7 @@ import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { refreshGroups } from '@/redux/groups/groupsSliceMiddleware';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import {
+  AdditionalData,
   Identifier,
   Properties,
   Property,
@@ -94,7 +95,7 @@ type OpenSpacePropertyOwner = {
 
 type OpenSpaceProperty = {
   Description: {
-    AdditionalData: object;
+    AdditionalData: AdditionalData;
     Identifier: Identifier;
     MetaData: PropertyMetaData;
     Name: string;

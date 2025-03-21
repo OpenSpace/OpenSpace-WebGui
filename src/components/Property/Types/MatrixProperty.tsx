@@ -1,32 +1,34 @@
 import { Grid } from '@mantine/core';
 
+import { useGetPropertyDescription, useProperty } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
+import { AdditionalDataVectorMatrix, PropertyProps } from '@/components/Property/types';
 
-import { ConcretePropertyBaseProps } from '../types';
+const matrixTypes = [
+  'Mat2Property',
+  'Mat3Property',
+  'Mat4Property',
+  'DMat2Property',
+  'DMat3Property',
+  'DMat4Property'
+];
 
-interface Props extends ConcretePropertyBaseProps {
-  setPropertyValue: (newValue: number[]) => void;
-  value: number[];
-  additionalData: {
-    Exponent: number; // TODO: handle the exponent
-    MaximumValue: number[];
-    MinimumValue: number[];
-    SteppingValue: number[];
-  };
-}
+export function MatrixProperty({ uri, readOnly }: PropertyProps) {
+  const [value, setPropertyValue] = useProperty<number[]>(uri, matrixTypes);
+  const description = useGetPropertyDescription(uri);
 
-export function MatrixProperty({
-  disabled,
-  setPropertyValue,
-  value,
-  additionalData
-}: Props) {
-  const min = additionalData.MinimumValue;
-  const max = additionalData.MaximumValue;
-  const step = additionalData.SteppingValue;
+  if (!description || !value) {
+    return <></>;
+  }
+
+  const additionalData = description.additionalData as AdditionalDataVectorMatrix;
+  const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
   const matrixSize = Math.sqrt(value.length);
 
   function setValue(index: number, newValue: number) {
+    if (!value) {
+      return;
+    }
     const v = [...value];
     v[index] = newValue;
     setPropertyValue(v);
@@ -42,7 +44,7 @@ export function MatrixProperty({
             max={max[i]}
             step={step[i]}
             onEnter={(newValue) => setValue(i, newValue)}
-            disabled={disabled}
+            disabled={readOnly}
           />
         </Grid.Col>
       ))}
