@@ -4,7 +4,7 @@ import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { Uri } from '@/types/types';
-import { isRenderable, isTransform } from '@/util/propertyTreeHelpers';
+import { isRenderable, isSgnTransform } from '@/util/propertyTreeHelpers';
 
 import { SceneGraphNodeHeader } from './SceneGraphNodeHeader';
 import { SceneGraphNodeMetaInfo } from './SceneGraphNodeMetaInfo';
@@ -40,7 +40,7 @@ export function SceneGraphNodeView({ uri }: Props) {
   const renderable = propertyOwner.subowners.find((uri) => isRenderable(uri));
 
   // Group the transforms under one tab
-  const transforms = propertyOwner.subowners.filter((uri) => isTransform(uri)).sort();
+  const transforms = propertyOwner.subowners.filter((uri) => isSgnTransform(uri));
 
   const hasRenderable = renderable !== undefined;
 

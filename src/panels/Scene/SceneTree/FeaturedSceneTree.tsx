@@ -47,23 +47,12 @@ export function FeaturedSceneTree() {
     <>
       <Tree
         data={featuredTreeData}
-        renderNode={({
-          node,
-          expanded,
-          elementProps,
-          tree,
-          level,
-          hasChildren,
-          selected
-        }) => (
+        renderNode={({ node, expanded, elementProps, tree }) => (
           <SceneTreeNode
             node={node}
             expanded={expanded}
             elementProps={elementProps}
             tree={tree}
-            level={level}
-            hasChildren={hasChildren}
-            selected={selected}
           />
         )}
       />

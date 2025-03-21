@@ -51,6 +51,11 @@ export function SceneTreeNodeContent({ node, expanded }: Props) {
   );
 }
 
+type SceneTreeNodeProps = Pick<
+  RenderTreeNodePayload,
+  'node' | 'expanded' | 'elementProps' | 'tree'
+>;
+
 // This component adds the neccessary props for Mantine tree nodes, which includes styling
 // (indentation at each tree level) and event handling
 export function SceneTreeNode({
@@ -58,7 +63,7 @@ export function SceneTreeNode({
   expanded,
   elementProps,
   tree
-}: RenderTreeNodePayload) {
+}: SceneTreeNodeProps) {
   const { openCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
   const dispatch = useAppDispatch();
 

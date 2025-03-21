@@ -108,9 +108,12 @@ export function isRenderable(uri: Uri): boolean {
   return uri.endsWith('.Renderable');
 }
 
-export function isTransform(uri: Uri): boolean {
+export function isSgnTransform(uri: Uri): boolean {
+  const isThirdLevel = (uri.match(/\./g) || []).length == 2;
   return (
-    uri.endsWith(ScaleKey) || uri.endsWith(TranslationKey) || uri.endsWith(RotationKey)
+    (isThirdLevel && uri.endsWith(ScaleKey)) ||
+    uri.endsWith(TranslationKey) ||
+    uri.endsWith(RotationKey)
   );
 }
 

@@ -16,13 +16,7 @@ export function AddedCustomNodes({ addedNodes, removeFocusNode }: Props) {
   ) : (
     <>
       {addedNodes.map((identifier) => (
-        <Group
-          key={identifier}
-          maw={'100%'}
-          wrap={'nowrap'}
-          grow
-          preventGrowOverflow={false}
-        >
+        <Group key={identifier} wrap={'nowrap'} grow preventGrowOverflow={false}>
           <ActionIcon
             variant={'light'}
             size={'sm'}

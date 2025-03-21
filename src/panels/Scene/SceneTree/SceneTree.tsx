@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
   ActionIcon,
   Box,
@@ -8,6 +8,7 @@ import {
   Tree,
   useTree
 } from '@mantine/core';
+import { useSetState } from '@mantine/hooks';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
@@ -24,7 +25,7 @@ import { SceneTreeGroupPrefixKey } from './treeUtils';
 import { SceneTreeFilterSettings, SceneTreeNodeData } from './types';
 
 export function SceneTree() {
-  const [filter, setFilter] = useState<SceneTreeFilterSettings>({
+  const [filter, setFilter] = useSetState<SceneTreeFilterSettings>({
     showOnlyVisible: false,
     showHiddenNodes: false,
     tags: []
@@ -43,7 +44,7 @@ export function SceneTree() {
 
   const dispatch = useAppDispatch();
 
-  // This will run after each render to update the expanded state in redux
+  // When the expanded nodes in the tree updates, also update the expanded state in redux
   useEffect(() => {
     return () => {
       // Convert the map to a list of strings with keys of the

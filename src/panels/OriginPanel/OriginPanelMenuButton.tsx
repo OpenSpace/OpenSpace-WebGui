@@ -19,8 +19,7 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
 
   const engineMode = useSubscribeToEngineMode();
 
-  const hasDistinctAim =
-    aimNode !== undefined && aimNode.identifier !== anchorNode?.identifier;
+  const hasDistinctAim = aimNode && aimNode.identifier !== anchorNode?.identifier;
 
   const isReady = anchorNode !== undefined;
 

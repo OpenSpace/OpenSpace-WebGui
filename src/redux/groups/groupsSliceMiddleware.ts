@@ -1,10 +1,10 @@
 import { createAction } from '@reduxjs/toolkit';
 
+import { computeGroups } from '@/redux/groups/util';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { addUriToPropertyTree } from '@/redux/propertytree/propertyTreeMiddleware';
 import { RootState } from '@/redux/store';
 import { PropertyOwners } from '@/types/types';
-import { computeGroups } from '@/util/groupsHelpers';
 
 import { setGroups, setTags } from './groupsSlice';
 
