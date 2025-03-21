@@ -43,8 +43,17 @@ export function NumericInput({
   } = usePropListeningState<number | undefined>(value);
 
   const shouldClamp = props.clampBehavior === 'strict';
-  const shouldClampMin = shouldClamp && min !== undefined;
-  const shouldClampMax = shouldClamp && max !== undefined;
+
+  const hasMin = min !== undefined;
+  const hasMax = max !== undefined;
+  const hasValue = storedValue !== undefined;
+
+  const shouldClampMin = shouldClamp && hasMin;
+  const shouldClampMax = shouldClamp && hasMax;
+
+  const isBelowMin = hasValue && hasMin && storedValue < min;
+  const isAboveMax = hasValue && hasMax && storedValue > max;
+  const isOutsideRange = isBelowMin || isAboveMax;
 
   // We only want to reset the value on blur if the user didn't hit ENTER.
   // This ref keeps track of that
@@ -126,6 +135,7 @@ export function NumericInput({
           />
         )
       }
+      error={isOutsideRange ? `Value outside range [${min}, ${max}]` : undefined}
       {...props}
       // TODO: Provide error on invalid input
     />
