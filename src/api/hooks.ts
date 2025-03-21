@@ -202,6 +202,44 @@ export const useGetIntListPropertyValue = (uri: Uri) =>
 export const useGetStringListPropertyValue = (uri: Uri) =>
   useProperty<string[]>(uri, 'StringListProperty');
 
+export const useGetGenericVectorPropertyValue = (uri: Uri) =>
+  useProperty<number[]>(uri, [
+    'Vec2Property',
+    'Vec3Property',
+    'Vec4Property',
+    'DVec2Property',
+    'DVec3Property',
+    'DVec4Property',
+    'IVec2Property',
+    'IVec3Property',
+    'IVec4Property',
+    'UVec2Property',
+    'UVec3Property',
+    'UVec4Property'
+  ]);
+
+export const useGetGenericMatrixPropertyValue = (uri: Uri) =>
+  useProperty<number[]>(uri, [
+    'Mat2Property',
+    'Mat3Property',
+    'Mat4Property',
+    'DMat2Property',
+    'DMat3Property',
+    'DMat4Property'
+  ]);
+
+export const useGetGenericNumericPropertyValue = (uri: Uri) =>
+  useProperty<number>(uri, [
+    'FloatProperty',
+    'DoubleProperty',
+    'ShortProperty',
+    'UShortProperty',
+    'LongProperty',
+    'ULongProperty',
+    'IntProperty',
+    'UIntProperty'
+  ]);
+
 export const useSubscribeToTime = () => {
   const now = useAppSelector((state) => state.time.timeCapped);
   const dispatch = useAppDispatch();

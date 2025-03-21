@@ -1,6 +1,7 @@
 import { Flex, Group, NumberFormatter, Paper, Text } from '@mantine/core';
 
 import {
+  useGetGenericNumericPropertyValue,
   useGetPropertyDescription,
   useProperty,
   usePropListeningState
@@ -10,17 +11,6 @@ import { PropertyProps } from '@/components/Property/types';
 
 import { NumericPropertySlider } from './Slider/NumericPropertySlider';
 import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from './util';
-
-const propertyTypes = [
-  'FloatProperty',
-  'DoubleProperty',
-  'ShortProperty',
-  'UShortProperty',
-  'LongProperty',
-  'ULongProperty',
-  'IntProperty',
-  'UIntProperty'
-];
 
 export interface AdditionalDataNumber {
   Exponent: number;
@@ -34,7 +24,7 @@ interface Props extends PropertyProps {
 }
 
 export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
-  const [value, setPropertyValue] = useProperty<number>(uri, propertyTypes);
+  const [value, setPropertyValue] = useGetGenericNumericPropertyValue(uri);
 
   const { value: currentValue, setValue: setCurrentValue } = usePropListeningState<
     number | undefined

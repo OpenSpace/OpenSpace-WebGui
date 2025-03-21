@@ -1,24 +1,9 @@
-import { useGetPropertyDescription, useProperty } from '@/api/hooks';
+import { useGetGenericVectorPropertyValue, useGetPropertyDescription } from '@/api/hooks';
 import { AdditionalDataVectorMatrix, PropertyProps } from '@/components/Property/types';
 
 import { ColorView } from './ViewOptions/ColorView';
 import { DefaultView } from './ViewOptions/DefaultView';
 import { MinMaxRangeView } from './ViewOptions/MinMaxRange';
-
-const vectorPropertyTypes = [
-  'Vec2Property',
-  'Vec3Property',
-  'Vec4Property',
-  'DVec2Property',
-  'DVec3Property',
-  'DVec4Property',
-  'IVec2Property',
-  'IVec3Property',
-  'IVec4Property',
-  'UVec2Property',
-  'UVec3Property',
-  'UVec4Property'
-];
 
 interface Props extends PropertyProps {
   isInt?: boolean;
@@ -30,7 +15,7 @@ type ViewOptions = {
 };
 
 export function VectorProperty({ uri, isInt = false, readOnly }: Props) {
-  const [value, setPropertyValue] = useProperty<number[]>(uri, vectorPropertyTypes);
+  const [value, setPropertyValue] = useGetGenericVectorPropertyValue(uri);
   const description = useGetPropertyDescription(uri);
 
   if (!description || !value) {
