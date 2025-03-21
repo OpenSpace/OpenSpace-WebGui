@@ -2,7 +2,7 @@ import { Box, Group } from '@mantine/core';
 
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { usePropertyOwner, useHasVisibleChildren } from '@/hooks/propertyOwner';
+import { useHasVisibleChildren, usePropertyOwner } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
 

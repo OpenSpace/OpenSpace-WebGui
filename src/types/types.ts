@@ -1,10 +1,5 @@
 import { Property } from '@/components/Property/Property';
-import {
-  AdditionalDataNumber,
-  AdditionalDataOptions,
-  AdditionalDataSelection,
-  AdditionalDataVectorMatrix
-} from '@/components/Property/types';
+import { AdditionalData } from '@/components/Property/types';
 
 import { PropertyVisibilityNumber } from './enums';
 
@@ -46,12 +41,6 @@ export interface PropertyMetaData {
   isReadOnly: boolean;
   needsConfirmation: boolean;
 }
-
-export type AdditionalData =
-  | AdditionalDataNumber
-  | AdditionalDataVectorMatrix
-  | AdditionalDataOptions
-  | AdditionalDataSelection;
 
 export interface PropertyDetails {
   additionalData: AdditionalData;
