@@ -1,11 +1,11 @@
-import { Button, Group, Text } from '@mantine/core';
+import { Button, Group, MantineStyleProps, Text } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { FocusIcon } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Identifier, PropertyOwner } from '@/types/types';
 
-interface FocusEntryProps {
+interface Props extends MantineStyleProps {
   entry: PropertyOwner;
   onSelect: (
     identifier: Identifier,
@@ -21,22 +21,21 @@ export function FocusEntry({
   onSelect,
   showFrameButton,
   isActive,
-  disableFocus
-}: FocusEntryProps) {
-  const buttonVariant = isActive ? 'filled' : 'light';
-
+  disableFocus,
+  ...styleProps
+}: Props) {
   function onSelectEntry(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     onSelect(entry.identifier, { shiftKey: event.shiftKey, ctrlKey: event.ctrlKey });
   }
 
   return (
-    <Group justify={'space-between'} gap={'xs'} w={'100%'}>
+    <Group justify={'space-between'} gap={'xs'} w={'100%'} {...styleProps}>
       <Button
         onClick={onSelectEntry}
         justify={'left'}
         flex={1}
         leftSection={<FocusIcon size={IconSize.sm} />}
-        variant={buttonVariant}
+        variant={isActive ? 'filled' : 'default'}
         disabled={disableFocus}
         miw={70}
       >
@@ -47,22 +46,19 @@ export function FocusEntry({
         {showFrameButton && (
           <NodeNavigationButton
             type={NavigationType.Frame}
-            variant={buttonVariant}
             identifier={entry.identifier}
-            size={'lg'}
+            size={'input-sm'}
           />
         )}
         <NodeNavigationButton
           type={NavigationType.Fly}
           identifier={entry.identifier}
-          variant={buttonVariant}
-          size={'lg'}
+          size={'input-sm'}
         />
         <NodeNavigationButton
           type={NavigationType.Jump}
           identifier={entry.identifier}
-          variant={buttonVariant}
-          size={'lg'}
+          size={'input-sm'}
         />
       </Group>
     </Group>
