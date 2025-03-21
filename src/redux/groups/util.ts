@@ -1,6 +1,6 @@
 import { Group, Groups, Properties, PropertyOwners } from '@/types/types';
 
-import { getGuiPath, isSceneGraphNode } from './propertyTreeHelpers';
+import { getGuiPath, isSceneGraphNode } from '../../util/propertyTreeHelpers';
 
 function emptyGroup(): Group {
   return { subgroups: [], propertyOwners: [] };

@@ -44,7 +44,7 @@ export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
       <Text
         ta={'left'}
         style={{ textWrap: 'pretty', overflowWrap: 'anywhere', wordBreak: 'break-word' }}
-        lineClamp={1}
+        lineClamp={3}
       >
         {name}
       </Text>
