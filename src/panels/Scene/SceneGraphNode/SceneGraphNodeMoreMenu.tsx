@@ -55,7 +55,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
         <Stack>
           <Text>Are you sure you want to remove the scene graph node:</Text>
           <Text fw={500} size={'lg'}>
-            {propertyOwner?.name}?
+            {propertyOwner?.name}
           </Text>
           <Text mt={'xs'}>
             This action is irreversible and will also remove all nodes in the scene tree

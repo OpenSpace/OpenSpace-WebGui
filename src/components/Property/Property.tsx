@@ -1,19 +1,23 @@
 import { memo } from 'react';
-import { Box } from '@mantine/core';
+import { Stack } from '@mantine/core';
 
-import { useSubscribeToProperty } from '@/api/hooks';
-import { useAppSelector } from '@/redux/hooks';
+import { useGetProperty, useSubscribeToProperty } from '@/api/hooks';
 import { Uri } from '@/types/types';
 
-import { ListProperty } from './/Types/ListProperty';
 import { BoolProperty } from './Types/BoolProperty';
+import { FloatListProperty } from './Types/ListProperty/FloatListProperty';
+import { IntListProperty } from './Types/ListProperty/IntListProperty';
+import { StringListProperty } from './Types/ListProperty/StringListProperty';
 import { MatrixProperty } from './Types/MatrixProperty';
-import { NumericProperty } from './Types/NumericProperty';
+import { IntNumericProperty } from './Types/NumericProperty/IntNumericProperty';
+import { NumericProperty } from './Types/NumericProperty/NumericProperty';
 import { OptionProperty } from './Types/OptionProperty';
 import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';
 import { TriggerProperty } from './Types/TriggerProperty';
+import { IntVectorProperty } from './Types/VectorProperty/IntVectorProperty';
 import { VectorProperty } from './Types/VectorProperty/VectorProperty';
+import { PropertyLabel } from './PropertyLabel';
 
 // (2024-10-21, emmbr) I don't know how to efficiently get rid of "any" in this case
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,12 +27,9 @@ const concreteProperties: { [key: string]: any } = {
   TriggerProperty,
   StringProperty,
 
-  // TODO: The numerical lists have to be fixed, still. There is no DoubleListProperty
-  // in use anywhere, and the only IntListProperty I could find did not work in the existing
-  // UI
-  // DoubleListProperty: ListProperty,
-  // IntListProperty: ListProperty,
-  StringListProperty: ListProperty,
+  DoubleListProperty: FloatListProperty,
+  IntListProperty,
+  StringListProperty,
 
   SelectionProperty,
 
@@ -36,8 +37,8 @@ const concreteProperties: { [key: string]: any } = {
   DoubleProperty: NumericProperty,
   LongProperty: NumericProperty,
   ULongProperty: NumericProperty,
-  IntProperty: NumericProperty,
-  UIntProperty: NumericProperty,
+  IntProperty: IntNumericProperty,
+  UIntProperty: IntNumericProperty,
   ShortProperty: NumericProperty,
   UShortProperty: NumericProperty,
 
@@ -45,13 +46,13 @@ const concreteProperties: { [key: string]: any } = {
   Vec3Property: VectorProperty,
   Vec4Property: VectorProperty,
 
-  IVec2Property: VectorProperty,
-  IVec3Property: VectorProperty,
-  IVec4Property: VectorProperty,
+  IVec2Property: IntVectorProperty,
+  IVec3Property: IntVectorProperty,
+  IVec4Property: IntVectorProperty,
 
-  UVec2Property: VectorProperty,
-  UVec3Property: VectorProperty,
-  UVec4Property: VectorProperty,
+  UVec2Property: IntVectorProperty,
+  UVec3Property: IntVectorProperty,
+  UVec4Property: IntVectorProperty,
 
   DVec2Property: VectorProperty,
   DVec3Property: VectorProperty,
@@ -71,32 +72,38 @@ interface Props {
 }
 
 export const Property = memo(({ uri }: Props) => {
-  const description = useAppSelector(
-    (state) => state.properties.properties[uri]?.description
-  );
-
-  const value = useAppSelector((state) => state.properties.properties[uri]?.value);
-
+  const property = useGetProperty(uri);
   const setPropertyValue = useSubscribeToProperty(uri);
 
+  const description = property?.description;
+  const value = property?.value;
+
   if (!description || value === undefined) {
-    return null;
+    return <></>;
   }
 
   const ConcreteProperty = concreteProperties[description.type];
 
   if (!ConcreteProperty) {
-    // TODO: Bring back once all types are implemented
-    // console.error('Missing property type', property.description.type);
-    return null;
+    throw Error(`Missing property type: '${property.description.type}'`);
   }
 
-  // console.log(property);
+  // In most cases we want to show the label on top of the property input, but some types
+  // have a custom label built in in the input type. Keep track of which that is
+  const hasBuiltInLabel =
+    ConcreteProperty === BoolProperty || ConcreteProperty === TriggerProperty;
 
+  // All the property types get all information, and then they may do whatever they
+  // want with it (like ignore certain parts)
   return (
-    // All the property types get all informaiton, and then they may do whatever they
-    // want with it (like ignore certain parts)
-    <Box pb={'xs'}>
+    <Stack mb={'md'} gap={5}>
+      {!hasBuiltInLabel && (
+        <PropertyLabel
+          label={description.name}
+          tip={description.description}
+          isReadOnly={description.metaData.isReadOnly}
+        />
+      )}
       <ConcreteProperty
         key={description.identifier}
         disabled={description.metaData.isReadOnly}
@@ -107,6 +114,6 @@ export const Property = memo(({ uri }: Props) => {
         viewOptions={description.metaData.ViewOptions}
         additionalData={description.additionalData}
       />
-    </Box>
+    </Stack>
   );
 });

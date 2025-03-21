@@ -1,4 +1,4 @@
-import { Group, Paper, Text } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 
 import { useGetPropertyOwner } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
@@ -38,9 +38,7 @@ export function GlobeLayer({ uri }: Props) {
       }
       noTransition
     >
-      <Paper withBorder>
-        <PropertyOwnerContent uri={uri} />
-      </Paper>
+      <PropertyOwnerContent uri={uri} />
     </Collapsable>
   );
 }

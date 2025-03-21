@@ -11,8 +11,6 @@ import {
 
 import {
   InterestingTagKey,
-  LayersSuffixKey,
-  RenderableSuffixKey,
   RotationKey,
   ScaleKey,
   ScenePrefixKey,
@@ -38,7 +36,7 @@ export function sgnIdentifierFromSubownerUri(uri: Uri): Identifier {
 }
 
 export function sgnRenderableUri(sceneGraphNodeUri: Uri): Uri {
-  return `${sceneGraphNodeUri}${RenderableSuffixKey}`;
+  return `${sceneGraphNodeUri}.Renderable`;
 }
 
 export function enabledPropertyUri(propertyOwnerUri: Uri): Uri {
@@ -107,7 +105,7 @@ export function isSceneGraphNode(uri: Uri): boolean {
 }
 
 export function isRenderable(uri: Uri): boolean {
-  return uri.endsWith(RenderableSuffixKey);
+  return uri.endsWith('.Renderable');
 }
 
 export function isTopLevelPropertyOwner(uri: Uri): boolean {
@@ -115,20 +113,31 @@ export function isTopLevelPropertyOwner(uri: Uri): boolean {
 }
 
 export function isGlobe(renderableUri: Uri, properties: Properties): boolean {
-  return (
-    renderableUri.endsWith(RenderableSuffixKey) &&
-    properties[`${renderableUri}.Type`]?.value === 'RenderableGlobe'
-  );
+  return properties[`${renderableUri}.Type`]?.value === 'RenderableGlobe';
 }
 
-export function isGlobeLayersUri(uri: Uri, properties: Properties): boolean {
-  const isLayers = uri.endsWith(LayersSuffixKey);
+export function isGlobeLayersUri(uri: Uri, properties?: Properties): boolean {
+  const isLayers = uri.endsWith('.Renderable.Layers');
   if (!isLayers) {
     return false;
   }
-  // The renderable is the parent of the Layers property owner
-  const renderableUri = uri.replace(LayersSuffixKey, '');
-  return isGlobe(renderableUri, properties);
+
+  // If we passed in properties, check if the parent renderable is a globe (beacuse we
+  // can). Otherwise, assume it is
+  if (properties) {
+    const renderableUri = removeLastWordFromUri(uri);
+    return isGlobe(renderableUri, properties);
+  }
+
+  return true;
+}
+
+export function isGlobeLayer(uri: Uri): boolean {
+  // The parent of the layer is the layer group
+  const layerGroupUri = removeLastWordFromUri(uri);
+  // The parent of the layer group should be the layers property owner
+  const layersUri = removeLastWordFromUri(layerGroupUri);
+  return isGlobeLayersUri(layersUri);
 }
 
 export function isPropertyOwnerHidden(uri: Uri, properties: Properties) {
