@@ -19,9 +19,11 @@ import {
   storeSceneTreeNodeExpanded
 } from '@/redux/local/localSlice';
 
+import { SceneEntry } from '../SceneEntry';
+
 import { useSceneTreeData } from './hooks';
 import { SceneTreeFilters } from './SceneTreeFilters';
-import { SceneEntry, SceneTreeNode } from './SceneTreeNode';
+import { SceneTreeNode } from './SceneTreeNode';
 import { SceneTreeGroupPrefixKey } from './treeUtils';
 import { SceneTreeFilterSettings, SceneTreeNodeData } from './types';
 

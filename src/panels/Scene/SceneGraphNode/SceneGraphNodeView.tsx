@@ -13,6 +13,8 @@ import { isRenderable, isSgnTransform } from '@/util/propertyTreeHelpers';
 import { SceneGraphNodeHeader } from './SceneGraphNodeHeader';
 import { SceneGraphNodeMetaInfo } from './SceneGraphNodeMetaInfo';
 
+import styles from './SceneGraphNodeView.module.css';
+
 interface Props {
   uri: Uri;
 }
@@ -56,7 +58,11 @@ export function SceneGraphNodeView({ uri }: Props) {
     <Layout>
       <Layout.FixedSection>
         <Group pt={'xs'} pb={'sm'} grow preventGrowOverflow={false}>
-          <SceneGraphNodeHeader uri={uri} />
+          {/* // The key here is necessary to make sure that the component is re-rendered when the
+        // anchor node changes, to trigger the animation */}
+          <Box key={uri} className={styles.highlight}>
+            <SceneGraphNodeHeader uri={uri} />
+          </Box>
           <CloseButton
             flex={0}
             onClick={() => dispatch(setSceneTreeSelectedNode(null))}

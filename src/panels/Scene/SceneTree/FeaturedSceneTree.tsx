@@ -1,4 +1,4 @@
-import { Box, Tree } from '@mantine/core';
+import { Tree } from '@mantine/core';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
@@ -8,11 +8,11 @@ import {
   useGetInterestingTagOwners
 } from '@/util/propertyTreeHooks';
 
-import { SceneEntry, SceneTreeNode } from './SceneTreeNode';
+import { SceneEntry } from '../SceneEntry';
+
+import { SceneTreeNode } from './SceneTreeNode';
 import { SceneTreeGroupPrefixKey, treeDataForSceneGraphNode } from './treeUtils';
 import { SceneTreeNodeData } from './types';
-
-import styles from './FeaturedSceneTree.module.css';
 /**
  * This component displays the current focus and aim of the camera, as well as the list of
  * nodes marked as interesting.
@@ -54,28 +54,20 @@ export function FeaturedSceneTree() {
   return (
     <>
       {anchorNode && (
-        // The key here is necessary to make sure that the component is re-rendered when the
-        // anchor node changes, to trigger the animation
-        <Box key={anchorNode.uri} className={styles.highlight}>
-          <SceneEntry
-            node={anchorData!}
-            isCurrentNode={anchorData!.value === currentlySelectedNode}
-            onClick={() => setCurrentlySelectedNode(anchorData!.value)}
-            expanded={false}
-          />
-        </Box>
+        <SceneEntry
+          node={anchorData!}
+          isCurrentNode={anchorData!.value === currentlySelectedNode}
+          onClick={() => setCurrentlySelectedNode(anchorData!.value)}
+          expanded={false}
+        />
       )}
       {aimNode && (
-        // The key here is necessary to make sure that the component is re-rendered when the
-        // anchor node changes, to trigger the animation
-        <Box key={`${aimNode.uri}aim`} className={styles.highlight}>
-          <SceneEntry
-            node={aimData!}
-            isCurrentNode={aimData!.value === currentlySelectedNode}
-            onClick={() => setCurrentlySelectedNode(aimData!.value)}
-            expanded={false}
-          />
-        </Box>
+        <SceneEntry
+          node={aimData!}
+          isCurrentNode={aimData!.value === currentlySelectedNode}
+          onClick={() => setCurrentlySelectedNode(aimData!.value)}
+          expanded={false}
+        />
       )}
       <Tree
         data={featuredTreeData}
