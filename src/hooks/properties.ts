@@ -129,8 +129,6 @@ export const useStringListProperty = (uri: Uri) =>
 // Generic properties
 /**
  * IMPORTANT: This should not be used other than in the generic property component!!
- * @param uri 
- * @returns 
  */
 export const useGenericVectorProperty = (uri: Uri) =>
   useProperty<number[]>(uri, [
@@ -150,8 +148,6 @@ export const useGenericVectorProperty = (uri: Uri) =>
 
 /**
  * IMPORTANT: This should not be used other than in the generic property component!!
- * @param uri 
- * @returns 
  */
 export const useGenericMatrixProperty = (uri: Uri) =>
   useProperty<number[]>(uri, [
@@ -165,8 +161,6 @@ export const useGenericMatrixProperty = (uri: Uri) =>
 
 /**
  * IMPORTANT: This should not be used other than in the generic property component!!
- * @param uri 
- * @returns 
  */
 export const useGenericNumericProperty = (uri: Uri) =>
   useProperty<number>(uri, [
