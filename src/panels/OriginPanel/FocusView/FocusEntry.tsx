@@ -22,14 +22,14 @@ export function FocusEntry({
   showFrameButton,
   isActive,
   disableFocus,
-  ...props
+  ...styleProps
 }: Props) {
   function onSelectEntry(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     onSelect(entry.identifier, { shiftKey: event.shiftKey, ctrlKey: event.ctrlKey });
   }
 
   return (
-    <Group justify={'space-between'} gap={'xs'} w={'100%'} {...props}>
+    <Group justify={'space-between'} gap={'xs'} w={'100%'} {...styleProps}>
       <Button
         onClick={onSelectEntry}
         justify={'left'}

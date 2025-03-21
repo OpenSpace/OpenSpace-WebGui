@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import {
   Checkbox,
-  Chip,
   Container,
   Group,
   List,
@@ -11,31 +10,20 @@ import {
   Title
 } from '@mantine/core';
 
-import { useGetBoolPropertyValue } from '@/api/hooks';
+import { FrictionControls } from '@/components/FrictionControls/FrictionControls';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import {
   setFlightControllerEnabled,
   setFlightControllerInputScaleFactor
 } from '@/redux/flightcontroller/flightControllerSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { RollFrictionKey, RotationalFrictionKey, ZoomFrictionKey } from '@/util/keys';
 
 export function FlightControlPanel() {
-  const dispatch = useAppDispatch();
-
   const isControllerEnabled = useAppSelector((state) => state.flightController.isEnabled);
   const mouseScaleFactor = useAppSelector(
     (state) => state.flightController.inputScaleFactor
   );
-
-  const [rotationFrictionProperty, setRotationFrictionProperty] =
-    useGetBoolPropertyValue(RotationalFrictionKey) ?? false;
-
-  const [zoomFrictionProperty, setZoomFrictionProperty] =
-    useGetBoolPropertyValue(ZoomFrictionKey) ?? false;
-
-  const [rollFrictionProperty, setRollFrictionProperty] =
-    useGetBoolPropertyValue(RollFrictionKey) ?? false;
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     return () => {
@@ -43,20 +31,8 @@ export function FlightControlPanel() {
     };
   }, [dispatch]);
 
-  function toggleEnabled() {
+  function toggleFlightController() {
     dispatch(setFlightControllerEnabled(!isControllerEnabled));
-  }
-
-  function toggleRotation() {
-    setRotationFrictionProperty(!rotationFrictionProperty);
-  }
-
-  function toggleZoom() {
-    setZoomFrictionProperty(!zoomFrictionProperty);
-  }
-
-  function toggleRoll() {
-    setRollFrictionProperty(!rollFrictionProperty);
   }
 
   const InfoBoxContent = (
@@ -87,35 +63,13 @@ export function FlightControlPanel() {
           label={'Toggle flight control'}
           defaultChecked={isControllerEnabled}
           checked={isControllerEnabled}
-          onChange={toggleEnabled}
+          onChange={toggleFlightController}
         />
         <InfoBox text={InfoBoxContent} />
       </Group>
       <Title order={3}>Settings</Title>
       <Text>Friction control</Text>
-      <Group gap={2} preventGrowOverflow={false} mb={'xs'}>
-        <Chip
-          onClick={toggleRotation}
-          checked={rotationFrictionProperty}
-          disabled={!isControllerEnabled}
-        >
-          Rotation
-        </Chip>
-        <Chip
-          onClick={toggleZoom}
-          checked={zoomFrictionProperty}
-          disabled={!isControllerEnabled}
-        >
-          Zoom
-        </Chip>
-        <Chip
-          onClick={toggleRoll}
-          checked={rollFrictionProperty}
-          disabled={!isControllerEnabled}
-        >
-          Roll
-        </Chip>
-      </Group>
+      <FrictionControls size={'sm'} gap={'xs'} align={'start'} />
       <Group justify={'space-between'} align={'start'} wrap={'nowrap'}>
         <Text>Input sensitivity</Text>
         <InfoBox text={'Controls how sensitive the touch and mouse inputs are'} />

@@ -25,10 +25,10 @@ export function AnchorAimListEntry({
   isCurrentAim,
   onSelectAnchor,
   onSelectAim,
-  ...props
+  ...styleProps
 }: Props) {
   return (
-    <Group gap={'xs'} key={node.identifier} {...props}>
+    <Group gap={'xs'} key={node.identifier} {...styleProps}>
       <Text flex={1} truncate pl={'xs'}>
         {node.name}
       </Text>

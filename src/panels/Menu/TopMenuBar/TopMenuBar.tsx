@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction } from 'react';
 import { alpha, Box, Flex, Group } from '@mantine/core';
 
+import { FrictionControls } from '@/components/FrictionControls/FrictionControls';
+
 import { FileMenu } from './Menus/FileMenu';
-import { FrictionMenu } from './Menus/FrictionMenu';
 import { HelpMenu } from './Menus/HelpMenu';
 import { ViewMenu } from './Menus/ViewMenu';
 import { WindowsMenu } from './Menus/WindowsMenu';
@@ -39,7 +40,7 @@ export function TopMenuBar({ visibleMenuItems, setVisibleMenuItems }: TopMenuBar
       </Group>
 
       <Box flex={'0 0 auto'}>
-        <FrictionMenu />
+        <FrictionControls size={'xs'} gap={2} mr={'xs'} />
       </Box>
     </Flex>
   );
