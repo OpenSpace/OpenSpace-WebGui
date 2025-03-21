@@ -16,7 +16,6 @@ import { StringProperty } from './Types/StringProperty';
 import { TriggerProperty } from './Types/TriggerProperty';
 import { VectorProperty } from './Types/VectorProperty/VectorProperty';
 import { PropertyLabel } from './PropertyLabel';
-import { PropertyProps } from './types';
 
 // The readOnly prop sent to each component are meant to enforce each
 // Property component to have to handle the readOnly state. This can
