@@ -4,7 +4,7 @@ import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { Property } from '@/components/Property/Property';
 import { ChevronRightIcon, SaveIcon, TaskBarIcon, VisibilityIcon } from '@/icons/icons';
 import { useAppDispatch } from '@/redux/hooks';
-import { setMenuItemsOrder } from '@/redux/local/localSlice';
+import { setMenuItemsOrder, setMenuItemVisible } from '@/redux/local/localSlice';
 import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
@@ -12,7 +12,7 @@ import { useMenuItems } from '../../hooks';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function ViewMenu() {
-  const { menuItems, setMenuItemVisible } = useMenuItems();
+  const { menuItems } = useMenuItems();
 
   const dispatch = useAppDispatch();
 
@@ -51,7 +51,14 @@ export function ViewMenu() {
                     {item.renderIcon?.(IconSize.xs)}
                   </Group>
                 }
-                onClick={() => setMenuItemVisible(itemConfig.id, !itemConfig.visible)}
+                onClick={() =>
+                  dispatch(
+                    setMenuItemVisible({
+                      id: itemConfig.id,
+                      visible: !itemConfig.visible
+                    })
+                  )
+                }
               >
                 {item.title}
               </Menu.Item>
