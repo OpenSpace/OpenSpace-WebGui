@@ -1,4 +1,4 @@
-import { CheckboxIndicator, Group, Menu } from '@mantine/core';
+import { CheckboxIndicator, Group, Menu, Radio, Stack } from '@mantine/core';
 
 import { useGetOptionPropertyValue, useGetPropertyDescription } from '@/api/hooks';
 import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
@@ -23,7 +23,6 @@ export function ViewMenu() {
   if (!description) {
     return <></>;
   }
-
   const { Options: data } = description.additionalData as AdditionalDataOptions;
 
   // Get the name of the option, e.g. "Option 1"
@@ -31,17 +30,17 @@ export function ViewMenu() {
   // @TODO (ylvse 2025-03-18): Change the property format
   const options = data.map((option) => Object.values(option)).flat();
 
-  function onChange(option: string | null) {
-    if (option && options.indexOf(option) !== -1) {
+  function onChange(option: string) {
+    const index = options.indexOf(option);
+    if (index !== -1) {
       // Now we need to find the number key of the option
       // which is the same as its index in the optionsStrings array
-      const index = options.indexOf(option);
-      setPropertyVisibility(index);
+      setPropertyVisibility(index + 1);
     }
   }
 
   return (
-    <TopBarMenuWrapper targetTitle={'View'}>
+    <TopBarMenuWrapper targetTitle={'View'} withinPortal={false}>
       <TopBarMenuWrapper
         targetTitle={
           <Menu.Item
@@ -100,19 +99,18 @@ export function ViewMenu() {
         closeOnItemClick={false}
       >
         <Menu.Label>Set visibility level for user</Menu.Label>
-        {options.map((option, i) => (
-          <Menu.Item
-            key={option}
-            leftSection={
-              <Group>
-                <CheckboxIndicator checked={i === propertyVisibility} />
-              </Group>
-            }
-            onClick={() => onChange(option)}
-          >
-            {option}
-          </Menu.Item>
-        ))}
+        <Radio.Group
+          value={
+            propertyVisibility !== undefined ? options[propertyVisibility - 1] : null
+          }
+          onChange={onChange}
+        >
+          <Stack gap={'xs'} m={'xs'}>
+            {options.map((option) => (
+              <Radio key={option} aria-label={option} label={option} value={option} />
+            ))}
+          </Stack>
+        </Radio.Group>
       </TopBarMenuWrapper>
     </TopBarMenuWrapper>
   );
