@@ -1,46 +1,25 @@
 import { Flex, Group, NumberFormatter, Paper, Text } from '@mantine/core';
 
-import {
-  useGetPropertyDescription,
-  useProperty,
-  usePropListeningState
-} from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-import { PropertyProps } from '@/components/Property/types';
+import { AdditionalDataNumber, PropertyProps } from '@/components/Property/types';
+import { useGenericNumericProperty, usePropertyDescription } from '@/hooks/properties';
+import { usePropListeningState } from '@/hooks/util';
 
 import { NumericPropertySlider } from './Slider/NumericPropertySlider';
 import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from './util';
-
-const propertyTypes = [
-  'FloatProperty',
-  'DoubleProperty',
-  'ShortProperty',
-  'UShortProperty',
-  'LongProperty',
-  'ULongProperty',
-  'IntProperty',
-  'UIntProperty'
-];
-
-export interface AdditionalDataNumber {
-  Exponent: number;
-  MaximumValue: number;
-  MinimumValue: number;
-  SteppingValue: number;
-}
 
 interface Props extends PropertyProps {
   isInt?: boolean;
 }
 
 export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
-  const [value, setPropertyValue] = useProperty<number>(uri, propertyTypes);
+  const [value, setPropertyValue] = useGenericNumericProperty(uri);
 
   const { value: currentValue, setValue: setCurrentValue } = usePropListeningState<
     number | undefined
   >(value);
 
-  const description = useGetPropertyDescription(uri);
+  const description = usePropertyDescription(uri);
 
   if (!description || currentValue === undefined || value === undefined) {
     return <></>;

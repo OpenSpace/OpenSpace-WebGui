@@ -8,7 +8,7 @@ interface Props {
   w?: number;
 }
 
-export function InfoBox({ text, w = 220 }: Props) {
+export function InfoBox({ text, w = 320 }: Props) {
   const [opened, setOpened] = useState(false);
 
   return (
@@ -23,7 +23,7 @@ export function InfoBox({ text, w = 220 }: Props) {
       <ActionIcon
         radius={'xl'}
         size={'xs'}
-        aria-label={"More information"}
+        aria-label={'More information'}
         onClick={() => setOpened(!opened)}
       >
         <InformationIcon />

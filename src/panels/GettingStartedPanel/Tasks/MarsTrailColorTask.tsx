@@ -1,10 +1,10 @@
-import { useGetVec3PropertyValue } from '@/api/hooks';
+import { useVec3Property } from '@/hooks/properties';
 
 import { TaskCheckbox } from './Components/TaskCheckbox';
 import { useTrackChange } from './hooks';
 
 export function MarsTrailColorTask() {
-  const [color] = useGetVec3PropertyValue('Scene.MarsTrail.Renderable.Appearance.Color');
+  const [color] = useVec3Property('Scene.MarsTrail.Renderable.Appearance.Color');
 
   const taskCompleted = useTrackChange(color);
 

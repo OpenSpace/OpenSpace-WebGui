@@ -1,9 +1,9 @@
-import { useGetStringListPropertyValue } from '@/api/hooks';
 import { Pills } from '@/components/Pills/Pills';
 import { PropertyProps } from '@/components/Property/types';
+import { useStringListProperty } from '@/hooks/properties';
 
 export function StringListProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setValue] = useGetStringListPropertyValue(uri);
+  const [value, setValue] = useStringListProperty(uri);
 
   if (value === undefined) {
     return <></>;

@@ -1,8 +1,8 @@
 import { Flex } from '@mantine/core';
 
-import { usePropListeningState } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { AdditionalDataVectorMatrix } from '@/components/Property/types';
+import { usePropListeningState } from '@/hooks/util';
 
 interface Props {
   disabled: boolean;

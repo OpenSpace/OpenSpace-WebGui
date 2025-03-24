@@ -1,6 +1,6 @@
 import { Button, Group } from '@mantine/core';
 
-import { useSubscribeToTime } from '@/api/hooks';
+import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 
 import { useJumpToTime } from './hooks';
 import { Phase } from './types';
