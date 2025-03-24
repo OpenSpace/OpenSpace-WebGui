@@ -1,4 +1,4 @@
-import { useSubscribeToTime } from '@/api/hooks';
+import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 
 import { TaskCheckbox } from './Components/TaskCheckbox';
 import { useTrackChange } from './hooks';

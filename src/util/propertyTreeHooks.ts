@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 
-import { useGetStringPropertyValue } from '@/api/hooks';
+import { useStringProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
 
 import { NavigationAimKey, NavigationAnchorKey } from './keys';
 import { hasInterestingTag, sgnUri } from './propertyTreeHelpers';
 
-export function useGetInterestingTagOwners() {
+export function useInterestingTagOwners() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
 
   const sortedDefaultList = useMemo(() => {
@@ -24,16 +24,16 @@ export function useGetInterestingTagOwners() {
   return sortedDefaultList;
 }
 
-export function useGetAnchorNode() {
-  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
+export function useAnchorNode() {
+  const [anchor] = useStringProperty(NavigationAnchorKey);
   const anchorNode = useAppSelector(
     (state) => state.propertyOwners.propertyOwners[sgnUri(anchor)]
   );
   return anchorNode;
 }
 
-export function useGetAimNode() {
-  const [aim] = useGetStringPropertyValue(NavigationAimKey);
+export function useAimNode() {
+  const [aim] = useStringProperty(NavigationAimKey);
   const aimNode = useAppSelector(
     (state) => state.propertyOwners.propertyOwners[sgnUri(aim)]
   );

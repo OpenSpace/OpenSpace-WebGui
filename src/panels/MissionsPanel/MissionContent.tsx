@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Button, Checkbox, Group, Text, Title } from '@mantine/core';
 
-import { useSubscribeToTime } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
+import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 
 import { TimeLine } from './TimeLine/TimeLine';
 import { MissionPhase } from './MissionPhase';

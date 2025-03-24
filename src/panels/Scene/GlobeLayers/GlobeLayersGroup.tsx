@@ -1,8 +1,8 @@
 import { Badge, Box, Card, Group, Text } from '@mantine/core';
 
-import { useGetPropertyOwner } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { Property } from '@/components/Property/Property';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { Identifier, Uri } from '@/types/types';
 import { displayName, isPropertyOwnerActive } from '@/util/propertyTreeHelpers';
@@ -15,8 +15,8 @@ interface Props {
   icon?: React.ReactNode;
 }
 
-export function GlobeLayersGroup({ uri, globe, icon }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
+export function GlobeLayerGroup({ uri, globe, icon }: Props) {
+  const propertyOwner = usePropertyOwner(uri);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);

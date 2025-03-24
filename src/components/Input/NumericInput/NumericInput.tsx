@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { NumberInput, NumberInputProps } from '@mantine/core';
 
-import { usePropListeningState } from '@/api/hooks';
+import { usePropListeningState } from '@/hooks/util';
 
 import { NumberStepControls } from './NumberStepControls';
 

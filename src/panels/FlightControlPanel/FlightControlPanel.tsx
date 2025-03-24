@@ -23,6 +23,7 @@ export function FlightControlPanel() {
   const mouseScaleFactor = useAppSelector(
     (state) => state.flightController.inputScaleFactor
   );
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {

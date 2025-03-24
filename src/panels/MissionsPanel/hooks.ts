@@ -1,4 +1,5 @@
-import { useOpenSpaceApi, useSubscribeToTime } from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
+import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { isDateValid } from '@/redux/time/util';
 
 type ReturnType = (time: string) => void;

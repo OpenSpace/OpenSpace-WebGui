@@ -1,12 +1,11 @@
-import { useDispatch } from 'react-redux';
 import { Box, CloseButton, Group, Tabs, Text, Tooltip } from '@mantine/core';
 
-import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { Layout } from '@/components/Layout/Layout';
-import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
-import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
+import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
+import { usePropertyOwner, useVisibleProperties } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { isRenderable, isSgnTransform } from '@/util/propertyTreeHelpers';
 
@@ -14,17 +13,18 @@ import { SceneGraphNodeHeader } from './SceneGraphNodeHeader';
 import { SceneGraphNodeMetaInfo } from './SceneGraphNodeMetaInfo';
 
 import styles from './SceneGraphNodeView.module.css';
+import { useAppDispatch } from '@/redux/hooks';
 
 interface Props {
   uri: Uri;
 }
 
 export function SceneGraphNodeView({ uri }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
+  const propertyOwner = usePropertyOwner(uri);
 
   // The SGN properties that are visible under the current user level setting
-  const visibleProperties = useGetVisibleProperties(propertyOwner);
-  const dispatch = useDispatch();
+  const visibleProperties = useVisibleProperties(propertyOwner);
+  const dispatch = useAppDispatch();
 
   if (!propertyOwner) {
     return (

@@ -3,9 +3,9 @@ import { Tree } from '@mantine/core';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
 import {
-  useGetAimNode,
-  useGetAnchorNode,
-  useGetInterestingTagOwners
+  useAimNode,
+  useAnchorNode,
+  useInterestingTagOwners
 } from '@/util/propertyTreeHooks';
 
 import { SceneEntry } from '../SceneEntry';
@@ -18,9 +18,9 @@ import { SceneTreeNodeData } from './types';
  * nodes marked as interesting.
  */
 export function FeaturedSceneTree() {
-  const interestingOwners = useGetInterestingTagOwners();
-  const anchorNode = useGetAnchorNode();
-  const aimNode = useGetAimNode();
+  const interestingOwners = useInterestingTagOwners();
+  const anchorNode = useAnchorNode();
+  const aimNode = useAimNode();
 
   const currentlySelectedNode = useAppSelector(
     (state) => state.local.sceneTree.currentlySelectedNode

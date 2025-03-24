@@ -1,8 +1,8 @@
 import { MantineStyleProps, NumberFormatter, Slider, Stack } from '@mantine/core';
 
-import { usePropListeningState } from '@/api/hooks';
 import { useSliderScale } from '@/components/Property/SliderUtil/hooks';
 import { SliderMinMaxLabels } from '@/components/Property/SliderUtil/SliderMinMaxLabels';
+import { usePropListeningState } from '@/hooks/util';
 
 import { stepToDecimalPlaces } from '../util';
 

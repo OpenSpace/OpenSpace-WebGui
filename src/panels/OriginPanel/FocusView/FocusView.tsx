@@ -1,17 +1,15 @@
 import { Button, Divider, Group, Kbd, Paper, Text, Title } from '@mantine/core';
 
-import {
-  useGetStringPropertyValue,
-  useOpenSpaceApi,
-  useSubscribeToEngineMode
-} from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { useStringProperty } from '@/hooks/properties';
+import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { CancelIcon, FocusIcon } from '@/icons/icons';
 import { EngineMode, IconSize } from '@/types/enums';
 import { Identifier, PropertyOwner } from '@/types/types';
 import { NavigationAimKey } from '@/util/keys';
-import { useGetAnchorNode } from '@/util/propertyTreeHooks';
+import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { RemainingFlightTimeIndicator } from '../RemainingFlightTimeIndicator';
 
@@ -26,8 +24,8 @@ interface Props {
 export function FocusView({ favorites, searchableNodes, matcherFunction }: Props) {
   const engineMode = useSubscribeToEngineMode();
 
-  const anchorNode = useGetAnchorNode();
-  const [aim] = useGetStringPropertyValue(NavigationAimKey);
+  const anchorNode = useAnchorNode();
+  const [aim] = useStringProperty(NavigationAimKey);
 
   const luaApi = useOpenSpaceApi();
 
