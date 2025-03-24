@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Checkbox, Group, Select, Stack, Title } from '@mantine/core';
 
-import { useSubscribeToSessionRecording } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
+import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 
 import { PlaybackPauseButton } from './Playback/PlaybackPauseButton';

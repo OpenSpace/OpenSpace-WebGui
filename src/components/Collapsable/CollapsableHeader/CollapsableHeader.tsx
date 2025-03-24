@@ -4,6 +4,8 @@ import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { ChevronDownIcon, ChevronRightIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
+import classes from './CollapsableHeader.module.css';
+
 interface Props extends MantineStyleProps {
   expanded: boolean;
   title: React.ReactNode;
@@ -21,7 +23,7 @@ export function CollapsableHeader({
   ...styleProps
 }: Props) {
   return (
-    <Group wrap={'nowrap'} gap={0} {...styleProps}>
+    <Group wrap={'nowrap'} gap={0} className={classes.header} {...styleProps}>
       <ActionIcon variant={'transparent'} onClick={toggle}>
         {expanded ? (
           <ChevronDownIcon size={IconSize.xs} />
@@ -31,7 +33,7 @@ export function CollapsableHeader({
       </ActionIcon>
       <ThreePartHeader
         title={
-          <UnstyledButton onClick={toggle} tabIndex={-1}>
+          <UnstyledButton onClick={toggle} tabIndex={-1} flex={1}>
             {title}
           </UnstyledButton>
         }

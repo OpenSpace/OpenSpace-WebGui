@@ -1,34 +1,36 @@
 import { MultiSelect } from '@mantine/core';
 
-import { PropertyLabel } from '@/components/Property/PropertyLabel';
+import { AdditionalDataSelection, PropertyProps } from '@/components/Property/types';
+import { usePropertyDescription, useSelectionProperty } from '@/hooks/properties';
+import { usePropListeningState } from '@/hooks/util';
 
-interface Props {
-  name: string;
-  description: string;
-  disabled: boolean;
-  setPropertyValue: (newValue: string[]) => void;
-  additionalData: {
-    Options: string[];
-  };
-  value: string[];
-}
+export function SelectionProperty({ uri, readOnly }: PropertyProps) {
+  const [value, setValue] = useSelectionProperty(uri);
+  const { value: currentValue, setValue: setCurrentValue } = usePropListeningState<
+    string[] | undefined
+  >(value);
 
-export function SelectionProperty({
-  name,
-  description,
-  disabled,
-  setPropertyValue,
-  value,
-  additionalData
-}: Props) {
-  const options = additionalData.Options;
+  const description = usePropertyDescription(uri);
+
+  if (!value || !description || currentValue === undefined) {
+    return <></>;
+  }
+
+  const { Options: options } = description.additionalData as AdditionalDataSelection;
+
+  function handleChange(newValue: string[]) {
+    setValue(newValue);
+    setCurrentValue(newValue);
+  }
+
   return (
     <MultiSelect
-      label={<PropertyLabel label={name} tip={description} />}
-      disabled={disabled}
+      aria-label={`${description.name} multi-select`}
+      disabled={readOnly}
       data={options}
-      value={value}
-      onChange={(_value) => setPropertyValue(_value)}
+      value={currentValue}
+      onChange={handleChange}
+      placeholder={value.length === 0 ? 'No selection' : ''}
       searchable
       clearable
     />

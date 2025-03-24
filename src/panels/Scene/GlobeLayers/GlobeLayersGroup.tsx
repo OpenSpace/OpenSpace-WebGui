@@ -1,8 +1,8 @@
-import { Badge, Box, Group, Paper, Space, Text } from '@mantine/core';
+import { Badge, Box, Card, Group, Text } from '@mantine/core';
 
-import { useGetPropertyOwner } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { Property } from '@/components/Property/Property';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { Identifier, Uri } from '@/types/types';
 import { displayName, isPropertyOwnerActive } from '@/util/propertyTreeHelpers';
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export function GlobeLayerGroup({ uri, globe, icon }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
+  const propertyOwner = usePropertyOwner(uri);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);
@@ -54,13 +54,15 @@ export function GlobeLayerGroup({ uri, globe, icon }: Props) {
       }
       noTransition
     >
-      <Paper p={'xs'}>
+      <Card withBorder bg={'transparent'} mt={'xs'} p={'xs'} pl={0}>
         <LayerList layers={layers} layerGroup={propertyOwner.identifier} globe={globe} />
-        <Space h={'xs'} />
+      </Card>
+
+      <Box m={'xs'}>
         {properties.map((propertyUri) => (
           <Property key={propertyUri} uri={propertyUri} />
         ))}
-      </Paper>
+      </Box>
     </Collapsable>
   );
 }

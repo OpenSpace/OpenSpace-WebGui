@@ -1,7 +1,7 @@
 import { MantineStyleProps } from '@mantine/core';
 
-import { usePropListeningState } from '@/api/hooks';
 import { StringInput } from '@/components/Input/StringInput';
+import { usePropListeningState } from '@/hooks/util';
 
 import { StackedStepControls } from './StackedStepControls';
 

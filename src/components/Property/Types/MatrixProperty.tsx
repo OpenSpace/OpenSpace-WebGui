@@ -1,58 +1,44 @@
 import { Grid } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-import { PropertyLabel } from '@/components/Property/PropertyLabel';
+import { AdditionalDataVectorMatrix, PropertyProps } from '@/components/Property/types';
+import { useGenericMatrixProperty, usePropertyDescription } from '@/hooks/properties';
 
-interface Props {
-  name: string;
-  description: string;
-  disabled: boolean;
-  setPropertyValue: (newValue: number[]) => void;
-  value: number[];
-  additionalData: {
-    Exponent: number; // TODO: handle the exponent
-    MaximumValue: number[];
-    MinimumValue: number[];
-    SteppingValue: number[];
-  };
-}
+export function MatrixProperty({ uri, readOnly }: PropertyProps) {
+  const [value, setPropertyValue] = useGenericMatrixProperty(uri);
+  const description = usePropertyDescription(uri);
 
-export function MatrixProperty({
-  name,
-  description,
-  disabled,
-  setPropertyValue,
-  value,
-  additionalData
-}: Props) {
-  const min = additionalData.MinimumValue;
-  const max = additionalData.MaximumValue;
-  const step = additionalData.SteppingValue;
+  if (!description || !value) {
+    return <></>;
+  }
+
+  const additionalData = description.additionalData as AdditionalDataVectorMatrix;
+  const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
   const matrixSize = Math.sqrt(value.length);
 
   function setValue(index: number, newValue: number) {
+    if (!value) {
+      return;
+    }
     const v = [...value];
     v[index] = newValue;
     setPropertyValue(v);
   }
 
   return (
-    <>
-      <PropertyLabel label={name} tip={description} />
-      <Grid>
-        {value.map((v, i) => (
-          <Grid.Col key={i} span={12 / matrixSize}>
-            <NumericInput
-              value={v}
-              min={min[i]}
-              max={max[i]}
-              step={step[i]}
-              onEnter={(newValue) => setValue(i, newValue)}
-              disabled={disabled}
-            />
-          </Grid.Col>
-        ))}
-      </Grid>
-    </>
+    <Grid gutter={'xs'}>
+      {value.map((item, i) => (
+        <Grid.Col key={i} span={12 / matrixSize}>
+          <NumericInput
+            value={item}
+            min={min[i]}
+            max={max[i]}
+            step={step[i]}
+            onEnter={(newValue) => setValue(i, newValue)}
+            disabled={readOnly}
+          />
+        </Grid.Col>
+      ))}
+    </Grid>
   );
 }

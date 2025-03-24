@@ -20,7 +20,7 @@ import {
 
 import { SkyBrowserImage } from './types';
 
-export function useGetWwtImageCollection(): [boolean, SkyBrowserImage[]] {
+export function useWwtImageCollection(): [boolean, SkyBrowserImage[]] {
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
   const [isPending, startTransition] = useTransition();
 
@@ -60,7 +60,7 @@ export function useGetWwtImageCollection(): [boolean, SkyBrowserImage[]] {
   return [isPending || imageList === null, imageList ?? []];
 }
 
-export function useGetSkyBrowserData() {
+export function useSkyBrowserData() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(subscribeToSkyBrowser());

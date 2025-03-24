@@ -1,18 +1,15 @@
 import { ActionIcon, Button, Divider, Group, Menu, Stack, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
-import {
-  useGetPropertyOwner,
-  useGetStringPropertyValue,
-  useOpenSpaceApi
-} from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { DeleteIcon, OpenInNewIcon, VerticalDotsIcon } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
-import { NavigationAnchorKey } from '@/util/keys';
 import { displayName, identifierFromUri } from '@/util/propertyTreeHelpers';
+import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { SceneGraphNodeView } from './SceneGraphNodeView';
@@ -22,8 +19,8 @@ interface Props {
 }
 
 export function SceneGraphNodeMoreMenu({ uri }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
-  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
+  const propertyOwner = usePropertyOwner(uri);
+  const anchorNode = useAnchorNode();
   const luaApi = useOpenSpaceApi();
 
   const { addWindow } = useWindowLayoutProvider();
@@ -55,7 +52,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
         <Stack>
           <Text>Are you sure you want to remove the scene graph node:</Text>
           <Text fw={500} size={'lg'}>
-            {propertyOwner?.name}?
+            {propertyOwner?.name}
           </Text>
           <Text mt={'xs'}>
             This action is irreversible and will also remove all nodes in the scene tree
@@ -109,7 +106,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
         <Group>
           <Button
             size={'sm'}
-            disabled={anchor === propertyOwner.identifier}
+            disabled={anchorNode?.identifier === propertyOwner.identifier}
             onClick={onRemove}
             color={'red'}
             variant={'outline'}
@@ -118,7 +115,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
             Delete
           </Button>
           <>
-            {anchor === propertyOwner.identifier ? (
+            {anchorNode?.identifier === propertyOwner.identifier ? (
               <Text size={'sm'} c={'dimmed'} w={'100px'}>
                 Cannot delete the current focus node
               </Text>

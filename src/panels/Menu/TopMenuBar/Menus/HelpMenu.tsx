@@ -1,8 +1,8 @@
 import { Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import { useGetIntPropertyValue, useGetStringPropertyValue } from '@/api/hooks';
 import { About } from '@/components/About/About';
+import { useIntProperty, useStringProperty } from '@/hooks/properties';
 import {
   BookIcon,
   FeedbackIcon,
@@ -10,7 +10,7 @@ import {
   OpenInBrowserIcon,
   RouteIcon
 } from '@/icons/icons';
-import { GettingStartedPanel } from '@/panels/GettingStartedPanel/GettingStartedPanel';
+import { GettingStartedPanel } from '@/windowmanagement/data/LazyLoads';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
@@ -18,8 +18,8 @@ import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 export function HelpMenu() {
   const [showAbout, { open, close }] = useDisclosure(false);
 
-  const [portProperty] = useGetIntPropertyValue('Modules.WebGui.Port');
-  const [addressProperty] = useGetStringPropertyValue('Modules.WebGui.Address');
+  const [portProperty] = useIntProperty('Modules.WebGui.Port');
+  const [addressProperty] = useStringProperty('Modules.WebGui.Address');
   const { addWindow } = useWindowLayoutProvider();
 
   function openGuiInBrowser() {
