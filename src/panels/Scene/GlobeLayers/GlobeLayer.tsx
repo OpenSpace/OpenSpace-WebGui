@@ -1,21 +1,19 @@
 import { Group, Text } from '@mantine/core';
 
-import { useGetPropertyOwner } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
+import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
-
-import { usePropertyOwnerVisibility } from '../hooks';
 
 interface Props {
   uri: Uri;
 }
 
 export function GlobeLayer({ uri }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
+  const propertyOwner = usePropertyOwner(uri);
 
   const { isVisible } = usePropertyOwnerVisibility(uri);
 

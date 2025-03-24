@@ -1,12 +1,9 @@
 import { Button, Divider, Group, Kbd, Text, Title, Tooltip } from '@mantine/core';
 
-import {
-  useGetStringPropertyValue,
-  useSubscribeToEngineMode,
-  useTriggerProperty
-} from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { useStringProperty, useTriggerProperty } from '@/hooks/properties';
+import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
@@ -31,8 +28,8 @@ export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: P
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const engineMode = useSubscribeToEngineMode();
 
-  const [anchor, setAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
-  const [aim, setAim] = useGetStringPropertyValue(NavigationAimKey);
+  const [anchor, setAnchor] = useStringProperty(NavigationAnchorKey);
+  const [aim, setAim] = useStringProperty(NavigationAimKey);
   const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
   const triggerRetargetAim = useTriggerProperty(RetargetAimKey);
 
@@ -133,6 +130,7 @@ export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: P
             onSelectAnchor={onSelectAnchor}
             onSelectAim={onSelectAim}
             disabled={isInFlight}
+            mb={3}
           />
         ))}
       </FilterList.Favorites>
@@ -151,7 +149,7 @@ export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: P
         )}
         matcherFunc={matcherFunction}
       >
-        <FilterList.SearchResults.VirtualList />
+        <FilterList.SearchResults.VirtualList gap={3} />
       </FilterList.SearchResults>
     </FilterList>
   );

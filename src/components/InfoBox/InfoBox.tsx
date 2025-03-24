@@ -7,7 +7,7 @@ interface Props {
   w?: number;
 }
 
-export function InfoBox({ text, w = 220 }: Props) {
+export function InfoBox({ text, w = 320 }: Props) {
   return (
     <Tooltip label={text} multiline maw={w} offset={{ mainAxis: 5, crossAxis: 100 }}>
       <ThemeIcon radius={'xl'} size={'xs'}>

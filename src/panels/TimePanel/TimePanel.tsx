@@ -1,6 +1,7 @@
 import { Button, Divider, Group, Title } from '@mantine/core';
 
-import { useOpenSpaceApi, useSetOpenSpaceTime } from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
+import { useSetOpenSpaceTime } from '@/hooks/util';
 
 import { TimeInput } from './TimeInput/TimeInput';
 import { SimulationIncrement } from './SimulationIncrement';
