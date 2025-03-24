@@ -1,12 +1,8 @@
 import { Group } from '@mantine/core';
 
-import {
-  useGetPropertyOwner,
-  useGetStringPropertyValue,
-  useSubscribeToEngineMode
-} from '@/api/hooks';
+import { useSubscribeToEngineMode } from '@/api/hooks';
 import { EngineMode } from '@/types/enums';
-import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
+import { useGetAimNode, useGetAnchorNode } from '@/util/propertyTreeHooks';
 
 import { AnchorAimButtons } from './MenuButtons/AnchorAimButtons';
 import { CancelFlightButton } from './MenuButtons/CancelFlightButton';
@@ -18,17 +14,14 @@ interface OriginPanelMenuButtonProps {
 }
 
 export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
-  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
-  const [aim] = useGetStringPropertyValue(NavigationAimKey);
-  const anchorName = useGetPropertyOwner(`${ScenePrefixKey}${anchor}`)?.name ?? anchor;
-  const aimName = useGetPropertyOwner(`${ScenePrefixKey}${aim}`)?.name ?? aim;
+  const aimNode = useGetAimNode();
+  const anchorNode = useGetAnchorNode();
+
   const engineMode = useSubscribeToEngineMode();
 
-  function hasDistinctAim() {
-    return aim !== '' && aim !== anchor;
-  }
+  const hasDistinctAim = aimNode && aimNode.identifier !== anchorNode?.identifier;
 
-  const isReady = anchor !== '' && anchor !== undefined;
+  const isReady = anchorNode !== undefined;
 
   const isInFlight = engineMode === EngineMode.CameraPath;
 
@@ -41,14 +34,18 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
     );
   }
 
-  return hasDistinctAim() ? (
+  return hasDistinctAim ? (
     <AnchorAimButtons
-      anchorName={anchorName}
-      aimName={aimName}
+      anchorName={anchorNode?.name}
+      aimName={aimNode?.name}
       isOpenSpaceReady={isReady}
       onClick={onClick}
     />
   ) : (
-    <FocusButton anchorName={anchorName} isOpenSpaceReady={isReady} onClick={onClick} />
+    <FocusButton
+      anchorName={anchorNode?.name}
+      isOpenSpaceReady={isReady}
+      onClick={onClick}
+    />
   );
 }

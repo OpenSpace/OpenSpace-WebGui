@@ -24,7 +24,13 @@ import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware'
 import { ConnectionStatus } from '@/types/enums';
 import { Property, PropertyOwner, PropertyValue, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
-import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelpers';
+import {
+  checkVisiblity,
+  enabledPropertyUri,
+  fadePropertyUri,
+  hasVisibleChildren,
+  isPropertyVisible
+} from '@/util/propertyTreeHelpers';
 import { dateToOpenSpaceTimeString } from '@/util/time';
 
 import { LuaApiContext } from './LuaApiContext';
@@ -49,6 +55,34 @@ export const useTriggerProperty = (uri: Uri) => {
 
   return trigger;
 };
+
+export function usePropertyOwnerVisibility(uri: Uri) {
+  const luaApi = useOpenSpaceApi();
+
+  const [enabledPropertyValue, setEnabledProperty] = useGetBoolPropertyValue(
+    enabledPropertyUri(uri)
+  );
+  const [fadePropertyValue] = useGetFloatPropertyValue(fadePropertyUri(uri));
+  const isFadeable = fadePropertyValue !== undefined;
+
+  const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
+
+  function setVisiblity(shouldShow: boolean, isImmediate: boolean = false) {
+    const fadeTime = isImmediate ? 0 : undefined;
+    if (!isFadeable) {
+      setEnabledProperty(shouldShow);
+    } else if (shouldShow) {
+      luaApi?.fadeIn(uri, fadeTime);
+    } else {
+      luaApi?.fadeOut(uri, fadeTime);
+    }
+  }
+
+  return {
+    isVisible,
+    setVisiblity
+  };
+}
 
 export function useGetProperty(uri: Uri): Property | undefined {
   return useAppSelector((state) => state.properties.properties[uri]);

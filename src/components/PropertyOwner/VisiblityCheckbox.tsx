@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Checkbox } from '@mantine/core';
 
-import { usePropertyOwnerVisibility } from '@/panels/Scene/hooks';
+import { usePropertyOwnerVisibility } from '@/api/hooks';
 import { Uri } from '@/types/types';
 
 interface Props {

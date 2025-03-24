@@ -1,8 +1,7 @@
 import { Button, Group, Text } from '@mantine/core';
 
-import { useOpenSpaceApi } from '@/api/hooks';
+import { useOpenSpaceApi, usePropertyOwnerVisibility } from '@/api/hooks';
 import { SunIcon } from '@/icons/icons';
-import { usePropertyOwnerVisibility } from '@/panels/Scene/hooks';
 import { IconSize } from '@/types/enums';
 
 export function ClearSkyButton() {

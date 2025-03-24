@@ -1,19 +1,12 @@
 import { Button, Stack, Text } from '@mantine/core';
 
-import {
-  useGetPropertyOwner,
-  useGetStringPropertyValue,
-  useOpenSpaceApi
-} from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
 import { AnchorIcon, CancelIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
-import { NavigationAnchorKey } from '@/util/keys';
-import { sgnUri } from '@/util/propertyTreeHelpers';
+import { useGetAnchorNode } from '@/util/propertyTreeHooks';
 
 export function CancelFlightButton() {
-  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
-  const anchorName = useGetPropertyOwner(sgnUri(anchor))?.name ?? anchor;
-
+  const anchorNode = useGetAnchorNode();
   const luaApi = useOpenSpaceApi();
 
   function cancelFlight(): void {
@@ -31,7 +24,7 @@ export function CancelFlightButton() {
       <Stack gap={5} ta={'left'}>
         Cancel
         <Text size={'xs'} opacity={0.8} truncate maw={130}>
-          <AnchorIcon /> {anchorName}
+          <AnchorIcon /> {anchorNode?.name ?? 'No anchor'}
         </Text>
       </Stack>
     </Button>
