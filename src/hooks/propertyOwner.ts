@@ -1,5 +1,6 @@
 import { shallowEqual } from '@mantine/hooks';
 
+import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { PropertyOwner, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
@@ -12,7 +13,6 @@ import {
 } from '@/util/propertyTreeHelpers';
 
 import { useBoolProperty, useFloatProperty, useOptionProperty } from './properties';
-import { useOpenSpaceApi } from '@/api/hooks';
 
 export function usePropertyOwner(uri: Uri): PropertyOwner | undefined {
   return useAppSelector((state) => state.propertyOwners.propertyOwners[uri]);

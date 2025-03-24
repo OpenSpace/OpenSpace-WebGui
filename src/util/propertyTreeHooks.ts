@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
+import { useStringProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
 
 import { NavigationAimKey, NavigationAnchorKey } from './keys';
 import { hasInterestingTag, sgnUri } from './propertyTreeHelpers';
-import { useStringProperty } from '@/hooks/properties';
 
 export function useInterestingTagOwners() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
