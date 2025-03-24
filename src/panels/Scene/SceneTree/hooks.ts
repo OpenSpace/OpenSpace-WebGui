@@ -21,6 +21,46 @@ import {
 } from './treeUtils';
 import { SceneTreeFilterSettings, SceneTreeNodeData } from './types';
 
+// Creates a tree data structure from the groups and a list of searchable nodes
+// This is used to create the tree data for the SceneTree component
+export function useSceneTreeData(filter: SceneTreeFilterSettings) {
+  const properties = useAppSelector((state) => state.properties.properties);
+  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+  const groups = useAppSelector((state) => state.groups.groups);
+  const customGuiOrdering = useAppSelector((state) => state.groups.customGroupOrdering);
+
+  // Create the tree data from the groups
+  const sceneTreeData = useMemo(
+    () => sceneTreeDataFromGroups(groups, propertyOwners),
+    [groups, propertyOwners]
+  );
+
+  // Filter the tree data based on the filter settings
+  const filteredTreeData = useMemo(() => {
+    return filterTreeData(sceneTreeData, filter, properties, propertyOwners);
+  }, [sceneTreeData, filter, properties, propertyOwners]);
+
+  // Sort the tree data based on the custom GUI ordering
+  const sortedTreeData = useMemo(() => {
+    return sortTreeData(filteredTreeData, customGuiOrdering, properties);
+  }, [filteredTreeData, customGuiOrdering, properties]);
+
+  // Create a flat list of all leaf nodes, that we can use for searching
+  const flatTreeData = useMemo(() => {
+    const flatTreeData = flattenTreeData(filteredTreeData);
+
+    // @TODO (2025-01-13 emmbr): Would be nice to sort the results by some type of
+    // "relevance", but for now we just sort alphabetically
+    return flatTreeData.sort((a: SceneTreeNodeData, b: SceneTreeNodeData) => {
+      const nameA = a.label as string;
+      const nameB = b.label as string;
+      return nameA.toLocaleLowerCase().localeCompare(nameB.toLocaleLowerCase());
+    });
+  }, [filteredTreeData]);
+
+  return { sceneTreeData: sortedTreeData, flatTreeData };
+}
+
 /**
  * Create the data for the Scene tree from the groups information.
  */
@@ -341,44 +381,4 @@ function flattenTreeData(treeData: SceneTreeNodeData[]): SceneTreeNodeData[] {
   flatten(treeData);
 
   return flatData;
-}
-
-// Creates a tree data structure from the groups and a list of searchable nodes
-// This is used to create the tree data for the SceneTree component
-export function useSceneTreeData(filter: SceneTreeFilterSettings) {
-  const properties = useAppSelector((state) => state.properties.properties);
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-  const groups = useAppSelector((state) => state.groups.groups);
-  const customGuiOrdering = useAppSelector((state) => state.groups.customGroupOrdering);
-
-  // Create the tree data from the groups
-  const sceneTreeData = useMemo(
-    () => sceneTreeDataFromGroups(groups, propertyOwners),
-    [groups, propertyOwners]
-  );
-
-  // Filter the tree data based on the filter settings
-  const filteredTreeData = useMemo(() => {
-    return filterTreeData(sceneTreeData, filter, properties, propertyOwners);
-  }, [sceneTreeData, filter, properties, propertyOwners]);
-
-  // Sort the tree data based on the custom GUI ordering
-  const sortedTreeData = useMemo(() => {
-    return sortTreeData(filteredTreeData, customGuiOrdering, properties);
-  }, [filteredTreeData, customGuiOrdering, properties]);
-
-  // Create a flat list of all leaf nodes, that we can use for searching
-  const flatTreeData = useMemo(() => {
-    const flatTreeData = flattenTreeData(filteredTreeData);
-
-    // @TODO (2025-01-13 emmbr): Would be nice to sort the results by some type of
-    // "relevance", but for now we just sort alphabetically
-    return flatTreeData.sort((a: SceneTreeNodeData, b: SceneTreeNodeData) => {
-      const nameA = a.label as string;
-      const nameB = b.label as string;
-      return nameA.toLocaleLowerCase().localeCompare(nameB.toLocaleLowerCase());
-    });
-  }, [filteredTreeData]);
-
-  return { sceneTreeData: sortedTreeData, flatTreeData };
 }
