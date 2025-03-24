@@ -1,22 +1,11 @@
 import { Select } from '@mantine/core';
 
-import { useGetOptionPropertyValue, useGetPropertyDescription } from '@/api/hooks';
-import { PropertyProps } from '@/components/Property/types';
-
-// In OpenSpace the options are represented like so:
-// { 0: "Option 1"}, { 1: "Option 2"}
-// The key is a number but in a string format.
-interface Option {
-  [key: string]: string;
-}
-
-export interface AdditionalDataOptions {
-  Options: Option[];
-}
+import { AdditionalDataOptions, PropertyProps } from '@/components/Property/types';
+import { useOptionProperty, usePropertyDescription } from '@/hooks/properties';
 
 export function OptionProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setValue] = useGetOptionPropertyValue(uri);
-  const description = useGetPropertyDescription(uri);
+  const [value, setValue] = useOptionProperty(uri);
+  const description = usePropertyDescription(uri);
 
   if (!description || value === undefined) {
     return <></>;

@@ -1,28 +1,18 @@
 import { Grid } from '@mantine/core';
 
-import { useGetPropertyDescription, useProperty } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { AdditionalDataVectorMatrix, PropertyProps } from '@/components/Property/types';
-
-const matrixTypes = [
-  'Mat2Property',
-  'Mat3Property',
-  'Mat4Property',
-  'DMat2Property',
-  'DMat3Property',
-  'DMat4Property'
-];
+import { useGenericMatrixProperty, usePropertyDescription } from '@/hooks/properties';
 
 export function MatrixProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setPropertyValue] = useProperty<number[]>(uri, matrixTypes);
-  const description = useGetPropertyDescription(uri);
+  const [value, setPropertyValue] = useGenericMatrixProperty(uri);
+  const description = usePropertyDescription(uri);
 
   if (!description || !value) {
     return <></>;
   }
 
   const additionalData = description.additionalData as AdditionalDataVectorMatrix;
-
   const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
   const matrixSize = Math.sqrt(value.length);
 

@@ -5,12 +5,12 @@ import { useWindowEvent } from '@mantine/hooks';
 import { CollapsableHeader } from '@/components/Collapsable/CollapsableHeader/CollapsableHeader';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
-import { isGroupNode } from '@/util/sceneTreeGroupsHelper';
 
 import { useOpenCurrentSceneNodeWindow } from '../hooks';
 import { SceneGraphNodeHeader } from '../SceneGraphNode/SceneGraphNodeHeader';
 
 import { CurrentNodeView } from './CurrentNodeView';
+import { isGroupNode } from './treeUtils';
 import { SceneTreeNodeData } from './types';
 
 interface Props {
@@ -37,7 +37,14 @@ export function SceneTreeNodeContent({ node, expanded }: Props) {
     <Box
       px={'xs'}
       py={2}
-      bd={isCurrentNode ? '3px solid var(--mantine-primary-color-filled)' : 'none'}
+      style={
+        isCurrentNode
+          ? {
+              borderLeft: '3px solid var(--mantine-primary-color-filled)',
+              backgroundColor: 'var(--mantine-color-dark-7)'
+            }
+          : undefined
+      }
     >
       <SceneGraphNodeHeader
         uri={node.value}
@@ -51,6 +58,11 @@ export function SceneTreeNodeContent({ node, expanded }: Props) {
   );
 }
 
+type SceneTreeNodeProps = Pick<
+  RenderTreeNodePayload,
+  'node' | 'expanded' | 'elementProps' | 'tree'
+>;
+
 // This component adds the neccessary props for Mantine tree nodes, which includes styling
 // (indentation at each tree level) and event handling
 export function SceneTreeNode({
@@ -58,7 +70,7 @@ export function SceneTreeNode({
   expanded,
   elementProps,
   tree
-}: RenderTreeNodePayload) {
+}: SceneTreeNodeProps) {
   const { openCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
   const dispatch = useAppDispatch();
 

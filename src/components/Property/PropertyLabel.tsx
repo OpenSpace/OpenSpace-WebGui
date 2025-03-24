@@ -1,12 +1,12 @@
 import { Group, InputLabel, Text, Tooltip } from '@mantine/core';
 
-import { useGetPropertyDescription } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { usePropertyDescription } from '@/hooks/properties';
 
 import { PropertyProps } from './types';
 
 export function PropertyLabel({ uri, readOnly }: PropertyProps) {
-  const details = useGetPropertyDescription(uri);
+  const details = usePropertyDescription(uri);
 
   if (!details) {
     return <></>;

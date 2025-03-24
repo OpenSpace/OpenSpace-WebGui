@@ -1,4 +1,5 @@
-import { useGetStringPropertyValue, useSubscribeToCamera } from '@/api/hooks';
+import { useStringProperty } from '@/hooks/properties';
+import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 import { RequireAtLeastOne } from '@/types/types';
 import { NavigationAnchorKey } from '@/util/keys';
@@ -24,7 +25,7 @@ export function NavigationTask({ anchor, lat, long }: RequiredProps) {
   const { latitude: currentLat, longitude: currentLong } = useAppSelector(
     (state) => state.camera
   );
-  const [currentAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
+  const [currentAnchor] = useStringProperty(NavigationAnchorKey);
 
   const hasCorrectNode = currentAnchor === anchor;
   // If the lat and long are not provided, we don't need to check them, so set them

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Pill, PillsInput } from '@mantine/core';
 
-import { usePropListeningState } from '@/api/hooks';
+import { usePropListeningState } from '@/hooks/util';
 
 interface Props {
   value: string[];

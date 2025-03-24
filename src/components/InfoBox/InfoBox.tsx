@@ -11,14 +11,14 @@ interface Props {
   w?: number;
 }
 
-export function InfoBox({ text, uri, w = 220 }: Props) {
+export function InfoBox({ text, uri, w = 320 }: Props) {
   const [opened, setOpened] = useState(false);
 
   return (
     <Popover
       opened={opened}
       onDismiss={() => setOpened(false)}
-      position={"top"}
+      position={'top'}
       withArrow
       offset={{ mainAxis: 5, crossAxis: 100 }}
     >

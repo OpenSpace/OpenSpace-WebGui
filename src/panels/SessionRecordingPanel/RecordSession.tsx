@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Checkbox, Group, TextInput, Title } from '@mantine/core';
 
-import { useOpenSpaceApi, useSubscribeToSessionRecording } from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
+import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { updateSessionRecordingSettings } from '@/redux/sessionrecording/sessionRecordingSlice';
 

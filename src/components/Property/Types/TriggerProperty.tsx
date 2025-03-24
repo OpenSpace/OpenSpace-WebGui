@@ -1,12 +1,12 @@
 import { Button, Group } from '@mantine/core';
 
-import { useGetPropertyDescription, useTriggerProperty } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyProps } from '@/components/Property/types';
+import { usePropertyDescription, useTriggerProperty } from '@/hooks/properties';
 
 export function TriggerProperty({ uri, readOnly }: PropertyProps) {
-  const triggerFunc = useTriggerProperty(uri);
-  const description = useGetPropertyDescription(uri);
+  const triggerFunction = useTriggerProperty(uri);
+  const description = usePropertyDescription(uri);
 
   if (!description) {
     return <></>;
@@ -14,7 +14,7 @@ export function TriggerProperty({ uri, readOnly }: PropertyProps) {
 
   return (
     <Group>
-      <Button onClick={triggerFunc} disabled={readOnly}>
+      <Button onClick={triggerFunction} disabled={readOnly}>
         {description.name}
       </Button>
       <InfoBox text={description.description} uri={uri} />

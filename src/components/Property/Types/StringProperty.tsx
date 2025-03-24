@@ -1,12 +1,12 @@
 import { Paper, Text } from '@mantine/core';
 
-import { useGetPropertyDescription, useGetStringPropertyValue } from '@/api/hooks';
 import { StringInput } from '@/components/Input/StringInput';
 import { PropertyProps } from '@/components/Property/types';
+import { usePropertyDescription, useStringProperty } from '@/hooks/properties';
 
 export function StringProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setValue] = useGetStringPropertyValue(uri);
-  const description = useGetPropertyDescription(uri);
+  const [value, setValue] = useStringProperty(uri);
+  const description = usePropertyDescription(uri);
 
   if (value === undefined || !description) {
     return <></>;
