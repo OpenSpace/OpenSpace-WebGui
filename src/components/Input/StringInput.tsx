@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { TextInput, TextInputProps } from '@mantine/core';
 
-import { usePropListeningState } from '@/api/hooks';
+import { usePropListeningState } from '@/hooks/util';
 
 export interface Props extends TextInputProps {
   onEnter: (newValue: string) => void;

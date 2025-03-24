@@ -1,6 +1,6 @@
 import { ActionIcon, Group } from '@mantine/core';
 
-import { useSubscribeToSessionRecording } from '@/api/hooks';
+import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
 import { VideocamIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';

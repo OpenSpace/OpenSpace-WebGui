@@ -1,6 +1,6 @@
 import { Button, Center, Loader, Modal, Text, Title } from '@mantine/core';
 
-import { useIsConnectionStatus } from '@/api/hooks';
+import { useIsConnectionStatus } from '@/hooks/util';
 import { ConnectionStatus } from '@/types/enums';
 
 export function ConnectionErrorOverlay() {

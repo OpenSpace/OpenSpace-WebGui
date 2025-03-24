@@ -2,7 +2,9 @@ import { useRef, useState } from 'react';
 import { ActionIcon, Alert, Button, Group, Stack, Text } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
-import { useOpenSpaceApi, useSetOpenSpaceTime, useSubscribeToTime } from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
+import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
+import { useSetOpenSpaceTime } from '@/hooks/util';
 import { LockIcon, LockOpenIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';

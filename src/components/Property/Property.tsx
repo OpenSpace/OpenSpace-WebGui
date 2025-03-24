@@ -1,8 +1,9 @@
 import { memo } from 'react';
 import { Stack } from '@mantine/core';
 
-import { useGetPropertyDescription } from '@/api/hooks';
+import { usePropertyDescription } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
+import { Uri } from '@/types/types';
 
 import { BoolProperty } from './Types/BoolProperty';
 import { DoubleListProperty } from './Types/ListProperty/DoubleListProperty';
@@ -20,7 +21,7 @@ import { PropertyLabel } from './PropertyLabel';
 // The readOnly prop sent to each component are meant to enforce each
 // Property component to have to handle the readOnly state. This can
 // easily be forgotten otherwise.
-function renderProperty(type: string, uri: string, readOnly: boolean): React.JSX.Element {
+function renderProperty(type: string, uri: Uri, readOnly: boolean): React.JSX.Element {
   switch (type) {
     case 'BoolProperty':
       return <BoolProperty uri={uri} readOnly={readOnly} />;
@@ -75,14 +76,14 @@ function renderProperty(type: string, uri: string, readOnly: boolean): React.JSX
 }
 
 interface Props {
-  uri: string;
+  uri: Uri;
 }
 
 export const Property = memo(({ uri }: Props) => {
   const propertyType = useAppSelector(
     (state) => state.properties.properties[uri]?.description.type
   );
-  const readOnly = useGetPropertyDescription(uri)?.metaData.isReadOnly;
+  const readOnly = usePropertyDescription(uri)?.metaData.isReadOnly;
 
   if (!propertyType || readOnly === undefined) {
     return <></>;
