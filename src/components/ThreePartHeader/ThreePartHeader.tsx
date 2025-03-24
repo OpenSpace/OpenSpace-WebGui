@@ -1,7 +1,7 @@
 import { Flex, Group, Text } from '@mantine/core';
 
 interface Props {
-  title: string | React.ReactNode;
+  title: React.ReactNode;
   leftSection?: React.ReactNode;
   rightSection?: React.ReactNode;
 }

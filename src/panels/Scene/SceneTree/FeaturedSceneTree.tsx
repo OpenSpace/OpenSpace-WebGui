@@ -44,18 +44,16 @@ export function FeaturedSceneTree() {
   }
 
   return (
-    <>
-      <Tree
-        data={featuredTreeData}
-        renderNode={({ node, expanded, elementProps, tree }) => (
-          <SceneTreeNode
-            node={node}
-            expanded={expanded}
-            elementProps={elementProps}
-            tree={tree}
-          />
-        )}
-      />
-    </>
+    <Tree
+      data={featuredTreeData}
+      renderNode={({ node, expanded, elementProps, tree }) => (
+        <SceneTreeNode
+          node={node}
+          expanded={expanded}
+          elementProps={elementProps}
+          tree={tree}
+        />
+      )}
+    />
   );
 }
