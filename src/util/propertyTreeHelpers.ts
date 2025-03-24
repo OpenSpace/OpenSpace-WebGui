@@ -108,6 +108,15 @@ export function isRenderable(uri: Uri): boolean {
   return uri.endsWith('.Renderable');
 }
 
+export function isSgnTransform(uri: Uri): boolean {
+  const isThirdLevel = (uri.match(/\./g) || []).length == 2;
+  return (
+    (isThirdLevel && uri.endsWith(ScaleKey)) ||
+    uri.endsWith(TranslationKey) ||
+    uri.endsWith(RotationKey)
+  );
+}
+
 export function isTopLevelPropertyOwner(uri: Uri): boolean {
   return !uri.includes('.');
 }

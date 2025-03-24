@@ -3,9 +3,16 @@ import { shallowEqual } from '@mantine/hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { PropertyOwner, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
-import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelpers';
+import {
+  checkVisiblity,
+  enabledPropertyUri,
+  fadePropertyUri,
+  hasVisibleChildren,
+  isPropertyVisible
+} from '@/util/propertyTreeHelpers';
 
-import { useOptionProperty } from './properties';
+import { useBoolProperty, useFloatProperty, useOptionProperty } from './properties';
+import { useOpenSpaceApi } from '@/api/hooks';
 
 export function usePropertyOwner(uri: Uri): PropertyOwner | undefined {
   return useAppSelector((state) => state.propertyOwners.propertyOwners[uri]);
@@ -47,3 +54,31 @@ export const useGetVisibleProperties = (propertyOwner: PropertyOwner | undefined
     ) || []
   );
 };
+
+export function usePropertyOwnerVisibility(uri: Uri) {
+  const luaApi = useOpenSpaceApi();
+
+  const [enabledPropertyValue, setEnabledProperty] = useBoolProperty(
+    enabledPropertyUri(uri)
+  );
+  const [fadePropertyValue] = useFloatProperty(fadePropertyUri(uri));
+  const isFadeable = fadePropertyValue !== undefined;
+
+  const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
+
+  function setVisiblity(shouldShow: boolean, isImmediate: boolean = false) {
+    const fadeTime = isImmediate ? 0 : undefined;
+    if (!isFadeable) {
+      setEnabledProperty(shouldShow);
+    } else if (shouldShow) {
+      luaApi?.fadeIn(uri, fadeTime);
+    } else {
+      luaApi?.fadeOut(uri, fadeTime);
+    }
+  }
+
+  return {
+    isVisible,
+    setVisiblity
+  };
+}

@@ -1,15 +1,13 @@
 import { Tree } from '@mantine/core';
 
-import { useStringProperty } from '@/hooks/properties';
-import { useAppSelector } from '@/redux/hooks';
-import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
-import { hasInterestingTag, sgnUri } from '@/util/propertyTreeHelpers';
 import {
-  SceneTreeGroupPrefixKey,
-  treeDataForSceneGraphNode
-} from '@/util/sceneTreeGroupsHelper';
+  useGetAimNode,
+  useGetAnchorNode,
+  useGetInterestingTagOwners
+} from '@/util/propertyTreeHooks';
 
 import { SceneTreeNode } from './SceneTreeNode';
+import { SceneTreeGroupPrefixKey, treeDataForSceneGraphNode } from './treeUtils';
 import { SceneTreeNodeData } from './types';
 
 /**
@@ -17,45 +15,45 @@ import { SceneTreeNodeData } from './types';
  * nodes marked as interesting.
  */
 export function FeaturedSceneTree() {
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-
-  const [anchor] = useStringProperty(NavigationAnchorKey);
-  const [aim] = useStringProperty(NavigationAimKey);
+  const interestingOwners = useGetInterestingTagOwners();
+  const anchorNode = useGetAnchorNode();
+  const aimNode = useGetAimNode();
 
   const featuredTreeData: SceneTreeNodeData[] = [];
 
-  if (anchor) {
-    const anchorData = treeDataForSceneGraphNode(sgnUri(anchor), propertyOwners);
+  if (anchorNode) {
+    const anchorData = treeDataForSceneGraphNode(anchorNode.name, anchorNode.uri);
     anchorData.label = 'Current Focus: ' + anchorData.label;
     featuredTreeData.push(anchorData);
   }
 
-  if (aim) {
-    const aimData = treeDataForSceneGraphNode(sgnUri(aim), propertyOwners);
+  if (aimNode) {
+    const aimData = treeDataForSceneGraphNode(aimNode.name, aimNode.uri);
     aimData.label = 'Current Aim: ' + aimData.label;
     featuredTreeData.push(aimData);
   }
 
-  const interestingNodes: SceneTreeNodeData[] = [];
-  const propertyOwnersScene = propertyOwners.Scene?.subowners ?? [];
-  propertyOwnersScene.forEach((uri) => {
-    if (hasInterestingTag(uri, propertyOwners)) {
-      interestingNodes.push(treeDataForSceneGraphNode(uri, propertyOwners));
-    }
-  });
-
-  if (interestingNodes.length > 0) {
+  if (interestingOwners.length > 0) {
     featuredTreeData.push({
       label: 'Quick Access',
       value: SceneTreeGroupPrefixKey + 'interesting',
-      children: interestingNodes
+      children: interestingOwners.map((owner) =>
+        treeDataForSceneGraphNode(owner.name, owner.uri)
+      )
     });
   }
 
   return (
     <Tree
       data={featuredTreeData}
-      renderNode={(payload) => <SceneTreeNode {...payload} />}
+      renderNode={({ node, expanded, elementProps, tree }) => (
+        <SceneTreeNode
+          node={node}
+          expanded={expanded}
+          elementProps={elementProps}
+          tree={tree}
+        />
+      )}
     />
   );
 }

@@ -1,10 +1,8 @@
 import { Group } from '@mantine/core';
 
-import { useStringProperty } from '@/hooks/properties';
-import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { EngineMode } from '@/types/enums';
-import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
+import { useGetAimNode, useGetAnchorNode } from '@/util/propertyTreeHooks';
 
 import { AnchorAimButtons } from './MenuButtons/AnchorAimButtons';
 import { CancelFlightButton } from './MenuButtons/CancelFlightButton';
@@ -16,17 +14,14 @@ interface OriginPanelMenuButtonProps {
 }
 
 export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
-  const [anchor] = useStringProperty(NavigationAnchorKey);
-  const [aim] = useStringProperty(NavigationAimKey);
-  const anchorName = usePropertyOwner(`${ScenePrefixKey}${anchor}`)?.name ?? anchor;
-  const aimName = usePropertyOwner(`${ScenePrefixKey}${aim}`)?.name ?? aim;
+  const aimNode = useGetAimNode();
+  const anchorNode = useGetAnchorNode();
+
   const engineMode = useSubscribeToEngineMode();
 
-  function hasDistinctAim() {
-    return aim !== '' && aim !== anchor;
-  }
+  const hasDistinctAim = aimNode && aimNode.identifier !== anchorNode?.identifier;
 
-  const isReady = anchor !== '' && anchor !== undefined;
+  const isReady = anchorNode !== undefined;
 
   const isInFlight = engineMode === EngineMode.CameraPath;
 
@@ -39,14 +34,18 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
     );
   }
 
-  return hasDistinctAim() ? (
+  return hasDistinctAim ? (
     <AnchorAimButtons
-      anchorName={anchorName}
-      aimName={aimName}
+      anchorName={anchorNode?.name}
+      aimName={aimNode?.name}
       isOpenSpaceReady={isReady}
       onClick={onClick}
     />
   ) : (
-    <FocusButton anchorName={anchorName} isOpenSpaceReady={isReady} onClick={onClick} />
+    <FocusButton
+      anchorName={anchorNode?.name}
+      isOpenSpaceReady={isReady}
+      onClick={onClick}
+    />
   );
 }

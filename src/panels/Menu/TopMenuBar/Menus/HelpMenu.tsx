@@ -10,7 +10,7 @@ import {
   OpenInBrowserIcon,
   RouteIcon
 } from '@/icons/icons';
-import { GettingStartedPanel } from '@/panels/GettingStartedPanel/GettingStartedPanel';
+import { GettingStartedPanel } from '@/windowmanagement/data/LazyLoads';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';

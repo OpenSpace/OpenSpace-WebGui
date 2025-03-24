@@ -62,7 +62,6 @@ export function FlightControlPanel() {
       <Group justify={'space-between'} my={'xs'} wrap={'nowrap'} align={'start'}>
         <Checkbox
           label={'Toggle flight control'}
-          defaultChecked={isControllerEnabled}
           checked={isControllerEnabled}
           onChange={toggleFlightController}
         />

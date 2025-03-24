@@ -4,27 +4,23 @@ import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavi
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
-import { useAppSelector } from '@/redux/hooks';
 import { NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
-import { displayName, sgnRenderableUri } from '@/util/propertyTreeHelpers';
+import { displayName, isRenderable } from '@/util/propertyTreeHelpers';
 
 import { SceneGraphNodeMoreMenu } from './SceneGraphNodeMoreMenu';
 
 interface Props {
   uri: Uri;
-  label?: string;
   onClick?: () => void;
-  leftSection?: React.ReactNode; // If specified, replaces the checkbox if the node has an attached renderable
+  label?: string;
 }
 
-export function SceneGraphNodeHeader({ uri, label, onClick, leftSection }: Props) {
+export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
   const propertyOwner = usePropertyOwner(uri);
 
-  const renderableUri = sgnRenderableUri(uri);
-  const hasRenderable = useAppSelector((state) => {
-    return state.propertyOwners.propertyOwners[renderableUri] !== undefined;
-  });
+  const renderableUri = propertyOwner?.subowners.find((uri) => isRenderable(uri));
+  const hasRenderable = renderableUri !== undefined;
 
   if (!propertyOwner) {
     return <></>;
@@ -36,6 +32,7 @@ export function SceneGraphNodeHeader({ uri, label, onClick, leftSection }: Props
   // the header is resized.
   const titleButton = (
     <Button
+      fullWidth
       h={'fit-content'}
       variant={'subtle'}
       p={0}
@@ -44,7 +41,11 @@ export function SceneGraphNodeHeader({ uri, label, onClick, leftSection }: Props
       justify={'start'}
       flex={1}
     >
-      <Text mah={80} ta={'left'} style={{ textWrap: 'pretty', wordBreak: 'break-word' }}>
+      <Text
+        ta={'left'}
+        style={{ textWrap: 'pretty', overflowWrap: 'anywhere', wordBreak: 'break-word' }}
+        lineClamp={3}
+      >
         {name}
       </Text>
     </Button>
@@ -54,11 +55,10 @@ export function SceneGraphNodeHeader({ uri, label, onClick, leftSection }: Props
     <ThreePartHeader
       title={onClick ? titleButton : name}
       leftSection={
-        leftSection ??
-        (hasRenderable && <PropertyOwnerVisibilityCheckbox uri={renderableUri} />)
+        hasRenderable && <PropertyOwnerVisibilityCheckbox uri={renderableUri} />
       }
       rightSection={
-        <Group wrap={'nowrap'} gap={'xs'}>
+        <Group wrap={'nowrap'} gap={'xs'} flex={0}>
           <NodeNavigationButton
             size={'sm'}
             type={NavigationType.Focus}

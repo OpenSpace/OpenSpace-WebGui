@@ -1,4 +1,4 @@
-import { ActionIcon, Text } from '@mantine/core';
+import { ActionIcon, Group, Text } from '@mantine/core';
 
 import { MinusIcon } from '@/icons/icons';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
@@ -16,20 +16,18 @@ export function AddedCustomNodes({ addedNodes, removeFocusNode }: Props) {
   ) : (
     <>
       {addedNodes.map((identifier) => (
-        <SceneGraphNodeHeader
-          key={identifier}
-          uri={sgnUri(identifier)}
-          leftSection={
-            <ActionIcon
-              variant={'light'}
-              size={'sm'}
-              color={'red'}
-              onClick={() => removeFocusNode(identifier)}
-            >
-              <MinusIcon />
-            </ActionIcon>
-          }
-        />
+        <Group key={identifier} wrap={'nowrap'} grow preventGrowOverflow={false}>
+          <ActionIcon
+            variant={'light'}
+            size={'sm'}
+            color={'red'}
+            flex={0}
+            onClick={() => removeFocusNode(identifier)}
+          >
+            <MinusIcon />
+          </ActionIcon>
+          <SceneGraphNodeHeader uri={sgnUri(identifier)} />
+        </Group>
       ))}
     </>
   );

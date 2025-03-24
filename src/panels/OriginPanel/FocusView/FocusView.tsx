@@ -6,11 +6,10 @@ import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { useStringProperty } from '@/hooks/properties';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { CancelIcon, FocusIcon } from '@/icons/icons';
-import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
 import { Identifier, PropertyOwner } from '@/types/types';
-import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
-import { sgnUri } from '@/util/propertyTreeHelpers';
+import { NavigationAimKey } from '@/util/keys';
+import { useGetAnchorNode } from '@/util/propertyTreeHooks';
 
 import { RemainingFlightTimeIndicator } from '../RemainingFlightTimeIndicator';
 
@@ -23,17 +22,15 @@ interface Props {
 }
 
 export function FocusView({ favorites, searchableNodes, matcherFunction }: Props) {
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const engineMode = useSubscribeToEngineMode();
 
-  const [anchor] = useStringProperty(NavigationAnchorKey);
+  const anchorNode = useGetAnchorNode();
   const [aim] = useStringProperty(NavigationAimKey);
 
   const luaApi = useOpenSpaceApi();
 
-  const anchorNode = anchor ? propertyOwners[sgnUri(anchor)] : undefined;
   const isInFlight = engineMode === EngineMode.CameraPath;
-  const hasAim = aim !== '' && aim !== anchor;
+  const hasAim = aim !== '' && aim !== anchorNode?.identifier;
 
   function onSelect(
     identifier: Identifier,
@@ -67,7 +64,6 @@ export function FocusView({ favorites, searchableNodes, matcherFunction }: Props
       <>
         {anchorNode && !isInFlight && (
           <FocusEntry
-            key={anchor}
             entry={anchorNode}
             onSelect={onSelect}
             isActive={!hasAim}
@@ -104,7 +100,7 @@ export function FocusView({ favorites, searchableNodes, matcherFunction }: Props
             key={entry.identifier}
             entry={entry}
             onSelect={onSelect}
-            isActive={!hasAim && anchor === entry.identifier}
+            isActive={!hasAim && anchorNode?.identifier === entry.identifier}
             disableFocus={isInFlight}
             mb={3}
           />
@@ -117,7 +113,7 @@ export function FocusView({ favorites, searchableNodes, matcherFunction }: Props
             key={node.identifier}
             entry={node}
             onSelect={onSelect}
-            isActive={!hasAim && anchor === node.identifier}
+            isActive={!hasAim && anchorNode?.identifier === node.identifier}
             disableFocus={isInFlight}
           />
         )}
