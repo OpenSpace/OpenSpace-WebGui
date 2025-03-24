@@ -1,42 +1,37 @@
 import { Flex, Group, NumberFormatter, Paper, Text } from '@mantine/core';
 
-import { usePropListeningState } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-
-import { ConcretePropertyBaseProps } from '../../types';
+import { AdditionalDataNumber, PropertyProps } from '@/components/Property/types';
+import { useGenericNumericProperty, usePropertyDescription } from '@/hooks/properties';
+import { usePropListeningState } from '@/hooks/util';
 
 import { NumericPropertySlider } from './Slider/NumericPropertySlider';
 import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from './util';
 
-export interface NumericPropertyProps extends ConcretePropertyBaseProps {
-  setPropertyValue: (newValue: number) => void;
-  value: number;
-  additionalData: {
-    Exponent: number;
-    MaximumValue: number;
-    MinimumValue: number;
-    SteppingValue: number;
-  };
-}
-
-interface Props extends NumericPropertyProps {
+interface Props extends PropertyProps {
   isInt?: boolean;
 }
 
-export function NumericProperty({
-  disabled,
-  setPropertyValue,
-  value,
-  additionalData,
-  isInt = false
-}: Props) {
-  const { value: currentValue, setValue: setCurrentValue } =
-    usePropListeningState<number>(value);
+export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
+  const [value, setPropertyValue] = useGenericNumericProperty(uri);
 
-  const min = additionalData.MinimumValue;
-  const max = additionalData.MaximumValue;
-  const step = additionalData.SteppingValue;
-  const exponent = additionalData.Exponent;
+  const { value: currentValue, setValue: setCurrentValue } = usePropListeningState<
+    number | undefined
+  >(value);
+
+  const description = usePropertyDescription(uri);
+
+  if (!description || currentValue === undefined || value === undefined) {
+    return <></>;
+  }
+
+  const additionalData = description.additionalData as AdditionalDataNumber;
+  const {
+    MinimumValue: min,
+    MaximumValue: max,
+    SteppingValue: step,
+    Exponent: exponent
+  } = additionalData;
 
   // When no min/max is set, the marks for the slider cannot be nicely computed
   const extent = max - min;
@@ -58,19 +53,19 @@ export function NumericProperty({
     <Group align={'bottom'}>
       {shouldShowSlider && (
         <NumericPropertySlider
-          value={currentValue}
+          value={value}
           flex={2}
           miw={100}
-          disabled={disabled}
+          disabled={readOnly}
           min={min}
           max={max}
           step={step}
           exponent={exponent}
-          onInput={onValueChange}
+          onInput={setPropertyValue}
         />
       )}
       <Flex flex={1} miw={100}>
-        {disabled ? (
+        {readOnly ? (
           <Paper px={'sm'} py={5} flex={1}>
             <Text size={'sm'}>
               <NumberFormatter
@@ -86,7 +81,6 @@ export function NumericProperty({
                 ? roundNumberToDecimalPlaces(numberValue, decimalPlaces)
                 : ''
             }
-            disabled={disabled}
             min={min}
             max={max}
             step={step}

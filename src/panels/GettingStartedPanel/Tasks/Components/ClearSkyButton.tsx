@@ -1,6 +1,7 @@
 import { Button, Group, Text } from '@mantine/core';
 
-import { useOpenSpaceApi, usePropertyOwnerVisibility } from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
+import { usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { SunIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 

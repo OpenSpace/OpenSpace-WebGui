@@ -1,9 +1,9 @@
 import { Button, Group, Text } from '@mantine/core';
 
-import { useGetPropertyOwner } from '@/api/hooks';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { displayName, isRenderable } from '@/util/propertyTreeHelpers';
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
+  const propertyOwner = usePropertyOwner(uri);
 
   const renderableUri = propertyOwner?.subowners.find((uri) => isRenderable(uri));
   const hasRenderable = renderableUri !== undefined;

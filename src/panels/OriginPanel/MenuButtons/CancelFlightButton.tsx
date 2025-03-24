@@ -3,10 +3,10 @@ import { Button, Stack, Text } from '@mantine/core';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { AnchorIcon, CancelIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
-import { useGetAnchorNode } from '@/util/propertyTreeHooks';
+import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 export function CancelFlightButton() {
-  const anchorNode = useGetAnchorNode();
+  const anchorNode = useAnchorNode();
   const luaApi = useOpenSpaceApi();
 
   function cancelFlight(): void {

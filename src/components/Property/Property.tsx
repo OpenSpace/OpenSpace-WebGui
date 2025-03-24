@@ -1,119 +1,102 @@
 import { memo } from 'react';
 import { Stack } from '@mantine/core';
 
-import { useGetProperty, useSubscribeToProperty } from '@/api/hooks';
+import { usePropertyDescription } from '@/hooks/properties';
+import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
 
 import { BoolProperty } from './Types/BoolProperty';
-import { FloatListProperty } from './Types/ListProperty/FloatListProperty';
+import { DoubleListProperty } from './Types/ListProperty/DoubleListProperty';
 import { IntListProperty } from './Types/ListProperty/IntListProperty';
 import { StringListProperty } from './Types/ListProperty/StringListProperty';
 import { MatrixProperty } from './Types/MatrixProperty';
-import { IntNumericProperty } from './Types/NumericProperty/IntNumericProperty';
 import { NumericProperty } from './Types/NumericProperty/NumericProperty';
 import { OptionProperty } from './Types/OptionProperty';
 import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';
 import { TriggerProperty } from './Types/TriggerProperty';
-import { IntVectorProperty } from './Types/VectorProperty/IntVectorProperty';
 import { VectorProperty } from './Types/VectorProperty/VectorProperty';
 import { PropertyLabel } from './PropertyLabel';
 
-// (2024-10-21, emmbr) I don't know how to efficiently get rid of "any" in this case
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const concreteProperties: { [key: string]: any } = {
-  BoolProperty,
-  OptionProperty,
-  TriggerProperty,
-  StringProperty,
-
-  DoubleListProperty: FloatListProperty,
-  IntListProperty,
-  StringListProperty,
-
-  SelectionProperty,
-
-  FloatProperty: NumericProperty,
-  DoubleProperty: NumericProperty,
-  LongProperty: NumericProperty,
-  ULongProperty: NumericProperty,
-  IntProperty: IntNumericProperty,
-  UIntProperty: IntNumericProperty,
-  ShortProperty: NumericProperty,
-  UShortProperty: NumericProperty,
-
-  Vec2Property: VectorProperty,
-  Vec3Property: VectorProperty,
-  Vec4Property: VectorProperty,
-
-  IVec2Property: IntVectorProperty,
-  IVec3Property: IntVectorProperty,
-  IVec4Property: IntVectorProperty,
-
-  UVec2Property: IntVectorProperty,
-  UVec3Property: IntVectorProperty,
-  UVec4Property: IntVectorProperty,
-
-  DVec2Property: VectorProperty,
-  DVec3Property: VectorProperty,
-  DVec4Property: VectorProperty,
-
-  Mat2Property: MatrixProperty,
-  Mat3Property: MatrixProperty,
-  Mat4Property: MatrixProperty,
-
-  DMat2Property: MatrixProperty,
-  DMat3Property: MatrixProperty,
-  DMat4Property: MatrixProperty
-};
+// The readOnly prop sent to each component are meant to enforce each
+// Property component to have to handle the readOnly state. This can
+// easily be forgotten otherwise.
+function renderProperty(type: string, uri: Uri, readOnly: boolean): React.JSX.Element {
+  switch (type) {
+    case 'BoolProperty':
+      return <BoolProperty uri={uri} readOnly={readOnly} />;
+    case 'OptionProperty':
+      return <OptionProperty uri={uri} readOnly={readOnly} />;
+    case 'TriggerProperty':
+      return <TriggerProperty uri={uri} readOnly={readOnly} />;
+    case 'StringProperty':
+      return <StringProperty uri={uri} readOnly={readOnly} />;
+    case 'DoubleListProperty':
+      return <DoubleListProperty uri={uri} readOnly={readOnly} />;
+    case 'IntListProperty':
+      return <IntListProperty uri={uri} readOnly={readOnly} />;
+    case 'StringListProperty':
+      return <StringListProperty uri={uri} readOnly={readOnly} />;
+    case 'SelectionProperty':
+      return <SelectionProperty uri={uri} readOnly={readOnly} />;
+    case 'FloatProperty':
+    case 'DoubleProperty':
+    case 'ShortProperty':
+    case 'UShortProperty':
+      return <NumericProperty uri={uri} readOnly={readOnly} />;
+    case 'LongProperty':
+    case 'ULongProperty':
+    case 'IntProperty':
+    case 'UIntProperty':
+      return <NumericProperty isInt uri={uri} readOnly={readOnly} />;
+    case 'Vec2Property':
+    case 'Vec3Property':
+    case 'Vec4Property':
+    case 'DVec2Property':
+    case 'DVec3Property':
+    case 'DVec4Property':
+      return <VectorProperty uri={uri} readOnly={readOnly} />;
+    case 'IVec2Property':
+    case 'IVec3Property':
+    case 'IVec4Property':
+    case 'UVec2Property':
+    case 'UVec3Property':
+    case 'UVec4Property':
+      return <VectorProperty uri={uri} isInt readOnly={readOnly} />;
+    case 'Mat2Property':
+    case 'Mat3Property':
+    case 'Mat4Property':
+    case 'DMat2Property':
+    case 'DMat3Property':
+    case 'DMat4Property':
+      return <MatrixProperty uri={uri} readOnly={readOnly} />;
+    default:
+      throw new Error(`Missing property type: '${type}'`);
+  }
+}
 
 interface Props {
   uri: Uri;
 }
 
 export const Property = memo(({ uri }: Props) => {
-  const property = useGetProperty(uri);
-  const setPropertyValue = useSubscribeToProperty(uri);
+  const propertyType = useAppSelector(
+    (state) => state.properties.properties[uri]?.description.type
+  );
+  const readOnly = usePropertyDescription(uri)?.metaData.isReadOnly;
 
-  const description = property?.description;
-  const value = property?.value;
-
-  if (!description || value === undefined) {
+  if (!propertyType || readOnly === undefined) {
     return <></>;
   }
 
-  const ConcreteProperty = concreteProperties[description.type];
+  const showLabel = !(
+    propertyType === 'BoolProperty' || propertyType === 'TriggerProperty'
+  );
 
-  if (!ConcreteProperty) {
-    throw Error(`Missing property type: '${property.description.type}'`);
-  }
-
-  // In most cases we want to show the label on top of the property input, but some types
-  // have a custom label built in in the input type. Keep track of which that is
-  const hasBuiltInLabel =
-    ConcreteProperty === BoolProperty || ConcreteProperty === TriggerProperty;
-
-  // All the property types get all information, and then they may do whatever they
-  // want with it (like ignore certain parts)
   return (
     <Stack mb={'md'} gap={5}>
-      {!hasBuiltInLabel && (
-        <PropertyLabel
-          label={description.name}
-          tip={description.description}
-          isReadOnly={description.metaData.isReadOnly}
-        />
-      )}
-      <ConcreteProperty
-        key={description.identifier}
-        disabled={description.metaData.isReadOnly}
-        name={description.name}
-        description={description.description}
-        value={value}
-        setPropertyValue={setPropertyValue}
-        viewOptions={description.metaData.ViewOptions}
-        additionalData={description.additionalData}
-      />
+      {showLabel && <PropertyLabel uri={uri} readOnly={readOnly} />}
+      {renderProperty(propertyType, uri, readOnly)}
     </Stack>
   );
 });

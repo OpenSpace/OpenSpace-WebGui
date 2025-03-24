@@ -1,8 +1,8 @@
 import { Box, Tabs, Text, Tooltip } from '@mantine/core';
 
-import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
+import { usePropertyOwner,useVisibleProperties } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { isRenderable, isSgnTransform } from '@/util/propertyTreeHelpers';
 
@@ -14,10 +14,10 @@ interface Props {
 }
 
 export function SceneGraphNodeView({ uri }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
+  const propertyOwner = usePropertyOwner(uri);
 
   // The SGN properties that are visible under the current user level setting
-  const visibleProperties = useGetVisibleProperties(propertyOwner);
+  const visibleProperties = useVisibleProperties(propertyOwner);
 
   if (!propertyOwner) {
     return (
