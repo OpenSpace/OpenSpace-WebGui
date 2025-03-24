@@ -14,7 +14,6 @@ import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ChevronsDownIcon, ChevronsUpIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-
 import {
   setSceneTreeSelectedNode,
   storeSceneTreeNodeExpanded

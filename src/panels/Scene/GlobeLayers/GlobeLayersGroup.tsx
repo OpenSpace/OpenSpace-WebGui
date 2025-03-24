@@ -15,7 +15,7 @@ interface Props {
   icon?: React.ReactNode;
 }
 
-export function GlobeLayerGroup({ uri, globe, icon }: Props) {
+export function GlobeLayersGroup({ uri, globe, icon }: Props) {
   const propertyOwner = usePropertyOwner(uri);
 
   if (!propertyOwner) {
