@@ -15,15 +15,14 @@ interface Props {
   icon?: React.ReactNode;
 }
 
-export function GlobeLayerGroup({ uri, globe, icon }: Props) {
+export function GlobeLayersGroup({ uri, globe, icon }: Props) {
   const propertyOwner = useGetPropertyOwner(uri);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);
   }
 
-  const { properties, subowners } = propertyOwner;
-  const layers = subowners;
+  const { properties, subowners: layers } = propertyOwner;
 
   const nActiveLayers = useAppSelector(
     (state) =>
