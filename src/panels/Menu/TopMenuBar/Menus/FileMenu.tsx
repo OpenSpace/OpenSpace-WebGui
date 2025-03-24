@@ -3,7 +3,7 @@ import { modals } from '@mantine/modals';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useBoolProperty } from '@/hooks/properties';
-import { AddFileIcon, ConsoleIcon, ExitAppIcon } from '@/icons/icons';
+import { ConsoleIcon, ExitAppIcon } from '@/icons/icons';
 
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
@@ -25,9 +25,9 @@ export function FileMenu() {
       onConfirm: () => luaApi?.toggleShutdown()
     });
   }
+
   return (
     <TopBarMenuWrapper targetTitle={'File'}>
-      <Menu.Item leftSection={<AddFileIcon />}>Add Asset</Menu.Item>
       <Menu.Item
         onClick={toggleLuaConsole}
         leftSection={<ConsoleIcon />}

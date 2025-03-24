@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Button, Group, Switch, Text, Title } from '@mantine/core';
+import { Button, Checkbox, Group, Text, Title } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
@@ -139,7 +139,7 @@ export function MissionContent({ missionOverview }: Props) {
           </Button>
         </Group>
         <Group mb={'xs'} gap={'xs'} wrap={'nowrap'}>
-          <Switch checked={displayCurrentPhase} onClick={toggleCurrentPhase} />
+          <Checkbox checked={displayCurrentPhase} onClick={toggleCurrentPhase} />
           <Text>Display current phase</Text>
           <InfoBox
             text={

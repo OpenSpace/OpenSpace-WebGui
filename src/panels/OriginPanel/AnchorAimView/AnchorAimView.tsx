@@ -130,6 +130,7 @@ export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: P
             onSelectAnchor={onSelectAnchor}
             onSelectAim={onSelectAim}
             disabled={isInFlight}
+            mb={3}
           />
         ))}
       </FilterList.Favorites>
@@ -148,7 +149,7 @@ export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: P
         )}
         matcherFunc={matcherFunction}
       >
-        <FilterList.SearchResults.VirtualList />
+        <FilterList.SearchResults.VirtualList gap={3} />
       </FilterList.SearchResults>
     </FilterList>
   );

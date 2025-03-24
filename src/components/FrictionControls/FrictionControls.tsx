@@ -1,4 +1,4 @@
-import { Chip, Group, Stack, Text } from '@mantine/core';
+import { Chip, Group, MantineSize, MantineSpacing, Stack, Text } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { useBoolProperty } from '@/hooks/properties';
@@ -6,7 +6,14 @@ import { KeybindButtons } from '@/panels/KeybindsPanel/KeybindButtons';
 import { useAppSelector } from '@/redux/hooks';
 import { RollFrictionKey, RotationalFrictionKey, ZoomFrictionKey } from '@/util/keys';
 
-export function FrictionMenu() {
+interface Props {
+  size?: MantineSize;
+  gap?: MantineSpacing;
+  align?: React.CSSProperties['alignItems'];
+  mr?: MantineSpacing;
+}
+
+export function FrictionControls({ size, gap = 'xs', align, mr }: Props) {
   const [rotation, setRotation] = useBoolProperty(RotationalFrictionKey);
   const [zoom, setZoom] = useBoolProperty(ZoomFrictionKey);
   const [roll, setRoll] = useBoolProperty(RollFrictionKey);
@@ -24,34 +31,37 @@ export function FrictionMenu() {
   );
 
   return (
-    <Group gap={'xs'} mr={'xs'}>
-      <Chip
-        checked={rotation}
-        onChange={() => setRotation(!rotation)}
-        variant={'light'}
-        size={'xs'}
-        color={'white'}
-      >
-        Rotation
-      </Chip>
-      <Chip
-        checked={zoom}
-        onChange={() => setZoom(!zoom)}
-        variant={'light'}
-        size={'xs'}
-        color={'white'}
-      >
-        Zoom
-      </Chip>
-      <Chip
-        checked={roll}
-        onChange={() => setRoll(!roll)}
-        variant={'light'}
-        size={'xs'}
-        color={'white'}
-      >
-        Roll
-      </Chip>
+    <Group justify={'space-between'} wrap={'nowrap'} align={align} mr={mr}>
+      <Group gap={gap}>
+        <Chip
+          checked={rotation}
+          onChange={() => setRotation(!rotation)}
+          variant={'light'}
+          size={size}
+          color={'white'}
+        >
+          Rotation
+        </Chip>
+        <Chip
+          checked={zoom}
+          onChange={() => setZoom(!zoom)}
+          variant={'light'}
+          size={size}
+          color={'white'}
+        >
+          Zoom
+        </Chip>
+        <Chip
+          checked={roll}
+          onChange={() => setRoll(!roll)}
+          variant={'light'}
+          size={size}
+          color={'white'}
+        >
+          Roll
+        </Chip>
+      </Group>
+
       <InfoBox
         text={
           <>
