@@ -9,7 +9,7 @@ import { DeleteIcon, OpenInNewIcon, VerticalDotsIcon } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { displayName, identifierFromUri } from '@/util/propertyTreeHelpers';
-import { useGetAnchorNode } from '@/util/propertyTreeHooks';
+import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { SceneGraphNodeView } from './SceneGraphNodeView';
@@ -20,7 +20,7 @@ interface Props {
 
 export function SceneGraphNodeMoreMenu({ uri }: Props) {
   const propertyOwner = usePropertyOwner(uri);
-  const anchorNode = useGetAnchorNode();
+  const anchorNode = useAnchorNode();
   const luaApi = useOpenSpaceApi();
 
   const { addWindow } = useWindowLayoutProvider();

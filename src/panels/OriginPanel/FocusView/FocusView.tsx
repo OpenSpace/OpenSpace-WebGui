@@ -9,7 +9,7 @@ import { CancelIcon, FocusIcon } from '@/icons/icons';
 import { EngineMode, IconSize } from '@/types/enums';
 import { Identifier, PropertyOwner } from '@/types/types';
 import { NavigationAimKey } from '@/util/keys';
-import { useGetAnchorNode } from '@/util/propertyTreeHooks';
+import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { RemainingFlightTimeIndicator } from '../RemainingFlightTimeIndicator';
 
@@ -24,7 +24,7 @@ interface Props {
 export function FocusView({ favorites, searchableNodes, matcherFunction }: Props) {
   const engineMode = useSubscribeToEngineMode();
 
-  const anchorNode = useGetAnchorNode();
+  const anchorNode = useAnchorNode();
   const [aim] = useStringProperty(NavigationAimKey);
 
   const luaApi = useOpenSpaceApi();

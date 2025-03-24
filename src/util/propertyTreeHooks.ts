@@ -7,7 +7,7 @@ import { NavigationAimKey, NavigationAnchorKey } from './keys';
 import { hasInterestingTag, sgnUri } from './propertyTreeHelpers';
 import { useStringProperty } from '@/hooks/properties';
 
-export function useGetInterestingTagOwners() {
+export function useInterestingTagOwners() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
 
   const sortedDefaultList = useMemo(() => {
@@ -24,7 +24,7 @@ export function useGetInterestingTagOwners() {
   return sortedDefaultList;
 }
 
-export function useGetAnchorNode() {
+export function useAnchorNode() {
   const [anchor] = useStringProperty(NavigationAnchorKey);
   const anchorNode = useAppSelector(
     (state) => state.propertyOwners.propertyOwners[sgnUri(anchor)]
@@ -32,7 +32,7 @@ export function useGetAnchorNode() {
   return anchorNode;
 }
 
-export function useGetAimNode() {
+export function useAimNode() {
   const [aim] = useStringProperty(NavigationAimKey);
   const aimNode = useAppSelector(
     (state) => state.propertyOwners.propertyOwners[sgnUri(aim)]

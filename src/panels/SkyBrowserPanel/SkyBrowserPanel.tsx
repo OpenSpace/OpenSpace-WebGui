@@ -10,7 +10,7 @@ import { BrowserTabs } from './BrowserTabs/BrowserTabs';
 import { ImageListWrapper } from './ImageList/ImageListWrapper';
 import { WorldWideTelescopeView } from './WorldWideTelescope/WorldWideTelescopeView';
 import { WwtProvider } from './WorldWideTelescope/WwtProvider/WwtProvider';
-import { useGetSkyBrowserData } from './hooks';
+import { useSkyBrowserData } from './hooks';
 
 export function SkyBrowserPanel() {
   const isInitialized = useAppSelector((state) => state.skybrowser.isInitialized);
@@ -21,7 +21,7 @@ export function SkyBrowserPanel() {
   const { addWindow } = useWindowLayoutProvider();
   const luaApi = useOpenSpaceApi();
 
-  useGetSkyBrowserData();
+  useSkyBrowserData();
 
   // Use useCallback here so we don't trigger the effect every render
   const openWorldWideTelescope = useCallback(() => {

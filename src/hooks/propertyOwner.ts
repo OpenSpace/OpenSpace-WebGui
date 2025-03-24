@@ -35,7 +35,7 @@ export const useHasVisibleChildren = (propertyOwnerUri: Uri): boolean => {
  * Find all the properties of a certain property owner that are visible, according to the
  * current visiblitity level setting. Also subscribe to changes for the visiblity level.
  */
-export const useGetVisibleProperties = (propertyOwner: PropertyOwner | undefined) => {
+export const useVisibleProperties = (propertyOwner: PropertyOwner | undefined) => {
   const [visiblityLevelSetting] = useOptionProperty(EnginePropertyVisibilityKey);
 
   // @TODO (emmbr, 2024-12-03) Would be nicer if we didn't have to do the filtering as

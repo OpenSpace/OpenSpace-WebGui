@@ -1,7 +1,7 @@
 import { Box } from '@mantine/core';
 
 import { Property } from '@/components/Property/Property';
-import { useGetVisibleProperties, usePropertyOwner } from '@/hooks/propertyOwner';
+import { useVisibleProperties, usePropertyOwner } from '@/hooks/propertyOwner';
 import { GlobeLayersPropertyOwner } from '@/panels/Scene/GlobeLayers/GlobeLayersPropertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
@@ -25,7 +25,7 @@ export function PropertyOwnerContent({ uri, hideSubowners = false }: Props) {
     isGlobeLayersUri(uri, state.properties.properties)
   );
 
-  const visibleProperties = useGetVisibleProperties(propertyOwner);
+  const visibleProperties = useVisibleProperties(propertyOwner);
   const subowners = propertyOwner.subowners ?? [];
 
   // First handle any custom content types that has a special treatment, like GlobeLayers

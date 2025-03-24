@@ -1,9 +1,9 @@
 import { Tree } from '@mantine/core';
 
 import {
-  useGetAimNode,
-  useGetAnchorNode,
-  useGetInterestingTagOwners
+  useAimNode,
+  useAnchorNode,
+  useInterestingTagOwners
 } from '@/util/propertyTreeHooks';
 
 import { SceneTreeNode } from './SceneTreeNode';
@@ -15,9 +15,9 @@ import { SceneTreeNodeData } from './types';
  * nodes marked as interesting.
  */
 export function FeaturedSceneTree() {
-  const interestingOwners = useGetInterestingTagOwners();
-  const anchorNode = useGetAnchorNode();
-  const aimNode = useGetAimNode();
+  const interestingOwners = useInterestingTagOwners();
+  const anchorNode = useAnchorNode();
+  const aimNode = useAimNode();
 
   const featuredTreeData: SceneTreeNodeData[] = [];
 

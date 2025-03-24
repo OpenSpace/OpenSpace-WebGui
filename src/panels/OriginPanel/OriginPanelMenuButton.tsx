@@ -2,7 +2,7 @@ import { Group } from '@mantine/core';
 
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { EngineMode } from '@/types/enums';
-import { useGetAimNode, useGetAnchorNode } from '@/util/propertyTreeHooks';
+import { useAimNode, useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { AnchorAimButtons } from './MenuButtons/AnchorAimButtons';
 import { CancelFlightButton } from './MenuButtons/CancelFlightButton';
@@ -14,8 +14,8 @@ interface OriginPanelMenuButtonProps {
 }
 
 export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
-  const aimNode = useGetAimNode();
-  const anchorNode = useGetAnchorNode();
+  const aimNode = useAimNode();
+  const anchorNode = useAnchorNode();
 
   const engineMode = useSubscribeToEngineMode();
 
