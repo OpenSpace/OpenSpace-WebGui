@@ -1,7 +1,8 @@
 import { useRef } from 'react';
-import { NumberInput, NumberInputProps } from '@mantine/core';
+import { NumberInput, NumberInputProps, ThemeIcon, Tooltip } from '@mantine/core';
 
 import { usePropListeningState } from '@/hooks/util';
+import { IconSize } from '@/types/enums';
 
 import { NumberStepControls } from './NumberStepControls';
 
@@ -43,8 +44,17 @@ export function NumericInput({
   } = usePropListeningState<number | undefined>(value);
 
   const shouldClamp = props.clampBehavior === 'strict';
-  const shouldClampMin = shouldClamp && min !== undefined;
-  const shouldClampMax = shouldClamp && max !== undefined;
+
+  const hasMin = min !== undefined;
+  const hasMax = max !== undefined;
+  const hasValue = storedValue !== undefined;
+
+  const shouldClampMin = shouldClamp && hasMin;
+  const shouldClampMax = shouldClamp && hasMax;
+
+  const isBelowMin = hasValue && hasMin && storedValue < min;
+  const isAboveMax = hasValue && hasMax && storedValue > max;
+  const isOutsideRange = isBelowMin || isAboveMax;
 
   // We only want to reset the value on blur if the user didn't hit ENTER.
   // This ref keeps track of that
@@ -116,6 +126,16 @@ export function NumericInput({
       max={max}
       step={step}
       hideControls={hideControls}
+      leftSection={
+        isOutsideRange &&
+        !isEditing && (
+          <Tooltip label={`Value outside range [${min}, ${max}]`}>
+            <ThemeIcon color={'orange.4'} variant={'transparent'}>
+              <MdWarning size={IconSize.xs} />
+            </ThemeIcon>
+          </Tooltip>
+        )
+      }
       rightSection={
         !hideControls && (
           <NumberStepControls
@@ -125,6 +145,9 @@ export function NumericInput({
             onChange={onStep}
           />
         )
+      }
+      error={
+        isOutsideRange && isEditing ? `Value outside range [${min}, ${max}]` : undefined
       }
       {...props}
       // TODO: Provide error on invalid input
