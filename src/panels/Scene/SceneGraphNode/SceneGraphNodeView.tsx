@@ -1,6 +1,5 @@
 import { Badge, Box, Group, Tabs, Text, Tooltip } from '@mantine/core';
 
-import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { usePropertyOwner, useVisibleProperties } from '@/hooks/propertyOwner';
@@ -127,21 +126,16 @@ export function SceneGraphNodeView({ uri }: Props) {
         {timeFrame && (
           <Tabs.Panel value={TabKeys.TimeFrame}>
             <Box p={'xs'}>
-              <Group justify={'space-between'} gap={'xs'}>
-                <Group gap={'xs'}>
-                  <Text size={'sm'}>Current state:</Text>
-                  <InfoBox>
-                    This object has an attached time frame and will only be visible during
-                    the time for which it is active. Note that the active time depends on
-                    the type of time frame used.
-                  </InfoBox>
-                </Group>
+              <Group gap={'xs'}>
+                <Text>Current status:</Text>
                 <Tooltip
                   label={
                     isInTimeFrame
                       ? 'This object is currently active and will be visible'
-                      : 'This object is currently inactive and will not be visible'
+                      : 'This object is currently inactive due to its time frame and will not be visible'
                   }
+                  multiline
+                  maw={300}
                 >
                   <Badge
                     size={'lg'}
@@ -153,15 +147,14 @@ export function SceneGraphNodeView({ uri }: Props) {
                       )
                     }
                     variant={'outline'}
-                    color={isInTimeFrame ? 'cyan' : 'red'}
+                    color={isInTimeFrame ? 'green' : 'red'}
                   >
                     {isInTimeFrame ? 'Active' : 'Inactive'}
                   </Badge>
                 </Tooltip>
               </Group>
-              <Text my={'xs'} size={'sm'} c={'dimmed'}>
-                Note that the object will not be visible outside the time range specified
-                below
+              <Text mt={'xs'} size={'sm'} c={'dimmed'}>
+                The object will not be visible outside the time range specified below.
               </Text>
             </Box>
             <PropertyOwner uri={timeFrame.uri} />
