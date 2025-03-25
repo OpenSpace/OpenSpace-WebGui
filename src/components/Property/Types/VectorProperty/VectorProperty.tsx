@@ -1,36 +1,59 @@
-import { ConcretePropertyBaseProps } from '../../types';
+import {
+  AdditionalDataVectorMatrix,
+  PropertyProps,
+  ViewOptionsVector
+} from '@/components/Property/types';
+import { useGenericVectorProperty, usePropertyDescription } from '@/hooks/properties';
 
-import { ColorVector } from './ViewOptions/ColorVector';
-import { ValueList } from './ViewOptions/DefaultValueList';
-import { MinMaxRange } from './ViewOptions/MinMaxRange';
+import { ColorView } from './ViewOptions/ColorView';
+import { DefaultView } from './ViewOptions/DefaultView';
+import { MinMaxRangeView } from './ViewOptions/MinMaxRange';
 
-export interface VectorPropertyProps extends ConcretePropertyBaseProps {
-  setPropertyValue: (newValue: number[]) => void;
-  value: number[];
-  additionalData: {
-    Exponent: number; // TODO: handle the exponent
-    MaximumValue: number[];
-    MinimumValue: number[];
-    SteppingValue: number[];
-  };
-  viewOptions: {
-    Color?: boolean;
-    MinMaxRange?: boolean;
-  };
-  // Not part of the data from OpenSpace
+interface Props extends PropertyProps {
   isInt?: boolean;
 }
 
-export function VectorProperty(props: VectorPropertyProps) {
-  const { viewOptions } = props;
+export function VectorProperty({ uri, isInt = false, readOnly }: Props) {
+  const [value, setPropertyValue] = useGenericVectorProperty(uri);
+  const description = usePropertyDescription(uri);
+
+  if (!description || !value) {
+    return <></>;
+  }
+
+  const viewOptions = description.metaData.ViewOptions as ViewOptionsVector;
+  const additionalData = description.additionalData as AdditionalDataVectorMatrix;
 
   if (viewOptions.Color) {
-    return <ColorVector {...props} />;
+    return (
+      <ColorView
+        value={value}
+        setPropertyValue={setPropertyValue}
+        additionalData={additionalData}
+        readOnly={readOnly}
+        isInt={isInt}
+      />
+    );
   }
 
   if (viewOptions.MinMaxRange) {
-    return <MinMaxRange {...props} />;
+    return (
+      <MinMaxRangeView
+        value={value}
+        setPropertyValue={setPropertyValue}
+        additionalData={additionalData}
+        disabled={readOnly}
+      />
+    );
   }
 
-  return <ValueList {...props} />;
+  return (
+    <DefaultView
+      disabled={readOnly}
+      setPropertyValue={setPropertyValue}
+      value={value}
+      additionalData={additionalData}
+      isInt={isInt}
+    />
+  );
 }

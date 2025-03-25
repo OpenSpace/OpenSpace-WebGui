@@ -4,7 +4,7 @@ import { Select } from '@mantine/core';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 
-import { useGetWwtImageCollection } from '../hooks';
+import { useWwtImageCollection } from '../hooks';
 
 import { ImageList } from './ImageList';
 import { NearestImages } from './NearestImages';
@@ -13,7 +13,7 @@ import { ViewingMode } from './util';
 // Memoizing this as it doesn't have any props and it is very expensive
 export const ImageListWrapper = memo(function ImageListSection() {
   const [value, setValue] = useState<string>(ViewingMode.allImages);
-  const [isPending, imageList] = useGetWwtImageCollection();
+  const [isPending, imageList] = useWwtImageCollection();
 
   // These computations are expensive so memoizing them too
   const skySurveys = useMemo(

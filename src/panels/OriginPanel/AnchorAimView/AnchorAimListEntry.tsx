@@ -1,9 +1,9 @@
-import { ActionIcon, Group, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Group, MantineStyleProps, Text, Tooltip } from '@mantine/core';
 
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
 import { Identifier, PropertyOwner } from '@/types/types';
 
-interface Props {
+interface Props extends MantineStyleProps {
   node: PropertyOwner;
   disabled: boolean;
   isCurrentAnchor: boolean;
@@ -24,10 +24,11 @@ export function AnchorAimListEntry({
   isCurrentAnchor,
   isCurrentAim,
   onSelectAnchor,
-  onSelectAim
+  onSelectAim,
+  ...styleProps
 }: Props) {
   return (
-    <Group gap={'xs'} key={node.identifier}>
+    <Group gap={'xs'} key={node.identifier} {...styleProps}>
       <Text flex={1} truncate pl={'xs'}>
         {node.name}
       </Text>
@@ -35,7 +36,7 @@ export function AnchorAimListEntry({
         <ActionIcon
           aria-label={'Set anchor'}
           size={'lg'}
-          variant={isCurrentAnchor ? 'filled' : 'light'}
+          variant={isCurrentAnchor ? 'filled' : 'default'}
           onClick={(event) => onSelectAnchor(node.identifier, event)}
           disabled={disabled}
         >
@@ -46,7 +47,7 @@ export function AnchorAimListEntry({
         <ActionIcon
           aria-label={'Set aim'}
           size={'lg'}
-          variant={isCurrentAim ? 'filled' : 'light'}
+          variant={isCurrentAim ? 'filled' : 'default'}
           onClick={(event) => onSelectAim(node.identifier, event)}
           disabled={disabled}
         >

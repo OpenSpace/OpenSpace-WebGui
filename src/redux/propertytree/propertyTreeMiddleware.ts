@@ -1,6 +1,7 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { api } from '@/api/api';
+import { AdditionalData } from '@/components/Property/types';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { refreshGroups } from '@/redux/groups/groupsSliceMiddleware';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
@@ -94,7 +95,7 @@ type OpenSpacePropertyOwner = {
 
 type OpenSpaceProperty = {
   Description: {
-    AdditionalData: object;
+    AdditionalData: AdditionalData;
     Identifier: Identifier;
     MetaData: PropertyMetaData;
     Name: string;

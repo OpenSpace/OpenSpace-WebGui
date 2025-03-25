@@ -1,10 +1,12 @@
 import { Box, Group } from '@mantine/core';
 
-import { useGetPropertyOwner, useHasVisibleChildren } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { useHasVisibleChildren, usePropertyOwner } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
+
+import CopyUriButton from '../CopyUriButton/CopyUriButton';
 
 import { PropertyOwnerContent } from './PropertyOwnerContent';
 import { PropertyOwnerVisibilityCheckbox } from './VisiblityCheckbox';
@@ -16,7 +18,7 @@ interface Props {
 }
 
 export function PropertyOwner({ uri, expandedOnDefault = false }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
+  const propertyOwner = usePropertyOwner(uri);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);
@@ -35,7 +37,12 @@ export function PropertyOwner({ uri, expandedOnDefault = false }: Props) {
       title={
         <Group gap={'xs'}>
           {displayName(propertyOwner)}
-          {propertyOwner.description && <InfoBox text={propertyOwner.description} />}
+          {propertyOwner.description && (
+            <InfoBox>
+              {propertyOwner.description}
+              <CopyUriButton uri={uri} />
+            </InfoBox>
+          )}
         </Group>
       }
       leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}

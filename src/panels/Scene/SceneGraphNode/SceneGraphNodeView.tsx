@@ -1,26 +1,15 @@
-import {
-  Badge,
-  Box,
-  CloseIcon,
-  Divider,
-  Flex,
-  Group,
-  Indicator,
-  Tabs,
-  Text,
-  Tooltip
-} from '@mantine/core';
+import { Badge, Box, Group, Tabs, Text, Tooltip } from '@mantine/core';
 
-import { useGetPropertyOwner, useGetVisibleProperties } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
+import { usePropertyOwner, useVisibleProperties } from '@/hooks/propertyOwner';
 import { ClockIcon, ClockOffIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
-import { sgnRenderableUri } from '@/util/propertyTreeHelpers';
+import { isRenderable, isSgnTransform } from '@/util/propertyTreeHelpers';
 
-import { useSgnTransforms, useTimeFrame } from '../hooks';
+import { useTimeFrame } from '../hooks';
 
 import { SceneGraphNodeHeader } from './SceneGraphNodeHeader';
 import { SceneGraphNodeMetaInfo } from './SceneGraphNodeMetaInfo';
@@ -30,17 +19,11 @@ interface Props {
 }
 
 export function SceneGraphNodeView({ uri }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
-
-  // We know that all scene graph nodes have the same subowners. However, not all of them
-  // are guaranteed to exist, so each of these may be undefined
-  const renderable = useGetPropertyOwner(sgnRenderableUri(uri));
-  const { scale, translation, rotation } = useSgnTransforms(uri);
-
+  const propertyOwner = usePropertyOwner(uri);
   const { timeFrame, isInTimeFrame } = useTimeFrame(uri);
 
   // The SGN properties that are visible under the current user level setting
-  const visibleProperties = useGetVisibleProperties(propertyOwner);
+  const visibleProperties = useVisibleProperties(propertyOwner);
 
   if (!propertyOwner) {
     return (
@@ -53,10 +36,6 @@ export function SceneGraphNodeView({ uri }: Props) {
     );
   }
 
-  // Group the transforms under one tab, in the following order. Only show the transforms
-  // that are actually present
-  const transforms = [scale, translation, rotation].filter((t) => t !== undefined);
-
   enum TabKeys {
     Renderable = 'renderable',
     Transform = 'transform',
@@ -65,7 +44,13 @@ export function SceneGraphNodeView({ uri }: Props) {
     TimeFrame = 'timeframe'
   }
 
-  const defaultTab = renderable ? TabKeys.Renderable : TabKeys.Transform;
+  const renderable = propertyOwner.subowners.find((uri) => isRenderable(uri));
+  const hasRenderable = renderable !== undefined;
+
+  // Group the transforms under one tab
+  const transforms = propertyOwner.subowners.filter((uri) => isSgnTransform(uri));
+
+  const defaultTab = hasRenderable ? TabKeys.Renderable : TabKeys.Transform;
   const hasOther = visibleProperties.length > 0;
 
   return (
@@ -77,12 +62,12 @@ export function SceneGraphNodeView({ uri }: Props) {
         <Tabs.List>
           <Tooltip
             label={
-              renderable
+              hasRenderable
                 ? 'Properties that control the visuals of this object'
                 : 'This scene graph node has no renderable'
             }
           >
-            <Tabs.Tab value={TabKeys.Renderable} disabled={!renderable}>
+            <Tabs.Tab value={TabKeys.Renderable} disabled={!hasRenderable}>
               Renderable
             </Tabs.Tab>
           </Tooltip>
@@ -118,9 +103,9 @@ export function SceneGraphNodeView({ uri }: Props) {
         </Tabs.List>
 
         <Tabs.Panel value={TabKeys.Renderable}>
-          {renderable ? (
+          {hasRenderable ? (
             <Box mt={'xs'}>
-              <PropertyOwnerContent uri={renderable.uri} />
+              <PropertyOwnerContent uri={renderable} />
             </Box>
           ) : (
             <Text m={'xs'}>This scene graph node has no renderable.</Text>
@@ -129,12 +114,8 @@ export function SceneGraphNodeView({ uri }: Props) {
 
         <Tabs.Panel value={TabKeys.Transform} mt={'xs'}>
           {transforms.length > 0 ? (
-            transforms.map((subowner) => (
-              <PropertyOwner
-                key={subowner.identifier}
-                uri={subowner.uri}
-                expandedOnDefault
-              />
+            transforms.map((uri) => (
+              <PropertyOwner key={uri} uri={uri} expandedOnDefault />
             ))
           ) : (
             <Text m={'xs'}>This scene graph node has no transform</Text>
@@ -149,11 +130,11 @@ export function SceneGraphNodeView({ uri }: Props) {
               <Group justify={'space-between'} gap={'xs'}>
                 <Group gap={'xs'}>
                   <Text size={'sm'}>Current state:</Text>
-                  <InfoBox
-                    text={`This object has an attached time frame and will only be visible
-                    during the time for which it is active. Note that the active time
-                    depends on the type of time frame used.`}
-                  />
+                  <InfoBox>
+                    This object has an attached time frame and will only be visible during
+                    the time for which it is active. Note that the active time depends on
+                    the type of time frame used.
+                  </InfoBox>
                 </Group>
                 <Tooltip
                   label={

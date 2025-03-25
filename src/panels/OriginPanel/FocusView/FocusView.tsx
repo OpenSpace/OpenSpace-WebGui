@@ -1,18 +1,15 @@
 import { Button, Divider, Group, Kbd, Paper, Text, Title } from '@mantine/core';
 
-import {
-  useGetStringPropertyValue,
-  useOpenSpaceApi,
-  useSubscribeToEngineMode
-} from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { useStringProperty } from '@/hooks/properties';
+import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { CancelIcon, FocusIcon } from '@/icons/icons';
-import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
 import { Identifier, PropertyOwner } from '@/types/types';
-import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
-import { sgnUri } from '@/util/propertyTreeHelpers';
+import { NavigationAimKey } from '@/util/keys';
+import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { RemainingFlightTimeIndicator } from '../RemainingFlightTimeIndicator';
 
@@ -25,17 +22,15 @@ interface Props {
 }
 
 export function FocusView({ favorites, searchableNodes, matcherFunction }: Props) {
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const engineMode = useSubscribeToEngineMode();
 
-  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
-  const [aim] = useGetStringPropertyValue(NavigationAimKey);
+  const anchorNode = useAnchorNode();
+  const [aim] = useStringProperty(NavigationAimKey);
 
   const luaApi = useOpenSpaceApi();
 
-  const anchorNode = anchor ? propertyOwners[sgnUri(anchor)] : undefined;
   const isInFlight = engineMode === EngineMode.CameraPath;
-  const hasAim = aim !== '' && aim !== anchor;
+  const hasAim = aim !== '' && aim !== anchorNode?.identifier;
 
   function onSelect(
     identifier: Identifier,
@@ -64,12 +59,11 @@ export function FocusView({ favorites, searchableNodes, matcherFunction }: Props
     <FilterList>
       <Group justify={'space-between'}>
         <Title order={2}>Focus</Title>
-        <InfoBox text={infoBoxContent} w={300} />
+        <InfoBox w={300}>{infoBoxContent}</InfoBox>
       </Group>
       <>
         {anchorNode && !isInFlight && (
           <FocusEntry
-            key={anchor}
             entry={anchorNode}
             onSelect={onSelect}
             isActive={!hasAim}
@@ -106,8 +100,9 @@ export function FocusView({ favorites, searchableNodes, matcherFunction }: Props
             key={entry.identifier}
             entry={entry}
             onSelect={onSelect}
-            isActive={!hasAim && anchor === entry.identifier}
+            isActive={!hasAim && anchorNode?.identifier === entry.identifier}
             disableFocus={isInFlight}
+            mb={3}
           />
         ))}
       </FilterList.Favorites>
@@ -118,13 +113,13 @@ export function FocusView({ favorites, searchableNodes, matcherFunction }: Props
             key={node.identifier}
             entry={node}
             onSelect={onSelect}
-            isActive={!hasAim && anchor === node.identifier}
+            isActive={!hasAim && anchorNode?.identifier === node.identifier}
             disableFocus={isInFlight}
           />
         )}
         matcherFunc={matcherFunction}
       >
-        <FilterList.SearchResults.VirtualList />
+        <FilterList.SearchResults.VirtualList gap={3} />
       </FilterList.SearchResults>
     </FilterList>
   );
