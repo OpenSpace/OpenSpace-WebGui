@@ -5,6 +5,7 @@ import { usePropListeningState } from '@/hooks/util';
 import { IconSize } from '@/types/enums';
 
 import { NumberStepControls } from './NumberStepControls';
+import { MdWarning } from 'react-icons/md';
 
 interface Props extends NumberInputProps {
   // The function to call when the user hits the ENTER key or presses the UP/DOWN buttons
