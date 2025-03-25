@@ -1,16 +1,18 @@
 import { Paper, Text } from '@mantine/core';
 
 import { StringInput } from '@/components/Input/StringInput';
+import { PropertyProps } from '@/components/Property/types';
+import { usePropertyDescription, useStringProperty } from '@/hooks/properties';
 
-import { ConcretePropertyBaseProps } from '../types';
+export function StringProperty({ uri, readOnly }: PropertyProps) {
+  const [value, setValue] = useStringProperty(uri);
+  const description = usePropertyDescription(uri);
 
-interface Props extends ConcretePropertyBaseProps {
-  setPropertyValue: (newValue: string) => void;
-  value: string;
-}
+  if (value === undefined || !description) {
+    return <></>;
+  }
 
-export function StringProperty({ name, disabled, setPropertyValue, value }: Props) {
-  if (disabled) {
+  if (readOnly) {
     return (
       <Paper px={'sm'} py={5}>
         <Text size={'sm'}>{value}</Text>
@@ -18,6 +20,10 @@ export function StringProperty({ name, disabled, setPropertyValue, value }: Prop
     );
   }
   return (
-    <StringInput onEnter={setPropertyValue} value={value} aria-label={`${name} input`} />
+    <StringInput
+      onEnter={setValue}
+      value={value}
+      aria-label={`${description.name} input`}
+    />
   );
 }

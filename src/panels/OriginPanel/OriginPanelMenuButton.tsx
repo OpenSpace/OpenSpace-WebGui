@@ -1,13 +1,9 @@
 import { Group } from '@mantine/core';
 
-import {
-  useGetPropertyOwner,
-  useGetStringPropertyValue,
-  useSubscribeToEngineMode
-} from '@/api/hooks';
+import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { EngineMode } from '@/types/enums';
 import { MenuItemEventHandlers } from '@/types/types';
-import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
+import { useAimNode, useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { AnchorAimButtons } from './MenuButtons/AnchorAimButtons';
 import { CancelFlightButton } from './MenuButtons/CancelFlightButton';
@@ -19,17 +15,14 @@ interface Props {
 }
 
 export function OriginPanelMenuButton({ eventHandlers }: Props) {
-  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
-  const [aim] = useGetStringPropertyValue(NavigationAimKey);
-  const anchorName = useGetPropertyOwner(`${ScenePrefixKey}${anchor}`)?.name ?? anchor;
-  const aimName = useGetPropertyOwner(`${ScenePrefixKey}${aim}`)?.name ?? aim;
+  const aimNode = useAimNode();
+  const anchorNode = useAnchorNode();
+
   const engineMode = useSubscribeToEngineMode();
 
-  function hasDistinctAim() {
-    return aim !== '' && aim !== anchor;
-  }
+  const hasDistinctAim = aimNode && aimNode.identifier !== anchorNode?.identifier;
 
-  const isReady = anchor !== '' && anchor !== undefined;
+  const isReady = anchorNode !== undefined;
 
   const isInFlight = engineMode === EngineMode.CameraPath;
 
@@ -42,16 +35,16 @@ export function OriginPanelMenuButton({ eventHandlers }: Props) {
     );
   }
 
-  return hasDistinctAim() ? (
+  return hasDistinctAim ? (
     <AnchorAimButtons
-      anchorName={anchorName}
-      aimName={aimName}
+      anchorName={anchorNode?.name}
+      aimName={aimNode?.name}
       isOpenSpaceReady={isReady}
       eventHandlers={eventHandlers}
     />
   ) : (
     <FocusButton
-      anchorName={anchorName}
+      anchorName={anchorNode?.name}
       isOpenSpaceReady={isReady}
       eventHandlers={eventHandlers}
     />

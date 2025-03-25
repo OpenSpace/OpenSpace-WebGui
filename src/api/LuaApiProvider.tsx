@@ -1,13 +1,13 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
 
 import { api } from '@/api/api';
+import { useIsConnectionStatus } from '@/hooks/util';
 import { closeConnection } from '@/redux/connection/connectionMiddleware';
 import { startConnection } from '@/redux/connection/connectionSlice';
 import { updateCustomGroupOrdering } from '@/redux/groups/groupsSlice';
 import { useAppDispatch } from '@/redux/hooks';
 import { ConnectionStatus } from '@/types/enums';
 
-import { useIsConnectionStatus } from './hooks';
 import { LuaApiContext } from './LuaApiContext';
 
 export function LuaApiProvider({ children }: PropsWithChildren) {

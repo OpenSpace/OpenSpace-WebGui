@@ -1,12 +1,9 @@
 import { Button, Divider, Group, Kbd, Text, Title, Tooltip } from '@mantine/core';
 
-import {
-  useGetStringPropertyValue,
-  useSubscribeToEngineMode,
-  useTriggerProperty
-} from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { useStringProperty, useTriggerProperty } from '@/hooks/properties';
+import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
@@ -31,8 +28,8 @@ export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: P
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const engineMode = useSubscribeToEngineMode();
 
-  const [anchor, setAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
-  const [aim, setAim] = useGetStringPropertyValue(NavigationAimKey);
+  const [anchor, setAnchor] = useStringProperty(NavigationAnchorKey);
+  const [aim, setAim] = useStringProperty(NavigationAimKey);
   const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
   const triggerRetargetAim = useTriggerProperty(RetargetAimKey);
 
@@ -84,8 +81,10 @@ export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: P
     <FilterList>
       <Group justify={'space-between'}>
         <Title order={2}>Anchor / Aim</Title>
-        <InfoBox text={infoBoxContent} w={300} />
+
+        <InfoBox w={300}>{infoBoxContent}</InfoBox>
       </Group>
+
       <Group gap={'xs'}>
         <Tooltip label={'Retarget anchor'} openDelay={600}>
           <Button

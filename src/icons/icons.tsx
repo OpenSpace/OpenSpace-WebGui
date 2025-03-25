@@ -70,7 +70,6 @@ export {
   MdPlayArrow as PlayIcon,
   MdFiberManualRecord as RecordIcon,
   MdRocketLaunch as RocketLaunchIcon,
-  MdOutlineCategory as SceneIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
   MdSunny as SunIcon,
@@ -90,4 +89,5 @@ export {
   PiMouseMiddleClickThin as ScrollClickMouseIcon
 } from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
+export { TbCube as SceneIcon } from 'react-icons/tb';
 export { VscFeedback as FeedbackIcon } from 'react-icons/vsc';

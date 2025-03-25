@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Checkbox, Group, Select, Stack, Title } from '@mantine/core';
 
-import { useSubscribeToSessionRecording } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
+import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 
 import { PlaybackPauseButton } from './Playback/PlaybackPauseButton';
@@ -62,12 +62,12 @@ export function PlaySession() {
             onChange={onShouldUpdateFramesChange}
             disabled={!isIdle}
           />
-          <InfoBox
-            text={`If checked, the specified number of frames will be recorded as
-                screenshots and saved to disk. Per default, they are saved in the
-                user/screenshots folder. This feature can not be used together with
-                'loop playback'`}
-          />
+          <InfoBox>
+            {`If checked, the specified number of frames will be recorded as
+              screenshots and saved to disk. Per default, they are saved in the
+              user/screenshots folder. This feature can not be used together with
+              'loop playback'`}
+          </InfoBox>
           {shouldOutputFrames && (
             <NumericInput
               value={outputFramerate}

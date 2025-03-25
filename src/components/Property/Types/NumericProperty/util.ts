@@ -7,5 +7,5 @@ export function stepToDecimalPlaces(step: number): number {
 }
 
 export function roundNumberToDecimalPlaces(num: number, decimalPlaces: number): string {
-  return num.toFixed(decimalPlaces);
+  return parseFloat(num.toFixed(decimalPlaces)).toString();
 }

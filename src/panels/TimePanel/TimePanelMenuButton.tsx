@@ -1,6 +1,6 @@
 import { Skeleton, Stack, Text } from '@mantine/core';
 
-import { useSubscribeToTime } from '@/api/hooks';
+import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
 import { MenuItemEventHandlers } from '@/types/types';
