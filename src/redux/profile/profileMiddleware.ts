@@ -4,7 +4,14 @@ import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 
-import { ProfileState } from './profileSlice';
+import { setMenuItemVisible } from '../local/localSlice';
+
+export interface ProfileState {
+  uiPanelVisibility: {
+    [key: string]: boolean;
+  };
+  markNodes: string[];
+}
 
 export const getProfile = createAsyncThunk('profile/getProfile', async () => {
   const topic = api.startTopic('profile', {});
@@ -18,6 +25,16 @@ export const addProfileListener = (startListening: AppStartListening) => {
     actionCreator: onOpenConnection,
     effect: async (_, listenerApi) => {
       listenerApi.dispatch(getProfile());
+    }
+  });
+
+  startListening({
+    actionCreator: getProfile.fulfilled,
+    effect: async (action, listenerApi) => {
+      Object.entries(action.payload.uiPanelVisibility).forEach(([key, value]) => {
+        listenerApi.dispatch(setMenuItemVisible({ id: key, visible: value }));
+      });
+      // @TODO (ylvse 2025-03-15): handle marknodes
     }
   });
 };
