@@ -18,6 +18,7 @@ import {
   VideocamIcon
 } from '@/icons/icons';
 import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
+import { TaskbarItemConfig } from '@/panels/Menu/types';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { TempPropertyTest } from '@/panels/Scene/TempPropertyTest';
 import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
@@ -44,7 +45,6 @@ import {
   TimePanel,
   UserPanelsPanel
 } from './LazyLoads';
-import { TaskbarItemConfig } from '@/panels/Menu/types';
 
 export interface MenuItem {
   title: string; // Title of the rc-dock tab

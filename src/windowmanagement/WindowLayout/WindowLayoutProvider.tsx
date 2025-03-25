@@ -2,12 +2,12 @@ import React, { useCallback, useRef } from 'react';
 import { Title } from '@mantine/core';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
+import { useAppDispatch } from '@/redux/hooks';
+import { setMenuItemOpen } from '@/redux/local/localSlice';
 import { Window } from '@/windowmanagement/Window/Window';
 
 import { FloatWindowPosition, WindowLayoutOptions } from './types';
 import { WindowLayoutContext } from './WindowLayoutContext';
-import { useAppDispatch } from '@/redux/hooks';
-import { setMenuItemOpen } from '@/redux/local/localSlice';
 
 export function WindowLayoutProvider({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();
@@ -114,20 +114,23 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
       dispatch(setMenuItemOpen({ id: options.id, open: true }));
     },
 
-    [createWindowTabData]
+    [createWindowTabData, dispatch]
   );
 
-  const closeWindow = useCallback((id: string) => {
-    if (!rcDocRef.current) {
-      return;
-    }
+  const closeWindow = useCallback(
+    (id: string) => {
+      if (!rcDocRef.current) {
+        return;
+      }
 
-    const existingPanel = rcDocRef.current.find(id);
-    if (existingPanel) {
-      rcDocRef.current.dockMove(existingPanel as TabData | PanelData, null, 'remove');
-      dispatch(setMenuItemOpen({ id: id, open: false }));
-    }
-  }, []);
+      const existingPanel = rcDocRef.current.find(id);
+      if (existingPanel) {
+        rcDocRef.current.dockMove(existingPanel as TabData | PanelData, null, 'remove');
+        dispatch(setMenuItemOpen({ id: id, open: false }));
+      }
+    },
+    [dispatch]
+  );
 
   return (
     <WindowLayoutContext.Provider

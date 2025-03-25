@@ -59,7 +59,7 @@ export const localSlice = createSlice({
       }
       return state;
     },
-    setMenuItemOpen: (state, action: PayloadAction<{ id: String; open: boolean }>) => {
+    setMenuItemOpen: (state, action: PayloadAction<{ id: string; open: boolean }>) => {
       const item = state.taskbarItems.find((item) => item.id === action.payload.id);
       if (item) {
         item.isOpen = action.payload.open;

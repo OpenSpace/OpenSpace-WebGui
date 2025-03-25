@@ -4,6 +4,8 @@ import DockLayout, { DockContext, LayoutData, PanelData, TabGroup } from 'rc-doc
 import { FlightController } from '@/panels/FlightControlPanel/FlightController';
 import { TaskBar } from '@/panels/Menu/TaskBar/TaskBar';
 import { TopMenuBar } from '@/panels/Menu/TopMenuBar/TopMenuBar';
+import { useAppDispatch } from '@/redux/hooks';
+import { setMenuItemOpen } from '@/redux/local/localSlice';
 
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
 
@@ -11,8 +13,6 @@ import { useWindowLayoutProvider } from './hooks';
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import './WindowLayout.css';
-import { useAppDispatch } from '@/redux/hooks';
-import { setMenuItemOpen } from '@/redux/local/localSlice';
 
 function createDefaultLayout(): LayoutData {
   return {
