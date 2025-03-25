@@ -1,22 +1,22 @@
-import { Button, Skeleton, Stack, Text } from '@mantine/core';
+import { Skeleton, Stack, Text } from '@mantine/core';
 
 import { FocusIcon } from '@/icons/icons';
+import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
 import { IconSize } from '@/types/enums';
+import { MenuItemEventHandlers } from '@/types/types';
 
 interface Props {
   anchorName: string | undefined;
   isOpenSpaceReady: boolean;
-  onClick: () => void;
+  eventHandlers: MenuItemEventHandlers;
 }
 
-export function FocusButton({ anchorName, isOpenSpaceReady, onClick }: Props) {
+export function FocusButton({ anchorName, isOpenSpaceReady, eventHandlers }: Props) {
   return (
-    <Button
-      onClick={onClick}
+    <TaskBarMenuButton
+      {...eventHandlers}
       disabled={!isOpenSpaceReady}
       leftSection={<FocusIcon size={IconSize.lg} />}
-      size={'xl'}
-      variant={'menubar'}
     >
       <Stack gap={0} maw={130} ta={'start'}>
         {!isOpenSpaceReady && <Skeleton>Anchor</Skeleton>}
@@ -25,6 +25,6 @@ export function FocusButton({ anchorName, isOpenSpaceReady, onClick }: Props) {
           Focus
         </Text>
       </Stack>
-    </Button>
+    </TaskBarMenuButton>
   );
 }

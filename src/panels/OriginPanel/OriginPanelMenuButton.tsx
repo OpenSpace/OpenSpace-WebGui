@@ -2,6 +2,7 @@ import { Group } from '@mantine/core';
 
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { EngineMode } from '@/types/enums';
+import { MenuItemEventHandlers } from '@/types/types';
 import { useAimNode, useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { AnchorAimButtons } from './MenuButtons/AnchorAimButtons';
@@ -9,11 +10,11 @@ import { CancelFlightButton } from './MenuButtons/CancelFlightButton';
 import { FocusButton } from './MenuButtons/FocusButton';
 import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
-interface OriginPanelMenuButtonProps {
-  onClick: () => void;
+interface Props {
+  eventHandlers: MenuItemEventHandlers;
 }
 
-export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
+export function OriginPanelMenuButton({ eventHandlers }: Props) {
   const aimNode = useAimNode();
   const anchorNode = useAnchorNode();
 
@@ -39,13 +40,13 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
       anchorName={anchorNode?.name}
       aimName={aimNode?.name}
       isOpenSpaceReady={isReady}
-      onClick={onClick}
+      eventHandlers={eventHandlers}
     />
   ) : (
     <FocusButton
       anchorName={anchorNode?.name}
       isOpenSpaceReady={isReady}
-      onClick={onClick}
+      eventHandlers={eventHandlers}
     />
   );
 }

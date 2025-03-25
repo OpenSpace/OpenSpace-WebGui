@@ -43,9 +43,5 @@ export function useMenuItems() {
     enablePanel('skyBrowser', isSkyBrowserEnabled ?? false);
   }, [isSkyBrowserEnabled, enablePanel]);
 
-  function setMenuItemVisible(id: string, value: boolean) {
-    dispatch(setMenuItemVisibleRedux({ id, visible: value }));
-  }
-
-  return { menuItems, filteredMenuItems, setMenuItemVisible };
+  return { menuItems, filteredMenuItems };
 }

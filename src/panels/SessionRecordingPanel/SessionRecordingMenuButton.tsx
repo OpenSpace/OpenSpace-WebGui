@@ -1,9 +1,12 @@
-import { ActionIcon, Group } from '@mantine/core';
+import { Group } from '@mantine/core';
 
 import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
 import { VideocamIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';
+import { MenuItemEventHandlers } from '@/types/types';
+
+import { TaskBarMenuButton } from '../Menu/TaskBar/TaskBarMenuButton';
 
 import { PlaybackPauseButton } from './Playback/PlaybackPauseButton';
 import { PlaybackResumeButton } from './Playback/PlaybackResumeButton';
@@ -11,11 +14,11 @@ import { PlaybackStopButton } from './Playback/PlaybackStopButton';
 import { RecordingStopButton } from './Record/RecordingStopButton';
 import { RecordingState } from './types';
 
-interface SessionRecMenuButtonProps {
-  onClick: () => void;
+interface Props {
+  eventHandlers: MenuItemEventHandlers;
 }
 
-export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProps) {
+export function SessionRecordingMenuButton({ eventHandlers }: Props) {
   const recordingState = useSubscribeToSessionRecording();
 
   const { recordingFileName: fileName } = useAppSelector(
@@ -45,8 +48,8 @@ export function SessionRecordingMenuButton({ onClick }: SessionRecMenuButtonProp
   }
 
   return (
-    <ActionIcon onClick={onClick} variant={'menubar'} size={'input-xl'}>
+    <TaskBarMenuButton {...eventHandlers} aria-label={'Session Recording'}>
       <VideocamIcon size={IconSize.lg} />
-    </ActionIcon>
+    </TaskBarMenuButton>
   );
 }
