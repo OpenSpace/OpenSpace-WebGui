@@ -6,6 +6,8 @@ import { useBoolProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
+import { useBrowserRadius } from '../hooks';
+
 import { useWwtProvider } from './WwtProvider/hooks';
 import {
   useUpdateAim,
@@ -27,6 +29,7 @@ export function WorldWideTelescopeView() {
   const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
   const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
   const [inverseZoom] = useBoolProperty('Modules.SkyBrowser.InverseZoomDirection');
+  const radius = useBrowserRadius(id);
 
   // A bunch of hooks that pass messages to WWT when our redux state changes
   useUpdateAim(id);
@@ -112,7 +115,11 @@ export function WorldWideTelescopeView() {
         allowFullScreen
         height={height}
         width={width}
-        style={{ borderWidth: 0, pointerEvents: 'none' }}
+        style={{
+          border: '0px solid transparent',
+          borderRadius: radius * 1000,
+          pointerEvents: 'none'
+        }}
       >
         <p>ERROR: cannot display AAS WorldWide Telescope research app!</p>
       </iframe>
