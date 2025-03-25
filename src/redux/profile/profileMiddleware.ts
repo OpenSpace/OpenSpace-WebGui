@@ -8,6 +8,8 @@ import { setMenuItemVisible } from '../local/localSlice';
 
 export interface ProfileState {
   uiPanelVisibility: {
+    // The key here should match the id of the menu item,
+    // else will be ignored
     [key: string]: boolean;
   };
   markNodes: string[];

@@ -1,8 +1,6 @@
 import { useFileDialog } from '@mantine/hooks';
 
-function useLoadJsonFile(handlePickedFile: (content: JSON) => void): {
-  openLoadFileDialog: () => void;
-} {
+function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void {
   const fileDialog = useFileDialog({
     multiple: false,
     accept: '.json',
@@ -28,7 +26,7 @@ function useLoadJsonFile(handlePickedFile: (content: JSON) => void): {
     fileDialog.open();
   }
 
-  return { openLoadFileDialog };
+  return openLoadFileDialog;
 }
 
 // For documentation about these features please read this article:
@@ -52,13 +50,13 @@ async function openSaveFileDialog(contents: JSON) {
     // It is an experimental feature of the chromium browser
     const fileHandle = await window.showSaveFilePicker(options);
 
-    // Create a FileSystemWritableFileStream to write to.
+    // Create a FileSystemWritableFileStream to write to
     const writable = await fileHandle.createWritable();
 
-    // Write the contents of the file to the stream.
+    // Write the contents of the file to the stream
     await writable.write(contentsString);
 
-    // Close the file and write the contents to disk.
+    // Close the file and write the contents to disk
     await writable.close();
   } else {
     // This is the fallback code if showSaveFilePicker is not available
@@ -81,7 +79,7 @@ async function openSaveFileDialog(contents: JSON) {
 // Exporting these as a hook as they seem to belong in the same file,
 // even though only on of them is a hook
 export function useSaveLoadJsonFiles(handlePickedFile: (content: JSON) => void) {
-  const { openLoadFileDialog } = useLoadJsonFile(handlePickedFile);
+  const openLoadFileDialog = useLoadJsonFile(handlePickedFile);
 
   return { openSaveFileDialog, openLoadFileDialog };
 }

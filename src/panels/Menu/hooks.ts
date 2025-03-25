@@ -72,9 +72,9 @@ export function useStoredLayout() {
     // Our lua function can't read the object if it is an array so
     // we need to convert it to an object
     const object = menuItems.reduce<Record<string, TaskbarItemConfig>>(
-      (acc, item, index) => {
-        acc[index.toString()] = item;
-        return acc;
+      (accumulator, item, index) => {
+        accumulator[index.toString()] = item;
+        return accumulator;
       },
       {}
     );
