@@ -1,6 +1,7 @@
 import { CheckboxIndicator, Group, Menu, Radio, Stack } from '@mantine/core';
 
 import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { AdditionalDataOptions } from '@/components/Property/types';
 import { useOptionProperty, usePropertyDescription } from '@/hooks/properties';
 import { ChevronRightIcon, SaveIcon, TaskBarIcon, VisibilityIcon } from '@/icons/icons';
@@ -23,7 +24,8 @@ export function ViewMenu() {
   if (!description) {
     return <></>;
   }
-  const { Options: data } = description.additionalData as AdditionalDataOptions;
+  const { Options: userLevelOptions } =
+    description.additionalData as AdditionalDataOptions;
 
   return (
     <TopBarMenuWrapper targetTitle={'View'} withinPortal={false}>
@@ -84,13 +86,21 @@ export function ViewMenu() {
         withinPortal={false}
         closeOnItemClick={false}
       >
-        <Menu.Label>Set visibility level for user</Menu.Label>
+        <Menu.Label>
+          <Group justify={'space-between'}>
+            Set visibility level
+            <InfoBox
+              text={`Controls what settings will be exposed in the interface. Increase the
+                level to reveal more advanced settings.`}
+            />
+          </Group>
+        </Menu.Label>
         <Radio.Group
           value={propertyVisibility?.toString()}
           onChange={(newValue) => setPropertyVisibility(parseInt(newValue))}
         >
           <Stack gap={'xs'} m={'xs'}>
-            {Object.entries(data).map(([key, option]) => (
+            {Object.entries(userLevelOptions).map(([key, option]) => (
               <Radio key={key} aria-label={option} label={option} value={key} />
             ))}
           </Stack>

@@ -11,14 +11,16 @@ export function OptionProperty({ uri, readOnly }: PropertyProps) {
     return <></>;
   }
 
-  const { Options: data } = description.additionalData as AdditionalDataOptions;
+  const { Options: options } = description.additionalData as AdditionalDataOptions;
 
   return (
     <Select
       aria-label={`${description.name} option input`}
       placeholder={'Choose an option'}
       disabled={readOnly}
-      data={Object.entries(data).map(([value, label]) => {
+      // For each entry in the options object, the numeric value is the key, and the
+      // label is the value
+      data={Object.entries(options).map(([value, label]) => {
         return { value: value, label: label };
       })}
       value={value.toString()}
