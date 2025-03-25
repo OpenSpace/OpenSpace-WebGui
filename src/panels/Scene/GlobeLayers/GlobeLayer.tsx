@@ -1,6 +1,7 @@
 import { Group, Text } from '@mantine/core';
 
 import { Collapsable } from '@/components/Collapsable/Collapsable';
+import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
@@ -31,7 +32,10 @@ export function GlobeLayer({ uri }: Props) {
       leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
       rightSection={
         <Group wrap={'nowrap'}>
-          <InfoBox text={propertyOwner.description || 'No information'} />
+          <InfoBox>
+            {propertyOwner.description || 'No information'}
+            <CopyUriButton uri={uri} />
+          </InfoBox>
         </Group>
       }
       noTransition
