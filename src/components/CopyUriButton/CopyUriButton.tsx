@@ -1,4 +1,4 @@
-import { Code,Group } from '@mantine/core';
+import { Code, Group } from '@mantine/core';
 
 import { CopyToClipboardButton } from '../CopyToClipboardButton/CopyToClipboardButton';
 

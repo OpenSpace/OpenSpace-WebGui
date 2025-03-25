@@ -1,8 +1,5 @@
 import { useRef } from 'react';
-import { BsExclamation } from 'react-icons/bs';
-import { MdDangerous, MdWarning } from 'react-icons/md';
-import { PiWarningFill } from 'react-icons/pi';
-import { NumberInput, NumberInputProps, ThemeIcon } from '@mantine/core';
+import { NumberInput, NumberInputProps, ThemeIcon, Tooltip } from '@mantine/core';
 
 import { usePropListeningState } from '@/hooks/util';
 import { IconSize } from '@/types/enums';
@@ -132,9 +129,11 @@ export function NumericInput({
       leftSection={
         isOutsideRange &&
         !isEditing && (
-          <ThemeIcon color={'orange.4'} variant={"transparent"}>
-            <MdWarning size={IconSize.xs} />
-          </ThemeIcon>
+          <Tooltip label={`Value outside range [${min}, ${max}]`}>
+            <ThemeIcon color={'orange.4'} variant={'transparent'}>
+              <MdWarning size={IconSize.xs} />
+            </ThemeIcon>
+          </Tooltip>
         )
       }
       rightSection={
