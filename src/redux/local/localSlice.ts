@@ -18,7 +18,12 @@ const initialState: LocalState = {
     currentlySelectedNode: null
   },
   taskbarItems: Object.values(menuItemsData).map((item) => {
-    return { id: item.componentID, visible: item.defaultVisible, enabled: true };
+    return {
+      id: item.componentID,
+      visible: item.defaultVisible,
+      enabled: true,
+      name: item.title
+    };
   })
 };
 
