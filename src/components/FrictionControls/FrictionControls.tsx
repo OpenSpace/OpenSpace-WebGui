@@ -62,48 +62,44 @@ export function FrictionControls({ size, gap = 'xs', align, mr }: Props) {
         </Chip>
       </Group>
 
-      <InfoBox
-        text={
-          <>
-            <Text size={'md'} fw={'bold'}>
-              Friction controls:
-            </Text>
-            <Text>
-              Enable or disable rotation, zoom, and roll friction. If checked, applies
-              friction to camera movement.
-            </Text>
-            <Stack gap={'xs'}>
-              {rotationKeybind && (
-                <Group justify={'space-between'}>
-                  <Text fw={'bold'}>Rotation:</Text>
-                  <KeybindButtons
-                    modifiers={rotationKeybind.modifiers}
-                    selectedKey={rotationKeybind.key}
-                  />
-                </Group>
-              )}
-              {zoomKeybind && (
-                <Group justify={'space-between'}>
-                  <Text fw={'bold'}>Zoom:</Text>
-                  <KeybindButtons
-                    modifiers={zoomKeybind.modifiers}
-                    selectedKey={zoomKeybind.key}
-                  />
-                </Group>
-              )}
-              {rollKeybind && (
-                <Group justify={'space-between'}>
-                  <Text fw={'bold'}>Roll:</Text>
-                  <KeybindButtons
-                    modifiers={rollKeybind.modifiers}
-                    selectedKey={rollKeybind.key}
-                  />
-                </Group>
-              )}
-            </Stack>
-          </>
-        }
-      />
+      <InfoBox>
+        <Text size={'md'} fw={'bold'}>
+          Friction controls:
+        </Text>
+        <Text>
+          Enable or disable rotation, zoom, and roll friction. If checked, applies
+          friction to camera movement.
+        </Text>
+        <Stack gap={'xs'}>
+          {rotationKeybind && (
+            <Group justify={'space-between'}>
+              <Text fw={'bold'}>Rotation:</Text>
+              <KeybindButtons
+                modifiers={rotationKeybind.modifiers}
+                selectedKey={rotationKeybind.key}
+              />
+            </Group>
+          )}
+          {zoomKeybind && (
+            <Group justify={'space-between'}>
+              <Text fw={'bold'}>Zoom:</Text>
+              <KeybindButtons
+                modifiers={zoomKeybind.modifiers}
+                selectedKey={zoomKeybind.key}
+              />
+            </Group>
+          )}
+          {rollKeybind && (
+            <Group justify={'space-between'}>
+              <Text fw={'bold'}>Roll:</Text>
+              <KeybindButtons
+                modifiers={rollKeybind.modifiers}
+                selectedKey={rollKeybind.key}
+              />
+            </Group>
+          )}
+        </Stack>
+      </InfoBox>
     </Group>
   );
 }
