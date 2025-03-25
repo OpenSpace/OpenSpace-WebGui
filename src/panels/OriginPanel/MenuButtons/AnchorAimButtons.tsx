@@ -10,18 +10,20 @@ interface Props {
   aimName: string | undefined;
   isOpenSpaceReady: boolean;
   eventHandlers: MenuItemEventHandlers;
+  isOpen: boolean;
 }
 
 export function AnchorAimButtons({
   anchorName,
   aimName,
   isOpenSpaceReady,
-  eventHandlers
+  eventHandlers,
+  isOpen
 }: Props) {
   // TODO: make sure Button has a working label for screen readers since we have mixed
   // icons, text and other elements inside the button
   return (
-    <TaskBarMenuButton {...eventHandlers} disabled={!isOpenSpaceReady}>
+    <TaskBarMenuButton {...eventHandlers} disabled={!isOpenSpaceReady} isOpen={isOpen}>
       <Group>
         <Group gap={5} align={'center'}>
           <AnchorIcon size={IconSize.md} />

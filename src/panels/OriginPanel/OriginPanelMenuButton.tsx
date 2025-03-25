@@ -12,9 +12,10 @@ import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
 interface Props {
   eventHandlers: MenuItemEventHandlers;
+  isOpen: boolean;
 }
 
-export function OriginPanelMenuButton({ eventHandlers }: Props) {
+export function OriginPanelMenuButton({ eventHandlers, isOpen }: Props) {
   const aimNode = useAimNode();
   const anchorNode = useAnchorNode();
 
@@ -41,12 +42,14 @@ export function OriginPanelMenuButton({ eventHandlers }: Props) {
       aimName={aimNode?.name}
       isOpenSpaceReady={isReady}
       eventHandlers={eventHandlers}
+      isOpen={isOpen}
     />
   ) : (
     <FocusButton
       anchorName={anchorNode?.name}
       isOpenSpaceReady={isReady}
       eventHandlers={eventHandlers}
+      isOpen={isOpen}
     />
   );
 }

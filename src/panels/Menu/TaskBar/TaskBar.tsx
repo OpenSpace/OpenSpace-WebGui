@@ -61,9 +61,13 @@ export function TaskBar() {
               }}
             >
               {item?.renderMenuButton ? (
-                item.renderMenuButton(eventHandlers(item))
+                item.renderMenuButton(eventHandlers(item), itemConfig)
               ) : (
-                <TaskBarMenuButton {...eventHandlers(item)} aria-label={item.title}>
+                <TaskBarMenuButton
+                  {...eventHandlers(item)}
+                  isOpen={itemConfig.isOpen}
+                  aria-label={item.title}
+                >
                   {item.renderIcon ? item.renderIcon(IconSize.lg) : item.title}
                 </TaskBarMenuButton>
               )}

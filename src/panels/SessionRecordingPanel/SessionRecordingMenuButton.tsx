@@ -16,9 +16,10 @@ import { RecordingState } from './types';
 
 interface Props {
   eventHandlers: MenuItemEventHandlers;
+  isOpen: boolean;
 }
 
-export function SessionRecordingMenuButton({ eventHandlers }: Props) {
+export function SessionRecordingMenuButton({ eventHandlers, isOpen }: Props) {
   const recordingState = useSubscribeToSessionRecording();
 
   const { recordingFileName: fileName } = useAppSelector(
@@ -48,7 +49,11 @@ export function SessionRecordingMenuButton({ eventHandlers }: Props) {
   }
 
   return (
-    <TaskBarMenuButton {...eventHandlers} aria-label={'Session Recording'}>
+    <TaskBarMenuButton
+      {...eventHandlers}
+      aria-label={'Session Recording'}
+      isOpen={isOpen}
+    >
       <VideocamIcon size={IconSize.lg} />
     </TaskBarMenuButton>
   );

@@ -2,9 +2,17 @@ import { Button, ButtonProps } from '@mantine/core';
 
 import { MenuItemEventHandlers } from '@/types/types';
 
-interface Props extends MenuItemEventHandlers, ButtonProps {}
+interface Props extends MenuItemEventHandlers, ButtonProps {
+  isOpen: boolean;
+}
 
-export function TaskBarMenuButton({ onClick, onRightClick, children, ...props }: Props) {
+export function TaskBarMenuButton({
+  onClick,
+  onRightClick,
+  isOpen,
+  children,
+  ...props
+}: Props) {
   return (
     <Button
       px={'sm'}
@@ -13,6 +21,10 @@ export function TaskBarMenuButton({ onClick, onRightClick, children, ...props }:
       size={'xl'}
       variant={'menubar'}
       {...props}
+      style={{
+        borderBottom: isOpen ? '4px solid var(--mantine-primary-color-filled)' : '',
+        borderRadius: 0
+      }}
     >
       {children}
     </Button>

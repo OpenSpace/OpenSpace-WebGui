@@ -11,9 +11,10 @@ import { formatDeltaTime } from './util';
 
 interface Props {
   eventHandlers: MenuItemEventHandlers;
+  isOpen: boolean;
 }
 
-export function TimePanelMenuButton({ eventHandlers }: Props) {
+export function TimePanelMenuButton({ eventHandlers, isOpen }: Props) {
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime);
   const isPaused = useAppSelector((state) => state.time.isPaused);
   const timeString = useAppSelector((state) => state.time.timeString);
@@ -46,7 +47,12 @@ export function TimePanelMenuButton({ eventHandlers }: Props) {
   }
 
   return (
-    <TaskBarMenuButton {...eventHandlers} disabled={!isReady} aria-label={'Time Panel'}>
+    <TaskBarMenuButton
+      {...eventHandlers}
+      disabled={!isReady}
+      aria-label={'Time Panel'}
+      isOpen={isOpen}
+    >
       <Stack gap={0} align={'flex-start'}>
         {isReady ? (
           <>

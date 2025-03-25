@@ -1,4 +1,4 @@
-import { Menu } from '@mantine/core';
+import { CloseButton, Group, Menu } from '@mantine/core';
 
 import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
@@ -8,7 +8,7 @@ import { useMenuItems } from '../../hooks';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function WindowsMenu() {
-  const { addWindow } = useWindowLayoutProvider();
+  const { addWindow, closeWindow } = useWindowLayoutProvider();
   const { menuItems } = useMenuItems();
 
   return (
@@ -17,20 +17,32 @@ export function WindowsMenu() {
       {menuItems.map((itemConfig) => {
         const item = menuItemsData[itemConfig.id];
         return (
-          <Menu.Item
-            key={item.componentID}
-            leftSection={item.renderIcon?.(IconSize.xs)}
-            onClick={() => {
-              addWindow(item.content, {
-                title: item.title,
-                position: item.preferredPosition,
-                id: item.componentID,
-                floatPosition: item.floatPosition
-              });
-            }}
-          >
-            {item.title}
-          </Menu.Item>
+          <Group>
+            <Menu.Item
+              key={item.componentID}
+              leftSection={item.renderIcon?.(IconSize.xs)}
+              onClick={() => {
+                addWindow(item.content, {
+                  title: item.title,
+                  position: item.preferredPosition,
+                  id: item.componentID,
+                  floatPosition: item.floatPosition
+                });
+              }}
+              style={{
+                borderLeft: itemConfig.isOpen
+                  ? '4px solid var(--mantine-primary-color-filled)'
+                  : '4px solid transparent',
+                borderRadius: 0
+              }}
+              flex={1}
+            >
+              {item.title}
+            </Menu.Item>
+            {itemConfig.isOpen && (
+              <CloseButton onClick={() => closeWindow(item.componentID)} />
+            )}
+          </Group>
         );
       })}
     </TopBarMenuWrapper>
