@@ -133,7 +133,7 @@ export function NumericInput({
         isOutsideRange &&
         !isEditing && (
           <ThemeIcon color={'orange.4'} variant={"transparent"}>
-            <MdWarning size={IconSize.sm} />
+            <MdWarning size={IconSize.xs} />
           </ThemeIcon>
         )
       }
