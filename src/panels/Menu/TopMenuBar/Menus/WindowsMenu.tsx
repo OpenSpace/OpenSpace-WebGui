@@ -1,4 +1,4 @@
-import { CloseButton, Group, Menu } from '@mantine/core';
+import { Box, CloseButton, Group, Menu } from '@mantine/core';
 
 import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
@@ -39,9 +39,14 @@ export function WindowsMenu() {
             >
               {item.title}
             </Menu.Item>
-            {itemConfig.isOpen && (
-              <CloseButton onClick={() => closeWindow(item.componentID)} />
-            )}
+            <Box w={IconSize.md}>
+              {itemConfig.isOpen && (
+                <CloseButton
+                  onClick={() => closeWindow(item.componentID)}
+                  size={IconSize.md}
+                />
+              )}
+            </Box>
           </Group>
         );
       })}
