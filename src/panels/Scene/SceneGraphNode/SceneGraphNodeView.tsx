@@ -17,9 +17,10 @@ import styles from './SceneGraphNodeView.module.css';
 
 interface Props {
   uri: Uri;
+  closeable?: boolean;
 }
 
-export function SceneGraphNodeView({ uri }: Props) {
+export function SceneGraphNodeView({ uri, closeable = false }: Props) {
   const propertyOwner = usePropertyOwner(uri);
 
   // The SGN properties that are visible under the current user level setting
@@ -63,10 +64,12 @@ export function SceneGraphNodeView({ uri }: Props) {
           <Box key={uri} className={styles.highlight}>
             <SceneGraphNodeHeader uri={uri} />
           </Box>
-          <CloseButton
-            flex={0}
-            onClick={() => dispatch(setSceneTreeSelectedNode(null))}
-          />
+          {closeable && (
+            <CloseButton
+              flex={0}
+              onClick={() => dispatch(setSceneTreeSelectedNode(null))}
+            />
+          )}
         </Group>
       </Layout.FixedSection>
       <Layout.GrowingSection>

@@ -1,14 +1,17 @@
-import { Button, Group, Text } from '@mantine/core';
+import { ActionIcon, Button, Group, Text } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
+import { OpenInNewIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { displayName, isRenderable } from '@/util/propertyTreeHelpers';
+import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { SceneGraphNodeMoreMenu } from './SceneGraphNodeMoreMenu';
+import { SceneGraphNodeView } from './SceneGraphNodeView';
 
 interface Props {
   uri: Uri;
@@ -18,12 +21,21 @@ interface Props {
 
 export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
   const propertyOwner = usePropertyOwner(uri);
+  const { addWindow } = useWindowLayoutProvider();
 
   const renderableUri = propertyOwner?.subowners.find((uri) => isRenderable(uri));
   const hasRenderable = renderableUri !== undefined;
 
   if (!propertyOwner) {
     return <></>;
+  }
+
+  function openInNewWindow() {
+    addWindow(<SceneGraphNodeView uri={uri} />, {
+      id: 'sgn-' + uri,
+      title: name,
+      position: 'float'
+    });
   }
 
   const name = label ?? displayName(propertyOwner);
@@ -65,6 +77,9 @@ export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
             variant={'subtle'}
             identifier={propertyOwner.identifier}
           />
+          <ActionIcon onClick={openInNewWindow} size={'sm'} flex={0}>
+            <OpenInNewIcon />
+          </ActionIcon>
           <SceneGraphNodeMoreMenu uri={uri} />
         </Group>
       }

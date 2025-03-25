@@ -1,4 +1,4 @@
-import { Box } from '@mantine/core';
+import { Box, Group } from '@mantine/core';
 
 import { CollapsableHeader } from '@/components/Collapsable/CollapsableHeader/CollapsableHeader';
 
@@ -23,17 +23,21 @@ export function SceneEntry({ node, expanded, isCurrentNode, onClick, className }
       <CollapsableHeader expanded={expanded} title={node.label} />
     </Box>
   ) : (
-    <Box
+    <Group
       px={'xs'}
       py={2}
       bd={isCurrentNode ? '3px solid var(--mantine-primary-color-filled)' : 'none'}
       className={className}
+      wrap={'nowrap'}
+      gap={'xs'}
+      grow
+      preventGrowOverflow={false}
     >
       <SceneGraphNodeHeader
         uri={node.value}
         label={node.label as string}
         onClick={onClick}
       />
-    </Box>
+    </Group>
   );
 }
