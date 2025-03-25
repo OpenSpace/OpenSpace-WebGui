@@ -1,17 +1,13 @@
-import { useState } from 'react';
-import { ActionIcon, Code, Group, Popover } from '@mantine/core';
+import { PropsWithChildren, useState } from 'react';
+import { ActionIcon, Popover } from '@mantine/core';
 
 import { InformationIcon } from '@/icons/icons';
 
-import { CopyToClipboardButton } from '../CopyToClipboardButton/CopyToClipboardButton';
-
 interface Props {
-  text: React.ReactNode;
-  uri?: string;
   w?: number;
 }
 
-export function InfoBox({ text, uri, w = 320 }: Props) {
+export function InfoBox({ children, w = 320 }: Props & PropsWithChildren) {
   const [opened, setOpened] = useState(false);
 
   return (
@@ -33,15 +29,7 @@ export function InfoBox({ text, uri, w = 320 }: Props) {
         </ActionIcon>
       </Popover.Target>
 
-      <Popover.Dropdown maw={w}>
-        {text}
-        {uri && (
-          <Group pt={'sm'}>
-            <Code>Copy URI:</Code>
-            <CopyToClipboardButton value={uri} />
-          </Group>
-        )}
-      </Popover.Dropdown>
+      <Popover.Dropdown maw={w}>{children}</Popover.Dropdown>
     </Popover>
   );
 }

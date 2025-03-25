@@ -3,6 +3,8 @@ import { Group, InputLabel, Text, Tooltip } from '@mantine/core';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { usePropertyDescription } from '@/hooks/properties';
 
+import CopyUriButton from '../CopyUriButton/CopyUriButton';
+
 import { PropertyProps } from './types';
 
 export function PropertyLabel({ uri, readOnly }: PropertyProps) {
@@ -32,7 +34,12 @@ export function PropertyLabel({ uri, readOnly }: PropertyProps) {
           </Tooltip>
         )}
       </InputLabel>
-      {description && <InfoBox text={description} uri={uri} />}
+      {description && (
+        <InfoBox>
+          {description}
+          <CopyUriButton uri={uri} />
+        </InfoBox>
+      )}
     </Group>
   );
 }

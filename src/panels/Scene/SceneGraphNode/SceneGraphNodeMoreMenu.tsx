@@ -2,6 +2,7 @@ import { ActionIcon, Button, Divider, Group, Menu, Stack, Text } from '@mantine/
 import { modals } from '@mantine/modals';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
@@ -120,12 +121,10 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
                 Cannot delete the current focus node
               </Text>
             ) : (
-              <InfoBox
-                text={
-                  'Remove this scene graph node (and all its child nodes) from the scene'
-                }
-                uri={uri}
-              />
+              <InfoBox>
+                Remove this scene graph node (and all its child nodes) from the scene
+                <CopyUriButton uri={uri} />
+              </InfoBox>
             )}
           </>
         </Group>

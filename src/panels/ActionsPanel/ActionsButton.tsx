@@ -1,6 +1,7 @@
 import { Badge, Button, Card, Group, Stack, Text, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { useAppSelector } from '@/redux/hooks';
 import { Action } from '@/types/types';
@@ -43,20 +44,18 @@ export function ActionsButton({ uri, action: _action, height }: Props) {
         </Button>
         <Stack justify={'center'} align={'center'} px={5}>
           {action.documentation && (
-            <InfoBox
-              text={
-                <Stack gap={'xs'}>
-                  <Text>{action.documentation}</Text>
-                  {keybind && (
-                    <KeybindButtons
-                      modifiers={keybind.modifiers}
-                      selectedKey={keybind.key}
-                    />
-                  )}
-                </Stack>
-              }
-              uri={uri}
-            />
+            <InfoBox>
+              <Stack gap={'xs'}>
+                <Text>{action.documentation}</Text>
+                {keybind && (
+                  <KeybindButtons
+                    modifiers={keybind.modifiers}
+                    selectedKey={keybind.key}
+                  />
+                )}
+              </Stack>
+              {uri && <CopyUriButton uri={uri} />}
+            </InfoBox>
           )}
           {isLocal && (
             <Tooltip label={'Local action'} position={'top'}>

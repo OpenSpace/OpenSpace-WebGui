@@ -2,7 +2,7 @@ import { Box, Tabs, Text, Tooltip } from '@mantine/core';
 
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
-import { usePropertyOwner,useVisibleProperties } from '@/hooks/propertyOwner';
+import { usePropertyOwner, useVisibleProperties } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { isRenderable, isSgnTransform } from '@/util/propertyTreeHelpers';
 
