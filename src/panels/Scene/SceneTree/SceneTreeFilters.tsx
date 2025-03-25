@@ -56,7 +56,7 @@ export function SceneTreeFilters({ setFilter, filter }: Props) {
                 setFilter({ showOnlyVisible: event.currentTarget.checked })
               }
             />
-            <InfoBox text={'Visible = Enabled and not faded out'} />
+            <InfoBox>Visible = Enabled and not faded out</InfoBox>
           </Group>
           <Group>
             <Checkbox
@@ -66,12 +66,10 @@ export function SceneTreeFilters({ setFilter, filter }: Props) {
                 setFilter({ showHiddenNodes: event.currentTarget.checked })
               }
             />
-            <InfoBox
-              text={
-                'Show scene graph nodes that are marked as hidden in the GUI ' +
-                'part of the asset. These are otherwise hidden in the interface'
-              }
-            />
+            <InfoBox>
+              {'Show scene graph nodes that are marked as hidden in the GUI ' +
+                'part of the asset. These are otherwise hidden in the interface'}
+            </InfoBox>
           </Group>
           <Title order={3}>Tags</Title>
           <MultiSelect

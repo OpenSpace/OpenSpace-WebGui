@@ -36,7 +36,7 @@ export function FlightControlPanel() {
     dispatch(setFlightControllerEnabled(!isControllerEnabled));
   }
 
-  const InfoBoxContent = (
+  const infoBoxContent = (
     <Container>
       <Text>Interact with the highlighted area to control the camera.</Text>
       <Space h={'xs'} />
@@ -59,20 +59,23 @@ export function FlightControlPanel() {
   return (
     <>
       <Title order={2}>Flight Control</Title>
+
       <Group justify={'space-between'} my={'xs'} wrap={'nowrap'} align={'start'}>
         <Checkbox
           label={'Toggle flight control'}
           checked={isControllerEnabled}
           onChange={toggleFlightController}
         />
-        <InfoBox text={InfoBoxContent} />
+
+        <InfoBox>{infoBoxContent}</InfoBox>
       </Group>
+
       <Title order={3}>Settings</Title>
       <Text>Friction control</Text>
       <FrictionControls size={'sm'} gap={'xs'} align={'start'} />
       <Group justify={'space-between'} align={'start'} wrap={'nowrap'}>
         <Text>Input sensitivity</Text>
-        <InfoBox text={'Controls how sensitive the touch and mouse inputs are'} />
+        <InfoBox>Controls how sensitive the touch and mouse inputs are</InfoBox>
       </Group>
       <Slider
         min={0.1}

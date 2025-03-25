@@ -81,8 +81,10 @@ export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: P
     <FilterList>
       <Group justify={'space-between'}>
         <Title order={2}>Anchor / Aim</Title>
-        <InfoBox text={infoBoxContent} w={300} />
+
+        <InfoBox w={300}>{infoBoxContent}</InfoBox>
       </Group>
+
       <Group gap={'xs'}>
         <Tooltip label={'Retarget anchor'} openDelay={600}>
           <Button

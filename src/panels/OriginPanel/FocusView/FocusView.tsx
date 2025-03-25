@@ -59,7 +59,7 @@ export function FocusView({ favorites, searchableNodes, matcherFunction }: Props
     <FilterList>
       <Group justify={'space-between'}>
         <Title order={2}>Focus</Title>
-        <InfoBox text={infoBoxContent} w={300} />
+        <InfoBox w={300}>{infoBoxContent}</InfoBox>
       </Group>
       <>
         {anchorNode && !isInFlight && (
