@@ -1,7 +1,11 @@
 import { useRef } from 'react';
-import { NumberInput, NumberInputProps } from '@mantine/core';
+import { BsExclamation } from 'react-icons/bs';
+import { MdDangerous, MdWarning } from 'react-icons/md';
+import { PiWarningFill } from 'react-icons/pi';
+import { NumberInput, NumberInputProps, ThemeIcon } from '@mantine/core';
 
 import { usePropListeningState } from '@/hooks/util';
+import { IconSize } from '@/types/enums';
 
 import { NumberStepControls } from './NumberStepControls';
 
@@ -125,6 +129,14 @@ export function NumericInput({
       max={max}
       step={step}
       hideControls={hideControls}
+      leftSection={
+        isOutsideRange &&
+        !isEditing && (
+          <ThemeIcon color={'orange.4'} variant={"transparent"}>
+            <MdWarning size={IconSize.sm} />
+          </ThemeIcon>
+        )
+      }
       rightSection={
         !hideControls && (
           <NumberStepControls
@@ -135,7 +147,9 @@ export function NumericInput({
           />
         )
       }
-      error={isOutsideRange ? `Value outside range [${min}, ${max}]` : undefined}
+      error={
+        isOutsideRange && isEditing ? `Value outside range [${min}, ${max}]` : undefined
+      }
       {...props}
       // TODO: Provide error on invalid input
     />
