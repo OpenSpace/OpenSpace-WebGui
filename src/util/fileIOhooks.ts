@@ -5,10 +5,10 @@ function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void 
     multiple: false,
     accept: '.json',
     resetOnOpen: true,
-    onChange: readOpenedLayout
+    onChange: readFile
   });
 
-  async function readOpenedLayout(contents: FileList | null) {
+  async function readFile(contents: FileList | null) {
     try {
       const content = await contents?.[0]?.text();
       if (!content) {

@@ -4,6 +4,7 @@ import { useGetBoolPropertyValue } from '@/api/hooks';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   setMenuItemEnabled,
+  setMenuItemsOrder,
   setMenuItemVisible as setMenuItemVisibleRedux
 } from '@/redux/local/localSlice';
 import { useSaveLoadJsonFiles } from '@/util/fileIOhooks';
@@ -62,10 +63,26 @@ export function useStoredLayout() {
   const dispatch = useAppDispatch();
 
   function handlePickedFile(content: JSON) {
-    const newLayout = Object.values(content) as TaskbarItemConfig[];
-    for (const item of newLayout) {
-      dispatch(setMenuItemVisibleRedux({ id: item.id, visible: item.visible }));
+    if (!content || Object.keys(content).length === 0) {
+      console.error('File is empty');
+      return;
     }
+    const newLayout = Object.values(content) as TaskbarItemConfig[];
+    if (newLayout.length !== menuItems.length) {
+      console.error('Invalid layout file. Length does not match');
+      return;
+    }
+    // We have to ensure that all id's are valid before we can set
+    // the new layout
+    const isValid = newLayout.every((newItem) =>
+      menuItems.find((existingItem) => existingItem.id === newItem.id)
+    );
+    if (!isValid) {
+      console.error("Invalid layout file. All id's must match");
+      return;
+    }
+    // If it is valid we set the new layout
+    dispatch(setMenuItemsOrder(newLayout));
   }
 
   async function saveLayout() {
