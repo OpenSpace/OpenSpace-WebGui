@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   alpha,
+  Badge,
   Button,
   createTheme,
   defaultVariantColorsResolver,
@@ -42,6 +43,13 @@ export const theme = createTheme({
     ActionIcon: ActionIcon.extend({
       defaultProps: {
         variant: 'default'
+      }
+    }),
+    Badge: Badge.extend({
+      styles: {
+        label: {
+          transform: 'none'
+        }
       }
     }),
     Button: Button.extend({
