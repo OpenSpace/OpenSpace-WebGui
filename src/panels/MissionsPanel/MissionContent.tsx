@@ -141,11 +141,9 @@ export function MissionContent({ missionOverview }: Props) {
         <Group mb={'xs'} gap={'xs'} wrap={'nowrap'}>
           <Checkbox checked={displayCurrentPhase} onClick={toggleCurrentPhase} />
           <Text>Display current phase</Text>
-          <InfoBox
-            text={
-              'If enabled, the mission phase that is currently happening will be displayed. It will update as time passes.'
-            }
-          />
+          <InfoBox>
+            If enabled, the mission phase that is currently happening will be displayed. It will update as time passes.
+          </InfoBox>
         </Group>
         {displayedPhase.data ? (
           <MissionPhase
