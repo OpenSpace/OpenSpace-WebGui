@@ -37,12 +37,11 @@ export function TimePanelMenuButton({ eventHandlers }: Props) {
       return `Realtime ${isPaused ? '(Paused)' : ''}`;
     }
 
-    const { increment, unit, isNegative } = formatDeltaTime(Math.abs(targetDeltaTime));
+    const { increment, unit, isNegative } = formatDeltaTime(targetDeltaTime);
     const roundedIncrement = Math.round(increment);
-    const pluralSuffix = roundedIncrement !== 1 ? 's' : '';
     const sign = isNegative ? '-' : '';
 
-    return `${sign}${roundedIncrement} ${unit}${pluralSuffix} / second ${isPaused ? '(Paused)' : ''}`;
+    return `${sign}${roundedIncrement} ${unit} / second ${isPaused ? '(Paused)' : ''}`;
   }
 
   return (
