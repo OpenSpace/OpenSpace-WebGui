@@ -1,7 +1,7 @@
-import { ActionIcon, Container, Menu } from '@mantine/core';
+import { Container } from '@mantine/core';
 
 import { Property } from '@/components/Property/Property';
-import { SettingsIcon } from '@/icons/icons';
+import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
 import {
   ApplyIdleBehaviorOnPathFinishKey,
   CameraPathArrivalDistanceFactorKey,
@@ -11,21 +11,13 @@ import {
 
 export function OriginSettings() {
   return (
-    <Menu position={'right-start'} closeOnItemClick={false}>
-      <Menu.Target>
-        <ActionIcon>
-          <SettingsIcon />
-        </ActionIcon>
-      </Menu.Target>
-      <Menu.Dropdown>
-        <Menu.Label>Camera Path Settings</Menu.Label>
-        <Container>
-          <Property uri={CameraPathSpeedFactorKey} />
-          <Property uri={CameraPathArrivalDistanceFactorKey} />
-          <Property uri={ApplyIdleBehaviorOnPathFinishKey} />
-          <Property uri={JumpToFadeDurationKey} />
-        </Container>
-      </Menu.Dropdown>
-    </Menu>
+    <SettingsPopout title={'Camera Path Settings'}>
+      <Container>
+        <Property uri={CameraPathSpeedFactorKey} />
+        <Property uri={CameraPathArrivalDistanceFactorKey} />
+        <Property uri={ApplyIdleBehaviorOnPathFinishKey} />
+        <Property uri={JumpToFadeDurationKey} />
+      </Container>
+    </SettingsPopout>
   );
 }

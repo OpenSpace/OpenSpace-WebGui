@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import { Collapse, Box, MantineStyleProps } from '@mantine/core';
+import { Box, Collapse, MantineStyleProps } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import { IconSize } from '@/types/enums';

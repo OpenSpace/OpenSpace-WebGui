@@ -1,11 +1,13 @@
-import { Fragment, useState } from 'react';
-import { Button, Group, Text, Title } from '@mantine/core';
+import { useState } from 'react';
+import { Badge, Box, Button, Group, InputLabel, Paper, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { Property } from '@/components/Property/Property';
-import { ValueList } from '@/components/Property/Types/VectorProperty/ViewOptions/DefaultValueList';
+import { DefaultView } from '@/components/Property/Types/VectorProperty/ViewOptions/DefaultView';
+import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
 import { MinusIcon, PlusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
@@ -22,37 +24,16 @@ export function SettingsDisplayCopies({ id }: Props) {
 
   return (
     <>
-      <Property uri={`ScreenSpace.${id}.Scale`} />
-      <Property uri={`ScreenSpace.${id}.FaceCamera`} />
-      <Property uri={`ScreenSpace.${id}.UseRadiusAzimuthElevation`} />
-      <Collapsable
-        title={<Title order={4}>Add New Display Copy Settings</Title>}
-        my={'md'}
-      >
-        <NumericInput value={noOfCopies} onEnter={setNoOfCopies} />
-        <ValueList
-          value={newPosition}
-          setPropertyValue={(value) => setNewPosition(value as [number, number, number])}
-          name={'Position for first copy'}
-          description={
-            'This sets the position of the first copy. The additional copies will be evenly spread out on the Azimuth, if isUsingRadiusAzimuthElevation is enabled, otherwise it will spread on the Y axis.'
-          }
-          disabled={false}
-          additionalData={{
-            MinimumValue: [-10, -10, -10],
-            MaximumValue: [10, 10, 10],
-            SteppingValue: [1, 1, 1],
-            Exponent: 1
-          }}
-          viewOptions={{}}
-        />
-      </Collapsable>
-      <Group grow>
+      <Title order={4} mb={'sm'}>
+        Add / Remove Display Copy
+      </Title>
+      <Group grow preventGrowOverflow={false}>
         <Button
           onClick={() => {
             luaApi?.skybrowser.addDisplayCopy(id, noOfCopies, newPosition);
           }}
           leftSection={<PlusIcon />}
+          flex={1}
         >
           Add
         </Button>
@@ -61,20 +42,78 @@ export function SettingsDisplayCopies({ id }: Props) {
             luaApi?.skybrowser.removeDisplayCopy(id);
           }}
           leftSection={<MinusIcon />}
+          flex={1}
         >
           Remove
         </Button>
+        <SettingsPopout flex={0} popoverWidth={300} title={'Add Display Copy Settings'}>
+          <Box p={'sm'}>
+            <Group>
+              <InputLabel fw={'normal'}>
+                <Text span size={'sm'}>
+                  Number of copies
+                </Text>
+              </InputLabel>
+              <InfoBox>
+                {`This sets the position of the first copy. The additional copies will be evenly
+          spread out on the Azimuth, if isUsingRadiusAzimuthElevation is enabled,
+          otherwise it will spread on the Y axis.`}
+              </InfoBox>
+            </Group>
+            <NumericInput value={noOfCopies} onEnter={setNoOfCopies} />
+            <Group mt={'sm'}>
+              <InputLabel fw={'normal'}>
+                <Text span size={'sm'}>
+                  Position for first copy
+                </Text>
+              </InputLabel>
+              <InfoBox>
+                {`This sets the position of the first copy. The additional copies will be evenly
+          spread out on the Azimuth, if isUsingRadiusAzimuthElevation is enabled,
+          otherwise it will spread on the Y axis.`}
+              </InfoBox>
+            </Group>
+            <Box pb={'sm'}>
+              <DefaultView
+                value={newPosition}
+                setPropertyValue={(value) =>
+                  setNewPosition(value as [number, number, number])
+                }
+                disabled={false}
+                additionalData={{
+                  MinimumValue: [-10, -10, -10],
+                  MaximumValue: [10, 10, 10],
+                  SteppingValue: [1, 1, 1],
+                  Exponent: 1
+                }}
+              />
+            </Box>
+          </Box>
+        </SettingsPopout>
       </Group>
       <Title order={4} mt={'md'} mb={'sm'}>
-        Added Display Copies
+        Display Settings
       </Title>
-      {Object.keys(displayCopies).length === 0 && <Text>No copies added</Text>}
-      {Object.entries(displayCopies).map(([key, entry]) => (
-        <Fragment key={key}>
-          <Property uri={`ScreenSpace.${id}.${entry.idShowProperty}`} />
-          <Property uri={`ScreenSpace.${id}.${key}`} />
-        </Fragment>
-      ))}
+      <Property uri={`ScreenSpace.${id}.Scale`} />
+      <Property uri={`ScreenSpace.${id}.FaceCamera`} />
+      <Property uri={`ScreenSpace.${id}.UseRadiusAzimuthElevation`} />
+
+      <Collapsable
+        title={
+          <>
+            Added Display Copies{' '}
+            <Badge variant={'default'}>{Object.keys(displayCopies).length}</Badge>
+          </>
+        }
+      >
+        {Object.keys(displayCopies).length === 0 && <Text>No copies added</Text>}
+        {Object.entries(displayCopies).map(([key, entry]) => (
+          <Paper key={key} p={'sm'} mt={'sm'}>
+            <Property uri={`ScreenSpace.${id}.${entry.idShowProperty}`} />
+            <Property uri={`ScreenSpace.${id}.${key}`} />
+          </Paper>
+        ))}
+      </Collapsable>
     </>
   );
 }
