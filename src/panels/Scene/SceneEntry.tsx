@@ -26,8 +26,14 @@ export function SceneEntry({ node, expanded, isCurrentNode, onClick, className }
     <Group
       px={'xs'}
       py={2}
-      bd={isCurrentNode ? '3px solid var(--mantine-primary-color-filled)' : 'none'}
-      className={className}
+      style={
+        isCurrentNode
+          ? {
+              borderLeft: '3px solid var(--mantine-primary-color-filled)',
+              backgroundColor: 'var(--mantine-color-dark-7)'
+            }
+          : undefined
+      }
       wrap={'nowrap'}
       gap={'xs'}
       grow
