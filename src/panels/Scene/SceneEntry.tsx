@@ -34,6 +34,7 @@ export function SceneEntry({ node, expanded, isCurrentNode, onClick, className }
             }
           : undefined
       }
+      className={className}
       wrap={'nowrap'}
       gap={'xs'}
       grow
