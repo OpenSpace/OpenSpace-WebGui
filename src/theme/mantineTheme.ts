@@ -48,7 +48,7 @@ export const theme = createTheme({
     Badge: Badge.extend({
       styles: {
         label: {
-          transform: 'none'
+          textTransform: 'none'
         }
       }
     }),
