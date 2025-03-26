@@ -11,6 +11,8 @@ import {
   VariantColorsResolver
 } from '@mantine/core';
 
+import styles from './mantineTheme.module.css';
+
 /**
  * This functions resolves colors for different variants, and adds new variants, for
  * Mantine components.
@@ -96,5 +98,6 @@ export const theme = createTheme({
       h6: { fontSize: '0.75rem' }
     }
   },
+  focusClassName: styles.focus,
   variantColorResolver
 });
