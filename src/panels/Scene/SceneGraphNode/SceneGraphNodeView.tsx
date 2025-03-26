@@ -61,7 +61,14 @@ export function SceneGraphNodeView({
   return (
     <Layout>
       <Layout.FixedSection>
-        <Group gap={'xs'} py={'xs'} pl={'xs'} grow preventGrowOverflow={false}>
+        <Group
+          gap={'xs'}
+          py={'xs'}
+          pl={'xs'}
+          grow
+          preventGrowOverflow={false}
+          wrap={'nowrap'}
+        >
           {/* The key here is necessary to make sure that the component is re-rendered
           when the anchor node changes, to trigger the animation */}
           <Box key={uri} className={styles.highlight}>
