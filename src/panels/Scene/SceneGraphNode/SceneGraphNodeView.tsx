@@ -63,7 +63,7 @@ export function SceneGraphNodeView({
       <Layout.FixedSection>
         <Group
           gap={'xs'}
-          py={'xs'}
+          pb={'xs'}
           pl={'xs'}
           grow
           preventGrowOverflow={false}
