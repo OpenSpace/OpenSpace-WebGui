@@ -1,4 +1,4 @@
-import { Badge, Box, Group, Tabs, Text, Tooltip } from '@mantine/core';
+import { Badge, Box, Group, Tabs, Text, ThemeIcon, Tooltip } from '@mantine/core';
 
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
@@ -80,11 +80,17 @@ export function SceneGraphNodeView({ uri }: Props) {
               <Tabs.Tab value={TabKeys.TimeFrame}>
                 <Group gap={5}>
                   Time
-                  {isInTimeFrame ? (
-                    <ClockIcon size={IconSize.xs} />
-                  ) : (
-                    <ClockOffIcon size={IconSize.xs} />
-                  )}
+                  <ThemeIcon
+                    variant={'transparent'}
+                    size={'compact-xs'}
+                    color={isInTimeFrame ? 'green' : 'red'}
+                  >
+                    {isInTimeFrame ? (
+                      <ClockIcon size={IconSize.xs} />
+                    ) : (
+                      <ClockOffIcon size={IconSize.xs} />
+                    )}
+                  </ThemeIcon>
                 </Group>
               </Tabs.Tab>
             </Tooltip>
