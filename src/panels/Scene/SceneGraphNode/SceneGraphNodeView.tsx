@@ -58,7 +58,7 @@ export function SceneGraphNodeView({ uri, closeable = false }: Props) {
   return (
     <Layout>
       <Layout.FixedSection>
-        <Group pt={'xs'} pb={'sm'} grow preventGrowOverflow={false}>
+        <Group gap={5} py={'xs'} pl={'xs'} grow preventGrowOverflow={false}>
           {/* // The key here is necessary to make sure that the component is re-rendered when the
         // anchor node changes, to trigger the animation */}
           <Box key={uri} className={styles.highlight}>
@@ -74,7 +74,7 @@ export function SceneGraphNodeView({ uri, closeable = false }: Props) {
       </Layout.FixedSection>
       <Layout.GrowingSection>
         <ScrollBox h={'100%'}>
-          <Tabs mt={'xs'} defaultValue={defaultTab}>
+          <Tabs defaultValue={defaultTab}>
             <Tabs.List>
               <Tooltip
                 label={
