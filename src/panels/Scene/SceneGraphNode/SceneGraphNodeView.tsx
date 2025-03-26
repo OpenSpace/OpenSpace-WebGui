@@ -76,7 +76,9 @@ export function SceneGraphNodeView({ uri }: Props) {
           </Tooltip>
 
           {timeFrame && (
-            <Tooltip label={'The time frame of the scene graph node'}>
+            <Tooltip
+              label={'Information about the time frame for when the object is visible'}
+            >
               <Tabs.Tab value={TabKeys.TimeFrame}>
                 <Group gap={5}>
                   Time
@@ -140,8 +142,6 @@ export function SceneGraphNodeView({ uri }: Props) {
                       ? 'This object is currently active and will be visible'
                       : 'This object is currently inactive due to its time frame and will not be visible'
                   }
-                  multiline
-                  maw={300}
                 >
                   <Badge
                     size={'lg'}
@@ -160,7 +160,7 @@ export function SceneGraphNodeView({ uri }: Props) {
                 </Tooltip>
               </Group>
               <Text mt={'xs'} size={'sm'} c={'dimmed'}>
-                The object will not be visible outside the time range specified below.
+                The object will not be visible outside the specified time range.
               </Text>
             </Box>
             <PropertyOwner uri={timeFrame.uri} />

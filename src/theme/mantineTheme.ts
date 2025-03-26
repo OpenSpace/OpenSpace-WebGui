@@ -90,7 +90,9 @@ export const theme = createTheme({
       defaultProps: {
         withArrow: true,
         transitionProps: { duration: 400, enterDelay: 400 },
-        position: 'top'
+        position: 'top',
+        maw: 300,
+        multiline: true
       }
     })
   },
