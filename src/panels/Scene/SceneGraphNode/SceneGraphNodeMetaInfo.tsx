@@ -123,7 +123,12 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
 
   return (
     <>
-      <Table mb={'md'} withRowBorders={false} data={mainTableData} />
+      <Table
+        mb={'md'}
+        withRowBorders={false}
+        data={mainTableData}
+        styles={{ td: { verticalAlign: 'top' } }}
+      />
       <Card>
         <Title order={3}>Asset Info</Title>
         <Table data={assetMetaTableData} />
