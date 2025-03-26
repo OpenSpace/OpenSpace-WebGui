@@ -1,12 +1,10 @@
-import { Box, CloseButton, Group, Tabs, Text, Tooltip } from '@mantine/core';
+import { Box, Group, Tabs, Text, Tooltip } from '@mantine/core';
 
 import { Layout } from '@/components/Layout/Layout';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { usePropertyOwner, useVisibleProperties } from '@/hooks/propertyOwner';
-import { useAppDispatch } from '@/redux/hooks';
-import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
 import { Uri } from '@/types/types';
 import { isRenderable, isSgnTransform } from '@/util/propertyTreeHelpers';
 
@@ -17,15 +15,20 @@ import styles from './SceneGraphNodeView.module.css';
 
 interface Props {
   uri: Uri;
-  closeable?: boolean;
+  // Extra content to be shown at the top right of the view
+  extraTopControls?: React.ReactNode;
+  showOpenInNewWindow?: boolean;
 }
 
-export function SceneGraphNodeView({ uri, closeable = false }: Props) {
+export function SceneGraphNodeView({
+  uri,
+  extraTopControls,
+  showOpenInNewWindow
+}: Props) {
   const propertyOwner = usePropertyOwner(uri);
 
   // The SGN properties that are visible under the current user level setting
   const visibleProperties = useVisibleProperties(propertyOwner);
-  const dispatch = useAppDispatch();
 
   if (!propertyOwner) {
     return (
@@ -58,18 +61,13 @@ export function SceneGraphNodeView({ uri, closeable = false }: Props) {
   return (
     <Layout>
       <Layout.FixedSection>
-        <Group gap={5} py={'xs'} pl={'xs'} grow preventGrowOverflow={false}>
-          {/* // The key here is necessary to make sure that the component is re-rendered when the
-        // anchor node changes, to trigger the animation */}
+        <Group gap={'xs'} py={'xs'} pl={'xs'} grow preventGrowOverflow={false}>
+          {/* The key here is necessary to make sure that the component is re-rendered
+          when the anchor node changes, to trigger the animation */}
           <Box key={uri} className={styles.highlight}>
-            <SceneGraphNodeHeader uri={uri} />
+            <SceneGraphNodeHeader uri={uri} showOpenInNewWindow={showOpenInNewWindow} />
           </Box>
-          {closeable && (
-            <CloseButton
-              flex={0}
-              onClick={() => dispatch(setSceneTreeSelectedNode(null))}
-            />
-          )}
+          {extraTopControls}
         </Group>
       </Layout.FixedSection>
       <Layout.GrowingSection>
