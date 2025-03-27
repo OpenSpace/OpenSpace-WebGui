@@ -6,7 +6,7 @@ import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { Property } from '@/components/Property/Property';
-import { DefaultView } from '@/components/Property/Types/VectorProperty/ViewOptions/DefaultView';
+import { VectorDefaultView } from '@/components/Property/Types/VectorProperty/ViewOptions/VectorDefaultView';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
 import { MinusIcon, PlusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
@@ -16,7 +16,7 @@ interface Props {
 }
 export function SettingsDisplayCopies({ id }: Props) {
   const [newPosition, setNewPosition] = useState<[number, number, number]>([0, 0, -2]);
-  const [noOfCopies, setNoOfCopies] = useState(1);
+  const [nCopies, setNCopies] = useState(1);
   const luaApi = useOpenSpaceApi();
   const displayCopies = useAppSelector(
     (state) => state.skybrowser.browsers[id]?.displayCopies
@@ -29,18 +29,14 @@ export function SettingsDisplayCopies({ id }: Props) {
       </Title>
       <Group grow preventGrowOverflow={false}>
         <Button
-          onClick={() => {
-            luaApi?.skybrowser.addDisplayCopy(id, noOfCopies, newPosition);
-          }}
+          onClick={() => luaApi?.skybrowser.addDisplayCopy(id, nCopies, newPosition)}
           leftSection={<PlusIcon />}
           flex={1}
         >
           Add
         </Button>
         <Button
-          onClick={() => {
-            luaApi?.skybrowser.removeDisplayCopy(id);
-          }}
+          onClick={() => luaApi?.skybrowser.removeDisplayCopy(id)}
           leftSection={<MinusIcon />}
           flex={1}
         >
@@ -60,7 +56,7 @@ export function SettingsDisplayCopies({ id }: Props) {
           otherwise it will spread on the Y axis.`}
               </InfoBox>
             </Group>
-            <NumericInput value={noOfCopies} onEnter={setNoOfCopies} />
+            <NumericInput value={nCopies} onEnter={setNCopies} />
             <Group mt={'sm'}>
               <InputLabel fw={'normal'}>
                 <Text span size={'sm'}>
@@ -74,7 +70,7 @@ export function SettingsDisplayCopies({ id }: Props) {
               </InfoBox>
             </Group>
             <Box pb={'sm'}>
-              <DefaultView
+              <VectorDefaultView
                 value={newPosition}
                 setPropertyValue={(value) =>
                   setNewPosition(value as [number, number, number])
@@ -100,10 +96,10 @@ export function SettingsDisplayCopies({ id }: Props) {
 
       <Collapsable
         title={
-          <>
-            Added Display Copies{' '}
+          <Group>
+            Added Display Copies
             <Badge variant={'default'}>{Object.keys(displayCopies).length}</Badge>
-          </>
+          </Group>
         }
       >
         {Object.keys(displayCopies).length === 0 && <Text>No copies added</Text>}

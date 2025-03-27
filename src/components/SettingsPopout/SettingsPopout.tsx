@@ -3,17 +3,12 @@ import { ActionIcon, MantineStyleProps, Menu } from '@mantine/core';
 
 import { SettingsIcon } from '@/icons/icons';
 
-interface Props {
+interface Props extends PropsWithChildren, MantineStyleProps {
   popoverWidth?: number;
   title?: string;
 }
 
-export function SettingsPopout({
-  popoverWidth,
-  title,
-  children,
-  ...styleProps
-}: Props & PropsWithChildren & MantineStyleProps) {
+export function SettingsPopout({ popoverWidth, title, children, ...styleProps }: Props) {
   return (
     <Menu position={'right-start'} closeOnItemClick={false} width={popoverWidth}>
       <Menu.Target>
