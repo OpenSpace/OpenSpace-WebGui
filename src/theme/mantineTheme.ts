@@ -3,6 +3,7 @@ import {
   alpha,
   Button,
   createTheme,
+  CSSVariablesResolver,
   defaultVariantColorsResolver,
   RangeSlider,
   Slider,
@@ -97,4 +98,12 @@ export const theme = createTheme({
     }
   },
   variantColorResolver
+});
+
+export const cssVariablesResolver: CSSVariablesResolver = () => ({
+  variables: {
+    '--openspace-border-active': '4px solid var(--mantine-primary-color-filled)'
+  },
+  dark: {},
+  light: {}
 });

@@ -30,7 +30,7 @@ export function WindowsMenu() {
               }
               style={{
                 borderLeft: itemConfig.isOpen
-                  ? '4px solid var(--mantine-primary-color-filled)'
+                  ? 'var(--openspace-border-active)'
                   : '4px solid transparent',
                 borderRadius: 0
               }}

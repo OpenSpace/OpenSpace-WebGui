@@ -40,7 +40,7 @@ export function SceneTreeNodeContent({ node, expanded }: Props) {
       style={
         isCurrentNode
           ? {
-              borderLeft: '3px solid var(--mantine-primary-color-filled)',
+              borderLeft: 'var(--openspace-border-active)',
               backgroundColor: 'var(--mantine-color-dark-7)'
             }
           : undefined
