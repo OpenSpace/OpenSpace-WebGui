@@ -1,41 +1,36 @@
-import { ActionIcon, Button, Group, Text } from '@mantine/core';
+import { Button, Group, Text } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
-import { OpenInNewIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { displayName, isRenderable } from '@/util/propertyTreeHelpers';
-import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
+import { OpenSgnInNewWindowButton } from './OpenSgnInNewWindowButton';
 import { SceneGraphNodeMoreMenu } from './SceneGraphNodeMoreMenu';
-import { SceneGraphNodeView } from './SceneGraphNodeView';
 
 interface Props {
   uri: Uri;
   onClick?: () => void;
   label?: string;
+  showOpenInNewWindow?: boolean;
 }
 
-export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
+export function SceneGraphNodeHeader({
+  uri,
+  onClick,
+  label,
+  showOpenInNewWindow = true
+}: Props) {
   const propertyOwner = usePropertyOwner(uri);
-  const { addWindow } = useWindowLayoutProvider();
 
   const renderableUri = propertyOwner?.subowners.find((uri) => isRenderable(uri));
   const hasRenderable = renderableUri !== undefined;
 
   if (!propertyOwner) {
     return <></>;
-  }
-
-  function openInNewWindow() {
-    addWindow(<SceneGraphNodeView uri={uri} />, {
-      id: 'sgn-' + uri,
-      title: name,
-      position: 'float'
-    });
   }
 
   const name = label ?? displayName(propertyOwner);
@@ -77,9 +72,7 @@ export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
             variant={'subtle'}
             identifier={propertyOwner.identifier}
           />
-          <ActionIcon onClick={openInNewWindow} size={'sm'} flex={0}>
-            <OpenInNewIcon />
-          </ActionIcon>
+          {showOpenInNewWindow && <OpenSgnInNewWindowButton uri={uri} />}
           <SceneGraphNodeMoreMenu uri={uri} />
         </Group>
       }
