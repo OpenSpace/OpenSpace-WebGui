@@ -34,7 +34,6 @@ export function ScenePanel() {
                 onClick={() => dispatch(setSceneTreeSelectedNode(null))}
               />
             }
-            showOpenInNewWindow
           />
         </Layout.GrowingSection>
       </Layout>

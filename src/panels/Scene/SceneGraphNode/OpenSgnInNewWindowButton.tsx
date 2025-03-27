@@ -12,7 +12,7 @@ interface Props {
   uri: Uri;
 }
 
-export function OpenInNewWindowButton({ uri }: Props) {
+export function OpenSgnInNewWindowButton({ uri }: Props) {
   const propertyOwner = usePropertyOwner(uri);
   const { addWindow } = useWindowLayoutProvider();
 

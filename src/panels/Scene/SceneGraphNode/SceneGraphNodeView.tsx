@@ -23,7 +23,7 @@ interface Props {
 export function SceneGraphNodeView({
   uri,
   extraTopControls,
-  showOpenInNewWindow
+  showOpenInNewWindow = true
 }: Props) {
   const propertyOwner = usePropertyOwner(uri);
 

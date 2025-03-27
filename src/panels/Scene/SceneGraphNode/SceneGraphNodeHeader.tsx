@@ -8,7 +8,7 @@ import { NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { displayName, isRenderable } from '@/util/propertyTreeHelpers';
 
-import { OpenInNewWindowButton } from './OpenInNewWindowButton';
+import { OpenSgnInNewWindowButton } from './OpenSgnInNewWindowButton';
 import { SceneGraphNodeMoreMenu } from './SceneGraphNodeMoreMenu';
 
 interface Props {
@@ -72,7 +72,7 @@ export function SceneGraphNodeHeader({
             variant={'subtle'}
             identifier={propertyOwner.identifier}
           />
-          {showOpenInNewWindow && <OpenInNewWindowButton uri={uri} />}
+          {showOpenInNewWindow && <OpenSgnInNewWindowButton uri={uri} />}
           <SceneGraphNodeMoreMenu uri={uri} />
         </Group>
       }
