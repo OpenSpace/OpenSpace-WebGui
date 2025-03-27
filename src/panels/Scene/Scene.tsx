@@ -24,9 +24,9 @@ export function Scene() {
     <Layout>
       <Layout.FixedSection>
         <FeaturedSceneTree />
-        <Divider mt={'lg'} />
+        <Divider mt={5} />
       </Layout.FixedSection>
-      <Layout.GrowingSection pt={'md'}>
+      <Layout.GrowingSection pt={'xs'}>
         <SceneTree />
       </Layout.GrowingSection>
     </Layout>

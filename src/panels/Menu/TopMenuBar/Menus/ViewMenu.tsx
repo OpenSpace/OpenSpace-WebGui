@@ -6,7 +6,7 @@ import { AdditionalDataOptions } from '@/components/Property/types';
 import { useOptionProperty, usePropertyDescription } from '@/hooks/properties';
 import { ChevronRightIcon, SaveIcon, TaskBarIcon, VisibilityIcon } from '@/icons/icons';
 import { useAppDispatch } from '@/redux/hooks';
-import { setMenuItemsOrder } from '@/redux/local/localSlice';
+import { setMenuItemsOrder, setMenuItemVisible } from '@/redux/local/localSlice';
 import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
@@ -14,7 +14,7 @@ import { useMenuItems } from '../../hooks';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function ViewMenu() {
-  const { menuItems, setMenuItemVisible } = useMenuItems();
+  const { menuItems } = useMenuItems();
   const [propertyVisibility, setPropertyVisibility] = useOptionProperty(
     'OpenSpaceEngine.PropertyVisibility'
   );
@@ -62,7 +62,14 @@ export function ViewMenu() {
                     {item.renderIcon?.(IconSize.xs)}
                   </Group>
                 }
-                onClick={() => setMenuItemVisible(itemConfig.id, !itemConfig.visible)}
+                onClick={() =>
+                  dispatch(
+                    setMenuItemVisible({
+                      id: itemConfig.id,
+                      visible: !itemConfig.visible
+                    })
+                  )
+                }
               >
                 {item.title}
               </Menu.Item>
@@ -89,10 +96,10 @@ export function ViewMenu() {
         <Menu.Label>
           <Group justify={'space-between'}>
             Set visibility level
-            <InfoBox
-              text={`Controls what settings will be exposed in the interface. Increase the
+            <InfoBox>
+              {`Controls what settings will be exposed in the interface. Increase the
                 level to reveal more advanced settings.`}
-            />
+            </InfoBox>
           </Group>
         </Menu.Label>
         <Radio.Group

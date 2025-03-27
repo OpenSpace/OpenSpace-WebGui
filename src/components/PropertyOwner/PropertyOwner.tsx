@@ -1,10 +1,12 @@
-import { Box, Group } from '@mantine/core';
+import { Box } from '@mantine/core';
 
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { useHasVisibleChildren, usePropertyOwner } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
+
+import CopyUriButton from '../CopyUriButton/CopyUriButton';
 
 import { PropertyOwnerContent } from './PropertyOwnerContent';
 import { PropertyOwnerVisibilityCheckbox } from './VisiblityCheckbox';
@@ -32,13 +34,16 @@ export function PropertyOwner({ uri, expandedOnDefault = false }: Props) {
 
   return (
     <Collapsable
-      title={
-        <Group gap={'xs'}>
-          {displayName(propertyOwner)}
-          {propertyOwner.description && <InfoBox text={propertyOwner.description} />}
-        </Group>
-      }
+      title={displayName(propertyOwner)}
       leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
+      rightSection={
+        propertyOwner.description && (
+          <InfoBox>
+            {propertyOwner.description}
+            <CopyUriButton uri={uri} />
+          </InfoBox>
+        )
+      }
       defaultOpen={expandedOnDefault}
       noTransition
     >
