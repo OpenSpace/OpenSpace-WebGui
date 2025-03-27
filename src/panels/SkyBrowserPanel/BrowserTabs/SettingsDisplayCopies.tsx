@@ -50,11 +50,7 @@ export function SettingsDisplayCopies({ id }: Props) {
                   Number of copies
                 </Text>
               </InputLabel>
-              <InfoBox>
-                {`This sets the position of the first copy. The additional copies will be evenly
-          spread out on the Azimuth, if isUsingRadiusAzimuthElevation is enabled,
-          otherwise it will spread on the Y axis.`}
-              </InfoBox>
+              <InfoBox>{`Number of copies to add at once.`}</InfoBox>
             </Group>
             <NumericInput value={nCopies} onEnter={setNCopies} />
             <Group mt={'sm'}>
