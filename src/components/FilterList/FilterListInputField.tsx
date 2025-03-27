@@ -24,7 +24,9 @@ function InputButton({ showMoreButton }: InputButtonProps) {
 
   return (
     showMoreButton && (
-      <Button onClick={toggleShowDataInstead}>{showDataInstead ? 'Less' : 'More'}</Button>
+      <Button w={80} variant={'subtle'} color={'gray'} onClick={toggleShowDataInstead}>
+        {showDataInstead ? 'Less' : 'More'}
+      </Button>
     )
   );
 }
