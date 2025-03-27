@@ -61,10 +61,8 @@ export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
       <PropertyOwnerVisibilityCheckbox uri={renderableUri} />
       {timeFrame && !isInTimeFrame && (
         <Tooltip
-          label={`This node is currently hidden since the time is outside its specified
+          label={`This node is hidden because the current time is outside its specified
             time frame. It will not be visible even if enabled.`}
-          w={300}
-          multiline
           position={'top'}
         >
           <ClockOffIcon />
