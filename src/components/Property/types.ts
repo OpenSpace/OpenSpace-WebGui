@@ -7,14 +7,14 @@ export interface PropertyProps {
 }
 
 // In OpenSpace the options are represented like so:
-// { 0: "Option 1"}, { 1: "Option 2"}
-// The key is a number but in a string format.
-interface Option {
+// { 1: "Option 1", 2: "Option 2", ...}
+// The key is an integer but in a string format.
+interface Options {
   [key: string]: string;
 }
 
 export interface AdditionalDataOptions {
-  Options: Option[];
+  Options: Options;
 }
 
 export interface AdditionalDataSelection {

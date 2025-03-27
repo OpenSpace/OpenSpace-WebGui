@@ -11,6 +11,8 @@ import { DragHandleIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
+import { ScrollBox } from '../ScrollBox/ScrollBox';
+
 interface Props extends PropsWithChildren, BoxComponentProps {
   minHeight?: number;
   defaultHeight: number;
@@ -110,12 +112,11 @@ export function ResizeableContent({
     },
     [contentRef, setHeightClamped, resetCursor, updateCursor]
   );
-
   return (
     <>
-      <Box ref={contentRef} style={{ height: height }} {...props}>
+      <ScrollBox ref={contentRef} style={{ height: height }} {...props}>
         {children}
-      </Box>
+      </ScrollBox>
       <Box ref={resizerRef}>
         <ActionIcon
           w={'100%'}

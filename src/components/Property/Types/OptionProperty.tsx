@@ -11,30 +11,21 @@ export function OptionProperty({ uri, readOnly }: PropertyProps) {
     return <></>;
   }
 
-  const { Options: data } = description.additionalData as AdditionalDataOptions;
-
-  // Get the name of the option, e.g. "Option 1"
-  // Flatten the array as otherwise each element is an array
-  // @TODO (ylvse 2025-03-18): Change the property format
-  const options = data.map((option) => Object.values(option)).flat();
-
-  function onChange(option: string | null) {
-    if (option && options.indexOf(option) !== -1) {
-      // Now we need to find the number key of the option
-      // which is the same as its index in the optionsStrings array
-      const index = options.indexOf(option);
-      setValue(index);
-    }
-  }
+  const { Options: options } = description.additionalData as AdditionalDataOptions;
 
   return (
     <Select
       aria-label={`${description.name} option input`}
       placeholder={'Choose an option'}
       disabled={readOnly}
-      data={options}
-      value={options[value]}
-      onChange={onChange}
+      // For each entry in the options object, the numeric value is the key, and the
+      // label is the value
+      data={Object.entries(options).map(([value, label]) => ({
+        value: value,
+        label: label
+      }))}
+      value={value.toString()}
+      onChange={(newOption) => newOption && setValue(parseInt(newOption))}
       allowDeselect={false}
     />
   );
