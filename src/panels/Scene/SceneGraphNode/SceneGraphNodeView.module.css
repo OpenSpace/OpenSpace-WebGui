@@ -1,0 +1,12 @@
+@keyframes highlightAnimation {
+  from {
+    background-color: var(--mantine-primary-color-filled);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+.highlight {
+  animation: highlightAnimation 1s forwards;
+}

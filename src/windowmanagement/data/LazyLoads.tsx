@@ -36,8 +36,8 @@ export const OriginPanel = lazy(() =>
     default: module.OriginPanel
   }))
 );
-export const Scene = lazy(() =>
-  import('@/panels/Scene/Scene').then((module) => ({ default: module.Scene }))
+export const ScenePanel = lazy(() =>
+  import('@/panels/Scene/ScenePanel').then((module) => ({ default: module.ScenePanel }))
 );
 export const ScreenSpaceRenderablePanel = lazy(() =>
   import('@/panels/ScreenSpaceRenderablePanel/ScreenSpaceRenderablePanel').then(
