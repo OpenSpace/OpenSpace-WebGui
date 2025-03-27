@@ -3,27 +3,19 @@ import { Skeleton, Stack, Text } from '@mantine/core';
 import { FocusIcon } from '@/icons/icons';
 import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
 import { IconSize } from '@/types/enums';
-import { MenuItemEventHandlers } from '@/types/types';
 
 interface Props {
   anchorName: string | undefined;
   isOpenSpaceReady: boolean;
-  eventHandlers: MenuItemEventHandlers;
-  isOpen: boolean;
+  id: string;
 }
 
-export function FocusButton({
-  anchorName,
-  isOpenSpaceReady,
-  eventHandlers,
-  isOpen
-}: Props) {
+export function FocusButton({ anchorName, isOpenSpaceReady, id }: Props) {
   return (
     <TaskBarMenuButton
-      {...eventHandlers}
+      id={id}
       disabled={!isOpenSpaceReady}
       leftSection={<FocusIcon size={IconSize.lg} />}
-      isOpen={isOpen}
     >
       <Stack gap={0} maw={130} ta={'start'}>
         {!isOpenSpaceReady && <Skeleton>Anchor</Skeleton>}

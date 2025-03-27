@@ -2,7 +2,6 @@ import { Group } from '@mantine/core';
 
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { EngineMode } from '@/types/enums';
-import { MenuItemEventHandlers } from '@/types/types';
 import { useAimNode, useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { AnchorAimButtons } from './MenuButtons/AnchorAimButtons';
@@ -11,11 +10,10 @@ import { FocusButton } from './MenuButtons/FocusButton';
 import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
 interface Props {
-  eventHandlers: MenuItemEventHandlers;
-  isOpen: boolean;
+  id: string;
 }
 
-export function OriginPanelMenuButton({ eventHandlers, isOpen }: Props) {
+export function OriginPanelMenuButton({ id }: Props) {
   const aimNode = useAimNode();
   const anchorNode = useAnchorNode();
 
@@ -41,15 +39,9 @@ export function OriginPanelMenuButton({ eventHandlers, isOpen }: Props) {
       anchorName={anchorNode?.name}
       aimName={aimNode?.name}
       isOpenSpaceReady={isReady}
-      eventHandlers={eventHandlers}
-      isOpen={isOpen}
+      id={id}
     />
   ) : (
-    <FocusButton
-      anchorName={anchorNode?.name}
-      isOpenSpaceReady={isReady}
-      eventHandlers={eventHandlers}
-      isOpen={isOpen}
-    />
+    <FocusButton anchorName={anchorNode?.name} isOpenSpaceReady={isReady} id={id} />
   );
 }

@@ -18,13 +18,11 @@ import {
   VideocamIcon
 } from '@/icons/icons';
 import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
-import { TaskbarItemConfig } from '@/panels/Menu/types';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { TempPropertyTest } from '@/panels/Scene/TempPropertyTest';
 import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { IconSize } from '@/types/enums';
-import { MenuItemEventHandlers } from '@/types/types';
 
 import { FloatWindowPosition, WindowLayoutPosition } from '../WindowLayout/types';
 
@@ -50,10 +48,7 @@ export interface MenuItem {
   title: string; // Title of the rc-dock tab
   componentID: string; // Unqiue ID to identify this component among the rc-dock tabs
   content: React.JSX.Element; // Content to render inside the rc-dock tab
-  renderMenuButton?: (
-    eventHandlers: MenuItemEventHandlers,
-    config: TaskbarItemConfig
-  ) => React.JSX.Element; // Custom menu button to render
+  renderMenuButton?: (id: string) => React.JSX.Element; // Custom menu button to render
   renderIcon?: (size: IconSize) => React.JSX.Element; // Custom icon to render
   preferredPosition: WindowLayoutPosition; // Where this panel is instantiated
   floatPosition?: FloatWindowPosition; // Preferred position and size of a floating window given in px,
@@ -67,12 +62,8 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Scene',
     componentID: 'scene',
     content: <Scene />,
-    renderMenuButton: (eventHandlers, config) => (
-      <TaskBarMenuButton
-        {...eventHandlers}
-        leftSection={<SceneIcon size={IconSize.lg} />}
-        isOpen={config.isOpen}
-      >
+    renderMenuButton: (id) => (
+      <TaskBarMenuButton id={id} leftSection={<SceneIcon size={IconSize.lg} />}>
         Scene
       </TaskBarMenuButton>
     ),
@@ -84,12 +75,8 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Settings',
     componentID: 'settings',
     content: <SettingsPanel />,
-    renderMenuButton: (eventHandlers, config) => (
-      <TaskBarMenuButton
-        {...eventHandlers}
-        leftSection={<SettingsIcon size={IconSize.lg} />}
-        isOpen={config.isOpen}
-      >
+    renderMenuButton: (id) => (
+      <TaskBarMenuButton id={id} leftSection={<SettingsIcon size={IconSize.lg} />}>
         Settings
       </TaskBarMenuButton>
     ),
@@ -101,9 +88,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Navigation',
     componentID: 'navigation',
     content: <OriginPanel />,
-    renderMenuButton: (eventHandlers, config) => (
-      <OriginPanelMenuButton eventHandlers={eventHandlers} isOpen={config.isOpen} />
-    ),
+    renderMenuButton: (id) => <OriginPanelMenuButton id={id} />,
     renderIcon: (size) => <FocusIcon size={size} />,
     preferredPosition: 'float',
     floatPosition: { offsetY: 100, offsetX: 320, width: 400, height: 440 },
@@ -113,9 +98,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Time Panel',
     componentID: 'timePanel',
     content: <TimePanel />,
-    renderMenuButton: (eventHandlers, config) => (
-      <TimePanelMenuButton eventHandlers={eventHandlers} isOpen={config.isOpen} />
-    ),
+    renderMenuButton: (id) => <TimePanelMenuButton id={id} />,
     renderIcon: (size) => <CalendarIcon size={size} />,
     preferredPosition: 'float',
     floatPosition: { offsetY: 100, offsetX: 370, width: 410, height: 520 },
@@ -125,9 +108,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Session Recording',
     componentID: 'sessionRecording',
     content: <SessionRecordingPanel />,
-    renderMenuButton: (eventHandlers, config) => (
-      <SessionRecordingMenuButton eventHandlers={eventHandlers} isOpen={config.isOpen} />
-    ),
+    renderMenuButton: (id) => <SessionRecordingMenuButton id={id} />,
     renderIcon: (size) => <VideocamIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: true

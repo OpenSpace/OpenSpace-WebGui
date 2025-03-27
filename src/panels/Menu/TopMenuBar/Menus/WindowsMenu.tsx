@@ -17,18 +17,17 @@ export function WindowsMenu() {
       {menuItems.map((itemConfig) => {
         const item = menuItemsData[itemConfig.id];
         return (
-          <Group>
+          <Group key={item.componentID} gap={5}>
             <Menu.Item
-              key={item.componentID}
               leftSection={item.renderIcon?.(IconSize.xs)}
-              onClick={() => {
+              onClick={() =>
                 addWindow(item.content, {
                   title: item.title,
                   position: item.preferredPosition,
                   id: item.componentID,
                   floatPosition: item.floatPosition
-                });
-              }}
+                })
+              }
               style={{
                 borderLeft: itemConfig.isOpen
                   ? '4px solid var(--mantine-primary-color-filled)'

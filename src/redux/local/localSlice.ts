@@ -64,6 +64,7 @@ export const localSlice = createSlice({
       if (item) {
         item.isOpen = action.payload.open;
       }
+      return state;
     },
     setMenuItemsOrder: (state, action: PayloadAction<TaskbarItemConfig[]>) => {
       state.taskbarItems = action.payload;
