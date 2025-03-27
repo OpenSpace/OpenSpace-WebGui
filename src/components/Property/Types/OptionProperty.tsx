@@ -20,9 +20,10 @@ export function OptionProperty({ uri, readOnly }: PropertyProps) {
       disabled={readOnly}
       // For each entry in the options object, the numeric value is the key, and the
       // label is the value
-      data={Object.entries(options).map(([value, label]) => {
-        return { value: value, label: label };
-      })}
+      data={Object.entries(options).map(([value, label]) => ({
+        value: value,
+        label: label
+      }))}
       value={value.toString()}
       onChange={(newOption) => newOption && setValue(parseInt(newOption))}
       allowDeselect={false}

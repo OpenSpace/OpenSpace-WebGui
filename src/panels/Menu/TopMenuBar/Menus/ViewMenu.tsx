@@ -105,6 +105,7 @@ export function ViewMenu() {
         <Radio.Group
           value={propertyVisibility?.toString()}
           onChange={(newValue) => setPropertyVisibility(parseInt(newValue))}
+          onKeyDown={(event) => event.stopPropagation()}
         >
           <Stack gap={'xs'} m={'xs'}>
             {Object.entries(userLevelOptions).map(([key, option]) => (
