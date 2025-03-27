@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { ActionIcon, ColorSwatch, Group, Tabs, Tooltip } from '@mantine/core';
+import { ActionIcon, Center, Tabs, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { PlusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
+import { IconSize } from '@/types/enums';
 
 import { useSkyBrowserColors, useSkyBrowserIds, useSkyBrowserNames } from '../hooks';
 
@@ -25,7 +26,6 @@ export function BrowserTabs({ openWorldWideTelescope }: Props) {
 
   return (
     <Tabs
-      variant={'outline'}
       value={selectedBrowserId}
       onChange={(id) => {
         if (id) {
@@ -33,34 +33,37 @@ export function BrowserTabs({ openWorldWideTelescope }: Props) {
           setShowSettings(false);
         }
       }}
-      mt={'lg'}
+      mt={'sm'}
     >
       {/* Tabs */}
       <Tabs.List>
         {Object.values(browsersIds).map((id, i) => (
-          <Tabs.Tab value={id} key={id}>
-            <Group>
-              {browserNames[i]}
-              <ColorSwatch
-                color={browserColors[i] ? `rgb(${browserColors[i].join(',')}` : 'gray'}
-                size={12}
-              />
-            </Group>
+          <Tabs.Tab
+            value={id}
+            key={id}
+            color={browserColors[i] ? `rgb(${browserColors[i].join(',')}` : 'gray'}
+          >
+            {browserNames[i]}
           </Tabs.Tab>
         ))}
         <Tooltip label={'Add new browser'}>
-          <ActionIcon
-            size={'lg'}
-            onClick={() => luaApi?.skybrowser.createTargetBrowserPair()}
-          >
-            <PlusIcon />
-          </ActionIcon>
+          <Center>
+            <ActionIcon
+              size={'sm'}
+              m={'xs'}
+              variant={'subtle'}
+              color={'gray'}
+              onClick={() => luaApi?.skybrowser.createTargetBrowserPair()}
+            >
+              <PlusIcon size={IconSize.xs} />
+            </ActionIcon>
+          </Center>
         </Tooltip>
       </Tabs.List>
 
       {/* Tab content */}
       {browsersIds.map((id) => (
-        <Tabs.Panel key={id} value={id} m={'xs'}>
+        <Tabs.Panel key={id} value={id} my={'xs'}>
           <TabContent
             showSettings={showSettings}
             setShowSettings={setShowSettings}

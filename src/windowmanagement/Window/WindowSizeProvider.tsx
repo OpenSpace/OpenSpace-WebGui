@@ -36,7 +36,7 @@ export function WindowSizeProvider({ children, ...props }: PropsWithChildren & B
         pointerEvents: { enable: enablePointerEvents, disable: disablePointerEvents }
       }}
     >
-      <ScrollBox h={'100%'} ref={ref} p={'xs'} {...props}>
+      <ScrollBox h={'100%'} ref={ref} p={'xs'} {...props} direction={'both'}>
         {children}
       </ScrollBox>
     </WindowSizeContext.Provider>

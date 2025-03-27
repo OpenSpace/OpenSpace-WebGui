@@ -25,4 +25,10 @@
   .scroller::-webkit-scrollbar-thumb:hover {
     border: 0px solid transparent;
   }
+
+  /* Unless we have this there is a strange white box in the
+  corner of two-directional scrolls */
+  ::-webkit-scrollbar-corner {
+    background: rgba(0, 0, 0, 0.5);
+  }
 }
