@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ActionIcon, Alert, Button, Group, Stack, Text } from '@mantine/core';
+import { ActionIcon, Alert, Button, Group, Paper, Stack, Text } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -16,7 +16,7 @@ import { MonthInput } from './MonthInput';
 import { TimeIncrementInput } from './TimeIncrementInput';
 
 export function TimeInput() {
-  const [useLock, setUseLock] = useState(false);
+  const [isLocked, setUseLock] = useState(false);
   const [pendingTime, setPendingTime] = useState(new Date());
   const [isHoldingShift, setIsHoldingShift] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -28,7 +28,7 @@ export function TimeInput() {
   useSubscribeToTime();
 
   const cappedDate = new Date(cappedTime ?? '');
-  const time = useLock ? pendingTime : cappedDate;
+  const time = isLocked ? pendingTime : cappedDate;
 
   // @TODO (2025-02-12, emmbr) is this ref really recessary?
   // To avoid stale state and javascript capture magic, we need to set the time
@@ -71,7 +71,7 @@ export function TimeInput() {
       return;
     }
 
-    if (useLock) {
+    if (isLocked) {
       // If we're in locked mode, just set the pending timestamp. this timestamp will
       // be used when the user clicks the "interpolate" or "set" button
       setPendingTime(data.time);
@@ -258,98 +258,100 @@ export function TimeInput() {
   }
 
   return (
-    <Stack
-      gap={'xs'}
-      p={'xs'}
-      style={{
-        outline: useLock ? '3px solid var(--mantine-primary-color-filled)' : undefined
-      }}
-    >
-      <Group gap={'xs'} justify={'center'}>
-        <ActionIcon onClick={toggleLock} variant={useLock ? 'filled' : 'default'}>
-          {useLock ? <LockIcon /> : <LockOpenIcon />}
-        </ActionIcon>
-        <Group gap={5} wrap={'nowrap'}>
-          <TimeIncrementInput
-            value={time.getUTCFullYear()}
-            onInputEnter={(value) => onTimeInput(TimePart.Years, value)}
-            onInputChangeStep={(change) => onTimeInputRelative(TimePart.Years, change)}
-            onInputChange={onYearChange}
-            onInputBlur={() => {
-              if (errorMessage) {
-                setErrorMessage('');
-              }
-            }}
-            error={errorMessage !== ''}
-            w={65}
-          />
-          <MonthInput
-            month={time.getUTCMonth()}
-            onInputChange={(value) => onTimeInput(TimePart.Months, value)}
-            onInputChangeStep={(change) => onTimeInputRelative(TimePart.Months, change)}
-            w={55}
-          />
+    <Paper bg={'dark.9'} withBorder={isLocked} m={0} p={'xs'}>
+      <Stack gap={'xs'}>
+        <Group gap={'xs'} justify={'center'}>
+          <ActionIcon onClick={toggleLock} variant={isLocked ? 'filled' : 'default'}>
+            {isLocked ? <LockIcon /> : <LockOpenIcon />}
+          </ActionIcon>
+          <Group gap={5} wrap={'nowrap'}>
+            <TimeIncrementInput
+              value={time.getUTCFullYear()}
+              onInputEnter={(value) => onTimeInput(TimePart.Years, value)}
+              onInputChangeStep={(change) => onTimeInputRelative(TimePart.Years, change)}
+              onInputChange={onYearChange}
+              onInputBlur={() => {
+                if (errorMessage) {
+                  setErrorMessage('');
+                }
+              }}
+              error={errorMessage !== ''}
+              w={65}
+            />
+            <MonthInput
+              month={time.getUTCMonth()}
+              onInputChange={(value) => onTimeInput(TimePart.Months, value)}
+              onInputChangeStep={(change) => onTimeInputRelative(TimePart.Months, change)}
+              w={55}
+            />
 
-          <TimeIncrementInput
-            value={time.getUTCDate()}
-            onInputEnter={(value) => onTimeInput(TimePart.Days, value)}
-            onInputChangeStep={(change) => onTimeInputRelative(TimePart.Days, change)}
-            min={1}
-            max={maxDaysInMonth(time.getUTCFullYear(), time.getUTCMonth())}
-            w={40}
-          />
+            <TimeIncrementInput
+              value={time.getUTCDate()}
+              onInputEnter={(value) => onTimeInput(TimePart.Days, value)}
+              onInputChangeStep={(change) => onTimeInputRelative(TimePart.Days, change)}
+              min={1}
+              max={maxDaysInMonth(time.getUTCFullYear(), time.getUTCMonth())}
+              w={40}
+            />
+          </Group>
+          <Group gap={5} wrap={'nowrap'}>
+            <TimeIncrementInput
+              value={time.getUTCHours()}
+              onInputEnter={(value) => onTimeInput(TimePart.Hours, value)}
+              onInputChangeStep={(change) => onTimeInputRelative(TimePart.Hours, change)}
+              min={0}
+              max={24}
+              w={40}
+            />
+            <TimeIncrementInput
+              value={time.getUTCMinutes()}
+              onInputEnter={(value) => onTimeInput(TimePart.Minutes, value)}
+              onInputChangeStep={(change) =>
+                onTimeInputRelative(TimePart.Minutes, change)
+              }
+              min={0}
+              max={60}
+              w={40}
+            />
+            <TimeIncrementInput
+              value={time.getUTCSeconds()}
+              onInputEnter={(value) => onTimeInput(TimePart.Seconds, value)}
+              onInputChangeStep={(change) =>
+                onTimeInputRelative(TimePart.Seconds, change)
+              }
+              min={0}
+              max={60}
+              w={40}
+            />
+          </Group>
         </Group>
-        <Group gap={5} wrap={'nowrap'}>
-          <TimeIncrementInput
-            value={time.getUTCHours()}
-            onInputEnter={(value) => onTimeInput(TimePart.Hours, value)}
-            onInputChangeStep={(change) => onTimeInputRelative(TimePart.Hours, change)}
-            min={0}
-            max={24}
-            w={40}
-          />
-          <TimeIncrementInput
-            value={time.getUTCMinutes()}
-            onInputEnter={(value) => onTimeInput(TimePart.Minutes, value)}
-            onInputChangeStep={(change) => onTimeInputRelative(TimePart.Minutes, change)}
-            min={0}
-            max={60}
-            w={40}
-          />
-          <TimeIncrementInput
-            value={time.getUTCSeconds()}
-            onInputEnter={(value) => onTimeInput(TimePart.Seconds, value)}
-            onInputChangeStep={(change) => onTimeInputRelative(TimePart.Seconds, change)}
-            min={0}
-            max={60}
-            w={40}
-          />
-        </Group>
-      </Group>
-      {errorMessage && <Alert color={'red'}>{errorMessage}</Alert>}
-      {useLock && (
-        <Group gap={'xs'} grow>
-          <Button
-            onClick={() => {
-              interpolateToPendingTime();
-              setUseLock(false);
-            }}
-          >
-            Interpolate
-          </Button>
-          <Button
-            onClick={() => {
-              setToPendingTime();
-              setUseLock(false);
-            }}
-          >
-            Set
-          </Button>
-          <Button variant={'outline'} onClick={() => setUseLock(false)}>
-            Cancel
-          </Button>
-        </Group>
-      )}
-    </Stack>
+        {errorMessage && <Alert color={'red'}>{errorMessage}</Alert>}
+        {isLocked && (
+          <Group gap={'xs'} grow>
+            <Button
+              onClick={() => {
+                interpolateToPendingTime();
+                setUseLock(false);
+              }}
+              variant={"filled"}
+            >
+              Interpolate
+            </Button>
+            <Button
+              onClick={() => {
+                setToPendingTime();
+                setUseLock(false);
+              }}
+              variant={"filled"}
+            >
+              Set
+            </Button>
+            <Button variant={'default'} onClick={() => setUseLock(false)}>
+              Cancel
+            </Button>
+          </Group>
+        )}
+      </Stack>
+    </Paper>
   );
 }

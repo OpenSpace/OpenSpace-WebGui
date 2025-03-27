@@ -1,14 +1,12 @@
 import { PropsWithChildren } from 'react';
-import { Box, BoxProps } from '@mantine/core';
+import { BoxProps } from '@mantine/core';
 
-import { useLayoutProvider } from './hooks';
+import { ScrollBox } from '../ScrollBox/ScrollBox';
 
 export function GrowingContent({ children, ...props }: PropsWithChildren & BoxProps) {
-  const { growingSizeHeight } = useLayoutProvider();
-
   return (
-    <Box h={growingSizeHeight} {...props}>
+    <ScrollBox flex={1} {...props}>
       {children}
-    </Box>
+    </ScrollBox>
   );
 }
