@@ -31,7 +31,7 @@ export function WindowsMenu() {
               style={{
                 borderLeft: itemConfig.isOpen
                   ? 'var(--openspace-border-active)'
-                  : '4px solid transparent',
+                  : 'var(--openspace-border-active-placeholder)',
                 borderRadius: 0
               }}
               flex={1}

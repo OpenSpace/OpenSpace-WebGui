@@ -105,7 +105,8 @@ export const theme = createTheme({
 
 export const cssVariablesResolver: CSSVariablesResolver = () => ({
   variables: {
-    '--openspace-border-active': '4px solid var(--mantine-primary-color-filled)'
+    '--openspace-border-active': '4px solid var(--mantine-primary-color-filled)',
+    '--openspace-border-active-placeholder': '4px solid transparent'
   },
   dark: {},
   light: {}
