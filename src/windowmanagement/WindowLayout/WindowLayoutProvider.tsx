@@ -2,13 +2,15 @@ import React, { useCallback, useRef } from 'react';
 import { Title } from '@mantine/core';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
+import { useAppDispatch } from '@/redux/hooks';
+import { setMenuItemOpen } from '@/redux/local/localSlice';
 import { Window } from '@/windowmanagement/Window/Window';
 
-import { FloatWindowPosition } from './types';
-import { WindowLayoutOptions } from './WindowLayout';
+import { FloatWindowPosition, WindowLayoutOptions } from './types';
 import { WindowLayoutContext } from './WindowLayoutContext';
 
 export function WindowLayoutProvider({ children }: { children: React.ReactNode }) {
+  const dispatch = useAppDispatch();
   const rcDocRef = useRef<DockLayout>(null);
 
   function isPanelDataInstance(obj: PanelData | BoxData) {
@@ -57,6 +59,8 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
       const isExistingPanel = rcDocRef.current.find(options.id);
       if (isExistingPanel) {
         rcDocRef.current.updateTab(isExistingPanel.id!, null, true);
+        dispatch(setMenuItemOpen({ id: options.id, open: true }));
+
         return;
       }
 
@@ -106,20 +110,27 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
         default:
           throw Error('Unhandled window position');
       }
+
+      dispatch(setMenuItemOpen({ id: options.id, open: true }));
     },
-    [createWindowTabData]
+
+    [createWindowTabData, dispatch]
   );
 
-  const closeWindow = useCallback((id: string) => {
-    if (!rcDocRef.current) {
-      return;
-    }
+  const closeWindow = useCallback(
+    (id: string) => {
+      if (!rcDocRef.current) {
+        return;
+      }
 
-    const existingPanel = rcDocRef.current.find(id);
-    if (existingPanel) {
-      rcDocRef.current.dockMove(existingPanel as TabData | PanelData, null, 'remove');
-    }
-  }, []);
+      const existingPanel = rcDocRef.current.find(id);
+      if (existingPanel) {
+        rcDocRef.current.dockMove(existingPanel as TabData | PanelData, null, 'remove');
+        dispatch(setMenuItemOpen({ id: id, open: false }));
+      }
+    },
+    [dispatch]
+  );
 
   return (
     <WindowLayoutContext.Provider

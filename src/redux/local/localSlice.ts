@@ -18,7 +18,12 @@ const initialState: LocalState = {
     currentlySelectedNode: null
   },
   taskbarItems: Object.values(menuItemsData).map((item) => {
-    return { id: item.componentID, visible: item.defaultVisible, enabled: true };
+    return {
+      id: item.componentID,
+      visible: item.defaultVisible,
+      enabled: true,
+      isOpen: false
+    };
   })
 };
 
@@ -54,6 +59,13 @@ export const localSlice = createSlice({
       }
       return state;
     },
+    setMenuItemOpen: (state, action: PayloadAction<{ id: string; open: boolean }>) => {
+      const item = state.taskbarItems.find((item) => item.id === action.payload.id);
+      if (item) {
+        item.isOpen = action.payload.open;
+      }
+      return state;
+    },
     setMenuItemsOrder: (state, action: PayloadAction<TaskbarItemConfig[]>) => {
       state.taskbarItems = action.payload;
       return state;
@@ -67,6 +79,7 @@ export const {
   setSceneTreeSelectedNode,
   setMenuItemVisible,
   setMenuItemEnabled,
+  setMenuItemOpen,
   setMenuItemsOrder
 } = localSlice.actions;
 export const localReducer = localSlice.reducer;
