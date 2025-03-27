@@ -113,7 +113,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     ),
     renderIcon: (size) => <CalendarIcon size={size} />,
     preferredPosition: 'float',
-    floatPosition: { offsetY: 100, offsetX: 370, width: 410, height: 600 },
+    floatPosition: { offsetY: 100, offsetX: 370, width: 410, height: 520 },
     defaultVisible: true
   },
   sessionRecording: {
