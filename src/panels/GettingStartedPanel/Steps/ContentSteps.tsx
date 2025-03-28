@@ -4,6 +4,7 @@ import {
   Checkbox,
   Group,
   List,
+  Paper,
   Stack,
   Text,
   Title
@@ -37,16 +38,18 @@ export const ContentSteps = [
       You can search for objects in the top search bar. The results are going to look like
       this:
     </Text>
-    <SceneGraphNodeHeader uri={'Scene.Earth'} />
+    <Paper maw={300} withBorder bg={'transparent'} p={'xs'}>
+      <SceneGraphNodeHeader uri={'Scene.Earth'} />
+    </Paper>
     <Group>
       <Text>You can focus on objects by clicking the focus icon: </Text>
-      <ActionIcon size={'sm'}>
+      <ActionIcon size={'sm'} style={{ pointerEvents: 'none' }}>
         <FocusIcon size={IconSize.xs} />
-      </ActionIcon>{' '}
+      </ActionIcon>
     </Group>
     <Group>
       <Text>To toggle the visibility, click on the checkmark:</Text>{' '}
-      <Checkbox checked onChange={() => {}} />
+      <Checkbox checked readOnly style={{ pointerEvents: 'none' }} />
     </Group>
   </Stack>,
   <>
@@ -60,8 +63,8 @@ export const ContentSteps = [
       label={'Turn off the trail of Earth'}
     />
     <Group>
-      <Text>To toggle the visibility, click on the checkmark:</Text>{' '}
-      <Checkbox checked onChange={() => {}} />
+      <Text>To toggle the visibility, click on the checkmark:</Text>
+      <Checkbox checked readOnly style={{ pointerEvents: 'none' }} />
     </Group>
   </>,
   <>

@@ -4,6 +4,8 @@ export {
   BsThreeDotsVertical as VerticalDotsIcon
 } from 'react-icons/bs';
 export {
+  FaArrowLeft as ArrowLeftIcon,
+  FaArrowRight as ArrowRightIcon,
   FaHome as HomeIcon,
   FaMinus as MinusIcon,
   FaPlus as PlusIcon,
