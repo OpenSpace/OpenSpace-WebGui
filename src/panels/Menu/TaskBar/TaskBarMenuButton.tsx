@@ -27,7 +27,7 @@ export function TaskBarMenuButton({ id, children, ...props }: Props) {
   const item = menuItemsData[id];
 
   if (!item) {
-    throw new Error(`No menu item found for id: ${id}`);
+    throw new Error(`No menu item found for id: '${id}'`);
   }
 
   function onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
@@ -55,7 +55,7 @@ export function TaskBarMenuButton({ id, children, ...props }: Props) {
       onContextMenu={onRightClick}
       size={'xl'}
       variant={'menubar'}
-      aria-label={item?.title}
+      aria-label={item.title}
       style={{
         borderBottom: itemConfig?.isOpen ? 'var(--openspace-border-active)' : '',
         borderRadius: 0
