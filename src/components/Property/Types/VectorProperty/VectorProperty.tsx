@@ -6,8 +6,8 @@ import {
 import { useGenericVectorProperty, usePropertyDescription } from '@/hooks/properties';
 
 import { ColorView } from './ViewOptions/ColorView';
-import { DefaultView } from './ViewOptions/DefaultView';
 import { MinMaxRangeView } from './ViewOptions/MinMaxRange';
+import { VectorDefaultView } from './ViewOptions/VectorDefaultView';
 
 interface Props extends PropertyProps {
   isInt?: boolean;
@@ -48,7 +48,7 @@ export function VectorProperty({ uri, isInt = false, readOnly }: Props) {
   }
 
   return (
-    <DefaultView
+    <VectorDefaultView
       disabled={readOnly}
       setPropertyValue={setPropertyValue}
       value={value}

@@ -112,7 +112,10 @@ export function WorldWideTelescopeView() {
         allowFullScreen
         height={height}
         width={width}
-        style={{ borderWidth: 0, pointerEvents: 'none' }}
+        style={{
+          border: '0px solid transparent',
+          pointerEvents: 'none'
+        }}
       >
         <p>ERROR: cannot display AAS WorldWide Telescope research app!</p>
       </iframe>
