@@ -40,7 +40,7 @@ export const TimeSteps = [
     <ChangeYearTask />
     <Text>To open the Time Panel, click on the following icon in the taskbar:</Text>
     <Box my={'xs'}>
-      <TimePanelMenuButton onClick={() => {}} />
+      <TimePanelMenuButton id={''} />
     </Box>
     <Group>
       <Text>Change the year by changing the value of the year in the time input:</Text>

@@ -14,7 +14,21 @@ export function TaskBarMenuButton({ id, children, ...props }: Props) {
   );
   const { addWindow, closeWindow } = useWindowLayoutProvider();
 
+  if (id === '') {
+    // This is a special case used to show the buttons in the getting started guide.
+    // These buttons should not be clickable
+    return (
+      <Button px={'sm'} size={'lg'} {...props} style={{ pointerEvents: 'none' }}>
+        {children}
+      </Button>
+    );
+  }
+
   const item = menuItemsData[id];
+
+  if (!item) {
+    throw new Error(`No menu item found for id: ${id}`);
+  }
 
   function onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     if (event.shiftKey) {
@@ -41,7 +55,7 @@ export function TaskBarMenuButton({ id, children, ...props }: Props) {
       onContextMenu={onRightClick}
       size={'xl'}
       variant={'menubar'}
-      aria-label={item.title}
+      aria-label={item?.title}
       style={{
         borderBottom: itemConfig?.isOpen ? 'var(--openspace-border-active)' : '',
         borderRadius: 0
