@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   alpha,
+  Badge,
   Button,
   createTheme,
   CSSVariablesResolver,
@@ -47,6 +48,13 @@ export const theme = createTheme({
         variant: 'default'
       }
     }),
+    Badge: Badge.extend({
+      styles: {
+        label: {
+          textTransform: 'none'
+        }
+      }
+    }),
     Button: Button.extend({
       defaultProps: {
         variant: 'default'
@@ -85,7 +93,9 @@ export const theme = createTheme({
       defaultProps: {
         withArrow: true,
         transitionProps: { duration: 400, enterDelay: 400 },
-        position: 'top'
+        position: 'top',
+        maw: 300,
+        multiline: true
       }
     })
   },

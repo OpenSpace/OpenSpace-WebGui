@@ -1,6 +1,9 @@
 import React, { useCallback } from 'react';
 import { BoxData, PanelData, TabData } from 'rc-dock';
 
+import { useBoolProperty } from '@/hooks/properties';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
+import { Uri } from '@/types/types';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 export const DefaultSgnWindowId = 'defaultSceneGraphNodeWindow';
@@ -55,5 +58,15 @@ export function useOpenCurrentSceneNodeWindow() {
   return {
     openCurrentNodeWindow,
     closeCurrentNodeWindow
+  };
+}
+
+export function useTimeFrame(uri: Uri) {
+  const timeFrame = usePropertyOwner(`${uri}.TimeFrame`);
+  const [isInTimeFrame] = useBoolProperty(`${uri}.TimeFrame.IsInTimeFrame`);
+
+  return {
+    timeFrame,
+    isInTimeFrame
   };
 }
