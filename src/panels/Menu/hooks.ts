@@ -72,7 +72,7 @@ export function useStoredLayout() {
       console.error('Invalid layout file. Length does not match');
       return;
     }
-    // We have to ensure that all id's are valid before we can set
+    // We have to ensure that all ids are valid before we can set
     // the new layout
     const isValid = newLayout.every((newItem) =>
       menuItems.find((existingItem) => existingItem.id === newItem.id)
