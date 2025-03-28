@@ -16,7 +16,12 @@ function InputButton({ showMoreButton }: InputButtonProps) {
 
   if (isSearching) {
     return (
-      <ActionIcon size={'lg'} onClick={() => setSearchString('')}>
+      <ActionIcon
+        size={'lg'}
+        variant={'subtle'}
+        color={'gray'}
+        onClick={() => setSearchString('')}
+      >
         <CancelIcon />
       </ActionIcon>
     );
