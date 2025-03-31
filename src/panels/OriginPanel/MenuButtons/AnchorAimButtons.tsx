@@ -3,25 +3,19 @@ import { Group, Stack, Text } from '@mantine/core';
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
 import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
 import { IconSize } from '@/types/enums';
-import { MenuItemEventHandlers } from '@/types/types';
 
 interface Props {
   anchorName: string | undefined;
   aimName: string | undefined;
   isOpenSpaceReady: boolean;
-  eventHandlers: MenuItemEventHandlers;
+  id: string;
 }
 
-export function AnchorAimButtons({
-  anchorName,
-  aimName,
-  isOpenSpaceReady,
-  eventHandlers
-}: Props) {
+export function AnchorAimButtons({ anchorName, aimName, isOpenSpaceReady, id }: Props) {
   // TODO: make sure Button has a working label for screen readers since we have mixed
   // icons, text and other elements inside the button
   return (
-    <TaskBarMenuButton {...eventHandlers} disabled={!isOpenSpaceReady}>
+    <TaskBarMenuButton id={id} disabled={!isOpenSpaceReady}>
       <Group>
         <Group gap={5} align={'center'}>
           <AnchorIcon size={IconSize.md} />

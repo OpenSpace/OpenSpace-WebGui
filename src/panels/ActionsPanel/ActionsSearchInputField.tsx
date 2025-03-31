@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
-import { TextInput } from '@mantine/core';
 
+import { FilterListInputField } from '@/components/FilterList/FilterListInputField';
 import { useFilterListProvider } from '@/components/FilterList/hooks';
 import { useAppSelector } from '@/redux/hooks';
 
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function ActionsSearchInputField({ placeHolderSearchText }: Props) {
-  const { searchString, setSearchString } = useFilterListProvider();
+  const { setSearchString } = useFilterListProvider();
   const navigationPath = useAppSelector((state) => state.actions.navigationPath);
 
   // Clear the search string when navigating to a new path
@@ -19,11 +19,5 @@ export function ActionsSearchInputField({ placeHolderSearchText }: Props) {
     setSearchString('');
   }, [navigationPath, setSearchString]);
 
-  return (
-    <TextInput
-      value={searchString}
-      placeholder={placeHolderSearchText}
-      onChange={(event) => setSearchString(event.currentTarget.value)}
-    />
-  );
+  return <FilterListInputField placeHolderSearchText={placeHolderSearchText} />;
 }

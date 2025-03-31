@@ -8,7 +8,7 @@ import { ActionsPage } from './pages/ActionsPage';
 import { GuiPage } from './pages/GuiPage';
 import { RoutesPage } from './pages/RoutesPage';
 import { store } from './redux/store';
-import { theme } from './theme/mantineTheme';
+import { cssVariablesResolver, theme } from './theme/mantineTheme';
 
 import 'rc-dock/dist/rc-dock-dark.css';
 
@@ -20,7 +20,11 @@ function App() {
       handle this well.*/}
       <LuaApiProvider>
         <StrictMode>
-          <MantineProvider theme={theme} defaultColorScheme={'dark'}>
+          <MantineProvider
+            theme={theme}
+            defaultColorScheme={'dark'}
+            cssVariablesResolver={cssVariablesResolver}
+          >
             <BrowserRouter>
               <Routes>
                 <Route index element={<RoutesPage />} />
