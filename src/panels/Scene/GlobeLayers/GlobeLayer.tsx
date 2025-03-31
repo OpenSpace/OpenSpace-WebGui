@@ -1,21 +1,20 @@
-import { Group, Paper, Text } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 
-import { useGetPropertyOwner } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
+import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
+import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
-
-import { usePropertyOwnerVisibility } from '../hooks';
 
 interface Props {
   uri: Uri;
 }
 
 export function GlobeLayer({ uri }: Props) {
-  const propertyOwner = useGetPropertyOwner(uri);
+  const propertyOwner = usePropertyOwner(uri);
 
   const { isVisible } = usePropertyOwnerVisibility(uri);
 
@@ -33,14 +32,15 @@ export function GlobeLayer({ uri }: Props) {
       leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
       rightSection={
         <Group wrap={'nowrap'}>
-          <InfoBox text={propertyOwner.description || 'No information'} />
+          <InfoBox>
+            {propertyOwner.description || 'No information'}
+            <CopyUriButton uri={uri} />
+          </InfoBox>
         </Group>
       }
       noTransition
     >
-      <Paper withBorder>
-        <PropertyOwnerContent uri={uri} />
-      </Paper>
+      <PropertyOwnerContent uri={uri} />
     </Collapsable>
   );
 }

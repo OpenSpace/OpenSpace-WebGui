@@ -1,41 +1,54 @@
 import { Button, ButtonProps } from '@mantine/core';
 
-import { IconSize } from '@/types/enums';
-import { MenuItem } from '@/windowmanagement/data/MenuItems';
+import { useAppSelector } from '@/redux/hooks';
+import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 interface Props extends ButtonProps {
-  item: MenuItem;
+  id: string;
 }
 
-export function TaskBarMenuButton({ item, ...props }: Props) {
-  const { addWindow } = useWindowLayoutProvider();
+export function TaskBarMenuButton({ id, children, ...props }: Props) {
+  const itemConfig = useAppSelector((state) =>
+    state.local.taskbarItems.find((config) => config.id === id)
+  );
+  const { addWindow, closeWindow } = useWindowLayoutProvider();
 
-  function handleClick(item: MenuItem): void {
-    addWindow(item.content, {
-      title: item.title,
-      position: item.preferredPosition,
-      id: item.componentID,
-      floatPosition: item.floatPosition
-    });
+  const item = menuItemsData[id];
+
+  function onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    if (event.shiftKey) {
+      closeWindow(item.componentID);
+    } else {
+      addWindow(item.content, {
+        title: item.title,
+        position: item.preferredPosition,
+        id: item.componentID,
+        floatPosition: item.floatPosition
+      });
+    }
   }
 
-  if (item.renderMenuButton) {
-    // If there is a function for rendering a custom button, always use that
-    return item.renderMenuButton(item.componentID, () => handleClick(item));
-  } else {
-    return (
-      <Button
-        key={item.componentID}
-        p={'sm'}
-        onClick={() => handleClick(item)}
-        size={'xl'}
-        variant={'menubar'}
-        aria-label={item.title}
-        {...props}
-      >
-        {item.renderIcon ? item.renderIcon(IconSize.lg) : item.title}
-      </Button>
-    );
+  function onRightClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    event.preventDefault();
+    closeWindow(item.componentID);
   }
+
+  return (
+    <Button
+      px={'sm'}
+      onClick={onClick}
+      onContextMenu={onRightClick}
+      size={'xl'}
+      variant={'menubar'}
+      aria-label={item.title}
+      style={{
+        borderBottom: itemConfig?.isOpen ? 'var(--openspace-border-active)' : '',
+        borderRadius: 0
+      }}
+      {...props}
+    >
+      {children}
+    </Button>
+  );
 }

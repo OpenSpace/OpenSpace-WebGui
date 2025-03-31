@@ -40,6 +40,3 @@ export const RecordingsFolderKey = '${RECORDINGS}/';
 export const WindowsKey = 'Windows';
 export const ScreenSpaceKey = 'ScreenSpace';
 export const RenderableKey = 'Renderable';
-export const ScaleKey = 'Scale';
-export const TranslationKey = 'Translation';
-export const RotationKey = 'Rotation';

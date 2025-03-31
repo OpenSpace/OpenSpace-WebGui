@@ -1,32 +1,27 @@
 import { Checkbox, Group } from '@mantine/core';
 
-import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { PropertyLabel } from '@/components/Property/PropertyLabel';
+import { PropertyProps } from '@/components/Property/types';
+import { useBoolProperty, usePropertyDescription } from '@/hooks/properties';
 
-interface Props {
-  name: string;
-  description: string;
-  disabled: boolean;
-  setPropertyValue: (newValue: boolean) => void;
-  value: boolean;
-}
+export function BoolProperty({ uri, readOnly }: PropertyProps) {
+  const [value, setValue] = useBoolProperty(uri);
+  const description = usePropertyDescription(uri);
 
-export function BoolProperty({
-  name,
-  description,
-  disabled,
-  setPropertyValue,
-  value
-}: Props) {
+  if (value === undefined || !description) {
+    return <></>;
+  }
+
   return (
-    <Group>
+    <Group gap={'xs'} wrap={'nowrap'}>
       <Checkbox
         checked={value}
-        onChange={(event) => setPropertyValue(event.currentTarget.checked)}
-        onKeyDown={(event) => event.key === 'Enter' && setPropertyValue(!value)}
-        disabled={disabled}
-        label={name}
+        onChange={(event) => setValue(event.currentTarget.checked)}
+        onKeyDown={(event) => event.key === 'Enter' && setValue(!value)}
+        disabled={readOnly}
+        aria-label={`Toggle ${description.name}`}
       />
-      <InfoBox text={description} />
+      <PropertyLabel uri={uri} readOnly={readOnly} />
     </Group>
   );
 }

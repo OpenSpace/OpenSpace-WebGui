@@ -22,7 +22,8 @@ const initialState: LocalState = {
       id: item.componentID,
       visible: item.defaultVisible,
       enabled: true,
-      name: item.title
+      name: item.title,
+      isOpen: false
     };
   })
 };
@@ -65,6 +66,13 @@ export const localSlice = createSlice({
       }
       return state;
     },
+    setMenuItemOpen: (state, action: PayloadAction<{ id: string; open: boolean }>) => {
+      const item = state.taskbarItems.find((item) => item.id === action.payload.id);
+      if (item) {
+        item.isOpen = action.payload.open;
+      }
+      return state;
+    },
     setMenuItemsOrder: (state, action: PayloadAction<TaskbarItemConfig[]>) => {
       state.taskbarItems = action.payload;
       return state;
@@ -78,6 +86,7 @@ export const {
   setSceneTreeSelectedNode,
   setMenuItemVisible,
   setMenuItemEnabled,
+  setMenuItemOpen,
   setMenuItemsOrder
 } = localSlice.actions;
 export const localReducer = localSlice.reducer;

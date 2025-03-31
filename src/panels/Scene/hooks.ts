@@ -1,17 +1,9 @@
 import React, { useCallback } from 'react';
 import { BoxData, PanelData, TabData } from 'rc-dock';
 
-import {
-  useGetBoolPropertyValue,
-  useGetFloatPropertyValue,
-  useOpenSpaceApi
-} from '@/api/hooks';
+import { useBoolProperty } from '@/hooks/properties';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
-import {
-  checkVisiblity,
-  enabledPropertyUri,
-  fadePropertyUri
-} from '@/util/propertyTreeHelpers';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 export const DefaultSgnWindowId = 'defaultSceneGraphNodeWindow';
@@ -69,30 +61,12 @@ export function useOpenCurrentSceneNodeWindow() {
   };
 }
 
-export function usePropertyOwnerVisibility(uri: Uri) {
-  const luaApi = useOpenSpaceApi();
-
-  const [enabledPropertyValue, setEnabledProperty] = useGetBoolPropertyValue(
-    enabledPropertyUri(uri)
-  );
-  const [fadePropertyValue] = useGetFloatPropertyValue(fadePropertyUri(uri));
-  const isFadeable = fadePropertyValue !== undefined;
-
-  const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
-
-  function setVisiblity(shouldShow: boolean, isImmediate: boolean = false) {
-    const fadeTime = isImmediate ? 0 : undefined;
-    if (!isFadeable) {
-      setEnabledProperty(shouldShow);
-    } else if (shouldShow) {
-      luaApi?.fadeIn(uri, fadeTime);
-    } else {
-      luaApi?.fadeOut(uri, fadeTime);
-    }
-  }
+export function useTimeFrame(uri: Uri) {
+  const timeFrame = usePropertyOwner(`${uri}.TimeFrame`);
+  const [isInTimeFrame] = useBoolProperty(`${uri}.TimeFrame.IsInTimeFrame`);
 
   return {
-    isVisible,
-    setVisiblity
+    timeFrame,
+    isInTimeFrame
   };
 }

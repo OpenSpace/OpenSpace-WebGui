@@ -1,62 +1,31 @@
 import { Select } from '@mantine/core';
 
-import { PropertyLabel } from '@/components/Property/PropertyLabel';
+import { AdditionalDataOptions, PropertyProps } from '@/components/Property/types';
+import { useOptionProperty, usePropertyDescription } from '@/hooks/properties';
 
-interface Option {
-  [key: string]: string; // OBS! The key is a number, but will always be converted to a string...
-}
+export function OptionProperty({ uri, readOnly }: PropertyProps) {
+  const [value, setValue] = useOptionProperty(uri);
+  const description = usePropertyDescription(uri);
 
-interface Props {
-  name: string;
-  description: string;
-  disabled: boolean;
-  setPropertyValue: (newValue: number) => void;
-  value: number;
-  additionalData: {
-    Options: Option[];
-  };
-}
-
-export function OptionProperty({
-  name,
-  description,
-  disabled,
-  setPropertyValue,
-  value,
-  additionalData
-}: Props) {
-  const data = additionalData.Options;
-
-  // TODO: This is a bit nasty... Only gets the first value. We should consider simplifying
-  // the data structure to not be an array. I ended up doing this and flipping the data
-  // structure to make  it easier to get the correpsonding value for a given string
-  const options: { [key: string]: number } = {};
-  data.forEach((option: Option) => {
-    const [key] = Object.values(option); // Gets the first value in the object
-    const value = parseInt(Object.keys(option)[0]);
-    options[key] = value;
-  });
-
-  // Value will be an integer number. We need to find the string version to use in the
-  // select component
-  function valueToString(value: number): string | undefined {
-    return Object.keys(options).find((key) => options[key] === value);
+  if (!description || value === undefined) {
+    return <></>;
   }
 
-  function onChange(option: string | null) {
-    if (option) {
-      setPropertyValue(options[option]);
-    }
-  }
+  const { Options: options } = description.additionalData as AdditionalDataOptions;
 
   return (
     <Select
-      label={<PropertyLabel label={name} tip={description} />}
+      aria-label={`${description.name} option input`}
       placeholder={'Choose an option'}
-      disabled={disabled}
-      data={Object.keys(options)}
-      value={valueToString(value)}
-      onChange={(_value) => onChange(_value)}
+      disabled={readOnly}
+      // For each entry in the options object, the numeric value is the key, and the
+      // label is the value
+      data={Object.entries(options).map(([value, label]) => ({
+        value: value,
+        label: label
+      }))}
+      value={value.toString()}
+      onChange={(newOption) => newOption && setValue(parseInt(newOption))}
       allowDeselect={false}
     />
   );

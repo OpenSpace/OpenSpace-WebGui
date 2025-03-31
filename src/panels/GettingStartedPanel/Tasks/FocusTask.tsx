@@ -1,4 +1,4 @@
-import { useGetStringPropertyValue } from '@/api/hooks';
+import { useStringProperty } from '@/hooks/properties';
 import { NavigationAnchorKey } from '@/util/keys';
 
 import { TaskCheckbox } from './Components/TaskCheckbox';
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export function FocusTask({ anchor }: Props) {
-  const [currentAnchor] = useGetStringPropertyValue(NavigationAnchorKey);
+  const [currentAnchor] = useStringProperty(NavigationAnchorKey);
   const taskCompleted =
     currentAnchor !== undefined && currentAnchor !== '' && currentAnchor === anchor;
 

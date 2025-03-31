@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
-import { useGetBoolPropertyValue } from '@/api/hooks';
+import { useBoolProperty } from '@/hooks/properties';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   setMenuItemEnabled,
@@ -14,8 +14,8 @@ import { TaskbarItemConfig } from './types';
 export function useMenuItems() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);
   const hasMission = useAppSelector((state) => state.missions.isInitialized);
-  const [isExoplanetsEnabled] = useGetBoolPropertyValue('Modules.Exoplanets.Enabled');
-  const [isSkyBrowserEnabled] = useGetBoolPropertyValue('Modules.SkyBrowser.Enabled');
+  const [isExoplanetsEnabled] = useBoolProperty('Modules.Exoplanets.Enabled');
+  const [isSkyBrowserEnabled] = useBoolProperty('Modules.SkyBrowser.Enabled');
 
   const filteredMenuItems = menuItems.filter((item) => item.visible);
 
@@ -26,7 +26,7 @@ export function useMenuItems() {
   // effect is also that when enabling/disabling a module during runtime, the menu item is
   // automatically shown or hidden in the taskbar.
   // @TODO: (anden88 2025-03-10): Investigate if SkyBrowser & Exoplanets still need the
-  //  enabled property
+  // enabled property
   const enablePanel = useCallback(
     (id: string, value: boolean) => {
       dispatch(setMenuItemEnabled({ id: id, enabled: value }));
@@ -47,11 +47,7 @@ export function useMenuItems() {
     enablePanel('skyBrowser', isSkyBrowserEnabled ?? false);
   }, [isSkyBrowserEnabled, enablePanel]);
 
-  function setMenuItemVisible(id: string, value: boolean) {
-    dispatch(setMenuItemVisibleRedux({ id, visible: value }));
-  }
-
-  return { menuItems, filteredMenuItems, setMenuItemVisible };
+  return { menuItems, filteredMenuItems };
 }
 
 export function useStoredLayout() {

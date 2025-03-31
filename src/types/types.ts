@@ -1,4 +1,5 @@
 import { Property } from '@/components/Property/Property';
+import { AdditionalData } from '@/components/Property/types';
 
 import { PropertyVisibilityNumber } from './enums';
 
@@ -42,9 +43,7 @@ export interface PropertyMetaData {
 }
 
 export interface PropertyDetails {
-  // TODO: ylvse (2025-02-17): create the type for additionalData
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  additionalData: any;
+  additionalData: AdditionalData;
   identifier: Identifier;
   metaData: PropertyMetaData;
   name: string;
@@ -52,10 +51,11 @@ export interface PropertyDetails {
   description: string;
 }
 
-export type PropertyValue = string | number | number[] | boolean | null;
+export type PropertyValue = string | string[] | number | number[] | boolean | null;
+
 export interface Property {
   description: PropertyDetails;
-  value: PropertyValue; // TODO: investigate if these are all the values we can have
+  value: PropertyValue;
   uri: Uri;
 }
 

@@ -1,6 +1,7 @@
 import { alpha, Box, Flex } from '@mantine/core';
 
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
+import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { useMenuItems } from '../hooks';
@@ -32,7 +33,13 @@ export function TaskBar() {
                 borderTopRightRadius: isLastItem ? 'var(--mantine-radius-md)' : undefined
               }}
             >
-              <TaskBarMenuButton item={item} />
+              {item?.renderMenuButton ? (
+                item.renderMenuButton(item.componentID)
+              ) : (
+                <TaskBarMenuButton id={item.componentID}>
+                  {item.renderIcon ? item.renderIcon(IconSize.lg) : item.title}
+                </TaskBarMenuButton>
+              )}
             </Box>
           );
         })}

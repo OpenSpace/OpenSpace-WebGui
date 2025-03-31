@@ -1,15 +1,17 @@
-import { Button, Skeleton, Stack, Text } from '@mantine/core';
+import { Skeleton, Stack, Text } from '@mantine/core';
 
-import { useSubscribeToTime } from '@/api/hooks';
+import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
+import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
 import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
 
 import { formatDeltaTime } from './util';
 
-interface TimePanelMenuButtonProps {
-  onClick: () => void;
+interface Props {
+  id: string;
 }
-export function TimePanelMenuButton({ onClick }: TimePanelMenuButtonProps) {
+
+export function TimePanelMenuButton({ id }: Props) {
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime);
   const isPaused = useAppSelector((state) => state.time.isPaused);
   const timeString = useAppSelector((state) => state.time.timeString);
@@ -33,16 +35,15 @@ export function TimePanelMenuButton({ onClick }: TimePanelMenuButtonProps) {
       return `Realtime ${isPaused ? '(Paused)' : ''}`;
     }
 
-    const { increment, unit, isNegative } = formatDeltaTime(Math.abs(targetDeltaTime));
+    const { increment, unit, isNegative } = formatDeltaTime(targetDeltaTime);
     const roundedIncrement = Math.round(increment);
-    const pluralSuffix = roundedIncrement !== 1 ? 's' : '';
     const sign = isNegative ? '-' : '';
 
-    return `${sign}${roundedIncrement} ${unit}${pluralSuffix} / second ${isPaused ? '(Paused)' : ''}`;
+    return `${sign}${roundedIncrement} ${unit} / second ${isPaused ? '(Paused)' : ''}`;
   }
 
   return (
-    <Button onClick={onClick} size={'xl'} variant={'menubar'} disabled={!isReady}>
+    <TaskBarMenuButton id={id} disabled={!isReady}>
       <Stack gap={0} align={'flex-start'}>
         {isReady ? (
           <>
@@ -56,6 +57,6 @@ export function TimePanelMenuButton({ onClick }: TimePanelMenuButtonProps) {
           </>
         )}
       </Stack>
-    </Button>
+    </TaskBarMenuButton>
   );
 }

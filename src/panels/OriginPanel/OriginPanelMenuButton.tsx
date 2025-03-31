@@ -1,34 +1,27 @@
 import { Group } from '@mantine/core';
 
-import {
-  useGetPropertyOwner,
-  useGetStringPropertyValue,
-  useSubscribeToEngineMode
-} from '@/api/hooks';
+import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { EngineMode } from '@/types/enums';
-import { NavigationAimKey, NavigationAnchorKey, ScenePrefixKey } from '@/util/keys';
+import { useAimNode, useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { AnchorAimButtons } from './MenuButtons/AnchorAimButtons';
 import { CancelFlightButton } from './MenuButtons/CancelFlightButton';
 import { FocusButton } from './MenuButtons/FocusButton';
 import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
-interface OriginPanelMenuButtonProps {
-  onClick: () => void;
+interface Props {
+  id: string;
 }
 
-export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
-  const [anchor] = useGetStringPropertyValue(NavigationAnchorKey);
-  const [aim] = useGetStringPropertyValue(NavigationAimKey);
-  const anchorName = useGetPropertyOwner(`${ScenePrefixKey}${anchor}`)?.name ?? anchor;
-  const aimName = useGetPropertyOwner(`${ScenePrefixKey}${aim}`)?.name ?? aim;
+export function OriginPanelMenuButton({ id }: Props) {
+  const aimNode = useAimNode();
+  const anchorNode = useAnchorNode();
+
   const engineMode = useSubscribeToEngineMode();
 
-  function hasDistinctAim() {
-    return aim !== '' && aim !== anchor;
-  }
+  const hasDistinctAim = aimNode && aimNode.identifier !== anchorNode?.identifier;
 
-  const isReady = anchor !== '' && anchor !== undefined;
+  const isReady = anchorNode !== undefined;
 
   const isInFlight = engineMode === EngineMode.CameraPath;
 
@@ -41,14 +34,14 @@ export function OriginPanelMenuButton({ onClick }: OriginPanelMenuButtonProps) {
     );
   }
 
-  return hasDistinctAim() ? (
+  return hasDistinctAim ? (
     <AnchorAimButtons
-      anchorName={anchorName}
-      aimName={aimName}
+      anchorName={anchorNode?.name}
+      aimName={aimNode?.name}
       isOpenSpaceReady={isReady}
-      onClick={onClick}
+      id={id}
     />
   ) : (
-    <FocusButton anchorName={anchorName} isOpenSpaceReady={isReady} onClick={onClick} />
+    <FocusButton anchorName={anchorNode?.name} isOpenSpaceReady={isReady} id={id} />
   );
 }
