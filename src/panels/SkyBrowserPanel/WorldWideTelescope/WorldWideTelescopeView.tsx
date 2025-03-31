@@ -114,7 +114,8 @@ export function WorldWideTelescopeView() {
         width={width}
         style={{
           border: '0px solid transparent',
-          pointerEvents: 'none'
+          pointerEvents: 'none',
+          colorScheme: 'normal'
         }}
       >
         <p>ERROR: cannot display AAS WorldWide Telescope research app!</p>

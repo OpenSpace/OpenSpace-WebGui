@@ -89,6 +89,7 @@ export function SettingsDisplayCopies({ id }: Props) {
       <Property uri={`ScreenSpace.${id}.Scale`} />
       <Property uri={`ScreenSpace.${id}.FaceCamera`} />
       <Property uri={`ScreenSpace.${id}.UseRadiusAzimuthElevation`} />
+      <Property uri={`ScreenSpace.${id}.Reload`} />
 
       <Collapsable
         title={
