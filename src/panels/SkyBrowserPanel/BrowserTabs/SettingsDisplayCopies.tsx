@@ -50,7 +50,7 @@ export function SettingsDisplayCopies({ id }: Props) {
                   Number of copies
                 </Text>
               </InputLabel>
-              <InfoBox>{`Number of copies to add at once.`}</InfoBox>
+              <InfoBox>Number of copies to add at once.</InfoBox>
             </Group>
             <NumericInput value={nCopies} onEnter={setNCopies} />
             <Group mt={'sm'}>
