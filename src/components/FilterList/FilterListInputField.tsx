@@ -50,6 +50,12 @@ export function FilterListInputField({
 }: Props) {
   const { searchString, setSearchString } = useFilterListProvider();
 
+  function onKeyDown(event: React.KeyboardEvent<HTMLElement>): void {
+    if (event.key === 'Escape') {
+      setSearchString('');
+    }
+  }
+
   return (
     <TextInput
       value={searchString}
@@ -58,6 +64,7 @@ export function FilterListInputField({
       autoFocus={searchAutoFocus}
       // Some arbitrary width must be set so that the More button is rendered correctly
       rightSectionWidth={'md'}
+      onKeyDown={onKeyDown}
       rightSection={<InputButton showMoreButton={showMoreButton} />}
       {...other}
     />

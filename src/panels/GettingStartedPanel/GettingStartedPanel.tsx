@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button, Group, Stack } from '@mantine/core';
 
 import { Layout } from '@/components/Layout/Layout';
+import { ArrowLeftIcon, ArrowRightIcon } from '@/icons/icons';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { ContentSteps } from './Steps/ContentSteps';
@@ -57,10 +58,18 @@ export function GettingStartedPanel() {
       </Layout.GrowingSection>
       <Layout.FixedSection>
         <Group justify={'space-between'}>
-          <Button onClick={onClickPrev} disabled={isFirstStep}>
+          <Button
+            onClick={onClickPrev}
+            disabled={isFirstStep}
+            leftSection={<ArrowLeftIcon />}
+          >
             Previous
           </Button>
-          <Button onClick={onClickNext} variant={'filled'}>
+          <Button
+            onClick={onClickNext}
+            variant={'filled'}
+            rightSection={!isLastStep && <ArrowRightIcon />}
+          >
             {isLastStep ? 'Finish' : 'Next'}
           </Button>
         </Group>

@@ -4,13 +4,19 @@ import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { AdditionalDataOptions } from '@/components/Property/types';
 import { useOptionProperty, usePropertyDescription } from '@/hooks/properties';
-import { ChevronRightIcon, SaveIcon, TaskBarIcon, VisibilityIcon } from '@/icons/icons';
+import {
+  ChevronRightIcon,
+  SaveIcon,
+  TaskBarIcon,
+  UpArrowIcon,
+  VisibilityIcon
+} from '@/icons/icons';
 import { useAppDispatch } from '@/redux/hooks';
 import { setMenuItemsOrder, setMenuItemVisible } from '@/redux/local/localSlice';
 import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
-import { useMenuItems } from '../../hooks';
+import { useMenuItems, useStoredLayout } from '../../hooks';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function ViewMenu() {
@@ -18,6 +24,8 @@ export function ViewMenu() {
   const [propertyVisibility, setPropertyVisibility] = useOptionProperty(
     'OpenSpaceEngine.PropertyVisibility'
   );
+
+  const { loadLayout, saveLayout } = useStoredLayout();
   const description = usePropertyDescription('OpenSpaceEngine.PropertyVisibility');
   const dispatch = useAppDispatch();
 
@@ -79,7 +87,19 @@ export function ViewMenu() {
         />
       </TopBarMenuWrapper>
 
-      <Menu.Item leftSection={<SaveIcon />}>Load/Save Layout</Menu.Item>
+      <Menu.Item leftSection={<UpArrowIcon />} onClick={loadLayout}>
+        Load Task Bar Settings
+      </Menu.Item>
+      <Menu.Item leftSection={<SaveIcon />} onClick={saveLayout}>
+        Save Task Bar Settings
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Label>
+        <Group>
+          <VisibilityIcon /> User Visibility
+        </Group>
+      </Menu.Label>
+
       <TopBarMenuWrapper
         targetTitle={
           <Menu.Item
