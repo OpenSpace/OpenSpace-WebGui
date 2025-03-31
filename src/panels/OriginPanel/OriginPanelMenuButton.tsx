@@ -1,12 +1,15 @@
-import { Group } from '@mantine/core';
+import { Group, Skeleton } from '@mantine/core';
 
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
-import { EngineMode } from '@/types/enums';
+import { FocusIcon } from '@/icons/icons';
+import { EngineMode, IconSize } from '@/types/enums';
 import { useAimNode, useAnchorNode } from '@/util/propertyTreeHooks';
 
-import { AnchorAimButtons } from './MenuButtons/AnchorAimButtons';
+import { TaskBarMenuButton } from '../Menu/TaskBar/TaskBarMenuButton';
+
+import { AnchorAimButtonContent } from './MenuButtons/AnchorAimButtonContent';
 import { CancelFlightButton } from './MenuButtons/CancelFlightButton';
-import { FocusButton } from './MenuButtons/FocusButton';
+import { FocusButtonContent } from './MenuButtons/FocusButtonContent';
 import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
 interface Props {
@@ -35,13 +38,16 @@ export function OriginPanelMenuButton({ id }: Props) {
   }
 
   return hasDistinctAim ? (
-    <AnchorAimButtons
-      anchorName={anchorNode?.name}
-      aimName={aimNode?.name}
-      isOpenSpaceReady={isReady}
-      id={id}
-    />
+    <TaskBarMenuButton id={id} disabled={!isReady}>
+      <AnchorAimButtonContent />
+    </TaskBarMenuButton>
   ) : (
-    <FocusButton anchorName={anchorNode?.name} isOpenSpaceReady={isReady} id={id} />
+    <TaskBarMenuButton
+      id={id}
+      disabled={!isReady}
+      leftSection={<FocusIcon size={IconSize.lg} />}
+    >
+      {!isReady ? <Skeleton>Anchor</Skeleton> : <FocusButtonContent />}
+    </TaskBarMenuButton>
   );
 }

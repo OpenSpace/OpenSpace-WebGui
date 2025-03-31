@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   Anchor,
+  Button,
   Checkbox,
   Group,
   List,
@@ -11,7 +12,6 @@ import {
 
 import { FolderPath } from '@/components/FolderPath/FolderPath';
 import { FocusIcon, SceneIcon } from '@/icons/icons';
-import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { IconSize } from '@/types/enums';
 
@@ -30,9 +30,15 @@ export const ContentSteps = [
   <Stack gap={'md'}>
     <Group>
       <Text>All the content in OpenSpace can be found in the Scene menu:</Text>
-      <TaskBarMenuButton id={''} leftSection={<SceneIcon size={IconSize.lg} />}>
+      <Button
+        variant={'menubar'}
+        leftSection={<SceneIcon size={IconSize.lg} />}
+        style={{ pointerEvents: 'none' }}
+        px={'sm'}
+        size={'lg'}
+      >
         Scene
-      </TaskBarMenuButton>
+      </Button>
     </Group>
     <Text>
       You can search for objects in the top search bar. The results are going to look like
