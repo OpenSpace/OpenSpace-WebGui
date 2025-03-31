@@ -46,18 +46,23 @@ async function openSaveFileDialog(contents: JSON) {
         }
       ]
     };
-    // For some reason typescript doesn't recognize this as a function
-    // It is an experimental feature of the chromium browser
-    const fileHandle = await window.showSaveFilePicker(options);
+    try {
+      // For some reason typescript doesn't recognize this as a function
+      // It is an experimental feature of the chromium browser
+      const fileHandle = await window.showSaveFilePicker(options);
 
-    // Create a FileSystemWritableFileStream to write to
-    const writable = await fileHandle.createWritable();
+      // Create a FileSystemWritableFileStream to write to
+      const writable = await fileHandle.createWritable();
 
-    // Write the contents of the file to the stream
-    await writable.write(contentsString);
+      // Write the contents of the file to the stream
+      await writable.write(contentsString);
 
-    // Close the file and write the contents to disk
-    await writable.close();
+      // Close the file and write the contents to disk
+      await writable.close();
+    } catch (e) {
+      // @TODO ylvse 2025-03-31: handle this error with the notification system?
+      console.error(e);
+    }
   } else {
     // This is the fallback code if showSaveFilePicker is not available
     // (Firefox for example).

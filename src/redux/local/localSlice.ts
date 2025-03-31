@@ -46,6 +46,12 @@ export const localSlice = createSlice({
       const item = state.taskbarItems.find((item) => item.id === action.payload.id);
       if (item) {
         item.visible = action.payload.visible;
+      } else {
+        // @TODO (ylvse 2025-03-31): handle this error with the notification system?
+        console.error(
+          'Tried to set visibility of non-existent menu item',
+          action.payload.id
+        );
       }
       return state;
     },
