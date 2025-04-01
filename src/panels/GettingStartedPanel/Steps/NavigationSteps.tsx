@@ -76,10 +76,10 @@ export const NavigationSteps: React.JSX.Element[] = [
     <Text>
       Open the navigation menu and click on the "Focus" button to focus on the Moon. The
       navigation menu can be found in the bottom bar:
-      <Box mt={'md'} p={'md'}>
-        <OriginPanelMenuButtonContent />
-      </Box>
     </Text>
+    <Box mt={'md'} p={'md'}>
+      <OriginPanelMenuButtonContent />
+    </Box>
   </>,
   <>
     <Text>Let's go closer to the Moon!</Text>
