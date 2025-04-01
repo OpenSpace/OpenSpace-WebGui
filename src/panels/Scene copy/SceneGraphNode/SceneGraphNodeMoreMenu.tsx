@@ -6,14 +6,11 @@ import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
-import { DeleteIcon, OpenInNewIcon, VerticalDotsIcon } from '@/icons/icons';
-import { IconSize, NavigationType } from '@/types/enums';
+import { DeleteIcon, VerticalDotsIcon } from '@/icons/icons';
+import { NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { displayName, identifierFromUri } from '@/util/propertyTreeHelpers';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
-import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
-
-import { SceneGraphNodeView } from './SceneGraphNodeView';
 
 interface Props {
   uri: Uri;
@@ -24,21 +21,11 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
   const anchorNode = useAnchorNode();
   const luaApi = useOpenSpaceApi();
 
-  const { addWindow } = useWindowLayoutProvider();
-
   if (!propertyOwner) {
     return <></>;
   }
 
   const name = displayName(propertyOwner);
-
-  function openInNewWindow() {
-    addWindow(<SceneGraphNodeView uri={uri} />, {
-      id: 'sgn-' + uri,
-      title: name,
-      position: 'float'
-    });
-  }
 
   function remove() {
     luaApi?.removeSceneGraphNode(identifierFromUri(uri));
@@ -76,14 +63,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Label>{name}</Menu.Label>
-        <Button
-          onClick={openInNewWindow}
-          variant={'filled'}
-          leftSection={<OpenInNewIcon size={IconSize.sm} />}
-        >
-          Pop out
-        </Button>
-        <Divider m={'xs'} />
+
         <Stack gap={'xs'}>
           <Group gap={'xs'}>
             <NodeNavigationButton

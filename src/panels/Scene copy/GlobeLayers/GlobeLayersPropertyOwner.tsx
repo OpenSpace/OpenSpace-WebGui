@@ -8,7 +8,7 @@ import {
 import { Uri } from '@/types/types';
 import { sgnIdentifierFromSubownerUri } from '@/util/propertyTreeHelpers';
 
-import { GlobeLayerGroup } from './GlobeLayersGroup';
+import { GlobeLayersGroup } from './GlobeLayersGroup';
 
 const layerGroups = [
   {
@@ -43,7 +43,7 @@ export function GlobeLayersPropertyOwner({ uri }: Props) {
   return (
     <>
       {layerGroups.map((group) => (
-        <GlobeLayerGroup
+        <GlobeLayersGroup
           key={group.id}
           uri={`${uri}.${group.id}`}
           icon={group.icon}

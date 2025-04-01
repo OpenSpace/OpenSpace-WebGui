@@ -3,23 +3,28 @@ import { Button, Group, Text, Tooltip } from '@mantine/core';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
-import { usePropertyOwner } from '@/hooks/propertyOwner';
+import { usePropertyOwner, useTimeFrame } from '@/hooks/propertyOwner';
 import { ClockOffIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { displayName, isRenderable } from '@/util/propertyTreeHelpers';
 
-import { useTimeFrame } from '../hooks';
-
+import { OpenSgnInNewWindowButton } from './OpenSgnInNewWindowButton';
 import { SceneGraphNodeMoreMenu } from './SceneGraphNodeMoreMenu';
 
 interface Props {
   uri: Uri;
   onClick?: () => void;
   label?: string;
+  showOpenInNewWindow?: boolean;
 }
 
-export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
+export function SceneGraphNodeHeader({
+  uri,
+  onClick,
+  label,
+  showOpenInNewWindow = true
+}: Props) {
   const propertyOwner = usePropertyOwner(uri);
   const { timeFrame, isInTimeFrame } = useTimeFrame(uri);
 
@@ -83,6 +88,7 @@ export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
             variant={'subtle'}
             identifier={propertyOwner.identifier}
           />
+          {showOpenInNewWindow && <OpenSgnInNewWindowButton uri={uri} />}
           <SceneGraphNodeMoreMenu uri={uri} />
         </Group>
       }
