@@ -19,7 +19,6 @@ import {
 } from '@/icons/icons';
 import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
-import { TempPropertyTest } from '@/panels/Scene/TempPropertyTest';
 import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
 import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { IconSize } from '@/types/enums';
@@ -194,13 +193,6 @@ export const menuItemsData: Record<string, MenuItem> = {
     preferredPosition: 'float',
     floatPosition: { offsetY: 150, offsetX: 350, width: 600, height: 500 },
     defaultVisible: true
-  },
-  propertyTest: {
-    title: 'Property Test (TEMP)',
-    componentID: 'propertyTest',
-    content: <TempPropertyTest />,
-    preferredPosition: 'left',
-    defaultVisible: false
   }
 };
 
