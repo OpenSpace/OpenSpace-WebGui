@@ -12,7 +12,7 @@ export function TaskCheckbox({ taskCompleted, label }: Props) {
     hasEverBeenCompleted.current = true;
   }
   return (
-    <Group>
+    <Group wrap={'nowrap'}>
       <Checkbox.Indicator
         size={'lg'}
         color={'green'}
