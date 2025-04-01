@@ -33,7 +33,7 @@ export function SceneGraphNodeView({
 }: Props) {
   const propertyOwner = usePropertyOwner(uri);
   const { timeFrame, isInTimeFrame } = useTimeFrame(uri);
-
+  console.log(uri);
   // The SGN properties that are visible under the current user level setting
   const visibleProperties = useVisibleProperties(propertyOwner);
 

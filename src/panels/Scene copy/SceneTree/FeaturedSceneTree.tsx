@@ -1,7 +1,7 @@
 import { Tree } from '@mantine/core';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
+import { setSceneTreeSelectedNode2 } from '@/redux/local/localSlice';
 import {
   useAimNode,
   useAnchorNode,
@@ -23,13 +23,13 @@ export function FeaturedSceneTree() {
   const aimNode = useAimNode();
 
   const currentlySelectedNode = useAppSelector(
-    (state) => state.local.sceneTree.currentlySelectedNode
+    (state) => state.local.sceneTree.currentlySelectedNode2
   );
 
   const dispatch = useAppDispatch();
 
   function setCurrentlySelectedNode(node: string) {
-    dispatch(setSceneTreeSelectedNode(node));
+    dispatch(setSceneTreeSelectedNode2(node));
   }
 
   const anchorData = anchorNode

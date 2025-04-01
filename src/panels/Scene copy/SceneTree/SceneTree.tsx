@@ -15,7 +15,7 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ChevronsDownIcon, ChevronsUpIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
-  setSceneTreeSelectedNode,
+  setSceneTreeSelectedNode2,
   storeSceneTreeNodeExpanded
 } from '@/redux/local/localSlice';
 
@@ -37,7 +37,7 @@ export function SceneTree() {
   const { sceneTreeData, flatTreeData } = useSceneTreeData(filter);
 
   const currentlySelectedNode = useAppSelector(
-    (state) => state.local.sceneTree.currentlySelectedNode
+    (state) => state.local.sceneTree.currentlySelectedNode2
   );
   const initialExpandedNodes = useAppSelector(
     (state) => state.local.sceneTree.expandedGroups
@@ -63,7 +63,7 @@ export function SceneTree() {
   }, [dispatch, tree.expandedState]);
 
   function setCurrentlySelectedNode(node: string) {
-    dispatch(setSceneTreeSelectedNode(node));
+    dispatch(setSceneTreeSelectedNode2(node));
   }
 
   return (

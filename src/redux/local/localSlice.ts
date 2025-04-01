@@ -8,6 +8,7 @@ export interface LocalState {
   sceneTree: {
     expandedGroups: string[];
     currentlySelectedNode: Uri | null;
+    currentlySelectedNode2: Uri | null;
   };
   taskbarItems: TaskbarItemConfig[];
 }
@@ -15,7 +16,8 @@ export interface LocalState {
 const initialState: LocalState = {
   sceneTree: {
     expandedGroups: [],
-    currentlySelectedNode: null
+    currentlySelectedNode: null,
+    currentlySelectedNode2: null
   },
   taskbarItems: Object.values(menuItemsData).map((item) => {
     return {
@@ -38,6 +40,10 @@ export const localSlice = createSlice({
     },
     setSceneTreeSelectedNode: (state, action: PayloadAction<Uri | null>) => {
       state.sceneTree.currentlySelectedNode = action.payload;
+      return state;
+    },
+    setSceneTreeSelectedNode2: (state, action: PayloadAction<Uri | null>) => {
+      state.sceneTree.currentlySelectedNode2 = action.payload;
       return state;
     },
     setMenuItemVisible: (
@@ -84,6 +90,7 @@ export const localSlice = createSlice({
 export const {
   storeSceneTreeNodeExpanded,
   setSceneTreeSelectedNode,
+  setSceneTreeSelectedNode2,
   setMenuItemVisible,
   setMenuItemEnabled,
   setMenuItemOpen,

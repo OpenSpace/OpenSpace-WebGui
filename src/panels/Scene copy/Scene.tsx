@@ -2,7 +2,7 @@ import { Container, Divider } from '@mantine/core';
 
 import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
-import { SceneTree } from '@/panels/Scene/SceneTree/SceneTree';
+import { SceneTree } from '@/panels/Scene copy/SceneTree/SceneTree';
 import { useAppSelector } from '@/redux/hooks';
 
 import { FeaturedSceneTree } from './SceneTree/FeaturedSceneTree';

@@ -36,7 +36,7 @@ export function ViewMenu() {
     description.additionalData as AdditionalDataOptions;
 
   return (
-    <TopBarMenuWrapper targetTitle={'View'} withinPortal={false}>
+    <TopBarMenuWrapper targetTitle={'View'}>
       <TopBarMenuWrapper
         targetTitle={
           <Menu.Item

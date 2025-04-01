@@ -3,14 +3,14 @@ import { CloseButton } from '@mantine/core';
 import { Layout } from '@/components/Layout/Layout';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
+import { setSceneTreeSelectedNode2 } from '@/redux/local/localSlice';
 
 import { SceneGraphNodeView } from './SceneGraphNode/SceneGraphNodeView';
 import { Scene } from './Scene';
 
 export function ScenePanel() {
   const currentlySelectedNode = useAppSelector(
-    (state) => state.local.sceneTree.currentlySelectedNode
+    (state) => state.local.sceneTree.currentlySelectedNode2
   );
 
   const dispatch = useAppDispatch();
@@ -29,7 +29,7 @@ export function ScenePanel() {
             extraTopControls={
               <CloseButton
                 flex={0}
-                onClick={() => dispatch(setSceneTreeSelectedNode(null))}
+                onClick={() => dispatch(setSceneTreeSelectedNode2(null))}
               />
             }
           />
