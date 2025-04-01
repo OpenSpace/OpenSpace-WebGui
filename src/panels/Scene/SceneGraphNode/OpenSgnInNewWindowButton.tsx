@@ -20,13 +20,21 @@ export function OpenSgnInNewWindowButton({ uri }: Props) {
     return <></>;
   }
 
-  const name = displayName(propertyOwner);
-
   function openInNewWindow() {
+    if (!propertyOwner) {
+      return;
+    }
+    const name = displayName(propertyOwner);
     addWindow(<SceneGraphNodeView uri={uri} showOpenInNewWindow={false} />, {
-      id: 'sgn-' + uri,
+      id: `sgn-${uri}`,
       title: name,
-      position: 'float'
+      position: 'float',
+      floatPosition: {
+        offsetX: 325,
+        offsetY: 250,
+        width: 375,
+        height: 475
+      }
     });
   }
 

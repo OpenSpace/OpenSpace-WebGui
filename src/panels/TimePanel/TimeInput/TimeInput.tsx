@@ -333,7 +333,7 @@ export function TimeInput() {
                 interpolateToPendingTime();
                 setUseLock(false);
               }}
-              variant={"filled"}
+              variant={'filled'}
             >
               Interpolate
             </Button>
@@ -342,7 +342,7 @@ export function TimeInput() {
                 setToPendingTime();
                 setUseLock(false);
               }}
-              variant={"filled"}
+              variant={'filled'}
             >
               Set
             </Button>

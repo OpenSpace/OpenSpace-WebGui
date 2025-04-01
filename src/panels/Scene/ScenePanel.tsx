@@ -4,13 +4,11 @@ import { Layout } from '@/components/Layout/Layout';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
-import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { SceneGraphNodeView } from './SceneGraphNode/SceneGraphNodeView';
 import { Scene } from './Scene';
 
 export function ScenePanel() {
-  const { height } = useWindowSize();
   const currentlySelectedNode = useAppSelector(
     (state) => state.local.sceneTree.currentlySelectedNode
   );
@@ -21,7 +19,7 @@ export function ScenePanel() {
     return (
       <Layout>
         <Layout.FixedSection>
-          <ResizeableContent defaultHeight={height * 0.5}>
+          <ResizeableContent defaultHeight={(window.innerHeight - 100) * 0.5}>
             <Scene />
           </ResizeableContent>
         </Layout.FixedSection>
