@@ -1,12 +1,14 @@
 import { Group } from '@mantine/core';
 
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { EngineMode } from '@/types/enums';
-import { useAimNode, useAnchorNode } from '@/util/propertyTreeHooks';
+import { useAnchorNode } from '@/util/propertyTreeHooks';
 
-import { AnchorAimButtons } from './MenuButtons/AnchorAimButtons';
+import { TaskBarMenuButton } from '../Menu/TaskBar/TaskBarMenuButton';
+
 import { CancelFlightButton } from './MenuButtons/CancelFlightButton';
-import { FocusButton } from './MenuButtons/FocusButton';
+import { OriginPanelMenuButtonContent } from './MenuButtons/OriginPanelMenuButtonContent';
 import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
 interface Props {
@@ -14,15 +16,10 @@ interface Props {
 }
 
 export function OriginPanelMenuButton({ id }: Props) {
-  const aimNode = useAimNode();
+  const engineMode = useSubscribeToEngineMode();
   const anchorNode = useAnchorNode();
 
-  const engineMode = useSubscribeToEngineMode();
-
-  const hasDistinctAim = aimNode && aimNode.identifier !== anchorNode?.identifier;
-
   const isReady = anchorNode !== undefined;
-
   const isInFlight = engineMode === EngineMode.CameraPath;
 
   if (isInFlight) {
@@ -34,14 +31,16 @@ export function OriginPanelMenuButton({ id }: Props) {
     );
   }
 
-  return hasDistinctAim ? (
-    <AnchorAimButtons
-      anchorName={anchorNode?.name}
-      aimName={aimNode?.name}
-      isOpenSpaceReady={isReady}
-      id={id}
-    />
-  ) : (
-    <FocusButton anchorName={anchorNode?.name} isOpenSpaceReady={isReady} id={id} />
+  if (!isReady) {
+    return (
+      <TaskBarMenuButton id={id} disabled>
+        <LoadingBlocks n={1} w={84} />
+      </TaskBarMenuButton>
+    );
+  }
+  return (
+    <TaskBarMenuButton id={id}>
+      <OriginPanelMenuButtonContent />
+    </TaskBarMenuButton>
   );
 }

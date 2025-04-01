@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   Anchor,
+  Button,
   Checkbox,
   Group,
   List,
@@ -30,9 +31,15 @@ export const ContentSteps = [
   <Stack gap={'md'}>
     <Group>
       <Text>All the content in OpenSpace can be found in the Scene menu:</Text>
-      <Group>
-        <SceneIcon size={IconSize.lg} /> Scene
-      </Group>
+      <Button
+        variant={'menubar'}
+        leftSection={<SceneIcon size={IconSize.lg} />}
+        style={{ pointerEvents: 'none' }}
+        px={'sm'}
+        size={'lg'}
+      >
+        Scene
+      </Button>
     </Group>
     <Text>
       You can search for objects in the top search bar. The results are going to look like
