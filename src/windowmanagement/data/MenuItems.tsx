@@ -40,7 +40,8 @@ import {
   SettingsPanel,
   SkyBrowserPanel,
   TimePanel,
-  UserPanelsPanel
+  UserPanelsPanel,
+  Scene2
 } from './LazyLoads';
 
 export interface MenuItem {
@@ -58,12 +59,25 @@ export interface MenuItem {
 
 export const menuItemsData: Record<string, MenuItem> = {
   scene: {
-    title: 'Scene',
+    title: 'Scene Version 1',
     componentID: 'scene',
     content: <Scene />,
     renderMenuButton: (id) => (
       <TaskBarMenuButton id={id} leftSection={<SceneIcon size={IconSize.lg} />}>
-        Scene
+        Scene 1
+      </TaskBarMenuButton>
+    ),
+    renderIcon: (size) => <SceneIcon size={size} />,
+    preferredPosition: 'left',
+    defaultVisible: true
+  },
+  scene2: {
+    title: 'Scene Version 2',
+    componentID: 'scene2',
+    content: <Scene2 />,
+    renderMenuButton: (id) => (
+      <TaskBarMenuButton id={id} leftSection={<SceneIcon size={IconSize.lg} />}>
+        Scene 2
       </TaskBarMenuButton>
     ),
     renderIcon: (size) => <SceneIcon size={size} />,

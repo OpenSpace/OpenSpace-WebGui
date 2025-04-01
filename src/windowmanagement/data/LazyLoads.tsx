@@ -72,3 +72,7 @@ export const GettingStartedPanel = lazy(() =>
     default: module.GettingStartedPanel
   }))
 );
+
+export const Scene2 = lazy(() =>
+  import('@/panels/Scene copy/Scene').then((module) => ({ default: module.Scene }))
+);
