@@ -141,7 +141,6 @@ export function Settings({ id }: Props) {
                 decimalScale={3}
               />
             </Group>
-
             <InputLabel>Right Ascension</InputLabel>
             <Group grow my={'xs'} align={'top'}>
               <Center>
@@ -183,6 +182,9 @@ export function Settings({ id }: Props) {
             </Group>
             <Property uri={`Scene.${targetId}.Renderable.ApplyRoll`} />
             <Property uri={`ScreenSpace.${id}.PointSpacecraft`} />
+            <Property uri={`Scene.${targetId}.Renderable.CrosshairSize`} />
+            <Property uri={`Scene.${targetId}.Renderable.RectangleThreshold`} />
+            <Property uri={`Scene.${targetId}.Renderable.LineWidth`} />
           </Tabs.Panel>
           <Tabs.Panel value={'Display'}>
             <SettingsDisplayCopies id={id} />
