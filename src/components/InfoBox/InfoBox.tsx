@@ -15,6 +15,7 @@ export function InfoBox({ children, w = 320 }: Props & PropsWithChildren) {
       opened={opened}
       onDismiss={() => setOpened(false)}
       position={'top'}
+      trapFocus
       withArrow
       offset={{ mainAxis: 5, crossAxis: 100 }}
     >

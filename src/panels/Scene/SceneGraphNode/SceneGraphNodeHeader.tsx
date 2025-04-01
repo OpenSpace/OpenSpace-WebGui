@@ -1,9 +1,10 @@
-import { Button, Group, Text } from '@mantine/core';
+import { Button, Group, Text, Tooltip } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
-import { usePropertyOwner } from '@/hooks/propertyOwner';
+import { usePropertyOwner, useTimeFrame } from '@/hooks/propertyOwner';
+import { ClockOffIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { displayName, isRenderable } from '@/util/propertyTreeHelpers';
@@ -25,6 +26,7 @@ export function SceneGraphNodeHeader({
   showOpenInNewWindow = true
 }: Props) {
   const propertyOwner = usePropertyOwner(uri);
+  const { timeFrame, isInTimeFrame } = useTimeFrame(uri);
 
   const renderableUri = propertyOwner?.subowners.find((uri) => isRenderable(uri));
   const hasRenderable = renderableUri !== undefined;
@@ -58,12 +60,26 @@ export function SceneGraphNodeHeader({
     </Button>
   );
 
+  // TODO: Make sure that the timeframe information is accessible
+  const visibilityControl = hasRenderable && (
+    <Group gap={'xs'}>
+      <PropertyOwnerVisibilityCheckbox uri={renderableUri} />
+      {timeFrame && !isInTimeFrame && (
+        <Tooltip
+          label={`This node is hidden because the current time is outside its specified
+            time frame. It will not be visible even if enabled.`}
+          position={'top'}
+        >
+          <ClockOffIcon />
+        </Tooltip>
+      )}
+    </Group>
+  );
+
   return (
     <ThreePartHeader
       title={onClick ? titleButton : name}
-      leftSection={
-        hasRenderable && <PropertyOwnerVisibilityCheckbox uri={renderableUri} />
-      }
+      leftSection={visibilityControl}
       rightSection={
         <Group wrap={'nowrap'} gap={'xs'} flex={0}>
           <NodeNavigationButton

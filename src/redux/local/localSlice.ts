@@ -18,7 +18,13 @@ const initialState: LocalState = {
     currentlySelectedNode: null
   },
   taskbarItems: Object.values(menuItemsData).map((item) => {
-    return { id: item.componentID, visible: item.defaultVisible, enabled: true };
+    return {
+      id: item.componentID,
+      visible: item.defaultVisible,
+      enabled: true,
+      name: item.title,
+      isOpen: false
+    };
   })
 };
 
@@ -41,6 +47,12 @@ export const localSlice = createSlice({
       const item = state.taskbarItems.find((item) => item.id === action.payload.id);
       if (item) {
         item.visible = action.payload.visible;
+      } else {
+        // @TODO (ylvse 2025-03-31): handle this error with the notification system?
+        console.error(
+          'Tried to set visibility of non-existent menu item',
+          action.payload.id
+        );
       }
       return state;
     },
@@ -51,6 +63,13 @@ export const localSlice = createSlice({
       const item = state.taskbarItems.find((item) => item.id === action.payload.id);
       if (item) {
         item.enabled = action.payload.enabled;
+      }
+      return state;
+    },
+    setMenuItemOpen: (state, action: PayloadAction<{ id: string; open: boolean }>) => {
+      const item = state.taskbarItems.find((item) => item.id === action.payload.id);
+      if (item) {
+        item.isOpen = action.payload.open;
       }
       return state;
     },
@@ -67,6 +86,7 @@ export const {
   setSceneTreeSelectedNode,
   setMenuItemVisible,
   setMenuItemEnabled,
+  setMenuItemOpen,
   setMenuItemsOrder
 } = localSlice.actions;
 export const localReducer = localSlice.reducer;

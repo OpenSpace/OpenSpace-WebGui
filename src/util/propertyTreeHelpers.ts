@@ -1,4 +1,4 @@
-import { PropertyVisibilityNumber, TransformType } from '@/types/enums';
+import { PropertyVisibilityNumber } from '@/types/enums';
 import {
   Identifier,
   Properties,
@@ -9,13 +9,7 @@ import {
   Uri
 } from '@/types/types';
 
-import {
-  InterestingTagKey,
-  RotationKey,
-  ScaleKey,
-  ScenePrefixKey,
-  TranslationKey
-} from './keys';
+import { InterestingTagKey, ScenePrefixKey } from './keys';
 
 // TODO: Maybe move some of these to a "uriHelpers" file?
 export function identifierFromUri(uri: Uri): Identifier {
@@ -61,30 +55,6 @@ export function removeLastWordFromUri(uri: Uri): Uri {
   return index === -1 ? uri : uri.substring(0, index);
 }
 
-export function getSgnRenderable(
-  sceneGraphNode: PropertyOwner,
-  propertyOwners: PropertyOwners
-): PropertyOwner | undefined {
-  return propertyOwners[sgnRenderableUri(sceneGraphNode.uri)];
-}
-
-export function getSgnTransform(
-  sceneGraphNode: PropertyOwner,
-  transformType: TransformType,
-  propertyOwners: PropertyOwners
-): PropertyOwner | undefined {
-  switch (transformType) {
-    case TransformType.Scale:
-      return propertyOwners[`${sceneGraphNode.uri}.${ScaleKey}`];
-    case TransformType.Translation:
-      return propertyOwners[`${sceneGraphNode.uri}.${TranslationKey}`];
-    case TransformType.Rotation:
-      return propertyOwners[`${sceneGraphNode.uri}.${RotationKey}`];
-    default:
-      return undefined;
-  }
-}
-
 export function hasInterestingTag(
   uri: Uri,
   propertyOwners: PropertyOwners
@@ -111,9 +81,8 @@ export function isRenderable(uri: Uri): boolean {
 export function isSgnTransform(uri: Uri): boolean {
   const isThirdLevel = (uri.match(/\./g) || []).length == 2;
   return (
-    (isThirdLevel && uri.endsWith(ScaleKey)) ||
-    uri.endsWith(TranslationKey) ||
-    uri.endsWith(RotationKey)
+    isThirdLevel &&
+    (uri.endsWith('.Scale') || uri.endsWith('.Translation') || uri.endsWith('.Rotation'))
   );
 }
 

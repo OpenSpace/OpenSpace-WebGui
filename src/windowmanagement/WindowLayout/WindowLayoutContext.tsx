@@ -1,7 +1,7 @@
 import React, { createContext, RefObject } from 'react';
 import DockLayout, { TabData } from 'rc-dock';
 
-import { WindowLayoutOptions } from './WindowLayout';
+import { WindowLayoutOptions } from './types';
 
 export interface ProviderProps {
   ref: RefObject<DockLayout | null>;

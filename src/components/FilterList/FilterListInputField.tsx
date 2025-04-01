@@ -16,7 +16,12 @@ function InputButton({ showMoreButton }: InputButtonProps) {
 
   if (isSearching) {
     return (
-      <ActionIcon size={'lg'} onClick={() => setSearchString('')}>
+      <ActionIcon
+        size={'lg'}
+        variant={'subtle'}
+        color={'gray'}
+        onClick={() => setSearchString('')}
+      >
         <CancelIcon />
       </ActionIcon>
     );
@@ -24,7 +29,9 @@ function InputButton({ showMoreButton }: InputButtonProps) {
 
   return (
     showMoreButton && (
-      <Button onClick={toggleShowDataInstead}>{showDataInstead ? 'Less' : 'More'}</Button>
+      <Button w={80} variant={'subtle'} color={'gray'} onClick={toggleShowDataInstead}>
+        {showDataInstead ? 'Less' : 'More'}
+      </Button>
     )
   );
 }
@@ -43,6 +50,12 @@ export function FilterListInputField({
 }: Props) {
   const { searchString, setSearchString } = useFilterListProvider();
 
+  function onKeyDown(event: React.KeyboardEvent<HTMLElement>): void {
+    if (event.key === 'Escape') {
+      setSearchString('');
+    }
+  }
+
   return (
     <TextInput
       value={searchString}
@@ -51,6 +64,7 @@ export function FilterListInputField({
       autoFocus={searchAutoFocus}
       // Some arbitrary width must be set so that the More button is rendered correctly
       rightSectionWidth={'md'}
+      onKeyDown={onKeyDown}
       rightSection={<InputButton showMoreButton={showMoreButton} />}
       {...other}
     />

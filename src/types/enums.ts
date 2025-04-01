@@ -18,12 +18,6 @@ export enum NavigationType {
   Frame
 }
 
-export enum TransformType {
-  Scale = 'Scale',
-  Translation = 'Translation',
-  Rotation = 'Rotation'
-}
-
 export enum ConnectionStatus {
   Connected = 'Connected',
   Connecting = 'Connecting',

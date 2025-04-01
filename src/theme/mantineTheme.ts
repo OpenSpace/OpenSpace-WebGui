@@ -1,8 +1,10 @@
 import {
   ActionIcon,
   alpha,
+  Badge,
   Button,
   createTheme,
+  CSSVariablesResolver,
   defaultVariantColorsResolver,
   RangeSlider,
   Slider,
@@ -46,6 +48,13 @@ export const theme = createTheme({
         variant: 'default'
       }
     }),
+    Badge: Badge.extend({
+      styles: {
+        label: {
+          textTransform: 'none'
+        }
+      }
+    }),
     Button: Button.extend({
       defaultProps: {
         variant: 'default'
@@ -84,7 +93,9 @@ export const theme = createTheme({
       defaultProps: {
         withArrow: true,
         transitionProps: { duration: 400, enterDelay: 400 },
-        position: 'top'
+        position: 'top',
+        maw: 300,
+        multiline: true
       }
     })
   },
@@ -100,4 +111,13 @@ export const theme = createTheme({
   },
   focusClassName: styles.focus,
   variantColorResolver
+});
+
+export const cssVariablesResolver: CSSVariablesResolver = () => ({
+  variables: {
+    '--openspace-border-active': '4px solid var(--mantine-primary-color-filled)',
+    '--openspace-border-active-placeholder': '4px solid transparent'
+  },
+  dark: {},
+  light: {}
 });
