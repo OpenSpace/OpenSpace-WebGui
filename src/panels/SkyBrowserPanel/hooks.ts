@@ -99,7 +99,7 @@ export function useBrowserColorString(id: string): string | undefined {
   return color ? (`rgb(${color.join(',')})` as string) : undefined;
 }
 
-export function useBrowserRadius(id: string): number | undefined {
+export function useBrowserRadius(id: string): number {
   return useAppSelector(
     (state) => state.skybrowser.browsers[id]?.borderRadius,
     lowPrecisionEqual
@@ -109,11 +109,11 @@ export function useBrowserRadius(id: string): number | undefined {
 export function useBrowserCoords(id: string) {
   const ra = useAppSelector(
     (state) => state.skybrowser.browsers[id]?.ra,
-    customPrecisionEqualFunc(1e-6)
+    customPrecisionEqualFunc(1e-8)
   );
   const dec = useAppSelector(
     (state) => state.skybrowser.browsers[id]?.dec,
-    customPrecisionEqualFunc(1e-6)
+    customPrecisionEqualFunc(1e-8)
   );
 
   const roll = useAppSelector(

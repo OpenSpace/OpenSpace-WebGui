@@ -91,7 +91,7 @@ export function useUpdateBorderColor(id: string) {
   const { wwtHasLoaded, setBorderColor } = useWwtProvider();
 
   useEffect(() => {
-    if (borderColor && wwtHasLoaded) {
+    if (borderColor !== undefined && wwtHasLoaded) {
       setBorderColor(borderColor);
     }
   }, [borderColor, wwtHasLoaded, setBorderColor]);
@@ -105,7 +105,7 @@ export function useUpdateBorderRadius(id: string) {
   const { width, height } = useWindowSize();
 
   useEffect(() => {
-    if (borderRadius && wwtHasLoaded) {
+    if (borderRadius !== undefined && wwtHasLoaded) {
       setBorderRadius(borderRadius);
     }
   }, [borderRadius, setBorderRadius, wwtHasLoaded, width, height]);
