@@ -1,5 +1,6 @@
-import { Group, Skeleton } from '@mantine/core';
+import { Group } from '@mantine/core';
 
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { EngineMode } from '@/types/enums';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
@@ -7,8 +8,8 @@ import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { TaskBarMenuButton } from '../Menu/TaskBar/TaskBarMenuButton';
 
 import { CancelFlightButton } from './MenuButtons/CancelFlightButton';
-import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 import { OriginPanelMenuButtonContent } from './MenuButtons/OriginPanelMenuButtonContent';
+import { RemainingFlightTimeIndicator } from './RemainingFlightTimeIndicator';
 
 interface Props {
   id: string;
@@ -31,11 +32,14 @@ export function OriginPanelMenuButton({ id }: Props) {
   }
 
   if (!isReady) {
-    return <Skeleton>Anchor</Skeleton>;
+    return (
+      <TaskBarMenuButton id={id} disabled>
+        <LoadingBlocks n={1} w={84} />
+      </TaskBarMenuButton>
+    );
   }
-
   return (
-    <TaskBarMenuButton id={id} disabled={!isReady}>
+    <TaskBarMenuButton id={id}>
       <OriginPanelMenuButtonContent />
     </TaskBarMenuButton>
   );

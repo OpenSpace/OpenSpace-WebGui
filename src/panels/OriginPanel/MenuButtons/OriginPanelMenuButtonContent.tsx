@@ -1,7 +1,8 @@
+import { Group, Stack, Text } from '@mantine/core';
+
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { useAimNode, useAnchorNode } from '@/util/propertyTreeHooks';
-import { Group, Stack, Text } from '@mantine/core';
 
 export function OriginPanelMenuButtonContent() {
   const aimNode = useAimNode();

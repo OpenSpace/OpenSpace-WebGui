@@ -1,8 +1,6 @@
-import { Box, Button, Center, Group, Kbd, List, Text, Title } from '@mantine/core';
+import { Box, Center, Group, Kbd, List, Text, Title } from '@mantine/core';
 
-import { FocusIcon } from '@/icons/icons';
-import { FocusButtonContent } from '@/panels/OriginPanel/MenuButtons/FocusButtonContent';
-import { IconSize } from '@/types/enums';
+import { OriginPanelMenuButtonContent } from '@/panels/OriginPanel/MenuButtons/OriginPanelMenuButtonContent';
 
 import { AltitudeMouse } from '../MouseDescriptions/AltitudeMouse';
 import { Mouse } from '../MouseDescriptions/Mouse';
@@ -15,7 +13,6 @@ import { CurrentFocus } from '../Tasks/Components/CurrentFocus';
 import { CurrentLatLong } from '../Tasks/Components/CurrentLatLong';
 import { FocusTask } from '../Tasks/FocusTask';
 import { NavigationTask } from '../Tasks/NavigationTask';
-import { OriginPanelMenuButtonContent } from '@/panels/OriginPanel/MenuButtons/OriginPanelMenuButtonContent';
 
 export const NavigationSteps: React.JSX.Element[] = [
   <>
