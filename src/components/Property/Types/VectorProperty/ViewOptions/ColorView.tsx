@@ -3,7 +3,7 @@ import { Flex, RGBA } from '@mantine/core';
 import { ColorPicker } from '@/components/ColorPicker/ColorPicker';
 import { AdditionalDataVectorMatrix } from '@/components/Property/types';
 
-import { DefaultView } from './DefaultView';
+import { VectorDefaultView } from './VectorDefaultView';
 
 interface Props {
   setPropertyValue: (value: number[]) => void;
@@ -27,7 +27,7 @@ export function ColorView({
 
   return (
     <Flex gap={'xs'} align={'center'}>
-      <DefaultView
+      <VectorDefaultView
         disabled={readOnly}
         setPropertyValue={setPropertyValue}
         value={value}

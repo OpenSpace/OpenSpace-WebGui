@@ -1,8 +1,8 @@
 import { useCallback, useEffect } from 'react';
-import { Button, Image, Stack, Text } from '@mantine/core';
+import { Button, Stack, Text, ThemeIcon } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { PlusIcon } from '@/icons/icons';
+import { PlusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
@@ -61,10 +61,12 @@ export function SkyBrowserPanel() {
         >
           Add browser
         </Button>
+        <ThemeIcon size={100} variant={'transparent'}>
+          <TelescopeIcon size={'100px'} />
+        </ThemeIcon>
         <Text ta={'center'} c={'dimmed'} mt={'lg'}>
-          Powered by AAS WorldWide Telescope
+          Powered by WorldWide Telescope
         </Text>
-        <Image src={'wwt.png'} mah={100} maw={100} mb={'lg'} />
       </Stack>
     );
   }
