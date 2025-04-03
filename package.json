@@ -19,6 +19,7 @@
     "@reduxjs/toolkit": "^2.2.8",
     "@tanstack/react-virtual": "^3.10.9",
     "@types/lodash": "^4.17.11",
+    "@types/wicg-file-system-access": "^2023.10.6",
     "d3": "^7.9.0",
     "lodash": "^4.17.21",
     "openspace-api-js": "^0.1.6",

@@ -29,14 +29,30 @@ function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void 
   return openLoadFileDialog;
 }
 
+async function verifyPermission(fileHandle: FileSystemFileHandle, readWrite: boolean) {
+  const options: FileSystemHandlePermissionDescriptor = {};
+  if (readWrite) {
+    options.mode = 'readwrite';
+  }
+  // Check if permission was already granted. If so, return true.
+  if ((await fileHandle.queryPermission(options)) === 'granted') {
+    return true;
+  }
+  // Request permission. If the user grants permission, return true.
+  if ((await fileHandle.requestPermission(options)) === 'granted') {
+    return true;
+  }
+  // The user didn't grant permission, so return false.
+  return false;
+}
+
 // For documentation about these features please read this article:
 // https://developer.chrome.com/docs/capabilities/browser-fs-access#opening_files_2
 async function openSaveFileDialog(contents: JSON) {
   const contentsString = JSON.stringify(contents, null, 2);
 
-  const supportsSaveDialog = 'showSaveFilePicker' in self;
-  if (supportsSaveDialog) {
-    const options = {
+  if (window.showSaveFilePicker !== undefined) {
+    const options: SaveFilePickerOptions = {
       types: [
         {
           description: 'Text Files',
@@ -51,6 +67,10 @@ async function openSaveFileDialog(contents: JSON) {
       // It is an experimental feature of the chromium browser
       const fileHandle = await window.showSaveFilePicker(options);
 
+      if ((await verifyPermission(fileHandle, true)) === false) {
+        console.error('Permission NOT granted to write to file');
+        throw new Error('Permission denied to write to file');
+      }
       // Create a FileSystemWritableFileStream to write to
       const writable = await fileHandle.createWritable();
 
@@ -61,7 +81,11 @@ async function openSaveFileDialog(contents: JSON) {
       await writable.close();
     } catch (e) {
       // @TODO ylvse 2025-03-31: handle this error with the notification system?
-      console.error(e);
+      if (e instanceof Error) {
+        console.error('Error saving file', e.cause, e.message, e.name);
+      } else {
+        console.error('Error saving file', e);
+      }
     }
   } else {
     // This is the fallback code if showSaveFilePicker is not available
