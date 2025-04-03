@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Group, Text, Title } from '@mantine/core';
+import { ActionIcon, Group, Text, Title } from '@mantine/core';
 
 import { FastForwardIcon, FastRewindIcon, PauseIcon } from '@/icons/icons';
 import { TimePanelMenuButtonContent } from '@/panels/TimePanel/MenuButton/TimePanelMenuButtonContent';
@@ -14,6 +14,8 @@ import { CurrentLatLong } from '../Tasks/Components/CurrentLatLong';
 import { FocusTask } from '../Tasks/FocusTask';
 import { NavigationTask } from '../Tasks/NavigationTask';
 import { PauseTimeTask } from '../Tasks/PauseTimeTask';
+
+import { ButtonWrapper } from './ButtonWrapper';
 
 export const TimeSteps = [
   <>
@@ -39,18 +41,20 @@ export const TimeSteps = [
     <Text>You can view the past as well as the future.</Text>
     <ChangeYearTask />
     <Text>To open the Time Panel, click on the following icon in the taskbar:</Text>
-    <Box my={'xs'}>
+    <ButtonWrapper p={'xs'} withBorder>
       <TimePanelMenuButtonContent />
-    </Box>
+    </ButtonWrapper>
     <Group>
       <Text>Change the year by changing the value of the year in the time input:</Text>
-      <TimeIncrementInput
-        value={new Date().getFullYear()}
-        onInputChange={() => {}}
-        onInputChangeStep={() => {}}
-        onInputEnter={() => {}}
-        w={65}
-      />
+      <ButtonWrapper>
+        <TimeIncrementInput
+          value={new Date().getFullYear()}
+          onInputChange={() => {}}
+          onInputChangeStep={() => {}}
+          onInputEnter={() => {}}
+          w={65}
+        />
+      </ButtonWrapper>
     </Group>
     <Text c={'dimmed'} fs={'italic'}>
       You can reset the time by pressing "Now"
