@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Action, ActionOrKeybind, Keybind } from '@/types/types';
+import { Action, Keybind } from '@/types/types';
 
 import { getAction, getAllActions } from './actionsMiddleware';
 
@@ -19,27 +19,6 @@ const initialState: ActionsState = {
   keybinds: [],
   showKeybinds: false
 };
-
-// TODO: (ylvse 2024-10-14) - This splitting of the actions and keybinds could be removed
-// if we didn't merge the arrays in the engine to begin with.
-// Once we ship this new GUI, we should rewrite the topic so that it sends the keybinds
-// and the actions as two separate arrays
-function instanceOfAction(data: ActionOrKeybind): data is Action {
-  return 'identifier' in data;
-}
-
-function splitActionsAndKeybinds(data: ActionOrKeybind[]): [Action[], Keybind[]] {
-  const actions: Action[] = [];
-  const keybinds: Keybind[] = [];
-  data.forEach((element) => {
-    if (instanceOfAction(element)) {
-      actions.push(element);
-    } else {
-      keybinds.push(element);
-    }
-  });
-  return [actions, keybinds];
-}
 
 export const actionsSlice = createSlice({
   name: 'actions',
@@ -76,29 +55,31 @@ export const actionsSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(getAllActions.fulfilled, (state, action) => {
-      const [actions, keybinds] = splitActionsAndKeybinds(action.payload);
-      const modifiedKeybinds: Keybind[] = keybinds.map((keybind) => {
-        const modifiers = Object.values(keybind.modifiers)
-          .map((value, i) => (value ? Object.keys(keybind.modifiers)[i] : null))
-          .filter((value) => value !== null) as Keybind['modifiers'];
+    builder.addCase(
+      getAllActions.fulfilled,
+      (state, action: PayloadAction<{ actions: Action[]; keybinds: Keybind[] }>) => {
+        const { actions, keybinds } = action.payload;
+        const modifiedKeybinds: Keybind[] = keybinds.map((keybind) => {
+          const modifiers = Object.values(keybind.modifiers)
+            .map((value, i) => (value ? Object.keys(keybind.modifiers)[i] : null))
+            .filter((value) => value !== null) as Keybind['modifiers'];
 
-        return {
-          action: keybind.action,
-          key: keybind.key,
-          modifiers: modifiers
-        };
-      });
+          return {
+            action: keybind.action,
+            key: keybind.key,
+            modifiers: modifiers
+          };
+        });
 
-      state.isInitialized = true;
-      state.keybinds = modifiedKeybinds;
-      state.actions = actions;
-      return state;
-    });
-    builder.addCase(getAction.fulfilled, (state, action) => {
-      const [actions, keybinds] = splitActionsAndKeybinds(action.payload);
-      state.actions = [...state.actions, ...actions];
-      state.keybinds = [...state.keybinds, ...keybinds];
+        state.isInitialized = true;
+        state.keybinds = modifiedKeybinds;
+        state.actions = actions;
+        return state;
+      }
+    );
+    builder.addCase(getAction.fulfilled, (state, action: PayloadAction<Action>) => {
+      console.log(action.payload);
+      state.actions = [...state.actions, action.payload];
       return state;
     });
   }

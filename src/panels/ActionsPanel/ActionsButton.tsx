@@ -37,7 +37,14 @@ export function ActionsButton({ uri, action: _action, height }: Props) {
   return (
     <Card p={borderPadding} h={height}>
       <Group gap={0} h={'100%'}>
-        <Button onClick={handleClick} h={'100%'} p={5} flex={1} variant={'filled'}>
+        <Button
+          onClick={handleClick}
+          h={'100%'}
+          p={5}
+          flex={1}
+          variant={'filled'}
+          bg={`rgba(${action.color.map((c) => c * 255).join(',')})`}
+        >
           <Text lineClamp={3} size={'sm'} style={{ whiteSpace: 'wrap' }}>
             {action.name}
           </Text>
