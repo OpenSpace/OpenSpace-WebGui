@@ -94,19 +94,13 @@ export function ViewMenu() {
         Save Task Bar Settings
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Label>
-        <Group>
-          <VisibilityIcon /> User Visibility
-        </Group>
-      </Menu.Label>
-
       <TopBarMenuWrapper
         targetTitle={
           <Menu.Item
             leftSection={<VisibilityIcon />}
             rightSection={<ChevronRightIcon size={IconSize.sm} />}
           >
-            User Visibility
+            Visibility Level
           </Menu.Item>
         }
         position={'right-start'}
