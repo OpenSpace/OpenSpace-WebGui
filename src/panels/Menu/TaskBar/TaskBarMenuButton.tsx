@@ -16,6 +16,10 @@ export function TaskBarMenuButton({ id, children, ...props }: Props) {
 
   const item = menuItemsData[id];
 
+  if (!item) {
+    throw new Error(`No menu item found for id: '${id}'`);
+  }
+
   function onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     if (event.shiftKey) {
       closeWindow(item.componentID);

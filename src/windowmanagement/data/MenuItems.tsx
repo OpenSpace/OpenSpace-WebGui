@@ -18,10 +18,10 @@ import {
   VideocamIcon
 } from '@/icons/icons';
 import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
-import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
+import { OriginPanelMenuButton } from '@/panels/OriginPanel/MenuButton/OriginPanelMenuButton';
 import { TempPropertyTest } from '@/panels/Scene/TempPropertyTest';
 import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
-import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
+import { TimePanelMenuButton } from '@/panels/TimePanel/MenuButton/TimePanelMenuButton';
 import { IconSize } from '@/types/enums';
 
 import { FloatWindowPosition, WindowLayoutPosition } from '../WindowLayout/types';
