@@ -1,7 +1,7 @@
 import { ActionIcon, Box, Group, Text, Title } from '@mantine/core';
 
 import { FastForwardIcon, FastRewindIcon, PauseIcon } from '@/icons/icons';
-import { TimePanelMenuButtonContent } from '@/panels/TimePanel/MenuButton/MenuButtonContent';
+import { TimePanelMenuButtonContent } from '@/panels/TimePanel/MenuButton/TimePanelMenuButtonContent';
 import { TimeIncrementInput } from '@/panels/TimePanel/TimeInput/TimeIncrementInput';
 import { IconSize } from '@/types/enums';
 

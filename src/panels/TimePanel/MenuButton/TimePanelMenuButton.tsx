@@ -1,9 +1,9 @@
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 
-import { TaskBarMenuButton } from '../Menu/TaskBar/TaskBarMenuButton';
+import { TaskBarMenuButton } from '../../Menu/TaskBar/TaskBarMenuButton';
 
-import { TimePanelMenuButtonContent } from './MenuButton/MenuButtonContent';
+import { TimePanelMenuButtonContent } from './TimePanelMenuButtonContent';
 
 interface Props {
   id: string;
