@@ -78,7 +78,6 @@ export const actionsSlice = createSlice({
       }
     );
     builder.addCase(getAction.fulfilled, (state, action: PayloadAction<Action>) => {
-      console.log(action.payload);
       state.actions = [...state.actions, action.payload];
       return state;
     });
