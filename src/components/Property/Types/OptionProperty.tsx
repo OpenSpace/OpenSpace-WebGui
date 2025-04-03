@@ -7,11 +7,18 @@ export function OptionProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue] = useOptionProperty(uri);
   const description = usePropertyDescription(uri);
 
-  if (!description || value === undefined) {
+  if (!description || value === undefined || !description.additionalData) {
     return <></>;
   }
+  console.log(description?.additionalData);
 
   const { Options: options } = description.additionalData as AdditionalDataOptions;
+
+  // We need to guard for if there are no options. This can happen if they
+  // are added dynamically
+  if (!options) {
+    return <></>;
+  }
 
   return (
     <Select
