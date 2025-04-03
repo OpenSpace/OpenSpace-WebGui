@@ -82,3 +82,13 @@ export function usePropertyOwnerVisibility(uri: Uri) {
     setVisiblity
   };
 }
+
+export function useTimeFrame(uri: Uri) {
+  const timeFrame = usePropertyOwner(`${uri}.TimeFrame`);
+  const [isInTimeFrame] = useBoolProperty(`${uri}.TimeFrame.IsInTimeFrame`);
+
+  return {
+    timeFrame,
+    isInTimeFrame
+  };
+}

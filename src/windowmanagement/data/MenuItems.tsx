@@ -35,7 +35,7 @@ import {
   KeybindsPanel,
   MissionsPanel,
   OriginPanel,
-  Scene,
+  ScenePanel,
   ScreenSpaceRenderablePanel,
   SessionRecordingPanel,
   SettingsPanel,
@@ -61,7 +61,7 @@ export const menuItemsData: Record<string, MenuItem> = {
   scene: {
     title: 'Scene',
     componentID: 'scene',
-    content: <Scene />,
+    content: <ScenePanel />,
     renderMenuButton: (id) => (
       <TaskBarMenuButton id={id} leftSection={<SceneIcon size={IconSize.lg} />}>
         Scene
