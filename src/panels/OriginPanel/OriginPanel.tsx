@@ -51,6 +51,8 @@ export function OriginPanel() {
     return searchableNodes.slice().sort((a, b) => a.name.localeCompare(b.name));
   }, [properties, propertyOwners]);
 
+  const defaultList = featuredNodes.length > 0 ? featuredNodes : sortedSearchableNodes;
+
   const searchMatcherFunction = generateMatcherFunctionByKeys([
     'identifier',
     'name',
@@ -100,14 +102,14 @@ export function OriginPanel() {
       <Layout.GrowingSection>
         {navigationMode === NavigationMode.Focus && (
           <FocusView
-            favorites={featuredNodes}
+            favorites={defaultList}
             searchableNodes={sortedSearchableNodes}
             matcherFunction={searchMatcherFunction}
           />
         )}
         {navigationMode === NavigationMode.AnchorAim && (
           <AnchorAimView
-            favorites={featuredNodes}
+            favorites={defaultList}
             searchableNodes={sortedSearchableNodes}
             matcherFunction={searchMatcherFunction}
           />
