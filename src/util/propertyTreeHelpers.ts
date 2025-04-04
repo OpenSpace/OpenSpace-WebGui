@@ -9,7 +9,7 @@ import {
   Uri
 } from '@/types/types';
 
-import { InterestingTagKey, ScenePrefixKey } from './keys';
+import { ScenePrefixKey } from './keys';
 
 // TODO: Maybe move some of these to a "uriHelpers" file?
 export function identifierFromUri(uri: Uri): Identifier {
@@ -53,13 +53,6 @@ export function sgnUri(identifier: Identifier | undefined): Uri {
 export function removeLastWordFromUri(uri: Uri): Uri {
   const index = uri.lastIndexOf('.');
   return index === -1 ? uri : uri.substring(0, index);
-}
-
-export function hasInterestingTag(
-  uri: Uri,
-  propertyOwners: PropertyOwners
-): boolean | undefined {
-  return propertyOwners[uri]?.tags.some((tag) => tag.includes(InterestingTagKey));
 }
 
 export function guiOrderingNumber(uri: Uri, properties: Properties): number | undefined {
