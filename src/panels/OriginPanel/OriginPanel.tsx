@@ -6,9 +6,10 @@ import { Layout } from '@/components/Layout/Layout';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
-import { Uri } from '@/types/types';
+import {  Uri } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
-import { hasInterestingTag, isPropertyOwnerHidden } from '@/util/propertyTreeHelpers';
+import { isPropertyOwnerHidden } from '@/util/propertyTreeHelpers';
+import { useFeaturedNodes } from '@/util/propertyTreeHooks';
 
 import { AnchorAimView } from './AnchorAimView/AnchorAimView';
 import { FocusView } from './FocusView/FocusView';
@@ -24,6 +25,8 @@ export function OriginPanel() {
   const properties = useAppSelector((state) => state.properties.properties);
   const engineMode = useAppSelector((state) => state.engineMode.mode);
 
+  const featuredNodes = useFeaturedNodes();
+
   const shouldStartInAnchorAim = useAppSelector((state) => {
     const aimProp = state.properties.properties[NavigationAimKey];
     const anchorProp = state.properties.properties[NavigationAnchorKey];
@@ -33,17 +36,6 @@ export function OriginPanel() {
     shouldStartInAnchorAim ? NavigationMode.AnchorAim : NavigationMode.Focus
   );
 
-  const sortedDefaultList = useMemo(() => {
-    const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
-    const markedInterestingNodeUris = uris.filter((uri) =>
-      hasInterestingTag(uri, propertyOwners)
-    );
-    const favorites = markedInterestingNodeUris
-      .map((uri) => propertyOwners[uri])
-      .filter((po) => po !== undefined);
-    return favorites.slice().sort((a, b) => a.name.localeCompare(b.name));
-  }, [propertyOwners]);
-
   // @TODO (2025-02-24, emmbr): Remove dependency on properties object
   const sortedSearchableNodes = useMemo(() => {
     const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
@@ -52,9 +44,9 @@ export function OriginPanel() {
       .filter((po) => po !== undefined);
 
     // Searchable nodes are all nodes that are not hidden in the GUI
-    const searchableNodes = allNodes.filter((node) => {
-      return !isPropertyOwnerHidden(node.uri, properties);
-    });
+    const searchableNodes = allNodes.filter((node) =>
+      !isPropertyOwnerHidden(node.uri, properties)
+    );
 
     return searchableNodes.slice().sort((a, b) => a.name.localeCompare(b.name));
   }, [properties, propertyOwners]);
@@ -108,14 +100,14 @@ export function OriginPanel() {
       <Layout.GrowingSection>
         {navigationMode === NavigationMode.Focus && (
           <FocusView
-            favorites={sortedDefaultList}
+            favorites={featuredNodes}
             searchableNodes={sortedSearchableNodes}
             matcherFunction={searchMatcherFunction}
           />
         )}
         {navigationMode === NavigationMode.AnchorAim && (
           <AnchorAimView
-            favorites={sortedDefaultList}
+            favorites={featuredNodes}
             searchableNodes={sortedSearchableNodes}
             matcherFunction={searchMatcherFunction}
           />
