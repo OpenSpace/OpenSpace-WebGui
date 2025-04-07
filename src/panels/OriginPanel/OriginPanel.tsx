@@ -6,7 +6,7 @@ import { Layout } from '@/components/Layout/Layout';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
-import {  Uri } from '@/types/types';
+import { Uri } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
 import { isPropertyOwnerHidden } from '@/util/propertyTreeHelpers';
 import { useFeaturedNodes } from '@/util/propertyTreeHooks';
