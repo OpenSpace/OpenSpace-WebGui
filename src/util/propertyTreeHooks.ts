@@ -8,7 +8,7 @@ import { NavigationAimKey, NavigationAnchorKey } from './keys';
 import { sgnUri } from './propertyTreeHelpers';
 
 /**
- * Get all the nodes marked in the profile, as a memo:d list of property owners.
+ * Get all the nodes marked in the profile, as a memoized list of property owners.
  */
 export function useFeaturedNodes() : PropertyOwner[] {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
