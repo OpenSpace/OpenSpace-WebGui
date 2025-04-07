@@ -118,18 +118,32 @@ export function isGlobeLayer(uri: Uri): boolean {
   return isGlobeLayersUri(layersUri);
 }
 
-export function isPropertyOwnerHidden(uri: Uri, properties: Properties) {
-  const isHidden = properties[`${uri}.GuiHidden`]?.value as boolean | undefined;
-  return isHidden || false;
-}
-
 export function isPropertyOwnerActive(uri: Uri, properties: Properties): boolean {
   const enabledValue = properties[enabledPropertyUri(uri)]?.value as boolean | undefined;
   const fadeValue = properties[fadePropertyUri(uri)]?.value as number | undefined;
   return checkVisiblity(enabledValue, fadeValue) || false;
 }
 
-export function isSceneGraphNodeVisible(uri: Uri, properties: Properties): boolean {
+/**
+ * Is the SGN marked to be hidden in the GUI?
+ */
+export function isSgnHidden(uri: Uri, properties: Properties): boolean {
+  const isHidden = properties[`${uri}.GuiHidden`]?.value as boolean | undefined;
+  return isHidden || false;
+}
+
+/**
+ * Is the SGN marked to be non-focusable?
+ */
+export function isSgnFocusable(uri: Uri, properties: Properties): boolean {
+  const isFocusable = properties[`${uri}.Focusable`]?.value as boolean | undefined;
+  return isFocusable || false;
+}
+
+/**
+ * Is the SGN currenlty visible, based on its enabled and fade properties?
+ */
+export function isSgnVisible(uri: Uri, properties: Properties): boolean {
   const renderableUri = sgnRenderableUri(uri);
   return isPropertyOwnerActive(renderableUri, properties);
 }

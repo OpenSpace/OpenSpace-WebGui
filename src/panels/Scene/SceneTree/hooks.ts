@@ -8,11 +8,7 @@ import {
   PropertyOwners,
   Uri
 } from '@/types/types';
-import {
-  guiOrderingNumber,
-  isPropertyOwnerHidden,
-  isSceneGraphNodeVisible
-} from '@/util/propertyTreeHelpers';
+import { guiOrderingNumber, isSgnHidden, isSgnVisible } from '@/util/propertyTreeHelpers';
 
 import {
   isGroupNode,
@@ -140,10 +136,10 @@ function filterTreeData(
   function shouldShowSceneGraphNode(uri: Uri) {
     let shouldShow = true;
     if (filter.showOnlyVisible) {
-      shouldShow &&= isSceneGraphNodeVisible(uri, properties);
+      shouldShow &&= isSgnVisible(uri, properties);
     }
     if (!filter.showHiddenNodes) {
-      shouldShow &&= !isPropertyOwnerHidden(uri, properties);
+      shouldShow &&= !isSgnHidden(uri, properties);
     }
     if (shouldShow && filter.tags.length > 0) {
       shouldShow &&= filter.tags.some((tag) => propertyOwners[uri]?.tags.includes(tag));

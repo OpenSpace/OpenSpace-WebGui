@@ -3,12 +3,12 @@ import { Center, Group, SegmentedControl, Text, VisuallyHidden } from '@mantine/
 
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
+import { useSceneGraphNodes } from '@/hooks/propertyOwner';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
-import { Uri } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
-import { hasInterestingTag, isPropertyOwnerHidden } from '@/util/propertyTreeHelpers';
+import { hasInterestingTag } from '@/util/propertyTreeHelpers';
 
 import { AnchorAimView } from './AnchorAimView/AnchorAimView';
 import { FocusView } from './FocusView/FocusView';
@@ -21,8 +21,17 @@ enum NavigationMode {
 
 export function OriginPanel() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-  const properties = useAppSelector((state) => state.properties.properties);
   const engineMode = useAppSelector((state) => state.engineMode.mode);
+
+  // @TODO (2024-04-04, emmbr): This can be removed once the mark nodes PR (#155) is
+  // merged, but for now we need a list of all nodes in addition to the filtered
+  // searchable ones
+  const allSceneGraphNodes = useSceneGraphNodes();
+
+  const searchableNodes = useSceneGraphNodes({
+    includeHidden: false,
+    includeNonFocusable: false
+  });
 
   const shouldStartInAnchorAim = useAppSelector((state) => {
     const aimProp = state.properties.properties[NavigationAimKey];
@@ -34,30 +43,17 @@ export function OriginPanel() {
   );
 
   const sortedDefaultList = useMemo(() => {
-    const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
-    const markedInterestingNodeUris = uris.filter((uri) =>
-      hasInterestingTag(uri, propertyOwners)
+    const markedInterestingNodeUris = allSceneGraphNodes.filter((node) =>
+      hasInterestingTag(node.uri, propertyOwners)
     );
-    const favorites = markedInterestingNodeUris
-      .map((uri) => propertyOwners[uri])
-      .filter((po) => po !== undefined);
+    const favorites = markedInterestingNodeUris.filter((po) => po !== undefined);
     return favorites.slice().sort((a, b) => a.name.localeCompare(b.name));
-  }, [propertyOwners]);
+  }, [propertyOwners, allSceneGraphNodes]);
 
-  // @TODO (2025-02-24, emmbr): Remove dependency on properties object
-  const sortedSearchableNodes = useMemo(() => {
-    const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
-    const allNodes = uris
-      .map((uri) => propertyOwners[uri])
-      .filter((po) => po !== undefined);
-
-    // Searchable nodes are all nodes that are not hidden in the GUI
-    const searchableNodes = allNodes.filter((node) => {
-      return !isPropertyOwnerHidden(node.uri, properties);
-    });
-
-    return searchableNodes.slice().sort((a, b) => a.name.localeCompare(b.name));
-  }, [properties, propertyOwners]);
+  const sortedSearchableNodes = useMemo(
+    () => searchableNodes.sort((a, b) => a.name.localeCompare(b.name)),
+    [searchableNodes]
+  );
 
   const searchMatcherFunction = generateMatcherFunctionByKeys([
     'identifier',

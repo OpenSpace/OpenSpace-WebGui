@@ -9,7 +9,9 @@ import {
   enabledPropertyUri,
   fadePropertyUri,
   hasVisibleChildren,
-  isPropertyVisible
+  isPropertyVisible,
+  isSgnFocusable,
+  isSgnHidden
 } from '@/util/propertyTreeHelpers';
 
 import { useBoolProperty, useFloatProperty, useOptionProperty } from './properties';
@@ -81,4 +83,48 @@ export function usePropertyOwnerVisibility(uri: Uri) {
     isVisible,
     setVisiblity
   };
+}
+
+interface UseSceneGraphNodesFilters {
+  // If true, include nodes marked as hidden in the GUI
+  includeHidden?: boolean;
+  // If true, include nodes marked as non-focusable
+  includeNonFocusable?: boolean;
+}
+
+export function useSceneGraphNodes(filters?: UseSceneGraphNodesFilters): PropertyOwner[] {
+  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+
+  const { includeHidden = false, includeNonFocusable = true } = filters || {};
+
+  // @TODO (2025-04-07, emmbr): Remove dependency on full properties object. This
+  // leads to rerendering on every property value change, which is not ideal.
+  return (
+    useAppSelector((state) => {
+      const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
+      const { properties } = state.properties;
+
+      return uris
+        .map((uri) => propertyOwners[uri])
+        .filter((node) => node !== undefined)
+        .filter((node) => {
+          const isHidden = isSgnHidden(node.uri, properties);
+          const isFocusable = isSgnFocusable(node.uri, properties);
+
+          if (!includeHidden && isHidden) {
+            return false;
+          }
+          if (!includeNonFocusable && !isFocusable) {
+            return false;
+          }
+          return true;
+        });
+    }, shallowEqual) || []
+  );
+}
+
+export function useIsSgnFocusable(uri: Uri): boolean {
+  return (
+    useAppSelector((state) => isSgnFocusable(uri, state.properties.properties)) || false
+  );
 }
