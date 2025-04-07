@@ -18,16 +18,6 @@ const initialState: PropertiesState = {
   propertyOverview: {}
 };
 
-// function updateProperty(
-//   state,
-//   uri: Uri,
-//   value: PropertyValue
-// ) {
-//   if (state.properties[uri]) {
-//     state.properties[uri].value = value;
-//   }
-// }
-
 export const propertiesSlice = createSlice({
   name: 'properties',
   initialState,
