@@ -78,18 +78,15 @@ function handleUpdatedValues(
   dispatch: Dispatch<UnknownAction>,
   uri: Uri,
   value: PropertyValue,
-  additionalData?: AdditionalData
+  additionalData: AdditionalData
 ) {
   // Update the value in the redux property tree, based on the
   // value from the backend.
   dispatch(updatePropertyValue({ uri, value }));
 
-  // If the property has options, we need to update the options in the redux store.
-  // Using only for options as of now for performance.
-  if (additionalData && 'Options' in additionalData) {
-    // Keeping this action generic in case we want to add more additional data in the future.
-    dispatch(updatePropertyAdditionalData({ uri, additionalData }));
-  }
+  // Keeping this action generic in case we want to add more additional data in the future.
+  dispatch(updatePropertyAdditionalData({ uri, additionalData }));
+
   // "Lazy unsubscribe":
   // Cancel the subscription whenever there is an update from the
   // server, and there are no more active subscibers on the client.
@@ -110,7 +107,7 @@ function handleUpdatedValues(
 
 function setupSubscription(dispatch: Dispatch<UnknownAction>, uri: Uri) {
   const subscription = api.subscribeToProperty(uri);
-  const handleUpdates = (value: PropertyValue, additionalData?: AdditionalData) =>
+  const handleUpdates = (value: PropertyValue, additionalData: AdditionalData) =>
     handleUpdatedValues(dispatch, uri, value, additionalData);
   const throttleHandleUpdates = throttle(handleUpdates, 200);
 
