@@ -23,7 +23,7 @@ export const profileSlice = createSlice({
     setMarkedNodes: (state, action: PayloadAction<Identifier[]>) => {
       state.markNodes = action.payload;
       return state;
-    },
+    }
   }
 });
 
