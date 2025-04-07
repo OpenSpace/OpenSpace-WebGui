@@ -76,7 +76,6 @@ export const propertiesSlice = createSlice({
     ) => {
       const { uri, value } = action.payload;
 
-      // TODO: check this return vs the old code
       if (state.properties[uri]) {
         state.properties[uri].value = value;
       }
@@ -88,7 +87,6 @@ export const propertiesSlice = createSlice({
     ) => {
       const { uri, additionalData } = action.payload;
 
-      // TODO: check this return vs the old code
       if (state.properties[uri]) {
         state.properties[uri].description.additionalData = additionalData;
       }

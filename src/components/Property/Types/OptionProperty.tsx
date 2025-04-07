@@ -10,14 +10,19 @@ export function OptionProperty({ uri, readOnly }: PropertyProps) {
   if (!description || value === undefined || !description.additionalData) {
     return <></>;
   }
-  console.log(description?.additionalData);
 
   const { Options: options } = description.additionalData as AdditionalDataOptions;
 
   // We need to guard for if there are no options. This can happen if they
   // are added dynamically
   if (!options) {
-    return <></>;
+    return (
+      <Select
+        aria-label={`${description.name} option input`}
+        placeholder={'No options were loaded'}
+        disabled
+      />
+    );
   }
 
   return (
