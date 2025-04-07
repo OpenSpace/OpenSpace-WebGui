@@ -43,7 +43,8 @@ export function ActionsButton({ uri, action: _action, height }: Props) {
           p={5}
           flex={1}
           variant={'filled'}
-          bg={`rgba(${action.color.map((c) => c * 255).join(',')})`}
+          color={action.color ? `rgba(${action.color.join(',')})` : undefined}
+          autoContrast // This here is needed now that we can set our own colors
         >
           <Text lineClamp={3} size={'sm'} style={{ whiteSpace: 'wrap' }}>
             {action.name}
