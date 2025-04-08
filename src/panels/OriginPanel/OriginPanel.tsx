@@ -3,7 +3,7 @@ import { Center, Group, SegmentedControl, Text, VisuallyHidden } from '@mantine/
 
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
-import { useSceneGraphNodes } from '@/hooks/propertyOwner';
+import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
@@ -28,9 +28,10 @@ export function OriginPanel() {
   // searchable ones
   const allSceneGraphNodes = useSceneGraphNodes();
 
+  // @TODO (2024-04-08, emmbr): Expose these filters to the user? Could also include tags
   const searchableNodes = useSceneGraphNodes({
-    includeHidden: false,
-    includeNonFocusable: false
+    includeGuiHidden: false,
+    onlyFocusable: true
   });
 
   const shouldStartInAnchorAim = useAppSelector((state) => {

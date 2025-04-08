@@ -8,7 +8,11 @@ import {
   PropertyOwners,
   Uri
 } from '@/types/types';
-import { guiOrderingNumber, isSgnHidden, isSgnVisible } from '@/util/propertyTreeHelpers';
+import {
+  isSgnHiddenInGui,
+  isSgnVisible,
+  sgnGuiOrderingNumber
+} from '@/util/propertyTreeHelpers';
 
 import {
   isGroupNode,
@@ -139,7 +143,7 @@ function filterTreeData(
       shouldShow &&= isSgnVisible(uri, properties);
     }
     if (!filter.showHiddenNodes) {
-      shouldShow &&= !isSgnHidden(uri, properties);
+      shouldShow &&= !isSgnHiddenInGui(uri, properties);
     }
     if (shouldShow && filter.tags.length > 0) {
       shouldShow &&= filter.tags.some((tag) => propertyOwners[uri]?.tags.includes(tag));
@@ -215,7 +219,7 @@ function createTreeSortingInformation(
       result[node.value] = {
         type: 'propertyOwner',
         name: node.label as string,
-        guiOrder: guiOrderingNumber(node.value, properties),
+        guiOrder: sgnGuiOrderingNumber(node.value, properties),
         payload: node.value
       };
     }

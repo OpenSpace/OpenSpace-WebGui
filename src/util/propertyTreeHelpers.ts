@@ -62,14 +62,6 @@ export function hasInterestingTag(
   return propertyOwners[uri]?.tags.some((tag) => tag.includes(InterestingTagKey));
 }
 
-export function guiOrderingNumber(uri: Uri, properties: Properties): number | undefined {
-  const shouldUseGuiOrderingNumber = properties[`${uri}.UseGuiOrdering`]?.value || false;
-  if (!shouldUseGuiOrderingNumber) {
-    return undefined;
-  }
-  return properties[`${uri}.GuiOrderingNumber`]?.value as number | undefined;
-}
-
 export function isSceneGraphNode(uri: Uri): boolean {
   return uri.startsWith(ScenePrefixKey) && uri.split('.').length === 2;
 }
@@ -125,9 +117,35 @@ export function isPropertyOwnerActive(uri: Uri, properties: Properties): boolean
 }
 
 /**
+ * Get the GUI ordering number for a specific scene graph node, if it should be used.
+ * Otherwise, return undefined.
+ */
+export function sgnGuiOrderingNumber(
+  uri: Uri,
+  properties: Properties
+): number | undefined {
+  const shouldUseGuiOrderingNumber = properties[`${uri}.UseGuiOrdering`]?.value || false;
+  if (!shouldUseGuiOrderingNumber) {
+    return undefined;
+  }
+  return properties[`${uri}.GuiOrderingNumber`]?.value as number | undefined;
+}
+
+/**
+ * Get the Gui Path for a specific scene graph node, if it exists.
+ */
+export function sgnGuiPath(sgnUri: Uri, properties: Properties): string {
+  const guiPath = properties[`${sgnUri}.GuiPath`]?.value;
+  if (guiPath !== undefined && typeof guiPath !== 'string') {
+    throw new Error(`GuiPath property for '${sgnUri}' is not a string`);
+  }
+  return guiPath || '/';
+}
+
+/**
  * Is the SGN marked to be hidden in the GUI?
  */
-export function isSgnHidden(uri: Uri, properties: Properties): boolean {
+export function isSgnHiddenInGui(uri: Uri, properties: Properties): boolean {
   const isHidden = properties[`${uri}.GuiHidden`]?.value as boolean | undefined;
   return isHidden || false;
 }
@@ -208,15 +226,4 @@ export function hasVisibleChildren(
   }
 
   return false;
-}
-
-/**
- * Get the Gui Path for a specific scene graph node, if it exists.
- */
-export function getGuiPath(sgnUri: Uri, properties: Properties): string | undefined {
-  const guiPath = properties[`${sgnUri}.GuiPath`]?.value;
-  if (guiPath !== undefined && typeof guiPath !== 'string') {
-    throw new Error(`GuiPath property for '${sgnUri}' is not a string`);
-  }
-  return guiPath as string | undefined;
 }
