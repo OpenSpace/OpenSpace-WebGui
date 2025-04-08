@@ -3,16 +3,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Identifier } from '@/types/types';
 
 export interface ProfileState {
-  uiPanelVisibility: {
-    // The key here should match the id of the menu item,
-    // else will be ignored
-    [key: string]: boolean;
-  };
   markNodes: Identifier[];
 }
 
 const initialState: ProfileState = {
-  uiPanelVisibility: {},
   markNodes: []
 };
 

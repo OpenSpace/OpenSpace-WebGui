@@ -3,16 +3,25 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
+import { Identifier } from '@/types/types';
 
 import { setMenuItemVisible } from '../local/localSlice';
 
-import { ProfileState, setMarkedNodes } from './profileSlice';
+import { setMarkedNodes } from './profileSlice';
+
+export interface ProfilePayload {
+  uiPanelVisibility: {
+    // The key here should match the id of the menu item, else will be ignored
+    [key: string]: boolean;
+  };
+  markNodes: Identifier[];
+}
 
 export const getProfile = createAsyncThunk('profile/getProfile', async () => {
   const topic = api.startTopic('profile', {});
   const { value } = await topic.iterator().next();
   topic.cancel();
-  return value as ProfileState;
+  return value as ProfilePayload;
 });
 
 export const addProfileListener = (startListening: AppStartListening) => {
