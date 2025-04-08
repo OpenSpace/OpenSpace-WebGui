@@ -25,16 +25,17 @@ export function OriginPanel() {
   const properties = useAppSelector((state) => state.properties.properties);
   const engineMode = useAppSelector((state) => state.engineMode.mode);
 
-  const featuredNodes = useFeaturedNodes();
-
   const shouldStartInAnchorAim = useAppSelector((state) => {
     const aimProp = state.properties.properties[NavigationAimKey];
     const anchorProp = state.properties.properties[NavigationAnchorKey];
     return aimProp?.value !== anchorProp?.value && aimProp?.value !== '';
   });
+
   const [navigationMode, setNavigationMode] = useState(
     shouldStartInAnchorAim ? NavigationMode.AnchorAim : NavigationMode.Focus
   );
+
+  const featuredNodes = useFeaturedNodes();
 
   // @TODO (2025-02-24, emmbr): Remove dependency on properties object
   const sortedSearchableNodes = useMemo(() => {
@@ -44,8 +45,8 @@ export function OriginPanel() {
       .filter((po) => po !== undefined);
 
     // Searchable nodes are all nodes that are not hidden in the GUI
-    const searchableNodes = allNodes.filter((node) =>
-      !isPropertyOwnerHidden(node.uri, properties)
+    const searchableNodes = allNodes.filter(
+      (node) => !isPropertyOwnerHidden(node.uri, properties)
     );
 
     return searchableNodes.slice().sort((a, b) => a.name.localeCompare(b.name));

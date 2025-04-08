@@ -8,16 +8,17 @@ import { NavigationAimKey, NavigationAnchorKey } from './keys';
 import { sgnUri } from './propertyTreeHelpers';
 
 /**
- * Get all the nodes marked in the profile, as a memoized list of property owners.
+ * Get all the nodes marked in the profile, as a list of property owners.
  */
-export function useFeaturedNodes() : PropertyOwner[] {
+export function useFeaturedNodes(): PropertyOwner[] {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const markedNodes = useAppSelector((state) => state.profile.markNodes);
 
   return useMemo(
-    () => markedNodes.map(
-      (id) => propertyOwners[sgnUri(id)]).filter((po) => po !== undefined
-    ),
+    () =>
+      markedNodes
+        .map((id) => propertyOwners[sgnUri(id)])
+        .filter((po) => po !== undefined),
     [markedNodes, propertyOwners]
   );
 }
