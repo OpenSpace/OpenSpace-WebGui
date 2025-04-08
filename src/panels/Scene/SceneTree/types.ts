@@ -11,3 +11,10 @@ export interface SceneTreeFilterSettings extends SceneGraphNodesFilters {
   // show nodes that are currently visible in the scene (i.e. enabled and not faded out)
   showOnlyVisible: boolean;
 }
+
+export const sceneTreeFilterDefaults: SceneTreeFilterSettings = {
+  showOnlyVisible: false,
+  showHiddenNodes: false,
+  onlyFocusable: false,
+  tags: []
+};

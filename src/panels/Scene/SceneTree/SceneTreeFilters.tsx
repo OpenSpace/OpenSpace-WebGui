@@ -9,10 +9,11 @@ import {
 } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { hasActiveFilters } from '@/hooks/sceneGraphNodes/util';
 import { FilterIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
-import { SceneTreeFilterSettings } from './types';
+import { sceneTreeFilterDefaults, SceneTreeFilterSettings } from './types';
 
 interface Props {
   setFilter: (
@@ -27,11 +28,10 @@ export function SceneTreeFilters({ setFilter, filter }: Props) {
   const tags = useAppSelector((state) => state.groups.tags);
 
   const sortedTags = Array.from(tags).sort();
-  const hasFilters =
-    filter.showOnlyVisible || filter.showHiddenNodes || filter.tags.length > 0;
+  const hasFilters = hasActiveFilters({ ...filter }) || filter.showOnlyVisible;
 
   function clearFilters() {
-    setFilter({ showOnlyVisible: false, showHiddenNodes: false, tags: [] });
+    setFilter(sceneTreeFilterDefaults);
   }
 
   return (
@@ -60,6 +60,19 @@ export function SceneTreeFilters({ setFilter, filter }: Props) {
           </Group>
           <Group>
             <Checkbox
+              label={'Show only focusable'}
+              checked={filter.onlyFocusable}
+              onChange={(event) =>
+                setFilter({ onlyFocusable: event.currentTarget.checked })
+              }
+            />
+            <InfoBox>
+              Hide scene graph nodes that are not markes as focusable, meaning that they
+              cannot be directly set as the focus node in the scene.
+            </InfoBox>
+          </Group>
+          <Group>
+            <Checkbox
               label={'Show objects with GUI hidden flag'}
               checked={filter.showHiddenNodes}
               onChange={(event) =>
@@ -67,8 +80,8 @@ export function SceneTreeFilters({ setFilter, filter }: Props) {
               }
             />
             <InfoBox>
-              {'Show scene graph nodes that are marked as hidden in the GUI ' +
-                'part of the asset. These are otherwise hidden in the interface'}
+              Show scene graph nodes that are marked as hidden in the GUI part of the
+              asset. These are otherwise hidden in the interface.
             </InfoBox>
           </Group>
           <Title order={3}>Tags</Title>

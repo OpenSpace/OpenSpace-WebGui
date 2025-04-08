@@ -1,5 +1,7 @@
 import { Properties, Uri } from '@/types/types';
 
+import { SceneGraphNodesFilters } from './types';
+
 /**
  * Get the GUI ordering number for a specific scene graph node, if it should be used.
  * Otherwise, return undefined.
@@ -40,4 +42,13 @@ export function isSgnHiddenInGui(uri: Uri, properties: Properties): boolean {
 export function isSgnFocusable(uri: Uri, properties: Properties): boolean {
   const isFocusable = properties[`${uri}.Focusable`]?.value as boolean | undefined;
   return isFocusable || false;
+}
+
+export function hasActiveFilters(filters: SceneGraphNodesFilters): boolean {
+  return (
+    filters.showHiddenNodes ||
+    filters.onlyFocusable ||
+    (filters.tags && filters.tags.length > 0) ||
+    false
+  );
 }
