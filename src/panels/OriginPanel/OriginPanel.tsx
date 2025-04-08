@@ -3,7 +3,7 @@ import { Center, Group, SegmentedControl, Text, VisuallyHidden } from '@mantine/
 
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
-import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes';
+import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes/sceneGraphNodes';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
@@ -30,7 +30,7 @@ export function OriginPanel() {
 
   // @TODO (2024-04-08, emmbr): Expose these filters to the user? Could also include tags
   const searchableNodes = useSceneGraphNodes({
-    includeGuiHidden: false,
+    showHiddenNodes: false,
     onlyFocusable: true
   });
 

@@ -1,14 +1,15 @@
 import { useMemo } from 'react';
-import { shallowEqual } from '@mantine/hooks';
 
 import { useAppSelector } from '@/redux/hooks';
 import { PropertyOwner, SceneGraphNodeGuiSettings, Uri } from '@/types/types';
+
+import { SceneGraphNodesFilters } from './types';
 import {
   isSgnFocusable,
   isSgnHiddenInGui,
   sgnGuiOrderingNumber,
   sgnGuiPath
-} from '@/util/propertyTreeHelpers';
+} from './util';
 
 export function useIsSgnFocusable(uri: Uri): boolean {
   return (
@@ -16,19 +17,10 @@ export function useIsSgnFocusable(uri: Uri): boolean {
   );
 }
 
-export interface SceneGraphNodesFilters {
-  // If true, include nodes marked as hidden in the GUI
-  includeGuiHidden?: boolean;
-  // If true, only show nodes marked as focusable
-  onlyFocusable?: boolean;
-  // A list of tags to filter by
-  tags?: string[];
-}
-
 export function useSceneGraphNodes({
-  includeGuiHidden = false,
+  showHiddenNodes = false,
   onlyFocusable = false,
-  tags = undefined
+  tags = []
 }: SceneGraphNodesFilters = {}): PropertyOwner[] {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const sgnGuiSettings = useSceneGraphNodeGuiSettings();
@@ -44,13 +36,13 @@ export function useSceneGraphNodes({
           return true;
         }
 
-        if (!includeGuiHidden && guiSettings.isHidden) {
+        if (!showHiddenNodes && guiSettings.isHidden) {
           return false;
         }
         if (onlyFocusable && !guiSettings.isFocusable) {
           return false;
         }
-        if (tags) {
+        if (tags.length > 0) {
           const hasTag = node.tags.some((tag) => tags.includes(tag));
           if (!hasTag) {
             return false;
@@ -58,38 +50,37 @@ export function useSceneGraphNodes({
         }
         return true;
       });
-  }, [propertyOwners, includeGuiHidden, onlyFocusable, tags, sgnGuiSettings]);
-}
-
-export interface SgnGuiSettingsMap {
-  [key: Uri]: SceneGraphNodeGuiSettings;
+  }, [propertyOwners, showHiddenNodes, onlyFocusable, tags, sgnGuiSettings]);
 }
 
 /**
  * Returns an object with the GUI settings for each scene graph node, mapped by the URI of
  * the property owner for the node.
+ *
+ * @TODO (2025-04-08, emmbr): If we group the GUI properties into a single property owner,
+ * we could potentially clear this up a bit.
  */
-export function useSceneGraphNodeGuiSettings(): SgnGuiSettingsMap {
+export function useSceneGraphNodeGuiSettings(): SceneGraphNodeGuiSettings {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+  const properties = useAppSelector((state) => state.properties.properties);
 
-  return useAppSelector((state) => {
+  return useMemo(() => {
     const sceneUris: Uri[] = propertyOwners.Scene?.subowners ?? [];
-
-    const guiSettings: SgnGuiSettingsMap = {};
-
+    const guiSettings: SceneGraphNodeGuiSettings = {};
     sceneUris
       .map((uri) => propertyOwners[uri])
       .filter((node) => node !== undefined)
       .forEach((node) => {
-        const { properties } = state.properties;
-
         guiSettings[node.uri] = {
           path: sgnGuiPath(node.uri, properties) || '',
           isHidden: isSgnHiddenInGui(node.uri, properties),
           isFocusable: isSgnFocusable(node.uri, properties),
+          // @TODO (emmbr, 2024-04-08): The GUI number here is currently not used
+          // anywhere, but we should try to rewrite the code to use it instead of
+          // the current approach in the scene tree
           guiOrderingNumber: sgnGuiOrderingNumber(node.uri, properties)
         };
       });
     return guiSettings;
-  }, shallowEqual);
+  }, [propertyOwners, properties]);
 }

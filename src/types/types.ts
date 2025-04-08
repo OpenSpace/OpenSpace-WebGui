@@ -82,10 +82,12 @@ export interface PropertyOwners {
 }
 
 export interface SceneGraphNodeGuiSettings {
-  path: string;
-  isHidden: boolean;
-  isFocusable: boolean;
-  guiOrderingNumber: number | undefined;
+  [key: Uri]: {
+    path: string;
+    isHidden: boolean;
+    isFocusable: boolean;
+    guiOrderingNumber: number | undefined;
+  };
 }
 
 export type Group = {

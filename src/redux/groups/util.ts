@@ -1,6 +1,7 @@
+import { sgnGuiPath } from '@/hooks/sceneGraphNodes/util';
 import { Group, Groups, Properties, PropertyOwners } from '@/types/types';
 
-import { isSceneGraphNode, sgnGuiPath } from '../../util/propertyTreeHelpers';
+import { isSceneGraphNode } from '../../util/propertyTreeHelpers';
 
 function emptyGroup(): Group {
   return { subgroups: [], propertyOwners: [] };
