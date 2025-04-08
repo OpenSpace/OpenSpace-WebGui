@@ -85,17 +85,18 @@ export function usePropertyOwnerVisibility(uri: Uri) {
   };
 }
 
-interface UseSceneGraphNodesFilters {
+interface SceneGraphNodesFilters {
   // If true, include nodes marked as hidden in the GUI
   includeHidden?: boolean;
   // If true, include nodes marked as non-focusable
   includeNonFocusable?: boolean;
 }
 
-export function useSceneGraphNodes(filters?: UseSceneGraphNodesFilters): PropertyOwner[] {
+export function useSceneGraphNodes({
+  includeHidden = false,
+  includeNonFocusable = true
+}: SceneGraphNodesFilters = {}): PropertyOwner[] {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-
-  const { includeHidden = false, includeNonFocusable = true } = filters || {};
 
   // @TODO (2025-04-07, emmbr): Remove dependency on full properties object. This
   // leads to rerendering on every property value change, which is not ideal.
