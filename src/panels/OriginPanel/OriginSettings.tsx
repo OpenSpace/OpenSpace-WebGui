@@ -30,7 +30,6 @@ export function OriginSettings() {
         <Menu.Label>Focus Search</Menu.Label>
         <Container>
           <Group wrap={'nowrap'}>
-            {/* TODO: add a setting for this in local state */}
             <Checkbox
               label={'Include Non-focusable Nodes'}
               checked={showNonfocusableInSearch}
