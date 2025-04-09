@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Loader, LoadingOverlay, Stack, Text } from '@mantine/core';
+import { Box, LoadingOverlay, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useBoolProperty } from '@/hooks/properties';
@@ -14,18 +14,22 @@ import {
   useUpdateOpacities,
   useUpdateSelectedImages
 } from './hooks';
+import { Overlay } from './Overlay';
 
 export function WorldWideTelescopeView() {
+  const cameraInSolarSystem = useAppSelector(
+    (state) => state.skybrowser.cameraInSolarSystem
+  );
+  const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
+  const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
+
   const [isDragging, setIsDragging] = useState(false);
   const [startDragPosition, setStartDragPosition] = useState({ x: 0, y: 0 });
 
-  const { ref, imageCollectionLoaded, wwtHasLoaded } = useWwtProvider();
-
+  const { ref, imageCollectionLoaded } = useWwtProvider();
   const { width, height } = useWindowSize();
   const luaApi = useOpenSpaceApi();
 
-  const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
-  const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
   const [inverseZoom] = useBoolProperty('Modules.SkyBrowser.InverseZoomDirection');
 
   // A bunch of hooks that pass messages to WWT when our redux state changes
@@ -77,30 +81,26 @@ export function WorldWideTelescopeView() {
     luaApi?.skybrowser.stopAnimations(id);
   }
 
-  if (id === '') {
-    return <Text m={'lg'}>No browser selected</Text>;
+  if (nBrowsers === 0) {
+    return (
+      <Text ta={'center'} m={'lg'}>
+        There are no SkyBrowsers. Create one in the SkyBrowser panel.
+      </Text>
+    );
   }
 
-  if (nBrowsers === 0) {
-    return <Text m={'lg'}>No browsers</Text>;
+  if (id === '') {
+    return <Text m={'lg'}>No browser selected</Text>;
   }
 
   return (
     <>
       <LoadingOverlay
-        visible={!imageCollectionLoaded}
+        visible={!imageCollectionLoaded || !cameraInSolarSystem}
         zIndex={1000}
         overlayProps={{ backgroundOpacity: 1, bg: 'dark.9' }}
         loaderProps={{
-          children: (
-            <Stack align={"center"}>
-              {!wwtHasLoaded && <Text>Loading WorldWide Telescope...</Text>}
-              {wwtHasLoaded && !imageCollectionLoaded && (
-                <Text>Loading image collection...</Text>
-              )}
-              <Loader size={'lg'} type={'dots'} />
-            </Stack>
-          )
+          children: <Overlay />
         }}
         transitionProps={{ transition: 'fade', duration: 500 }}
       />

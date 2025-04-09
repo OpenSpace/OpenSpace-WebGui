@@ -14,9 +14,6 @@ import { useSkyBrowserData } from './hooks';
 
 export function SkyBrowserPanel() {
   const isInitialized = useAppSelector((state) => state.skybrowser.isInitialized);
-  const cameraInSolarSystem = useAppSelector(
-    (state) => state.skybrowser.cameraInSolarSystem
-  );
   const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
   const { addWindow } = useWindowLayoutProvider();
   const luaApi = useOpenSpaceApi();
@@ -44,9 +41,6 @@ export function SkyBrowserPanel() {
     }
   }, [openWorldWideTelescope, nBrowsers]);
 
-  if (!cameraInSolarSystem) {
-    return <Text m={'lg'}>Camera has to be in solar system for Sky Browser to work</Text>;
-  }
   if (nBrowsers === 0) {
     return (
       <Stack h={'100%'} w={'100%'} align={'center'} p={'lg'}>
