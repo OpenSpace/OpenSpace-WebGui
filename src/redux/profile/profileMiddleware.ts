@@ -3,23 +3,25 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
+import { Identifier } from '@/types/types';
 
 import { setMenuItemVisible } from '../local/localSlice';
 
-export interface ProfileState {
+import { setMarkedNodes } from './profileSlice';
+
+export interface ProfilePayload {
   uiPanelVisibility: {
-    // The key here should match the id of the menu item,
-    // else will be ignored
+    // The key here should match the id of the menu item, else will be ignored
     [key: string]: boolean;
   };
-  markNodes: string[];
+  markNodes: Identifier[];
 }
 
 export const getProfile = createAsyncThunk('profile/getProfile', async () => {
   const topic = api.startTopic('profile', {});
   const { value } = await topic.iterator().next();
   topic.cancel();
-  return value as ProfileState;
+  return value as ProfilePayload;
 });
 
 export const addProfileListener = (startListening: AppStartListening) => {
@@ -33,10 +35,15 @@ export const addProfileListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: getProfile.fulfilled,
     effect: async (action, listenerApi) => {
+      // Get the data from the profile topic and set it in the redux store
+
+      // Panel visibility settings
       Object.entries(action.payload.uiPanelVisibility).forEach(([key, value]) => {
         listenerApi.dispatch(setMenuItemVisible({ id: key, visible: value }));
       });
-      // @TODO (ylvse 2025-03-15): handle marknodes
+
+      // Marked nodes
+      listenerApi.dispatch(setMarkedNodes(action.payload.markNodes));
     }
   });
 };
