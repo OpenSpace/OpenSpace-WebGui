@@ -12,7 +12,7 @@ import { useFeaturedNodes } from '@/util/propertyTreeHooks';
 
 import { AnchorAimView } from './AnchorAimView/AnchorAimView';
 import { FocusView } from './FocusView/FocusView';
-import { NavigationSettings } from './NavigationSettings';
+import { OriginSettings } from './OriginSettings';
 
 enum NavigationMode {
   Focus = 'Focus',
@@ -94,7 +94,7 @@ export function OriginPanel() {
               }
             ]}
           />
-          <NavigationSettings />
+          <OriginSettings />
         </Group>
       </Layout.FixedSection>
       <Layout.GrowingSection>
