@@ -12,7 +12,7 @@ interface Props {
   isInt?: boolean;
 }
 
-export function DefaultView({
+export function VectorDefaultView({
   disabled,
   setPropertyValue,
   value,
