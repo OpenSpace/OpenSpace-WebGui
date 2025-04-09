@@ -12,7 +12,7 @@ import { useFeaturedNodes } from '@/util/propertyTreeHooks';
 
 import { AnchorAimView } from './AnchorAimView/AnchorAimView';
 import { FocusView } from './FocusView/FocusView';
-import { OriginSettings } from './OriginSettings';
+import { NavigationSettings } from './NavigationSettings';
 
 enum NavigationMode {
   Focus = 'Focus',
@@ -28,6 +28,10 @@ export function OriginPanel() {
     return aimProp?.value !== anchorProp?.value && aimProp?.value !== '';
   });
 
+  const showNonFocusable = useAppSelector(
+    (state) => state.local.menus.navigation.showNonFocusable
+  );
+
   const [navigationMode, setNavigationMode] = useState(
     shouldStartInAnchorAim ? NavigationMode.AnchorAim : NavigationMode.Focus
   );
@@ -37,7 +41,7 @@ export function OriginPanel() {
   // @TODO (2024-04-08, emmbr): Expose these filters to the user? Could also include tags
   const searchableNodes = useSceneGraphNodes({
     showHiddenNodes: false,
-    onlyFocusable: true
+    onlyFocusable: !showNonFocusable
   });
 
   const sortedSearchableNodes = useMemo(
@@ -90,7 +94,7 @@ export function OriginPanel() {
               }
             ]}
           />
-          <OriginSettings />
+          <NavigationSettings />
         </Group>
       </Layout.FixedSection>
       <Layout.GrowingSection>
