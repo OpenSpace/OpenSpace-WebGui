@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Text } from '@mantine/core';
+import { Box, Loader, LoadingOverlay, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useBoolProperty } from '@/hooks/properties';
@@ -19,7 +19,7 @@ export function WorldWideTelescopeView() {
   const [isDragging, setIsDragging] = useState(false);
   const [startDragPosition, setStartDragPosition] = useState({ x: 0, y: 0 });
 
-  const { ref } = useWwtProvider();
+  const { ref, imageCollectionLoaded, wwtHasLoaded } = useWwtProvider();
 
   const { width, height } = useWindowSize();
   const luaApi = useOpenSpaceApi();
@@ -86,40 +86,59 @@ export function WorldWideTelescopeView() {
   }
 
   return (
-    <Box
-      component={'button'}
-      onMouseMove={(e) => handleDrag(e.clientX, e.clientY)}
-      onMouseDown={(e) => mouseDown(e.clientX, e.clientY)}
-      onMouseUp={mouseUp}
-      onMouseLeave={mouseUp}
-      onWheel={(e) => scroll(e.deltaY)}
-      aria-label={'Dragging area for WorldWideTelescope'}
-      p={'0px'}
-      bg={'transparent'}
-      pos={'absolute'}
-      bd={'0px'}
-      style={{
-        cursor: isDragging ? 'grabbing' : 'grab'
-      }}
-    >
-      <iframe
-        ref={ref}
-        id={'webpage'}
-        name={'wwt'}
-        title={'WorldWideTelescope'}
-        src={'http://wwt.openspaceproject.com/1/gui/'}
-        allow={'accelerometer; clipboard-write; gyroscope'}
-        allowFullScreen
-        height={height}
-        width={width}
+    <>
+      <LoadingOverlay
+        visible={!imageCollectionLoaded}
+        zIndex={1000}
+        overlayProps={{ backgroundOpacity: 1, bg: 'dark.9' }}
+        loaderProps={{
+          children: (
+            <Stack align={"center"}>
+              {!wwtHasLoaded && <Text>Loading WorldWide Telescope...</Text>}
+              {wwtHasLoaded && !imageCollectionLoaded && (
+                <Text>Loading image collection...</Text>
+              )}
+              <Loader size={'lg'} type={'dots'} />
+            </Stack>
+          )
+        }}
+        transitionProps={{ transition: 'fade', duration: 500 }}
+      />
+      <Box
+        component={'button'}
+        onMouseMove={(e) => handleDrag(e.clientX, e.clientY)}
+        onMouseDown={(e) => mouseDown(e.clientX, e.clientY)}
+        onMouseUp={mouseUp}
+        onMouseLeave={mouseUp}
+        onWheel={(e) => scroll(e.deltaY)}
+        aria-label={'Dragging area for WorldWideTelescope'}
+        p={'0px'}
+        bg={'transparent'}
+        pos={'absolute'}
+        bd={'0px'}
         style={{
-          border: '0px solid transparent',
-          pointerEvents: 'none',
-          colorScheme: 'normal'
+          cursor: isDragging ? 'grabbing' : 'grab'
         }}
       >
-        <p>ERROR: cannot display AAS WorldWide Telescope research app!</p>
-      </iframe>
-    </Box>
+        <iframe
+          ref={ref}
+          id={'webpage'}
+          name={'wwt'}
+          title={'WorldWideTelescope'}
+          src={'http://wwt.openspaceproject.com/1/gui/'}
+          allow={'accelerometer; clipboard-write; gyroscope'}
+          allowFullScreen
+          height={height}
+          width={width}
+          style={{
+            border: '0px solid transparent',
+            pointerEvents: 'none',
+            colorScheme: 'normal'
+          }}
+        >
+          <p>ERROR: cannot display AAS WorldWide Telescope research app!</p>
+        </iframe>
+      </Box>
+    </>
   );
 }

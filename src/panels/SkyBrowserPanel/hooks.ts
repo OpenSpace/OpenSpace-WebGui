@@ -47,7 +47,7 @@ export function useWwtImageCollection(): [boolean, SkyBrowserImage[]] {
 
     try {
       // We only need to get the images if we don't have them already
-      if (imageList === null) {
+      if (imageList === undefined) {
         startTransition(() => {
           getWwtListOfImages();
         });
@@ -57,7 +57,7 @@ export function useWwtImageCollection(): [boolean, SkyBrowserImage[]] {
     }
   }, [luaApi, dispatch, imageList]);
 
-  return [isPending || imageList === null, imageList ?? []];
+  return [isPending || imageList === undefined, imageList ?? []];
 }
 
 export function useSkyBrowserData() {

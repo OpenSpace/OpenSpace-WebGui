@@ -18,7 +18,7 @@ export interface SkyBrowserState {
   browserIds: string[];
   browserNames: string[];
   browserColors: [number, number, number][];
-  imageList: SkyBrowserImage[] | null;
+  imageList: SkyBrowserImage[] | undefined;
   activeImage: string;
 }
 
@@ -26,7 +26,7 @@ const initialState: SkyBrowserState = {
   isInitialized: false,
   cameraInSolarSystem: true, // Setting this to true as OpenSpace usually starts on Earth
   selectedBrowserId: '',
-  imageList: null,
+  imageList: undefined,
   browsers: {},
   activeImage: '',
   browserColors: [],
