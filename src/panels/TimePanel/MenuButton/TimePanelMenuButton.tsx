@@ -1,7 +1,6 @@
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
+import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
 import { useAppSelector } from '@/redux/hooks';
-
-import { TaskBarMenuButton } from '../../Menu/TaskBar/TaskBarMenuButton';
 
 import { TimePanelMenuButtonContent } from './TimePanelMenuButtonContent';
 

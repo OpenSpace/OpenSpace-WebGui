@@ -22,7 +22,7 @@ import { SetBoolPropertyTask } from '../Tasks/ChangePropertyTask';
 import { FocusTask } from '../Tasks/FocusTask';
 import { MarsTrailColorTask } from '../Tasks/MarsTrailColorTask';
 
-import { ButtonWrapper } from './ButtonWrapper';
+import { ClickBlocker } from './ClickBlocker';
 
 export const ContentSteps = [
   <>
@@ -32,7 +32,7 @@ export const ContentSteps = [
   <Stack gap={'md'}>
     <Group>
       <Text>All the content in OpenSpace can be found in the Scene menu:</Text>
-      <ButtonWrapper withBorder>
+      <ClickBlocker withBorder>
         <Button
           variant={'menubar'}
           leftSection={<SceneIcon size={IconSize.lg} />}
@@ -41,15 +41,15 @@ export const ContentSteps = [
         >
           Scene
         </Button>
-      </ButtonWrapper>
+      </ClickBlocker>
     </Group>
     <Text>
       You can search for objects in the top search bar. The results are going to look like
       this:
     </Text>
-    <ButtonWrapper withBorder w={300} p={'xs'}>
+    <ClickBlocker withBorder w={300} p={'xs'}>
       <SceneGraphNodeHeader uri={'Scene.Earth'} />
-    </ButtonWrapper>
+    </ClickBlocker>
     <Group>
       <Text>You can focus on objects by clicking the focus icon: </Text>
       <ActionIcon size={'sm'} style={{ pointerEvents: 'none' }}>

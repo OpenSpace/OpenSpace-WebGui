@@ -15,7 +15,7 @@ import { FocusTask } from '../Tasks/FocusTask';
 import { NavigationTask } from '../Tasks/NavigationTask';
 import { PauseTimeTask } from '../Tasks/PauseTimeTask';
 
-import { ButtonWrapper } from './ButtonWrapper';
+import { ClickBlocker } from './ClickBlocker';
 
 export const TimeSteps = [
   <>
@@ -41,12 +41,12 @@ export const TimeSteps = [
     <Text>You can view the past as well as the future.</Text>
     <ChangeYearTask />
     <Text>To open the Time Panel, click on the following icon in the taskbar:</Text>
-    <ButtonWrapper p={'xs'} withBorder>
+    <ClickBlocker p={'xs'} withBorder>
       <TimePanelMenuButtonContent />
-    </ButtonWrapper>
+    </ClickBlocker>
     <Group>
       <Text>Change the year by changing the value of the year in the time input:</Text>
-      <ButtonWrapper>
+      <ClickBlocker>
         <TimeIncrementInput
           value={new Date().getFullYear()}
           onInputChange={() => {}}
@@ -54,7 +54,7 @@ export const TimeSteps = [
           onInputEnter={() => {}}
           w={65}
         />
-      </ButtonWrapper>
+      </ClickBlocker>
     </Group>
     <Text c={'dimmed'} fs={'italic'}>
       You can reset the time by pressing "Now"

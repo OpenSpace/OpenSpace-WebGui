@@ -14,7 +14,7 @@ import { CurrentLatLong } from '../Tasks/Components/CurrentLatLong';
 import { FocusTask } from '../Tasks/FocusTask';
 import { NavigationTask } from '../Tasks/NavigationTask';
 
-import { ButtonWrapper } from './ButtonWrapper';
+import { ClickBlocker } from './ClickBlocker';
 
 export const NavigationSteps: React.JSX.Element[] = [
   <>
@@ -78,9 +78,9 @@ export const NavigationSteps: React.JSX.Element[] = [
     <Text>
       Open the navigation menu and click on the "Focus" button to focus on the Moon. The
       navigation menu can be found in the bottom bar:
-      <ButtonWrapper p={'xs'} withBorder>
+      <ClickBlocker p={'xs'} withBorder>
         <OriginPanelMenuButtonContent />
-      </ButtonWrapper>
+      </ClickBlocker>
     </Text>
   </>,
   <>
