@@ -4,6 +4,7 @@ import { Topic } from 'openspace-api-js';
 import { api } from '@/api/api';
 import { ConnectionStatus } from '@/types/enums';
 
+import { onCloseConnection } from '../connection/connectionSlice';
 import { AppStartListening } from '../listenerMiddleware';
 
 import {
@@ -12,8 +13,6 @@ import {
   subscriptionIsSetup,
   updateSkyBrowser
 } from './skybrowserSlice';
-import { closeConnection } from '../connection/connectionMiddleware';
-import { onCloseConnection } from '../connection/connectionSlice';
 
 const subscribeToSkyBrowser = createAction<void>('skybrowser/subscribe');
 const unsubscribeToSkyBrowser = createAction<void>('skybrowser/unsubscribe');

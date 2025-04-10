@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { LoadingOverlay, Text } from '@mantine/core';
+import { useGesture } from '@use-gesture/react';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useBoolProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
-import { useGesture } from '@use-gesture/react';
-import styles from './WorldWideTelescope.module.css';
 
 import { useWwtProvider } from './WwtProvider/hooks';
 import {
@@ -17,6 +16,8 @@ import {
   useUpdateSelectedImages
 } from './hooks';
 import { Overlay } from './Overlay';
+
+import styles from './WorldWideTelescope.module.css';
 
 export function WorldWideTelescopeView() {
   const cameraInSolarSystem = useAppSelector(
@@ -48,7 +49,8 @@ export function WorldWideTelescopeView() {
       onDragEnd: () => mouseUp(),
       onPinch: (state) => {
         if (state.touches == 2) {
-          const direction = state.direction[0];
+          // The first direction determines the "scroll" direction
+          const [direction] = state.direction;
           scroll(direction < 0 ? 50 : -50);
         }
       },
@@ -57,7 +59,8 @@ export function WorldWideTelescopeView() {
       }
     },
     {
-      drag: { threshold: 0.1 }, // To make it differentiate better between dragging and pinching
+      // To make it differentiate better between dragging and pinching
+      drag: { threshold: 0.1 },
       eventOptions: { passive: false }
     }
   );

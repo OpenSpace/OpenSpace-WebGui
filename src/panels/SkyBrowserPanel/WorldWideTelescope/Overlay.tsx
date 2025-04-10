@@ -1,5 +1,7 @@
+import { Loader, Stack, Text } from '@mantine/core';
+
 import { useAppSelector } from '@/redux/hooks';
-import { Stack, Loader, Text } from '@mantine/core';
+
 import { useWwtProvider } from './WwtProvider/hooks';
 
 export function Overlay() {
