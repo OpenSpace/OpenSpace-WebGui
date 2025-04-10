@@ -74,9 +74,8 @@ export const skyBrowserSlice = createSlice({
 
       return state;
     },
-    resetSkyBrowser: (state) => {
-      state = initialState;
-      return state;
+    resetSkyBrowser: () => {
+      return initialState;
     },
     setImageCollectionData: (state, action: PayloadAction<SkyBrowserImage[]>) => {
       state.imageList = action.payload;
