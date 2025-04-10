@@ -167,7 +167,7 @@ export function WorldWideTelescopeView() {
         >
           <p>ERROR: cannot display AAS WorldWide Telescope research app!</p>
         </iframe>
-        {/* </Box> */}
+        
       </div>
     </>
   );
