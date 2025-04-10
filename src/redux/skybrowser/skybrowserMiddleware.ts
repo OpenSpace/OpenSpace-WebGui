@@ -7,10 +7,12 @@ import { ConnectionStatus } from '@/types/enums';
 import { AppStartListening } from '../listenerMiddleware';
 
 import {
+  resetSkyBrowser,
   type SkyBrowserUpdate,
   subscriptionIsSetup,
   updateSkyBrowser
 } from './skybrowserSlice';
+import { closeConnection } from '../connection/connectionMiddleware';
 
 const subscribeToSkyBrowser = createAction<void>('skybrowser/subscribe');
 const unsubscribeToSkyBrowser = createAction<void>('skybrowser/unsubscribe');
@@ -63,6 +65,15 @@ export const addSkyBrowserListener = (startListening: AppStartListening) => {
       if (nSubscribers === 0) {
         tearDownSubscription();
       }
+    }
+  });
+
+  startListening({
+    actionCreator: closeConnection,
+    effect: (_, listenerApi) => {
+      nSubscribers = 0;
+      listenerApi.dispatch(unsubscribeToSkyBrowser());
+      listenerApi.dispatch(resetSkyBrowser());
     }
   });
 };
