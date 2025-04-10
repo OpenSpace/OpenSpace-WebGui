@@ -13,6 +13,7 @@ import {
   updateSkyBrowser
 } from './skybrowserSlice';
 import { closeConnection } from '../connection/connectionMiddleware';
+import { onCloseConnection } from '../connection/connectionSlice';
 
 const subscribeToSkyBrowser = createAction<void>('skybrowser/subscribe');
 const unsubscribeToSkyBrowser = createAction<void>('skybrowser/unsubscribe');
@@ -69,7 +70,7 @@ export const addSkyBrowserListener = (startListening: AppStartListening) => {
   });
 
   startListening({
-    actionCreator: closeConnection,
+    actionCreator: onCloseConnection,
     effect: (_, listenerApi) => {
       nSubscribers = 0;
       listenerApi.dispatch(unsubscribeToSkyBrowser());
