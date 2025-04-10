@@ -6,7 +6,7 @@ interface Props extends PropsWithChildren, MantineStyleProps {
 }
 
 // This component is designed to be used as a wrapper for buttons in the Getting Started Panel
-// for buttons that we only want to displat "as an image", i.e. show what they look like
+// for buttons that we only want to display "as an image", i.e. show what they look like
 // without actually being clickable.
 export function ButtonWrapper({ withBorder = false, children, ...styleProps }: Props) {
   return (
