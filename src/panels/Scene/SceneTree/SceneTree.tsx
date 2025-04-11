@@ -22,14 +22,16 @@ import { useSceneTreeData } from './hooks';
 import { SceneTreeFilters } from './SceneTreeFilters';
 import { SceneTreeNode, SceneTreeNodeContent } from './SceneTreeNode';
 import { SceneTreeGroupPrefixKey } from './treeUtils';
-import { SceneTreeFilterSettings, SceneTreeNodeData } from './types';
+import {
+  sceneTreeFilterDefaults,
+  SceneTreeFilterSettings,
+  SceneTreeNodeData
+} from './types';
 
 export function SceneTree() {
-  const [filter, setFilter] = useSetState<SceneTreeFilterSettings>({
-    showOnlyVisible: false,
-    showHiddenNodes: false,
-    tags: []
-  });
+  const [filter, setFilter] = useSetState<SceneTreeFilterSettings>(
+    sceneTreeFilterDefaults
+  );
 
   const { sceneTreeData, flatTreeData } = useSceneTreeData(filter);
   const { closeCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();

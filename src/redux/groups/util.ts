@@ -1,6 +1,7 @@
+import { sgnGuiPath } from '@/hooks/sceneGraphNodes/util';
 import { Group, Groups, Properties, PropertyOwners } from '@/types/types';
 
-import { getGuiPath, isSceneGraphNode } from '../../util/propertyTreeHelpers';
+import { isSceneGraphNode } from '../../util/propertyTreeHelpers';
 
 function emptyGroup(): Group {
   return { subgroups: [], propertyOwners: [] };
@@ -23,7 +24,7 @@ export function computeGroups(
   // Create links to all scene graph nodes based on their GUI path. If a node does not
   // have a GUI path, it is added to the top level
   sceneGraphNodes.forEach((uri) => {
-    const guiPath = getGuiPath(uri, properties) || '/';
+    const guiPath = sgnGuiPath(uri, properties);
     groups[guiPath] = groups[guiPath] || emptyGroup();
     groups[guiPath].propertyOwners.push(uri);
   });

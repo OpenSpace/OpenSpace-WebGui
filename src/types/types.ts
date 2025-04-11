@@ -106,6 +106,15 @@ export interface PropertyOwners {
   [key: Uri]: PropertyOwner | undefined;
 }
 
+export interface SceneGraphNodeGuiSettings {
+  [key: Uri]: {
+    path: string;
+    isHidden: boolean;
+    isFocusable: boolean;
+    guiOrderingNumber: number | undefined;
+  };
+}
+
 export type Group = {
   subgroups: string[]; // group paths
   propertyOwners: Uri[];
