@@ -12,7 +12,7 @@ export interface Action {
   name: string;
   synchronization: boolean;
   documentation: string;
-  color: [number, number, number, number] | null; // rgba color, [0, 255]
+  color?: [number, number, number, number]; // rgba color, [0, 1]
 }
 
 export type KeybindModifiers = ('super' | 'alt' | 'shift' | 'control')[];
