@@ -4,9 +4,11 @@ import { Topic } from 'openspace-api-js';
 import { api } from '@/api/api';
 import { ConnectionStatus } from '@/types/enums';
 
+import { onCloseConnection } from '../connection/connectionSlice';
 import { AppStartListening } from '../listenerMiddleware';
 
 import {
+  resetSkyBrowser,
   type SkyBrowserUpdate,
   subscriptionIsSetup,
   updateSkyBrowser
@@ -63,6 +65,15 @@ export const addSkyBrowserListener = (startListening: AppStartListening) => {
       if (nSubscribers === 0) {
         tearDownSubscription();
       }
+    }
+  });
+
+  startListening({
+    actionCreator: onCloseConnection,
+    effect: (_, listenerApi) => {
+      nSubscribers = 0;
+      listenerApi.dispatch(unsubscribeToSkyBrowser());
+      listenerApi.dispatch(resetSkyBrowser());
     }
   });
 };

@@ -1,10 +1,6 @@
 import { Tree } from '@mantine/core';
 
-import {
-  useAimNode,
-  useAnchorNode,
-  useFeaturedNodes
-} from '@/util/propertyTreeHooks';
+import { useAimNode, useAnchorNode, useFeaturedNodes } from '@/util/propertyTreeHooks';
 
 import { SceneTreeNode } from './SceneTreeNode';
 import { SceneTreeGroupPrefixKey, treeDataForSceneGraphNode } from './treeUtils';
