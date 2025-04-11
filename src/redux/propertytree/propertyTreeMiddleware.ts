@@ -28,7 +28,7 @@ import {
 } from './propertyowner/propertyOwnerSlice';
 
 // The property tree middleware is designed to populate the react store's
-// copy of the property tree when the frontend is connected to OpenSpace.
+// copy of the property tree when the frontend is connected to OpenSpace
 
 export const reloadPropertyTree = createAction<void>('propertyTree/reload');
 export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(

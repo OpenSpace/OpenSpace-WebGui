@@ -32,7 +32,7 @@ export interface SemanticVersion {
 
 // The property owner data we get from OpenSpace is different from what we want to store
 // in the redux state, hence this local owner type to get proper ts highlighting when
-// converting the data.
+// converting the data
 export type OpenSpacePropertyOwner = {
   description: string;
   guiName: string;

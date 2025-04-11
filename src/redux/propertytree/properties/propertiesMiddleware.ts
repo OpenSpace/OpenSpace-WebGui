@@ -80,11 +80,10 @@ function handleUpdatedValues(
   value: PropertyValue,
   additionalData: AdditionalData
 ) {
-  // Update the value in the redux property tree, based on the
-  // value from the backend.
+  // Update the value in the redux property tree, based on the value from the backend
   dispatch(updatePropertyValue({ uri, value }));
 
-  // Keeping this action generic in case we want to add more additional data in the future.
+  // Keeping this action generic in case we want to add more additional data in the future
   dispatch(updatePropertyAdditionalData({ uri, additionalData }));
 
   // "Lazy unsubscribe":
