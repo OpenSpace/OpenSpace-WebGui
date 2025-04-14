@@ -31,9 +31,9 @@ export const MissionsPanel = lazy(() =>
     default: module.MissionsPanel
   }))
 );
-export const OriginPanel = lazy(() =>
-  import('@/panels/OriginPanel/OriginPanel').then((module) => ({
-    default: module.OriginPanel
+export const NavigationPanel = lazy(() =>
+  import('@/panels/NavigationPanel/NavigationPanel').then((module) => ({
+    default: module.NavigationPanel
   }))
 );
 export const Scene = lazy(() =>

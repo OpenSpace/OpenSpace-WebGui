@@ -6,7 +6,7 @@ export const RotationalFrictionKey =
   'NavigationHandler.OrbitalNavigator.Friction.RotationalFriction';
 export const ZoomFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.ZoomFriction';
 export const RollFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.RollFriction';
-// Origin panel settings
+// Navigation panel settings
 export const ApplyIdleBehaviorOnPathFinishKey =
   'NavigationHandler.PathNavigator.ApplyIdleBehaviorOnFinish';
 export const CameraPathArrivalDistanceFactorKey =

@@ -12,14 +12,14 @@ import { useFeaturedNodes } from '@/util/propertyTreeHooks';
 
 import { AnchorAimView } from './AnchorAimView/AnchorAimView';
 import { FocusView } from './FocusView/FocusView';
-import { OriginSettings } from './OriginSettings';
+import { NavigationSettings } from './NavigationSettings';
 
 enum NavigationMode {
   Focus = 'Focus',
   AnchorAim = 'Anchor & Aim'
 }
 
-export function OriginPanel() {
+export function NavigationPanel() {
   const engineMode = useAppSelector((state) => state.engineMode.mode);
 
   const shouldStartInAnchorAim = useAppSelector((state) => {
@@ -94,7 +94,7 @@ export function OriginPanel() {
               }
             ]}
           />
-          <OriginSettings />
+          <NavigationSettings />
         </Group>
       </Layout.FixedSection>
       <Layout.GrowingSection>

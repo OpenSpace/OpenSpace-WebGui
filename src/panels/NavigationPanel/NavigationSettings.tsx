@@ -12,7 +12,7 @@ import {
   JumpToFadeDurationKey
 } from '@/util/keys';
 
-export function OriginSettings() {
+export function NavigationSettings() {
   const showOnlyFocusableInSearch = useAppSelector(
     (state) => state.local.menus.navigation.onlyFocusable
   );

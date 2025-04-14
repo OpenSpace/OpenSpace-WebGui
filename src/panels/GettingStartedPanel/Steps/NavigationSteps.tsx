@@ -1,6 +1,6 @@
 import { Center, Group, Kbd, List, Text, Title } from '@mantine/core';
 
-import { OriginPanelMenuButtonContent } from '@/panels/OriginPanel/MenuButton/OriginPanelMenuButtonContent';
+import { NavigationPanelMenuButtonContent } from '@/panels/NavigationPanel/MenuButton/NavigationPanelMenuButtonContent';
 
 import { AltitudeMouse } from '../MouseDescriptions/AltitudeMouse';
 import { Mouse } from '../MouseDescriptions/Mouse';
@@ -79,7 +79,7 @@ export const NavigationSteps: React.JSX.Element[] = [
       Open the navigation menu and click on the "Focus" button to focus on the Moon. The
       navigation menu can be found in the bottom bar:
       <ClickBlocker p={'xs'} withBorder>
-        <OriginPanelMenuButtonContent />
+        <NavigationPanelMenuButtonContent />
       </ClickBlocker>
     </Text>
   </>,
