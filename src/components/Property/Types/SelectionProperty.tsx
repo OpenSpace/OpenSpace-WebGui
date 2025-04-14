@@ -25,7 +25,7 @@ export function SelectionProperty({ uri, readOnly }: PropertyProps) {
 
   return (
     <MultiSelect
-      aria-label={`${description.name} multi-select`}
+      aria-label={`${description.guiName} multi-select`}
       disabled={readOnly}
       data={options}
       value={currentValue}

@@ -7,7 +7,7 @@ import { onCloseConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { RootState } from '@/redux/store';
 import { ConnectionStatus } from '@/types/enums';
-import { OpenSpaceProperty, PropertyDetails, PropertyValue, Uri } from '@/types/types';
+import { PropertyMetaData, PropertyValue, Uri } from '@/types/types';
 
 import {
   addProperties,
@@ -78,23 +78,14 @@ function handleUpdatedValues(
   dispatch: Dispatch<UnknownAction>,
   uri: Uri,
   value?: PropertyValue,
-  metaData?: OpenSpaceProperty['Description']
+  metaData?: PropertyMetaData
 ) {
   if (value !== undefined) {
     // Update the value in the redux property tree, based on the value from the backend
     dispatch(updatePropertyValue({ uri, value }));
   }
   if (metaData !== undefined) {
-    // TODO change the data in the engine to match this
-    const metaDataRedux: PropertyDetails = {
-      additionalData: metaData.AdditionalData,
-      identifier: metaData.Identifier,
-      metaData: metaData.MetaData,
-      name: metaData.Name,
-      type: metaData.Type,
-      description: metaData.description
-    };
-    dispatch(updatePropertyMetaData({ uri, metaData: metaDataRedux }));
+    dispatch(updatePropertyMetaData({ uri, metaData }));
   }
 
   // "Lazy unsubscribe":
@@ -117,10 +108,8 @@ function handleUpdatedValues(
 
 function setupSubscription(dispatch: Dispatch<UnknownAction>, uri: Uri) {
   const subscription = api.subscribeToProperty(uri);
-  const handleUpdates = (
-    value?: PropertyValue,
-    metaData?: OpenSpaceProperty['Description']
-  ) => handleUpdatedValues(dispatch, uri, value, metaData);
+  const handleUpdates = (value?: PropertyValue, metaData?: PropertyMetaData) =>
+    handleUpdatedValues(dispatch, uri, value, metaData);
   const throttleHandleUpdates = throttle(handleUpdates, 200);
 
   (async () => {

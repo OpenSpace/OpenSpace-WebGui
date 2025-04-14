@@ -21,10 +21,10 @@ export function VectorProperty({ uri, isInt = false, readOnly }: Props) {
     return <></>;
   }
 
-  const viewOptions = description.metaData.ViewOptions as ViewOptionsVector;
+  const viewOptions = description.viewOptions as ViewOptionsVector;
   const additionalData = description.additionalData as AdditionalDataVectorMatrix;
 
-  if (viewOptions.Color) {
+  if (viewOptions?.Color) {
     return (
       <ColorView
         value={value}
@@ -36,7 +36,7 @@ export function VectorProperty({ uri, isInt = false, readOnly }: Props) {
     );
   }
 
-  if (viewOptions.MinMaxRange) {
+  if (viewOptions?.MinMaxRange) {
     return (
       <MinMaxRangeView
         value={value}

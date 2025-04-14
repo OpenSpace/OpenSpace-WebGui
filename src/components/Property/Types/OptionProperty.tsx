@@ -18,7 +18,7 @@ export function OptionProperty({ uri, readOnly }: PropertyProps) {
   if (!options) {
     return (
       <Select
-        aria-label={`${description.name} option input`}
+        aria-label={`${description.guiName} option input`}
         placeholder={'No options were loaded'}
         disabled
       />
@@ -27,7 +27,7 @@ export function OptionProperty({ uri, readOnly }: PropertyProps) {
 
   return (
     <Select
-      aria-label={`${description.name} option input`}
+      aria-label={`${description.guiName} option input`}
       placeholder={'Choose an option'}
       disabled={readOnly}
       // For each entry in the options object, the numeric value is the key, and the

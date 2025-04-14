@@ -5,7 +5,6 @@ import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { refreshGroups } from '@/redux/groups/groupsSliceMiddleware';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import {
-  OpenSpaceProperty,
   OpenSpacePropertyOwner,
   Properties,
   Property,
@@ -46,13 +45,14 @@ export const addUriToPropertyTree = createAsyncThunk(
     }
 
     const response = (await api.getProperty(uriToFetch)) as
-      | OpenSpaceProperty
+      | Property
       | OpenSpacePropertyOwner;
 
     // Property Owner
     if ('properties' in response) {
       const { properties, propertyOwners } = flattenPropertyTree(response);
       const propertiesMap: Properties = {};
+
       properties.forEach((p) => {
         propertiesMap[p.uri] = p;
       });
@@ -66,11 +66,9 @@ export const addUriToPropertyTree = createAsyncThunk(
       };
     } else {
       // Property
-      const result = [convertOsPropertyToProperty(response)];
       const propertiesMap: Properties = {};
-      result.forEach((p) => {
-        propertiesMap[p.uri] = p;
-      });
+      propertiesMap[response.uri] = response;
+
       return {
         properties: propertiesMap,
         propertyOwners: null
@@ -78,27 +76,6 @@ export const addUriToPropertyTree = createAsyncThunk(
     }
   }
 );
-
-/**
- * Utility function to convert an OpenSpace property object to our internal property
- * object
- */
-function convertOsPropertyToProperty(prop: OpenSpaceProperty): Property {
-  return {
-    uri: prop.Description.Identifier,
-    value: prop.Value,
-    // TODO anden88 2024-10-18: when the description data is sent with first letter
-    // lowercase we can simplify this to "description: property.description"
-    description: {
-      additionalData: prop.Description.AdditionalData,
-      identifier: prop.Description.Identifier,
-      metaData: prop.Description.MetaData,
-      name: prop.Description.Name,
-      type: prop.Description.Type,
-      description: prop.Description.description
-    }
-  };
-}
 
 function flattenPropertyTree(propertyOwner: OpenSpacePropertyOwner) {
   let propertyOwners: PropertyOwner[] = [];
@@ -109,7 +86,7 @@ function flattenPropertyTree(propertyOwner: OpenSpacePropertyOwner) {
       uri: propertyOwner.uri,
       identifier: propertyOwner.identifier,
       name: propertyOwner.guiName ?? propertyOwner.identifier,
-      properties: propertyOwner.properties.map((p) => p.Description.Identifier),
+      properties: propertyOwner.properties.map((p) => p.uri),
       subowners: propertyOwner.subowners.map((p) => p.uri),
       tags: propertyOwner.tag,
       description: propertyOwner.description
@@ -125,7 +102,7 @@ function flattenPropertyTree(propertyOwner: OpenSpacePropertyOwner) {
   });
 
   propertyOwner.properties.forEach((property) => {
-    properties.push(convertOsPropertyToProperty(property));
+    properties.push(property);
   });
 
   return { propertyOwners, properties };

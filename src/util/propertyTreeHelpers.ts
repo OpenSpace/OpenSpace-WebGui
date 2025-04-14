@@ -152,8 +152,7 @@ export function isPropertyVisible(
     return true;
   }
 
-  const propertyVisibility =
-    PropertyVisibilityNumber[property?.description.metaData.Visibility] ?? 0;
+  const propertyVisibility = PropertyVisibilityNumber[property?.metaData.visibility] ?? 0;
 
   return visiblitySetting >= propertyVisibility;
 }

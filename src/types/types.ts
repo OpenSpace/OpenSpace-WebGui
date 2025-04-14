@@ -37,49 +37,32 @@ export type OpenSpacePropertyOwner = {
   description: string;
   guiName: string;
   identifier: Identifier;
-  properties: OpenSpaceProperty[];
+  properties: Property[];
   subowners: OpenSpacePropertyOwner[];
   tag: string[];
   uri: Uri;
 };
 
-export type OpenSpaceProperty = {
-  Description: {
-    AdditionalData: AdditionalData;
-    Identifier: Identifier;
-    MetaData: PropertyMetaData;
-    Name: string;
-    Type: string; // TODO: define these as property types? i.e., boolproperty | stringproperty etc
-    description: string;
-  };
-  Value: string | number | number[] | boolean;
-};
-
 export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
 
 export interface PropertyMetaData {
-  Group: string;
-  ViewOptions: {
+  additionalData?: AdditionalData;
+  description: string;
+  isReadOnly: boolean;
+  guiName: string;
+  group: string;
+  needsConfirmation: boolean;
+  type: string; // TODO: define these as property types i.e., boolproperty, stringproperty etc
+  viewOptions?: {
     [key: string]: boolean;
   };
-  Visibility: PropertyVisibility;
-  isReadOnly: boolean;
-  needsConfirmation: boolean;
-}
-
-export interface PropertyDetails {
-  additionalData: AdditionalData;
-  identifier: Identifier;
-  metaData: PropertyMetaData;
-  name: string;
-  type: string; // TODO: define these as property types i.e., boolproperty, stringproperty etc
-  description: string;
+  visibility: PropertyVisibility;
 }
 
 export type PropertyValue = string | string[] | number | number[] | boolean | null;
 
 export interface Property {
-  description: PropertyDetails;
+  metaData: PropertyMetaData;
   value: PropertyValue;
   uri: Uri;
 }

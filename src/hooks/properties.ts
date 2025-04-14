@@ -7,7 +7,48 @@ import {
   unsubscribeToProperty
 } from '@/redux/propertytree/properties/propertiesMiddleware';
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
-import { PropertyDetails, PropertyValue, Uri } from '@/types/types';
+import { PropertyMetaData, PropertyValue, Uri } from '@/types/types';
+import {
+  AdditionalDataNumber,
+  AdditionalDataOptions,
+  AdditionalDataSelection,
+  AdditionalDataVectorMatrix
+} from '@/components/Property/types';
+
+const GenericVectorTypes = [
+  'Vec2Property',
+  'Vec3Property',
+  'Vec4Property',
+  'DVec2Property',
+  'DVec3Property',
+  'DVec4Property',
+  'IVec2Property',
+  'IVec3Property',
+  'IVec4Property',
+  'UVec2Property',
+  'UVec3Property',
+  'UVec4Property'
+];
+
+const GenericMatrixTypes = [
+  'Mat2Property',
+  'Mat3Property',
+  'Mat4Property',
+  'DMat2Property',
+  'DMat3Property',
+  'DMat4Property'
+];
+
+const GenericNumericTypes = [
+  'FloatProperty',
+  'DoubleProperty',
+  'ShortProperty',
+  'UShortProperty',
+  'LongProperty',
+  'ULongProperty',
+  'IntProperty',
+  'UIntProperty'
+];
 
 // Since trigger properties are different than the rest, they don't actually
 // have a value. Only returning the trigger function
@@ -21,8 +62,36 @@ export const useTriggerProperty = (uri: Uri) => {
   return trigger;
 };
 
-export function usePropertyDescription(uri: Uri): PropertyDetails | undefined {
-  return useAppSelector((state) => state.properties.properties[uri]?.description);
+export function usePropertyDescription(uri: Uri): PropertyMetaData | undefined {
+  const metaData = useAppSelector((state) => state.properties.properties[uri]?.metaData);
+  const type = useAppSelector((state) => state.properties.properties[uri]?.metaData.type);
+
+  if (!metaData || !type) {
+    return undefined;
+  }
+
+  // We need to cast the metaData to the correct type
+  if (GenericMatrixTypes.includes(type) || GenericVectorTypes.includes(type)) {
+    return {
+      ...metaData,
+      additionalData: metaData?.additionalData as AdditionalDataVectorMatrix
+    };
+  } else if (GenericNumericTypes.includes(type)) {
+    return {
+      ...metaData,
+      additionalData: metaData?.additionalData as AdditionalDataNumber
+    };
+  } else if (type === 'SelectionProperty') {
+    return {
+      ...metaData,
+      additionalData: metaData?.additionalData as AdditionalDataSelection
+    };
+  } else if (type === 'OptionProperty') {
+    return {
+      ...metaData,
+      additionalData: metaData?.additionalData as AdditionalDataOptions
+    };
+  } else return undefined;
 }
 
 function useProperty<T>(
@@ -38,15 +107,15 @@ function useProperty<T>(
     const prop = state.properties.properties[uri];
     // Validate the props type
     if (prop) {
-      if (Array.isArray(propertyType) && !propertyType.includes(prop.description.type)) {
+      if (Array.isArray(propertyType) && !propertyType.includes(prop.metaData.type)) {
         throw Error(
-          `Requested one of the following properties: ${propertyType.join(', ')} but got a ${prop.description.type}`
+          `Requested one of the following properties: ${propertyType.join(', ')} but got a ${prop.metaData.type}`
         );
       } else if (
         typeof propertyType === 'string' &&
-        prop.description.type !== propertyType
+        prop.metaData.type !== propertyType
       ) {
-        throw Error(`Requested a ${propertyType} but got a ${prop.description.type}`);
+        throw Error(`Requested a ${propertyType} but got a ${prop.metaData.type}`);
       }
     }
     return prop?.value;
@@ -131,45 +200,16 @@ export const useStringListProperty = (uri: Uri) =>
  * IMPORTANT: This should not be used other than in the generic property component!!
  */
 export const useGenericVectorProperty = (uri: Uri) =>
-  useProperty<number[]>(uri, [
-    'Vec2Property',
-    'Vec3Property',
-    'Vec4Property',
-    'DVec2Property',
-    'DVec3Property',
-    'DVec4Property',
-    'IVec2Property',
-    'IVec3Property',
-    'IVec4Property',
-    'UVec2Property',
-    'UVec3Property',
-    'UVec4Property'
-  ]);
+  useProperty<number[]>(uri, GenericVectorTypes);
 
 /**
  * IMPORTANT: This should not be used other than in the generic property component!!
  */
 export const useGenericMatrixProperty = (uri: Uri) =>
-  useProperty<number[]>(uri, [
-    'Mat2Property',
-    'Mat3Property',
-    'Mat4Property',
-    'DMat2Property',
-    'DMat3Property',
-    'DMat4Property'
-  ]);
+  useProperty<number[]>(uri, GenericMatrixTypes);
 
 /**
  * IMPORTANT: This should not be used other than in the generic property component!!
  */
 export const useGenericNumericProperty = (uri: Uri) =>
-  useProperty<number>(uri, [
-    'FloatProperty',
-    'DoubleProperty',
-    'ShortProperty',
-    'UShortProperty',
-    'LongProperty',
-    'ULongProperty',
-    'IntProperty',
-    'UIntProperty'
-  ]);
+  useProperty<number>(uri, GenericNumericTypes);

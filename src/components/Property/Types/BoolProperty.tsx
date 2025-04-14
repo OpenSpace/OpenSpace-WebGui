@@ -19,7 +19,7 @@ export function BoolProperty({ uri, readOnly }: PropertyProps) {
         onChange={(event) => setValue(event.currentTarget.checked)}
         onKeyDown={(event) => event.key === 'Enter' && setValue(!value)}
         disabled={readOnly}
-        aria-label={`Toggle ${description.name}`}
+        aria-label={`Toggle ${description.guiName}`}
       />
       <PropertyLabel uri={uri} readOnly={readOnly} />
     </Group>

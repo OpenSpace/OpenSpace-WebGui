@@ -16,7 +16,7 @@ export function TriggerProperty({ uri, readOnly }: PropertyProps) {
   return (
     <Group>
       <Button onClick={triggerFunction} disabled={readOnly}>
-        {description.name}
+        {description.guiName}
       </Button>
       <InfoBox>
         {description.description}

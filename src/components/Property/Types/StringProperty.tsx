@@ -23,7 +23,7 @@ export function StringProperty({ uri, readOnly }: PropertyProps) {
     <StringInput
       onEnter={setValue}
       value={value}
-      aria-label={`${description.name} input`}
+      aria-label={`${description.guiName} input`}
     />
   );
 }

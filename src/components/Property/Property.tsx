@@ -81,9 +81,9 @@ interface Props {
 
 export const Property = memo(({ uri }: Props) => {
   const propertyType = useAppSelector(
-    (state) => state.properties.properties[uri]?.description.type
+    (state) => state.properties.properties[uri]?.metaData.type
   );
-  const readOnly = usePropertyDescription(uri)?.metaData.isReadOnly;
+  const readOnly = usePropertyDescription(uri)?.isReadOnly;
 
   if (!propertyType || readOnly === undefined) {
     return <></>;

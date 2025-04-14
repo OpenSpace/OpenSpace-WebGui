@@ -1,6 +1,6 @@
-import { OpenSpaceProperty, PropertyValue } from '@/types/types';
+import { PropertyMetaData, PropertyValue } from '@/types/types';
 
 export interface PropertyPayload {
   value?: PropertyValue;
-  metaData?: OpenSpaceProperty['Description'];
+  metaData?: PropertyMetaData;
 }

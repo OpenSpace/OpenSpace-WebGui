@@ -14,13 +14,13 @@ export function PropertyLabel({ uri, readOnly }: PropertyProps) {
     return <></>;
   }
 
-  const { name, description } = details;
+  const { guiName, description } = details;
 
   return (
     <Group wrap={'nowrap'}>
       <InputLabel fw={'normal'}>
         <Text span size={'sm'}>
-          {name}
+          {guiName}
         </Text>
         {readOnly && (
           <Tooltip

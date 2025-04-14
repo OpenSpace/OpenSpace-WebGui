@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { AdditionalData } from '@/components/Property/types';
 import { PropertyVisibilityNumber } from '@/types/enums';
 import {
   Properties,
-  PropertyDetails,
+  PropertyMetaData,
   PropertyOverview,
   PropertyValue,
   Uri
@@ -32,9 +31,9 @@ export const propertiesSlice = createSlice({
       for (const [uri, property] of Object.entries(action.payload)) {
         state.properties[uri] = property;
         state.propertyOverview[uri] = {
-          name: property?.description.name ?? '',
-          visibility: property?.description.metaData.Visibility
-            ? PropertyVisibilityNumber[property?.description.metaData.Visibility]
+          name: property?.metaData.guiName ?? '',
+          visibility: property?.metaData.visibility
+            ? PropertyVisibilityNumber[property?.metaData.visibility]
             : 0
         };
       }
@@ -79,12 +78,12 @@ export const propertiesSlice = createSlice({
     },
     updatePropertyMetaData: (
       state,
-      action: PayloadAction<{ uri: Uri; metaData: PropertyDetails }>
+      action: PayloadAction<{ uri: Uri; metaData: PropertyMetaData }>
     ) => {
       const { uri, metaData } = action.payload;
 
       if (state.properties[uri]) {
-        state.properties[uri].description = metaData;
+        state.properties[uri].metaData = metaData;
       }
       return state;
     }

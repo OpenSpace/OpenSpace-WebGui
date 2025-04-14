@@ -39,9 +39,12 @@ export type AdditionalData =
   | AdditionalDataNumber
   | AdditionalDataVectorMatrix
   | AdditionalDataOptions
-  | AdditionalDataSelection;
+  | AdditionalDataSelection
+  | undefined;
 
-export type ViewOptionsVector = {
-  Color?: boolean;
-  MinMaxRange?: boolean;
-};
+export type ViewOptionsVector =
+  | {
+      Color?: boolean;
+      MinMaxRange?: boolean;
+    }
+  | undefined;
