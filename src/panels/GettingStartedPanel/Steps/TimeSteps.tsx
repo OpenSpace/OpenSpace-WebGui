@@ -76,10 +76,20 @@ export const TimeSteps = [
     <Text>In the Time Panel:</Text>
     <Group>
       <Text>Click on the buttons that adjust the delta time:</Text>
-      <ActionIcon size={'lg'} style={{ pointerEvents: 'none' }}>
+      <ActionIcon
+        size={'lg'}
+        style={{ pointerEvents: 'none' }}
+        aria-label={'Rewind delta time'}
+        aria-disabled
+      >
         <FastRewindIcon size={IconSize.md} />
       </ActionIcon>
-      <ActionIcon size={'lg'} style={{ pointerEvents: 'none' }}>
+      <ActionIcon
+        size={'lg'}
+        style={{ pointerEvents: 'none' }}
+        aria-label={'Forward delta time'}
+        aria-disabled
+      >
         <FastForwardIcon size={IconSize.md} />
       </ActionIcon>
     </Group>
@@ -92,7 +102,12 @@ export const TimeSteps = [
     <PauseTimeTask />
     <Text>
       In the time panel, click on the pause icon:{' '}
-      <ActionIcon size={IconSize.lg} style={{ pointerEvents: 'none' }}>
+      <ActionIcon
+        size={IconSize.lg}
+        style={{ pointerEvents: 'none' }}
+        aria-label={'Pause time'}
+        aria-disabled
+      >
         <PauseIcon />
       </ActionIcon>{' '}
       to pause time.

@@ -24,7 +24,11 @@ export function CollapsableHeader({
 }: Props) {
   return (
     <Group wrap={'nowrap'} gap={0} className={classes.header} {...styleProps}>
-      <ActionIcon variant={'transparent'} onClick={toggle}>
+      <ActionIcon
+        variant={'transparent'}
+        onClick={toggle}
+        aria-label={`${expanded ? 'expand' : 'close'} ${title}`}
+      >
         {expanded ? (
           <ChevronDownIcon size={IconSize.xs} />
         ) : (

@@ -70,7 +70,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
   return (
     <Menu position={'right-start'}>
       <Menu.Target>
-        <ActionIcon size={'sm'}>
+        <ActionIcon size={'sm'} aria-label={'Open node menu'}>
           <VerticalDotsIcon />
         </ActionIcon>
       </Menu.Target>
