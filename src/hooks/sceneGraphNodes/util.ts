@@ -44,10 +44,6 @@ export function isSgnFocusable(uri: Uri, properties: Properties): boolean {
 }
 
 export function hasActiveFilters(filters: SceneGraphNodesFilters): boolean {
-  return (
-    filters.showHiddenNodes ||
-    filters.onlyFocusable ||
-    (filters.tags && filters.tags.length > 0) ||
-    false
-  );
+  const tagFilterIsActive = (filters.tags && filters.tags.length > 0) || false;
+  return filters.includeGuiHiddenNodes || filters.onlyFocusable || tagFilterIsActive;
 }

@@ -17,8 +17,12 @@ export function useIsSgnFocusable(uri: Uri): boolean {
   );
 }
 
+/**
+ * Returns a list of scene graph nodes (as property owners), possibly filtered by the
+ * provided filters.
+ */
 export function useSceneGraphNodes({
-  showHiddenNodes = false,
+  includeGuiHiddenNodes = false,
   onlyFocusable = false,
   tags = []
 }: SceneGraphNodesFilters = {}): PropertyOwner[] {
@@ -36,24 +40,24 @@ export function useSceneGraphNodes({
           return true;
         }
 
-        if (!showHiddenNodes && guiSettings.isHidden) {
+        if (!includeGuiHiddenNodes && guiSettings.isHidden) {
           return false;
         }
-        
+
         if (onlyFocusable && !guiSettings.isFocusable) {
           return false;
         }
-        
+
         if (tags.length > 0) {
           const hasTag = node.tags.some((tag) => tags.includes(tag));
           if (!hasTag) {
             return false;
           }
         }
-        
+
         return true;
       });
-  }, [propertyOwners, showHiddenNodes, onlyFocusable, tags, sgnGuiSettings]);
+  }, [propertyOwners, includeGuiHiddenNodes, onlyFocusable, tags, sgnGuiSettings]);
 }
 
 /**
@@ -61,7 +65,7 @@ export function useSceneGraphNodes({
  * the property owner for the node.
  *
  * @TODO (2025-04-08, emmbr): If we group the GUI properties into a single property owner,
- * we could potentially clear this up a bit.
+ * we could potentially clean this up a bit.
  */
 export function useSceneGraphNodeGuiSettings(): SceneGraphNodeGuiSettings {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);

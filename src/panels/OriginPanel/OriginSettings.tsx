@@ -4,7 +4,7 @@ import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { Property } from '@/components/Property/Property';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setShowNonFocusableInNavMenu } from '@/redux/local/localSlice';
+import { setOnlyFocusableInNavMenu } from '@/redux/local/localSlice';
 import {
   ApplyIdleBehaviorOnPathFinishKey,
   CameraPathArrivalDistanceFactorKey,
@@ -13,8 +13,8 @@ import {
 } from '@/util/keys';
 
 export function OriginSettings() {
-  const showNonfocusableInSearch = useAppSelector(
-    (state) => state.local.menus.navigation.showNonFocusable
+  const showOnlyFocusableInSearch = useAppSelector(
+    (state) => state.local.menus.navigation.onlyFocusable
   );
 
   const dispatch = useAppDispatch();
@@ -25,9 +25,9 @@ export function OriginSettings() {
         <Group wrap={'nowrap'} mb={'xs'}>
           <Checkbox
             label={'Include Non-focusable Nodes in Search'}
-            checked={showNonfocusableInSearch}
+            checked={!showOnlyFocusableInSearch}
             onChange={(event) => {
-              dispatch(setShowNonFocusableInNavMenu(event.currentTarget.checked));
+              dispatch(setOnlyFocusableInNavMenu(!event.currentTarget.checked));
             }}
           />
           <InfoBox>

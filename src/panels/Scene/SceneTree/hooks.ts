@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes/sceneGraphNodes';
+import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes/hooks';
 import { sgnGuiOrderingNumber } from '@/hooks/sceneGraphNodes/util';
 import { useAppSelector } from '@/redux/hooks';
 import {
@@ -29,7 +29,7 @@ export function useSceneTreeData(filter: SceneTreeFilterSettings) {
 
   // First, filter the scene graph nodes based on the GUI filter settings
   const filteredSceneGraphNodes = useSceneGraphNodes({
-    showHiddenNodes: filter.showHiddenNodes,
+    includeGuiHiddenNodes: filter.includeGuiHiddenNodes,
     onlyFocusable: filter.onlyFocusable,
     tags: filter.tags
   });
@@ -112,7 +112,8 @@ function sceneTreeDataFromGroups(
     // Add property owners, also recursively
     groupData.propertyOwners.forEach((uri) => {
       const owner = propertyOwners[uri];
-      if (!owner || filteredPropertyOwners.indexOf(owner) === -1) {
+      const isInFilteredList = filteredPropertyOwners.some((node) => node.uri === uri);
+      if (!owner || !isInFilteredList) {
         return;
       }
       groupNodeData.children?.push(
@@ -136,7 +137,8 @@ function sceneTreeDataFromGroups(
   const nodesWithoutGroup = groups['/']?.propertyOwners || [];
   nodesWithoutGroup.forEach((uri) => {
     const owner = propertyOwners[uri];
-    if (!owner || filteredPropertyOwners.indexOf(owner) === -1) {
+    const isInFilteredList = filteredPropertyOwners.some((node) => node.uri === uri);
+    if (!owner || !isInFilteredList) {
       return;
     }
     treeData.push(treeDataForSceneGraphNode(owner.name, owner.uri));

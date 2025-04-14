@@ -8,7 +8,7 @@ export interface LocalState {
   menus: {
     navigation: {
       // Whether to show non-focusable nodes in the navigation menu search results
-      showNonFocusable: boolean;
+      onlyFocusable: boolean;
     };
   };
   sceneTree: {
@@ -21,7 +21,7 @@ export interface LocalState {
 const initialState: LocalState = {
   menus: {
     navigation: {
-      showNonFocusable: false
+      onlyFocusable: true
     }
   },
   // @TODO: (emmbr 2025-04-09): Consider moving this to the menus object above. did not
@@ -53,8 +53,8 @@ export const localSlice = createSlice({
       state.sceneTree.currentlySelectedNode = action.payload;
       return state;
     },
-    setShowNonFocusableInNavMenu: (state, action: PayloadAction<boolean>) => {
-      state.menus.navigation.showNonFocusable = action.payload;
+    setOnlyFocusableInNavMenu: (state, action: PayloadAction<boolean>) => {
+      state.menus.navigation.onlyFocusable = action.payload;
       return state;
     },
     setMenuItemVisible: (
@@ -101,7 +101,7 @@ export const localSlice = createSlice({
 export const {
   storeSceneTreeNodeExpanded,
   setSceneTreeSelectedNode,
-  setShowNonFocusableInNavMenu,
+  setOnlyFocusableInNavMenu,
   setMenuItemVisible,
   setMenuItemEnabled,
   setMenuItemOpen,

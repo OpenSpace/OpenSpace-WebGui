@@ -4,7 +4,7 @@ import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavi
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
-import { useIsSgnFocusable } from '@/hooks/sceneGraphNodes/sceneGraphNodes';
+import { useIsSgnFocusable } from '@/hooks/sceneGraphNodes/hooks';
 import { ClockOffIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';

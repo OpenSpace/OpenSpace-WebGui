@@ -14,7 +14,7 @@ export interface SceneTreeFilterSettings extends SceneGraphNodesFilters {
 
 export const sceneTreeFilterDefaults: SceneTreeFilterSettings = {
   showOnlyVisible: false,
-  showHiddenNodes: false,
+  includeGuiHiddenNodes: false,
   onlyFocusable: false,
   tags: []
 };

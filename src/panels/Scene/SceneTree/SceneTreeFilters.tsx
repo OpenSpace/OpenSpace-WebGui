@@ -74,9 +74,9 @@ export function SceneTreeFilters({ setFilter, filter }: Props) {
           <Group>
             <Checkbox
               label={'Show objects with GUI hidden flag'}
-              checked={filter.showHiddenNodes}
+              checked={filter.includeGuiHiddenNodes}
               onChange={(event) =>
-                setFilter({ showHiddenNodes: event.currentTarget.checked })
+                setFilter({ includeGuiHiddenNodes: event.currentTarget.checked })
               }
             />
             <InfoBox>
