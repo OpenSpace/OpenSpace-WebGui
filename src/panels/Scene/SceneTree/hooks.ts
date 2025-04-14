@@ -1,18 +1,16 @@
 import { useMemo } from 'react';
 
+import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes/hooks';
+import { sgnGuiOrderingNumber } from '@/hooks/sceneGraphNodes/util';
 import { useAppSelector } from '@/redux/hooks';
 import {
   CustomGroupOrdering,
   Groups,
   Properties,
-  PropertyOwners,
-  Uri
+  PropertyOwner,
+  PropertyOwners
 } from '@/types/types';
-import {
-  guiOrderingNumber,
-  isPropertyOwnerHidden,
-  isSceneGraphNodeVisible
-} from '@/util/propertyTreeHelpers';
+import { isSgnVisible } from '@/util/propertyTreeHelpers';
 
 import {
   isGroupNode,
@@ -29,25 +27,37 @@ export function useSceneTreeData(filter: SceneTreeFilterSettings) {
   const groups = useAppSelector((state) => state.groups.groups);
   const customGuiOrdering = useAppSelector((state) => state.groups.customGroupOrdering);
 
-  // Create the tree data from the groups
-  const sceneTreeData = useMemo(
-    () => sceneTreeDataFromGroups(groups, propertyOwners),
-    [groups, propertyOwners]
+  // First, filter the scene graph nodes based on the GUI filter settings
+  const filteredSceneGraphNodes = useSceneGraphNodes({
+    includeGuiHiddenNodes: filter.includeGuiHiddenNodes,
+    onlyFocusable: filter.onlyFocusable,
+    tags: filter.tags
+  });
+
+  // Filter these property owners based on visbility
+  const visibilityFilteredNodes = useMemo(
+    () =>
+      filter.showOnlyVisible
+        ? filteredSceneGraphNodes.filter((node) => isSgnVisible(node.uri, properties))
+        : filteredSceneGraphNodes,
+    [filteredSceneGraphNodes, properties, filter.showOnlyVisible]
   );
 
-  // Filter the tree data based on the filter settings
-  const filteredTreeData = useMemo(() => {
-    return filterTreeData(sceneTreeData, filter, properties, propertyOwners);
-  }, [sceneTreeData, filter, properties, propertyOwners]);
+  // Create the tree data from the groups and the filtered scene graph nodes
+  const sceneTreeData = useMemo(
+    () => sceneTreeDataFromGroups(groups, propertyOwners, visibilityFilteredNodes),
+    [groups, propertyOwners, visibilityFilteredNodes]
+  );
 
   // Sort the tree data based on the custom GUI ordering
-  const sortedTreeData = useMemo(() => {
-    return sortTreeData(filteredTreeData, customGuiOrdering, properties);
-  }, [filteredTreeData, customGuiOrdering, properties]);
+  const sortedTreeData = useMemo(
+    () => sortTreeData(sceneTreeData, customGuiOrdering, properties),
+    [sceneTreeData, customGuiOrdering, properties]
+  );
 
   // Create a flat list of all leaf nodes, that we can use for searching
   const flatTreeData = useMemo(() => {
-    const flatTreeData = flattenTreeData(filteredTreeData);
+    const flatTreeData = flattenTreeData(sceneTreeData);
 
     // @TODO (2025-01-13 emmbr): Would be nice to sort the results by some type of
     // "relevance", but for now we just sort alphabetically
@@ -56,7 +66,7 @@ export function useSceneTreeData(filter: SceneTreeFilterSettings) {
       const nameB = b.label as string;
       return nameA.toLocaleLowerCase().localeCompare(nameB.toLocaleLowerCase());
     });
-  }, [filteredTreeData]);
+  }, [sceneTreeData]);
 
   return { sceneTreeData: sortedTreeData, flatTreeData };
 }
@@ -66,7 +76,8 @@ export function useSceneTreeData(filter: SceneTreeFilterSettings) {
  */
 function sceneTreeDataFromGroups(
   groups: Groups,
-  propertyOwners: PropertyOwners
+  propertyOwners: PropertyOwners,
+  filteredPropertyOwners: PropertyOwner[]
 ): SceneTreeNodeData[] {
   const treeData: SceneTreeNodeData[] = [];
 
@@ -77,7 +88,7 @@ function sceneTreeDataFromGroups(
   });
 
   // Build the data structure for the tree
-  function generateGroupData(path: string) {
+  function generateGroupData(path: string): SceneTreeNodeData {
     const splitPath = path.split('/');
     const name = splitPath.length > 1 ? splitPath.pop() : 'Untitled';
 
@@ -90,15 +101,19 @@ function sceneTreeDataFromGroups(
 
     const groupData = groups[path];
 
-    // Add subgroups, recursively
-    groupData.subgroups.forEach((subGroupPath) =>
-      groupNodeData.children?.push(generateGroupData(subGroupPath))
-    );
+    // Add subgroups, recursively. Only add if there are children in the group
+    groupData.subgroups.forEach((subGroupPath) => {
+      const subGroupData = generateGroupData(subGroupPath);
+      if (subGroupData.children && subGroupData.children.length > 0) {
+        groupNodeData.children?.push(subGroupData);
+      }
+    });
 
     // Add property owners, also recursively
     groupData.propertyOwners.forEach((uri) => {
       const owner = propertyOwners[uri];
-      if (owner === undefined) {
+      const isInFilteredList = filteredPropertyOwners.some((node) => node.uri === uri);
+      if (!owner || !isInFilteredList) {
         return;
       }
       groupNodeData.children?.push(
@@ -109,78 +124,27 @@ function sceneTreeDataFromGroups(
     return groupNodeData;
   }
 
+  // Start adding group data to show from the top level groups. Subgroups will be added
+  // recursively. Only show group if the resulting data has children
   topLevelGroupsPaths.forEach((path) => {
-    treeData.push(generateGroupData(path));
+    const groupData = generateGroupData(path);
+    if (groupData.children && groupData.children.length > 0) {
+      treeData.push(groupData);
+    }
   });
 
   // Add the nodes without any group to the top level
   const nodesWithoutGroup = groups['/']?.propertyOwners || [];
   nodesWithoutGroup.forEach((uri) => {
     const owner = propertyOwners[uri];
-    if (owner === undefined) {
+    const isInFilteredList = filteredPropertyOwners.some((node) => node.uri === uri);
+    if (!owner || !isInFilteredList) {
       return;
     }
     treeData.push(treeDataForSceneGraphNode(owner.name, owner.uri));
   });
 
   return treeData;
-}
-
-/****************************************************************************************
- * FILTERING
- ****************************************************************************************/
-
-function filterTreeData(
-  nodes: SceneTreeNodeData[],
-  filter: SceneTreeFilterSettings,
-  properties: Properties,
-  propertyOwners: PropertyOwners
-): SceneTreeNodeData[] {
-  // Should the scene graph node be shown based on the current filter settings?
-  function shouldShowSceneGraphNode(uri: Uri) {
-    let shouldShow = true;
-    if (filter.showOnlyVisible) {
-      shouldShow &&= isSceneGraphNodeVisible(uri, properties);
-    }
-    if (!filter.showHiddenNodes) {
-      shouldShow &&= !isPropertyOwnerHidden(uri, properties);
-    }
-    if (shouldShow && filter.tags.length > 0) {
-      shouldShow &&= filter.tags.some((tag) => propertyOwners[uri]?.tags.includes(tag));
-    }
-    return shouldShow;
-  }
-
-  // Recursively apply filtering to one node in the tree. That is, if the node is a group,
-  // filter its children. Set the nodes that should be filtered out to null, so that the
-  // filtering can be done in a separate step.
-  function recursivelyFilterSubTree(node: SceneTreeNodeData): SceneTreeNodeData | null {
-    const newNode = { ...node };
-    if (isGroupNode(newNode)) {
-      // Groups => filter children
-      newNode.children = filterTreeData(
-        newNode.children || [],
-        filter,
-        properties,
-        propertyOwners
-      );
-      if (newNode.children.length === 0) {
-        // Don't show empty groups
-        return null;
-      }
-      return newNode;
-    } else {
-      // PropertyOwners (scene graph nodes), may be filtered out based on current
-      // filter settings
-      return shouldShowSceneGraphNode(newNode.value) ? newNode : null;
-    }
-  }
-
-  const filteredNodes = nodes
-    .map((node) => recursivelyFilterSubTree(node))
-    .filter((node) => node !== null);
-
-  return filteredNodes || [];
 }
 
 /****************************************************************************************
@@ -219,7 +183,7 @@ function createTreeSortingInformation(
       result[node.value] = {
         type: 'propertyOwner',
         name: node.label as string,
-        guiOrder: guiOrderingNumber(node.value, properties),
+        guiOrder: sgnGuiOrderingNumber(node.value, properties),
         payload: node.value
       };
     }

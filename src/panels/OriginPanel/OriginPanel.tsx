@@ -3,12 +3,11 @@ import { Center, Group, SegmentedControl, Text, VisuallyHidden } from '@mantine/
 
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
+import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes/hooks';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
-import { Uri } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
-import { isPropertyOwnerHidden } from '@/util/propertyTreeHelpers';
 import { useFeaturedNodes } from '@/util/propertyTreeHooks';
 
 import { AnchorAimView } from './AnchorAimView/AnchorAimView';
@@ -21,8 +20,6 @@ enum NavigationMode {
 }
 
 export function OriginPanel() {
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-  const properties = useAppSelector((state) => state.properties.properties);
   const engineMode = useAppSelector((state) => state.engineMode.mode);
 
   const shouldStartInAnchorAim = useAppSelector((state) => {
@@ -31,26 +28,26 @@ export function OriginPanel() {
     return aimProp?.value !== anchorProp?.value && aimProp?.value !== '';
   });
 
+  const showOnlyFocusable = useAppSelector(
+    (state) => state.local.menus.navigation.onlyFocusable
+  );
+
   const [navigationMode, setNavigationMode] = useState(
     shouldStartInAnchorAim ? NavigationMode.AnchorAim : NavigationMode.Focus
   );
 
   const featuredNodes = useFeaturedNodes();
 
-  // @TODO (2025-02-24, emmbr): Remove dependency on properties object
-  const sortedSearchableNodes = useMemo(() => {
-    const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
-    const allNodes = uris
-      .map((uri) => propertyOwners[uri])
-      .filter((po) => po !== undefined);
+  // @TODO (2024-04-08, emmbr): Expose these filters to the user? Could also include tags
+  const searchableNodes = useSceneGraphNodes({
+    includeGuiHiddenNodes: false,
+    onlyFocusable: showOnlyFocusable
+  });
 
-    // Searchable nodes are all nodes that are not hidden in the GUI
-    const searchableNodes = allNodes.filter(
-      (node) => !isPropertyOwnerHidden(node.uri, properties)
-    );
-
-    return searchableNodes.slice().sort((a, b) => a.name.localeCompare(b.name));
-  }, [properties, propertyOwners]);
+  const sortedSearchableNodes = useMemo(
+    () => searchableNodes.slice().sort((a, b) => a.name.localeCompare(b.name)),
+    [searchableNodes]
+  );
 
   const defaultList = featuredNodes.length > 0 ? featuredNodes : sortedSearchableNodes;
 
