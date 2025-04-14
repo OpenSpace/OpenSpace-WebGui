@@ -12,7 +12,7 @@ export function SettingsPopout({ popoverWidth, title, children, ...styleProps }:
   return (
     <Menu position={'right-start'} closeOnItemClick={false} width={popoverWidth}>
       <Menu.Target>
-        <ActionIcon {...styleProps}>
+        <ActionIcon {...styleProps} aria-label={'Open settings'}>
           <SettingsIcon />
         </ActionIcon>
       </Menu.Target>

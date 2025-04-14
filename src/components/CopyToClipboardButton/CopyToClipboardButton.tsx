@@ -16,6 +16,7 @@ export function CopyToClipboardButton({ value }: Props) {
             size={'sm'}
             variant={'subtle'}
             onClick={copy}
+            aria-label={'Copy to clipboard'}
           >
             <CopyIcon />
           </ActionIcon>

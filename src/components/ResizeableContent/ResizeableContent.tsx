@@ -127,6 +127,7 @@ export function ResizeableContent({
           }}
           size={'xs'}
           radius={0}
+          aria-label={'Resize window (keyboard control not suppored)'}
         >
           <DragHandleIcon size={IconSize.xs} />
         </ActionIcon>

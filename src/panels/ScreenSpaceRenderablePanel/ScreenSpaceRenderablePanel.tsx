@@ -102,7 +102,7 @@ export function ScreenSpaceRenderablePanel() {
               onClick={() => removeSlide(uri)}
               color={'red'}
               variant={'outline'}
-              aria-label={'Remove slide'}
+              aria-label={`Remove slide ${uri}`}
             >
               <MinusIcon />
             </ActionIcon>

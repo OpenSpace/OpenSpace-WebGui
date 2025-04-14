@@ -81,7 +81,8 @@ export function EarthEntry({
               ? removeFocusNode(addressUtf8)
               : addFocusNode(addressUtf8, lat, long, alt)
           }
-          color={isAdded ? 'red' : 'blue'}
+          color={isAdded ? 'red' : 'blue'} // @TODO anden88 2025-04-14: do we want this color? It is currently not showing due to the chosen variant.
+          aria-label={`${isAdded ? 'Remove' : 'Add'} node: ${address}`}
         >
           {isAdded ? <MinusIcon /> : <PlusIcon />}
         </ActionIcon>
