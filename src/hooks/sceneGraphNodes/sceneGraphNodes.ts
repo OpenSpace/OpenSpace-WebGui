@@ -39,15 +39,18 @@ export function useSceneGraphNodes({
         if (!showHiddenNodes && guiSettings.isHidden) {
           return false;
         }
+        
         if (onlyFocusable && !guiSettings.isFocusable) {
           return false;
         }
+        
         if (tags.length > 0) {
           const hasTag = node.tags.some((tag) => tags.includes(tag));
           if (!hasTag) {
             return false;
           }
         }
+        
         return true;
       });
   }, [propertyOwners, showHiddenNodes, onlyFocusable, tags, sgnGuiSettings]);

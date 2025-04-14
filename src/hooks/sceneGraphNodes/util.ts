@@ -4,7 +4,6 @@ import { SceneGraphNodesFilters } from './types';
 
 /**
  * Get the GUI ordering number for a specific scene graph node, if it should be used.
- * Otherwise, return undefined.
  */
 export function sgnGuiOrderingNumber(
   uri: Uri,
