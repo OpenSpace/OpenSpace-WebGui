@@ -2,10 +2,10 @@ import { Kbd, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { useProperty } from '@/hooks/properties';
 import { ConsoleIcon, ExitAppIcon } from '@/icons/icons';
 
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
-import { useProperty } from '@/hooks/properties';
 
 export function FileMenu() {
   const luaApi = useOpenSpaceApi();

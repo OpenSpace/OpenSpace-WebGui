@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import { BoxData, PanelData, TabData } from 'rc-dock';
 
+import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
-import { useProperty } from '@/hooks/properties';
 
 export const DefaultSgnWindowId = 'defaultSceneGraphNodeWindow';
 

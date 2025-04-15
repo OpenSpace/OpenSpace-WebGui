@@ -3,6 +3,7 @@ import { Button, Divider, Group, Kbd, Paper, Text, Title } from '@mantine/core';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { useProperty } from '@/hooks/properties';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { CancelIcon, FocusIcon } from '@/icons/icons';
 import { EngineMode, IconSize } from '@/types/enums';
@@ -13,7 +14,6 @@ import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { RemainingFlightTimeIndicator } from '../RemainingFlightTimeIndicator';
 
 import { FocusEntry } from './FocusEntry';
-import { useProperty } from '@/hooks/properties';
 
 interface Props {
   favorites: PropertyOwner[];

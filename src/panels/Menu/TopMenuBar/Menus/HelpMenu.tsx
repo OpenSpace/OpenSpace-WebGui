@@ -2,6 +2,7 @@ import { Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import { About } from '@/components/About/About';
+import { useProperty } from '@/hooks/properties';
 import {
   BookIcon,
   FeedbackIcon,
@@ -13,7 +14,6 @@ import { GettingStartedPanel } from '@/windowmanagement/data/LazyLoads';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
-import { useProperty } from '@/hooks/properties';
 
 export function HelpMenu() {
   const [showAbout, { open, close }] = useDisclosure(false);

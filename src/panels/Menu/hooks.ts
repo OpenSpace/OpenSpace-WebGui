@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
+import { useProperty } from '@/hooks/properties';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   setMenuItemEnabled,
@@ -9,7 +10,6 @@ import {
 import { useSaveLoadJsonFiles } from '@/util/fileIOhooks';
 
 import { TaskbarItemConfig } from './types';
-import { useProperty } from '@/hooks/properties';
 
 export function useMenuItems() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);

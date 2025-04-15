@@ -6,7 +6,7 @@ import { PropertyProps } from '@/components/Property/types';
 import { useProperty } from '@/hooks/properties';
 
 export function TriggerProperty({ uri, readOnly }: PropertyProps) {
-  const [_, trigger, meta] = useProperty('TriggerProperty', uri);
+  const [, trigger, meta] = useProperty('TriggerProperty', uri);
 
   if (!meta) {
     return <></>;

@@ -2,6 +2,7 @@ import { CheckboxIndicator, Group, Menu, Radio, Stack } from '@mantine/core';
 
 import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { useProperty } from '@/hooks/properties';
 import {
   ChevronRightIcon,
   SaveIcon,
@@ -16,7 +17,6 @@ import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { useMenuItems, useStoredLayout } from '../../hooks';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
-import { useProperty } from '@/hooks/properties';
 
 export function ViewMenu() {
   const { menuItems } = useMenuItems();

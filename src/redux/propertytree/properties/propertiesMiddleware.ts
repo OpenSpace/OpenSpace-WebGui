@@ -7,6 +7,8 @@ import { onCloseConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { RootState } from '@/redux/store';
 import { ConnectionStatus } from '@/types/enums';
+import { AnyProperty } from '@/types/Property/property';
+import { Uri } from '@/types/types';
 
 import {
   addProperties,
@@ -15,8 +17,6 @@ import {
   updatePropertyValue
 } from './propertiesSlice';
 import { PropertyPayload } from './types';
-import { Uri } from '@/types/types';
-import { AnyProperty } from '@/types/Property/property';
 
 // The middleware also supports subscribing and setting properties
 // regardless of whether they are present in the redux store or not.

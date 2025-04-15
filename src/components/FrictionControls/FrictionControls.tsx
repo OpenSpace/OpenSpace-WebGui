@@ -1,10 +1,10 @@
 import { Chip, Group, MantineSize, MantineSpacing, Stack, Text } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { useProperty } from '@/hooks/properties';
 import { KeybindButtons } from '@/panels/KeybindsPanel/KeybindButtons';
 import { useAppSelector } from '@/redux/hooks';
 import { RollFrictionKey, RotationalFrictionKey, ZoomFrictionKey } from '@/util/keys';
-import { useProperty } from '@/hooks/properties';
 
 interface Props {
   size?: MantineSize;

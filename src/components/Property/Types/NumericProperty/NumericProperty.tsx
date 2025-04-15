@@ -2,11 +2,11 @@ import { Flex, Group, NumberFormatter, Paper, Text } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { PropertyProps } from '@/components/Property/types';
+import { useProperty } from '@/hooks/properties';
 import { usePropListeningState } from '@/hooks/util';
 
 import { NumericPropertySlider } from './Slider/NumericPropertySlider';
 import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from './util';
-import { useProperty } from '@/hooks/properties';
 
 interface Props extends PropertyProps {
   isInt?: boolean;

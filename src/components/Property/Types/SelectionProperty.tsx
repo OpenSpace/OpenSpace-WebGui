@@ -1,8 +1,8 @@
 import { MultiSelect } from '@mantine/core';
 
 import { PropertyProps } from '@/components/Property/types';
-import { usePropListeningState } from '@/hooks/util';
 import { useProperty } from '@/hooks/properties';
+import { usePropListeningState } from '@/hooks/util';
 
 export function SelectionProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue, meta] = useProperty('SelectionProperty', uri);
@@ -14,7 +14,7 @@ export function SelectionProperty({ uri, readOnly }: PropertyProps) {
     return <></>;
   }
 
-  const options = meta.additionalData.options;
+  const { options } = meta.additionalData;
 
   function handleChange(newValue: string[]) {
     setValue(newValue);

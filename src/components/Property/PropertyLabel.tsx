@@ -1,11 +1,11 @@
 import { Group, InputLabel, Text, Tooltip } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { useAppSelector } from '@/redux/hooks';
 
 import CopyUriButton from '../CopyUriButton/CopyUriButton';
 
 import { PropertyProps } from './types';
-import { useAppSelector } from '@/redux/hooks';
 
 export function PropertyLabel({ uri, readOnly }: PropertyProps) {
   const meta = useAppSelector((state) => state.properties.properties[uri]?.metaData);

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Box, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { useProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
@@ -13,7 +14,6 @@ import {
   useUpdateOpacities,
   useUpdateSelectedImages
 } from './hooks';
-import { useProperty } from '@/hooks/properties';
 
 export function WorldWideTelescopeView() {
   const [isDragging, setIsDragging] = useState(false);

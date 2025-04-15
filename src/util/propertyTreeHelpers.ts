@@ -1,4 +1,5 @@
 import { PropertyVisibilityNumber } from '@/types/enums';
+import { AnyProperty } from '@/types/Property/property';
 import {
   Identifier,
   Properties,
@@ -9,7 +10,6 @@ import {
 } from '@/types/types';
 
 import { ScenePrefixKey } from './keys';
-import { AnyProperty } from '@/types/Property/property';
 
 // TODO: Maybe move some of these to a "uriHelpers" file?
 export function identifierFromUri(uri: Uri): Identifier {

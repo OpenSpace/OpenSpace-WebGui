@@ -1,8 +1,12 @@
 import { PropertyVisibilityNumber } from '../enums';
+
 import { NormalizeToConcreteTypes, PropertyGroups } from './propertyGroups';
 import { PropertyTypes } from './propertyTypes';
 
 export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
+
+// Creating an empty object type to use as a default value for the optional types
+type EmtpyObject = Record<string, never>;
 
 /**
  * Extracts the `additionalData` property from a specific property type in `PropertyTypes`.
@@ -15,7 +19,7 @@ type AdditionalData<T extends keyof PropertyTypes> = PropertyTypes[T] extends {
   additionalData: infer A;
 }
   ? { additionalData: A }
-  : {};
+  : EmtpyObject;
 
 /**
  * Extracts the `viewOptions` property from a specific property type in `PropertyTypes`.
@@ -28,7 +32,7 @@ type ViewOptions<T extends keyof PropertyTypes> = PropertyTypes[T] extends {
   viewOptions: infer A;
 }
   ? { viewOptions: A }
-  : {};
+  : EmtpyObject;
 
 // Generic Property<T> type
 type Property<T extends keyof PropertyTypes> = {
@@ -59,6 +63,10 @@ export type AnyProperty = {
 // A utility type that creates a union of `Property<T>` types for all keys `T` in `PropertyTypeMap`.
 // This is achieved by iterating over each key `T` in `PropertyTypeMap` and resolving it to `Property<T>`.
 // The `T extends any` construct ensures that the union is properly distributed over all keys.
+
+// The "extends any" syntax seems to be accepted typescript syntax - see
+// https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#conditional-type-constraints
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type PropertyUnion<T extends keyof PropertyTypes> = T extends any ? Property<T> : never;
 
 // Export a nicer name for the union type

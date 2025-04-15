@@ -1,7 +1,7 @@
+import { useProperty } from '@/hooks/properties';
 import { NavigationAnchorKey } from '@/util/keys';
 
 import { TaskCheckbox } from './Components/TaskCheckbox';
-import { useProperty } from '@/hooks/properties';
 
 interface Props {
   anchor: string;

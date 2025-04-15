@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
+import { useProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { PropertyOwner } from '@/types/types';
 
 import { NavigationAimKey, NavigationAnchorKey } from './keys';
 import { sgnUri } from './propertyTreeHelpers';
-import { useProperty } from '@/hooks/properties';
 
 /**
  * Get all the nodes marked in the profile, as a list of property owners.

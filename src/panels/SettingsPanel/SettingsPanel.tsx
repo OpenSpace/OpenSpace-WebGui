@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { useProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { EnginePropertyVisibilityKey, ScenePrefixKey } from '@/util/keys';
 import {
@@ -13,7 +14,6 @@ import { checkCaseInsensitiveSubstringList } from '@/util/stringmatcher';
 
 import { SettingsSearchListItem } from './SettingsSearchListItem';
 import { collectSearchableItems, SearchItem, SearchItemType } from './util';
-import { useProperty } from '@/hooks/properties';
 
 export function SettingsPanel() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);

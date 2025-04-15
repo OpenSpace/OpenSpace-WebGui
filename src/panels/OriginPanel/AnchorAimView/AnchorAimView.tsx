@@ -2,6 +2,7 @@ import { Button, Divider, Group, Kbd, Text, Title, Tooltip } from '@mantine/core
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { useProperty } from '@/hooks/properties';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
@@ -16,7 +17,6 @@ import {
 import { sgnUri } from '@/util/propertyTreeHelpers';
 
 import { AnchorAimListEntry } from './AnchorAimListEntry';
-import { useProperty } from '@/hooks/properties';
 
 interface Props {
   favorites: PropertyOwner[];

@@ -4,6 +4,7 @@ import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { refreshGroups } from '@/redux/groups/groupsSliceMiddleware';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
+import { AnyProperty } from '@/types/Property/property';
 import {
   OpenSpacePropertyOwner,
   Properties,
@@ -24,7 +25,6 @@ import {
   clearPropertyOwners,
   removePropertyOwners
 } from './propertyowner/propertyOwnerSlice';
-import { AnyProperty } from '@/types/Property/property';
 
 // The property tree middleware is designed to populate the react store's
 // copy of the property tree when the frontend is connected to OpenSpace

@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { PropertyVisibilityNumber } from '@/types/enums';
-import { Properties, PropertyOverview, Uri } from '@/types/types';
 import { AnyProperty } from '@/types/Property/property';
+import { Properties, PropertyOverview, Uri } from '@/types/types';
 
 export interface PropertiesState {
   isInitialized: boolean;

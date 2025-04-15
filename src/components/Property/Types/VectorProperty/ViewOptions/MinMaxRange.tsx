@@ -28,7 +28,7 @@ export function MinMaxRangeView({
     setIsEditing: setIsEditingSlider
   } = usePropListeningState<number[]>(value);
 
-  const exponent = additionalData.exponent;
+  const { exponent } = additionalData;
   const [min] = additionalData.minimumValue;
   const [max] = additionalData.maximumValue;
   const [step] = additionalData.steppingValue;

@@ -1,11 +1,13 @@
+import { useEffect } from 'react';
+import { useThrottledCallback } from '@mantine/hooks';
+
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   subscribeToProperty,
   unsubscribeToProperty
 } from '@/redux/propertytree/properties/propertiesMiddleware';
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
-import { useThrottledCallback } from '@mantine/hooks';
-import { useEffect } from 'react';
+
 import { PropertyOrPropertyGroup, PropertyTypeKey } from '../types/Property/property';
 import { PropertyGroupsRuntime } from '../types/Property/propertyGroups';
 
