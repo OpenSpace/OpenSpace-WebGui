@@ -12,11 +12,11 @@ import {
 } from '@mantine/core';
 
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
-import { useStringProperty } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
 import { identifierFromUri } from '@/util/propertyTreeHelpers';
+import { useProperty } from '@/types/hooks';
 
 interface Props {
   uri: Uri;
@@ -24,9 +24,9 @@ interface Props {
 
 export function SceneGraphNodeMetaInfo({ uri }: Props) {
   const propertyOwner = usePropertyOwner(uri);
-  const [guiPath] = useStringProperty(`${uri}.GuiPath`);
+  const [guiPath] = useProperty('StringProperty', `${uri}.GuiPath`);
 
-  const [description] = useStringProperty(`${uri}.GuiDescription`);
+  const [description] = useProperty('StringProperty', `${uri}.GuiDescription`);
   if (description) {
     description.replace(/\\n/g, '').replace(/<br>/g, '');
   }

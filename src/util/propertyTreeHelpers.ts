@@ -2,7 +2,6 @@ import { PropertyVisibilityNumber } from '@/types/enums';
 import {
   Identifier,
   Properties,
-  Property,
   PropertyOverview,
   PropertyOwner,
   PropertyOwners,
@@ -10,6 +9,7 @@ import {
 } from '@/types/types';
 
 import { ScenePrefixKey } from './keys';
+import { AnyProperty } from '@/types/Property/property';
 
 // TODO: Maybe move some of these to a "uriHelpers" file?
 export function identifierFromUri(uri: Uri): Identifier {
@@ -145,7 +145,7 @@ export function checkVisiblity(
 
 // Returns whether a property matches the current visiblity settings
 export function isPropertyVisible(
-  property: Property | undefined,
+  property: AnyProperty | undefined,
   visiblitySetting: number | undefined
 ): boolean {
   if (visiblitySetting === undefined || !property) {

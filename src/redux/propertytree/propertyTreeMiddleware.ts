@@ -7,7 +7,6 @@ import type { AppStartListening } from '@/redux/listenerMiddleware';
 import {
   OpenSpacePropertyOwner,
   Properties,
-  Property,
   PropertyOwner,
   PropertyOwners,
   Uri
@@ -25,6 +24,7 @@ import {
   clearPropertyOwners,
   removePropertyOwners
 } from './propertyowner/propertyOwnerSlice';
+import { AnyProperty } from '@/types/Property/property';
 
 // The property tree middleware is designed to populate the react store's
 // copy of the property tree when the frontend is connected to OpenSpace
@@ -45,7 +45,7 @@ export const addUriToPropertyTree = createAsyncThunk(
     }
 
     const response = (await api.getProperty(uriToFetch)) as
-      | Property
+      | AnyProperty
       | OpenSpacePropertyOwner;
 
     // Property Owner
@@ -79,7 +79,7 @@ export const addUriToPropertyTree = createAsyncThunk(
 
 function flattenPropertyTree(propertyOwner: OpenSpacePropertyOwner) {
   let propertyOwners: PropertyOwner[] = [];
-  let properties: Property[] = [];
+  let properties: AnyProperty[] = [];
 
   if (propertyOwner.uri) {
     propertyOwners.push({

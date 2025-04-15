@@ -1,6 +1,6 @@
-import { PropertyMetaData, PropertyValue } from '@/types/types';
+import { AnyProperty } from '@/types/Property/property';
 
 export interface PropertyPayload {
-  value?: PropertyValue;
-  metaData?: PropertyMetaData;
+  value?: AnyProperty['value'];
+  metaData?: AnyProperty['metaData'];
 }

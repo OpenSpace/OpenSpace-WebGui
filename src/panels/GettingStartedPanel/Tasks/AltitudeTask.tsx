@@ -1,10 +1,10 @@
-import { useStringProperty } from '@/hooks/properties';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 import { NavigationAnchorKey } from '@/util/keys';
 
 import { TaskCheckbox } from './Components/TaskCheckbox';
 import { compareAltitude } from './util';
+import { useProperty } from '@/types/hooks';
 
 interface Props {
   anchor: string;
@@ -16,7 +16,7 @@ interface Props {
 export function AltitudeTask({ anchor, unit, altitude, compare }: Props) {
   const currentAltitude = useAppSelector((state) => state.camera.altitude);
   const currentUnit = useAppSelector((state) => state.camera.altitudeUnit);
-  const [currentAnchor] = useStringProperty(NavigationAnchorKey);
+  const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
 
   useSubscribeToCamera();
 

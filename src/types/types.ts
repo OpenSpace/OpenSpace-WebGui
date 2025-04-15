@@ -1,7 +1,4 @@
-import { Property } from '@/components/Property/Property';
-import { AdditionalData } from '@/components/Property/types';
-
-import { PropertyVisibilityNumber } from './enums';
+import { AnyProperty } from './Property/property';
 
 export type Uri = string;
 export type Identifier = string;
@@ -37,42 +34,18 @@ export type OpenSpacePropertyOwner = {
   description: string;
   guiName: string;
   identifier: Identifier;
-  properties: Property[];
+  properties: AnyProperty[];
   subowners: OpenSpacePropertyOwner[];
   tag: string[];
   uri: Uri;
 };
-
-export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
-
-export interface PropertyMetaData {
-  additionalData?: AdditionalData;
-  description: string;
-  isReadOnly: boolean;
-  guiName: string;
-  group: string;
-  needsConfirmation: boolean;
-  type: string; // TODO: define these as property types i.e., boolproperty, stringproperty etc
-  viewOptions?: {
-    [key: string]: boolean;
-  };
-  visibility: PropertyVisibility;
-}
-
-export type PropertyValue = string | string[] | number | number[] | boolean | null;
-
-export interface Property {
-  metaData: PropertyMetaData;
-  value: PropertyValue;
-  uri: Uri;
-}
 
 export interface PropertyOverview {
   [uri: string]: { name: string; visibility: number };
 }
 
 export interface Properties {
-  [key: Uri]: Property | undefined;
+  [key: Uri]: AnyProperty | undefined;
 }
 
 export interface PropertyOwner {

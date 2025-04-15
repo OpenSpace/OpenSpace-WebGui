@@ -12,14 +12,17 @@ import {
   isPropertyVisible
 } from '@/util/propertyTreeHelpers';
 
-import { useBoolProperty, useFloatProperty, useOptionProperty } from './properties';
+import { useProperty } from '@/types/hooks';
 
 export function usePropertyOwner(uri: Uri): PropertyOwner | undefined {
   return useAppSelector((state) => state.propertyOwners.propertyOwners[uri]);
 }
 
 export const useHasVisibleChildren = (propertyOwnerUri: Uri): boolean => {
-  const [visiblityLevelSetting] = useOptionProperty(EnginePropertyVisibilityKey);
+  const [visiblityLevelSetting] = useProperty(
+    'OptionProperty',
+    EnginePropertyVisibilityKey
+  );
 
   return useAppSelector((state) => {
     return hasVisibleChildren(
@@ -36,7 +39,10 @@ export const useHasVisibleChildren = (propertyOwnerUri: Uri): boolean => {
  * current visiblitity level setting. Also subscribe to changes for the visiblity level.
  */
 export const useVisibleProperties = (propertyOwner: PropertyOwner | undefined) => {
-  const [visiblityLevelSetting] = useOptionProperty(EnginePropertyVisibilityKey);
+  const [visiblityLevelSetting] = useProperty(
+    'OptionProperty',
+    EnginePropertyVisibilityKey
+  );
 
   // @TODO (emmbr, 2024-12-03) Would be nicer if we didn't have to do the filtering as
   // part of the selector, but instead just get the state.properties.properties object
@@ -58,10 +64,11 @@ export const useVisibleProperties = (propertyOwner: PropertyOwner | undefined) =
 export function usePropertyOwnerVisibility(uri: Uri) {
   const luaApi = useOpenSpaceApi();
 
-  const [enabledPropertyValue, setEnabledProperty] = useBoolProperty(
+  const [enabledPropertyValue, setEnabledProperty] = useProperty(
+    'BoolProperty',
     enabledPropertyUri(uri)
   );
-  const [fadePropertyValue] = useFloatProperty(fadePropertyUri(uri));
+  const [fadePropertyValue] = useProperty('FloatProperty', fadePropertyUri(uri));
   const isFadeable = fadePropertyValue !== undefined;
 
   const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);

@@ -7,15 +7,16 @@ import { onCloseConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { RootState } from '@/redux/store';
 import { ConnectionStatus } from '@/types/enums';
-import { PropertyMetaData, PropertyValue, Uri } from '@/types/types';
 
 import {
   addProperties,
   setPropertyValue,
-  updatePropertyMetaData as updatePropertyMetaData,
+  updatePropertyMetaData,
   updatePropertyValue
 } from './propertiesSlice';
 import { PropertyPayload } from './types';
+import { Uri } from '@/types/types';
+import { AnyProperty } from '@/types/Property/property';
 
 // The middleware also supports subscribing and setting properties
 // regardless of whether they are present in the redux store or not.
@@ -77,8 +78,8 @@ const subscriptionInfos: { [key: Uri]: SubscriptionInfo } = {};
 function handleUpdatedValues(
   dispatch: Dispatch<UnknownAction>,
   uri: Uri,
-  value?: PropertyValue,
-  metaData?: PropertyMetaData
+  value?: AnyProperty['value'],
+  metaData?: AnyProperty['metaData']
 ) {
   if (value !== undefined) {
     // Update the value in the redux property tree, based on the value from the backend
@@ -108,8 +109,10 @@ function handleUpdatedValues(
 
 function setupSubscription(dispatch: Dispatch<UnknownAction>, uri: Uri) {
   const subscription = api.subscribeToProperty(uri);
-  const handleUpdates = (value?: PropertyValue, metaData?: PropertyMetaData) =>
-    handleUpdatedValues(dispatch, uri, value, metaData);
+  const handleUpdates = (
+    value?: AnyProperty['value'],
+    metaData?: AnyProperty['metaData']
+  ) => handleUpdatedValues(dispatch, uri, value, metaData);
   const throttleHandleUpdates = throttle(handleUpdates, 200);
 
   (async () => {

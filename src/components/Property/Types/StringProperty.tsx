@@ -2,13 +2,12 @@ import { Paper, Text } from '@mantine/core';
 
 import { StringInput } from '@/components/Input/StringInput';
 import { PropertyProps } from '@/components/Property/types';
-import { usePropertyDescription, useStringProperty } from '@/hooks/properties';
+import { useProperty } from '@/types/hooks';
 
 export function StringProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setValue] = useStringProperty(uri);
-  const description = usePropertyDescription(uri);
+  const [value, setValue, meta] = useProperty('StringProperty', uri);
 
-  if (value === undefined || !description) {
+  if (value === undefined || !meta) {
     return <></>;
   }
 
@@ -20,10 +19,6 @@ export function StringProperty({ uri, readOnly }: PropertyProps) {
     );
   }
   return (
-    <StringInput
-      onEnter={setValue}
-      value={value}
-      aria-label={`${description.guiName} input`}
-    />
+    <StringInput onEnter={setValue} value={value} aria-label={`${meta.guiName} input`} />
   );
 }

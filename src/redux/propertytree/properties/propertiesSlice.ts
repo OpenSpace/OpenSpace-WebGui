@@ -1,13 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { PropertyVisibilityNumber } from '@/types/enums';
-import {
-  Properties,
-  PropertyMetaData,
-  PropertyOverview,
-  PropertyValue,
-  Uri
-} from '@/types/types';
+import { Properties, PropertyOverview, Uri } from '@/types/types';
+import { AnyProperty } from '@/types/Property/property';
 
 export interface PropertiesState {
   isInitialized: boolean;
@@ -55,7 +50,7 @@ export const propertiesSlice = createSlice({
     },
     setPropertyValue: (
       state,
-      action: PayloadAction<{ uri: Uri; value: PropertyValue }>
+      action: PayloadAction<{ uri: Uri; value: AnyProperty['value'] }>
     ) => {
       const { uri, value } = action.payload;
 
@@ -67,7 +62,7 @@ export const propertiesSlice = createSlice({
     },
     updatePropertyValue: (
       state,
-      action: PayloadAction<{ uri: Uri; value: PropertyValue }>
+      action: PayloadAction<{ uri: Uri; value: AnyProperty['value'] }>
     ) => {
       const { uri, value } = action.payload;
 
@@ -78,7 +73,7 @@ export const propertiesSlice = createSlice({
     },
     updatePropertyMetaData: (
       state,
-      action: PayloadAction<{ uri: Uri; metaData: PropertyMetaData }>
+      action: PayloadAction<{ uri: Uri; metaData: AnyProperty['metaData'] }>
     ) => {
       const { uri, metaData } = action.payload;
 

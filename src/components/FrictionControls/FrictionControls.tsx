@@ -1,10 +1,10 @@
 import { Chip, Group, MantineSize, MantineSpacing, Stack, Text } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { useBoolProperty } from '@/hooks/properties';
 import { KeybindButtons } from '@/panels/KeybindsPanel/KeybindButtons';
 import { useAppSelector } from '@/redux/hooks';
 import { RollFrictionKey, RotationalFrictionKey, ZoomFrictionKey } from '@/util/keys';
+import { useProperty } from '@/types/hooks';
 
 interface Props {
   size?: MantineSize;
@@ -14,9 +14,9 @@ interface Props {
 }
 
 export function FrictionControls({ size, gap = 'xs', align, mr }: Props) {
-  const [rotation, setRotation] = useBoolProperty(RotationalFrictionKey);
-  const [zoom, setZoom] = useBoolProperty(ZoomFrictionKey);
-  const [roll, setRoll] = useBoolProperty(RollFrictionKey);
+  const [rotation, setRotation] = useProperty('BoolProperty', RotationalFrictionKey);
+  const [zoom, setZoom] = useProperty('BoolProperty', ZoomFrictionKey);
+  const [roll, setRoll] = useProperty('BoolProperty', RollFrictionKey);
 
   const keybinds = useAppSelector((state) => state.actions.keybinds);
 

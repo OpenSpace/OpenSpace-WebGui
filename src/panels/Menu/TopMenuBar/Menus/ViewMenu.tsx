@@ -2,8 +2,6 @@ import { CheckboxIndicator, Group, Menu, Radio, Stack } from '@mantine/core';
 
 import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { AdditionalDataOptions } from '@/components/Property/types';
-import { useOptionProperty, usePropertyDescription } from '@/hooks/properties';
 import {
   ChevronRightIcon,
   SaveIcon,
@@ -18,22 +16,22 @@ import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { useMenuItems, useStoredLayout } from '../../hooks';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
+import { useProperty } from '@/types/hooks';
 
 export function ViewMenu() {
   const { menuItems } = useMenuItems();
-  const [propertyVisibility, setPropertyVisibility] = useOptionProperty(
+  const [propertyVisibility, setPropertyVisibility, meta] = useProperty(
+    'OptionProperty',
     'OpenSpaceEngine.PropertyVisibility'
   );
 
   const { loadLayout, saveLayout } = useStoredLayout();
-  const description = usePropertyDescription('OpenSpaceEngine.PropertyVisibility');
   const dispatch = useAppDispatch();
 
-  if (!description) {
+  if (!meta) {
     return <></>;
   }
-  const { Options: userLevelOptions } =
-    description.additionalData as AdditionalDataOptions;
+  const userLevelOptions = meta.additionalData.Options;
 
   return (
     <TopBarMenuWrapper targetTitle={'View'}>

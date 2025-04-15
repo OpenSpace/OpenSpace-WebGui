@@ -1,83 +1,41 @@
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { PropertyVisibilityNumber } from './enums';
-import {
-  AdditionalDataNumber,
-  AdditionalDataOptions,
-  AdditionalDataSelection,
-  AdditionalDataVectorMatrix
-} from '@/components/Property/types';
-import {
-  subscribeToProperty,
-  unsubscribeToProperty
-} from '@/redux/propertytree/properties/propertiesMiddleware';
-import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
-import { useThrottledCallback } from '@mantine/hooks';
-import { useEffect } from 'react';
-
-export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
-
-export interface BasePropertyMetaData {
-  description: string;
-  isReadOnly: boolean;
-  guiName: string;
-  group: string;
-  needsConfirmation: boolean;
-  visibility: PropertyVisibility;
-  viewOptions?: Record<string, boolean>;
+// In OpenSpace the options are represented like so:
+// { 1: "Option 1", 2: "Option 2", ...}
+// The key is an integer but in a string format.
+interface Options {
+  [key: string]: string;
 }
 
-export type Property<T extends keyof PropertyTypeMap = keyof PropertyTypeMap> = {
-  metaData: BasePropertyMetaData & {
-    type: T;
-    additionalData?: PropertyTypeMap[T]['additionalData'];
+export interface AdditionalDataOptions {
+  Options: Options;
+}
+
+export interface AdditionalDataSelection {
+  Options: string[];
+}
+
+export interface AdditionalDataVectorMatrix {
+  Exponent: number; // TODO: handle the exponent
+  MaximumValue: number[];
+  MinimumValue: number[];
+  SteppingValue: number[];
+}
+
+export interface AdditionalDataNumber {
+  Exponent: number;
+  MaximumValue: number;
+  MinimumValue: number;
+  SteppingValue: number;
+}
+
+export type PropertyTypes = {
+  TriggerProperty: {
+    value: void;
   };
-  value: PropertyTypeMap[T]['value'];
-  uri: string;
-};
-
-export type AnyProperty = {
-  [K in keyof PropertyTypeMap]: Property<K>;
-}[keyof PropertyTypeMap];
-
-export function useProperty<T extends keyof PropertyTypeMap>(
-  type: T,
-  uri: string
-): [Property<T>['value'] | undefined, (value: T) => void, Property<T>['metaData']] {
-  const prop = useAppSelector((state) => state.properties.properties[uri] as Property<T>);
-  if (prop.metaData.type !== type) {
-    throw new Error(
-      `Tried to access property with uri ${uri} as type ${type}, but it is of type ${prop.metaData.type}`
-    );
-  }
-  const dispatch = useAppDispatch();
-  // Throttle limit
-  const ThrottleMs = 1000 / 60;
-
-  // Every time we want a property value we also want to make sure we get the
-  // updated value. Hence we subscribe
-  useEffect(() => {
-    dispatch(subscribeToProperty({ uri: uri }));
-    return () => {
-      dispatch(unsubscribeToProperty({ uri: uri }));
-    };
-  }, [dispatch, uri]);
-
-  // Set function to mimic useState
-  const setValue = useThrottledCallback((value: Property<T>['value']) => {
-    dispatch(setPropertyValue({ uri: uri, value: value }));
-  }, ThrottleMs);
-
-  return [prop.value, setValue, prop.metaData];
-}
-
-type PropertyTypeMap = {
   BoolProperty: {
     value: boolean;
-    additionalData: undefined;
   };
   StringProperty: {
     value: string;
-    additionalData: undefined;
   };
   MatrixProperty: {
     value: number[];
@@ -141,7 +99,7 @@ type PropertyTypeMap = {
   };
   DoubleProperty: {
     value: number;
-    additionalData: AdditionalDataVectorMatrix;
+    additionalData: AdditionalDataNumber;
   };
   FloatProperty: {
     value: number;
@@ -197,14 +155,11 @@ type PropertyTypeMap = {
   };
   DoubleListProperty: {
     value: number[];
-    additionalData: undefined;
   };
   IntListProperty: {
     value: number[];
-    additionalData: undefined;
   };
   StringListProperty: {
     value: string[];
-    additionalData: undefined;
   };
 };
