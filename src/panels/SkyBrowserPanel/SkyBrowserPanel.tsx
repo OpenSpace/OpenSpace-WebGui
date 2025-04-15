@@ -8,10 +8,10 @@ import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { BrowserTabs } from './BrowserTabs/BrowserTabs';
 import { ImageListWrapper } from './ImageList/ImageListWrapper';
+import { InfoOverlayContent } from './WorldWideTelescope/InfoOverlayContent';
 import { WorldWideTelescopeView } from './WorldWideTelescope/WorldWideTelescopeView';
 import { WwtProvider } from './WorldWideTelescope/WwtProvider/WwtProvider';
 import { useSkyBrowserData } from './hooks';
-import { InfoOverlayContent } from './WorldWideTelescope/InfoOverlayContent';
 
 export function SkyBrowserPanel() {
   const isInitialized = useAppSelector((state) => state.skybrowser.isInitialized);

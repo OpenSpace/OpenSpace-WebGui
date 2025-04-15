@@ -11,9 +11,9 @@ import {
   useOpacities,
   useSelectedImages
 } from '../hooks';
+import { Status } from '../types';
 
 import { useWwtProvider } from './WwtProvider/hooks';
-import { Status } from '../types';
 
 // These are the hooks that will keep track of the redux state and
 // when it changes, it will pass along these messages to WWT

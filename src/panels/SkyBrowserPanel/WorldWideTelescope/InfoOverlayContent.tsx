@@ -1,4 +1,5 @@
 import { Loader, Stack, Text } from '@mantine/core';
+
 import { Status } from '../types';
 
 interface Props {
