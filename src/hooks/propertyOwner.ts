@@ -12,7 +12,7 @@ import {
   isPropertyVisible
 } from '@/util/propertyTreeHelpers';
 
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 export function usePropertyOwner(uri: Uri): PropertyOwner | undefined {
   return useAppSelector((state) => state.propertyOwners.propertyOwners[uri]);

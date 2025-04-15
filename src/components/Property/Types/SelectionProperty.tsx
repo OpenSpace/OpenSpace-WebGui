@@ -2,7 +2,7 @@ import { MultiSelect } from '@mantine/core';
 
 import { PropertyProps } from '@/components/Property/types';
 import { usePropListeningState } from '@/hooks/util';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 export function SelectionProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue, meta] = useProperty('SelectionProperty', uri);

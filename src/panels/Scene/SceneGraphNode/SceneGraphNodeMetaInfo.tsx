@@ -16,7 +16,7 @@ import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
 import { identifierFromUri } from '@/util/propertyTreeHelpers';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 interface Props {
   uri: Uri;

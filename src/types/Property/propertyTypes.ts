@@ -1,3 +1,10 @@
+export type ViewOptionsVector =
+  | {
+      Color?: boolean;
+      MinMaxRange?: boolean;
+    }
+  | undefined;
+
 // In OpenSpace the options are represented like so:
 // { 1: "Option 1", 2: "Option 2", ...}
 // The key is an integer but in a string format.
@@ -52,50 +59,62 @@ export type PropertyTypes = {
   Vec2Property: {
     value: number[];
     additionalData: AdditionalDataVectorMatrix;
+    viewOptions: ViewOptionsVector;
   };
   Vec3Property: {
     value: number[];
     additionalData: AdditionalDataVectorMatrix;
+    viewOptions: ViewOptionsVector;
   };
   Vec4Property: {
     value: number[];
     additionalData: AdditionalDataVectorMatrix;
+    viewOptions: ViewOptionsVector;
   };
   DVec2Property: {
     value: number[];
     additionalData: AdditionalDataVectorMatrix;
+    viewOptions: ViewOptionsVector;
   };
   DVec3Property: {
     value: number[];
     additionalData: AdditionalDataVectorMatrix;
+    viewOptions: ViewOptionsVector;
   };
   DVec4Property: {
     value: number[];
     additionalData: AdditionalDataVectorMatrix;
+    viewOptions: ViewOptionsVector;
   };
   IVec2Property: {
     value: number[];
     additionalData: AdditionalDataVectorMatrix;
+    viewOptions: ViewOptionsVector;
   };
   IVec3Property: {
     value: number[];
     additionalData: AdditionalDataVectorMatrix;
+    viewOptions: ViewOptionsVector;
   };
   IVec4Property: {
     value: number[];
     additionalData: AdditionalDataVectorMatrix;
+    viewOptions: ViewOptionsVector;
   };
   UVec2Property: {
     value: number[];
     additionalData: AdditionalDataVectorMatrix;
+    viewOptions: ViewOptionsVector;
   };
   UVec3Property: {
     value: number[];
     additionalData: AdditionalDataVectorMatrix;
+    viewOptions: ViewOptionsVector;
   };
   UVec4Property: {
     value: number[];
     additionalData: AdditionalDataVectorMatrix;
+    viewOptions: ViewOptionsVector;
   };
   DoubleProperty: {
     value: number;

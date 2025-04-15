@@ -5,7 +5,7 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { ConsoleIcon, ExitAppIcon } from '@/icons/icons';
 
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 export function FileMenu() {
   const luaApi = useOpenSpaceApi();

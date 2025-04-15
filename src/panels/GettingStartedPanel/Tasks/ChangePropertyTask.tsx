@@ -1,5 +1,5 @@
 import { TaskCheckbox } from './Components/TaskCheckbox';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 interface Props {
   uri: string;

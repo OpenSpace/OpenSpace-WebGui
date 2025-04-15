@@ -16,7 +16,7 @@ import {
 import { sgnUri } from '@/util/propertyTreeHelpers';
 
 import { AnchorAimListEntry } from './AnchorAimListEntry';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 interface Props {
   favorites: PropertyOwner[];

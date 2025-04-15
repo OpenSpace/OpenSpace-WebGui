@@ -13,7 +13,7 @@ import { checkCaseInsensitiveSubstringList } from '@/util/stringmatcher';
 
 import { SettingsSearchListItem } from './SettingsSearchListItem';
 import { collectSearchableItems, SearchItem, SearchItemType } from './util';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 export function SettingsPanel() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);

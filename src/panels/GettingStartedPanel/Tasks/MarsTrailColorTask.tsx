@@ -1,4 +1,4 @@
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 import { TaskCheckbox } from './Components/TaskCheckbox';
 import { useTrackChange } from './hooks';
 

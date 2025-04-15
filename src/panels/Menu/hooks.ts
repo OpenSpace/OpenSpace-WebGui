@@ -9,7 +9,7 @@ import {
 import { useSaveLoadJsonFiles } from '@/util/fileIOhooks';
 
 import { TaskbarItemConfig } from './types';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 export function useMenuItems() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);

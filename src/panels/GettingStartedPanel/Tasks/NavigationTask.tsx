@@ -4,7 +4,7 @@ import { RequireAtLeastOne } from '@/types/types';
 import { NavigationAnchorKey } from '@/util/keys';
 
 import { TaskCheckbox } from './Components/TaskCheckbox';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 interface Props {
   anchor: string;

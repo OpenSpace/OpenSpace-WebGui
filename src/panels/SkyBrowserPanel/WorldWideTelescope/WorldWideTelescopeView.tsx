@@ -13,7 +13,7 @@ import {
   useUpdateOpacities,
   useUpdateSelectedImages
 } from './hooks';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 export function WorldWideTelescopeView() {
   const [isDragging, setIsDragging] = useState(false);

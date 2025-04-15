@@ -4,7 +4,7 @@ import { BoxData, PanelData, TabData } from 'rc-dock';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 export const DefaultSgnWindowId = 'defaultSceneGraphNodeWindow';
 

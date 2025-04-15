@@ -2,7 +2,7 @@ import { Grid } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { PropertyProps } from '@/components/Property/types';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 export function MatrixProperty({ uri, readOnly }: PropertyProps) {
   const [value, setPropertyValue, meta] = useProperty('GenericMatrixProperty', uri);

@@ -4,7 +4,7 @@ import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { KeybindButtons } from '@/panels/KeybindsPanel/KeybindButtons';
 import { useAppSelector } from '@/redux/hooks';
 import { RollFrictionKey, RotationalFrictionKey, ZoomFrictionKey } from '@/util/keys';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 interface Props {
   size?: MantineSize;

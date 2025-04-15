@@ -22,7 +22,7 @@ import { sgnUri } from '@/util/propertyTreeHelpers';
 import { SceneGraphNodeHeader } from '../Scene/SceneGraphNode/SceneGraphNodeHeader';
 
 import { ExoplanetEntry } from './ExoplanetEntry';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 export function ExoplanetsPanel() {
   const luaApi = useOpenSpaceApi();

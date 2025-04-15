@@ -1,7 +1,7 @@
 import { Select } from '@mantine/core';
 
 import { PropertyProps } from '@/components/Property/types';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 export function OptionProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue, meta] = useProperty('OptionProperty', uri);

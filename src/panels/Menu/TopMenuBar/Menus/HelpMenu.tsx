@@ -13,7 +13,7 @@ import { GettingStartedPanel } from '@/windowmanagement/data/LazyLoads';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 export function HelpMenu() {
   const [showAbout, { open, close }] = useDisclosure(false);

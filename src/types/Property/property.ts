@@ -2,13 +2,6 @@ import { PropertyVisibilityNumber } from '../enums';
 import { NormalizeToConcreteTypes, PropertyGroups } from './propertyGroups';
 import { PropertyTypes } from './propertyTypes';
 
-export type ViewOptionsVector =
-  | {
-      Color?: boolean;
-      MinMaxRange?: boolean;
-    }
-  | undefined;
-
 export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
 
 /**
@@ -24,6 +17,19 @@ type AdditionalData<T extends keyof PropertyTypes> = PropertyTypes[T] extends {
   ? { additionalData: A }
   : {};
 
+/**
+ * Extracts the `viewOptions` property from a specific property type in `PropertyTypes`.
+ *
+ * This utility type checks if the specified property type in `PropertyTypes` contains
+ * an `viewOptions` field. If it does, it creates a new type with the `viewOptions`
+ * field. Otherwise, it defaults to an empty object type.
+ */
+type ViewOptions<T extends keyof PropertyTypes> = PropertyTypes[T] extends {
+  viewOptions: infer A;
+}
+  ? { viewOptions: A }
+  : {};
+
 // Generic Property<T> type
 type Property<T extends keyof PropertyTypes> = {
   metaData: {
@@ -34,8 +40,8 @@ type Property<T extends keyof PropertyTypes> = {
     group: string;
     needsConfirmation: boolean;
     visibility: PropertyVisibility;
-    viewOptions?: Record<string, boolean>;
-  } & AdditionalData<T>;
+  } & AdditionalData<T> &
+    ViewOptions<T>;
   value: PropertyTypes[T]['value'];
   uri: string;
 };

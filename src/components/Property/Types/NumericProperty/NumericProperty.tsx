@@ -6,7 +6,7 @@ import { usePropListeningState } from '@/hooks/util';
 
 import { NumericPropertySlider } from './Slider/NumericPropertySlider';
 import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from './util';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 interface Props extends PropertyProps {
   isInt?: boolean;

@@ -3,7 +3,7 @@ import { PropertyProps } from '@/components/Property/types';
 import { ColorView } from './ViewOptions/ColorView';
 import { MinMaxRangeView } from './ViewOptions/MinMaxRange';
 import { VectorDefaultView } from './ViewOptions/VectorDefaultView';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 interface Props extends PropertyProps {
   isInt?: boolean;

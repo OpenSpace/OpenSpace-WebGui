@@ -13,7 +13,7 @@ import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { RemainingFlightTimeIndicator } from '../RemainingFlightTimeIndicator';
 
 import { FocusEntry } from './FocusEntry';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 interface Props {
   favorites: PropertyOwner[];

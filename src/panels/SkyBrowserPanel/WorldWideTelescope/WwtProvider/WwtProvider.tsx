@@ -4,7 +4,7 @@ import { useAppSelector } from '@/redux/hooks';
 
 import { useStartPingingWwt, useWwtEventListener, useWwtMessages } from './hooks';
 import { WwtContext } from './WwtContext';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 export function WwtProvider({ children }: PropsWithChildren) {
   const {

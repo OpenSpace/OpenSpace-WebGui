@@ -1,6 +1,6 @@
 import { Pills } from '@/components/Pills/Pills';
 import { PropertyProps } from '@/components/Property/types';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 export function DoubleListProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue] = useProperty('DoubleListProperty', uri);

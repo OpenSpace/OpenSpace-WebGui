@@ -16,7 +16,7 @@ import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { useMenuItems, useStoredLayout } from '../../hooks';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 export function ViewMenu() {
   const { menuItems } = useMenuItems();

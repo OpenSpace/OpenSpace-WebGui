@@ -5,7 +5,7 @@ import { PropertyOwner } from '@/types/types';
 
 import { NavigationAimKey, NavigationAnchorKey } from './keys';
 import { sgnUri } from './propertyTreeHelpers';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 /**
  * Get all the nodes marked in the profile, as a list of property owners.

@@ -3,7 +3,7 @@ import { Button, Group } from '@mantine/core';
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyProps } from '@/components/Property/types';
-import { useProperty } from '@/types/hooks';
+import { useProperty } from '@/hooks/properties';
 
 export function TriggerProperty({ uri, readOnly }: PropertyProps) {
   const [_, trigger, meta] = useProperty('TriggerProperty', uri);
