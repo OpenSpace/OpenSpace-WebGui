@@ -41,8 +41,10 @@ interface Props {
 
 export function Settings({ id }: Props) {
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
-  const luaApi = useOpenSpaceApi();
   const targetId = useAppSelector((state) => state.skybrowser.browsers[id]?.targetId);
+
+  const luaApi = useOpenSpaceApi();
+
   const color = useBrowserColorString(id);
   const fov = useBrowserFov(id);
   const radius = useBrowserRadius(id);
@@ -72,6 +74,7 @@ export function Settings({ id }: Props) {
   function setDeclination(newValue: number): void {
     luaApi?.skybrowser.setEquatorialAim(id, ra, newValue);
   }
+
   if (!imageList) {
     return <LoadingBlocks mt={'md'} />;
   }

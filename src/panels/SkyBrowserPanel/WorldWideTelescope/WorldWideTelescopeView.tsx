@@ -15,7 +15,7 @@ import {
   useUpdateOpacities,
   useUpdateSelectedImages
 } from './hooks';
-import { Overlay } from './Overlay';
+import { InfoOverlayContent } from './Overlay';
 
 import styles from './WorldWideTelescope.module.css';
 
@@ -33,7 +33,16 @@ export function WorldWideTelescopeView() {
   const { width, height } = useWindowSize();
   const luaApi = useOpenSpaceApi();
 
-  const bind = useGesture(
+  /**
+   * The `offset` parameter represents the accumulated distance of the drag gesture
+   * in pixels. It is an array where:
+   * - `offset[0]` corresponds to the horizontal distance (x-axis).
+   * - `offset[1]` corresponds to the vertical distance (y-axis).
+   *
+   * This value is updated as the user drags, providing the total displacement
+   * from the starting point of the gesture.
+   */
+  const bindGestures = useGesture(
     {
       onDrag: (state) => {
         state.event.preventDefault();
@@ -109,7 +118,6 @@ export function WorldWideTelescopeView() {
     if (!id) {
       return;
     }
-    //console.log(deltaY);
     const scrollDirection = inverseZoom ? -deltaY : deltaY;
     luaApi?.skybrowser.scrollOverBrowser(id, scrollDirection);
     luaApi?.skybrowser.stopAnimations(id);
@@ -131,10 +139,9 @@ export function WorldWideTelescopeView() {
     <>
       <LoadingOverlay
         visible={!imageCollectionLoaded || !cameraInSolarSystem}
-        zIndex={1000}
         overlayProps={{ backgroundOpacity: 1, bg: 'dark.9' }}
         loaderProps={{
-          children: <Overlay />
+          children: <InfoOverlayContent />
         }}
         transitionProps={{ transition: 'fade', duration: 500 }}
       />
@@ -147,7 +154,7 @@ export function WorldWideTelescopeView() {
           position: 'absolute'
         }}
         className={styles.dragArea}
-        {...bind()}
+        {...bindGestures()}
       >
         <iframe
           ref={ref}
@@ -167,7 +174,6 @@ export function WorldWideTelescopeView() {
         >
           <p>ERROR: cannot display AAS WorldWide Telescope research app!</p>
         </iframe>
-        
       </div>
     </>
   );

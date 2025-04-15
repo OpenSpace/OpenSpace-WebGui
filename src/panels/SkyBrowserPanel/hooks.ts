@@ -20,7 +20,7 @@ import {
 
 import { SkyBrowserImage } from './types';
 
-export function useWwtImageCollection(): [boolean, SkyBrowserImage[]] {
+export function useWwtImageCollection(): [boolean, SkyBrowserImage[] | undefined] {
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
   const [isPending, startTransition] = useTransition();
 
@@ -57,7 +57,9 @@ export function useWwtImageCollection(): [boolean, SkyBrowserImage[]] {
     }
   }, [luaApi, dispatch, imageList]);
 
-  return [isPending || imageList === undefined, imageList ?? []];
+  const isLoading = isPending || imageList === undefined;
+
+  return [isLoading, imageList];
 }
 
 export function useSkyBrowserData() {

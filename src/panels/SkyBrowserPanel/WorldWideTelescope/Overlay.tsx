@@ -4,7 +4,7 @@ import { useAppSelector } from '@/redux/hooks';
 
 import { useWwtProvider } from './WwtProvider/hooks';
 
-export function Overlay() {
+export function InfoOverlayContent() {
   const cameraInSolarSystem = useAppSelector(
     (state) => state.skybrowser.cameraInSolarSystem
   );
@@ -24,11 +24,9 @@ export function Overlay() {
 
   if (!cameraInSolarSystem) {
     return (
-      <Stack align={'center'} p={'lg'}>
+      <Stack align={'center'} p={'lg'} ta={'center'}>
         <Text>Camera is not in solar system.</Text>
-        <Text ta={'center'}>
-          You need to be in the solar system to use the SkyBrowser.
-        </Text>
+        <Text>You need to be in the solar system to use the SkyBrowser.</Text>
       </Stack>
     );
   }
