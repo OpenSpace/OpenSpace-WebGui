@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { Button, Stack, Text, ThemeIcon } from '@mantine/core';
+import { Button, LoadingOverlay, Stack, Text, ThemeIcon } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { PlusIcon, TelescopeIcon } from '@/icons/icons';
@@ -11,10 +11,13 @@ import { ImageListWrapper } from './ImageList/ImageListWrapper';
 import { WorldWideTelescopeView } from './WorldWideTelescope/WorldWideTelescopeView';
 import { WwtProvider } from './WorldWideTelescope/WwtProvider/WwtProvider';
 import { useSkyBrowserData } from './hooks';
+import { InfoOverlayContent } from './WorldWideTelescope/InfoOverlayContent';
 
 export function SkyBrowserPanel() {
   const isInitialized = useAppSelector((state) => state.skybrowser.isInitialized);
   const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
+  const isInSolarSystem = useAppSelector((state) => state.skybrowser.cameraInSolarSystem);
+
   const { addWindow } = useWindowLayoutProvider();
   const luaApi = useOpenSpaceApi();
 
@@ -67,6 +70,14 @@ export function SkyBrowserPanel() {
 
   return (
     <>
+      <LoadingOverlay
+        visible={!isInSolarSystem}
+        overlayProps={{ backgroundOpacity: 1, bg: 'dark.9' }}
+        loaderProps={{
+          children: <InfoOverlayContent type={'CameraNotInSolarSystem'} />
+        }}
+        transitionProps={{ transition: 'fade', duration: 500 }}
+      ></LoadingOverlay>
       <ImageListWrapper />
       <BrowserTabs openWorldWideTelescope={openWorldWideTelescope} />
     </>

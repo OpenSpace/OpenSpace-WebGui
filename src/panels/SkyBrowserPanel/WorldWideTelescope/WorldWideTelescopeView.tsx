@@ -9,30 +9,28 @@ import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { useWwtProvider } from './WwtProvider/hooks';
 import {
+  useOverlayStatus,
   useUpdateAim,
   useUpdateBorderColor,
   useUpdateBorderRadius,
   useUpdateOpacities,
   useUpdateSelectedImages
 } from './hooks';
-import { InfoOverlayContent } from './Overlay';
+import { InfoOverlayContent } from './InfoOverlayContent';
 
 import styles from './WorldWideTelescope.module.css';
 
 export function WorldWideTelescopeView() {
-  const cameraInSolarSystem = useAppSelector(
-    (state) => state.skybrowser.cameraInSolarSystem
-  );
   const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
   const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
 
   const [isDragging, setIsDragging] = useState(false);
   const [startDragPosition, setStartDragPosition] = useState({ x: 0, y: 0 });
 
-  const { ref, imageCollectionLoaded } = useWwtProvider();
+  const { ref } = useWwtProvider();
   const { width, height } = useWindowSize();
   const luaApi = useOpenSpaceApi();
-
+  const { visible, type: overlayType } = useOverlayStatus();
   /**
    * The `offset` parameter represents the accumulated distance of the drag gesture
    * in pixels. It is an array where:
@@ -138,10 +136,10 @@ export function WorldWideTelescopeView() {
   return (
     <>
       <LoadingOverlay
-        visible={!imageCollectionLoaded || !cameraInSolarSystem}
+        visible={visible}
         overlayProps={{ backgroundOpacity: 1, bg: 'dark.9' }}
         loaderProps={{
-          children: <InfoOverlayContent />
+          children: <InfoOverlayContent type={overlayType} />
         }}
         transitionProps={{ transition: 'fade', duration: 500 }}
       />
