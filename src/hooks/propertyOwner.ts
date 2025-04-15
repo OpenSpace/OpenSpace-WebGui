@@ -38,7 +38,7 @@ export const useHasVisibleChildren = (propertyOwnerUri: Uri): boolean => {
  * current visiblitity level setting. Also subscribe to changes for the visiblity level.
  */
 export const useVisibleProperties = (propertyOwner: PropertyOwner | undefined) => {
-  const [visiblityLevelSetting] = useProperty(
+  const [visibilityLevelSetting] = useProperty(
     'OptionProperty',
     EnginePropertyVisibilityKey
   );
@@ -53,7 +53,7 @@ export const useVisibleProperties = (propertyOwner: PropertyOwner | undefined) =
     useAppSelector(
       (state) =>
         propertyOwner?.properties.filter((p) =>
-          isPropertyVisible(state.properties.properties[p], visiblityLevelSetting)
+          isPropertyVisible(state.properties.properties[p], visibilityLevelSetting)
         ),
       shallowEqual
     ) || []
