@@ -6,7 +6,7 @@ import { PropertyTypes } from './propertyTypes';
 export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
 
 // Creating an empty object type to use as a default value for the optional types
-type EmtpyObject = Record<string, never>;
+type EmptyObject = Record<string, never>;
 
 /**
  * Extracts the `additionalData` property from a specific property type in `PropertyTypes`.
@@ -19,7 +19,7 @@ type AdditionalData<T extends keyof PropertyTypes> = PropertyTypes[T] extends {
   additionalData: infer A;
 }
   ? { additionalData: A }
-  : EmtpyObject;
+  : EmptyObject;
 
 /**
  * Extracts the `viewOptions` property from a specific property type in `PropertyTypes`.
@@ -32,7 +32,7 @@ type ViewOptions<T extends keyof PropertyTypes> = PropertyTypes[T] extends {
   viewOptions: infer A;
 }
   ? { viewOptions: A }
-  : EmtpyObject;
+  : EmptyObject;
 
 // Generic Property<T> type
 type Property<T extends keyof PropertyTypes> = {
