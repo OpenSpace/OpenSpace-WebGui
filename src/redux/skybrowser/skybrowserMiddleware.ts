@@ -4,15 +4,14 @@ import { Topic } from 'openspace-api-js';
 import { api } from '@/api/api';
 import { ConnectionStatus } from '@/types/enums';
 
-import { onCloseConnection } from '../connection/connectionSlice';
-import { AppStartListening } from '../listenerMiddleware';
-
 import {
   resetSkyBrowser,
   type SkyBrowserUpdate,
   subscriptionIsSetup,
   updateSkyBrowser
 } from './skybrowserSlice';
+import { onCloseConnection } from '@/redux/connection/connectionSlice';
+import { AppStartListening } from '@/redux/listenerMiddleware';
 
 const subscribeToSkyBrowser = createAction<void>('skybrowser/subscribe');
 const unsubscribeToSkyBrowser = createAction<void>('skybrowser/unsubscribe');
