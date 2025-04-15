@@ -30,6 +30,31 @@ export interface SemanticVersion {
   patch: number;
 }
 
+// The property owner data we get from OpenSpace is different from what we want to store
+// in the redux state, hence this local owner type to get proper ts highlighting when
+// converting the data
+export type OpenSpacePropertyOwner = {
+  description: string;
+  guiName: string;
+  identifier: Identifier;
+  properties: OpenSpaceProperty[];
+  subowners: OpenSpacePropertyOwner[];
+  tag: string[];
+  uri: Uri;
+};
+
+export type OpenSpaceProperty = {
+  Description: {
+    AdditionalData: AdditionalData;
+    Identifier: Identifier;
+    MetaData: PropertyMetaData;
+    Name: string;
+    Type: string; // TODO: define these as property types? i.e., boolproperty | stringproperty etc
+    description: string;
+  };
+  Value: string | number | number[] | boolean;
+};
+
 export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
 
 export interface PropertyMetaData {
@@ -79,6 +104,15 @@ export interface PropertyOwner {
 
 export interface PropertyOwners {
   [key: Uri]: PropertyOwner | undefined;
+}
+
+export interface SceneGraphNodeGuiSettings {
+  [key: Uri]: {
+    path: string;
+    isHidden: boolean;
+    isFocusable: boolean;
+    guiOrderingNumber: number | undefined;
+  };
 }
 
 export type Group = {

@@ -1,15 +1,14 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { api } from '@/api/api';
-import { AdditionalData } from '@/components/Property/types';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { refreshGroups } from '@/redux/groups/groupsSliceMiddleware';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import {
-  Identifier,
+  OpenSpaceProperty,
+  OpenSpacePropertyOwner,
   Properties,
   Property,
-  PropertyMetaData,
   PropertyOwner,
   PropertyOwners,
   Uri
@@ -27,6 +26,9 @@ import {
   clearPropertyOwners,
   removePropertyOwners
 } from './propertyowner/propertyOwnerSlice';
+
+// The property tree middleware is designed to populate the react store's
+// copy of the property tree when the frontend is connected to OpenSpace
 
 export const reloadPropertyTree = createAction<void>('propertyTree/reload');
 export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(
@@ -76,34 +78,6 @@ export const addUriToPropertyTree = createAsyncThunk(
     }
   }
 );
-
-// The property tree middleware is designed to populate the react store's
-// copy of the property tree when the frontend is connected to OpenSpace.
-
-// The property owner data we get from OpenSpace is different from what we want to store
-// in the redux state, hence this local owner type to get proper ts highlighting when
-// converting the data.
-type OpenSpacePropertyOwner = {
-  description: string;
-  guiName: string;
-  identifier: Identifier;
-  properties: OpenSpaceProperty[];
-  subowners: OpenSpacePropertyOwner[];
-  tag: string[];
-  uri: Uri;
-};
-
-type OpenSpaceProperty = {
-  Description: {
-    AdditionalData: AdditionalData;
-    Identifier: Identifier;
-    MetaData: PropertyMetaData;
-    Name: string;
-    Type: string; // TODO: define these as property types? i.e., boolproperty | stringproperty etc
-    description: string;
-  };
-  Value: string | number | number[] | boolean;
-};
 
 /**
  * Utility function to convert an OpenSpace property object to our internal property

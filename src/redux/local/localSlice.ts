@@ -5,6 +5,12 @@ import { Uri } from '@/types/types';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 export interface LocalState {
+  menus: {
+    navigation: {
+      // Whether to show non-focusable nodes in the navigation menu search results
+      onlyFocusable: boolean;
+    };
+  };
   sceneTree: {
     expandedGroups: string[];
     currentlySelectedNode: Uri | null;
@@ -13,6 +19,13 @@ export interface LocalState {
 }
 
 const initialState: LocalState = {
+  menus: {
+    navigation: {
+      onlyFocusable: true
+    }
+  },
+  // @TODO: (emmbr 2025-04-09): Consider moving this to the menus object above. did not
+  // want to do it as of now to avoid PR conflicts
   sceneTree: {
     expandedGroups: [],
     currentlySelectedNode: null
@@ -38,6 +51,10 @@ export const localSlice = createSlice({
     },
     setSceneTreeSelectedNode: (state, action: PayloadAction<Uri | null>) => {
       state.sceneTree.currentlySelectedNode = action.payload;
+      return state;
+    },
+    setOnlyFocusableInNavMenu: (state, action: PayloadAction<boolean>) => {
+      state.menus.navigation.onlyFocusable = action.payload;
       return state;
     },
     setMenuItemVisible: (
@@ -84,6 +101,7 @@ export const localSlice = createSlice({
 export const {
   storeSceneTreeNodeExpanded,
   setSceneTreeSelectedNode,
+  setOnlyFocusableInNavMenu,
   setMenuItemVisible,
   setMenuItemEnabled,
   setMenuItemOpen,
