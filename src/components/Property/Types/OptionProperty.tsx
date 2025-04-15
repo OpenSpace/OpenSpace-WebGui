@@ -10,7 +10,7 @@ export function OptionProperty({ uri, readOnly }: PropertyProps) {
     return <></>;
   }
 
-  const options = meta.additionalData.Options;
+  const options = meta.additionalData.options;
 
   // We need to guard for if there are no options. This can happen if they
   // are added dynamically

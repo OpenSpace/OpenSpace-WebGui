@@ -14,7 +14,7 @@ export function SelectionProperty({ uri, readOnly }: PropertyProps) {
     return <></>;
   }
 
-  const options = meta.additionalData.Options;
+  const options = meta.additionalData.options;
 
   function handleChange(newValue: string[]) {
     setValue(newValue);

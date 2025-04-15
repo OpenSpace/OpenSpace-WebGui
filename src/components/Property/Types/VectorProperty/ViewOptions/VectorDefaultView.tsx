@@ -22,7 +22,7 @@ export function VectorDefaultView({
   const { value: currentValue, setValue: setCurrentValue } =
     usePropListeningState<number[]>(value);
 
-  const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
+  const { minimumValue: min, maximumValue: max, steppingValue: step } = additionalData;
 
   function setValue(index: number, newValue: number) {
     const v = [...value];

@@ -28,10 +28,10 @@ export function MinMaxRangeView({
     setIsEditing: setIsEditingSlider
   } = usePropListeningState<number[]>(value);
 
-  const exponent = additionalData.Exponent;
-  const [min] = additionalData.MinimumValue;
-  const [max] = additionalData.MaximumValue;
-  const [step] = additionalData.SteppingValue;
+  const exponent = additionalData.exponent;
+  const [min] = additionalData.minimumValue;
+  const [max] = additionalData.maximumValue;
+  const [step] = additionalData.steppingValue;
 
   const { scale, scaledMarks, valueToSliderValue, sliderValueToValue } = useSliderScale(
     exponent,

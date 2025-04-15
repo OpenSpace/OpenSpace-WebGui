@@ -12,9 +12,9 @@ export function MatrixProperty({ uri, readOnly }: PropertyProps) {
   }
 
   const {
-    MinimumValue: min,
-    MaximumValue: max,
-    SteppingValue: step
+    minimumValue: min,
+    maximumValue: max,
+    steppingValue: step
   } = meta.additionalData;
 
   const matrixSize = Math.sqrt(value.length);

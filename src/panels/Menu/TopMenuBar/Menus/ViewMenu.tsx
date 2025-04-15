@@ -31,7 +31,7 @@ export function ViewMenu() {
   if (!meta) {
     return <></>;
   }
-  const userLevelOptions = meta.additionalData.Options;
+  const userLevelOptions = meta.additionalData.options;
 
   return (
     <TopBarMenuWrapper targetTitle={'View'}>
