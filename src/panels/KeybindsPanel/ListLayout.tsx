@@ -5,10 +5,11 @@ import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
 import { useAppSelector } from '@/redux/hooks';
-import { Action, KeybindModifiers } from '@/types/types';
+import { Action, KeybindInfoType, KeybindModifiers } from '@/types/types';
 
 import { KeybindButtons } from './KeybindButtons';
 import { KeybindInfo } from './KeybindInfo';
+import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 
 export function ListLayout() {
   const [selectedAction, setSelectedAction] = useState<Action | null>(null);
@@ -16,7 +17,13 @@ export function ListLayout() {
   const keybinds = useAppSelector((state) => state.actions.keybinds);
   const actions = useAppSelector((state) => state.actions.actions);
 
-  const keybindInfo = keybinds
+  const { allowedKeys, toggleKey, selectedKeys } = useKeySettings<KeybindInfoType>({
+    name: true,
+    key: true,
+    documentation: true
+  });
+
+  const keybindInfo: KeybindInfoType[] = keybinds
     .filter((keybind) => {
       // Filter all keybinds based on the modifiers selected
       return modifiersFilter.every((modifier) => keybind.modifiers.includes(modifier));
@@ -70,6 +77,7 @@ export function ListLayout() {
                 </Chip>
               </Chip.Group>
             </Group>
+            <FilterList.SearchSettingsMenu keys={allowedKeys} setKey={toggleKey} />
           </Group>
           <FilterList.SearchResults
             data={keybindInfo}
@@ -89,7 +97,7 @@ export function ListLayout() {
                 <Text truncate>{node.name}</Text>
               </Button>
             )}
-            matcherFunc={generateMatcherFunctionByKeys(['name', 'key', 'documentation'])}
+            matcherFunc={generateMatcherFunctionByKeys(selectedKeys)}
           >
             <FilterList.SearchResults.VirtualList gap={'xs'} />
           </FilterList.SearchResults>
