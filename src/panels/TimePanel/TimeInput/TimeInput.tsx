@@ -271,15 +271,13 @@ export function TimeInput() {
       <Stack gap={'xs'}>
         <Group gap={'xs'} justify={'center'}>
           <Tooltip
-            label={
-              'Lock time updates to prevent automatic changes. Use "Interpolate" or "Set"' +
-              ' to manually apply the selected date and time.'
-            }
+            label={`Lock time updates to prevent automatic changes. Use "Interpolate" or "Set"
+              to manually apply the selected date and time.`}
           >
             <ActionIcon
               onClick={toggleLock}
               variant={isLocked ? 'filled' : 'default'}
-              aria-label={`${isLocked ? 'Disable' : 'Enable'} manual date and time updates`}
+              aria-label={`Set date-time input mode to ${isLocked ? 'unlocked' : 'locked'} mode`}
             >
               {isLocked ? <LockIcon /> : <LockOpenIcon />}
             </ActionIcon>

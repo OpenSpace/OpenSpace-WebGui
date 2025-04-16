@@ -19,7 +19,7 @@ export function ColorPicker({ color, disabled, onChange, withAlpha }: Props) {
           disabled={disabled}
           size={'lg'}
           variant={'subtle'}
-          aria-label={'@TODO'}
+          aria-label={'Open color edit'}
         >
           <ColorSwatch color={rgbaToColor(color, withAlpha)} />
         </ActionIcon>

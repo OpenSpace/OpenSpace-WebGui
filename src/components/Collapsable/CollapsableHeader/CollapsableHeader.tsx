@@ -27,7 +27,7 @@ export function CollapsableHeader({
       <ActionIcon
         variant={'transparent'}
         onClick={toggle}
-        aria-label={`${expanded ? 'expand' : 'close'} ${title}`}
+        aria-label={`${expanded ? 'Open' : 'Close'} ${title}`}
       >
         {expanded ? (
           <ChevronDownIcon size={IconSize.xs} />

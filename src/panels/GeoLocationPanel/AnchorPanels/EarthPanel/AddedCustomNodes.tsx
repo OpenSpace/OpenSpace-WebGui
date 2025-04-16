@@ -23,7 +23,7 @@ export function AddedCustomNodes({ addedNodes, removeFocusNode }: Props) {
             color={'red'}
             flex={0}
             onClick={() => removeFocusNode(identifier)}
-            aria-label={`Remove node ${identifier}`}
+            aria-label={`Remove node: ${identifier}`}
           >
             <MinusIcon />
           </ActionIcon>

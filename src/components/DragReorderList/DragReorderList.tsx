@@ -71,7 +71,7 @@ export function DragReorderList<T>({
                     <ActionIcon
                       style={{ cursor: 'grab' }}
                       {...item.dragHandleProps}
-                      aria-label={'Move item up or down (keyboard control not suppored)'}
+                      aria-label={'Move item up or down (keyboard control not supported)'}
                     >
                       <DragHandleIcon />
                     </ActionIcon>
