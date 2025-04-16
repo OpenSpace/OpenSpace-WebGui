@@ -568,7 +568,7 @@ export interface openspace {
    * Sets all property(s) identified by the URI (with potential wildcards) in the first argument. The second argument can be any type, but it has to match the type that the property (or properties) expect. If the third is not present or is '0', the value changes instantly, otherwise the change will take that many seconds and the value is interpolated at each step in between. The fourth parameter is an optional easing function if a 'duration' has been specified. If 'duration' is 0, this parameter value is ignored. Otherwise, it can be one of many supported easing functions. See easing.h for available functions. The fifth argument is another Lua script that will be executed when the interpolation provided in parameter 3 finishes.
 The URI is interpreted using a wildcard in which '*' is expanded to '(.*)' and bracketed components '{ }' are interpreted as group tag names. Then, the passed value will be set on all properties that fit the regex + group name combination.
    */
-  setPropertyValue: () => Promise<void>
+  setPropertyValue: (uri: string, value: any, duration?: number, easingFunction?: string, script?: string) => Promise<void>
   /**
    * Sets the property identified by the URI in the first argument. The second argument can be any type, but it has to match the type that the property expects. If the third is not present or is '0', the value changes instantly, otherwise the change will take that many seconds and the value is interpolated at each step in between. The fourth parameter is an optional easing function if a 'duration' has been specified. If 'duration' is 0, this parameter value is ignored. Otherwise, it has to be one of the easing functions defined in the list below. This is the same as calling the setValue method and passing 'single' as the fourth argument to setPropertyValue. The fifth argument is another Lua script that will be executed when the interpolation provided in parameter 3 finishes.
  Avaiable easing functions: Linear, QuadraticEaseIn, QuadraticEaseOut, QuadraticEaseInOut, CubicEaseIn, CubicEaseOut, CubicEaseInOut, QuarticEaseIn, QuarticEaseOut, QuarticEaseInOut, QuinticEaseIn, QuinticEaseOut, QuinticEaseInOut, SineEaseIn, SineEaseOut, SineEaseInOut, CircularEaseIn, CircularEaseOut, CircularEaseInOut, ExponentialEaseIn, ExponentialEaseOut, ExponentialEaseInOut, ElasticEaseIn, ElasticEaseOut, ElasticEaseInOut, BounceEaseIn, BounceEaseOut, BounceEaseInOut
@@ -1507,6 +1507,14 @@ By default, the reference frame will be picked based on whether the orbital navi
 \\param joystickName the name for the joystick or game controller \\param axis the joystick axis for which to set the deadzone \\param deadzone the new deadzone value
    */
   setAxisDeadZone: (joystickName: string, axis: integer, deadzone: number) => Promise<void>
+  /**
+   * Set the current focus node for the navigation, or re-focus on it if it was already the focus node.
+
+Per default, the camera will retarget to center the focus node in the view. The velocities will also be reset so that the camera stops moving after any retargetting is done. However, both of these behaviors may be skipped using the optional arguments.
+
+\\param identifier The identifier of the scene graph node to focus \\param shouldRetarget If true, retarget the camera to look at the focus node \\param shouldResetVelocities If true, reset the camera velocities so that the camera stops after its done retargetting (or immediately if retargetting is not done)
+   */
+  setFocus: (identifier: string, shouldRetarget?: boolean, shouldResetVelocities?: boolean) => Promise<void>
   /**
    * Set the camera position from a provided [NavigationState](#core_navigation_state).
 

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { ActionIcon, Box, Button, Divider, Group, Text, TextInput } from '@mantine/core';
 
-import { useGetPropertyOwner, useOpenSpaceApi } from '@/api/hooks';
+import { useOpenSpaceApi } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { AddPhotoIcon, MinusIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { Identifier, Uri } from '@/types/types';
@@ -20,7 +21,7 @@ export function ScreenSpaceRenderablePanel() {
   const [slideName, setSlideName] = useState('');
   const [slideURL, setSlideURL] = useState('');
   const luaApi = useOpenSpaceApi();
-  const screenSpacePropertyOwner = useGetPropertyOwner(ScreenSpaceKey);
+  const screenSpacePropertyOwner = usePropertyOwner(ScreenSpaceKey);
 
   const renderables = screenSpacePropertyOwner?.subowners ?? [];
   const isButtonDisabled = !slideName || !slideURL;
@@ -94,7 +95,7 @@ export function ScreenSpaceRenderablePanel() {
             wrap={'nowrap'}
             align={'top'}
           >
-            <Box>
+            <Box flex={1}>
               <PropertyOwner uri={uri} />
             </Box>
             <ActionIcon

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
 import { ActionIcon, Box, Group, MantineSpacing } from '@mantine/core';
 
+import { usePropListeningState } from '@/hooks/util';
 import { DragHandleIcon } from '@/icons/icons';
 
 export interface OnDragEndProps<T> {
@@ -30,11 +30,7 @@ export function DragReorderList<T>({
   dragHandlePosition = 'left',
   gap = 'xs'
 }: Props<T>) {
-  const [localCache, setLocalCache] = useState(data);
-
-  useEffect(() => {
-    setLocalCache(data);
-  }, [data]);
+  const { value: localCache, setValue: setLocalCache } = usePropListeningState(data);
 
   async function handleDragEnd(result: DropResult<string>) {
     if (!result.destination || result.source.index === result.destination.index) {
@@ -42,7 +38,7 @@ export function DragReorderList<T>({
       return;
     }
     // Deep copy the old array
-    const updatedData = [...data];
+    const updatedData = [...localCache];
     // Create the new data list
     const [movedItem] = updatedData.splice(result.source.index, 1);
     updatedData.splice(result.destination.index, 0, movedItem);

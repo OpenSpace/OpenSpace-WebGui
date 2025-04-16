@@ -1,4 +1,4 @@
-import { PropertyVisibilityNumber, TransformType } from '@/types/enums';
+import { PropertyVisibilityNumber } from '@/types/enums';
 import {
   Identifier,
   Properties,
@@ -9,15 +9,7 @@ import {
   Uri
 } from '@/types/types';
 
-import {
-  InterestingTagKey,
-  LayersSuffixKey,
-  RenderableSuffixKey,
-  RotationKey,
-  ScaleKey,
-  ScenePrefixKey,
-  TranslationKey
-} from './keys';
+import { ScenePrefixKey } from './keys';
 
 // TODO: Maybe move some of these to a "uriHelpers" file?
 export function identifierFromUri(uri: Uri): Identifier {
@@ -38,7 +30,7 @@ export function sgnIdentifierFromSubownerUri(uri: Uri): Identifier {
 }
 
 export function sgnRenderableUri(sceneGraphNodeUri: Uri): Uri {
-  return `${sceneGraphNodeUri}${RenderableSuffixKey}`;
+  return `${sceneGraphNodeUri}.Renderable`;
 }
 
 export function enabledPropertyUri(propertyOwnerUri: Uri): Uri {
@@ -53,7 +45,7 @@ export function displayName(propertyOwner: PropertyOwner): string {
   return propertyOwner.name ?? propertyOwner.identifier ?? propertyOwner.uri;
 }
 
-export function sgnUri(identifier: Identifier): Uri {
+export function sgnUri(identifier: Identifier | undefined): Uri {
   return `${ScenePrefixKey}${identifier}`;
 }
 
@@ -61,37 +53,6 @@ export function sgnUri(identifier: Identifier): Uri {
 export function removeLastWordFromUri(uri: Uri): Uri {
   const index = uri.lastIndexOf('.');
   return index === -1 ? uri : uri.substring(0, index);
-}
-
-export function getSgnRenderable(
-  sceneGraphNode: PropertyOwner,
-  propertyOwners: PropertyOwners
-): PropertyOwner | undefined {
-  return propertyOwners[sgnRenderableUri(sceneGraphNode.uri)];
-}
-
-export function getSgnTransform(
-  sceneGraphNode: PropertyOwner,
-  transformType: TransformType,
-  propertyOwners: PropertyOwners
-): PropertyOwner | undefined {
-  switch (transformType) {
-    case TransformType.Scale:
-      return propertyOwners[`${sceneGraphNode.uri}.${ScaleKey}`];
-    case TransformType.Translation:
-      return propertyOwners[`${sceneGraphNode.uri}.${TranslationKey}`];
-    case TransformType.Rotation:
-      return propertyOwners[`${sceneGraphNode.uri}.${RotationKey}`];
-    default:
-      return undefined;
-  }
-}
-
-export function hasInterestingTag(
-  uri: Uri,
-  propertyOwners: PropertyOwners
-): boolean | undefined {
-  return propertyOwners[uri]?.tags.some((tag) => tag.includes(InterestingTagKey));
 }
 
 export function guiOrderingNumber(uri: Uri, properties: Properties): number | undefined {
@@ -107,7 +68,15 @@ export function isSceneGraphNode(uri: Uri): boolean {
 }
 
 export function isRenderable(uri: Uri): boolean {
-  return uri.endsWith(RenderableSuffixKey);
+  return uri.endsWith('.Renderable');
+}
+
+export function isSgnTransform(uri: Uri): boolean {
+  const isThirdLevel = (uri.match(/\./g) || []).length == 2;
+  return (
+    isThirdLevel &&
+    (uri.endsWith('.Scale') || uri.endsWith('.Translation') || uri.endsWith('.Rotation'))
+  );
 }
 
 export function isTopLevelPropertyOwner(uri: Uri): boolean {
@@ -115,32 +84,45 @@ export function isTopLevelPropertyOwner(uri: Uri): boolean {
 }
 
 export function isGlobe(renderableUri: Uri, properties: Properties): boolean {
-  return (
-    renderableUri.endsWith(RenderableSuffixKey) &&
-    properties[`${renderableUri}.Type`]?.value === 'RenderableGlobe'
-  );
+  return properties[`${renderableUri}.Type`]?.value === 'RenderableGlobe';
 }
 
-export function isGlobeLayersUri(uri: Uri, properties: Properties): boolean {
-  const isLayers = uri.endsWith(LayersSuffixKey);
+export function isGlobeLayersUri(uri: Uri, properties?: Properties): boolean {
+  const isLayers = uri.endsWith('.Renderable.Layers');
   if (!isLayers) {
     return false;
   }
-  // The renderable is the parent of the Layers property owner
-  const renderableUri = uri.replace(LayersSuffixKey, '');
-  return isGlobe(renderableUri, properties);
+
+  // If we passed in properties, check if the parent renderable is a globe (beacuse we
+  // can). Otherwise, assume it is
+  if (properties) {
+    const renderableUri = removeLastWordFromUri(uri);
+    return isGlobe(renderableUri, properties);
+  }
+
+  return true;
 }
 
-export function isPropertyOwnerHidden(uri: Uri, properties: Properties) {
-  const isHidden = properties[`${uri}.GuiHidden`]?.value as boolean | undefined;
-  return isHidden || false;
+export function isGlobeLayer(uri: Uri): boolean {
+  // The parent of the layer is the layer group
+  const layerGroupUri = removeLastWordFromUri(uri);
+  // The parent of the layer group should be the layers property owner
+  const layersUri = removeLastWordFromUri(layerGroupUri);
+  return isGlobeLayersUri(layersUri);
 }
 
-export function isSceneGraphNodeVisible(uri: Uri, properties: Properties): boolean {
-  const renderableUri = sgnRenderableUri(uri);
-  const enabledValue = properties[enabledPropertyUri(renderableUri)]?.value as boolean;
-  const fadeValue = properties[fadePropertyUri(renderableUri)]?.value as number;
+export function isPropertyOwnerActive(uri: Uri, properties: Properties): boolean {
+  const enabledValue = properties[enabledPropertyUri(uri)]?.value as boolean | undefined;
+  const fadeValue = properties[fadePropertyUri(uri)]?.value as number | undefined;
   return checkVisiblity(enabledValue, fadeValue) || false;
+}
+
+/**
+ * Is the SGN currently visible, based on its enabled and fade properties?
+ */
+export function isSgnVisible(uri: Uri, properties: Properties): boolean {
+  const renderableUri = sgnRenderableUri(uri);
+  return isPropertyOwnerActive(renderableUri, properties);
 }
 
 // Visible means that the object is enabled, based on the values of its enabled and fade
@@ -203,15 +185,4 @@ export function hasVisibleChildren(
   }
 
   return false;
-}
-
-/**
- * Get the Gui Path for a specific scene graph node, if it exists.
- */
-export function getGuiPath(sgnUri: Uri, properties: Properties): string | undefined {
-  const guiPath = properties[`${sgnUri}.GuiPath`]?.value;
-  if (guiPath !== undefined && typeof guiPath !== 'string') {
-    throw new Error(`GuiPath property for '${sgnUri}' is not a string`);
-  }
-  return guiPath as string | undefined;
 }

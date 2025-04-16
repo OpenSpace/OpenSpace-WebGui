@@ -8,6 +8,7 @@ export default defineConfig({
     alias: {
       '@/api': '/src/api',
       '@/components': '/src/components',
+      '@/hooks': '/src/hooks',
       '@/icons': '/src/icons',
       '@/panels': '/src/panels',
       '@/public': '/public',
@@ -20,6 +21,7 @@ export default defineConfig({
   server: {
     port: 4670
   },
+  base: './',
   build: {
     rollupOptions: {
       output: {

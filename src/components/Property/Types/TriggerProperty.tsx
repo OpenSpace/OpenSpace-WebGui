@@ -1,26 +1,27 @@
 import { Button, Group } from '@mantine/core';
 
+import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { PropertyProps } from '@/components/Property/types';
+import { usePropertyDescription, useTriggerProperty } from '@/hooks/properties';
 
-interface Props {
-  name: string;
-  description: string;
-  disabled: boolean;
-  setPropertyValue: (newValue: null) => void;
-}
+export function TriggerProperty({ uri, readOnly }: PropertyProps) {
+  const triggerFunction = useTriggerProperty(uri);
+  const description = usePropertyDescription(uri);
 
-export function TriggerProperty({
-  name,
-  description,
-  disabled,
-  setPropertyValue
-}: Props) {
+  if (!description) {
+    return <></>;
+  }
+
   return (
     <Group>
-      <Button onClick={() => setPropertyValue(null)} disabled={disabled}>
-        {name}
+      <Button onClick={triggerFunction} disabled={readOnly}>
+        {description.name}
       </Button>
-      <InfoBox text={description} />
+      <InfoBox>
+        {description.description}
+        <CopyUriButton uri={uri} />
+      </InfoBox>
     </Group>
   );
 }

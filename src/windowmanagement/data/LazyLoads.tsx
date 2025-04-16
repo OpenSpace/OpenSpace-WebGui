@@ -21,9 +21,9 @@ export const GeoLocationPanel = lazy(() =>
     default: module.GeoLocationPanel
   }))
 );
-export const KeyBindsPanel = lazy(() =>
+export const KeybindsPanel = lazy(() =>
   import('@/panels/KeybindsPanel/KeybindsPanel').then((module) => ({
-    default: module.KeyBindsPanel
+    default: module.KeybindsPanel
   }))
 );
 export const MissionsPanel = lazy(() =>
@@ -31,9 +31,9 @@ export const MissionsPanel = lazy(() =>
     default: module.MissionsPanel
   }))
 );
-export const OriginPanel = lazy(() =>
-  import('@/panels/OriginPanel/OriginPanel').then((module) => ({
-    default: module.OriginPanel
+export const NavigationPanel = lazy(() =>
+  import('@/panels/NavigationPanel/NavigationPanel').then((module) => ({
+    default: module.NavigationPanel
   }))
 );
 export const Scene = lazy(() =>
@@ -65,5 +65,10 @@ export const TimePanel = lazy(() =>
 export const UserPanelsPanel = lazy(() =>
   import('@/panels/UserPanelsPanel/UserPanelsPanel').then((module) => ({
     default: module.UserPanelsPanel
+  }))
+);
+export const GettingStartedPanel = lazy(() =>
+  import('@/panels/GettingStartedPanel/GettingStartedPanel').then((module) => ({
+    default: module.GettingStartedPanel
   }))
 );

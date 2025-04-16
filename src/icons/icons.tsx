@@ -4,6 +4,8 @@ export {
   BsThreeDotsVertical as VerticalDotsIcon
 } from 'react-icons/bs';
 export {
+  FaArrowLeft as ArrowLeftIcon,
+  FaArrowRight as ArrowRightIcon,
   FaHome as HomeIcon,
   FaMinus as MinusIcon,
   FaPlus as PlusIcon,
@@ -30,6 +32,8 @@ export {
   MdArrowBack as BackArrowIcon,
   MdCalendarMonth as CalendarIcon,
   MdCancel as CancelIcon,
+  MdCheckBox as CheckBoxCheckedIcon,
+  MdCheckBoxOutlineBlank as CheckBoxUncheckedIcon,
   MdExpandMore as ChevronDownIcon,
   MdChevronLeft as ChevronLeftIcon,
   MdChevronRight as ChevronRightIcon,
@@ -70,8 +74,9 @@ export {
   MdRocketLaunch as RocketLaunchIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
+  MdSunny as SunIcon,
   MdTimer as TimerIcon,
-  MdOutlineCategory as TreeViewIcon,
+  MdArrowUpward as UpArrowIcon,
   MdVideocam as VideocamIcon,
   MdOutlineVisibility as VisibilityIcon,
   MdWater as WaterIcon,
@@ -79,6 +84,16 @@ export {
   MdZoomOut as ZoomOutIcon,
   MdZoomOutMap as ZoomOutMapIcon
 } from 'react-icons/md';
-export { PiBookOpenText as BookIcon } from 'react-icons/pi';
+export {
+  PiBookOpenText as BookIcon,
+  PiMouseLeftClickThin as LeftClickMouseIcon,
+  PiMouseRightClickThin as RightClickMouseIcon,
+  PiMouseMiddleClickThin as ScrollClickMouseIcon
+} from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
+export {
+  TbClock as ClockIcon,
+  TbClockX as ClockOffIcon,
+  TbCube as SceneIcon
+} from 'react-icons/tb';
 export { VscFeedback as FeedbackIcon } from 'react-icons/vsc';

@@ -1,4 +1,5 @@
 import { Property } from '@/components/Property/Property';
+import { AdditionalData } from '@/components/Property/types';
 
 import { PropertyVisibilityNumber } from './enums';
 
@@ -13,10 +14,12 @@ export interface Action {
   documentation: string;
 }
 
+export type KeybindModifiers = ('super' | 'alt' | 'shift' | 'control')[];
+
 export interface Keybind {
   action: string;
   key: string;
-  modifiers: ('super' | 'alt' | 'shift' | 'control')[];
+  modifiers: KeybindModifiers;
 }
 
 export type ActionOrKeybind = Action | Keybind;
@@ -26,6 +29,31 @@ export interface SemanticVersion {
   minor: number;
   patch: number;
 }
+
+// The property owner data we get from OpenSpace is different from what we want to store
+// in the redux state, hence this local owner type to get proper ts highlighting when
+// converting the data
+export type OpenSpacePropertyOwner = {
+  description: string;
+  guiName: string;
+  identifier: Identifier;
+  properties: OpenSpaceProperty[];
+  subowners: OpenSpacePropertyOwner[];
+  tag: string[];
+  uri: Uri;
+};
+
+export type OpenSpaceProperty = {
+  Description: {
+    AdditionalData: AdditionalData;
+    Identifier: Identifier;
+    MetaData: PropertyMetaData;
+    Name: string;
+    Type: string; // TODO: define these as property types? i.e., boolproperty | stringproperty etc
+    description: string;
+  };
+  Value: string | number | number[] | boolean;
+};
 
 export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
 
@@ -40,9 +68,7 @@ export interface PropertyMetaData {
 }
 
 export interface PropertyDetails {
-  // TODO: ylvse (2025-02-17): create the type for additionalData
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  additionalData: any;
+  additionalData: AdditionalData;
   identifier: Identifier;
   metaData: PropertyMetaData;
   name: string;
@@ -50,10 +76,11 @@ export interface PropertyDetails {
   description: string;
 }
 
-export type PropertyValue = string | number | number[] | boolean | null;
+export type PropertyValue = string | string[] | number | number[] | boolean | null;
+
 export interface Property {
   description: PropertyDetails;
-  value: PropertyValue; // TODO: investigate if these are all the values we can have
+  value: PropertyValue;
   uri: Uri;
 }
 
@@ -79,6 +106,15 @@ export interface PropertyOwners {
   [key: Uri]: PropertyOwner | undefined;
 }
 
+export interface SceneGraphNodeGuiSettings {
+  [key: Uri]: {
+    path: string;
+    isHidden: boolean;
+    isFocusable: boolean;
+    guiOrderingNumber: number | undefined;
+  };
+}
+
 export type Group = {
   subgroups: string[]; // group paths
   propertyOwners: Uri[];
@@ -92,3 +128,15 @@ export type CustomGroupOrdering = {
   // The value is a list of node names in the order they should be displayed
   [key: string]: string[] | undefined;
 };
+
+// This type makes it possible to require that at least one (or all) of
+// the optional properties in an interface are required.
+// Code found here:
+// https://stackoverflow.com/questions/40510611/typescript-interface-require-one-of-two-properties-to-exist
+export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
+  T,
+  Exclude<keyof T, Keys>
+> &
+  {
+    [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
+  }[Keys];

@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import { actionsReducer } from './actions/actionsSlice';
+import { cameraReducer } from './camera/cameraSlice';
 import { cameraPathReducer } from './camerapath/cameraPathSlice';
 import { connectionReducer } from './connection/connectionSlice';
 import { documentationReducer } from './documentation/documentationSlice';
@@ -10,6 +11,7 @@ import { flightControllerReducer } from './flightcontroller/flightControllerSlic
 import { groupsReducer } from './groups/groupsSlice';
 import { localReducer } from './local/localSlice';
 import { missionsReducer } from './missions/missionsSlice';
+import { profileReducer } from './profile/profileSlice';
 import { propertiesReducer } from './propertytree/properties/propertiesSlice';
 import { propertyOwnersReducer } from './propertytree/propertyowner/propertyOwnerSlice';
 import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
@@ -22,6 +24,7 @@ import { listenerMiddleware } from './listenerMiddleware';
 export const store = configureStore({
   reducer: {
     actions: actionsReducer,
+    camera: cameraReducer,
     cameraPath: cameraPathReducer,
     connection: connectionReducer,
     documentation: documentationReducer,
@@ -31,6 +34,7 @@ export const store = configureStore({
     groups: groupsReducer,
     local: localReducer,
     missions: missionsReducer,
+    profile: profileReducer,
     properties: propertiesReducer,
     propertyOwners: propertyOwnersReducer,
     sessionRecording: sessionRecordingReducer,

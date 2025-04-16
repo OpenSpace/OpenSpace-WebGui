@@ -1,30 +1,59 @@
-import { ValueList } from './ViewOptions/DefaultValueList';
-import { MinMaxRange } from './ViewOptions/MinMaxRange';
+import {
+  AdditionalDataVectorMatrix,
+  PropertyProps,
+  ViewOptionsVector
+} from '@/components/Property/types';
+import { useGenericVectorProperty, usePropertyDescription } from '@/hooks/properties';
 
-export interface VectorPropertyProps {
-  name: string;
-  description: string;
-  disabled: boolean;
-  setPropertyValue: (newValue: number[]) => void;
-  value: number[];
-  additionalData: {
-    Exponent: number; // TODO: handle the exponent
-    MaximumValue: number[];
-    MinimumValue: number[];
-    SteppingValue: number[];
-  };
-  viewOptions: {
-    Color?: boolean;
-    MinMaxRange?: boolean;
-  };
+import { ColorView } from './ViewOptions/ColorView';
+import { MinMaxRangeView } from './ViewOptions/MinMaxRange';
+import { VectorDefaultView } from './ViewOptions/VectorDefaultView';
+
+interface Props extends PropertyProps {
+  isInt?: boolean;
 }
 
-export function VectorProperty(props: VectorPropertyProps) {
-  const { value, viewOptions } = props;
+export function VectorProperty({ uri, isInt = false, readOnly }: Props) {
+  const [value, setPropertyValue] = useGenericVectorProperty(uri);
+  const description = usePropertyDescription(uri);
 
-  if (value.length === 2 && viewOptions.MinMaxRange) {
-    return <MinMaxRange {...props} />;
+  if (!description || !value) {
+    return <></>;
   }
 
-  return <ValueList {...props} />;
+  const viewOptions = description.metaData.ViewOptions as ViewOptionsVector;
+  const additionalData = description.additionalData as AdditionalDataVectorMatrix;
+
+  if (viewOptions.Color) {
+    return (
+      <ColorView
+        value={value}
+        setPropertyValue={setPropertyValue}
+        additionalData={additionalData}
+        readOnly={readOnly}
+        isInt={isInt}
+      />
+    );
+  }
+
+  if (viewOptions.MinMaxRange) {
+    return (
+      <MinMaxRangeView
+        value={value}
+        setPropertyValue={setPropertyValue}
+        additionalData={additionalData}
+        disabled={readOnly}
+      />
+    );
+  }
+
+  return (
+    <VectorDefaultView
+      disabled={readOnly}
+      setPropertyValue={setPropertyValue}
+      value={value}
+      additionalData={additionalData}
+      isInt={isInt}
+    />
+  );
 }

@@ -1,16 +1,16 @@
-import { Kbd, Menu, Text } from '@mantine/core';
+import { Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
-import { useGetBoolPropertyValue, useOpenSpaceApi } from '@/api/hooks';
-import { AddFileIcon, ConsoleIcon, ExitAppIcon } from '@/icons/icons';
+import { useOpenSpaceApi } from '@/api/hooks';
+import { useBoolProperty } from '@/hooks/properties';
+import { ConsoleIcon, ExitAppIcon } from '@/icons/icons';
 
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function FileMenu() {
   const luaApi = useOpenSpaceApi();
 
-  const [isConsoleVisible, setIsConsoleVisible] =
-    useGetBoolPropertyValue('LuaConsole.IsVisible');
+  const [isConsoleVisible, setIsConsoleVisible] = useBoolProperty('LuaConsole.IsVisible');
 
   function toggleLuaConsole() {
     setIsConsoleVisible(!isConsoleVisible);
@@ -25,22 +25,14 @@ export function FileMenu() {
       onConfirm: () => luaApi?.toggleShutdown()
     });
   }
+
   return (
     <TopBarMenuWrapper targetTitle={'File'}>
-      <Menu.Item leftSection={<AddFileIcon />}>Add Asset</Menu.Item>
-      <Menu.Item
-        onClick={toggleLuaConsole}
-        leftSection={<ConsoleIcon />}
-        rightSection={<Kbd>~</Kbd>}
-      >
+      <Menu.Item onClick={toggleLuaConsole} leftSection={<ConsoleIcon />}>
         Toggle Console
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item
-        onClick={toggleShutdown}
-        leftSection={<ExitAppIcon />}
-        rightSection={<Kbd>Esc</Kbd>}
-      >
+      <Menu.Item onClick={toggleShutdown} leftSection={<ExitAppIcon />}>
         Quit OpenSpace
       </Menu.Item>
     </TopBarMenuWrapper>

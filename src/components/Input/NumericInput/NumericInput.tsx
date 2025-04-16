@@ -1,7 +1,9 @@
 import { useRef } from 'react';
-import { NumberInput, NumberInputProps } from '@mantine/core';
+import { MdWarning } from 'react-icons/md';
+import { NumberInput, NumberInputProps, ThemeIcon, Tooltip } from '@mantine/core';
 
-import { usePropListeningState } from '@/api/hooks';
+import { usePropListeningState } from '@/hooks/util';
+import { IconSize } from '@/types/enums';
 
 import { NumberStepControls } from './NumberStepControls';
 
@@ -11,6 +13,9 @@ interface Props extends NumberInputProps {
   // The value of the input. In contrast to the original NumberInput, we here only allow
   // numbers, not strings
   value: number;
+  // An function that based on the current value can be used to display and alternative
+  // string. Only applied when the value is not being edited
+  valueLabel?: (value: number | undefined) => string;
 }
 
 /**
@@ -23,19 +28,34 @@ export function NumericInput({
   disabled = false,
   hideControls,
   onEnter = () => {},
+  onChange,
+  onBlur,
   value,
   min,
   max,
   step,
+  valueLabel,
   ...props
 }: Props) {
-  const { value: storedValue, set: setStoredValue } = usePropListeningState<
-    number | undefined
-  >(value);
+  const {
+    value: storedValue,
+    setValue: setStoredValue,
+    setIsEditing,
+    isEditing
+  } = usePropListeningState<number | undefined>(value);
 
   const shouldClamp = props.clampBehavior === 'strict';
-  const shouldClampMin = shouldClamp && min !== undefined;
-  const shouldClampMax = shouldClamp && max !== undefined;
+
+  const hasMin = min !== undefined;
+  const hasMax = max !== undefined;
+  const hasValue = storedValue !== undefined;
+
+  const shouldClampMin = shouldClamp && hasMin;
+  const shouldClampMax = shouldClamp && hasMax;
+
+  const isBelowMin = hasValue && hasMin && storedValue < min;
+  const isAboveMax = hasValue && hasMax && storedValue > max;
+  const isOutsideRange = isBelowMin || isAboveMax;
 
   // We only want to reset the value on blur if the user didn't hit ENTER.
   // This ref keeps track of that
@@ -60,11 +80,13 @@ export function NumericInput({
     }
   }
 
-  function onBlur() {
+  function handleBlur(event: React.FocusEvent<HTMLInputElement, Element>) {
     if (shouldResetOnBlurRef.current === true) {
       resetValue();
     }
     shouldResetOnBlurRef.current = true;
+    setIsEditing(false);
+    onBlur?.(event);
   }
 
   function onStep(change: number) {
@@ -81,18 +103,40 @@ export function NumericInput({
     onEnter(newValue);
   }
 
+  function handleChange(value: number | string): void {
+    setIsEditing(true);
+    onChange?.(value);
+  }
+
+  const shouldFormatValue = !isEditing && valueLabel !== undefined;
+
+  // @TODO (2025-02-18, emmbr): This input type does not support scientific notation...
   return (
     <NumberInput
-      value={storedValue === undefined ? '' : storedValue}
+      value={shouldFormatValue ? valueLabel(value) : storedValue}
       onKeyUp={onKeyUp}
-      onBlur={onBlur}
-      onValueChange={(newValue) => setStoredValue(newValue.floatValue)}
+      onBlur={handleBlur}
+      onValueChange={(newValue) => {
+        setStoredValue(newValue.floatValue);
+      }}
+      onChange={handleChange}
+      onFocus={() => setIsEditing(true)}
       disabled={disabled}
       label={label}
       min={min}
       max={max}
       step={step}
       hideControls={hideControls}
+      leftSection={
+        isOutsideRange &&
+        !isEditing && (
+          <Tooltip label={`Value outside range [${min}, ${max}]`}>
+            <ThemeIcon color={'orange.4'} variant={'transparent'}>
+              <MdWarning size={IconSize.xs} />
+            </ThemeIcon>
+          </Tooltip>
+        )
+      }
       rightSection={
         !hideControls && (
           <NumberStepControls
@@ -102,6 +146,9 @@ export function NumericInput({
             onChange={onStep}
           />
         )
+      }
+      error={
+        isOutsideRange && isEditing ? `Value outside range [${min}, ${max}]` : undefined
       }
       {...props}
       // TODO: Provide error on invalid input

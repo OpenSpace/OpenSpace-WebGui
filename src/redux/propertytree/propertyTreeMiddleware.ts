@@ -5,15 +5,16 @@ import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { refreshGroups } from '@/redux/groups/groupsSliceMiddleware';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import {
-  Identifier,
+  OpenSpaceProperty,
+  OpenSpacePropertyOwner,
   Properties,
   Property,
-  PropertyMetaData,
   PropertyOwner,
   PropertyOwners,
   Uri
 } from '@/types/types';
 import { rootOwnerKey } from '@/util/keys';
+import { isGlobeLayer, removeLastWordFromUri } from '@/util/propertyTreeHelpers';
 
 import {
   addProperties,
@@ -26,6 +27,9 @@ import {
   removePropertyOwners
 } from './propertyowner/propertyOwnerSlice';
 
+// The property tree middleware is designed to populate the react store's
+// copy of the property tree when the frontend is connected to OpenSpace
+
 export const reloadPropertyTree = createAction<void>('propertyTree/reload');
 export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(
   'propertyTree/removeUri'
@@ -34,9 +38,18 @@ export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(
 export const addUriToPropertyTree = createAsyncThunk(
   'propertyTree/addUri',
   async (uri: Uri) => {
-    const response = (await api.getProperty(uri)) as
+    let uriToFetch = uri;
+    // If the uri is to a layer, we want to get the parent property owner.
+    // This is to preserve the order of the layers.
+    if (isGlobeLayer(uri)) {
+      uriToFetch = removeLastWordFromUri(uri);
+    }
+
+    const response = (await api.getProperty(uriToFetch)) as
       | OpenSpaceProperty
       | OpenSpacePropertyOwner;
+
+    // Property Owner
     if ('properties' in response) {
       const { properties, propertyOwners } = flattenPropertyTree(response);
       const propertiesMap: Properties = {};
@@ -52,6 +65,7 @@ export const addUriToPropertyTree = createAsyncThunk(
         propertyOwners: propertyOwnerMap
       };
     } else {
+      // Property
       const result = [convertOsPropertyToProperty(response)];
       const propertiesMap: Properties = {};
       result.forEach((p) => {
@@ -64,34 +78,6 @@ export const addUriToPropertyTree = createAsyncThunk(
     }
   }
 );
-
-// The property tree middleware is designed to populate the react store's
-// copy of the property tree when the frontend is connected to OpenSpace.
-
-// The property owner data we get from OpenSpace is different from what we want to store
-// in the redux state, hence this local owner type to get proper ts highlighting when
-// converting the data.
-type OpenSpacePropertyOwner = {
-  description: string;
-  guiName: string;
-  identifier: Identifier;
-  properties: OpenSpaceProperty[];
-  subowners: OpenSpacePropertyOwner[];
-  tag: string[];
-  uri: Uri;
-};
-
-type OpenSpaceProperty = {
-  Description: {
-    AdditionalData: object;
-    Identifier: Identifier;
-    MetaData: PropertyMetaData;
-    Name: string;
-    Type: string; // TODO: define these as property types? i.e., boolproperty | stringproperty etc
-    description: string;
-  };
-  Value: string | number | number[] | boolean;
-};
 
 /**
  * Utility function to convert an OpenSpace property object to our internal property

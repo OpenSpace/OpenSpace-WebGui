@@ -1,0 +1,3 @@
+.header:hover {
+  background-color: var(--mantine-color-dark-filled-hover);
+}

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
   ActionIcon,
   Button,
@@ -10,38 +9,29 @@ import {
 } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { hasActiveFilters } from '@/hooks/sceneGraphNodes/util';
 import { FilterIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
-import { SceneTreeFilterSettings } from './treeUtil';
+import { sceneTreeFilterDefaults, SceneTreeFilterSettings } from './types';
 
 interface Props {
-  onFilterChange: (filter: SceneTreeFilterSettings) => void;
+  setFilter: (
+    statePartial:
+      | Partial<SceneTreeFilterSettings>
+      | ((currentState: SceneTreeFilterSettings) => Partial<SceneTreeFilterSettings>)
+  ) => void;
+  filter: SceneTreeFilterSettings;
 }
 
-export function SceneTreeFilters({ onFilterChange }: Props) {
-  const [showOnlyVisible, setshowOnlyVisible] = useState(false);
-  const [showHiddenNodes, setShowHiddenNodes] = useState(false);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
+export function SceneTreeFilters({ setFilter, filter }: Props) {
   const tags = useAppSelector((state) => state.groups.tags);
 
   const sortedTags = Array.from(tags).sort();
-  const hasFilters = showOnlyVisible || showHiddenNodes || selectedTags.length > 0;
-
-  // Trigger callback when the filter changes
-  useEffect(() => {
-    onFilterChange({
-      showOnlyVisible,
-      showHiddenNodes,
-      tags: selectedTags
-    });
-  }, [onFilterChange, selectedTags, showHiddenNodes, showOnlyVisible]);
+  const hasFilters = hasActiveFilters({ ...filter }) || filter.showOnlyVisible;
 
   function clearFilters() {
-    setshowOnlyVisible(false);
-    setShowHiddenNodes(false);
-    setSelectedTags([]);
+    setFilter(sceneTreeFilterDefaults);
   }
 
   return (
@@ -61,29 +51,44 @@ export function SceneTreeFilters({ onFilterChange }: Props) {
           <Group>
             <Checkbox
               label={'Show only visible'}
-              checked={showOnlyVisible}
-              onChange={(event) => setshowOnlyVisible(event.currentTarget.checked)}
+              checked={filter.showOnlyVisible}
+              onChange={(event) =>
+                setFilter({ showOnlyVisible: event.currentTarget.checked })
+              }
             />
-            <InfoBox text={'Visible = Enabled and not faded out'} />
+            <InfoBox>Visible = Enabled and not faded out</InfoBox>
+          </Group>
+          <Group>
+            <Checkbox
+              label={'Show only focusable'}
+              checked={filter.onlyFocusable}
+              onChange={(event) =>
+                setFilter({ onlyFocusable: event.currentTarget.checked })
+              }
+            />
+            <InfoBox>
+              Hide scene graph nodes that are not markes as focusable, meaning that they
+              cannot be directly set as the focus node in the scene.
+            </InfoBox>
           </Group>
           <Group>
             <Checkbox
               label={'Show objects with GUI hidden flag'}
-              checked={showHiddenNodes}
-              onChange={(event) => setShowHiddenNodes(event.currentTarget.checked)}
-            />
-            <InfoBox
-              text={
-                'Show scene graph nodes that are marked as hidden in the GUI ' +
-                'part of the asset. These are otherwise hidden in the interface'
+              checked={filter.includeGuiHiddenNodes}
+              onChange={(event) =>
+                setFilter({ includeGuiHiddenNodes: event.currentTarget.checked })
               }
             />
+            <InfoBox>
+              Show scene graph nodes that are marked as hidden in the GUI part of the
+              asset. These are otherwise hidden in the interface.
+            </InfoBox>
           </Group>
           <Title order={3}>Tags</Title>
           <MultiSelect
             data={sortedTags}
-            value={selectedTags}
-            onChange={setSelectedTags}
+            value={filter.tags}
+            onChange={(newTags) => setFilter({ tags: newTags })}
             clearable
             searchable
           />

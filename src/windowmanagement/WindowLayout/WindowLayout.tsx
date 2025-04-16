@@ -1,28 +1,18 @@
-import { useEffect, useState } from 'react';
 import { CloseButton, Stack } from '@mantine/core';
 import DockLayout, { DockContext, LayoutData, PanelData, TabGroup } from 'rc-dock';
 
 import { FlightController } from '@/panels/FlightControlPanel/FlightController';
 import { TaskBar } from '@/panels/Menu/TaskBar/TaskBar';
 import { TopMenuBar } from '@/panels/Menu/TopMenuBar/TopMenuBar';
+import { useAppDispatch } from '@/redux/hooks';
+import { setMenuItemOpen } from '@/redux/local/localSlice';
 
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
-import { menuItemsData } from '../data/MenuItems';
 
 import { useWindowLayoutProvider } from './hooks';
-import { FloatWindowPosition } from './types';
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import './WindowLayout.css';
-
-export type WindowLayoutPosition = 'left' | 'right' | 'float' | 'top';
-
-export interface WindowLayoutOptions {
-  title: string;
-  id: string;
-  position?: WindowLayoutPosition;
-  floatPosition?: FloatWindowPosition;
-}
 
 function createDefaultLayout(): LayoutData {
   return {
@@ -53,7 +43,7 @@ function createDefaultLayout(): LayoutData {
 
 export function WindowLayout() {
   const { ref } = useWindowLayoutProvider();
-  const [visibleMenuItems, setVisibleMenuItems] = useState<string[]>([]);
+  const dispatch = useAppDispatch();
 
   const groups: { [key: string]: TabGroup } = {
     // This is the rc-dock group configuration we use for the transparent window in the
@@ -73,21 +63,22 @@ export function WindowLayout() {
         return (
           <CloseButton
             aria-label={'Close window'}
-            onClick={() => context.dockMove(panelData, null, 'remove')}
+            onClick={() => {
+              context.dockMove(panelData, null, 'remove');
+              // If there are multiple tabs in one panel we need to notify all of them
+              // that they are closing, `onLayoutChange` will only give the ID of the
+              // active tab and not the rest
+              panelData.tabs.forEach((tabData) => {
+                if (tabData.id) {
+                  dispatch(setMenuItemOpen({ id: tabData.id, open: false }));
+                }
+              });
+            }}
           />
         );
       }
     }
   };
-
-  // Populate default visible items for taskbar
-  useEffect(() => {
-    const defaultVisibleMenuItems = menuItemsData
-      .filter((item) => item.defaultVisible)
-      .map((item) => item.componentID);
-
-    setVisibleMenuItems(defaultVisibleMenuItems);
-  }, []);
 
   return (
     <>
@@ -98,10 +89,7 @@ export function WindowLayout() {
           height: '100vh'
         }}
       >
-        <TopMenuBar
-          visibleMenuItems={visibleMenuItems}
-          setVisibleMenuItems={setVisibleMenuItems}
-        />
+        <TopMenuBar />
         <div
           style={{
             flexGrow: 1, // DockLayout takes up remaining space
@@ -119,10 +107,15 @@ export function WindowLayout() {
               bottom: 0,
               left: 0
             }}
+            onLayoutChange={(_, currentTabID, direction) => {
+              if (direction === 'remove' && currentTabID) {
+                dispatch(setMenuItemOpen({ id: currentTabID, open: false }));
+              }
+            }}
           />
         </div>
 
-        <TaskBar visibleMenuItems={visibleMenuItems}></TaskBar>
+        <TaskBar />
       </Stack>
     </>
   );

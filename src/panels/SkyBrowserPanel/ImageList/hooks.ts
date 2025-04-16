@@ -4,7 +4,7 @@ import { useBrowserCoords, useBrowserFov, useCartesianDirection } from '../hooks
 
 import { DistanceSortThreshold, euclidianDistance, isWithinFOV } from './util';
 
-export function useGetImagesInView(id: string) {
+export function useImagesInView(id: string) {
   const { ra, dec } = useBrowserCoords(id);
   const fov = useBrowserFov(id);
   const viewDirection = useCartesianDirection(id);

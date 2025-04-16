@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { AdditionalData } from '@/components/Property/types';
 import { PropertyVisibilityNumber } from '@/types/enums';
 import { Properties, PropertyOverview, PropertyValue, Uri } from '@/types/types';
 
@@ -16,16 +17,6 @@ const initialState: PropertiesState = {
   // that doesn't update when the values of properties update
   propertyOverview: {}
 };
-
-// function updateProperty(
-//   state,
-//   uri: Uri,
-//   value: PropertyValue
-// ) {
-//   if (state.properties[uri]) {
-//     state.properties[uri].value = value;
-//   }
-// }
 
 export const propertiesSlice = createSlice({
   name: 'properties',
@@ -75,18 +66,21 @@ export const propertiesSlice = createSlice({
     ) => {
       const { uri, value } = action.payload;
 
-      // TODO: check this return vs the old code
       if (state.properties[uri]) {
         state.properties[uri].value = value;
       }
       return state;
+    },
+    updatePropertyAdditionalData: (
+      state,
+      action: PayloadAction<{ uri: Uri; additionalData: AdditionalData }>
+    ) => {
+      const { uri, additionalData } = action.payload;
 
-      // const newPropertyState = { ...state.properties[action.payload.uri] };
-      // newPropertyState.value = action.payload.value;
-      // return {
-      //   ...state,
-      //   [action.payload.uri]: newPropertyState
-      // };
+      if (state.properties[uri]) {
+        state.properties[uri].description.additionalData = additionalData;
+      }
+      return state;
     }
   }
 });
@@ -97,6 +91,7 @@ export const {
   removeProperties,
   clearProperties,
   setPropertyValue,
+  updatePropertyAdditionalData,
   updatePropertyValue
 } = propertiesSlice.actions;
 

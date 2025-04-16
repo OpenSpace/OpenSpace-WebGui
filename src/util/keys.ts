@@ -6,7 +6,7 @@ export const RotationalFrictionKey =
   'NavigationHandler.OrbitalNavigator.Friction.RotationalFriction';
 export const ZoomFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.ZoomFriction';
 export const RollFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.RollFriction';
-// Origin panel settings
+// Navigation panel settings
 export const ApplyIdleBehaviorOnPathFinishKey =
   'NavigationHandler.PathNavigator.ApplyIdleBehaviorOnFinish';
 export const CameraPathArrivalDistanceFactorKey =
@@ -17,10 +17,9 @@ export const JumpToFadeDurationKey = 'NavigationHandler.JumpToFadeDuration';
 // To get any scene graph node you need ScenePrefix+NodeIdentifier
 export const ScenePrefixKey = 'Scene.';
 
-export const RenderableSuffixKey = '.Renderable';
-export const LayersSuffixKey = '.Layers';
+// @TODO (2024-04-07, emmbr): Remove this key here and from engine - it is no longer used
+// export const InterestingTagKey = 'GUI.Interesting';
 
-export const InterestingTagKey = 'GUI.Interesting';
 export const rootOwnerKey = '__rootOwner';
 export const GeoLocationGroupKey = '/GeoLocation';
 
@@ -46,3 +45,17 @@ export const RenderableKey = 'Renderable';
 export const ScaleKey = 'Scale';
 export const TranslationKey = 'Translation';
 export const RotationKey = 'Rotation';
+
+// Sky browser properties
+export const SkyBrowserAllowCameraRotationKey = 'Modules.SkyBrowser.AllowCameraRotation';
+export const SkyBrowserCameraRotationSpeedKey = 'Modules.SkyBrowser.CameraRotationSpeed';
+export const SkyBrowserTargetAnimationSpeedKey =
+  'Modules.SkyBrowser.TargetAnimationSpeed';
+export const SkyBrowserBrowserAnimationSpeedKey =
+  'Modules.SkyBrowser.BrowserAnimationSpeed';
+export const SkyBrowserHideTargetsBrowsersWithGuiKey =
+  'Modules.SkyBrowser.HideTargetsBrowsersWithGui';
+export const SkyBrowserInverseZoomDirectionKey =
+  'Modules.SkyBrowser.InverseZoomDirection';
+export const SkyBrowserSpaceCraftAnimationTimeKey =
+  'Modules.SkyBrowser.SpaceCraftAnimationTime';

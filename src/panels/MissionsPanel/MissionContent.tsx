@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react';
-import { Box, Button, Group, Switch, Text, Title } from '@mantine/core';
+import { useEffect, useMemo, useState } from 'react';
+import { Button, Checkbox, Group, Text, Title } from '@mantine/core';
 
-import { useSubscribeToTime } from '@/api/hooks';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
+import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 
 import { TimeLine } from './TimeLine/TimeLine';
 import { MissionPhase } from './MissionPhase';
@@ -22,6 +23,21 @@ export function MissionContent({ missionOverview }: Props) {
     type: undefined,
     data: undefined
   });
+
+  // Reset phases when selected mission is changed
+  useEffect(() => {
+    // When the mission is changed, display overview again
+    setDisplayedPhase({
+      type: DisplayType.Overview,
+      data: missionOverview
+    });
+    // Avoid potentially showing information from a previous mission
+    setLastDisplayedPhase({
+      type: DisplayType.Overview,
+      data: missionOverview
+    });
+    setDisplayCurrentPhase(false);
+  }, [missionOverview]);
 
   const now = useSubscribeToTime();
 
@@ -104,14 +120,14 @@ export function MissionContent({ missionOverview }: Props) {
   }
 
   return (
-    <Group wrap={'nowrap'} align={'start'} h={'100%'} gap={0}>
+    <Group wrap={'nowrap'} align={'start'} gap={'xs'}>
       <TimeLine
         allPhasesNested={allPhasesNested}
         displayedPhase={displayedPhase}
         missionOverview={missionOverview}
         setDisplayedPhase={setPhaseManually}
       />
-      <Box px={'md'} h={'100%'} style={{ overflow: 'auto' }}>
+      <ScrollBox px={'md'} h={'100%'}>
         <Group justify={'space-between'} mb={'md'}>
           <Title order={2}>{missionOverview.name}</Title>
           <Button
@@ -123,13 +139,12 @@ export function MissionContent({ missionOverview }: Props) {
           </Button>
         </Group>
         <Group mb={'xs'} gap={'xs'} wrap={'nowrap'}>
-          <Switch checked={displayCurrentPhase} onClick={toggleCurrentPhase} />
+          <Checkbox checked={displayCurrentPhase} onClick={toggleCurrentPhase} />
           <Text>Display current phase</Text>
-          <InfoBox
-            text={
-              'If enabled, the mission phase that is currently happening will be displayed. It will update as time passes.'
-            }
-          />
+          <InfoBox>
+            If enabled, the mission phase that is currently happening will be displayed.
+            It will update as time passes.
+          </InfoBox>
         </Group>
         {displayedPhase.data ? (
           <MissionPhase
@@ -139,7 +154,7 @@ export function MissionContent({ missionOverview }: Props) {
         ) : (
           'No data for the current time range'
         )}
-      </Box>
+      </ScrollBox>
     </Group>
   );
 }

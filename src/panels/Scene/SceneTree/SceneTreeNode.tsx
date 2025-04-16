@@ -1,19 +1,20 @@
 import { useRef } from 'react';
-import { Box, RenderTreeNodePayload, TreeNodeData } from '@mantine/core';
+import { Box, RenderTreeNodePayload } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
 import { CollapsableHeader } from '@/components/Collapsable/CollapsableHeader/CollapsableHeader';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setSceneTreeSelectedNode } from '@/redux/local/localSlice';
-import { isGroupNode } from '@/util/sceneTreeGroupsHelper';
 
 import { useOpenCurrentSceneNodeWindow } from '../hooks';
 import { SceneGraphNodeHeader } from '../SceneGraphNode/SceneGraphNodeHeader';
 
 import { CurrentNodeView } from './CurrentNodeView';
+import { isGroupNode } from './treeUtils';
+import { SceneTreeNodeData } from './types';
 
 interface Props {
-  node: TreeNodeData;
+  node: SceneTreeNodeData;
   expanded: boolean;
 }
 
@@ -29,11 +30,21 @@ export function SceneTreeNodeContent({ node, expanded }: Props) {
 
   // @TODO: Make the text in this component look more clickable, e.g. using hover effects
   return isGroupNode(node) ? (
-    <CollapsableHeader expanded={expanded} title={node.label} />
+    <Box>
+      <CollapsableHeader expanded={expanded} title={node.label} />
+    </Box>
   ) : (
     <Box
-      ml={'xs'}
-      bd={isCurrentNode ? '3px solid var(--mantine-primary-color-filled)' : 'none'}
+      px={'xs'}
+      py={2}
+      style={
+        isCurrentNode
+          ? {
+              borderLeft: 'var(--openspace-border-active)',
+              backgroundColor: 'var(--mantine-color-dark-7)'
+            }
+          : undefined
+      }
     >
       <SceneGraphNodeHeader
         uri={node.value}
@@ -47,6 +58,11 @@ export function SceneTreeNodeContent({ node, expanded }: Props) {
   );
 }
 
+type SceneTreeNodeProps = Pick<
+  RenderTreeNodePayload,
+  'node' | 'expanded' | 'elementProps' | 'tree'
+>;
+
 // This component adds the neccessary props for Mantine tree nodes, which includes styling
 // (indentation at each tree level) and event handling
 export function SceneTreeNode({
@@ -54,7 +70,7 @@ export function SceneTreeNode({
   expanded,
   elementProps,
   tree
-}: RenderTreeNodePayload) {
+}: SceneTreeNodeProps) {
   const { openCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
   const dispatch = useAppDispatch();
 

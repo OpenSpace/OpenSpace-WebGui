@@ -1,10 +1,12 @@
 import { PropsWithChildren } from 'react';
-import { Collapse, Container } from '@mantine/core';
+import { Box, Collapse, MantineStyleProps } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+
+import { IconSize } from '@/types/enums';
 
 import { CollapsableHeader } from './CollapsableHeader/CollapsableHeader';
 
-interface Props extends PropsWithChildren {
+interface Props extends PropsWithChildren, MantineStyleProps {
   // The title of the collapsable content.
   title: React.ReactNode;
   // If true, the content will not transition in or out. Helps with performance.
@@ -22,7 +24,8 @@ export function Collapsable({
   defaultOpen = false,
   leftSection,
   rightSection,
-  children
+  children,
+  ...styleProps
 }: Props) {
   const [open, { toggle }] = useDisclosure(defaultOpen);
 
@@ -34,9 +37,11 @@ export function Collapsable({
         leftSection={leftSection}
         rightSection={rightSection}
         toggle={toggle}
+        {...styleProps}
       />
-      <Collapse in={open} transitionDuration={noTransition ? 0 : 300} my={'xs'}>
-        <Container>{children}</Container>
+      <Collapse in={open} transitionDuration={noTransition ? 0 : 300}>
+        {/* Note that the margin here is set to somewhat align with the header's icon size */}
+        <Box ml={IconSize.md}>{children}</Box>
       </Collapse>
     </>
   );
