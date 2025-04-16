@@ -11,7 +11,7 @@ export function FilterListSearchSettingsMenu<T>({ keys, setKey }: Props<T>) {
   return (
     <Menu position={'right-start'} withArrow closeOnItemClick={false}>
       <Menu.Target>
-        <ActionIcon>
+        <ActionIcon flex={'0 0 auto'}>
           <SettingsIcon />
         </ActionIcon>
       </Menu.Target>
