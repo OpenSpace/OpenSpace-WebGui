@@ -5,6 +5,7 @@ import { SearchResults } from './SearchResults/SearchResults';
 import { FilterListFavorites } from './FilterListFavorites';
 import { FilterListInputField } from './FilterListInputField';
 import { FilterListProvider } from './FilterListProvider';
+import { FilterListSearchSettingsMenu } from './SearchSettingsMenu/FilterListSearchSettingsMenu';
 
 interface Props extends PropsWithChildren {
   isLoading?: boolean;
@@ -22,3 +23,4 @@ export function FilterList({ height = '100%', isLoading, children }: Props) {
 FilterList.InputField = FilterListInputField;
 FilterList.Favorites = FilterListFavorites;
 FilterList.SearchResults = SearchResults;
+FilterList.SearchSettingsMenu = FilterListSearchSettingsMenu;
