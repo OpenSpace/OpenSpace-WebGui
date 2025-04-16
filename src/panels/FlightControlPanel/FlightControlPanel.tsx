@@ -72,7 +72,7 @@ export function FlightControlPanel() {
 
       <Title order={3}>Settings</Title>
       <Text>Friction control</Text>
-      <FrictionControls size={'sm'} gap={'xs'} align={'start'} justify="space-between" />
+      <FrictionControls size={'sm'} gap={'xs'} align={'start'} justify={"space-between"} />
       <Group justify={'space-between'} align={'start'} wrap={'nowrap'}>
         <Text>Input sensitivity</Text>
         <InfoBox>Controls how sensitive the touch and mouse inputs are</InfoBox>

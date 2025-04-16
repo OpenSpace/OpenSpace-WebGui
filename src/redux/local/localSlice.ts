@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { TaskbarItemConfig } from '@/panels/Menu/types';
 import { Uri } from '@/types/types';
+
 import { createDefaultTaskbar } from './util';
 
 export interface LocalState {

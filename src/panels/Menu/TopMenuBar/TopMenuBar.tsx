@@ -2,12 +2,12 @@ import { alpha, Box, Flex, Group, Text } from '@mantine/core';
 
 import { FrictionControls } from '@/components/FrictionControls/FrictionControls';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
+import { useAppSelector } from '@/redux/hooks';
 
 import { FileMenu } from './Menus/FileMenu';
 import { HelpMenu } from './Menus/HelpMenu';
 import { ViewMenu } from './Menus/ViewMenu';
 import { WindowsMenu } from './Menus/WindowsMenu';
-import { useAppSelector } from '@/redux/hooks';
 
 export function TopMenuBar() {
   const name = useAppSelector((state) => state.profile.name);
@@ -36,7 +36,7 @@ export function TopMenuBar() {
           <Text ta={'center'}>Profile: {name}</Text>
         </Box>
         <Box flex={flex}>
-          <FrictionControls size={'xs'} gap={2} mr={'xs'} justify="end" />
+          <FrictionControls size={'xs'} gap={2} mr={'xs'} justify={"end"} />
         </Box>
       </Flex>
     </ScrollBox>

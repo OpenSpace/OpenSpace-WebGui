@@ -2,6 +2,7 @@ import { Button, CheckboxIndicator, Group, Menu, Radio, Stack } from '@mantine/c
 
 import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { AdditionalDataOptions } from '@/components/Property/types';
 import { useOptionProperty, usePropertyDescription } from '@/hooks/properties';
 import {
@@ -22,7 +23,6 @@ import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { useMenuItems, useStoredLayout } from '../../hooks';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
-import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 
 export function ViewMenu() {
   const defaultTaskbar = useAppSelector((state) => state.profile.uiPanelVisibility);
@@ -67,7 +67,7 @@ export function ViewMenu() {
         <Menu.Label pr={0}>
           <Group justify={'space-between'}>
             Toggle Task Bar Items{' '}
-            <Button size="xs" onClick={() => resetTaskbar()}>
+            <Button size={"xs"} onClick={() => resetTaskbar()}>
               Reset
             </Button>
           </Group>
