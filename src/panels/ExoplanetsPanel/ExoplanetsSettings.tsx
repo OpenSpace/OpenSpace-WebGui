@@ -71,7 +71,7 @@ export function ExoplanetsSettings({ hasAddedExoplanets }: Props) {
           />
           <InfoBox>
             Show/Hide the habitable zone visualizations. Setting the value automatically
-            updates the visibility for all added exoplanet systems
+            updates the visibility for all added exoplanet systems.
           </InfoBox>
         </Group>
         <Group>
@@ -85,7 +85,7 @@ export function ExoplanetsSettings({ hasAddedExoplanets }: Props) {
           <InfoBox>
             Show/Hide disc visualization of the uncertainty of the planetary orbits.
             Setting the value automatically updates the visibility for all added exoplanet
-            systems
+            systems.
           </InfoBox>
         </Group>
         <Group>
@@ -99,7 +99,7 @@ export function ExoplanetsSettings({ hasAddedExoplanets }: Props) {
           <InfoBox>
             If true, show a ring with the radius 1 AU around the host star of each system,
             to use for size comparison. Setting the value automatically updates the
-            visibility for all added exoplanet systems
+            visibility for all added exoplanet systems.
           </InfoBox>
         </Group>
       </Stack>
