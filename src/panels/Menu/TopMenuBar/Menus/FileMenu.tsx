@@ -28,11 +28,7 @@ export function FileMenu() {
 
   return (
     <TopBarMenuWrapper targetTitle={'File'}>
-      <Menu.Item
-        onClick={toggleLuaConsole}
-        leftSection={<ConsoleIcon />}
-        rightSection={<Kbd>~</Kbd>}
-      >
+      <Menu.Item onClick={toggleLuaConsole} leftSection={<ConsoleIcon />}>
         Toggle Console
       </Menu.Item>
       <Menu.Divider />
