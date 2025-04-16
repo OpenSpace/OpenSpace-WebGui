@@ -1,4 +1,4 @@
-import { Kbd, Menu, Text } from '@mantine/core';
+import { Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
 import { useOpenSpaceApi } from '@/api/hooks';
