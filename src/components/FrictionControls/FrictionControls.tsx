@@ -11,9 +11,10 @@ interface Props {
   gap?: MantineSpacing;
   align?: React.CSSProperties['alignItems'];
   mr?: MantineSpacing;
+  justify?: React.CSSProperties['justifyContent'];
 }
 
-export function FrictionControls({ size, gap = 'xs', align, mr }: Props) {
+export function FrictionControls({ justify, size, gap = 'xs', align, mr }: Props) {
   const [rotation, setRotation] = useBoolProperty(RotationalFrictionKey);
   const [zoom, setZoom] = useBoolProperty(ZoomFrictionKey);
   const [roll, setRoll] = useBoolProperty(RollFrictionKey);
@@ -31,7 +32,7 @@ export function FrictionControls({ size, gap = 'xs', align, mr }: Props) {
   );
 
   return (
-    <Group justify={'space-between'} wrap={'nowrap'} align={align} mr={mr}>
+    <Group justify={justify} wrap={'nowrap'} align={align} mr={mr}>
       <Group gap={gap}>
         <Chip
           checked={rotation}
