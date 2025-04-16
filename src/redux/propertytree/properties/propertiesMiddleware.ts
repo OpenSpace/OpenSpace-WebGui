@@ -3,19 +3,20 @@ import { throttle } from 'lodash';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
-import { AdditionalData } from '@/components/Property/types';
 import { onCloseConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { RootState } from '@/redux/store';
 import { ConnectionStatus } from '@/types/enums';
-import { OpenSpaceProperty, PropertyValue, Uri } from '@/types/types';
+import { AnyProperty } from '@/types/Property/property';
+import { Uri } from '@/types/types';
 
 import {
   addProperties,
   setPropertyValue,
-  updatePropertyAdditionalData,
+  updatePropertyMetaData,
   updatePropertyValue
 } from './propertiesSlice';
+import { PropertyPayload } from './types';
 
 // The middleware also supports subscribing and setting properties
 // regardless of whether they are present in the redux store or not.
@@ -77,14 +78,16 @@ const subscriptionInfos: { [key: Uri]: SubscriptionInfo } = {};
 function handleUpdatedValues(
   dispatch: Dispatch<UnknownAction>,
   uri: Uri,
-  value: PropertyValue,
-  additionalData: AdditionalData
+  value?: AnyProperty['value'],
+  metaData?: AnyProperty['metaData']
 ) {
-  // Update the value in the redux property tree, based on the value from the backend
-  dispatch(updatePropertyValue({ uri, value }));
-
-  // Keeping this action generic in case we want to add more additional data in the future
-  dispatch(updatePropertyAdditionalData({ uri, additionalData }));
+  if (value !== undefined) {
+    // Update the value in the redux property tree, based on the value from the backend
+    dispatch(updatePropertyValue({ uri, value }));
+  }
+  if (metaData !== undefined) {
+    dispatch(updatePropertyMetaData({ uri, metaData }));
+  }
 
   // "Lazy unsubscribe":
   // Cancel the subscription whenever there is an update from the
@@ -106,15 +109,18 @@ function handleUpdatedValues(
 
 function setupSubscription(dispatch: Dispatch<UnknownAction>, uri: Uri) {
   const subscription = api.subscribeToProperty(uri);
-  const handleUpdates = (value: PropertyValue, additionalData: AdditionalData) =>
-    handleUpdatedValues(dispatch, uri, value, additionalData);
+  const handleUpdates = (
+    value?: AnyProperty['value'],
+    metaData?: AnyProperty['metaData']
+  ) => handleUpdatedValues(dispatch, uri, value, metaData);
   const throttleHandleUpdates = throttle(handleUpdates, 200);
 
   (async () => {
-    for await (const data of subscription.iterator() as AsyncIterable<OpenSpaceProperty>) {
-      throttleHandleUpdates(data.Value, data.Description.AdditionalData);
+    for await (const data of subscription.iterator() as AsyncIterable<PropertyPayload>) {
+      throttleHandleUpdates(data.value, data.metaData);
     }
   })();
+
   return subscription;
 }
 

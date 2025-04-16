@@ -1,6 +1,6 @@
 import { PropsWithChildren, useEffect } from 'react';
 
-import { useStringProperty } from '@/hooks/properties';
+import { useProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 
 import { useStartPingingWwt, useWwtEventListener, useWwtMessages } from './hooks';
@@ -28,7 +28,7 @@ export function WwtProvider({ children }: PropsWithChildren) {
   } = useWwtEventListener();
 
   const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
-  const [url] = useStringProperty('Modules.SkyBrowser.WwtImageCollectionUrl');
+  const [url] = useProperty('StringProperty', 'Modules.SkyBrowser.WwtImageCollectionUrl');
   const shouldConnect = !wwtHasLoaded && url !== undefined && nBrowsers > 0;
   const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
 

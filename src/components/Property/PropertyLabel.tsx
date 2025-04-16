@@ -1,26 +1,26 @@
 import { Group, InputLabel, Text, Tooltip } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { usePropertyDescription } from '@/hooks/properties';
+import { useAppSelector } from '@/redux/hooks';
 
 import CopyUriButton from '../CopyUriButton/CopyUriButton';
 
 import { PropertyProps } from './types';
 
 export function PropertyLabel({ uri, readOnly }: PropertyProps) {
-  const details = usePropertyDescription(uri);
+  const meta = useAppSelector((state) => state.properties.properties[uri]?.metaData);
 
-  if (!details) {
+  if (!meta) {
     return <></>;
   }
 
-  const { name, description } = details;
+  const { guiName, description } = meta;
 
   return (
     <Group wrap={'nowrap'}>
       <InputLabel fw={'normal'}>
         <Text span size={'sm'}>
-          {name}
+          {guiName}
         </Text>
         {readOnly && (
           <Tooltip

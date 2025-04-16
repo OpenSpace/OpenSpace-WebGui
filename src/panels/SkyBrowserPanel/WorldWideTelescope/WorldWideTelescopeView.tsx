@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Box, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { useBoolProperty } from '@/hooks/properties';
+import { useProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
@@ -26,7 +26,10 @@ export function WorldWideTelescopeView() {
 
   const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
   const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
-  const [inverseZoom] = useBoolProperty('Modules.SkyBrowser.InverseZoomDirection');
+  const [inverseZoom] = useProperty(
+    'BoolProperty',
+    'Modules.SkyBrowser.InverseZoomDirection'
+  );
 
   // A bunch of hooks that pass messages to WWT when our redux state changes
   useUpdateAim(id);
