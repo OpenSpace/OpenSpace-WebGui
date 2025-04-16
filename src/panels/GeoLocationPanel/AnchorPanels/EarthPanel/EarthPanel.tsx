@@ -25,6 +25,7 @@ import { CustomCoordinates } from './CustomCoordinates';
 import { EarthEntry } from './EarthEntry';
 import { ArcGISJSON, Candidate } from './types';
 import { addressUTF8 } from './util';
+import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 
 interface Props {
   currentAnchor: Identifier;
@@ -38,6 +39,11 @@ export function EarthPanel({ currentAnchor }: Props) {
   const luaApi = useOpenSpaceApi();
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const groups = useAppSelector((state) => state.groups.groups);
+
+  const { allowedKeys, toggleKey, selectedKeys } = useKeySettings<Candidate>({
+    address: true,
+    attributes: true
+  });
 
   const geoLocationOwners = groups[GeoLocationGroupKey]?.propertyOwners.map((uri) => {
     const index = uri.indexOf(ScenePrefixKey);
@@ -194,7 +200,10 @@ export function EarthPanel({ currentAnchor }: Props) {
           {places.length > 0 ? (
             <ResizeableContent defaultHeight={250}>
               <FilterList>
-                <FilterList.InputField placeHolderSearchText={'Filter search'} />
+                <Group>
+                  <FilterList.InputField placeHolderSearchText={'Filter search'} />
+                  <FilterList.SearchSettingsMenu keys={allowedKeys} setKey={toggleKey} />
+                </Group>
                 <FilterList.SearchResults
                   data={places}
                   renderElement={(place) => (
@@ -209,7 +218,7 @@ export function EarthPanel({ currentAnchor }: Props) {
                       removeFocusNode={removeFocusNode}
                     />
                   )}
-                  matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
+                  matcherFunc={generateMatcherFunctionByKeys(selectedKeys)}
                 >
                   <FilterList.SearchResults.VirtualList />
                 </FilterList.SearchResults>
