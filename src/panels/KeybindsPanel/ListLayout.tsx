@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button, Chip, Group, Text } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
+import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
 import { useAppSelector } from '@/redux/hooks';
@@ -9,7 +10,6 @@ import { Action, KeybindInfoType, KeybindModifiers } from '@/types/types';
 
 import { KeybindButtons } from './KeybindButtons';
 import { KeybindInfo } from './KeybindInfo';
-import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 
 export function ListLayout() {
   const [selectedAction, setSelectedAction] = useState<Action | null>(null);

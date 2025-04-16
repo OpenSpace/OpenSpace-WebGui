@@ -11,6 +11,7 @@ import {
 import { useSetState } from '@mantine/hooks';
 
 import { FilterList } from '@/components/FilterList/FilterList';
+import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ChevronsDownIcon, ChevronsUpIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -23,11 +24,10 @@ import { SceneTreeFilters } from './SceneTreeFilters';
 import { SceneTreeNode, SceneTreeNodeContent } from './SceneTreeNode';
 import { SceneTreeGroupPrefixKey } from './treeUtils';
 import {
-  SceneTreeFilterSettings,
   sceneTreeFilterDefaults,
+  SceneTreeFilterSettings,
   SceneTreeNodeData
 } from './types';
-import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 
 export function SceneTree() {
   const [filter, setFilter] = useSetState<SceneTreeFilterSettings>(

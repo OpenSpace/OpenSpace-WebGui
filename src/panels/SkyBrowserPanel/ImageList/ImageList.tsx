@@ -1,14 +1,14 @@
 import { memo, useCallback, useMemo } from 'react';
+import { Group } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
+import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { SkyBrowserImage } from '../types';
 
 import { ImageCard } from './ImageCard';
-import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
-import { Group } from '@mantine/core';
 
 interface Props {
   imageList: SkyBrowserImage[];

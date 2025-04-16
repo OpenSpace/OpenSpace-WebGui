@@ -1,5 +1,8 @@
+import { Group } from '@mantine/core';
+
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { FilterList } from '@/components/FilterList/FilterList';
+import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
@@ -11,8 +14,6 @@ import { ActionsButton } from './ActionsButton';
 import { ActionsFolder } from './ActionsFolder';
 import { ActionsSearchInputField } from './ActionsSearchInputField';
 import { useActionsForLevel, useActionsInPath } from './hooks';
-import { Group } from '@mantine/core';
-import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 
 export function ActionsPanel() {
   const isInitialized = useAppSelector((state) => state.actions.isInitialized);

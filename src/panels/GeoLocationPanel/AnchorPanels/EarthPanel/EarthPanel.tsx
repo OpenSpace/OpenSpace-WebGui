@@ -13,6 +13,7 @@ import {
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
+import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
@@ -25,7 +26,6 @@ import { CustomCoordinates } from './CustomCoordinates';
 import { EarthEntry } from './EarthEntry';
 import { ArcGISJSON, Candidate } from './types';
 import { addressUTF8 } from './util';
-import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 
 interface Props {
   currentAnchor: Identifier;

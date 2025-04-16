@@ -2,10 +2,10 @@ import { PropsWithChildren } from 'react';
 import { Stack } from '@mantine/core';
 
 import { SearchResults } from './SearchResults/SearchResults';
+import { FilterListSearchSettingsMenu } from './SearchSettingsMenu/FilterListSearchSettingsMenu';
 import { FilterListFavorites } from './FilterListFavorites';
 import { FilterListInputField } from './FilterListInputField';
 import { FilterListProvider } from './FilterListProvider';
-import { FilterListSearchSettingsMenu } from './SearchSettingsMenu/FilterListSearchSettingsMenu';
 
 interface Props extends PropsWithChildren {
   isLoading?: boolean;

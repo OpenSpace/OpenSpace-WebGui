@@ -1,20 +1,20 @@
 import { useMemo, useState } from 'react';
 import { Center, Group, SegmentedControl, Text, VisuallyHidden } from '@mantine/core';
 
+import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
 import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes/hooks';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
+import { PropertyOwner } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
 import { useFeaturedNodes } from '@/util/propertyTreeHooks';
 
 import { AnchorAimView } from './AnchorAimView/AnchorAimView';
 import { FocusView } from './FocusView/FocusView';
 import { NavigationSettings } from './NavigationSettings';
-import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
-import { PropertyOwner } from '@/types/types';
 
 enum NavigationMode {
   Focus = 'Focus',

@@ -1,6 +1,7 @@
+import { ActionIcon, Checkbox, Group, Menu, Stack } from '@mantine/core';
+
 import { SettingsIcon } from '@/icons/icons';
 import { camelCaseToRegularText } from '@/util/text';
-import { Menu, ActionIcon, Group, Checkbox, Stack } from '@mantine/core';
 
 interface Props<T> {
   keys: Record<keyof T, boolean>;
