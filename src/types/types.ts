@@ -24,6 +24,8 @@ export interface Keybind {
 
 export type ActionOrKeybind = Action | Keybind;
 
+export type KeybindInfoType = Keybind & Action;
+
 export interface SemanticVersion {
   major: number;
   minor: number;
