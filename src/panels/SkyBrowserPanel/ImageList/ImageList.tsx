@@ -7,6 +7,8 @@ import { useWindowSize } from '@/windowmanagement/Window/hooks';
 import { SkyBrowserImage } from '../types';
 
 import { ImageCard } from './ImageCard';
+import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
+import { Group } from '@mantine/core';
 
 interface Props {
   imageList: SkyBrowserImage[];
@@ -17,14 +19,18 @@ interface Props {
 // Memoizing this as it is very expensive
 export const ImageList = memo(function ImageList({ imageList, noImagesDisplay }: Props) {
   const { width } = useWindowSize();
+  const { allowedKeys, toggleKey, selectedKeys } = useKeySettings<SkyBrowserImage>({
+    collection: true,
+    name: true
+  });
 
   const renderImageCard = useCallback((image: SkyBrowserImage) => {
     return <ImageCard image={image} />;
   }, []);
 
   const matcherFunc = useMemo(
-    () => generateMatcherFunctionByKeys(['collection', 'name']),
-    []
+    () => generateMatcherFunctionByKeys(selectedKeys),
+    [selectedKeys]
   );
 
   const cardWidth = 130;
@@ -33,9 +39,12 @@ export const ImageList = memo(function ImageList({ imageList, noImagesDisplay }:
 
   return (
     <FilterList>
-      <FilterList.InputField
-        placeHolderSearchText={`Search ${imageList.length} image${imageList.length > 1 ? 's' : ''}...`}
-      />
+      <Group>
+        <FilterList.InputField
+          placeHolderSearchText={`Search ${imageList.length} image${imageList.length > 1 ? 's' : ''}...`}
+        />
+        <FilterList.SearchSettingsMenu keys={allowedKeys} setKey={toggleKey} />
+      </Group>
       <FilterList.SearchResults
         data={imageList}
         renderElement={renderImageCard}
