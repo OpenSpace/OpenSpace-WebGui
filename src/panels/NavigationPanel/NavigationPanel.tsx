@@ -13,6 +13,8 @@ import { useFeaturedNodes } from '@/util/propertyTreeHooks';
 import { AnchorAimView } from './AnchorAimView/AnchorAimView';
 import { FocusView } from './FocusView/FocusView';
 import { NavigationSettings } from './NavigationSettings';
+import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
+import { PropertyOwner } from '@/types/types';
 
 enum NavigationMode {
   Focus = 'Focus',
@@ -36,6 +38,13 @@ export function NavigationPanel() {
     shouldStartInAnchorAim ? NavigationMode.AnchorAim : NavigationMode.Focus
   );
 
+  const { allowedKeys, toggleKey, selectedKeys } = useKeySettings<PropertyOwner>({
+    identifier: false,
+    name: true,
+    uri: false,
+    tags: false
+  });
+
   const featuredNodes = useFeaturedNodes();
 
   // @TODO (2024-04-08, emmbr): Expose these filters to the user? Could also include tags
@@ -51,12 +60,7 @@ export function NavigationPanel() {
 
   const defaultList = featuredNodes.length > 0 ? featuredNodes : sortedSearchableNodes;
 
-  const searchMatcherFunction = generateMatcherFunctionByKeys([
-    'identifier',
-    'name',
-    'uri',
-    'tags'
-  ]);
+  const searchMatcherFunction = generateMatcherFunctionByKeys(selectedKeys);
 
   const isInFlight = engineMode === EngineMode.CameraPath;
 
@@ -103,6 +107,8 @@ export function NavigationPanel() {
             favorites={defaultList}
             searchableNodes={sortedSearchableNodes}
             matcherFunction={searchMatcherFunction}
+            toggleKey={toggleKey}
+            allowedKeys={allowedKeys}
           />
         )}
         {navigationMode === NavigationMode.AnchorAim && (
@@ -110,6 +116,8 @@ export function NavigationPanel() {
             favorites={defaultList}
             searchableNodes={sortedSearchableNodes}
             matcherFunction={searchMatcherFunction}
+            toggleKey={toggleKey}
+            allowedKeys={allowedKeys}
           />
         )}
       </Layout.GrowingSection>
