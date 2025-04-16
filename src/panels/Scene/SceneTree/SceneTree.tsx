@@ -23,15 +23,21 @@ import { SceneTreeFilters } from './SceneTreeFilters';
 import { SceneTreeNode, SceneTreeNodeContent } from './SceneTreeNode';
 import { SceneTreeGroupPrefixKey } from './treeUtils';
 import {
-  sceneTreeFilterDefaults,
   SceneTreeFilterSettings,
+  sceneTreeFilterDefaults,
   SceneTreeNodeData
 } from './types';
+import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 
 export function SceneTree() {
   const [filter, setFilter] = useSetState<SceneTreeFilterSettings>(
     sceneTreeFilterDefaults
   );
+
+  const { allowedKeys, toggleKey, selectedKeys } = useKeySettings<SceneTreeNodeData>({
+    guiPath: false,
+    label: true
+  });
 
   const { sceneTreeData, flatTreeData } = useSceneTreeData(filter);
   const { closeCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
@@ -71,6 +77,7 @@ export function SceneTree() {
       <Group justify={'space-between'} gap={'xs'} mr={'xs'}>
         <FilterList.InputField placeHolderSearchText={'Search for a node...'} flex={1} />
         <SceneTreeFilters setFilter={setFilter} filter={filter} />
+        <FilterList.SearchSettingsMenu keys={allowedKeys} setKey={toggleKey} />
       </Group>
 
       <FilterList.Favorites>
@@ -102,7 +109,8 @@ export function SceneTree() {
         renderElement={(node: SceneTreeNodeData) => (
           <SceneTreeNodeContent key={node.value} node={node} expanded={false} />
         )}
-        matcherFunc={generateMatcherFunctionByKeys(['label', 'guiPath'])} // For now we just use the name
+        // For now we just use the name
+        matcherFunc={generateMatcherFunctionByKeys(selectedKeys)}
       >
         <FilterList.SearchResults.VirtualList />
       </FilterList.SearchResults>
