@@ -100,9 +100,6 @@ export function UserPanelsPanel() {
   return (
     <>
       <Title my={'xs'} order={2}>
-        User Panels
-      </Title>
-      <Title my={'xs'} order={3}>
         Open Local Panel
       </Title>
       <Group align={'flex-end'}>
@@ -119,7 +116,7 @@ export function UserPanelsPanel() {
         </ActionIcon>
       </Group>
       <Divider my={'md'} />
-      <Title order={3} my={'xs'}>
+      <Title order={2} my={'xs'}>
         Open from URL
       </Title>
       <TextInput
@@ -143,7 +140,7 @@ export function UserPanelsPanel() {
           }
         />
       </Group>
-      <Title mt={'xs'} mb={'xs'} order={4}>
+      <Title mt={'xs'} mb={'xs'} order={3}>
         Recently Opened URLs
       </Title>
       {addedPanels.map((panel) => (

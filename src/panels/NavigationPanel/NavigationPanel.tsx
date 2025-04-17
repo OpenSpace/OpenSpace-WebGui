@@ -3,25 +3,23 @@ import { Center, Group, SegmentedControl, Text, VisuallyHidden } from '@mantine/
 
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
+import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes/hooks';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
-import { Uri } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
-import { hasInterestingTag, isPropertyOwnerHidden } from '@/util/propertyTreeHelpers';
+import { useFeaturedNodes } from '@/util/propertyTreeHooks';
 
 import { AnchorAimView } from './AnchorAimView/AnchorAimView';
 import { FocusView } from './FocusView/FocusView';
-import { OriginSettings } from './OriginSettings';
+import { NavigationSettings } from './NavigationSettings';
 
 enum NavigationMode {
   Focus = 'Focus',
   AnchorAim = 'Anchor & Aim'
 }
 
-export function OriginPanel() {
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-  const properties = useAppSelector((state) => state.properties.properties);
+export function NavigationPanel() {
   const engineMode = useAppSelector((state) => state.engineMode.mode);
 
   const shouldStartInAnchorAim = useAppSelector((state) => {
@@ -29,35 +27,29 @@ export function OriginPanel() {
     const anchorProp = state.properties.properties[NavigationAnchorKey];
     return aimProp?.value !== anchorProp?.value && aimProp?.value !== '';
   });
+
+  const showOnlyFocusable = useAppSelector(
+    (state) => state.local.menus.navigation.onlyFocusable
+  );
+
   const [navigationMode, setNavigationMode] = useState(
     shouldStartInAnchorAim ? NavigationMode.AnchorAim : NavigationMode.Focus
   );
 
-  const sortedDefaultList = useMemo(() => {
-    const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
-    const markedInterestingNodeUris = uris.filter((uri) =>
-      hasInterestingTag(uri, propertyOwners)
-    );
-    const favorites = markedInterestingNodeUris
-      .map((uri) => propertyOwners[uri])
-      .filter((po) => po !== undefined);
-    return favorites.slice().sort((a, b) => a.name.localeCompare(b.name));
-  }, [propertyOwners]);
+  const featuredNodes = useFeaturedNodes();
 
-  // @TODO (2025-02-24, emmbr): Remove dependency on properties object
-  const sortedSearchableNodes = useMemo(() => {
-    const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
-    const allNodes = uris
-      .map((uri) => propertyOwners[uri])
-      .filter((po) => po !== undefined);
+  // @TODO (2024-04-08, emmbr): Expose these filters to the user? Could also include tags
+  const searchableNodes = useSceneGraphNodes({
+    includeGuiHiddenNodes: false,
+    onlyFocusable: showOnlyFocusable
+  });
 
-    // Searchable nodes are all nodes that are not hidden in the GUI
-    const searchableNodes = allNodes.filter((node) => {
-      return !isPropertyOwnerHidden(node.uri, properties);
-    });
+  const sortedSearchableNodes = useMemo(
+    () => searchableNodes.slice().sort((a, b) => a.name.localeCompare(b.name)),
+    [searchableNodes]
+  );
 
-    return searchableNodes.slice().sort((a, b) => a.name.localeCompare(b.name));
-  }, [properties, propertyOwners]);
+  const defaultList = featuredNodes.length > 0 ? featuredNodes : sortedSearchableNodes;
 
   const searchMatcherFunction = generateMatcherFunctionByKeys([
     'identifier',
@@ -102,20 +94,20 @@ export function OriginPanel() {
               }
             ]}
           />
-          <OriginSettings />
+          <NavigationSettings />
         </Group>
       </Layout.FixedSection>
       <Layout.GrowingSection>
         {navigationMode === NavigationMode.Focus && (
           <FocusView
-            favorites={sortedDefaultList}
+            favorites={defaultList}
             searchableNodes={sortedSearchableNodes}
             matcherFunction={searchMatcherFunction}
           />
         )}
         {navigationMode === NavigationMode.AnchorAim && (
           <AnchorAimView
-            favorites={sortedDefaultList}
+            favorites={defaultList}
             searchableNodes={sortedSearchableNodes}
             matcherFunction={searchMatcherFunction}
           />

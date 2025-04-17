@@ -1,17 +1,37 @@
 import { PropsWithChildren } from 'react';
-import { ActionIcon, Menu } from '@mantine/core';
+import { ActionIcon, FloatingPosition, MantineStyleProps, Menu } from '@mantine/core';
 
 import { SettingsIcon } from '@/icons/icons';
 
-export function SettingsPopout({ children }: PropsWithChildren) {
+interface Props extends PropsWithChildren, MantineStyleProps {
+  popoverWidth?: number;
+  position?: FloatingPosition;
+  title?: string;
+}
+
+export function SettingsPopout({
+  popoverWidth,
+  position,
+  title,
+  children,
+  ...styleProps
+}: Props) {
   return (
-    <Menu position={'right-start'} closeOnItemClick={false}>
+    <Menu
+      position={position ?? 'right-start'}
+      closeOnItemClick={false}
+      width={popoverWidth}
+      withArrow
+    >
       <Menu.Target>
-        <ActionIcon>
+        <ActionIcon {...styleProps}>
           <SettingsIcon />
         </ActionIcon>
       </Menu.Target>
-      <Menu.Dropdown>{children}</Menu.Dropdown>
+      <Menu.Dropdown>
+        {title && <Menu.Label>{title}</Menu.Label>}
+        {children}
+      </Menu.Dropdown>
     </Menu>
   );
 }

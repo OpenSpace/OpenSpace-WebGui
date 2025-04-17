@@ -33,7 +33,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
-    "typeRoots": ["./src/types/*.d.ts"]
+    "typeRoots": ["./src/types/*.d.ts", "./node_modules/@types"]
   },
   "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }

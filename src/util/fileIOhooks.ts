@@ -36,7 +36,7 @@ async function openSaveFileDialog(contents: JSON) {
 
   const supportsSaveDialog = 'showSaveFilePicker' in self;
   if (supportsSaveDialog) {
-    const options = {
+    const options: SaveFilePickerOptions = {
       types: [
         {
           description: 'Text Files',

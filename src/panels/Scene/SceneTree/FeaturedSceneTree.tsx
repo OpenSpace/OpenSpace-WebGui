@@ -1,10 +1,6 @@
 import { Tree } from '@mantine/core';
 
-import {
-  useAimNode,
-  useAnchorNode,
-  useInterestingTagOwners
-} from '@/util/propertyTreeHooks';
+import { useAimNode, useAnchorNode, useFeaturedNodes } from '@/util/propertyTreeHooks';
 
 import { SceneTreeNode } from './SceneTreeNode';
 import { SceneTreeGroupPrefixKey, treeDataForSceneGraphNode } from './treeUtils';
@@ -15,7 +11,7 @@ import { SceneTreeNodeData } from './types';
  * nodes marked as interesting.
  */
 export function FeaturedSceneTree() {
-  const interestingOwners = useInterestingTagOwners();
+  const featuredNodes = useFeaturedNodes();
   const anchorNode = useAnchorNode();
   const aimNode = useAimNode();
 
@@ -33,11 +29,11 @@ export function FeaturedSceneTree() {
     featuredTreeData.push(aimData);
   }
 
-  if (interestingOwners.length > 0) {
+  if (featuredNodes.length > 0) {
     featuredTreeData.push({
       label: 'Quick Access',
       value: SceneTreeGroupPrefixKey + 'interesting',
-      children: interestingOwners.map((owner) =>
+      children: featuredNodes.map((owner) =>
         treeDataForSceneGraphNode(owner.name, owner.uri)
       )
     });

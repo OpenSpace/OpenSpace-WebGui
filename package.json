@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "npm install",
     "build": "tsc -b && vite build",
     "lint": "npx prettier . --check & eslint .",
     "lint-fix": "npx prettier . --write & eslint . --fix",
@@ -37,6 +38,7 @@
     "@types/d3": "^7.4.3",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@types/wicg-file-system-access": "^2023.10.5",
     "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^9.9.0",
     "eslint-config-prettier": "^10.0.1",

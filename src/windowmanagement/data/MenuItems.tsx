@@ -18,10 +18,10 @@ import {
   VideocamIcon
 } from '@/icons/icons';
 import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
-import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
+import { NavigationPanelMenuButton } from '@/panels/NavigationPanel/MenuButton/NavigationPanelMenuButton';
 import { TempPropertyTest } from '@/panels/Scene/TempPropertyTest';
 import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
-import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
+import { TimePanelMenuButton } from '@/panels/TimePanel/MenuButton/TimePanelMenuButton';
 import { IconSize } from '@/types/enums';
 
 import { FloatWindowPosition, WindowLayoutPosition } from '../WindowLayout/types';
@@ -34,7 +34,7 @@ import {
   GettingStartedPanel,
   KeybindsPanel,
   MissionsPanel,
-  OriginPanel,
+  NavigationPanel,
   Scene,
   ScreenSpaceRenderablePanel,
   SessionRecordingPanel,
@@ -87,8 +87,8 @@ export const menuItemsData: Record<string, MenuItem> = {
   navigation: {
     title: 'Navigation',
     componentID: 'navigation',
-    content: <OriginPanel />,
-    renderMenuButton: (id) => <OriginPanelMenuButton id={id} />,
+    content: <NavigationPanel />,
+    renderMenuButton: (id) => <NavigationPanelMenuButton id={id} />,
     renderIcon: (size) => <FocusIcon size={size} />,
     preferredPosition: 'float',
     floatPosition: { offsetY: 100, offsetX: 320, width: 400, height: 440 },
@@ -175,7 +175,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     content: <FlightControlPanel />,
     renderIcon: (size) => <ExpandArrowsIcon size={size} />,
     preferredPosition: 'right',
-    defaultVisible: false
+    defaultVisible: !window.IsWithinCEF
   },
   keybindingsLayout: {
     title: 'Keybindings Layout',
