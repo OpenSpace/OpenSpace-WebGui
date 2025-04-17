@@ -95,7 +95,8 @@ export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons
 export {
   TbClock as ClockIcon,
   TbClockX as ClockOffIcon,
-  TbCube as SceneIcon
+  TbCube as SceneIcon,
+  TbScript as ScriptLogIcon
 } from 'react-icons/tb';
 export {
   VscFeedback as FeedbackIcon,

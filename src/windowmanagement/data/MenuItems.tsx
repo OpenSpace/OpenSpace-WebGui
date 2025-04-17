@@ -13,6 +13,7 @@ import {
   RocketLaunchIcon,
   RouteIcon,
   SceneIcon,
+  ScriptLogIcon,
   SettingsIcon,
   TelescopeIcon,
   VideocamIcon
@@ -207,6 +208,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Script Log',
     componentID: 'scriptLogPanel',
     content: <ScriptLogPanel />,
+    renderIcon: (size) => <ScriptLogIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: false
   }
