@@ -28,7 +28,7 @@ export function ActionsButton({ uri, action: _action, height }: Props) {
     return <></>;
   }
 
-  const isLocal = action.synchronization === false;
+  const isLocal = action.isLocal;
 
   function handleClick() {
     openspaceApi?.action.triggerAction(action!.identifier);

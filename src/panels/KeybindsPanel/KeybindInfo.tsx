@@ -20,7 +20,7 @@ export function KeybindInfo({ selectedAction }: Props) {
           <Table.Tr>
             <Table.Td>Is Local:</Table.Td>
             <Table.Td>
-              {selectedAction.synchronization ? (
+              {selectedAction.isLocal ? (
                 <Badge variant={'filled'}>Yes</Badge>
               ) : (
                 <Badge variant={'outline'}>No</Badge>
