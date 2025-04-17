@@ -12,12 +12,6 @@ interface Props {
 export function ExoplanetsSettings({ hasAddedExoplanets }: Props) {
   const luaApi = useOpenSpaceApi();
 
-  const Tags = {
-    UncertaintyDisc: 'exoplanet_uncertainty_disc',
-    HabitableZone: 'exoplanet_habitable_zone',
-    Size1AuRing: 'exoplanet_1au_ring'
-  };
-
   const [showHabitableZone, setShowHabitableZone] = useBoolProperty(
     'Modules.Exoplanets.ShowHabitableZone'
   );
@@ -27,6 +21,12 @@ export function ExoplanetsSettings({ hasAddedExoplanets }: Props) {
   const [show1AuRing, setShow1AuRing] = useBoolProperty(
     'Modules.Exoplanets.ShowComparisonCircle'
   );
+
+  const Tags = {
+    UncertaintyDisc: 'exoplanet_uncertainty_disc',
+    HabitableZone: 'exoplanet_habitable_zone',
+    Size1AuRing: 'exoplanet_1au_ring'
+  };
 
   function toggleShowHabitableZone() {
     const shouldShow = !showHabitableZone;
