@@ -33,6 +33,7 @@ import {
   GeoLocationPanel,
   GettingStartedPanel,
   KeybindsPanel,
+  LogPanel,
   MissionsPanel,
   NavigationPanel,
   Scene,
@@ -200,6 +201,13 @@ export const menuItemsData: Record<string, MenuItem> = {
     componentID: 'propertyTest',
     content: <TempPropertyTest />,
     preferredPosition: 'left',
+    defaultVisible: false
+  },
+  logPanel: {
+    title: 'Logs',
+    componentID: 'logPanel',
+    content: <LogPanel />,
+    preferredPosition: 'right',
     defaultVisible: false
   }
 };
