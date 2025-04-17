@@ -10,7 +10,7 @@ export interface Action {
   identifier: string;
   guiPath: string;
   name: string;
-  synchronization: boolean;
+  isLocal: boolean;
   documentation: string;
   color?: [number, number, number, number]; // rgba color, [0, 1]
 }
