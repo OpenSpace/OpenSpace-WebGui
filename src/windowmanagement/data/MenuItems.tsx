@@ -33,11 +33,11 @@ import {
   GeoLocationPanel,
   GettingStartedPanel,
   KeybindsPanel,
-  LogPanel,
   MissionsPanel,
   NavigationPanel,
   Scene,
   ScreenSpaceRenderablePanel,
+  ScriptLogPanel,
   SessionRecordingPanel,
   SettingsPanel,
   SkyBrowserPanel,
@@ -203,10 +203,10 @@ export const menuItemsData: Record<string, MenuItem> = {
     preferredPosition: 'left',
     defaultVisible: false
   },
-  logPanel: {
-    title: 'Logs',
-    componentID: 'logPanel',
-    content: <LogPanel />,
+  scriptLogPanel: {
+    title: 'Script Log',
+    componentID: 'scriptLogPanel',
+    content: <ScriptLogPanel />,
     preferredPosition: 'right',
     defaultVisible: false
   }
