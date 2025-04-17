@@ -17,11 +17,11 @@ export const ImageListWrapper = memo(function ImageListSection() {
 
   // These computations are expensive so memoizing them too
   const skySurveys = useMemo(
-    () => imageList.filter((img) => !img.hasCelestialCoords),
+    () => (imageList ? imageList.filter((img) => !img.hasCelestialCoords) : []),
     [imageList]
   );
   const allImages = useMemo(
-    () => imageList.filter((img) => img.hasCelestialCoords),
+    () => (imageList ? imageList.filter((img) => img.hasCelestialCoords) : []),
     [imageList]
   );
 

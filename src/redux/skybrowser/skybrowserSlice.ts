@@ -18,7 +18,7 @@ export interface SkyBrowserState {
   browserIds: string[];
   browserNames: string[];
   browserColors: [number, number, number][];
-  imageList: SkyBrowserImage[] | null;
+  imageList: SkyBrowserImage[] | undefined;
   activeImage: string;
 }
 
@@ -26,7 +26,7 @@ const initialState: SkyBrowserState = {
   isInitialized: false,
   cameraInSolarSystem: true, // Setting this to true as OpenSpace usually starts on Earth
   selectedBrowserId: '',
-  imageList: null,
+  imageList: undefined,
   browsers: {},
   activeImage: '',
   browserColors: [],
@@ -74,6 +74,9 @@ export const skyBrowserSlice = createSlice({
 
       return state;
     },
+    resetSkyBrowser: () => {
+      return initialState;
+    },
     setImageCollectionData: (state, action: PayloadAction<SkyBrowserImage[]>) => {
       state.imageList = action.payload;
       return state;
@@ -90,6 +93,7 @@ export const {
   updateSkyBrowser,
   setImageCollectionData,
   setActiveImage,
-  subscriptionIsSetup
+  subscriptionIsSetup,
+  resetSkyBrowser
 } = skyBrowserSlice.actions;
 export const skyBrowserReducer = skyBrowserSlice.reducer;

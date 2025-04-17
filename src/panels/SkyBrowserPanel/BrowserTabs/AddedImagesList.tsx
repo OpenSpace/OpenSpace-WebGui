@@ -60,6 +60,7 @@ export function AddedImagesList({ id }: Props) {
 
   return (
     <Box my={'md'}>
+      {selectedImages.length === 0 && 'No images added to this browser'}
       <DragReorderList<number>
         onDragEnd={onDragEnd}
         id={'selectedImages'}

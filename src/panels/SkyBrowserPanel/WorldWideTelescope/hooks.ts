@@ -11,6 +11,7 @@ import {
   useOpacities,
   useSelectedImages
 } from '../hooks';
+import { Status } from '../types';
 
 import { useWwtProvider } from './WwtProvider/hooks';
 
@@ -109,4 +110,23 @@ export function useUpdateBorderRadius(id: string) {
       setBorderRadius(borderRadius);
     }
   }, [borderRadius, setBorderRadius, wwtHasLoaded, width, height]);
+}
+
+export function useOverlayStatus(): { visible: boolean; type: Status } {
+  const cameraInSolarSystem = useAppSelector(
+    (state) => state.skybrowser.cameraInSolarSystem
+  );
+  const { imageCollectionLoaded, wwtHasLoaded } = useWwtProvider();
+
+  if (!cameraInSolarSystem) {
+    return { visible: true, type: 'CameraNotInSolarSystem' };
+  }
+  if (!wwtHasLoaded) {
+    return { visible: true, type: 'LoadingWwt' };
+  }
+  if (!imageCollectionLoaded) {
+    return { visible: true, type: 'LoadingImageCollection' };
+  } else {
+    return { visible: false, type: 'Ok' };
+  }
 }

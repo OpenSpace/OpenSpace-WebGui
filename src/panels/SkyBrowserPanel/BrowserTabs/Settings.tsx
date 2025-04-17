@@ -12,6 +12,7 @@ import {
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { Property } from '@/components/Property/Property';
 import { NumericPropertySlider } from '@/components/Property/Types/NumericProperty/Slider/NumericPropertySlider';
 import { useAppSelector } from '@/redux/hooks';
@@ -39,8 +40,11 @@ interface Props {
 }
 
 export function Settings({ id }: Props) {
-  const luaApi = useOpenSpaceApi();
+  const imageList = useAppSelector((state) => state.skybrowser.imageList);
   const targetId = useAppSelector((state) => state.skybrowser.browsers[id]?.targetId);
+
+  const luaApi = useOpenSpaceApi();
+
   const color = useBrowserColorString(id);
   const fov = useBrowserFov(id);
   const radius = useBrowserRadius(id);
@@ -69,6 +73,10 @@ export function Settings({ id }: Props) {
 
   function setDeclination(newValue: number): void {
     luaApi?.skybrowser.setEquatorialAim(id, ra, newValue);
+  }
+
+  if (!imageList) {
+    return <LoadingBlocks mt={'md'} />;
   }
 
   return (
