@@ -8,6 +8,6 @@ declare global {
     // Add a custom property to the Window object to indicate if it's within CEF.
     // This is set within the CEF environment so will be true within CEF and undefined otherwise.
     // This is useful for checking if the app is running in a CEF context or not.
-    IsWithinCEF: boolean | undefined;
+    isWithinCEF: boolean | undefined;
   }
 }
