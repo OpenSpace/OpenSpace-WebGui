@@ -167,7 +167,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     content: <MissionsPanel />,
     renderIcon: (size) => <RocketLaunchIcon size={size} />,
     preferredPosition: 'right',
-    defaultVisible: true
+    defaultVisible: false
   },
   flightControl: {
     title: 'Flight Control',
