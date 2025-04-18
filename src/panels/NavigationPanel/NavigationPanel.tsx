@@ -1,12 +1,14 @@
 import { useMemo, useState } from 'react';
 import { Center, Group, SegmentedControl, Text, VisuallyHidden } from '@mantine/core';
 
+import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
 import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes/hooks';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
+import { PropertyOwner } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
 import { useFeaturedNodes } from '@/util/propertyTreeHooks';
 
@@ -36,6 +38,13 @@ export function NavigationPanel() {
     shouldStartInAnchorAim ? NavigationMode.AnchorAim : NavigationMode.Focus
   );
 
+  const { allowedKeys, toggleKey, selectedKeys } = useKeySettings<PropertyOwner>({
+    identifier: false,
+    name: true,
+    uri: false,
+    tags: false
+  });
+
   const featuredNodes = useFeaturedNodes();
 
   // @TODO (2024-04-08, emmbr): Expose these filters to the user? Could also include tags
@@ -51,12 +60,7 @@ export function NavigationPanel() {
 
   const defaultList = featuredNodes.length > 0 ? featuredNodes : sortedSearchableNodes;
 
-  const searchMatcherFunction = generateMatcherFunctionByKeys([
-    'identifier',
-    'name',
-    'uri',
-    'tags'
-  ]);
+  const searchMatcherFunction = generateMatcherFunctionByKeys(selectedKeys);
 
   const isInFlight = engineMode === EngineMode.CameraPath;
 
@@ -103,6 +107,8 @@ export function NavigationPanel() {
             favorites={defaultList}
             searchableNodes={sortedSearchableNodes}
             matcherFunction={searchMatcherFunction}
+            toggleKey={toggleKey}
+            allowedKeys={allowedKeys}
           />
         )}
         {navigationMode === NavigationMode.AnchorAim && (
@@ -110,6 +116,8 @@ export function NavigationPanel() {
             favorites={defaultList}
             searchableNodes={sortedSearchableNodes}
             matcherFunction={searchMatcherFunction}
+            toggleKey={toggleKey}
+            allowedKeys={allowedKeys}
           />
         )}
       </Layout.GrowingSection>
