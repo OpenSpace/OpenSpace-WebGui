@@ -73,9 +73,9 @@ export function SettingsDisplayCopies({ id }: Props) {
                 }
                 disabled={false}
                 additionalData={{
-                  minimumValue: [-10, -10, -10],
-                  maximumValue: [10, 10, 10],
-                  steppingValue: [1, 1, 1],
+                  min: [-10, -10, -10],
+                  max: [10, 10, 10],
+                  step: [1, 1, 1],
                   exponent: 1
                 }}
               />

@@ -23,12 +23,7 @@ export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
     return <></>;
   }
 
-  const {
-    minimumValue: min,
-    maximumValue: max,
-    steppingValue: step,
-    exponent: exponent
-  } = meta.additionalData;
+  const { min, max, step, exponent } = meta.additionalData;
 
   // When no min/max is set, the marks for the slider cannot be nicely computed
   const extent = max - min;

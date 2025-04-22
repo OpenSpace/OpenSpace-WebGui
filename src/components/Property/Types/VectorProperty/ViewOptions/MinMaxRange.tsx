@@ -29,9 +29,9 @@ export function MinMaxRangeView({
   } = usePropListeningState<number[]>(value);
 
   const { exponent } = additionalData;
-  const [min] = additionalData.minimumValue;
-  const [max] = additionalData.maximumValue;
-  const [step] = additionalData.steppingValue;
+  const [min] = additionalData.min;
+  const [max] = additionalData.max;
+  const [step] = additionalData.step;
 
   const { scale, scaledMarks, valueToSliderValue, sliderValueToValue } = useSliderScale(
     exponent,

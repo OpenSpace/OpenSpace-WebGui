@@ -18,16 +18,16 @@ export interface AdditionalDataSelection {
 
 export interface AdditionalDataVectorMatrix {
   exponent: number; // TODO: handle the exponent
-  maximumValue: number[];
-  minimumValue: number[];
-  steppingValue: number[];
+  max: number[];
+  min: number[];
+  step: number[];
 }
 
 export interface AdditionalDataNumber {
   exponent: number;
-  maximumValue: number;
-  minimumValue: number;
-  steppingValue: number;
+  max: number;
+  min: number;
+  step: number;
 }
 
 export type PropertyTypes = {
