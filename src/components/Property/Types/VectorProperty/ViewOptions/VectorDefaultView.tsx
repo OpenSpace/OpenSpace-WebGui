@@ -1,4 +1,4 @@
-import { Group } from '@mantine/core';
+import { Group, Stack } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
@@ -42,7 +42,7 @@ export function VectorDefaultView({
   }
 
   return (
-    <>
+    <Stack gap={'xs'}>
       <Group gap={'xs'} wrap={'nowrap'} grow>
         {currentValue.map((item, i) => (
           <NumericInput
@@ -74,6 +74,6 @@ export function VectorDefaultView({
           ))}
         </Group>
       )}
-    </>
+    </Stack>
   );
 }

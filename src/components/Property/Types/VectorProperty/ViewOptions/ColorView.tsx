@@ -1,4 +1,4 @@
-import { Flex, RGBA } from '@mantine/core';
+import { Box, Flex, RGBA } from '@mantine/core';
 
 import { ColorPicker } from '@/components/ColorPicker/ColorPicker';
 import { AdditionalDataVectorMatrix } from '@/components/Property/types';
@@ -26,7 +26,7 @@ export function ColorView({
   const hasAlpha = value.length === 4;
 
   return (
-    <Flex gap={'xs'} align={'center'}>
+    <Flex gap={'xs'} align={'start'} justify={'center'}>
       <VectorDefaultView
         disabled={readOnly}
         setPropertyValue={setPropertyValue}
