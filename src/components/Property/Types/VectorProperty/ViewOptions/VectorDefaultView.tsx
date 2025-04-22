@@ -1,5 +1,6 @@
-import { Group, Stack } from '@mantine/core';
+import { Flex, Group, Stack } from '@mantine/core';
 
+import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
 import { AdditionalDataVectorMatrix } from '@/components/Property/types';
@@ -42,12 +43,10 @@ export function VectorDefaultView({
   }
 
   return (
-    <Stack gap={'xs'}>
-      <Group gap={'xs'} wrap={'nowrap'} grow>
-        {currentValue.map((item, i) => (
+    <DynamicGrid minChildSize={120} maxCols={currentValue.length}>
+      {currentValue.map((item, i) => (
+        <Stack key={i} gap={'xs'}>
           <NumericInput
-            miw={40}
-            key={i}
             value={item}
             disabled={disabled}
             min={min[i]}
@@ -56,14 +55,8 @@ export function VectorDefaultView({
             allowDecimal={!isInt}
             onEnter={(newValue) => setValue(i, newValue)}
           />
-        ))}
-      </Group>
-      {shouldShowSlider && (
-        <Group gap={'xs'} wrap={'nowrap'} grow>
-          {currentValue.map((item, i) => (
+          {shouldShowSlider && (
             <NumericSlider
-              miw={40}
-              key={i}
               value={item}
               disabled={disabled}
               min={min[i]}
@@ -71,9 +64,9 @@ export function VectorDefaultView({
               step={step[i]}
               onInput={(newValue) => setValue(i, newValue)}
             />
-          ))}
-        </Group>
-      )}
-    </Stack>
+          )}
+        </Stack>
+      ))}
+    </DynamicGrid>
   );
 }
