@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ActionIcon, Group, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Code, Group, Text, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
@@ -19,13 +19,15 @@ export function ScriptLogEntry({ script }: Props) {
 
   return (
     <Group wrap={'nowrap'} justify={'space-between'} align={'start'}>
-      <Text
-        truncate={expanded ? undefined : 'end'}
-        onClick={() => setExpanded(!expanded)}
-        style={{ cursor: 'pointer', overflowWrap: 'anywhere' }}
-      >
-        {script}
-      </Text>
+      <Code color={"dark.7"} w={'100%'}>
+        <Text
+          truncate={expanded ? undefined : 'end'}
+          onClick={() => setExpanded(!expanded)}
+          style={{ cursor: 'pointer', overflowWrap: 'anywhere' }}
+        >
+          {script}
+        </Text>
+      </Code>
       <Group wrap={'nowrap'} gap={'xs'}>
         <CopyToClipboardButton value={script} />
         <Tooltip label={'Rerun script'}>

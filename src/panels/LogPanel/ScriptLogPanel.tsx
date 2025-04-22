@@ -4,7 +4,7 @@ import { ActionIcon, Group, Tooltip } from '@mantine/core';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
-import { ReplayIcon } from '@/icons/icons';
+import { RefreshIcon } from '@/icons/icons';
 
 import { ScriptLogEntry } from './ScriptLogEntry';
 
@@ -13,8 +13,10 @@ import { ScriptLogEntry } from './ScriptLogEntry';
 type FileLines = Record<string, string> | undefined;
 
 export function ScriptLogPanel() {
+  const [scriptLogEntries, setScriptLogEntries] = useState<string[] | undefined>(
+    undefined
+  );
   const luaApi = useOpenSpaceApi();
-  const [scriptLogEntries, setScriptLogEntries] = useState<string[]>([]);
 
   const fetchScriptLogEntries = useCallback(async () => {
     // eslint-disable-next-line no-template-curly-in-string
@@ -41,28 +43,23 @@ export function ScriptLogPanel() {
   }, [fetchScriptLogEntries]);
 
   function preprocessScriptEntry(entry: string): string {
-    // @TODO (anden88, 2025-04-17): do we want to rewrite this using regex instead?
-    // return entry.replace(/[.,()""]/g, ' ');
-    return entry
-      .replaceAll('.', ' ')
-      .replaceAll(',', ' ')
-      .replaceAll('"', ' ')
-      .replaceAll('(', ' ')
-      .replaceAll(')', ' ');
+    // Replace special characters with spaces. The '+' ensures repeated punctuation is
+    // replaced by a single space instead of many.
+    return entry.replace(/[.,()[\]{}"'\\/]+/g, ' ');
   }
 
   return (
-    <FilterList isLoading={scriptLogEntries.length === 0}>
+    <FilterList isLoading={scriptLogEntries === undefined}>
       <Group gap={'xs'}>
         <Tooltip label={'Refresh script log'}>
           <ActionIcon onClick={fetchScriptLogEntries} aria-label={'Refresh script log'}>
-            <ReplayIcon />
+            <RefreshIcon />
           </ActionIcon>
         </Tooltip>
         <FilterList.InputField placeHolderSearchText={'Search for a script'} flex={1} />
       </Group>
       <FilterList.SearchResults
-        data={scriptLogEntries}
+        data={scriptLogEntries ?? []}
         renderElement={(entry) => <ScriptLogEntry script={entry} />}
         matcherFunc={(data, searchString) => {
           const preprocessedData = preprocessScriptEntry(data);
