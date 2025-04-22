@@ -21,7 +21,7 @@ function SliderMarkLabel({
   );
 }
 
-export function SliderMinMaxLabels({ min, max, decimalPlaces }: Props) {
+export function MinMaxLabels({ min, max, decimalPlaces }: Props) {
   return (
     <Group justify={'space-between'} px={2}>
       <Text size={'xs'} c={'dimmed'}>

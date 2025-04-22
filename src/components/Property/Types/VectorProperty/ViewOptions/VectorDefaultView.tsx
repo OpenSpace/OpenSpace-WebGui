@@ -1,8 +1,9 @@
-import { Flex } from '@mantine/core';
+import { Flex, Group, Slider } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { AdditionalDataVectorMatrix } from '@/components/Property/types';
 import { usePropListeningState } from '@/hooks/util';
+import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
 
 interface Props {
   disabled: boolean;
@@ -31,21 +32,46 @@ export function VectorDefaultView({
     setCurrentValue(v);
   }
 
+  // When no min/max is set, the marks for the slider cannot be nicely computed
+  const extent = max[0] - min[0];
+  // @TODO (2025-03-03, emmbr) This should be handled a better way... This is a bit of a
+  // hack and the max value is just arbitrarily chosen
+  const maxAllowedExtentForSlider = 1e12;
+  const shouldShowSlider = isFinite(extent) && extent < maxAllowedExtentForSlider;
+
   return (
-    <Flex gap={'xs'}>
-      {currentValue.map((item, i) => (
-        <NumericInput
-          miw={40}
-          key={i}
-          value={item}
-          disabled={disabled}
-          min={min[i]}
-          max={max[i]}
-          step={step[i]}
-          allowDecimal={!isInt}
-          onEnter={(newValue) => setValue(i, newValue)}
-        />
-      ))}
-    </Flex>
+    <>
+      <Group gap={'xs'} wrap="nowrap" grow>
+        {currentValue.map((item, i) => (
+          <NumericInput
+            miw={40}
+            key={i}
+            value={item}
+            disabled={disabled}
+            min={min[i]}
+            max={max[i]}
+            step={step[i]}
+            allowDecimal={!isInt}
+            onEnter={(newValue) => setValue(i, newValue)}
+          />
+        ))}
+      </Group>
+      {shouldShowSlider && (
+        <Group gap={'xs'} wrap={'nowrap'} grow>
+          {currentValue.map((item, i) => (
+            <NumericSlider
+              miw={40}
+              key={i}
+              value={item}
+              disabled={disabled}
+              min={min[i]}
+              max={max[i]}
+              step={step[i]}
+              onInput={(newValue) => setValue(i, newValue)}
+            />
+          ))}
+        </Group>
+      )}
+    </>
   );
 }

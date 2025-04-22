@@ -1,12 +1,11 @@
 import { Flex, Group, NumberFormatter, Paper, Text } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
+import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
 import { AdditionalDataNumber, PropertyProps } from '@/components/Property/types';
 import { useGenericNumericProperty, usePropertyDescription } from '@/hooks/properties';
 import { usePropListeningState } from '@/hooks/util';
-
-import { NumericPropertySlider } from './Slider/NumericPropertySlider';
-import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from './util';
+import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from '@/util/numeric';
 
 interface Props extends PropertyProps {
   isInt?: boolean;
@@ -52,7 +51,7 @@ export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
   return (
     <Group align={'bottom'}>
       {shouldShowSlider && (
-        <NumericPropertySlider
+        <NumericSlider
           value={value}
           flex={2}
           miw={100}
@@ -61,7 +60,7 @@ export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
           max={max}
           step={step}
           exponent={exponent}
-          onInput={setPropertyValue}
+          onInput={onValueChange}
         />
       )}
       <Flex flex={1} miw={100}>

@@ -10,7 +10,7 @@ import { DoubleListProperty } from './Types/ListProperty/DoubleListProperty';
 import { IntListProperty } from './Types/ListProperty/IntListProperty';
 import { StringListProperty } from './Types/ListProperty/StringListProperty';
 import { MatrixProperty } from './Types/MatrixProperty';
-import { NumericProperty } from './Types/NumericProperty/NumericProperty';
+import { NumericProperty } from './Types/NumericProperty';
 import { OptionProperty } from './Types/OptionProperty';
 import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';

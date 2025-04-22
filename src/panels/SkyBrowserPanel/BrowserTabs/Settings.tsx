@@ -12,8 +12,8 @@ import {
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
+import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
 import { Property } from '@/components/Property/Property';
-import { NumericPropertySlider } from '@/components/Property/Types/NumericProperty/Slider/NumericPropertySlider';
 import { useAppSelector } from '@/redux/hooks';
 import {
   SkyBrowserAllowCameraRotationKey,
@@ -92,7 +92,7 @@ export function Settings({ id }: Props) {
         <Box py={'sm'}>
           <Tabs.Panel value={'Settings'}>
             <Group grow>
-              <NumericPropertySlider
+              <NumericSlider
                 disabled={false}
                 value={radius}
                 min={0}
@@ -122,7 +122,7 @@ export function Settings({ id }: Props) {
             />
             <InputLabel>Vertical field of view</InputLabel>
             <Group grow>
-              <NumericPropertySlider
+              <NumericSlider
                 disabled={false}
                 value={fov}
                 min={1}
@@ -164,7 +164,7 @@ export function Settings({ id }: Props) {
             </Group>
             <InputLabel>Declination</InputLabel>
             <Group grow>
-              <NumericPropertySlider
+              <NumericSlider
                 disabled={false}
                 value={dec}
                 min={-89}

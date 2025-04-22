@@ -1,8 +1,8 @@
 import { Group, NumberFormatter, RangeSlider, Stack } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-import { useSliderScale } from '@/components/Property/SliderUtil/hooks';
-import { SliderMinMaxLabels } from '@/components/Property/SliderUtil/SliderMinMaxLabels';
+import { useSliderScale } from '@/components/Input/NumericInput/NumericSlider/hooks';
+import { SliderMinMaxLabels } from '@/components/Input/NumericInput/NumericSlider/MinMaxLabels';
 import { AdditionalDataVectorMatrix } from '@/components/Property/types';
 import { usePropListeningState } from '@/hooks/util';
 

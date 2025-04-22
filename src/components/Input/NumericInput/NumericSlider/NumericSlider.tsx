@@ -1,10 +1,10 @@
 import { MantineStyleProps, NumberFormatter, Slider, Stack } from '@mantine/core';
 
-import { useSliderScale } from '@/components/Property/SliderUtil/hooks';
-import { SliderMinMaxLabels } from '@/components/Property/SliderUtil/SliderMinMaxLabels';
 import { usePropListeningState } from '@/hooks/util';
+import { stepToDecimalPlaces } from '@/util/numeric';
 
-import { stepToDecimalPlaces } from '../util';
+import { useSliderScale } from './hooks';
+import { MinMaxLabels } from './MinMaxLabels';
 
 interface Props extends MantineStyleProps {
   disabled: boolean;
@@ -16,7 +16,7 @@ interface Props extends MantineStyleProps {
   exponent?: number;
 }
 
-export function NumericPropertySlider({
+export function NumericSlider({
   disabled,
   value,
   min,
@@ -68,7 +68,7 @@ export function NumericPropertySlider({
         onChangeEnd={() => setIsEditingSlider(false)}
         opacity={disabled ? 0.5 : 1}
       />
-      <SliderMinMaxLabels min={min} max={max} decimalPlaces={decimalPlaces} />
+      <MinMaxLabels min={min} max={max} decimalPlaces={decimalPlaces} />
     </Stack>
   );
 }
