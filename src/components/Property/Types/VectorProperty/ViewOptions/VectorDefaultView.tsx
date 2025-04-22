@@ -1,9 +1,9 @@
-import { Flex, Group, Slider } from '@mantine/core';
+import { Group } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
+import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
 import { AdditionalDataVectorMatrix } from '@/components/Property/types';
 import { usePropListeningState } from '@/hooks/util';
-import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
 
 interface Props {
   disabled: boolean;
@@ -25,6 +25,15 @@ export function VectorDefaultView({
 
   const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
 
+  // @TODO (2025-03-03, emmbr) This should be handled a better way... This is a bit of a
+  // hack and the max value is just arbitrarily chosen
+  const maxAllowedExtentForSlider = 1e12;
+  const shouldShowSlider = max.some((value, i) => {
+    // When no min/max is set, the marks for the slider cannot be nicely computed
+    const extent = value - min[i];
+    return isFinite(value - min[i]) && extent < maxAllowedExtentForSlider;
+  });
+
   function setValue(index: number, newValue: number) {
     const v = [...value];
     v[index] = newValue;
@@ -32,16 +41,9 @@ export function VectorDefaultView({
     setCurrentValue(v);
   }
 
-  // When no min/max is set, the marks for the slider cannot be nicely computed
-  const extent = max[0] - min[0];
-  // @TODO (2025-03-03, emmbr) This should be handled a better way... This is a bit of a
-  // hack and the max value is just arbitrarily chosen
-  const maxAllowedExtentForSlider = 1e12;
-  const shouldShowSlider = isFinite(extent) && extent < maxAllowedExtentForSlider;
-
   return (
     <>
-      <Group gap={'xs'} wrap="nowrap" grow>
+      <Group gap={'xs'} wrap={'nowrap'} grow>
         {currentValue.map((item, i) => (
           <NumericInput
             miw={40}
