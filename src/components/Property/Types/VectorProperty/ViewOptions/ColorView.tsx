@@ -1,4 +1,4 @@
-import { Box, Flex, Group, RGBA } from '@mantine/core';
+import { Group, RGBA } from '@mantine/core';
 
 import { ColorPicker } from '@/components/ColorPicker/ColorPicker';
 import { AdditionalDataVectorMatrix } from '@/components/Property/types';
@@ -26,12 +26,13 @@ export function ColorView({
   const hasAlpha = value.length === 4;
 
   return (
-    <Group gap={'xs'} align={'start'} preventGrowOverflow={false} grow wrap={"nowrap"}>
+    <Group gap={'xs'} align={'start'} preventGrowOverflow={false} grow wrap={'nowrap'}>
       <VectorDefaultView
         disabled={readOnly}
         setPropertyValue={setPropertyValue}
         value={value}
         additionalData={additionalData}
+        labels={['r', 'g', 'b', 'a']}
       />
       <ColorPicker
         disabled={readOnly}

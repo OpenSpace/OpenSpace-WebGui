@@ -1,4 +1,4 @@
-import { Flex, Group, Stack } from '@mantine/core';
+import { Group, Stack, Text } from '@mantine/core';
 
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
@@ -12,6 +12,7 @@ interface Props {
   value: number[];
   additionalData: AdditionalDataVectorMatrix;
   isInt?: boolean;
+  labels?: string[];
 }
 
 export function VectorDefaultView({
@@ -19,13 +20,13 @@ export function VectorDefaultView({
   setPropertyValue,
   value,
   additionalData,
-  isInt = false
+  isInt = false,
+  labels = ['x', 'y', 'z', 'w']
 }: Props) {
   const { value: currentValue, setValue: setCurrentValue } =
     usePropListeningState<number[]>(value);
 
   const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
-
   // @TODO (2025-03-03, emmbr) This should be handled a better way... This is a bit of a
   // hack and the max value is just arbitrarily chosen
   const maxAllowedExtentForSlider = 1e12;
@@ -43,29 +44,39 @@ export function VectorDefaultView({
   }
 
   return (
-    <DynamicGrid minChildSize={120} maxCols={currentValue.length}>
+    <DynamicGrid
+      minChildSize={120}
+      maxCols={currentValue.length}
+      spacing={'xs'}
+      verticalSpacing={'xs'}
+    >
       {currentValue.map((item, i) => (
-        <Stack key={i} gap={'xs'}>
-          <NumericInput
-            value={item}
-            disabled={disabled}
-            min={min[i]}
-            max={max[i]}
-            step={step[i]}
-            allowDecimal={!isInt}
-            onEnter={(newValue) => setValue(i, newValue)}
-          />
-          {shouldShowSlider && (
-            <NumericSlider
+        <Group wrap={"nowrap"} align={"start"} gap={'xs'} grow preventGrowOverflow={false}>
+          <Text c={'dimmed'} mt={5} flex={0} size={"sm"}>
+            {labels[i]}
+          </Text>
+          <Stack key={i} gap={'xs'}>
+            <NumericInput
               value={item}
               disabled={disabled}
               min={min[i]}
               max={max[i]}
               step={step[i]}
-              onInput={(newValue) => setValue(i, newValue)}
+              allowDecimal={!isInt}
+              onEnter={(newValue) => setValue(i, newValue)}
             />
-          )}
-        </Stack>
+            {shouldShowSlider && (
+              <NumericSlider
+                value={item}
+                disabled={disabled}
+                min={min[i]}
+                max={max[i]}
+                step={step[i]}
+                onInput={(newValue) => setValue(i, newValue)}
+              />
+            )}
+          </Stack>
+        </Group>
       ))}
     </DynamicGrid>
   );

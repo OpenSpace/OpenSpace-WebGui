@@ -41,8 +41,6 @@ export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
 
   const decimalPlaces = stepToDecimalPlaces(step);
 
-  // @TODO (2025-03-14, emmbr) There still seems to be a bit of a stutter when dragging
-  // the slider. Investigate.
   function onValueChange(newValue: number) {
     setCurrentValue(newValue);
     setPropertyValue(newValue);
