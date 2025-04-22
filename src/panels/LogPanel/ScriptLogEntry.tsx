@@ -22,7 +22,7 @@ export function ScriptLogEntry({ script }: Props) {
       <Text
         truncate={expanded ? undefined : 'end'}
         onClick={() => setExpanded(!expanded)}
-        style={{ cursor: 'pointer', textWrap: 'pretty', overflowWrap: 'anywhere' }}
+        style={{ cursor: 'pointer', overflowWrap: 'anywhere' }}
       >
         {script}
       </Text>
