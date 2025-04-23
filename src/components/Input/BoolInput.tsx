@@ -25,7 +25,7 @@ export function BoolInput({
         onChange={(event) => setValue(event.currentTarget.checked)}
         onKeyDown={(event) => event.key === 'Enter' && setValue(!value)}
         disabled={readOnly}
-        aria-label={`Toggle ${name}`}
+        aria-label={name}
       />
       <Label name={name} description={description} readOnly={readOnly} />
     </Group>
