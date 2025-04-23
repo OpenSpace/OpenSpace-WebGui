@@ -18,29 +18,28 @@ export function ScriptLogEntry({ script }: Props) {
   }
 
   return (
-    <Group wrap={'nowrap'} justify={'space-between'} align={'start'}>
-      <Code color={"dark.7"} w={'100%'}>
+    <Group wrap={'nowrap'} align={'start'} gap={'xs'}>
+      <Code color={'dark.7'} w={'100%'}>
         <Text
           truncate={expanded ? undefined : 'end'}
           onClick={() => setExpanded(!expanded)}
           style={{ cursor: 'pointer', overflowWrap: 'anywhere' }}
+          size="sm"
         >
           {script}
         </Text>
       </Code>
-      <Group wrap={'nowrap'} gap={'xs'}>
-        <CopyToClipboardButton value={script} />
-        <Tooltip label={'Rerun script'}>
-          <ActionIcon
-            onClick={runScript}
-            variant={'light'}
-            color={'green'}
-            aria-label={'Rerun script'}
-          >
-            <RerunScriptIcon />
-          </ActionIcon>
-        </Tooltip>
-      </Group>
+      <CopyToClipboardButton value={script} />
+      <Tooltip label={'Rerun script'}>
+        <ActionIcon
+          onClick={runScript}
+          variant={'light'}
+          color={'green'}
+          aria-label={'Rerun script'}
+        >
+          <RerunScriptIcon />
+        </ActionIcon>
+      </Tooltip>
     </Group>
   );
 }
