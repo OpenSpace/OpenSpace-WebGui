@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ActionIcon, Button, Group, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Button, Code, Group, Text, Title, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { Layout } from '@/components/Layout/Layout';
-import { DeleteIcon, RefreshIcon, RerunScriptIcon } from '@/icons/icons';
+import { CancelIcon, DeleteIcon, RefreshIcon, RerunScriptIcon } from '@/icons/icons';
 
 import { ScriptLogEntry } from './ScriptLogEntry';
+import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 
 // TODO (anden88 2025-04-17): Remove when lists from OpenSpace don't have the
 // ['1']: value, ['2']: value format
@@ -89,7 +90,7 @@ export function ScriptLogPanel() {
     // TODO (anden88 2025-04-23): In what order do we want to run the scripts? The scripts
     // are ordered latest first (top-bottom) but they were actually executed bottom up...
     const scriptsToRun = Array.from(selectedScripts)
-      .sort((a, b) => a - b)
+      .sort((a, b) => b - a)
       .map((index) => scriptLogEntries[index]);
 
     scriptsToRun.map((script) => luaApi.scheduleScript(script, 0));
@@ -102,30 +103,57 @@ export function ScriptLogPanel() {
       <Layout.FixedSection mb={'xs'}>
         <Group wrap={'nowrap'} justify={'space-between'} align={'start'} gap={'xs'}>
           <Group gap={'xs'}>
-            <Tooltip label={'Run all the selected scripts in sequential order'}>
+            <Tooltip
+              label={'Run all the selected scripts in sequential order, bottom to top'}
+            >
               <Button
                 onClick={runSelectedScripts}
                 rightSection={<RerunScriptIcon />}
                 disabled={selectedScripts.size === 0}
+                variant={'filled'}
+                color={'green'}
               >
-                Run Scripts
+                Run
               </Button>
             </Tooltip>
+            <CopyToClipboardButton
+              value={
+                scriptLogEntries
+                  ? Array.from(selectedScripts)
+                      .map((index) => scriptLogEntries[index])
+                      .join('\n')
+                  : 'No script selected'
+              }
+              showLabel
+              disabled={selectedScripts.size === 0}
+            />
             <Tooltip label={'Clears all selected scripts'}>
               <Button
                 onClick={() => setSelectedScripts(new Set())}
-                rightSection={<DeleteIcon />}
+                rightSection={<CancelIcon />}
                 disabled={selectedScripts.size === 0}
+                variant="light"
+                color="gray"
               >
-                Clear All
+                Clear
               </Button>
             </Tooltip>
           </Group>
           <InfoBox>
             <Text>
-              This script log has been cleaned for ease of use, so some entries might have
-              been accidentally filtered. For the full log or logs from previous runs, see
-              the file in the OpenSpace/logs folder.
+              This script log has been cleaned for ease of use. Some entries may have been
+              filtered out unintentionally.
+              <Text>
+                Entries are listed from latest to oldest (top to bottom). Running multiple
+                scripts at once will run them in the order bottom to top.
+              </Text>
+            </Text>
+            <Text>
+              To view the complete log or previous runs, check the{' '}
+              <Text fs={'italic'} fw={500} display={'inline-block'}>
+                OpenSpace/logs
+              </Text>{' '}
+              folder.
             </Text>
           </InfoBox>
         </Group>
