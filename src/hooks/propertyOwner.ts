@@ -18,7 +18,7 @@ export function usePropertyOwner(uri: Uri): PropertyOwner | undefined {
 }
 
 export const useHasVisibleChildren = (propertyOwnerUri: Uri): boolean => {
-  const [visiblityLevelSetting] = useProperty(
+  const [visibilityLevelSetting] = useProperty(
     'OptionProperty',
     EnginePropertyVisibilityKey
   );
@@ -26,7 +26,7 @@ export const useHasVisibleChildren = (propertyOwnerUri: Uri): boolean => {
   return useAppSelector((state) => {
     return hasVisibleChildren(
       propertyOwnerUri,
-      visiblityLevelSetting,
+      visibilityLevelSetting,
       state.propertyOwners.propertyOwners,
       state.properties.propertyOverview
     );
