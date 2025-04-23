@@ -5,7 +5,10 @@ import { PropertyTypes } from './propertyTypes';
 
 export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
 
-// Creating an empty object type to use as a default value for the optional types
+// Define an empty object type to use as a default value for optional types.
+// Using `Record<string, never>` ensures that the type represents an object
+// with no properties, as `never` indicates that no values are allowed for any key.
+// We use this as a fallback where we infer the additionalData or viewOptions.
 type EmptyObject = Record<string, never>;
 
 /**
@@ -60,12 +63,12 @@ export type AnyProperty = {
   [K in keyof PropertyTypes]: Property<K>;
 }[keyof PropertyTypes];
 
-// A utility type that creates a union of `Property<T>` types for all keys `T` in `PropertyTypeMap`.
-// This is achieved by iterating over each key `T` in `PropertyTypeMap` and resolving it to `Property<T>`.
-// The `T extends any` construct ensures that the union is properly distributed over all keys.
-
-// The "extends any" syntax seems to be accepted typescript syntax - see
-// https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#conditional-type-constraints
+/**
+ * A utility type that creates a union of `Property<T>` types for all keys `T` in `PropertyTypes`.
+ * This is achieved by iterating over each key `T` in `PropertyTypes` and resolving it to `Property<T>`.
+ * The `T extends any` construct ensures that the union is properly distributed over all keys.
+ * The "extends any" syntax seems to be accepted typescript syntax - see
+ * https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#conditional-type-constraints */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type PropertyUnion<T extends keyof PropertyTypes> = T extends any ? Property<T> : never;
 

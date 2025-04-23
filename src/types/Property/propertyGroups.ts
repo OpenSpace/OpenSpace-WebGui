@@ -1,4 +1,9 @@
-import { PropertyTypes } from './propertyTypes';
+import {
+  GenericMatrixTypesArray,
+  GenericNumericTypesArray,
+  GenericVectorTypesArray,
+  PropertyTypes
+} from './propertyTypes';
 
 // Generic types for groups of properties
 export type PropertyGroups = {
@@ -7,52 +12,13 @@ export type PropertyGroups = {
   GenericNumericProperty: GenericNumericTypes;
 };
 
-// Define an immutable array of generic vector property types using `Object.freeze` and `as const`.
-const GenericVectorTypesArray = Object.freeze([
-  'Vec2Property',
-  'Vec3Property',
-  'Vec4Property',
-  'DVec2Property',
-  'DVec3Property',
-  'DVec4Property',
-  'IVec2Property',
-  'IVec3Property',
-  'IVec4Property',
-  'UVec2Property',
-  'UVec3Property',
-  'UVec4Property'
-] as const);
-
 // Define a type `GenericVectorTypes` that represents the union of all elements
 // in the `GenericVectorTypesArray`.
 type GenericVectorTypes = (typeof GenericVectorTypesArray)[number];
 
-// Define an immutable array of generic matrix property types using `Object.freeze` and `as const`.
-const GenericMatrixTypesArray = Object.freeze([
-  'Mat2Property',
-  'Mat3Property',
-  'Mat4Property',
-  'DMat2Property',
-  'DMat3Property',
-  'DMat4Property'
-] as const);
-
 // Define a type `GenericMatrixTypes` that represents the union of all elements
 // in the `GenericMatrixTypesArray`.
 type GenericMatrixTypes = (typeof GenericMatrixTypesArray)[number];
-
-// Define an immutable array of generic numeric property types using `Object.freeze` and `as const`.
-// This ensures that the array is read-only and its elements are treated as literal types.
-const GenericNumericTypesArray = Object.freeze([
-  'FloatProperty',
-  'DoubleProperty',
-  'ShortProperty',
-  'UShortProperty',
-  'LongProperty',
-  'ULongProperty',
-  'IntProperty',
-  'UIntProperty'
-] as const);
 
 // Define a type `GenericNumericTypes` that represents the union of all elements
 // in the `GenericNumericTypesArray`. This is achieved by using the `typeof` operator

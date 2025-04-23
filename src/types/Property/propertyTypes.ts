@@ -1,3 +1,42 @@
+// Define an immutable array of generic numeric property types using `Object.freeze` and `as const`.
+// This ensures that the array is read-only and its elements are treated as literal types.
+export const GenericNumericTypesArray = Object.freeze([
+  'FloatProperty',
+  'DoubleProperty',
+  'ShortProperty',
+  'UShortProperty',
+  'LongProperty',
+  'ULongProperty',
+  'IntProperty',
+  'UIntProperty'
+] as const);
+
+// Define an immutable array of generic vector property types using `Object.freeze` and `as const`.
+export const GenericVectorTypesArray = Object.freeze([
+  'Vec2Property',
+  'Vec3Property',
+  'Vec4Property',
+  'DVec2Property',
+  'DVec3Property',
+  'DVec4Property',
+  'IVec2Property',
+  'IVec3Property',
+  'IVec4Property',
+  'UVec2Property',
+  'UVec3Property',
+  'UVec4Property'
+] as const);
+
+// Define an immutable array of generic matrix property types using `Object.freeze` and `as const`.
+export const GenericMatrixTypesArray = Object.freeze([
+  'Mat2Property',
+  'Mat3Property',
+  'Mat4Property',
+  'DMat2Property',
+  'DMat3Property',
+  'DMat4Property'
+] as const);
+
 export type ViewOptionsVector =
   | {
       Color?: boolean;
@@ -30,6 +69,20 @@ export interface AdditionalDataNumber {
   step: number;
 }
 
+interface NumberProperty {
+  value: number;
+  additionalData: AdditionalDataNumber;
+}
+interface VectorProperty {
+  value: number[];
+  additionalData: AdditionalDataVectorMatrix;
+  viewOptions: ViewOptionsVector;
+}
+interface MatrixProperty {
+  value: number[];
+  additionalData: AdditionalDataVectorMatrix;
+}
+
 export type PropertyTypes = {
   TriggerProperty: {
     value: void;
@@ -40,10 +93,6 @@ export type PropertyTypes = {
   StringProperty: {
     value: string;
   };
-  MatrixProperty: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-  };
   SelectionProperty: {
     value: string[];
     additionalData: AdditionalDataSelection;
@@ -51,122 +100,6 @@ export type PropertyTypes = {
   OptionProperty: {
     value: number;
     additionalData: AdditionalDataOptions;
-  };
-  Vec2Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-    viewOptions: ViewOptionsVector;
-  };
-  Vec3Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-    viewOptions: ViewOptionsVector;
-  };
-  Vec4Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-    viewOptions: ViewOptionsVector;
-  };
-  DVec2Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-    viewOptions: ViewOptionsVector;
-  };
-  DVec3Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-    viewOptions: ViewOptionsVector;
-  };
-  DVec4Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-    viewOptions: ViewOptionsVector;
-  };
-  IVec2Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-    viewOptions: ViewOptionsVector;
-  };
-  IVec3Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-    viewOptions: ViewOptionsVector;
-  };
-  IVec4Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-    viewOptions: ViewOptionsVector;
-  };
-  UVec2Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-    viewOptions: ViewOptionsVector;
-  };
-  UVec3Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-    viewOptions: ViewOptionsVector;
-  };
-  UVec4Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-    viewOptions: ViewOptionsVector;
-  };
-  DoubleProperty: {
-    value: number;
-    additionalData: AdditionalDataNumber;
-  };
-  FloatProperty: {
-    value: number;
-    additionalData: AdditionalDataNumber;
-  };
-  IntProperty: {
-    value: number;
-    additionalData: AdditionalDataNumber;
-  };
-  LongProperty: {
-    value: number;
-    additionalData: AdditionalDataNumber;
-  };
-  ShortProperty: {
-    value: number;
-    additionalData: AdditionalDataNumber;
-  };
-  UIntProperty: {
-    value: number;
-    additionalData: AdditionalDataNumber;
-  };
-  ULongProperty: {
-    value: number;
-    additionalData: AdditionalDataNumber;
-  };
-  UShortProperty: {
-    value: number;
-    additionalData: AdditionalDataNumber;
-  };
-  Mat2Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-  };
-  Mat3Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-  };
-  Mat4Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-  };
-  DMat2Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-  };
-  DMat3Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
-  };
-  DMat4Property: {
-    value: number[];
-    additionalData: AdditionalDataVectorMatrix;
   };
   DoubleListProperty: {
     value: number[];
@@ -177,4 +110,33 @@ export type PropertyTypes = {
   StringListProperty: {
     value: string[];
   };
+  // Number properties
+  DoubleProperty: NumberProperty;
+  FloatProperty: NumberProperty;
+  IntProperty: NumberProperty;
+  LongProperty: NumberProperty;
+  ShortProperty: NumberProperty;
+  UIntProperty: NumberProperty;
+  ULongProperty: NumberProperty;
+  UShortProperty: NumberProperty;
+  // Vector properties
+  Vec2Property: VectorProperty;
+  Vec3Property: VectorProperty;
+  Vec4Property: VectorProperty;
+  DVec2Property: VectorProperty;
+  DVec3Property: VectorProperty;
+  DVec4Property: VectorProperty;
+  IVec2Property: VectorProperty;
+  IVec3Property: VectorProperty;
+  IVec4Property: VectorProperty;
+  UVec2Property: VectorProperty;
+  UVec3Property: VectorProperty;
+  UVec4Property: VectorProperty;
+  // Matrix properties
+  Mat2Property: MatrixProperty;
+  Mat3Property: MatrixProperty;
+  Mat4Property: MatrixProperty;
+  DMat2Property: MatrixProperty;
+  DMat3Property: MatrixProperty;
+  DMat4Property: MatrixProperty;
 };

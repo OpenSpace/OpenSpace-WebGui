@@ -20,18 +20,16 @@ import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function ViewMenu() {
   const { menuItems } = useMenuItems();
-  const [propertyVisibility, setPropertyVisibility, meta] = useProperty(
-    'OptionProperty',
-    'OpenSpaceEngine.PropertyVisibility'
-  );
+  const [propertyVisibility, setPropertyVisibility, propertyVisibilityMetadata] =
+    useProperty('OptionProperty', 'OpenSpaceEngine.PropertyVisibility');
 
   const { loadLayout, saveLayout } = useStoredLayout();
   const dispatch = useAppDispatch();
 
-  if (!meta) {
+  if (!propertyVisibilityMetadata) {
     return <></>;
   }
-  const userLevelOptions = meta.additionalData.options;
+  const userLevelOptions = propertyVisibilityMetadata.additionalData.options;
 
   return (
     <TopBarMenuWrapper targetTitle={'View'}>
