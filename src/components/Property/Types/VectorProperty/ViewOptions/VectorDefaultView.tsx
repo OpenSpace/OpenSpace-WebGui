@@ -13,7 +13,6 @@ interface Props {
   value: number[];
   additionalData: AdditionalDataVectorMatrix;
   isInt?: boolean;
-  labels?: string[];
 }
 
 export function VectorDefaultView({
@@ -21,14 +20,14 @@ export function VectorDefaultView({
   setPropertyValue,
   value,
   additionalData,
-  isInt = false,
-  labels = ['x', 'y', 'z', 'w']
+  isInt = false
 }: Props) {
   const { value: currentValue, setValue: setCurrentValue } =
     usePropListeningState<number[]>(value);
 
   const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
   const shouldShowSlider = max.every((max, i) => validSliderExtent(min[i], max));
+  const labels = ['x', 'y', 'z', 'w'];
 
   function setValue(index: number, newValue: number) {
     const v = [...value];
@@ -74,6 +73,7 @@ export function VectorDefaultView({
                 max={max[i]}
                 step={step[i]}
                 onInput={(newValue) => setValue(i, newValue)}
+                showMarks={false}
               />
             )}
           </Stack>

@@ -14,6 +14,7 @@ interface Props extends MantineStyleProps {
   step: number;
   onInput: (newValue: number) => void;
   exponent?: number;
+  showMarks?: boolean;
 }
 
 export function NumericSlider({
@@ -24,6 +25,7 @@ export function NumericSlider({
   step,
   onInput,
   exponent = 1,
+  showMarks = true,
   ...styleProps
 }: Props) {
   // Note that this value does not take the slider scale into account
@@ -62,7 +64,7 @@ export function NumericSlider({
         min={min}
         max={max}
         step={step}
-        marks={scaledMarks}
+        marks={showMarks ? scaledMarks : undefined}
         scale={scale}
         onChange={onSliderInput}
         onChangeEnd={() => setIsEditingSlider(false)}
