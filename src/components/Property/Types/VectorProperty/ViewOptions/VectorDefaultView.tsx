@@ -51,8 +51,14 @@ export function VectorDefaultView({
       verticalSpacing={'xs'}
     >
       {currentValue.map((item, i) => (
-        <Group wrap={"nowrap"} align={"start"} gap={'xs'} grow preventGrowOverflow={false}>
-          <Text c={'dimmed'} mt={5} flex={0} size={"sm"}>
+        <Group
+          wrap={'nowrap'}
+          align={'start'}
+          gap={'xs'}
+          grow
+          preventGrowOverflow={false}
+        >
+          <Text c={'dimmed'} mt={5} flex={0} size={'sm'}>
             {labels[i]}
           </Text>
           <Stack key={i} gap={'xs'}>
