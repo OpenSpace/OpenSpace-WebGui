@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, Chip, Group, Text } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
-import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
+import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
 import { useAppSelector } from '@/redux/hooks';
@@ -17,11 +17,12 @@ export function ListLayout() {
   const keybinds = useAppSelector((state) => state.actions.keybinds);
   const actions = useAppSelector((state) => state.actions.actions);
 
-  const { allowedKeys, toggleKey, selectedKeys } = useKeySettings<KeybindInfoType>({
-    name: true,
-    key: true,
-    documentation: true
-  });
+  const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
+    useSearchKeySettings<KeybindInfoType>({
+      documentation: true,
+      key: true,
+      name: true
+    });
 
   const keybindInfo: KeybindInfoType[] = keybinds
     .filter((keybind) => {
@@ -77,7 +78,10 @@ export function ListLayout() {
                 </Chip>
               </Chip.Group>
             </Group>
-            <FilterList.SearchSettingsMenu keys={allowedKeys} setKey={toggleKey} />
+            <FilterList.SearchSettingsMenu
+              keys={allowedSearchKeys}
+              setKey={toggleSearchKey}
+            />
           </Group>
           <FilterList.SearchResults
             data={keybindInfo}
@@ -97,7 +101,7 @@ export function ListLayout() {
                 <Text truncate>{node.name}</Text>
               </Button>
             )}
-            matcherFunc={generateMatcherFunctionByKeys(selectedKeys)}
+            matcherFunc={generateMatcherFunctionByKeys(selectedSearchKeys)}
           >
             <FilterList.SearchResults.VirtualList gap={'xs'} />
           </FilterList.SearchResults>

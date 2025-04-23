@@ -23,7 +23,7 @@ interface Props {
   searchableNodes: PropertyOwner[];
   matcherFunction: (node: PropertyOwner, query: string) => boolean;
   toggleKey: (key: keyof PropertyOwner, enabled: boolean) => void;
-  allowedKeys: Record<keyof PropertyOwner, boolean>;
+  allowedKeys: Partial<Record<keyof PropertyOwner, boolean>>;
 }
 
 export function AnchorAimView({

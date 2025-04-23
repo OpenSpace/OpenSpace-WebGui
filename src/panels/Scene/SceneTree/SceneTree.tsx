@@ -11,7 +11,7 @@ import {
 import { useSetState } from '@mantine/hooks';
 
 import { FilterList } from '@/components/FilterList/FilterList';
-import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
+import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ChevronsDownIcon, ChevronsUpIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -34,10 +34,13 @@ export function SceneTree() {
     sceneTreeFilterDefaults
   );
 
-  const { allowedKeys, toggleKey, selectedKeys } = useKeySettings<SceneTreeNodeData>({
-    guiPath: false,
-    label: true
-  });
+  const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
+    useSearchKeySettings<SceneTreeNodeData>({
+      label: true,
+      guiPath: false
+    });
+
+  const keyLabels = { label: 'Name', guiPath: 'GUI Path' };
 
   const { sceneTreeData, flatTreeData } = useSceneTreeData(filter);
   const { closeCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
@@ -76,8 +79,12 @@ export function SceneTree() {
     <FilterList>
       <Group justify={'space-between'} gap={'xs'} mr={'xs'}>
         <FilterList.InputField placeHolderSearchText={'Search for a node...'} flex={1} />
+        <FilterList.SearchSettingsMenu
+          keys={allowedSearchKeys}
+          setKey={toggleSearchKey}
+          labels={keyLabels}
+        />
         <SceneTreeFilters setFilter={setFilter} filter={filter} />
-        <FilterList.SearchSettingsMenu keys={allowedKeys} setKey={toggleKey} />
       </Group>
 
       <FilterList.Favorites>
@@ -109,8 +116,7 @@ export function SceneTree() {
         renderElement={(node: SceneTreeNodeData) => (
           <SceneTreeNodeContent key={node.value} node={node} expanded={false} />
         )}
-        // For now we just use the name
-        matcherFunc={generateMatcherFunctionByKeys(selectedKeys)}
+        matcherFunc={generateMatcherFunctionByKeys(selectedSearchKeys)}
       >
         <FilterList.SearchResults.VirtualList />
       </FilterList.SearchResults>

@@ -48,7 +48,7 @@ export function SceneTreeFilters({ setFilter, filter }: Props) {
             <FilterIcon />
           </ActionIcon>
         </Menu.Target>
-        <Menu.Dropdown maw={'300px'}>
+        <Menu.Dropdown maw={'330px'}>
           <Menu.Label>Filters</Menu.Label>
           <Stack p={'xs'}>
             <Group>

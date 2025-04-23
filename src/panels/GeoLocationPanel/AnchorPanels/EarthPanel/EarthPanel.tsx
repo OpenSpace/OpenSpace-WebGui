@@ -13,7 +13,7 @@ import {
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
-import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
+import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
@@ -40,10 +40,13 @@ export function EarthPanel({ currentAnchor }: Props) {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const groups = useAppSelector((state) => state.groups.groups);
 
-  const { allowedKeys, toggleKey, selectedKeys } = useKeySettings<Candidate>({
-    address: true,
-    attributes: true
-  });
+  const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
+    useSearchKeySettings<Candidate>({
+      address: true,
+      attributes: true
+    });
+
+  const keyLabels = { address: 'Address', attributes: 'Details' };
 
   const geoLocationOwners = groups[GeoLocationGroupKey]?.propertyOwners.map((uri) => {
     const index = uri.indexOf(ScenePrefixKey);
@@ -202,7 +205,11 @@ export function EarthPanel({ currentAnchor }: Props) {
               <FilterList>
                 <Group>
                   <FilterList.InputField placeHolderSearchText={'Filter search'} />
-                  <FilterList.SearchSettingsMenu keys={allowedKeys} setKey={toggleKey} />
+                  <FilterList.SearchSettingsMenu
+                    keys={allowedSearchKeys}
+                    setKey={toggleSearchKey}
+                    labels={keyLabels}
+                  />
                 </Group>
                 <FilterList.SearchResults
                   data={places}
@@ -218,7 +225,7 @@ export function EarthPanel({ currentAnchor }: Props) {
                       removeFocusNode={removeFocusNode}
                     />
                   )}
-                  matcherFunc={generateMatcherFunctionByKeys(selectedKeys)}
+                  matcherFunc={generateMatcherFunctionByKeys(selectedSearchKeys)}
                 >
                   <FilterList.SearchResults.VirtualList />
                 </FilterList.SearchResults>

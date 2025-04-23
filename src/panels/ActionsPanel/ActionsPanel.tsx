@@ -2,7 +2,7 @@ import { Group } from '@mantine/core';
 
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { FilterList } from '@/components/FilterList/FilterList';
-import { useKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
+import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
@@ -17,12 +17,13 @@ import { useActionsForLevel, useActionsInPath } from './hooks';
 
 export function ActionsPanel() {
   const isInitialized = useAppSelector((state) => state.actions.isInitialized);
-  const { allowedKeys, toggleKey, selectedKeys } = useKeySettings<Action>({
-    name: true,
-    identifier: false,
-    documentation: false,
-    guiPath: false
-  });
+  const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
+    useSearchKeySettings<Action>({
+      name: true,
+      documentation: false,
+      guiPath: false,
+      identifier: false
+    });
   const actionLevel = useActionsForLevel();
   const actionsInPath = useActionsInPath();
 
@@ -43,7 +44,10 @@ export function ActionsPanel() {
           <Group preventGrowOverflow={false}>
             {/* This is a custom variant of the FilterList input field */}
             <ActionsSearchInputField placeHolderSearchText={'Search for an action...'} />
-            <FilterList.SearchSettingsMenu keys={allowedKeys} setKey={toggleKey} />
+            <FilterList.SearchSettingsMenu
+              keys={allowedSearchKeys}
+              setKey={toggleSearchKey}
+            />
           </Group>
           <FilterList.Favorites>
             <DynamicGrid spacing={'xs'} verticalSpacing={'xs'} minChildSize={170}>
@@ -69,7 +73,7 @@ export function ActionsPanel() {
                 height={ButtonHeight}
               />
             )}
-            matcherFunc={generateMatcherFunctionByKeys(selectedKeys)}
+            matcherFunc={generateMatcherFunctionByKeys(selectedSearchKeys)}
           >
             <FilterList.SearchResults.VirtualList gap={'xs'} />
           </FilterList.SearchResults>
