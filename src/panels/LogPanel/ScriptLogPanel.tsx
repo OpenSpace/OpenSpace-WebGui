@@ -121,6 +121,7 @@ export function ScriptLogPanel() {
                 scriptLogEntries
                   ? Array.from(selectedScripts)
                       .map((index) => scriptLogEntries[index])
+                      .reverse()
                       .join('\n')
                   : 'No script selected'
               }
