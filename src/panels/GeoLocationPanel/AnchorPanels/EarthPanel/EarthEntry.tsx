@@ -82,6 +82,8 @@ export function EarthEntry({
               : addFocusNode(addressUtf8, lat, long, alt)
           }
           color={isAdded ? 'red' : 'blue'}
+          variant={'subtle'}
+          aria-label={`${isAdded ? 'Remove' : 'Add'} node: ${address}`}
         >
           {isAdded ? <MinusIcon /> : <PlusIcon />}
         </ActionIcon>

@@ -15,7 +15,12 @@ export function ColorPicker({ color, disabled, onChange, withAlpha }: Props) {
   return (
     <Popover position={'right-end'} withArrow arrowPosition={'center'}>
       <Popover.Target>
-        <ActionIcon disabled={disabled} size={'lg'} variant={'subtle'}>
+        <ActionIcon
+          disabled={disabled}
+          size={'lg'}
+          variant={'subtle'}
+          aria-label={'Open color edit'}
+        >
           <ColorSwatch color={rgbaToColor(color, withAlpha)} />
         </ActionIcon>
       </Popover.Target>

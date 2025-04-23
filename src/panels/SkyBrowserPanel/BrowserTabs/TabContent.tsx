@@ -77,49 +77,68 @@ export function TabContent({
       <Group justify={'space-between'}>
         <ActionIcon.Group>
           <Tooltip label={'Look at target'}>
-            <ActionIcon onClick={() => luaApi?.skybrowser.adjustCamera(browserId)}>
+            <ActionIcon
+              onClick={() => luaApi?.skybrowser.adjustCamera(browserId)}
+              aria-label={'Look at skybrowser target'}
+            >
               <EyeIcon />
             </ActionIcon>
           </Tooltip>
           <Tooltip label={'Move target to center of view'}>
             <ActionIcon
               onClick={() => luaApi?.skybrowser.centerTargetOnScreen(browserId)}
+              aria-label={'Move skybrowser target to center of view'}
             >
               <MoveTargetIcon />
             </ActionIcon>
           </Tooltip>
           <Tooltip label={'Zoom in'}>
-            <ActionIcon onClick={() => zoom(browserId, fov - zoomStep)}>
+            <ActionIcon
+              onClick={() => zoom(browserId, fov - zoomStep)}
+              aria-label={'Zoom in'}
+            >
               <ZoomInIcon />
             </ActionIcon>
           </Tooltip>
           <Tooltip label={'Zoom out'}>
-            <ActionIcon onClick={() => zoom(browserId, fov + zoomStep)}>
+            <ActionIcon
+              onClick={() => zoom(browserId, fov + zoomStep)}
+              aria-label={'Zoom out'}
+            >
               <ZoomOutIcon />
             </ActionIcon>
           </Tooltip>
           <Tooltip label={'Remove all images'}>
-            <ActionIcon onClick={removeAllImages}>
+            <ActionIcon onClick={removeAllImages} aria-label={'Remove all images'}>
               <DeleteIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip label={'Open Telescope View'}>
-            <ActionIcon onClick={openWorldWideTelescope}>
+          <Tooltip label={'Open telescope view'}>
+            <ActionIcon
+              onClick={openWorldWideTelescope}
+              aria-label={'Open telescope view'}
+            >
               <OpenInNewIcon />
             </ActionIcon>
           </Tooltip>
         </ActionIcon.Group>
         <Group>
-          <Tooltip label={'Settings'}>
+          <Tooltip label={'Skybrowser settings'}>
             <ActionIcon
               onClick={() => setShowSettings((old) => !old)}
               variant={showSettings ? 'filled' : 'default'}
+              aria-label={`${showSettings ? 'Close' : 'Open'} skybrowser settings`}
             >
               <SettingsIcon />
             </ActionIcon>
           </Tooltip>
           <Tooltip label={'Delete browser'}>
-            <ActionIcon onClick={deleteBrowser} color={'red'} variant={'light'}>
+            <ActionIcon
+              onClick={deleteBrowser}
+              color={'red'}
+              variant={'light'}
+              aria-label={'Delete browser'}
+            >
               <CloseIcon />
             </ActionIcon>
           </Tooltip>
