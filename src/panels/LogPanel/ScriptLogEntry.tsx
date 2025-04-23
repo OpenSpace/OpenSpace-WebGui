@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ActionIcon, Code, Group, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Checkbox, Code, Group, Text, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
@@ -7,9 +7,12 @@ import { RerunScriptIcon } from '@/icons/icons';
 
 interface Props {
   script: string;
+  index: number;
+  isSelected: boolean;
+  onToggleSelection: (index: number) => void;
 }
 
-export function ScriptLogEntry({ script }: Props) {
+export function ScriptLogEntry({ script, index, isSelected, onToggleSelection }: Props) {
   const luaApi = useOpenSpaceApi();
   const [expanded, setExpanded] = useState(false);
 
@@ -19,12 +22,13 @@ export function ScriptLogEntry({ script }: Props) {
 
   return (
     <Group wrap={'nowrap'} align={'start'} gap={'xs'}>
+      <Checkbox checked={isSelected} onChange={() => onToggleSelection(index)} />
       <Code color={'dark.7'} w={'100%'}>
         <Text
           truncate={expanded ? undefined : 'end'}
           onClick={() => setExpanded(!expanded)}
           style={{ cursor: 'pointer', wordBreak: 'break-all' }}
-          size="sm"
+          size={"sm"}
         >
           {script}
         </Text>
