@@ -75,7 +75,7 @@ export interface SkyBrowserImage {
   url: string; // Url of image to load into WWT
 }
 
-export type Status =
+export type WwtStatus =
   | 'LoadingWwt'
   | 'LoadingImageCollection'
   | 'CameraNotInSolarSystem'

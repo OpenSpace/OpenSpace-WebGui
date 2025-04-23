@@ -2,6 +2,8 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
+import { onCloseConnection } from '@/redux/connection/connectionSlice';
+import { AppStartListening } from '@/redux/listenerMiddleware';
 import { ConnectionStatus } from '@/types/enums';
 
 import {
@@ -10,8 +12,6 @@ import {
   subscriptionIsSetup,
   updateSkyBrowser
 } from './skybrowserSlice';
-import { onCloseConnection } from '@/redux/connection/connectionSlice';
-import { AppStartListening } from '@/redux/listenerMiddleware';
 
 const subscribeToSkyBrowser = createAction<void>('skybrowser/subscribe');
 const unsubscribeToSkyBrowser = createAction<void>('skybrowser/unsubscribe');

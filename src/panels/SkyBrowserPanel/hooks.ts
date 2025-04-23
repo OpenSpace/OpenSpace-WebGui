@@ -64,12 +64,14 @@ export function useWwtImageCollection(): [boolean, SkyBrowserImage[] | undefined
 
 export function useSkyBrowserData() {
   const dispatch = useAppDispatch();
+  const connected = useAppSelector((state) => state.connection.connectionStatus);
   useEffect(() => {
     dispatch(subscribeToSkyBrowser());
     return () => {
       dispatch(unsubscribeToSkyBrowser());
     };
-  }, [dispatch]);
+    // We want to run this effect when the connection status changes
+  }, [dispatch, connected]);
 }
 
 export function useActiveImage(): [string, (url: string) => void] {

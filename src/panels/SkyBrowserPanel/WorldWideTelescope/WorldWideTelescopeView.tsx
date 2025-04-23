@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { LoadingOverlay, Text } from '@mantine/core';
-import { useGesture } from '@use-gesture/react';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { useBoolProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
@@ -14,7 +12,8 @@ import {
   useUpdateBorderColor,
   useUpdateBorderRadius,
   useUpdateOpacities,
-  useUpdateSelectedImages
+  useUpdateSelectedImages,
+  useWwtInteraction
 } from './hooks';
 import { InfoOverlayContent } from './InfoOverlayContent';
 
@@ -23,55 +22,14 @@ import styles from './WorldWideTelescope.module.css';
 export function WorldWideTelescopeView() {
   const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
   const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
-
-  const [isDragging, setIsDragging] = useState(false);
-  const [startDragPosition, setStartDragPosition] = useState({ x: 0, y: 0 });
-
   const { ref } = useWwtProvider();
   const { width, height } = useWindowSize();
+
+  const { bindGestures, isDragging } = useWwtInteraction(id, width, height);
+
   const luaApi = useOpenSpaceApi();
   const { visible, type: overlayType } = useOverlayStatus();
-  /**
-   * The `offset` parameter represents the accumulated distance of the drag gesture
-   * in pixels. It is an array where:
-   * - `offset[0]` corresponds to the horizontal distance (x-axis).
-   * - `offset[1]` corresponds to the vertical distance (y-axis).
-   *
-   * This value is updated as the user drags, providing the total displacement
-   * from the starting point of the gesture.
-   */
-  const bindGestures = useGesture(
-    {
-      onDrag: (state) => {
-        state.event.preventDefault();
-        if (!state.wheeling && !state.pinching && state.touches === 1) {
-          handleDrag(state.offset[0], state.offset[1]);
-        }
-      },
-      onDragStart: (state) => {
-        if (state.touches === 1 && !state.wheeling && !state.pinching) {
-          mouseDown(state.offset[0], state.offset[1]);
-        }
-      },
-      onDragEnd: () => mouseUp(),
-      onPinch: (state) => {
-        if (state.touches == 2) {
-          // The first direction determines the "scroll" direction
-          const [direction] = state.direction;
-          scroll(direction < 0 ? 50 : -50);
-        }
-      },
-      onWheel: (state) => {
-        scroll(state.event.deltaY);
-      }
-    },
-    {
-      // To make it differentiate better between dragging and pinching
-      drag: { threshold: 0.1 },
-      eventOptions: { passive: false }
-    }
-  );
-  const [inverseZoom] = useBoolProperty('Modules.SkyBrowser.InverseZoomDirection');
+
   // A bunch of hooks that pass messages to WWT when our redux state changes
   useUpdateAim(id);
   useUpdateSelectedImages(id);
@@ -86,40 +44,6 @@ export function WorldWideTelescopeView() {
     const ratio = width / height;
     luaApi?.skybrowser.setBrowserRatio(id, ratio);
   }, [width, height, id, luaApi?.skybrowser]);
-
-  function handleDrag(x: number, y: number) {
-    if (!id || !isDragging) {
-      return;
-    }
-    // Calculate pixel translation
-    const dx = x - startDragPosition.x;
-    const dy = y - startDragPosition.y;
-    // Call lua function with relative values
-    luaApi?.skybrowser.finetuneTargetPosition(id, [dx / width, dy / height]);
-  }
-
-  function mouseDown(x: number, y: number) {
-    if (!id) {
-      return;
-    }
-    luaApi?.skybrowser.startFinetuningTarget(id);
-    luaApi?.skybrowser.stopAnimations(id);
-    setIsDragging(true);
-    setStartDragPosition({ x, y });
-  }
-
-  function mouseUp() {
-    setIsDragging(false);
-  }
-
-  function scroll(deltaY: number) {
-    if (!id) {
-      return;
-    }
-    const scrollDirection = inverseZoom ? -deltaY : deltaY;
-    luaApi?.skybrowser.scrollOverBrowser(id, scrollDirection);
-    luaApi?.skybrowser.stopAnimations(id);
-  }
 
   if (nBrowsers === 0) {
     return (

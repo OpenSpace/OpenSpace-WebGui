@@ -1,9 +1,9 @@
 import { Loader, Stack, Text } from '@mantine/core';
 
-import { Status } from '../types';
+import { WwtStatus } from '../types';
 
 interface Props {
-  type: Status;
+  type: WwtStatus;
 }
 
 export function InfoOverlayContent({ type }: Props) {
