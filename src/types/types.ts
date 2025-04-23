@@ -10,8 +10,9 @@ export interface Action {
   identifier: string;
   guiPath: string;
   name: string;
-  synchronization: boolean;
+  isLocal: boolean;
   documentation: string;
+  color?: [number, number, number, number]; // rgba color, [0, 1]
 }
 
 export type KeybindModifiers = ('super' | 'alt' | 'shift' | 'control')[];
@@ -104,6 +105,15 @@ export interface PropertyOwner {
 
 export interface PropertyOwners {
   [key: Uri]: PropertyOwner | undefined;
+}
+
+export interface SceneGraphNodeGuiSettings {
+  [key: Uri]: {
+    path: string;
+    isHidden: boolean;
+    isFocusable: boolean;
+    guiOrderingNumber: number | undefined;
+  };
 }
 
 export type Group = {

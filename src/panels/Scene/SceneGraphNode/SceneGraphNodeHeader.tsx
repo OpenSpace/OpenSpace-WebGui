@@ -4,6 +4,7 @@ import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavi
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
+import { useIsSgnFocusable } from '@/hooks/sceneGraphNodes/hooks';
 import { ClockOffIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
@@ -22,6 +23,7 @@ interface Props {
 export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
   const propertyOwner = usePropertyOwner(uri);
   const { timeFrame, isInTimeFrame } = useTimeFrame(uri);
+  const isFocusable = useIsSgnFocusable(uri);
 
   const renderableUri = propertyOwner?.subowners.find((uri) => isRenderable(uri));
   const hasRenderable = renderableUri !== undefined;
@@ -77,12 +79,14 @@ export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
       leftSection={visibilityControl}
       rightSection={
         <Group wrap={'nowrap'} gap={'xs'} flex={0}>
-          <NodeNavigationButton
-            size={'sm'}
-            type={NavigationType.Focus}
-            variant={'subtle'}
-            identifier={propertyOwner.identifier}
-          />
+          {isFocusable && (
+            <NodeNavigationButton
+              size={'sm'}
+              type={NavigationType.Focus}
+              variant={'subtle'}
+              identifier={propertyOwner.identifier}
+            />
+          )}
           <SceneGraphNodeMoreMenu uri={uri} />
         </Group>
       }

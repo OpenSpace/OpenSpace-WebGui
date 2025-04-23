@@ -6,7 +6,7 @@ export const RotationalFrictionKey =
   'NavigationHandler.OrbitalNavigator.Friction.RotationalFriction';
 export const ZoomFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.ZoomFriction';
 export const RollFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.RollFriction';
-// Origin panel settings
+// Navigation panel settings
 export const ApplyIdleBehaviorOnPathFinishKey =
   'NavigationHandler.PathNavigator.ApplyIdleBehaviorOnFinish';
 export const CameraPathArrivalDistanceFactorKey =
@@ -25,13 +25,6 @@ export const GeoLocationGroupKey = '/GeoLocation';
 
 // OpenSpace engine
 export const EnginePropertyVisibilityKey = 'OpenSpaceEngine.PropertyVisibility';
-
-export const UncertaintyDiscTagKey = 'exoplanet_uncertainty_disc';
-export const UncertaintyDiscPropertyKey = 'Modules.Exoplanets.ShowOrbitUncertainty';
-export const HabitableZoneTagKey = 'exoplanet_habitable_zone';
-export const HabitableZonePropertyKey = 'Modules.Exoplanets.ShowHabitableZone';
-export const Size1AuRingTagKey = 'exoplanet_1au_ring';
-export const Size1AuRingPropertyKey = 'Modules.Exoplanets.ShowComparisonCircle';
 
 // OpenSpace folders
 // eslint-disable-next-line no-template-curly-in-string

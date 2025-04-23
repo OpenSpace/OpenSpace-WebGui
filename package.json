@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "npm install",
     "build": "tsc -b && vite build",
     "lint": "npx prettier . --check & eslint .",
     "lint-fix": "npx prettier . --write & eslint . --fix",

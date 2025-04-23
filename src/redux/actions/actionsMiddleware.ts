@@ -6,25 +6,22 @@ import { AppStartListening } from '@/redux/listenerMiddleware';
 import { Uri } from '@/types/types';
 
 export const getAllActions = createAsyncThunk('actions/getAll', async () => {
-  // TODO 2024-12-06 ylvse: We should rename all "shortcuts" names to "actions"
-  // "shortcut" is a legacy name
-  const topic = api.startTopic('shortcuts', {
-    event: 'get_all_shortcuts'
+  const topic = api.startTopic('actionsKeybinds', {
+    event: 'get_all'
   });
   const { value } = await topic.iterator().next();
   topic.cancel();
-  return value.shortcuts;
+  return value;
 });
 
-// TODO 2024-11-27 (ylvse): This action should be added to the events handling
 export const getAction = createAsyncThunk('actions/get', async (uri: Uri) => {
-  const topic = api.startTopic('shortcuts', {
-    event: 'get_shortcut',
+  const topic = api.startTopic('actionsKeybinds', {
+    event: 'get_action',
     identifier: uri
   });
   const { value } = await topic.iterator().next();
   topic.cancel();
-  return value.shortcuts;
+  return value;
 });
 
 export const addActionsListener = (startListening: AppStartListening) => {

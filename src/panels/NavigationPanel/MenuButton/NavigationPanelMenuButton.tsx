@@ -10,13 +10,13 @@ import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { RemainingFlightTimeIndicator } from '../RemainingFlightTimeIndicator';
 
 import { CancelFlightButton } from './CancelFlightButton';
-import { OriginPanelMenuButtonContent } from './OriginPanelMenuButtonContent';
+import { NavigationPanelMenuButtonContent } from './NavigationPanelMenuButtonContent';
 
 interface Props {
   id: string;
 }
 
-export function OriginPanelMenuButton({ id }: Props) {
+export function NavigationPanelMenuButton({ id }: Props) {
   const engineMode = useSubscribeToEngineMode();
   const anchorNode = useAnchorNode();
 
@@ -44,7 +44,7 @@ export function OriginPanelMenuButton({ id }: Props) {
   }
   return (
     <TaskBarMenuButton id={id}>
-      <OriginPanelMenuButtonContent />
+      <NavigationPanelMenuButtonContent />
     </TaskBarMenuButton>
   );
 }

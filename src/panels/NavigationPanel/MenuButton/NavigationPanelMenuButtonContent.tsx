@@ -4,7 +4,7 @@ import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { useAimNode, useAnchorNode } from '@/util/propertyTreeHooks';
 
-export function OriginPanelMenuButtonContent() {
+export function NavigationPanelMenuButtonContent() {
   const aimNode = useAimNode();
   const anchorNode = useAnchorNode();
   const hasDistinctAim = aimNode && aimNode.identifier !== anchorNode?.identifier;
