@@ -175,7 +175,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     content: <FlightControlPanel />,
     renderIcon: (size) => <ExpandArrowsIcon size={size} />,
     preferredPosition: 'right',
-    defaultVisible: false
+    defaultVisible: !window.isWithinCEF
   },
   keybindingsLayout: {
     title: 'Keybindings Layout',
