@@ -100,15 +100,15 @@ export function ScriptLogPanel() {
   return (
     <Layout>
       <Layout.FixedSection mb={'xs'}>
-        <Group wrap={'nowrap'} justify={'space-between'}>
-          <Group>
+        <Group wrap={'nowrap'} justify={'space-between'} align={'start'} gap={'xs'}>
+          <Group gap={'xs'}>
             <Tooltip label={'Run all the selected scripts in sequential order'}>
               <Button
                 onClick={runSelectedScripts}
                 rightSection={<RerunScriptIcon />}
                 disabled={selectedScripts.size === 0}
               >
-                Run Selected Scripts
+                Run Scripts
               </Button>
             </Tooltip>
             <Tooltip label={'Clears all selected scripts'}>
