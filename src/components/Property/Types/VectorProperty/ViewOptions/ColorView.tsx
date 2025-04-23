@@ -67,7 +67,8 @@ export function ColorView({
     // Split the string into an array of numbers and parse them as floats.
     // Divide by 255 to get the value between 0 and 1.
     const values = result.split(',').map((v) => parseFloat(v.trim()) / 255);
-    setPropertyValue(values);
+    const clampedValues = values.map((v) => Math.max(0, Math.min(1, v)));
+    setPropertyValue(clampedValues);
   }
 
   return (
