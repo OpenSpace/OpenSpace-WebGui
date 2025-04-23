@@ -23,7 +23,7 @@ export function ScriptLogEntry({ script }: Props) {
         <Text
           truncate={expanded ? undefined : 'end'}
           onClick={() => setExpanded(!expanded)}
-          style={{ cursor: 'pointer', overflowWrap: 'anywhere' }}
+          style={{ cursor: 'pointer', wordBreak: 'break-all' }}
           size="sm"
         >
           {script}
@@ -36,6 +36,7 @@ export function ScriptLogEntry({ script }: Props) {
           variant={'light'}
           color={'green'}
           aria-label={'Rerun script'}
+          size={'sm'}
         >
           <RerunScriptIcon />
         </ActionIcon>

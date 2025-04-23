@@ -42,10 +42,10 @@ export function ScriptLogPanel() {
     fetchScriptLogEntries();
   }, [fetchScriptLogEntries]);
 
-  function preprocessScriptEntry(entry: string): string {
+  function sanitizeScript(script: string): string {
     // Replace special characters with spaces. The '+' ensures repeated punctuation is
-    // replaced by a single space instead of many.
-    return entry.replace(/[.,()[\]{}"'\\/]+/g, ' ');
+    // replaced by a single space instead of many
+    return script.replace(/[.,()[\]{}"'\\/]+/g, ' ');
   }
 
   return (
@@ -61,12 +61,11 @@ export function ScriptLogPanel() {
       <FilterList.SearchResults
         data={scriptLogEntries ?? []}
         renderElement={(entry) => <ScriptLogEntry script={entry} />}
-        matcherFunc={(data, searchString) => {
-          const preprocessedData = preprocessScriptEntry(data);
-          return wordBeginningSubString(preprocessedData, searchString);
+        matcherFunc={(script, searchString) => {
+          return wordBeginningSubString(sanitizeScript(script), searchString);
         }}
       >
-        <FilterList.SearchResults.VirtualList gap={'xs'} />
+        <FilterList.SearchResults.VirtualList gap={3} />
       </FilterList.SearchResults>
     </FilterList>
   );
