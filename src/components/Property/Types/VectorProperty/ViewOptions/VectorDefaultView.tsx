@@ -3,6 +3,7 @@ import { Group, Stack, Text } from '@mantine/core';
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
+import { validSliderExtent } from '@/components/Input/NumericInput/NumericSlider/util';
 import { AdditionalDataVectorMatrix } from '@/components/Property/types';
 import { usePropListeningState } from '@/hooks/util';
 
@@ -27,14 +28,7 @@ export function VectorDefaultView({
     usePropListeningState<number[]>(value);
 
   const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
-  // @TODO (2025-03-03, emmbr) This should be handled a better way... This is a bit of a
-  // hack and the max value is just arbitrarily chosen
-  const maxAllowedExtentForSlider = 1e12;
-  const shouldShowSlider = max.some((value, i) => {
-    // When no min/max is set, the marks for the slider cannot be nicely computed
-    const extent = value - min[i];
-    return isFinite(value - min[i]) && extent < maxAllowedExtentForSlider;
-  });
+  const shouldShowSlider = max.every((max, i) => validSliderExtent(min[i], max));
 
   function setValue(index: number, newValue: number) {
     const v = [...value];
@@ -57,11 +51,12 @@ export function VectorDefaultView({
           gap={'xs'}
           grow
           preventGrowOverflow={false}
+          key={i}
         >
           <Text c={'dimmed'} mt={5} flex={0} size={'sm'}>
             {labels[i]}
           </Text>
-          <Stack key={i} gap={'xs'}>
+          <Stack gap={'xs'}>
             <NumericInput
               value={item}
               disabled={disabled}

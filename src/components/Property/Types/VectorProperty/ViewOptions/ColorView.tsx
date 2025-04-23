@@ -11,7 +11,7 @@ interface Props {
 }
 
 // @TODO (ylvse 2025-03-23): Do something smarter with these colors?
-//
+// These are the rgb / rgba versions of Mantines default colors
 const swatchesRgb = [
   'rgb(250, 82, 82)',
   'rgb(230, 73, 128)',
@@ -60,15 +60,22 @@ export function ColorView({
   }
   const hasAlpha = value.length === 4;
   const colorString = value.map((v) => (v * 255).toFixed(0)).join(', ');
+
+  function onChange(value: string) {
+    // Remove the text from the rgb(a) string
+    const result = value.replace(hasAlpha ? 'rgba(' : 'rgb(', '').replace(')', '');
+    // Split the string into an array of numbers and parse them as floats.
+    // Divide by 255 to get the value between 0 and 1.
+    const values = result.split(',').map((v) => parseFloat(v.trim()) / 255);
+    setPropertyValue(values);
+  }
+
   return (
     <ColorInput
       format={hasAlpha ? 'rgba' : 'rgb'}
       value={hasAlpha ? `rgba(${colorString})` : `rgb(${colorString})`}
       withEyeDropper={false}
-      onChange={(value) => {
-        const result = value.replace(hasAlpha ? 'rgba(' : 'rgb(', '').replace(')', '');
-        setPropertyValue(result.split(',').map((v) => parseFloat(v.trim()) / 255));
-      }}
+      onChange={onChange}
       disabled={readOnly}
       swatches={hasAlpha ? swatchesRgba : swatchesRgb}
       swatchesPerRow={6}
