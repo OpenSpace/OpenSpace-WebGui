@@ -53,10 +53,10 @@ export function ColorView({
     throw Error('Invalid use of Color view option!');
   }
   if (!additionalData.MaximumValue.every((v) => v === 1)) {
-    throw Error('Color view option only supports values between 0 and 1!');
+    throw Error('Color view option only supports maximum values of 1!');
   }
   if (!additionalData.MinimumValue.every((v) => v === 0)) {
-    throw Error('Color view option only supports values between 0 and 1!');
+    throw Error('Color view option only supports minimum values of 0!');
   }
   const hasAlpha = value.length === 4;
   const colorString = value.map((v) => (v * 255).toFixed(0)).join(', ');
