@@ -44,11 +44,11 @@ export const PropertyGroupsRuntime: Record<
 };
 
 /**
- * A utility type that resolves to a specific group type from `VirtualPropertyGroups`
- * if the provided type `T` is a key of `VirtualPropertyGroups`. Otherwise, it resolves
+ * A utility type that resolves to a specific group type from `PropertyGroups`
+ * if the provided type `T` is a key of `PropertyGroups`. Otherwise, it resolves
  * to the type `T` itself.
  *
- * @template T - The type to be checked against the keys of `VirtualPropertyGroups`.
+ * @template T - The type to be checked against the keys of `PropertyGroups`.
  */
 type ExpandGroupAlias<T> = T extends keyof PropertyGroups ? PropertyGroups[T] : T;
 
