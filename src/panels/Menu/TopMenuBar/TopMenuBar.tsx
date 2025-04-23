@@ -1,6 +1,8 @@
 import { alpha, Box, Flex, Group, Text } from '@mantine/core';
 
 import { FrictionControls } from '@/components/FrictionControls/FrictionControls';
+import { FrictionControlsInfo } from '@/components/FrictionControls/FrictionControlsInfo';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { useAppSelector } from '@/redux/hooks';
 
@@ -11,8 +13,6 @@ import { WindowsMenu } from './Menus/WindowsMenu';
 
 export function TopMenuBar() {
   const name = useAppSelector((state) => state.profile.name);
-  // If each child has this flex, they are ensured to have the same size
-  const flex = '1 1 0px';
 
   return (
     <ScrollBox direction={'horizontal'}>
@@ -26,18 +26,21 @@ export function TopMenuBar() {
           whiteSpace: 'nowrap'
         }}
       >
-        <Group flex={flex}>
+        <Group flex={1} wrap={'nowrap'}>
           <FileMenu />
           <WindowsMenu />
           <ViewMenu />
           <HelpMenu />
         </Group>
-        <Box flex={flex}>
+        <Box flex={1} style={{ overflow: 'hidden' }}>
           <Text ta={'center'}>Profile: {name}</Text>
         </Box>
-        <Box flex={flex}>
-          <FrictionControls size={'xs'} gap={2} mr={'xs'} justify={"end"} />
-        </Box>
+        <Group flex={1} wrap={'nowrap'} align={'center'} justify={'end'} mr={'xs'}>
+          <FrictionControls size={'xs'} />
+          <InfoBox>
+            <FrictionControlsInfo />
+          </InfoBox>
+        </Group>
       </Flex>
     </ScrollBox>
   );

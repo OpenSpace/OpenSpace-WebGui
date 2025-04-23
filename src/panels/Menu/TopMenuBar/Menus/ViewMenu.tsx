@@ -44,9 +44,8 @@ export function ViewMenu() {
       dispatch(setMenuItemVisible({ id: key, visible: value }));
     });
   }
-  const additionalData = description
-    ? (description.additionalData as AdditionalDataOptions)
-    : undefined;
+  const additionalData = description?.additionalData as AdditionalDataOptions | undefined;
+
   const userLevelOptions = additionalData?.Options;
 
   return (
@@ -66,8 +65,8 @@ export function ViewMenu() {
       >
         <Menu.Label pr={0}>
           <Group justify={'space-between'}>
-            Toggle Task Bar Items{' '}
-            <Button size={"xs"} onClick={() => resetTaskbar()}>
+            Toggle Task Bar Items
+            <Button size={'xs'} onClick={resetTaskbar}>
               Reset
             </Button>
           </Group>
