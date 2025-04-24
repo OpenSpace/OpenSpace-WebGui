@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ActionIcon, Button, Code, Group, Text, Title, Tooltip } from '@mantine/core';
+import { ActionIcon, Button, Group, Text, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { Layout } from '@/components/Layout/Layout';
-import { CancelIcon, DeleteIcon, RefreshIcon, RerunScriptIcon } from '@/icons/icons';
+import { CancelIcon, RefreshIcon, RerunScriptIcon } from '@/icons/icons';
 
 import { ScriptLogEntry } from './ScriptLogEntry';
-import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 
 // TODO (anden88 2025-04-17): Remove when lists from OpenSpace don't have the
 // ['1']: value, ['2']: value format
@@ -133,8 +133,8 @@ export function ScriptLogPanel() {
                 onClick={() => setSelectedScripts(new Set())}
                 rightSection={<CancelIcon />}
                 disabled={selectedScripts.size === 0}
-                variant="light"
-                color="gray"
+                variant={'light'}
+                color={'gray'}
               >
                 Clear
               </Button>

@@ -28,7 +28,7 @@ export function ScriptLogEntry({ script, index, isSelected, onToggleSelection }:
           truncate={expanded ? undefined : 'end'}
           onClick={() => setExpanded(!expanded)}
           style={{ cursor: 'pointer', wordBreak: 'break-all' }}
-          size={"sm"}
+          size={'sm'}
         >
           {script}
         </Text>
