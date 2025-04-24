@@ -47,7 +47,7 @@ export function ScriptLogPanel() {
           if (script.includes('ScriptLog.txt')) {
             return false;
           }
-          // Also filter away the script used for rerunning scripts. Assuming few people 
+          // Also filter away the script used for rerunning scripts. Assuming few people
           // use this schedule script function, this should be fine
           return !script.includes('openspace.scheduleScript');
         })
@@ -70,7 +70,7 @@ export function ScriptLogPanel() {
   function sanitizeScript(script: string): string {
     // Replace special characters with spaces. The '+' ensures repeated punctuation is
     // replaced by a single space instead of many
-    return script.replace(/[.,()[\]{}"'\\/]+/g, ' ');
+    return script.replace(/[.,()[\]{}"'\\/;]+/g, ' ');
   }
 
   function handleToggleSelection(index: number) {
@@ -89,8 +89,6 @@ export function ScriptLogPanel() {
     if (scriptLogEntries === undefined || !luaApi) {
       return;
     }
-    // TODO (anden88 2025-04-23): In what order do we want to run the scripts? The scripts
-    // are ordered latest first (top-bottom) but they were actually executed bottom up...
     const scriptsToRun = Array.from(selectedScripts)
       .sort((a, b) => b - a)
       .map((index) => scriptLogEntries[index]);
@@ -98,6 +96,7 @@ export function ScriptLogPanel() {
     scriptsToRun.map((script) => luaApi.scheduleScript(script, 0));
 
     setSelectedScripts(new Set());
+    fetchScriptLogEntries();
   }
 
   return (
@@ -146,10 +145,10 @@ export function ScriptLogPanel() {
             <Text>
               This script log has been cleaned for ease of use. Some entries may have been
               filtered out unintentionally.
-              <Text>
-                Entries are listed from latest to oldest (top to bottom). Running multiple
-                scripts at once will run them in the order bottom to top.
-              </Text>
+            </Text>
+            <Text>
+              Entries are listed from latest to oldest (top to bottom). Running multiple
+              scripts at once will run them in the order bottom to top.
             </Text>
             <Text>
               To view the complete log or previous runs, check the{' '}
