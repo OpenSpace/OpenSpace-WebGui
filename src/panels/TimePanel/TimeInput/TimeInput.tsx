@@ -10,6 +10,7 @@ import {
   Tooltip
 } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
@@ -77,6 +78,11 @@ export function TimeInput() {
     relative: boolean;
   }) {
     if (!isDateValid(data.time)) {
+      notifications.show({
+        title: 'Invalid time',
+        message: 'Error trying to set time to an invalid date',
+        color: 'yellow'
+      });
       return;
     }
 

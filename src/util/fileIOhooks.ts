@@ -1,4 +1,7 @@
 import { useFileDialog } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
+
+import { isReactRenderable } from './reactHelpers';
 
 function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void {
   const fileDialog = useFileDialog({
@@ -18,6 +21,13 @@ function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void 
       handlePickedFile(json);
     } catch (e) {
       // TODO: do we want to throw here?
+      if (isReactRenderable(e)) {
+        notifications.show({
+          title: 'Error parsing file',
+          message: e,
+          color: 'red'
+        });
+      }
       console.error('Error parsing file', e);
     }
   }
@@ -60,7 +70,13 @@ async function openSaveFileDialog(contents: JSON) {
       // Close the file and write the contents to disk
       await writable.close();
     } catch (e) {
-      // @TODO ylvse 2025-03-31: handle this error with the notification system?
+      if (isReactRenderable(e)) {
+        notifications.show({
+          title: 'Error parsing file',
+          message: e,
+          color: 'red'
+        });
+      }
       console.error(e);
     }
   } else {

@@ -1,5 +1,6 @@
 import { ErrorBoundary } from 'react-error-boundary';
 import { ModalsProvider } from '@mantine/modals';
+import { Notifications } from '@mantine/notifications';
 
 import { fallbackRender } from '@/components/ErrorFallback/fallbackRender';
 import { WindowLayout } from '@/windowmanagement/WindowLayout/WindowLayout';
@@ -11,6 +12,7 @@ export function GuiPage() {
       fallbackRender={fallbackRender}
       onReset={() => window.location.reload()}
     >
+      <Notifications autoClose={6000} />
       <ModalsProvider>
         <WindowLayoutProvider>
           <WindowLayout />

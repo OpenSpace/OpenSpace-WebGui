@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react';
+import { notifications } from '@mantine/notifications';
 
 import { useBoolProperty } from '@/hooks/properties';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -60,12 +61,20 @@ export function useStoredLayout() {
 
   function handlePickedFile(content: JSON) {
     if (!content || Object.keys(content).length === 0) {
-      console.error('File is empty');
+      notifications.show({
+        title: 'Error loading JSON file',
+        message: 'File is empty',
+        color: 'red'
+      });
       return;
     }
     const newLayout = Object.values(content) as TaskbarItemConfig[];
     if (newLayout.length !== menuItems.length) {
-      console.error('Invalid layout file. Length does not match');
+      notifications.show({
+        title: 'Error loading JSON file',
+        message: 'Invalid layout file. Length does not match',
+        color: 'red'
+      });
       return;
     }
     // We have to ensure that all ids are valid before we can set
@@ -74,7 +83,11 @@ export function useStoredLayout() {
       menuItems.find((existingItem) => existingItem.id === newItem.id)
     );
     if (!isValid) {
-      console.error("Invalid layout file. All id's must match");
+      notifications.show({
+        title: 'Error loading JSON file',
+        message: "Invalid layout file. All id's must match",
+        color: 'red'
+      });
       return;
     }
     // If it is valid we set the new layout

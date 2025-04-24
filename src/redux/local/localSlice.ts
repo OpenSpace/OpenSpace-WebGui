@@ -1,3 +1,4 @@
+import { notifications } from '@mantine/notifications';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { TaskbarItemConfig } from '@/panels/Menu/types';
@@ -65,11 +66,11 @@ export const localSlice = createSlice({
       if (item) {
         item.visible = action.payload.visible;
       } else {
-        // @TODO (ylvse 2025-03-31): handle this error with the notification system?
-        console.error(
-          'Tried to set visibility of non-existent menu item',
-          action.payload.id
-        );
+        notifications.show({
+          title: 'Error missing menu item',
+          message: `Tried to set visibility of non-existent menu item: '${action.payload.id}'`,
+          color: 'red'
+        });
       }
       return state;
     },

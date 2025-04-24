@@ -11,12 +11,13 @@ import { store } from './redux/store';
 import { cssVariablesResolver, theme } from './theme/mantineTheme';
 
 import 'rc-dock/dist/rc-dock-dark.css';
+import '@mantine/notifications/styles.css';
 
 function App() {
   return (
     <Provider store={store}>
-      {/* We want to place the Lua API provider outside the StrictMode as it creates a 
-      socket connection. Strict mode calls useEffects twice and the socket does not 
+      {/* We want to place the Lua API provider outside the StrictMode as it creates a
+      socket connection. Strict mode calls useEffects twice and the socket does not
       handle this well.*/}
       <LuaApiProvider>
         <StrictMode>
