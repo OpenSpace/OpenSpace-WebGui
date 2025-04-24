@@ -30,6 +30,7 @@ export function ScriptLogPanel() {
     if (!fileName) {
       return;
     }
+
     const data = (await luaApi?.readFileLines(fileName)) as FileLines;
 
     if (!data) {
@@ -46,13 +47,14 @@ export function ScriptLogPanel() {
           if (script.includes('ScriptLog.txt')) {
             return false;
           }
-          // Assuming few people use script scheuduling this should be fine
+          // Also filter away the script used for rerunning scripts. Assuming few people 
+          // use this schedule script function, this should be fine
           return !script.includes('openspace.scheduleScript');
         })
         .reverse()
         .map((script) => {
           if (script.startsWith('return openspace.')) {
-            return script.substring('return'.length);
+            return script.substring('return '.length);
           }
           return script;
         })
@@ -151,7 +153,7 @@ export function ScriptLogPanel() {
             </Text>
             <Text>
               To view the complete log or previous runs, check the{' '}
-              <Text fs={'italic'} fw={500} display={'inline-block'}>
+              <Text fs={'italic'} fw={500} span>
                 OpenSpace/logs
               </Text>{' '}
               folder.
@@ -185,9 +187,9 @@ export function ScriptLogPanel() {
                 onToggleSelection={handleToggleSelection}
               />
             )}
-            matcherFunc={(script, searchString) => {
-              return wordBeginningSubString(sanitizeScript(script), searchString);
-            }}
+            matcherFunc={(script, searchString) =>
+              wordBeginningSubString(sanitizeScript(script), searchString)
+            }
           >
             <FilterList.SearchResults.VirtualList gap={3} />
           </FilterList.SearchResults>
