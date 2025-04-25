@@ -16,7 +16,7 @@ export function CopyToClipboardButton({ value, showLabel, disabled }: Props) {
           {showLabel ? (
             <Button
               color={copied ? 'teal' : 'gray'}
-              variant={"light"}
+              variant={'light'}
               onClick={copy}
               rightSection={<CopyIcon />}
               disabled={disabled}
