@@ -1,6 +1,7 @@
 import {
   Button,
   CheckboxIndicator,
+  Container,
   Group,
   Menu,
   Radio,
@@ -46,10 +47,7 @@ export function ViewMenu() {
   const { loadLayout, saveLayout } = useStoredLayout();
   const dispatch = useAppDispatch();
 
-  if (!propertyVisibilityMetadata) {
-    return <></>;
-  }
-  const userLevelOptions = propertyVisibilityMetadata.additionalData.options;
+  const userLevelOptions = propertyVisibilityMetadata?.additionalData?.options;
 
   function resetTaskbar() {
     dispatch(resetTaskbarItems());
@@ -151,21 +149,23 @@ export function ViewMenu() {
             </InfoBox>
           </Group>
         </Menu.Label>
-        <Radio.Group
-          value={propertyVisibility?.toString()}
-          onChange={(newValue) => setPropertyVisibility(parseInt(newValue))}
-          onKeyDown={(event) => event.stopPropagation()}
-        >
-          <Stack gap={'xs'} m={'xs'}>
-            {userLevelOptions ? (
-              Object.entries(userLevelOptions).map(([key, option]) => (
-                <Radio key={key} aria-label={option} label={option} value={key} />
-              ))
-            ) : (
-              <LoadingBlocks />
-            )}
-          </Stack>
-        </Radio.Group>
+        <Container>
+          <Radio.Group
+            value={propertyVisibility?.toString()}
+            onChange={(newValue) => setPropertyVisibility(parseInt(newValue))}
+            onKeyDown={(event) => event.stopPropagation()}
+          >
+            <Stack gap={'xs'}>
+              {userLevelOptions ? (
+                Object.entries(userLevelOptions).map(([key, option]) => (
+                  <Radio key={key} aria-label={option} label={option} value={key} />
+                ))
+              ) : (
+                <LoadingBlocks />
+              )}
+            </Stack>
+          </Radio.Group>
+        </Container>
 
         <Menu.Label>
           <Group justify={'space-between'}>
@@ -173,22 +173,27 @@ export function ViewMenu() {
             <InfoBox>Increase or decrease the scale of the GUI.</InfoBox>
           </Group>
         </Menu.Label>
-        <Slider
-          defaultValue={guiScale}
-          min={0.1}
-          max={2}
-          step={0.01}
-          label={(value) => `${Math.round(value * 100)}%`}
-          onChangeEnd={(value) => setGuiScale(value)}
-          marks={[
-            { value: 0.1, label: '10%' },
-            { value: 1, label: '100%' },
-            { value: 2, label: '200%' }
-          ]}
-          miw={170}
-          mb={'lg'}
-          mx={'xs'}
-        />
+        <Container>
+          {guiScale ? (
+            <Slider
+              defaultValue={guiScale}
+              min={0.1}
+              max={2}
+              step={0.01}
+              label={(value) => `${Math.round(value * 100)}%`}
+              onChangeEnd={(value) => setGuiScale(value)}
+              marks={[
+                { value: 0.1, label: '10%' },
+                { value: 1, label: '100%' },
+                { value: 2, label: '200%' }
+              ]}
+              miw={170}
+              mb={'lg'} // Needed for marks to fit in menu
+            />
+          ) : (
+            <LoadingBlocks n={1} />
+          )}
+        </Container>
       </TopBarMenuWrapper>
     </TopBarMenuWrapper>
   );
