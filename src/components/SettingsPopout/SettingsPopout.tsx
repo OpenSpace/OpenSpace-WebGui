@@ -24,7 +24,7 @@ export function SettingsPopout({
       withArrow
     >
       <Menu.Target>
-        <ActionIcon {...styleProps}>
+        <ActionIcon {...styleProps} aria-label={'Open settings'}>
           <SettingsIcon />
         </ActionIcon>
       </Menu.Target>

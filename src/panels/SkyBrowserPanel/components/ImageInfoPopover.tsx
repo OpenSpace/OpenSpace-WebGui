@@ -8,11 +8,12 @@ interface Props {
   image: SkyBrowserImage;
 }
 
+// @TODO anden88: 2025-04-14 this should be changed to the new clickable `InfoBox`
 export function ImageInfoPopover({ image }: Props) {
   return (
     <Popover width={200} position={'bottom'} withArrow shadow={'md'} trapFocus>
       <Popover.Target>
-        <ActionIcon variant={'outline'} size={'xs'}>
+        <ActionIcon variant={'outline'} size={'xs'} aria-label={'More information'}>
           <InformationIcon />
         </ActionIcon>
       </Popover.Target>

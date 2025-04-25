@@ -1,5 +1,14 @@
 import { useRef, useState } from 'react';
-import { ActionIcon, Alert, Button, Group, Paper, Stack, Text } from '@mantine/core';
+import {
+  ActionIcon,
+  Alert,
+  Button,
+  Group,
+  Paper,
+  Stack,
+  Text,
+  Tooltip
+} from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -261,9 +270,18 @@ export function TimeInput() {
     <Paper bg={'dark.9'} withBorder={isLocked} m={0} p={'xs'}>
       <Stack gap={'xs'}>
         <Group gap={'xs'} justify={'center'}>
-          <ActionIcon onClick={toggleLock} variant={isLocked ? 'filled' : 'default'}>
-            {isLocked ? <LockIcon /> : <LockOpenIcon />}
-          </ActionIcon>
+          <Tooltip
+            label={`Lock time updates to prevent automatic changes. Use "Interpolate" or "Set"
+              to manually apply the selected date and time.`}
+          >
+            <ActionIcon
+              onClick={toggleLock}
+              variant={isLocked ? 'filled' : 'default'}
+              aria-label={`Set date-time input mode to ${isLocked ? 'unlocked' : 'locked'} mode`}
+            >
+              {isLocked ? <LockIcon /> : <LockOpenIcon />}
+            </ActionIcon>
+          </Tooltip>
           <Group gap={5} wrap={'nowrap'}>
             <TimeIncrementInput
               value={time.getUTCFullYear()}

@@ -1,21 +1,19 @@
+import { JSX } from 'react';
 import { Group, InputLabel, Text, Tooltip } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { usePropertyDescription } from '@/hooks/properties';
+import { Uri } from '@/types/types';
 
 import CopyUriButton from '../CopyUriButton/CopyUriButton';
 
-import { PropertyProps } from './types';
+interface Props {
+  name: string;
+  description: string | JSX.Element;
+  uri?: Uri;
+  readOnly?: boolean;
+}
 
-export function PropertyLabel({ uri, readOnly }: PropertyProps) {
-  const details = usePropertyDescription(uri);
-
-  if (!details) {
-    return <></>;
-  }
-
-  const { name, description } = details;
-
+export function Label({ name, description, uri, readOnly = false }: Props) {
   return (
     <Group wrap={'nowrap'}>
       <InputLabel fw={'normal'}>
@@ -37,7 +35,7 @@ export function PropertyLabel({ uri, readOnly }: PropertyProps) {
       {description && (
         <InfoBox>
           {description}
-          <CopyUriButton uri={uri} />
+          {uri && <CopyUriButton uri={uri} />}
         </InfoBox>
       )}
     </Group>

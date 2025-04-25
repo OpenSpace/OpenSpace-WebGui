@@ -230,6 +230,7 @@ export function NodeNavigationButton({
           variant={variant}
           style={style}
           disabled={disabled}
+          aria-label={content.title}
         >
           {content.icon}
         </ActionIcon>
