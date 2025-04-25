@@ -71,6 +71,8 @@ export {
   MdOutlineEdit as PenIcon,
   MdPlayArrow as PlayIcon,
   MdFiberManualRecord as RecordIcon,
+  MdOutlineRefresh as RefreshIcon,
+  MdOutlineReplay as ReplayIcon,
   MdRocketLaunch as RocketLaunchIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
@@ -95,6 +97,10 @@ export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons
 export {
   TbClock as ClockIcon,
   TbClockX as ClockOffIcon,
-  TbCube as SceneIcon
+  TbCube as SceneIcon,
+  TbScript as ScriptLogIcon
 } from 'react-icons/tb';
-export { VscFeedback as FeedbackIcon } from 'react-icons/vsc';
+export {
+  VscFeedback as FeedbackIcon,
+  VscDebugRerun as RerunScriptIcon
+} from 'react-icons/vsc';

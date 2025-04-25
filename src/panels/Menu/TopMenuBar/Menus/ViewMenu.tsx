@@ -1,9 +1,9 @@
-import { CheckboxIndicator, Group, Menu, Radio, Stack } from '@mantine/core';
+import { Button, CheckboxIndicator, Group, Menu, Radio, Stack } from '@mantine/core';
 
 import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { AdditionalDataOptions } from '@/components/Property/types';
-import { useOptionProperty, usePropertyDescription } from '@/hooks/properties';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
+import { useProperty } from '@/hooks/properties';
 import {
   ChevronRightIcon,
   SaveIcon,
@@ -11,8 +11,12 @@ import {
   UpArrowIcon,
   VisibilityIcon
 } from '@/icons/icons';
-import { useAppDispatch } from '@/redux/hooks';
-import { setMenuItemsOrder, setMenuItemVisible } from '@/redux/local/localSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import {
+  resetTaskbarItems,
+  setMenuItemsOrder,
+  setMenuItemVisible
+} from '@/redux/local/localSlice';
 import { IconSize } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
@@ -20,20 +24,28 @@ import { useMenuItems, useStoredLayout } from '../../hooks';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function ViewMenu() {
+  const defaultTaskbar = useAppSelector((state) => state.profile.uiPanelVisibility);
+
   const { menuItems } = useMenuItems();
-  const [propertyVisibility, setPropertyVisibility] = useOptionProperty(
-    'OpenSpaceEngine.PropertyVisibility'
-  );
+  const [propertyVisibility, setPropertyVisibility, propertyVisibilityMetadata] =
+    useProperty('OptionProperty', 'OpenSpaceEngine.PropertyVisibility');
 
   const { loadLayout, saveLayout } = useStoredLayout();
-  const description = usePropertyDescription('OpenSpaceEngine.PropertyVisibility');
   const dispatch = useAppDispatch();
 
-  if (!description) {
+  if (!propertyVisibilityMetadata) {
     return <></>;
   }
-  const { Options: userLevelOptions } =
-    description.additionalData as AdditionalDataOptions;
+  const userLevelOptions = propertyVisibilityMetadata.additionalData.options;
+
+  function resetTaskbar() {
+    dispatch(resetTaskbarItems());
+
+    // Panel visibility settings
+    Object.entries(defaultTaskbar).forEach(([key, value]) => {
+      dispatch(setMenuItemVisible({ id: key, visible: value }));
+    });
+  }
 
   return (
     <TopBarMenuWrapper targetTitle={'View'}>
@@ -50,7 +62,14 @@ export function ViewMenu() {
         withinPortal={false}
         closeOnItemClick={false}
       >
-        <Menu.Label>Toggle Task Bar Items</Menu.Label>
+        <Menu.Label pr={0}>
+          <Group justify={'space-between'}>
+            Toggle Task Bar Items
+            <Button size={'xs'} onClick={resetTaskbar}>
+              Reset
+            </Button>
+          </Group>
+        </Menu.Label>
         <DragReorderList
           id={'viewMenu'}
           data={menuItems}
@@ -122,9 +141,13 @@ export function ViewMenu() {
           onKeyDown={(event) => event.stopPropagation()}
         >
           <Stack gap={'xs'} m={'xs'}>
-            {Object.entries(userLevelOptions).map(([key, option]) => (
-              <Radio key={key} aria-label={option} label={option} value={key} />
-            ))}
+            {userLevelOptions ? (
+              Object.entries(userLevelOptions).map(([key, option]) => (
+                <Radio key={key} aria-label={option} label={option} value={key} />
+              ))
+            ) : (
+              <LoadingBlocks />
+            )}
           </Stack>
         </Radio.Group>
       </TopBarMenuWrapper>

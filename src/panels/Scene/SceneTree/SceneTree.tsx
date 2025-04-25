@@ -93,12 +93,20 @@ export function SceneTree() {
         <Box pos={'relative'}>
           <Group gap={0} pos={'absolute'} top={0} right={0}>
             <Tooltip label={'Collapse all'} position={'top'}>
-              <ActionIcon variant={'subtle'} onClick={tree.collapseAllNodes}>
+              <ActionIcon
+                variant={'subtle'}
+                onClick={tree.collapseAllNodes}
+                aria-label={'Collapse all nodes'}
+              >
                 <ChevronsUpIcon />
               </ActionIcon>
             </Tooltip>
             <Tooltip label={'Expand all'} position={'top'}>
-              <ActionIcon variant={'subtle'} onClick={tree.expandAllNodes}>
+              <ActionIcon
+                variant={'subtle'}
+                onClick={tree.expandAllNodes}
+                aria-label={'Expand all nodes'}
+              >
                 <ChevronsDownIcon />
               </ActionIcon>
             </Tooltip>

@@ -89,6 +89,7 @@ export function StepControlButton({
       size={'xs'}
       variant={'transparent'}
       tabIndex={tabIndex}
+      aria-label={direction === 'up' ? 'Increment value' : 'Decrement value'}
       {...props}
     >
       {direction === 'up' ? <ChevronUpIcon /> : <ChevronDownIcon />}

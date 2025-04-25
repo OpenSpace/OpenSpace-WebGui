@@ -2,39 +2,29 @@ import { useEffect } from 'react';
 import { Divider, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
-import { Property } from '@/components/Property/Property';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
-import { useStringProperty } from '@/hooks/properties';
+import { useProperty } from '@/hooks/properties';
 import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Identifier } from '@/types/types';
-import {
-  HabitableZonePropertyKey,
-  NavigationAimKey,
-  NavigationAnchorKey,
-  Size1AuRingPropertyKey,
-  UncertaintyDiscPropertyKey
-} from '@/util/keys';
+import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
 import { sgnUri } from '@/util/propertyTreeHelpers';
 
 import { SceneGraphNodeHeader } from '../Scene/SceneGraphNode/SceneGraphNodeHeader';
 
 import { ExoplanetEntry } from './ExoplanetEntry';
+import { ExoplanetsSettings } from './ExoplanetsSettings';
 
 export function ExoplanetsPanel() {
-  const luaApi = useOpenSpaceApi();
-
-  const propertyOwners = useAppSelector((state) => {
-    return state.propertyOwners.propertyOwners;
-  });
-
+  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const isDataInitialized = useAppSelector((state) => state.exoplanets.isInitialized);
   const allSystemNames = useAppSelector((state) => state.exoplanets.data);
-  const [aim, setAim] = useStringProperty(NavigationAimKey);
-  const [anchor, setAnchor] = useStringProperty(NavigationAnchorKey);
+  const [aim, setAim] = useProperty('StringProperty', NavigationAimKey);
+  const [anchor, setAnchor] = useProperty('StringProperty', NavigationAnchorKey);
+
+  const luaApi = useOpenSpaceApi();
 
   const dispatch = useAppDispatch();
 
@@ -109,11 +99,7 @@ export function ExoplanetsPanel() {
           </FilterList.SearchResults>
         </FilterList>
       </ResizeableContent>
-      <Collapsable title={'Settings'}>
-        <Property uri={HabitableZonePropertyKey} />
-        <Property uri={UncertaintyDiscPropertyKey} />
-        <Property uri={Size1AuRingPropertyKey} />
-      </Collapsable>
+      <ExoplanetsSettings hasAddedExoplanets={addedSystems.length > 0} />
       <Divider my={'xs'}></Divider>
       <Title order={3}>Added Systems</Title>
       {addedSystems.length === 0 ? (

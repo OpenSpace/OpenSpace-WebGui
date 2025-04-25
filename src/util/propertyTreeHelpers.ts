@@ -1,8 +1,8 @@
 import { PropertyVisibilityNumber } from '@/types/enums';
+import { AnyProperty } from '@/types/Property/property';
 import {
   Identifier,
   Properties,
-  Property,
   PropertyOverview,
   PropertyOwner,
   PropertyOwners,
@@ -143,15 +143,14 @@ export function checkVisiblity(
 
 // Returns whether a property matches the current visiblity settings
 export function isPropertyVisible(
-  property: Property | undefined,
+  property: AnyProperty | undefined,
   visiblitySetting: number | undefined
 ): boolean {
   if (visiblitySetting === undefined || !property) {
     return true;
   }
 
-  const propertyVisibility =
-    PropertyVisibilityNumber[property?.description.metaData.Visibility] ?? 0;
+  const propertyVisibility = PropertyVisibilityNumber[property?.metaData.visibility] ?? 0;
 
   return visiblitySetting >= propertyVisibility;
 }

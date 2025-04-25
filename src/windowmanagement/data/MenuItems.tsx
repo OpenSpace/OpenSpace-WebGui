@@ -13,6 +13,7 @@ import {
   RocketLaunchIcon,
   RouteIcon,
   SceneIcon,
+  ScriptLogIcon,
   SettingsIcon,
   TelescopeIcon,
   VideocamIcon
@@ -37,6 +38,7 @@ import {
   NavigationPanel,
   Scene,
   ScreenSpaceRenderablePanel,
+  ScriptLogPanel,
   SessionRecordingPanel,
   SettingsPanel,
   SkyBrowserPanel,
@@ -167,7 +169,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     content: <MissionsPanel />,
     renderIcon: (size) => <RocketLaunchIcon size={size} />,
     preferredPosition: 'right',
-    defaultVisible: true
+    defaultVisible: false
   },
   flightControl: {
     title: 'Flight Control',
@@ -175,7 +177,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     content: <FlightControlPanel />,
     renderIcon: (size) => <ExpandArrowsIcon size={size} />,
     preferredPosition: 'right',
-    defaultVisible: false
+    defaultVisible: !window.isWithinCEF
   },
   keybindingsLayout: {
     title: 'Keybindings Layout',
@@ -200,6 +202,14 @@ export const menuItemsData: Record<string, MenuItem> = {
     componentID: 'propertyTest',
     content: <TempPropertyTest />,
     preferredPosition: 'left',
+    defaultVisible: false
+  },
+  scriptLogPanel: {
+    title: 'Script Log',
+    componentID: 'scriptLogPanel',
+    content: <ScriptLogPanel />,
+    renderIcon: (size) => <ScriptLogIcon size={size} />,
+    preferredPosition: 'right',
     defaultVisible: false
   }
 };

@@ -6,7 +6,8 @@ import {
   Menu,
   MultiSelect,
   Stack,
-  Title
+  Title,
+  Tooltip
 } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
@@ -44,9 +45,11 @@ export function SceneTreeFilters({ setFilter, filter }: Props) {
       )}
       <Menu position={'right-start'} withArrow closeOnItemClick={false}>
         <Menu.Target>
-          <ActionIcon>
-            <FilterIcon />
-          </ActionIcon>
+          <Tooltip label={'Additional settings to filter search result'}>
+            <ActionIcon aria-label={'Open search filter menu'}>
+              <FilterIcon />
+            </ActionIcon>
+          </Tooltip>
         </Menu.Target>
         <Menu.Dropdown maw={'330px'}>
           <Menu.Label>Filters</Menu.Label>

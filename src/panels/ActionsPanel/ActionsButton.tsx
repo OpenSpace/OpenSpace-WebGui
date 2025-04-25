@@ -28,7 +28,7 @@ export function ActionsButton({ uri, action: _action, height }: Props) {
     return <></>;
   }
 
-  const isLocal = action.synchronization === false;
+  const {isLocal} = action;
 
   function handleClick() {
     openspaceApi?.action.triggerAction(action!.identifier);
@@ -37,7 +37,19 @@ export function ActionsButton({ uri, action: _action, height }: Props) {
   return (
     <Card p={borderPadding} h={height}>
       <Group gap={0} h={'100%'}>
-        <Button onClick={handleClick} h={'100%'} p={5} flex={1} variant={'filled'}>
+        <Button
+          onClick={handleClick}
+          h={'100%'}
+          p={5}
+          flex={1}
+          variant={'filled'}
+          color={
+            action.color
+              ? `rgba(${action.color.map((val) => val * 255).join(',')})`
+              : undefined
+          }
+          autoContrast // This here is needed now that we can set our own colors
+        >
           <Text lineClamp={3} size={'sm'} style={{ whiteSpace: 'wrap' }}>
             {action.name}
           </Text>

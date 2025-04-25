@@ -52,7 +52,12 @@ export const ContentSteps = [
     </ClickBlocker>
     <Group>
       <Text>You can focus on objects by clicking the focus icon: </Text>
-      <ActionIcon size={'sm'} style={{ pointerEvents: 'none' }}>
+      <ActionIcon
+        size={'sm'}
+        style={{ pointerEvents: 'none' }}
+        aria-label={'Focus object'}
+        aria-disabled
+      >
         <FocusIcon size={IconSize.xs} />
       </ActionIcon>
     </Group>
