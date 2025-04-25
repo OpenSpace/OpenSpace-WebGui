@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { Button, Stack, Text, ThemeIcon } from '@mantine/core';
+import { Button, LoadingOverlay, Stack, Text, ThemeIcon } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { PlusIcon, TelescopeIcon } from '@/icons/icons';
@@ -8,16 +8,16 @@ import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { BrowserTabs } from './BrowserTabs/BrowserTabs';
 import { ImageListWrapper } from './ImageList/ImageListWrapper';
+import { InfoOverlayContent } from './WorldWideTelescope/InfoOverlayContent';
 import { WorldWideTelescopeView } from './WorldWideTelescope/WorldWideTelescopeView';
 import { WwtProvider } from './WorldWideTelescope/WwtProvider/WwtProvider';
 import { useSkyBrowserData } from './hooks';
 
 export function SkyBrowserPanel() {
   const isInitialized = useAppSelector((state) => state.skybrowser.isInitialized);
-  const cameraInSolarSystem = useAppSelector(
-    (state) => state.skybrowser.cameraInSolarSystem
-  );
   const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
+  const isInSolarSystem = useAppSelector((state) => state.skybrowser.cameraInSolarSystem);
+
   const { addWindow } = useWindowLayoutProvider();
   const luaApi = useOpenSpaceApi();
 
@@ -43,10 +43,7 @@ export function SkyBrowserPanel() {
       openWorldWideTelescope();
     }
   }, [openWorldWideTelescope, nBrowsers]);
-
-  if (!cameraInSolarSystem) {
-    return <Text m={'lg'}>Camera has to be in solar system for Sky Browser to work</Text>;
-  }
+  console.log(luaApi, isInitialized);
   if (nBrowsers === 0) {
     return (
       <Stack h={'100%'} w={'100%'} align={'center'} p={'lg'}>
@@ -73,6 +70,14 @@ export function SkyBrowserPanel() {
 
   return (
     <>
+      <LoadingOverlay
+        visible={!isInSolarSystem}
+        overlayProps={{ backgroundOpacity: 1, bg: 'dark.9' }}
+        loaderProps={{
+          children: <InfoOverlayContent type={'CameraNotInSolarSystem'} />
+        }}
+        transitionProps={{ transition: 'fade', duration: 500 }}
+      />
       <ImageListWrapper />
       <BrowserTabs openWorldWideTelescope={openWorldWideTelescope} />
     </>

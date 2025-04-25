@@ -111,7 +111,12 @@ export function UserPanelsPanel() {
           flex={1}
           onKeyDown={(e) => e.key === 'Enter' && addLocalPanel()}
         />
-        <ActionIcon onClick={addLocalPanel} disabled={!selectedPanel} size={'lg'}>
+        <ActionIcon
+          onClick={addLocalPanel}
+          disabled={!selectedPanel}
+          size={'lg'}
+          aria-label={'Open local panel'}
+        >
           <OpenWindowIcon />
         </ActionIcon>
       </Group>
@@ -134,7 +139,12 @@ export function UserPanelsPanel() {
           onKeyDown={(e) => e.key === 'Enter' && addWebPanel()}
           flex={1}
           rightSection={
-            <ActionIcon onClick={addWebPanel} disabled={!panelURL} size={'lg'}>
+            <ActionIcon
+              onClick={addWebPanel}
+              disabled={!panelURL}
+              size={'lg'}
+              aria-label={'Open web panel'}
+            >
               <OpenWindowIcon />
             </ActionIcon>
           }

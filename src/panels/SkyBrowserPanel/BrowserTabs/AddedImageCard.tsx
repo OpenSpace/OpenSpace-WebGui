@@ -70,15 +70,21 @@ export function AddedImageCard({ image, opacity }: Props) {
             label={(value) => value.toFixed(1)}
           />
         </Stack>
-        <ActionIcon
-          color={'red'}
-          variant={'outline'}
-          onClick={() =>
-            luaApi?.skybrowser.removeSelectedImageInBrowser(selectedBrowserId, image.url)
-          }
-        >
-          <DeleteIcon />
-        </ActionIcon>
+        <Tooltip label={'Delete image'}>
+          <ActionIcon
+            color={'red'}
+            variant={'outline'}
+            onClick={() =>
+              luaApi?.skybrowser.removeSelectedImageInBrowser(
+                selectedBrowserId,
+                image.url
+              )
+            }
+            aria-label={`Remove ${image.name} image`}
+          >
+            <DeleteIcon />
+          </ActionIcon>
+        </Tooltip>
       </Group>
     </Paper>
   );

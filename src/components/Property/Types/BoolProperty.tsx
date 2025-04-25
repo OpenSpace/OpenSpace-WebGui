@@ -1,6 +1,4 @@
-import { Checkbox, Group } from '@mantine/core';
-
-import { PropertyLabel } from '@/components/Property/PropertyLabel';
+import { BoolInput } from '@/components/Input/BoolInput';
 import { PropertyProps } from '@/components/Property/types';
 import { useProperty } from '@/hooks/properties';
 
@@ -12,15 +10,12 @@ export function BoolProperty({ uri, readOnly }: PropertyProps) {
   }
 
   return (
-    <Group gap={'xs'} wrap={'nowrap'}>
-      <Checkbox
-        checked={value}
-        onChange={(event) => setValue(event.currentTarget.checked)}
-        onKeyDown={(event) => event.key === 'Enter' && setValue(!value)}
-        disabled={readOnly}
-        aria-label={`Toggle ${meta.guiName}`}
-      />
-      <PropertyLabel uri={uri} readOnly={readOnly} />
-    </Group>
+    <BoolInput
+      value={value}
+      setValue={setValue}
+      name={meta.name}
+      description={meta.description}
+      readOnly={readOnly}
+    />
   );
 }

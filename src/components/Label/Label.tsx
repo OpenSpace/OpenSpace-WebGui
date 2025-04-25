@@ -1,26 +1,25 @@
+import { JSX } from 'react';
 import { Group, InputLabel, Text, Tooltip } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { useAppSelector } from '@/redux/hooks';
 
-import CopyUriButton from '../CopyUriButton/CopyUriButton';
+import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 
-import { PropertyProps } from './types';
+import { Uri } from '@/types/types';
 
-export function PropertyLabel({ uri, readOnly }: PropertyProps) {
-  const meta = useAppSelector((state) => state.properties.properties[uri]?.metaData);
+interface Props {
+  name: string;
+  description: string | JSX.Element;
+  uri?: Uri;
+  readOnly?: boolean;
+}
 
-  if (!meta) {
-    return <></>;
-  }
-
-  const { guiName, description } = meta;
-
+export function Label({ name, description, uri, readOnly = false }: Props) {
   return (
     <Group wrap={'nowrap'}>
       <InputLabel fw={'normal'}>
         <Text span size={'sm'}>
-          {guiName}
+          {name}
         </Text>
         {readOnly && (
           <Tooltip
@@ -37,7 +36,7 @@ export function PropertyLabel({ uri, readOnly }: PropertyProps) {
       {description && (
         <InfoBox>
           {description}
-          <CopyUriButton uri={uri} />
+          {uri && <CopyUriButton uri={uri} />}
         </InfoBox>
       )}
     </Group>

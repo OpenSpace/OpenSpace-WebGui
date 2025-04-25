@@ -62,6 +62,7 @@ export function DeltaTimeStepsControl() {
           disabled={!hasPrevDeltaTimeStep}
           size={'lg'}
           w={'100%'}
+          aria-label={'Set previous delta time step'}
         >
           <FastRewindIcon size={IconSize.md} />
         </ActionIcon>
@@ -80,7 +81,7 @@ export function DeltaTimeStepsControl() {
       <ActionIcon
         onClick={togglePause}
         size={'lg'}
-        aria-label={isPaused ? 'play' : 'pause'}
+        aria-label={`${isPaused ? 'Play' : 'Pause'} time`}
         flex={2}
       >
         {isPaused ? <PlayIcon size={IconSize.md} /> : <PauseIcon size={IconSize.md} />}
@@ -91,6 +92,7 @@ export function DeltaTimeStepsControl() {
           disabled={!hasNextDeltaTimeStep}
           size={'lg'}
           w={'100%'}
+          aria-label={'Set next delta time step'}
         >
           <FastForwardIcon size={IconSize.md} />
         </ActionIcon>
