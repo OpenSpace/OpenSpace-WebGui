@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from 'react';
-import { notifications } from '@mantine/notifications';
 
 import { useBoolProperty } from '@/hooks/properties';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -8,7 +7,9 @@ import {
   setMenuItemsOrder,
   setMenuItemVisible as setMenuItemVisibleRedux
 } from '@/redux/local/localSlice';
+import { LogLevel } from '@/types/enums';
 import { useSaveLoadJsonFiles } from '@/util/fileIOhooks';
+import { showNotification } from '@/util/logging';
 
 import { TaskbarItemConfig } from './types';
 
@@ -61,20 +62,16 @@ export function useStoredLayout() {
 
   function handlePickedFile(content: JSON) {
     if (!content || Object.keys(content).length === 0) {
-      notifications.show({
-        title: 'Error loading JSON file',
-        message: 'File is empty',
-        color: 'red'
-      });
+      showNotification('Error loading JSON file', 'File is empty', LogLevel.Error);
       return;
     }
     const newLayout = Object.values(content) as TaskbarItemConfig[];
     if (newLayout.length !== menuItems.length) {
-      notifications.show({
-        title: 'Error loading JSON file',
-        message: 'Invalid layout file. Length does not match',
-        color: 'red'
-      });
+      showNotification(
+        'Error loadding JSON file',
+        'Invali layoutfile, length does not match',
+        LogLevel.Error
+      );
       return;
     }
     // We have to ensure that all ids are valid before we can set
@@ -83,11 +80,11 @@ export function useStoredLayout() {
       menuItems.find((existingItem) => existingItem.id === newItem.id)
     );
     if (!isValid) {
-      notifications.show({
-        title: 'Error loading JSON file',
-        message: "Invalid layout file. All id's must match",
-        color: 'red'
-      });
+      showNotification(
+        'Error loading JSON file',
+        "Invalid layout file, all id's must match",
+        LogLevel.Error
+      );
       return;
     }
     // If it is valid we set the new layout

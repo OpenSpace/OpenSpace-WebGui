@@ -1,8 +1,9 @@
-import { notifications } from '@mantine/notifications';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { TaskbarItemConfig } from '@/panels/Menu/types';
+import { LogLevel } from '@/types/enums';
 import { Uri } from '@/types/types';
+import { showNotification } from '@/util/logging';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 export interface LocalState {
@@ -66,11 +67,11 @@ export const localSlice = createSlice({
       if (item) {
         item.visible = action.payload.visible;
       } else {
-        notifications.show({
-          title: 'Error missing menu item',
-          message: `Tried to set visibility of non-existent menu item: '${action.payload.id}'`,
-          color: 'red'
-        });
+        showNotification(
+          'Error missing menu item',
+          `Tried to set visibility of non-existent enu item: '${action.payload.id}'`,
+          LogLevel.Error
+        );
       }
       return state;
     },

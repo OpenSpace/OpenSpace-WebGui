@@ -1,5 +1,4 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
-import { notifications } from '@mantine/notifications';
 
 import { api } from '@/api/api';
 import { useIsConnectionStatus } from '@/hooks/util';
@@ -7,7 +6,8 @@ import { closeConnection } from '@/redux/connection/connectionMiddleware';
 import { startConnection } from '@/redux/connection/connectionSlice';
 import { updateCustomGroupOrdering } from '@/redux/groups/groupsSlice';
 import { useAppDispatch } from '@/redux/hooks';
-import { ConnectionStatus } from '@/types/enums';
+import { ConnectionStatus, LogLevel } from '@/types/enums';
+import { showNotification } from '@/util/logging';
 import { isReactRenderable } from '@/util/reactHelpers';
 
 import { LuaApiContext } from './LuaApiContext';
@@ -33,13 +33,10 @@ export function LuaApiProvider({ children }: PropsWithChildren) {
         setLuaApi(res);
       } catch (e) {
         if (isReactRenderable(e)) {
-          notifications.show({
-            title: 'Error fetching OpenSpace API',
-            message: e,
-            color: 'red'
-          });
+          showNotification('Error fetching OpenSpace API', e, LogLevel.Error);
+        } else {
+          console.error(e);
         }
-        console.error(e);
       }
     };
     if (isConnected) {

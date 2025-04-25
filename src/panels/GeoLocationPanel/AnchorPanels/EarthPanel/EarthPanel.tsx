@@ -10,7 +10,6 @@ import {
   Title,
   Tooltip
 } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -18,8 +17,10 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
 import { useAppSelector } from '@/redux/hooks';
+import { LogLevel } from '@/types/enums';
 import { Identifier } from '@/types/types';
 import { GeoLocationGroupKey, ScenePrefixKey } from '@/util/keys';
+import { showNotification } from '@/util/logging';
 import { isReactRenderable } from '@/util/reactHelpers';
 
 import { AddedCustomNodes } from './AddedCustomNodes';
@@ -82,13 +83,10 @@ export function EarthPanel({ currentAnchor }: Props) {
       setPlaces(uniquePlaces);
     } catch (error) {
       if (isReactRenderable(error)) {
-        notifications.show({
-          title: 'Error fetching data',
-          message: error,
-          color: 'red'
-        });
+        showNotification('Error fetching data', error, LogLevel.Error);
+      } else {
+        console.error('Error fetching data:', error);
       }
-      console.error('Error fetching data:', error);
     }
   }
 

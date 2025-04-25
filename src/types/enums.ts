@@ -41,3 +41,9 @@ export enum EngineMode {
   SessionRecordingPlayback = 'session_recording_playback',
   CameraPath = 'camera_path'
 }
+
+export enum LogLevel {
+  Info = 0,
+  Warning,
+  Error
+}

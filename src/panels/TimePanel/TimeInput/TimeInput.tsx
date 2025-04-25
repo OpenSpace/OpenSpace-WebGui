@@ -10,7 +10,6 @@ import {
   Tooltip
 } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
@@ -18,6 +17,8 @@ import { useSetOpenSpaceTime } from '@/hooks/util';
 import { LockIcon, LockOpenIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
+import { LogLevel } from '@/types/enums';
+import { showNotification } from '@/util/logging';
 
 import { TimePart } from '../types';
 import { maxDaysInMonth } from '../util';
@@ -78,11 +79,11 @@ export function TimeInput() {
     relative: boolean;
   }) {
     if (!isDateValid(data.time)) {
-      notifications.show({
-        title: 'Invalid time',
-        message: 'Error trying to set time to an invalid date',
-        color: 'yellow'
-      });
+      showNotification(
+        'Invalid time',
+        'Error trying to set time to an invalid date',
+        LogLevel.Warning
+      );
       return;
     }
 
