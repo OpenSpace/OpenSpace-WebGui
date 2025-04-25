@@ -1,4 +1,12 @@
-import { Button, CheckboxIndicator, Group, Menu, Radio, Stack } from '@mantine/core';
+import {
+  Button,
+  CheckboxIndicator,
+  Group,
+  Menu,
+  Radio,
+  Slider,
+  Stack
+} from '@mantine/core';
 
 import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
@@ -7,9 +15,9 @@ import { useProperty } from '@/hooks/properties';
 import {
   ChevronRightIcon,
   SaveIcon,
+  SettingsIcon,
   TaskBarIcon,
-  UpArrowIcon,
-  VisibilityIcon
+  UpArrowIcon
 } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
@@ -29,6 +37,11 @@ export function ViewMenu() {
   const { menuItems } = useMenuItems();
   const [propertyVisibility, setPropertyVisibility, propertyVisibilityMetadata] =
     useProperty('OptionProperty', 'OpenSpaceEngine.PropertyVisibility');
+
+  const [guiScale, setGuiScale] = useProperty(
+    'FloatProperty',
+    'Modules.CefWebGui.GuiScale'
+  );
 
   const { loadLayout, saveLayout } = useStoredLayout();
   const dispatch = useAppDispatch();
@@ -109,17 +122,20 @@ export function ViewMenu() {
       <Menu.Item leftSection={<UpArrowIcon />} onClick={loadLayout}>
         Load Task Bar Settings
       </Menu.Item>
+
       <Menu.Item leftSection={<SaveIcon />} onClick={saveLayout}>
         Save Task Bar Settings
       </Menu.Item>
+
       <Menu.Divider />
+
       <TopBarMenuWrapper
         targetTitle={
           <Menu.Item
-            leftSection={<VisibilityIcon />}
+            leftSection={<SettingsIcon />}
             rightSection={<ChevronRightIcon size={IconSize.sm} />}
           >
-            Visibility Level
+            GUI Settings
           </Menu.Item>
         }
         position={'right-start'}
@@ -128,7 +144,7 @@ export function ViewMenu() {
       >
         <Menu.Label>
           <Group justify={'space-between'}>
-            Set visibility level
+            Visibility level
             <InfoBox>
               {`Controls what settings will be exposed in the interface. Increase the
                 level to reveal more advanced settings.`}
@@ -150,6 +166,29 @@ export function ViewMenu() {
             )}
           </Stack>
         </Radio.Group>
+
+        <Menu.Label>
+          <Group justify={'space-between'}>
+            Scale
+            <InfoBox>Increase or decrease the scale of the GUI.</InfoBox>
+          </Group>
+        </Menu.Label>
+        <Slider
+          defaultValue={guiScale}
+          min={0.1}
+          max={2}
+          step={0.01}
+          label={(value) => `${Math.round(value * 100)}%`}
+          onChangeEnd={(value) => setGuiScale(value)}
+          marks={[
+            { value: 0.1, label: '10%' },
+            { value: 1, label: '100%' },
+            { value: 2, label: '200%' }
+          ]}
+          miw={170}
+          mb={'lg'}
+          mx={'xs'}
+        />
       </TopBarMenuWrapper>
     </TopBarMenuWrapper>
   );
