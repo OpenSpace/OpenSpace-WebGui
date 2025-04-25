@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useGesture } from '@use-gesture/react';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { useProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
@@ -16,7 +17,6 @@ import {
 import { WwtStatus } from '../types';
 
 import { useWwtProvider } from './WwtProvider/hooks';
-import { useProperty } from '@/hooks/properties';
 
 // These are the hooks that will keep track of the redux state and
 // when it changes, it will pass along these messages to WWT

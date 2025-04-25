@@ -2,8 +2,8 @@ import { Button, CheckboxIndicator, Group, Menu, Radio, Stack } from '@mantine/c
 
 import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { useProperty } from '@/hooks/properties';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
+import { useProperty } from '@/hooks/properties';
 import {
   ChevronRightIcon,
   SaveIcon,

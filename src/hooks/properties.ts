@@ -7,7 +7,6 @@ import {
   unsubscribeToProperty
 } from '@/redux/propertytree/properties/propertiesMiddleware';
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
-
 import { PropertyOrPropertyGroup, PropertyTypeKey } from '@/types/Property/property';
 import { PropertyGroupsRuntime } from '@/types/Property/propertyGroups';
 

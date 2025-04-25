@@ -1,10 +1,8 @@
 import { JSX } from 'react';
 import { Group, InputLabel, Text, Tooltip } from '@mantine/core';
 
-import { InfoBox } from '@/components/InfoBox/InfoBox';
-
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
-
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { Uri } from '@/types/types';
 
 interface Props {
