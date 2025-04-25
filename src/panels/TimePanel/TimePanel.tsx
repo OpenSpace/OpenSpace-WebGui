@@ -1,4 +1,4 @@
-import { Alert, Button, Divider, Group, Stack, Text,Title } from '@mantine/core';
+import { Alert, Button, Divider, Group, Stack, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
