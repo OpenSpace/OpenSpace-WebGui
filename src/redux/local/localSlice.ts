@@ -34,7 +34,6 @@ const initialState: LocalState = {
     return {
       id: item.componentID,
       visible: item.defaultVisible,
-      enabled: true,
       name: item.title,
       isOpen: false
     };
