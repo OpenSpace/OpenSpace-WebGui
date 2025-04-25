@@ -72,3 +72,9 @@ export const GettingStartedPanel = lazy(() =>
     default: module.GettingStartedPanel
   }))
 );
+
+export const ScriptLogPanel = lazy(() =>
+  import('@/panels/LogPanel/ScriptLogPanel').then((module) => ({
+    default: module.ScriptLogPanel
+  }))
+);
