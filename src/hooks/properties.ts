@@ -9,6 +9,7 @@ import {
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import { PropertyOrPropertyGroup, PropertyTypeKey } from '@/types/Property/property';
 import { PropertyGroupsRuntime } from '@/types/Property/propertyGroups';
+import { Uri } from '@/types/types';
 
 function validatePropertyType<T>(
   type: T,
@@ -29,7 +30,7 @@ function validatePropertyType<T>(
 
 export function useProperty<T extends PropertyTypeKey>(
   type: T,
-  uri: string
+  uri: Uri
 ): [
   PropertyOrPropertyGroup<T>['value'] | undefined,
   (value: PropertyOrPropertyGroup<T>['value']) => void,
