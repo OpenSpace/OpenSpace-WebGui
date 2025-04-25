@@ -142,17 +142,17 @@ export function ScriptLogPanel() {
             </Tooltip>
           </Group>
           <InfoBox>
-            <Text>
+            <Text mb={'xs'}>
               This script log has been cleaned for ease of use. Some entries may have been
               filtered out unintentionally.
             </Text>
-            <Text>
+            <Text mb={'xs'}>
               Entries are listed from latest to oldest (top to bottom). Running multiple
               scripts at once will run them in the order bottom to top.
             </Text>
             <Text>
               To view the complete log or previous runs, check the{' '}
-              <Text fs={'italic'} fw={500} span>
+              <Text fs={'italic'} span>
                 OpenSpace/logs
               </Text>{' '}
               folder.
