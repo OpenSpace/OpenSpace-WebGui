@@ -3,8 +3,7 @@ import { Button, CheckboxIndicator, Group, Menu, Radio, Stack } from '@mantine/c
 import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
-import { AdditionalDataOptions } from '@/components/Property/types';
-import { useOptionProperty, usePropertyDescription } from '@/hooks/properties';
+import { useProperty } from '@/hooks/properties';
 import {
   ChevronRightIcon,
   SaveIcon,
@@ -28,13 +27,16 @@ export function ViewMenu() {
   const defaultTaskbar = useAppSelector((state) => state.profile.uiPanelVisibility);
 
   const { menuItems } = useMenuItems();
-  const [propertyVisibility, setPropertyVisibility] = useOptionProperty(
-    'OpenSpaceEngine.PropertyVisibility'
-  );
+  const [propertyVisibility, setPropertyVisibility, propertyVisibilityMetadata] =
+    useProperty('OptionProperty', 'OpenSpaceEngine.PropertyVisibility');
 
   const { loadLayout, saveLayout } = useStoredLayout();
-  const description = usePropertyDescription('OpenSpaceEngine.PropertyVisibility');
   const dispatch = useAppDispatch();
+
+  if (!propertyVisibilityMetadata) {
+    return <></>;
+  }
+  const userLevelOptions = propertyVisibilityMetadata.additionalData.options;
 
   function resetTaskbar() {
     dispatch(resetTaskbarItems());
@@ -44,9 +46,6 @@ export function ViewMenu() {
       dispatch(setMenuItemVisible({ id: key, visible: value }));
     });
   }
-  const additionalData = description?.additionalData as AdditionalDataOptions | undefined;
-
-  const userLevelOptions = additionalData?.Options;
 
   return (
     <TopBarMenuWrapper targetTitle={'View'}>

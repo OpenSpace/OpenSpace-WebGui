@@ -5,7 +5,7 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
-import { useStringProperty } from '@/hooks/properties';
+import { useProperty } from '@/hooks/properties';
 import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Identifier } from '@/types/types';
@@ -21,9 +21,9 @@ export function ExoplanetsPanel() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const isDataInitialized = useAppSelector((state) => state.exoplanets.isInitialized);
   const allSystemNames = useAppSelector((state) => state.exoplanets.data);
+  const [aim, setAim] = useProperty('StringProperty', NavigationAimKey);
+  const [anchor, setAnchor] = useProperty('StringProperty', NavigationAnchorKey);
 
-  const [aim, setAim] = useStringProperty(NavigationAimKey);
-  const [anchor, setAnchor] = useStringProperty(NavigationAnchorKey);
   const luaApi = useOpenSpaceApi();
 
   const dispatch = useAppDispatch();

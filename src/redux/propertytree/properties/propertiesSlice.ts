@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { AdditionalData } from '@/components/Property/types';
 import { PropertyVisibilityNumber } from '@/types/enums';
-import { Properties, PropertyOverview, PropertyValue, Uri } from '@/types/types';
+import { AnyProperty } from '@/types/Property/property';
+import { Properties, PropertyOverview, Uri } from '@/types/types';
 
 export interface PropertiesState {
   isInitialized: boolean;
@@ -26,9 +26,9 @@ export const propertiesSlice = createSlice({
       for (const [uri, property] of Object.entries(action.payload)) {
         state.properties[uri] = property;
         state.propertyOverview[uri] = {
-          name: property?.description.name ?? '',
-          visibility: property?.description.metaData.Visibility
-            ? PropertyVisibilityNumber[property?.description.metaData.Visibility]
+          name: property?.metaData.guiName ?? '',
+          visibility: property?.metaData.visibility
+            ? PropertyVisibilityNumber[property?.metaData.visibility]
             : 0
         };
       }
@@ -50,7 +50,7 @@ export const propertiesSlice = createSlice({
     },
     setPropertyValue: (
       state,
-      action: PayloadAction<{ uri: Uri; value: PropertyValue }>
+      action: PayloadAction<{ uri: Uri; value: AnyProperty['value'] }>
     ) => {
       const { uri, value } = action.payload;
 
@@ -62,7 +62,7 @@ export const propertiesSlice = createSlice({
     },
     updatePropertyValue: (
       state,
-      action: PayloadAction<{ uri: Uri; value: PropertyValue }>
+      action: PayloadAction<{ uri: Uri; value: AnyProperty['value'] }>
     ) => {
       const { uri, value } = action.payload;
 
@@ -71,14 +71,14 @@ export const propertiesSlice = createSlice({
       }
       return state;
     },
-    updatePropertyAdditionalData: (
+    updatePropertyMetaData: (
       state,
-      action: PayloadAction<{ uri: Uri; additionalData: AdditionalData }>
+      action: PayloadAction<{ uri: Uri; metaData: AnyProperty['metaData'] }>
     ) => {
-      const { uri, additionalData } = action.payload;
+      const { uri, metaData } = action.payload;
 
       if (state.properties[uri]) {
-        state.properties[uri].description.additionalData = additionalData;
+        state.properties[uri].metaData = metaData;
       }
       return state;
     }
@@ -91,7 +91,7 @@ export const {
   removeProperties,
   clearProperties,
   setPropertyValue,
-  updatePropertyAdditionalData,
+  updatePropertyMetaData,
   updatePropertyValue
 } = propertiesSlice.actions;
 
