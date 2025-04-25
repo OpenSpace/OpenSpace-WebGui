@@ -6,6 +6,7 @@ export {
 export {
   FaArrowLeft as ArrowLeftIcon,
   FaArrowRight as ArrowRightIcon,
+  FaDev as DevIcon,
   FaHome as HomeIcon,
   FaMinus as MinusIcon,
   FaPlus as PlusIcon,

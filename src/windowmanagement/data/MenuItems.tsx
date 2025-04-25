@@ -4,6 +4,7 @@ import {
   BrowserIcon,
   CalendarIcon,
   DashboardIcon,
+  DevIcon,
   ExoplanetIcon,
   ExpandArrowsIcon,
   FocusIcon,
@@ -18,9 +19,9 @@ import {
   TelescopeIcon,
   VideocamIcon
 } from '@/icons/icons';
+import { DevPanel } from '@/panels/DevPanel/DevPanel';
 import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
 import { NavigationPanelMenuButton } from '@/panels/NavigationPanel/MenuButton/NavigationPanelMenuButton';
-import { TempPropertyTest } from '@/panels/Scene/TempPropertyTest';
 import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
 import { TimePanelMenuButton } from '@/panels/TimePanel/MenuButton/TimePanelMenuButton';
 import { IconSize } from '@/types/enums';
@@ -197,13 +198,6 @@ export const menuItemsData: Record<string, MenuItem> = {
     floatPosition: { offsetY: 150, offsetX: 350, width: 600, height: 500 },
     defaultVisible: true
   },
-  propertyTest: {
-    title: 'Property Test (TEMP)',
-    componentID: 'propertyTest',
-    content: <TempPropertyTest />,
-    preferredPosition: 'left',
-    defaultVisible: false
-  },
   scriptLogPanel: {
     title: 'Script Log',
     componentID: 'scriptLogPanel',
@@ -215,6 +209,16 @@ export const menuItemsData: Record<string, MenuItem> = {
 };
 
 if (import.meta.env.DEV) {
+  // Add an extra panel for dev-specific content
+  menuItemsData.devPanel = {
+    title: 'Dev Panel',
+    componentID: 'devPanel',
+    content: <DevPanel />,
+    renderIcon: (size) => <DevIcon size={size} />,
+    preferredPosition: 'right',
+    defaultVisible: false
+  };
+
   Object.entries(menuItemsData).forEach(([key, value]) => {
     if (key !== value.componentID) {
       throw Error(
