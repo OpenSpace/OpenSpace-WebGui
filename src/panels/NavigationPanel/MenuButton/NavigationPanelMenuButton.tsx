@@ -34,7 +34,7 @@ export function NavigationPanelMenuButton({ id }: Props) {
 
   if (!isReady) {
     return (
-      <TaskBarMenuButton id={id} disabled leftSection={<FocusIcon size={IconSize.lg} />}>
+      <TaskBarMenuButton id={id} leftSection={<FocusIcon size={IconSize.lg} />}>
         <Stack gap={0}>
           <LoadingBlocks n={1} w={84} />
           <Text ta={'left'}>Focus</Text>

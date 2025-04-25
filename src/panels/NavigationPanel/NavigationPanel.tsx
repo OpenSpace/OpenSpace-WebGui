@@ -3,6 +3,7 @@ import { Center, Group, SegmentedControl, Text, VisuallyHidden } from '@mantine/
 
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes/hooks';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
@@ -43,12 +44,12 @@ export function NavigationPanel() {
     includeGuiHiddenNodes: false,
     onlyFocusable: showOnlyFocusable
   });
+  const isLoading = searchableNodes.length === 0;
 
   const sortedSearchableNodes = useMemo(
     () => searchableNodes.slice().sort((a, b) => a.name.localeCompare(b.name)),
     [searchableNodes]
   );
-
   const defaultList = featuredNodes.length > 0 ? featuredNodes : sortedSearchableNodes;
 
   const searchMatcherFunction = generateMatcherFunctionByKeys([
@@ -59,6 +60,10 @@ export function NavigationPanel() {
   ]);
 
   const isInFlight = engineMode === EngineMode.CameraPath;
+
+  if (isLoading) {
+    return <LoadingBlocks />;
+  }
 
   return (
     <Layout>

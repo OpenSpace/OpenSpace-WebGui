@@ -21,7 +21,7 @@ import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
 import { NavigationPanelMenuButton } from '@/panels/NavigationPanel/MenuButton/NavigationPanelMenuButton';
 import { TempPropertyTest } from '@/panels/Scene/TempPropertyTest';
 import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
-import { TimePanelMenuButton } from '@/panels/TimePanel/MenuButton/TimePanelMenuButton';
+import { TimePanelMenuButtonContent } from '@/panels/TimePanel/MenuButton/TimePanelMenuButtonContent';
 import { IconSize } from '@/types/enums';
 
 import { FloatWindowPosition, WindowLayoutPosition } from '../WindowLayout/types';
@@ -98,7 +98,11 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Time Panel',
     componentID: 'timePanel',
     content: <TimePanel />,
-    renderMenuButton: (id) => <TimePanelMenuButton id={id} />,
+    renderMenuButton: (id) => (
+      <TaskBarMenuButton id={id}>
+        <TimePanelMenuButtonContent />
+      </TaskBarMenuButton>
+    ),
     renderIcon: (size) => <CalendarIcon size={size} />,
     preferredPosition: 'float',
     floatPosition: { offsetY: 100, offsetX: 370, width: 410, height: 520 },
@@ -135,7 +139,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     content: <ExoplanetsPanel />,
     renderIcon: (size) => <ExoplanetIcon size={size} />,
     preferredPosition: 'right',
-    defaultVisible: true
+    defaultVisible: false
   },
   userPanels: {
     title: 'User Panels',
@@ -159,7 +163,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     content: <SkyBrowserPanel />,
     renderIcon: (size) => <TelescopeIcon size={size} />,
     preferredPosition: 'right',
-    defaultVisible: true
+    defaultVisible: false
   },
   mission: {
     title: 'Mission',
@@ -167,7 +171,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     content: <MissionsPanel />,
     renderIcon: (size) => <RocketLaunchIcon size={size} />,
     preferredPosition: 'right',
-    defaultVisible: true
+    defaultVisible: false
   },
   flightControl: {
     title: 'Flight Control',
