@@ -8,8 +8,8 @@ import {
 } from '@/redux/propertytree/properties/propertiesMiddleware';
 import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 
-import { PropertyOrPropertyGroup, PropertyTypeKey } from '../types/Property/property';
-import { PropertyGroupsRuntime } from '../types/Property/propertyGroups';
+import { PropertyOrPropertyGroup, PropertyTypeKey } from '@/types/Property/property';
+import { PropertyGroupsRuntime } from '@/types/Property/propertyGroups';
 
 function validatePropertyType<T>(
   type: T,
