@@ -13,7 +13,7 @@ export function BoolProperty({ uri, readOnly }: PropertyProps) {
     <BoolInput
       value={value}
       setValue={setValue}
-      name={meta.name}
+      name={meta.guiName}
       description={meta.description}
       readOnly={readOnly}
     />
