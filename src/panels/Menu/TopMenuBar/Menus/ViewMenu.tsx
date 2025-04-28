@@ -11,6 +11,7 @@ import {
 
 import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { Label } from '@/components/Label/Label';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useProperty } from '@/hooks/properties';
 import {
@@ -47,7 +48,7 @@ export function ViewMenu() {
   const { loadLayout, saveLayout } = useStoredLayout();
   const dispatch = useAppDispatch();
 
-  const userLevelOptions = propertyVisibilityMetadata?.additionalData?.options;
+  const userLevelOptions = propertyVisibilityMetadata?.additionalData.options;
 
   function resetTaskbar() {
     dispatch(resetTaskbarItems());
@@ -141,7 +142,7 @@ export function ViewMenu() {
         closeOnItemClick={false}
       >
         <Menu.Label>
-          <Group justify={'space-between'}>
+          <Group gap={'xs'}>
             Visibility level
             <InfoBox>
               {`Controls what settings will be exposed in the interface. Increase the
@@ -167,8 +168,8 @@ export function ViewMenu() {
           </Radio.Group>
         </Container>
 
-        <Menu.Label>
-          <Group justify={'space-between'}>
+        <Menu.Label mt={'xs'}>
+          <Group gap={'xs'}>
             Scale
             <InfoBox>Increase or decrease the scale of the GUI.</InfoBox>
           </Group>
