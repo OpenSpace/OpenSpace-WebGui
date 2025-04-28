@@ -125,7 +125,7 @@ export function AnchorAimView({
         </Tooltip>
       </Group>
       <Divider />
-      <Group>
+      <Group gap={'xs'}>
         <FilterList.InputField
           placeHolderSearchText={'Search for a new anchor/aim...'}
           showMoreButton

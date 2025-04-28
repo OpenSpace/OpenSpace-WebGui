@@ -97,7 +97,7 @@ export function FocusView({
         )}
         <Divider />
       </>
-      <Group>
+      <Group gap={'xs'}>
         <FilterList.InputField
           placeHolderSearchText={'Search for a new focus...'}
           showMoreButton
