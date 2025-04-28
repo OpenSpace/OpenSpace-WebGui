@@ -5,8 +5,8 @@ import { useCallback, useState } from 'react';
  *
  * @template T - The type of the object whose keys are being managed.
  *
- * @param keys - An object containing a partial mapping of keys of type `T` to boolean values,
- *               indicating whether each key is enabled or disabled by default.
+ * @param keys - An object where each key must be a key of T. The value of the key is a boolean
+ * indicating whether the key is enabled (true) or disabled (false) by default.
  *
  * @returns An object containing:
  * - `allowedKeys`: The current state of the keys and their enabled/disabled statuses.
@@ -30,7 +30,10 @@ import { useCallback, useState } from 'react';
  * console.log(selectedKeys); // Outputs: ['darkMode', 'notifications']
  * ```
  */
-export function useSearchKeySettings<T>(keys: Partial<Record<keyof T, boolean>>) {
+
+export function useSearchKeySettings<T extends object>(
+  keys: Partial<Record<keyof T, boolean>>
+) {
   const [allowedSearchKeys, setAllowedSearchKeys] =
     useState<Partial<Record<keyof T, boolean>>>(keys);
 

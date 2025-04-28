@@ -3,11 +3,7 @@ import { Box, MantineSpacing, SimpleGrid } from '@mantine/core';
 
 import { VirtualList } from './VirtualList';
 
-export interface KeyType {
-  key: string;
-}
-
-interface Props<T extends KeyType> {
+interface Props<T> {
   data: T[];
   renderElement: (data: T, i: number) => React.ReactNode;
   gap?: MantineSpacing; // Gap inbetween items
@@ -15,7 +11,7 @@ interface Props<T extends KeyType> {
   columns?: number;
 }
 
-export function VirtualGrid<T extends KeyType>({
+export function VirtualGrid<T>({
   data,
   renderElement,
   gap,

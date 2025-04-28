@@ -12,13 +12,17 @@ import { SettingsIcon, WarningIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { camelCaseToRegularText } from '@/util/text';
 
-interface Props<T> {
+interface Props<T extends object> {
   keys: Partial<Record<keyof T, boolean>>;
   setKey: (key: keyof T, enabled: boolean) => void;
   labels?: Partial<Record<keyof T, string>>;
 }
 
-export function FilterListSearchSettingsMenu<T>({ keys, setKey, labels }: Props<T>) {
+export function FilterListSearchSettingsMenu<T extends object>({
+  keys,
+  setKey,
+  labels
+}: Props<T>) {
   const noKeyIsSelected = Object.values(keys).every((value) => value === false);
   return (
     <Menu position={'right-start'} withArrow closeOnItemClick={false}>
@@ -42,6 +46,7 @@ export function FilterListSearchSettingsMenu<T>({ keys, setKey, labels }: Props<
       <Menu.Dropdown maw={'300px'}>
         <Menu.Label>Search in</Menu.Label>
         <Stack p={'xs'}>
+          {/* When using Object.entries a new object is created, and we cant infer the type from that */}
           {Object.entries(keys).map(([key, enabled]) => (
             <Group key={key}>
               <Checkbox

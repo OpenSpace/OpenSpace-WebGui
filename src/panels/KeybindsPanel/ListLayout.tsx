@@ -19,9 +19,9 @@ export function ListLayout() {
 
   const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
     useSearchKeySettings<KeybindInfoType>({
-      documentation: true,
-      key: true,
-      name: true
+      name: true,
+      documentation: false,
+      key: true
     });
 
   const keybindInfo: KeybindInfoType[] = keybinds

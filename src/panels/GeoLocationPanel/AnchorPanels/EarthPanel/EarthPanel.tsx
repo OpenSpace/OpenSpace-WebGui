@@ -13,7 +13,6 @@ import {
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
-import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
@@ -39,14 +38,6 @@ export function EarthPanel({ currentAnchor }: Props) {
   const luaApi = useOpenSpaceApi();
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const groups = useAppSelector((state) => state.groups.groups);
-
-  const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
-    useSearchKeySettings<Candidate>({
-      address: true,
-      attributes: true
-    });
-
-  const keyLabels = { address: 'Address', attributes: 'Details' };
 
   const geoLocationOwners = groups[GeoLocationGroupKey]?.propertyOwners.map((uri) => {
     const index = uri.indexOf(ScenePrefixKey);
@@ -205,11 +196,6 @@ export function EarthPanel({ currentAnchor }: Props) {
               <FilterList>
                 <Group>
                   <FilterList.InputField placeHolderSearchText={'Filter search'} />
-                  <FilterList.SearchSettingsMenu
-                    keys={allowedSearchKeys}
-                    setKey={toggleSearchKey}
-                    labels={keyLabels}
-                  />
                 </Group>
                 <FilterList.SearchResults
                   data={places}
@@ -225,7 +211,7 @@ export function EarthPanel({ currentAnchor }: Props) {
                       removeFocusNode={removeFocusNode}
                     />
                   )}
-                  matcherFunc={generateMatcherFunctionByKeys(selectedSearchKeys)}
+                  matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
                 >
                   <FilterList.SearchResults.VirtualList />
                 </FilterList.SearchResults>
