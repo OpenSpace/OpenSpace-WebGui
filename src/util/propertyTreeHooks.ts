@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useStringProperty } from '@/hooks/properties';
+import { useProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { PropertyOwner } from '@/types/types';
 
@@ -24,7 +24,7 @@ export function useFeaturedNodes(): PropertyOwner[] {
 }
 
 export function useAnchorNode() {
-  const [anchor] = useStringProperty(NavigationAnchorKey);
+  const [anchor] = useProperty('StringProperty', NavigationAnchorKey);
   const anchorNode = useAppSelector(
     (state) => state.propertyOwners.propertyOwners[sgnUri(anchor)]
   );
@@ -32,7 +32,7 @@ export function useAnchorNode() {
 }
 
 export function useAimNode() {
-  const [aim] = useStringProperty(NavigationAimKey);
+  const [aim] = useProperty('StringProperty', NavigationAimKey);
   const aimNode = useAppSelector(
     (state) => state.propertyOwners.propertyOwners[sgnUri(aim)]
   );

@@ -1,9 +1,10 @@
 import { memo } from 'react';
 import { Stack } from '@mantine/core';
 
-import { usePropertyDescription } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
+
+import { Label } from '../Label/Label';
 
 import { BoolProperty } from './Types/BoolProperty';
 import { DoubleListProperty } from './Types/ListProperty/DoubleListProperty';
@@ -16,7 +17,6 @@ import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';
 import { TriggerProperty } from './Types/TriggerProperty';
 import { VectorProperty } from './Types/VectorProperty/VectorProperty';
-import { PropertyLabel } from './PropertyLabel';
 
 // The readOnly prop sent to each component are meant to enforce each
 // Property component to have to handle the readOnly state. This can
@@ -80,23 +80,24 @@ interface Props {
 }
 
 export const Property = memo(({ uri }: Props) => {
-  const propertyType = useAppSelector(
-    (state) => state.properties.properties[uri]?.description.type
-  );
-  const readOnly = usePropertyDescription(uri)?.metaData.isReadOnly;
+  const meta = useAppSelector((state) => state.properties.properties[uri]?.metaData);
 
-  if (!propertyType || readOnly === undefined) {
+  if (!meta) {
     return <></>;
   }
 
-  const showLabel = !(
-    propertyType === 'BoolProperty' || propertyType === 'TriggerProperty'
-  );
+  const showLabel = !(meta.type === 'BoolProperty' || meta.type === 'TriggerProperty');
 
   return (
     <Stack mb={'md'} gap={5}>
-      {showLabel && <PropertyLabel uri={uri} readOnly={readOnly} />}
-      {renderProperty(propertyType, uri, readOnly)}
+      {showLabel && (
+        <Label
+          name={meta.guiName}
+          description={meta.description}
+          readOnly={meta.isReadOnly}
+        />
+      )}
+      {renderProperty(meta.type, uri, meta.isReadOnly)}
     </Stack>
   );
 });

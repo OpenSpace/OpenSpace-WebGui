@@ -24,8 +24,8 @@ interface Props extends ActionIconProps {
 export function StepControlButton({
   direction,
   onChange,
-  stepHoldDelay = 200,
-  stepHoldInterval = 50,
+  stepHoldDelay = 400,
+  stepHoldInterval = 100,
   step = 1,
   tabIndex,
   ...props

@@ -1,8 +1,8 @@
 import { Flex } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-import { AdditionalDataVectorMatrix } from '@/components/Property/types';
 import { usePropListeningState } from '@/hooks/util';
+import { AdditionalDataVectorMatrix } from '@/types/Property/propertyTypes';
 
 interface Props {
   disabled: boolean;
@@ -22,7 +22,7 @@ export function VectorDefaultView({
   const { value: currentValue, setValue: setCurrentValue } =
     usePropListeningState<number[]>(value);
 
-  const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
+  const { min, max, step } = additionalData;
 
   function setValue(index: number, newValue: number) {
     const v = [...value];

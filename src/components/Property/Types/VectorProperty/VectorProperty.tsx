@@ -1,9 +1,5 @@
-import {
-  AdditionalDataVectorMatrix,
-  PropertyProps,
-  ViewOptionsVector
-} from '@/components/Property/types';
-import { useGenericVectorProperty, usePropertyDescription } from '@/hooks/properties';
+import { PropertyProps } from '@/components/Property/types';
+import { useProperty } from '@/hooks/properties';
 
 import { ColorView } from './ViewOptions/ColorView';
 import { MinMaxRangeView } from './ViewOptions/MinMaxRange';
@@ -14,34 +10,30 @@ interface Props extends PropertyProps {
 }
 
 export function VectorProperty({ uri, isInt = false, readOnly }: Props) {
-  const [value, setPropertyValue] = useGenericVectorProperty(uri);
-  const description = usePropertyDescription(uri);
+  const [value, setPropertyValue, meta] = useProperty('GenericVectorProperty', uri);
 
-  if (!description || !value) {
+  if (!meta || !value) {
     return <></>;
   }
 
-  const viewOptions = description.metaData.ViewOptions as ViewOptionsVector;
-  const additionalData = description.additionalData as AdditionalDataVectorMatrix;
-
-  if (viewOptions.Color) {
+  if (meta.viewOptions?.Color) {
     return (
       <ColorView
         value={value}
         setPropertyValue={setPropertyValue}
-        additionalData={additionalData}
+        additionalData={meta.additionalData}
         readOnly={readOnly}
         isInt={isInt}
       />
     );
   }
 
-  if (viewOptions.MinMaxRange) {
+  if (meta.viewOptions?.MinMaxRange) {
     return (
       <MinMaxRangeView
         value={value}
         setPropertyValue={setPropertyValue}
-        additionalData={additionalData}
+        additionalData={meta.additionalData}
         disabled={readOnly}
       />
     );
@@ -52,7 +44,7 @@ export function VectorProperty({ uri, isInt = false, readOnly }: Props) {
       disabled={readOnly}
       setPropertyValue={setPropertyValue}
       value={value}
-      additionalData={additionalData}
+      additionalData={meta.additionalData}
       isInt={isInt}
     />
   );

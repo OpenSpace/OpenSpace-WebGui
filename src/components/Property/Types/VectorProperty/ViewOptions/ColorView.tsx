@@ -1,7 +1,7 @@
 import { Flex, RGBA } from '@mantine/core';
 
 import { ColorPicker } from '@/components/ColorPicker/ColorPicker';
-import { AdditionalDataVectorMatrix } from '@/components/Property/types';
+import { AdditionalDataVectorMatrix } from '@/types/Property/propertyTypes';
 
 import { VectorDefaultView } from './VectorDefaultView';
 

@@ -4,7 +4,7 @@ import { TaskbarItemConfig } from '@/panels/Menu/types';
 import { LogLevel } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { showNotification } from '@/util/logging';
-import { menuItemsData } from '@/windowmanagement/data/MenuItems';
+import { createDefaultTaskbar } from './util';
 
 export interface LocalState {
   menus: {
@@ -32,21 +32,17 @@ const initialState: LocalState = {
     expandedGroups: [],
     currentlySelectedNode: null
   },
-  taskbarItems: Object.values(menuItemsData).map((item) => {
-    return {
-      id: item.componentID,
-      visible: item.defaultVisible,
-      enabled: true,
-      name: item.title,
-      isOpen: false
-    };
-  })
+  taskbarItems: createDefaultTaskbar()
 };
 
 export const localSlice = createSlice({
   name: 'local',
   initialState,
   reducers: {
+    resetTaskbarItems: (state) => {
+      state.taskbarItems = createDefaultTaskbar();
+      return state;
+    },
     storeSceneTreeNodeExpanded: (state, action: PayloadAction<string[]>) => {
       state.sceneTree.expandedGroups = action.payload;
       return state;
@@ -101,6 +97,7 @@ export const localSlice = createSlice({
 
 // Action creators are generated for each case reducer function, replaces the `Actions/index.js`
 export const {
+  resetTaskbarItems,
   storeSceneTreeNodeExpanded,
   setSceneTreeSelectedNode,
   setOnlyFocusableInNavMenu,

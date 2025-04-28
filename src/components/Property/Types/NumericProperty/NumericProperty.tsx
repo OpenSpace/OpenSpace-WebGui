@@ -1,8 +1,8 @@
 import { Flex, Group, NumberFormatter, Paper, Text } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-import { AdditionalDataNumber, PropertyProps } from '@/components/Property/types';
-import { useGenericNumericProperty, usePropertyDescription } from '@/hooks/properties';
+import { PropertyProps } from '@/components/Property/types';
+import { useProperty } from '@/hooks/properties';
 import { usePropListeningState } from '@/hooks/util';
 
 import { NumericPropertySlider } from './Slider/NumericPropertySlider';
@@ -13,25 +13,17 @@ interface Props extends PropertyProps {
 }
 
 export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
-  const [value, setPropertyValue] = useGenericNumericProperty(uri);
+  const [value, setPropertyValue, meta] = useProperty('GenericNumericProperty', uri);
 
   const { value: currentValue, setValue: setCurrentValue } = usePropListeningState<
     number | undefined
   >(value);
 
-  const description = usePropertyDescription(uri);
-
-  if (!description || currentValue === undefined || value === undefined) {
+  if (!meta || currentValue === undefined || value === undefined) {
     return <></>;
   }
 
-  const additionalData = description.additionalData as AdditionalDataNumber;
-  const {
-    MinimumValue: min,
-    MaximumValue: max,
-    SteppingValue: step,
-    Exponent: exponent
-  } = additionalData;
+  const { min, max, step, exponent } = meta.additionalData;
 
   // When no min/max is set, the marks for the slider cannot be nicely computed
   const extent = max - min;
