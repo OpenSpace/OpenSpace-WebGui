@@ -8,7 +8,7 @@ import { Label } from '../Label/Label';
 
 interface Props {
   name: string;
-  description: string | JSX.Element;
+  description: JSX.Element;
   uri: Uri;
   readOnly?: boolean;
 }
