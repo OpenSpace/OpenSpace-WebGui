@@ -57,8 +57,8 @@ export function PropertyTest() {
         <Title order={4}>IntVec2:</Title>
         <Property uri={'Scene.1ldGrid.Renderable.Segments'} />
         <Title order={4}>MinMaxRange:</Title>
-        TODO: More variants
         <Property uri={'Scene.SloanDigitalSkySurvey.Renderable.Fading.FadeInDistances'} />
+        {/* @TODO (2025-04-29, emmbr): Add more variants of vectors*/}
       </Container>
 
       <Title order={3}>Matrix Property:</Title>
