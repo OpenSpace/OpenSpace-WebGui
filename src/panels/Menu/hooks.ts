@@ -1,6 +1,10 @@
+import { useEffect } from 'react';
+
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setMenuItemsOrder } from '@/redux/local/localSlice';
+import { setMenuItemsOrder, setMenuItemVisible } from '@/redux/local/localSlice';
 import { useSaveLoadJsonFiles } from '@/util/fileIOhooks';
+import { menuItemsData } from '@/windowmanagement/data/MenuItems';
+import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { TaskbarItemConfig } from './types';
 
@@ -14,11 +18,30 @@ export function useMenuItems() {
 
 export function useStoredLayout() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);
+  const hasMission = useAppSelector((state) => state.missions.isInitialized);
+  const { addWindow } = useWindowLayoutProvider();
 
   const { openSaveFileDialog, openLoadFileDialog } =
     useSaveLoadJsonFiles(handlePickedFile);
 
   const dispatch = useAppDispatch();
+
+  // Special handling of when a mission file is loaded
+  useEffect(() => {
+    if (!hasMission) {
+      return;
+    }
+    // Show the missions button in the taskbar if a mission is loaded
+    dispatch(
+      setMenuItemVisible({ id: menuItemsData.mission.componentID, visible: true })
+    );
+    // Open the missions window if a mission is loaded
+    addWindow(menuItemsData.mission.content, {
+      id: menuItemsData.mission.componentID,
+      title: menuItemsData.mission.title,
+      position: menuItemsData.mission.preferredPosition
+    });
+  }, [hasMission]);
 
   function handlePickedFile(content: JSON) {
     if (!content || Object.keys(content).length === 0) {
