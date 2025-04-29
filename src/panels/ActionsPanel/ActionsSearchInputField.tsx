@@ -19,5 +19,7 @@ export function ActionsSearchInputField({ placeHolderSearchText }: Props) {
     setSearchString('');
   }, [navigationPath, setSearchString]);
 
-  return <FilterListInputField placeHolderSearchText={placeHolderSearchText} />;
+  return (
+    <FilterListInputField placeHolderSearchText={placeHolderSearchText} flex={'auto'} />
+  );
 }

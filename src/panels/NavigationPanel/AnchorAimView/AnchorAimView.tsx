@@ -56,7 +56,7 @@ export function AnchorAimView({
     setAnchor(identifier);
 
     if (!event.shiftKey) {
-      triggerRetargetAnchor();
+      triggerRetargetAnchor(null);
     }
   }
 
@@ -67,7 +67,7 @@ export function AnchorAimView({
     setAim(identifier);
 
     if (!event.shiftKey) {
-      triggerRetargetAim();
+      triggerRetargetAim(null);
     }
   }
 
