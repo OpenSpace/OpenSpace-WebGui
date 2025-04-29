@@ -1,6 +1,6 @@
 import { Chip, MantineSize } from '@mantine/core';
 
-import { useBoolProperty } from '@/hooks/properties';
+import { useProperty } from '@/hooks/properties';
 import { RollFrictionKey, RotationalFrictionKey, ZoomFrictionKey } from '@/util/keys';
 
 interface Props {
@@ -8,9 +8,9 @@ interface Props {
 }
 
 export function FrictionControls({ size }: Props) {
-  const [rotation, setRotation] = useBoolProperty(RotationalFrictionKey);
-  const [zoom, setZoom] = useBoolProperty(ZoomFrictionKey);
-  const [roll, setRoll] = useBoolProperty(RollFrictionKey);
+  const [rotation, setRotation] = useProperty('BoolProperty', RotationalFrictionKey);
+  const [zoom, setZoom] = useProperty('BoolProperty', ZoomFrictionKey);
+  const [roll, setRoll] = useProperty('BoolProperty', RollFrictionKey);
 
   return (
     <>

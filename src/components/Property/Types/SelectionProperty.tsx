@@ -1,22 +1,20 @@
 import { MultiSelect } from '@mantine/core';
 
-import { AdditionalDataSelection, PropertyProps } from '@/components/Property/types';
-import { usePropertyDescription, useSelectionProperty } from '@/hooks/properties';
+import { PropertyProps } from '@/components/Property/types';
+import { useProperty } from '@/hooks/properties';
 import { usePropListeningState } from '@/hooks/util';
 
 export function SelectionProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setValue] = useSelectionProperty(uri);
+  const [value, setValue, meta] = useProperty('SelectionProperty', uri);
   const { value: currentValue, setValue: setCurrentValue } = usePropListeningState<
     string[] | undefined
   >(value);
 
-  const description = usePropertyDescription(uri);
-
-  if (!value || !description || currentValue === undefined) {
+  if (!value || !meta || currentValue === undefined) {
     return <></>;
   }
 
-  const { Options: options } = description.additionalData as AdditionalDataSelection;
+  const { options } = meta.additionalData;
 
   function handleChange(newValue: string[]) {
     setValue(newValue);
@@ -25,7 +23,7 @@ export function SelectionProperty({ uri, readOnly }: PropertyProps) {
 
   return (
     <MultiSelect
-      aria-label={`${description.name} multi-select`}
+      aria-label={`${meta.guiName} multi-select`}
       disabled={readOnly}
       data={options}
       value={currentValue}

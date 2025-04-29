@@ -174,6 +174,7 @@ declare module 'openspace-api-js' {
   }
 
   export class WebSocketWrapper {
+    /** Internal usage only */
     constructor(address: string, port: number);
     onConnect(cb: () => void): void;
     onDisconnect(cb: () => void): void;
@@ -687,6 +688,10 @@ interface assetLibrary {
    */
   isLoaded: (assetName: string) => Promise<boolean>
   /**
+   * Reloads the asset with the specified name. If the asset was previously loaded explicity it will be removed and then re-added. If the asset was not previously loaded, it will only be loaded instead.
+   */
+  reload: (assetName: string) => Promise<void>
+  /**
    * Removes the asset with the specfied name from the scene. The parameter to this function is the same that was originally used to load this asset, i.e. the path to the asset file.
    */
   remove: (assetName: string) => Promise<void>
@@ -1151,20 +1156,6 @@ interface globebrowsingLibrary {
    */
   deleteLayer: (globeIdentifier: string, layerGroup: string, layerOrName: string | table) => Promise<void>
   /**
-   * Fly the camera to a geographic coordinate (latitude, longitude and altitude) on a globe, using the path navigation system.
-
-\\param globe The identifier of a scene graph node that has a RenderableGlobe attached. If an empty string is provided, the current anchor node is used \\param latitude The latitude of the target coordinate, in degrees \\param longitude The longitude of the target coordinate, in degrees \\param altitude The altitude of the target coordinate, in meters \\param duration An optional duration for the motion to take, in seconds. For example, a value of 5 means \"fly to this position over a duration of 5 seconds\" \\param shouldUseUpVector If true, try to use the up-direction when computing the target position for the camera. For globes, this means that North should be up, in relation to the camera's view direction. Note that for this to take effect, rolling motions must be enabled in the Path Navigator settings.
-   */
-  flyToGeo: (globe: string, latitude: number, longitude: number, altitude: number, duration?: number, shouldUseUpVector?: boolean) => Promise<void>
-  /**
-   * Fly the camera to a geographic coordinate (latitude and longitude) on a globe, using the path navigation system.
-
-The distance to fly to can either be set to be the current distance of the camera to the target object, or the default distance from the path navigation system.
-
-\\param globe The identifier of a scene graph node that has a RenderableGlobe attached. If an empty string is provided, the current anchor node is used \\param latitude The latitude of the target coordinate, in degrees \\param longitude The longitude of the target coordinate, in degrees \\param useCurrentDistance If true, use the current distance of the camera to the target globe when going to the specified position. If false, or not specified, set the distance based on the bounding sphere and the distance factor setting in Path Navigator \\param duration An optional duration for the motion to take, in seconds. For example, a value of 5 means \"fly to this position over a duration of 5 seconds\" \\param shouldUseUpVector If true, try to use the up-direction when computing the target position for the camera. For globes, this means that North should be up, in relation to the camera's view direction. Note that for this to take effect, rolling motions must be enabled in the Path Navigator settings.
-   */
-  flyToGeo2: (globe: string, latitude: number, longitude: number, useCurrentDistance?: boolean, duration?: number, shouldUseUpVector?: boolean) => Promise<void>
-  /**
    * Get geographic coordinates of the camera position in latitude, longitude, and altitude (degrees and meters).
 
 \\param useEyePosition If true, use the view direction of the camera instead of the camera position
@@ -1187,33 +1178,11 @@ Deprecated in favor of `layers`.
    */
   getLayers: (globeIdentifier: string, layerGroup: string) => Promise<string[]>
   /**
-   * Returns the position in the local Cartesian coordinate system of the specified globe that corresponds to the given geographic coordinates. In the local coordinate system, the position (0,0,0) corresponds to the globe's center.
-
-Deprecated in favor of `localPositionFromGeo`.
-
-\\param globeIdentifier The identifier of the scene graph node for the globe \\param latitude The latitude of the geograpic position, in degrees \\param longitude The longitude of the geographic position, in degrees \\param altitude The altitude, in meters
-   */
-  getLocalPositionFromGeo: (globeIdentifier: string, latitude: number, longitude: number, altitude: number) => Promise<[number, number, number]>
-  /**
    * Go to the chunk on a globe with given index x, y, level.
 
 \\param globeIdentifier The identifier of the scene graph node for the globe \\param x The x value of the tile index \\param y The y value of the tile index \\param level The level of the tile index
    */
   goToChunk: (globeIdentifier: string, x: integer, y: integer, level: integer) => Promise<void>
-  /**
-   * Immediately move the camera to a geographic coordinate on a globe.
-
-\\param globe The identifier of a scene graph node that has a RenderableGlobe attached. If an empty string is provided, the current anchor node is used \\param latitude The latitude of the target coordinate, in degrees \\param longitude The longitude of the target coordinate, in degrees \\param altitude An optional altitude, given in meters over the reference surface of the globe. If no altitude is provided, the altitude will be kept as the current distance to the reference surface of the specified globe.
-   */
-  goToGeo: (globe: string, latitude: number, longitude: number, altitude?: number) => Promise<void>
-  /**
-   * Immediately move the camera to a geographic coordinate on a globe by first fading the rendering to black, jump to the specified coordinate, and then fade in.
-
-This is done by triggering another script that handles the logic.
-
-\\param globe The identifier of a scene graph node that has a RenderableGlobe attached. If an empty string is provided, the current anchor node is used \\param latitude The latitude of the target coordinate, in degrees \\param longitude The longitude of the target coordinate, in degrees \\param altitude An optional altitude, given in meters over the reference surface of the globe. If no altitude is provided, the altitude will be kept as the current distance to the reference surface of the specified globe. \\param fadeDuration An optional duration for the fading. If not included, the property in Navigation Handler will be used
-   */
-  jumpToGeo: (globe: string, latitude: number, longitude: number, altitude?: number, fadeDuration?: number) => Promise<void>
   /**
    * Returns the list of layers for the specified globe, for a specific layer group.
 
@@ -1231,12 +1200,6 @@ This is done by triggering another script that handles the logic.
  'openspace.globebrowsing.loadWMSCapabilities' file.
    */
   loadWMSServersFromFile: (filePath: string) => Promise<void>
-  /**
-   * Returns the position in the local Cartesian coordinate system of the specified globe that corresponds to the given geographic coordinates. In the local coordinate system, the position (0,0,0) corresponds to the globe's center.
-
-\\param globeIdentifier The identifier of the scene graph node for the globe \\param latitude The latitude of the geograpic position, in degrees \\param longitude The longitude of the geographic position, in degrees \\param altitude The altitude, in meters
-   */
-  localPositionFromGeo: (globeIdentifier: string, latitude: number, longitude: number, altitude: number) => Promise<[number, number, number]>
   /**
    * Rearranges the order of a single layer on a globe. The first position in the list has index 0, and the last position is given by the number of layers minus one.
 
@@ -1448,6 +1411,46 @@ The axis value will be rescaled from [-1, 1] to the provided [min, max] range (d
    */
   distanceToFocusInteractionSphere: () => Promise<number>
   /**
+   * Move the camera to the node with the specified identifier. The optional double specifies the duration of the motion, in seconds. If the optional bool is set to true the target up vector for camera is set based on the target node. Either of the optional parameters can be left out.
+
+\\param nodeIdentifier The identifier of the node to which we want to fly \\param useUpFromTargetOrDuration If this value is a boolean value (`true` or `false`), this value determines whether we want to end up with the camera facing along the selected node's up direction. If this value is a numerical value, refer to the documnentation of the `duration` parameter \\param duration The duration (in seconds) how long the flying to the selected node should take. If this value is left out, a sensible default value is uses, which can be configured in the engine
+   */
+  flyTo: (nodeIdentifier: string, useUpFromTargetOrDuration?: boolean | number, duration?: number) => Promise<void>
+  /**
+   * Fly the camera to a geographic coordinate (latitude, longitude and altitude) on a globe, using the path navigation system. If the node is a globe, the longitude and latitude is expressed in the body's native coordinate system. If it is not, the position on the surface of the interaction sphere is used instead.
+
+\\param node The identifier of a scene graph node. If an empty string is provided, the current anchor node is used \\param latitude The latitude of the target coordinate, in degrees \\param longitude The longitude of the target coordinate, in degrees \\param altitude The altitude of the target coordinate, in meters \\param duration An optional duration for the motion to take, in seconds. For example, a value of 5 means \"fly to this position over a duration of 5 seconds\" \\param shouldUseUpVector If true, try to use the up-direction when computing the target position for the camera. For globes, this means that North should be up, in relation to the camera's view direction. Note that for this to take effect, rolling motions must be enabled in the Path Navigator settings.
+   */
+  flyToGeo: (node: string, latitude: number, longitude: number, altitude: number, duration?: number, shouldUseUpVector?: boolean) => Promise<void>
+  /**
+   * Fly the camera to a geographic coordinate (latitude and longitude) on a globe, using the path navigation system. If the node is a globe, the longitude and latitude is expressed in the body's native coordinate system. If it is not, the position on the surface of the interaction sphere is used instead.
+
+The distance to fly to can either be set to be the current distance of the camera to the target object, or the default distance from the path navigation system.
+
+\\param node The identifier of a scene graph node. If an empty string is provided, the current anchor node is used \\param latitude The latitude of the target coordinate, in degrees \\param longitude The longitude of the target coordinate, in degrees \\param useCurrentDistance If true, use the current distance of the camera to the target globe when going to the specified position. If false, or not specified, set the distance based on the bounding sphere and the distance factor setting in Path Navigator \\param duration An optional duration for the motion to take, in seconds. For example, a value of 5 means \"fly to this position over a duration of 5 seconds\" \\param shouldUseUpVector If true, try to use the up-direction when computing the target position for the camera. For globes, this means that North should be up, in relation to the camera's view direction. Note that for this to take effect, rolling motions must be enabled in the Path Navigator settings.
+   */
+  flyToGeo2: (node: string, latitude: number, longitude: number, useCurrentDistance?: boolean, duration?: number, shouldUseUpVector?: boolean) => Promise<void>
+  /**
+   * Move the camera to the node with the specified identifier. The second argument is the desired target height above the target node's bounding sphere, in meters. The optional double specifies the duration of the motion, in seconds. If the optional bool is set to true, the target up vector for camera is set based on the target node. Either of the optional parameters can be left out.
+
+\\param nodeIdentifier The identifier of the node to which we want to fly \\param height The height (in meters) to which we want to fly. The way the height is defined specifically determines on the type of node to which the fly-to command is pointed. \\param useUpFromTargetOrDuration If this value is a boolean value (`true` or `false`), this value determines whether we want to end up with the camera facing along the selected node's up direction. If this value is a numerical value, refer to the documnentation of the `duration` parameter \\param duration The duration (in seconds) how long the flying to the selected node should take. If this value is left out, a sensible default value is uses, which can be configured in the engine
+   */
+  flyToHeight: (nodeIdentifier: string, height: number, useUpFromTargetOrDuration?: boolean | number, duration?: number) => Promise<void>
+  /**
+   * Create a path to the navigation state described by the input table. Note that roll must be included for the target up direction in the navigation state to be taken into account.
+
+\\param navigationState A [NavigationState](#core_navigation_state) to fly to \\param duration An optional duration for the motion to take, in seconds. For example, a value of 5 means \"fly to this position over a duration of 5 seconds\"
+   */
+  flyToNavigationState: (navigationState: table, duration?: number) => Promise<void>
+  /**
+   * Returns the position in the local Cartesian coordinate system of the specified globe that corresponds to the given geographic coordinates. In the local coordinate system, the position (0,0,0) corresponds to the globe's center. If the node is a globe, the longitude and latitude is expressed in the body's native coordinate system. If it is not, the position on the surface of the interaction sphere is used instead.
+
+Deprecated in favor of `localPositionFromGeo`.
+
+\\param globeIdentifier The identifier of the scene graph node \\param latitude The latitude of the geograpic position, in degrees \\param longitude The longitude of the geographic position, in degrees \\param altitude The altitude, in meters
+   */
+  getLocalPositionFromGeo: (nodeIdentifier: string, latitude: number, longitude: number, altitude: number) => Promise<[number, number, number]>
+  /**
    * Return the current [NavigationState](#core_navigation_state) as a Lua table.
 
 By default, the reference frame will be picked based on whether the orbital navigator is currently following the anchor node rotation. If it is, the anchor will be chosen as reference frame. If not, the reference frame will be set to the scene graph root.
@@ -1457,6 +1460,18 @@ By default, the reference frame will be picked based on whether the orbital navi
 \\return a Lua table representing the current NavigationState of the camera
    */
   getNavigationState: (frame?: string) => Promise<table>
+  /**
+   * Immediately move the camera to a geographic coordinate on a globe. If the node is a globe, the longitude and latitude is expressed in the body's native coordinate system. If it is not, the position on the surface of the interaction sphere is used instead.
+
+\\param node The identifier of a scene graph node. If an empty string is provided, the current anchor node is used \\param latitude The latitude of the target coordinate, in degrees \\param longitude The longitude of the target coordinate, in degrees \\param altitude An optional altitude, given in meters over the reference surface of the globe. If no altitude is provided, the altitude will be kept as the current distance to the reference surface of the specified globe.
+   */
+  goToGeo: (node: string, latitude: number, longitude: number, altitude?: number) => Promise<void>
+  /**
+   * Returns true if a camera path is currently running, and false otherwise.
+
+\\return Whether a camera path is currently active, or not
+   */
+  isFlying: () => Promise<boolean>
   /**
    * Return all the information bound to a certain joystick axis.
 
@@ -1474,6 +1489,26 @@ By default, the reference frame will be picked based on whether the orbital navi
    */
   joystickButton: (joystickName: string, button: integer) => Promise<string>
   /**
+   * Fade rendering to black, jump to the specified navigation state, and then fade in. This is done by triggering another script that handles the logic.
+
+\\param nodeIdentifier The identifier of the scene graph node to jump to \\param fadeDuration An optional duration for the fading. If not included, the property in Navigation Handler will be used
+   */
+  jumpTo: (nodeIdentifier: string, fadeDuration?: number) => Promise<void>
+  /**
+   * Immediately move the camera to a geographic coordinate on a node by first fading the rendering to black, jump to the specified coordinate, and then fade in. If the node is a globe, the longitude and latitude values are expressed in the body's native coordinate system. If it is not, the position on the surface of the interaction sphere is used instead.
+
+This is done by triggering another script that handles the logic.
+
+\\param node The identifier of a scene graph node. If an empty string is provided, the current anchor node is used \\param latitude The latitude of the target coordinate, in degrees \\param longitude The longitude of the target coordinate, in degrees \\param altitude An optional altitude, given in meters over the reference surface of the globe. If no altitude is provided, the altitude will be kept as the current distance to the reference surface of the specified node \\param fadeDuration An optional duration for the fading. If not included, the property in Navigation Handler will be used
+   */
+  jumpToGeo: (node: string, latitude: number, longitude: number, altitude?: number, fadeDuration?: number) => Promise<void>
+  /**
+   * Fade rendering to black, jump to the specified node, and then fade in. This is done by triggering another script that handles the logic.
+
+\\param navigationState A [NavigationState](#core_navigation_state) to jump to. \\param useTimeStamp if true, and the provided NavigationState includes a timestamp, the time will be set as well. \\param fadeDuration An optional duration for the fading. If not included, the property in Navigation Handler will be used.
+   */
+  jumpToNavigationState: (navigationState: table, useTimeStamp?: boolean, fadeDuration?: number) => Promise<void>
+  /**
    * Return the complete list of connected joysticks.
 
 \\return a list of joystick names
@@ -1485,6 +1520,12 @@ By default, the reference frame will be picked based on whether the orbital navi
 \\param filePath the path to the file, including the file name (and extension, if it is anything other than `.navstate`) \\param useTimeStamp if true, and the provided NavigationState includes a timestamp, the time will be set as well.
    */
   loadNavigationState: (filePath: string, useTimeStamp?: boolean) => Promise<void>
+  /**
+   * Returns the position in the local Cartesian coordinate system of the specified node that corresponds to the given geographic coordinates. In the local coordinate system, the position (0,0,0) corresponds to the globe's center. If the node is a globe, the longitude and latitude is expressed in the body's native coordinate system. If it is not, the position on the surface of the interaction sphere is used instead.
+
+\\param nodeIdentifier The identifier of the scene graph node \\param latitude The latitude of the geograpic position, in degrees \\param longitude The longitude of the geographic position, in degrees \\param altitude The altitude, in meters
+   */
+  localPositionFromGeo: (nodeIdentifier: string, latitude: number, longitude: number, altitude: number) => Promise<[number, number, number]>
   /**
    * Reset the camera direction to point at the aim node.
    */
@@ -1510,9 +1551,9 @@ By default, the reference frame will be picked based on whether the orbital navi
   /**
    * Set the current focus node for the navigation, or re-focus on it if it was already the focus node.
 
-Per default, the camera will retarget to center the focus node in the view. The velocities will also be reset so that the camera stops moving after any retargetting is done. However, both of these behaviors may be skipped using the optional arguments.
+Per default, the camera will retarget to center the focus node in the view. The velocities will also be reset so that the camera stops moving after any retargeting is done. However, both of these behaviors may be skipped using the optional arguments.
 
-\\param identifier The identifier of the scene graph node to focus \\param shouldRetarget If true, retarget the camera to look at the focus node \\param shouldResetVelocities If true, reset the camera velocities so that the camera stops after its done retargetting (or immediately if retargetting is not done)
+\\param identifier The identifier of the scene graph node to focus \\param shouldRetarget If true, retarget the camera to look at the focus node \\param shouldResetVelocities If true, reset the camera velocities so that the camera stops after its done retargeting (or immediately if retargeting is not done)
    */
   setFocus: (identifier: string, shouldRetarget?: boolean, shouldResetVelocities?: boolean) => Promise<void>
   /**
@@ -1533,6 +1574,24 @@ Per default, the camera will retarget to center the focus node in the view. The 
    * Immediately start applying the chosen IdleBehavior. If none is specified, use the one set to default in the OrbitalNavigator.
    */
   triggerIdleBehavior: (choice?: string) => Promise<void>
+  /**
+   * Fly linearly to a specific distance in relation to the focus node.
+
+\\param distance The distance to fly to, in meters above the bounding sphere. \\param duration An optional duration for the motion to take, in seconds.
+   */
+  zoomToDistance: (distance: number, duration?: number) => Promise<void>
+  /**
+   * Fly linearly to a specific distance in relation to the focus node, given as a relative value based on the size of the object rather than in meters.
+
+\\param distance The distance to fly to, given as a multiple of the bounding sphere of the current focus node bounding sphere. A value of 1 will result in a position at a distance of one times the size of the bounding sphere away from the object. \\param duration An optional duration for the motion, in seconds.
+   */
+  zoomToDistanceRelative: (distance: number, duration?: number) => Promise<void>
+  /**
+   * Zoom linearly to the current focus node, using the default distance.
+
+\\param duration An optional duration for the motion to take, in seconds. For example, a value of 5 means \"zoom in over 5 seconds\"
+   */
+  zoomToFocus: (duration?: number) => Promise<void>
 } // interface navigationLibrary
 
 interface openglCapabilitiesLibrary {
@@ -1632,38 +1691,6 @@ interface pathnavigationLibrary {
    */
   createPath: (pathInstruction: table) => Promise<void>
   /**
-   * Move the camera to the node with the specified identifier. The optional double specifies the duration of the motion, in seconds. If the optional bool is set to true the target up vector for camera is set based on the target node. Either of the optional parameters can be left out.
-   */
-  flyTo: (nodeIdentifier: string, useUpFromTargetOrDuration?: boolean | number, duration?: number) => Promise<void>
-  /**
-   * Move the camera to the node with the specified identifier. The second argument is the desired target height above the target node's bounding sphere, in meters. The optional double specifies the duration of the motion, in seconds. If the optional bool is set to true, the target up vector for camera is set based on the target node. Either of the optional parameters can be left out.
-   */
-  flyToHeight: (nodeIdentifier: string, height: number, useUpFromTargetOrDuration?: boolean | number, duration?: number) => Promise<void>
-  /**
-   * Create a path to the navigation state described by the input table. Note that roll must be included for the target up direction in the navigation state to be taken into account.
-
-\\param navigationState A [NavigationState](#core_navigation_state) to fly to \\param duration An optional duration for the motion to take, in seconds. For example, a value of 5 means \"fly to this position over a duration of 5 seconds\"
-   */
-  flyToNavigationState: (navigationState: table, duration?: number) => Promise<void>
-  /**
-   * Returns true if a camera path is currently running, and false otherwise.
-
-\\return Whether a camera path is currently active, or not
-   */
-  isFlying: () => Promise<boolean>
-  /**
-   * Fade rendering to black, jump to the specified navigation state, and then fade in. This is done by triggering another script that handles the logic.
-
-\\param nodeIdentifier The identifier of the scene graph node to jump to \\param fadeDuration An optional duration for the fading. If not included, the property in Navigation Handler will be used
-   */
-  jumpTo: (nodeIdentifier: string, fadeDuration?: number) => Promise<void>
-  /**
-   * Fade rendering to black, jump to the specified node, and then fade in. This is done by triggering another script that handles the logic.
-
-\\param navigationState A [NavigationState](#core_navigation_state) to jump to. \\param useTimeStamp if true, and the provided NavigationState includes a timestamp, the time will be set as well. \\param fadeDuration An optional duration for the fading. If not included, the property in Navigation Handler will be used.
-   */
-  jumpToNavigationState: (navigationState: table, useTimeStamp?: boolean, fadeDuration?: number) => Promise<void>
-  /**
    * Pause a playing camera path.
    */
   pausePath: () => Promise<void>
@@ -1675,24 +1702,6 @@ interface pathnavigationLibrary {
    * Stops a path, if one is being played.
    */
   stopPath: () => Promise<void>
-  /**
-   * Fly linearly to a specific distance in relation to the focus node.
-
-\\param distance The distance to fly to, in meters above the bounding sphere. \\param duration An optional duration for the motion to take, in seconds.
-   */
-  zoomToDistance: (distance: number, duration?: number) => Promise<void>
-  /**
-   * Fly linearly to a specific distance in relation to the focus node, given as a relative value based on the size of the object rather than in meters.
-
-\\param distance The distance to fly to, given as a multiple of the bounding sphere of the current focus node bounding sphere. A value of 1 will result in a position at a distance of one times the size of the bounding sphere away from the object. \\param duration An optional duration for the motion, in seconds.
-   */
-  zoomToDistanceRelative: (distance: number, duration?: number) => Promise<void>
-  /**
-   * Zoom linearly to the current focus node, using the default distance.
-
-\\param duration An optional duration for the motion to take, in seconds. For example, a value of 5 means \"zoom in over 5 seconds\"
-   */
-  zoomToFocus: (duration?: number) => Promise<void>
 } // interface pathnavigationLibrary
 
 interface scriptSchedulerLibrary {

@@ -67,6 +67,7 @@ export function FilterListInputField({
       rightSectionWidth={'md'}
       onKeyDown={onKeyDown}
       rightSection={<InputButton showMoreButton={showMoreButton} />}
+      flex={'auto'}
       {...other}
     />
   );

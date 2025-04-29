@@ -1,6 +1,8 @@
 import { memo, useCallback, useMemo } from 'react';
+import { Group } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
+import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
@@ -17,14 +19,19 @@ interface Props {
 // Memoizing this as it is very expensive
 export const ImageList = memo(function ImageList({ imageList, noImagesDisplay }: Props) {
   const { width } = useWindowSize();
+  const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
+    useSearchKeySettings<SkyBrowserImage>({
+      name: true,
+      collection: true
+    });
 
   const renderImageCard = useCallback((image: SkyBrowserImage) => {
     return <ImageCard image={image} />;
   }, []);
 
   const matcherFunc = useMemo(
-    () => generateMatcherFunctionByKeys(['collection', 'name']),
-    []
+    () => generateMatcherFunctionByKeys(selectedSearchKeys),
+    [selectedSearchKeys]
   );
 
   const cardWidth = 130;
@@ -33,9 +40,15 @@ export const ImageList = memo(function ImageList({ imageList, noImagesDisplay }:
 
   return (
     <FilterList>
-      <FilterList.InputField
-        placeHolderSearchText={`Search ${imageList.length} image${imageList.length > 1 ? 's' : ''}...`}
-      />
+      <Group>
+        <FilterList.InputField
+          placeHolderSearchText={`Search ${imageList.length} image${imageList.length > 1 ? 's' : ''}...`}
+        />
+        <FilterList.SearchSettingsMenu
+          keys={allowedSearchKeys}
+          setKey={toggleSearchKey}
+        />
+      </Group>
       <FilterList.SearchResults
         data={imageList}
         renderElement={renderImageCard}

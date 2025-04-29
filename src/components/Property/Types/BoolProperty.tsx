@@ -1,12 +1,11 @@
 import { BoolInput } from '@/components/Input/BoolInput';
 import { PropertyProps } from '@/components/Property/types';
-import { useBoolProperty, usePropertyDescription } from '@/hooks/properties';
+import { useProperty } from '@/hooks/properties';
 
 export function BoolProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setValue] = useBoolProperty(uri);
-  const description = usePropertyDescription(uri);
+  const [value, setValue, meta] = useProperty('BoolProperty', uri);
 
-  if (value === undefined || !description) {
+  if (value === undefined || !meta) {
     return <></>;
   }
 
@@ -14,8 +13,8 @@ export function BoolProperty({ uri, readOnly }: PropertyProps) {
     <BoolInput
       value={value}
       setValue={setValue}
-      name={description.name}
-      description={description.description}
+      name={meta.name}
+      description={meta.description}
       readOnly={readOnly}
     />
   );

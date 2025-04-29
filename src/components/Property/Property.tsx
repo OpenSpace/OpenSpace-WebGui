@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import { Stack } from '@mantine/core';
 
-import { usePropertyDescription } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
 
@@ -81,29 +80,24 @@ interface Props {
 }
 
 export const Property = memo(({ uri }: Props) => {
-  const propertyType = useAppSelector(
-    (state) => state.properties.properties[uri]?.description.type
-  );
-  const description = usePropertyDescription(uri);
+  const meta = useAppSelector((state) => state.properties.properties[uri]?.metaData);
 
-  if (!propertyType || description === undefined) {
+  if (!meta) {
     return <></>;
   }
 
-  const showLabel = !(
-    propertyType === 'BoolProperty' || propertyType === 'TriggerProperty'
-  );
+  const showLabel = !(meta.type === 'BoolProperty' || meta.type === 'TriggerProperty');
 
   return (
     <Stack mb={'md'} gap={5}>
       {showLabel && (
         <Label
-          name={description.name}
-          description={description.description}
-          readOnly={description.metaData.isReadOnly}
+          name={meta.guiName}
+          description={meta.description}
+          readOnly={meta.isReadOnly}
         />
       )}
-      {renderProperty(propertyType, uri, description.metaData.isReadOnly)}
+      {renderProperty(meta.type, uri, meta.isReadOnly)}
     </Stack>
   );
 });

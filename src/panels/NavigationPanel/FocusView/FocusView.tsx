@@ -3,7 +3,7 @@ import { Button, Divider, Group, Kbd, Paper, Text, Title } from '@mantine/core';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { useStringProperty } from '@/hooks/properties';
+import { useProperty } from '@/hooks/properties';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { CancelIcon, FocusIcon } from '@/icons/icons';
 import { EngineMode, IconSize } from '@/types/enums';
@@ -19,13 +19,21 @@ interface Props {
   favorites: PropertyOwner[];
   searchableNodes: PropertyOwner[];
   matcherFunction: (node: PropertyOwner, query: string) => boolean;
+  toggleKey: (key: keyof PropertyOwner, enabled: boolean) => void;
+  allowedKeys: Partial<Record<keyof PropertyOwner, boolean>>;
 }
 
-export function FocusView({ favorites, searchableNodes, matcherFunction }: Props) {
+export function FocusView({
+  favorites,
+  searchableNodes,
+  matcherFunction,
+  toggleKey,
+  allowedKeys
+}: Props) {
   const engineMode = useSubscribeToEngineMode();
 
   const anchorNode = useAnchorNode();
-  const [aim] = useStringProperty(NavigationAimKey);
+  const [aim] = useProperty('StringProperty', NavigationAimKey);
 
   const luaApi = useOpenSpaceApi();
 
@@ -89,11 +97,13 @@ export function FocusView({ favorites, searchableNodes, matcherFunction }: Props
         )}
         <Divider />
       </>
-
-      <FilterList.InputField
-        placeHolderSearchText={'Search for a new focus...'}
-        showMoreButton
-      />
+      <Group gap={'xs'}>
+        <FilterList.InputField
+          placeHolderSearchText={'Search for a new focus...'}
+          showMoreButton
+        />
+        <FilterList.SearchSettingsMenu keys={allowedKeys} setKey={toggleKey} />
+      </Group>
       <FilterList.Favorites>
         {favorites.map((entry) => (
           <FocusEntry

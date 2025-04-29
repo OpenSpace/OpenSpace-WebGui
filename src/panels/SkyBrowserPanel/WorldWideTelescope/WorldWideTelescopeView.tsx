@@ -22,6 +22,7 @@ import styles from './WorldWideTelescope.module.css';
 export function WorldWideTelescopeView() {
   const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
   const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
+
   const { ref } = useWwtProvider();
   const { width, height } = useWindowSize();
 

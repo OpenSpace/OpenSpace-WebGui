@@ -81,6 +81,7 @@ export {
   MdArrowUpward as UpArrowIcon,
   MdVideocam as VideocamIcon,
   MdOutlineVisibility as VisibilityIcon,
+  MdWarning as WarningIcon,
   MdWater as WaterIcon,
   MdZoomIn as ZoomInIcon,
   MdZoomOut as ZoomOutIcon,

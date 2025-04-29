@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useGesture } from '@use-gesture/react';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { useBoolProperty } from '@/hooks/properties';
+import { useProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
@@ -138,7 +138,10 @@ export function useWwtInteraction(id: string, width: number, height: number) {
   const [isDragging, setIsDragging] = useState(false);
   const [startDragPosition, setStartDragPosition] = useState({ x: 0, y: 0 });
 
-  const [inverseZoom] = useBoolProperty('Modules.SkyBrowser.InverseZoomDirection');
+  const [inverseZoom] = useProperty(
+    'BoolProperty',
+    'Modules.SkyBrowser.InverseZoomDirection'
+  );
   const luaApi = useOpenSpaceApi();
 
   /**
