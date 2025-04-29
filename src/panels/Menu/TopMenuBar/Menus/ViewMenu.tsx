@@ -1,4 +1,13 @@
-import { Button, CheckboxIndicator, Group, Menu, Radio, Stack } from '@mantine/core';
+import {
+  Button,
+  CheckboxIndicator,
+  Container,
+  Group,
+  Menu,
+  Radio,
+  Slider,
+  Stack
+} from '@mantine/core';
 
 import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
@@ -7,9 +16,9 @@ import { useProperty } from '@/hooks/properties';
 import {
   ChevronRightIcon,
   SaveIcon,
+  SettingsIcon,
   TaskBarIcon,
-  UpArrowIcon,
-  VisibilityIcon
+  UpArrowIcon
 } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
@@ -30,13 +39,15 @@ export function ViewMenu() {
   const [propertyVisibility, setPropertyVisibility, propertyVisibilityMetadata] =
     useProperty('OptionProperty', 'OpenSpaceEngine.PropertyVisibility');
 
+  const [guiScale, setGuiScale] = useProperty(
+    'FloatProperty',
+    'Modules.CefWebGui.GuiScale'
+  );
+
   const { loadLayout, saveLayout } = useStoredLayout();
   const dispatch = useAppDispatch();
 
-  if (!propertyVisibilityMetadata) {
-    return <></>;
-  }
-  const userLevelOptions = propertyVisibilityMetadata.additionalData.options;
+  const userLevelOptions = propertyVisibilityMetadata?.additionalData.options;
 
   function resetTaskbar() {
     dispatch(resetTaskbarItems());
@@ -109,17 +120,20 @@ export function ViewMenu() {
       <Menu.Item leftSection={<UpArrowIcon />} onClick={loadLayout}>
         Load Task Bar Settings
       </Menu.Item>
+
       <Menu.Item leftSection={<SaveIcon />} onClick={saveLayout}>
         Save Task Bar Settings
       </Menu.Item>
+
       <Menu.Divider />
+
       <TopBarMenuWrapper
         targetTitle={
           <Menu.Item
-            leftSection={<VisibilityIcon />}
+            leftSection={<SettingsIcon />}
             rightSection={<ChevronRightIcon size={IconSize.sm} />}
           >
-            Visibility Level
+            GUI Settings
           </Menu.Item>
         }
         position={'right-start'}
@@ -127,29 +141,59 @@ export function ViewMenu() {
         closeOnItemClick={false}
       >
         <Menu.Label>
-          <Group justify={'space-between'}>
-            Set visibility level
+          <Group gap={'xs'}>
+            Visibility level
             <InfoBox>
               {`Controls what settings will be exposed in the interface. Increase the
                 level to reveal more advanced settings.`}
             </InfoBox>
           </Group>
         </Menu.Label>
-        <Radio.Group
-          value={propertyVisibility?.toString()}
-          onChange={(newValue) => setPropertyVisibility(parseInt(newValue))}
-          onKeyDown={(event) => event.stopPropagation()}
-        >
-          <Stack gap={'xs'} m={'xs'}>
-            {userLevelOptions ? (
-              Object.entries(userLevelOptions).map(([key, option]) => (
-                <Radio key={key} aria-label={option} label={option} value={key} />
-              ))
-            ) : (
-              <LoadingBlocks />
-            )}
-          </Stack>
-        </Radio.Group>
+        <Container>
+          <Radio.Group
+            value={propertyVisibility?.toString()}
+            onChange={(newValue) => setPropertyVisibility(parseInt(newValue))}
+            onKeyDown={(event) => event.stopPropagation()}
+          >
+            <Stack gap={'xs'}>
+              {userLevelOptions ? (
+                Object.entries(userLevelOptions).map(([key, option]) => (
+                  <Radio key={key} aria-label={option} label={option} value={key} />
+                ))
+              ) : (
+                <LoadingBlocks />
+              )}
+            </Stack>
+          </Radio.Group>
+        </Container>
+
+        <Menu.Label mt={'xs'}>
+          <Group gap={'xs'}>
+            Scale
+            <InfoBox>Increase or decrease the scale of the GUI.</InfoBox>
+          </Group>
+        </Menu.Label>
+        <Container>
+          {guiScale ? (
+            <Slider
+              defaultValue={guiScale}
+              min={0.1}
+              max={2}
+              step={0.01}
+              label={(value) => `${Math.round(value * 100)}%`}
+              onChangeEnd={(value) => setGuiScale(value)}
+              marks={[
+                { value: 0.1, label: '10%' },
+                { value: 1, label: '100%' },
+                { value: 2, label: '200%' }
+              ]}
+              miw={170}
+              mb={'lg'} // Needed for marks to fit in menu
+            />
+          ) : (
+            <LoadingBlocks n={1} />
+          )}
+        </Container>
       </TopBarMenuWrapper>
     </TopBarMenuWrapper>
   );
