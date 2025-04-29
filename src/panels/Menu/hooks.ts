@@ -28,19 +28,18 @@ export function useStoredLayout() {
 
   // Special handling of when a mission file is loaded
   useEffect(() => {
-    if (!hasMission) {
-      return;
-    }
     // Show the missions button in the taskbar if a mission is loaded
     dispatch(
-      setMenuItemVisible({ id: menuItemsData.mission.componentID, visible: true })
+      setMenuItemVisible({ id: menuItemsData.mission.componentID, visible: hasMission })
     );
-    // Open the missions window if a mission is loaded
-    addWindow(menuItemsData.mission.content, {
-      id: menuItemsData.mission.componentID,
-      title: menuItemsData.mission.title,
-      position: menuItemsData.mission.preferredPosition
-    });
+    if (hasMission) {
+      // Open the missions window if a mission is loaded
+      addWindow(menuItemsData.mission.content, {
+        id: menuItemsData.mission.componentID,
+        title: menuItemsData.mission.title,
+        position: menuItemsData.mission.preferredPosition
+      });
+    }
   }, [hasMission]);
 
   function handlePickedFile(content: JSON) {
