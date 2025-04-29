@@ -1,42 +1,22 @@
 import { JSX } from 'react';
-import { Group, InputLabel, Text, Tooltip } from '@mantine/core';
+import { Group, InputLabel, Text } from '@mantine/core';
 
-import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { Uri } from '@/types/types';
 
 interface Props {
-  name: string;
+  name: string | JSX.Element;
   description: string | JSX.Element;
-  uri?: Uri;
-  readOnly?: boolean;
 }
 
-export function Label({ name, description, uri, readOnly = false }: Props) {
+export function Label({ name, description }: Props) {
   return (
     <Group wrap={'nowrap'}>
       <InputLabel fw={'normal'}>
         <Text span size={'sm'}>
           {name}
         </Text>
-        {readOnly && (
-          <Tooltip
-            maw={200}
-            multiline
-            label={`This property is read-only, meaning that it's not intended to be changed.`}
-          >
-            <Text span ml={'xs'} size={'xs'} c={'dimmed'}>
-              (Read-only)
-            </Text>
-          </Tooltip>
-        )}
       </InputLabel>
-      {description && (
-        <InfoBox>
-          {description}
-          {uri && <CopyUriButton uri={uri} />}
-        </InfoBox>
-      )}
+      {description && <InfoBox>{description}</InfoBox>}
     </Group>
   );
 }
