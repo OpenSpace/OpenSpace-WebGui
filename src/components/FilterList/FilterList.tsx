@@ -2,6 +2,7 @@ import { PropsWithChildren } from 'react';
 import { Stack } from '@mantine/core';
 
 import { SearchResults } from './SearchResults/SearchResults';
+import { FilterListSearchSettingsMenu } from './SearchSettingsMenu/FilterListSearchSettingsMenu';
 import { FilterListFavorites } from './FilterListFavorites';
 import { FilterListInputField } from './FilterListInputField';
 import { FilterListProvider } from './FilterListProvider';
@@ -22,3 +23,4 @@ export function FilterList({ height = '100%', isLoading, children }: Props) {
 FilterList.InputField = FilterListInputField;
 FilterList.Favorites = FilterListFavorites;
 FilterList.SearchResults = SearchResults;
+FilterList.SearchSettingsMenu = FilterListSearchSettingsMenu;

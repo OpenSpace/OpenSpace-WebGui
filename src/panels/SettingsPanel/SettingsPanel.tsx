@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
-import { useOptionProperty } from '@/hooks/properties';
+import { useProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { EnginePropertyVisibilityKey, ScenePrefixKey } from '@/util/keys';
 import {
@@ -18,7 +18,10 @@ import { collectSearchableItems, SearchItem, SearchItemType } from './util';
 export function SettingsPanel() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const propertyOverview = useAppSelector((state) => state.properties.propertyOverview);
-  const [visiblityLevelSetting] = useOptionProperty(EnginePropertyVisibilityKey);
+  const [visiblityLevelSetting] = useProperty(
+    'OptionProperty',
+    EnginePropertyVisibilityKey
+  );
 
   // Get all the top property owners, that are not part of the scene
   const topLevelPropertyOwners = useMemo(

@@ -1,6 +1,6 @@
 import { ColorInput } from '@mantine/core';
 
-import { AdditionalDataVectorMatrix } from '@/components/Property/types';
+import { AdditionalDataVectorMatrix } from '@/types/Property/propertyTypes';
 
 interface Props {
   setPropertyValue: (value: number[]) => void;
@@ -52,10 +52,10 @@ export function ColorView({
   if ((value.length !== 3 && value.length !== 4) || isInt) {
     throw Error('Invalid use of Color view option!');
   }
-  if (!additionalData.MaximumValue.every((v) => v === 1)) {
+  if (!additionalData.max.every((v) => v === 1)) {
     throw Error('Color view option only supports maximum values of 1!');
   }
-  if (!additionalData.MinimumValue.every((v) => v === 0)) {
+  if (!additionalData.min.every((v) => v === 0)) {
     throw Error('Color view option only supports minimum values of 0!');
   }
   const hasAlpha = value.length === 4;

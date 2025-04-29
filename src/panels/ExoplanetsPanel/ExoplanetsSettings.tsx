@@ -3,7 +3,7 @@ import { Checkbox, Group, Stack } from '@mantine/core';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { useBoolProperty } from '@/hooks/properties';
+import { useProperty } from '@/hooks/properties';
 
 interface Props {
   hasAddedExoplanets: boolean;
@@ -12,13 +12,16 @@ interface Props {
 export function ExoplanetsSettings({ hasAddedExoplanets }: Props) {
   const luaApi = useOpenSpaceApi();
 
-  const [showHabitableZone, setShowHabitableZone] = useBoolProperty(
+  const [showHabitableZone, setShowHabitableZone] = useProperty(
+    'BoolProperty',
     'Modules.Exoplanets.ShowHabitableZone'
   );
-  const [showOrbitUncertainty, setShowOrbitUncertainty] = useBoolProperty(
+  const [showOrbitUncertainty, setShowOrbitUncertainty] = useProperty(
+    'BoolProperty',
     'Modules.Exoplanets.ShowOrbitUncertainty'
   );
-  const [show1AuRing, setShow1AuRing] = useBoolProperty(
+  const [show1AuRing, setShow1AuRing] = useProperty(
+    'BoolProperty',
     'Modules.Exoplanets.ShowComparisonCircle'
   );
 

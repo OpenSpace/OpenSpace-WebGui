@@ -30,7 +30,7 @@ export function SearchResults<T>({
   // Memoizing this function so we don't need to recreate it when
   // the renderElement function changes
   const filteredItems = useMemo(
-    () => data.filter((e) => matcherFunc(e, searchString)),
+    () => (searchString === '' ? data : data.filter((e) => matcherFunc(e, searchString))),
     [searchString, matcherFunc, data]
   );
 

@@ -1,7 +1,4 @@
-import { Property } from '@/components/Property/Property';
-import { AdditionalData } from '@/components/Property/types';
-
-import { PropertyVisibilityNumber } from './enums';
+import { AnyProperty } from './Property/property';
 
 export type Uri = string;
 export type Identifier = string;
@@ -25,6 +22,8 @@ export interface Keybind {
 
 export type ActionOrKeybind = Action | Keybind;
 
+export type KeybindInfoType = Keybind & Action;
+
 export interface SemanticVersion {
   major: number;
   minor: number;
@@ -38,59 +37,18 @@ export type OpenSpacePropertyOwner = {
   description: string;
   guiName: string;
   identifier: Identifier;
-  properties: OpenSpaceProperty[];
+  properties: AnyProperty[];
   subowners: OpenSpacePropertyOwner[];
   tag: string[];
   uri: Uri;
 };
-
-export type OpenSpaceProperty = {
-  Description: {
-    AdditionalData: AdditionalData;
-    Identifier: Identifier;
-    MetaData: PropertyMetaData;
-    Name: string;
-    Type: string; // TODO: define these as property types? i.e., boolproperty | stringproperty etc
-    description: string;
-  };
-  Value: string | number | number[] | boolean;
-};
-
-export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
-
-export interface PropertyMetaData {
-  Group: string;
-  ViewOptions: {
-    [key: string]: boolean;
-  };
-  Visibility: PropertyVisibility;
-  isReadOnly: boolean;
-  needsConfirmation: boolean;
-}
-
-export interface PropertyDetails {
-  additionalData: AdditionalData;
-  identifier: Identifier;
-  metaData: PropertyMetaData;
-  name: string;
-  type: string; // TODO: define these as property types i.e., boolproperty, stringproperty etc
-  description: string;
-}
-
-export type PropertyValue = string | string[] | number | number[] | boolean | null;
-
-export interface Property {
-  description: PropertyDetails;
-  value: PropertyValue;
-  uri: Uri;
-}
 
 export interface PropertyOverview {
   [uri: string]: { name: string; visibility: number };
 }
 
 export interface Properties {
-  [key: Uri]: Property | undefined;
+  [key: Uri]: AnyProperty | undefined;
 }
 
 export interface PropertyOwner {

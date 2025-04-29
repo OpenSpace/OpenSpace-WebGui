@@ -1,17 +1,20 @@
 import { useEffect } from 'react';
 import {
-  Checkbox,
+  Box,
   Container,
   Group,
   List,
   Slider,
   Space,
+  Stack,
   Text,
   Title
 } from '@mantine/core';
 
 import { FrictionControls } from '@/components/FrictionControls/FrictionControls';
-import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { FrictionControlsInfo } from '@/components/FrictionControls/FrictionControlsInfo';
+import { BoolInput } from '@/components/Input/BoolInput';
+import { Label } from '@/components/Label/Label';
 import {
   setFlightControllerEnabled,
   setFlightControllerInputScaleFactor
@@ -57,49 +60,51 @@ export function FlightControlPanel() {
   );
 
   return (
-    <>
-      <Title order={2}>Flight Control</Title>
+    <Stack gap={'xs'}>
+      <BoolInput
+        name={'Toggle flight control'}
+        description={infoBoxContent}
+        value={isControllerEnabled}
+        setValue={toggleFlightController}
+      />
 
-      <Group justify={'space-between'} my={'xs'} wrap={'nowrap'} align={'start'}>
-        <Checkbox
-          label={'Toggle flight control'}
-          checked={isControllerEnabled}
-          onChange={toggleFlightController}
+      <Title order={2}>Settings</Title>
+      <Box>
+        <Label name={'Friction control'} description={<FrictionControlsInfo />} />
+        <Group align={'start'}>
+          <FrictionControls size={'sm'} />
+        </Group>
+      </Box>
+
+      <Box>
+        <Label
+          name={'Input sensitivity'}
+          description={'Controls how sensitive the touch and mouse inputs are'}
         />
-
-        <InfoBox>{infoBoxContent}</InfoBox>
-      </Group>
-
-      <Title order={3}>Settings</Title>
-      <Text>Friction control</Text>
-      <FrictionControls size={'sm'} gap={'xs'} align={'start'} />
-      <Group justify={'space-between'} align={'start'} wrap={'nowrap'}>
-        <Text>Input sensitivity</Text>
-        <InfoBox>Controls how sensitive the touch and mouse inputs are</InfoBox>
-      </Group>
-      <Slider
-        min={0.1}
-        max={1}
-        step={0.01}
-        value={mouseScaleFactor}
-        disabled={!isControllerEnabled}
-        marks={[
-          {
-            value: 0.1,
-            label: 0.1
-          },
-          {
-            value: (1 - 0.1) / 2.0 + 0.1
-          },
-          {
-            value: 1,
-            label: 1
-          }
-        ]}
-        onChange={(value) => {
-          dispatch(setFlightControllerInputScaleFactor(value));
-        }}
-      ></Slider>
-    </>
+        <Slider
+          min={0.1}
+          max={1}
+          step={0.01}
+          value={mouseScaleFactor}
+          disabled={!isControllerEnabled}
+          marks={[
+            {
+              value: 0.1,
+              label: 0.1
+            },
+            {
+              value: (1 - 0.1) / 2.0 + 0.1
+            },
+            {
+              value: 1,
+              label: 1
+            }
+          ]}
+          onChange={(value) => {
+            dispatch(setFlightControllerInputScaleFactor(value));
+          }}
+        ></Slider>
+      </Box>
+    </Stack>
   );
 }

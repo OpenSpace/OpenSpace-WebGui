@@ -4,8 +4,8 @@ import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
 import { validSliderExtent } from '@/components/Input/NumericInput/NumericSlider/util';
-import { AdditionalDataVectorMatrix } from '@/components/Property/types';
 import { usePropListeningState } from '@/hooks/util';
+import { AdditionalDataVectorMatrix } from '@/types/Property/propertyTypes';
 
 interface Props {
   disabled: boolean;
@@ -25,7 +25,7 @@ export function VectorDefaultView({
   const { value: currentValue, setValue: setCurrentValue } =
     usePropListeningState<number[]>(value);
 
-  const { MinimumValue: min, MaximumValue: max, SteppingValue: step } = additionalData;
+  const { min, max, step } = additionalData;
   const shouldShowSlider = max.every((max, i) => validSliderExtent(min[i], max));
   const labels = ['x', 'y', 'z', 'w'];
 

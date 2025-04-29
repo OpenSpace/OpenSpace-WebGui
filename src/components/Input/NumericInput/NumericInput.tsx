@@ -1,8 +1,8 @@
 import { useRef } from 'react';
-import { MdWarning } from 'react-icons/md';
 import { NumberInput, NumberInputProps, ThemeIcon, Tooltip } from '@mantine/core';
 
 import { usePropListeningState } from '@/hooks/util';
+import { WarningIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
 import { NumberStepControls } from './NumberStepControls';
@@ -132,7 +132,7 @@ export function NumericInput({
         !isEditing && (
           <Tooltip label={`Value outside range [${min}, ${max}]`}>
             <ThemeIcon color={'orange.4'} variant={'transparent'}>
-              <MdWarning size={IconSize.xs} />
+              <WarningIcon size={IconSize.xs} />
             </ThemeIcon>
           </Tooltip>
         )

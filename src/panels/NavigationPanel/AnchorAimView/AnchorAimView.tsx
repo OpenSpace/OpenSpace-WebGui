@@ -2,7 +2,7 @@ import { Button, Divider, Group, Kbd, Text, Title, Tooltip } from '@mantine/core
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { useStringProperty, useTriggerProperty } from '@/hooks/properties';
+import { useProperty } from '@/hooks/properties';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
@@ -22,16 +22,24 @@ interface Props {
   favorites: PropertyOwner[];
   searchableNodes: PropertyOwner[];
   matcherFunction: (node: PropertyOwner, query: string) => boolean;
+  toggleKey: (key: keyof PropertyOwner, enabled: boolean) => void;
+  allowedKeys: Partial<Record<keyof PropertyOwner, boolean>>;
 }
 
-export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: Props) {
+export function AnchorAimView({
+  favorites,
+  searchableNodes,
+  matcherFunction,
+  toggleKey,
+  allowedKeys
+}: Props) {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const engineMode = useSubscribeToEngineMode();
 
-  const [anchor, setAnchor] = useStringProperty(NavigationAnchorKey);
-  const [aim, setAim] = useStringProperty(NavigationAimKey);
-  const triggerRetargetAnchor = useTriggerProperty(RetargetAnchorKey);
-  const triggerRetargetAim = useTriggerProperty(RetargetAimKey);
+  const [anchor, setAnchor] = useProperty('StringProperty', NavigationAnchorKey);
+  const [aim, setAim] = useProperty('StringProperty', NavigationAimKey);
+  const [, triggerRetargetAnchor] = useProperty('TriggerProperty', RetargetAnchorKey);
+  const [, triggerRetargetAim] = useProperty('TriggerProperty', RetargetAimKey);
 
   const anchorNode = anchor ? propertyOwners[sgnUri(anchor)] : undefined;
   const aimNode = aim ? propertyOwners[sgnUri(aim)] : undefined;
@@ -117,11 +125,13 @@ export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: P
         </Tooltip>
       </Group>
       <Divider />
-
-      <FilterList.InputField
-        placeHolderSearchText={'Search for a new anchor/aim...'}
-        showMoreButton
-      />
+      <Group gap={'xs'}>
+        <FilterList.InputField
+          placeHolderSearchText={'Search for a new anchor/aim...'}
+          showMoreButton
+        />
+        <FilterList.SearchSettingsMenu keys={allowedKeys} setKey={toggleKey} />
+      </Group>
       <FilterList.Favorites>
         {favorites.map((entry) => (
           <AnchorAimListEntry

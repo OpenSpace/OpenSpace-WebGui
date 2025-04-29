@@ -21,6 +21,7 @@ function InputButton({ showMoreButton }: InputButtonProps) {
         variant={'subtle'}
         color={'gray'}
         onClick={() => setSearchString('')}
+        aria-label={'Clear search input'}
       >
         <CancelIcon />
       </ActionIcon>
@@ -66,6 +67,7 @@ export function FilterListInputField({
       rightSectionWidth={'md'}
       onKeyDown={onKeyDown}
       rightSection={<InputButton showMoreButton={showMoreButton} />}
+      flex={'auto'}
       {...other}
     />
   );

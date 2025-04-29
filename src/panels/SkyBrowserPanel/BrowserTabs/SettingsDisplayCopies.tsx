@@ -73,10 +73,10 @@ export function SettingsDisplayCopies({ id }: Props) {
                 }
                 disabled={false}
                 additionalData={{
-                  MinimumValue: [-10, -10, -10],
-                  MaximumValue: [10, 10, 10],
-                  SteppingValue: [1, 1, 1],
-                  Exponent: 1
+                  min: [-10, -10, -10],
+                  max: [10, 10, 10],
+                  step: [1, 1, 1],
+                  exponent: 1
                 }}
               />
             </Box>

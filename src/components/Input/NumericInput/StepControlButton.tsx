@@ -24,8 +24,8 @@ interface Props extends ActionIconProps {
 export function StepControlButton({
   direction,
   onChange,
-  stepHoldDelay = 200,
-  stepHoldInterval = 50,
+  stepHoldDelay = 400,
+  stepHoldInterval = 100,
   step = 1,
   tabIndex,
   ...props
@@ -89,6 +89,7 @@ export function StepControlButton({
       size={'xs'}
       variant={'transparent'}
       tabIndex={tabIndex}
+      aria-label={direction === 'up' ? 'Increment value' : 'Decrement value'}
       {...props}
     >
       {direction === 'up' ? <ChevronUpIcon /> : <ChevronDownIcon />}

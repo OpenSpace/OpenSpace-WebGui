@@ -89,9 +89,9 @@ export function NodeNavigationButton({
 
   function flyTo(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     if (event.shiftKey) {
-      luaApi?.pathnavigation.flyTo(identifier, 0.0);
+      luaApi?.navigation.flyTo(identifier, 0.0);
     } else {
-      luaApi?.pathnavigation.flyTo(identifier);
+      luaApi?.navigation.flyTo(identifier);
     }
     // stop propagation?
     onFinish?.();
@@ -102,9 +102,9 @@ export function NodeNavigationButton({
       return;
     }
     if (event.shiftKey) {
-      luaApi?.globebrowsing.flyToGeo(identifier, latitude, longitude, altitude, 0.0);
+      luaApi?.navigation.flyToGeo(identifier, latitude, longitude, altitude, 0.0);
     } else {
-      luaApi?.globebrowsing.flyToGeo(identifier, latitude, longitude, altitude);
+      luaApi?.navigation.flyToGeo(identifier, latitude, longitude, altitude);
     }
   }
 
@@ -128,7 +128,7 @@ export function NodeNavigationButton({
   }
 
   function fadeTo() {
-    luaApi?.pathnavigation.jumpTo(identifier);
+    luaApi?.navigation.jumpTo(identifier);
     // stop propagation?
     onFinish?.();
   }
@@ -137,7 +137,7 @@ export function NodeNavigationButton({
     if (type !== NavigationType.FlyGeo && type !== NavigationType.JumpGeo) {
       return;
     }
-    luaApi?.globebrowsing.jumpToGeo(identifier, latitude, longitude, altitude);
+    luaApi?.navigation.jumpToGeo(identifier, latitude, longitude, altitude);
   }
 
   const content: ButtonContent = {
@@ -230,6 +230,7 @@ export function NodeNavigationButton({
           variant={variant}
           style={style}
           disabled={disabled}
+          aria-label={content.title}
         >
           {content.icon}
         </ActionIcon>

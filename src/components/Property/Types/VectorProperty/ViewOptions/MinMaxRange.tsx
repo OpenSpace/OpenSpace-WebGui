@@ -3,8 +3,8 @@ import { Group, NumberFormatter, RangeSlider, Stack } from '@mantine/core';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useSliderScale } from '@/components/Input/NumericInput/NumericSlider/hooks';
 import { MinMaxLabels } from '@/components/Input/NumericInput/NumericSlider/MinMaxLabels';
-import { AdditionalDataVectorMatrix } from '@/components/Property/types';
 import { usePropListeningState } from '@/hooks/util';
+import { AdditionalDataVectorMatrix } from '@/types/Property/propertyTypes';
 
 interface Props {
   disabled: boolean;
@@ -28,10 +28,10 @@ export function MinMaxRangeView({
     setIsEditing: setIsEditingSlider
   } = usePropListeningState<number[]>(value);
 
-  const exponent = additionalData.Exponent;
-  const [min] = additionalData.MinimumValue;
-  const [max] = additionalData.MaximumValue;
-  const [step] = additionalData.SteppingValue;
+  const { exponent } = additionalData;
+  const [min] = additionalData.min;
+  const [max] = additionalData.max;
+  const [step] = additionalData.step;
 
   const { scale, scaledMarks, valueToSliderValue, sliderValueToValue } = useSliderScale(
     exponent,
