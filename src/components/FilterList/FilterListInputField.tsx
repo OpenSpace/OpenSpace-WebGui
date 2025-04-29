@@ -47,7 +47,7 @@ export function FilterListInputField({
   searchAutoFocus,
   placeHolderSearchText,
   showMoreButton = false,
-  ...other // mantine props
+  ...styleProps // mantine props
 }: Props) {
   const { searchString, setSearchString } = useFilterListProvider();
 
@@ -67,8 +67,7 @@ export function FilterListInputField({
       rightSectionWidth={'md'}
       onKeyDown={onKeyDown}
       rightSection={<InputButton showMoreButton={showMoreButton} />}
-      flex={'auto'}
-      {...other}
+      {...styleProps}
     />
   );
 }

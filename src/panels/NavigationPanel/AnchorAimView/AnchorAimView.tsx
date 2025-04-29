@@ -129,6 +129,7 @@ export function AnchorAimView({
         <FilterList.InputField
           placeHolderSearchText={'Search for a new anchor/aim...'}
           showMoreButton
+          flex={'auto'}
         />
         <FilterList.SearchSettingsMenu keys={allowedKeys} setKey={toggleKey} />
       </Group>

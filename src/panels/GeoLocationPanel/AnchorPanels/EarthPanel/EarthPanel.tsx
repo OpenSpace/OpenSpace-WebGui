@@ -194,9 +194,7 @@ export function EarthPanel({ currentAnchor }: Props) {
           {places.length > 0 ? (
             <ResizeableContent defaultHeight={250}>
               <FilterList>
-                <Group>
-                  <FilterList.InputField placeHolderSearchText={'Filter search'} />
-                </Group>
+                <FilterList.InputField placeHolderSearchText={'Filter search'} />
                 <FilterList.SearchResults
                   data={places}
                   renderElement={(place) => (
