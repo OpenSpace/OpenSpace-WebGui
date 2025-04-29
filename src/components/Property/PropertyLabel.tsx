@@ -2,13 +2,12 @@ import { JSX } from 'react';
 import { Text, Tooltip } from '@mantine/core';
 
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
+import { Label } from '@/components/Label/Label';
 import { Uri } from '@/types/types';
-
-import { Label } from '../Label/Label';
 
 interface Props {
   name: string;
-  description: JSX.Element;
+  description: string | JSX.Element;
   uri: Uri;
   readOnly?: boolean;
 }

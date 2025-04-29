@@ -17,7 +17,7 @@ export function BoolInput({
   setValue,
   name,
   description,
-  label = undefined,
+  label,
   disabled = false
 }: Props) {
   return (

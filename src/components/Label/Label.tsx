@@ -4,7 +4,7 @@ import { Group, InputLabel, Text } from '@mantine/core';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 
 interface Props {
-  name: JSX.Element;
+  name: string | JSX.Element;
   description: string | JSX.Element;
 }
 
