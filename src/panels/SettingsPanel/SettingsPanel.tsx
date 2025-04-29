@@ -14,6 +14,7 @@ import { checkCaseInsensitiveSubstringList } from '@/util/stringmatcher';
 
 import { SettingsSearchListItem } from './SettingsSearchListItem';
 import { collectSearchableItems, SearchItem, SearchItemType } from './util';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 
 export function SettingsPanel() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
@@ -70,6 +71,10 @@ export function SettingsPanel() {
   const matcher = useCallback((testItem: SearchItem, search: string): boolean => {
     return checkCaseInsensitiveSubstringList(testItem.searchKeys, search);
   }, []);
+
+  if (topLevelPropertyOwners.length === 0) {
+    return <LoadingBlocks />;
+  }
 
   return (
     <FilterList>
