@@ -5,31 +5,34 @@ import { PropertyTypes } from './propertyTypes';
 
 export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
 
+// Define an empty object type to use as a default value for optional types
+type EmptyObject = { [K in never]: never };
+
 /**
  * Extracts the `additionalData` property from a specific property type in `PropertyTypes`.
  *
  * This utility type checks if the specified property type in `PropertyTypes` contains
- * an `additionalData` field. If it does, it uses the inferred type for the additional
- * data. Otherwise, it defaults to undefined.
+ * an `additionalData` field. If it does, it creates a new type with the `additionalData`
+ * field. Otherwise, it defaults to an empty object type.
  */
 type AdditionalData<T extends keyof PropertyTypes> = PropertyTypes[T] extends {
   additionalData: infer A;
 }
-  ? A
-  : undefined;
+  ? { additionalData: A }
+  : EmptyObject;
 
 /**
  * Extracts the `viewOptions` property from a specific property type in `PropertyTypes`.
  *
  * This utility type checks if the specified property type in `PropertyTypes` contains
- * an `viewOptions` field. If it does, it uses the inferred type for the view options.
- * Otherwise, it defaults to undefined.
+ * an `viewOptions` field. If it does, it creates a new type with the `viewOptions`
+ * field. Otherwise, it defaults to an empty object type.
  */
 type ViewOptions<T extends keyof PropertyTypes> = PropertyTypes[T] extends {
   viewOptions: infer A;
 }
-  ? A
-  : undefined;
+  ? { viewOptions: A }
+  : EmptyObject;
 
 // Generic Property<T> type
 type Property<T extends keyof PropertyTypes> = {
@@ -41,9 +44,8 @@ type Property<T extends keyof PropertyTypes> = {
     group: string;
     needsConfirmation: boolean;
     visibility: PropertyVisibility;
-    additionalData?: AdditionalData<T>;
-    viewOptions?: ViewOptions<T>;
-  };
+  } & AdditionalData<T> &
+    ViewOptions<T>;
   value: PropertyTypes[T]['value'];
   uri: string;
 };
