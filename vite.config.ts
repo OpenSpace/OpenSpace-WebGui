@@ -19,7 +19,7 @@ export default defineConfig({
     }
   },
   server: {
-    port: 4670
+    port: 4690
   },
   base: './',
   build: {
