@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 import { FilterList } from '@/components/FilterList/FilterList';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { useProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
@@ -14,7 +15,6 @@ import { checkCaseInsensitiveSubstringList } from '@/util/stringmatcher';
 
 import { SettingsSearchListItem } from './SettingsSearchListItem';
 import { collectSearchableItems, SearchItem, SearchItemType } from './util';
-import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 
 export function SettingsPanel() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
