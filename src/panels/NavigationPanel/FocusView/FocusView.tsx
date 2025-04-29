@@ -101,6 +101,7 @@ export function FocusView({
         <FilterList.InputField
           placeHolderSearchText={'Search for a new focus...'}
           showMoreButton
+          flex={'auto'}
         />
         <FilterList.SearchSettingsMenu keys={allowedKeys} setKey={toggleKey} />
       </Group>
