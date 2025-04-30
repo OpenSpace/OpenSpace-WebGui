@@ -30,9 +30,17 @@ export function StringInput({ onEnter, value, errorCheck, ...props }: Props) {
 
   function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
-      if (!errorCheck || !errorCheck(storedValue)) {
+      const hasErrorCheck = errorCheck !== undefined;
+      const isValueOk = errorCheck && !errorCheck(storedValue);
+
+      // If the value is valid, we want to set it and call the onEnter function
+      if (!hasErrorCheck || isValueOk) {
         onEnter(storedValue);
         shouldResetOnBlurRef.current = false;
+      }
+      // If the value is not valid, we want to reset it to the original value
+      else if (hasErrorCheck && !isValueOk) {
+        resetValue();
       }
       event.currentTarget.blur();
     }

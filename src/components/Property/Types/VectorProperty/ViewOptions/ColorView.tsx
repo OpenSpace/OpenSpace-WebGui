@@ -1,54 +1,18 @@
-import { ColorInput } from '@mantine/core';
+import { useState } from 'react';
+import { RGBA } from '@mantine/core';
+import { isNumber } from 'lodash';
 
+import { ColorPicker } from '@/components/ColorPicker/ColorPicker';
+import { StringInput } from '@/components/Input/StringInput';
+import { WarningIcon } from '@/components/WarningIcon/WarningIcon';
 import { AdditionalDataVectorMatrix } from '@/types/Property/propertyTypes';
+import { openspaceColorToRgba, toOpenspaceColor } from '@/util/colorHelper';
 
-interface Props {
-  setPropertyValue: (value: number[]) => void;
-  value: number[];
-  additionalData: AdditionalDataVectorMatrix;
-  readOnly: boolean;
-  isInt: boolean;
-}
-
-// @TODO (ylvse 2025-03-23): Do something smarter with these colors?
-// These are the rgb / rgba versions of Mantines default colors
-const swatchesRgb = [
-  'rgb(250, 82, 82)',
-  'rgb(230, 73, 128)',
-  'rgb(190, 75, 219)',
-  'rgb(121, 80, 242)',
-  'rgb(76, 110, 245)',
-  'rgb(34, 139, 230)',
-  'rgb(21, 170, 191)',
-  'rgb(18, 184, 134)',
-  'rgb(64, 192, 87)',
-  'rgb(130, 201, 30)',
-  'rgb(250, 176, 5)',
-  'rgb(253, 126, 20)'
-];
-
-const swatchesRgba = [
-  'rgba(250, 82, 82, 1)',
-  'rgba(230, 73, 128, 1)',
-  'rgba(190, 75, 219, 1)',
-  'rgba(121, 80, 242, 1)',
-  'rgba(76, 110, 245, 1)',
-  'rgba(34, 139, 230, 1)',
-  'rgba(21, 170, 191, 1)',
-  'rgba(18, 184, 134, 1)',
-  'rgba(64, 192, 87, 1)',
-  'rgba(130, 201, 30, 1)',
-  'rgba(250, 176, 5, 1)',
-  'rgba(253, 126, 20, 1)'
-];
-
-export function ColorView({
-  readOnly,
-  setPropertyValue,
-  value,
-  additionalData,
-  isInt
-}: Props) {
+function validateInput(
+  value: number[],
+  additionalData: AdditionalDataVectorMatrix,
+  isInt: boolean
+) {
   if ((value.length !== 3 && value.length !== 4) || isInt) {
     throw Error('Invalid use of Color view option!');
   }
@@ -58,28 +22,88 @@ export function ColorView({
   if (!additionalData.min.every((v) => v === 0)) {
     throw Error('Color view option only supports minimum values of 0!');
   }
-  const hasAlpha = value.length === 4;
-  const colorString = value.map((v) => (v * 255).toFixed(0)).join(', ');
+}
 
-  function onChange(value: string) {
-    // Remove the text from the rgb(a) string
-    const result = value.replace(hasAlpha ? 'rgba(' : 'rgb(', '').replace(')', '');
-    // Split the string into an array of numbers and parse them as floats.
-    // Divide by 255 to get the value between 0 and 1.
-    const values = result.split(',').map((v) => parseFloat(v.trim()) / 255);
-    const clampedValues = values.map((v) => Math.max(0, Math.min(1, v)));
-    setPropertyValue(clampedValues);
+interface Props {
+  setPropertyValue: (value: number[]) => void;
+  value: number[];
+  additionalData: AdditionalDataVectorMatrix;
+  readOnly: boolean;
+  isInt: boolean;
+}
+
+export function ColorView({
+  readOnly,
+  setPropertyValue,
+  value,
+  additionalData,
+  isInt
+}: Props) {
+  const [isError, setIsError] = useState(false);
+
+  const isOutsideRange = value.some((v) => v < 0 || v > 1);
+  const currentColor: RGBA = openspaceColorToRgba(value);
+  const hasAlpha = value.length === 4;
+  const valueDisplayString = value
+    .map((v) => parseFloat(v.toFixed(3)).toString())
+    .join(', ');
+
+  validateInput(value, additionalData, isInt);
+
+  function isValidColorString(colorString: string): boolean {
+    const newValues = colorString.split(',').map((v) => parseFloat(v));
+    const result =
+      newValues.length === value.length &&
+      newValues.every((v) => !isNaN(v) && isNumber(v));
+
+    return result;
+  }
+
+  function onColorPickerChange(color: RGBA) {
+    const newValue = toOpenspaceColor(color, hasAlpha);
+    setPropertyValue(newValue);
+
+    setIsError(!isValidColorString(newValue.join(', ')));
+  }
+
+  function handleEnter(newValue: string) {
+    const newNumberValue = newValue.split(',').map((v) => parseFloat(v));
+    setPropertyValue(newNumberValue);
+  }
+
+  function handleInputChange(newValue: string) {
+    const isValid = isValidColorString(newValue);
+    setIsError(!isValid);
+  }
+
+  function handleBlur() {
+    setIsError(!isValidColorString(value.join(', ')));
   }
 
   return (
-    <ColorInput
-      format={hasAlpha ? 'rgba' : 'rgb'}
-      value={hasAlpha ? `rgba(${colorString})` : `rgb(${colorString})`}
-      withEyeDropper={false}
-      onChange={onChange}
-      disabled={readOnly}
-      swatches={hasAlpha ? swatchesRgba : swatchesRgb}
-      swatchesPerRow={6}
+    <StringInput
+      onEnter={handleEnter}
+      onInput={(e) => handleInputChange(e.currentTarget.value)}
+      value={valueDisplayString}
+      error={isError}
+      leftSection={
+        <ColorPicker
+          color={currentColor}
+          withAlpha={hasAlpha}
+          onChange={onColorPickerChange}
+        />
+      }
+      onBlur={handleBlur}
+      readOnly={readOnly}
+      rightSection={
+        isOutsideRange && (
+          <WarningIcon
+            tooltipText={`Value outside range [${additionalData.min}, ${additionalData.max}]`}
+          />
+        )
+      }
+      placeholder={'1, 0.5, 0.2'}
+      errorCheck={(value: string) => !isValidColorString(value)}
     />
   );
 }

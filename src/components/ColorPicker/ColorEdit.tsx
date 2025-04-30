@@ -18,6 +18,38 @@ interface Props {
   withAlpha: boolean;
 }
 
+// @TODO (ylvse 2025-03-23): Do something smarter with these colors?
+// These are the rgb / rgba versions of Mantines default colors
+const swatchesRgb = [
+  'rgb(250, 82, 82)',
+  'rgb(230, 73, 128)',
+  'rgb(190, 75, 219)',
+  'rgb(121, 80, 242)',
+  'rgb(76, 110, 245)',
+  'rgb(34, 139, 230)',
+  'rgb(21, 170, 191)',
+  'rgb(18, 184, 134)',
+  'rgb(64, 192, 87)',
+  'rgb(130, 201, 30)',
+  'rgb(250, 176, 5)',
+  'rgb(253, 126, 20)'
+];
+
+const swatchesRgba = [
+  'rgba(250, 82, 82, 1)',
+  'rgba(230, 73, 128, 1)',
+  'rgba(190, 75, 219, 1)',
+  'rgba(121, 80, 242, 1)',
+  'rgba(76, 110, 245, 1)',
+  'rgba(34, 139, 230, 1)',
+  'rgba(21, 170, 191, 1)',
+  'rgba(18, 184, 134, 1)',
+  'rgba(64, 192, 87, 1)',
+  'rgba(130, 201, 30, 1)',
+  'rgba(250, 176, 5, 1)',
+  'rgba(253, 126, 20, 1)'
+];
+
 export function ColorEdit({ color, onChange, withAlpha }: Props) {
   const formats = withAlpha ? ['rgba', 'hexa', 'hsla'] : ['rgb', 'hex', 'hsl'];
   const defaultFormat = withAlpha ? 'rgba' : 'rgb';
@@ -56,6 +88,8 @@ export function ColorEdit({ color, onChange, withAlpha }: Props) {
         // lead to the value changing, which would then trigger the onChange event
         format={withAlpha ? 'rgba' : 'rgb'}
         onChange={onColorChange}
+        swatches={withAlpha ? swatchesRgba : swatchesRgb}
+        swatchesPerRow={12}
       />
       <ColorInput
         value={textEditValue}

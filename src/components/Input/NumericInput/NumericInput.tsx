@@ -1,9 +1,8 @@
 import { useRef } from 'react';
-import { NumberInput, NumberInputProps, ThemeIcon, Tooltip } from '@mantine/core';
+import { NumberInput, NumberInputProps } from '@mantine/core';
 
+import { WarningIcon } from '@/components/WarningIcon/WarningIcon';
 import { usePropListeningState } from '@/hooks/util';
-import { WarningIcon } from '@/icons/icons';
-import { IconSize } from '@/types/enums';
 
 import { NumberStepControls } from './NumberStepControls';
 
@@ -129,13 +128,7 @@ export function NumericInput({
       hideControls={hideControls}
       leftSection={
         isOutsideRange &&
-        !isEditing && (
-          <Tooltip label={`Value outside range [${min}, ${max}]`}>
-            <ThemeIcon color={'orange.4'} variant={'transparent'}>
-              <WarningIcon size={IconSize.xs} />
-            </ThemeIcon>
-          </Tooltip>
-        )
+        !isEditing && <WarningIcon tooltipText={`Value outside range [${min}, ${max}]`} />
       }
       rightSection={
         !hideControls && (

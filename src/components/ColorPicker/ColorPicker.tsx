@@ -1,5 +1,6 @@
 import { ActionIcon, ColorSwatch, Popover, RGBA } from '@mantine/core';
 
+import { IconSize } from '@/types/enums';
 import { rgbaToColor } from '@/util/colorHelper';
 
 import { ColorEdit } from './ColorEdit';
@@ -18,11 +19,11 @@ export function ColorPicker({ color, disabled, onChange, withAlpha }: Props) {
         <ActionIcon
           disabled={disabled}
           size={'lg'}
-          variant={'subtle'}
+          variant={'transparent'}
           aria-label={'Open color edit'}
           flex={0}
         >
-          <ColorSwatch color={rgbaToColor(color, withAlpha)} />
+          <ColorSwatch size={IconSize.sm} color={rgbaToColor(color, withAlpha)} />
         </ActionIcon>
       </Popover.Target>
       <Popover.Dropdown>
