@@ -10,6 +10,7 @@ export default defineConfig({
       '@/components': '/src/components',
       '@/hooks': '/src/hooks',
       '@/icons': '/src/icons',
+      '@/localization': '/src/localization',
       '@/panels': '/src/panels',
       '@/public': '/public',
       '@/redux': '/src/redux',

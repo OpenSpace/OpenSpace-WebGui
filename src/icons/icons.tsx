@@ -57,6 +57,7 @@ export {
   MdOutlineInsertPhoto as InsertPhotoIcon,
   MdKeyboard as KeyboardIcon,
   MdLandscape as LandscapeIcon,
+  MdLanguage as LanguageIcon,
   MdLaunch as LaunchIcon,
   MdOutlineLayers as LayersIcon,
   MdFlashOn as LightningFlashIcon,
@@ -86,8 +87,7 @@ export {
   MdWater as WaterIcon,
   MdZoomIn as ZoomInIcon,
   MdZoomOut as ZoomOutIcon,
-  MdZoomOutMap as ZoomOutMapIcon
-} from 'react-icons/md';
+  MdZoomOutMap as ZoomOutMapIcon} from 'react-icons/md';
 export {
   PiBookOpenText as BookIcon,
   PiMouseLeftClickThin as LeftClickMouseIcon,

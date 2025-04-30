@@ -3,6 +3,11 @@ import { AnyProperty } from './Property/property';
 export type Uri = string;
 export type Identifier = string;
 
+export type LanguageInfo = {
+  language: string;
+  icon: React.JSX.Element;
+};
+
 export interface Action {
   identifier: string;
   guiPath: string;
