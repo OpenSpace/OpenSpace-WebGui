@@ -142,7 +142,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     content: <ExoplanetsPanel />,
     renderIcon: (size) => <ExoplanetIcon size={size} />,
     preferredPosition: 'right',
-    defaultVisible: false
+    defaultVisible: true
   },
   userPanels: {
     title: 'User Panels',
@@ -166,7 +166,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     content: <SkyBrowserPanel />,
     renderIcon: (size) => <TelescopeIcon size={size} />,
     preferredPosition: 'right',
-    defaultVisible: false
+    defaultVisible: true
   },
   mission: {
     title: 'Mission',
