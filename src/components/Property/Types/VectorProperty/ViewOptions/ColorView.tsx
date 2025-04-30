@@ -102,7 +102,7 @@ export function ColorView({
           />
         )
       }
-      placeholder={'1, 0.5, 0.2'}
+      placeholder={'Example: 1, 0.5, 0.2'}
       errorCheck={(value: string) => !isValidColorString(value)}
     />
   );
