@@ -15,8 +15,10 @@ import {
   SceneIcon,
   SettingsIcon,
   TelescopeIcon,
-  VideocamIcon
+  VideocamIcon,
+  NightSkyIcon
 } from '@/icons/icons';
+
 import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
 import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
 import { TempPropertyTest } from '@/panels/Scene/TempPropertyTest';
@@ -33,6 +35,7 @@ import {
   GeoLocationPanel,
   GettingStartedPanel,
   KeybindsPanel,
+  NightSkyPanel,
   MissionsPanel,
   OriginPanel,
   Scene,
@@ -185,6 +188,14 @@ export const menuItemsData: Record<string, MenuItem> = {
     preferredPosition: 'float',
     floatPosition: { offsetY: 150, offsetX: 350, width: 1050, height: 680 },
     defaultVisible: false
+  },
+  nightSky: {
+    title: 'NightSky',
+    componentID: 'nightSky',
+    content: <NightSkyPanel />,
+    renderIcon: (size) => <NightSkyIcon size={size} />,
+    preferredPosition: 'right',
+    defaultVisible: true
   },
   gettingStartedTour: {
     title: 'Getting Started Tour',

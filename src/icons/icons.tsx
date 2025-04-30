@@ -1,7 +1,9 @@
 export {
   BsWindowSidebar as PanelIcon,
   BsWindowDock as TaskBarIcon,
-  BsThreeDotsVertical as VerticalDotsIcon
+  BsThreeDotsVertical as VerticalDotsIcon,
+  BsFillRecordFill as SingleDotIcon,
+  BsFillXCircleFill as XCircleIcon
 } from 'react-icons/bs';
 export {
   FaArrowLeft as ArrowLeftIcon,
@@ -9,7 +11,8 @@ export {
   FaHome as HomeIcon,
   FaMinus as MinusIcon,
   FaPlus as PlusIcon,
-  FaRegSave as SaveIcon
+  FaRegSave as SaveIcon,
+  FaCheckCircle as CheckCircleIcon
 } from 'react-icons/fa';
 export {
   FiChevronsDown as ChevronsDownIcon,
@@ -17,6 +20,7 @@ export {
 } from 'react-icons/fi';
 export { GoBrowser as BrowserIcon } from 'react-icons/go';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
+export { ImSphere as SphereIcon } from "react-icons/im";
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoInformation as InformationIcon,
@@ -94,6 +98,9 @@ export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons
 export {
   TbClock as ClockIcon,
   TbClockX as ClockOffIcon,
-  TbCube as SceneIcon
+  TbCube as SceneIcon,
+  TbSphere as LineIcon,
+  TbAbc as AbcIcon
 } from 'react-icons/tb';
 export { VscFeedback as FeedbackIcon } from 'react-icons/vsc';
+export { GiNightSky as NightSkyIcon } from 'react-icons/gi';

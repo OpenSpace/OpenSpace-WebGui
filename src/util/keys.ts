@@ -40,3 +40,6 @@ export const RecordingsFolderKey = '${RECORDINGS}/';
 export const WindowsKey = 'Windows';
 export const ScreenSpaceKey = 'ScreenSpace';
 export const RenderableKey = 'Renderable';
+
+//NightSkyKeys
+export const AttachedToGroundKey = 'NightSky.AttachedToGround';
