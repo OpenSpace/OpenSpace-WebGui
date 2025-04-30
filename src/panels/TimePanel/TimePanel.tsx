@@ -1,12 +1,18 @@
-import { Button, Divider, Group, Title } from '@mantine/core';
+import { Alert, Button, Divider, Group, Stack, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useSetOpenSpaceTime } from '@/hooks/util';
+import { useAppSelector } from '@/redux/hooks';
+import { TimeStatus } from '@/types/enums';
 
 import { TimeInput } from './TimeInput/TimeInput';
 import { SimulationIncrement } from './SimulationIncrement';
 
 export function TimePanel() {
+  const status = useAppSelector((state) => state.time.status);
+  const backupTimeString = useAppSelector((state) => state.time.timeString);
+
   const luaApi = useOpenSpaceApi();
   const { setTime } = useSetOpenSpaceTime();
 
@@ -24,10 +30,26 @@ export function TimePanel() {
     setTime(new Date());
   }
 
+  if (status === TimeStatus.Uninitialized) {
+    return <LoadingBlocks />;
+  }
+
   return (
     <>
       <Title order={2}>Select Time</Title>
-      <TimeInput />
+      {status === TimeStatus.OutsideRange ? (
+        <Alert color={'red'}>
+          <Stack align={'center'} gap={2} pb={'xs'}>
+            <Text>{backupTimeString}</Text>
+            <Text c={'red'}>
+              Can't interact with dates outside the range April 20, 271821 BC to Sep 13,
+              275760 AD.
+            </Text>
+          </Stack>
+        </Alert>
+      ) : (
+        <TimeInput />
+      )}
       <Title order={2}>Simulation Speed</Title>
       <SimulationIncrement />
       <Divider my={'xs'} />

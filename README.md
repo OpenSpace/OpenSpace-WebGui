@@ -12,7 +12,7 @@ npm install
 #run development app
 npm run dev
 # open gui
-open http://localhost:4670
+open http://localhost:4690
 ```
 
 ## Additional Scripts

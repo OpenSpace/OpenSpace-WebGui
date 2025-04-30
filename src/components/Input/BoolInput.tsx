@@ -8,7 +8,8 @@ interface Props {
   description: string | JSX.Element;
   value: boolean;
   setValue: (value: boolean) => void;
-  readOnly?: boolean;
+  label?: JSX.Element;
+  disabled?: boolean;
 }
 
 export function BoolInput({
@@ -16,7 +17,8 @@ export function BoolInput({
   setValue,
   name,
   description,
-  readOnly = false
+  label,
+  disabled = false
 }: Props) {
   return (
     <Group gap={'xs'} wrap={'nowrap'}>
@@ -24,10 +26,10 @@ export function BoolInput({
         checked={value}
         onChange={(event) => setValue(event.currentTarget.checked)}
         onKeyDown={(event) => event.key === 'Enter' && setValue(!value)}
-        disabled={readOnly}
+        disabled={disabled}
         aria-label={name}
       />
-      <Label name={name} description={description} readOnly={readOnly} />
+      {label || <Label name={name} description={description} />}
     </Group>
   );
 }

@@ -1,4 +1,4 @@
-import { Container, Divider } from '@mantine/core';
+import { Divider } from '@mantine/core';
 
 import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
@@ -13,11 +13,7 @@ export function Scene() {
   );
 
   if (!hasLoadedScene) {
-    return (
-      <Container mt={'md'}>
-        <LoadingBlocks />
-      </Container>
-    );
+    return <LoadingBlocks />;
   }
 
   return (

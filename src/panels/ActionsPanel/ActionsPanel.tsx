@@ -30,7 +30,7 @@ export function ActionsPanel() {
   // TODO anden88 2025-02-06: use same css variable as ActionsButton
   const ButtonHeight = 80;
 
-  if (!isInitialized || !actionLevel) {
+  if (!isInitialized || !actionLevel || actionsInPath.length === 0) {
     return <LoadingBlocks />;
   }
 

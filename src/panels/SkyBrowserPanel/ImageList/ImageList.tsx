@@ -43,6 +43,7 @@ export const ImageList = memo(function ImageList({ imageList, noImagesDisplay }:
       <Group>
         <FilterList.InputField
           placeHolderSearchText={`Search ${imageList.length} image${imageList.length > 1 ? 's' : ''}...`}
+          flex={'auto'}
         />
         <FilterList.SearchSettingsMenu
           keys={allowedSearchKeys}

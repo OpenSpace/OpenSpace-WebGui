@@ -3,6 +3,8 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { MantineProvider } from '@mantine/core';
 
+import '@/localization/config';
+
 import { LuaApiProvider } from './api/LuaApiProvider';
 import { ActionsPage } from './pages/ActionsPage';
 import { GuiPage } from './pages/GuiPage';
@@ -15,8 +17,8 @@ import 'rc-dock/dist/rc-dock-dark.css';
 function App() {
   return (
     <Provider store={store}>
-      {/* We want to place the Lua API provider outside the StrictMode as it creates a 
-      socket connection. Strict mode calls useEffects twice and the socket does not 
+      {/* We want to place the Lua API provider outside the StrictMode as it creates a
+      socket connection. Strict mode calls useEffects twice and the socket does not
       handle this well.*/}
       <LuaApiProvider>
         <StrictMode>

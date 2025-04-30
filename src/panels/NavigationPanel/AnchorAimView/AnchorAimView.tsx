@@ -56,7 +56,7 @@ export function AnchorAimView({
     setAnchor(identifier);
 
     if (!event.shiftKey) {
-      triggerRetargetAnchor();
+      triggerRetargetAnchor(null);
     }
   }
 
@@ -67,7 +67,7 @@ export function AnchorAimView({
     setAim(identifier);
 
     if (!event.shiftKey) {
-      triggerRetargetAim();
+      triggerRetargetAim(null);
     }
   }
 
@@ -129,6 +129,7 @@ export function AnchorAimView({
         <FilterList.InputField
           placeHolderSearchText={'Search for a new anchor/aim...'}
           showMoreButton
+          flex={'auto'}
         />
         <FilterList.SearchSettingsMenu keys={allowedKeys} setKey={toggleKey} />
       </Group>

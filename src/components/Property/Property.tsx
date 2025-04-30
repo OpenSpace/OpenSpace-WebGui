@@ -4,8 +4,6 @@ import { Stack } from '@mantine/core';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
 
-import { Label } from '../Label/Label';
-
 import { BoolProperty } from './Types/BoolProperty';
 import { DoubleListProperty } from './Types/ListProperty/DoubleListProperty';
 import { IntListProperty } from './Types/ListProperty/IntListProperty';
@@ -17,6 +15,7 @@ import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';
 import { TriggerProperty } from './Types/TriggerProperty';
 import { VectorProperty } from './Types/VectorProperty/VectorProperty';
+import { PropertyLabel } from './PropertyLabel';
 
 // The readOnly prop sent to each component are meant to enforce each
 // Property component to have to handle the readOnly state. This can
@@ -91,10 +90,11 @@ export const Property = memo(({ uri }: Props) => {
   return (
     <Stack mb={'md'} gap={5}>
       {showLabel && (
-        <Label
+        <PropertyLabel
           name={meta.guiName}
           description={meta.description}
           readOnly={meta.isReadOnly}
+          uri={uri}
         />
       )}
       {renderProperty(meta.type, uri, meta.isReadOnly)}

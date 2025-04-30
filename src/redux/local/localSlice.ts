@@ -70,16 +70,6 @@ export const localSlice = createSlice({
       }
       return state;
     },
-    setMenuItemEnabled: (
-      state,
-      action: PayloadAction<{ id: string; enabled: boolean }>
-    ) => {
-      const item = state.taskbarItems.find((item) => item.id === action.payload.id);
-      if (item) {
-        item.enabled = action.payload.enabled;
-      }
-      return state;
-    },
     setMenuItemOpen: (state, action: PayloadAction<{ id: string; open: boolean }>) => {
       const item = state.taskbarItems.find((item) => item.id === action.payload.id);
       if (item) {
@@ -101,7 +91,6 @@ export const {
   setSceneTreeSelectedNode,
   setOnlyFocusableInNavMenu,
   setMenuItemVisible,
-  setMenuItemEnabled,
   setMenuItemOpen,
   setMenuItemsOrder
 } = localSlice.actions;
