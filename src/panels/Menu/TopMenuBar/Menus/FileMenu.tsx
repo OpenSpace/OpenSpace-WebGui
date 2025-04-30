@@ -37,50 +37,46 @@ export function FileMenu() {
 
   return (
     <TopBarMenuWrapper targetTitle={'File'} closeOnItemClick={false}>
-      <Menu.Label>
-        {!profile.initalized ? (
-          <LoadingBlocks n={1} />
-        ) : (
-          <Group justify={'space-between'} align={'center'}>
-            Profile: {profile.name}
-          </Group>
-        )}
-      </Menu.Label>
-
-      <TopBarMenuWrapper
-        targetTitle={
-          <Menu.Item rightSection={<ChevronRightIcon size={IconSize.sm} />}>
-            About
-          </Menu.Item>
-        }
-        position={'right-start'}
-        withinPortal={false}
-        closeOnItemClick={false}
-      >
-        <Container py={'xs'} px={'xs'} maw={300}>
-          <Text>{profile.name}</Text>
-          <Menu.Divider />
-          {profile.description && (
-            <Text size={'sm'} mb={'xs'}>
-              {profile.description}
-            </Text>
-          )}
-          {profile.author && <Text size={'sm'}>Author: {profile.author}</Text>}
-          {profile.license && <Text size={'sm'}>License: {profile.license}</Text>}
-          {profile.url && (
-            <Text size={'sm'}>
-              URL:{' '}
-              <Anchor href={profile.url} target={'_blank'}>
-                {profile.url}
-              </Anchor>
-            </Text>
-          )}
-          <Text size={'xs'} mt={'xs'} style={{ wordBreak: 'break-word' }}>
-            {profile.filePath}
-          </Text>
-        </Container>
-      </TopBarMenuWrapper>
-
+      {!profile.initalized ? (
+        <LoadingBlocks n={1} />
+      ) : (
+        <>
+          <Menu.Label>Profile: {profile.name}</Menu.Label>
+          <TopBarMenuWrapper
+            targetTitle={
+              <Menu.Item rightSection={<ChevronRightIcon size={IconSize.sm} />}>
+                About
+              </Menu.Item>
+            }
+            position={'right-start'}
+            withinPortal={false}
+            closeOnItemClick={false}
+          >
+            <Container py={'xs'} px={'xs'} maw={300}>
+              <Text>{profile.name}</Text>
+              <Menu.Divider />
+              {profile.description && (
+                <Text size={'sm'} mb={'xs'}>
+                  {profile.description}
+                </Text>
+              )}
+              {profile.author && <Text size={'sm'}>Author: {profile.author}</Text>}
+              {profile.license && <Text size={'sm'}>License: {profile.license}</Text>}
+              {profile.url && (
+                <Text size={'sm'}>
+                  URL:{' '}
+                  <Anchor href={profile.url} target={'_blank'}>
+                    {profile.url}
+                  </Anchor>
+                </Text>
+              )}
+              <Text size={'xs'} mt={'xs'} style={{ wordBreak: 'break-word' }}>
+                {profile.filePath}
+              </Text>
+            </Container>
+          </TopBarMenuWrapper>
+        </>
+      )}
       <Menu.Divider />
       <Menu.Item onClick={toggleLuaConsole} leftSection={<ConsoleIcon />}>
         Toggle Console
