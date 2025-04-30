@@ -18,6 +18,7 @@ export function LocaleSwitcher() {
       <LanguageIcon size={IconSize.sm} />
     );
   }
+
   function changeLanguage(language: string): void {
     i18n.changeLanguage(language);
   }
