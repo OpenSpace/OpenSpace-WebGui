@@ -7,9 +7,16 @@ import { onCloseConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { RootState } from '@/redux/store';
 import { ConnectionStatus } from '@/types/enums';
-import { PropertyValue, Uri } from '@/types/types';
+import { AnyProperty } from '@/types/Property/property';
+import { Uri } from '@/types/types';
 
-import { addProperties, setPropertyValue, updatePropertyValue } from './propertiesSlice';
+import {
+  addProperties,
+  setPropertyValue,
+  updatePropertyMetaData,
+  updatePropertyValue
+} from './propertiesSlice';
+import { PropertyPayload } from './types';
 
 // The middleware also supports subscribing and setting properties
 // regardless of whether they are present in the redux store or not.
@@ -71,11 +78,16 @@ const subscriptionInfos: { [key: Uri]: SubscriptionInfo } = {};
 function handleUpdatedValues(
   dispatch: Dispatch<UnknownAction>,
   uri: Uri,
-  value: PropertyValue
+  value?: AnyProperty['value'],
+  metaData?: AnyProperty['metaData']
 ) {
-  // Update the value in the redux property tree, based on the
-  // value from the backend.
-  dispatch(updatePropertyValue({ uri, value }));
+  if (value !== undefined) {
+    // Update the value in the redux property tree, based on the value from the backend
+    dispatch(updatePropertyValue({ uri, value }));
+  }
+  if (metaData !== undefined) {
+    dispatch(updatePropertyMetaData({ uri, metaData }));
+  }
 
   // "Lazy unsubscribe":
   // Cancel the subscription whenever there is an update from the
@@ -97,15 +109,18 @@ function handleUpdatedValues(
 
 function setupSubscription(dispatch: Dispatch<UnknownAction>, uri: Uri) {
   const subscription = api.subscribeToProperty(uri);
-  const handleUpdates = (value: PropertyValue) =>
-    handleUpdatedValues(dispatch, uri, value);
+  const handleUpdates = (
+    value?: AnyProperty['value'],
+    metaData?: AnyProperty['metaData']
+  ) => handleUpdatedValues(dispatch, uri, value, metaData);
   const throttleHandleUpdates = throttle(handleUpdates, 200);
 
   (async () => {
-    for await (const data of subscription.iterator()) {
-      throttleHandleUpdates(data.Value as PropertyValue);
+    for await (const data of subscription.iterator() as AsyncIterable<PropertyPayload>) {
+      throttleHandleUpdates(data.value, data.metaData);
     }
   })();
+
   return subscription;
 }
 

@@ -36,9 +36,9 @@ export const MissionsPanel = lazy(() =>
     default: module.MissionsPanel
   }))
 );
-export const OriginPanel = lazy(() =>
-  import('@/panels/OriginPanel/OriginPanel').then((module) => ({
-    default: module.OriginPanel
+export const NavigationPanel = lazy(() =>
+  import('@/panels/NavigationPanel/NavigationPanel').then((module) => ({
+    default: module.NavigationPanel
   }))
 );
 export const Scene = lazy(() =>
@@ -75,5 +75,11 @@ export const UserPanelsPanel = lazy(() =>
 export const GettingStartedPanel = lazy(() =>
   import('@/panels/GettingStartedPanel/GettingStartedPanel').then((module) => ({
     default: module.GettingStartedPanel
+  }))
+);
+
+export const ScriptLogPanel = lazy(() =>
+  import('@/panels/LogPanel/ScriptLogPanel').then((module) => ({
+    default: module.ScriptLogPanel
   }))
 );

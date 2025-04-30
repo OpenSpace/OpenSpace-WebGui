@@ -19,6 +19,7 @@ export function ExoplanetEntry({ name, isAdded, onClick }: ExoplanetProps) {
           style={{ flexGrow: 0 }}
           onClick={onClick}
           color={isAdded ? 'red' : 'blue'}
+          aria-label={`${isAdded ? 'Remove' : 'Add'} system: ${name}`}
         >
           {isAdded ? <MinusIcon /> : <PlusIcon />}
         </ActionIcon>

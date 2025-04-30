@@ -1,8 +1,8 @@
-import { ActionIcon, Box, Group, Text, Title } from '@mantine/core';
+import { ActionIcon, Group, Text, Title } from '@mantine/core';
 
 import { FastForwardIcon, FastRewindIcon, PauseIcon } from '@/icons/icons';
+import { TimePanelMenuButtonContent } from '@/panels/TimePanel/MenuButton/TimePanelMenuButtonContent';
 import { TimeIncrementInput } from '@/panels/TimePanel/TimeInput/TimeIncrementInput';
-import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
 import { IconSize } from '@/types/enums';
 
 import { AltitudeTask } from '../Tasks/AltitudeTask';
@@ -14,6 +14,8 @@ import { CurrentLatLong } from '../Tasks/Components/CurrentLatLong';
 import { FocusTask } from '../Tasks/FocusTask';
 import { NavigationTask } from '../Tasks/NavigationTask';
 import { PauseTimeTask } from '../Tasks/PauseTimeTask';
+
+import { ClickBlocker } from './ClickBlocker';
 
 export const TimeSteps = [
   <>
@@ -39,18 +41,20 @@ export const TimeSteps = [
     <Text>You can view the past as well as the future.</Text>
     <ChangeYearTask />
     <Text>To open the Time Panel, click on the following icon in the taskbar:</Text>
-    <Box my={'xs'}>
-      <TimePanelMenuButton onClick={() => {}} />
-    </Box>
+    <ClickBlocker p={'xs'} withBorder>
+      <TimePanelMenuButtonContent />
+    </ClickBlocker>
     <Group>
       <Text>Change the year by changing the value of the year in the time input:</Text>
-      <TimeIncrementInput
-        value={new Date().getFullYear()}
-        onInputChange={() => {}}
-        onInputChangeStep={() => {}}
-        onInputEnter={() => {}}
-        w={65}
-      />
+      <ClickBlocker>
+        <TimeIncrementInput
+          value={new Date().getFullYear()}
+          onInputChange={() => {}}
+          onInputChangeStep={() => {}}
+          onInputEnter={() => {}}
+          w={65}
+        />
+      </ClickBlocker>
     </Group>
     <Text c={'dimmed'} fs={'italic'}>
       You can reset the time by pressing "Now"
@@ -72,10 +76,20 @@ export const TimeSteps = [
     <Text>In the Time Panel:</Text>
     <Group>
       <Text>Click on the buttons that adjust the delta time:</Text>
-      <ActionIcon size={'lg'} style={{ pointerEvents: 'none' }}>
+      <ActionIcon
+        size={'lg'}
+        style={{ pointerEvents: 'none' }}
+        aria-label={'Rewind delta time'}
+        aria-disabled
+      >
         <FastRewindIcon size={IconSize.md} />
       </ActionIcon>
-      <ActionIcon size={'lg'} style={{ pointerEvents: 'none' }}>
+      <ActionIcon
+        size={'lg'}
+        style={{ pointerEvents: 'none' }}
+        aria-label={'Forward delta time'}
+        aria-disabled
+      >
         <FastForwardIcon size={IconSize.md} />
       </ActionIcon>
     </Group>
@@ -88,7 +102,12 @@ export const TimeSteps = [
     <PauseTimeTask />
     <Text>
       In the time panel, click on the pause icon:{' '}
-      <ActionIcon size={IconSize.lg} style={{ pointerEvents: 'none' }}>
+      <ActionIcon
+        size={IconSize.lg}
+        style={{ pointerEvents: 'none' }}
+        aria-label={'Pause time'}
+        aria-disabled
+      >
         <PauseIcon />
       </ActionIcon>{' '}
       to pause time.

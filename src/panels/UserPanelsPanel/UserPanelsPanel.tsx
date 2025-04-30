@@ -64,10 +64,7 @@ export function UserPanelsPanel() {
     if (!selectedPanel) {
       return;
     }
-    // TODO (ylvse) 2024-12-04: Change this back to window.location.host once we no longer
-    // serve the gui on port 4670 (the webpanels are served on port 4680)
-    // const src = `http://${window.location.host}/webpanels/${panelName}/index.html`;
-    const src = `http://localhost:4680/webpanels/${selectedPanel}/index.html`;
+    const src = `http://${window.location.host}/webpanels/${selectedPanel}/index.html`;
 
     openPanel(src, selectedPanel);
 
@@ -100,9 +97,6 @@ export function UserPanelsPanel() {
   return (
     <>
       <Title my={'xs'} order={2}>
-        User Panels
-      </Title>
-      <Title my={'xs'} order={3}>
         Open Local Panel
       </Title>
       <Group align={'flex-end'}>
@@ -114,12 +108,17 @@ export function UserPanelsPanel() {
           flex={1}
           onKeyDown={(e) => e.key === 'Enter' && addLocalPanel()}
         />
-        <ActionIcon onClick={addLocalPanel} disabled={!selectedPanel} size={'lg'}>
+        <ActionIcon
+          onClick={addLocalPanel}
+          disabled={!selectedPanel}
+          size={'lg'}
+          aria-label={'Open local panel'}
+        >
           <OpenWindowIcon />
         </ActionIcon>
       </Group>
       <Divider my={'md'} />
-      <Title order={3} my={'xs'}>
+      <Title order={2} my={'xs'}>
         Open from URL
       </Title>
       <TextInput
@@ -137,13 +136,18 @@ export function UserPanelsPanel() {
           onKeyDown={(e) => e.key === 'Enter' && addWebPanel()}
           flex={1}
           rightSection={
-            <ActionIcon onClick={addWebPanel} disabled={!panelURL} size={'lg'}>
+            <ActionIcon
+              onClick={addWebPanel}
+              disabled={!panelURL}
+              size={'lg'}
+              aria-label={'Open web panel'}
+            >
               <OpenWindowIcon />
             </ActionIcon>
           }
         />
       </Group>
-      <Title mt={'xs'} mb={'xs'} order={4}>
+      <Title mt={'xs'} mb={'xs'} order={3}>
         Recently Opened URLs
       </Title>
       {addedPanels.map((panel) => (

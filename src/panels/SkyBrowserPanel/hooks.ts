@@ -20,7 +20,7 @@ import {
 
 import { SkyBrowserImage } from './types';
 
-export function useWwtImageCollection(): [boolean, SkyBrowserImage[]] {
+export function useWwtImageCollection(): [boolean, SkyBrowserImage[] | undefined] {
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
   const [isPending, startTransition] = useTransition();
 
@@ -47,7 +47,7 @@ export function useWwtImageCollection(): [boolean, SkyBrowserImage[]] {
 
     try {
       // We only need to get the images if we don't have them already
-      if (imageList === null) {
+      if (imageList === undefined) {
         startTransition(() => {
           getWwtListOfImages();
         });
@@ -57,17 +57,21 @@ export function useWwtImageCollection(): [boolean, SkyBrowserImage[]] {
     }
   }, [luaApi, dispatch, imageList]);
 
-  return [isPending || imageList === null, imageList ?? []];
+  const isLoading = isPending || imageList === undefined;
+
+  return [isLoading, imageList];
 }
 
 export function useSkyBrowserData() {
   const dispatch = useAppDispatch();
+  const connected = useAppSelector((state) => state.connection.connectionStatus);
   useEffect(() => {
     dispatch(subscribeToSkyBrowser());
     return () => {
       dispatch(unsubscribeToSkyBrowser());
     };
-  }, [dispatch]);
+    // We want to run this effect when the connection status changes
+  }, [dispatch, connected]);
 }
 
 export function useActiveImage(): [string, (url: string) => void] {
@@ -99,7 +103,7 @@ export function useBrowserColorString(id: string): string | undefined {
   return color ? (`rgb(${color.join(',')})` as string) : undefined;
 }
 
-export function useBrowserRadius(id: string): number | undefined {
+export function useBrowserRadius(id: string): number {
   return useAppSelector(
     (state) => state.skybrowser.browsers[id]?.borderRadius,
     lowPrecisionEqual
@@ -109,11 +113,11 @@ export function useBrowserRadius(id: string): number | undefined {
 export function useBrowserCoords(id: string) {
   const ra = useAppSelector(
     (state) => state.skybrowser.browsers[id]?.ra,
-    customPrecisionEqualFunc(1e-6)
+    customPrecisionEqualFunc(1e-8)
   );
   const dec = useAppSelector(
     (state) => state.skybrowser.browsers[id]?.dec,
-    customPrecisionEqualFunc(1e-6)
+    customPrecisionEqualFunc(1e-8)
   );
 
   const roll = useAppSelector(

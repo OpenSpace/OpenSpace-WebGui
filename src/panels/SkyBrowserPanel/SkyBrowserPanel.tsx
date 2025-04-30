@@ -1,23 +1,23 @@
 import { useCallback, useEffect } from 'react';
-import { Button, Image, Stack, Text } from '@mantine/core';
+import { Button, LoadingOverlay, Stack, Text, ThemeIcon } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { PlusIcon } from '@/icons/icons';
+import { PlusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { BrowserTabs } from './BrowserTabs/BrowserTabs';
 import { ImageListWrapper } from './ImageList/ImageListWrapper';
+import { InfoOverlayContent } from './WorldWideTelescope/InfoOverlayContent';
 import { WorldWideTelescopeView } from './WorldWideTelescope/WorldWideTelescopeView';
 import { WwtProvider } from './WorldWideTelescope/WwtProvider/WwtProvider';
 import { useSkyBrowserData } from './hooks';
 
 export function SkyBrowserPanel() {
   const isInitialized = useAppSelector((state) => state.skybrowser.isInitialized);
-  const cameraInSolarSystem = useAppSelector(
-    (state) => state.skybrowser.cameraInSolarSystem
-  );
   const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
+  const isInSolarSystem = useAppSelector((state) => state.skybrowser.cameraInSolarSystem);
+
   const { addWindow } = useWindowLayoutProvider();
   const luaApi = useOpenSpaceApi();
 
@@ -43,10 +43,7 @@ export function SkyBrowserPanel() {
       openWorldWideTelescope();
     }
   }, [openWorldWideTelescope, nBrowsers]);
-
-  if (!cameraInSolarSystem) {
-    return <Text m={'lg'}>Camera has to be in solar system for Sky Browser to work</Text>;
-  }
+  console.log(luaApi, isInitialized);
   if (nBrowsers === 0) {
     return (
       <Stack h={'100%'} w={'100%'} align={'center'} p={'lg'}>
@@ -61,16 +58,26 @@ export function SkyBrowserPanel() {
         >
           Add browser
         </Button>
+        <ThemeIcon size={100} variant={'transparent'}>
+          <TelescopeIcon size={'100px'} />
+        </ThemeIcon>
         <Text ta={'center'} c={'dimmed'} mt={'lg'}>
-          Powered by AAS WorldWide Telescope
+          Powered by WorldWide Telescope
         </Text>
-        <Image src={'wwt.png'} mah={100} maw={100} mb={'lg'} />
       </Stack>
     );
   }
 
   return (
     <>
+      <LoadingOverlay
+        visible={!isInSolarSystem}
+        overlayProps={{ backgroundOpacity: 1, bg: 'dark.9' }}
+        loaderProps={{
+          children: <InfoOverlayContent type={'CameraNotInSolarSystem'} />
+        }}
+        transitionProps={{ transition: 'fade', duration: 500 }}
+      />
       <ImageListWrapper />
       <BrowserTabs openWorldWideTelescope={openWorldWideTelescope} />
     </>

@@ -1,17 +1,20 @@
-import { Property } from '@/components/Property/Property';
-import { AdditionalData } from '@/components/Property/types';
-
-import { PropertyVisibilityNumber } from './enums';
+import { AnyProperty } from './Property/property';
 
 export type Uri = string;
 export type Identifier = string;
+
+export type LanguageInfo = {
+  language: string;
+  icon: React.JSX.Element;
+};
 
 export interface Action {
   identifier: string;
   guiPath: string;
   name: string;
-  synchronization: boolean;
+  isLocal: boolean;
   documentation: string;
+  color?: [number, number, number, number]; // rgba color, [0, 1]
 }
 
 export type KeybindModifiers = ('super' | 'alt' | 'shift' | 'control')[];
@@ -24,47 +27,33 @@ export interface Keybind {
 
 export type ActionOrKeybind = Action | Keybind;
 
+export type KeybindInfoType = Keybind & Action;
+
 export interface SemanticVersion {
   major: number;
   minor: number;
   patch: number;
 }
 
-export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
-
-export interface PropertyMetaData {
-  Group: string;
-  ViewOptions: {
-    [key: string]: boolean;
-  };
-  Visibility: PropertyVisibility;
-  isReadOnly: boolean;
-  needsConfirmation: boolean;
-}
-
-export interface PropertyDetails {
-  additionalData: AdditionalData;
-  identifier: Identifier;
-  metaData: PropertyMetaData;
-  name: string;
-  type: string; // TODO: define these as property types i.e., boolproperty, stringproperty etc
+// The property owner data we get from OpenSpace is different from what we want to store
+// in the redux state, hence this local owner type to get proper ts highlighting when
+// converting the data
+export type OpenSpacePropertyOwner = {
   description: string;
-}
-
-export type PropertyValue = string | string[] | number | number[] | boolean | null;
-
-export interface Property {
-  description: PropertyDetails;
-  value: PropertyValue;
+  guiName: string;
+  identifier: Identifier;
+  properties: AnyProperty[];
+  subowners: OpenSpacePropertyOwner[];
+  tag: string[];
   uri: Uri;
-}
+};
 
 export interface PropertyOverview {
   [uri: string]: { name: string; visibility: number };
 }
 
 export interface Properties {
-  [key: Uri]: Property | undefined;
+  [key: Uri]: AnyProperty | undefined;
 }
 
 export interface PropertyOwner {
@@ -79,6 +68,15 @@ export interface PropertyOwner {
 
 export interface PropertyOwners {
   [key: Uri]: PropertyOwner | undefined;
+}
+
+export interface SceneGraphNodeGuiSettings {
+  [key: Uri]: {
+    path: string;
+    isHidden: boolean;
+    isFocusable: boolean;
+    guiOrderingNumber: number | undefined;
+  };
 }
 
 export type Group = {

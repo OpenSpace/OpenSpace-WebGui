@@ -6,14 +6,7 @@ import { AppStartListening } from '@/redux/listenerMiddleware';
 
 import { setMenuItemVisible } from '../local/localSlice';
 
-export interface ProfileState {
-  uiPanelVisibility: {
-    // The key here should match the id of the menu item,
-    // else will be ignored
-    [key: string]: boolean;
-  };
-  markNodes: string[];
-}
+import { ProfileState, setProfileData } from './profileSlice';
 
 export const getProfile = createAsyncThunk('profile/getProfile', async () => {
   const topic = api.startTopic('profile', {});
@@ -33,10 +26,15 @@ export const addProfileListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: getProfile.fulfilled,
     effect: async (action, listenerApi) => {
+      // Get the data from the profile topic and set it in the redux store
+
+      // Panel visibility settings
       Object.entries(action.payload.uiPanelVisibility).forEach(([key, value]) => {
         listenerApi.dispatch(setMenuItemVisible({ id: key, visible: value }));
       });
-      // @TODO (ylvse 2025-03-15): handle marknodes
+
+      // Store the profile data in the slice
+      listenerApi.dispatch(setProfileData(action.payload));
     }
   });
 };

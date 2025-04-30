@@ -1,31 +1,30 @@
 import { useMemo } from 'react';
 
-import { useStringProperty } from '@/hooks/properties';
+import { useProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
-import { Uri } from '@/types/types';
+import { PropertyOwner } from '@/types/types';
 
 import { NavigationAimKey, NavigationAnchorKey } from './keys';
-import { hasInterestingTag, sgnUri } from './propertyTreeHelpers';
+import { sgnUri } from './propertyTreeHelpers';
 
-export function useInterestingTagOwners() {
+/**
+ * Get all the nodes marked in the profile, as a list of property owners.
+ */
+export function useFeaturedNodes(): PropertyOwner[] {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+  const markedNodes = useAppSelector((state) => state.profile.markNodes);
 
-  const sortedDefaultList = useMemo(() => {
-    const uris: Uri[] = propertyOwners.Scene?.subowners ?? [];
-    const markedInterestingNodeUris = uris.filter((uri) =>
-      hasInterestingTag(uri, propertyOwners)
-    );
-    const favorites = markedInterestingNodeUris
-      .map((uri) => propertyOwners[uri])
-      .filter((po) => po !== undefined);
-    return favorites.slice().sort((a, b) => a.name.localeCompare(b.name));
-  }, [propertyOwners]);
-
-  return sortedDefaultList;
+  return useMemo(
+    () =>
+      markedNodes
+        .map((id) => propertyOwners[sgnUri(id)])
+        .filter((po) => po !== undefined),
+    [markedNodes, propertyOwners]
+  );
 }
 
 export function useAnchorNode() {
-  const [anchor] = useStringProperty(NavigationAnchorKey);
+  const [anchor] = useProperty('StringProperty', NavigationAnchorKey);
   const anchorNode = useAppSelector(
     (state) => state.propertyOwners.propertyOwners[sgnUri(anchor)]
   );
@@ -33,7 +32,7 @@ export function useAnchorNode() {
 }
 
 export function useAimNode() {
-  const [aim] = useStringProperty(NavigationAimKey);
+  const [aim] = useProperty('StringProperty', NavigationAimKey);
   const aimNode = useAppSelector(
     (state) => state.propertyOwners.propertyOwners[sgnUri(aim)]
   );

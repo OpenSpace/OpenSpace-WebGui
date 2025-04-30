@@ -4,26 +4,27 @@ import {
   BrowserIcon,
   CalendarIcon,
   DashboardIcon,
+  DevIcon,
   ExoplanetIcon,
   ExpandArrowsIcon,
   FocusIcon,
   InsertPhotoIcon,
   KeyboardIcon,
   LocationPinIcon,
+  NightSkyIcon,
   RocketLaunchIcon,
   RouteIcon,
   SceneIcon,
+  ScriptLogIcon,
   SettingsIcon,
   TelescopeIcon,
-  VideocamIcon,
-  NightSkyIcon
+  VideocamIcon
 } from '@/icons/icons';
-
+import { DevPanel } from '@/panels/DevPanel/DevPanel';
 import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
-import { OriginPanelMenuButton } from '@/panels/OriginPanel/OriginPanelMenuButton';
-import { TempPropertyTest } from '@/panels/Scene/TempPropertyTest';
+import { NavigationPanelMenuButton } from '@/panels/NavigationPanel/MenuButton/NavigationPanelMenuButton';
 import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
-import { TimePanelMenuButton } from '@/panels/TimePanel/TimePanelMenuButton';
+import { TimePanelMenuButtonContent } from '@/panels/TimePanel/MenuButton/TimePanelMenuButtonContent';
 import { IconSize } from '@/types/enums';
 
 import { FloatWindowPosition, WindowLayoutPosition } from '../WindowLayout/types';
@@ -37,9 +38,10 @@ import {
   KeybindsPanel,
   NightSkyPanel,
   MissionsPanel,
-  OriginPanel,
+  NavigationPanel,
   Scene,
   ScreenSpaceRenderablePanel,
+  ScriptLogPanel,
   SessionRecordingPanel,
   SettingsPanel,
   SkyBrowserPanel,
@@ -90,8 +92,8 @@ export const menuItemsData: Record<string, MenuItem> = {
   navigation: {
     title: 'Navigation',
     componentID: 'navigation',
-    content: <OriginPanel />,
-    renderMenuButton: (id) => <OriginPanelMenuButton id={id} />,
+    content: <NavigationPanel />,
+    renderMenuButton: (id) => <NavigationPanelMenuButton id={id} />,
     renderIcon: (size) => <FocusIcon size={size} />,
     preferredPosition: 'float',
     floatPosition: { offsetY: 100, offsetX: 320, width: 400, height: 440 },
@@ -101,7 +103,11 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Time Panel',
     componentID: 'timePanel',
     content: <TimePanel />,
-    renderMenuButton: (id) => <TimePanelMenuButton id={id} />,
+    renderMenuButton: (id) => (
+      <TaskBarMenuButton id={id}>
+        <TimePanelMenuButtonContent />
+      </TaskBarMenuButton>
+    ),
     renderIcon: (size) => <CalendarIcon size={size} />,
     preferredPosition: 'float',
     floatPosition: { offsetY: 100, offsetX: 370, width: 410, height: 520 },
@@ -170,7 +176,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     content: <MissionsPanel />,
     renderIcon: (size) => <RocketLaunchIcon size={size} />,
     preferredPosition: 'right',
-    defaultVisible: true
+    defaultVisible: false
   },
   flightControl: {
     title: 'Flight Control',
@@ -178,7 +184,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     content: <FlightControlPanel />,
     renderIcon: (size) => <ExpandArrowsIcon size={size} />,
     preferredPosition: 'right',
-    defaultVisible: false
+    defaultVisible: !window.isWithinCEF
   },
   keybindingsLayout: {
     title: 'Keybindings Layout',
@@ -206,16 +212,27 @@ export const menuItemsData: Record<string, MenuItem> = {
     floatPosition: { offsetY: 150, offsetX: 350, width: 600, height: 500 },
     defaultVisible: true
   },
-  propertyTest: {
-    title: 'Property Test (TEMP)',
-    componentID: 'propertyTest',
-    content: <TempPropertyTest />,
-    preferredPosition: 'left',
+  scriptLogPanel: {
+    title: 'Script Log',
+    componentID: 'scriptLogPanel',
+    content: <ScriptLogPanel />,
+    renderIcon: (size) => <ScriptLogIcon size={size} />,
+    preferredPosition: 'right',
     defaultVisible: false
   }
 };
 
 if (import.meta.env.DEV) {
+  // Add an extra panel for dev-specific content
+  menuItemsData.devPanel = {
+    title: 'Dev Panel',
+    componentID: 'devPanel',
+    content: <DevPanel />,
+    renderIcon: (size) => <DevIcon size={size} />,
+    preferredPosition: 'right',
+    defaultVisible: false
+  };
+
   Object.entries(menuItemsData).forEach(([key, value]) => {
     if (key !== value.componentID) {
       throw Error(

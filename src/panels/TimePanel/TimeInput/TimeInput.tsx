@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ActionIcon, Alert, Button, Group, Paper, Stack, Text } from '@mantine/core';
+import { ActionIcon, Alert, Button, Group, Paper, Stack, Tooltip } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -22,7 +22,6 @@ export function TimeInput() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const cappedTime = useAppSelector((state) => state.time.timeCapped);
-  const backupTimeString = useAppSelector((state) => state.time.timeString);
   const luaApi = useOpenSpaceApi();
   const { setTime, interpolateTime } = useSetOpenSpaceTime();
   useSubscribeToTime();
@@ -246,24 +245,25 @@ export function TimeInput() {
   }
 
   if (cappedTime === undefined) {
-    return (
-      <Stack align={'center'} gap={2} pb={'xs'}>
-        <Text>{backupTimeString}</Text>
-        <Text c={'red'}>
-          Can't interact with dates outside the range April 20, 271821 BC to Sep 13,
-          275760 AD.
-        </Text>
-      </Stack>
-    );
+    return <></>;
   }
 
   return (
     <Paper bg={'dark.9'} withBorder={isLocked} m={0} p={'xs'}>
       <Stack gap={'xs'}>
         <Group gap={'xs'} justify={'center'}>
-          <ActionIcon onClick={toggleLock} variant={isLocked ? 'filled' : 'default'}>
-            {isLocked ? <LockIcon /> : <LockOpenIcon />}
-          </ActionIcon>
+          <Tooltip
+            label={`Lock time updates to prevent automatic changes. Use "Interpolate" or "Set"
+              to manually apply the selected date and time.`}
+          >
+            <ActionIcon
+              onClick={toggleLock}
+              variant={isLocked ? 'filled' : 'default'}
+              aria-label={`Set date-time input mode to ${isLocked ? 'unlocked' : 'locked'} mode`}
+            >
+              {isLocked ? <LockIcon /> : <LockOpenIcon />}
+            </ActionIcon>
+          </Tooltip>
           <Group gap={5} wrap={'nowrap'}>
             <TimeIncrementInput
               value={time.getUTCFullYear()}

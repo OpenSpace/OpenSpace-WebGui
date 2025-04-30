@@ -1,15 +1,15 @@
 import { PropertyVisibilityNumber } from '@/types/enums';
+import { AnyProperty } from '@/types/Property/property';
 import {
   Identifier,
   Properties,
-  Property,
   PropertyOverview,
   PropertyOwner,
   PropertyOwners,
   Uri
 } from '@/types/types';
 
-import { InterestingTagKey, ScenePrefixKey } from './keys';
+import { ScenePrefixKey } from './keys';
 
 // TODO: Maybe move some of these to a "uriHelpers" file?
 export function identifierFromUri(uri: Uri): Identifier {
@@ -53,13 +53,6 @@ export function sgnUri(identifier: Identifier | undefined): Uri {
 export function removeLastWordFromUri(uri: Uri): Uri {
   const index = uri.lastIndexOf('.');
   return index === -1 ? uri : uri.substring(0, index);
-}
-
-export function hasInterestingTag(
-  uri: Uri,
-  propertyOwners: PropertyOwners
-): boolean | undefined {
-  return propertyOwners[uri]?.tags.some((tag) => tag.includes(InterestingTagKey));
 }
 
 export function guiOrderingNumber(uri: Uri, properties: Properties): number | undefined {
@@ -118,18 +111,16 @@ export function isGlobeLayer(uri: Uri): boolean {
   return isGlobeLayersUri(layersUri);
 }
 
-export function isPropertyOwnerHidden(uri: Uri, properties: Properties) {
-  const isHidden = properties[`${uri}.GuiHidden`]?.value as boolean | undefined;
-  return isHidden || false;
-}
-
 export function isPropertyOwnerActive(uri: Uri, properties: Properties): boolean {
   const enabledValue = properties[enabledPropertyUri(uri)]?.value as boolean | undefined;
   const fadeValue = properties[fadePropertyUri(uri)]?.value as number | undefined;
   return checkVisiblity(enabledValue, fadeValue) || false;
 }
 
-export function isSceneGraphNodeVisible(uri: Uri, properties: Properties): boolean {
+/**
+ * Is the SGN currently visible, based on its enabled and fade properties?
+ */
+export function isSgnVisible(uri: Uri, properties: Properties): boolean {
   const renderableUri = sgnRenderableUri(uri);
   return isPropertyOwnerActive(renderableUri, properties);
 }
@@ -152,15 +143,14 @@ export function checkVisiblity(
 
 // Returns whether a property matches the current visiblity settings
 export function isPropertyVisible(
-  property: Property | undefined,
+  property: AnyProperty | undefined,
   visiblitySetting: number | undefined
 ): boolean {
   if (visiblitySetting === undefined || !property) {
     return true;
   }
 
-  const propertyVisibility =
-    PropertyVisibilityNumber[property?.description.metaData.Visibility] ?? 0;
+  const propertyVisibility = PropertyVisibilityNumber[property?.metaData.visibility] ?? 0;
 
   return visiblitySetting >= propertyVisibility;
 }
@@ -194,15 +184,4 @@ export function hasVisibleChildren(
   }
 
   return false;
-}
-
-/**
- * Get the Gui Path for a specific scene graph node, if it exists.
- */
-export function getGuiPath(sgnUri: Uri, properties: Properties): string | undefined {
-  const guiPath = properties[`${sgnUri}.GuiPath`]?.value;
-  if (guiPath !== undefined && typeof guiPath !== 'string') {
-    throw new Error(`GuiPath property for '${sgnUri}' is not a string`);
-  }
-  return guiPath as string | undefined;
 }

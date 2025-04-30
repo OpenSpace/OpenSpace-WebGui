@@ -8,6 +8,7 @@ export {
 export {
   FaArrowLeft as ArrowLeftIcon,
   FaArrowRight as ArrowRightIcon,
+  FaDev as DevIcon,
   FaHome as HomeIcon,
   FaMinus as MinusIcon,
   FaPlus as PlusIcon,
@@ -18,6 +19,7 @@ export {
   FiChevronsDown as ChevronsDownIcon,
   FiChevronsUp as ChevronsUpIcon
 } from 'react-icons/fi';
+export { GiNightSky as NightSkyIcon } from 'react-icons/gi';
 export { GoBrowser as BrowserIcon } from 'react-icons/go';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
 export { ImSphere as SphereIcon } from "react-icons/im";
@@ -60,6 +62,7 @@ export {
   MdOutlineInsertPhoto as InsertPhotoIcon,
   MdKeyboard as KeyboardIcon,
   MdLandscape as LandscapeIcon,
+  MdLanguage as LanguageIcon,
   MdLaunch as LaunchIcon,
   MdOutlineLayers as LayersIcon,
   MdFlashOn as LightningFlashIcon,
@@ -75,6 +78,8 @@ export {
   MdOutlineEdit as PenIcon,
   MdPlayArrow as PlayIcon,
   MdFiberManualRecord as RecordIcon,
+  MdOutlineRefresh as RefreshIcon,
+  MdOutlineReplay as ReplayIcon,
   MdRocketLaunch as RocketLaunchIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
@@ -83,11 +88,11 @@ export {
   MdArrowUpward as UpArrowIcon,
   MdVideocam as VideocamIcon,
   MdOutlineVisibility as VisibilityIcon,
+  MdWarning as WarningIcon,
   MdWater as WaterIcon,
   MdZoomIn as ZoomInIcon,
   MdZoomOut as ZoomOutIcon,
-  MdZoomOutMap as ZoomOutMapIcon
-} from 'react-icons/md';
+  MdZoomOutMap as ZoomOutMapIcon} from 'react-icons/md';
 export {
   PiBookOpenText as BookIcon,
   PiMouseLeftClickThin as LeftClickMouseIcon,
@@ -96,11 +101,14 @@ export {
 } from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
 export {
+  TbAbc as AbcIcon,
   TbClock as ClockIcon,
   TbClockX as ClockOffIcon,
   TbCube as SceneIcon,
-  TbSphere as LineIcon,
-  TbAbc as AbcIcon
+  TbScript as ScriptLogIcon
+  TbSphere as LineIcon
 } from 'react-icons/tb';
-export { VscFeedback as FeedbackIcon } from 'react-icons/vsc';
-export { GiNightSky as NightSkyIcon } from 'react-icons/gi';
+export {
+  VscFeedback as FeedbackIcon,
+  VscDebugRerun as RerunScriptIcon
+} from 'react-icons/vsc';

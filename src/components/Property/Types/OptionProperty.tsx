@@ -1,21 +1,32 @@
 import { Select } from '@mantine/core';
 
-import { AdditionalDataOptions, PropertyProps } from '@/components/Property/types';
-import { useOptionProperty, usePropertyDescription } from '@/hooks/properties';
+import { PropertyProps } from '@/components/Property/types';
+import { useProperty } from '@/hooks/properties';
 
 export function OptionProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setValue] = useOptionProperty(uri);
-  const description = usePropertyDescription(uri);
+  const [value, setValue, meta] = useProperty('OptionProperty', uri);
 
-  if (!description || value === undefined) {
+  if (!meta || value === undefined || !meta.additionalData) {
     return <></>;
   }
 
-  const { Options: options } = description.additionalData as AdditionalDataOptions;
+  const { options } = meta.additionalData;
+
+  // We need to guard for if there are no options. This can happen if they
+  // are added dynamically
+  if (!options) {
+    return (
+      <Select
+        aria-label={`${meta.guiName} option input`}
+        placeholder={'No options were loaded'}
+        disabled
+      />
+    );
+  }
 
   return (
     <Select
-      aria-label={`${description.name} option input`}
+      aria-label={`${meta.guiName} option input`}
       placeholder={'Choose an option'}
       disabled={readOnly}
       // For each entry in the options object, the numeric value is the key, and the

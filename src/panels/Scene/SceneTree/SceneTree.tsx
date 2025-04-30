@@ -11,6 +11,7 @@ import {
 import { useSetState } from '@mantine/hooks';
 
 import { FilterList } from '@/components/FilterList/FilterList';
+import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ChevronsDownIcon, ChevronsUpIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -22,14 +23,24 @@ import { useSceneTreeData } from './hooks';
 import { SceneTreeFilters } from './SceneTreeFilters';
 import { SceneTreeNode, SceneTreeNodeContent } from './SceneTreeNode';
 import { SceneTreeGroupPrefixKey } from './treeUtils';
-import { SceneTreeFilterSettings, SceneTreeNodeData } from './types';
+import {
+  sceneTreeFilterDefaults,
+  SceneTreeFilterSettings,
+  SceneTreeNodeData
+} from './types';
 
 export function SceneTree() {
-  const [filter, setFilter] = useSetState<SceneTreeFilterSettings>({
-    showOnlyVisible: false,
-    showHiddenNodes: false,
-    tags: []
-  });
+  const [filter, setFilter] = useSetState<SceneTreeFilterSettings>(
+    sceneTreeFilterDefaults
+  );
+
+  const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
+    useSearchKeySettings<SceneTreeNodeData>({
+      label: true,
+      guiPath: false
+    });
+
+  const keyLabels = { label: 'Name', guiPath: 'GUI Path' };
 
   const { sceneTreeData, flatTreeData } = useSceneTreeData(filter);
   const { closeCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
@@ -68,6 +79,11 @@ export function SceneTree() {
     <FilterList>
       <Group justify={'space-between'} gap={'xs'} mr={'xs'}>
         <FilterList.InputField placeHolderSearchText={'Search for a node...'} flex={1} />
+        <FilterList.SearchSettingsMenu
+          keys={allowedSearchKeys}
+          setKey={toggleSearchKey}
+          labels={keyLabels}
+        />
         <SceneTreeFilters setFilter={setFilter} filter={filter} />
       </Group>
 
@@ -77,12 +93,20 @@ export function SceneTree() {
         <Box pos={'relative'}>
           <Group gap={0} pos={'absolute'} top={0} right={0}>
             <Tooltip label={'Collapse all'} position={'top'}>
-              <ActionIcon variant={'subtle'} onClick={tree.collapseAllNodes}>
+              <ActionIcon
+                variant={'subtle'}
+                onClick={tree.collapseAllNodes}
+                aria-label={'Collapse all nodes'}
+              >
                 <ChevronsUpIcon />
               </ActionIcon>
             </Tooltip>
             <Tooltip label={'Expand all'} position={'top'}>
-              <ActionIcon variant={'subtle'} onClick={tree.expandAllNodes}>
+              <ActionIcon
+                variant={'subtle'}
+                onClick={tree.expandAllNodes}
+                aria-label={'Expand all nodes'}
+              >
                 <ChevronsDownIcon />
               </ActionIcon>
             </Tooltip>
@@ -100,7 +124,7 @@ export function SceneTree() {
         renderElement={(node: SceneTreeNodeData) => (
           <SceneTreeNodeContent key={node.value} node={node} expanded={false} />
         )}
-        matcherFunc={generateMatcherFunctionByKeys(['label', 'guiPath'])} // For now we just use the name
+        matcherFunc={generateMatcherFunctionByKeys(selectedSearchKeys)}
       >
         <FilterList.SearchResults.VirtualList />
       </FilterList.SearchResults>

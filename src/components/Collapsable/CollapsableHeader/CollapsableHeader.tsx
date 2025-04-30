@@ -1,4 +1,4 @@
-import { ActionIcon, Group, UnstyledButton } from '@mantine/core';
+import { ActionIcon, Group, MantineStyleProps, UnstyledButton } from '@mantine/core';
 
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { ChevronDownIcon, ChevronRightIcon } from '@/icons/icons';
@@ -6,7 +6,7 @@ import { IconSize } from '@/types/enums';
 
 import classes from './CollapsableHeader.module.css';
 
-interface Props {
+interface Props extends MantineStyleProps {
   expanded: boolean;
   title: React.ReactNode;
   toggle?: () => void;
@@ -19,11 +19,16 @@ export function CollapsableHeader({
   title,
   toggle,
   leftSection,
-  rightSection
+  rightSection,
+  ...styleProps
 }: Props) {
   return (
-    <Group wrap={'nowrap'} gap={0} className={classes.header}>
-      <ActionIcon variant={'transparent'} onClick={toggle}>
+    <Group wrap={'nowrap'} gap={0} className={classes.header} {...styleProps}>
+      <ActionIcon
+        variant={'transparent'}
+        onClick={toggle}
+        aria-label={`${expanded ? 'Open' : 'Close'} ${title}`}
+      >
         {expanded ? (
           <ChevronDownIcon size={IconSize.xs} />
         ) : (

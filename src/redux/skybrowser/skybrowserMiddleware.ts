@@ -2,11 +2,12 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
+import { onCloseConnection } from '@/redux/connection/connectionSlice';
+import { AppStartListening } from '@/redux/listenerMiddleware';
 import { ConnectionStatus } from '@/types/enums';
 
-import { AppStartListening } from '../listenerMiddleware';
-
 import {
+  resetSkyBrowser,
   type SkyBrowserUpdate,
   subscriptionIsSetup,
   updateSkyBrowser
@@ -63,6 +64,15 @@ export const addSkyBrowserListener = (startListening: AppStartListening) => {
       if (nSubscribers === 0) {
         tearDownSubscription();
       }
+    }
+  });
+
+  startListening({
+    actionCreator: onCloseConnection,
+    effect: (_, listenerApi) => {
+      nSubscribers = 0;
+      listenerApi.dispatch(unsubscribeToSkyBrowser());
+      listenerApi.dispatch(resetSkyBrowser());
     }
   });
 };

@@ -2,11 +2,11 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
-import { onOpenConnection } from '@/redux/connection/connectionSlice';
+import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { ConnectionStatus } from '@/types/enums';
 
-import { updateTime } from './timeSlice';
+import { resetTime, updateTime } from './timeSlice';
 import { OpenSpaceTimeState } from './types';
 
 const subscribeToTime = createAction<void>('time/subscribe');
@@ -68,6 +68,13 @@ export const addTimeListener = (startListening: AppStartListening) => {
       if (nSubscribers === 0) {
         tearDownSubscription();
       }
+    }
+  });
+
+  startListening({
+    actionCreator: onCloseConnection,
+    effect: (_, listenerApi) => {
+      listenerApi.dispatch(resetTime());
     }
   });
 };

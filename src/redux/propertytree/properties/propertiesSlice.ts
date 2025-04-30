@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { PropertyVisibilityNumber } from '@/types/enums';
-import { Properties, PropertyOverview, PropertyValue, Uri } from '@/types/types';
+import { AnyProperty } from '@/types/Property/property';
+import { Properties, PropertyOverview, Uri } from '@/types/types';
 
 export interface PropertiesState {
   isInitialized: boolean;
@@ -17,16 +18,6 @@ const initialState: PropertiesState = {
   propertyOverview: {}
 };
 
-// function updateProperty(
-//   state,
-//   uri: Uri,
-//   value: PropertyValue
-// ) {
-//   if (state.properties[uri]) {
-//     state.properties[uri].value = value;
-//   }
-// }
-
 export const propertiesSlice = createSlice({
   name: 'properties',
   initialState,
@@ -35,9 +26,9 @@ export const propertiesSlice = createSlice({
       for (const [uri, property] of Object.entries(action.payload)) {
         state.properties[uri] = property;
         state.propertyOverview[uri] = {
-          name: property?.description.name ?? '',
-          visibility: property?.description.metaData.Visibility
-            ? PropertyVisibilityNumber[property?.description.metaData.Visibility]
+          name: property?.metaData.guiName ?? '',
+          visibility: property?.metaData.visibility
+            ? PropertyVisibilityNumber[property?.metaData.visibility]
             : 0
         };
       }
@@ -59,7 +50,7 @@ export const propertiesSlice = createSlice({
     },
     setPropertyValue: (
       state,
-      action: PayloadAction<{ uri: Uri; value: PropertyValue }>
+      action: PayloadAction<{ uri: Uri; value: AnyProperty['value'] }>
     ) => {
       const { uri, value } = action.payload;
 
@@ -71,22 +62,25 @@ export const propertiesSlice = createSlice({
     },
     updatePropertyValue: (
       state,
-      action: PayloadAction<{ uri: Uri; value: PropertyValue }>
+      action: PayloadAction<{ uri: Uri; value: AnyProperty['value'] }>
     ) => {
       const { uri, value } = action.payload;
 
-      // TODO: check this return vs the old code
       if (state.properties[uri]) {
         state.properties[uri].value = value;
       }
       return state;
+    },
+    updatePropertyMetaData: (
+      state,
+      action: PayloadAction<{ uri: Uri; metaData: AnyProperty['metaData'] }>
+    ) => {
+      const { uri, metaData } = action.payload;
 
-      // const newPropertyState = { ...state.properties[action.payload.uri] };
-      // newPropertyState.value = action.payload.value;
-      // return {
-      //   ...state,
-      //   [action.payload.uri]: newPropertyState
-      // };
+      if (state.properties[uri]) {
+        state.properties[uri].metaData = metaData;
+      }
+      return state;
     }
   }
 });
@@ -97,6 +91,7 @@ export const {
   removeProperties,
   clearProperties,
   setPropertyValue,
+  updatePropertyMetaData,
   updatePropertyValue
 } = propertiesSlice.actions;
 

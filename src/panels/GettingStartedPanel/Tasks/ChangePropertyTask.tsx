@@ -1,4 +1,4 @@
-import { useBoolProperty } from '@/hooks/properties';
+import { useProperty } from '@/hooks/properties';
 
 import { TaskCheckbox } from './Components/TaskCheckbox';
 
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function SetBoolPropertyTask({ label, uri, finalValue }: Props) {
-  const [value] = useBoolProperty(uri);
+  const [value] = useProperty('BoolProperty', uri);
 
   const taskCompleted = value === finalValue;
 
