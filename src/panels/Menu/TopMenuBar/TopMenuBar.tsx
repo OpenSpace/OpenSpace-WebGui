@@ -10,6 +10,7 @@ import { FileMenu } from './Menus/FileMenu';
 import { HelpMenu } from './Menus/HelpMenu';
 import { ViewMenu } from './Menus/ViewMenu';
 import { WindowsMenu } from './Menus/WindowsMenu';
+// import { LocaleSwitcher } from './Menus/LocaleSwitcher';
 
 export function TopMenuBar() {
   const name = useAppSelector((state) => state.profile.name);
@@ -31,6 +32,7 @@ export function TopMenuBar() {
           <WindowsMenu />
           <ViewMenu />
           <HelpMenu />
+          {/* <LocaleSwitcher /> */}
         </Group>
         <Box flex={1} style={{ overflow: 'hidden' }}>
           <Text ta={'center'}>Profile: {name}</Text>
