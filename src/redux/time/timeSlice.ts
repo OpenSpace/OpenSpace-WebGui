@@ -1,9 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { TimeStatus } from '@/types/enums';
+
 import { OpenSpaceTimeState } from './types';
 import { dateStringUTC as parseTimeStringToUTCString, isDateValid } from './util';
 
 export interface TimeState {
+  status: TimeStatus; // Uninitialized, OutsideRange, Ok
   time?: number; // No of milliseconds for this date since the epoch 01/01/1970 UTC
   timeCapped?: number; // Rounded no of milliseconds for this date since the epoch 01/01/1970 UTC
   targetDeltaTime?: number;
@@ -20,6 +23,7 @@ export interface TimeState {
 // We could leave this as empty but better to be explicit that they
 // are undefined at start
 const initialState: TimeState = {
+  status: TimeStatus.Uninitialized,
   time: undefined,
   timeCapped: undefined,
   targetDeltaTime: undefined,
@@ -63,6 +67,7 @@ export const time = createSlice({
           if (!state.timeCapped || isUpdated) {
             state.timeCapped = newCappedMilliSeconds;
           }
+          state.status = TimeStatus.Ok;
         } else {
           // If the ztime is undefined we need to decide what to do. If we let it
           // be then time will be "stuck" on whatever was the latest working date
@@ -71,6 +76,7 @@ export const time = createSlice({
           state.time = undefined;
           state.timeCapped = undefined;
           state.timeString = newTime;
+          state.status = TimeStatus.OutsideRange;
         }
       }
       if (deltaTime !== undefined) {
@@ -99,9 +105,13 @@ export const time = createSlice({
       }
 
       return state;
+    },
+    resetTime: (state) => {
+      state = initialState;
+      return state;
     }
   }
 });
 
-export const { updateTime } = time.actions;
+export const { updateTime, resetTime } = time.actions;
 export const timeReducer = time.reducer;

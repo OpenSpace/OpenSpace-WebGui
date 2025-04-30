@@ -23,7 +23,7 @@ import { DevPanel } from '@/panels/DevPanel/DevPanel';
 import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
 import { NavigationPanelMenuButton } from '@/panels/NavigationPanel/MenuButton/NavigationPanelMenuButton';
 import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
-import { TimePanelMenuButton } from '@/panels/TimePanel/MenuButton/TimePanelMenuButton';
+import { TimePanelMenuButtonContent } from '@/panels/TimePanel/MenuButton/TimePanelMenuButtonContent';
 import { IconSize } from '@/types/enums';
 
 import { FloatWindowPosition, WindowLayoutPosition } from '../WindowLayout/types';
@@ -101,7 +101,11 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Time Panel',
     componentID: 'timePanel',
     content: <TimePanel />,
-    renderMenuButton: (id) => <TimePanelMenuButton id={id} />,
+    renderMenuButton: (id) => (
+      <TaskBarMenuButton id={id}>
+        <TimePanelMenuButtonContent />
+      </TaskBarMenuButton>
+    ),
     renderIcon: (size) => <CalendarIcon size={size} />,
     preferredPosition: 'float',
     floatPosition: { offsetY: 100, offsetX: 370, width: 410, height: 520 },
