@@ -1,10 +1,9 @@
-import { alpha, Box, Flex, Group, Text } from '@mantine/core';
+import { alpha, Box, Flex, Group } from '@mantine/core';
 
 import { FrictionControls } from '@/components/FrictionControls/FrictionControls';
 import { FrictionControlsInfo } from '@/components/FrictionControls/FrictionControlsInfo';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
-import { useAppSelector } from '@/redux/hooks';
 
 import { FileMenu } from './Menus/FileMenu';
 import { HelpMenu } from './Menus/HelpMenu';
@@ -13,8 +12,6 @@ import { WindowsMenu } from './Menus/WindowsMenu';
 // import { LocaleSwitcher } from './Menus/LocaleSwitcher';
 
 export function TopMenuBar() {
-  const name = useAppSelector((state) => state.profile.name);
-
   return (
     <ScrollBox direction={'horizontal'}>
       <Flex
@@ -35,7 +32,7 @@ export function TopMenuBar() {
           {/* <LocaleSwitcher /> */}
         </Group>
         <Box flex={1} style={{ overflow: 'hidden' }}>
-          <Text ta={'center'}>Profile: {name}</Text>
+          {/* There's space to put something in the center here if we want */}
         </Box>
         <Group flex={1} wrap={'nowrap'} align={'center'} justify={'end'} mr={'xs'}>
           <FrictionControls size={'xs'} />
