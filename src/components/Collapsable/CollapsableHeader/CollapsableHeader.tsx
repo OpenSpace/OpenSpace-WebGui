@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, MantineStyleProps, UnstyledButton } from '@mantine/core';
 
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
@@ -22,12 +23,16 @@ export function CollapsableHeader({
   rightSection,
   ...styleProps
 }: Props) {
+  const { t } = useTranslation('components', { keyPrefix: 'collapsable-header' });
+
   return (
     <Group wrap={'nowrap'} gap={0} className={classes.header} {...styleProps}>
       <ActionIcon
         variant={'transparent'}
         onClick={toggle}
-        aria-label={`${expanded ? 'Open' : 'Close'} ${title}`}
+        aria-label={`${
+          expanded ? t('chevron-aria-label.open') : t('chevron-aria-label.close')
+        } ${title}`}
       >
         {expanded ? (
           <ChevronDownIcon size={IconSize.xs} />

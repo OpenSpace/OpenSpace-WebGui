@@ -1,4 +1,5 @@
 import { PropsWithChildren } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, FloatingPosition, MantineStyleProps, Menu } from '@mantine/core';
 
 import { SettingsIcon } from '@/icons/icons';
@@ -16,6 +17,8 @@ export function SettingsPopout({
   children,
   ...styleProps
 }: Props) {
+  const { t } = useTranslation('components');
+
   return (
     <Menu
       position={position ?? 'right-start'}
@@ -24,7 +27,7 @@ export function SettingsPopout({
       withArrow
     >
       <Menu.Target>
-        <ActionIcon {...styleProps} aria-label={'Open settings'}>
+        <ActionIcon {...styleProps} aria-label={t('settings-popout.aria-label')}>
           <SettingsIcon />
         </ActionIcon>
       </Menu.Target>

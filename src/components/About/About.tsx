@@ -36,7 +36,7 @@ export function About({ opened, close }: Props) {
         <Grid.Col span={8}>
           <Stack gap={'xs'}>
             <Title order={1}>OpenSpace</Title>
-            <Text>{t('about.about-openspace')}</Text>
+            <Text>{t('about.about-openspace-description')}</Text>
             <Text>{osVersionNumber()}</Text>
             <Text>
               &copy; 2014 - {new Date().getFullYear()} OpenSpace Development Team

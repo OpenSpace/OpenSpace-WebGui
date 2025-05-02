@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ColorInput,
   ColorPicker as MantineColorPicker,
@@ -25,6 +26,7 @@ export function ColorEdit({ color, onChange, withAlpha }: Props) {
   const [format, setFormat] = useState<ColorFormat>(defaultFormat);
   const [value, setValue] = useState(rgbaToColor(color, withAlpha));
   const [textEditValue, setTextEditValue] = useState(rgbaToColor(color, withAlpha));
+  const { t } = useTranslation('components');
 
   useEffect(() => {
     const updatedColor = rgbaToFormat(color, format || defaultFormat);
@@ -74,7 +76,7 @@ export function ColorEdit({ color, onChange, withAlpha }: Props) {
         }}
         onChange={setTextEditValue}
         format={format}
-        error={warnAboutInvalidColor ? 'Invalid color' : null}
+        error={warnAboutInvalidColor ? t('color-edit.error-invalid-color') : null}
       />
       <Select
         data={formats.map((value) => ({ value, label: value.toUpperCase() }))}

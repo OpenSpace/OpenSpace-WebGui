@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
 import { ActionIcon, Box, Group, MantineSpacing } from '@mantine/core';
 
@@ -31,6 +32,7 @@ export function DragReorderList<T>({
   gap = 'xs'
 }: Props<T>) {
   const { value: localCache, setValue: setLocalCache } = usePropListeningState(data);
+  const { t } = useTranslation('components');
 
   async function handleDragEnd(result: DropResult<string>) {
     if (!result.destination || result.source.index === result.destination.index) {
@@ -71,7 +73,7 @@ export function DragReorderList<T>({
                     <ActionIcon
                       style={{ cursor: 'grab' }}
                       {...item.dragHandleProps}
-                      aria-label={'Move item up or down (keyboard control not supported)'}
+                      aria-label={t('drag-reorder-list.drag-handle-aria-label')}
                     >
                       <DragHandleIcon />
                     </ActionIcon>
