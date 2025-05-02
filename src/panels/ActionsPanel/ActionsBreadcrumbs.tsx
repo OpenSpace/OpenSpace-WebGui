@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Breadcrumbs, Button, Group } from '@mantine/core';
 
 import { HomeIcon, UpArrowIcon } from '@/icons/icons';
@@ -5,7 +6,6 @@ import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import { calculateLevelDepth, createPath, getFolders } from './util';
-import { useTranslation } from 'react-i18next';
 
 export function ActionsBreadcrumbs() {
   const navigationPath = useAppSelector((state) => state.actions.navigationPath);
