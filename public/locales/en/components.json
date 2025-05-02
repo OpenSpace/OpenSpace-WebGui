@@ -1,0 +1,12 @@
+{
+  "about": {
+    "modal-title": "About OpenSpace",
+    "img-alt-text": "OpenSpace logo",
+    "about-openspace": "OpenSpace is open-source interactive data visualization software designed to visualize the entire known universe and portray our ongoing efforts to investigate the cosmos.",
+    "fetching-version-number": "Fetching OpenSpace version...",
+    "custom-version-number": "Custom"
+  },
+  "collapsable-header": {
+    "chevron-aria-label": "{{variable}} ? open : close "
+  }
+}
