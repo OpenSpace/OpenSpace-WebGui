@@ -14,6 +14,7 @@ import { ActionsButton } from './ActionsButton';
 import { ActionsFolder } from './ActionsFolder';
 import { ActionsSearchInputField } from './ActionsSearchInputField';
 import { useActionsForLevel, useActionsInPath } from './hooks';
+import { useTranslation } from 'react-i18next';
 
 export function ActionsPanel() {
   const isInitialized = useAppSelector((state) => state.actions.isInitialized);
@@ -26,6 +27,7 @@ export function ActionsPanel() {
     });
   const actionLevel = useActionsForLevel();
   const actionsInPath = useActionsInPath();
+  const { t } = useTranslation('actionpanel');
 
   // TODO anden88 2025-02-06: use same css variable as ActionsButton
   const ButtonHeight = 80;
@@ -43,7 +45,9 @@ export function ActionsPanel() {
         <FilterList>
           <Group preventGrowOverflow={false}>
             {/* This is a custom variant of the FilterList input field */}
-            <ActionsSearchInputField placeHolderSearchText={'Search for an action...'} />
+            <ActionsSearchInputField
+              placeHolderSearchText={t('action-search-placeholder')}
+            />
             <FilterList.SearchSettingsMenu
               keys={allowedSearchKeys}
               setKey={toggleSearchKey}
