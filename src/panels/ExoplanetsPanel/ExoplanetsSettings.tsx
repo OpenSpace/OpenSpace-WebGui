@@ -4,6 +4,7 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { useProperty } from '@/hooks/properties';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   hasAddedExoplanets: boolean;
@@ -11,6 +12,7 @@ interface Props {
 
 export function ExoplanetsSettings({ hasAddedExoplanets }: Props) {
   const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('exoplanetspanel', { keyPrefix: 'exoplanets-settings' });
 
   const [showHabitableZone, setShowHabitableZone] = useProperty(
     'BoolProperty',
@@ -62,48 +64,37 @@ export function ExoplanetsSettings({ hasAddedExoplanets }: Props) {
   }
 
   return (
-    <Collapsable title={'Settings'}>
+    <Collapsable title={t('section-title')}>
       <Stack gap={'xs'}>
         <Group>
           <Checkbox
             checked={showHabitableZone}
             onChange={toggleShowHabitableZone}
             onKeyDown={(event) => event.key === 'Enter' && toggleShowHabitableZone()}
-            aria-label={`Toggle Show Habitable Zone`}
-            label={'Show Habitable Zone'}
+            aria-label={t('show-habitable-zone.aria-label')}
+            label={t('show-habitable-zone.label')}
           />
-          <InfoBox>
-            Show/Hide the habitable zone visualizations. Setting the value automatically
-            updates the visibility for all added exoplanet systems.
-          </InfoBox>
+          <InfoBox>{t('show-habitable-zone.tooltip')}</InfoBox>
         </Group>
         <Group>
           <Checkbox
             checked={showOrbitUncertainty}
             onChange={toggleShowOrbitUncertainty}
             onKeyDown={(event) => event.key === 'Enter' && toggleShowOrbitUncertainty()}
-            aria-label={`Toggle Show Orbit Uncertainty`}
-            label={'Show Orbit Uncertainty'}
+            aria-label={t('show-orbit-uncertainty.aria-label')}
+            label={t('show-orbit-uncertainty.label')}
           />
-          <InfoBox>
-            Show/Hide disc visualization of the uncertainty of the planetary orbits.
-            Setting the value automatically updates the visibility for all added exoplanet
-            systems.
-          </InfoBox>
+          <InfoBox>{t('show-orbit-uncertainty.tooltip')}</InfoBox>
         </Group>
         <Group>
           <Checkbox
             checked={show1AuRing}
             onChange={toggleShow1AuRing}
             onKeyDown={(event) => event.key === 'Enter' && toggleShow1AuRing()}
-            aria-label={`Toggle Show 1 AU Size Ring`}
-            label={'Show 1 AU Size Ring'}
+            aria-label={t('show-1-au-ring.aria-label')}
+            label={t('show-1-au-ring.label')}
           />
-          <InfoBox>
-            If true, show a ring with the radius 1 AU around the host star of each system,
-            to use for size comparison. Setting the value automatically updates the
-            visibility for all added exoplanet systems.
-          </InfoBox>
+          <InfoBox>{t('show-1-au-ring.tooltip')}</InfoBox>
         </Group>
       </Stack>
     </Collapsable>
