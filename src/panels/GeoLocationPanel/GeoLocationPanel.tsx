@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Divider, Select, Text, Title } from '@mantine/core';
 
 import { EarthPanel } from './AnchorPanels/EarthPanel/EarthPanel';
 
 export function GeoLocationPanel() {
   const [currentAnchorOption, setCurrentAnchorOption] = useState('Earth');
+  const { t } = useTranslation('geolocationpanel');
   const anchorOptions = ['Earth'];
   const anchorPanelContent = anchorPanel();
 
@@ -14,20 +16,20 @@ export function GeoLocationPanel() {
         return <EarthPanel currentAnchor={currentAnchorOption} />;
       default:
         return (
-          <Text>Currently there is no data for locations on {currentAnchorOption}</Text>
+          <Text>{t('geolocation.no-anchor-panel', { anchor: currentAnchorOption })}</Text>
         );
     }
   }
 
   return (
     <>
-      <Title order={2}>Geo Location</Title>
+      <Title order={2}>{t('geolocation.title')}</Title>
       <Select
         data={anchorOptions}
         value={currentAnchorOption}
         onChange={(value) => setCurrentAnchorOption(value!)}
         allowDeselect={false}
-        label={'Select an anchor'}
+        label={t('geolocation.select-anchor-label')}
         w={'100%'}
         my={'xs'}
       />
