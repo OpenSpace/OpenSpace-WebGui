@@ -53,7 +53,7 @@ export function useStoredLayout() {
     if (newLayout.length !== menuItems.length) {
       showNotification(
         'Error loadding JSON file',
-        'Invali layoutfile, length does not match',
+        'Invalid layoutfile, length does not match',
         LogLevel.Error
       );
       return;
@@ -66,7 +66,7 @@ export function useStoredLayout() {
     if (!isValid) {
       showNotification(
         'Error loading JSON file',
-        "Invalid layout file, all id's must match",
+        'Invalid layout file, all IDs must match panel IDs',
         LogLevel.Error
       );
       return;

@@ -65,7 +65,7 @@ export const localSlice = createSlice({
       } else {
         showNotification(
           'Error missing menu item',
-          `Tried to set visibility of non-existent enu item: '${action.payload.id}'`,
+          `Tried to set visibility of non-existent menu item: '${action.payload.id}'`,
           LogLevel.Error
         );
       }

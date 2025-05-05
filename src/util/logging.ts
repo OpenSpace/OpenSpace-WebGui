@@ -11,7 +11,7 @@ export function showNotification(
     [LogLevel.Info]: 'white',
     [LogLevel.Warning]: 'yellow',
     [LogLevel.Error]: 'red'
-  }[level];
+  };
 
   const log = {
     // eslint-disable-next-line no-console
@@ -20,13 +20,13 @@ export function showNotification(
     [LogLevel.Warning]: console.warn,
     // eslint-disable-next-line no-console
     [LogLevel.Error]: console.error
-  }[level];
+  };
 
   notifications.show({
     title: title,
     message: message,
-    color: color
+    color: color[level]
   });
 
-  log(message);
+  log[level](message);
 }
