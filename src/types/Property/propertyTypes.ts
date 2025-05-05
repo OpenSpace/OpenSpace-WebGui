@@ -85,7 +85,7 @@ interface MatrixProperty {
 
 export type PropertyTypes = {
   TriggerProperty: {
-    value: void;
+    value: null;
   };
   BoolProperty: {
     value: boolean;

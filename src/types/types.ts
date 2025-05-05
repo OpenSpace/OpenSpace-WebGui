@@ -3,6 +3,11 @@ import { AnyProperty } from './Property/property';
 export type Uri = string;
 export type Identifier = string;
 
+export type LanguageInfo = {
+  language: string;
+  icon: React.JSX.Element;
+};
+
 export interface Action {
   identifier: string;
   guiPath: string;
@@ -21,6 +26,8 @@ export interface Keybind {
 }
 
 export type ActionOrKeybind = Action | Keybind;
+
+export type KeybindInfoType = Keybind & Action;
 
 export interface SemanticVersion {
   major: number;

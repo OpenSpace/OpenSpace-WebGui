@@ -1,14 +1,5 @@
 import { useRef, useState } from 'react';
-import {
-  ActionIcon,
-  Alert,
-  Button,
-  Group,
-  Paper,
-  Stack,
-  Text,
-  Tooltip
-} from '@mantine/core';
+import { ActionIcon, Alert, Button, Group, Paper, Stack, Tooltip } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -33,7 +24,6 @@ export function TimeInput() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const cappedTime = useAppSelector((state) => state.time.timeCapped);
-  const backupTimeString = useAppSelector((state) => state.time.timeString);
   const luaApi = useOpenSpaceApi();
   const { setTime, interpolateTime } = useSetOpenSpaceTime();
   useSubscribeToTime();
@@ -262,15 +252,7 @@ export function TimeInput() {
   }
 
   if (cappedTime === undefined) {
-    return (
-      <Stack align={'center'} gap={2} pb={'xs'}>
-        <Text>{backupTimeString}</Text>
-        <Text c={'red'}>
-          Can't interact with dates outside the range April 20, 271821 BC to Sep 13,
-          275760 AD.
-        </Text>
-      </Stack>
-    );
+    return <></>;
   }
 
   return (

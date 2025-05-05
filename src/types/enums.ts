@@ -24,6 +24,12 @@ export enum ConnectionStatus {
   Disconnected = 'Disconnected'
 }
 
+export enum TimeStatus {
+  Uninitialized = 'Uninitialized',
+  OutsideRange = 'OutsideRange',
+  Ok = 'Ok'
+}
+
 // This is not really an enum, but a collection of constants that need to be accessible
 // using a string value. It serves a similar function, but we need the keys as strings.
 // Did not find any better place for it, so putting it here for now. // emmbr, 2025-01-13

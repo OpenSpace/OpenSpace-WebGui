@@ -5,11 +5,8 @@ import { PropertyTypes } from './propertyTypes';
 
 export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
 
-// Define an empty object type to use as a default value for optional types.
-// Using `Record<string, never>` ensures that the type represents an object
-// with no properties, as `never` indicates that no values are allowed for any key.
-// We use this as a fallback where we infer the additionalData or viewOptions.
-type EmptyObject = Record<string, never>;
+// Define an empty object type to use as a default value for optional types
+type EmptyObject = { [K in never]: never };
 
 /**
  * Extracts the `additionalData` property from a specific property type in `PropertyTypes`.

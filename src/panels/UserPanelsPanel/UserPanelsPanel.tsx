@@ -64,10 +64,7 @@ export function UserPanelsPanel() {
     if (!selectedPanel) {
       return;
     }
-    // TODO (ylvse) 2024-12-04: Change this back to window.location.host once we no longer
-    // serve the gui on port 4670 (the webpanels are served on port 4680)
-    // const src = `http://${window.location.host}/webpanels/${panelName}/index.html`;
-    const src = `http://localhost:4680/webpanels/${selectedPanel}/index.html`;
+    const src = `http://${window.location.host}/webpanels/${selectedPanel}/index.html`;
 
     openPanel(src, selectedPanel);
 

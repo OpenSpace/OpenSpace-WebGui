@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 import { FilterList } from '@/components/FilterList/FilterList';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { useProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
@@ -70,6 +71,10 @@ export function SettingsPanel() {
   const matcher = useCallback((testItem: SearchItem, search: string): boolean => {
     return checkCaseInsensitiveSubstringList(testItem.searchKeys, search);
   }, []);
+
+  if (topLevelPropertyOwners.length === 0) {
+    return <LoadingBlocks />;
+  }
 
   return (
     <FilterList>

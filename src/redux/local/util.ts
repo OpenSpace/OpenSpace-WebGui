@@ -5,7 +5,6 @@ export function createDefaultTaskbar(): TaskbarItemConfig[] {
   return Object.values(menuItemsData).map((item) => ({
     id: item.componentID,
     visible: item.defaultVisible,
-    enabled: true,
     name: item.title,
     isOpen: false
   }));

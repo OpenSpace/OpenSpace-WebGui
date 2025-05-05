@@ -22,9 +22,17 @@ interface Props {
   favorites: PropertyOwner[];
   searchableNodes: PropertyOwner[];
   matcherFunction: (node: PropertyOwner, query: string) => boolean;
+  toggleKey: (key: keyof PropertyOwner, enabled: boolean) => void;
+  allowedKeys: Partial<Record<keyof PropertyOwner, boolean>>;
 }
 
-export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: Props) {
+export function AnchorAimView({
+  favorites,
+  searchableNodes,
+  matcherFunction,
+  toggleKey,
+  allowedKeys
+}: Props) {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const engineMode = useSubscribeToEngineMode();
 
@@ -48,7 +56,7 @@ export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: P
     setAnchor(identifier);
 
     if (!event.shiftKey) {
-      triggerRetargetAnchor();
+      triggerRetargetAnchor(null);
     }
   }
 
@@ -59,7 +67,7 @@ export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: P
     setAim(identifier);
 
     if (!event.shiftKey) {
-      triggerRetargetAim();
+      triggerRetargetAim(null);
     }
   }
 
@@ -117,11 +125,14 @@ export function AnchorAimView({ favorites, searchableNodes, matcherFunction }: P
         </Tooltip>
       </Group>
       <Divider />
-
-      <FilterList.InputField
-        placeHolderSearchText={'Search for a new anchor/aim...'}
-        showMoreButton
-      />
+      <Group gap={'xs'}>
+        <FilterList.InputField
+          placeHolderSearchText={'Search for a new anchor/aim...'}
+          showMoreButton
+          flex={'auto'}
+        />
+        <FilterList.SearchSettingsMenu keys={allowedKeys} setKey={toggleKey} />
+      </Group>
       <FilterList.Favorites>
         {favorites.map((entry) => (
           <AnchorAimListEntry

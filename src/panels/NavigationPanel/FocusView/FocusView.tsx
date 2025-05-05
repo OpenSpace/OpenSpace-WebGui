@@ -19,9 +19,17 @@ interface Props {
   favorites: PropertyOwner[];
   searchableNodes: PropertyOwner[];
   matcherFunction: (node: PropertyOwner, query: string) => boolean;
+  toggleKey: (key: keyof PropertyOwner, enabled: boolean) => void;
+  allowedKeys: Partial<Record<keyof PropertyOwner, boolean>>;
 }
 
-export function FocusView({ favorites, searchableNodes, matcherFunction }: Props) {
+export function FocusView({
+  favorites,
+  searchableNodes,
+  matcherFunction,
+  toggleKey,
+  allowedKeys
+}: Props) {
   const engineMode = useSubscribeToEngineMode();
 
   const anchorNode = useAnchorNode();
@@ -89,11 +97,14 @@ export function FocusView({ favorites, searchableNodes, matcherFunction }: Props
         )}
         <Divider />
       </>
-
-      <FilterList.InputField
-        placeHolderSearchText={'Search for a new focus...'}
-        showMoreButton
-      />
+      <Group gap={'xs'}>
+        <FilterList.InputField
+          placeHolderSearchText={'Search for a new focus...'}
+          showMoreButton
+          flex={'auto'}
+        />
+        <FilterList.SearchSettingsMenu keys={allowedKeys} setKey={toggleKey} />
+      </Group>
       <FilterList.Favorites>
         {favorites.map((entry) => (
           <FocusEntry
