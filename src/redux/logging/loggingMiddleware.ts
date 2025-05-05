@@ -10,23 +10,41 @@ import { AppStartListening } from '../listenerMiddleware';
 
 let topic: Topic | null = null;
 
+/** This `LogLevel` must match OpenSpace/Ghoul LogLevel in
+ * https://github.com/OpenSpace/Ghoul/blob/f02810ad2f77166711f4503060e20745f0d808c6/include/ghoul/logging/loglevel.h#L41
+ */
+enum OpenSpaceLogLevel {
+  AllLogging = 0,
+  Trace = 1,
+  Debug = 2,
+  Info = 3,
+  Warning = 4,
+  Error = 5,
+  Fatal = 6,
+  NoLogging = 7
+}
+
+type LogMessage = {
+  level: OpenSpaceLogLevel;
+  category: string;
+  message: string;
+  timeStamp: string;
+  dateStamp: string;
+};
+
 export const setupSubscription = createAsyncThunk(
   'logging/setupSubscription',
   async () => {
     topic = api.startTopic('errorLog', {
       event: 'start_subscription',
       settings: {
-        timeStamping: false,
-        dateStamping: false,
-        categoryStamping: true,
-        logLevelStamping: true,
         logLevel: 'Warning'
       }
     });
 
     (async () => {
-      for await (const message of topic.iterator() as AsyncIterable<string>) {
-        parseLogMessage(message);
+      for await (const message of topic.iterator() as AsyncIterable<LogMessage>) {
+        logNotificationMessage(message);
       }
     })();
   }
@@ -44,22 +62,30 @@ function unsubscribe() {
   topic = null;
 }
 
-function parseLogMessage(message: string) {
-  const destructuredMessage = message.split(/[\t]+/);
-  const [category, level, ...msg] = destructuredMessage;
+function logNotificationMessage(logMessage: LogMessage) {
+  const { category, level, message } = logMessage;
+
+  if (level === OpenSpaceLogLevel.NoLogging) {
+    return;
+  }
 
   function getLogLevel(): LogLevel {
-    if (level === '(Warning)') {
-      return LogLevel.Warning;
+    switch (level) {
+      case OpenSpaceLogLevel.Warning:
+        return LogLevel.Warning;
+
+      case OpenSpaceLogLevel.Error:
+      case OpenSpaceLogLevel.Fatal:
+        return LogLevel.Error;
+
+      default:
+        return LogLevel.Info;
     }
-    if (level === '(Error)') {
-      return LogLevel.Error;
-    }
-    return LogLevel.Info;
   }
+
   const logLevel = getLogLevel();
 
-  showNotification(category, `${category}: ${msg.join(' ')}`, logLevel);
+  showNotification(category, `${category}: ${message}`, logLevel);
 }
 
 export const addLoggingListener = (startListening: AppStartListening) => {
