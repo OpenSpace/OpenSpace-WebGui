@@ -1,8 +1,7 @@
-import { Anchor, Container, Group, Menu, Text } from '@mantine/core';
+import { Anchor, Container, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useProperty } from '@/hooks/properties';
 import { ChevronRightIcon, ConsoleIcon, ExitAppIcon } from '@/icons/icons';
