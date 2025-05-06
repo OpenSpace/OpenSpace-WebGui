@@ -1,4 +1,4 @@
-import { Group, Stack, Text } from '@mantine/core';
+import { Group, Stack } from '@mantine/core';
 
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
@@ -27,7 +27,6 @@ export function VectorDefaultView({
 
   const { min, max, step } = additionalData;
   const shouldShowSlider = max.every((max, i) => validSliderExtent(min[i], max));
-  const labels = ['x', 'y', 'z', 'w'];
 
   function setValue(index: number, newValue: number) {
     const v = [...value];
@@ -52,9 +51,6 @@ export function VectorDefaultView({
           preventGrowOverflow={false}
           key={i}
         >
-          <Text c={'dimmed'} mt={5} flex={0} size={'sm'}>
-            {labels[i]}
-          </Text>
           <Stack gap={'xs'}>
             <NumericInput
               value={item}

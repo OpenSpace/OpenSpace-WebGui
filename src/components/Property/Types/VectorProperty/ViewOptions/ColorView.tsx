@@ -52,11 +52,10 @@ export function ColorView({
 
   function isValidColorString(colorString: string): boolean {
     const newValues = colorString.split(',').map((v) => parseFloat(v));
-    const result =
-      newValues.length === value.length &&
-      newValues.every((v) => !isNaN(v) && isNumber(v));
+    const validLength = newValues.length === value.length;
+    const validNumbers = newValues.every((v) => !isNaN(v) && isNumber(v));
 
-    return result;
+    return validLength && validNumbers;
   }
 
   function onColorPickerChange(color: RGBA) {
@@ -102,7 +101,7 @@ export function ColorView({
           />
         )
       }
-      placeholder={'Example: 1, 0.5, 0.2'}
+      placeholder={`1, 0.5, 0.2${hasAlpha ? ', 0.5' : ''}`}
       errorCheck={(value: string) => !isValidColorString(value)}
     />
   );
