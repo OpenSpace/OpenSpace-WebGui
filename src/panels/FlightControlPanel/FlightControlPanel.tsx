@@ -1,15 +1,5 @@
 import { useEffect } from 'react';
-import {
-  Box,
-  Container,
-  Group,
-  List,
-  Slider,
-  Space,
-  Stack,
-  Text,
-  Title
-} from '@mantine/core';
+import { Container, Group, List, Slider, Space, Stack, Text, Title } from '@mantine/core';
 
 import { FrictionControls } from '@/components/FrictionControls/FrictionControls';
 import { FrictionControlsInfo } from '@/components/FrictionControls/FrictionControlsInfo';
@@ -63,23 +53,23 @@ export function FlightControlPanel() {
     <Stack gap={'xs'}>
       <BoolInput
         name={'Toggle flight control'}
-        description={infoBoxContent}
+        info={infoBoxContent}
         value={isControllerEnabled}
         setValue={toggleFlightController}
       />
 
       <Title order={2}>Settings</Title>
-      <Box>
-        <Label name={'Friction control'} description={<FrictionControlsInfo />} />
+      <Stack gap={'xs'}>
+        <Label name={'Friction control'} info={<FrictionControlsInfo />} />
         <Group align={'start'}>
           <FrictionControls size={'sm'} />
         </Group>
-      </Box>
+      </Stack>
 
-      <Box>
+      <Stack gap={'xs'}>
         <Label
           name={'Input sensitivity'}
-          description={'Controls how sensitive the touch and mouse inputs are'}
+          info={'Controls how sensitive the touch and mouse inputs are'}
         />
         <Slider
           min={0.1}
@@ -103,8 +93,8 @@ export function FlightControlPanel() {
           onChange={(value) => {
             dispatch(setFlightControllerInputScaleFactor(value));
           }}
-        ></Slider>
-      </Box>
+        />
+      </Stack>
     </Stack>
   );
 }

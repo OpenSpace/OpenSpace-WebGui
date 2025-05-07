@@ -1,25 +1,22 @@
 import { JSX } from 'react';
 import { Checkbox, Group } from '@mantine/core';
 
-import { Label } from '../Label/Label';
+import { InfoBox } from '../InfoBox/InfoBox';
 
 interface Props {
   name: string;
-  description: string | JSX.Element;
   value: boolean;
   setValue: (value: boolean) => void;
-  label?: JSX.Element;
+  info?: string | JSX.Element;
   disabled?: boolean;
 }
 
-export function BoolInput({
-  value,
-  setValue,
-  name,
-  description,
-  label,
-  disabled = false
-}: Props) {
+/**
+ * This custom checkbox should be used for all boolean inputs, to make sure that we use a
+ * consistent design, always support input using Enter, an provide an aria-label for
+ * screen readers.
+ */
+export function BoolInput({ value, setValue, name, info, disabled = false }: Props) {
   return (
     <Group gap={'xs'} wrap={'nowrap'}>
       <Checkbox
@@ -27,9 +24,10 @@ export function BoolInput({
         onChange={(event) => setValue(event.currentTarget.checked)}
         onKeyDown={(event) => event.key === 'Enter' && setValue(!value)}
         disabled={disabled}
+        label={name}
         aria-label={name}
       />
-      {label || <Label name={name} description={description} />}
+      {info && <InfoBox>{info}</InfoBox>}
     </Group>
   );
 }

@@ -1,13 +1,6 @@
-import {
-  ActionIcon,
-  Checkbox,
-  Group,
-  Menu,
-  Stack,
-  ThemeIcon,
-  Tooltip
-} from '@mantine/core';
+import { ActionIcon, Group, Menu, Stack, ThemeIcon, Tooltip } from '@mantine/core';
 
+import { BoolInput } from '@/components/Input/BoolInput';
 import { SettingsIcon, WarningIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { camelCaseToRegularText } from '@/util/text';
@@ -49,10 +42,10 @@ export function FilterListSearchSettingsMenu<T extends object>({
           {/* When using Object.entries a new object is created, and we cant infer the type from that */}
           {Object.entries(keys).map(([key, enabled]) => (
             <Group key={key}>
-              <Checkbox
-                label={labels ? labels[key as keyof T] : camelCaseToRegularText(key)}
-                checked={enabled as boolean}
-                onChange={(event) => setKey(key as keyof T, event.currentTarget.checked)}
+              <BoolInput
+                name={labels ? labels[key as keyof T] || '' : camelCaseToRegularText(key)}
+                value={enabled as boolean}
+                setValue={(newValue) => setKey(key as keyof T, newValue)}
               />
             </Group>
           ))}
