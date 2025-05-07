@@ -173,7 +173,7 @@ export function TimeLine({
 
   return (
     <div style={{ flexGrow: 0 }}>
-      <Group justify={'flex-end'} wrap={'nowrap'}>
+      <Group justify={'flex-end'} wrap={'nowrap'} gap={5}>
         <ActionIcon onClick={() => zoomByButton(0.5)} aria-label={'Zoom in timeline'}>
           <ZoomOutIcon size={IconSize.sm} />
         </ActionIcon>
