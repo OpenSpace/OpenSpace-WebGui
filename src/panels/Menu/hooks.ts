@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setMenuItemsOrder, setMenuItemVisible } from '@/redux/local/localSlice';
+import { LogLevel } from '@/types/enums';
 import { useSaveLoadJsonFiles } from '@/util/fileIOhooks';
+import { showNotification } from '@/util/logging';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { TaskbarItemConfig } from './types';
-import { showNotification } from '@/util/logging';
-import { LogLevel } from '@/types/enums';
 
 export function useMenuItems() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);

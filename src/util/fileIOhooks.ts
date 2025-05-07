@@ -1,9 +1,6 @@
 import { useFileDialog } from '@mantine/hooks';
 
-import { LogLevel } from '@/types/enums';
-
-import { showNotification } from './logging';
-import { isReactRenderable } from './reactHelpers';
+import { processCatchError } from './logging';
 
 function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void {
   const fileDialog = useFileDialog({
@@ -23,11 +20,7 @@ function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void 
       handlePickedFile(json);
     } catch (e) {
       // TODO: do we want to throw here?
-      if (isReactRenderable(e)) {
-        showNotification('Error parsing file', e, LogLevel.Error);
-      } else {
-        console.error('Error parsing file', e);
-      }
+      processCatchError(e, 'Error parsing file');
     }
   }
 
@@ -69,11 +62,7 @@ async function openSaveFileDialog(contents: JSON) {
       // Close the file and write the contents to disk
       await writable.close();
     } catch (e) {
-      if (isReactRenderable(e)) {
-        showNotification('Error parsing file', e, LogLevel.Error);
-      } else {
-        console.error(e);
-      }
+      processCatchError(e, 'Error parsing file');
     }
   } else {
     // This is the fallback code if showSaveFilePicker is not available

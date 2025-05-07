@@ -11,6 +11,7 @@ import {
   removeUriFromPropertyTree
 } from '@/redux/propertytree/propertyTreeMiddleware';
 import { ConnectionStatus } from '@/types/enums';
+import { processCatchError } from '@/util/logging';
 
 import { refreshMissions } from '../missions/missionsMiddleware';
 
@@ -28,7 +29,7 @@ export const setupEventsSubscription = createAsyncThunk(
         status: 'start_subscription'
       });
     } catch (e) {
-      console.error(e);
+      processCatchError(e, 'Error subscribing to OpenSpace events');
     }
     for await (const data of eventTopic.iterator() as AsyncIterable<EventData>) {
       switch (data.Event) {

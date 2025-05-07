@@ -2,6 +2,8 @@ import { notifications } from '@mantine/notifications';
 
 import { LogLevel } from '@/types/enums';
 
+import { isReactNode } from './reactHelpers';
+
 export function showNotification(
   title: string,
   message: React.ReactNode,
@@ -29,4 +31,13 @@ export function showNotification(
   });
 
   log[level](message);
+}
+
+export function processCatchError(error: unknown, title: string) {
+  if (isReactNode(error)) {
+    showNotification(title, error, LogLevel.Error);
+  } else {
+    // eslint-disable-next-line no-console
+    console.error(title, error);
+  }
 }

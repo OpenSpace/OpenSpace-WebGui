@@ -10,7 +10,8 @@ import { AppStartListening } from '../listenerMiddleware';
 
 let topic: Topic | null = null;
 
-/** This `LogLevel` must match OpenSpace/Ghoul LogLevel in
+/**
+ * This `LogLevel` must match OpenSpace/Ghoul LogLevel in
  * https://github.com/OpenSpace/Ghoul/blob/f02810ad2f77166711f4503060e20745f0d808c6/include/ghoul/logging/loglevel.h#L41
  */
 enum OpenSpaceLogLevel {
@@ -73,11 +74,9 @@ function logNotificationMessage(logMessage: LogMessage) {
     switch (level) {
       case OpenSpaceLogLevel.Warning:
         return LogLevel.Warning;
-
       case OpenSpaceLogLevel.Error:
       case OpenSpaceLogLevel.Fatal:
         return LogLevel.Error;
-
       default:
         return LogLevel.Info;
     }

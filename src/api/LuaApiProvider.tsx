@@ -6,9 +6,8 @@ import { closeConnection } from '@/redux/connection/connectionMiddleware';
 import { startConnection } from '@/redux/connection/connectionSlice';
 import { updateCustomGroupOrdering } from '@/redux/groups/groupsSlice';
 import { useAppDispatch } from '@/redux/hooks';
-import { ConnectionStatus, LogLevel } from '@/types/enums';
-import { showNotification } from '@/util/logging';
-import { isReactRenderable } from '@/util/reactHelpers';
+import { ConnectionStatus } from '@/types/enums';
+import { processCatchError } from '@/util/logging';
 
 import { LuaApiContext } from './LuaApiContext';
 
@@ -32,11 +31,7 @@ export function LuaApiProvider({ children }: PropsWithChildren) {
         const res = await api.singleReturnLibrary();
         setLuaApi(res);
       } catch (e) {
-        if (isReactRenderable(e)) {
-          showNotification('Error fetching OpenSpace API', e, LogLevel.Error);
-        } else {
-          console.error(e);
-        }
+        processCatchError(e, 'Error fetching OpenSpace API');
       }
     };
     if (isConnected) {

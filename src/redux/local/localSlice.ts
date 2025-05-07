@@ -4,6 +4,7 @@ import { TaskbarItemConfig } from '@/panels/Menu/types';
 import { LogLevel } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { showNotification } from '@/util/logging';
+
 import { createDefaultTaskbar } from './util';
 
 export interface LocalState {
