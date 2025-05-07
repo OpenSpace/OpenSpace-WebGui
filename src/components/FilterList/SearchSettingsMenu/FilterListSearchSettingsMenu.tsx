@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
   Checkbox,
@@ -23,13 +24,15 @@ export function FilterListSearchSettingsMenu<T extends object>({
   setKey,
   labels
 }: Props<T>) {
+  const { t } = useTranslation('components', { keyPrefix: 'filter-list' });
   const noKeyIsSelected = Object.values(keys).every((value) => value === false);
+
   return (
     <Menu position={'right-start'} withArrow closeOnItemClick={false}>
       <Menu.Target>
         <ActionIcon flex={'none'}>
           {noKeyIsSelected && (
-            <Tooltip label={'Nothing is selected. Search will be empty.'}>
+            <Tooltip label={t('search-settings-menu.no-selection-tooltip')}>
               <ThemeIcon
                 color={'orange.4'}
                 variant={'transparent'}
@@ -44,7 +47,7 @@ export function FilterListSearchSettingsMenu<T extends object>({
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown maw={'300px'}>
-        <Menu.Label>Search in</Menu.Label>
+        <Menu.Label>{t('search-settings-menu.dropdown-menu-label')}</Menu.Label>
         <Stack p={'xs'}>
           {/* When using Object.entries a new object is created, and we cant infer the type from that */}
           {Object.entries(keys).map(([key, enabled]) => (

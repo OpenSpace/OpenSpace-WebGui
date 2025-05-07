@@ -1,9 +1,12 @@
+import { useTranslation } from 'react-i18next';
+
 import { Pills } from '@/components/Pills/Pills';
 import { PropertyProps } from '@/components/Property/types';
 import { useProperty } from '@/hooks/properties';
 
 export function StringListProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue] = useProperty('StringListProperty', uri);
+  const { t } = useTranslation('components');
 
   if (value === undefined) {
     return <></>;
@@ -13,7 +16,7 @@ export function StringListProperty({ uri, readOnly }: PropertyProps) {
     <Pills
       value={value}
       setValue={setValue}
-      placeHolderText={'item1, item2, ...'}
+      placeHolderText={t('property.list-property.string-list-placeholder-text')}
       disabled={readOnly}
     />
   );

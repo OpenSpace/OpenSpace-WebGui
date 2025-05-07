@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, ActionIconProps } from '@mantine/core';
 import { useInterval, useTimeout } from '@mantine/hooks';
 
@@ -35,7 +36,7 @@ export function StepControlButton({
     () => stepInterval.start(),
     stepHoldDelay
   );
-
+  const { t } = useTranslation('components');
   const onStepDone = useCallback((): void => {
     clearTimeout();
     if (stepInterval.active) {
@@ -89,7 +90,11 @@ export function StepControlButton({
       size={'xs'}
       variant={'transparent'}
       tabIndex={tabIndex}
-      aria-label={direction === 'up' ? 'Increment value' : 'Decrement value'}
+      aria-label={
+        direction === 'up'
+          ? t('input.step-control-button.aria-label.increment')
+          : t('input.step-control-button.aria-label.decrement')
+      }
       {...props}
     >
       {direction === 'up' ? <ChevronUpIcon /> : <ChevronDownIcon />}

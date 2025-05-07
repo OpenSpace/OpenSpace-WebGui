@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Group, Stack, Text } from '@mantine/core';
 
 import { KeybindButtons } from '@/panels/KeybindsPanel/KeybindButtons';
@@ -5,6 +6,7 @@ import { useAppSelector } from '@/redux/hooks';
 
 export function FrictionControlsInfo() {
   const keybinds = useAppSelector((state) => state.actions.keybinds);
+  const { t } = useTranslation('components');
 
   const rotationKeybind = keybinds.find(
     (keybind) => keybind.action === 'os.ToggleRotationFriction'
@@ -19,16 +21,13 @@ export function FrictionControlsInfo() {
   return (
     <>
       <Text size={'md'} fw={'bold'}>
-        Friction controls:
+        {t('friction-controls-info.heading')}:
       </Text>
-      <Text>
-        Enable or disable rotation, zoom, and roll friction. If checked, applies friction
-        to camera movement.
-      </Text>
+      <Text>{t('friction-controls-info.description')}</Text>
       <Stack gap={'xs'}>
         {rotationKeybind && (
           <Group justify={'space-between'}>
-            <Text fw={'bold'}>Rotation:</Text>
+            <Text fw={'bold'}>{t('friction-controls.rotation-label')}:</Text>
             <KeybindButtons
               modifiers={rotationKeybind.modifiers}
               selectedKey={rotationKeybind.key}
@@ -37,7 +36,7 @@ export function FrictionControlsInfo() {
         )}
         {zoomKeybind && (
           <Group justify={'space-between'}>
-            <Text fw={'bold'}>Zoom:</Text>
+            <Text fw={'bold'}>{t('friction-controls.zoom-label')}:</Text>
             <KeybindButtons
               modifiers={zoomKeybind.modifiers}
               selectedKey={zoomKeybind.key}
@@ -46,7 +45,7 @@ export function FrictionControlsInfo() {
         )}
         {rollKeybind && (
           <Group justify={'space-between'}>
-            <Text fw={'bold'}>Roll:</Text>
+            <Text fw={'bold'}>{t('friction-controls.roll-label')}:</Text>
             <KeybindButtons
               modifiers={rollKeybind.modifiers}
               selectedKey={rollKeybind.key}

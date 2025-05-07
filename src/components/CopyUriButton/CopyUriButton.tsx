@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Code, Group } from '@mantine/core';
 
 import { CopyToClipboardButton } from '../CopyToClipboardButton/CopyToClipboardButton';
@@ -7,11 +8,13 @@ interface Props {
 }
 
 function CopyUriButton({ uri }: Props) {
+  const { t } = useTranslation('components');
+
   return (
     <>
       {uri && (
         <Group pt={'sm'}>
-          <Code>Copy URI:</Code>
+          <Code>{t('copy-uri-button.label')}</Code>
           <CopyToClipboardButton value={uri} />
         </Group>
       )}

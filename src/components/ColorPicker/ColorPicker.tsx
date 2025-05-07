@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, ColorSwatch, Popover, RGBA } from '@mantine/core';
 
 import { rgbaToColor } from '@/util/colorHelper';
@@ -12,6 +13,8 @@ interface Props {
 }
 
 export function ColorPicker({ color, disabled, onChange, withAlpha }: Props) {
+  const { t } = useTranslation('components');
+
   return (
     <Popover position={'right-end'} withArrow arrowPosition={'center'}>
       <Popover.Target>
@@ -19,7 +22,7 @@ export function ColorPicker({ color, disabled, onChange, withAlpha }: Props) {
           disabled={disabled}
           size={'lg'}
           variant={'subtle'}
-          aria-label={'Open color edit'}
+          aria-label={t('color-picker.color-swatch-aria-label')}
         >
           <ColorSwatch color={rgbaToColor(color, withAlpha)} />
         </ActionIcon>

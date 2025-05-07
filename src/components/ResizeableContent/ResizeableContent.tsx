@@ -5,6 +5,7 @@ import {
   useRef,
   useState
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Box, BoxComponentProps } from '@mantine/core';
 
 import { DragHandleIcon } from '@/icons/icons';
@@ -26,6 +27,7 @@ export function ResizeableContent({
 }: Props) {
   const [height, setHeight] = useState(defaultHeight);
   const { pointerEvents: windowPointer } = useWindowSize();
+  const { t } = useTranslation('components');
 
   const contentRef = useRef<HTMLDivElement>(null);
   const resizerRef = useRef<HTMLDivElement>(null);
@@ -127,7 +129,7 @@ export function ResizeableContent({
           }}
           size={'xs'}
           radius={0}
-          aria-label={'Resize window (keyboard control not supported)'}
+          aria-label={t('resizeable-content.aria-label')}
         >
           <DragHandleIcon size={IconSize.xs} />
         </ActionIcon>

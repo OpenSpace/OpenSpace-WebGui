@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import {
   ActionIcon,
   ActionIconProps,
@@ -76,6 +77,7 @@ export function NodeNavigationButton({
   disabled
 }: NodeNavigationButtonProps) {
   const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('components', { keyPrefix: 'node-navigation-button' });
 
   function focus(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     if (!event.shiftKey) {
@@ -150,59 +152,41 @@ export function NodeNavigationButton({
   switch (type) {
     case NavigationType.Jump:
       content.onClick = fadeTo;
-      content.title = 'Jump to';
+      content.title = t('jump.title');
       content.icon = <LightningFlashIcon />;
-      content.tooltip = 'Teleport to object using a fade transition';
+      content.tooltip = t('jump.tooltip');
       break;
     case NavigationType.JumpGeo:
       content.onClick = jumpToGeo;
-      content.title = 'Jump to Geo';
+      content.title = t('jump-geo.title');
       content.icon = <LightningFlashIcon />;
-      content.tooltip = 'Teleport to position using a fade transition';
+      content.tooltip = t('jump-geo.tooltip');
       break;
     case NavigationType.Focus:
       content.onClick = focus;
-      content.title = 'Focus';
+      content.title = t('focus.title');
       content.icon = <FocusIcon />;
-      content.tooltip = (
-        <span>
-          Focus the object (set as anchor). Hold <Kbd>Shift</Kbd> when clicking to focus
-          without retargeting
-        </span>
-      );
+      content.tooltip = <Trans t={t} i18nKey={'focus.tooltip'} components={[<Kbd />]} />;
       break;
     case NavigationType.Fly:
       content.onClick = flyTo;
-      content.title = 'Fly to';
+      content.title = t('fly.title');
       content.icon = <AirplaneIcon />;
-      content.tooltip = (
-        <span>
-          Trigger a flight to the object. Hold <Kbd>Shift</Kbd> when clicking to instantly
-          teleport/jump
-        </span>
-      );
+      content.tooltip = <Trans t={t} i18nKey={'fly.tooltip'} components={[<Kbd />]} />;
       break;
     case NavigationType.FlyGeo:
       content.onClick = flyToGeo;
-      content.title = 'Fly to Geo';
+      content.title = t('fly-geo.title');
       content.icon = <AirplaneIcon />;
       content.tooltip = (
-        <span>
-          Trigger a flight to the position. Hold <Kbd>Shift</Kbd> when clicking to
-          instantly teleport/jump
-        </span>
+        <Trans t={t} i18nKey={'fly-geo.tooltip'} components={[<Kbd />]} />
       );
       break;
     case NavigationType.Frame:
       content.onClick = zoomToFocus;
-      content.title = 'Zoom to / Frame';
+      content.title = t('frame.title');
       content.icon = <FrameFocusIcon />;
-      content.tooltip = (
-        <span>
-          Frame the object by moving the camera in a straigt line and rotate towards it.
-          Hold <Kbd>Shift</Kbd> when clicking to do it instantaneously
-        </span>
-      );
+      content.tooltip = <Trans t={t} i18nKey={'frame.tooltip'} components={[<Kbd />]} />;
       break;
 
     default:
