@@ -7,6 +7,7 @@ interface Props extends MantineStyleProps {
   name: string;
   value?: boolean; // This is optional to allow for defaultChecked to work
   setValue: (value: boolean) => void;
+  showLabel?: boolean;
   defaultChecked?: boolean;
   info?: string | JSX.Element;
   disabled?: boolean;
@@ -23,6 +24,7 @@ export function BoolInput({
   name,
   defaultChecked,
   info,
+  showLabel = true,
   disabled = false,
   ...styleProps
 }: Props) {
@@ -34,7 +36,7 @@ export function BoolInput({
         onKeyDown={(event) => event.key === 'Enter' && setValue(!value)}
         disabled={disabled}
         defaultChecked={defaultChecked}
-        label={name}
+        label={showLabel ? name : undefined}
         aria-label={name}
       />
       {info && <InfoBox>{info}</InfoBox>}
