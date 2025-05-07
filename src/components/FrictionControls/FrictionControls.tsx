@@ -17,27 +17,27 @@ export function FrictionControls({ size }: Props) {
       <Chip
         checked={rotation}
         onChange={() => setRotation(!rotation)}
-        variant={'light'}
+        variant={rotation ? 'light' : 'transparent'}
         size={size}
-        color={'white'}
+        color={'teal'}
       >
         Rotation
       </Chip>
       <Chip
         checked={zoom}
         onChange={() => setZoom(!zoom)}
-        variant={'light'}
+        variant={zoom ? 'light' : 'transparent'}
         size={size}
-        color={'white'}
+        color={'teal'}
       >
         Zoom
       </Chip>
       <Chip
         checked={roll}
         onChange={() => setRoll(!roll)}
-        variant={'light'}
+        variant={roll ? 'light' : 'transparent'}
         size={size}
-        color={'white'}
+        color={'teal'}
       >
         Roll
       </Chip>
