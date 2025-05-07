@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ActionIcon, Checkbox, Code, Group, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Code, Group, Text, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
