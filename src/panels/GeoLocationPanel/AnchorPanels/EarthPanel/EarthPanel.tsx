@@ -1,19 +1,10 @@
 import { useState } from 'react';
-import {
-  Button,
-  Checkbox,
-  Group,
-  NumberInput,
-  Tabs,
-  Text,
-  TextInput,
-  Title,
-  Tooltip
-} from '@mantine/core';
+import { Button, Group, NumberInput, Tabs, Text, TextInput, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { BoolInput } from '@/components/Input/BoolInput';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
 import { useAppSelector } from '@/redux/hooks';
@@ -165,16 +156,13 @@ export function EarthPanel({ currentAnchor }: Props) {
               Results
             </Title>
             <SettingsPopout>
-              <Tooltip
-                label={'Calculates an appropriate altitude automatically if unchecked'}
-              >
-                <Checkbox
-                  checked={isCustomAltitude}
-                  onChange={(event) => setIsCustomAltitude(event.currentTarget.checked)}
-                  label={'Use custom altitude'}
-                  m={'xs'}
-                />
-              </Tooltip>
+              <BoolInput
+                name={'Use custom altitude'}
+                value={isCustomAltitude}
+                setValue={setIsCustomAltitude}
+                info={'Calculates an appropriate altitude automatically if unchecked'}
+                m={'xs'}
+              />
               <NumberInput
                 value={customAltitude}
                 onChange={(value) => {
