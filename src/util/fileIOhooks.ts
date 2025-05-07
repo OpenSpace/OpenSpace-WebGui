@@ -1,8 +1,13 @@
 import { useFileDialog } from '@mantine/hooks';
+import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
 
-import { processCatchError } from './logging';
+import { useAppDispatch } from '@/redux/hooks';
+import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
+import { LogLevel } from '@/types/enums';
 
 function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void {
+  const dispatch = useAppDispatch();
+
   const fileDialog = useFileDialog({
     multiple: false,
     accept: '.json',
@@ -19,8 +24,7 @@ function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void 
       const json = JSON.parse(content);
       handlePickedFile(json);
     } catch (e) {
-      // TODO: do we want to throw here?
-      processCatchError(e, 'Error parsing file');
+      dispatch(handleNotificationLogging('Error parsing file', e, LogLevel.Error));
     }
   }
 
@@ -33,7 +37,10 @@ function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void 
 
 // For documentation about these features please read this article:
 // https://developer.chrome.com/docs/capabilities/browser-fs-access#opening_files_2
-async function openSaveFileDialog(contents: JSON) {
+async function openSaveFileDialogInternal(
+  contents: JSON,
+  dispatch: Dispatch<UnknownAction>
+) {
   const contentsString = JSON.stringify(contents, null, 2);
 
   const supportsSaveDialog = 'showSaveFilePicker' in self;
@@ -62,7 +69,7 @@ async function openSaveFileDialog(contents: JSON) {
       // Close the file and write the contents to disk
       await writable.close();
     } catch (e) {
-      processCatchError(e, 'Error parsing file');
+      dispatch(handleNotificationLogging('Error parsing file', e, LogLevel.Error));
     }
   } else {
     // This is the fallback code if showSaveFilePicker is not available
@@ -85,7 +92,12 @@ async function openSaveFileDialog(contents: JSON) {
 // Exporting these as a hook as they seem to belong in the same file,
 // even though only on of them is a hook
 export function useSaveLoadJsonFiles(handlePickedFile: (content: JSON) => void) {
+  const dispatch = useAppDispatch();
   const openLoadFileDialog = useLoadJsonFile(handlePickedFile);
+
+  async function openSaveFileDialog(contents: JSON) {
+    openSaveFileDialogInternal(contents, dispatch);
+  }
 
   return { openSaveFileDialog, openLoadFileDialog };
 }

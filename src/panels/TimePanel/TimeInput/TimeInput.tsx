@@ -6,10 +6,10 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { useSetOpenSpaceTime } from '@/hooks/util';
 import { LockIcon, LockOpenIcon } from '@/icons/icons';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { isDateValid } from '@/redux/time/util';
 import { LogLevel } from '@/types/enums';
-import { showNotification } from '@/util/logging';
 
 import { TimePart } from '../types';
 import { maxDaysInMonth } from '../util';
@@ -27,6 +27,7 @@ export function TimeInput() {
   const luaApi = useOpenSpaceApi();
   const { setTime, interpolateTime } = useSetOpenSpaceTime();
   useSubscribeToTime();
+  const dispatch = useAppDispatch();
 
   const cappedDate = new Date(cappedTime ?? '');
   const time = isLocked ? pendingTime : cappedDate;
@@ -69,10 +70,12 @@ export function TimeInput() {
     relative: boolean;
   }) {
     if (!isDateValid(data.time)) {
-      showNotification(
-        'Invalid time',
-        'Error trying to set time to an invalid date',
-        LogLevel.Warning
+      dispatch(
+        handleNotificationLogging(
+          'Invalid time',
+          'Error trying to set time to an invalid date',
+          LogLevel.Warning
+        )
       );
       return;
     }

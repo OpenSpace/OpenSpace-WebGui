@@ -49,7 +49,7 @@ export enum EngineMode {
 }
 
 export enum LogLevel {
-  Info = 0,
-  Warning,
-  Error
+  Info = 'Info',
+  Warning = 'Warning',
+  Error = 'Error'
 }

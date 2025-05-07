@@ -6,14 +6,13 @@ import { getAction } from '@/redux/actions/actionsMiddleware';
 import { removeAction } from '@/redux/actions/actionsSlice';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
+import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
+import { refreshMissions } from '@/redux/missions/missionsMiddleware';
 import {
   addUriToPropertyTree,
   removeUriFromPropertyTree
 } from '@/redux/propertytree/propertyTreeMiddleware';
-import { ConnectionStatus } from '@/types/enums';
-import { processCatchError } from '@/util/logging';
-
-import { refreshMissions } from '../missions/missionsMiddleware';
+import { ConnectionStatus, LogLevel } from '@/types/enums';
 
 import { EventData } from './types';
 
@@ -29,7 +28,14 @@ export const setupEventsSubscription = createAsyncThunk(
         status: 'start_subscription'
       });
     } catch (e) {
-      processCatchError(e, 'Error subscribing to OpenSpace events');
+      thunkAPI.dispatch(
+        handleNotificationLogging(
+          'Error subscribing to OpenSpace events',
+          e,
+          LogLevel.Error
+        )
+      );
+      thunkAPI.rejectWithValue(e);
     }
     for await (const data of eventTopic.iterator() as AsyncIterable<EventData>) {
       switch (data.Event) {

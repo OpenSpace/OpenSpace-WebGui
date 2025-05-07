@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { TaskbarItemConfig } from '@/panels/Menu/types';
-import { LogLevel } from '@/types/enums';
 import { Uri } from '@/types/types';
-import { showNotification } from '@/util/logging';
 
 import { createDefaultTaskbar } from './util';
 
@@ -63,12 +61,6 @@ export const localSlice = createSlice({
       const item = state.taskbarItems.find((item) => item.id === action.payload.id);
       if (item) {
         item.visible = action.payload.visible;
-      } else {
-        showNotification(
-          'Error missing menu item',
-          `Tried to set visibility of non-existent menu item: '${action.payload.id}'`,
-          LogLevel.Error
-        );
       }
       return state;
     },

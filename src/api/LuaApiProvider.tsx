@@ -6,8 +6,8 @@ import { closeConnection } from '@/redux/connection/connectionMiddleware';
 import { startConnection } from '@/redux/connection/connectionSlice';
 import { updateCustomGroupOrdering } from '@/redux/groups/groupsSlice';
 import { useAppDispatch } from '@/redux/hooks';
-import { ConnectionStatus } from '@/types/enums';
-import { processCatchError } from '@/util/logging';
+import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
+import { ConnectionStatus, LogLevel } from '@/types/enums';
 
 import { LuaApiContext } from './LuaApiContext';
 
@@ -31,13 +31,15 @@ export function LuaApiProvider({ children }: PropsWithChildren) {
         const res = await api.singleReturnLibrary();
         setLuaApi(res);
       } catch (e) {
-        processCatchError(e, 'Error fetching OpenSpace API');
+        dispatch(
+          handleNotificationLogging('Error fetching OpenSpace API', e, LogLevel.Error)
+        );
       }
     };
     if (isConnected) {
       fetchApi();
     }
-  }, [isConnected]);
+  }, [isConnected, dispatch]);
 
   // The groups ordering is not part of any topic so we request it
   // once we have the api

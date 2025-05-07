@@ -1,12 +1,29 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { notifications } from '@mantine/notifications';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
+import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
 import { LogLevel } from '@/types/enums';
-import { showNotification } from '@/util/logging';
+import { isReactNode } from '@/util/reactHelpers';
 
-import { onCloseConnection, onOpenConnection } from '../connection/connectionSlice';
 import { AppStartListening } from '../listenerMiddleware';
+import { RootState } from '../store';
+
+import { updateLogLevel } from './loggingSlice';
+
+export const handleNotificationLogging = createAction(
+  'logging/handleNotificationLogging',
+  function prepare(title: string, message: unknown, level: LogLevel) {
+    return {
+      payload: {
+        title,
+        message,
+        level
+      }
+    };
+  }
+);
 
 let topic: Topic | null = null;
 
@@ -35,17 +52,19 @@ type LogMessage = {
 
 export const setupSubscription = createAsyncThunk(
   'logging/setupSubscription',
-  async () => {
+  async (level: LogLevel, thunkApi) => {
     topic = api.startTopic('errorLog', {
       event: 'start_subscription',
       settings: {
-        logLevel: 'Warning'
+        logLevel: level
       }
     });
 
     (async () => {
       for await (const message of topic.iterator() as AsyncIterable<LogMessage>) {
-        logNotificationMessage(message);
+        const { showNotifications } = (thunkApi.getState() as RootState).logging;
+
+        logNotificationMessage(message, showNotifications);
       }
     })();
   }
@@ -63,7 +82,7 @@ function unsubscribe() {
   topic = null;
 }
 
-function logNotificationMessage(logMessage: LogMessage) {
+function logNotificationMessage(logMessage: LogMessage, showNotification: boolean) {
   const { category, level, message } = logMessage;
 
   if (level === OpenSpaceLogLevel.NoLogging) {
@@ -84,7 +103,39 @@ function logNotificationMessage(logMessage: LogMessage) {
 
   const logLevel = getLogLevel();
 
-  showNotification(category, `${category}: ${message}`, logLevel);
+  internalHandleLogging(category, `${category}: ${message}`, logLevel, showNotification);
+}
+
+function internalHandleLogging(
+  title: string,
+  message: unknown,
+  level: LogLevel,
+  showNotification: boolean
+) {
+  const color = {
+    [LogLevel.Info]: 'white',
+    [LogLevel.Warning]: 'yellow',
+    [LogLevel.Error]: 'red'
+  };
+
+  const log = {
+    // eslint-disable-next-line no-console
+    [LogLevel.Info]: console.log,
+    // eslint-disable-next-line no-console
+    [LogLevel.Warning]: console.warn,
+    // eslint-disable-next-line no-console
+    [LogLevel.Error]: console.error
+  };
+
+  if (isReactNode(message) && showNotification) {
+    notifications.show({
+      title: title,
+      message: message,
+      color: color[level]
+    });
+  }
+
+  log[level](message);
 }
 
 export const addLoggingListener = (startListening: AppStartListening) => {
@@ -92,7 +143,8 @@ export const addLoggingListener = (startListening: AppStartListening) => {
     actionCreator: onOpenConnection,
     effect: async (_, listenerApi) => {
       if (!topic) {
-        listenerApi.dispatch(setupSubscription());
+        // By default we subscribe to "Warning" messages and above
+        listenerApi.dispatch(setupSubscription(LogLevel.Warning));
       }
     }
   });
@@ -103,6 +155,32 @@ export const addLoggingListener = (startListening: AppStartListening) => {
       if (topic) {
         unsubscribe();
       }
+    }
+  });
+
+  startListening({
+    actionCreator: updateLogLevel,
+    effect: async (action) => {
+      if (topic) {
+        topic.talk({
+          event: 'update_logLevel',
+          logLevel: action.payload
+        });
+      }
+    }
+  });
+
+  startListening({
+    actionCreator: handleNotificationLogging,
+    effect: (action, listenerApi) => {
+      const { title, message, level } = action.payload;
+
+      internalHandleLogging(
+        title,
+        message,
+        level,
+        listenerApi.getState().logging.showNotifications
+      );
     }
   });
 };
