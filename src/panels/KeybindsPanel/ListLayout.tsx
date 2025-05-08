@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Chip, Container, Group, Text } from '@mantine/core';
+import { Chip, Container, Group } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
@@ -8,8 +8,8 @@ import { Layout } from '@/components/Layout/Layout';
 import { useAppSelector } from '@/redux/hooks';
 import { Action, KeybindInfoType, KeybindModifiers } from '@/types/types';
 
-import { KeybindButtons } from './KeybindButtons';
 import { KeybindInfo } from './KeybindInfo';
+import { ListEntry } from './ListEntry';
 
 export function ListLayout() {
   const [selectedAction, setSelectedAction] = useState<Action | null>(null);
@@ -86,21 +86,13 @@ export function ListLayout() {
             </Group>
             <FilterList.SearchResults
               data={keybindInfo}
-              renderElement={(node) => (
-                <Button
-                  onClick={() => onClick(node)}
-                  size={'md'}
-                  variant={
-                    node.identifier === selectedAction?.identifier ? 'filled' : 'light'
-                  }
-                  fullWidth
-                  rightSection={
-                    <KeybindButtons modifiers={node.modifiers} selectedKey={node.key} />
-                  }
-                  justify={'space-between'}
-                >
-                  <Text truncate>{node.name}</Text>
-                </Button>
+              renderElement={(entry) => (
+                <ListEntry
+                  key={entry.identifier}
+                  keybind={entry}
+                  onClick={() => onClick(entry)}
+                  isSelected={entry.identifier === selectedAction?.identifier}
+                />
               )}
               matcherFunc={generateMatcherFunctionByKeys(selectedSearchKeys)}
             >
