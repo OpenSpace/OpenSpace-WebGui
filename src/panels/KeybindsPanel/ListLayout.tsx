@@ -4,13 +4,19 @@ import { Box, Chip, Group, Paper, Text } from '@mantine/core';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { Layout } from '@/components/Layout/Layout';
 import { useAppSelector } from '@/redux/hooks';
 import { Action, KeybindInfoType, KeybindModifiers } from '@/types/types';
 
 import { KeybindInfo } from './KeybindInfo';
 import { ListEntry } from './ListEntry';
 
-export function ListLayout() {
+interface Props {
+  // The height of this view, used to get the scrolling behavior right
+  height: number;
+}
+
+export function ListLayout({ height }: Props) {
   const [selectedAction, setSelectedAction] = useState<Action | null>(null);
   const [modifiersFilter, setModifiersFilter] = useState<KeybindModifiers>([]);
   const keybinds = useAppSelector((state) => state.actions.keybinds);
@@ -52,54 +58,60 @@ export function ListLayout() {
   }
 
   return (
-    <Group align={'top'} p={'md'}>
-      <Box flex={2}>
-        <FilterList>
-          <Group gap={'xs'}>
-            <FilterList.InputField
-              placeHolderSearchText={'Search for a keybind'}
-              flex={1}
-              miw={200}
-            />
-            <Group gap={5}>
-              <Chip.Group
-                multiple
-                onChange={(value) => setModifiersFilter(value as KeybindModifiers)}
-              >
-                <Chip value={'shift'} size={'xs'}>
-                  Shift
-                </Chip>
-                <Chip value={'control'} size={'xs'}>
-                  Ctrl
-                </Chip>
-                <Chip value={'alt'} size={'xs'}>
-                  Alt
-                </Chip>
-              </Chip.Group>
-            </Group>
-            <FilterList.SearchSettingsMenu
-              keys={allowedSearchKeys}
-              setKey={toggleSearchKey}
-            />
-          </Group>
+    <Group align={'top'} px={'xs'}>
+      <Box h={height} pt={'xs'} flex={2}>
+        <Layout>
+          <FilterList>
+            <Layout.FixedSection>
+              <Group gap={'xs'}>
+                <FilterList.InputField
+                  placeHolderSearchText={'Search for a keybind'}
+                  flex={1}
+                  miw={200}
+                />
+                <Group gap={5}>
+                  <Chip.Group
+                    multiple
+                    onChange={(value) => setModifiersFilter(value as KeybindModifiers)}
+                  >
+                    <Chip value={'shift'} size={'xs'}>
+                      Shift
+                    </Chip>
+                    <Chip value={'control'} size={'xs'}>
+                      Ctrl
+                    </Chip>
+                    <Chip value={'alt'} size={'xs'}>
+                      Alt
+                    </Chip>
+                  </Chip.Group>
+                </Group>
+                <FilterList.SearchSettingsMenu
+                  keys={allowedSearchKeys}
+                  setKey={toggleSearchKey}
+                />
+              </Group>
+            </Layout.FixedSection>
 
-          <FilterList.SearchResults
-            data={keybindInfo}
-            renderElement={(entry) => (
-              <ListEntry
-                key={entry.identifier}
-                keybind={entry}
-                onClick={() => onClick(entry)}
-                isSelected={entry.identifier === selectedAction?.identifier}
-              />
-            )}
-            matcherFunc={generateMatcherFunctionByKeys(selectedSearchKeys)}
-          >
-            <FilterList.SearchResults.VirtualList gap={'xs'} />
-          </FilterList.SearchResults>
-        </FilterList>
+            <Layout.GrowingSection>
+              <FilterList.SearchResults
+                data={keybindInfo}
+                renderElement={(entry) => (
+                  <ListEntry
+                    key={entry.identifier}
+                    keybind={entry}
+                    onClick={() => onClick(entry)}
+                    isSelected={entry.identifier === selectedAction?.identifier}
+                  />
+                )}
+                matcherFunc={generateMatcherFunctionByKeys(selectedSearchKeys)}
+              >
+                <FilterList.SearchResults.VirtualList gap={'xs'} />
+              </FilterList.SearchResults>
+            </Layout.GrowingSection>
+          </FilterList>
+        </Layout>
       </Box>
-      <Box flex={1}>
+      <Box flex={1} pt={'xs'}>
         {selectedAction ? (
           <KeybindInfo action={selectedAction} />
         ) : (
