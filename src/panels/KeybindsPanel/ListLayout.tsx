@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Chip, Group, Text } from '@mantine/core';
+import { Button, Chip, Container, Group, Text } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
@@ -53,63 +53,65 @@ export function ListLayout() {
   }
 
   return (
-    <Layout pb={'xs'}>
-      <Layout.GrowingSection py={'md'}>
-        <FilterList>
-          <Group gap={'xs'}>
-            <FilterList.InputField
-              placeHolderSearchText={'Search for a keybind'}
-              flex={1}
-              miw={200}
-            />
-            <Group gap={5}>
-              <Chip.Group
-                multiple
-                onChange={(value) => setModifiersFilter(value as KeybindModifiers)}
-              >
-                <Chip value={'shift'} size={'xs'}>
-                  Shift
-                </Chip>
-                <Chip value={'control'} size={'xs'}>
-                  Ctrl
-                </Chip>
-                <Chip value={'alt'} size={'xs'}>
-                  Alt
-                </Chip>
-              </Chip.Group>
+    <Container>
+      <Layout pb={'xs'}>
+        <Layout.GrowingSection py={'md'}>
+          <FilterList>
+            <Group gap={'xs'}>
+              <FilterList.InputField
+                placeHolderSearchText={'Search for a keybind'}
+                flex={1}
+                miw={200}
+              />
+              <Group gap={5}>
+                <Chip.Group
+                  multiple
+                  onChange={(value) => setModifiersFilter(value as KeybindModifiers)}
+                >
+                  <Chip value={'shift'} size={'xs'}>
+                    Shift
+                  </Chip>
+                  <Chip value={'control'} size={'xs'}>
+                    Ctrl
+                  </Chip>
+                  <Chip value={'alt'} size={'xs'}>
+                    Alt
+                  </Chip>
+                </Chip.Group>
+              </Group>
+              <FilterList.SearchSettingsMenu
+                keys={allowedSearchKeys}
+                setKey={toggleSearchKey}
+              />
             </Group>
-            <FilterList.SearchSettingsMenu
-              keys={allowedSearchKeys}
-              setKey={toggleSearchKey}
-            />
-          </Group>
-          <FilterList.SearchResults
-            data={keybindInfo}
-            renderElement={(node) => (
-              <Button
-                onClick={() => onClick(node)}
-                size={'md'}
-                variant={
-                  node.identifier === selectedAction?.identifier ? 'filled' : 'light'
-                }
-                fullWidth
-                rightSection={
-                  <KeybindButtons modifiers={node.modifiers} selectedKey={node.key} />
-                }
-                justify={'space-between'}
-              >
-                <Text truncate>{node.name}</Text>
-              </Button>
-            )}
-            matcherFunc={generateMatcherFunctionByKeys(selectedSearchKeys)}
-          >
-            <FilterList.SearchResults.VirtualList gap={'xs'} />
-          </FilterList.SearchResults>
-        </FilterList>
-      </Layout.GrowingSection>
-      <Layout.FixedSection>
-        {selectedAction && <KeybindInfo selectedAction={selectedAction} />}
-      </Layout.FixedSection>
-    </Layout>
+            <FilterList.SearchResults
+              data={keybindInfo}
+              renderElement={(node) => (
+                <Button
+                  onClick={() => onClick(node)}
+                  size={'md'}
+                  variant={
+                    node.identifier === selectedAction?.identifier ? 'filled' : 'light'
+                  }
+                  fullWidth
+                  rightSection={
+                    <KeybindButtons modifiers={node.modifiers} selectedKey={node.key} />
+                  }
+                  justify={'space-between'}
+                >
+                  <Text truncate>{node.name}</Text>
+                </Button>
+              )}
+              matcherFunc={generateMatcherFunctionByKeys(selectedSearchKeys)}
+            >
+              <FilterList.SearchResults.VirtualList gap={'xs'} />
+            </FilterList.SearchResults>
+          </FilterList>
+        </Layout.GrowingSection>
+        <Layout.FixedSection>
+          {selectedAction && <KeybindInfo selectedAction={selectedAction} />}
+        </Layout.FixedSection>
+      </Layout>
+    </Container>
   );
 }

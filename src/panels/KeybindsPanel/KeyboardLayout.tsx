@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, Divider, Grid, Group, Text, Title } from '@mantine/core';
+import { Container, Divider, Grid, Group, Stack, Text, Title } from '@mantine/core';
 
 import { Action } from '@/types/types';
 
@@ -14,8 +14,7 @@ export function KeyboardLayout() {
 
   const hasSelectedKeys = selectedKey !== '' || activeModifiers.length > 0;
   return (
-    <Container maw={'none'} pt={'xs'}>
-      <Title order={2}>Keybinds</Title>
+    <Container maw={'none'}>
       <FullKeyboard
         setSelectedActions={setSelectedActions}
         setActiveModifiers={setActiveModifiers}
@@ -23,32 +22,32 @@ export function KeyboardLayout() {
         selectedKey={selectedKey}
         activeModifiers={activeModifiers}
       />
-      <Group my={'md'}>
-        <Text size={'lg'} fw={500}>
-          Selected keybind:
-        </Text>
-        <KeybindButtons selectedKey={selectedKey} modifiers={activeModifiers} />
+      <Group align={'top'}>
+        <Stack>
+          <Title order={2}>Selected keybind:</Title>
+          <KeybindButtons selectedKey={selectedKey} modifiers={activeModifiers} />
+        </Stack>
+        <Divider orientation={'vertical'} mx={'xs'} />
+        <Stack flex={1}>
+          <Title order={2}>Mapped actions:</Title>
+          {selectedActions.length > 0 ? (
+            <Grid mx={'xs'}>
+              {selectedActions.map((selectedAction) => (
+                <KeybindInfo
+                  key={selectedAction.identifier}
+                  selectedAction={selectedAction}
+                />
+              ))}
+            </Grid>
+          ) : (
+            <Text>
+              {hasSelectedKeys
+                ? 'No action is associated with this keybind.'
+                : 'No key selected. Select a key to see its action.'}
+            </Text>
+          )}
+        </Stack>
       </Group>
-      <Divider />
-      <Title order={3} my={'md'}>
-        Mapped actions
-      </Title>
-      {selectedActions.length > 0 ? (
-        <Grid mx={'xs'}>
-          {selectedActions.map((selectedAction) => (
-            <KeybindInfo
-              key={selectedAction.identifier}
-              selectedAction={selectedAction}
-            />
-          ))}
-        </Grid>
-      ) : (
-        <Text>
-          {hasSelectedKeys
-            ? 'No action is associated with this keybind.'
-            : 'No key selected. Select a key to see its action.'}
-        </Text>
-      )}
     </Container>
   );
 }

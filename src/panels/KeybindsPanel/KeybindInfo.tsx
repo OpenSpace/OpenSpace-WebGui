@@ -33,6 +33,12 @@ export function KeybindInfo({ selectedAction }: Props) {
               <Code>{selectedAction.guiPath}</Code>
             </Table.Td>
           </Table.Tr>
+          <Table.Tr>
+            <Table.Td>Identifier:</Table.Td>
+            <Table.Td>
+              <Code>{selectedAction.identifier}</Code>
+            </Table.Td>
+          </Table.Tr>
         </Table.Tbody>
       </Table>
     </Paper>
