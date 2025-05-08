@@ -185,7 +185,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     defaultVisible: !window.isWithinCEF
   },
   keybindingsLayout: {
-    title: 'Keybindings Layout',
+    title: 'Keybinds',
     componentID: 'keybindingsLayout',
     content: <KeybindsPanel />,
     renderIcon: (size) => <KeyboardIcon size={size} />,
