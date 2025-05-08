@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Chip, Group } from '@mantine/core';
+import { Box, Chip, Group, Paper, Text } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
@@ -100,7 +100,13 @@ export function ListLayout() {
         </FilterList>
       </Box>
       <Box flex={1}>
-        {selectedAction && <KeybindInfo selectedAction={selectedAction} />}
+        {selectedAction ? (
+          <KeybindInfo selectedAction={selectedAction} />
+        ) : (
+          <Paper p={'md'}>
+            <Text>Select a keybind to see more info</Text>
+          </Paper>
+        )}
       </Box>
     </Group>
   );

@@ -1,4 +1,4 @@
-import { Badge, Code, Group, Paper, Table, Title } from '@mantine/core';
+import { Badge, Code, Group, Paper, Table, Text } from '@mantine/core';
 
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 import { Action } from '@/types/types';
@@ -9,10 +9,10 @@ interface Props {
 
 export function KeybindInfo({ selectedAction }: Props) {
   return (
-    <Paper key={selectedAction.identifier} p={'md'}>
-      <Title order={4} mb={'md'}>
+    <Paper key={selectedAction.identifier} p={'sm'}>
+      <Text ml={'xs'} mb={'xs'} fw={'bold'}>
         {selectedAction.name}
-      </Title>
+      </Text>
       <Table>
         <Table.Tbody>
           <Table.Tr>
