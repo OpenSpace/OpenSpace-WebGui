@@ -101,7 +101,7 @@ export function ListLayout() {
       </Box>
       <Box flex={1}>
         {selectedAction ? (
-          <KeybindInfo selectedAction={selectedAction} />
+          <KeybindInfo action={selectedAction} />
         ) : (
           <Paper p={'md'}>
             <Text>Select a keybind to see more info</Text>

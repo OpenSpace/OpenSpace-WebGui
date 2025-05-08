@@ -33,10 +33,7 @@ export function KeyboardLayout() {
           {selectedActions.length > 0 ? (
             <Grid mx={'xs'}>
               {selectedActions.map((selectedAction) => (
-                <KeybindInfo
-                  key={selectedAction.identifier}
-                  selectedAction={selectedAction}
-                />
+                <KeybindInfo key={selectedAction.identifier} action={selectedAction} />
               ))}
             </Grid>
           ) : (
