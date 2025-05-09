@@ -43,9 +43,7 @@ export function FilterListSearchSettingsMenu<T extends object>({
           {Object.entries(keys).map(([key, enabled]) => (
             <Group key={key}>
               <BoolInput
-                label={
-                  labels ? labels[key as keyof T] || '' : camelCaseToRegularText(key)
-                }
+                label={(labels && labels[key as keyof T]) || camelCaseToRegularText(key)}
                 value={enabled as boolean}
                 setValue={(newValue) => setKey(key as keyof T, newValue)}
               />
