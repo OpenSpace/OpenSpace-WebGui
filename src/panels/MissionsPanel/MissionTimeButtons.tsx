@@ -31,7 +31,7 @@ export function MissionTimeButtons({ currentPhase }: Props) {
     case DisplayType.Phase: {
       const phaseType = isMissionOverview ? 'Mission' : 'Phase';
       return (
-        <Group>
+        <Group wrap={'nowrap'} gap={'xs'}>
           <Button
             onClick={jumpToStartOfPhase}
             leftSection={<GoToStart size={IconSize.xs} />}

@@ -9,7 +9,7 @@ export const TimeLineConfig = {
   paddingGraph: {
     top: 4,
     inner: 5,
-    bottom: 4
+    bottom: 20
   },
   // Minimum width of a phase
   minLevelWidth: 20,
