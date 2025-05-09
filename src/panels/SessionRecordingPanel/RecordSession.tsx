@@ -106,7 +106,7 @@ export function RecordSession() {
       <Title order={2} mb={'xs'}>
         Record
       </Title>
-      <BoolInput name={'Use text file format'} setValue={onFormatChanged} mb={'sm'} />
+      <BoolInput label={'Use text file format'} setValue={onFormatChanged} mb={'sm'} />
       <Group align={'start'} gap={'xs'}>
         <TextInput
           value={filenameRecording}
@@ -126,7 +126,7 @@ export function RecordSession() {
         )}
       </Group>
       <BoolInput
-        name={'Overwrite file'}
+        label={'Overwrite file'}
         value={overwriteFile}
         setValue={onOverwriteFileChanged}
         disabled={!showOverwriteCheckbox}

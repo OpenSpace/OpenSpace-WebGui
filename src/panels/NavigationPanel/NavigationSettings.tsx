@@ -23,7 +23,7 @@ export function NavigationSettings() {
     <SettingsPopout title={'Navigation Settings'} position={'right'}>
       <Container>
         <BoolInput
-          name={'Include Non-focusable Nodes in Search'}
+          label={'Include Non-focusable Nodes in Search'}
           value={!showOnlyFocusableInSearch}
           setValue={(value: boolean) => dispatch(setOnlyFocusableInNavMenu(!value))}
           info={`Per default, nodes that are marked as non-focusable are excluded from the

@@ -4,10 +4,10 @@ import { Checkbox, Group, MantineStyleProps } from '@mantine/core';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 
 interface Props extends MantineStyleProps {
-  name: string;
   value?: boolean; // This is optional to allow for defaultChecked to work
   setValue: (value: boolean) => void;
-  showLabel?: boolean;
+  label?: string;
+  ariaLabel?: string;
   defaultChecked?: boolean;
   info?: string | JSX.Element;
   disabled?: boolean;
@@ -19,15 +19,23 @@ interface Props extends MantineStyleProps {
  * screen readers.
  */
 export function BoolInput({
+  label,
   value,
   setValue,
-  name,
+  ariaLabel,
   defaultChecked,
   info,
-  showLabel = true,
   disabled = false,
   ...styleProps
 }: Props) {
+  if (value === undefined && defaultChecked === undefined) {
+    throw new Error('Either value or defaultChecked must be provided');
+  }
+
+  if (!label && !ariaLabel) {
+    throw new Error('If no label is provided, ariaLabel must be provided');
+  }
+
   return (
     <Group gap={'xs'} wrap={'nowrap'} {...styleProps}>
       <Checkbox
@@ -36,8 +44,8 @@ export function BoolInput({
         onKeyDown={(event) => event.key === 'Enter' && setValue(!value)}
         disabled={disabled}
         defaultChecked={defaultChecked}
-        label={showLabel ? name : undefined}
-        aria-label={name}
+        label={label}
+        aria-label={ariaLabel || label}
       />
       {info && <InfoBox>{info}</InfoBox>}
     </Group>

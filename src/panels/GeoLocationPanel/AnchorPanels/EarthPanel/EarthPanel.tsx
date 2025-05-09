@@ -157,7 +157,7 @@ export function EarthPanel({ currentAnchor }: Props) {
             </Title>
             <SettingsPopout>
               <BoolInput
-                name={'Use custom altitude'}
+                label={'Use custom altitude'}
                 value={isCustomAltitude}
                 setValue={setIsCustomAltitude}
                 info={'Calculates an appropriate altitude automatically if unchecked'}

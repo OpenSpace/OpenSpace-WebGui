@@ -25,9 +25,8 @@ export function ScriptLogEntry({ script, index, isSelected, onToggleSelection }:
     <Group wrap={'nowrap'} align={'start'} gap={'xs'}>
       <BoolInput
         value={isSelected}
-        name={`Select script ${index}`}
+        ariaLabel={`Select script ${index}`}
         setValue={() => onToggleSelection(index)}
-        showLabel={false}
       />
       <Code color={'dark.7'} w={'100%'}>
         <Text

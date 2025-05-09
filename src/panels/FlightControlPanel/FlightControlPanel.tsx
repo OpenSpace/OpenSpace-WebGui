@@ -52,7 +52,7 @@ export function FlightControlPanel() {
   return (
     <Stack gap={'xs'}>
       <BoolInput
-        name={'Toggle flight control'}
+        label={'Toggle flight control'}
         info={infoBoxContent}
         value={isControllerEnabled}
         setValue={toggleFlightController}

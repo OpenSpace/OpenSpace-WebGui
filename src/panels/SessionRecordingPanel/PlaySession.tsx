@@ -50,14 +50,14 @@ export function PlaySession() {
       </Title>
       <Stack gap={'xs'}>
         <BoolInput
-          name={'Loop playback'}
+          label={'Loop playback'}
           value={loopPlayback}
           setValue={onLoopPlaybackChange}
           disabled={!isIdle}
         />
         <Group>
           <BoolInput
-            name={'Output frames'}
+            label={'Output frames'}
             value={shouldOutputFrames}
             setValue={onShouldUpdateFramesChange}
             disabled={!isIdle}

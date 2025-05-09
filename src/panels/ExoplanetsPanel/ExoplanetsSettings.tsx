@@ -65,14 +65,14 @@ export function ExoplanetsSettings({ hasAddedExoplanets }: Props) {
     <Collapsable title={'Settings'}>
       <Stack gap={'xs'}>
         <BoolInput
-          name={'Show Habitable Zone'}
+          label={'Show Habitable Zone'}
           value={showHabitableZone}
           setValue={toggleShowHabitableZone}
           info={`Show/Hide the habitable zone visualizations. Setting the value automatically
             updates the visibility for all added exoplanet systems.`}
         />
         <BoolInput
-          name={'Show Orbit Uncertainty'}
+          label={'Show Orbit Uncertainty'}
           value={showOrbitUncertainty}
           setValue={toggleShowOrbitUncertainty}
           info={`Show/Hide disc visualization of the uncertainty of the planetary orbits.
@@ -80,7 +80,7 @@ export function ExoplanetsSettings({ hasAddedExoplanets }: Props) {
             systems.`}
         />
         <BoolInput
-          name={'1 AU Size Ring'}
+          label={'1 AU Size Ring'}
           value={show1AuRing}
           setValue={toggleShow1AuRing}
           info={`If true, show a ring with the radius 1 AU around the host star of each system,
