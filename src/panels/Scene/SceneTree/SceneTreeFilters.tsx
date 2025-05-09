@@ -57,7 +57,8 @@ export function SceneTreeFilters({ setFilter, filter }: Props) {
               name={'Show only visible'}
               value={filter.showOnlyVisible}
               setValue={(value) => setFilter({ showOnlyVisible: value })}
-              info={'Visible = Enabled and not faded out'}
+              info={`Show only nodes that are currenlty visible, meaning enabled and not
+                faded out.`}
             />
             <BoolInput
               name={'Show only focusable'}
@@ -71,7 +72,7 @@ export function SceneTreeFilters({ setFilter, filter }: Props) {
               value={filter.includeGuiHiddenNodes}
               setValue={(value) => setFilter({ includeGuiHiddenNodes: value })}
               info={`Show scene graph nodes that are marked as hidden in the GUI part of the
-                asset. These are otherwise hidden in the interface..`}
+                asset. These are otherwise hidden in the interface.`}
             />
             <Title order={3}>Tags</Title>
             <MultiSelect

@@ -31,11 +31,7 @@ export function PropertyLabel({ name, uri, description, readOnly = false }: Prop
           )}
         </>
       }
-      info={
-        description ? (
-          <PropertyDescription uri={uri} description={description} />
-        ) : undefined
-      }
+      info={<PropertyDescription uri={uri} description={description || ''} />}
     />
   );
 }

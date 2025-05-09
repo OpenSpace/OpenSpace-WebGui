@@ -1,7 +1,7 @@
 import { JSX } from 'react';
 import { Checkbox, Group, MantineStyleProps } from '@mantine/core';
 
-import { InfoBox } from '../InfoBox/InfoBox';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 
 interface Props extends MantineStyleProps {
   name: string;
