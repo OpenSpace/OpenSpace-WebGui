@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Chip, Group, Text } from '@mantine/core';
+import { Box, Chip, Group, Paper, Text } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
@@ -8,10 +8,15 @@ import { Layout } from '@/components/Layout/Layout';
 import { useAppSelector } from '@/redux/hooks';
 import { Action, KeybindInfoType, KeybindModifiers } from '@/types/types';
 
-import { KeybindButtons } from './KeybindButtons';
 import { KeybindInfo } from './KeybindInfo';
+import { ListEntry } from './ListEntry';
 
-export function ListLayout() {
+interface Props {
+  // The height of this view, used to get the scrolling behavior right
+  height: number;
+}
+
+export function ListLayout({ height }: Props) {
   const [selectedAction, setSelectedAction] = useState<Action | null>(null);
   const [modifiersFilter, setModifiersFilter] = useState<KeybindModifiers>([]);
   const keybinds = useAppSelector((state) => state.actions.keybinds);
@@ -53,63 +58,68 @@ export function ListLayout() {
   }
 
   return (
-    <Layout pb={'xs'}>
-      <Layout.GrowingSection py={'md'}>
-        <FilterList>
-          <Group gap={'xs'}>
-            <FilterList.InputField
-              placeHolderSearchText={'Search for a keybind'}
-              flex={1}
-              miw={200}
-            />
-            <Group gap={5}>
-              <Chip.Group
-                multiple
-                onChange={(value) => setModifiersFilter(value as KeybindModifiers)}
+    <Group align={'top'} px={'xs'}>
+      <Box h={height} pt={'xs'} flex={2}>
+        <Layout>
+          <FilterList>
+            <Layout.FixedSection>
+              <Group gap={'xs'}>
+                <FilterList.InputField
+                  placeHolderSearchText={'Search for a keybind'}
+                  flex={1}
+                  miw={200}
+                />
+                <Group gap={5}>
+                  <Chip.Group
+                    multiple
+                    onChange={(value) => setModifiersFilter(value as KeybindModifiers)}
+                  >
+                    <Chip value={'shift'} size={'xs'}>
+                      Shift
+                    </Chip>
+                    <Chip value={'control'} size={'xs'}>
+                      Ctrl
+                    </Chip>
+                    <Chip value={'alt'} size={'xs'}>
+                      Alt
+                    </Chip>
+                  </Chip.Group>
+                </Group>
+                <FilterList.SearchSettingsMenu
+                  keys={allowedSearchKeys}
+                  setKey={toggleSearchKey}
+                />
+              </Group>
+            </Layout.FixedSection>
+
+            <Layout.GrowingSection>
+              <FilterList.SearchResults
+                data={keybindInfo}
+                renderElement={(entry) => (
+                  <ListEntry
+                    key={entry.identifier}
+                    keybind={entry}
+                    onClick={() => onClick(entry)}
+                    isSelected={entry.identifier === selectedAction?.identifier}
+                  />
+                )}
+                matcherFunc={generateMatcherFunctionByKeys(selectedSearchKeys)}
               >
-                <Chip value={'shift'} size={'xs'}>
-                  Shift
-                </Chip>
-                <Chip value={'control'} size={'xs'}>
-                  Ctrl
-                </Chip>
-                <Chip value={'alt'} size={'xs'}>
-                  Alt
-                </Chip>
-              </Chip.Group>
-            </Group>
-            <FilterList.SearchSettingsMenu
-              keys={allowedSearchKeys}
-              setKey={toggleSearchKey}
-            />
-          </Group>
-          <FilterList.SearchResults
-            data={keybindInfo}
-            renderElement={(node) => (
-              <Button
-                onClick={() => onClick(node)}
-                size={'md'}
-                variant={
-                  node.identifier === selectedAction?.identifier ? 'filled' : 'light'
-                }
-                fullWidth
-                rightSection={
-                  <KeybindButtons modifiers={node.modifiers} selectedKey={node.key} />
-                }
-                justify={'space-between'}
-              >
-                <Text truncate>{node.name}</Text>
-              </Button>
-            )}
-            matcherFunc={generateMatcherFunctionByKeys(selectedSearchKeys)}
-          >
-            <FilterList.SearchResults.VirtualList gap={'xs'} />
-          </FilterList.SearchResults>
-        </FilterList>
-      </Layout.GrowingSection>
-      <Layout.FixedSection>
-        {selectedAction && <KeybindInfo selectedAction={selectedAction} />}
-      </Layout.FixedSection>
-    </Layout>
+                <FilterList.SearchResults.VirtualList gap={'xs'} />
+              </FilterList.SearchResults>
+            </Layout.GrowingSection>
+          </FilterList>
+        </Layout>
+      </Box>
+      <Box flex={1} pt={'xs'}>
+        {selectedAction ? (
+          <KeybindInfo action={selectedAction} />
+        ) : (
+          <Paper p={'md'}>
+            <Text>Select a keybind to see more info</Text>
+          </Paper>
+        )}
+      </Box>
+    </Group>
   );
 }
