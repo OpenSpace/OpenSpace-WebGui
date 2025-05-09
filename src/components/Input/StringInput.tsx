@@ -13,7 +13,15 @@ export interface Props extends TextInputProps {
  * This is a version of the text input that sets the value only on ENTER, and re-sets
  * the value on ESCAPE.
  */
-export function StringInput({ onEnter, value, errorCheck, ...props }: Props) {
+export function StringInput({
+  onEnter,
+  onChange,
+  onFocus,
+  onBlur,
+  value,
+  errorCheck,
+  ...props
+}: Props) {
   const {
     value: storedValue,
     setValue: setStoredValue,
@@ -28,11 +36,19 @@ export function StringInput({ onEnter, value, errorCheck, ...props }: Props) {
     setStoredValue(value);
   }
 
-  function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
+  function handleKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
-      if (!errorCheck || !errorCheck(storedValue)) {
+      const hasErrorCheck = errorCheck !== undefined;
+      const isValueOk = errorCheck && !errorCheck(storedValue);
+
+      // If the value is valid, we want to set it and call the onEnter function
+      if (!hasErrorCheck || isValueOk) {
         onEnter(storedValue);
         shouldResetOnBlurRef.current = false;
+      }
+      // If the value is not valid, we want to reset it to the original value
+      else if (hasErrorCheck && !isValueOk) {
+        resetValue();
       }
       event.currentTarget.blur();
     }
@@ -41,7 +57,8 @@ export function StringInput({ onEnter, value, errorCheck, ...props }: Props) {
     }
   }
 
-  function onBlur() {
+  function handleBlur(e: React.FocusEvent<HTMLInputElement, Element>) {
+    onBlur?.(e);
     if (shouldResetOnBlurRef.current === true) {
       resetValue();
     }
@@ -49,18 +66,24 @@ export function StringInput({ onEnter, value, errorCheck, ...props }: Props) {
     setIsEditing(false);
   }
 
-  function onChange(value: string): void {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    onChange?.(e);
     setIsEditing(true);
-    setStoredValue(value);
+    setStoredValue(e.currentTarget.value);
+  }
+
+  function handleFocus(e: React.FocusEvent<HTMLInputElement, Element>) {
+    onFocus?.(e);
+    setIsEditing(true);
   }
 
   return (
     <TextInput
       value={storedValue}
-      onChange={(event) => onChange(event.currentTarget.value)}
-      onKeyUp={onKeyUp}
-      onFocus={() => setIsEditing(true)}
-      onBlur={onBlur}
+      onChange={handleChange}
+      onKeyUp={handleKeyUp}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
       error={errorCheck ? errorCheck(storedValue) : false}
       {...props}
     />

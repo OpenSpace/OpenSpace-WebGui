@@ -15,7 +15,6 @@ export function VectorProperty({ uri, isInt = false, readOnly }: Props) {
   if (!meta || !value) {
     return <></>;
   }
-
   if (meta.viewOptions?.Color) {
     return (
       <ColorView

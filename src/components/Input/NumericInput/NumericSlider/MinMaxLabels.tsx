@@ -13,7 +13,8 @@ function SliderMarkLabel({
   value: number;
   decimalPlaces?: number;
 }) {
-  return value < 100000 && value > 0.0001 ? (
+  const absoluteValue = Math.abs(value);
+  return absoluteValue < 100000 && absoluteValue > 0.0001 ? (
     <NumberFormatter value={value} decimalScale={decimalPlaces} />
   ) : (
     // For very large or very small values, we use scientific notation
@@ -21,7 +22,7 @@ function SliderMarkLabel({
   );
 }
 
-export function SliderMinMaxLabels({ min, max, decimalPlaces }: Props) {
+export function MinMaxLabels({ min, max, decimalPlaces }: Props) {
   return (
     <Group justify={'space-between'} px={2}>
       <Text size={'xs'} c={'dimmed'}>
