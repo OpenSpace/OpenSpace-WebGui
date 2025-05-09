@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setMenuItemsOrder, setMenuItemVisible } from '@/redux/local/localSlice';
+import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
+import { LogLevel } from '@/types/enums';
 import { useSaveLoadJsonFiles } from '@/util/fileIOhooks';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
@@ -44,12 +46,24 @@ export function useStoredLayout() {
 
   function handlePickedFile(content: JSON) {
     if (!content || Object.keys(content).length === 0) {
-      console.error('File is empty');
+      dispatch(
+        handleNotificationLogging(
+          'Error loading JSON file',
+          'File is empty',
+          LogLevel.Error
+        )
+      );
       return;
     }
     const newLayout = Object.values(content) as TaskbarItemConfig[];
     if (newLayout.length !== menuItems.length) {
-      console.error('Invalid layout file. Length does not match');
+      dispatch(
+        handleNotificationLogging(
+          'Error loadding JSON file',
+          'Invalid layoutfile, length does not match',
+          LogLevel.Error
+        )
+      );
       return;
     }
     // We have to ensure that all ids are valid before we can set
@@ -58,7 +72,13 @@ export function useStoredLayout() {
       menuItems.find((existingItem) => existingItem.id === newItem.id)
     );
     if (!isValid) {
-      console.error("Invalid layout file. All id's must match");
+      dispatch(
+        handleNotificationLogging(
+          'Error loading JSON file',
+          'Invalid layout file, all IDs must match panel IDs',
+          LogLevel.Error
+        )
+      );
       return;
     }
     // If it is valid we set the new layout
