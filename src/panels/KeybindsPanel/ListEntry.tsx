@@ -10,7 +10,7 @@ interface Props {
   isSelected: boolean;
 }
 
-export function ListEntry({ keybind, onClick, isSelected }: Props) {
+export function KeybindListEntry({ keybind, onClick, isSelected }: Props) {
   return (
     <Button
       onClick={onClick}

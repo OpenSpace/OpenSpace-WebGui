@@ -9,7 +9,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { Action, KeybindInfoType, KeybindModifiers } from '@/types/types';
 
 import { KeybindInfo } from './KeybindInfo';
-import { ListEntry } from './ListEntry';
+import { KeybindListEntry } from './ListEntry';
 
 interface Props {
   // The height of this view, used to get the scrolling behavior right
@@ -96,7 +96,7 @@ export function ListLayout({ height }: Props) {
               <FilterList.SearchResults
                 data={keybindInfo}
                 renderElement={(entry) => (
-                  <ListEntry
+                  <KeybindListEntry
                     key={entry.identifier}
                     keybind={entry}
                     onClick={() => onClick(entry)}
