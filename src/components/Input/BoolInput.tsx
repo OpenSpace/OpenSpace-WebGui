@@ -24,8 +24,8 @@ interface PropsWithValue extends BaseProps {
 }
 
 interface PropsWithDefault extends BaseProps {
-  value: boolean;
-  defaultChecked?: never;
+  defaultChecked: boolean;
+  value?: never;
 }
 
 type Props = (PropsWithValue | PropsWithDefault) & Labels;
