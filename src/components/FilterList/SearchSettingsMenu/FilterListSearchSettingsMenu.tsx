@@ -39,11 +39,12 @@ export function FilterListSearchSettingsMenu<T extends object>({
       <Menu.Dropdown maw={'300px'}>
         <Menu.Label>Search in</Menu.Label>
         <Stack p={'xs'}>
-          {/* When using Object.entries a new object is created, and we cant infer the type from that */}
+          {/* When using Object.entries a new object is created, and we cant infer the
+              type from that. Hence the `as keyof T` here */}
           {Object.entries(keys).map(([key, enabled]) => (
             <Group key={key}>
               <BoolInput
-                label={(labels && labels[key as keyof T]) || camelCaseToRegularText(key)}
+                label={labels?.[key as keyof T] || camelCaseToRegularText(key)}
                 value={enabled as boolean}
                 setValue={(newValue) => setKey(key as keyof T, newValue)}
               />
