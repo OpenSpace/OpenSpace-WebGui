@@ -8,8 +8,6 @@ interface BaseProps extends MantineStyleProps {
   setValue: (value: boolean) => void;
   info?: string | JSX.Element;
   disabled?: boolean;
-  label?: string;
-  ariaLabel?: string;
 }
 
 // Either the label or the ariaLabel must be provided, or both.
