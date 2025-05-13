@@ -52,14 +52,14 @@ export function PlaySession() {
         <BoolInput
           label={'Loop playback'}
           value={loopPlayback}
-          setValue={onLoopPlaybackChange}
+          onChange={onLoopPlaybackChange}
           disabled={!isIdle}
         />
         <Group>
           <BoolInput
             label={'Output frames'}
             value={shouldOutputFrames}
-            setValue={onShouldUpdateFramesChange}
+            onChange={onShouldUpdateFramesChange}
             disabled={!isIdle}
             info={`If checked, the specified number of frames will be recorded as
               screenshots and saved to disk. Per default, they are saved in the

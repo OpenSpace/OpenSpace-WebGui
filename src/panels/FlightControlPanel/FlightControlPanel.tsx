@@ -55,7 +55,7 @@ export function FlightControlPanel() {
         label={'Toggle flight control'}
         info={infoBoxContent}
         value={isControllerEnabled}
-        setValue={toggleFlightController}
+        onChange={toggleFlightController}
       />
 
       <Title order={2}>Settings</Title>

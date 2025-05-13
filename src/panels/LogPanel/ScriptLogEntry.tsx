@@ -26,7 +26,7 @@ export function ScriptLogEntry({ script, index, isSelected, onToggleSelection }:
       <BoolInput
         value={isSelected}
         ariaLabel={`Select script ${index}`}
-        setValue={() => onToggleSelection(index)}
+        onChange={() => onToggleSelection(index)}
       />
       <Code color={'dark.7'} w={'100%'}>
         <Text

@@ -25,7 +25,7 @@ export function NavigationSettings() {
         <BoolInput
           label={'Include Non-focusable Nodes in Search'}
           value={!showOnlyFocusableInSearch}
-          setValue={(value: boolean) => dispatch(setOnlyFocusableInNavMenu(!value))}
+          onChange={(value: boolean) => dispatch(setOnlyFocusableInNavMenu(!value))}
           info={`Per default, nodes that are marked as non-focusable are excluded from the
             search in the navigation menu. Checking this option will include them and
             allowing setting these nodes as focus.`}

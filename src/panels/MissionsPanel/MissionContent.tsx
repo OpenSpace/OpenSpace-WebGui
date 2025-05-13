@@ -141,7 +141,7 @@ export function MissionContent({ missionOverview }: Props) {
         <BoolInput
           label={'Display current phase'}
           value={displayCurrentPhase}
-          setValue={toggleCurrentPhase}
+          onChange={toggleCurrentPhase}
           info={`If enabled, the mission phase that is currently happening will be displayed.
             It will update as time passes.`}
           mb={'xs'}

@@ -46,7 +46,7 @@ export function FilterListSearchSettingsMenu<T extends object>({
               <BoolInput
                 label={labels?.[key as keyof T] || camelCaseToRegularText(key)}
                 value={enabled as boolean}
-                setValue={(newValue) => setKey(key as keyof T, newValue)}
+                onChange={(newValue) => setKey(key as keyof T, newValue)}
               />
             </Group>
           ))}

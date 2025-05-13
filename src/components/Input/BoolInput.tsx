@@ -5,26 +5,28 @@ import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { RequireAtLeastOne } from '@/types/types';
 
 interface BaseProps extends MantineStyleProps {
-  setValue: (value: boolean) => void;
+  onChange?: (value: boolean) => void;
   info?: string | JSX.Element;
   disabled?: boolean;
 }
 
-// Either the label or the ariaLabel must be provided, or both.
+// Either the label or the ariaLabel must be provided, or both
 interface Label {
   label?: string;
   ariaLabel?: string;
 }
 type Labels = RequireAtLeastOne<Label, 'label' | 'ariaLabel'>;
 
-// Either the value or the defaultChecked must be provided, but not both.
+// If value is provided, defaultChecked must not be provided
 interface PropsWithValue extends BaseProps {
   value: boolean;
   defaultChecked?: never;
 }
 
+// If defaultChecked is provided, value must not be provided, but it's also possible to
+// not specify either, in which case defaultChecked will be considered false by default
 interface PropsWithDefault extends BaseProps {
-  defaultChecked: boolean;
+  defaultChecked?: boolean;
   value?: never;
 }
 
@@ -40,12 +42,13 @@ type Props = (PropsWithValue | PropsWithDefault) & Labels;
  *
  * Note that either `value` or `defaultChecked` must be provided, but not both. Using
  * `value` will make the checkbox a controlled component, while using `defaultChecked`
- * will make it uncontrolled.
+ * will make it uncontrolled. Not specifying either means that `defaultChecked` will be
+ * `false` by default.
  */
 export function BoolInput({
   label,
   value,
-  setValue,
+  onChange,
   ariaLabel,
   defaultChecked,
   info,
@@ -60,8 +63,8 @@ export function BoolInput({
     <Group gap={'xs'} wrap={'nowrap'} {...styleProps}>
       <Checkbox
         checked={value}
-        onChange={(event) => setValue(event.currentTarget.checked)}
-        onKeyDown={(event) => event.key === 'Enter' && setValue(!value)}
+        onChange={(event) => onChange?.(event.currentTarget.checked)}
+        onKeyDown={(event) => event.key === 'Enter' && onChange?.(!value)}
         disabled={disabled}
         defaultChecked={defaultChecked}
         label={label}
