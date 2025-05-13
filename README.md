@@ -71,6 +71,14 @@ We apply a custom theme to the Mantine components. If you are building a separat
 
  - Follow the **Hooks Order** as much as possible.
 
+## Guide: how to add a new panel
+  - Create a panel by making a new component and place it in a folder in the `src/panels` folder. The folder name should be the same as the component name. For example, if you create a new panel called `MyPanel`, create a folder called `MyPanel` and place the component in there. The panel name should end with "Panel": `MyPanel` is okay, but `MyComponent` is not. 
+  * Hooks, types and util functions that only are used in that panel can be placed in the same folder. If you have a lot of files, consider creating subfolders for hooks, types and utils. 
+  - Include the panel in `src/windowmanagement/data/LazyLoads.tsx` and `src/windowmanagement/data/MenuItems.tsx`. This will make it appear in the menus.
+  - We also need to add the panel to the OpenSpace Launcher. To do this, save a layout file by clicking `View > Save Task Bar Settings` and overwrite the JSON file at `OpenSpace > data > assets > web > default_ui_panels.json`.
+  - This change in the engine needs to be committed to an engine branch.
+  - Done!
+
 ### Hooks Order
  - For cleaner code, we adhere to the following **hooks order** whenever possible. In some situations, a hook is derived from a "lower order" hook, in which case the order can be swapped.
  - Order:
@@ -90,5 +98,5 @@ We now support a TypeScript version of our [JavaScript API](https://github.com/O
 
 Follow the steps here (TODO: link to api-js readme describing steps to generate file)
 
- ## Deploy
- TODO Steps:
+## Deploy
+TODO Steps:
