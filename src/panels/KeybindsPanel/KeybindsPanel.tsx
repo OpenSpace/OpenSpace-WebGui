@@ -20,8 +20,8 @@ export function KeybindsPanel() {
       <Tabs.Panel value={'keyboardLayout'}>
         <KeyboardLayout />
       </Tabs.Panel>
-      <Tabs.Panel value={'listLayout'}>
-        <ListLayout height={windowHeight - tabsHeight} />
+      <Tabs.Panel value={'listLayout'} h={windowHeight - tabsHeight}>
+        <ListLayout />
       </Tabs.Panel>
     </Tabs>
   );
