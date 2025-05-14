@@ -3,15 +3,29 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Identifier } from '@/types/types';
 
 export interface ProfileState {
+  initalized: boolean;
   uiPanelVisibility: Record<string, boolean>;
   markNodes: Identifier[];
   name: string | undefined;
+  author: string | undefined;
+  description: string | undefined;
+  license: string | undefined;
+  url: string | undefined;
+  version: string | undefined;
+  filePath: string;
 }
 
 const initialState: ProfileState = {
+  initalized: false,
+  uiPanelVisibility: {},
   markNodes: [],
   name: undefined,
-  uiPanelVisibility: {}
+  author: undefined,
+  description: undefined,
+  license: undefined,
+  url: undefined,
+  version: undefined,
+  filePath: ''
 };
 
 export const profileSlice = createSlice({
@@ -20,6 +34,7 @@ export const profileSlice = createSlice({
   reducers: {
     setProfileData: (state, action: PayloadAction<ProfileState>) => {
       state = action.payload;
+      state.initalized = true;
       return state;
     }
   }
