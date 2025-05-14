@@ -8,6 +8,7 @@ import { Identifier } from '@/types/types';
 
 import { Candidate, Extent } from './types';
 import { addressUTF8 } from './util';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   place: Candidate;
@@ -28,6 +29,9 @@ export function EarthEntry({
   addFocusNode,
   removeFocusNode
 }: Props) {
+  const { t } = useTranslation('geolocationpanel', {
+    keyPrefix: 'earth-panel.earth-entry-aria-label'
+  });
   const address = place.attributes.LongLabel;
   const addressUtf8 = addressUTF8(address);
 
@@ -83,7 +87,7 @@ export function EarthEntry({
           }
           color={isAdded ? 'red' : 'blue'}
           variant={'subtle'}
-          aria-label={`${isAdded ? 'Remove' : 'Add'} node: ${address}`}
+          aria-label={`${isAdded ? t('remove') : t('add')}: ${address}`}
         >
           {isAdded ? <MinusIcon /> : <PlusIcon />}
         </ActionIcon>

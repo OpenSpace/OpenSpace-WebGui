@@ -2,6 +2,7 @@ import actionPanel from '@/public/locales/en/actionpanel.json';
 import components from '@/public/locales/en/components.json';
 import exoplanetsPanel from '@/public/locales/en/exoplanetspanel.json';
 import flightcontrolPanel from '@/public/locales/en/flightcontrolpanel.json';
+import geolocationPanel from '@/public/locales/en/geolocationpanel.json';
 import notifications from '@/public/locales/en/notifications.json';
 
 /**
@@ -14,6 +15,7 @@ export const resources = {
     components: components,
     exoplanetspanel: exoplanetsPanel,
     flightcontrolpanel: flightcontrolPanel,
+    geolocationpanel: geolocationPanel,
     notifications: notifications
   }
 } as const;

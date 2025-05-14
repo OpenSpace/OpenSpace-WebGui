@@ -1,0 +1,41 @@
+{
+  "geolocation": {
+    "title": "Geo Location",
+    "select-anchor-label": "Select an anchor",
+    "no-anchor-panel": "Currently there is no data for locations on {{anchor}}"
+  },
+  "earth-panel": {
+    "tab-search": "Search Place",
+    "tab-custom-coordinates": "Custom Coordinates",
+
+    "search": {
+      "input-placeholder": "Search places...",
+      "button-label": "Search",
+      "filter-placeholder": "Filter search",
+      "no-result": "Nothing found. Try another search!",
+      "results-title": "Results",
+      "settings": {
+        "tooltip": "Calculates an appropriate altitude automatically if unchecked",
+        "altitude-checkbox": "Use custom altitude",
+        "altitude-input-label": "Custom altitude (km)"
+      }
+    },
+    "added-nodes-title": "Added Nodes",
+    "earth-entry-aria-label": {
+      "add": "Add node",
+      "remove": "Remove node"
+    },
+    "custom-coordinates": {
+      "latitude-label": "Latitude (deg)",
+      "longitude-label": "Longitude (deg)",
+      "altitude-label": "Altitude (km)",
+      "node-name-label": "Node name (optional)",
+      "node-name-placeholder": "Custom Coordinate ({{latitude}}, {{longitude}}, {{altitude}}km)",
+      "add-focus-button-label": "Add Focus"
+    },
+    "added-custom-nodes": {
+      "empty-nodes": "No added nodes",
+      "remove-node-aria-label": "Remove node"
+    }
+  }
+}

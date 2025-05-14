@@ -27,6 +27,7 @@ import { CustomCoordinates } from './CustomCoordinates';
 import { EarthEntry } from './EarthEntry';
 import { ArcGISJSON, Candidate } from './types';
 import { addressUTF8 } from './util';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   currentAnchor: Identifier;
@@ -40,6 +41,7 @@ export function EarthPanel({ currentAnchor }: Props) {
   const luaApi = useOpenSpaceApi();
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const groups = useAppSelector((state) => state.groups.groups);
+  const { t } = useTranslation('geolocationpanel', { keyPrefix: 'earth-panel' });
   const dispatch = useAppDispatch();
 
   const geoLocationOwners = groups[GeoLocationGroupKey]?.propertyOwners.map((uri) => {
@@ -145,36 +147,36 @@ export function EarthPanel({ currentAnchor }: Props) {
     <>
       <Tabs variant={'outline'} radius={'md'} defaultValue={SearchPlaceKey}>
         <Tabs.List>
-          <Tabs.Tab value={SearchPlaceKey}>Search Place</Tabs.Tab>
-          <Tabs.Tab value={CustomCoordinatesKey}>Custom Coordinates</Tabs.Tab>
+          <Tabs.Tab value={SearchPlaceKey}>{t('tab-search')}</Tabs.Tab>
+          <Tabs.Tab value={CustomCoordinatesKey}>{t('tab-custom-coordinates')}</Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value={SearchPlaceKey}>
           <TextInput
-            placeholder={'Search places...'}
+            placeholder={t('search.input-placeholder')}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
                 getPlaces();
               }
             }}
             onChange={(event) => setInputValue(event.target.value)}
-            rightSection={<Button onClick={() => getPlaces()}>Search</Button>}
+            rightSection={
+              <Button onClick={() => getPlaces()}>{t('search.button-label')}</Button>
+            }
             rightSectionWidth={'md'}
             my={'xs'}
           />
 
           <Group justify={'space-between'}>
             <Title order={3} my={'xs'}>
-              Results
+              {t('search.results-title')}
             </Title>
             <SettingsPopout>
-              <Tooltip
-                label={'Calculates an appropriate altitude automatically if unchecked'}
-              >
+              <Tooltip label={t('search.settings.tooltip')}>
                 <Checkbox
                   checked={isCustomAltitude}
                   onChange={(event) => setIsCustomAltitude(event.currentTarget.checked)}
-                  label={'Use custom altitude'}
+                  label={t('search.settings.altitude-checkbox')}
                   m={'xs'}
                 />
               </Tooltip>
@@ -185,7 +187,7 @@ export function EarthPanel({ currentAnchor }: Props) {
                     setCustomAltitude(value);
                   }
                 }}
-                label={'Custom altitude (km)'}
+                label={t('search.settings.altitude-input-label')}
                 disabled={!isCustomAltitude}
                 defaultValue={300}
                 min={0}
@@ -197,7 +199,9 @@ export function EarthPanel({ currentAnchor }: Props) {
           {places.length > 0 ? (
             <ResizeableContent defaultHeight={250}>
               <FilterList>
-                <FilterList.InputField placeHolderSearchText={'Filter search'} />
+                <FilterList.InputField
+                  placeHolderSearchText={t('search.filter-placeholder')}
+                />
                 <FilterList.SearchResults
                   data={places}
                   renderElement={(place) => (
@@ -219,7 +223,7 @@ export function EarthPanel({ currentAnchor }: Props) {
               </FilterList>
             </ResizeableContent>
           ) : (
-            <Text>Nothing found. Try another search!</Text>
+            <Text>{t('search.no-result')}</Text>
           )}
         </Tabs.Panel>
         <Tabs.Panel value={CustomCoordinatesKey}>
@@ -234,7 +238,7 @@ export function EarthPanel({ currentAnchor }: Props) {
       </Tabs>
 
       <Title order={2} my={'xs'}>
-        Added Nodes
+        {t('added-nodes-title')}
       </Title>
       <AddedCustomNodes addedNodes={addedCustomNodes} removeFocusNode={removeFocusNode} />
     </>
