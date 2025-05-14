@@ -5,9 +5,11 @@ import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import { calculateLevelDepth, createPath, getFolders } from './util';
+import { useTranslation } from 'react-i18next';
 
 export function ActionsBreadcrumbs() {
   const navigationPath = useAppSelector((state) => state.actions.navigationPath);
+  const { t } = useTranslation('actionpanel');
   const dispatch = useAppDispatch();
 
   const currentLevel = calculateLevelDepth(navigationPath);
@@ -30,7 +32,7 @@ export function ActionsBreadcrumbs() {
     <Group gap={'xs'} mb={'xs'}>
       <ActionIcon
         onClick={() => goToLevel(currentLevel - 1)}
-        aria-label={'Back'}
+        aria-label={t('breadcrumbs-aria-label')}
         disabled={isTopLevel}
       >
         <UpArrowIcon />
