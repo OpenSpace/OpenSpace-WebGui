@@ -11,32 +11,32 @@ interface Props {
 
 export function About({ opened, close }: Props) {
   const openSpaceVersion = useAppSelector((state) => state.version.openSpaceVersion);
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'about' });
 
   function osVersionNumber(): string {
     if (!openSpaceVersion) {
-      return t('about.fetching-version-number');
+      return t('fetching-version-number');
     }
 
     function formatVersion(version: SemanticVersion): string {
       return version.major !== 255 && version.minor !== 255 && version.patch !== 255
         ? `${version.major}.${version.minor}.${version.patch}`
-        : t('about.custom-version-number');
+        : t('custom-version-number');
     }
 
     return `OpenSpace version: ${formatVersion(openSpaceVersion)}`;
   }
 
   return (
-    <Modal opened={opened} onClose={close} title={t('about.modal-title')} size={'40%'}>
+    <Modal opened={opened} onClose={close} title={t('modal-title')} size={'40%'}>
       <Grid>
         <Grid.Col span={4}>
-          <Image src={'openspace-logo.png'} alt={t('about.img-alt-text')} w={'100%'} />
+          <Image src={'openspace-logo.png'} alt={t('img-alt-text')} w={'100%'} />
         </Grid.Col>
         <Grid.Col span={8}>
           <Stack gap={'xs'}>
             <Title order={1}>OpenSpace</Title>
-            <Text>{t('about.about-openspace-description')}</Text>
+            <Text>{t('about-openspace-description')}</Text>
             <Text>{osVersionNumber()}</Text>
             <Text>
               &copy; 2014 - {new Date().getFullYear()} OpenSpace Development Team

@@ -14,7 +14,7 @@ interface Props {
 }
 
 export function PropertyLabel({ name, description, uri, readOnly = false }: Props) {
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'property.property-label' });
 
   return (
     <Label
@@ -22,13 +22,9 @@ export function PropertyLabel({ name, description, uri, readOnly = false }: Prop
         <>
           {name}
           {readOnly && (
-            <Tooltip
-              maw={200}
-              multiline
-              label={t('property.property-label.tooltip-label')}
-            >
+            <Tooltip maw={200} multiline label={t('tooltip-label')}>
               <Text span ml={'xs'} size={'xs'} c={'dimmed'}>
-                {t('property.property-label.label')}
+                {t('label')}
               </Text>
             </Tooltip>
           )}

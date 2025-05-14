@@ -6,7 +6,7 @@ import { useProperty } from '@/hooks/properties';
 
 export function OptionProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue, meta] = useProperty('OptionProperty', uri);
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'property.option-property' });
 
   if (!meta || value === undefined || !meta.additionalData) {
     return <></>;
@@ -19,8 +19,8 @@ export function OptionProperty({ uri, readOnly }: PropertyProps) {
   if (!options) {
     return (
       <Select
-        aria-label={t('property.option-property.aria-label', { guiName: meta.guiName })}
-        placeholder={t('property.option-property.placeholder.no-options')}
+        aria-label={t('aria-label', { guiName: meta.guiName })}
+        placeholder={t('placeholder.no-options')}
         disabled
       />
     );
@@ -28,8 +28,8 @@ export function OptionProperty({ uri, readOnly }: PropertyProps) {
 
   return (
     <Select
-      aria-label={t('property.option-property.aria-label', { guiName: meta.guiName })}
-      placeholder={t('property.option-property.placeholder.options')}
+      aria-label={t('aria-label', { guiName: meta.guiName })}
+      placeholder={t('placeholder.options')}
       disabled={readOnly}
       // For each entry in the options object, the numeric value is the key, and the
       // label is the value

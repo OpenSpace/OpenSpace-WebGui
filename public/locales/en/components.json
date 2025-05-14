@@ -44,7 +44,7 @@
       "no-selection-tooltip": "Nothing is selected. Search will be empty.",
       "dropdown-menu-label": "Search in"
     },
-    "filter-list-input-field": {
+    "input-field": {
       "cancel-button-aria-label": "Clear search input",
       "show-more-button": {
         "less": "Less",
@@ -55,11 +55,11 @@
   "friction-controls": {
     "rotation-label": "Rotation",
     "zoom-label": "Zoom",
-    "roll-label": "Roll"
-  },
-  "friction-controls-info": {
-    "heading": "Friction controls",
-    "description": "Enable or disable rotation, zoom, and roll friction. If checked, applies friction to camera movement."
+    "roll-label": "Roll",
+    "info": {
+      "heading": "Friction controls",
+      "description": "Enable or disable rotation, zoom, and roll friction. If checked, applies friction to camera movement."
+    }
   },
   "info-box": {
     "aria-label": "More information"

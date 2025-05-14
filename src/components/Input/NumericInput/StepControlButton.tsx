@@ -36,7 +36,7 @@ export function StepControlButton({
     () => stepInterval.start(),
     stepHoldDelay
   );
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'input.step-control-button' });
   const onStepDone = useCallback((): void => {
     clearTimeout();
     if (stepInterval.active) {
@@ -91,9 +91,7 @@ export function StepControlButton({
       variant={'transparent'}
       tabIndex={tabIndex}
       aria-label={
-        direction === 'up'
-          ? t('input.step-control-button.aria-label.increment')
-          : t('input.step-control-button.aria-label.decrement')
+        direction === 'up' ? t('aria-label.increment') : t('aria-label.decrement')
       }
       {...props}
     >

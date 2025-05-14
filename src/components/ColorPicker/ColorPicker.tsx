@@ -13,7 +13,7 @@ interface Props {
 }
 
 export function ColorPicker({ color, disabled, onChange, withAlpha }: Props) {
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'color-picker' });
 
   return (
     <Popover position={'right-end'} withArrow arrowPosition={'center'}>
@@ -22,7 +22,7 @@ export function ColorPicker({ color, disabled, onChange, withAlpha }: Props) {
           disabled={disabled}
           size={'lg'}
           variant={'subtle'}
-          aria-label={t('color-picker.color-swatch-aria-label')}
+          aria-label={t('color-swatch-aria-label')}
         >
           <ColorSwatch color={rgbaToColor(color, withAlpha)} />
         </ActionIcon>

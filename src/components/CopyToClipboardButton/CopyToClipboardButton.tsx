@@ -10,17 +10,13 @@ interface Props {
 }
 
 export function CopyToClipboardButton({ value, showLabel, disabled }: Props) {
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'copy-to-clipboard-button' });
 
   return (
     <CopyButton value={value} timeout={2000}>
       {({ copied, copy }) => (
         <Tooltip
-          label={
-            copied
-              ? t('copy-to-clipboard-button.tooltip.copied')
-              : t('copy-to-clipboard-button.tooltip.copy')
-          }
+          label={copied ? t('tooltip.copied') : t('tooltip.copy')}
           position={'right'}
         >
           {showLabel ? (
@@ -31,7 +27,7 @@ export function CopyToClipboardButton({ value, showLabel, disabled }: Props) {
               rightSection={<CopyIcon />}
               disabled={disabled}
             >
-              {t('copy-to-clipboard-button.label')}
+              {t('label')}
             </Button>
           ) : (
             <ActionIcon

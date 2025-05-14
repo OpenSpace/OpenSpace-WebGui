@@ -6,7 +6,7 @@ import { useProperty } from '@/hooks/properties';
 
 export function IntListProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue] = useProperty('IntListProperty', uri);
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'property.list-property' });
 
   if (value === undefined) {
     return <></>;
@@ -20,7 +20,7 @@ export function IntListProperty({ uri, readOnly }: PropertyProps) {
     <Pills
       value={value.map((value) => value.toString())}
       setValue={setValueFromString}
-      placeHolderText={t('property.list-property.int-list-placeholder-text')}
+      placeHolderText={t('int-list-placeholder-text')}
       disabled={readOnly}
     />
   );

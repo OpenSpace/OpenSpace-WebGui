@@ -10,7 +10,9 @@ export function SelectionProperty({ uri, readOnly }: PropertyProps) {
   const { value: currentValue, setValue: setCurrentValue } = usePropListeningState<
     string[] | undefined
   >(value);
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', {
+    keyPrefix: 'property.selection-property'
+  });
 
   if (!value || !meta || currentValue === undefined) {
     return <></>;
@@ -25,14 +27,12 @@ export function SelectionProperty({ uri, readOnly }: PropertyProps) {
 
   return (
     <MultiSelect
-      aria-label={t('property.selection-property.aria-label', { guiName: meta.guiName })}
+      aria-label={t('aria-label', { guiName: meta.guiName })}
       disabled={readOnly}
       data={options}
       value={currentValue}
       onChange={handleChange}
-      placeholder={
-        value.length === 0 ? t('property.selection-property.placeholder-empty-field') : ''
-      }
+      placeholder={value.length === 0 ? t('placeholder-empty-field') : ''}
       searchable
       clearable
     />

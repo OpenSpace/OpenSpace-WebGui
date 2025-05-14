@@ -8,13 +8,13 @@ interface Props {
 }
 
 function CopyUriButton({ uri }: Props) {
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'copy-uri-button' });
 
   return (
     <>
       {uri && (
         <Group pt={'sm'}>
-          <Code>{t('copy-uri-button.label')}</Code>
+          <Code>{t('label')}</Code>
           <CopyToClipboardButton value={uri} />
         </Group>
       )}

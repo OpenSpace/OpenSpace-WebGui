@@ -21,9 +21,9 @@ export function FrictionControlsInfo() {
   return (
     <>
       <Text size={'md'} fw={'bold'}>
-        {t('friction-controls-info.heading')}:
+        {t('friction-controls.info.heading')}:
       </Text>
-      <Text>{t('friction-controls-info.description')}</Text>
+      <Text>{t('friction-controls.info.description')}</Text>
       <Stack gap={'xs'}>
         {rotationKeybind && (
           <Group justify={'space-between'}>

@@ -17,7 +17,7 @@ export function SettingsPopout({
   children,
   ...styleProps
 }: Props) {
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'settings-popout' });
 
   return (
     <Menu
@@ -27,7 +27,7 @@ export function SettingsPopout({
       withArrow
     >
       <Menu.Target>
-        <ActionIcon {...styleProps} aria-label={t('settings-popout.aria-label')}>
+        <ActionIcon {...styleProps} aria-label={t('aria-label')}>
           <SettingsIcon />
         </ActionIcon>
       </Menu.Target>

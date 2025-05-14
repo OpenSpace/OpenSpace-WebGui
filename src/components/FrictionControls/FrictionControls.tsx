@@ -12,7 +12,7 @@ export function FrictionControls({ size }: Props) {
   const [rotation, setRotation] = useProperty('BoolProperty', RotationalFrictionKey);
   const [zoom, setZoom] = useProperty('BoolProperty', ZoomFrictionKey);
   const [roll, setRoll] = useProperty('BoolProperty', RollFrictionKey);
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'friction-controls' });
 
   return (
     <>
@@ -23,7 +23,7 @@ export function FrictionControls({ size }: Props) {
         size={size}
         color={'white'}
       >
-        {t('friction-controls.rotation-label')}
+        {t('rotation-label')}
       </Chip>
       <Chip
         checked={zoom}
@@ -32,7 +32,7 @@ export function FrictionControls({ size }: Props) {
         size={size}
         color={'white'}
       >
-        {t('friction-controls.zoom-label')}
+        {t('zoom-label')}
       </Chip>
       <Chip
         checked={roll}
@@ -41,7 +41,7 @@ export function FrictionControls({ size }: Props) {
         size={size}
         color={'white'}
       >
-        {t('friction-controls.roll-label')}
+        {t('roll-label')}
       </Chip>
     </>
   );

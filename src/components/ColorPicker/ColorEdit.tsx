@@ -26,7 +26,7 @@ export function ColorEdit({ color, onChange, withAlpha }: Props) {
   const [format, setFormat] = useState<ColorFormat>(defaultFormat);
   const [value, setValue] = useState(rgbaToColor(color, withAlpha));
   const [textEditValue, setTextEditValue] = useState(rgbaToColor(color, withAlpha));
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'color-edit' });
 
   useEffect(() => {
     const updatedColor = rgbaToFormat(color, format || defaultFormat);
@@ -76,7 +76,7 @@ export function ColorEdit({ color, onChange, withAlpha }: Props) {
         }}
         onChange={setTextEditValue}
         format={format}
-        error={warnAboutInvalidColor ? t('color-edit.error-invalid-color') : null}
+        error={warnAboutInvalidColor ? t('error-invalid-color') : null}
       />
       <Select
         data={formats.map((value) => ({ value, label: value.toUpperCase() }))}

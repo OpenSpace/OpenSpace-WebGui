@@ -6,7 +6,7 @@ import { useProperty } from '@/hooks/properties';
 
 export function StringListProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue] = useProperty('StringListProperty', uri);
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'property.list-property' });
 
   if (value === undefined) {
     return <></>;
@@ -16,7 +16,7 @@ export function StringListProperty({ uri, readOnly }: PropertyProps) {
     <Pills
       value={value}
       setValue={setValue}
-      placeHolderText={t('property.list-property.string-list-placeholder-text')}
+      placeHolderText={t('string-list-placeholder-text')}
       disabled={readOnly}
     />
   );

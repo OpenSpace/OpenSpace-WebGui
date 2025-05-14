@@ -7,7 +7,7 @@ import { useProperty } from '@/hooks/properties';
 
 export function StringProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue, meta] = useProperty('StringProperty', uri);
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'property.string-property' });
 
   if (value === undefined || !meta) {
     return <></>;
@@ -24,7 +24,7 @@ export function StringProperty({ uri, readOnly }: PropertyProps) {
     <StringInput
       onEnter={setValue}
       value={value}
-      aria-label={t('property.list-property.string-list-placeholder-text', {
+      aria-label={t('aria-label', {
         guiName: meta.guiName
       })}
     />

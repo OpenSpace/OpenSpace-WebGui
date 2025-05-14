@@ -6,7 +6,7 @@ import { useProperty } from '@/hooks/properties';
 
 export function DoubleListProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue] = useProperty('DoubleListProperty', uri);
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'property.list-property' });
 
   if (value === undefined) {
     return <></>;
@@ -20,7 +20,7 @@ export function DoubleListProperty({ uri, readOnly }: PropertyProps) {
     <Pills
       value={value.map((v) => v.toString())}
       setValue={setValueString}
-      placeHolderText={t('property.list-property.double-list-placeholder-text')}
+      placeHolderText={t('double-list-placeholder-text')}
       disabled={readOnly}
     />
   );

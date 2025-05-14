@@ -27,7 +27,7 @@ export function SearchResults<T>({
   children
 }: Props<T>) {
   const { showFavorites, isLoading, searchString } = useFilterListProvider();
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'filter-list.search-results' });
 
   // Memoizing this function so we don't need to recreate it when
   // the renderElement function changes
@@ -51,9 +51,7 @@ export function SearchResults<T>({
   }
 
   if (filteredItems.length === 0) {
-    return (
-      noResultsDisplay ?? <Text>{t('filter-list.search-results.empty-results')}</Text>
-    );
+    return noResultsDisplay ?? <Text>{t('empty-results')}</Text>;
   }
 
   return (

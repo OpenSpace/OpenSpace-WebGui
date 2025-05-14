@@ -24,7 +24,9 @@ export function FilterListSearchSettingsMenu<T extends object>({
   setKey,
   labels
 }: Props<T>) {
-  const { t } = useTranslation('components', { keyPrefix: 'filter-list' });
+  const { t } = useTranslation('components', {
+    keyPrefix: 'filter-list.search-settings-menu'
+  });
   const noKeyIsSelected = Object.values(keys).every((value) => value === false);
 
   return (
@@ -32,7 +34,7 @@ export function FilterListSearchSettingsMenu<T extends object>({
       <Menu.Target>
         <ActionIcon flex={'none'}>
           {noKeyIsSelected && (
-            <Tooltip label={t('search-settings-menu.no-selection-tooltip')}>
+            <Tooltip label={t('no-selection-tooltip')}>
               <ThemeIcon
                 color={'orange.4'}
                 variant={'transparent'}
@@ -47,7 +49,7 @@ export function FilterListSearchSettingsMenu<T extends object>({
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown maw={'300px'}>
-        <Menu.Label>{t('search-settings-menu.dropdown-menu-label')}</Menu.Label>
+        <Menu.Label>{t('dropdown-menu-label')}</Menu.Label>
         <Stack p={'xs'}>
           {/* When using Object.entries a new object is created, and we cant infer the type from that */}
           {Object.entries(keys).map(([key, enabled]) => (

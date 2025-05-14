@@ -10,7 +10,7 @@ interface Props {
 
 export function InfoBox({ children, w = 320 }: Props & PropsWithChildren) {
   const [opened, setOpened] = useState(false);
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'info-box' });
 
   return (
     <Popover
@@ -25,7 +25,7 @@ export function InfoBox({ children, w = 320 }: Props & PropsWithChildren) {
         <ActionIcon
           radius={'xl'}
           size={'xs'}
-          aria-label={t('info-box.aria-label')}
+          aria-label={t('aria-label')}
           onClick={() => setOpened(!opened)}
         >
           <InformationIcon />

@@ -44,7 +44,7 @@ export function NumericInput({
     setIsEditing,
     isEditing
   } = usePropListeningState<number | undefined>(value);
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'input.numeric-input' });
 
   const shouldClamp = props.clampBehavior === 'strict';
 
@@ -132,7 +132,7 @@ export function NumericInput({
       leftSection={
         isOutsideRange &&
         !isEditing && (
-          <Tooltip label={t('input.numeric-input.error-label', { min, max })}>
+          <Tooltip label={t('error-label', { min, max })}>
             <ThemeIcon color={'orange.4'} variant={'transparent'}>
               <WarningIcon size={IconSize.xs} />
             </ThemeIcon>
@@ -149,11 +149,7 @@ export function NumericInput({
           />
         )
       }
-      error={
-        isOutsideRange && isEditing
-          ? t('input.numeric-input.error-label', { min, max })
-          : undefined
-      }
+      error={isOutsideRange && isEditing ? t('error-label', { min, max }) : undefined}
       {...props}
       // TODO: Provide error on invalid input
     />

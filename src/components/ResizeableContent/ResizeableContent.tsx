@@ -27,7 +27,7 @@ export function ResizeableContent({
 }: Props) {
   const [height, setHeight] = useState(defaultHeight);
   const { pointerEvents: windowPointer } = useWindowSize();
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'resizeable-content' });
 
   const contentRef = useRef<HTMLDivElement>(null);
   const resizerRef = useRef<HTMLDivElement>(null);
@@ -129,7 +129,7 @@ export function ResizeableContent({
           }}
           size={'xs'}
           radius={0}
-          aria-label={t('resizeable-content.aria-label')}
+          aria-label={t('aria-label')}
         >
           <DragHandleIcon size={IconSize.xs} />
         </ActionIcon>

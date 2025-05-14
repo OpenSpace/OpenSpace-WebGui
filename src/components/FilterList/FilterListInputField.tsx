@@ -12,7 +12,7 @@ interface InputButtonProps {
 function InputButton({ showMoreButton }: InputButtonProps) {
   const { searchString, setSearchString, showDataInstead, toggleShowDataInstead } =
     useFilterListProvider();
-  const { t } = useTranslation('components', { keyPrefix: 'filter-list' });
+  const { t } = useTranslation('components', { keyPrefix: 'filter-list.input-field' });
 
   const isSearching = searchString !== '';
 
@@ -23,7 +23,7 @@ function InputButton({ showMoreButton }: InputButtonProps) {
         variant={'subtle'}
         color={'gray'}
         onClick={() => setSearchString('')}
-        aria-label={t('filter-list-input-field.cancel-button-aria-label')}
+        aria-label={t('cancel-button-aria-label')}
       >
         <CancelIcon />
       </ActionIcon>
@@ -33,9 +33,7 @@ function InputButton({ showMoreButton }: InputButtonProps) {
   return (
     showMoreButton && (
       <Button w={80} variant={'subtle'} color={'gray'} onClick={toggleShowDataInstead}>
-        {showDataInstead
-          ? t('filter-list-input-field.show-more-button.more')
-          : t('filter-list-input-field.show-more-button.more')}
+        {showDataInstead ? t('show-more-button.less') : t('show-more-button.more')}
       </Button>
     )
   );

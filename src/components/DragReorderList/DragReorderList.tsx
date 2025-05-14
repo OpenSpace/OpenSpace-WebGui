@@ -32,7 +32,7 @@ export function DragReorderList<T>({
   gap = 'xs'
 }: Props<T>) {
   const { value: localCache, setValue: setLocalCache } = usePropListeningState(data);
-  const { t } = useTranslation('components');
+  const { t } = useTranslation('components', { keyPrefix: 'drag-reorder-list' });
 
   async function handleDragEnd(result: DropResult<string>) {
     if (!result.destination || result.source.index === result.destination.index) {
@@ -73,7 +73,7 @@ export function DragReorderList<T>({
                     <ActionIcon
                       style={{ cursor: 'grab' }}
                       {...item.dragHandleProps}
-                      aria-label={t('drag-reorder-list.drag-handle-aria-label')}
+                      aria-label={t('drag-handle-aria-label')}
                     >
                       <DragHandleIcon />
                     </ActionIcon>
