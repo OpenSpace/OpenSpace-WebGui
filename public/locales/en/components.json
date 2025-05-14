@@ -1,0 +1,135 @@
+{
+  "about": {
+    "modal-title": "About OpenSpace",
+    "logo-alt-text": "OpenSpace logo",
+    "about-openspace-description": "OpenSpace is open-source interactive data visualization software designed to visualize the entire known universe and portray our ongoing efforts to investigate the cosmos.",
+    "fetching-version-number": "Fetching OpenSpace version...",
+    "custom-version-number": "Custom"
+  },
+  "collapsable-header": {
+    "chevron-aria-label": {
+      "open": "Open",
+      "close": "Close"
+    }
+  },
+  "color-edit": {
+    "error-invalid-color": "Invalid color"
+  },
+  "color-picker": {
+    "color-swatch-aria-label": "Open color edit"
+  },
+  "copy-to-clipboard-button": {
+    "tooltip": {
+      "copy": "Copy",
+      "copied": "Copied"
+    },
+    "label": "Copy"
+  },
+  "copy-uri-button": {
+    "label": "Copy URI"
+  },
+  "drag-reorder-list": {
+    "drag-handle-aria-label": "Move item up or down (keyboard control not supported)"
+  },
+  "error-fallback": {
+    "alert-title": "🚨 Houston, we have a problem...🚨",
+    "alert-text": "An error with the following message was thrown:",
+    "reload-button-label": "Reload page"
+  },
+  "filter-list": {
+    "search-results": {
+      "empty-results": "No results found. Try another search!"
+    },
+    "search-settings-menu": {
+      "no-selection-tooltip": "Nothing is selected. Search will be empty.",
+      "dropdown-menu-label": "Search in"
+    },
+    "input-field": {
+      "cancel-button-aria-label": "Clear search input",
+      "show-more-button": {
+        "less": "Less",
+        "more": "More"
+      }
+    }
+  },
+  "friction-controls": {
+    "rotation-label": "Rotation",
+    "zoom-label": "Zoom",
+    "roll-label": "Roll",
+    "info": {
+      "heading": "Friction controls",
+      "description": "Enable or disable rotation, zoom, and roll friction. If checked, applies friction to camera movement."
+    }
+  },
+  "info-box": {
+    "aria-label": "More information"
+  },
+  "input": {
+    "numeric-input": {
+      "error-label": "Value outside range [{{min}}, {{max}}]"
+    },
+    "step-control-button": {
+      "aria-label": {
+        "increment": "Increment value",
+        "decrement": "Decrement value"
+      }
+    }
+  },
+  "node-navigation-button": {
+    "jump": {
+      "title": "Jump to",
+      "tooltip": "Teleport to object using a fade transition"
+    },
+    "jump-geo": {
+      "title": "Jump to Geo",
+      "tooltip": "Teleport to position using a fade transition"
+    },
+    "focus": {
+      "title": "Focus",
+      "tooltip": "Focus the object (set as anchor). Hold <0>Shift</0> when clicking to focus without retargeting"
+    },
+    "fly": {
+      "title": "Fly to",
+      "tooltip": "Trigger a flight to the object. Hold <0>Shift</0> when clicking to instantly teleport/jump"
+    },
+    "fly-geo": {
+      "title": "Fly to Geo",
+      "tooltip": "Trigger a flight to the position. Hold <0>Shift</0> when clicking to instantly teleport/jump"
+    },
+    "frame": {
+      "title": "Zoom to / Frame",
+      "tooltip": "Frame the object by moving the camera in a straigt line and rotate towards it. Hold <0>Shift</0> when clicking to do it instantaneously"
+    }
+  },
+  "property": {
+    "list-property": {
+      "double-list-placeholder-text": "number1, number2, ...",
+      "int-list-placeholder-text": "integer1, integer2, ...",
+      "string-list-placeholder-text": "item1, item2, ..."
+    },
+    "option-property": {
+      "aria-label": "{{guiName}} option input",
+      "placeholder": {
+        "options": "Choose an option",
+        "no-options": "No options were loaded"
+      }
+    },
+    "selection-property": {
+      "aria-label": "{{guiName}} multi-select",
+      "placeholder-empty-field": "No selection"
+    },
+    "string-property": {
+      "aria-label": "{{guiName}} input"
+    },
+    "property-label": {
+      "read-only-tooltip": "This property is read-only, meaning that it's not intended to be changed.",
+      "read-only-label": "Read-only"
+    }
+  },
+  "resizeable-content": {
+    "aria-label": "Resize window (keyboard control not suppored)"
+  },
+  "settings-popout": {
+    "aria-label": "Open settings"
+  }
+}
