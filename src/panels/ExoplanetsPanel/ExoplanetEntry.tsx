@@ -1,6 +1,7 @@
 import { ActionIcon, Group, Text } from '@mantine/core';
 
 import { MinusIcon, PlusIcon } from '@/icons/icons';
+import { useTranslation } from 'react-i18next';
 
 interface ExoplanetProps {
   name: string;
@@ -9,6 +10,8 @@ interface ExoplanetProps {
 }
 
 export function ExoplanetEntry({ name, isAdded, onClick }: ExoplanetProps) {
+  const { t } = useTranslation('exoplanetspanel', { keyPrefix: 'exoplanet-entry' });
+
   return (
     <Group grow mb={'xs'}>
       {
@@ -19,7 +22,7 @@ export function ExoplanetEntry({ name, isAdded, onClick }: ExoplanetProps) {
           style={{ flexGrow: 0 }}
           onClick={onClick}
           color={isAdded ? 'red' : 'blue'}
-          aria-label={`${isAdded ? 'Remove' : 'Add'} system: ${name}`}
+          aria-label={`${isAdded ? t('remove-aria-label') : t('add-aria-label')}: ${name}`}
         >
           {isAdded ? <MinusIcon /> : <PlusIcon />}
         </ActionIcon>

@@ -16,6 +16,7 @@ import { SceneGraphNodeHeader } from '../Scene/SceneGraphNode/SceneGraphNodeHead
 
 import { ExoplanetEntry } from './ExoplanetEntry';
 import { ExoplanetsSettings } from './ExoplanetsSettings';
+import { useTranslation } from 'react-i18next';
 
 export function ExoplanetsPanel() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
@@ -23,6 +24,7 @@ export function ExoplanetsPanel() {
   const allSystemNames = useAppSelector((state) => state.exoplanets.data);
   const [aim, setAim] = useProperty('StringProperty', NavigationAimKey);
   const [anchor, setAnchor] = useProperty('StringProperty', NavigationAnchorKey);
+  const { t } = useTranslation('exoplanetspanel', { keyPrefix: 'exoplanets' });
 
   const luaApi = useOpenSpaceApi();
 
@@ -82,7 +84,9 @@ export function ExoplanetsPanel() {
     <>
       <ResizeableContent defaultHeight={300}>
         <FilterList isLoading={allSystemNames.length === 0}>
-          <FilterList.InputField placeHolderSearchText={'Star name...'} />
+          <FilterList.InputField
+            placeHolderSearchText={t('exoplanet-search-placeholder')}
+          />
           <FilterList.SearchResults
             data={allSystemNames}
             renderElement={(name) => (
@@ -101,9 +105,9 @@ export function ExoplanetsPanel() {
       </ResizeableContent>
       <ExoplanetsSettings hasAddedExoplanets={addedSystems.length > 0} />
       <Divider my={'xs'}></Divider>
-      <Title order={3}>Added Systems</Title>
+      <Title order={3}>{t('added-systems.title')}</Title>
       {addedSystems.length === 0 ? (
-        <Text>No active systems</Text>
+        <Text>{t('added-systems.no-active-systems')}</Text>
       ) : (
         addedSystems.map(
           (hostStar) =>

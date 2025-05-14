@@ -1,5 +1,6 @@
 import actionPanel from '@/public/locales/en/actionpanel.json';
 import components from '@/public/locales/en/components.json';
+import exoplanetsPanel from '@/public/locales/en/exoplanetspanel.json';
 import notifications from '@/public/locales/en/notifications.json';
 
 /**
