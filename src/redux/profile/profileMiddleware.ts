@@ -34,7 +34,9 @@ export const addProfileListener = (startListening: AppStartListening) => {
         const { taskbarItems } = listenerApi.getState().local;
         const item = taskbarItems.find((item) => item.id === key);
 
-        if (!item) {
+        if (item) {
+          listenerApi.dispatch(setMenuItemVisible({ id: key, visible: value }));
+        } else {
           listenerApi.dispatch(
             handleNotificationLogging(
               'Error missing menu item',
@@ -42,8 +44,6 @@ export const addProfileListener = (startListening: AppStartListening) => {
               LogLevel.Error
             )
           );
-        } else {
-          listenerApi.dispatch(setMenuItemVisible({ id: key, visible: value }));
         }
       });
 
