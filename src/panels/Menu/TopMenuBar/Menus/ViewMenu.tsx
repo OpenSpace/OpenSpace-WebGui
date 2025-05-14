@@ -13,11 +13,13 @@ import { notifications } from '@mantine/notifications';
 
 import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { BoolInput } from '@/components/Input/BoolInput';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useProperty } from '@/hooks/properties';
 import {
   ChevronRightIcon,
   DeleteIcon,
+  NotificationsIcon,
   SaveIcon,
   SettingsIcon,
   TaskBarIcon,
@@ -200,29 +202,44 @@ export function ViewMenu() {
             <LoadingBlocks n={1} />
           )}
         </Container>
+      </TopBarMenuWrapper>
 
+      <TopBarMenuWrapper
+        targetTitle={
+          <Menu.Item
+            leftSection={<NotificationsIcon />}
+            rightSection={<ChevronRightIcon size={IconSize.sm} />}
+          >
+            Notifications
+          </Menu.Item>
+        }
+        position={'right-start'}
+        withinPortal={false}
+        closeOnItemClick={false}
+      >
+        <Menu.Label>
+          <Group gap={'xs'}>Notifications</Group>
+        </Menu.Label>
+        <Container>
+          {/* @TODO (2025-05-14, emmbr): Use BoolInput component */}
+          <Checkbox
+            label={'Show Notifications'}
+            checked={logNotifications}
+            onChange={(event) => dispatch(showNotifications(event.currentTarget.checked))}
+            mb={'xs'}
+          />
+        </Container>
         <Menu.Label>
           <Group gap={'xs'}>
-            Notifications
+            Min OpenSpace Log Level
             <InfoBox>Controls which messages will be shown from OpenSpace</InfoBox>
           </Group>
         </Menu.Label>
         <Container>
-          <Checkbox
-            label={'Show Notifications'}
-            checked={logNotifications}
-            onChange={(event) => {
-              dispatch(showNotifications(event.currentTarget.checked));
-            }}
-            mb={'xs'}
-          />
-        </Container>
-        <Menu.Label>Set Min OpenSpace Log Level</Menu.Label>
-        <Container>
           <Radio.Group
             value={notificationLogLevel}
             onChange={(value) => dispatch(updateLogLevel(value as LogLevel))}
-            mb={3}
+            mb={'xs'}
           >
             <Stack gap={'xs'}>
               {Object.values(LogLevel).map((logLevel) => (
@@ -240,7 +257,7 @@ export function ViewMenu() {
           onClick={() => notifications.clean()}
           leftSection={<DeleteIcon size={IconSize.sm} />}
         >
-          Clear All Notifications
+          Clear Notifications
         </Menu.Item>
       </TopBarMenuWrapper>
     </TopBarMenuWrapper>
