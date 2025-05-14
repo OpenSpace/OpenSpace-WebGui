@@ -5,7 +5,7 @@ import { PropertyProps } from '@/components/Property/types';
 import { useProperty } from '@/hooks/properties';
 
 export function DoubleListProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setValue] = useProperty('DoubleListProperty', uri);
+  const [value, setValue, meta] = useProperty('DoubleListProperty', uri);
   const { t } = useTranslation('components', { keyPrefix: 'property.list-property' });
 
   if (value === undefined) {
@@ -21,6 +21,7 @@ export function DoubleListProperty({ uri, readOnly }: PropertyProps) {
       value={value.map((v) => v.toString())}
       setValue={setValueString}
       placeHolderText={t('double-list-placeholder-text')}
+      ariaLabel={t('aria-label', { guiName: meta?.guiName })}
       disabled={readOnly}
     />
   );

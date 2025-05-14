@@ -103,6 +103,7 @@
   },
   "property": {
     "list-property": {
+      "aria-label": "{{guiName}} list input",
       "double-list-placeholder-text": "number1, number2, ...",
       "int-list-placeholder-text": "integer1, integer2, ...",
       "string-list-placeholder-text": "item1, item2, ..."

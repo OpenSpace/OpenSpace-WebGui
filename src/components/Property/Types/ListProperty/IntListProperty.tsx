@@ -5,7 +5,7 @@ import { PropertyProps } from '@/components/Property/types';
 import { useProperty } from '@/hooks/properties';
 
 export function IntListProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setValue] = useProperty('IntListProperty', uri);
+  const [value, setValue, meta] = useProperty('IntListProperty', uri);
   const { t } = useTranslation('components', { keyPrefix: 'property.list-property' });
 
   if (value === undefined) {
@@ -21,6 +21,7 @@ export function IntListProperty({ uri, readOnly }: PropertyProps) {
       value={value.map((value) => value.toString())}
       setValue={setValueFromString}
       placeHolderText={t('int-list-placeholder-text')}
+      ariaLabel={t('aria-label', { guiName: meta?.guiName })}
       disabled={readOnly}
     />
   );

@@ -5,7 +5,7 @@ import { PropertyProps } from '@/components/Property/types';
 import { useProperty } from '@/hooks/properties';
 
 export function StringListProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setValue] = useProperty('StringListProperty', uri);
+  const [value, setValue, meta] = useProperty('StringListProperty', uri);
   const { t } = useTranslation('components', { keyPrefix: 'property.list-property' });
 
   if (value === undefined) {
@@ -17,6 +17,7 @@ export function StringListProperty({ uri, readOnly }: PropertyProps) {
       value={value}
       setValue={setValue}
       placeHolderText={t('string-list-placeholder-text')}
+      ariaLabel={t('aria-label', { guiName: meta?.guiName })}
       disabled={readOnly}
     />
   );
