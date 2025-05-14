@@ -1,10 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, Text } from '@mantine/core';
 
 import { MinusIcon } from '@/icons/icons';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { Identifier } from '@/types/types';
 import { sgnUri } from '@/util/propertyTreeHelpers';
-import { useTranslation } from 'react-i18next';
 
 interface Props {
   addedNodes: Identifier[];

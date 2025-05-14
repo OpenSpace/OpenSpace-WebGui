@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Group } from '@mantine/core';
 
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
@@ -14,7 +15,6 @@ import { ActionsButton } from './ActionsButton';
 import { ActionsFolder } from './ActionsFolder';
 import { ActionsSearchInputField } from './ActionsSearchInputField';
 import { useActionsForLevel, useActionsInPath } from './hooks';
-import { useTranslation } from 'react-i18next';
 
 export function ActionsPanel() {
   const isInitialized = useAppSelector((state) => state.actions.isInitialized);

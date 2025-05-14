@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Divider, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -16,7 +17,6 @@ import { SceneGraphNodeHeader } from '../Scene/SceneGraphNode/SceneGraphNodeHead
 
 import { ExoplanetEntry } from './ExoplanetEntry';
 import { ExoplanetsSettings } from './ExoplanetsSettings';
-import { useTranslation } from 'react-i18next';
 
 export function ExoplanetsPanel() {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);

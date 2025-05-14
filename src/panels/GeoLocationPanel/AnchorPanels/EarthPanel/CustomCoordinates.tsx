@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Group, Stack, TextInput } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
@@ -6,7 +7,6 @@ import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavi
 import { PlusIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
 import { Identifier } from '@/types/types';
-import { useTranslation } from 'react-i18next';
 
 interface Props {
   currentAnchor: Identifier;

@@ -1,10 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import { Checkbox, Group, Stack } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { useProperty } from '@/hooks/properties';
-import { useTranslation } from 'react-i18next';
 
 interface Props {
   hasAddedExoplanets: boolean;

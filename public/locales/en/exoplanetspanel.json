@@ -1,31 +1,31 @@
 {
-    "exoplanet-entry": {
-      "add-aria-label": "Add system",
-      "remove-aria-label": "Remove system"
+  "exoplanet-entry": {
+    "add-aria-label": "Add system",
+    "remove-aria-label": "Remove system"
+  },
+  "exoplanets": {
+    "exoplanet-search-placeholder": "Star name...",
+    "added-systems": {
+      "title": "Added Systems",
+      "no-active-systems": "No active systems"
+    }
+  },
+  "exoplanets-settings": {
+    "section-title": "Settings",
+    "show-habitable-zone": {
+      "aria-label": "Toggle show habitable zone",
+      "label": "Show Habitable Zone",
+      "tooltip": "Show/Hide the habitable zone visualizations. Setting the value automatically updates the visibility for all added exoplanet systems."
     },
-    "exoplanets": {
-      "exoplanet-search-placeholder": "Star name...",
-      "added-systems": {
-        "title": "Added Systems",
-        "no-active-systems": "No active systems"
-      }
+    "show-orbit-uncertainty": {
+      "aria-label": "Toggle show orbit uncertainty",
+      "label": "Show Orbit Uncertainty",
+      "tooltip": "Show/Hide disc visualization of the uncertainty of the planetary orbits. Setting the value automatically updates the visibility for all added exoplanet systems."
     },
-    "exoplanets-settings": {
-      "section-title": "Settings",
-      "show-habitable-zone": {
-        "aria-label": "Toggle show habitable zone",
-        "label": "Show Habitable Zone",
-        "tooltip": "Show/Hide the habitable zone visualizations. Setting the value automatically updates the visibility for all added exoplanet systems."
-      },
-      "show-orbit-uncertainty": {
-        "aria-label": "Toggle show orbit uncertainty",
-        "label": "Show Orbit Uncertainty",
-        "tooltip": "Show/Hide disc visualization of the uncertainty of the planetary orbits. Setting the value automatically updates the visibility for all added exoplanet systems."
-      },
-      "show-1-au-ring": {
-        "aria-label": "Toggle show 1 AU size ring",
-        "label": "Show 1 AU Size Ring",
-        "tooltip": "If true, show a ring with the radius 1 AU around the host star of each system, to use for size comparison. Setting the value automatically updates the visibility for all added exoplanet systems."
-      }
+    "show-1-au-ring": {
+      "aria-label": "Toggle show 1 AU size ring",
+      "label": "Show 1 AU Size Ring",
+      "tooltip": "If true, show a ring with the radius 1 AU around the host star of each system, to use for size comparison. Setting the value automatically updates the visibility for all added exoplanet systems."
     }
   }
+}

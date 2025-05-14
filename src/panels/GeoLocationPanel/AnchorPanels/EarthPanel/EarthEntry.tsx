@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, Text, Tooltip } from '@mantine/core';
 import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 
@@ -8,7 +9,6 @@ import { Identifier } from '@/types/types';
 
 import { Candidate, Extent } from './types';
 import { addressUTF8 } from './util';
-import { useTranslation } from 'react-i18next';
 
 interface Props {
   place: Candidate;

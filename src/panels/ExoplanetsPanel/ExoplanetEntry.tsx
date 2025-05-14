@@ -1,7 +1,7 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, Text } from '@mantine/core';
 
 import { MinusIcon, PlusIcon } from '@/icons/icons';
-import { useTranslation } from 'react-i18next';
 
 interface ExoplanetProps {
   name: string;
