@@ -7,7 +7,7 @@ import { Alert, Button, Code, Text } from '@mantine/core';
 // of the JSX code that is inside the Error Boundary. The resetErrorBoundary
 // prop allows us to pass in a function where we can "recover" from the thrown
 // error, reset the error, and retry rendering.
-export function fallbackRender({ error, resetErrorBoundary }: FallbackProps) {
+export function FallbackRender({ error, resetErrorBoundary }: FallbackProps) {
   const { t } = useTranslation('components', { keyPrefix: 'error-fallback' });
 
   return (

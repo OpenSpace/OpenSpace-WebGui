@@ -13,7 +13,6 @@ import { notifications } from '@mantine/notifications';
 
 import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { BoolInput } from '@/components/Input/BoolInput';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useProperty } from '@/hooks/properties';
 import {
