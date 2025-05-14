@@ -20,12 +20,14 @@ import {
   setFlightControllerInputScaleFactor
 } from '@/redux/flightcontroller/flightControllerSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useTranslation } from 'react-i18next';
 
 export function FlightControlPanel() {
   const isControllerEnabled = useAppSelector((state) => state.flightController.isEnabled);
   const mouseScaleFactor = useAppSelector(
     (state) => state.flightController.inputScaleFactor
   );
+  const { t } = useTranslation('flightcontrolpanel');
 
   const dispatch = useAppDispatch();
 
@@ -41,20 +43,20 @@ export function FlightControlPanel() {
 
   const infoBoxContent = (
     <Container>
-      <Text>Interact with the highlighted area to control the camera.</Text>
+      <Text>{t('controller.description.intro')}</Text>
       <Space h={'xs'} />
-      <Text fw={'bold'}>Mouse controls:</Text>
-      <Text>Click and drag to rotate. Hold</Text>
+      <Text fw={'bold'}>{t('controller.description.mouse-title')}</Text>
+      <Text>{t('controller.description.mouse-body.text')}</Text>
       <List>
-        <List.Item>Shift to zoom (y-axis) or roll (x-axis)</List.Item>
-        <List.Item>Ctrl to pan</List.Item>
+        <List.Item>{t('controller.description.mouse-body.list.shift')}</List.Item>
+        <List.Item>{t('controller.description.mouse-body.list.ctrl')}</List.Item>
       </List>
       <Space h={'xs'} />
-      <Text fw={'bold'}>Touch controls:</Text>
+      <Text fw={'bold'}>{t('controller.description.touch-title')}</Text>
       <List>
-        <List.Item>1 finger to rotate</List.Item>
-        <List.Item>2 fingers to pan</List.Item>
-        <List.Item>3 fingers to zoom (y-axis) or roll (x-axis)</List.Item>
+        <List.Item>{t('controller.description.touch-body.list.1-finger')}</List.Item>
+        <List.Item>{t('controller.description.touch-body.list.2-fingers')}</List.Item>
+        <List.Item>{t('controller.description.touch-body.list.3-fingers')}</List.Item>
       </List>
     </Container>
   );
@@ -62,25 +64,22 @@ export function FlightControlPanel() {
   return (
     <Stack gap={'xs'}>
       <BoolInput
-        name={'Toggle flight control'}
+        name={t('controller.label')}
         description={infoBoxContent}
         value={isControllerEnabled}
         setValue={toggleFlightController}
       />
 
-      <Title order={2}>Settings</Title>
+      <Title order={2}>{t('settings-title')}</Title>
       <Box>
-        <Label name={'Friction control'} description={<FrictionControlsInfo />} />
+        <Label name={t('friction-label')} description={<FrictionControlsInfo />} />
         <Group align={'start'}>
           <FrictionControls size={'sm'} />
         </Group>
       </Box>
 
       <Box>
-        <Label
-          name={'Input sensitivity'}
-          description={'Controls how sensitive the touch and mouse inputs are'}
-        />
+        <Label name={t('sensitivity.label')} description={t('sensitivity.description')} />
         <Slider
           min={0.1}
           max={1}

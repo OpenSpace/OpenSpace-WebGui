@@ -132,7 +132,7 @@ export function FlightController() {
           style={{
             height: '100%',
             width: '100%',
-            border: '3px solid var(--mantine-primary-color-filled)'
+            border: 'var(--openspace-border-active)'
           }}
           onPointerDown={mouseDown}
           onPointerUp={mouseUp}
