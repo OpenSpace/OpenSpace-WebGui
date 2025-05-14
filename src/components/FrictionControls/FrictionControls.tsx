@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Chip, MantineSize } from '@mantine/core';
 
 import { useProperty } from '@/hooks/properties';
@@ -11,35 +12,36 @@ export function FrictionControls({ size }: Props) {
   const [rotation, setRotation] = useProperty('BoolProperty', RotationalFrictionKey);
   const [zoom, setZoom] = useProperty('BoolProperty', ZoomFrictionKey);
   const [roll, setRoll] = useProperty('BoolProperty', RollFrictionKey);
+  const { t } = useTranslation('components', { keyPrefix: 'friction-controls' });
 
   return (
     <>
       <Chip
         checked={rotation}
         onChange={() => setRotation(!rotation)}
-        variant={'light'}
+        variant={rotation ? 'light' : 'transparent'}
         size={size}
-        color={'white'}
+        color={'teal'}
       >
-        Rotation
+        {t('rotation-label')}
       </Chip>
       <Chip
         checked={zoom}
         onChange={() => setZoom(!zoom)}
-        variant={'light'}
+        variant={zoom ? 'light' : 'transparent'}
         size={size}
-        color={'white'}
+        color={'teal'}
       >
-        Zoom
+        {t('zoom-label')}
       </Chip>
       <Chip
         checked={roll}
         onChange={() => setRoll(!roll)}
-        variant={'light'}
+        variant={roll ? 'light' : 'transparent'}
         size={size}
-        color={'white'}
+        color={'teal'}
       >
-        Roll
+        {t('roll-label')}
       </Chip>
     </>
   );

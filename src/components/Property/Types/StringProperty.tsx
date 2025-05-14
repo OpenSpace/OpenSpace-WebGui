@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Paper, Text } from '@mantine/core';
 
 import { StringInput } from '@/components/Input/StringInput';
@@ -6,6 +7,7 @@ import { useProperty } from '@/hooks/properties';
 
 export function StringProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue, meta] = useProperty('StringProperty', uri);
+  const { t } = useTranslation('components', { keyPrefix: 'property.string-property' });
 
   if (value === undefined || !meta) {
     return <></>;
@@ -19,6 +21,12 @@ export function StringProperty({ uri, readOnly }: PropertyProps) {
     );
   }
   return (
-    <StringInput onEnter={setValue} value={value} aria-label={`${meta.guiName} input`} />
+    <StringInput
+      onEnter={setValue}
+      value={value}
+      aria-label={t('aria-label', {
+        guiName: meta.guiName
+      })}
+    />
   );
 }

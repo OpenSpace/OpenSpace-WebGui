@@ -1,4 +1,4 @@
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ActionIcon,
   ColorInput,
@@ -12,6 +12,7 @@ import {
   toRgba
 } from '@mantine/core';
 import { ColorFormat } from 'node_modules/@mantine/core/lib/components/ColorPicker/ColorPicker.types';
+import { useTranslation } from 'react-i18next';
 
 import { IconSize } from '@/types/enums';
 import { rgbaToColor, rgbaToFormat, toFormat } from '@/util/colorHelper';
@@ -63,6 +64,7 @@ export function ColorPicker({ color, disabled, onChange, withAlpha }: Props) {
   const [format, setFormat] = useState<ColorFormat>(defaultFormat);
   const [value, setValue] = useState(rgbaToColor(color, withAlpha));
   const [textEditValue, setTextEditValue] = useState(rgbaToColor(color, withAlpha));
+  const { t } = useTranslation('components', { keyPrefix: 'color-picker' });
 
   const formats = withAlpha ? ['rgba', 'hexa', 'hsla'] : ['rgb', 'hex', 'hsl'];
 
@@ -94,8 +96,8 @@ export function ColorPicker({ color, disabled, onChange, withAlpha }: Props) {
           disabled={disabled}
           size={'lg'}
           variant={'transparent'}
-          aria-label={'Open color edit'}
           flex={0}
+          aria-label={t('color-swatch-aria-label')}
         >
           <ColorSwatch size={IconSize.sm} color={rgbaToColor(color, withAlpha)} />
         </ActionIcon>

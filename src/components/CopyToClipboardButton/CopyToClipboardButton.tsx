@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Button, CopyButton, Tooltip } from '@mantine/core';
 
 import { CopyIcon } from '@/icons/icons';
@@ -9,10 +10,15 @@ interface Props {
 }
 
 export function CopyToClipboardButton({ value, showLabel, disabled }: Props) {
+  const { t } = useTranslation('components', { keyPrefix: 'copy-to-clipboard-button' });
+
   return (
     <CopyButton value={value} timeout={2000}>
       {({ copied, copy }) => (
-        <Tooltip label={copied ? 'Copied' : 'Copy'} position={'right'}>
+        <Tooltip
+          label={copied ? t('tooltip.copied') : t('tooltip.copy')}
+          position={'right'}
+        >
           {showLabel ? (
             <Button
               color={copied ? 'teal' : 'gray'}
@@ -21,7 +27,7 @@ export function CopyToClipboardButton({ value, showLabel, disabled }: Props) {
               rightSection={<CopyIcon />}
               disabled={disabled}
             >
-              Copy
+              {t('label')}
             </Button>
           ) : (
             <ActionIcon

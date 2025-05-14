@@ -1,0 +1,6 @@
+{
+  "error": {
+    "fetch-lua-api": "Error fetching OpenSpace API",
+    "parsing-file": "Error parsing file"
+  }
+}

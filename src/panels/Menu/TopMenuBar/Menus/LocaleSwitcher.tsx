@@ -8,12 +8,12 @@ import { IconSize } from '@/types/enums';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function LocaleSwitcher() {
-  const { i18n } = useTranslation('settings');
+  const { i18n } = useTranslation();
 
   function languageIcon(): React.JSX.Element {
-    const { resolvedLanguage } = i18n;
-    return resolvedLanguage ? (
-      SupportedLanguages[resolvedLanguage].icon
+    const { language } = i18n;
+    return language ? (
+      SupportedLanguages[language].icon
     ) : (
       <LanguageIcon size={IconSize.sm} />
     );
