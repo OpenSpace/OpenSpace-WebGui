@@ -31,7 +31,7 @@ export function About({ opened, close }: Props) {
     <Modal opened={opened} onClose={close} title={t('modal-title')} size={'40%'}>
       <Grid>
         <Grid.Col span={4}>
-          <Image src={'openspace-logo.png'} alt={t('img-alt-text')} w={'100%'} />
+          <Image src={'openspace-logo.png'} alt={t('logo-alt-text')} w={'100%'} />
         </Grid.Col>
         <Grid.Col span={8}>
           <Stack gap={'xs'}>

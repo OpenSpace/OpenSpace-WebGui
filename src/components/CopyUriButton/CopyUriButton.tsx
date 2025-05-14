@@ -14,7 +14,7 @@ function CopyUriButton({ uri }: Props) {
     <>
       {uri && (
         <Group pt={'sm'}>
-          <Code>{t('label')}</Code>
+          <Code>{t('label')}:</Code>
           <CopyToClipboardButton value={uri} />
         </Group>
       )}

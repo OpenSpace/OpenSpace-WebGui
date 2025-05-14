@@ -22,9 +22,9 @@ export function PropertyLabel({ name, description, uri, readOnly = false }: Prop
         <>
           {name}
           {readOnly && (
-            <Tooltip maw={200} multiline label={t('tooltip-label')}>
+            <Tooltip maw={200} multiline label={t('read-only-tooltip')}>
               <Text span ml={'xs'} size={'xs'} c={'dimmed'}>
-                {t('label')}
+                {`(${t('read-only-label')})`}
               </Text>
             </Tooltip>
           )}

@@ -1,7 +1,7 @@
 {
   "about": {
     "modal-title": "About OpenSpace",
-    "img-alt-text": "OpenSpace logo",
+    "logo-alt-text": "OpenSpace logo",
     "about-openspace-description": "OpenSpace is open-source interactive data visualization software designed to visualize the entire known universe and portray our ongoing efforts to investigate the cosmos.",
     "fetching-version-number": "Fetching OpenSpace version...",
     "custom-version-number": "Custom"
@@ -26,7 +26,7 @@
     "label": "Copy"
   },
   "copy-uri-button": {
-    "label": "Copy URI:"
+    "label": "Copy URI"
   },
   "drag-reorder-list": {
     "drag-handle-aria-label": "Move item up or down (keyboard control not supported)"
@@ -122,8 +122,8 @@
       "aria-label": "{{guiName}} input"
     },
     "property-label": {
-      "tooltip-label": "This property is read-only, meaning that it's not intended to be changed.",
-      "label": "(Read-only)"
+      "read-only-tooltip": "This property is read-only, meaning that it's not intended to be changed.",
+      "read-only-label": "Read-only"
     }
   },
   "resizeable-content": {
