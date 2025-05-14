@@ -1,4 +1,5 @@
 import components from '@/public/locales/en/components.json';
+import notifications from '@/public/locales/en/notifications.json';
 
 /**
  * This object in combination with `i18next.d.ts` enables intellisense and syntax
@@ -6,7 +7,8 @@ import components from '@/public/locales/en/components.json';
  */
 export const resources = {
   en: {
-    components: components
+    components: components,
+    notifications: notifications
   }
 } as const;
 

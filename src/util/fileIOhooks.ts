@@ -4,8 +4,11 @@ import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
 import { useAppDispatch } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { LogLevel } from '@/types/enums';
+import { useTranslation } from 'react-i18next';
+import { TFunction } from 'i18next';
 
 function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void {
+  const {t} = useTranslation('notifications', {keyPrefix: 'error'})
   const dispatch = useAppDispatch();
 
   const fileDialog = useFileDialog({
@@ -24,7 +27,7 @@ function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void 
       const json = JSON.parse(content);
       handlePickedFile(json);
     } catch (e) {
-      dispatch(handleNotificationLogging('Error parsing file', e, LogLevel.Error));
+      dispatch(handleNotificationLogging(t('parsing-file'), e, LogLevel.Error));
     }
   }
 
@@ -39,7 +42,8 @@ function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void 
 // https://developer.chrome.com/docs/capabilities/browser-fs-access#opening_files_2
 async function openSaveFileDialogInternal(
   contents: JSON,
-  dispatch: Dispatch<UnknownAction>
+  dispatch: Dispatch<UnknownAction>,
+  t: TFunction<"notifications", "error">
 ) {
   const contentsString = JSON.stringify(contents, null, 2);
 
@@ -69,7 +73,7 @@ async function openSaveFileDialogInternal(
       // Close the file and write the contents to disk
       await writable.close();
     } catch (e) {
-      dispatch(handleNotificationLogging('Error parsing file', e, LogLevel.Error));
+      dispatch(handleNotificationLogging(t('parsing-file'), e, LogLevel.Error));
     }
   } else {
     // This is the fallback code if showSaveFilePicker is not available
@@ -94,9 +98,10 @@ async function openSaveFileDialogInternal(
 export function useSaveLoadJsonFiles(handlePickedFile: (content: JSON) => void) {
   const dispatch = useAppDispatch();
   const openLoadFileDialog = useLoadJsonFile(handlePickedFile);
+  const { t } = useTranslation('notifications', {keyPrefix: 'error'})
 
   async function openSaveFileDialog(contents: JSON) {
-    openSaveFileDialogInternal(contents, dispatch);
+    openSaveFileDialogInternal(contents, dispatch, t);
   }
 
   return { openSaveFileDialog, openLoadFileDialog };

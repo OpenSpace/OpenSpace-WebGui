@@ -1,4 +1,5 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { api } from '@/api/api';
 import { useIsConnectionStatus } from '@/hooks/util';
@@ -14,6 +15,7 @@ import { LuaApiContext } from './LuaApiContext';
 export function LuaApiProvider({ children }: PropsWithChildren) {
   const [luaApi, setLuaApi] = useState<OpenSpace.openspace | null>(null);
   const isConnected = useIsConnectionStatus(ConnectionStatus.Connected);
+  const { t } = useTranslation('notifications', { keyPrefix: 'error' });
   const dispatch = useAppDispatch();
 
   // Connect to OpenSpace
@@ -31,15 +33,13 @@ export function LuaApiProvider({ children }: PropsWithChildren) {
         const res = await api.singleReturnLibrary();
         setLuaApi(res);
       } catch (e) {
-        dispatch(
-          handleNotificationLogging('Error fetching OpenSpace API', e, LogLevel.Error)
-        );
+        dispatch(handleNotificationLogging(t('fetch-lua-api'), e, LogLevel.Error));
       }
     };
     if (isConnected) {
       fetchApi();
     }
-  }, [isConnected, dispatch]);
+  }, [isConnected, dispatch, t]);
 
   // The groups ordering is not part of any topic so we request it
   // once we have the api
