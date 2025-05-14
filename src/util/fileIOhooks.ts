@@ -1,6 +1,16 @@
 import { useFileDialog } from '@mantine/hooks';
+import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
+
+import { useAppDispatch } from '@/redux/hooks';
+import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
+import { LogLevel } from '@/types/enums';
+import { useTranslation } from 'react-i18next';
+import { TFunction } from 'i18next';
 
 function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void {
+  const {t} = useTranslation('notifications', {keyPrefix: 'error'})
+  const dispatch = useAppDispatch();
+
   const fileDialog = useFileDialog({
     multiple: false,
     accept: '.json',
@@ -17,8 +27,7 @@ function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void 
       const json = JSON.parse(content);
       handlePickedFile(json);
     } catch (e) {
-      // TODO: do we want to throw here?
-      console.error('Error parsing file', e);
+      dispatch(handleNotificationLogging(t('parsing-file'), e, LogLevel.Error));
     }
   }
 
@@ -31,7 +40,11 @@ function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void 
 
 // For documentation about these features please read this article:
 // https://developer.chrome.com/docs/capabilities/browser-fs-access#opening_files_2
-async function openSaveFileDialog(contents: JSON) {
+async function openSaveFileDialogInternal(
+  contents: JSON,
+  dispatch: Dispatch<UnknownAction>,
+  t: TFunction<"notifications", "error">
+) {
   const contentsString = JSON.stringify(contents, null, 2);
 
   const supportsSaveDialog = 'showSaveFilePicker' in self;
@@ -60,8 +73,7 @@ async function openSaveFileDialog(contents: JSON) {
       // Close the file and write the contents to disk
       await writable.close();
     } catch (e) {
-      // @TODO ylvse 2025-03-31: handle this error with the notification system?
-      console.error(e);
+      dispatch(handleNotificationLogging(t('parsing-file'), e, LogLevel.Error));
     }
   } else {
     // This is the fallback code if showSaveFilePicker is not available
@@ -84,7 +96,13 @@ async function openSaveFileDialog(contents: JSON) {
 // Exporting these as a hook as they seem to belong in the same file,
 // even though only on of them is a hook
 export function useSaveLoadJsonFiles(handlePickedFile: (content: JSON) => void) {
+  const dispatch = useAppDispatch();
   const openLoadFileDialog = useLoadJsonFile(handlePickedFile);
+  const { t } = useTranslation('notifications', {keyPrefix: 'error'})
+
+  async function openSaveFileDialog(contents: JSON) {
+    openSaveFileDialogInternal(contents, dispatch, t);
+  }
 
   return { openSaveFileDialog, openLoadFileDialog };
 }

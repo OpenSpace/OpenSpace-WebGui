@@ -66,6 +66,7 @@ export {
   MdLockOpen as LockOpenIcon,
   MdFilterCenterFocus as MoveTargetIcon,
   MdNightlight as NightIcon,
+  MdNotifications as NotificationsIcon,
   MdOpenInBrowser as OpenInBrowserIcon,
   MdOpenInNew as OpenInNewIcon,
   MdOpenInNew as OpenWindowIcon,
