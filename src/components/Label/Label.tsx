@@ -5,10 +5,10 @@ import { InfoBox } from '@/components/InfoBox/InfoBox';
 
 interface Props {
   name: string | JSX.Element;
-  description: string | JSX.Element;
+  info?: string | JSX.Element;
 }
 
-export function Label({ name, description }: Props) {
+export function Label({ name, info }: Props) {
   return (
     <Group wrap={'nowrap'}>
       <InputLabel fw={'normal'}>
@@ -16,7 +16,7 @@ export function Label({ name, description }: Props) {
           {name}
         </Text>
       </InputLabel>
-      {description && <InfoBox>{description}</InfoBox>}
+      {info && <InfoBox>{info}</InfoBox>}
     </Group>
   );
 }
