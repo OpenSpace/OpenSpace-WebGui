@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, ButtonProps } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -5,6 +6,7 @@ import { PauseIcon } from '@/icons/icons';
 
 export function PlaybackPauseButton({ ...props }: ButtonProps) {
   const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('common');
 
   return (
     <Button
@@ -13,7 +15,7 @@ export function PlaybackPauseButton({ ...props }: ButtonProps) {
       variant={'filled'}
       {...props}
     >
-      Pause
+      {t('pause')}
     </Button>
   );
 }

@@ -1,6 +1,8 @@
+import common from '@/public/locales/en/common.json';
 import components from '@/public/locales/en/components.json';
 import log from '@/public/locales/en/log.json';
 import notifications from '@/public/locales/en/notifications.json';
+import sessionrecording from '@/public/locales/en/sessionrecordingpanel.json';
 
 /**
  * This object in combination with `i18next.d.ts` enables intellisense and syntax
@@ -8,9 +10,11 @@ import notifications from '@/public/locales/en/notifications.json';
  */
 export const resources = {
   en: {
+    common: common,
     components: components,
     log: log,
-    notifications: notifications
+    notifications: notifications,
+    sessionrecording: sessionrecording
   }
 } as const;
 

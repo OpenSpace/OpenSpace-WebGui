@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, ButtonProps } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -14,6 +15,7 @@ export function RecordingStopButton({ filename, ...props }: Props) {
   const { format, overwriteFile } = useAppSelector(
     (state) => state.sessionRecording.settings
   );
+  const { t } = useTranslation('sessionrecording');
 
   function stopRecording(): void {
     // prettier-ignore
@@ -29,7 +31,7 @@ export function RecordingStopButton({ filename, ...props }: Props) {
       variant={'filled'}
       {...props}
     >
-      Stop Recording
+      {t('stop-recording')}
     </Button>
   );
 }

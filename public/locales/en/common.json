@@ -1,3 +1,7 @@
 {
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "pause": "Pause",
+  "play": "Play",
+  "record": "Record",
+  "resume": "Resume"
 }

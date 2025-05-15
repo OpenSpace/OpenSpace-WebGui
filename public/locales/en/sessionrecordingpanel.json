@@ -1,0 +1,28 @@
+{
+  "stop-playback": "Stop Playback",
+  "stop-recording": "Stop Recording",
+  "play-session": {
+    "loop-playback-label": "Loop playback",
+
+    "output-frames": {
+      "label": "Ouput frames",
+      "info": "If checked, the specified number of frames will be recorded as screenshots and saved to disk. Per default, they are saved in the user/screenshots folder. This feature can not be used together with 'loop playback.",
+      "framerate-placeholder": "Framerate",
+      "framerate-aria-label": "Set framerate"
+    },
+    "playback-file": {
+      "label": "Playback file",
+      "placeholder": "Select playback file"
+    }
+  },
+  "record-session": {
+    "title": "Record",
+    "format-checkbox-label": "Text file format",
+    "overwrite-checkbox-label": "Overwrite file",
+    "recording-input-aria-label": "Enter recording filename",
+    "error-messages": {
+      "empty": "Filename cannot be empty",
+      "duplicate": "File '{{filename}}' already exists"
+    }
+  }
+}

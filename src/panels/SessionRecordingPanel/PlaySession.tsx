@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Checkbox, Group, Select, Stack, Title } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
@@ -20,6 +21,9 @@ export function PlaySession() {
 
   const fileList = useAppSelector((state) => state.sessionRecording.files);
   const recordingState = useSubscribeToSessionRecording();
+  const { t } = useTranslation(['sessionrecording', 'common'], {
+    keyPrefix: 'play-session'
+  });
 
   const isIdle = recordingState === RecordingState.Idle;
   const isPlayingBack =
@@ -46,33 +50,28 @@ export function PlaySession() {
   return (
     <>
       <Title order={2} my={'xs'}>
-        Play
+        {t('common:play')}
       </Title>
       <Stack gap={'xs'}>
         <Checkbox
-          label={'Loop playback'}
+          label={t('loop-playback-label')}
           checked={loopPlayback}
           onChange={onLoopPlaybackChange}
           disabled={!isIdle}
         />
         <Group>
           <Checkbox
-            label={'Output frames'}
+            label={t('output-frames.label')}
             checked={shouldOutputFrames}
             onChange={onShouldUpdateFramesChange}
             disabled={!isIdle}
           />
-          <InfoBox>
-            {`If checked, the specified number of frames will be recorded as
-              screenshots and saved to disk. Per default, they are saved in the
-              user/screenshots folder. This feature can not be used together with
-              'loop playback'`}
-          </InfoBox>
+          <InfoBox>{t('output-frames.info')}</InfoBox>
           {shouldOutputFrames && (
             <NumericInput
               value={outputFramerate}
-              placeholder={'Framerate'}
-              aria-label={'Set framerate'}
+              placeholder={t('output-frames.framerate-placeholder')}
+              aria-label={t('output-frames.framerate-aria-label')}
               onEnter={(value) => setOutputFramerate(value)}
               w={80}
             />
@@ -81,8 +80,8 @@ export function PlaySession() {
         <Group gap={'xs'} align={'flex-end'}>
           <Select
             value={filenamePlayback}
-            label={'Playback file'}
-            placeholder={'Select playback file'}
+            label={t('playback-file.label')}
+            placeholder={t('playback-file.placeholder')}
             data={fileList}
             onChange={setFilenamePlayback}
             searchable

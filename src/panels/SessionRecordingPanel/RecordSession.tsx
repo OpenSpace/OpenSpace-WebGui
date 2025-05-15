@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Checkbox, Group, TextInput, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -24,6 +25,7 @@ export function RecordSession() {
 
   const recordingState = useSubscribeToSessionRecording();
   const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('sessionrecording', { keyPrefix: 'record-session' });
 
   const isIdle = recordingState === RecordingState.Idle;
   const isRecordingState = recordingState === RecordingState.Recording;
@@ -32,7 +34,7 @@ export function RecordSession() {
     if (filenameRecording === '') {
       setFilenameState({
         invalid: true,
-        errorMessage: 'Filename cannot be empty'
+        errorMessage: t('error-messages.empty')
       });
       setShowOverwriteCheckbox(false);
       return;
@@ -41,7 +43,7 @@ export function RecordSession() {
     if (!overwriteFile && !isFileUnique(filenameRecording)) {
       setFilenameState({
         invalid: true,
-        errorMessage: 'Filename already exists'
+        errorMessage: t('error-messages.duplicate', { filenameRecording })
       });
       setShowOverwriteCheckbox(true);
       return;
@@ -81,7 +83,7 @@ export function RecordSession() {
     } else {
       setFilenameState({
         invalid: true,
-        errorMessage: `File '${value}' already exists`
+        errorMessage: t('error-messages.duplicate', { value })
       });
       setShowOverwriteCheckbox(true);
     }
@@ -106,14 +108,14 @@ export function RecordSession() {
         Record
       </Title>
       <Checkbox
-        label={'Text file format'}
+        label={t('format-checkbox-label')}
         onChange={(event) => onFormatChanged(event.currentTarget.checked)}
         defaultChecked
         mb={'sm'}
       />
       {showOverwriteCheckbox && (
         <Checkbox
-          label={'Overwrite file'}
+          label={t('overwrite-checkbox-label')}
           onChange={(event) => onOverwriteFileChanged(event.currentTarget.checked)}
           checked={overwriteFile}
           mb={'sm'}
@@ -122,8 +124,8 @@ export function RecordSession() {
       <Group align={'start'} gap={'xs'}>
         <TextInput
           value={filenameRecording}
-          placeholder={'Enter recording filename'}
-          aria-label={'Enter recording filename'}
+          placeholder={t('recording-input-aria-label')}
+          aria-label={t('recording-input-aria-label')}
           onChange={(event) => onFilenameChanged(event.currentTarget.value)}
           error={filenameState.invalid && filenameState.errorMessage}
           disabled={!isIdle}
