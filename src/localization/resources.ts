@@ -1,5 +1,7 @@
+import common from '@/public/locales/en/common.json';
 import components from '@/public/locales/en/components.json';
 import notifications from '@/public/locales/en/notifications.json';
+import navigationPanel from '@/public/locales/en/panel-navigation.json';
 
 /**
  * This object in combination with `i18next.d.ts` enables intellisense and syntax
@@ -7,8 +9,10 @@ import notifications from '@/public/locales/en/notifications.json';
  */
 export const resources = {
   en: {
+    common: common,
     components: components,
-    notifications: notifications
+    notifications: notifications,
+    'panel-navigation': navigationPanel
   }
 } as const;
 

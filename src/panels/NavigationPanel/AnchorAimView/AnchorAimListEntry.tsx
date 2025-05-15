@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, MantineStyleProps, Text, Tooltip } from '@mantine/core';
 
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
@@ -27,14 +28,18 @@ export function AnchorAimListEntry({
   onSelectAim,
   ...styleProps
 }: Props) {
+  const { t } = useTranslation('panel-navigation', {
+    keyPrefix: 'anchor-aim.anchor-aim-list-entry'
+  });
+
   return (
     <Group gap={'xs'} key={node.identifier} {...styleProps}>
       <Text flex={1} truncate pl={'xs'}>
         {node.name}
       </Text>
-      <Tooltip label={'Set and target anchor'} openDelay={600}>
+      <Tooltip label={t('anchor-tooltip')} openDelay={600}>
         <ActionIcon
-          aria-label={`Set anchor to: ${node.name}`}
+          aria-label={t('anchor-tooltip', node.name)}
           size={'lg'}
           variant={isCurrentAnchor ? 'filled' : 'default'}
           onClick={(event) => onSelectAnchor(node.identifier, event)}
@@ -43,9 +48,9 @@ export function AnchorAimListEntry({
           <AnchorIcon />
         </ActionIcon>
       </Tooltip>
-      <Tooltip label={'Set and target aim'} openDelay={600}>
+      <Tooltip label={t('aim-tooltip')} openDelay={600}>
         <ActionIcon
-          aria-label={`Set aim to: ${node.name}`}
+          aria-label={t('aim-tooltip', node.name)}
           size={'lg'}
           variant={isCurrentAim ? 'filled' : 'default'}
           onClick={(event) => onSelectAim(node.identifier, event)}

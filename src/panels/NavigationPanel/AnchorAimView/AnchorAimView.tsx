@@ -1,4 +1,5 @@
-import { Button, Divider, Group, Kbd, Text, Title, Tooltip } from '@mantine/core';
+import { Trans, useTranslation } from 'react-i18next';
+import { Button, Divider, Group, Kbd, Space, Text, Title, Tooltip } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
@@ -35,6 +36,9 @@ export function AnchorAimView({
 }: Props) {
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const engineMode = useSubscribeToEngineMode();
+  const { t } = useTranslation('panel-navigation', {
+    keyPrefix: 'anchor-aim.anchor-aim-view'
+  });
 
   const [anchor, setAnchor] = useProperty('StringProperty', NavigationAnchorKey);
   const [aim, setAim] = useProperty('StringProperty', NavigationAimKey);
@@ -46,7 +50,7 @@ export function AnchorAimView({
   const isInFlight = engineMode === EngineMode.CameraPath;
 
   if (anchor === undefined || aim === undefined) {
-    throw new Error('Anchor or aim property property does not exist');
+    throw new Error(t('error.no-anchor-aim-property'));
   }
 
   function onSelectAnchor(
@@ -71,30 +75,30 @@ export function AnchorAimView({
     }
   }
 
-  const infoBoxContent = (
-    <>
-      <Text style={{ textWrap: 'pretty' }}>
-        Set an anchor (<AnchorIcon />) that the camera attaches to, and an aim (
-        <TelescopeIcon />) for the camera to look at. The aim will be kept in the same
-        position as time changes.
-      </Text>
-      <Text style={{ textWrap: 'pretty' }} mt={'xs'}>
-        When selecting the aim/anchor, the chosen node will be targetted to be centered in
-        the view. Hold <Kbd>Shift</Kbd> on-click to set anchor/aim without targetting.
-      </Text>
-    </>
-  );
-
   return (
     <FilterList>
-      <Group justify={'space-between'}>
-        <Title order={2}>Anchor / Aim</Title>
-
-        <InfoBox w={300}>{infoBoxContent}</InfoBox>
+      <Group>
+        <Title order={2}>{t('title')}</Title>
+        <InfoBox w={300}>
+          <Text style={{ textWrap: 'pretty' }}>
+            <Trans
+              t={t}
+              i18nKey={'info.part-1'}
+              components={{
+                anchorIcon: <AnchorIcon />,
+                aimIcon: <TelescopeIcon />
+              }}
+            />
+          </Text>
+          <Space h={'xs'} />
+          <Text style={{ textWrap: 'pretty' }}>
+            <Trans t={t} i18nKey={'info.part-2'} components={{ keybind: <Kbd /> }} />
+          </Text>
+        </InfoBox>
       </Group>
 
       <Group gap={'xs'}>
-        <Tooltip label={'Retarget anchor'} openDelay={600}>
+        <Tooltip label={t('retarget-anchor-tooltip')} openDelay={600}>
           <Button
             flex={1}
             leftSection={<AnchorIcon size={IconSize.sm} />}
@@ -107,7 +111,10 @@ export function AnchorAimView({
           </Button>
         </Tooltip>
 
-        <Tooltip label={aimNode ? 'Retarget aim' : 'No aim is set'} openDelay={600}>
+        <Tooltip
+          label={aimNode ? t('retarget-aim-tooltip') : t('retarget-aim-tooltip-no-aim')}
+          openDelay={600}
+        >
           <Button
             flex={1}
             variant={'filled'}
@@ -119,7 +126,7 @@ export function AnchorAimView({
             {aimNode ? (
               <Text truncate>{aimNode.name}</Text>
             ) : (
-              <Text c={'dimmed'}>No aim</Text>
+              <Text c={'dimmed'}>{t('no-aim')}</Text>
             )}
           </Button>
         </Tooltip>
@@ -127,7 +134,7 @@ export function AnchorAimView({
       <Divider />
       <Group gap={'xs'}>
         <FilterList.InputField
-          placeHolderSearchText={'Search for a new anchor/aim...'}
+          placeHolderSearchText={t('filter-list-placeholder')}
           showMoreButton
           flex={'auto'}
         />
