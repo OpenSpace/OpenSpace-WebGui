@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Select } from '@mantine/core';
 
 import { PropertyProps } from '@/components/Property/types';
@@ -5,6 +6,7 @@ import { useProperty } from '@/hooks/properties';
 
 export function OptionProperty({ uri, readOnly }: PropertyProps) {
   const [value, setValue, meta] = useProperty('OptionProperty', uri);
+  const { t } = useTranslation('components', { keyPrefix: 'property.option-property' });
 
   if (!meta || value === undefined || !meta.additionalData) {
     return <></>;
@@ -17,8 +19,8 @@ export function OptionProperty({ uri, readOnly }: PropertyProps) {
   if (!options) {
     return (
       <Select
-        aria-label={`${meta.guiName} option input`}
-        placeholder={'No options were loaded'}
+        aria-label={t('aria-label', { guiName: meta.guiName })}
+        placeholder={t('placeholder.no-options')}
         disabled
       />
     );
@@ -26,8 +28,8 @@ export function OptionProperty({ uri, readOnly }: PropertyProps) {
 
   return (
     <Select
-      aria-label={`${meta.guiName} option input`}
-      placeholder={'Choose an option'}
+      aria-label={t('aria-label', { guiName: meta.guiName })}
+      placeholder={t('placeholder.options')}
       disabled={readOnly}
       // For each entry in the options object, the numeric value is the key, and the
       // label is the value

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, Menu, Stack, ThemeIcon, Tooltip } from '@mantine/core';
 
 import { BoolInput } from '@/components/Input/BoolInput';
@@ -16,13 +17,17 @@ export function FilterListSearchSettingsMenu<T extends object>({
   setKey,
   labels
 }: Props<T>) {
+  const { t } = useTranslation('components', {
+    keyPrefix: 'filter-list.search-settings-menu'
+  });
   const noKeyIsSelected = Object.values(keys).every((value) => value === false);
+
   return (
     <Menu position={'right-start'} withArrow closeOnItemClick={false}>
       <Menu.Target>
         <ActionIcon flex={'none'}>
           {noKeyIsSelected && (
-            <Tooltip label={'Nothing is selected. Search will be empty.'}>
+            <Tooltip label={t('no-selection-tooltip')}>
               <ThemeIcon
                 color={'orange.4'}
                 variant={'transparent'}
@@ -37,7 +42,7 @@ export function FilterListSearchSettingsMenu<T extends object>({
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown maw={'300px'}>
-        <Menu.Label>Search in</Menu.Label>
+        <Menu.Label>{t('dropdown-menu-label')}</Menu.Label>
         <Stack p={'xs'}>
           {/* When using Object.entries a new object is created, and we cant infer the
               type from that. Hence the `as keyof T` here */}

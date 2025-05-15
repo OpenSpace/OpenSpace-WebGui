@@ -27,7 +27,8 @@
 
 /* Currently selected key */
 .simple-keyboard.hg-layout-default .hg-button.hg-highlight {
-  background: var(--mantine-color-cyan-8);
+  background: var(--mantine-primary-color-6);
+  outline: 2px solid var(--mantine-color-white);
 }
 
 /* Modifiers */

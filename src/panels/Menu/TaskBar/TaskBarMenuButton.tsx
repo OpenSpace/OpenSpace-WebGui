@@ -47,7 +47,9 @@ export function TaskBarMenuButton({ id, children, ...props }: Props) {
       variant={'menubar'}
       aria-label={item.title}
       style={{
-        borderBottom: itemConfig?.isOpen ? 'var(--openspace-border-active)' : '',
+        borderBottom: itemConfig?.isOpen
+          ? 'var(--openspace-border-active)'
+          : 'var(--openspace-border-active-placeholder)',
         borderRadius: 0
       }}
       {...props}

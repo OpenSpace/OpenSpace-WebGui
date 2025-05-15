@@ -7,7 +7,9 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { BoolInput } from '@/components/Input/BoolInput';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
+import { LogLevel } from '@/types/enums';
 import { Identifier } from '@/types/types';
 import { GeoLocationGroupKey, ScenePrefixKey } from '@/util/keys';
 
@@ -29,6 +31,7 @@ export function EarthPanel({ currentAnchor }: Props) {
   const luaApi = useOpenSpaceApi();
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const groups = useAppSelector((state) => state.groups.groups);
+  const dispatch = useAppDispatch();
 
   const geoLocationOwners = groups[GeoLocationGroupKey]?.propertyOwners.map((uri) => {
     const index = uri.indexOf(ScenePrefixKey);
@@ -70,7 +73,7 @@ export function EarthPanel({ currentAnchor }: Props) {
 
       setPlaces(uniquePlaces);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      dispatch(handleNotificationLogging('Error fetching data', error, LogLevel.Error));
     }
   }
 

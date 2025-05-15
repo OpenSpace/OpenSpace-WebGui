@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Button, MantineStyleProps, TextInput } from '@mantine/core';
 
 import { CancelIcon } from '@/icons/icons';
@@ -11,6 +12,7 @@ interface InputButtonProps {
 function InputButton({ showMoreButton }: InputButtonProps) {
   const { searchString, setSearchString, showDataInstead, toggleShowDataInstead } =
     useFilterListProvider();
+  const { t } = useTranslation('components', { keyPrefix: 'filter-list.input-field' });
 
   const isSearching = searchString !== '';
 
@@ -21,7 +23,7 @@ function InputButton({ showMoreButton }: InputButtonProps) {
         variant={'subtle'}
         color={'gray'}
         onClick={() => setSearchString('')}
-        aria-label={'Clear search input'}
+        aria-label={t('cancel-button-aria-label')}
       >
         <CancelIcon />
       </ActionIcon>
@@ -31,7 +33,7 @@ function InputButton({ showMoreButton }: InputButtonProps) {
   return (
     showMoreButton && (
       <Button w={80} variant={'subtle'} color={'gray'} onClick={toggleShowDataInstead}>
-        {showDataInstead ? 'Less' : 'More'}
+        {showDataInstead ? t('show-more-button.less') : t('show-more-button.more')}
       </Button>
     )
   );

@@ -127,7 +127,7 @@ export function MissionContent({ missionOverview }: Props) {
         missionOverview={missionOverview}
         setDisplayedPhase={setPhaseManually}
       />
-      <ScrollBox px={'md'} h={'100%'}>
+      <ScrollBox h={'100%'}>
         <Group justify={'space-between'} mb={'md'}>
           <Title order={2}>{missionOverview.name}</Title>
           <Button

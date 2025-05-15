@@ -63,10 +63,11 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
       {displayedPhase.data.image && (
         <Image
           my={'xs'}
-          maw={window.innerWidth * 0.25}
+          mah={'300px'}
           src={displayedPhase.data.image}
           alt={'Image text not available'}
           fallbackSrc={'placeholder.svg'}
+          fit={'contain'}
         />
       )}
       <Title order={3} my={'md'}>

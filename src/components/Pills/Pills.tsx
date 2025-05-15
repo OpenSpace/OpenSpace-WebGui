@@ -7,10 +7,11 @@ interface Props {
   value: string[];
   setValue: (value: string[]) => void;
   placeHolderText: string;
+  ariaLabel: string;
   disabled: boolean;
 }
 
-export function Pills({ value, setValue, placeHolderText, disabled }: Props) {
+export function Pills({ value, setValue, placeHolderText, ariaLabel, disabled }: Props) {
   const [clickedItemIndex, setClickedItemIndex] = useState<number | undefined>(undefined);
   const [placeholder, setPlaceholder] = useState('');
   const [inputString, setInputString] = useState('');
@@ -78,11 +79,7 @@ export function Pills({ value, setValue, placeHolderText, disabled }: Props) {
   }
 
   return (
-    <PillsInput
-      disabled={disabled}
-      onBlur={stopEditing}
-      aria-label={`List input for ${name}`}
-    >
+    <PillsInput disabled={disabled} onBlur={stopEditing} aria-label={ariaLabel}>
       <Pill.Group mah={100} style={{ overflowY: 'auto' }}>
         {shownValues.map((item, i) => (
           <Pill

@@ -12,7 +12,7 @@ export function ConnectionErrorOverlay() {
       {connecting && (
         <Modal.Root opened={true} onClose={() => {}} centered>
           <Modal.Overlay backgroundOpacity={0.55} blur={3} />
-          <Modal.Content>
+          <Modal.Content title={'Connecting to OpenSpace'}>
             <Modal.Header>
               <Title order={2}>Houston, we are ready to connect...</Title>
             </Modal.Header>
@@ -28,7 +28,7 @@ export function ConnectionErrorOverlay() {
       {connectionLost && (
         <Modal.Root opened={true} onClose={() => {}} centered>
           <Modal.Overlay backgroundOpacity={0.55} blur={3} />
-          <Modal.Content>
+          <Modal.Content title={'Reconnecting to OpenSpace'}>
             <Modal.Header>
               <Title order={2}>Houston, we've had a...</Title>
             </Modal.Header>
