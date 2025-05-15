@@ -1,14 +1,14 @@
+import { useTranslation } from 'react-i18next';
 import { useFileDialog } from '@mantine/hooks';
 import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
+import { TFunction } from 'i18next';
 
 import { useAppDispatch } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { LogLevel } from '@/types/enums';
-import { useTranslation } from 'react-i18next';
-import { TFunction } from 'i18next';
 
 function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void {
-  const {t} = useTranslation('notifications', {keyPrefix: 'error'})
+  const { t } = useTranslation('notifications', { keyPrefix: 'error' });
   const dispatch = useAppDispatch();
 
   const fileDialog = useFileDialog({
@@ -43,7 +43,7 @@ function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void 
 async function openSaveFileDialogInternal(
   contents: JSON,
   dispatch: Dispatch<UnknownAction>,
-  t: TFunction<"notifications", "error">
+  t: TFunction<'notifications', 'error'>
 ) {
   const contentsString = JSON.stringify(contents, null, 2);
 
@@ -98,7 +98,7 @@ async function openSaveFileDialogInternal(
 export function useSaveLoadJsonFiles(handlePickedFile: (content: JSON) => void) {
   const dispatch = useAppDispatch();
   const openLoadFileDialog = useLoadJsonFile(handlePickedFile);
-  const { t } = useTranslation('notifications', {keyPrefix: 'error'})
+  const { t } = useTranslation('notifications', { keyPrefix: 'error' });
 
   async function openSaveFileDialog(contents: JSON) {
     openSaveFileDialogInternal(contents, dispatch, t);
