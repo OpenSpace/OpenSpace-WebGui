@@ -12,7 +12,7 @@ import { ImageCard } from './ImageCard';
 
 interface Props {
   imageList: SkyBrowserImage[];
-  noImagesDisplay?: React.JSX.Element;
+  noImagesDisplay?: React.ReactNode;
 }
 
 // Generic component for all the image lists

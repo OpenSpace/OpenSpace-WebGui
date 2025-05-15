@@ -14,7 +14,7 @@ export interface OnDragEndProps<T> {
 
 interface Props<T> {
   onDragEnd: ({ oldIndex, newIndex, updatedData }: OnDragEndProps<T>) => void;
-  renderFunc: (item: T, i: number) => React.JSX.Element;
+  renderFunc: (item: T, i: number) => React.ReactNode;
   data: T[];
   keyFunc: (item: T) => string;
   id: string;

@@ -4,7 +4,7 @@ import { ChevronRightIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
 interface Props {
-  path: (React.JSX.Element | string)[];
+  path: React.ReactNode[];
 }
 
 export function FolderPath({ path }: Props) {

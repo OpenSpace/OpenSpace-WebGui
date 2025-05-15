@@ -50,7 +50,7 @@ import {
 export interface MenuItem {
   title: string; // Title of the rc-dock tab
   componentID: string; // Unqiue ID to identify this component among the rc-dock tabs
-  content: React.JSX.Element; // Content to render inside the rc-dock tab
+  content: React.ReactNode; // Content to render inside the rc-dock tab
   renderMenuButton?: (id: string) => React.JSX.Element; // Custom menu button to render
   renderIcon?: (size: IconSize) => React.JSX.Element; // Custom icon to render
   preferredPosition: WindowLayoutPosition; // Where this panel is instantiated

@@ -59,7 +59,7 @@ interface ButtonContent {
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   icon: React.JSX.Element;
   title: string;
-  tooltip: React.JSX.Element | string;
+  tooltip: React.ReactNode;
 }
 
 export function NodeNavigationButton({
