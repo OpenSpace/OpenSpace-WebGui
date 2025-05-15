@@ -1,0 +1,21 @@
+{
+  "scriptlog": {
+    "run-scripts-button-label": "Run",
+    "run-scripts-tooltip": "Run all the selected scripts in sequential order, bottom to top",
+    "copy-to-clipboard-error": "No script selected",
+    "clear-scripts-tooltip": "Clears all selected scripts",
+    "clear-scripts-button-label": "Clear",
+    "refresh-scripts-tooltip": "Refresh script log",
+    "search-script-placeholder": "Search for a script",
+    "more-info": {
+      "first": "This script log has been cleaned for ease of use. Some entries may have been filtered out unintentionally.",
+      "second": "Entries are listed from latest to oldest (top to bottom). Running multiple scripts at once will run them in the order bottom to top.",
+      "third": "To view the complete log or previous runs, check the ",
+      "forth": "OpenSpace/logs ",
+      "fith": "folder."
+    }
+  },
+  "script-entry": {
+    "rerun-tooltip": "Rerun script"
+  }
+}

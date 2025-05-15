@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Checkbox, Code, Group, Text, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -15,6 +16,7 @@ interface Props {
 export function ScriptLogEntry({ script, index, isSelected, onToggleSelection }: Props) {
   const luaApi = useOpenSpaceApi();
   const [expanded, setExpanded] = useState(false);
+  const { t } = useTranslation('log', { keyPrefix: 'script-entry' });
 
   function runScript() {
     luaApi?.scheduleScript(script, 0);
@@ -34,12 +36,12 @@ export function ScriptLogEntry({ script, index, isSelected, onToggleSelection }:
         </Text>
       </Code>
       <CopyToClipboardButton value={script} />
-      <Tooltip label={'Rerun script'}>
+      <Tooltip label={t('rerun-tooltip')}>
         <ActionIcon
           onClick={runScript}
           variant={'light'}
           color={'green'}
-          aria-label={'Rerun script'}
+          aria-label={t('rerun-tooltip')}
           size={'sm'}
         >
           <RerunScriptIcon />

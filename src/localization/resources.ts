@@ -1,4 +1,5 @@
 import components from '@/public/locales/en/components.json';
+import log from '@/public/locales/en/log.json';
 import notifications from '@/public/locales/en/notifications.json';
 
 /**
@@ -8,6 +9,7 @@ import notifications from '@/public/locales/en/notifications.json';
 export const resources = {
   en: {
     components: components,
+    log: log,
     notifications: notifications
   }
 } as const;
