@@ -1,4 +1,4 @@
-import { Container, Tabs } from '@mantine/core';
+import { Tabs } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
 
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
@@ -11,20 +11,18 @@ export function KeybindsPanel() {
   const { ref, height: tabsHeight } = useElementSize();
 
   return (
-    <Container fluid>
-      <Tabs variant={'outline'} radius={'md'} defaultValue={'keyboardLayout'}>
-        <Tabs.List ref={ref}>
-          <Tabs.Tab value={'keyboardLayout'}>Keyboard View</Tabs.Tab>
-          <Tabs.Tab value={'listLayout'}>List View</Tabs.Tab>
-        </Tabs.List>
+    <Tabs radius={'md'} defaultValue={'keyboardLayout'}>
+      <Tabs.List ref={ref}>
+        <Tabs.Tab value={'keyboardLayout'}>Keyboard View</Tabs.Tab>
+        <Tabs.Tab value={'listLayout'}>List View</Tabs.Tab>
+      </Tabs.List>
 
-        <Tabs.Panel value={'keyboardLayout'}>
-          <KeyboardLayout />
-        </Tabs.Panel>
-        <Tabs.Panel value={'listLayout'} h={windowHeight - tabsHeight}>
-          <ListLayout />
-        </Tabs.Panel>
-      </Tabs>
-    </Container>
+      <Tabs.Panel value={'keyboardLayout'}>
+        <KeyboardLayout />
+      </Tabs.Panel>
+      <Tabs.Panel value={'listLayout'} h={windowHeight - tabsHeight}>
+        <ListLayout />
+      </Tabs.Panel>
+    </Tabs>
   );
 }
