@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
   Button,
@@ -31,6 +32,7 @@ export function UserPanelsPanel() {
   const addedPanels = useAppSelector((state) => state.userPanels.addedWebpanels);
 
   const localPanels = useAppSelector((state) => state.userPanels.panels);
+  const { t } = useTranslation('userpanels');
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -97,11 +99,11 @@ export function UserPanelsPanel() {
   return (
     <>
       <Title my={'xs'} order={2}>
-        Open Local Panel
+        {t('local-panel.title')}
       </Title>
       <Group align={'flex-end'}>
         <Select
-          placeholder={'Select panel'}
+          placeholder={t('local-panel.placeholder')}
           data={localPanels}
           onChange={setSelectedPanel}
           value={selectedPanel}
@@ -112,26 +114,26 @@ export function UserPanelsPanel() {
           onClick={addLocalPanel}
           disabled={!selectedPanel}
           size={'lg'}
-          aria-label={'Open local panel'}
+          aria-label={t('local-panel.open-local-panel-aria-label')}
         >
           <OpenWindowIcon />
         </ActionIcon>
       </Group>
       <Divider my={'md'} />
       <Title order={2} my={'xs'}>
-        Open from URL
+        {t('url-panel.title')}
       </Title>
       <TextInput
         value={urlPanelTitle}
-        label={'Title (optional)'}
-        placeholder={'Input title (optional)'}
+        label={t('url-panel.title-input-label')}
+        placeholder={t('url-panel.title-input-placeholder')}
         onChange={(e) => setUrlPanelTitle(e.target.value)}
       />
       <Group align={'flex-end'} justify={'space-between'}>
         <TextInput
           value={panelURL}
-          label={'URL'}
-          placeholder={'Input URL'}
+          label={t('url-panel.url-label')}
+          placeholder={t('url-panel.url-placeholder')}
           onChange={(e) => setPanelURL(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && addWebPanel()}
           flex={1}
@@ -140,7 +142,7 @@ export function UserPanelsPanel() {
               onClick={addWebPanel}
               disabled={!panelURL}
               size={'lg'}
-              aria-label={'Open web panel'}
+              aria-label={t('url-panel.open-web-panel-aria-label')}
             >
               <OpenWindowIcon />
             </ActionIcon>
@@ -148,7 +150,7 @@ export function UserPanelsPanel() {
         />
       </Group>
       <Title mt={'xs'} mb={'xs'} order={3}>
-        Recently Opened URLs
+        {t('recently-opened-urls.title')}
       </Title>
       {addedPanels.map((panel) => (
         <Button
