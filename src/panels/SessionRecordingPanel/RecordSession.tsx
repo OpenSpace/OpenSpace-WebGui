@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Checkbox, Group, TextInput, Title } from '@mantine/core';
+import { Group, TextInput, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { BoolInput } from '@/components/Input/BoolInput';
 import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { updateSessionRecordingSettings } from '@/redux/sessionrecording/sessionRecordingSlice';
@@ -107,20 +108,11 @@ export function RecordSession() {
       <Title order={2} mb={'xs'}>
         Record
       </Title>
-      <Checkbox
+      <BoolInput
         label={t('format-checkbox-label')}
-        onChange={(event) => onFormatChanged(event.currentTarget.checked)}
-        defaultChecked
+        onChange={onFormatChanged}
         mb={'sm'}
       />
-      {showOverwriteCheckbox && (
-        <Checkbox
-          label={t('overwrite-checkbox-label')}
-          onChange={(event) => onOverwriteFileChanged(event.currentTarget.checked)}
-          checked={overwriteFile}
-          mb={'sm'}
-        />
-      )}
       <Group align={'start'} gap={'xs'}>
         <TextInput
           value={filenameRecording}
@@ -139,6 +131,14 @@ export function RecordSession() {
           />
         )}
       </Group>
+      <BoolInput
+        label={t('overwrite-checkbox-label')}
+        value={overwriteFile}
+        onChange={onOverwriteFileChanged}
+        disabled={!showOverwriteCheckbox}
+        my={'sm'}
+        info={t('overwrite-checkbox-tooltip')}
+      />
     </>
   );
 }

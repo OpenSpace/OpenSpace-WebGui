@@ -17,8 +17,9 @@
   },
   "record-session": {
     "title": "Record",
-    "format-checkbox-label": "Text file format",
+    "format-checkbox-label": "Use text file format",
     "overwrite-checkbox-label": "Overwrite file",
+    "overwrite-checkbox-tooltip": "If you enter a filename that already exists, this checkbox allows you to overwrite the existing file.",
     "recording-input-aria-label": "Enter recording filename",
     "error-messages": {
       "empty": "Filename cannot be empty",

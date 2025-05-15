@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Button, Checkbox, Group, Text, Title } from '@mantine/core';
+import { Button, Group, Title } from '@mantine/core';
 
-import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { BoolInput } from '@/components/Input/BoolInput';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 
@@ -138,14 +138,14 @@ export function MissionContent({ missionOverview }: Props) {
             Overview
           </Button>
         </Group>
-        <Group mb={'xs'} gap={'xs'} wrap={'nowrap'}>
-          <Checkbox checked={displayCurrentPhase} onChange={toggleCurrentPhase} />
-          <Text>Display current phase</Text>
-          <InfoBox>
-            If enabled, the mission phase that is currently happening will be displayed.
-            It will update as time passes.
-          </InfoBox>
-        </Group>
+        <BoolInput
+          label={'Display current phase'}
+          value={displayCurrentPhase}
+          onChange={toggleCurrentPhase}
+          info={`If enabled, the mission phase that is currently happening will be displayed.
+            It will update as time passes.`}
+          mb={'xs'}
+        />
         {displayedPhase.data ? (
           <MissionPhase
             displayedPhase={displayedPhase}

@@ -16,6 +16,7 @@
     }
   },
   "script-entry": {
-    "rerun-tooltip": "Rerun script"
+    "rerun-tooltip": "Rerun script",
+    "select-script-aria-label": "Select script {{script}}"
   }
 }

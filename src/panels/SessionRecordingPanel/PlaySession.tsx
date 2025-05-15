@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Checkbox, Group, Select, Stack, Title } from '@mantine/core';
+import { Group, Select, Stack, Title } from '@mantine/core';
 
-import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { BoolInput } from '@/components/Input/BoolInput';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
@@ -29,8 +29,8 @@ export function PlaySession() {
   const isPlayingBack =
     recordingState === RecordingState.Paused || recordingState === RecordingState.Playing;
 
-  function onLoopPlaybackChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    if (event.currentTarget.checked) {
+  function onLoopPlaybackChange(shouldLoop: boolean): void {
+    if (shouldLoop) {
       setLoopPlayback(true);
       setShouldOutputFrames(false);
     } else {
@@ -38,8 +38,8 @@ export function PlaySession() {
     }
   }
 
-  function onShouldUpdateFramesChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    if (event.currentTarget.checked) {
+  function onShouldUpdateFramesChange(shouldOutputFrames: boolean): void {
+    if (shouldOutputFrames) {
       setShouldOutputFrames(true);
       setLoopPlayback(false);
     } else {
@@ -53,29 +53,28 @@ export function PlaySession() {
         {t('common:play')}
       </Title>
       <Stack gap={'xs'}>
-        <Checkbox
+        <BoolInput
           label={t('loop-playback-label')}
-          checked={loopPlayback}
+          value={loopPlayback}
           onChange={onLoopPlaybackChange}
           disabled={!isIdle}
         />
         <Group>
-          <Checkbox
+          <BoolInput
             label={t('output-frames.label')}
-            checked={shouldOutputFrames}
+            value={shouldOutputFrames}
             onChange={onShouldUpdateFramesChange}
             disabled={!isIdle}
+            info={t('output-frames.info')}
           />
-          <InfoBox>{t('output-frames.info')}</InfoBox>
-          {shouldOutputFrames && (
-            <NumericInput
-              value={outputFramerate}
-              placeholder={t('output-frames.framerate-placeholder')}
-              aria-label={t('output-frames.framerate-aria-label')}
-              onEnter={(value) => setOutputFramerate(value)}
-              w={80}
-            />
-          )}
+          <NumericInput
+            value={outputFramerate}
+            placeholder={t('output-frames.framerate-placeholder')}
+            aria-label={t('output-frames.framerate-aria-label')}
+            onEnter={(value) => setOutputFramerate(value)}
+            w={80}
+            disabled={!shouldOutputFrames || !isIdle}
+          />
         </Group>
         <Group gap={'xs'} align={'flex-end'}>
           <Select

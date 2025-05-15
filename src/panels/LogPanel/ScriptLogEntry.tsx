@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Checkbox, Code, Group, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Code, Group, Text, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
+import { BoolInput } from '@/components/Input/BoolInput';
 import { RerunScriptIcon } from '@/icons/icons';
 
 interface Props {
@@ -24,7 +25,11 @@ export function ScriptLogEntry({ script, index, isSelected, onToggleSelection }:
 
   return (
     <Group wrap={'nowrap'} align={'start'} gap={'xs'}>
-      <Checkbox checked={isSelected} onChange={() => onToggleSelection(index)} />
+      <BoolInput
+        value={isSelected}
+        ariaLabel={t('select-script-aria-label')}
+        onChange={() => onToggleSelection(index)}
+      />
       <Code color={'dark.7'} w={'100%'}>
         <Text
           truncate={expanded ? undefined : 'end'}
