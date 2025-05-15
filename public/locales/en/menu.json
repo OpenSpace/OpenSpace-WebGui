@@ -1,0 +1,72 @@
+{
+  "file-menu": {
+    "title": "File",
+    "profile-label": "Profile",
+    "about": {
+      "title": "About",
+      "author": "Author",
+      "license": "License",
+      "url": "URL"
+    },
+    "toggle-console": "Toggle Console",
+    "quit": {
+      "title": "Quit OpenSpace",
+      "modal": {
+        "title": "Confirm Action",
+        "body": "Are you sure you want to quit OpenSpace?",
+        "confirm": "Quit"
+      }
+    }
+  },
+  "help-menu": {
+    "title": "Help",
+    "tutorials": "Open Web Tutorials",
+    "getting-started": "Open Getting Started Tour",
+    "send-feedback": "Send Feedback",
+    "open-gui": "Open GUI in the Browser",
+    "about": "About"
+  },
+  "language": "Language",
+  "view-menu": {
+    "title": "View",
+    "task-bar": {
+      "title": "Task Bar",
+      "toggle-items": "Toggle Task Bar Items",
+      "reset": "Reset",
+      "load-settings": "Load Task Bar Settings",
+      "save-settings": "Save Task Bar Settings"
+    },
+    "gui-settings": {
+      "title": "GUI Settings",
+      "visibility-level": {
+        "title": "Visibility Level",
+        "tooltip": "Controls what settings will be exposed in the interface. Increase the level to reveal more advanced settings."
+      },
+      "scale": {
+        "title": "Scale",
+        "tooltip": "Increase or decrease the scale of the GUI."
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "show-notifications": "Show Notifications",
+      "log-level": {
+        "label": "Min OpenSpace Log Level",
+        "tooltip": "Controls which messages will be shown from OpenSpace"
+      },
+      "clear-notifications": "Clear Notifications"
+    }
+  },
+  "windows-menu": {
+    "title": "Windows",
+    "add-new-window": "Add New Window"
+  },
+  "error": {
+    "title": "Error loading JSON file",
+    "message": {
+      "empty-file": "File is empty",
+      "invalid-length": "Invalid layout file, length does not match",
+      "invalid-ids": "Invalid layout file, all IDs must match panel IDs"
+    }
+  }
+}

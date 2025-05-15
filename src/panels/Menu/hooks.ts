@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setMenuItemsOrder, setMenuItemVisible } from '@/redux/local/localSlice';
@@ -25,6 +26,7 @@ export function useStoredLayout() {
 
   const { openSaveFileDialog, openLoadFileDialog } =
     useSaveLoadJsonFiles(handlePickedFile);
+  const { t } = useTranslation('menu', { keyPrefix: 'error' });
 
   const dispatch = useAppDispatch();
 
@@ -47,22 +49,14 @@ export function useStoredLayout() {
   function handlePickedFile(content: JSON) {
     if (!content || Object.keys(content).length === 0) {
       dispatch(
-        handleNotificationLogging(
-          'Error loading JSON file',
-          'File is empty',
-          LogLevel.Error
-        )
+        handleNotificationLogging(t('title'), t('message.empty-file'), LogLevel.Error)
       );
       return;
     }
     const newLayout = Object.values(content) as TaskbarItemConfig[];
     if (newLayout.length !== menuItems.length) {
       dispatch(
-        handleNotificationLogging(
-          'Error loadding JSON file',
-          'Invalid layoutfile, length does not match',
-          LogLevel.Error
-        )
+        handleNotificationLogging(t('title'), t('message.invalid-length'), LogLevel.Error)
       );
       return;
     }
@@ -73,11 +67,7 @@ export function useStoredLayout() {
     );
     if (!isValid) {
       dispatch(
-        handleNotificationLogging(
-          'Error loading JSON file',
-          'Invalid layout file, all IDs must match panel IDs',
-          LogLevel.Error
-        )
+        handleNotificationLogging(t('title'), t('message.invalid-ids'), LogLevel.Error)
       );
       return;
     }

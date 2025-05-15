@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Anchor, Container, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
@@ -12,7 +13,7 @@ import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function FileMenu() {
   const profile = useAppSelector((state) => state.profile);
-
+  const { t } = useTranslation(['menu', 'common'], { keyPrefix: 'file-menu' });
   const luaApi = useOpenSpaceApi();
 
   const [isConsoleVisible, setIsConsoleVisible] = useProperty(
@@ -26,25 +27,27 @@ export function FileMenu() {
 
   function toggleShutdown() {
     return modals.openConfirmModal({
-      title: 'Confirm action',
-      children: <Text>Are you sure you want to quit OpenSpace?</Text>,
-      labels: { confirm: 'Quit', cancel: 'Cancel' },
+      title: t('quit.modal.title'),
+      children: <Text>{t('quit.modal.body')}</Text>,
+      labels: { confirm: t('quit.modal.confirm'), cancel: t('common:cancel') },
       confirmProps: { color: 'red', variant: 'filled' },
       onConfirm: () => luaApi?.toggleShutdown()
     });
   }
 
   return (
-    <TopBarMenuWrapper targetTitle={'File'} closeOnItemClick={false}>
+    <TopBarMenuWrapper targetTitle={t('title')} closeOnItemClick={false}>
       {!profile.initalized ? (
         <LoadingBlocks n={1} />
       ) : (
         <>
-          <Menu.Label>Profile: {profile.name}</Menu.Label>
+          <Menu.Label>
+            {t('profile-label')}: {profile.name}
+          </Menu.Label>
           <TopBarMenuWrapper
             targetTitle={
               <Menu.Item rightSection={<ChevronRightIcon size={IconSize.sm} />}>
-                About
+                {t('about.title')}
               </Menu.Item>
             }
             position={'right-start'}
@@ -59,11 +62,19 @@ export function FileMenu() {
                   {profile.description}
                 </Text>
               )}
-              {profile.author && <Text size={'sm'}>Author: {profile.author}</Text>}
-              {profile.license && <Text size={'sm'}>License: {profile.license}</Text>}
+              {profile.author && (
+                <Text size={'sm'}>
+                  {t('about.author')}: {profile.author}
+                </Text>
+              )}
+              {profile.license && (
+                <Text size={'sm'}>
+                  {t('about.license')}: {profile.license}
+                </Text>
+              )}
               {profile.url && (
                 <Text size={'sm'}>
-                  URL:{' '}
+                  {t('about.url')}:{' '}
                   <Anchor href={profile.url} target={'_blank'}>
                     {profile.url}
                   </Anchor>
@@ -83,11 +94,11 @@ export function FileMenu() {
         aria-checked={isConsoleVisible}
         aria-label={isConsoleVisible ? 'Close console' : 'Open console'}
       >
-        Toggle Console
+        {t('toggle-console')}
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item onClick={toggleShutdown} leftSection={<ExitAppIcon />}>
-        Quit OpenSpace
+        {t('quit.title')}
       </Menu.Item>
     </TopBarMenuWrapper>
   );

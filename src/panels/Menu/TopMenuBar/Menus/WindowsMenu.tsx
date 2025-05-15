@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Box, CloseButton, Group, Menu } from '@mantine/core';
 
 import { IconSize } from '@/types/enums';
@@ -10,10 +11,11 @@ import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 export function WindowsMenu() {
   const { addWindow, closeWindow } = useWindowLayoutProvider();
   const { menuItems } = useMenuItems();
+  const { t } = useTranslation('menu', { keyPrefix: 'windows-menu' });
 
   return (
-    <TopBarMenuWrapper closeOnItemClick targetTitle={'Windows'}>
-      <Menu.Label>Add New Window</Menu.Label>
+    <TopBarMenuWrapper closeOnItemClick targetTitle={t('title')}>
+      <Menu.Label>{t('add-new-window')}</Menu.Label>
       {menuItems.map((itemConfig) => {
         const item = menuItemsData[itemConfig.id];
         return (

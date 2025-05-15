@@ -1,6 +1,7 @@
 import common from '@/public/locales/en/common.json';
 import components from '@/public/locales/en/components.json';
 import log from '@/public/locales/en/log.json';
+import menu from '@/public/locales/en/menu.json';
 import notifications from '@/public/locales/en/notifications.json';
 import sessionrecording from '@/public/locales/en/sessionrecordingpanel.json';
 
@@ -13,6 +14,7 @@ export const resources = {
     common: common,
     components: components,
     log: log,
+    menu: menu,
     notifications: notifications,
     sessionrecording: sessionrecording
   }
