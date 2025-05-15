@@ -4,6 +4,12 @@ import { Checkbox, Group, MantineStyleProps } from '@mantine/core';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { RequireAtLeastOne } from '@/types/types';
 
+// @TODO (2025-05-15, emmbr): We should consider extending the Mantine Checkbox component
+// here, to support the same props as the native checkbox, such as `indeterminate` and
+// `required`. This would make the BoolInput component more flexible and consistent with
+// the native checkbox behavior. However, that also requires effort to ensure that the
+// component behaves correctly with these props, so leaving for now
+
 interface BaseProps extends MantineStyleProps {
   onChange?: (value: boolean) => void;
   info?: string | JSX.Element;
