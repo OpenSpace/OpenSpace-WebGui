@@ -197,7 +197,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Getting Started Tour',
     componentID: 'gettingStartedTour',
     content: <GettingStartedPanel />,
-    renderIcon: (size) => <RouteIcon size={size} />,
+    renderIcon: (size) => <RouteIcon size={size} style={{ transform: 'scale(-1)' }} />,
     preferredPosition: 'float',
     floatPosition: { offsetY: 150, offsetX: 350, width: 600, height: 500 },
     defaultVisible: true
