@@ -77,7 +77,12 @@ export function FileMenu() {
         </>
       )}
       <Menu.Divider />
-      <Menu.Item onClick={toggleLuaConsole} leftSection={<ConsoleIcon />}>
+      <Menu.Item
+        onClick={toggleLuaConsole}
+        leftSection={<ConsoleIcon />}
+        aria-checked={isConsoleVisible}
+        aria-label={isConsoleVisible ? 'Close console' : 'Open console'}
+      >
         Toggle Console
       </Menu.Item>
       <Menu.Divider />

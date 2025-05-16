@@ -28,7 +28,13 @@ export function About({ opened, close }: Props) {
   }
 
   return (
-    <Modal opened={opened} onClose={close} title={t('modal-title')} size={'40%'}>
+    <Modal
+      opened={opened}
+      onClose={close}
+      title={t('modal-title')}
+      size={'40%'}
+      closeButtonProps={{ 'aria-label': 'Close about' }}
+    >
       <Grid>
         <Grid.Col span={4}>
           <Image src={'openspace-logo.png'} alt={t('logo-alt-text')} w={'100%'} />

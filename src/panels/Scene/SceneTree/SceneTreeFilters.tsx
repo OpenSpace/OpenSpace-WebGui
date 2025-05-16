@@ -1,7 +1,6 @@
 import {
   ActionIcon,
   Button,
-  Checkbox,
   Group,
   Menu,
   MultiSelect,
@@ -10,7 +9,7 @@ import {
   Tooltip
 } from '@mantine/core';
 
-import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { BoolInput } from '@/components/Input/BoolInput';
 import { hasActiveFilters } from '@/hooks/sceneGraphNodes/util';
 import { FilterIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
@@ -53,43 +52,28 @@ export function SceneTreeFilters({ setFilter, filter }: Props) {
         </Menu.Target>
         <Menu.Dropdown maw={'330px'}>
           <Menu.Label>Filters</Menu.Label>
-          <Stack p={'xs'}>
-            <Group>
-              <Checkbox
-                label={'Show only visible'}
-                checked={filter.showOnlyVisible}
-                onChange={(event) =>
-                  setFilter({ showOnlyVisible: event.currentTarget.checked })
-                }
-              />
-              <InfoBox>Visible = Enabled and not faded out</InfoBox>
-            </Group>
-            <Group>
-              <Checkbox
-                label={'Show only focusable'}
-                checked={filter.onlyFocusable}
-                onChange={(event) =>
-                  setFilter({ onlyFocusable: event.currentTarget.checked })
-                }
-              />
-              <InfoBox>
-                Hide scene graph nodes that are not markes as focusable, meaning that they
-                cannot be directly set as the focus node in the scene.
-              </InfoBox>
-            </Group>
-            <Group>
-              <Checkbox
-                label={'Show objects with GUI hidden flag'}
-                checked={filter.includeGuiHiddenNodes}
-                onChange={(event) =>
-                  setFilter({ includeGuiHiddenNodes: event.currentTarget.checked })
-                }
-              />
-              <InfoBox>
-                Show scene graph nodes that are marked as hidden in the GUI part of the
-                asset. These are otherwise hidden in the interface.
-              </InfoBox>
-            </Group>
+          <Stack px={'xs'} gap={'xs'}>
+            <BoolInput
+              label={'Show only visible'}
+              value={filter.showOnlyVisible}
+              onChange={(value) => setFilter({ showOnlyVisible: value })}
+              info={`Show only nodes that are currenlty visible, meaning enabled and not
+                faded out.`}
+            />
+            <BoolInput
+              label={'Show only focusable'}
+              value={filter.onlyFocusable || false}
+              onChange={(value) => setFilter({ onlyFocusable: value })}
+              info={`Hide scene graph nodes that are not markes as focusable, meaning that
+                they cannot be directly set as the focus node in the scene.`}
+            />
+            <BoolInput
+              label={'Show objects with GUI hidden flag'}
+              value={filter.includeGuiHiddenNodes || false}
+              onChange={(value) => setFilter({ includeGuiHiddenNodes: value })}
+              info={`Show scene graph nodes that are marked as hidden in the GUI part of
+                the asset. These are otherwise hidden in the interface.`}
+            />
             <Title order={3}>Tags</Title>
             <MultiSelect
               data={sortedTags}

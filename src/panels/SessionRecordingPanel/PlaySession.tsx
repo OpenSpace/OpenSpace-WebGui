@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Checkbox, Group, Select, Stack, Title } from '@mantine/core';
+import { Group, Select, Stack, Title } from '@mantine/core';
 
-import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { BoolInput } from '@/components/Input/BoolInput';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
@@ -25,8 +25,8 @@ export function PlaySession() {
   const isPlayingBack =
     recordingState === RecordingState.Paused || recordingState === RecordingState.Playing;
 
-  function onLoopPlaybackChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    if (event.currentTarget.checked) {
+  function onLoopPlaybackChange(shouldLoop: boolean): void {
+    if (shouldLoop) {
       setLoopPlayback(true);
       setShouldOutputFrames(false);
     } else {
@@ -34,8 +34,8 @@ export function PlaySession() {
     }
   }
 
-  function onShouldUpdateFramesChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    if (event.currentTarget.checked) {
+  function onShouldUpdateFramesChange(shouldOutputFrames: boolean): void {
+    if (shouldOutputFrames) {
       setShouldOutputFrames(true);
       setLoopPlayback(false);
     } else {
@@ -49,34 +49,31 @@ export function PlaySession() {
         Play
       </Title>
       <Stack gap={'xs'}>
-        <Checkbox
+        <BoolInput
           label={'Loop playback'}
-          checked={loopPlayback}
+          value={loopPlayback}
           onChange={onLoopPlaybackChange}
           disabled={!isIdle}
         />
         <Group>
-          <Checkbox
+          <BoolInput
             label={'Output frames'}
-            checked={shouldOutputFrames}
+            value={shouldOutputFrames}
             onChange={onShouldUpdateFramesChange}
             disabled={!isIdle}
-          />
-          <InfoBox>
-            {`If checked, the specified number of frames will be recorded as
+            info={`If checked, the specified number of frames will be recorded as
               screenshots and saved to disk. Per default, they are saved in the
               user/screenshots folder. This feature can not be used together with
-              'loop playback'`}
-          </InfoBox>
-          {shouldOutputFrames && (
-            <NumericInput
-              value={outputFramerate}
-              placeholder={'Framerate'}
-              aria-label={'Set framerate'}
-              onEnter={(value) => setOutputFramerate(value)}
-              w={80}
-            />
-          )}
+              'Loop playback'`}
+          />
+          <NumericInput
+            value={outputFramerate}
+            placeholder={'Framerate'}
+            aria-label={'Set framerate'}
+            onEnter={(value) => setOutputFramerate(value)}
+            w={80}
+            disabled={!shouldOutputFrames || !isIdle}
+          />
         </Group>
         <Group gap={'xs'} align={'flex-end'}>
           <Select

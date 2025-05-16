@@ -185,12 +185,12 @@ export const menuItemsData: Record<string, MenuItem> = {
     defaultVisible: !window.isWithinCEF
   },
   keybindingsLayout: {
-    title: 'Keybindings Layout',
+    title: 'Keybinds',
     componentID: 'keybindingsLayout',
     content: <KeybindsPanel />,
     renderIcon: (size) => <KeyboardIcon size={size} />,
     preferredPosition: 'float',
-    floatPosition: { offsetY: 150, offsetX: 350, width: 1050, height: 680 },
+    floatPosition: { offsetY: 150, offsetX: 350, width: 1100, height: 680 },
     defaultVisible: false
   },
   gettingStartedTour: {
