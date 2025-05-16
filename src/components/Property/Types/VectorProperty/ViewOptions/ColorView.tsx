@@ -7,6 +7,7 @@ import { StringInput } from '@/components/Input/StringInput';
 import { WarningIcon } from '@/components/WarningIcon/WarningIcon';
 import { AdditionalDataVectorMatrix } from '@/types/Property/propertyTypes';
 import { openspaceColorToRgba, toOpenspaceColor } from '@/util/colorHelper';
+import { useTranslation } from 'react-i18next';
 
 function validateInput(
   value: number[],
@@ -40,6 +41,9 @@ export function ColorView({
   isInt
 }: Props) {
   const [isError, setIsError] = useState(false);
+  const { t } = useTranslation('components', {
+    keyPrefix: 'property.vector-property.color-view'
+  });
 
   const isOutsideRange = value.some((v) => v < 0 || v > 1);
   const currentColor: RGBA = openspaceColorToRgba(value);
@@ -97,11 +101,14 @@ export function ColorView({
       rightSection={
         isOutsideRange && (
           <WarningIcon
-            tooltipText={`Value outside range [${additionalData.min}, ${additionalData.max}]`}
+            tooltipText={t('outside-range', {
+              min: additionalData.min,
+              max: additionalData.max
+            })}
           />
         )
       }
-      placeholder={`1, 0.5, 0.2${hasAlpha ? ', 0.5' : ''}`}
+      placeholder={hasAlpha ? t('placeholder-rgba') : t('placeholder-rgb')}
       errorCheck={(value: string) => !isValidColorString(value)}
     />
   );

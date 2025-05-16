@@ -122,6 +122,13 @@
     "string-property": {
       "aria-label": "{{guiName}} input"
     },
+    "vector-property": {
+      "color-view": {
+        "outside-range": "Value outside range [{{min}}, {{max}}]",
+        "placeholder-rgb": "number1, number2, number3",
+        "placeholder-rgba": "number1, number2, number3, number4"
+      }
+    },
     "property-label": {
       "read-only-tooltip": "This property is read-only, meaning that it's not intended to be changed.",
       "read-only-label": "Read-only"
