@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, Chip, Group, Paper, Text } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -16,6 +17,8 @@ export function ListLayout() {
   const [modifiersFilter, setModifiersFilter] = useState<KeybindModifiers>([]);
   const keybinds = useAppSelector((state) => state.actions.keybinds);
   const actions = useAppSelector((state) => state.actions.actions);
+
+  const { t } = useTranslation('panel-keybinds', { keyPrefix: 'list-layout' });
 
   const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
     useSearchKeySettings<KeybindInfoType>({
@@ -59,7 +62,7 @@ export function ListLayout() {
           <Layout.FixedSection>
             <Group gap={'xs'}>
               <FilterList.InputField
-                placeHolderSearchText={'Search for a keybind'}
+                placeHolderSearchText={t('filter-list-placeholder')}
                 flex={1}
                 miw={200}
               />
@@ -109,7 +112,7 @@ export function ListLayout() {
           <KeybindInfo action={selectedAction} />
         ) : (
           <Paper p={'md'}>
-            <Text>Select a keybind to see more info</Text>
+            <Text>{t('selected-placeholder')}</Text>
           </Paper>
         )}
       </Box>

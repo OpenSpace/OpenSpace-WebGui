@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Container, Divider, Menu } from '@mantine/core';
 
 import { BoolInput } from '@/components/Input/BoolInput';
@@ -17,24 +18,24 @@ export function NavigationSettings() {
     (state) => state.local.menus.navigation.onlyFocusable
   );
 
+  const { t } = useTranslation('panel-navigation', { keyPrefix: 'navigation-settings' });
+
   const dispatch = useAppDispatch();
 
   return (
-    <SettingsPopout title={'Navigation Settings'} position={'right'}>
+    <SettingsPopout title={t('title')} position={'right'}>
       <Container>
         <BoolInput
-          label={'Include Non-focusable Nodes in Search'}
+          label={t('include-non-focusable-label')}
           value={!showOnlyFocusableInSearch}
           onChange={(value: boolean) => dispatch(setOnlyFocusableInNavMenu(!value))}
-          info={`Per default, nodes that are marked as non-focusable are excluded from the
-            search in the navigation menu. Checking this option will include them and
-            allowing setting these nodes as focus.`}
+          info={t('include-non-focusable-description')}
           mb={'xs'}
         />
         <Property uri={JumpToFadeDurationKey} />
       </Container>
       <Divider my={'xs'} />
-      <Menu.Label>Camera Path Settings</Menu.Label>
+      <Menu.Label>{t('camera-path-settings')}</Menu.Label>
       <Container>
         <Property uri={CameraPathSpeedFactorKey} />
         <Property uri={CameraPathArrivalDistanceFactorKey} />

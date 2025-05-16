@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Group, Text } from '@mantine/core';
 
 import { Collapsable } from '@/components/Collapsable/Collapsable';
@@ -14,12 +15,13 @@ interface Props {
 }
 
 export function GlobeLayer({ uri }: Props) {
+  const { t } = useTranslation('panel-scene', { keyPrefix: 'globe-layer' });
   const propertyOwner = usePropertyOwner(uri);
 
   const { isVisible } = usePropertyOwnerVisibility(uri);
 
   if (!propertyOwner) {
-    throw Error(`No property owner found for uri: ${uri}`);
+    throw Error(t('error.no-property-owner', { uri }));
   }
 
   // @TODO (emmbr, 2024-12-06): We want to avoid hardcoded colors, but since changing the
@@ -33,7 +35,7 @@ export function GlobeLayer({ uri }: Props) {
       rightSection={
         <Group wrap={'nowrap'}>
           <InfoBox>
-            {propertyOwner.description || 'No information'}
+            {propertyOwner.description || t('no-information')}
             <CopyUriButton uri={uri} />
           </InfoBox>
         </Group>
