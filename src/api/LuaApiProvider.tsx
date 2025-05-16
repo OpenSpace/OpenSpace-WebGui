@@ -1,4 +1,5 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { api } from '@/api/api';
 import { useIsConnectionStatus } from '@/hooks/util';
@@ -6,13 +7,15 @@ import { closeConnection } from '@/redux/connection/connectionMiddleware';
 import { startConnection } from '@/redux/connection/connectionSlice';
 import { updateCustomGroupOrdering } from '@/redux/groups/groupsSlice';
 import { useAppDispatch } from '@/redux/hooks';
-import { ConnectionStatus } from '@/types/enums';
+import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
+import { ConnectionStatus, LogLevel } from '@/types/enums';
 
 import { LuaApiContext } from './LuaApiContext';
 
 export function LuaApiProvider({ children }: PropsWithChildren) {
   const [luaApi, setLuaApi] = useState<OpenSpace.openspace | null>(null);
   const isConnected = useIsConnectionStatus(ConnectionStatus.Connected);
+  const { t } = useTranslation('notifications', { keyPrefix: 'error' });
   const dispatch = useAppDispatch();
 
   // Connect to OpenSpace
@@ -30,13 +33,13 @@ export function LuaApiProvider({ children }: PropsWithChildren) {
         const res = await api.singleReturnLibrary();
         setLuaApi(res);
       } catch (e) {
-        console.error(e);
+        dispatch(handleNotificationLogging(t('fetch-lua-api'), e, LogLevel.Error));
       }
     };
     if (isConnected) {
       fetchApi();
     }
-  }, [isConnected]);
+  }, [isConnected, dispatch, t]);
 
   // The groups ordering is not part of any topic so we request it
   // once we have the api

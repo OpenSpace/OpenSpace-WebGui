@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { NumberInput, NumberInputProps, ThemeIcon, Tooltip } from '@mantine/core';
 
 import { usePropListeningState } from '@/hooks/util';
@@ -43,6 +44,7 @@ export function NumericInput({
     setIsEditing,
     isEditing
   } = usePropListeningState<number | undefined>(value);
+  const { t } = useTranslation('components', { keyPrefix: 'input.numeric-input' });
 
   const shouldClamp = props.clampBehavior === 'strict';
 
@@ -130,7 +132,7 @@ export function NumericInput({
       leftSection={
         isOutsideRange &&
         !isEditing && (
-          <Tooltip label={`Value outside range [${min}, ${max}]`}>
+          <Tooltip label={t('error-label', { min, max })}>
             <ThemeIcon color={'orange.4'} variant={'transparent'}>
               <WarningIcon size={IconSize.xs} />
             </ThemeIcon>
@@ -147,9 +149,7 @@ export function NumericInput({
           />
         )
       }
-      error={
-        isOutsideRange && isEditing ? `Value outside range [${min}, ${max}]` : undefined
-      }
+      error={isOutsideRange && isEditing ? t('error-label', { min, max }) : undefined}
       {...props}
       // TODO: Provide error on invalid input
     />

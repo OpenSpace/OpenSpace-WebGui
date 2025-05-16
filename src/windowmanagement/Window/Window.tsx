@@ -2,7 +2,7 @@ import { PropsWithChildren, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { BoxProps } from '@mantine/core';
 
-import { fallbackRender } from '@/components/ErrorFallback/fallbackRender';
+import { FallbackRender } from '@/components/ErrorFallback/FallbackRender';
 
 import { WindowSizeProvider } from './WindowSizeProvider';
 
@@ -15,7 +15,7 @@ export function Window({ children, ...props }: PropsWithChildren & BoxProps) {
 
   return (
     <WindowSizeProvider {...props}>
-      <ErrorBoundary fallbackRender={fallbackRender} onReset={handleReset}>
+      <ErrorBoundary fallbackRender={FallbackRender} onReset={handleReset}>
         <Suspense fallback={null}>{children}</Suspense>
       </ErrorBoundary>
     </WindowSizeProvider>

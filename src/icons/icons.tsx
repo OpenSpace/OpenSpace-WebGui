@@ -75,6 +75,7 @@ export {
   MdLockOpen as LockOpenIcon,
   MdFilterCenterFocus as MoveTargetIcon,
   MdNightlight as NightIcon,
+  MdNotifications as NotificationsIcon,
   MdOpenInBrowser as OpenInBrowserIcon,
   MdOpenInNew as OpenInNewIcon,
   MdOpenInNew as OpenWindowIcon,
@@ -96,7 +97,8 @@ export {
   MdWater as WaterIcon,
   MdZoomIn as ZoomInIcon,
   MdZoomOut as ZoomOutIcon,
-  MdZoomOutMap as ZoomOutMapIcon} from 'react-icons/md';
+  MdZoomOutMap as ZoomOutMapIcon
+} from 'react-icons/md';
 export {
   PiBookOpenText as BookIcon,
   PiCompass as CompassSmallIcon,

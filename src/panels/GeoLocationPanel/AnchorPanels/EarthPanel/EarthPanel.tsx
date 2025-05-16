@@ -1,22 +1,15 @@
 import { useState } from 'react';
-import {
-  Button,
-  Checkbox,
-  Group,
-  NumberInput,
-  Tabs,
-  Text,
-  TextInput,
-  Title,
-  Tooltip
-} from '@mantine/core';
+import { Button, Group, NumberInput, Tabs, Text, TextInput, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { BoolInput } from '@/components/Input/BoolInput';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
+import { LogLevel } from '@/types/enums';
 import { Identifier } from '@/types/types';
 import { GeoLocationGroupKey, ScenePrefixKey } from '@/util/keys';
 
@@ -38,6 +31,7 @@ export function EarthPanel({ currentAnchor }: Props) {
   const luaApi = useOpenSpaceApi();
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const groups = useAppSelector((state) => state.groups.groups);
+  const dispatch = useAppDispatch();
 
   const geoLocationOwners = groups[GeoLocationGroupKey]?.propertyOwners.map((uri) => {
     const index = uri.indexOf(ScenePrefixKey);
@@ -79,7 +73,7 @@ export function EarthPanel({ currentAnchor }: Props) {
 
       setPlaces(uniquePlaces);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      dispatch(handleNotificationLogging('Error fetching data', error, LogLevel.Error));
     }
   }
 
@@ -165,16 +159,13 @@ export function EarthPanel({ currentAnchor }: Props) {
               Results
             </Title>
             <SettingsPopout>
-              <Tooltip
-                label={'Calculates an appropriate altitude automatically if unchecked'}
-              >
-                <Checkbox
-                  checked={isCustomAltitude}
-                  onChange={(event) => setIsCustomAltitude(event.currentTarget.checked)}
-                  label={'Use custom altitude'}
-                  m={'xs'}
-                />
-              </Tooltip>
+              <BoolInput
+                label={'Use custom altitude'}
+                value={isCustomAltitude}
+                onChange={setIsCustomAltitude}
+                info={'Calculates an appropriate altitude automatically if unchecked'}
+                m={'xs'}
+              />
               <NumberInput
                 value={customAltitude}
                 onChange={(value) => {

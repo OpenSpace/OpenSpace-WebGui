@@ -3,8 +3,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
-
-import { setMenuItemVisible } from '../local/localSlice';
+import { setMenuItemVisible } from '@/redux/local/localSlice';
+import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
+import { LogLevel } from '@/types/enums';
 
 import { ProfileState, setProfileData } from './profileSlice';
 
@@ -30,7 +31,20 @@ export const addProfileListener = (startListening: AppStartListening) => {
 
       // Panel visibility settings
       Object.entries(action.payload.uiPanelVisibility).forEach(([key, value]) => {
-        listenerApi.dispatch(setMenuItemVisible({ id: key, visible: value }));
+        const { taskbarItems } = listenerApi.getState().local;
+        const item = taskbarItems.find((item) => item.id === key);
+
+        if (item) {
+          listenerApi.dispatch(setMenuItemVisible({ id: key, visible: value }));
+        } else {
+          listenerApi.dispatch(
+            handleNotificationLogging(
+              'Error missing menu item',
+              `Tried to set visibility of non-existent menu item: '${key}'`,
+              LogLevel.Error
+            )
+          );
+        }
       });
 
       // Store the profile data in the slice
