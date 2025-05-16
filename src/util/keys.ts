@@ -52,3 +52,13 @@ export const SkyBrowserInverseZoomDirectionKey =
   'Modules.SkyBrowser.InverseZoomDirection';
 export const SkyBrowserSpaceCraftAnimationTimeKey =
   'Modules.SkyBrowser.SpaceCraftAnimationTime';
+
+//Keys used by NightSkyPanel
+export const StarsDimInAtmosphereKey = 
+  'Scene.Stars.Renderable.DimInAtmosphere';
+export const StarsRenderableKey = 'Scene.Stars.Renderable';
+export const StarLabelsRenderableKey = 'Scene.StarsLabels.Renderable';
+export const StarLabelsAlternateRenderableKey = 
+  'Scene.StarLabelsAlternate.Renderable';
+export const MoonPerformShadingKey = 
+  'Scene.Moon.Renderable.PerformShading';

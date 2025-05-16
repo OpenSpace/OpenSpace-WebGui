@@ -1,11 +1,9 @@
-import { ActionIcon, Center, Group, Paper, Slider, Stack, Text, Tooltip } from '@mantine/core';
+import { Stack, Text } from '@mantine/core';
 
 import { useState } from 'react';
 import { Checkbox } from '@mantine/core';
-import { useAppSelector } from '@/redux/hooks';
-import { useBoolProperty, useFloatProperty } from '@/hooks/properties';
-
-import { SphereIcon, LineIcon, SingleDotIcon, HomeIcon, AbcIcon } from '@/icons/icons';
+import { useProperty } from '@/hooks/properties';
+import { SphereIcon, LineIcon, SingleDotIcon, HomeIcon, AbcIcon, BandIcon, CompassSmallIcon, CompassLargeIcon, CompassMarksIcon, PencilIcon, PaintBrushIcon } from '@/icons/icons';
 import { useOpenSpaceApi } from '@/api/hooks';
 
 interface Props {
@@ -14,35 +12,66 @@ interface Props {
   identifier?: string;
   onAction?: string;
   offAction?: string;
+  boolProp?: string;
+  directionCheck?: string;
 }
 
 
-export function IconLabelButton({title, icon, identifier, onAction, offAction}: Props) {
+export function IconLabelButton({title, icon, identifier, onAction, offAction, directionCheck, boolProp}: Props) {
   
   const luaApi = useOpenSpaceApi();
 
+  const [interalCheck, setInternalCheked] = useState(false);
+
   function checkIdentifier() {
     if (identifier) {
-      return "Scene."+identifier+".Renderable";
-    } else {
-      switch (onAction) {
-        case 'os.nightsky.FadeInConstalltionLabels':
-          return "Scene.Constellations.Renderable.Labels";
-        case 'os.constellation_art.ShowArt':
-          return "Scene.ImageConstellation-Ori.Renderable";
-          default:
-          console.log("Handle special checkbox");
-          return "false";
+      if (identifier.startsWith("Scene")) {
+        return identifier;
+      } else {
+        return "Scene."+identifier+".Renderable";
       }
+    } else {
+      return "";
     }
-  }; 
+  };
+  
+  let showingDirections:boolean | undefined;
+  let directionsTexture:string | undefined;
+  let directionsFaded:number | undefined;
+  let boolEnabled:boolean | undefined;
+  if (boolProp) {
+    [boolEnabled] = useProperty('BoolProperty', boolProp);
+  }
 
-  const [enabled] = useBoolProperty(checkIdentifier()+".Enabled");
-  const [identifierFaded] = useFloatProperty(checkIdentifier()+".Fade");
+  let [enabled] = useProperty('BoolProperty', checkIdentifier()+".Enabled");
+
+  if (directionCheck) {
+    [showingDirections] = useProperty('BoolProperty', "Scene.CardinalDirectionSphere.Renderable.Enabled");
+    [directionsTexture] = useProperty('StringProperty', "Scene.CardinalDirectionSphere.Renderable.Texture");
+    [directionsFaded] = useProperty('FloatProperty', "Scene.CardinalDirectionSphere.Renderable.Fade");
+  }
+  const [identifierFaded] = useProperty('FloatProperty', checkIdentifier()+".Fade");
 
   
   function isChecked() {
-      return enabled && identifierFaded;
+      if (!identifier) {
+        if (directionCheck) {
+           if ((!showingDirections) || (directionsFaded != 1)) {
+            return false
+           } else {
+            if (directionsTexture && (directionsTexture.indexOf(directionCheck) > -1) ) {
+              return true;
+            }
+           }
+        } else {
+          return interalCheck;
+        }
+      }
+      if (boolProp) {
+        return enabled && boolEnabled;
+      } else {
+        return enabled && (identifierFaded == 1);
+      }
   }
 
   function getDisplayIcon(icon: string) {
@@ -55,6 +84,18 @@ export function IconLabelButton({title, icon, identifier, onAction, offAction}: 
         return (<SingleDotIcon size={30} />);
       case 'text':
         return (<AbcIcon size={30} />);
+      case 'band':
+        return (<BandIcon size={30} />)
+      case 'compasssmall':
+        return (<CompassSmallIcon size={30} />)
+      case 'compasslarge':
+        return (<CompassLargeIcon size={30} />)
+      case 'compassmarks':
+        return (<CompassMarksIcon size={30} />)
+      case 'pencil':
+        return (<PencilIcon size={30} />)
+      case 'paint':
+        return (<PaintBrushIcon size={30} />)
       default:
         return (<HomeIcon size={30} />);
     }
@@ -62,34 +103,34 @@ export function IconLabelButton({title, icon, identifier, onAction, offAction}: 
 
   function checkboxChange(checked: boolean) {
     if (checked) {
-      if (identifier) {
+      if (onAction) {
+        luaApi?.action.triggerAction(onAction);
+        setInternalCheked(true);
+      } else if (identifier) {
         luaApi?.fadeIn("Scene."+identifier+".Renderable");
-      } else if (onAction) {
-        luaApi?.action.triggerAction(onAction)
       }
     } else {
-      if (identifier) {
+      if (offAction) {
+        luaApi?.action.triggerAction(offAction);
+        setInternalCheked(false);
+      } else if (identifier) {
         luaApi?.fadeOut("Scene."+identifier+".Renderable");
-      } else if (offAction) {
-        luaApi?.action.triggerAction(offAction)
       }
     }  
   }
 
   return (
-    <Paper
-          withBorder
-          style={{
-            borderColor: 'var(--mantine-color-gray-8)'
-          }}
-          p={'xs'}
-        >
-    {title}
-    {getDisplayIcon(icon)} 
-    <Checkbox
+
+    <Checkbox.Card
+      radius="md"
       checked={isChecked() ? true : false}
-      onChange={(event) => {checkboxChange(event.currentTarget.checked)}}
-    />
-    </Paper>
+      onChange={(event) => {checkboxChange(event)}}
+    > 
+      <Stack align='center'>
+        <Checkbox.Indicator />
+        {getDisplayIcon(icon)}
+        <Text>{title}</Text>      
+      </Stack>  
+      </Checkbox.Card>
   );
 }

@@ -19,7 +19,10 @@ export {
   FiChevronsDown as ChevronsDownIcon,
   FiChevronsUp as ChevronsUpIcon
 } from 'react-icons/fi';
-export { GiNightSky as NightSkyIcon } from 'react-icons/gi';
+export { 
+  GiNightSky as NightSkyIcon,
+  GiPencil as PencilIcon,
+} from 'react-icons/gi';
 export { GoBrowser as BrowserIcon } from 'react-icons/go';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
 export { ImSphere as SphereIcon } from "react-icons/im";
@@ -36,6 +39,7 @@ export {
   MdOutlineAirplanemodeActive as AirplaneIcon,
   MdAnchor as AnchorIcon,
   MdArrowBack as BackArrowIcon,
+  MdOutlinePanoramaPhotosphere as BandIcon,
   MdCalendarMonth as CalendarIcon,
   MdCancel as CancelIcon,
   MdCheckBox as CheckBoxCheckedIcon,
@@ -95,7 +99,10 @@ export {
   MdZoomOutMap as ZoomOutMapIcon} from 'react-icons/md';
 export {
   PiBookOpenText as BookIcon,
+  PiCompass as CompassSmallIcon,
+  PiCompassBold as CompassLargeIcon,
   PiMouseLeftClickThin as LeftClickMouseIcon,
+  PiPaintBrushHouseholdLight as PaintBrushIcon,
   PiMouseRightClickThin as RightClickMouseIcon,
   PiMouseMiddleClickThin as ScrollClickMouseIcon
 } from 'react-icons/pi';
@@ -104,8 +111,9 @@ export {
   TbAbc as AbcIcon,
   TbClock as ClockIcon,
   TbClockX as ClockOffIcon,
+  TbCompass as CompassMarksIcon,
   TbCube as SceneIcon,
-  TbScript as ScriptLogIcon
+  TbScript as ScriptLogIcon,
   TbSphere as LineIcon
 } from 'react-icons/tb';
 export {
