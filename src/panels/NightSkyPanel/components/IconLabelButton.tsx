@@ -138,6 +138,8 @@ export function IconLabelButton({
       if (offAction) {
         luaApi?.action.triggerAction(offAction);
         setInternalCheked(false);
+      } else if (boolProp) {
+        luaApi?.setPropertyValueSingle(boolProp, false);
       } else if (identifier) {
         luaApi?.fadeOut('Scene.' + identifier + '.Renderable');
       }

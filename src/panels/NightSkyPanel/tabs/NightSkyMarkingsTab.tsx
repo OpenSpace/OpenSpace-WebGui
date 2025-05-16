@@ -89,7 +89,6 @@ export function NightSkyMarkingsTab() {
             icon={'pencil'}
             identifier={'Constellations'}
             onAction={'os.nightsky.ShowConstellationElements'}
-            offAction={'os.nightsky.HideConstellationElements'}
             boolProp={'Scene.Constellations.Renderable.DrawElements'}
           />
         </Grid.Col>
@@ -107,8 +106,8 @@ export function NightSkyMarkingsTab() {
             title={'Labels'}
             icon={'text'}
             identifier={'Scene.Constellations.Renderable.Labels'}
-            onAction={'os.nightsky.FadeInConstalltionLabels'}
-            offAction={'os.nightsky.FadeOutConstalltionLabels'}
+            onAction={'os.nightsky.FadeInConstellationLabels'}
+            offAction={'os.nightsky.FadeOutConstellationLabels'}
           />
         </Grid.Col>
       </Grid>
