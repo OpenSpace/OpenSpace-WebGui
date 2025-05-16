@@ -1,15 +1,14 @@
-import { Container, Divider, Tabs, Space, Group } from '@mantine/core';
+import { Container, Divider, Group, Space, Tabs } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
-import { NightSkyMarkingsTab } from './tabs/NightSkyMarkingsTab';
-import { NightSkyLocationTab } from './tabs/NightSkyLocationTab';
-import { NightSkyStarsTab } from './tabs/NightSkyStarsTab';
-import { NightSkySolarSystemTab } from './tabs/NightSkySolarSystemTab';
-import { NightSkyTimeTab } from './tabs/NightSkyTimeTab';
-import { NightSkySunTab } from './tabs/NightSkySunTab';
 
+import { NightSkyLocationTab } from './tabs/NightSkyLocationTab';
+import { NightSkyMarkingsTab } from './tabs/NightSkyMarkingsTab';
+import { NightSkySolarSystemTab } from './tabs/NightSkySolarSystemTab';
+import { NightSkyStarsTab } from './tabs/NightSkyStarsTab';
+import { NightSkySunTab } from './tabs/NightSkySunTab';
+import { NightSkyTimeTab } from './tabs/NightSkyTimeTab';
 
 export function NightSkyPanel() {
-
   const { ref } = useElementSize();
 
   return (
@@ -24,14 +23,26 @@ export function NightSkyPanel() {
           <Tabs.Tab value={'sun'}>Sun</Tabs.Tab>
         </Tabs.List>
         <Divider size={'xl'}></Divider>
-        <Space h="lg"></Space>
+        <Space h={'lg'}></Space>
         <Group bg={'dark'} p={'lg'}>
-          <Tabs.Panel value={'markings'}><NightSkyMarkingsTab /></Tabs.Panel>
-          <Tabs.Panel value={'location'}><NightSkyLocationTab /></Tabs.Panel>
-          <Tabs.Panel value={'stars'}><NightSkyStarsTab /></Tabs.Panel>
-          <Tabs.Panel value={'time'}><NightSkyTimeTab /></Tabs.Panel>
-          <Tabs.Panel value={'solarsystem'}><NightSkySolarSystemTab /></Tabs.Panel>
-          <Tabs.Panel value={'sun'}><NightSkySunTab /></Tabs.Panel>
+          <Tabs.Panel value={'markings'}>
+            <NightSkyMarkingsTab />
+          </Tabs.Panel>
+          <Tabs.Panel value={'location'}>
+            <NightSkyLocationTab />
+          </Tabs.Panel>
+          <Tabs.Panel value={'stars'}>
+            <NightSkyStarsTab />
+          </Tabs.Panel>
+          <Tabs.Panel value={'time'}>
+            <NightSkyTimeTab />
+          </Tabs.Panel>
+          <Tabs.Panel value={'solarsystem'}>
+            <NightSkySolarSystemTab />
+          </Tabs.Panel>
+          <Tabs.Panel value={'sun'}>
+            <NightSkySunTab />
+          </Tabs.Panel>
         </Group>
       </Tabs>
     </Container>

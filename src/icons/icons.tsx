@@ -1,31 +1,28 @@
 export {
   BsWindowSidebar as PanelIcon,
+  BsFillRecordFill as SingleDotIcon,
   BsWindowDock as TaskBarIcon,
   BsThreeDotsVertical as VerticalDotsIcon,
-  BsFillRecordFill as SingleDotIcon,
   BsFillXCircleFill as XCircleIcon
 } from 'react-icons/bs';
 export {
   FaArrowLeft as ArrowLeftIcon,
   FaArrowRight as ArrowRightIcon,
+  FaCheckCircle as CheckCircleIcon,
   FaDev as DevIcon,
   FaHome as HomeIcon,
   FaMinus as MinusIcon,
   FaPlus as PlusIcon,
-  FaRegSave as SaveIcon,
-  FaCheckCircle as CheckCircleIcon
+  FaRegSave as SaveIcon
 } from 'react-icons/fa';
 export {
   FiChevronsDown as ChevronsDownIcon,
   FiChevronsUp as ChevronsUpIcon
 } from 'react-icons/fi';
-export { 
-  GiNightSky as NightSkyIcon,
-  GiPencil as PencilIcon,
-} from 'react-icons/gi';
+export { GiNightSky as NightSkyIcon, GiPencil as PencilIcon } from 'react-icons/gi';
 export { GoBrowser as BrowserIcon } from 'react-icons/go';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
-export { ImSphere as SphereIcon } from "react-icons/im";
+export { ImSphere as SphereIcon } from 'react-icons/im';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoInformation as InformationIcon,
@@ -101,8 +98,8 @@ export {
 } from 'react-icons/md';
 export {
   PiBookOpenText as BookIcon,
-  PiCompass as CompassSmallIcon,
   PiCompassBold as CompassLargeIcon,
+  PiCompass as CompassSmallIcon,
   PiMouseLeftClickThin as LeftClickMouseIcon,
   PiPaintBrushHouseholdLight as PaintBrushIcon,
   PiMouseRightClickThin as RightClickMouseIcon,
@@ -114,9 +111,9 @@ export {
   TbClock as ClockIcon,
   TbClockX as ClockOffIcon,
   TbCompass as CompassMarksIcon,
+  TbSphere as LineIcon,
   TbCube as SceneIcon,
-  TbScript as ScriptLogIcon,
-  TbSphere as LineIcon
+  TbScript as ScriptLogIcon
 } from 'react-icons/tb';
 export {
   VscFeedback as FeedbackIcon,
