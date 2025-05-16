@@ -5,9 +5,9 @@ import { WindowLayoutOptions } from './types';
 
 export interface ProviderProps {
   ref: RefObject<DockLayout | null>;
-  addWindow: (component: React.JSX.Element, options: WindowLayoutOptions) => void;
+  addWindow: (component: React.ReactNode, options: WindowLayoutOptions) => void;
   closeWindow: (id: string) => void;
-  createWindowTabData: (id: string, title: string, content: React.JSX.Element) => TabData;
+  createWindowTabData: (id: string, title: string, content: React.ReactNode) => TabData;
 }
 
 export const WindowLayoutContext = createContext<ProviderProps | null>(null);

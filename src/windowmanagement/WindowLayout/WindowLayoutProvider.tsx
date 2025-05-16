@@ -30,7 +30,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
   }
 
   const createWindowTabData = useCallback(
-    (id: string, title: string, content: React.JSX.Element): TabData => {
+    (id: string, title: string, content: React.ReactNode): TabData => {
       return {
         id,
         title: (
@@ -50,7 +50,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
   );
 
   const addWindow = useCallback(
-    (component: React.JSX.Element, options: WindowLayoutOptions) => {
+    (component: React.ReactNode, options: WindowLayoutOptions) => {
       if (!rcDocRef.current) {
         return;
       }

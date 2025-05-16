@@ -1,4 +1,3 @@
-import { JSX } from 'react';
 import { Checkbox, Group, MantineStyleProps } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
@@ -12,7 +11,7 @@ import { RequireAtLeastOne } from '@/types/types';
 
 interface BaseProps extends MantineStyleProps {
   onChange?: (value: boolean) => void;
-  info?: string | JSX.Element;
+  info?: React.ReactNode;
   disabled?: boolean;
 }
 
