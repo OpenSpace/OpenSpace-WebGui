@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, ButtonProps } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -19,6 +20,7 @@ export function PlaybackPlayButton({
   ...props
 }: Props) {
   const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('common');
 
   async function startPlayback(): Promise<void> {
     const shouldWaitForTiles = true;
@@ -41,7 +43,7 @@ export function PlaybackPlayButton({
 
   return (
     <Button onClick={startPlayback} leftSection={<PlayIcon />} {...props}>
-      Play
+      {t('play')}
     </Button>
   );
 }

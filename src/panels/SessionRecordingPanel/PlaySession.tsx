@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Group, Select, Stack, Title } from '@mantine/core';
 
 import { BoolInput } from '@/components/Input/BoolInput';
@@ -20,6 +21,9 @@ export function PlaySession() {
 
   const fileList = useAppSelector((state) => state.sessionRecording.files);
   const recordingState = useSubscribeToSessionRecording();
+  const { t } = useTranslation(['sessionrecording', 'common'], {
+    keyPrefix: 'play-session'
+  });
 
   const isIdle = recordingState === RecordingState.Idle;
   const isPlayingBack =
@@ -46,30 +50,27 @@ export function PlaySession() {
   return (
     <>
       <Title order={2} my={'xs'}>
-        Play
+        {t('common:play')}
       </Title>
       <Stack gap={'xs'}>
         <BoolInput
-          label={'Loop playback'}
+          label={t('loop-playback-label')}
           value={loopPlayback}
           onChange={onLoopPlaybackChange}
           disabled={!isIdle}
         />
         <Group>
           <BoolInput
-            label={'Output frames'}
+            label={t('output-frames.label')}
             value={shouldOutputFrames}
             onChange={onShouldUpdateFramesChange}
             disabled={!isIdle}
-            info={`If checked, the specified number of frames will be recorded as
-              screenshots and saved to disk. Per default, they are saved in the
-              user/screenshots folder. This feature can not be used together with
-              'Loop playback'`}
+            info={t('output-frames.info')}
           />
           <NumericInput
             value={outputFramerate}
-            placeholder={'Framerate'}
-            aria-label={'Set framerate'}
+            placeholder={t('output-frames.framerate-placeholder')}
+            aria-label={t('output-frames.framerate-aria-label')}
             onEnter={(value) => setOutputFramerate(value)}
             w={80}
             disabled={!shouldOutputFrames || !isIdle}
@@ -78,8 +79,8 @@ export function PlaySession() {
         <Group gap={'xs'} align={'flex-end'}>
           <Select
             value={filenamePlayback}
-            label={'Playback file'}
-            placeholder={'Select playback file'}
+            label={t('playback-file.label')}
+            placeholder={t('playback-file.placeholder')}
             data={fileList}
             onChange={setFilenamePlayback}
             searchable

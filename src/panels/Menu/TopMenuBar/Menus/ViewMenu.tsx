@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   Checkbox,
@@ -52,6 +53,7 @@ export function ViewMenu() {
   );
 
   const { loadLayout, saveLayout } = useStoredLayout();
+  const { t } = useTranslation('menu', { keyPrefix: 'view-menu' });
   const dispatch = useAppDispatch();
 
   const userLevelOptions = propertyVisibilityMetadata?.additionalData.options;
@@ -66,14 +68,14 @@ export function ViewMenu() {
   }
 
   return (
-    <TopBarMenuWrapper targetTitle={'View'}>
+    <TopBarMenuWrapper targetTitle={t('title')}>
       <TopBarMenuWrapper
         targetTitle={
           <Menu.Item
             leftSection={<TaskBarIcon />}
             rightSection={<ChevronRightIcon size={IconSize.sm} />}
           >
-            Task Bar
+            {t('task-bar.title')}
           </Menu.Item>
         }
         position={'right-start'}
@@ -82,9 +84,9 @@ export function ViewMenu() {
       >
         <Menu.Label pr={0}>
           <Group justify={'space-between'}>
-            Toggle Task Bar Items
+            {t('task-bar.toggle-items')}
             <Button size={'xs'} onClick={resetTaskbar}>
-              Reset
+              {t('task-bar.reset')}
             </Button>
           </Group>
         </Menu.Label>
@@ -125,11 +127,11 @@ export function ViewMenu() {
       </TopBarMenuWrapper>
 
       <Menu.Item leftSection={<UpArrowIcon />} onClick={loadLayout}>
-        Load Task Bar Settings
+        {t('task-bar.load-settings')}
       </Menu.Item>
 
       <Menu.Item leftSection={<SaveIcon />} onClick={saveLayout}>
-        Save Task Bar Settings
+        {t('task-bar.save-settings')}
       </Menu.Item>
 
       <Menu.Divider />
@@ -140,7 +142,7 @@ export function ViewMenu() {
             leftSection={<SettingsIcon />}
             rightSection={<ChevronRightIcon size={IconSize.sm} />}
           >
-            GUI Settings
+            {t('gui-settings.title')}
           </Menu.Item>
         }
         position={'right-start'}
@@ -149,11 +151,8 @@ export function ViewMenu() {
       >
         <Menu.Label>
           <Group gap={'xs'}>
-            Visibility Level
-            <InfoBox>
-              {`Controls what settings will be exposed in the interface. Increase the
-                level to reveal more advanced settings.`}
-            </InfoBox>
+            {t('gui-settings.visibility-level.title')}
+            <InfoBox>{t('gui-settings.visibility-level.tooltip')}</InfoBox>
           </Group>
         </Menu.Label>
         <Container>
@@ -176,8 +175,8 @@ export function ViewMenu() {
 
         <Menu.Label mt={'xs'}>
           <Group gap={'xs'}>
-            Scale
-            <InfoBox>Increase or decrease the scale of the GUI.</InfoBox>
+            {t('gui-settings.scale.title')}
+            <InfoBox>{t('gui-settings.scale.tooltip')}</InfoBox>
           </Group>
         </Menu.Label>
         <Container>
@@ -209,7 +208,7 @@ export function ViewMenu() {
             leftSection={<NotificationsIcon />}
             rightSection={<ChevronRightIcon size={IconSize.sm} />}
           >
-            Notifications
+            {t('notifications.title')}
           </Menu.Item>
         }
         position={'right-start'}
@@ -217,12 +216,12 @@ export function ViewMenu() {
         closeOnItemClick={false}
       >
         <Menu.Label>
-          <Group gap={'xs'}>Notifications</Group>
+          <Group gap={'xs'}>{t('notifications.title')}</Group>
         </Menu.Label>
         <Container>
           {/* @TODO (2025-05-14, emmbr): Use BoolInput component */}
           <Checkbox
-            label={'Show Notifications'}
+            label={t('notifications.show-notifications')}
             checked={logNotifications}
             onChange={(event) => dispatch(showNotifications(event.currentTarget.checked))}
             mb={'xs'}
@@ -230,8 +229,8 @@ export function ViewMenu() {
         </Container>
         <Menu.Label>
           <Group gap={'xs'}>
-            Min OpenSpace Log Level
-            <InfoBox>Controls which messages will be shown from OpenSpace</InfoBox>
+            {t('notifications.log-level.label')}
+            <InfoBox>{t('notifications.log-level.tooltip')}</InfoBox>
           </Group>
         </Menu.Label>
         <Container>
@@ -256,7 +255,7 @@ export function ViewMenu() {
           onClick={() => notifications.clean()}
           leftSection={<DeleteIcon size={IconSize.sm} />}
         >
-          Clear Notifications
+          {t('notifications.clear-notifications')}
         </Menu.Item>
       </TopBarMenuWrapper>
     </TopBarMenuWrapper>
