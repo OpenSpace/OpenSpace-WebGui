@@ -21,16 +21,16 @@ export function NightSkyStarsTab() {
                 <Space h={'lg'}></Space>
                 <Group>
                     <BoolInput
-                        name={'Show During day'}
-                        description={'Check this box to show the stars during the daytime'}
+                        label={'Show During day'}
+                        info={'Check this box to show the stars during the daytime'}
                         value={!starsDimInAtm || false}
-                        setValue={ () => {setStarsDimInAtm(!starsDimInAtm)} }
+                        onChange={ () => {setStarsDimInAtm(!starsDimInAtm)} }
                     />
                     <BoolInput
-                        name={'Hide always'}
-                        description={'Check this box to never see the stars, even at night or in space.'}
+                        label={'Hide always'}
+                        info={'Check this box to never see the stars, even at night or in space.'}
                         value={!starsEnabled || false}
-                        setValue={ () => {
+                        onChange={ () => {
                             if (starsEnabled) {
                                 luaApi?.fadeOut(StarsRenderableKey)
                             } else {
@@ -46,10 +46,10 @@ export function NightSkyStarsTab() {
                 <Space h={'lg'}></Space>
                 <Group>
                 <BoolInput
-                        name={'Show Labels'}
-                        description={''}
+                        label={'Show Labels'}
+                        info={''}
                         value={starsLabelsEnabled || false}
-                        setValue={ () => {
+                        onChange={ () => {
                             if (starsLabelsEnabled) {
                                 luaApi?.fadeOut(StarLabelsRenderableKey)
                             } else {
@@ -58,10 +58,10 @@ export function NightSkyStarsTab() {
                         } }
                 />
                 <BoolInput
-                        name={'Show Alternate Labels'}
-                        description={''}
+                        label={'Show Alternate Labels'}
+                        info={''}
                         value={starsLabelsAltEnabled || false}
-                        setValue={ () => {
+                        onChange={ () => {
                             if (starsLabelsAltEnabled) {
                                 luaApi?.fadeOut(StarLabelsAlternateRenderableKey)
                             } else {

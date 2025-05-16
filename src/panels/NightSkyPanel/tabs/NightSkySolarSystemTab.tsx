@@ -64,10 +64,10 @@ export function NightSkySolarSystemTab() {
                     }
                 }}>-</Button>
                 <BoolInput
-                    name={'Show Phase'}
-                    description={'Uncheck this to show the full moon always. This is equivalent to the "Perform Shading" property on the Moon.'}
+                    label={'Show Phase'}
+                    info={'Uncheck this to show the full moon always. This is equivalent to the "Perform Shading" property on the Moon.'}
                     value={performShading || false}
-                    setValue={ setPerformShading }
+                    onChange={ setPerformShading }
                 />
             </Group>
 

@@ -15,7 +15,7 @@
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",
     "@mantine/core": "^7.17.4",
-    "@mantine/dates": "^7.15.1",
+    "@mantine/dates": "^7.17.4",
     "@mantine/hooks": "^7.17.4",
     "@mantine/modals": "^7.17.4",
     "@mantine/notifications": "^7.17.4",
@@ -23,6 +23,7 @@
     "@tanstack/react-virtual": "^3.10.9",
     "@types/lodash": "^4.17.11",
     "@use-gesture/react": "^10.3.1",
+    "browser-geo-tz": "^0.2.0",
     "country-flag-icons": "^1.5.19",
     "d3": "^7.9.0",
     "i18next": "^25.0.2",
@@ -38,8 +39,7 @@
     "react-redux": "^9.1.2",
     "react-router": "^7.2.0",
     "react-simple-keyboard": "^3.8.35",
-    "spherical-geometry-js": "^3.0.2",
-    "browser-geo-tz": "^0.2.0"
+    "spherical-geometry-js": "^3.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
