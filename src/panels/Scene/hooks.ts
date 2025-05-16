@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BoxData, PanelData, TabData } from 'rc-dock';
 
 import { useProperty } from '@/hooks/properties';
@@ -9,18 +10,19 @@ import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 export const DefaultSgnWindowId = 'defaultSceneGraphNodeWindow';
 
 export function useOpenCurrentSceneNodeWindow() {
+  const { t } = useTranslation('panel-scene', { keyPrefix: 'hooks' });
   const { ref, addWindow, closeWindow, createWindowTabData } = useWindowLayoutProvider();
 
   function openCurrentNodeWindow(content: React.JSX.Element) {
     if (!ref || ref.current === null) {
-      throw new Error('WindowLayoutProvider ref is not set');
+      throw new Error('WindowLayoutProvider ref is not set'); // TODO: Localize?
     }
 
     const existingWindow = ref.current.find(DefaultSgnWindowId);
     if (!existingWindow) {
       addWindow(content, {
         id: DefaultSgnWindowId,
-        title: 'Scene: Selected Node',
+        title: t('selected-node-window-title'),
         position: 'float'
       });
 
@@ -28,6 +30,7 @@ export function useOpenCurrentSceneNodeWindow() {
       const scenePanelParentBox = ref.current.find('scene')?.parent as BoxData;
 
       if (!newWindow || !scenePanelParentBox) {
+        // TODO: Localize?
         throw new Error('Could not find the new window or the scene panel parent box');
       }
 
@@ -39,7 +42,7 @@ export function useOpenCurrentSceneNodeWindow() {
     } else {
       const newTabData = createWindowTabData(
         DefaultSgnWindowId,
-        'Scene: Selected Node',
+        t('selected-node-window-title'),
         content
       );
       ref.current.updateTab(DefaultSgnWindowId, newTabData, true);
