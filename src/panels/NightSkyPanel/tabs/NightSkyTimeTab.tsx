@@ -100,60 +100,44 @@ export function NightSkyTimeTab() {
         <Group gap={'xl'}>
           <Group>
             <Button
-              onClick={() => {
-                luaApi?.action.triggerAction('os.time.siderealDayIncrease');
-              }}
+              onClick={() => luaApi?.action.triggerAction('os.time.siderealDayIncrease')}
             >
               + sidereal day
             </Button>
             <Button
-              onClick={() => {
-                luaApi?.action.triggerAction('os.time.siderealDayDecrease');
-              }}
+              onClick={() => luaApi?.action.triggerAction('os.time.siderealDayDecrease')}
             >
               - sidereal day
             </Button>
             <Button
-              onClick={() => {
-                luaApi?.action.triggerAction('os.time.siderealWeekIncrease');
-              }}
+              onClick={() => luaApi?.action.triggerAction('os.time.siderealWeekIncrease')}
             >
               + sidereal week
             </Button>
             <Button
-              onClick={() => {
-                luaApi?.action.triggerAction('os.time.siderealWeekDecrease');
-              }}
+              onClick={() => luaApi?.action.triggerAction('os.time.siderealWeekDecrease')}
             >
               - sidereal week
             </Button>
           </Group>
           <Group>
             <Button
-              onClick={() => {
-                luaApi?.action.triggerAction('os.time.SolarDayIncrease');
-              }}
+              onClick={() => luaApi?.action.triggerAction('os.time.SolarDayIncrease')}
             >
               + solar day
             </Button>
             <Button
-              onClick={() => {
-                luaApi?.action.triggerAction('os.time.SolarDayDecrease');
-              }}
+              onClick={() => luaApi?.action.triggerAction('os.time.SolarDayDecrease')}
             >
               - solar day
             </Button>
             <Button
-              onClick={() => {
-                luaApi?.action.triggerAction('os.time.SolarWeekIncrease');
-              }}
+              onClick={() => luaApi?.action.triggerAction('os.time.SolarWeekIncrease')}
             >
               + solar week
             </Button>
             <Button
-              onClick={() => {
-                luaApi?.action.triggerAction('os.time.SolarWeekDecrease');
-              }}
+              onClick={() => luaApi?.action.triggerAction('os.time.SolarWeekDecrease')}
             >
               - solar week
             </Button>
@@ -195,13 +179,7 @@ export function NightSkyTimeTab() {
             300x (5 min/sec)
           </Button>
 
-          <Button
-            onClick={() => {
-              luaApi?.time.togglePause();
-            }}
-          >
-            Play / Pause
-          </Button>
+          <Button onClick={() => luaApi?.time.togglePause()}>Play / Pause</Button>
         </Group>
       </Stack>
       <Divider mt={5} />

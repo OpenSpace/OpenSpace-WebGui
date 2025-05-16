@@ -38,9 +38,7 @@ export function NightSkyStarsTab() {
             label={'Show During day'}
             info={'Check this box to show the stars during the daytime'}
             value={!starsDimInAtm || false}
-            onChange={() => {
-              setStarsDimInAtm(!starsDimInAtm);
-            }}
+            onChange={() => setStarsDimInAtm(!starsDimInAtm)}
           />
           <BoolInput
             label={'Hide always'}
@@ -96,16 +94,12 @@ export function NightSkyStarsTab() {
           </Paper>
           <Text size={'xl'}>Appearance</Text>
           <Button
-            onClick={() => {
-              luaApi?.action.triggerAction('os.nightsky.DefaultStars');
-            }}
+            onClick={() => luaApi?.action.triggerAction('os.nightsky.DefaultStars')}
           >
             Default settings
           </Button>
           <Button
-            onClick={() => {
-              luaApi?.action.triggerAction('os.nightsky.PointlikeStars');
-            }}
+            onClick={() => luaApi?.action.triggerAction('os.nightsky.PointlikeStars')}
           >
             More point like
           </Button>

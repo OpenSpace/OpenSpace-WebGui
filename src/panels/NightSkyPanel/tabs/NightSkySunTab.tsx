@@ -33,18 +33,10 @@ export function NightSkySunTab() {
         Glare
       </Text>
       <Group>
-        <Button
-          onClick={() => {
-            openspace?.fadeIn('Scene.SunGlare.Renderable');
-          }}
-        >
+        <Button onClick={() => openspace?.fadeIn('Scene.SunGlare.Renderable')}>
           Show Glare
         </Button>
-        <Button
-          onClick={() => {
-            openspace?.fadeOut('Scene.SunGlare.Renderable');
-          }}
-        >
+        <Button onClick={() => openspace?.fadeOut('Scene.SunGlare.Renderable')}>
           Hide Glare
         </Button>
       </Group>
@@ -52,25 +44,13 @@ export function NightSkySunTab() {
         Size
       </Text>
       <Group>
-        <Button
-          onClick={() => {
-            openspace?.setPropertyValueSingle(AngularSizeKey, 0.3);
-          }}
-        >
+        <Button onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.3)}>
           Default Angular Size
         </Button>
-        <Button
-          onClick={() => {
-            openspace?.setPropertyValueSingle(AngularSizeKey, 0.6);
-          }}
-        >
+        <Button onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.6)}>
           Large Angular Size
         </Button>
-        <Button
-          onClick={() => {
-            openspace?.setPropertyValueSingle(AngularSizeKey, 0.8);
-          }}
-        >
+        <Button onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.8)}>
           Extra Large Angular Size
         </Button>
         <Button
@@ -97,20 +77,8 @@ export function NightSkySunTab() {
         Trails
       </Text>
       <Group my={'md'}>
-        <Button
-          onClick={() => {
-            addTrail('NOW');
-          }}
-        >
-          Add trail for simulation date
-        </Button>
-        <Button
-          onClick={() => {
-            addTrail('UTC');
-          }}
-        >
-          Add trail for today{' '}
-        </Button>
+        <Button onClick={() => addTrail('NOW')}>Add trail for simulation date</Button>
+        <Button onClick={() => addTrail('UTC')}>Add trail for today </Button>
       </Group>
 
       <DatePickerInput
@@ -143,7 +111,7 @@ export function NightSkySunTab() {
           Hide All
         </Button>
       </Group>
-      <Space h={'lg'}></Space>
+      <Space h={'lg'} />
       {addedTrails.length === 0 ? (
         <Text>No sun trails</Text>
       ) : (

@@ -12,9 +12,7 @@ export function NightSkyMarkingsTab() {
       <Button
         mb={'lg'}
         fullWidth
-        onClick={() => {
-          openspace?.action.triggerAction('os.nightsky.HideAllMarkings');
-        }}
+        onClick={() => openspace?.action.triggerAction('os.nightsky.HideAllMarkings')}
       >
         HIDE ALL
       </Button>

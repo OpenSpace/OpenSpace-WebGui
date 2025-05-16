@@ -54,7 +54,7 @@ export function NightSkyLocationTab() {
               left: dotPosition().x - 0.1666666666 + '%',
               top: dotPosition().y - 0.1666666666 + '%'
             }}
-          ></Image>
+          />
         </BackgroundImage>
       </Group>
       <Divider my={'xl'} mt={5} />
@@ -63,23 +63,21 @@ export function NightSkyLocationTab() {
         <Stack>
           <Group>
             <Button
-              onClick={() => {
-                luaApi?.action.triggerAction('os.nightsky.position.NorthPole');
-              }}
+              onClick={() =>
+                luaApi?.action.triggerAction('os.nightsky.position.NorthPole')
+              }
             >
               North Pole
             </Button>
             <Button
-              onClick={() => {
-                luaApi?.action.triggerAction('os.nightsky.position.Equator');
-              }}
+              onClick={() => luaApi?.action.triggerAction('os.nightsky.position.Equator')}
             >
               Equator
             </Button>
             <Button
-              onClick={() => {
-                luaApi?.action.triggerAction('os.nightsky.position.SouthPole');
-              }}
+              onClick={() =>
+                luaApi?.action.triggerAction('os.nightsky.position.SouthPole')
+              }
             >
               South Pole
             </Button>
@@ -97,56 +95,24 @@ export function NightSkyLocationTab() {
         Direction
       </Text>
       <Group my={'md'}>
-        <Button
-          onClick={() => {
-            look('North');
-          }}
-        >
-          Look North
-        </Button>
-        <Button
-          onClick={() => {
-            look('East');
-          }}
-        >
-          Look East
-        </Button>
-        <Button
-          onClick={() => {
-            look('South');
-          }}
-        >
-          Look South
-        </Button>
-        <Button
-          onClick={() => {
-            look('West');
-          }}
-        >
-          Look West
-        </Button>
+        <Button onClick={() => look('North')}>Look North</Button>
+        <Button onClick={() => look('East')}>Look East</Button>
+        <Button onClick={() => look('South')}>Look South</Button>
+        <Button onClick={() => look('West')}>Look West</Button>
       </Group>
       <Text size={'xl'}>Horizon</Text>
       <Group my={'md'}>
         <Button
-          onClick={() => {
-            luaApi?.action.triggerAction('os.nightsky.LevelHorizonPitch');
-          }}
+          onClick={() => luaApi?.action.triggerAction('os.nightsky.LevelHorizonPitch')}
         >
           Look at Horizon
         </Button>
         <Button
-          onClick={() => {
-            luaApi?.action.triggerAction('os.nightsky.LevelHorizonYaw');
-          }}
+          onClick={() => luaApi?.action.triggerAction('os.nightsky.LevelHorizonYaw')}
         >
           Level Horizon
         </Button>
-        <Button
-          onClick={() => {
-            luaApi?.action.triggerAction('os.nightsky.LookUp');
-          }}
-        >
+        <Button onClick={() => luaApi?.action.triggerAction('os.nightsky.LookUp')}>
           Look Up
         </Button>
       </Group>

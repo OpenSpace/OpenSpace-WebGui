@@ -48,18 +48,10 @@ export function NightSkySolarSystemTab() {
         Labels
       </Text>
       <Group>
-        <Button
-          onClick={() => {
-            luaApi?.fadeIn('{solarsystem_labels}.Renderable');
-          }}
-        >
+        <Button onClick={() => luaApi?.fadeIn('{solarsystem_labels}.Renderable')}>
           Show Labels
         </Button>
-        <Button
-          onClick={() => {
-            luaApi?.fadeOut('{solarsystem_labels}.Renderable');
-          }}
-        >
+        <Button onClick={() => luaApi?.fadeOut('{solarsystem_labels}.Renderable')}>
           Hide Labels
         </Button>
       </Group>
@@ -68,18 +60,10 @@ export function NightSkySolarSystemTab() {
         Planets
       </Text>
       <Group>
-        <Button
-          onClick={() => {
-            action('os.nightsky.ShowNightSkyPlanets');
-          }}
-        >
+        <Button onClick={() => action('os.nightsky.ShowNightSkyPlanets')}>
           Show Night Sky Planets
         </Button>
-        <Button
-          onClick={() => {
-            action('os.nightsky.HideNightSkyPlanets');
-          }}
-        >
+        <Button onClick={() => action('os.nightsky.HideNightSkyPlanets')}>
           Hide Night Sky Planets
         </Button>
       </Group>
@@ -88,27 +72,9 @@ export function NightSkySolarSystemTab() {
         Moon
       </Text>
       <Group>
-        <Button
-          onClick={() => {
-            setMoonScale(1.0);
-          }}
-        >
-          Default Scale Moon (1x)
-        </Button>
-        <Button
-          onClick={() => {
-            setMoonScale(2.0);
-          }}
-        >
-          Enlarge Moon (2x)
-        </Button>
-        <Button
-          onClick={() => {
-            setMoonScale(4.0);
-          }}
-        >
-          Enlarge Moon (4x)
-        </Button>
+        <Button onClick={() => setMoonScale(1.0)}>Default Scale Moon (1x)</Button>
+        <Button onClick={() => setMoonScale(2.0)}>Enlarge Moon (2x)</Button>
+        <Button onClick={() => setMoonScale(4.0)}>Enlarge Moon (4x)</Button>
         <Button
           onClick={() => {
             if (moonScale) {
