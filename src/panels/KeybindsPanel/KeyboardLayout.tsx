@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Container, Divider, Grid, Group, Stack, Text, Title } from '@mantine/core';
 
 import { Action } from '@/types/types';
@@ -12,6 +13,8 @@ export function KeyboardLayout() {
   const [activeModifiers, setActiveModifiers] = useState<string[]>([]);
   const [selectedKey, setSelectedKey] = useState<string>('');
 
+  const { t } = useTranslation('panel-keybinds', { keyPrefix: 'keyboard-layout' });
+
   const hasSelectedKeys = selectedKey !== '' || activeModifiers.length > 0;
   return (
     <Container maw={'none'}>
@@ -24,12 +27,12 @@ export function KeyboardLayout() {
       />
       <Group align={'top'}>
         <Stack>
-          <Title order={2}>Selected keybind:</Title>
+          <Title order={2}>{t('selected-keybind-title')}:</Title>
           <KeybindButtons selectedKey={selectedKey} modifiers={activeModifiers} />
         </Stack>
         <Divider orientation={'vertical'} mx={'xs'} />
         <Stack flex={1}>
-          <Title order={2}>Mapped actions:</Title>
+          <Title order={2}>{t('mapped-actions-title')}:</Title>
           {selectedActions.length > 0 ? (
             <Grid mx={'xs'}>
               {selectedActions.map((selectedAction) => (
@@ -38,9 +41,7 @@ export function KeyboardLayout() {
             </Grid>
           ) : (
             <Text>
-              {hasSelectedKeys
-                ? 'No action is associated with this keybind.'
-                : 'No key selected. Select a key to see its action.'}
+              {hasSelectedKeys ? t('no-mapped-action-text') : t('no-key-selected-text')}
             </Text>
           )}
         </Stack>
