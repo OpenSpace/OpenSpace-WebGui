@@ -20,7 +20,7 @@ import { PropertyLabel } from './PropertyLabel';
 // The readOnly prop sent to each component are meant to enforce each
 // Property component to have to handle the readOnly state. This can
 // easily be forgotten otherwise.
-function renderProperty(type: string, uri: Uri, readOnly: boolean): React.ReactNode {
+function renderProperty(type: string, uri: Uri, readOnly: boolean): React.JSX.Element {
   switch (type) {
     case 'BoolProperty':
       return <BoolProperty uri={uri} readOnly={readOnly} />;

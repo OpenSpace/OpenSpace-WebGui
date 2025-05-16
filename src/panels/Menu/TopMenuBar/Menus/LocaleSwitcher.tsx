@@ -10,7 +10,7 @@ import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 export function LocaleSwitcher() {
   const { i18n } = useTranslation();
 
-  function languageIcon(): React.ReactNode {
+  function languageIcon(): React.JSX.Element {
     const { language } = i18n;
     return language ? (
       SupportedLanguages[language].icon
