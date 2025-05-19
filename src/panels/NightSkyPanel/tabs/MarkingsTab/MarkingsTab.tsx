@@ -15,9 +15,11 @@ import {
 } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
-import { NightSkyCardinalDirectionsBox } from './NightSkyCardinalDirectionsBox';
-import { NightSkyConstellationsBox } from './NightSkyConstellationsBox';
-import { NightSkyMarkingBox } from './NightSkyMarkingBox';
+import { CardinalDirectionsBox } from './CardinalDirectionsBox';
+import { ConstellationsShowArtBox } from './ConstellationsShowArtBox';
+import { ConstellationsShowLabelsBox } from './ConstellationsShowLabelsBox';
+import { ConstellationShowLinesBox } from './ConstellationsShowLinesBox';
+import { NightSkyMarkingBox } from './MarkingBox';
 
 export function MarkingsTab() {
   const openspace = useOpenSpaceApi();
@@ -112,26 +114,17 @@ export function MarkingsTab() {
           icon={<GridSphereIcon size={IconSize.md} />}
           identifier={'ConstellationBounds'}
         />
-        <NightSkyConstellationsBox
+        <ConstellationShowLinesBox
           title={'Lines'}
           icon={<PencilIcon size={IconSize.md} />}
-          identifier={'Constellations'}
-          onAction={'os.nightsky.ShowConstellationElements'}
-          elements
         />
-        <NightSkyConstellationsBox
+        <ConstellationsShowArtBox
           title={'Art'}
           icon={<PaintBrushIcon size={IconSize.md} />}
-          identifier={'ImageConstellation-Ori'}
-          onAction={'os.constellation_art.ShowArt'}
-          offAction={'os.constellation_art.HideArt'}
         />
-        <NightSkyConstellationsBox
+        <ConstellationsShowLabelsBox
           title={'Labels'}
           icon={<AbcIcon size={IconSize.md} />}
-          identifier={'Scene.Constellations.Renderable.Labels'}
-          onAction={'os.nightsky.FadeInConstellationLabels'}
-          offAction={'os.nightsky.FadeOutConstellationLabels'}
         />
       </SimpleGrid>
 
@@ -139,17 +132,17 @@ export function MarkingsTab() {
         Cardinal Directions
       </Title>
       <SimpleGrid cols={4} spacing={'sm'}>
-        <NightSkyCardinalDirectionsBox
+        <CardinalDirectionsBox
           variant={'small'}
           title={'Small'}
           icon={<CompassSmallIcon size={IconSize.md} />}
         />
-        <NightSkyCardinalDirectionsBox
+        <CardinalDirectionsBox
           variant={'large'}
           title={'Large'}
           icon={<CompassLargeIcon size={IconSize.md} />}
         />
-        <NightSkyCardinalDirectionsBox
+        <CardinalDirectionsBox
           variant={'marks'}
           title={'Marks'}
           icon={<CompassMarksIcon size={IconSize.md} />}

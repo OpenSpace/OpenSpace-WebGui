@@ -1,4 +1,4 @@
-import { Checkbox, Skeleton } from '@mantine/core';
+import { Checkbox } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
@@ -6,7 +6,7 @@ import { usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 
 import { CardinalDirectionBoxVariant } from '../../types';
 
-import { ToggleCard } from './ToggleCard';
+import { MarkingBoxLayout } from './MarkingBoxLayout';
 
 interface Props {
   variant: CardinalDirectionBoxVariant;
@@ -14,7 +14,11 @@ interface Props {
   icon: React.JSX.Element;
 }
 
-export function NightSkyCardinalDirectionsBox({ variant, title, icon }: Props) {
+// @TODO (2025-05-19, emmbr) This component needs logic for checking if the used actions
+// exist. However, for this we need to be able to access the actions state using the
+// identifier of the action, so loaving for now
+
+export function CardinalDirectionsBox({ variant, title, icon }: Props) {
   const luaApi = useOpenSpaceApi();
 
   const { isVisible } = usePropertyOwnerVisibility(
@@ -31,20 +35,20 @@ export function NightSkyCardinalDirectionsBox({ variant, title, icon }: Props) {
   // file names, are fragile agains file name changes. Consider more robust solution
   const variantData = {
     small: {
-      enableAction: 'os.nightsky.ShowNeswLettersSmall',
-      disableAction: 'os.nightsky.HideNesw',
+      showAction: 'os.nightsky.ShowNeswLettersSmall',
+      hideAction: 'os.nightsky.HideNesw',
       textureCheck: 'red_small.png',
       label: 'Show small cardinal directions'
     },
     large: {
-      enableAction: 'os.nightsky.ShowNeswLetters',
-      disableAction: 'os.nightsky.HideNesw',
+      showAction: 'os.nightsky.ShowNeswLetters',
+      hideAction: 'os.nightsky.HideNesw',
       textureCheck: 'red.png',
       label: 'Show large cardinal directions'
     },
     marks: {
-      enableAction: 'os.nightsky.AddNeswBandMarks',
-      disableAction: 'os.nightsky.RemoveNeswBandMarks',
+      showAction: 'os.nightsky.AddNeswBandMarks',
+      hideAction: 'os.nightsky.RemoveNeswBandMarks',
       textureCheck: '_lines_',
       label: 'Show marks on cardinal directions'
     }
@@ -70,25 +74,24 @@ export function NightSkyCardinalDirectionsBox({ variant, title, icon }: Props) {
 
   function checkboxChange(checked: boolean) {
     if (checked) {
-      luaApi?.action.triggerAction(data.enableAction);
+      luaApi?.action.triggerAction(data.showAction);
     } else {
-      luaApi?.action.triggerAction(data.disableAction);
+      luaApi?.action.triggerAction(data.hideAction);
     }
   }
 
   return (
-    <Skeleton visible={!hasLoaded}>
-      <ToggleCard
-        checkbox={
-          <Checkbox
-            onChange={(event) => checkboxChange(event.currentTarget.checked)}
-            checked={isChecked()}
-            aria-label={data.label}
-          />
-        }
-        title={title}
-        icon={icon}
-      />
-    </Skeleton>
+    <MarkingBoxLayout
+      checkbox={
+        <Checkbox
+          onChange={(event) => checkboxChange(event.currentTarget.checked)}
+          checked={isChecked()}
+          aria-label={data.label}
+        />
+      }
+      title={title}
+      icon={icon}
+      isLoading={!hasLoaded}
+    />
   );
 }
