@@ -1,4 +1,4 @@
-import { Checkbox } from '@mantine/core';
+import { Checkbox, Skeleton } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
@@ -25,21 +25,28 @@ export function NightSkyCardinalDirectionsBox({ variant, title, icon }: Props) {
     'Scene.CardinalDirectionSphere.Renderable.Texture'
   );
 
+  const hasLoaded = isVisible !== undefined && texture !== undefined;
+
+  // @TODO (2025-05-19, emmbr) These checks, expesially against the parts of the texture
+  // file names, are fragile agains file name changes. Consider more robust solution
   const variantData = {
     small: {
       enableAction: 'os.nightsky.ShowNeswLettersSmall',
       disableAction: 'os.nightsky.HideNesw',
-      textureCheckString: 'red_small.png'
+      textureCheck: 'red_small.png',
+      label: 'Show small cardinal directions'
     },
     large: {
       enableAction: 'os.nightsky.ShowNeswLetters',
       disableAction: 'os.nightsky.HideNesw',
-      textureCheckString: 'red.png'
+      textureCheck: 'red.png',
+      label: 'Show large cardinal directions'
     },
     marks: {
       enableAction: 'os.nightsky.AddNeswBandMarks',
       disableAction: 'os.nightsky.RemoveNeswBandMarks',
-      textureCheckString: '_lines_'
+      textureCheck: '_lines_',
+      label: 'Show marks on cardinal directions'
     }
   };
 
@@ -49,7 +56,7 @@ export function NightSkyCardinalDirectionsBox({ variant, title, icon }: Props) {
   }
 
   function isTextureForVariantEnabled(): boolean | undefined {
-    return texture ? texture.indexOf(data.textureCheckString) > -1 : false;
+    return texture ? texture.indexOf(data.textureCheck) > -1 : false;
   }
 
   function isChecked(): boolean {
@@ -70,15 +77,18 @@ export function NightSkyCardinalDirectionsBox({ variant, title, icon }: Props) {
   }
 
   return (
-    <ToggleCard
-      checkbox={
-        <Checkbox
-          onChange={(event) => checkboxChange(event.currentTarget.checked)}
-          checked={isChecked()}
-        />
-      }
-      title={title}
-      icon={icon}
-    />
+    <Skeleton visible={!hasLoaded}>
+      <ToggleCard
+        checkbox={
+          <Checkbox
+            onChange={(event) => checkboxChange(event.currentTarget.checked)}
+            checked={isChecked()}
+            aria-label={data.label}
+          />
+        }
+        title={title}
+        icon={icon}
+      />
+    </Skeleton>
   );
 }
