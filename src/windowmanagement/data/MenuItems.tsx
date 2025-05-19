@@ -201,7 +201,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     content: <NightSkyPanel />,
     renderIcon: (size) => <NightSkyIcon size={size} />,
     preferredPosition: 'right',
-    defaultVisible: true
+    defaultVisible: false
   },
   gettingStartedTour: {
     title: 'Getting Started Tour',
