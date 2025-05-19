@@ -5,6 +5,10 @@ import { BoolInput } from '@/components/Input/BoolInput';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { useProperty } from '@/hooks/properties';
 
+// @TODO (2025-05-19, emmbr) This component needs logic for checking if the used actions
+// exist. However, for this we need to be able to access the actions state using the
+// identifier of the action, so loaving for now
+
 export function StarsTab() {
   const luaApi = useOpenSpaceApi();
 

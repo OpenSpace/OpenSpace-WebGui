@@ -50,31 +50,29 @@ export function SunTab() {
           Hide Glare
         </Button>
       </Group>
+      <Title order={2} mt={'md'} mb={'sm'}>
+        Size
+      </Title>
       {angularSize !== undefined ? (
-        <>
-          <Title order={2} mt={'md'}>
-            Size
-          </Title>
-          <Group mt={'sm'} gap={'xs'}>
-            <Button onClick={() => setAngularSize(0.3)}>Default Angular Size</Button>
-            <Button onClick={() => setAngularSize(0.6)}>Large Angular Size</Button>
-            <Button onClick={() => setAngularSize(0.8)}>Extra Large Angular Size</Button>
-            <ActionIcon
-              onClick={() => setAngularSize(angularSize + 0.1)}
-              size={'lg'}
-              aria-label={'Increase angular size'}
-            >
-              <PlusIcon />
-            </ActionIcon>
-            <ActionIcon
-              onClick={() => setAngularSize(angularSize - 0.1)}
-              size={'lg'}
-              aria-label={'Decrease angular size'}
-            >
-              <MinusIcon />
-            </ActionIcon>
-          </Group>
-        </>
+        <Group gap={'xs'}>
+          <Button onClick={() => setAngularSize(0.3)}>Default Angular Size</Button>
+          <Button onClick={() => setAngularSize(0.6)}>Large Angular Size</Button>
+          <Button onClick={() => setAngularSize(0.8)}>Extra Large Angular Size</Button>
+          <ActionIcon
+            onClick={() => setAngularSize(angularSize + 0.1)}
+            size={'lg'}
+            aria-label={'Increase angular size'}
+          >
+            <PlusIcon />
+          </ActionIcon>
+          <ActionIcon
+            onClick={() => setAngularSize(angularSize - 0.1)}
+            size={'lg'}
+            aria-label={'Decrease angular size'}
+          >
+            <MinusIcon />
+          </ActionIcon>
+        </Group>
       ) : (
         <>
           <Text>Could not find Sun Angular Size settings</Text>

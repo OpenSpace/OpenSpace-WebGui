@@ -7,6 +7,10 @@ import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
 
+// @TODO (2025-05-19, emmbr) This component needs logic for checking if the used actions
+// exist. However, for this we need to be able to access the actions state using the
+// identifier of the action, so loaving for now
+
 export function TimeTab() {
   const [lastLat, setLastLat] = useState<number>(0);
   const [lastLong, setLastong] = useState<number>(0);

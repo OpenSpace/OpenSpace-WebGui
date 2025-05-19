@@ -1,9 +1,13 @@
-import { ActionIcon, Button, Group, Text, Title } from '@mantine/core';
+import { ActionIcon, Box, Button, Group, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { BoolInput } from '@/components/Input/BoolInput';
 import { useProperty } from '@/hooks/properties';
 import { MinusIcon, PlusIcon } from '@/icons/icons';
+
+// @TODO (2025-05-19, emmbr) This component needs logic for checking if the used actions
+// exist. However, for this we need to be able to access the actions state using the
+// identifier of the action, so loaving for now
 
 export function SolarSystemTab() {
   const luaApi = useOpenSpaceApi();
@@ -23,8 +27,10 @@ export function SolarSystemTab() {
 
   return (
     <>
-      <Title order={2}>Trails</Title>
-      <Group mt={'sm'} gap={'xs'}>
+      <Title order={2} mb={'sm'}>
+        Trails
+      </Title>
+      <Group gap={'xs'}>
         <Button onClick={() => action('os.FadeDownTrails')}>Hide ALL Trails</Button>
         <Button
           onClick={() => {
@@ -36,10 +42,10 @@ export function SolarSystemTab() {
         </Button>
       </Group>
 
-      <Title order={2} mt={'md'}>
+      <Title order={2} mt={'md'} mb={'sm'}>
         Labels
       </Title>
-      <Group mt={'sm'} gap={'xs'}>
+      <Group gap={'xs'}>
         <Button onClick={() => luaApi?.fadeIn('{solarsystem_labels}.Renderable')}>
           Show Labels
         </Button>
@@ -48,10 +54,10 @@ export function SolarSystemTab() {
         </Button>
       </Group>
 
-      <Title order={2} mt={'md'}>
+      <Title order={2} mt={'md'} mb={'sm'}>
         Planets
       </Title>
-      <Group mt={'sm'} gap={'xs'}>
+      <Group gap={'xs'}>
         <Button onClick={() => action('os.nightsky.ShowNightSkyPlanets')}>
           Show Night Sky Planets
         </Button>
@@ -60,48 +66,47 @@ export function SolarSystemTab() {
         </Button>
       </Group>
 
-      <Title order={2} mt={'md'}>
+      <Title order={2} mt={'md'} mb={'sm'}>
         Moon
       </Title>
-      <Group mt={'sm'} gap={'xs'}>
-        {moonScale !== undefined ? (
-          <>
-            <Button onClick={() => setMoonScale(1.0)}>Default Scale Moon (1x)</Button>
-            <Button onClick={() => setMoonScale(2.0)}>Enlarge Moon (2x)</Button>
-            <Button onClick={() => setMoonScale(4.0)}>Enlarge Moon (4x)</Button>
-            <ActionIcon
-              onClick={() => setMoonScale(moonScale + 0.5)}
-              size={'lg'}
-              aria-label={'Increase moon scale'}
-            >
-              <PlusIcon />
-            </ActionIcon>
-            <ActionIcon
-              onClick={() => setMoonScale(moonScale - 0.5)}
-              size={'lg'}
-              aria-label={'Deacrease moon scale'}
-            >
-              <MinusIcon />
-            </ActionIcon>
-          </>
-        ) : (
-          <Text>Could not find Moon scale settings</Text>
-        )}
+      {moonScale !== undefined ? (
+        <Group gap={'xs'}>
+          <Button onClick={() => setMoonScale(1.0)}>Default Scale Moon (1x)</Button>
+          <Button onClick={() => setMoonScale(2.0)}>Enlarge Moon (2x)</Button>
+          <Button onClick={() => setMoonScale(4.0)}>Enlarge Moon (4x)</Button>
+          <ActionIcon
+            onClick={() => setMoonScale(moonScale + 0.5)}
+            size={'lg'}
+            aria-label={'Increase moon scale'}
+          >
+            <PlusIcon />
+          </ActionIcon>
+          <ActionIcon
+            onClick={() => setMoonScale(moonScale - 0.5)}
+            size={'lg'}
+            aria-label={'Deacrease moon scale'}
+          >
+            <MinusIcon />
+          </ActionIcon>
+        </Group>
+      ) : (
+        <Text>Could not find Moon scale settings</Text>
+      )}
+
+      <Box mt={'md'}>
         {performShading !== undefined ? (
-          <>
-            <BoolInput
-              label={'Show Phase'}
-              info={
-                'Uncheck this to show the full moon always. This is equivalent to the "Perform Shading" property on the Moon.'
-              }
-              value={performShading || false}
-              onChange={setPerformShading}
-            />
-          </>
+          <BoolInput
+            label={'Show Phase'}
+            info={
+              'Uncheck this to show the full moon always. This is equivalent to the "Perform Shading" property on the Moon.'
+            }
+            value={performShading || false}
+            onChange={setPerformShading}
+          />
         ) : (
           <Text>Could not find Moon Perform Shading settings</Text>
         )}
-      </Group>
+      </Box>
     </>
   );
 }
