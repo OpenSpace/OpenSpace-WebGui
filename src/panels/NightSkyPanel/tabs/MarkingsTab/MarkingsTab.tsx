@@ -15,9 +15,9 @@ import {
 } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
-import { NightSkyCardinalDirectionsBox } from '../components/NightSkyCardinalDirectionsBox';
-import { NightSkyConstellationsBox } from '../components/NightSkyConstellationsBox';
-import { NightSkyMarkingBox } from '../components/NightSkyMarkingBox';
+import { NightSkyCardinalDirectionsBox } from './NightSkyCardinalDirectionsBox';
+import { NightSkyConstellationsBox } from './NightSkyConstellationsBox';
+import { NightSkyMarkingBox } from './NightSkyMarkingBox';
 
 export function MarkingsTab() {
   const openspace = useOpenSpaceApi();

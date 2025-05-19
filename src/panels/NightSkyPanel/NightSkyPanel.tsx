@@ -1,7 +1,7 @@
 import { Box, Tabs } from '@mantine/core';
 
 import { LocationTab } from './tabs/LocationTab';
-import { MarkingsTab } from './tabs/MarkingsTab';
+import { MarkingsTab } from './tabs/MarkingsTab/MarkingsTab';
 import { SolarSystemTab } from './tabs/SolarSystemTab';
 import { StarsTab } from './tabs/StarsTab';
 import { SunTab } from './tabs/SunTab';

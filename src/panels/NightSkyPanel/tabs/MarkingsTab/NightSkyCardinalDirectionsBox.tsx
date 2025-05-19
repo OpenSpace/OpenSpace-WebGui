@@ -4,7 +4,7 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 
-import { CardinalDirectionBoxVariant } from '../types';
+import { CardinalDirectionBoxVariant } from '../../types';
 
 import { ToggleCard } from './ToggleCard';
 
