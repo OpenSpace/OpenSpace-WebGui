@@ -41,8 +41,10 @@ export function SunTab() {
 
   return (
     <>
-      <Title order={2}>Glare</Title>
-      <Group gap={'xs'} mt={'sm'}>
+      <Title order={2} mb={'xs'}>
+        Glare
+      </Title>
+      <Group gap={'xs'}>
         <Button onClick={() => openspace?.fadeIn('Scene.SunGlare.Renderable')}>
           Show Glare
         </Button>
@@ -50,7 +52,7 @@ export function SunTab() {
           Hide Glare
         </Button>
       </Group>
-      <Title order={2} mt={'md'} mb={'sm'}>
+      <Title order={2} mt={'md'} mb={'xs'}>
         Size
       </Title>
       {angularSize !== undefined ? (
@@ -79,9 +81,11 @@ export function SunTab() {
         </>
       )}
 
-      <Divider my={'md'} />
-      <Title order={2}>Trails</Title>
-      <Group mt={'sm'} gap={'xs'}>
+      <Divider my={'sm'} />
+      <Title order={2} mb={'xs'}>
+        Trails
+      </Title>
+      <Group gap={'xs'}>
         <Button onClick={() => addTrail('NOW')} leftSection={<PlusIcon />}>
           Add Trail for Simulation Date
         </Button>
@@ -97,7 +101,7 @@ export function SunTab() {
         placeholder={'01/01/2001'}
         value={trailDate}
         onChange={setTrailDate}
-        mt={'md'}
+        mt={'sm'}
       />
       <Button
         disabled={trailDate === null}

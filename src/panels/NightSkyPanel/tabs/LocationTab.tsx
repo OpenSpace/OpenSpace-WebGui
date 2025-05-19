@@ -84,25 +84,25 @@ export function LocationTab() {
       </Transition>
 
       <Divider my={'xs'} mt={5} />
-      <Group>
-        <Title order={2}>Jump to Position</Title>
-        <Group gap={'xs'}>
-          <Button
-            onClick={() => luaApi?.action.triggerAction('os.nightsky.position.NorthPole')}
-          >
-            North Pole
-          </Button>
-          <Button
-            onClick={() => luaApi?.action.triggerAction('os.nightsky.position.Equator')}
-          >
-            Equator
-          </Button>
-          <Button
-            onClick={() => luaApi?.action.triggerAction('os.nightsky.position.SouthPole')}
-          >
-            South Pole
-          </Button>
-        </Group>
+      <Title order={2} mb={'xs'}>
+        Jump to Position
+      </Title>
+      <Group gap={'xs'}>
+        <Button
+          onClick={() => luaApi?.action.triggerAction('os.nightsky.position.NorthPole')}
+        >
+          North Pole
+        </Button>
+        <Button
+          onClick={() => luaApi?.action.triggerAction('os.nightsky.position.Equator')}
+        >
+          Equator
+        </Button>
+        <Button
+          onClick={() => luaApi?.action.triggerAction('os.nightsky.position.SouthPole')}
+        >
+          South Pole
+        </Button>
       </Group>
       <Paper p={'sm'} my={'md'}>
         <Text>
@@ -112,16 +112,20 @@ export function LocationTab() {
       </Paper>
       <Divider my={'xs'} />
 
-      <Title order={2}>Direction</Title>
-      <Group my={'md'} gap={'xs'}>
+      <Title order={2} mt={'xs'} mb={'xs'}>
+        Direction
+      </Title>
+      <Group gap={'xs'}>
         <Button onClick={() => look('North')}>Look North</Button>
         <Button onClick={() => look('East')}>Look East</Button>
         <Button onClick={() => look('South')}>Look South</Button>
         <Button onClick={() => look('West')}>Look West</Button>
       </Group>
-      <Title order={2}>Horizon</Title>
+      <Title order={2} mt={'sm'} mb={'xs'}>
+        Horizon
+      </Title>
 
-      <Group my={'md'} gap={'xs'}>
+      <Group gap={'xs'}>
         <Button
           onClick={() => luaApi?.action.triggerAction('os.nightsky.LevelHorizonPitch')}
         >

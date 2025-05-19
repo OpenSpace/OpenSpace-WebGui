@@ -27,7 +27,7 @@ export function SolarSystemTab() {
 
   return (
     <>
-      <Title order={2} mb={'sm'}>
+      <Title order={2} mb={'xs'}>
         Trails
       </Title>
       <Group gap={'xs'}>
@@ -42,7 +42,7 @@ export function SolarSystemTab() {
         </Button>
       </Group>
 
-      <Title order={2} mt={'md'} mb={'sm'}>
+      <Title order={2} mt={'md'} mb={'xs'}>
         Labels
       </Title>
       <Group gap={'xs'}>
@@ -54,7 +54,7 @@ export function SolarSystemTab() {
         </Button>
       </Group>
 
-      <Title order={2} mt={'md'} mb={'sm'}>
+      <Title order={2} mt={'md'} mb={'xs'}>
         Planets
       </Title>
       <Group gap={'xs'}>
@@ -66,7 +66,7 @@ export function SolarSystemTab() {
         </Button>
       </Group>
 
-      <Title order={2} mt={'md'} mb={'sm'}>
+      <Title order={2} mt={'md'} mb={'xs'}>
         Moon
       </Title>
       {moonScale !== undefined ? (
