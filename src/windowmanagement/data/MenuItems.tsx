@@ -196,7 +196,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     defaultVisible: false
   },
   nightSky: {
-    title: 'NightSky',
+    title: 'Night Sky',
     componentID: 'nightSky',
     content: <NightSkyPanel />,
     renderIcon: (size) => <NightSkyIcon size={size} />,
