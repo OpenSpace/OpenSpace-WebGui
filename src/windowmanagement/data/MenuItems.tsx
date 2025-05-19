@@ -11,6 +11,7 @@ import {
   InsertPhotoIcon,
   KeyboardIcon,
   LocationPinIcon,
+  NightSkyIcon,
   RocketLaunchIcon,
   RouteIcon,
   SceneIcon,
@@ -37,6 +38,7 @@ import {
   KeybindsPanel,
   MissionsPanel,
   NavigationPanel,
+  NightSkyPanel,
   Scene,
   ScreenSpaceRenderablePanel,
   ScriptLogPanel,
@@ -191,6 +193,14 @@ export const menuItemsData: Record<string, MenuItem> = {
     renderIcon: (size) => <KeyboardIcon size={size} />,
     preferredPosition: 'float',
     floatPosition: { offsetY: 150, offsetX: 350, width: 1100, height: 680 },
+    defaultVisible: false
+  },
+  nightSky: {
+    title: 'Night Sky',
+    componentID: 'nightSky',
+    content: <NightSkyPanel />,
+    renderIcon: (size) => <NightSkyIcon size={size} />,
+    preferredPosition: 'right',
     defaultVisible: false
   },
   gettingStartedTour: {

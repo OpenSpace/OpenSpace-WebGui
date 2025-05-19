@@ -26,6 +26,11 @@ export const KeybindsPanel = lazy(() =>
     default: module.KeybindsPanel
   }))
 );
+export const NightSkyPanel = lazy(() =>
+  import('@/panels/NightSkyPanel/NightSkyPanel').then((module) => ({
+    default: module.NightSkyPanel
+  }))
+);
 export const MissionsPanel = lazy(() =>
   import('@/panels/MissionsPanel/MissionsPanel').then((module) => ({
     default: module.MissionsPanel
