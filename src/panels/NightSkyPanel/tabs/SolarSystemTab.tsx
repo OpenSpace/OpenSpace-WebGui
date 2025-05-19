@@ -5,7 +5,7 @@ import { BoolInput } from '@/components/Input/BoolInput';
 import { useProperty } from '@/hooks/properties';
 import { MinusIcon, PlusIcon } from '@/icons/icons';
 
-export function NightSkySolarSystemTab() {
+export function SolarSystemTab() {
   const luaApi = useOpenSpaceApi();
 
   const [performShading, setPerformShading] = useProperty(

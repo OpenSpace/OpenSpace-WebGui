@@ -19,7 +19,7 @@ import { NightSkyCardinalDirectionsBox } from '../components/NightSkyCardinalDir
 import { NightSkyConstellationsBox } from '../components/NightSkyConstellationsBox';
 import { NightSkyMarkingBox } from '../components/NightSkyMarkingBox';
 
-export function NightSkyMarkingsTab() {
+export function MarkingsTab() {
   const openspace = useOpenSpaceApi();
 
   return (

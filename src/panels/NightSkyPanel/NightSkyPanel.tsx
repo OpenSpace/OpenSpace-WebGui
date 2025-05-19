@@ -1,11 +1,11 @@
 import { Box, Tabs } from '@mantine/core';
 
-import { NightSkyLocationTab } from './tabs/NightSkyLocationTab';
-import { NightSkyMarkingsTab } from './tabs/NightSkyMarkingsTab';
-import { NightSkySolarSystemTab } from './tabs/NightSkySolarSystemTab';
-import { NightSkyStarsTab } from './tabs/NightSkyStarsTab';
-import { NightSkySunTab } from './tabs/NightSkySunTab';
-import { NightSkyTimeTab } from './tabs/NightSkyTimeTab';
+import { LocationTab } from './tabs/LocationTab';
+import { MarkingsTab } from './tabs/MarkingsTab';
+import { SolarSystemTab } from './tabs/SolarSystemTab';
+import { StarsTab } from './tabs/StarsTab';
+import { SunTab } from './tabs/SunTab';
+import { TimeTab } from './tabs/TimeTab';
 
 export function NightSkyPanel() {
   return (
@@ -21,22 +21,22 @@ export function NightSkyPanel() {
 
       <Box p={'xs'}>
         <Tabs.Panel value={'markings'}>
-          <NightSkyMarkingsTab />
+          <MarkingsTab />
         </Tabs.Panel>
         <Tabs.Panel value={'location'}>
-          <NightSkyLocationTab />
+          <LocationTab />
         </Tabs.Panel>
         <Tabs.Panel value={'stars'}>
-          <NightSkyStarsTab />
+          <StarsTab />
         </Tabs.Panel>
         <Tabs.Panel value={'time'}>
-          <NightSkyTimeTab />
+          <TimeTab />
         </Tabs.Panel>
         <Tabs.Panel value={'solarsystem'}>
-          <NightSkySolarSystemTab />
+          <SolarSystemTab />
         </Tabs.Panel>
         <Tabs.Panel value={'sun'}>
-          <NightSkySunTab />
+          <SunTab />
         </Tabs.Panel>
       </Box>
     </Tabs>

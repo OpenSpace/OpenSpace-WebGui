@@ -17,7 +17,7 @@ import { useAppSelector } from '@/redux/hooks';
 
 import { LookDirection } from '../types';
 
-export function NightSkyLocationTab() {
+export function LocationTab() {
   const luaApi = useOpenSpaceApi();
   useSubscribeToCamera();
 

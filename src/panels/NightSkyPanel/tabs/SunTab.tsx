@@ -19,7 +19,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';
 import { sgnUri } from '@/util/propertyTreeHelpers';
 
-export function NightSkySunTab() {
+export function SunTab() {
   const [trailDate, setTrailDate] = useState<Date | null>(null);
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
 

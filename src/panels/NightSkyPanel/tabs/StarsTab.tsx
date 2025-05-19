@@ -5,7 +5,7 @@ import { BoolInput } from '@/components/Input/BoolInput';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { useProperty } from '@/hooks/properties';
 
-export function NightSkyStarsTab() {
+export function StarsTab() {
   const luaApi = useOpenSpaceApi();
 
   const [starsDimInAtm, setStarsDimInAtm] = useProperty(

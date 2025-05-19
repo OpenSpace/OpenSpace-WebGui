@@ -7,7 +7,7 @@ import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
 
-export function NightSkyTimeTab() {
+export function TimeTab() {
   const [lastLat, setLastLat] = useState<number>(0);
   const [lastLong, setLastong] = useState<number>(0);
   const [localArea, setLocalArea] = useState<string>('UTC');
