@@ -8,7 +8,7 @@ import { EyeIcon, EyeOffIcon, MinusIcon, PlusIcon } from '@/icons/icons';
 
 // @TODO (2025-05-19, emmbr) This component needs logic for checking if the used actions
 // exist. However, for this we need to be able to access the actions state using the
-// identifier of the action, so loaving for now
+// identifier of the action, so leaving for now
 
 export function SolarSystemTab() {
   const luaApi = useOpenSpaceApi();

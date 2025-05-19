@@ -16,7 +16,7 @@ interface Props {
 
 // @TODO (2025-05-19, emmbr) This component needs logic for checking if the used actions
 // exist. However, for this we need to be able to access the actions state using the
-// identifier of the action, so loaving for now
+// identifier of the action, so leaving for now
 
 export function CardinalDirectionsBox({ variant, title, icon }: Props) {
   const luaApi = useOpenSpaceApi();
@@ -56,20 +56,18 @@ export function CardinalDirectionsBox({ variant, title, icon }: Props) {
 
   const data = variantData[variant];
   if (!data) {
-    throw new Error('Invalid variant');
+    throw new Error(`Invalid variant '${variant}'`);
   }
 
-  function isTextureForVariantEnabled(): boolean | undefined {
-    return texture ? texture.indexOf(data.textureCheck) > -1 : false;
+  function isTextureForVariantEnabled(): boolean {
+    return texture ? texture.includes(data.textureCheck) : false;
   }
 
   function isChecked(): boolean {
     if (!isVisible) {
       return false;
-    } else if (isTextureForVariantEnabled()) {
-      return true;
-    }
-    return false;
+    } 
+    return isTextureForVariantEnabled();
   }
 
   function checkboxChange(checked: boolean) {

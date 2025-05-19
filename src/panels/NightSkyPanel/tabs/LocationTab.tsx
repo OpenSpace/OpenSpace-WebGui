@@ -23,7 +23,7 @@ import { LookDirection } from '../types';
 
 // @TODO (2025-05-19, emmbr) This component needs logic for checking if the used actions
 // exist. However, for this we need to be able to access the actions state using the
-// identifier of the action, so loaving for now
+// identifier of the action, so leaving for now
 
 export function LocationTab() {
   const {
@@ -39,15 +39,15 @@ export function LocationTab() {
 
   function dotPosition(): { x: number; y: number } {
     if (currentLong !== undefined && currentLat !== undefined) {
-      //here we are getting the percentage of the map on where to show the marker
-      //for example, lat, long of 0,0 winds up with a map position of x: 0.5 and y:0.5
+      // Here we are getting the percentage of the map on where to show the marker
+      // for example, lat, long of 0,0 winds up with a map position of x: 0.5 and y: 0.5
       return { x: ((currentLong + 180) / 360) * 100, y: ((90 - currentLat) / 180) * 100 };
     }
     return { x: 0, y: 0 };
   }
 
   function look(direction: LookDirection): void {
-    luaApi?.action.triggerAction('os.nightsky.Looking' + direction);
+    luaApi?.action.triggerAction(`os.nightsky.Looking'${direction}`);
   }
 
   if (!luaApi) {
