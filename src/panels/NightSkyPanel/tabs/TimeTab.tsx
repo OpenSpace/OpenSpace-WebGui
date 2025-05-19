@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Alert, Button, Divider, Group, Stack, Text, Title } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { Alert, Button, Divider, Group, Text, Title } from '@mantine/core';
 import * as GeoTZ from 'browser-geo-tz';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
+import { PlusMinusActionGroup } from '@/components/PlusMinusActionGroup/PlusMinusActionGroup';
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
@@ -24,7 +25,7 @@ export function TimeTab() {
   const luaApi = useOpenSpaceApi();
   const timeCapped = useSubscribeToTime();
 
-  const date = useMemo(() => new Date(timeCapped ?? ''), [timeCapped]);
+  const date = new Date(timeCapped ?? '');
   const isValidDate = isDateValid(date);
 
   useEffect(() => {
@@ -87,97 +88,92 @@ export function TimeTab() {
       <Text mb={'lg'}>Timezone: {localArea}</Text>
       <Text my={'md'}>UTC: {isValidDate ? date.toUTCString() : 'Date out of range'}</Text>
       <Divider />
-      <Title order={3} my={'xs'}>
+      <Title order={3} mt={'sm'} mb={'xs'}>
         Jumps
       </Title>
-      <Stack>
-        <Group gap={'lg'}>
-          <Group gap={'xs'}>
-            <Button
-              onClick={() => luaApi.action.triggerAction('os.time.siderealDayIncrease')}
-            >
-              + Sidereal day
-            </Button>
-            <Button
-              onClick={() => luaApi.action.triggerAction('os.time.siderealDayDecrease')}
-            >
-              - Sidereal day
-            </Button>
-            <Button
-              onClick={() => luaApi.action.triggerAction('os.time.siderealWeekIncrease')}
-            >
-              + Sidereal week
-            </Button>
-            <Button
-              onClick={() => luaApi.action.triggerAction('os.time.siderealWeekDecrease')}
-            >
-              - Sidereal week
-            </Button>
-          </Group>
-          <Group gap={'xs'}>
-            <Button
-              onClick={() => luaApi.action.triggerAction('os.time.SolarDayIncrease')}
-            >
-              + Solar day
-            </Button>
-            <Button
-              onClick={() => luaApi.action.triggerAction('os.time.SolarDayDecrease')}
-            >
-              - Solar day
-            </Button>
-            <Button
-              onClick={() => luaApi.action.triggerAction('os.time.SolarWeekIncrease')}
-            >
-              + Solar week
-            </Button>
-            <Button
-              onClick={() => luaApi.action.triggerAction('os.time.SolarWeekDecrease')}
-            >
-              - solar week
-            </Button>
-          </Group>
-        </Group>
-        <Divider />
-        <Title order={3}>Diurnal Motion</Title>
+      <Group gap={'lg'}>
         <Group gap={'xs'}>
-          <Button
-            onClick={() => {
-              luaApi.time.interpolatePause(false);
-              luaApi.time.interpolateDeltaTime(1);
-            }}
-          >
-            Realtime
-          </Button>
-          <Button
-            onClick={() => {
-              luaApi.time.interpolatePause(false);
-              luaApi.time.interpolateDeltaTime(60);
-            }}
-          >
-            60x (1 min/sec)
-          </Button>
-          <Button
-            onClick={() => {
-              luaApi.time.interpolatePause(false);
-              luaApi.time.interpolateDeltaTime(120);
-            }}
-          >
-            120x (2 min/sec)
-          </Button>
-          <Button
-            onClick={() => {
-              luaApi.time.interpolatePause(false);
-              luaApi.time.interpolateDeltaTime(300);
-            }}
-          >
-            300x (5 min/sec)
-          </Button>
+          <PlusMinusActionGroup
+            minusLabel={'Go back in time one sidereal day'}
+            plusLabel={'Go forward in time one sidereal day'}
+            centerLabel={'Sidereal Day'}
+            onClickMinus={() =>
+              luaApi.action.triggerAction('os.time.siderealDayDecrease')
+            }
+            onClickPlus={() => luaApi.action.triggerAction('os.time.siderealDayIncrease')}
+          />
 
-          <Button onClick={() => luaApi.time.togglePause()}>Play / Pause</Button>
+          <PlusMinusActionGroup
+            minusLabel={'Go back in time one sidereal week'}
+            plusLabel={'Go forward in time one sidereal week'}
+            centerLabel={'Sidereal Week'}
+            onClickMinus={() =>
+              luaApi.action.triggerAction('os.time.siderealWeekDecrease')
+            }
+            onClickPlus={() =>
+              luaApi.action.triggerAction('os.time.siderealWeekIncrease')
+            }
+          />
         </Group>
-      </Stack>
-      <Divider my={'xs'} />
-      <Alert title={'Note'}>
+        <Group gap={'xs'}>
+          <PlusMinusActionGroup
+            minusLabel={'Go back in time one solar day'}
+            plusLabel={'Go forward in time one solar day'}
+            centerLabel={'Solar Day'}
+            onClickMinus={() => luaApi.action.triggerAction('os.time.SolarDayDecrease')}
+            onClickPlus={() => luaApi.action.triggerAction('os.time.SolarDayIncrease')}
+          />
+
+          <PlusMinusActionGroup
+            minusLabel={'Go back in time one solar week'}
+            plusLabel={'Go forward in time one solar week'}
+            centerLabel={'Solar Week'}
+            onClickMinus={() => luaApi.action.triggerAction('os.time.SolarWeekDecrease')}
+            onClickPlus={() => luaApi.action.triggerAction('os.time.SolarWeekIncrease')}
+          />
+        </Group>
+      </Group>
+      <Divider mt={'sm'} />
+      <Title order={3} mt={'sm'} mb={'xs'}>
+        Diurnal Motion
+      </Title>
+      <Group gap={'xs'}>
+        <Button
+          onClick={() => {
+            luaApi.time.interpolatePause(false);
+            luaApi.time.interpolateDeltaTime(1);
+          }}
+        >
+          Realtime
+        </Button>
+        <Button
+          onClick={() => {
+            luaApi.time.interpolatePause(false);
+            luaApi.time.interpolateDeltaTime(60);
+          }}
+        >
+          60x (1 min/sec)
+        </Button>
+        <Button
+          onClick={() => {
+            luaApi.time.interpolatePause(false);
+            luaApi.time.interpolateDeltaTime(120);
+          }}
+        >
+          120x (2 min/sec)
+        </Button>
+        <Button
+          onClick={() => {
+            luaApi.time.interpolatePause(false);
+            luaApi.time.interpolateDeltaTime(300);
+          }}
+        >
+          300x (5 min/sec)
+        </Button>
+
+        <Button onClick={() => luaApi.time.togglePause()}>Play / Pause</Button>
+      </Group>
+      <Alert title={'Note'} mt={'md'}>
         <Text>
           Only some controls are found here. For more control over time, use the Time
           Panel.
