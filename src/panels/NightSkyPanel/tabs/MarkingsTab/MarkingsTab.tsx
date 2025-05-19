@@ -1,4 +1,4 @@
-import { Button, SimpleGrid, Title } from '@mantine/core';
+import { Box, Button, SimpleGrid, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
@@ -27,7 +27,7 @@ export function MarkingsTab() {
   const luaApi = useOpenSpaceApi();
 
   return (
-    <>
+    <Box maw={600}>
       {luaApi ? (
         <Button
           leftSection={<EyeOffIcon />}
@@ -154,6 +154,6 @@ export function MarkingsTab() {
           icon={<CompassMarksIcon size={IconSize.md} />}
         />
       </SimpleGrid>
-    </>
+    </Box>
   );
 }
