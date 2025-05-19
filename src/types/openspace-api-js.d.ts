@@ -233,6 +233,7 @@ export interface openspace {
   exoplanets: exoplanetsLibrary;
   gaia: gaiaLibrary;
   globebrowsing: globebrowsingLibrary;
+  iswa: iswaLibrary;
   keyframeRecording: keyframeRecordingLibrary;
   modules: modulesLibrary;
   navigation: navigationLibrary;
@@ -349,13 +350,9 @@ export interface openspace {
    */
   fileExists: (file: string) => Promise<boolean>
   /**
-   * Returns a list of property identifiers that match the passed regular expression
-   */
-  getProperty: (regex: string) => Promise<string[]>
-  /**
    * Returns the value the property, identified by the provided URI. Deprecated in favor of the 'propertyValue' function
    */
-  getPropertyValue: () => Promise<void>
+  getPropertyValue: (uri: string) => Promise<string | number | boolean | table>
   /**
    * Get a dictionary containing the current map with custom orderings for the Scene GUI tree. Each key in the dictionary corresponds to a branch in the tree, i.e. a specific GUI path.
    */
@@ -365,7 +362,9 @@ export interface openspace {
    */
   hasMission: (identifier: string) => Promise<boolean>
   /**
-   * Returns whether a property with the given URI exists
+   * Returns whether a property with the given URI exists. The `uri` identifies the property or properties that are checked by this function and can include both wildcards `*` which match anything, as well as tags (`{tag}`) which match scene graph nodes that have this tag. There is also the ability to combine two tags through the `&`, `|`, and `~` operators. `{tag1&tag2}` will match anything that has the tag1 and the tag2. `{tag1|tag2}` will match anything that has the tag1 or the tag 2, and `{tag1~tag2}` will match anything that has tag1 but not tag2. If no wildcards or tags are provided at most one property value will be changed. With wildcards or tags all properties that match the URI are changed instead.
+
+\\param uri The URI that identifies the property or properties whose values should be changed. The URI can contain 0 or 1 wildcard `*` characters or a tag expression (`{tag}`) that identifies a property owner.
    */
   hasProperty: (uri: string) => Promise<boolean>
   /**
@@ -452,13 +451,15 @@ export interface openspace {
    */
   printWarning: (...args: any[]) => Promise<void>
   /**
-   * Returns a list of property identifiers that match the passed regular expression
+   * Returns a list of property identifiers that match the passed regular expression. The `uri` identifies the property or properties that are returned by this function and can include both wildcards `*` which match anything, as well as tags (`{tag}`) which match scene graph nodes that have this tag. There is also the ability to combine two tags through the `&`, `|`, and `~` operators. `{tag1&tag2}` will match anything that has the tag1 and the tag2. `{tag1|tag2}` will match anything that has the tag1 or the tag 2, and `{tag1~tag2}` will match anything that has tag1 but not tag2. If no wildcards or tags are provided at most one property value will be changed. With wildcards or tags all properties that match the URI are changed instead.
+
+\\param uri The URI that identifies the property or properties whose values should be changed. The URI can contain 0 or 1 wildcard `*` characters or a tag expression (`{tag}`) that identifies a property owner.
    */
-  property: (regex: string) => Promise<string[]>
+  property: (uri: string) => Promise<string[]>
   /**
-   * Returns the value the property, identified by the provided URI. Deprecated in favor of the 'propertyValue' function
+   * Returns the value of the property identified by the provided URI. This function will provide an error message if no property matching the URI is found.
    */
-  propertyValue: (uri: string) => Promise<unknown>
+  propertyValue: (uri: string) => Promise<string | number | boolean | table>
   /**
    * Returns the number of bytes of system memory that is currently being used. This function only works on Windows.
    */
@@ -504,7 +505,7 @@ export interface openspace {
   /**
    * Removes all SceneGraphNodes with identifiers matching the input regular expression.
    */
-  removeSceneGraphNodesFromRegex: (name: string) => Promise<void>
+  removeSceneGraphNodesFromRegex: (regex: string) => Promise<void>
   /**
    * Given a ScreenSpaceRenderable name this script will remove it from the RenderEngine. The parameter can also be a table in which case the 'Identifier' key is used to look up the name from the table.
    */
@@ -566,15 +567,81 @@ export interface openspace {
    */
   setPathToken: (pathToken: string, path: path) => Promise<void>
   /**
-   * Sets all property(s) identified by the URI (with potential wildcards) in the first argument. The second argument can be any type, but it has to match the type that the property (or properties) expect. If the third is not present or is '0', the value changes instantly, otherwise the change will take that many seconds and the value is interpolated at each step in between. The fourth parameter is an optional easing function if a 'duration' has been specified. If 'duration' is 0, this parameter value is ignored. Otherwise, it can be one of many supported easing functions. See easing.h for available functions. The fifth argument is another Lua script that will be executed when the interpolation provided in parameter 3 finishes.
-The URI is interpreted using a wildcard in which '*' is expanded to '(.*)' and bracketed components '{ }' are interpreted as group tag names. Then, the passed value will be set on all properties that fit the regex + group name combination.
+   * Sets the property or properties identified by the URI to the specified
+value. The `uri` identifies which property or properties are affected by this function
+call and can include both wildcards `*` which match anything, as well as tags (`{tag}`)
+which match scene graph nodes that have this tag. There is also the ability to combine two
+tags through the `&`, `|`, and `~` operators. `{tag1&tag2}` will match anything that has
+the tag1 and the tag2. `{tag1|tag2}` will match anything that has the tag1 or the tag 2,
+and `{tag1~tag2}` will match anything that has tag1 but not tag2. If no wildcards or tags
+are provided at most one property value will be changed. With wildcards or tags all
+properties that match the URI are changed instead. The second argument's type must match
+the type of the property or properties or an error is raised. If a duration is provided,
+the requested change will occur over the provided number of seconds. If no duration is
+provided or the duration is 0, the change occurs instantaneously.
+
+For example `openspace.setPropertyValue("*Trail.Renderable.Enabled", true)` will enable
+any property that ends with "Trail.Renderable.Enabled", for example
+"StarTrail.Renderable.Enabled", "EarthTrail.Renderable.Enabled", but not
+"EarthTrail.Renderable.Size".
+
+`openspace.setPropertyValue("{tag1}.Renderable.Enabled", true)` will enable any node in
+the scene that has the "tag1" assigned to it.
+
+If you only want to change a single property value, also see the #setPropertyValueSingle
+function as it will do so in a more efficient way. The `setPropertyValue` function will
+work for individual property value, but is more computationally expensive.
+
+\\param uri The URI that identifies the property or properties whose values should be
+changed. The URI can contain 0 or 1 wildcard `*` characters or a tag expression (`{tag}`)
+that identifies a property owner
+\\param value The new value to which the property/properties identified by the `uri`
+should be changed to. The type of this parameter must agree with the type of the selected
+property
+\\param duration The number of seconds over which the change will occur. If not provided
+or the provided value is 0, the change is instantaneously.
+\\param easing If a duration larger than 0 is provided, this parameter controls the manner
+in which the parameter is interpolated. Has to be one of "Linear", "QuadraticEaseIn",
+"QuadraticEaseOut", "QuadraticEaseInOut", "CubicEaseIn", "CubicEaseOut", "CubicEaseInOut",
+"QuarticEaseIn", "QuarticEaseOut", "QuarticEaseInOut", "QuinticEaseIn", "QuinticEaseOut",
+"QuinticEaseInOut", "SineEaseIn", "SineEaseOut", "SineEaseInOut", "CircularEaseIn",
+"CircularEaseOut", "CircularEaseInOut", "ExponentialEaseIn", "ExponentialEaseOut",
+"ExponentialEaseInOut", "ElasticEaseIn", "ElasticEaseOut", "ElasticEaseInOut",
+"BounceEaseIn", "BounceEaseOut", "BounceEaseInOut"
+\\param postscript A Lua script that will be executed once the change of property value
+is completed. If a duration larger than 0 was provided, it is at the end of the
+interpolation. If 0 was provided, the script runs immediately.
    */
-  setPropertyValue: (uri: string, value: any, duration?: number, easingFunction?: string, script?: string) => Promise<void>
+  setPropertyValue: (uri: string, value: string | number | boolean | table, duration?: number, easing?: easingfunction, postscript?: string) => Promise<void>
   /**
-   * Sets the property identified by the URI in the first argument. The second argument can be any type, but it has to match the type that the property expects. If the third is not present or is '0', the value changes instantly, otherwise the change will take that many seconds and the value is interpolated at each step in between. The fourth parameter is an optional easing function if a 'duration' has been specified. If 'duration' is 0, this parameter value is ignored. Otherwise, it has to be one of the easing functions defined in the list below. This is the same as calling the setValue method and passing 'single' as the fourth argument to setPropertyValue. The fifth argument is another Lua script that will be executed when the interpolation provided in parameter 3 finishes.
- Avaiable easing functions: Linear, QuadraticEaseIn, QuadraticEaseOut, QuadraticEaseInOut, CubicEaseIn, CubicEaseOut, CubicEaseInOut, QuarticEaseIn, QuarticEaseOut, QuarticEaseInOut, QuinticEaseIn, QuinticEaseOut, QuinticEaseInOut, SineEaseIn, SineEaseOut, SineEaseInOut, CircularEaseIn, CircularEaseOut, CircularEaseInOut, ExponentialEaseIn, ExponentialEaseOut, ExponentialEaseInOut, ElasticEaseIn, ElasticEaseOut, ElasticEaseInOut, BounceEaseIn, BounceEaseOut, BounceEaseInOut
+   * Sets the single property identified by the URI to the specified value.
+The `uri` identifies which property is affected by this function call. The second
+argument's type must match the type of the property or an error is raised. If a duration
+is provided, the requested change will occur over the provided number of seconds. If no
+duration is provided or the duration is 0, the change occurs instantaneously.
+
+If you want to change multiple property values simultaneously, also see the
+#setPropertyValue function. The `setPropertyValueSingle` function however will work more
+efficiently for individual property values.
+
+\\param uri The URI that identifies the property
+\\param value The new value to which the property identified by the `uri` should be
+changed to. The type of this parameter must agree with the type of the selected property
+\\param duration The number of seconds over which the change will occur. If not provided
+or the provided value is 0, the change is instantaneously.
+\\param easing If a duration larger than 0 is provided, this parameter controls the manner
+in which the parameter is interpolated. Has to be one of "Linear", "QuadraticEaseIn",
+"QuadraticEaseOut", "QuadraticEaseInOut", "CubicEaseIn", "CubicEaseOut", "CubicEaseInOut",
+"QuarticEaseIn", "QuarticEaseOut", "QuarticEaseInOut", "QuinticEaseIn", "QuinticEaseOut",
+"QuinticEaseInOut", "SineEaseIn", "SineEaseOut", "SineEaseInOut", "CircularEaseIn",
+"CircularEaseOut", "CircularEaseInOut", "ExponentialEaseIn", "ExponentialEaseOut",
+"ExponentialEaseInOut", "ElasticEaseIn", "ElasticEaseOut", "ElasticEaseInOut",
+"BounceEaseIn", "BounceEaseOut", "BounceEaseInOut"
+\\param postscript This parameter specifies a Lua script that will be executed once the
+change of property value is completed. If a duration larger than 0 was provided, it is
+at the end of the interpolation. If 0 was provided, the script runs immediately.
    */
-  setPropertyValueSingle: (uri: string, value: any, duration?: number, easingFunction?: string, script?: string) => Promise<void>
+  setPropertyValueSingle: (uri: string, value: string | number | boolean | table, duration?: number, easing?: easingfunction, postscript?: string) => Promise<void>
   /**
    * Sets the folder used for storing screenshots or session recording frames
    */
@@ -940,10 +1007,6 @@ interface exoplanetsLibrary {
    */
   addExoplanetSystems: (listOfStarNames: string[]) => Promise<void>
   /**
-   * Deprecated in favor of 'listOfExoplanets'
-   */
-  getListOfExoplanets: () => Promise<string[]>
-  /**
    * Lists the names of the host stars of all exoplanet systems that have sufficient data for generating a visualization, and prints the list to the console.
    */
   listAvailableExoplanetSystems: () => Promise<void>
@@ -1162,22 +1225,6 @@ interface globebrowsingLibrary {
    */
   geoPositionForCamera: (useEyePosition?: boolean) => Promise<[number, number, number]>
   /**
-   * Get geographic coordinates of the camera position in latitude, longitude, and altitude (degrees and meters).
-
-Deprecated in favor of `geoPositionForCamera`.
-
-\\param useEyePosition If true, use the view direction of the camera instead of the camera position
-   */
-  getGeoPositionForCamera: (useEyePosition?: boolean) => Promise<[number, number, number]>
-  /**
-   * Returns the list of layers for the specified globe for a specific layer group.
-
-Deprecated in favor of `layers`.
-
-\\param globeIdentifier The identifier of the scene graph node for the globe \\param layerGroup The identifier of the layer group for which to list the layers
-   */
-  getLayers: (globeIdentifier: string, layerGroup: string) => Promise<string[]>
-  /**
    * Go to the chunk on a globe with given index x, y, level.
 
 \\param globeIdentifier The identifier of the scene graph node for the globe \\param x The x value of the tile index \\param y The y value of the tile index \\param level The level of the tile index
@@ -1231,8 +1278,8 @@ The `source` and `destination` parameters can also be the identifiers of the lay
   removeWMSServer: (name: string) => Promise<void>
   /**
    * Sets the position of a scene graph node that has a
- [GlobeTranslation](#globebrowsing_translation_globetranslation) and/or
- [GlobeRotation](#globebrowsing_rotation_globerotation).
+ [GlobeTranslation](#base_translation_globetranslation) and/or
+ [GlobeRotation](#base_rotation_globerotation).
 
  Usage:
  ```lua
@@ -1252,8 +1299,8 @@ The `source` and `destination` parameters can also be the identifiers of the lay
   setNodePosition: (nodeIdentifier: string, globeIdentifier: string, latitude: number, longitude: number, altitude?: number) => Promise<void>
   /**
    * Sets the position of a scene graph node that has a
- [GlobeTranslation](#globebrowsing_translation_globetranslation) and/or
- [GlobeRotation](#globebrowsing_rotation_globerotation) to match the camera. Only
+ [GlobeTranslation](#base_translation_globetranslation) and/or
+ [GlobeRotation](#base_rotation_globerotation) to match the camera. Only
  uses camera position not rotation. If useAltitude is true, then the position
  will also be updated to the camera's altitude.
 
@@ -1270,6 +1317,41 @@ The `source` and `destination` parameters can also be the identifiers of the lay
    */
   setNodePositionFromCamera: (nodeIdentifer: string, useAltitude?: boolean) => Promise<void>
 } // interface globebrowsingLibrary
+
+interface iswaLibrary {
+  /**
+   * Adds a cdf files to choose from.
+   */
+  addCdfFiles: (path: string) => Promise<void>
+  /**
+   * Adds a IswaCygnet.
+   */
+  addCygnet: (id?: integer, type?: string, group?: string) => Promise<void>
+  /**
+   * Adds KameleonPlanes from cdf file.
+   */
+  addKameleonPlanes: (group: string, pos: integer) => Promise<void>
+  /**
+   * Adds a Screen Space Cygnets.
+   */
+  addScreenSpaceCygnet: (d: table) => Promise<void>
+  /**
+   * Remove a Cygnets.
+   */
+  removeCygnet: (name: string) => Promise<void>
+  /**
+   * Remove a group of Cygnets.
+   */
+  removeGroup: (name: string) => Promise<void>
+  /**
+   * Remove a Screen Space Cygnets.
+   */
+  removeScreenSpaceCygnet: (id: integer) => Promise<void>
+  /**
+   * Sets the base url.
+   */
+  setBaseUrl: (url: string) => Promise<void>
+} // interface iswaLibrary
 
 interface keyframeRecordingLibrary {
   /**
@@ -1443,14 +1525,6 @@ The distance to fly to can either be set to be the current distance of the camer
    */
   flyToNavigationState: (navigationState: table, duration?: number) => Promise<void>
   /**
-   * Returns the position in the local Cartesian coordinate system of the specified globe that corresponds to the given geographic coordinates. In the local coordinate system, the position (0,0,0) corresponds to the globe's center. If the node is a globe, the longitude and latitude is expressed in the body's native coordinate system. If it is not, the position on the surface of the interaction sphere is used instead.
-
-Deprecated in favor of `localPositionFromGeo`.
-
-\\param globeIdentifier The identifier of the scene graph node \\param latitude The latitude of the geograpic position, in degrees \\param longitude The longitude of the geographic position, in degrees \\param altitude The altitude, in meters
-   */
-  getLocalPositionFromGeo: (nodeIdentifier: string, latitude: number, longitude: number, altitude: number) => Promise<[number, number, number]>
-  /**
    * Return the current [NavigationState](#core_navigation_state) as a Lua table.
 
 By default, the reference frame will be picked based on whether the orbital navigator is currently following the anchor node rotation. If it is, the anchor will be chosen as reference frame. If not, the reference frame will be set to the scene graph root.
@@ -1460,12 +1534,6 @@ By default, the reference frame will be picked based on whether the orbital navi
 \\return a Lua table representing the current NavigationState of the camera
    */
   getNavigationState: (frame?: string) => Promise<table>
-  /**
-   * Immediately move the camera to a geographic coordinate on a globe. If the node is a globe, the longitude and latitude is expressed in the body's native coordinate system. If it is not, the position on the surface of the interaction sphere is used instead.
-
-\\param node The identifier of a scene graph node. If an empty string is provided, the current anchor node is used \\param latitude The latitude of the target coordinate, in degrees \\param longitude The longitude of the target coordinate, in degrees \\param altitude An optional altitude, given in meters over the reference surface of the globe. If no altitude is provided, the altitude will be kept as the current distance to the reference surface of the specified globe.
-   */
-  goToGeo: (node: string, latitude: number, longitude: number, altitude?: number) => Promise<void>
   /**
    * Returns true if a camera path is currently running, and false otherwise.
 
@@ -1787,18 +1855,6 @@ interface skybrowserLibrary {
    * Finetunes the target depending on a mouse drag. rendered copy to it. First argument is the identifier of the sky browser, second is the start position of the drag and third is the end position of the drag.
    */
   finetuneTargetPosition: (identifier: string, translation: vec2) => Promise<void>
-  /**
-   * Deprecated in favor of 'listOfExoplanets'
-   */
-  getListOfImages: () => Promise<table>
-  /**
-   * Deprecated in favor of 'targetData'
-   */
-  getTargetData: () => Promise<table>
-  /**
-   * Deprecated in favor of 'wwtImageCollectionUrl'
-   */
-  getWwtImageCollectionUrl: () => Promise<table>
   /**
    * Takes an identifier to a sky browser and starts the initialization for that browser. That means that the browser starts to try to connect to the AAS WorldWide Telescope application by sending it messages. And that the target matches its appearance to its corresponding browser.
    */
