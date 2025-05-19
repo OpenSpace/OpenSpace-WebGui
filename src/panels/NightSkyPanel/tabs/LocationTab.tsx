@@ -1,4 +1,5 @@
 import {
+  Alert,
   BackgroundImage,
   Button,
   Divider,
@@ -7,13 +8,15 @@ import {
   Paper,
   Stack,
   Text,
-  Title
+  Title,
+  Transition
 } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
-import { LocationPinIcon } from '@/icons/icons';
+import { LocationPinIcon, WarningIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
+import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { LookDirection } from '../types';
 
@@ -22,17 +25,19 @@ import { LookDirection } from '../types';
 // identifier of the action, so loaving for now
 
 export function LocationTab() {
-  const luaApi = useOpenSpaceApi();
-  useSubscribeToCamera();
-
   const {
     latitude: currentLat,
     longitude: currentLong,
     altitude: currentAlt
   } = useAppSelector((state) => state.camera);
 
+  const luaApi = useOpenSpaceApi();
+  useSubscribeToCamera();
+
+  const anchor = useAnchorNode();
+
   function dotPosition(): { x: number; y: number } {
-    if (currentLong && currentLat) {
+    if (currentLong !== undefined && currentLat !== undefined) {
       //here we are getting the percentage of the map on where to show the marker
       //for example, lat, long of 0,0 winds up with a map position of x: 0.5 and y:0.5
       return { x: ((currentLong + 180) / 360) * 100, y: ((90 - currentLat) / 180) * 100 };
@@ -68,6 +73,16 @@ export function LocationTab() {
           />
         </BackgroundImage>
       </Group>
+      <Transition mounted={anchor?.identifier !== 'Earth'} transition={'fade'}>
+        {(styles) => (
+          <div style={styles}>
+            <Alert w={'100%'} title={'Warning!'} icon={<WarningIcon />}>
+              <Text>{`You are not on Earth, but on ${anchor?.name}.`}</Text>
+            </Alert>
+          </div>
+        )}
+      </Transition>
+
       <Divider my={'xs'} mt={5} />
       <Group>
         <Title order={2}>Jump to Position</Title>
