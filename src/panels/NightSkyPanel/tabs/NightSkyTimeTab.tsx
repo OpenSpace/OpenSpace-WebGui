@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Divider, Group, Stack, Text, Title } from '@mantine/core';
 import * as GeoTZ from 'browser-geo-tz';
 
@@ -8,44 +8,25 @@ import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
 
 export function NightSkyTimeTab() {
-  const luaApi = useOpenSpaceApi();
-  const timeCapped = useSubscribeToTime();
-
-  const { latitude: currentLat, longitude: currentLong } = useAppSelector((state) => {
-    return state.camera;
-  });
-
   const [lastLat, setLastLat] = useState<number>(0);
   const [lastLong, setLastong] = useState<number>(0);
   const [localArea, setLocalArea] = useState<string>('UTC');
-  const [localTimeString, setLocalTimeString] = useState<string>('UTC');
+
+  const { latitude: currentLat, longitude: currentLong } = useAppSelector(
+    (state) => state.camera
+  );
+
+  const luaApi = useOpenSpaceApi();
+  const timeCapped = useSubscribeToTime();
 
   const date = useMemo(() => new Date(timeCapped ?? ''), [timeCapped]);
   const isValidDate = isDateValid(date);
-  const timeLabel = isValidDate ? date.toUTCString() : 'Date out of range';
-
-  async function getAreas(lat: number, lon: number): Promise<string[]> {
-    return await GeoTZ.find(lat, lon);
-  }
-
-  const getLocalTime = useCallback((): string => {
-    let str = date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      weekday: 'short',
-      timeZone: localArea as string
-    });
-    str += ' ' + date.toLocaleTimeString('en-US', { timeZone: localArea as string });
-    return str;
-  }, [date, localArea]);
 
   useEffect(() => {
-    setLocalTimeString(getLocalTime());
-  }, [date, getLocalTime]);
-
-  useEffect(() => {
-    if (currentLat && currentLong) {
+    async function getAreas(lat: number, lon: number): Promise<string[]> {
+      return await GeoTZ.find(lat, lon);
+    }
+    if (currentLat !== undefined && currentLong !== undefined) {
       const dLat = Math.abs(currentLat - lastLat);
       const dLon = Math.abs(currentLong - lastLong);
 
@@ -55,13 +36,21 @@ export function NightSkyTimeTab() {
 
       setLastLat(currentLat);
       setLastong(currentLong);
-
-      getAreas(currentLat, currentLong).then((value) => {
-        setLocalArea(value[0]);
-        setLocalTimeString(getLocalTime());
-      });
+      getAreas(currentLat, currentLong).then((value) => setLocalArea(value[0]));
     }
-  }, [currentLat, currentLong, getLocalTime, lastLat, lastLong]);
+  }, [currentLat, currentLong, lastLat, lastLong]);
+
+  function localTimeString(): string {
+    let str = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'short',
+      timeZone: localArea
+    });
+    str += ' ' + date.toLocaleTimeString('en-US', { timeZone: localArea });
+    return str;
+  }
 
   return (
     <>
@@ -84,10 +73,10 @@ export function NightSkyTimeTab() {
         </Button>
       </Group>
       <Text size={'lg'} fw={'bold'}>
-        Local: {localTimeString}
+        Local: {localTimeString()}
       </Text>
       <Text mb={'lg'}>Timezone: {localArea}</Text>
-      <Text my={'md'}>UTC: {timeLabel}</Text>
+      <Text my={'md'}>UTC: {isValidDate ? date.toUTCString() : 'Date out of range'}</Text>
       <Divider />
       <Title order={3} my={'xs'}>
         Jumps
