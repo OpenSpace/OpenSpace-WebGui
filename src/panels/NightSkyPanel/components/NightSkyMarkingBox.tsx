@@ -1,6 +1,6 @@
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { Identifier } from '@/types/types';
-import { sgnUri } from '@/util/propertyTreeHelpers';
+import { sgnRenderableUri, sgnUri } from '@/util/propertyTreeHelpers';
 
 import { ToggleCard } from './ToggleCard';
 
@@ -11,7 +11,8 @@ interface Props {
 }
 
 export function NightSkyMarkingBox({ title, icon, identifier }: Props) {
-  const uri = sgnUri(identifier);
+  const uri = sgnRenderableUri(sgnUri(identifier));
+
   return (
     <ToggleCard
       checkbox={<PropertyOwnerVisibilityCheckbox uri={uri} />}

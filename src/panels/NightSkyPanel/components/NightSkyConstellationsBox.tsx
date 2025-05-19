@@ -4,7 +4,7 @@ import { Checkbox } from '@mantine/core';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
-import { sgnUri } from '@/util/propertyTreeHelpers';
+import { sgnRenderableUri, sgnUri } from '@/util/propertyTreeHelpers';
 
 import { ToggleCard } from './ToggleCard';
 
@@ -27,7 +27,7 @@ export function NightSkyConstellationsBox({
 }: Props) {
   const luaApi = useOpenSpaceApi();
 
-  const uri = identifier ? sgnUri(identifier) : '';
+  const uri = identifier ? sgnRenderableUri(sgnUri(identifier)) : '';
   const { isVisible } = usePropertyOwnerVisibility(uri);
 
   const [elementsEnabled, setElementsEnabled] = useProperty(
