@@ -1,8 +1,4 @@
-import { useState } from 'react';
-import { Checkbox, Stack, Text } from '@mantine/core';
-
-import { useOpenSpaceApi } from '@/api/hooks';
-import { useProperty } from '@/hooks/properties';
+import { Paper, Stack, Text } from '@mantine/core';
 import {
   AbcIcon,
   BandIcon,
@@ -16,6 +12,8 @@ import {
   SingleDotIcon,
   SphereIcon
 } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
+import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 
 interface Props {
   title: string;
@@ -27,138 +25,46 @@ interface Props {
   directionCheck?: string;
 }
 
-export function IconLabelButton({
+export function NightSkyMarkingBox({
   title,
   icon,
   identifier,
-  onAction,
-  offAction,
-  directionCheck,
-  boolProp
 }: Props) {
-  const luaApi = useOpenSpaceApi();
-
-  const [interalCheck, setInternalCheked] = useState(false);
-
-  let showingDirections: boolean | undefined;
-  let directionsTexture: string | undefined;
-  let directionsFaded: number | undefined;
-  let boolEnabled: boolean | undefined;
-  if (boolProp) {
-    [boolEnabled] = useProperty('BoolProperty', boolProp);
-  }
-
-  const [enabled] = useProperty('BoolProperty', checkIdentifier() + '.Enabled');
-
-  if (directionCheck) {
-    [showingDirections] = useProperty(
-      'BoolProperty',
-      'Scene.CardinalDirectionSphere.Renderable.Enabled'
-    );
-    [directionsTexture] = useProperty(
-      'StringProperty',
-      'Scene.CardinalDirectionSphere.Renderable.Texture'
-    );
-    [directionsFaded] = useProperty(
-      'FloatProperty',
-      'Scene.CardinalDirectionSphere.Renderable.Fade'
-    );
-  }
-  const [identifierFaded] = useProperty('FloatProperty', checkIdentifier() + '.Fade');
-
-  function checkIdentifier() {
-    if (identifier) {
-      if (identifier.startsWith('Scene')) {
-        return identifier;
-      } else {
-        return 'Scene.' + identifier + '.Renderable';
-      }
-    } else {
-      return '';
-    }
-  }
-
-  function isChecked() {
-    if (!identifier) {
-      if (directionCheck) {
-        if (!showingDirections || directionsFaded != 1) {
-          return false;
-        } else {
-          if (directionsTexture && directionsTexture.indexOf(directionCheck) > -1) {
-            return true;
-          }
-        }
-      } else {
-        return interalCheck;
-      }
-    }
-    if (boolProp) {
-      return enabled && boolEnabled;
-    } else {
-      return enabled && identifierFaded == 1;
-    }
-  }
 
   function getDisplayIcon(icon: string) {
     switch (icon) {
       case 'grid':
-        return <SphereIcon size={30} />;
+        return <SphereIcon size={IconSize.md} />;
       case 'line':
-        return <LineIcon size={30} />;
+        return <LineIcon size={IconSize.md} />;
       case 'dot':
-        return <SingleDotIcon size={30} />;
+        return <SingleDotIcon size={IconSize.md} />;
       case 'text':
-        return <AbcIcon size={30} />;
+        return <AbcIcon size={IconSize.md} />;
       case 'band':
-        return <BandIcon size={30} />;
+        return <BandIcon size={IconSize.md} />;
       case 'compasssmall':
-        return <CompassSmallIcon size={30} />;
+        return <CompassSmallIcon size={IconSize.md} />;
       case 'compasslarge':
-        return <CompassLargeIcon size={30} />;
+        return <CompassLargeIcon size={IconSize.md} />;
       case 'compassmarks':
-        return <CompassMarksIcon size={30} />;
+        return <CompassMarksIcon size={IconSize.md} />;
       case 'pencil':
-        return <PencilIcon size={30} />;
+        return <PencilIcon size={IconSize.md} />;
       case 'paint':
-        return <PaintBrushIcon size={30} />;
+        return <PaintBrushIcon size={IconSize.md} />;
       default:
-        return <HomeIcon size={30} />;
-    }
-  }
-
-  function checkboxChange(checked: boolean) {
-    if (checked) {
-      if (onAction) {
-        luaApi?.action.triggerAction(onAction);
-        setInternalCheked(true);
-      } else if (identifier) {
-        luaApi?.fadeIn('Scene.' + identifier + '.Renderable');
-      }
-    } else {
-      if (offAction) {
-        luaApi?.action.triggerAction(offAction);
-        setInternalCheked(false);
-      } else if (boolProp) {
-        luaApi?.setPropertyValueSingle(boolProp, false);
-      } else if (identifier) {
-        luaApi?.fadeOut('Scene.' + identifier + '.Renderable');
-      }
+        return <HomeIcon size={IconSize.md} />;
     }
   }
 
   return (
-    <Checkbox.Card
-      radius={'md'}
-      checked={isChecked() ? true : false}
-      onChange={(event) => {
-        checkboxChange(event);
-      }}
-    >
-      <Stack align={'center'}>
-        <Checkbox.Indicator />
+    <Paper pt={'sm'}>
+      <Stack align={'center'} >
+        <PropertyOwnerVisibilityCheckbox uri={"Scene."+identifier!+".Renderable"}/>
         {getDisplayIcon(icon)}
         <Text>{title}</Text>
       </Stack>
-    </Checkbox.Card>
+    </Paper>
   );
 }
