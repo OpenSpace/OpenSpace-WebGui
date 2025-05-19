@@ -6,9 +6,10 @@ import { Uri } from '@/types/types';
 
 interface Props {
   uri: Uri;
+  label?: React.ReactNode;
 }
 
-export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
+export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
   const { isVisible, setVisiblity } = usePropertyOwnerVisibility(uri);
 
   // This is the value that is shown in the checkbox, it is not necessarily the same as
@@ -52,9 +53,8 @@ export function PropertyOwnerVisibilityCheckbox({ uri }: Props) {
       checked={checked}
       onKeyDown={onKeyDown}
       onKeyUp={onKeyUp}
-      onChange={(event) => {
-        updateValue(event.currentTarget.checked, isImmediate);
-      }}
+      onChange={(event) => updateValue(event.currentTarget.checked, isImmediate)}
+      label={label}
     />
   );
 }

@@ -65,10 +65,10 @@ export function NightSkyTimeTab() {
 
   return (
     <>
-      <Group mb={'md'}>
-        <Text my={'md'} size={'xl'}>
+      <Group justify={'space-between'} align={'top'} gap={'xs'} mb={'md'}>
+        <Title order={2} size={'xl'}>
           Simulation Time
-        </Text>
+        </Title>
         <Button
           onClick={async () => {
             const now = await luaApi?.time.currentWallTime();
@@ -83,52 +83,54 @@ export function NightSkyTimeTab() {
           Set to now
         </Button>
       </Group>
-      <Title order={2}>Local: {localTimeString}</Title>
+      <Text size={'lg'} fw={'bold'}>
+        Local: {localTimeString}
+      </Text>
       <Text mb={'lg'}>Timezone: {localArea}</Text>
       <Text my={'md'}>UTC: {timeLabel}</Text>
       <Divider />
-      <Title order={3} my={'md'}>
+      <Title order={3} my={'xs'}>
         Jumps
       </Title>
       <Stack>
-        <Group gap={'xl'}>
+        <Group gap={'lg'}>
           <Group gap={'xs'}>
             <Button
               onClick={() => luaApi?.action.triggerAction('os.time.siderealDayIncrease')}
             >
-              + sidereal day
+              + Sidereal day
             </Button>
             <Button
               onClick={() => luaApi?.action.triggerAction('os.time.siderealDayDecrease')}
             >
-              - sidereal day
+              - Sidereal day
             </Button>
             <Button
               onClick={() => luaApi?.action.triggerAction('os.time.siderealWeekIncrease')}
             >
-              + sidereal week
+              + Sidereal week
             </Button>
             <Button
               onClick={() => luaApi?.action.triggerAction('os.time.siderealWeekDecrease')}
             >
-              - sidereal week
+              - Sidereal week
             </Button>
           </Group>
           <Group gap={'xs'}>
             <Button
               onClick={() => luaApi?.action.triggerAction('os.time.SolarDayIncrease')}
             >
-              + solar day
+              + Solar day
             </Button>
             <Button
               onClick={() => luaApi?.action.triggerAction('os.time.SolarDayDecrease')}
             >
-              - solar day
+              - Solar day
             </Button>
             <Button
               onClick={() => luaApi?.action.triggerAction('os.time.SolarWeekIncrease')}
             >
-              + solar week
+              + Solar week
             </Button>
             <Button
               onClick={() => luaApi?.action.triggerAction('os.time.SolarWeekDecrease')}
@@ -176,8 +178,8 @@ export function NightSkyTimeTab() {
           <Button onClick={() => luaApi?.time.togglePause()}>Play / Pause</Button>
         </Group>
       </Stack>
-      <Divider />
-      <Alert variant={'outline'} color={'dark'} my={'lg'}>
+      <Divider my={'xs'} />
+      <Alert title={'Note'}>
         <Text>
           Only some controls are found here. For more control over time, use the Time
           Panel.

@@ -1,8 +1,9 @@
-import { Button, Group, Text, Title } from '@mantine/core';
+import { ActionIcon, Button, Group, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { BoolInput } from '@/components/Input/BoolInput';
 import { useProperty } from '@/hooks/properties';
+import { MinusIcon, PlusIcon } from '@/icons/icons';
 
 export function NightSkySolarSystemTab() {
   const luaApi = useOpenSpaceApi();
@@ -22,18 +23,9 @@ export function NightSkySolarSystemTab() {
 
   return (
     <>
-      <Title order={2} my={'md'}>
-        {' '}
-        Trails{' '}
-      </Title>
-      <Group mb={'md'}>
-        <Button
-          onClick={() => {
-            action('os.FadeDownTrails');
-          }}
-        >
-          Hide ALL Trails
-        </Button>
+      <Title order={2}>Trails</Title>
+      <Group mt={'sm'} gap={'xs'}>
+        <Button onClick={() => action('os.FadeDownTrails')}>Hide ALL Trails</Button>
         <Button
           onClick={() => {
             luaApi?.fadeIn('{planetTrail_solarSystem}');
@@ -44,11 +36,10 @@ export function NightSkySolarSystemTab() {
         </Button>
       </Group>
 
-      <Title order={2} my={'md'}>
-        {' '}
-        Labels{' '}
+      <Title order={2} mt={'md'}>
+        Labels
       </Title>
-      <Group gap={'xs'}>
+      <Group mt={'sm'} gap={'xs'}>
         <Button onClick={() => luaApi?.fadeIn('{solarsystem_labels}.Renderable')}>
           Show Labels
         </Button>
@@ -57,11 +48,10 @@ export function NightSkySolarSystemTab() {
         </Button>
       </Group>
 
-      <Title order={2} my={'md'}>
-        {' '}
-        Planets{' '}
+      <Title order={2} mt={'md'}>
+        Planets
       </Title>
-      <Group gap={'xs'}>
+      <Group mt={'sm'} gap={'xs'}>
         <Button onClick={() => action('os.nightsky.ShowNightSkyPlanets')}>
           Show Night Sky Planets
         </Button>
@@ -70,18 +60,29 @@ export function NightSkySolarSystemTab() {
         </Button>
       </Group>
 
-      <Title order={2} my={'md'}>
-        {' '}
-        Moon{' '}
+      <Title order={2} mt={'md'}>
+        Moon
       </Title>
-      <Group gap={'xs'}>
+      <Group mt={'sm'} gap={'xs'}>
         {moonScale !== undefined ? (
           <>
             <Button onClick={() => setMoonScale(1.0)}>Default Scale Moon (1x)</Button>
             <Button onClick={() => setMoonScale(2.0)}>Enlarge Moon (2x)</Button>
             <Button onClick={() => setMoonScale(4.0)}>Enlarge Moon (4x)</Button>
-            <Button onClick={() => setMoonScale(moonScale + 0.5)}>+</Button>
-            <Button onClick={() => setMoonScale(moonScale - 0.5)}>-</Button>
+            <ActionIcon
+              onClick={() => setMoonScale(moonScale + 0.5)}
+              size={'lg'}
+              aria-label={'Increase moon scale'}
+            >
+              <PlusIcon />
+            </ActionIcon>
+            <ActionIcon
+              onClick={() => setMoonScale(moonScale - 0.5)}
+              size={'lg'}
+              aria-label={'Deacrease moon scale'}
+            >
+              <MinusIcon />
+            </ActionIcon>
           </>
         ) : (
           <Text>Could not find Moon scale settings</Text>

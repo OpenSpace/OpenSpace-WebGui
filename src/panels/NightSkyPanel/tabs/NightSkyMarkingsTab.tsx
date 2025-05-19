@@ -25,7 +25,6 @@ export function NightSkyMarkingsTab() {
   return (
     <>
       <Button
-        mt={'xs'}
         w={200}
         onClick={() => openspace?.action.triggerAction('os.nightsky.HideAllMarkings')}
       >

@@ -1,28 +1,39 @@
 import { useState } from 'react';
-import { Button, Divider, Group, Text, Title } from '@mantine/core';
+import {
+  ActionIcon,
+  Button,
+  Divider,
+  Group,
+  Paper,
+  Stack,
+  Text,
+  Title
+} from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
-import { CalendarIcon } from '@/icons/icons';
+import { CalendarIcon, MinusIcon, PlusIcon } from '@/icons/icons';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { useAppSelector } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';
 import { sgnUri } from '@/util/propertyTreeHelpers';
 
 export function NightSkySunTab() {
-  const openspace = useOpenSpaceApi();
-
+  const [trailDate, setTrailDate] = useState<Date | null>(null);
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
 
+  const openspace = useOpenSpaceApi();
+  const sunTrailTag = 'sun_trail';
+
   const addedTrails = Object.values(propertyOwners).filter((owner) =>
-    owner!.tags.includes('sun_trail')
+    owner!.tags.includes(sunTrailTag)
   );
 
-  const AngularSizeKey = 'Scene.EarthAtmosphere.Renderable.SunAngularSize';
-  const [angularSize, setAngularSize] = useProperty('FloatProperty', AngularSizeKey);
-
-  const [trailDate, setTrailDate] = useState<Date | null>(null);
+  const [angularSize, setAngularSize] = useProperty(
+    'FloatProperty',
+    'Scene.EarthAtmosphere.Renderable.SunAngularSize'
+  );
 
   function addTrail(date: string): void {
     openspace?.action.triggerAction('os.nightsky.AddSunTrail', { Date: date });
@@ -30,10 +41,8 @@ export function NightSkySunTab() {
 
   return (
     <>
-      <Title order={2} my={'sm'}>
-        Glare
-      </Title>
-      <Group gap={'xs'} my={'md'}>
+      <Title order={2}>Glare</Title>
+      <Group gap={'xs'} mt={'sm'}>
         <Button onClick={() => openspace?.fadeIn('Scene.SunGlare.Renderable')}>
           Show Glare
         </Button>
@@ -43,25 +52,27 @@ export function NightSkySunTab() {
       </Group>
       {angularSize !== undefined ? (
         <>
-          <Title order={2}>Size</Title>
-          <Group my={'md'} gap={'xs'}>
-            <Button
-              onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.3)}
+          <Title order={2} mt={'md'}>
+            Size
+          </Title>
+          <Group mt={'sm'} gap={'xs'}>
+            <Button onClick={() => setAngularSize(0.3)}>Default Angular Size</Button>
+            <Button onClick={() => setAngularSize(0.6)}>Large Angular Size</Button>
+            <Button onClick={() => setAngularSize(0.8)}>Extra Large Angular Size</Button>
+            <ActionIcon
+              onClick={() => setAngularSize(angularSize + 0.1)}
+              size={'lg'}
+              aria-label={'Increase angular size'}
             >
-              Default Angular Size
-            </Button>
-            <Button
-              onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.6)}
+              <PlusIcon />
+            </ActionIcon>
+            <ActionIcon
+              onClick={() => setAngularSize(angularSize - 0.1)}
+              size={'lg'}
+              aria-label={'Decrease angular size'}
             >
-              Large Angular Size
-            </Button>
-            <Button
-              onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.8)}
-            >
-              Extra Large Angular Size
-            </Button>
-            <Button onClick={() => setAngularSize(angularSize + 0.1)}>+</Button>
-            <Button onClick={() => setAngularSize(angularSize - 0.1)}>-</Button>
+              <MinusIcon />
+            </ActionIcon>
           </Group>
         </>
       ) : (
@@ -70,11 +81,15 @@ export function NightSkySunTab() {
         </>
       )}
 
-      <Divider mt={'xl'} mb={'md'}></Divider>
+      <Divider my={'md'} />
       <Title order={2}>Trails</Title>
-      <Group my={'md'} gap={'xs'}>
-        <Button onClick={() => addTrail('NOW')}>Add trail for simulation date</Button>
-        <Button onClick={() => addTrail('UTC')}>Add trail for today </Button>
+      <Group mt={'sm'} gap={'xs'}>
+        <Button onClick={() => addTrail('NOW')} leftSection={<PlusIcon />}>
+          Add Trail for Simulation Date
+        </Button>
+        <Button onClick={() => addTrail('UTC')} leftSection={<PlusIcon />}>
+          Add Trail for Today
+        </Button>
       </Group>
 
       <DatePickerInput
@@ -84,39 +99,43 @@ export function NightSkySunTab() {
         placeholder={'01/01/2001'}
         value={trailDate}
         onChange={setTrailDate}
-        my={'md'}
+        mt={'md'}
       />
       <Button
         disabled={trailDate === null}
-        leftSection={'+'}
-        onClick={() => {
-          if (trailDate) {
-            addTrail(trailDate.toISOString());
-          }
-        }}
+        leftSection={<PlusIcon />}
+        onClick={() => trailDate && addTrail(trailDate.toISOString())}
+        mt={'xs'}
       >
         Add Trail
       </Button>
 
-      <Group my={'xl'}>
+      <Group mt={'md'} mb={'xs'}>
         <Title order={3}>Added Sun Trails</Title>
-        <Button size={'compact-md'} onClick={() => openspace?.fadeOut('{sun_trail}')}>
+        <Button
+          size={'compact-md'}
+          onClick={() => openspace?.fadeOut(`{${sunTrailTag}}`)}
+        >
           Hide All
         </Button>
       </Group>
-      {addedTrails.length === 0 ? (
-        <Text>No sun trails</Text>
-      ) : (
-        addedTrails.map(
-          (trail) =>
-            trail && (
-              <SceneGraphNodeHeader
-                key={trail.identifier}
-                uri={sgnUri(trail.identifier)}
-              />
-            )
-        )
-      )}
+      <Paper p={'sm'}>
+        {addedTrails.length === 0 ? (
+          <Text>No sun trails</Text>
+        ) : (
+          <Stack gap={'xs'}>
+            {addedTrails.map(
+              (trail) =>
+                trail && (
+                  <SceneGraphNodeHeader
+                    key={trail.identifier}
+                    uri={sgnUri(trail.identifier)}
+                  />
+                )
+            )}
+          </Stack>
+        )}
+      </Paper>
     </>
   );
 }

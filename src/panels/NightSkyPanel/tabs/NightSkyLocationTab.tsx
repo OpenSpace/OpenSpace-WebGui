@@ -5,7 +5,9 @@ import {
   Group,
   Image,
   Paper,
-  Text
+  Stack,
+  Text,
+  Title
 } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -40,12 +42,17 @@ export function NightSkyLocationTab() {
 
   return (
     <>
-      <Group justify={'center'}>
-        <Text size={'md'}>
-          Globe position - Latitude: {currentLat?.toFixed(2)}, Longitude:{' '}
-          {currentLong?.toFixed(2)}, Altitude: {currentAlt?.toFixed(2)}m
-        </Text>
-        <BackgroundImage w={200} h={100} src={'eqcy.png'}>
+      <Group mb={'md'} justify={'space-between'} align={'top'}>
+        <Stack gap={5}>
+          <Title order={2} mb={'xs'}>
+            Globe Location
+          </Title>
+          <Text size={'md'}>Latitude: {currentLat?.toFixed(2)}</Text>
+          <Text size={'md'}>Longitude: {currentLong?.toFixed(2)}</Text>
+          <Text size={'md'}>Altitude: {currentAlt?.toFixed(2)}m</Text>
+        </Stack>
+
+        <BackgroundImage w={300} h={150} src={'eqcy.png'} radius={'sm'}>
           <Image
             src={'icon.png'}
             style={{
@@ -57,9 +64,9 @@ export function NightSkyLocationTab() {
           />
         </BackgroundImage>
       </Group>
-      <Divider my={'xl'} mt={5} />
+      <Divider my={'xs'} mt={5} />
       <Group>
-        <Text size={'xl'}>Jump to Positon</Text>
+        <Title order={2}>Jump to Position</Title>
         <Group gap={'xs'}>
           <Button
             onClick={() => luaApi?.action.triggerAction('os.nightsky.position.NorthPole')}
@@ -78,24 +85,24 @@ export function NightSkyLocationTab() {
           </Button>
         </Group>
       </Group>
-      <Paper shadow={'xs'} p={'xl'} my={'xl'}>
+      <Paper p={'sm'} my={'md'}>
         <Text>
           To search for a particular location on Earth, use the Geo Location window.
           <LocationPinIcon size={20}></LocationPinIcon>
         </Text>
       </Paper>
-      <Divider mt={5} />
-      <Text my={'md'} size={'xl'}>
-        Direction
-      </Text>
+      <Divider my={'xs'} />
+
+      <Title order={2}>Direction</Title>
       <Group my={'md'} gap={'xs'}>
         <Button onClick={() => look('North')}>Look North</Button>
         <Button onClick={() => look('East')}>Look East</Button>
         <Button onClick={() => look('South')}>Look South</Button>
         <Button onClick={() => look('West')}>Look West</Button>
       </Group>
-      <Text size={'xl'}>Horizon</Text>
-      <Group my={'md'}>
+      <Title order={2}>Horizon</Title>
+
+      <Group my={'md'} gap={'xs'}>
         <Button
           onClick={() => luaApi?.action.triggerAction('os.nightsky.LevelHorizonPitch')}
         >
