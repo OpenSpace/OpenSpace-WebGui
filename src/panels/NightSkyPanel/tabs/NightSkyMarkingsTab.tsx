@@ -1,6 +1,19 @@
 import { Button, SimpleGrid, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import {
+  AbcIcon,
+  BandIcon,
+  CompassLargeIcon,
+  CompassMarksIcon,
+  CompassSmallIcon,
+  GridSphereIcon,
+  LineIcon,
+  PaintBrushIcon,
+  PencilIcon,
+  SingleDotIcon
+} from '@/icons/icons';
+import { IconSize } from '@/types/enums';
 
 import { NightSkyCardinalDirectionsBox } from '../components/NightSkyCardinalDirectionsBox';
 import { NightSkyConstellationsBox } from '../components/NightSkyConstellationsBox';
@@ -22,32 +35,52 @@ export function NightSkyMarkingsTab() {
         Alt/Az
       </Title>
       <SimpleGrid cols={4} spacing={'sm'}>
-        <NightSkyMarkingBox title={'Grid'} icon={'grid'} identifier={'AltAzGrid'} />
+        <NightSkyMarkingBox
+          title={'Grid'}
+          icon={<GridSphereIcon size={IconSize.md} />}
+          identifier={'AltAzGrid'}
+        />
         <NightSkyMarkingBox
           title={'Meridian'}
-          icon={'line'}
+          icon={<LineIcon size={IconSize.md} />}
           identifier={'MeridianPlane'}
         />
         <NightSkyMarkingBox
           title={'Labels'}
-          icon={'text'}
+          icon={<AbcIcon size={IconSize.md} />}
           identifier={'AltAzGridLabels'}
         />
-        <NightSkyMarkingBox title={'Zenith'} icon={'dot'} identifier={'ZenithDot'} />
+        <NightSkyMarkingBox
+          title={'Zenith'}
+          icon={<SingleDotIcon size={IconSize.md} />}
+          identifier={'ZenithDot'}
+        />
       </SimpleGrid>
 
       <Title order={2} my={'sm'}>
         Ecliptic
       </Title>
       <SimpleGrid cols={4} spacing={'sm'}>
-        <NightSkyMarkingBox title={'Grid'} icon={'grid'} identifier={'EclipticSphere'} />
-        <NightSkyMarkingBox title={'Line'} icon={'line'} identifier={'EclipticLine'} />
+        <NightSkyMarkingBox
+          title={'Grid'}
+          icon={<GridSphereIcon size={IconSize.md} />}
+          identifier={'EclipticSphere'}
+        />
+        <NightSkyMarkingBox
+          title={'Line'}
+          icon={<LineIcon size={IconSize.md} />}
+          identifier={'EclipticLine'}
+        />
         <NightSkyMarkingBox
           title={'Labels'}
-          icon={'text'}
+          icon={<AbcIcon size={IconSize.md} />}
           identifier={'EclipticSphereLabels'}
         />
-        <NightSkyMarkingBox title={'Band'} icon={'band'} identifier={'EclipticBand'} />
+        <NightSkyMarkingBox
+          title={'Band'}
+          icon={<BandIcon size={IconSize.md} />}
+          identifier={'EclipticBand'}
+        />
       </SimpleGrid>
 
       <Title order={2} my={'sm'}>
@@ -56,13 +89,17 @@ export function NightSkyMarkingsTab() {
       <SimpleGrid cols={4} spacing={'sm'}>
         <NightSkyMarkingBox
           title={'Grid'}
-          icon={'grid'}
+          icon={<GridSphereIcon size={IconSize.md} />}
           identifier={'EquatorialSphere'}
         />
-        <NightSkyMarkingBox title={'Line'} icon={'line'} identifier={'EquatorialLine'} />
+        <NightSkyMarkingBox
+          title={'Line'}
+          icon={<LineIcon size={IconSize.md} />}
+          identifier={'EquatorialLine'}
+        />
         <NightSkyMarkingBox
           title={'Labels'}
-          icon={'text'}
+          icon={<AbcIcon size={IconSize.md} />}
           identifier={'EquatorialSphereLabels'}
         />
       </SimpleGrid>
@@ -73,26 +110,26 @@ export function NightSkyMarkingsTab() {
       <SimpleGrid cols={4} spacing={'sm'}>
         <NightSkyMarkingBox
           title={'Grid'}
-          icon={'grid'}
+          icon={<GridSphereIcon size={IconSize.md} />}
           identifier={'ConstellationBounds'}
         />
         <NightSkyConstellationsBox
           title={'Lines'}
-          icon={'pencil'}
+          icon={<PencilIcon size={IconSize.md} />}
           identifier={'Constellations'}
           onAction={'os.nightsky.ShowConstellationElements'}
           elements
         />
         <NightSkyConstellationsBox
           title={'Art'}
-          icon={'paint'}
+          icon={<PaintBrushIcon size={IconSize.md} />}
           identifier={'ImageConstellation-Ori'}
           onAction={'os.constellation_art.ShowArt'}
           offAction={'os.constellation_art.HideArt'}
         />
         <NightSkyConstellationsBox
           title={'Labels'}
-          icon={'text'}
+          icon={<AbcIcon size={IconSize.md} />}
           identifier={'Scene.Constellations.Renderable.Labels'}
           onAction={'os.nightsky.FadeInConstellationLabels'}
           offAction={'os.nightsky.FadeOutConstellationLabels'}
@@ -106,17 +143,17 @@ export function NightSkyMarkingsTab() {
         <NightSkyCardinalDirectionsBox
           variant={'small'}
           title={'Small'}
-          icon={'compasssmall'}
+          icon={<CompassSmallIcon size={IconSize.md} />}
         />
         <NightSkyCardinalDirectionsBox
           variant={'large'}
           title={'Large'}
-          icon={'compasslarge'}
+          icon={<CompassLargeIcon size={IconSize.md} />}
         />
         <NightSkyCardinalDirectionsBox
           variant={'marks'}
           title={'Marks'}
-          icon={'compassmarks'}
+          icon={<CompassMarksIcon size={IconSize.md} />}
         />
       </SimpleGrid>
     </>

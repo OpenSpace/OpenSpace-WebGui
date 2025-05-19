@@ -22,7 +22,7 @@ export {
 export { GiNightSky as NightSkyIcon, GiPencil as PencilIcon } from 'react-icons/gi';
 export { GoBrowser as BrowserIcon } from 'react-icons/go';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
-export { ImSphere as SphereIcon } from 'react-icons/im';
+export { ImSphere as GridSphereIcon } from 'react-icons/im';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoInformation as InformationIcon,
