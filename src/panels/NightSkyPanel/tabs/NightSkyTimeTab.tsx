@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Divider, Group, Stack, Text, Title } from '@mantine/core';
 import * as GeoTZ from 'browser-geo-tz';
 
@@ -20,7 +20,7 @@ export function NightSkyTimeTab() {
   const [localArea, setLocalArea] = useState<string>('UTC');
   const [localTimeString, setLocalTimeString] = useState<string>('UTC');
 
-  const date = new Date(timeCapped ?? '');
+  const date = useMemo(() => new Date(timeCapped ?? ''), [timeCapped]);
   const isValidDate = isDateValid(date);
   const timeLabel = isValidDate ? date.toUTCString() : 'Date out of range';
 
@@ -28,7 +28,7 @@ export function NightSkyTimeTab() {
     return await GeoTZ.find(lat, lon);
   }
 
-  function getLocalTime(): string {
+  const getLocalTime = useCallback((): string => {
     let str = date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
@@ -38,11 +38,11 @@ export function NightSkyTimeTab() {
     });
     str += ' ' + date.toLocaleTimeString('en-US', { timeZone: localArea as string });
     return str;
-  }
+  }, [date, localArea]);
 
   useEffect(() => {
     setLocalTimeString(getLocalTime());
-  }, [date]);
+  }, [date, getLocalTime]);
 
   useEffect(() => {
     if (currentLat && currentLong) {
@@ -61,7 +61,7 @@ export function NightSkyTimeTab() {
         setLocalTimeString(getLocalTime());
       });
     }
-  }, [currentLat, currentLong]);
+  }, [currentLat, currentLong, getLocalTime, lastLat, lastLong]);
 
   return (
     <>
