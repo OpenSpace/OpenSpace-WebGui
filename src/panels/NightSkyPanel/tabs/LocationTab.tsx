@@ -13,6 +13,7 @@ import {
 } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { LocationPinIcon, WarningIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
@@ -47,6 +48,10 @@ export function LocationTab() {
 
   function look(direction: LookDirection): void {
     luaApi?.action.triggerAction('os.nightsky.Looking' + direction);
+  }
+
+  if (!luaApi) {
+    return <LoadingBlocks />;
   }
 
   return (
@@ -89,17 +94,17 @@ export function LocationTab() {
       </Title>
       <Group gap={'xs'}>
         <Button
-          onClick={() => luaApi?.action.triggerAction('os.nightsky.position.NorthPole')}
+          onClick={() => luaApi.action.triggerAction('os.nightsky.position.NorthPole')}
         >
           North Pole
         </Button>
         <Button
-          onClick={() => luaApi?.action.triggerAction('os.nightsky.position.Equator')}
+          onClick={() => luaApi.action.triggerAction('os.nightsky.position.Equator')}
         >
           Equator
         </Button>
         <Button
-          onClick={() => luaApi?.action.triggerAction('os.nightsky.position.SouthPole')}
+          onClick={() => luaApi.action.triggerAction('os.nightsky.position.SouthPole')}
         >
           South Pole
         </Button>
@@ -127,16 +132,16 @@ export function LocationTab() {
 
       <Group gap={'xs'}>
         <Button
-          onClick={() => luaApi?.action.triggerAction('os.nightsky.LevelHorizonPitch')}
+          onClick={() => luaApi.action.triggerAction('os.nightsky.LevelHorizonPitch')}
         >
           Look at Horizon
         </Button>
         <Button
-          onClick={() => luaApi?.action.triggerAction('os.nightsky.LevelHorizonYaw')}
+          onClick={() => luaApi.action.triggerAction('os.nightsky.LevelHorizonYaw')}
         >
           Level Horizon
         </Button>
-        <Button onClick={() => luaApi?.action.triggerAction('os.nightsky.LookUp')}>
+        <Button onClick={() => luaApi.action.triggerAction('os.nightsky.LookUp')}>
           Look Up
         </Button>
       </Group>

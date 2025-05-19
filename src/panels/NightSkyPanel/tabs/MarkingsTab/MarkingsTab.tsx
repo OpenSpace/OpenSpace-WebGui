@@ -1,12 +1,14 @@
 import { Button, SimpleGrid, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import {
   AbcIcon,
   BandIcon,
   CompassLargeIcon,
   CompassMarksIcon,
   CompassSmallIcon,
+  EyeOffIcon,
   GridSphereIcon,
   LineIcon,
   PaintBrushIcon,
@@ -22,16 +24,20 @@ import { ConstellationShowLinesBox } from './ConstellationsShowLinesBox';
 import { NightSkyMarkingBox } from './MarkingBox';
 
 export function MarkingsTab() {
-  const openspace = useOpenSpaceApi();
+  const luaApi = useOpenSpaceApi();
 
   return (
     <>
-      <Button
-        w={200}
-        onClick={() => openspace?.action.triggerAction('os.nightsky.HideAllMarkings')}
-      >
-        Hide All
-      </Button>
+      {luaApi ? (
+        <Button
+          leftSection={<EyeOffIcon />}
+          onClick={() => luaApi.action.triggerAction('os.nightsky.HideAllMarkings')}
+        >
+          Hide All
+        </Button>
+      ) : (
+        <LoadingBlocks n={1} />
+      )}
       <Title order={2} my={'sm'}>
         Alt/Az
       </Title>

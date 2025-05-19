@@ -12,8 +12,9 @@ import {
 import { DatePickerInput } from '@mantine/dates';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useProperty } from '@/hooks/properties';
-import { CalendarIcon, MinusIcon, PlusIcon } from '@/icons/icons';
+import { CalendarIcon, EyeIcon, EyeOffIcon, MinusIcon, PlusIcon } from '@/icons/icons';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { useAppSelector } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';
@@ -23,20 +24,24 @@ export function SunTab() {
   const [trailDate, setTrailDate] = useState<Date | null>(null);
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
 
-  const openspace = useOpenSpaceApi();
+  const [angularSize, setAngularSize] = useProperty(
+    'FloatProperty',
+    'Scene.EarthAtmosphere.Renderable.SunAngularSize'
+  );
+
+  const luaApi = useOpenSpaceApi();
   const sunTrailTag = 'sun_trail';
 
   const addedTrails = Object.values(propertyOwners).filter((owner) =>
     owner!.tags.includes(sunTrailTag)
   );
 
-  const [angularSize, setAngularSize] = useProperty(
-    'FloatProperty',
-    'Scene.EarthAtmosphere.Renderable.SunAngularSize'
-  );
-
   function addTrail(date: string): void {
-    openspace?.action.triggerAction('os.nightsky.AddSunTrail', { Date: date });
+    luaApi?.action.triggerAction('os.nightsky.AddSunTrail', { Date: date });
+  }
+
+  if (!luaApi) {
+    return <LoadingBlocks />;
   }
 
   return (
@@ -45,10 +50,16 @@ export function SunTab() {
         Glare
       </Title>
       <Group gap={'xs'}>
-        <Button onClick={() => openspace?.fadeIn('Scene.SunGlare.Renderable')}>
+        <Button
+          onClick={() => luaApi.fadeIn('Scene.SunGlare.Renderable')}
+          leftSection={<EyeIcon />}
+        >
           Show Glare
         </Button>
-        <Button onClick={() => openspace?.fadeOut('Scene.SunGlare.Renderable')}>
+        <Button
+          onClick={() => luaApi.fadeOut('Scene.SunGlare.Renderable')}
+          leftSection={<EyeOffIcon />}
+        >
           Hide Glare
         </Button>
       </Group>
@@ -114,10 +125,7 @@ export function SunTab() {
 
       <Group mt={'md'} mb={'xs'}>
         <Title order={3}>Added Sun Trails</Title>
-        <Button
-          size={'compact-md'}
-          onClick={() => openspace?.fadeOut(`{${sunTrailTag}}`)}
-        >
+        <Button size={'compact-md'} onClick={() => luaApi.fadeOut(`{${sunTrailTag}}`)}>
           Hide All
         </Button>
       </Group>

@@ -2,8 +2,9 @@ import { ActionIcon, Box, Button, Group, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { BoolInput } from '@/components/Input/BoolInput';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useProperty } from '@/hooks/properties';
-import { MinusIcon, PlusIcon } from '@/icons/icons';
+import { EyeIcon, EyeOffIcon, MinusIcon, PlusIcon } from '@/icons/icons';
 
 // @TODO (2025-05-19, emmbr) This component needs logic for checking if the used actions
 // exist. However, for this we need to be able to access the actions state using the
@@ -25,6 +26,10 @@ export function SolarSystemTab() {
     luaApi?.action.triggerAction(identifier);
   }
 
+  if (!luaApi) {
+    return <LoadingBlocks />;
+  }
+
   return (
     <>
       <Title order={2} mb={'xs'}>
@@ -34,8 +39,8 @@ export function SolarSystemTab() {
         <Button onClick={() => action('os.FadeDownTrails')}>Hide ALL Trails</Button>
         <Button
           onClick={() => {
-            luaApi?.fadeIn('{planetTrail_solarSystem}');
-            luaApi?.fadeOut('Scene.EarthTrail.Renderable');
+            luaApi.fadeIn('{planetTrail_solarSystem}');
+            luaApi.fadeOut('Scene.EarthTrail.Renderable');
           }}
         >
           Show Planet Trails
@@ -46,10 +51,16 @@ export function SolarSystemTab() {
         Labels
       </Title>
       <Group gap={'xs'}>
-        <Button onClick={() => luaApi?.fadeIn('{solarsystem_labels}.Renderable')}>
+        <Button
+          onClick={() => luaApi.fadeIn('{solarsystem_labels}.Renderable')}
+          leftSection={<EyeIcon />}
+        >
           Show Labels
         </Button>
-        <Button onClick={() => luaApi?.fadeOut('{solarsystem_labels}.Renderable')}>
+        <Button
+          onClick={() => luaApi.fadeOut('{solarsystem_labels}.Renderable')}
+          leftSection={<EyeOffIcon />}
+        >
           Hide Labels
         </Button>
       </Group>
@@ -58,10 +69,16 @@ export function SolarSystemTab() {
         Planets
       </Title>
       <Group gap={'xs'}>
-        <Button onClick={() => action('os.nightsky.ShowNightSkyPlanets')}>
+        <Button
+          onClick={() => action('os.nightsky.ShowNightSkyPlanets')}
+          leftSection={<EyeIcon />}
+        >
           Show Night Sky Planets
         </Button>
-        <Button onClick={() => action('os.nightsky.HideNightSkyPlanets')}>
+        <Button
+          onClick={() => action('os.nightsky.HideNightSkyPlanets')}
+          leftSection={<EyeOffIcon />}
+        >
           Hide Night Sky Planets
         </Button>
       </Group>

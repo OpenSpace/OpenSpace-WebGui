@@ -2,6 +2,7 @@ import { Alert, Button, Divider, Group, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { BoolInput } from '@/components/Input/BoolInput';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { useProperty } from '@/hooks/properties';
 
@@ -16,6 +17,10 @@ export function StarsTab() {
     'BoolProperty',
     'Scene.Stars.Renderable.DimInAtmosphere'
   );
+
+  if (!luaApi) {
+    return <LoadingBlocks />;
+  }
 
   return (
     <>
@@ -54,12 +59,10 @@ export function StarsTab() {
           The buttons below only work in the 'nightsky' profile. Use the profile editor to
           edit the actions and adjust the values for your dome.
         </Alert>
-        <Button onClick={() => luaApi?.action.triggerAction('os.nightsky.DefaultStars')}>
+        <Button onClick={() => luaApi.action.triggerAction('os.nightsky.DefaultStars')}>
           Default settings
         </Button>
-        <Button
-          onClick={() => luaApi?.action.triggerAction('os.nightsky.PointlikeStars')}
-        >
+        <Button onClick={() => luaApi.action.triggerAction('os.nightsky.PointlikeStars')}>
           More point like stars
         </Button>
       </Group>

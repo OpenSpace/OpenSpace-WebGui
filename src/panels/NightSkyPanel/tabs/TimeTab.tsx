@@ -3,6 +3,7 @@ import { Alert, Button, Divider, Group, Stack, Text, Title } from '@mantine/core
 import * as GeoTZ from 'browser-geo-tz';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
@@ -56,6 +57,10 @@ export function TimeTab() {
     return str;
   }
 
+  if (!luaApi) {
+    return <LoadingBlocks />;
+  }
+
   return (
     <>
       <Group justify={'space-between'} align={'top'} gap={'xs'} mb={'md'}>
@@ -64,7 +69,7 @@ export function TimeTab() {
         </Title>
         <Button
           onClick={async () => {
-            const now = await luaApi?.time.currentWallTime();
+            const now = await luaApi.time.currentWallTime();
             if (now) {
               luaApi?.time.setTime(now);
             } else {
@@ -89,44 +94,44 @@ export function TimeTab() {
         <Group gap={'lg'}>
           <Group gap={'xs'}>
             <Button
-              onClick={() => luaApi?.action.triggerAction('os.time.siderealDayIncrease')}
+              onClick={() => luaApi.action.triggerAction('os.time.siderealDayIncrease')}
             >
               + Sidereal day
             </Button>
             <Button
-              onClick={() => luaApi?.action.triggerAction('os.time.siderealDayDecrease')}
+              onClick={() => luaApi.action.triggerAction('os.time.siderealDayDecrease')}
             >
               - Sidereal day
             </Button>
             <Button
-              onClick={() => luaApi?.action.triggerAction('os.time.siderealWeekIncrease')}
+              onClick={() => luaApi.action.triggerAction('os.time.siderealWeekIncrease')}
             >
               + Sidereal week
             </Button>
             <Button
-              onClick={() => luaApi?.action.triggerAction('os.time.siderealWeekDecrease')}
+              onClick={() => luaApi.action.triggerAction('os.time.siderealWeekDecrease')}
             >
               - Sidereal week
             </Button>
           </Group>
           <Group gap={'xs'}>
             <Button
-              onClick={() => luaApi?.action.triggerAction('os.time.SolarDayIncrease')}
+              onClick={() => luaApi.action.triggerAction('os.time.SolarDayIncrease')}
             >
               + Solar day
             </Button>
             <Button
-              onClick={() => luaApi?.action.triggerAction('os.time.SolarDayDecrease')}
+              onClick={() => luaApi.action.triggerAction('os.time.SolarDayDecrease')}
             >
               - Solar day
             </Button>
             <Button
-              onClick={() => luaApi?.action.triggerAction('os.time.SolarWeekIncrease')}
+              onClick={() => luaApi.action.triggerAction('os.time.SolarWeekIncrease')}
             >
               + Solar week
             </Button>
             <Button
-              onClick={() => luaApi?.action.triggerAction('os.time.SolarWeekDecrease')}
+              onClick={() => luaApi.action.triggerAction('os.time.SolarWeekDecrease')}
             >
               - solar week
             </Button>
@@ -137,38 +142,38 @@ export function TimeTab() {
         <Group gap={'xs'}>
           <Button
             onClick={() => {
-              luaApi?.time.interpolatePause(false);
-              luaApi?.time.interpolateDeltaTime(1);
+              luaApi.time.interpolatePause(false);
+              luaApi.time.interpolateDeltaTime(1);
             }}
           >
             Realtime
           </Button>
           <Button
             onClick={() => {
-              luaApi?.time.interpolatePause(false);
-              luaApi?.time.interpolateDeltaTime(60);
+              luaApi.time.interpolatePause(false);
+              luaApi.time.interpolateDeltaTime(60);
             }}
           >
             60x (1 min/sec)
           </Button>
           <Button
             onClick={() => {
-              luaApi?.time.interpolatePause(false);
-              luaApi?.time.interpolateDeltaTime(120);
+              luaApi.time.interpolatePause(false);
+              luaApi.time.interpolateDeltaTime(120);
             }}
           >
             120x (2 min/sec)
           </Button>
           <Button
             onClick={() => {
-              luaApi?.time.interpolatePause(false);
-              luaApi?.time.interpolateDeltaTime(300);
+              luaApi.time.interpolatePause(false);
+              luaApi.time.interpolateDeltaTime(300);
             }}
           >
             300x (5 min/sec)
           </Button>
 
-          <Button onClick={() => luaApi?.time.togglePause()}>Play / Pause</Button>
+          <Button onClick={() => luaApi.time.togglePause()}>Play / Pause</Button>
         </Group>
       </Stack>
       <Divider my={'xs'} />

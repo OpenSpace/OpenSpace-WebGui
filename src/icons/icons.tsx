@@ -55,6 +55,7 @@ export {
   MdHdrStrong as ExoplanetIcon,
   MdOpenWith as ExpandArrowsIcon,
   MdVisibility as EyeIcon,
+  MdVisibilityOff as EyeOffIcon,
   MdFastForward as FastForwardIcon,
   MdFastRewind as FastRewindIcon,
   MdFilterAlt as FilterIcon,
