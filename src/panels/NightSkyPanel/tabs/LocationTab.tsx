@@ -109,15 +109,16 @@ export function LocationTab() {
           South Pole
         </Button>
       </Group>
-      <Paper p={'sm'} my={'md'}>
-        <Text>
-          To search for a particular location on Earth, use the Geo Location window.
-          <LocationPinIcon size={20}></LocationPinIcon>
-        </Text>
+      <Paper>
+        <Alert mt={'md'} p={'sm'} variant={'subtle'} icon={<LocationPinIcon />}>
+          <Text size={'sm'}>
+            To search for a specific location on Earth, use the Geo Location window.
+          </Text>
+        </Alert>
       </Paper>
-      <Divider my={'xs'} />
+      <Divider my={'sm'} />
 
-      <Title order={2} mt={'xs'} mb={'xs'}>
+      <Title order={2} mb={'xs'}>
         Direction
       </Title>
       <Group gap={'xs'}>

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Alert, Button, Divider, Group, Text, Title } from '@mantine/core';
+import { Alert, Button, Divider, Group, Paper, Text, Title } from '@mantine/core';
 import * as GeoTZ from 'browser-geo-tz';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { PlusMinusActionGroup } from '@/components/PlusMinusActionGroup/PlusMinusActionGroup';
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
+import { CalendarIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
 
@@ -173,12 +174,14 @@ export function TimeTab() {
 
         <Button onClick={() => luaApi.time.togglePause()}>Play / Pause</Button>
       </Group>
-      <Alert title={'Note'} mt={'md'}>
-        <Text>
-          Only some controls are found here. For more control over time, use the Time
-          Panel.
-        </Text>
-      </Alert>
+      <Paper>
+        <Alert mt={'md'} variant={'subtle'} p={'sm'} icon={<CalendarIcon />}>
+          <Text size={'sm'}>
+            Only some controls are found here. For more control over time, use the Time
+            Panel.
+          </Text>
+        </Alert>
+      </Paper>
     </>
   );
 }
