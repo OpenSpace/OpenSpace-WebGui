@@ -12,6 +12,9 @@ export const SupportedLanguages: Record<string, LanguageInfo> = {
   sv: { language: 'Swedish', icon: <SE width={20} /> }
 };
 
+// @TODO anden88 2025-05-19: Temporary fix to get translation lookup working correctly
+const basePath = process.env.NODE_ENV === 'production' ? '/frontend/' : '/';
+
 i18n
   .use(HttpApi)
   .use(initReactI18next)
@@ -27,6 +30,9 @@ i18n
     interpolation: {
       // React already escapes any code in translation messages, safguarding against XSS
       escapeValue: false
+    },
+    backend: {
+      loadPath: `${basePath}locales/{{lng}}/{{ns}}.json`
     }
   });
 
