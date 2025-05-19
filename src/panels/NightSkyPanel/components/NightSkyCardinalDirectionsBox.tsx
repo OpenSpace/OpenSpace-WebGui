@@ -1,4 +1,4 @@
-import { Checkbox, Paper, Stack, Text } from '@mantine/core';
+import { Checkbox, Group, Paper, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
@@ -8,6 +8,7 @@ import {
   CompassSmallIcon,
   HomeIcon
 } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
 
 import { CardinalDirectionBoxVariant, MarkingIcon } from '../types';
 
@@ -36,13 +37,13 @@ export function NightSkyCardinalDirectionsBox({ variant, title, icon }: Props) {
   function getDisplayIcon(icon: string) {
     switch (icon) {
       case 'compasssmall':
-        return <CompassSmallIcon size={30} />;
+        return <CompassSmallIcon size={IconSize.md} />;
       case 'compasslarge':
-        return <CompassLargeIcon size={30} />;
+        return <CompassLargeIcon size={IconSize.md} />;
       case 'compassmarks':
-        return <CompassMarksIcon size={30} />;
+        return <CompassMarksIcon size={IconSize.md} />;
       default:
-        return <HomeIcon size={30} />;
+        return <HomeIcon size={IconSize.md} />;
     }
   }
 
@@ -104,17 +105,17 @@ export function NightSkyCardinalDirectionsBox({ variant, title, icon }: Props) {
   }
 
   return (
-    <Paper pt={'sm'}>
-      <Stack align={'center'}>
+    <Paper p={'xs'}>
+      <Group justify={'center'}>
         <Checkbox
-          onChange={(event) => {
-            checkboxChange(event.currentTarget.checked);
-          }}
+          onChange={(event) => checkboxChange(event.currentTarget.checked)}
           checked={isChecked()}
         />
-        {getDisplayIcon(icon)}
-        <Text>{title}</Text>
-      </Stack>
+        <Stack align={'center'} flex={1} gap={3}>
+          {getDisplayIcon(icon)}
+          <Text>{title}</Text>
+        </Stack>
+      </Group>
     </Paper>
   );
 }

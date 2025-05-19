@@ -12,13 +12,13 @@ export function NightSkyMarkingsTab() {
   return (
     <>
       <Button
-        mb={'lg'}
-        fullWidth
+        mt={'xs'}
+        w={200}
         onClick={() => openspace?.action.triggerAction('os.nightsky.HideAllMarkings')}
       >
-        HIDE ALL
+        Hide All
       </Button>
-      <Title order={2} my={'md'}>
+      <Title order={2} my={'sm'}>
         Alt/Az
       </Title>
       <SimpleGrid cols={4} spacing={'sm'}>
@@ -36,7 +36,7 @@ export function NightSkyMarkingsTab() {
         <NightSkyMarkingBox title={'Zenith'} icon={'dot'} identifier={'ZenithDot'} />
       </SimpleGrid>
 
-      <Title order={2} my={'md'}>
+      <Title order={2} my={'sm'}>
         Ecliptic
       </Title>
       <SimpleGrid cols={4} spacing={'sm'}>
@@ -50,7 +50,7 @@ export function NightSkyMarkingsTab() {
         <NightSkyMarkingBox title={'Band'} icon={'band'} identifier={'EclipticBand'} />
       </SimpleGrid>
 
-      <Title order={2} my={'md'}>
+      <Title order={2} my={'sm'}>
         Equatorial
       </Title>
       <SimpleGrid cols={4} spacing={'sm'}>
@@ -67,7 +67,7 @@ export function NightSkyMarkingsTab() {
         />
       </SimpleGrid>
 
-      <Title order={2} my={'md'}>
+      <Title order={2} my={'sm'}>
         Constellations
       </Title>
       <SimpleGrid cols={4} spacing={'sm'}>
@@ -99,7 +99,7 @@ export function NightSkyMarkingsTab() {
         />
       </SimpleGrid>
 
-      <Title order={2} my={'md'}>
+      <Title order={2} my={'sm'}>
         Cardinal Directions
       </Title>
       <SimpleGrid cols={4} spacing={'sm'}>

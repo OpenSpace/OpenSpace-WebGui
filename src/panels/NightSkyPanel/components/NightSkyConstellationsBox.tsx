@@ -1,8 +1,11 @@
-import { Checkbox, Paper, Stack, Text } from '@mantine/core';
+import { Checkbox } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
 import { AbcIcon, HomeIcon, PaintBrushIcon, PencilIcon, SphereIcon } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
+
+import { ToggleCard } from './ToggleCard';
 
 interface Props {
   title: string;
@@ -21,27 +24,16 @@ export function NightSkyConstellationsBox({
   offAction,
   elements
 }: Props) {
+  const uri = identifier ? 'Scene.' + identifier + '.Renderable' : '';
   const luaApi = useOpenSpaceApi();
 
-  const [enabled] = useProperty('BoolProperty', checkIdentifier() + '.Enabled');
+  const [enabled] = useProperty('BoolProperty', `${uri}.Enabled`);
   const [elementsEnabled, setElementsEnabled] = useProperty(
     'BoolProperty',
     'Scene.Constellations.Renderable.DrawElements'
   );
 
-  const [identifierFaded] = useProperty('FloatProperty', checkIdentifier() + '.Fade');
-
-  function checkIdentifier() {
-    if (identifier) {
-      if (identifier.startsWith('Scene')) {
-        return identifier;
-      } else {
-        return 'Scene.' + identifier + '.Renderable';
-      }
-    } else {
-      return '';
-    }
-  }
+  const [identifierFaded] = useProperty('FloatProperty', `${uri}.Fade`);
 
   function isChecked() {
     if (elements) {
@@ -54,15 +46,15 @@ export function NightSkyConstellationsBox({
   function getDisplayIcon(icon: string) {
     switch (icon) {
       case 'grid':
-        return <SphereIcon size={30} />;
+        return <SphereIcon size={IconSize.md} />;
       case 'text':
-        return <AbcIcon size={30} />;
+        return <AbcIcon size={IconSize.md} />;
       case 'pencil':
-        return <PencilIcon size={30} />;
+        return <PencilIcon size={IconSize.md} />;
       case 'paint':
-        return <PaintBrushIcon size={30} />;
+        return <PaintBrushIcon size={IconSize.md} />;
       default:
-        return <HomeIcon size={30} />;
+        return <HomeIcon size={IconSize.md} />;
     }
   }
 
@@ -71,7 +63,7 @@ export function NightSkyConstellationsBox({
       if (onAction) {
         luaApi?.action.triggerAction(onAction);
       } else if (identifier) {
-        luaApi?.fadeIn('Scene.' + identifier + '.Renderable');
+        luaApi?.fadeIn(uri);
       }
     } else {
       if (offAction) {
@@ -79,22 +71,21 @@ export function NightSkyConstellationsBox({
       } else if (elements) {
         setElementsEnabled(false);
       } else {
-        luaApi?.fadeOut('Scene.' + identifier + '.Renderable');
+        luaApi?.fadeOut(uri);
       }
     }
   }
+
   return (
-    <Paper pt={'sm'}>
-      <Stack align={'center'}>
+    <ToggleCard
+      checkbox={
         <Checkbox
-          onChange={(event) => {
-            checkboxChange(event.currentTarget.checked);
-          }}
+          onChange={(event) => checkboxChange(event.currentTarget.checked)}
           checked={isChecked()}
         />
-        {getDisplayIcon(icon)}
-        <Text>{title}</Text>
-      </Stack>
-    </Paper>
+      }
+      title={title}
+      icon={getDisplayIcon(icon)}
+    />
   );
 }
