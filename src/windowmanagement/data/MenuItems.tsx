@@ -52,7 +52,7 @@ import {
 export interface MenuItem {
   title: string; // Title of the rc-dock tab
   componentID: string; // Unqiue ID to identify this component among the rc-dock tabs
-  content: React.JSX.Element; // Content to render inside the rc-dock tab
+  content: React.ReactNode; // Content to render inside the rc-dock tab
   renderMenuButton?: (id: string) => React.JSX.Element; // Custom menu button to render
   renderIcon?: (size: IconSize) => React.JSX.Element; // Custom icon to render
   preferredPosition: WindowLayoutPosition; // Where this panel is instantiated
@@ -207,7 +207,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Getting Started Tour',
     componentID: 'gettingStartedTour',
     content: <GettingStartedPanel />,
-    renderIcon: (size) => <RouteIcon size={size} />,
+    renderIcon: (size) => <RouteIcon size={size} style={{ transform: 'scale(-1)' }} />,
     preferredPosition: 'float',
     floatPosition: { offsetY: 150, offsetX: 350, width: 600, height: 500 },
     defaultVisible: true

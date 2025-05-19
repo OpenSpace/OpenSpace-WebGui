@@ -11,7 +11,7 @@ export const DefaultSgnWindowId = 'defaultSceneGraphNodeWindow';
 export function useOpenCurrentSceneNodeWindow() {
   const { ref, addWindow, closeWindow, createWindowTabData } = useWindowLayoutProvider();
 
-  function openCurrentNodeWindow(content: React.JSX.Element) {
+  function openCurrentNodeWindow(content: React.ReactNode) {
     if (!ref || ref.current === null) {
       throw new Error('WindowLayoutProvider ref is not set');
     }

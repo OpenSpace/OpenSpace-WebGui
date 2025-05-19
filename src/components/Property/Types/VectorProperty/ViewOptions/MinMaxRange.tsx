@@ -1,8 +1,8 @@
 import { Group, NumberFormatter, RangeSlider, Stack } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-import { useSliderScale } from '@/components/Property/SliderUtil/hooks';
-import { SliderMinMaxLabels } from '@/components/Property/SliderUtil/SliderMinMaxLabels';
+import { useSliderScale } from '@/components/Input/NumericInput/NumericSlider/hooks';
+import { MinMaxLabels } from '@/components/Input/NumericInput/NumericSlider/MinMaxLabels';
 import { usePropListeningState } from '@/hooks/util';
 import { AdditionalDataVectorMatrix } from '@/types/Property/propertyTypes';
 
@@ -86,7 +86,7 @@ export function MinMaxRangeView({
           opacity={disabled ? 0.5 : 1}
           {...commonProps}
         />
-        <SliderMinMaxLabels min={min} max={max} />
+        <MinMaxLabels min={min} max={max} />
       </Stack>
     </Stack>
   );

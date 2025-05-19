@@ -1,12 +1,12 @@
 import { Flex, Group, NumberFormatter, Paper, Text } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
+import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
+import { validSliderExtent } from '@/components/Input/NumericInput/NumericSlider/util';
 import { PropertyProps } from '@/components/Property/types';
 import { useProperty } from '@/hooks/properties';
 import { usePropListeningState } from '@/hooks/util';
-
-import { NumericPropertySlider } from './Slider/NumericPropertySlider';
-import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from './util';
+import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from '@/util/numeric';
 
 interface Props extends PropertyProps {
   isInt?: boolean;
@@ -25,17 +25,9 @@ export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
 
   const { min, max, step, exponent } = meta.additionalData;
 
-  // When no min/max is set, the marks for the slider cannot be nicely computed
-  const extent = max - min;
-  // @TODO (2025-03-03, emmbr) This should be handled a better way... This is a bit of a
-  // hack and the max value is just arbitrarily chosen
-  const maxAllowedExtentForSlider = 1e12;
-  const shouldShowSlider = isFinite(extent) && extent < maxAllowedExtentForSlider;
-
   const decimalPlaces = stepToDecimalPlaces(step);
+  const shouldShowSlider = validSliderExtent(min, max);
 
-  // @TODO (2025-03-14, emmbr) There still seems to be a bit of a stutter when dragging
-  // the slider. Investigate.
   function onValueChange(newValue: number) {
     setCurrentValue(newValue);
     setPropertyValue(newValue);
@@ -44,7 +36,7 @@ export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
   return (
     <Group align={'bottom'}>
       {shouldShowSlider && (
-        <NumericPropertySlider
+        <NumericSlider
           value={value}
           flex={2}
           miw={100}
@@ -53,7 +45,7 @@ export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
           max={max}
           step={step}
           exponent={exponent}
-          onInput={setPropertyValue}
+          onInput={onValueChange}
         />
       )}
       <Flex flex={1} miw={100}>

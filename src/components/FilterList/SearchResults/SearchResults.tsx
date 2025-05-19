@@ -16,7 +16,7 @@ interface Props<T> extends PropsWithChildren {
   renderElement: renderFunc<T>;
   data: T[];
   matcherFunc: (data: T, searchString: string) => boolean;
-  noResultsDisplay?: React.JSX.Element;
+  noResultsDisplay?: React.ReactNode;
 }
 
 export function SearchResults<T>({

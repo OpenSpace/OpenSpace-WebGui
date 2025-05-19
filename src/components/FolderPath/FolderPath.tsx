@@ -4,6 +4,7 @@ import { ChevronRightIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
 interface Props {
+  // Each step in the can be a string or a React element, such as an icon
   path: (React.JSX.Element | string)[];
 }
 
