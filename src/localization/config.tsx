@@ -13,8 +13,7 @@ export const SupportedLanguages: Record<string, LanguageInfo> = {
 };
 
 // @TODO anden88 2025-05-19: Temporary fix to get translation lookup working correctly
-const basePath = process.env.NODE_ENV === 'production' ? '/frontend/' : '/';
-
+const basePath = import.meta.env.PROD ? '/frontend/' : '/';
 i18n
   .use(HttpApi)
   .use(initReactI18next)
