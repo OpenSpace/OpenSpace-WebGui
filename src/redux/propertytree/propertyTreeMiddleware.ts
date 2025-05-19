@@ -44,7 +44,7 @@ export const addUriToPropertyTree = createAsyncThunk(
       uriToFetch = removeLastWordFromUri(uri);
     }
 
-    const response = (await api.getProperty(uriToFetch)) as
+    const response = (await api.property(uriToFetch)) as
       | AnyProperty
       | OpenSpacePropertyOwner;
 
