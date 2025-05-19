@@ -1,4 +1,6 @@
 import { Paper, Stack, Text } from '@mantine/core';
+
+import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import {
   AbcIcon,
   BandIcon,
@@ -13,7 +15,6 @@ import {
   SphereIcon
 } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
-import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 
 interface Props {
   title: string;
@@ -25,12 +26,7 @@ interface Props {
   directionCheck?: string;
 }
 
-export function NightSkyMarkingBox({
-  title,
-  icon,
-  identifier,
-}: Props) {
-
+export function NightSkyMarkingBox({ title, icon, identifier }: Props) {
   function getDisplayIcon(icon: string) {
     switch (icon) {
       case 'grid':
@@ -60,8 +56,8 @@ export function NightSkyMarkingBox({
 
   return (
     <Paper pt={'sm'}>
-      <Stack align={'center'} >
-        <PropertyOwnerVisibilityCheckbox uri={"Scene."+identifier!+".Renderable"}/>
+      <Stack align={'center'}>
+        <PropertyOwnerVisibilityCheckbox uri={'Scene.' + identifier! + '.Renderable'} />
         {getDisplayIcon(icon)}
         <Text>{title}</Text>
       </Stack>

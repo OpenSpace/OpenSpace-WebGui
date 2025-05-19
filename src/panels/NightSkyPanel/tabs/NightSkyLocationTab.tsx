@@ -5,7 +5,6 @@ import {
   Group,
   Image,
   Paper,
-  Stack,
   Text
 } from '@mantine/core';
 
@@ -61,27 +60,23 @@ export function NightSkyLocationTab() {
       <Divider my={'xl'} mt={5} />
       <Group>
         <Text size={'xl'}>Jump to Positon</Text>
-          <Group gap={'xs'}>
-            <Button
-              onClick={() =>
-                luaApi?.action.triggerAction('os.nightsky.position.NorthPole')
-              }
-            >
-              North Pole
-            </Button>
-            <Button
-              onClick={() => luaApi?.action.triggerAction('os.nightsky.position.Equator')}
-            >
-              Equator
-            </Button>
-            <Button
-              onClick={() =>
-                luaApi?.action.triggerAction('os.nightsky.position.SouthPole')
-              }
-            >
-              South Pole
-            </Button>
-          </Group>
+        <Group gap={'xs'}>
+          <Button
+            onClick={() => luaApi?.action.triggerAction('os.nightsky.position.NorthPole')}
+          >
+            North Pole
+          </Button>
+          <Button
+            onClick={() => luaApi?.action.triggerAction('os.nightsky.position.Equator')}
+          >
+            Equator
+          </Button>
+          <Button
+            onClick={() => luaApi?.action.triggerAction('os.nightsky.position.SouthPole')}
+          >
+            South Pole
+          </Button>
+        </Group>
       </Group>
       <Paper shadow={'xs'} p={'xl'} my={'xl'}>
         <Text>

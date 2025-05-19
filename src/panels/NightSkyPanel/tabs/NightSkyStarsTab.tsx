@@ -1,9 +1,9 @@
-import { Alert, Button, Divider, Group, Paper, Space, Text, Title } from '@mantine/core';
+import { Alert, Button, Divider, Group, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { BoolInput } from '@/components/Input/BoolInput';
-import { useProperty } from '@/hooks/properties';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
+import { useProperty } from '@/hooks/properties';
 
 export function NightSkyStarsTab() {
   const luaApi = useOpenSpaceApi();
@@ -18,7 +18,7 @@ export function NightSkyStarsTab() {
       <Group my={'md'}>
         <Title order={2}>Visibility</Title>
         <Group>
-          <PropertyOwnerVisibilityCheckbox uri={"Scene.Stars.Renderable"} />
+          <PropertyOwnerVisibilityCheckbox uri={'Scene.Stars.Renderable'} />
           <Text>Show Stars</Text>
           <BoolInput
             label={'Show During day'}
@@ -29,26 +29,30 @@ export function NightSkyStarsTab() {
         </Group>
       </Group>
       <Group>
-          <Title order={2}>Labels</Title>
-          <Group>
-            <PropertyOwnerVisibilityCheckbox uri={"Scene.StarsLabels.Renderable"} />
-            <Text>Show Labels</Text>
-            <PropertyOwnerVisibilityCheckbox uri={"Scene.StarLabelsAlternate.Renderable"} />
-            <Text>Show Alternate Labels</Text>
-          </Group>
+        <Title order={2}>Labels</Title>
+        <Group>
+          <PropertyOwnerVisibilityCheckbox uri={'Scene.StarsLabels.Renderable'} />
+          <Text>Show Labels</Text>
+          <PropertyOwnerVisibilityCheckbox uri={'Scene.StarLabelsAlternate.Renderable'} />
+          <Text>Show Alternate Labels</Text>
         </Group>
+      </Group>
       <Divider my={'md'}></Divider>
       <Group my={'xl'}>
-        <Alert variant="outline" title="Note" color="dark" p={'xl'} mb={'md'}>
-          The buttons below only work in the 'nightsky' profile. Use the profile
-          editor to edit the actions and ajust the values for your dome.
+        <Alert variant={'outline'} title={'Note'} color={'dark'} p={'xl'} mb={'md'}>
+          The buttons below only work in the 'nightsky' profile. Use the profile editor to
+          edit the actions and ajust the values for your dome.
         </Alert>
         <Title order={2}>Appearance</Title>
         <Group gap={'xs'}>
-          <Button onClick={() => luaApi?.action.triggerAction('os.nightsky.DefaultStars')}>
+          <Button
+            onClick={() => luaApi?.action.triggerAction('os.nightsky.DefaultStars')}
+          >
             Default settings
           </Button>
-          <Button onClick={() => luaApi?.action.triggerAction('os.nightsky.PointlikeStars')}>
+          <Button
+            onClick={() => luaApi?.action.triggerAction('os.nightsky.PointlikeStars')}
+          >
             More point like stars
           </Button>
         </Group>

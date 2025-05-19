@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, Button, Divider, Group, Paper, Stack, Text, Title } from '@mantine/core';
+import { Alert, Button, Divider, Group, Stack, Text, Title } from '@mantine/core';
 import * as GeoTZ from 'browser-geo-tz';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -87,7 +87,9 @@ export function NightSkyTimeTab() {
       <Text mb={'lg'}>Timezone: {localArea}</Text>
       <Text my={'md'}>UTC: {timeLabel}</Text>
       <Divider />
-      <Title order={3} my={'md'}>Jumps</Title>
+      <Title order={3} my={'md'}>
+        Jumps
+      </Title>
       <Stack>
         <Group gap={'xl'}>
           <Group gap={'xs'}>

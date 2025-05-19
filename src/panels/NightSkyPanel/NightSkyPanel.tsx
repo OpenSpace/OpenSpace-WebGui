@@ -1,5 +1,4 @@
-import { Container, Divider, Group, Space, Tabs } from '@mantine/core';
-import { useElementSize } from '@mantine/hooks';
+import { Group, Tabs } from '@mantine/core';
 
 import { NightSkyLocationTab } from './tabs/NightSkyLocationTab';
 import { NightSkyMarkingsTab } from './tabs/NightSkyMarkingsTab';

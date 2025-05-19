@@ -1,15 +1,8 @@
-import { useState } from 'react';
 import { Checkbox, Paper, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
-import {
-  AbcIcon,
-  HomeIcon,
-  PaintBrushIcon,
-  PencilIcon,
-  SphereIcon
-} from '@/icons/icons';
+import { AbcIcon, HomeIcon, PaintBrushIcon, PencilIcon, SphereIcon } from '@/icons/icons';
 
 interface Props {
   title: string;
@@ -31,10 +24,13 @@ export function NightSkyConstellationsBox({
   const luaApi = useOpenSpaceApi();
 
   const [enabled] = useProperty('BoolProperty', checkIdentifier() + '.Enabled');
-  const [elementsEnabled, setElementsEnabled] = useProperty('BoolProperty', 'Scene.Constellations.Renderable.DrawElements');
+  const [elementsEnabled, setElementsEnabled] = useProperty(
+    'BoolProperty',
+    'Scene.Constellations.Renderable.DrawElements'
+  );
 
   const [identifierFaded] = useProperty('FloatProperty', checkIdentifier() + '.Fade');
-  
+
   function checkIdentifier() {
     if (identifier) {
       if (identifier.startsWith('Scene')) {
@@ -88,17 +84,17 @@ export function NightSkyConstellationsBox({
     }
   }
   return (
-  <Paper pt={'sm'}>
-    <Stack align={'center'} >
+    <Paper pt={'sm'}>
+      <Stack align={'center'}>
         <Checkbox
-            onChange={(event) => {
-                checkboxChange(event.currentTarget.checked)
-            }}
-            checked={isChecked()}
+          onChange={(event) => {
+            checkboxChange(event.currentTarget.checked);
+          }}
+          checked={isChecked()}
         />
         {getDisplayIcon(icon)}
         <Text>{title}</Text>
-    </Stack>
-  </Paper>
+      </Stack>
+    </Paper>
   );
 }

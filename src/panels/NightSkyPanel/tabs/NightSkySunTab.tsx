@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Divider, Group, Space, Text, Title } from '@mantine/core';
+import { Button, Divider, Group, Text, Title } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -7,8 +7,8 @@ import { useProperty } from '@/hooks/properties';
 import { CalendarIcon } from '@/icons/icons';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { useAppSelector } from '@/redux/hooks';
-import { sgnUri } from '@/util/propertyTreeHelpers';
 import { IconSize } from '@/types/enums';
+import { sgnUri } from '@/util/propertyTreeHelpers';
 
 export function NightSkySunTab() {
   const openspace = useOpenSpaceApi();
@@ -30,7 +30,9 @@ export function NightSkySunTab() {
 
   return (
     <>
-      <Title order={2} my={'sm'}>Glare</Title>
+      <Title order={2} my={'sm'}>
+        Glare
+      </Title>
       <Group gap={'xs'} my={'md'}>
         <Button onClick={() => openspace?.fadeIn('Scene.SunGlare.Renderable')}>
           Show Glare
@@ -40,22 +42,28 @@ export function NightSkySunTab() {
         </Button>
       </Group>
       {angularSize !== undefined ? (
-          <>
-            <Title order={2}>Size</Title>
-            <Group my={'md'} gap={'xs'}>
-              <Button onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.3)}>
-                Default Angular Size
-              </Button>
-              <Button onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.6)}>
-                Large Angular Size
-              </Button>
-              <Button onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.8)}>
-                Extra Large Angular Size
-              </Button>
-              <Button onClick={() => setAngularSize(angularSize + 0.1)}>+</Button>
-              <Button onClick={() => setAngularSize(angularSize - 0.1)}>-</Button>
-            </Group>
-          </>
+        <>
+          <Title order={2}>Size</Title>
+          <Group my={'md'} gap={'xs'}>
+            <Button
+              onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.3)}
+            >
+              Default Angular Size
+            </Button>
+            <Button
+              onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.6)}
+            >
+              Large Angular Size
+            </Button>
+            <Button
+              onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.8)}
+            >
+              Extra Large Angular Size
+            </Button>
+            <Button onClick={() => setAngularSize(angularSize + 0.1)}>+</Button>
+            <Button onClick={() => setAngularSize(angularSize - 0.1)}>-</Button>
+          </Group>
+        </>
       ) : (
         <>
           <Text>Could not find Sun Angular Size settings</Text>
