@@ -14,6 +14,8 @@ import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { LocationPinIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
+import { LookDirection } from '../types';
+
 export function NightSkyLocationTab() {
   const luaApi = useOpenSpaceApi();
   useSubscribeToCamera();
@@ -22,19 +24,18 @@ export function NightSkyLocationTab() {
     latitude: currentLat,
     longitude: currentLong,
     altitude: currentAlt
-  } = useAppSelector((state) => {
-    return state.camera;
-  });
+  } = useAppSelector((state) => state.camera);
 
-  function dotPosition() {
+  function dotPosition(): { x: number; y: number } {
     if (currentLong && currentLat) {
+      //here we are getting the percentage of the map on where to show the marker
+      //for example, lat, long of 0,0 winds up with a map position of x: 0.5 and y:0.5
       return { x: ((currentLong + 180) / 360) * 100, y: ((90 - currentLat) / 180) * 100 };
-    } else {
-      return { x: 0, y: 0 };
     }
+    return { x: 0, y: 0 };
   }
 
-  function look(direction: string): void {
+  function look(direction: LookDirection): void {
     luaApi?.action.triggerAction('os.nightsky.Looking' + direction);
   }
 
@@ -45,14 +46,14 @@ export function NightSkyLocationTab() {
           Globe position - Latitude: {currentLat?.toFixed(2)}, Longitude:{' '}
           {currentLong?.toFixed(2)}, Altitude: {currentAlt?.toFixed(2)}m
         </Text>
-        <BackgroundImage w={300} h={150} src={'eqcy.png'}>
+        <BackgroundImage w={200} h={100} src={'eqcy.png'}>
           <Image
             src={'icon.png'}
             style={{
               width: '10px',
               position: 'relative',
-              left: dotPosition().x - 0.1666666666 + '%',
-              top: dotPosition().y - 0.1666666666 + '%'
+              left: dotPosition().x - 0.1666666 + '%', //here i was just trying to account for the marker
+              top: dotPosition().y - 0.1666666 + '%' //it should be centered instead of top left corner
             }}
           />
         </BackgroundImage>
@@ -60,8 +61,7 @@ export function NightSkyLocationTab() {
       <Divider my={'xl'} mt={5} />
       <Group>
         <Text size={'xl'}>Jump to Positon</Text>
-        <Stack>
-          <Group>
+          <Group gap={'xs'}>
             <Button
               onClick={() =>
                 luaApi?.action.triggerAction('os.nightsky.position.NorthPole')
@@ -82,7 +82,6 @@ export function NightSkyLocationTab() {
               South Pole
             </Button>
           </Group>
-        </Stack>
       </Group>
       <Paper shadow={'xs'} p={'xl'} my={'xl'}>
         <Text>
@@ -94,7 +93,7 @@ export function NightSkyLocationTab() {
       <Text my={'md'} size={'xl'}>
         Direction
       </Text>
-      <Group my={'md'}>
+      <Group my={'md'} gap={'xs'}>
         <Button onClick={() => look('North')}>Look North</Button>
         <Button onClick={() => look('East')}>Look East</Button>
         <Button onClick={() => look('South')}>Look South</Button>

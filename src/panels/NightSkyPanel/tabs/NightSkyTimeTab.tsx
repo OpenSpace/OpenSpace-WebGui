@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Divider, Group, Paper, Stack, Text } from '@mantine/core';
+import { Alert, Button, Divider, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import * as GeoTZ from 'browser-geo-tz';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -83,22 +83,14 @@ export function NightSkyTimeTab() {
           Set to now
         </Button>
       </Group>
-      <Text size={'xl'} style={{ flexGrow: 12 }}>
-        Local: {localTimeString}
-      </Text>
-      <Text mb={'lg'} style={{ flexGrow: 12 }}>
-        Timezone: {localArea}
-      </Text>
-      <Text my={'md'} style={{ flexGrow: 12 }}>
-        UTC: {timeLabel}
-      </Text>
-      <Divider mt={5} />
-      <Text my={'md'} size={'xl'}>
-        Jumps
-      </Text>
-      <Stack mb={'lg'}>
+      <Title order={2}>Local: {localTimeString}</Title>
+      <Text mb={'lg'}>Timezone: {localArea}</Text>
+      <Text my={'md'}>UTC: {timeLabel}</Text>
+      <Divider />
+      <Title order={3} my={'md'}>Jumps</Title>
+      <Stack>
         <Group gap={'xl'}>
-          <Group>
+          <Group gap={'xs'}>
             <Button
               onClick={() => luaApi?.action.triggerAction('os.time.siderealDayIncrease')}
             >
@@ -120,7 +112,7 @@ export function NightSkyTimeTab() {
               - sidereal week
             </Button>
           </Group>
-          <Group>
+          <Group gap={'xs'}>
             <Button
               onClick={() => luaApi?.action.triggerAction('os.time.SolarDayIncrease')}
             >
@@ -143,9 +135,9 @@ export function NightSkyTimeTab() {
             </Button>
           </Group>
         </Group>
-        <Divider mt={5} />
-        <Text size={'xl'}>Diurnal Motion</Text>
-        <Group>
+        <Divider />
+        <Title order={3}>Diurnal Motion</Title>
+        <Group gap={'xs'}>
           <Button
             onClick={() => {
               luaApi?.time.interpolatePause(false);
@@ -182,13 +174,13 @@ export function NightSkyTimeTab() {
           <Button onClick={() => luaApi?.time.togglePause()}>Play / Pause</Button>
         </Group>
       </Stack>
-      <Divider mt={5} />
-      <Paper my={'lg'} shadow={'xs'} p={'xl'}>
+      <Divider />
+      <Alert variant={'outline'} color={'dark'} my={'lg'}>
         <Text>
           Only some controls are found here. For more control over time, use the Time
           Panel.
         </Text>
-      </Paper>
+      </Alert>
     </>
   );
 }

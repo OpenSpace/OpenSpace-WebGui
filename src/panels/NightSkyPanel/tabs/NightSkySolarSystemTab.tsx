@@ -1,16 +1,15 @@
-import { Button, Group, Text } from '@mantine/core';
+import { Button, Group, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { BoolInput } from '@/components/Input/BoolInput';
 import { useProperty } from '@/hooks/properties';
-import { MoonPerformShadingKey } from '@/util/keys';
 
 export function NightSkySolarSystemTab() {
   const luaApi = useOpenSpaceApi();
 
   const [performShading, setPerformShading] = useProperty(
     'BoolProperty',
-    MoonPerformShadingKey
+    'Scene.Moon.Renderable.PerformShading'
   );
   const [moonScale, setMoonScale] = useProperty(
     'DoubleProperty',
@@ -23,9 +22,7 @@ export function NightSkySolarSystemTab() {
 
   return (
     <>
-      <Text size={'xl'} my={'md'}>
-        Trails
-      </Text>
+      <Title order={2} my={'md'}> Trails </Title>
       <Group mb={'md'}>
         <Button
           onClick={() => {
@@ -44,10 +41,8 @@ export function NightSkySolarSystemTab() {
         </Button>
       </Group>
 
-      <Text size={'xl'} my={'md'}>
-        Labels
-      </Text>
-      <Group>
+      <Title order={2} my={'md'}> Labels </Title>
+      <Group gap={'xs'}>
         <Button onClick={() => luaApi?.fadeIn('{solarsystem_labels}.Renderable')}>
           Show Labels
         </Button>
@@ -56,10 +51,8 @@ export function NightSkySolarSystemTab() {
         </Button>
       </Group>
 
-      <Text size={'xl'} my={'md'}>
-        Planets
-      </Text>
-      <Group>
+      <Title order={2} my={'md'}> Planets </Title>
+      <Group gap={'xs'}>
         <Button onClick={() => action('os.nightsky.ShowNightSkyPlanets')}>
           Show Night Sky Planets
         </Button>
@@ -68,39 +61,29 @@ export function NightSkySolarSystemTab() {
         </Button>
       </Group>
 
-      <Text size={'xl'} my={'md'}>
-        Moon
-      </Text>
-      <Group>
-        <Button onClick={() => setMoonScale(1.0)}>Default Scale Moon (1x)</Button>
-        <Button onClick={() => setMoonScale(2.0)}>Enlarge Moon (2x)</Button>
-        <Button onClick={() => setMoonScale(4.0)}>Enlarge Moon (4x)</Button>
-        <Button
-          onClick={() => {
-            if (moonScale) {
-              setMoonScale(moonScale + 0.5);
-            }
-          }}
-        >
-          +
-        </Button>
-        <Button
-          onClick={() => {
-            if (moonScale) {
-              setMoonScale(moonScale - 0.5);
-            }
-          }}
-        >
-          -
-        </Button>
-        <BoolInput
-          label={'Show Phase'}
-          info={
-            'Uncheck this to show the full moon always. This is equivalent to the "Perform Shading" property on the Moon.'
-          }
-          value={performShading || false}
-          onChange={setPerformShading}
-        />
+      <Title order={2} my={'md'}> Moon </Title>
+      <Group gap={'xs'}>
+        {moonScale !== undefined ? (
+          <>
+              <Button onClick={() => setMoonScale(1.0)}>Default Scale Moon (1x)</Button>
+              <Button onClick={() => setMoonScale(2.0)}>Enlarge Moon (2x)</Button>
+              <Button onClick={() => setMoonScale(4.0)}>Enlarge Moon (4x)</Button>
+              <Button onClick={() => setMoonScale(moonScale + 0.5)}>+</Button>
+              <Button onClick={() => setMoonScale(moonScale - 0.5)}>-</Button>
+          </>
+        ): (
+          <Text>Could not find Moon scale settings</Text>
+        )}
+        {performShading !== undefined ? (
+          <>
+            <BoolInput
+            label={'Show Phase'}
+            info={'Uncheck this to show the full moon always. This is equivalent to the "Perform Shading" property on the Moon.'}
+            value={performShading || false} onChange={setPerformShading} />
+          </>
+        ): (
+          <Text>Could not find Moon Perform Shading settings</Text>
+        )}
       </Group>
     </>
   );

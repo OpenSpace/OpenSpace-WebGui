@@ -8,6 +8,7 @@ import { CalendarIcon } from '@/icons/icons';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { useAppSelector } from '@/redux/hooks';
 import { sgnUri } from '@/util/propertyTreeHelpers';
+import { IconSize } from '@/types/enums';
 
 export function NightSkySunTab() {
   const openspace = useOpenSpaceApi();
@@ -29,10 +30,8 @@ export function NightSkySunTab() {
 
   return (
     <>
-      <Text size={'xl'} mb={'xl'}>
-        Glare
-      </Text>
-      <Group>
+      <Title order={2} my={'sm'}>Glare</Title>
+      <Group gap={'xs'} my={'md'}>
         <Button onClick={() => openspace?.fadeIn('Scene.SunGlare.Renderable')}>
           Show Glare
         </Button>
@@ -40,57 +39,48 @@ export function NightSkySunTab() {
           Hide Glare
         </Button>
       </Group>
-      <Text size={'xl'} my={'xl'}>
-        Size
-      </Text>
-      <Group>
-        <Button onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.3)}>
-          Default Angular Size
-        </Button>
-        <Button onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.6)}>
-          Large Angular Size
-        </Button>
-        <Button onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.8)}>
-          Extra Large Angular Size
-        </Button>
-        <Button
-          onClick={async () => {
-            if (angularSize) {
-              setAngularSize(angularSize + 0.1);
-            }
-          }}
-        >
-          +
-        </Button>
-        <Button
-          onClick={() => {
-            if (angularSize) {
-              setAngularSize(angularSize - 0.1);
-            }
-          }}
-        >
-          -
-        </Button>
-      </Group>
+      {angularSize !== undefined ? (
+          <>
+            <Title order={2}>Size</Title>
+            <Group my={'md'} gap={'xs'}>
+              <Button onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.3)}>
+                Default Angular Size
+              </Button>
+              <Button onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.6)}>
+                Large Angular Size
+              </Button>
+              <Button onClick={() => openspace?.setPropertyValueSingle(AngularSizeKey, 0.8)}>
+                Extra Large Angular Size
+              </Button>
+              <Button onClick={() => setAngularSize(angularSize + 0.1)}>+</Button>
+              <Button onClick={() => setAngularSize(angularSize - 0.1)}>-</Button>
+            </Group>
+          </>
+      ) : (
+        <>
+          <Text>Could not find Sun Angular Size settings</Text>
+        </>
+      )}
+
       <Divider mt={'xl'} mb={'md'}></Divider>
-      <Text my={'md'} size={'xl'}>
-        Trails
-      </Text>
-      <Group my={'md'}>
+      <Title order={2}>Trails</Title>
+      <Group my={'md'} gap={'xs'}>
         <Button onClick={() => addTrail('NOW')}>Add trail for simulation date</Button>
         <Button onClick={() => addTrail('UTC')}>Add trail for today </Button>
       </Group>
 
       <DatePickerInput
-        leftSection={<CalendarIcon size={18} />}
+        leftSection={<CalendarIcon size={IconSize.sm} />}
         leftSectionPointerEvents={'none'}
         label={'Choose date'}
-        placeholder={''}
+        placeholder={'01/01/2001'}
         value={trailDate}
         onChange={setTrailDate}
         my={'md'}
       />
       <Button
+        disabled={trailDate === null}
+        leftSection={'+'}
         onClick={() => {
           if (trailDate) {
             addTrail(trailDate.toISOString());
@@ -100,18 +90,12 @@ export function NightSkySunTab() {
         Add Trail
       </Button>
 
-      <Group mt={'xl'}>
+      <Group my={'xl'}>
         <Title order={3}>Added Sun Trails</Title>
-        <Button
-          size={'compact-md'}
-          onClick={() => {
-            openspace?.fadeOut('{sun_trail}');
-          }}
-        >
+        <Button size={'compact-md'} onClick={() => openspace?.fadeOut('{sun_trail}')}>
           Hide All
         </Button>
       </Group>
-      <Space h={'lg'} />
       {addedTrails.length === 0 ? (
         <Text>No sun trails</Text>
       ) : (

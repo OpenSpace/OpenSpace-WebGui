@@ -1,4 +1,4 @@
-import { Button, Grid, Text } from '@mantine/core';
+import { Button, Grid, SimpleGrid, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 
@@ -16,131 +16,43 @@ export function NightSkyMarkingsTab() {
       >
         HIDE ALL
       </Button>
-      <Text my={'md'}>Alt/Az</Text>
-      <Grid columns={16} gutter={'sm'}>
-        <Grid.Col span={4}>
+      <Title order={2} my={'md'}>Alt/Az</Title>
+      <SimpleGrid cols={4} spacing={'sm'}>
           <IconLabelButton title={'Grid'} icon={'grid'} identifier={'AltAzGrid'} />
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <IconLabelButton
-            title={'Meridian'}
-            icon={'line'}
-            identifier={'MeridianPlane'}
-          />
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <IconLabelButton
-            title={'Labels'}
-            icon={'text'}
-            identifier={'AltAzGridLabels'}
-          />
-        </Grid.Col>
-        <Grid.Col span={4}>
+          <IconLabelButton title={'Meridian'} icon={'line'} identifier={'MeridianPlane'} />
+          <IconLabelButton title={'Labels'} icon={'text'} identifier={'AltAzGridLabels'} />
           <IconLabelButton title={'Zenith'} icon={'dot'} identifier={'ZenithDot'} />
-        </Grid.Col>
-      </Grid>
-      <Text my={'md'}>Ecliptic</Text>
-      <Grid columns={16} gutter={'sm'}>
-        <Grid.Col span={4}>
+      </SimpleGrid>
+
+      <Title order={2} my={'md'}>Ecliptic</Title>
+      <SimpleGrid cols={4} spacing={'sm'}>
           <IconLabelButton title={'Grid'} icon={'grid'} identifier={'EclipticSphere'} />
-        </Grid.Col>
-        <Grid.Col span={4}>
           <IconLabelButton title={'Line'} icon={'line'} identifier={'EclipticLine'} />
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <IconLabelButton
-            title={'Labels'}
-            icon={'text'}
-            identifier={'EclipticSphereLabels'}
-          />
-        </Grid.Col>
-        <Grid.Col span={4}>
+          <IconLabelButton title={'Labels'} icon={'text'} identifier={'EclipticSphereLabels'} />
           <IconLabelButton title={'Band'} icon={'band'} identifier={'EclipticBand'} />
-        </Grid.Col>
-      </Grid>
-      <Text my={'md'}>Equatorial</Text>
-      <Grid columns={16} gutter={'sm'}>
-        <Grid.Col span={4}>
+      </SimpleGrid>
+
+      <Title order={2} my={'md'}>Equatorial</Title>
+      <SimpleGrid cols={4} spacing={'sm'}>
           <IconLabelButton title={'Grid'} icon={'grid'} identifier={'EquatorialSphere'} />
-        </Grid.Col>
-        <Grid.Col span={4}>
           <IconLabelButton title={'Line'} icon={'line'} identifier={'EquatorialLine'} />
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <IconLabelButton
-            title={'Labels'}
-            icon={'text'}
-            identifier={'EquatorialSphereLabels'}
-          />
-        </Grid.Col>
-      </Grid>
-      <Text my={'md'}>Constellations</Text>
-      <Grid columns={16} gutter={'sm'}>
-        <Grid.Col span={4}>
-          <IconLabelButton
-            title={'Grid'}
-            icon={'grid'}
-            identifier={'ConstellationBounds'}
-          />
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <IconLabelButton
-            title={'Lines'}
-            icon={'pencil'}
-            identifier={'Constellations'}
-            onAction={'os.nightsky.ShowConstellationElements'}
-            boolProp={'Scene.Constellations.Renderable.DrawElements'}
-          />
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <IconLabelButton
-            title={'Art'}
-            icon={'paint'}
-            identifier={'ImageConstellation-Ori'}
-            onAction={'os.constellation_art.ShowArt'}
-            offAction={'os.constellation_art.HideArt'}
-          />
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <IconLabelButton
-            title={'Labels'}
-            icon={'text'}
-            identifier={'Scene.Constellations.Renderable.Labels'}
-            onAction={'os.nightsky.FadeInConstellationLabels'}
-            offAction={'os.nightsky.FadeOutConstellationLabels'}
-          />
-        </Grid.Col>
-      </Grid>
-      <Text my={'md'}>Cardinal Directions</Text>
-      <Grid columns={16} gutter={'sm'}>
-        <Grid.Col span={4}>
-          <IconLabelButton
-            title={'Small'}
-            icon={'compasssmall'}
-            onAction={'os.nightsky.ShowNeswLettersSmall'}
-            offAction={'os.nightsky.HideNesw'}
-            directionCheck={'red_small.png'}
-          />
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <IconLabelButton
-            directionCheck={'red.png'}
-            title={'Large'}
-            icon={'compasslarge'}
-            onAction={'os.nightsky.ShowNeswLetters'}
-            offAction={'os.nightsky.HideNesw'}
-          />
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <IconLabelButton
-            directionCheck={'_lines_'}
-            title={'Marks'}
-            icon={'compassmarks'}
-            onAction={'os.nightsky.AddNeswBandMarks'}
-            offAction={'os.nightsky.RemoveNeswBandMarks'}
-          />
-        </Grid.Col>
-      </Grid>
+          <IconLabelButton title={'Labels'} icon={'text'} identifier={'EquatorialSphereLabels'} />
+      </SimpleGrid>
+
+      <Title order={2} my={'md'}>Constellations</Title>
+      <SimpleGrid cols={4} spacing={'sm'}>
+          <IconLabelButton title={'Grid'} icon={'grid'} identifier={'ConstellationBounds'} />
+          <IconLabelButton title={'Lines'} icon={'pencil'} identifier={'Constellations'} onAction={'os.nightsky.ShowConstellationElements'} boolProp={'Scene.Constellations.Renderable.DrawElements'} />
+          <IconLabelButton title={'Art'} icon={'paint'} identifier={'ImageConstellation-Ori'} onAction={'os.constellation_art.ShowArt'} offAction={'os.constellation_art.HideArt'} />
+          <IconLabelButton title={'Labels'} icon={'text'} identifier={'Scene.Constellations.Renderable.Labels'} onAction={'os.nightsky.FadeInConstellationLabels'} offAction={'os.nightsky.FadeOutConstellationLabels'} />
+      </SimpleGrid>
+
+      <Title order={2} my={'md'}>Cardinal Directions</Title>
+      <SimpleGrid cols={4} spacing={'sm'}>
+        <IconLabelButton title={'Small'} icon={'compasssmall'} onAction={'os.nightsky.ShowNeswLettersSmall'} offAction={'os.nightsky.HideNesw'} directionCheck={'red_small.png'} />
+        <IconLabelButton directionCheck={'red.png'} title={'Large'} icon={'compasslarge'} onAction={'os.nightsky.ShowNeswLetters'} offAction={'os.nightsky.HideNesw'} />
+        <IconLabelButton directionCheck={'_lines_'} title={'Marks'} icon={'compassmarks'} onAction={'os.nightsky.AddNeswBandMarks'} offAction={'os.nightsky.RemoveNeswBandMarks'} />
+      </SimpleGrid>
     </>
   );
 }
