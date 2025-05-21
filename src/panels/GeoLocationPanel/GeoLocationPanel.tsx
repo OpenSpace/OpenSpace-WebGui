@@ -28,7 +28,6 @@ export function GeoLocationPanel() {
         allowDeselect={false}
         label={t('select-anchor-label')}
         w={'100%'}
-        my={'xs'}
       />
       <Divider my={'xs'} />
       {anchorPanelContent}
