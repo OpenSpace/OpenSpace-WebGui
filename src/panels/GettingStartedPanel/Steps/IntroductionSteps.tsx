@@ -3,7 +3,7 @@ import { Image, List, Stack, Text } from '@mantine/core';
 
 import { TaskCheckbox } from '../Tasks/Components/TaskCheckbox';
 
-export const IntroductionSteps: React.JSX.Element[] = [
+export const IntroductionSteps: React.ReactNode[] = [
   <Stack align={'center'}>
     <Image src={'openspace-logo.png'} w={200} h={300} my={'lg'} />
     <Text size={'lg'}>Let's get started with exploring the observable Universe!</Text>

@@ -1,11 +1,10 @@
-import { JSX } from 'react';
 import { Group, InputLabel, Text } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 
 interface Props {
-  name: string | JSX.Element;
-  info?: string | JSX.Element;
+  name: React.ReactNode;
+  info?: React.ReactNode;
 }
 
 export function Label({ name, info }: Props) {

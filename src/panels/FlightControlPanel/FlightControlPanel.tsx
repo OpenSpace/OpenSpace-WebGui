@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { Container, Group, List, Slider, Space, Stack, Text, Title } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
+import { Group, List, Slider, Space, Stack, Text, Title } from '@mantine/core';
 
 import { FrictionControls } from '@/components/FrictionControls/FrictionControls';
 import { FrictionControlsInfo } from '@/components/FrictionControls/FrictionControlsInfo';
@@ -16,6 +17,7 @@ export function FlightControlPanel() {
   const mouseScaleFactor = useAppSelector(
     (state) => state.flightController.inputScaleFactor
   );
+  const { t } = useTranslation('panel-flightcontrol');
 
   const dispatch = useAppDispatch();
 
@@ -30,47 +32,49 @@ export function FlightControlPanel() {
   }
 
   const infoBoxContent = (
-    <Container>
-      <Text>Interact with the highlighted area to control the camera.</Text>
+    <>
+      <Text>{t('description.intro')}</Text>
       <Space h={'xs'} />
-      <Text fw={'bold'}>Mouse controls:</Text>
-      <Text>Click and drag to rotate. Hold</Text>
+      <Text fw={'bold'}>{t('description.mouse-title')}</Text>
+      <Text>{t('description.mouse-body.text')}</Text>
       <List>
-        <List.Item>Shift to zoom (y-axis) or roll (x-axis)</List.Item>
-        <List.Item>Ctrl to pan</List.Item>
+        {t('description.mouse-body.keybinds', { returnObjects: true }).map(
+          (text, index) => (
+            <List.Item key={index}>{text}</List.Item>
+          )
+        )}
       </List>
       <Space h={'xs'} />
-      <Text fw={'bold'}>Touch controls:</Text>
+      <Text fw={'bold'}>{t('description.touch-title')}</Text>
       <List>
-        <List.Item>1 finger to rotate</List.Item>
-        <List.Item>2 fingers to pan</List.Item>
-        <List.Item>3 fingers to zoom (y-axis) or roll (x-axis)</List.Item>
+        {t('description.touch-body.controls', { returnObjects: true }).map(
+          (text, index) => (
+            <List.Item key={index}>{text}</List.Item>
+          )
+        )}
       </List>
-    </Container>
+    </>
   );
 
   return (
     <Stack gap={'xs'}>
       <BoolInput
-        label={'Toggle flight control'}
+        label={t('toggle-flight-label')}
         info={infoBoxContent}
         value={isControllerEnabled}
         onChange={toggleFlightController}
       />
 
-      <Title order={2}>Settings</Title>
+      <Title order={2}>{t('settings-title')}</Title>
       <Stack gap={'xs'}>
-        <Label name={'Friction control'} info={<FrictionControlsInfo />} />
+        <Label name={t('friction-label')} info={<FrictionControlsInfo />} />
         <Group align={'start'}>
           <FrictionControls size={'sm'} />
         </Group>
       </Stack>
 
       <Stack gap={'xs'}>
-        <Label
-          name={'Input sensitivity'}
-          info={'Controls how sensitive the touch and mouse inputs are'}
-        />
+        <Label name={t('sensitivity.label')} info={t('sensitivity.description')} />
         <Slider
           min={0.1}
           max={1}

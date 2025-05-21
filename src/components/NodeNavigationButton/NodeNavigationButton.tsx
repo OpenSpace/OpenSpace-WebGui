@@ -59,7 +59,7 @@ interface ButtonContent {
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   icon: React.JSX.Element;
   title: string;
-  tooltip: React.JSX.Element | string;
+  tooltip: React.ReactNode;
 }
 
 export function NodeNavigationButton({
@@ -81,7 +81,10 @@ export function NodeNavigationButton({
 
   function focus(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     if (!event.shiftKey) {
-      luaApi?.setPropertyValueSingle(RetargetAnchorKey, null);
+      // Using `0` here instead of `nil` as the new more strictly-typed
+      // `setPropertyValueSingle` no longer accepts `nil` as a valid argument due to the
+      // fact that it is not representable in Lua
+      luaApi?.setPropertyValueSingle(RetargetAnchorKey, 0);
     }
     luaApi?.setPropertyValueSingle(NavigationAnchorKey, identifier);
     luaApi?.setPropertyValueSingle(NavigationAimKey, '');

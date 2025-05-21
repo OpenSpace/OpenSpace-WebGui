@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, Text } from '@mantine/core';
 
 import { MinusIcon } from '@/icons/icons';
@@ -11,8 +12,11 @@ interface Props {
 }
 
 export function AddedCustomNodes({ addedNodes, removeFocusNode }: Props) {
+  const { t } = useTranslation('panel-geolocation', {
+    keyPrefix: 'earth-panel.added-custom-nodes'
+  });
   return addedNodes.length === 0 ? (
-    <Text>No added nodes</Text>
+    <Text>{t('empty-nodes')}</Text>
   ) : (
     <>
       {addedNodes.map((identifier) => (
@@ -23,7 +27,7 @@ export function AddedCustomNodes({ addedNodes, removeFocusNode }: Props) {
             color={'red'}
             flex={0}
             onClick={() => removeFocusNode(identifier)}
-            aria-label={`Remove node: ${identifier}`}
+            aria-label={`${t('remove-node-aria-label')}: ${identifier}`}
           >
             <MinusIcon />
           </ActionIcon>

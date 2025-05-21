@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, Text, Tooltip } from '@mantine/core';
 import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 
@@ -28,6 +29,9 @@ export function EarthEntry({
   addFocusNode,
   removeFocusNode
 }: Props) {
+  const { t } = useTranslation('panel-geolocation', {
+    keyPrefix: 'earth-panel.earth-entry-aria-label'
+  });
   const address = place.attributes.LongLabel;
   const addressUtf8 = addressUTF8(address);
 
@@ -83,7 +87,7 @@ export function EarthEntry({
           }
           color={isAdded ? 'red' : 'blue'}
           variant={'subtle'}
-          aria-label={`${isAdded ? 'Remove' : 'Add'} node: ${address}`}
+          aria-label={`${isAdded ? t('remove') : t('add')}: ${address}`}
         >
           {isAdded ? <MinusIcon /> : <PlusIcon />}
         </ActionIcon>

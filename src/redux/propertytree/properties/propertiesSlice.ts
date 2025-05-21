@@ -18,6 +18,17 @@ const initialState: PropertiesState = {
   propertyOverview: {}
 };
 
+function updatePropertyOverviewFromMeta(
+  state: PropertiesState,
+  uri: Uri,
+  metaData: AnyProperty['metaData']
+) {
+  state.propertyOverview[uri] = {
+    name: metaData.guiName ?? '',
+    visibility: metaData.visibility ? PropertyVisibilityNumber[metaData.visibility] : 0
+  };
+}
+
 export const propertiesSlice = createSlice({
   name: 'properties',
   initialState,
@@ -25,12 +36,9 @@ export const propertiesSlice = createSlice({
     addProperties: (state, action: PayloadAction<Properties>) => {
       for (const [uri, property] of Object.entries(action.payload)) {
         state.properties[uri] = property;
-        state.propertyOverview[uri] = {
-          name: property?.metaData.guiName ?? '',
-          visibility: property?.metaData.visibility
-            ? PropertyVisibilityNumber[property?.metaData.visibility]
-            : 0
-        };
+        if (property?.metaData) {
+          updatePropertyOverviewFromMeta(state, uri, property.metaData);
+        }
       }
       return state;
     },
@@ -79,7 +87,11 @@ export const propertiesSlice = createSlice({
 
       if (state.properties[uri]) {
         state.properties[uri].metaData = metaData;
+
+        // We also need to update the property overview data if the meta data changes
+        updatePropertyOverviewFromMeta(state, uri, metaData);
       }
+
       return state;
     }
   }
