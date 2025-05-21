@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Group, NumberInput, Tabs, Text, TextInput, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -18,7 +19,6 @@ import { CustomCoordinates } from './CustomCoordinates';
 import { EarthEntry } from './EarthEntry';
 import { ArcGISJSON, Candidate } from './types';
 import { addressUTF8 } from './util';
-import { useTranslation } from 'react-i18next';
 
 interface Props {
   currentAnchor: Identifier;
@@ -32,7 +32,7 @@ export function EarthPanel({ currentAnchor }: Props) {
   const luaApi = useOpenSpaceApi();
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const groups = useAppSelector((state) => state.groups.groups);
-  const { t } = useTranslation('geolocationpanel', { keyPrefix: 'earth-panel' });
+  const { t } = useTranslation('panel-geolocation', { keyPrefix: 'earth-panel' });
   const dispatch = useAppDispatch();
 
   const geoLocationOwners = groups[GeoLocationGroupKey]?.propertyOwners.map((uri) => {
@@ -151,9 +151,7 @@ export function EarthPanel({ currentAnchor }: Props) {
               }
             }}
             onChange={(event) => setInputValue(event.target.value)}
-            rightSection={
-              <Button onClick={() => getPlaces()}>{t('search.button-label')}</Button>
-            }
+            rightSection={<Button onClick={getPlaces}>{t('search.button-label')}</Button>}
             rightSectionWidth={'md'}
             my={'xs'}
           />

@@ -12,7 +12,7 @@ interface Props {
 }
 
 export function AddedCustomNodes({ addedNodes, removeFocusNode }: Props) {
-  const { t } = useTranslation('geolocationpanel', {
+  const { t } = useTranslation('panel-geolocation', {
     keyPrefix: 'earth-panel.added-custom-nodes'
   });
   return addedNodes.length === 0 ? (

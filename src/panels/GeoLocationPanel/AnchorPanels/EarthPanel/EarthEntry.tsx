@@ -29,7 +29,7 @@ export function EarthEntry({
   addFocusNode,
   removeFocusNode
 }: Props) {
-  const { t } = useTranslation('geolocationpanel', {
+  const { t } = useTranslation('panel-geolocation', {
     keyPrefix: 'earth-panel.earth-entry-aria-label'
   });
   const address = place.attributes.LongLabel;

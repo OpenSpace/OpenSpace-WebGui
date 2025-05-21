@@ -1,14 +1,12 @@
 {
-  "exoplanet-entry": {
-    "add-aria-label": "Add system",
-    "remove-aria-label": "Remove system"
+  "exoplanet-search-placeholder": "Star name...",
+  "added-systems": {
+    "title": "Added Systems",
+    "no-active-systems": "No active systems"
   },
-  "exoplanets": {
-    "exoplanet-search-placeholder": "Star name...",
-    "added-systems": {
-      "title": "Added Systems",
-      "no-active-systems": "No active systems"
-    }
+  "exoplanet-entry": {
+    "add-system-aria-label": "Add system",
+    "remove-system-aria-label": "Remove system"
   },
   "exoplanets-settings": {
     "section-title": "Settings",

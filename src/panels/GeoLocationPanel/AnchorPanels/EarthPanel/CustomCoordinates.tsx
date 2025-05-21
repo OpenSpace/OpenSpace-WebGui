@@ -22,7 +22,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
   const [longitude, setLongitude] = useState(0);
   const [altitude, setAltitude] = useState(0);
   const [customName, setCustomName] = useState('');
-  const { t } = useTranslation('geolocationpanel', {
+  const { t } = useTranslation('panel-geolocation', {
     keyPrefix: 'earth-panel.custom-coordinates'
   });
   const altitudeInMeter = altitude * 1000;

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
   ColorInput,
@@ -12,7 +13,6 @@ import {
   toRgba
 } from '@mantine/core';
 import { ColorFormat } from 'node_modules/@mantine/core/lib/components/ColorPicker/ColorPicker.types';
-import { useTranslation } from 'react-i18next';
 
 import { IconSize } from '@/types/enums';
 import { rgbaToColor, rgbaToFormat, toFormat } from '@/util/colorHelper';

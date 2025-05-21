@@ -66,7 +66,7 @@ export function CardinalDirectionsBox({ variant, title, icon }: Props) {
   function isChecked(): boolean {
     if (!isVisible) {
       return false;
-    } 
+    }
     return isTextureForVariantEnabled();
   }
 

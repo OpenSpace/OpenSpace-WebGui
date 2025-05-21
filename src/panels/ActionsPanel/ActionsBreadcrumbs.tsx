@@ -9,7 +9,7 @@ import { calculateLevelDepth, createPath, getFolders } from './util';
 
 export function ActionsBreadcrumbs() {
   const navigationPath = useAppSelector((state) => state.actions.navigationPath);
-  const { t } = useTranslation('actionpanel');
+  const { t } = useTranslation('panel-actions');
   const dispatch = useAppDispatch();
 
   const currentLevel = calculateLevelDepth(navigationPath);

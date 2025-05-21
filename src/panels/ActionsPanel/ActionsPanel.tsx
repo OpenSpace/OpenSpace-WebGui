@@ -27,7 +27,7 @@ export function ActionsPanel() {
     });
   const actionLevel = useActionsForLevel();
   const actionsInPath = useActionsInPath();
-  const { t } = useTranslation('actionpanel');
+  const { t } = useTranslation('panel-actions');
 
   // TODO anden88 2025-02-06: use same css variable as ActionsButton
   const ButtonHeight = 80;

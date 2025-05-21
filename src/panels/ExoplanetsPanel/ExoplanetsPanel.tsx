@@ -24,7 +24,7 @@ export function ExoplanetsPanel() {
   const allSystemNames = useAppSelector((state) => state.exoplanets.data);
   const [aim, setAim] = useProperty('StringProperty', NavigationAimKey);
   const [anchor, setAnchor] = useProperty('StringProperty', NavigationAnchorKey);
-  const { t } = useTranslation('exoplanetspanel', { keyPrefix: 'exoplanets' });
+  const { t } = useTranslation('panel-exoplanets');
 
   const luaApi = useOpenSpaceApi();
 

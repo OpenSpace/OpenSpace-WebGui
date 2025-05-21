@@ -10,23 +10,24 @@ interface ExoplanetProps {
 }
 
 export function ExoplanetEntry({ name, isAdded, onClick }: ExoplanetProps) {
-  const { t } = useTranslation('exoplanetspanel', { keyPrefix: 'exoplanet-entry' });
+  const { t } = useTranslation('panel-exoplanets', { keyPrefix: 'exoplanet-entry' });
 
   return (
     <Group grow mb={'xs'}>
-      {
-        <ActionIcon
-          size={'lg'} // Fixed size, adjust as needed
-          key={`${name}button`}
-          variant={isAdded ? 'outline' : 'filled'}
-          style={{ flexGrow: 0 }}
-          onClick={onClick}
-          color={isAdded ? 'red' : 'blue'}
-          aria-label={`${isAdded ? t('remove-aria-label') : t('add-aria-label')}: ${name}`}
-        >
-          {isAdded ? <MinusIcon /> : <PlusIcon />}
-        </ActionIcon>
-      }
+      <ActionIcon
+        size={'lg'} // Fixed size, adjust as needed
+        key={`${name}button`}
+        variant={isAdded ? 'outline' : 'filled'}
+        style={{ flexGrow: 0 }}
+        onClick={onClick}
+        color={isAdded ? 'red' : 'blue'}
+        aria-label={`${
+          isAdded ? t('remove-system-aria-label') : t('add-system-aria-label')
+        }: ${name}`}
+      >
+        {isAdded ? <MinusIcon /> : <PlusIcon />}
+      </ActionIcon>
+
       <Text style={{ flexGrow: 12, maxWidth: '100%' }}>{name}</Text>
     </Group>
   );

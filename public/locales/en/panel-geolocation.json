@@ -1,13 +1,9 @@
 {
-  "geolocation": {
-    "title": "Geo Location",
-    "select-anchor-label": "Select an anchor",
-    "no-anchor-panel": "Currently there is no data for locations on {{anchor}}"
-  },
+  "select-anchor-label": "Select an anchor",
+  "no-anchor-panel": "Currently there is no data for locations on {{anchor}}",
   "earth-panel": {
     "tab-search": "Search Place",
     "tab-custom-coordinates": "Custom Coordinates",
-
     "search": {
       "input-placeholder": "Search places...",
       "button-label": "Search",

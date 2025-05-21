@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RGBA } from '@mantine/core';
 import { isNumber } from 'lodash';
 
@@ -7,7 +8,6 @@ import { StringInput } from '@/components/Input/StringInput';
 import { WarningIcon } from '@/components/WarningIcon/WarningIcon';
 import { AdditionalDataVectorMatrix } from '@/types/Property/propertyTypes';
 import { openspaceColorToRgba, toOpenspaceColor } from '@/util/colorHelper';
-import { useTranslation } from 'react-i18next';
 
 function validateInput(
   value: number[],

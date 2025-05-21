@@ -19,7 +19,7 @@ export function ActionsButton({ uri, action: _action, height }: Props) {
   const openspaceApi = useOpenSpaceApi();
   const allActions = useAppSelector((state) => state.actions.actions);
   const keybinds = useAppSelector((state) => state.actions.keybinds);
-  const { t } = useTranslation('actionpanel');
+  const { t } = useTranslation('panel-actions');
 
   const action = uri ? allActions.find((action) => action.identifier === uri) : _action;
   const keybind = keybinds.find((_keybind) => _keybind.action === action?.identifier);
