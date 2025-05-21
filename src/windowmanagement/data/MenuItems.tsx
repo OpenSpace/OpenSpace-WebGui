@@ -11,6 +11,7 @@ import {
   InsertPhotoIcon,
   KeyboardIcon,
   LocationPinIcon,
+  NightSkyIcon,
   RocketLaunchIcon,
   RouteIcon,
   SceneIcon,
@@ -37,6 +38,7 @@ import {
   KeybindsPanel,
   MissionsPanel,
   NavigationPanel,
+  NightSkyPanel,
   Scene,
   ScreenSpaceRenderablePanel,
   ScriptLogPanel,
@@ -50,7 +52,7 @@ import {
 export interface MenuItem {
   title: string; // Title of the rc-dock tab
   componentID: string; // Unqiue ID to identify this component among the rc-dock tabs
-  content: React.JSX.Element; // Content to render inside the rc-dock tab
+  content: React.ReactNode; // Content to render inside the rc-dock tab
   renderMenuButton?: (id: string) => React.JSX.Element; // Custom menu button to render
   renderIcon?: (size: IconSize) => React.JSX.Element; // Custom icon to render
   preferredPosition: WindowLayoutPosition; // Where this panel is instantiated
@@ -185,19 +187,27 @@ export const menuItemsData: Record<string, MenuItem> = {
     defaultVisible: !window.isWithinCEF
   },
   keybindingsLayout: {
-    title: 'Keybindings Layout',
+    title: 'Keybinds',
     componentID: 'keybindingsLayout',
     content: <KeybindsPanel />,
     renderIcon: (size) => <KeyboardIcon size={size} />,
     preferredPosition: 'float',
-    floatPosition: { offsetY: 150, offsetX: 350, width: 1050, height: 680 },
+    floatPosition: { offsetY: 150, offsetX: 350, width: 1100, height: 680 },
+    defaultVisible: false
+  },
+  nightSky: {
+    title: 'Night Sky',
+    componentID: 'nightSky',
+    content: <NightSkyPanel />,
+    renderIcon: (size) => <NightSkyIcon size={size} />,
+    preferredPosition: 'right',
     defaultVisible: false
   },
   gettingStartedTour: {
     title: 'Getting Started Tour',
     componentID: 'gettingStartedTour',
     content: <GettingStartedPanel />,
-    renderIcon: (size) => <RouteIcon size={size} />,
+    renderIcon: (size) => <RouteIcon size={size} style={{ transform: 'scale(-1)' }} />,
     preferredPosition: 'float',
     floatPosition: { offsetY: 150, offsetX: 350, width: 600, height: 500 },
     defaultVisible: true

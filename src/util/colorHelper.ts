@@ -3,29 +3,23 @@ import { ColorFormat } from 'node_modules/@mantine/core/lib/components/ColorPick
 
 // OpenSpace colors are defined as an object with r, g, b, and a (optional) properties,
 // with values in the range [0, 1]
-export type OpenSpaceColor = {
-  r: number;
-  g: number;
-  b: number;
-  a?: number;
-};
+export type OpenSpaceColor = number[];
 
 export function openspaceColorToRgba(color: OpenSpaceColor): RGBA {
   return {
-    r: Math.round(255 * color.r),
-    g: Math.round(255 * color.g),
-    b: Math.round(255 * color.b),
-    a: color.a === undefined ? 1.0 : color.a
+    r: Math.round(255 * color[0]),
+    g: Math.round(255 * color[1]),
+    b: Math.round(255 * color[2]),
+    a: color[3] === undefined ? 1.0 : color[3]
   };
 }
 
-export function openspaceColorToColor(color: OpenSpaceColor): string {
-  const r = Math.round(255 * color.r);
-  const g = Math.round(255 * color.g);
-  const b = Math.round(255 * color.b);
-  return color.a !== undefined
-    ? `rgba(${r}, ${g}, ${b}, ${color.a})`
-    : `rgb(${r}, ${g}, ${b})`;
+export function openspaceColorToColor([r, g, b, a]: OpenSpaceColor): string {
+  const [red, green, blue] = [r, g, b].map((c) => Math.round(c * 255));
+
+  return a !== undefined
+    ? `rgba(${red}, ${green}, ${blue}, ${a})`
+    : `rgb(${red}, ${green}, ${blue})`;
 }
 
 export function rgbaToColor(color: RGBA, useAlpha: boolean): string {
@@ -35,12 +29,7 @@ export function rgbaToColor(color: RGBA, useAlpha: boolean): string {
 }
 
 export function toOpenspaceColor(color: RGBA, useAlpha: boolean): OpenSpaceColor {
-  return {
-    r: color.r / 255,
-    g: color.g / 255,
-    b: color.b / 255,
-    a: useAlpha ? color.a : undefined
-  };
+  return [color.r / 255, color.g / 255, color.b / 255].concat(useAlpha ? [color.a] : []);
 }
 
 export function rgbaToFormat(color: RGBA, format: ColorFormat): string {

@@ -1,11 +1,14 @@
 export {
   BsWindowSidebar as PanelIcon,
+  BsFillRecordFill as SingleDotIcon,
   BsWindowDock as TaskBarIcon,
-  BsThreeDotsVertical as VerticalDotsIcon
+  BsThreeDotsVertical as VerticalDotsIcon,
+  BsFillXCircleFill as XCircleIcon
 } from 'react-icons/bs';
 export {
   FaArrowLeft as ArrowLeftIcon,
   FaArrowRight as ArrowRightIcon,
+  FaCheckCircle as CheckCircleIcon,
   FaDev as DevIcon,
   FaHome as HomeIcon,
   FaMinus as MinusIcon,
@@ -16,8 +19,10 @@ export {
   FiChevronsDown as ChevronsDownIcon,
   FiChevronsUp as ChevronsUpIcon
 } from 'react-icons/fi';
+export { GiNightSky as NightSkyIcon, GiPencil as PencilIcon } from 'react-icons/gi';
 export { GoBrowser as BrowserIcon } from 'react-icons/go';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
+export { ImSphere as GridSphereIcon } from 'react-icons/im';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoInformation as InformationIcon,
@@ -31,6 +36,7 @@ export {
   MdOutlineAirplanemodeActive as AirplaneIcon,
   MdAnchor as AnchorIcon,
   MdArrowBack as BackArrowIcon,
+  MdOutlinePanoramaPhotosphere as BandIcon,
   MdCalendarMonth as CalendarIcon,
   MdCancel as CancelIcon,
   MdCheckBox as CheckBoxCheckedIcon,
@@ -49,6 +55,7 @@ export {
   MdHdrStrong as ExoplanetIcon,
   MdOpenWith as ExpandArrowsIcon,
   MdVisibility as EyeIcon,
+  MdVisibilityOff as EyeOffIcon,
   MdFastForward as FastForwardIcon,
   MdFastRewind as FastRewindIcon,
   MdFilterAlt as FilterIcon,
@@ -92,14 +99,20 @@ export {
 } from 'react-icons/md';
 export {
   PiBookOpenText as BookIcon,
+  PiCompassBold as CompassLargeIcon,
+  PiCompass as CompassSmallIcon,
   PiMouseLeftClickThin as LeftClickMouseIcon,
+  PiPaintBrushHouseholdLight as PaintBrushIcon,
   PiMouseRightClickThin as RightClickMouseIcon,
   PiMouseMiddleClickThin as ScrollClickMouseIcon
 } from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
 export {
+  TbAbc as AbcIcon,
   TbClock as ClockIcon,
   TbClockX as ClockOffIcon,
+  TbCompass as CompassMarksIcon,
+  TbSphere as LineIcon,
   TbCube as SceneIcon,
   TbScript as ScriptLogIcon
 } from 'react-icons/tb';

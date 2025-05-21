@@ -1,6 +1,6 @@
-import { Checkbox, Container, Divider, Group, Menu } from '@mantine/core';
+import { Container, Divider, Menu } from '@mantine/core';
 
-import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { BoolInput } from '@/components/Input/BoolInput';
 import { Property } from '@/components/Property/Property';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -22,20 +22,15 @@ export function NavigationSettings() {
   return (
     <SettingsPopout title={'Navigation Settings'} position={'right'}>
       <Container>
-        <Group wrap={'nowrap'} mb={'xs'}>
-          <Checkbox
-            label={'Include Non-focusable Nodes in Search'}
-            checked={!showOnlyFocusableInSearch}
-            onChange={(event) => {
-              dispatch(setOnlyFocusableInNavMenu(!event.currentTarget.checked));
-            }}
-          />
-          <InfoBox>
-            Per default, nodes that are marked as non-focusable are excluded from the
+        <BoolInput
+          label={'Include Non-focusable Nodes in Search'}
+          value={!showOnlyFocusableInSearch}
+          onChange={(value: boolean) => dispatch(setOnlyFocusableInNavMenu(!value))}
+          info={`Per default, nodes that are marked as non-focusable are excluded from the
             search in the navigation menu. Checking this option will include them and
-            allowing setting these nodes as focus.
-          </InfoBox>
-        </Group>
+            allowing setting these nodes as focus.`}
+          mb={'xs'}
+        />
         <Property uri={JumpToFadeDurationKey} />
       </Container>
       <Divider my={'xs'} />

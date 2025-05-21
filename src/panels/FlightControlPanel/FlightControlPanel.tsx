@@ -1,16 +1,6 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Container,
-  Group,
-  List,
-  Slider,
-  Space,
-  Stack,
-  Text,
-  Title
-} from '@mantine/core';
+import { Container, Group, List, Slider, Space, Stack, Text, Title } from '@mantine/core';
 
 import { FrictionControls } from '@/components/FrictionControls/FrictionControls';
 import { FrictionControlsInfo } from '@/components/FrictionControls/FrictionControlsInfo';
@@ -64,22 +54,22 @@ export function FlightControlPanel() {
   return (
     <Stack gap={'xs'}>
       <BoolInput
-        name={t('controller.label')}
-        description={infoBoxContent}
+        label={t('controller.label')}
+        info={infoBoxContent}
         value={isControllerEnabled}
-        setValue={toggleFlightController}
+        onChange={toggleFlightController}
       />
 
       <Title order={2}>{t('settings-title')}</Title>
-      <Box>
-        <Label name={t('friction-label')} description={<FrictionControlsInfo />} />
+      <Stack gap={'xs'}>
+        <Label name={t('friction-label')} info={<FrictionControlsInfo />} />
         <Group align={'start'}>
           <FrictionControls size={'sm'} />
         </Group>
-      </Box>
+      </Stack>
 
-      <Box>
-        <Label name={t('sensitivity.label')} description={t('sensitivity.description')} />
+      <Stack gap={'xs'}>
+        <Label name={t('sensitivity.label')} info={t('sensitivity.description')} />
         <Slider
           min={0.1}
           max={1}
@@ -102,8 +92,8 @@ export function FlightControlPanel() {
           onChange={(value) => {
             dispatch(setFlightControllerInputScaleFactor(value));
           }}
-        ></Slider>
-      </Box>
+        />
+      </Stack>
     </Stack>
   );
 }

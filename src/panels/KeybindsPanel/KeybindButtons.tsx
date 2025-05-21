@@ -24,7 +24,7 @@ export function KeybindButtons({
   const allKeys = [...modifiers, displayKey].filter((kbd) => kbd);
 
   return (
-    <Group wrap={'nowrap'} {...styleProps}>
+    <Group wrap={'nowrap'} gap={'xs'} {...styleProps}>
       {allKeys.map((kbd, i) => (
         <Fragment key={kbd}>
           {i !== 0 && <Text c={'white'}> + </Text>}

@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { Checkbox, Group, Stack } from '@mantine/core';
+import { Stack } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
-import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { BoolInput } from '@/components/Input/BoolInput';
 import { useProperty } from '@/hooks/properties';
 
 interface Props {
@@ -66,36 +66,27 @@ export function ExoplanetsSettings({ hasAddedExoplanets }: Props) {
   return (
     <Collapsable title={t('section-title')}>
       <Stack gap={'xs'}>
-        <Group>
-          <Checkbox
-            checked={showHabitableZone}
-            onChange={toggleShowHabitableZone}
-            onKeyDown={(event) => event.key === 'Enter' && toggleShowHabitableZone()}
-            aria-label={t('show-habitable-zone.aria-label')}
-            label={t('show-habitable-zone.label')}
-          />
-          <InfoBox>{t('show-habitable-zone.tooltip')}</InfoBox>
-        </Group>
-        <Group>
-          <Checkbox
-            checked={showOrbitUncertainty}
-            onChange={toggleShowOrbitUncertainty}
-            onKeyDown={(event) => event.key === 'Enter' && toggleShowOrbitUncertainty()}
-            aria-label={t('show-orbit-uncertainty.aria-label')}
-            label={t('show-orbit-uncertainty.label')}
-          />
-          <InfoBox>{t('show-orbit-uncertainty.tooltip')}</InfoBox>
-        </Group>
-        <Group>
-          <Checkbox
-            checked={show1AuRing}
-            onChange={toggleShow1AuRing}
-            onKeyDown={(event) => event.key === 'Enter' && toggleShow1AuRing()}
-            aria-label={t('show-1-au-ring.aria-label')}
-            label={t('show-1-au-ring.label')}
-          />
-          <InfoBox>{t('show-1-au-ring.tooltip')}</InfoBox>
-        </Group>
+        <BoolInput
+          label={t('show-habitable-zone.label')}
+          aria-label={t('show-habitable-zone.aria-label')}
+          value={showHabitableZone || false}
+          onChange={toggleShowHabitableZone}
+          info={t('show-habitable-zone.tooltip')}
+        />
+        <BoolInput
+          label={t('show-orbit-uncertainty.label')}
+          aria-label={t('show-orbit-uncertainty.aria-label')}
+          value={showOrbitUncertainty || false}
+          onChange={toggleShowOrbitUncertainty}
+          info={t('show-orbit-uncertainty.tooltip')}
+        />
+        <BoolInput
+          label={t('show-1-au-ring.label')}
+          aria-label={t('show-1-au-ring.aria-label')}
+          value={show1AuRing || false}
+          onChange={toggleShow1AuRing}
+          info={t('show-1-au-ring.tooltip')}
+        />
       </Stack>
     </Collapsable>
   );

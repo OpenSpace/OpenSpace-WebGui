@@ -1,20 +1,10 @@
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import {
-  Button,
-  Checkbox,
-  Group,
-  NumberInput,
-  Tabs,
-  Text,
-  TextInput,
-  Title,
-  Tooltip
-} from '@mantine/core';
+import { Button, Group, NumberInput, Tabs, Text, TextInput, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { BoolInput } from '@/components/Input/BoolInput';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -28,6 +18,7 @@ import { CustomCoordinates } from './CustomCoordinates';
 import { EarthEntry } from './EarthEntry';
 import { ArcGISJSON, Candidate } from './types';
 import { addressUTF8 } from './util';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   currentAnchor: Identifier;
@@ -172,14 +163,13 @@ export function EarthPanel({ currentAnchor }: Props) {
               {t('search.results-title')}
             </Title>
             <SettingsPopout>
-              <Tooltip label={t('search.settings.tooltip')}>
-                <Checkbox
-                  checked={isCustomAltitude}
-                  onChange={(event) => setIsCustomAltitude(event.currentTarget.checked)}
-                  label={t('search.settings.altitude-checkbox')}
-                  m={'xs'}
-                />
-              </Tooltip>
+              <BoolInput
+                label={t('search.settings.altitude-checkbox')}
+                value={isCustomAltitude}
+                onChange={setIsCustomAltitude}
+                info={t('search.settings.tooltip')}
+                m={'xs'}
+              />
               <NumberInput
                 value={customAltitude}
                 onChange={(value) => {

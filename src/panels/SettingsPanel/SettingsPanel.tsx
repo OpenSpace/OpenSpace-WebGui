@@ -9,6 +9,7 @@ import { EnginePropertyVisibilityKey, ScenePrefixKey } from '@/util/keys';
 import {
   hasVisibleChildren,
   identifierFromUri,
+  isPropertyVisible,
   isTopLevelPropertyOwner
 } from '@/util/propertyTreeHelpers';
 import { checkCaseInsensitiveSubstringList } from '@/util/stringmatcher';
@@ -41,9 +42,8 @@ export function SettingsPanel() {
     searchableSubOwners = searchableSubOwners.filter((uri) =>
       hasVisibleChildren(uri, visiblityLevelSetting, propertyOwners, propertyOverview)
     );
-    searchableProperties = searchableProperties.filter(
-      (uri) =>
-        visiblityLevelSetting && visiblityLevelSetting >= propertyOverview[uri].visibility
+    searchableProperties = searchableProperties.filter((uri) =>
+      isPropertyVisible(propertyOverview[uri], visiblityLevelSetting)
     );
 
     return searchableSubOwners

@@ -1,14 +1,13 @@
-import { JSX } from 'react';
 import { Group, InputLabel, Text } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 
 interface Props {
-  name: string | JSX.Element;
-  description: string | JSX.Element;
+  name: React.ReactNode;
+  info?: React.ReactNode;
 }
 
-export function Label({ name, description }: Props) {
+export function Label({ name, info }: Props) {
   return (
     <Group wrap={'nowrap'}>
       <InputLabel fw={'normal'}>
@@ -16,7 +15,7 @@ export function Label({ name, description }: Props) {
           {name}
         </Text>
       </InputLabel>
-      {description && <InfoBox>{description}</InfoBox>}
+      {info && <InfoBox>{info}</InfoBox>}
     </Group>
   );
 }

@@ -16,7 +16,7 @@ import { NavigationTask } from '../Tasks/NavigationTask';
 
 import { ClickBlocker } from './ClickBlocker';
 
-export const NavigationSteps: React.JSX.Element[] = [
+export const NavigationSteps: React.ReactNode[] = [
   <>
     <Title>Navigation</Title>
     In this chapter we will learn about navigating in OpenSpace.
