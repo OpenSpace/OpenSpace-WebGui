@@ -66,7 +66,7 @@ export function ActionsButton({ uri, action: _action, height }: Props) {
                   />
                 )}
               </Stack>
-              {uri && <CopyUriButton uri={uri} />}
+              {action!.identifier && <CopyUriButton uri={action!.identifier} />}
             </InfoBox>
           )}
           {isLocal && (
