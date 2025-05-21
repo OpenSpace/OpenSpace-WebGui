@@ -1,9 +1,8 @@
-import { PropertyVisibilityNumber } from '@/types/enums';
-import { AnyProperty } from '@/types/Property/property';
 import {
   Identifier,
   Properties,
   PropertyOverview,
+  PropertyOverviewData,
   PropertyOwner,
   PropertyOwners,
   Uri
@@ -143,23 +142,21 @@ export function checkVisiblity(
 
 // Returns whether a property matches the current visiblity settings
 export function isPropertyVisible(
-  property: AnyProperty | undefined,
+  propertyData: PropertyOverviewData | undefined,
   visiblitySetting: number | undefined
 ): boolean {
-  if (visiblitySetting === undefined || !property) {
+  if (visiblitySetting === undefined || !propertyData) {
     return true;
   }
 
-  const propertyVisibility = PropertyVisibilityNumber[property?.metaData.visibility] ?? 0;
-
-  return visiblitySetting >= propertyVisibility;
+  return visiblitySetting >= propertyData.visibility;
 }
 
 export function hasVisibleChildren(
   ownerUri: Uri,
   visiblitySetting: number | undefined,
   propertyOwners: PropertyOwners,
-  properties: PropertyOverview
+  propertyOverview: PropertyOverview
 ): boolean {
   let queue: Uri[] = [ownerUri];
 
@@ -172,8 +169,8 @@ export function hasVisibleChildren(
     // Check if any of the owner's properties are visible
     if (
       visiblitySetting &&
-      propertyOwner.properties.some(
-        (uri) => visiblitySetting >= properties[uri].visibility
+      propertyOwner.properties.some((uri) =>
+        isPropertyVisible(propertyOverview[uri], visiblitySetting)
       )
     ) {
       return true;
