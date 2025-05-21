@@ -8,8 +8,8 @@
       },
       "title": "Anchor / Aim",
       "info": {
-        "part-1": "Set an anchor (<anchorIcon/>) that the camera attaches to, and an aim (<aimIcon/>) for the camera to look at. The aim will be kept in the same position as time changes.",
-        "part-2": "When selecting the aim/anchor, the chosen node will be targetted to be centered in the view. Hold <keybind>Shift</keybind> on-click to set anchor/aim without targetting."
+        "about-icons": "Set an anchor (<anchorIcon/>) that the camera attaches to, and an aim (<aimIcon/>) for the camera to look at. The aim will be kept in the same position as time changes.",
+        "shift-keybind": "When selecting the aim/anchor, the chosen node will be targetted to be centered in the view. Hold <keybind>Shift</keybind> on-click to set anchor/aim without targetting."
       },
       "retarget-anchor-tooltip": "Retarget anchor",
       "retarget-aim-tooltip": "Retarget aim",
@@ -19,9 +19,9 @@
     },
     "anchor-aim-list-entry": {
       "anchor-tooltip": "Set and target anchor",
-      "anchor-aria-label": "Set anchor to: {{name}}",
+      "anchor-aria-label": "Set anchor to",
       "aim-tooltip": "Set and target aim",
-      "aim-aria-label": "Set aim to: {{name}}"
+      "aim-aria-label": "Set aim to"
     },
     "focus-view": {
       "title": "Focus",

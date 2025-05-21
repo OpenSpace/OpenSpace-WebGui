@@ -4,7 +4,7 @@
   },
   "globe-layer": {
     "error": {
-      "no-property-owner": "No property found for URI: {{uri}}"
+      "no-property-owner-for-uri": "No property found for URI"
     },
     "no-information": "No information"
   },
@@ -80,8 +80,8 @@
   },
   "scene-tree": {
     "featured-scene-tree": {
-      "current-focus-label": "Current Focus: {{name}}",
-      "current-aim-label": "Current Aim: {{name}}",
+      "current-focus-label": "Current Focus",
+      "current-aim-label": "Current Aim",
       "quick-access-label": "Quick Access"
     },
     "scene-tree":{

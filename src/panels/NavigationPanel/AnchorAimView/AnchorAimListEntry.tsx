@@ -39,7 +39,7 @@ export function AnchorAimListEntry({
       </Text>
       <Tooltip label={t('anchor-tooltip')} openDelay={600}>
         <ActionIcon
-          aria-label={t('anchor-tooltip', node.name)}
+          aria-label={`${t('anchor-aria-label')}: ${node.name}`}
           size={'lg'}
           variant={isCurrentAnchor ? 'filled' : 'default'}
           onClick={(event) => onSelectAnchor(node.identifier, event)}
@@ -50,7 +50,7 @@ export function AnchorAimListEntry({
       </Tooltip>
       <Tooltip label={t('aim-tooltip')} openDelay={600}>
         <ActionIcon
-          aria-label={t('aim-tooltip', node.name)}
+          aria-label={`${t('aim-aria-label')}: ${node.name}`}
           size={'lg'}
           variant={isCurrentAim ? 'filled' : 'default'}
           onClick={(event) => onSelectAim(node.identifier, event)}

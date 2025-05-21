@@ -21,7 +21,7 @@ export function GlobeLayer({ uri }: Props) {
   const { isVisible } = usePropertyOwnerVisibility(uri);
 
   if (!propertyOwner) {
-    throw Error(t('error.no-property-owner', { uri }));
+    throw Error(`${t('error.no-property-owner-for-uri')}: ${uri}`);
   }
 
   // @TODO (emmbr, 2024-12-06): We want to avoid hardcoded colors, but since changing the

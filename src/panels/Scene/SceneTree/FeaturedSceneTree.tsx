@@ -23,13 +23,13 @@ export function FeaturedSceneTree() {
 
   if (anchorNode) {
     const anchorData = treeDataForSceneGraphNode(anchorNode.name, anchorNode.uri);
-    anchorData.label = t('current-focus-label', { name: anchorNode.name });
+    anchorData.label = `${t('current-focus-label')}: ${anchorNode.name}`;
     featuredTreeData.push(anchorData);
   }
 
   if (aimNode) {
     const aimData = treeDataForSceneGraphNode(aimNode.name, aimNode.uri);
-    aimData.label = t('current-aim-label', { name: aimNode.name });
+    aimData.label = `${t('current-aim-label')}: ${aimNode.name}`;
     featuredTreeData.push(aimData);
   }
 

@@ -83,7 +83,7 @@ export function AnchorAimView({
           <Text style={{ textWrap: 'pretty' }}>
             <Trans
               t={t}
-              i18nKey={'info.part-1'}
+              i18nKey={'info.about-icons'}
               components={{
                 anchorIcon: <AnchorIcon />,
                 aimIcon: <TelescopeIcon />
@@ -92,7 +92,11 @@ export function AnchorAimView({
           </Text>
           <Space h={'xs'} />
           <Text style={{ textWrap: 'pretty' }}>
-            <Trans t={t} i18nKey={'info.part-2'} components={{ keybind: <Kbd /> }} />
+            <Trans
+              t={t}
+              i18nKey={'info.shift-keybind'}
+              components={{ keybind: <Kbd /> }}
+            />
           </Text>
         </InfoBox>
       </Group>
