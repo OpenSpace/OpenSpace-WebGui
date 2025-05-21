@@ -25,10 +25,10 @@
     },
     "focus-view": {
       "title": "Focus",
-      "info": {
-        "part-1": "Click the <focusIcon /> button to focus/retarget object.",
-        "part-2": "- Hold <keybind>Shift</keybind> when clicking to set as focus/anchor without retargetting.",
-        "part-3": "- Hold <keybind>Ctrl</keybind> when clicking to keep current camera velocities."
+      "info":  {
+        "click-focus-button": "Click the <focusIcon /> button to focus/retarget object.",
+        "shift-keybind": "Hold <keybind>Shift</keybind> when clicking to set as focus/anchor without retargetting.",
+        "ctrl-keybind": "Hold <keybind>Ctrl</keybind> when clicking to keep current camera velocities."
       },
       "filter-list-placeholder": "Search for a new focus..."
     }

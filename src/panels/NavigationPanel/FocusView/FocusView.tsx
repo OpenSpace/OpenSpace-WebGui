@@ -1,5 +1,15 @@
 import { Trans, useTranslation } from 'react-i18next';
-import { Button, Divider, Group, Kbd, Paper, Space, Text, Title } from '@mantine/core';
+import {
+  Button,
+  Divider,
+  Group,
+  Kbd,
+  List,
+  Paper,
+  Space,
+  Text,
+  Title
+} from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -63,17 +73,27 @@ export function FocusView({
           <Text>
             <Trans
               t={t}
-              i18nKey={'info.part-1'}
+              i18nKey={'info.click-focus-button'}
               components={{ focusIcon: <FocusIcon /> }}
             />
           </Text>
           <Space h={'xs'} />
-          <Text style={{ textWrap: 'pretty' }}>
-            <Trans t={t} i18nKey={'info.part-2'} components={{ keybind: <Kbd /> }} />
-          </Text>
-          <Text style={{ textWrap: 'pretty' }}>
-            <Trans t={t} i18nKey={'info.part-3'} components={{ keybind: <Kbd /> }} />
-          </Text>
+          <List>
+            <List.Item>
+              <Trans
+                t={t}
+                i18nKey={'info.shift-keybind'}
+                components={{ keybind: <Kbd /> }}
+              />
+            </List.Item>
+            <List.Item>
+              <Trans
+                t={t}
+                i18nKey={'info.ctrl-keybind'}
+                components={{ keybind: <Kbd /> }}
+              />
+            </List.Item>
+          </List>
         </InfoBox>
       </Group>
       <>
