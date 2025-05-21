@@ -1,0 +1,18 @@
+{
+  "local-panel": {
+    "title": "Open Local Panel",
+    "placeholder": "Select Panel",
+    "open-local-panel-aria-label": "Open local panel"
+  },
+  "url-panel": {
+    "title": "Open from URL",
+    "title-input-label": "Title (optional)",
+    "title-input-placeholder": "Input title (optional)",
+    "url-label": "URL",
+    "url-placeholder": "Input URL",
+    "open-web-panel-aria-label": "Open web panel"
+  },
+  "recently-opened-urls": {
+    "title": "Recently Opened URLs"
+  }
+}

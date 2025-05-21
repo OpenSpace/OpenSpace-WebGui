@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -21,6 +22,7 @@ export function HelpMenu() {
   const [portProperty] = useProperty('IntProperty', 'Modules.WebGui.Port');
   const [addressProperty] = useProperty('StringProperty', 'Modules.WebGui.Address');
   const { addWindow } = useWindowLayoutProvider();
+  const { t } = useTranslation('menu', { keyPrefix: 'help-menu' });
 
   function openGuiInBrowser() {
     const port = portProperty ?? 4680;
@@ -42,7 +44,7 @@ export function HelpMenu() {
     <>
       <About opened={showAbout} close={close} />
 
-      <TopBarMenuWrapper targetTitle={'Help'}>
+      <TopBarMenuWrapper targetTitle={t('title')}>
         <Menu.Item
           component={'a'}
           href={
@@ -51,13 +53,13 @@ export function HelpMenu() {
           target={'_blank'}
           leftSection={<BookIcon />}
         >
-          Open Web Tutorials
+          {t('tutorials')}
         </Menu.Item>
         <Menu.Item
           leftSection={<RouteIcon style={{ transform: 'scale(-1)' }} />}
           onClick={openGettingStartedTour}
         >
-          Open Getting Started Tour
+          {t('getting-started')}
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item
@@ -66,17 +68,17 @@ export function HelpMenu() {
           target={'_blank'}
           leftSection={<FeedbackIcon />}
         >
-          Send Feedback
+          {t('send-feedback')}
         </Menu.Item>
         <Menu.Divider />
 
         <Menu.Item onClick={openGuiInBrowser} leftSection={<OpenInBrowserIcon />}>
-          Open GUI in Browser
+          {t('open-gui')}
         </Menu.Item>
 
         <Menu.Divider />
         <Menu.Item onClick={open} leftSection={<InformationCircleOutlineIcon />}>
-          About
+          {t('about')}
         </Menu.Item>
       </TopBarMenuWrapper>
     </>
