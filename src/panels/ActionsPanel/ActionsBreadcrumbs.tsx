@@ -9,7 +9,7 @@ import { calculateLevelDepth, createPath, getFolders } from './util';
 
 export function ActionsBreadcrumbs() {
   const navigationPath = useAppSelector((state) => state.actions.navigationPath);
-  const { t } = useTranslation('panel-actions');
+  const { t } = useTranslation('panel-actions', { keyPrefix: 'actions-breadcrumbs' });
   const dispatch = useAppDispatch();
 
   const currentLevel = calculateLevelDepth(navigationPath);
@@ -32,7 +32,7 @@ export function ActionsBreadcrumbs() {
     <Group gap={'xs'} mb={'xs'}>
       <ActionIcon
         onClick={() => goToLevel(currentLevel - 1)}
-        aria-label={t('breadcrumbs-aria-label')}
+        aria-label={t('back-button-aria-label')}
         disabled={isTopLevel}
       >
         <UpArrowIcon />

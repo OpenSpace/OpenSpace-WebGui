@@ -1,5 +1,9 @@
 {
-  "breadcrumbs-aria-label": "Back",
-  "action-button-tooltip": "Local action",
-  "action-search-placeholder": "Search for an action..."
+  "action-search-placeholder": "Search for an action...",
+  "actions-breadcrumbs": {
+    "back-button-aria-label": "Back"
+  },
+  "actions-button":{
+    "is-local-tooltip": "Local action"
+  } 
 }
