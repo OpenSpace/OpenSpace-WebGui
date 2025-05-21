@@ -1,6 +1,6 @@
 import { useRef } from 'react';
-import { NumberInput, NumberInputProps } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { NumberInput, NumberInputProps } from '@mantine/core';
 
 import { WarningIcon } from '@/components/WarningIcon/WarningIcon';
 import { usePropListeningState } from '@/hooks/util';

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Stack } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -11,6 +12,7 @@ interface Props {
 
 export function ExoplanetsSettings({ hasAddedExoplanets }: Props) {
   const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('panel-exoplanets', { keyPrefix: 'exoplanets-settings' });
 
   const [showHabitableZone, setShowHabitableZone] = useProperty(
     'BoolProperty',
@@ -62,30 +64,28 @@ export function ExoplanetsSettings({ hasAddedExoplanets }: Props) {
   }
 
   return (
-    <Collapsable title={'Settings'}>
+    <Collapsable title={t('section-title')}>
       <Stack gap={'xs'}>
         <BoolInput
-          label={'Show Habitable Zone'}
+          label={t('show-habitable-zone.label')}
+          aria-label={t('show-habitable-zone.aria-label')}
           value={showHabitableZone || false}
           onChange={toggleShowHabitableZone}
-          info={`Show/Hide the habitable zone visualizations. Setting the value automatically
-            updates the visibility for all added exoplanet systems.`}
+          info={t('show-habitable-zone.tooltip')}
         />
         <BoolInput
-          label={'Show Orbit Uncertainty'}
+          label={t('show-orbit-uncertainty.label')}
+          aria-label={t('show-orbit-uncertainty.aria-label')}
           value={showOrbitUncertainty || false}
           onChange={toggleShowOrbitUncertainty}
-          info={`Show/Hide disc visualization of the uncertainty of the planetary orbits.
-            Setting the value automatically updates the visibility for all added exoplanet
-            systems.`}
+          info={t('show-orbit-uncertainty.tooltip')}
         />
         <BoolInput
-          label={'1 AU Size Ring'}
+          label={t('show-1-au-ring.label')}
+          aria-label={t('show-1-au-ring.aria-label')}
           value={show1AuRing || false}
           onChange={toggleShow1AuRing}
-          info={`If true, show a ring with the radius 1 AU around the host star of each system,
-            to use for size comparison. Setting the value automatically updates the
-            visibility for all added exoplanet systems.`}
+          info={t('show-1-au-ring.tooltip')}
         />
       </Stack>
     </Collapsable>

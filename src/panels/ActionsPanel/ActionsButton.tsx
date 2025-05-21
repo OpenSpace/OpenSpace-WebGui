@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Badge, Button, Card, Group, Stack, Text, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -18,6 +19,7 @@ export function ActionsButton({ uri, action: _action, height }: Props) {
   const openspaceApi = useOpenSpaceApi();
   const allActions = useAppSelector((state) => state.actions.actions);
   const keybinds = useAppSelector((state) => state.actions.keybinds);
+  const { t } = useTranslation('panel-actions', { keyPrefix: 'actions-button' });
 
   const action = uri ? allActions.find((action) => action.identifier === uri) : _action;
   const keybind = keybinds.find((_keybind) => _keybind.action === action?.identifier);
@@ -70,7 +72,7 @@ export function ActionsButton({ uri, action: _action, height }: Props) {
             </InfoBox>
           )}
           {isLocal && (
-            <Tooltip label={'Local action'} position={'top'}>
+            <Tooltip label={t('is-local-tooltip')} position={'top'}>
               <Badge variant={'light'} circle>
                 L
               </Badge>

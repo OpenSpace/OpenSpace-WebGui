@@ -1,10 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, Menu, Stack } from '@mantine/core';
 
+import { BoolInput } from '@/components/Input/BoolInput';
 import { WarningIcon } from '@/components/WarningIcon/WarningIcon';
 import { SettingsIcon } from '@/icons/icons';
-
-import { BoolInput } from '@/components/Input/BoolInput';
 import { camelCaseToRegularText } from '@/util/text';
 
 interface Props<T extends object> {

@@ -96,9 +96,9 @@ async function openSaveFileDialogInternal(
 // Exporting these as a hook as they seem to belong in the same file,
 // even though only on of them is a hook
 export function useSaveLoadJsonFiles(handlePickedFile: (content: JSON) => void) {
-  const dispatch = useAppDispatch();
   const openLoadFileDialog = useLoadJsonFile(handlePickedFile);
   const { t } = useTranslation('notifications', { keyPrefix: 'error' });
+  const dispatch = useAppDispatch();
 
   async function openSaveFileDialog(contents: JSON) {
     openSaveFileDialogInternal(contents, dispatch, t);

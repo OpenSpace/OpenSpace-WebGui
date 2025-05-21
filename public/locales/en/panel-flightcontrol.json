@@ -1,0 +1,25 @@
+{
+  "toggle-flight-label": "Toggle flight control",
+  "description": {
+    "intro": "Interact with the highlighted area to control the camera.",
+    "mouse-title": "Mouse controls:",
+    "mouse-body": {
+      "text": "Click and drag to rotate. Hold",
+      "keybinds": ["Shift to zoom (y-axis) or roll (x-axis)", "Ctrl to pan"]
+    },
+    "touch-title": "Touch controls:",
+    "touch-body": {
+      "controls": [
+        "1 finger to rotate",
+        "2 fingers to pan",
+        "3 fingers to zoom (y-axis) or roll (x-axis)"
+      ]
+    }
+  },
+  "settings-title": "Settings",
+  "friction-label": "Friction control",
+  "sensitivity": {
+    "label": "Input sensitivity",
+    "description": "Controls how sensitive the touch and mouse inputs are"
+  }
+}

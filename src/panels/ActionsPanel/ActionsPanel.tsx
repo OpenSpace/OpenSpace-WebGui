@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Group } from '@mantine/core';
 
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
@@ -26,6 +27,7 @@ export function ActionsPanel() {
     });
   const actionLevel = useActionsForLevel();
   const actionsInPath = useActionsInPath();
+  const { t } = useTranslation('panel-actions');
 
   // TODO anden88 2025-02-06: use same css variable as ActionsButton
   const ButtonHeight = 80;
@@ -43,7 +45,9 @@ export function ActionsPanel() {
         <FilterList>
           <Group preventGrowOverflow={false}>
             {/* This is a custom variant of the FilterList input field */}
-            <ActionsSearchInputField placeHolderSearchText={'Search for an action...'} />
+            <ActionsSearchInputField
+              placeHolderSearchText={t('action-search-placeholder')}
+            />
             <FilterList.SearchSettingsMenu
               keys={allowedSearchKeys}
               setKey={toggleSearchKey}
