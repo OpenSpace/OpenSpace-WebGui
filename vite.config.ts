@@ -20,6 +20,7 @@ export default defineConfig({
     }
   },
   server: {
+    host: true, // Allows access from both localhost and 127.0.0.1
     port: 4690
   },
   base: './',
