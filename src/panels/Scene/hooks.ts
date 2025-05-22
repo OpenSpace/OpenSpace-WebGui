@@ -15,7 +15,7 @@ export function useOpenCurrentSceneNodeWindow() {
 
   function openCurrentNodeWindow(content: React.ReactNode) {
     if (!ref || ref.current === null) {
-      throw new Error('WindowLayoutProvider ref is not set'); // TODO: Localize?
+      throw new Error('WindowLayoutProvider ref is not set');
     }
 
     const existingWindow = ref.current.find(DefaultSgnWindowId);
@@ -30,7 +30,6 @@ export function useOpenCurrentSceneNodeWindow() {
       const scenePanelParentBox = ref.current.find('scene')?.parent as BoxData;
 
       if (!newWindow || !scenePanelParentBox) {
-        // TODO: Localize?
         throw new Error('Could not find the new window or the scene panel parent box');
       }
 
