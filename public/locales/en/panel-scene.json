@@ -110,7 +110,7 @@
       },
       "show-gui-hidden": {
         "label": "Show objects with GUI hidden flag",
-        "info": "Show scene graph nodes that are marked as hidden in the GUI part ofthe asset. These are otherwise hidden in the interface."
+        "info": "Show scene graph nodes that are marked as hidden in the GUI part of the asset. These are otherwise hidden in the interface."
       },
       "menu-label-tags": "Tags"
     }
