@@ -102,7 +102,7 @@
       "menu-label-filters": "Filters",
       "show-only-visible": {
         "label": "Show only visible",
-        "info": "Show only nodes that are currenlty visible, meaning enabled and not faded out."
+        "info": "Show only nodes that are currently visible, meaning enabled and not faded out."
       },
       "show-only-focusable": {
         "label": "Show only focusable",
