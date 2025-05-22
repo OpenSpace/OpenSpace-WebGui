@@ -25,9 +25,6 @@
     },
     "label": "Copy"
   },
-  "copy-uri-button": {
-    "label": "URI"
-  },
   "drag-reorder-list": {
     "drag-handle-aria-label": "Move item up or down (keyboard control not supported)"
   },
