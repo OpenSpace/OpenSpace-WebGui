@@ -20,93 +20,98 @@ export function RecordSession() {
 
   const dispatch = useAppDispatch();
   const fileList = useAppSelector((state) => state.sessionRecording.files);
-  const { overwriteFile } = useAppSelector((state) => state.sessionRecording.settings);
-  const [showOverwriteCheckbox, setShowOverwriteCheckbox] = useState(overwriteFile);
+  const { overwriteFile, format } = useAppSelector(
+    (state) => state.sessionRecording.settings
+  );
 
   const recordingState = useSubscribeToSessionRecording();
   const luaApi = useOpenSpaceApi();
 
   const isIdle = recordingState === RecordingState.Idle;
   const isRecordingState = recordingState === RecordingState.Recording;
+  const fileNameIsValid = !filenameState.invalid;
 
   function startRecording(): void {
     if (filenameRecording === '') {
-      setFilenameState({
-        invalid: true,
-        errorMessage: 'Filename cannot be empty'
-      });
-      setShowOverwriteCheckbox(false);
+      setFilenameState({ invalid: true, errorMessage: 'Filename cannot be empty' });
       return;
     }
 
-    if (!overwriteFile && !isFileUnique(filenameRecording)) {
-      setFilenameState({
-        invalid: true,
-        errorMessage: 'Filename already exists'
-      });
-      setShowOverwriteCheckbox(true);
+    if (!overwriteFile && !isFileUnique(filenameRecording, format)) {
+      setFilenameState({ invalid: true, errorMessage: 'Filename already exists' });
       return;
     }
     luaApi?.sessionRecording.startRecording();
   }
 
-  function isFileUnique(filename: string): boolean {
+  function isFileUnique(filename: string, fileFormat: 'Ascii' | 'Binary'): boolean {
+    const asciiExtension = '.osrectxt';
+    const binaryExtension = '.osrec';
+
+    let lowerFileName = filename.toLowerCase();
+
+    const hasExtension =
+      lowerFileName.endsWith(asciiExtension) || lowerFileName.endsWith(binaryExtension);
+
+    // Add the expected extension if it does not exist
+    if (!hasExtension) {
+      const expectedExtension = fileFormat === 'Ascii' ? asciiExtension : binaryExtension;
+      lowerFileName = lowerFileName.concat(expectedExtension);
+    }
+
     // Check if filename already exists
-    return fileList.every((file) => {
-      // Remove file extension
-      const index = file.lastIndexOf('.');
-      const existingFilename = index !== -1 ? file.substring(0, index) : file;
-      return existingFilename.toLowerCase() !== filename.toLowerCase();
-    });
+    return fileList.every((file) => file.toLowerCase() !== lowerFileName);
   }
 
   function onFilenameChanged(value: string): void {
     setFilenameRecording(value);
 
+    // Remove any error messages if the input field is empty
     if (!value.trim()) {
-      setFilenameState({
-        invalid: false,
-        errorMessage: ''
-      });
-      setShowOverwriteCheckbox(false);
+      setFilenameState({ invalid: false, errorMessage: '' });
       return;
     }
 
-    if (isFileUnique(value)) {
+    if (isFileUnique(value, format)) {
       dispatch(updateSessionRecordingSettings({ recordingFileName: value }));
-      setFilenameState({
-        invalid: false,
-        errorMessage: ''
-      });
-      setShowOverwriteCheckbox(false);
+      setFilenameState({ invalid: false, errorMessage: '' });
     } else {
-      setFilenameState({
-        invalid: true,
-        errorMessage: `File '${value}' already exists`
-      });
-      setShowOverwriteCheckbox(true);
+      setFilenameState({ invalid: true, errorMessage: `File '${value}' already exists` });
     }
   }
 
   function onFormatChanged(useTextFormat: boolean): void {
-    const _format = useTextFormat ? 'Ascii' : 'Binary';
-    updateSessionRecordingSettings({ format: _format });
+    const newFormat = useTextFormat ? 'Ascii' : 'Binary';
+    dispatch(updateSessionRecordingSettings({ format: newFormat }));
+
+    // The filename might be invalid if the format changes so we check it again
+    if (isFileUnique(filenameRecording, newFormat)) {
+      setFilenameState({ invalid: false, errorMessage: '' });
+    } else {
+      setFilenameState({
+        invalid: true,
+        errorMessage: `File '${filenameRecording}' already exists`
+      });
+    }
   }
 
   function onOverwriteFileChanged(value: boolean): void {
-    dispatch(
-      updateSessionRecordingSettings({
-        overwriteFile: value
-      })
-    );
+    dispatch(updateSessionRecordingSettings({ overwriteFile: value }));
   }
+
+  // const test = filenameState.invalid;
 
   return (
     <>
       <Title order={2} mb={'xs'}>
         Record
       </Title>
-      <BoolInput label={'Use text file format'} onChange={onFormatChanged} mb={'sm'} />
+      <BoolInput
+        value={format === 'Ascii'}
+        label={'Use text file format'}
+        onChange={onFormatChanged}
+        mb={'sm'}
+      />
       <Group align={'start'} gap={'xs'}>
         <TextInput
           value={filenameRecording}
@@ -129,7 +134,7 @@ export function RecordSession() {
         label={'Overwrite file'}
         value={overwriteFile}
         onChange={onOverwriteFileChanged}
-        disabled={!showOverwriteCheckbox}
+        disabled={fileNameIsValid}
         my={'sm'}
         info={`If you enter a filename that already exists, this checkbox allows you to
           overwrite the existing file.`}

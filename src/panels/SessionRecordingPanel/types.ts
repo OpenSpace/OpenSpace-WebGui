@@ -9,4 +9,6 @@ export interface SessionRecordingSettings {
   recordingFileName: string;
   format: 'Ascii' | 'Binary';
   overwriteFile: boolean;
+  latestFile: string;
+  hideGuiOnPlayback: boolean;
 }
