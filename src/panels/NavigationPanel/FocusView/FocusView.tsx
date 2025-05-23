@@ -1,4 +1,15 @@
-import { Button, Divider, Group, Kbd, Paper, Text, Title } from '@mantine/core';
+import { Trans, useTranslation } from 'react-i18next';
+import {
+  Button,
+  Divider,
+  Group,
+  Kbd,
+  List,
+  Paper,
+  Space,
+  Text,
+  Title
+} from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -30,6 +41,11 @@ export function FocusView({
   toggleKey,
   allowedKeys
 }: Props) {
+  const { t: tCommon } = useTranslation('common');
+  const { t } = useTranslation('panel-navigation', {
+    keyPrefix: 'anchor-aim.focus-view'
+  });
+
   const engineMode = useSubscribeToEngineMode();
 
   const anchorNode = useAnchorNode();
@@ -49,25 +65,36 @@ export function FocusView({
     luaApi?.navigation.setFocus(identifier, shouldRetarget, shouldResetVelocities);
   }
 
-  const infoBoxContent = (
-    <>
-      <Text>
-        Click the <FocusIcon /> button to focus/retarget object.
-      </Text>
-      <Text style={{ textWrap: 'pretty' }} mt={'xs'}>
-        - Hold <Kbd>Shift</Kbd> when clicking to set as focus/anchor without retargetting.
-      </Text>
-      <Text style={{ textWrap: 'pretty' }}>
-        - Hold <Kbd>Ctrl</Kbd> when clicking to keep current camera velocities.
-      </Text>
-    </>
-  );
-
   return (
     <FilterList>
       <Group justify={'space-between'}>
-        <Title order={2}>Focus</Title>
-        <InfoBox w={300}>{infoBoxContent}</InfoBox>
+        <Title order={2}>{t('title')}</Title>
+        <InfoBox w={300}>
+          <Text>
+            <Trans
+              t={t}
+              i18nKey={'info.click-focus-button'}
+              components={{ focusIcon: <FocusIcon /> }}
+            />
+          </Text>
+          <Space h={'xs'} />
+          <List>
+            <List.Item>
+              <Trans
+                t={t}
+                i18nKey={'info.shift-keybind'}
+                components={{ keybind: <Kbd /> }}
+              />
+            </List.Item>
+            <List.Item>
+              <Trans
+                t={t}
+                i18nKey={'info.ctrl-keybind'}
+                components={{ keybind: <Kbd /> }}
+              />
+            </List.Item>
+          </List>
+        </InfoBox>
       </Group>
       <>
         {anchorNode && !isInFlight && (
@@ -90,7 +117,7 @@ export function FocusView({
                 size={'sm'}
                 color={'red'}
               >
-                Cancel
+                {tCommon('cancel')}
               </Button>
             </Group>
           </Paper>
@@ -99,7 +126,7 @@ export function FocusView({
       </>
       <Group gap={'xs'}>
         <FilterList.InputField
-          placeHolderSearchText={'Search for a new focus...'}
+          placeHolderSearchText={t('filter-list-placeholder')}
           showMoreButton
           flex={'auto'}
         />
