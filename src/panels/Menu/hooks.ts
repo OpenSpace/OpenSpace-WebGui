@@ -42,7 +42,7 @@ export function useStoredLayout() {
         position: menuItemsData.mission.preferredPosition
       });
     }
-  }, [hasMission]);
+  }, [addWindow, dispatch, hasMission]);
 
   function handlePickedFile(content: JSON) {
     if (!content || Object.keys(content).length === 0) {

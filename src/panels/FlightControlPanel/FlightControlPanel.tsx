@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Group, List, Slider, Space, Stack, Text, Title } from '@mantine/core';
+import { List, Slider, Space, Stack, Text } from '@mantine/core';
 
-import { FrictionControls } from '@/components/FrictionControls/FrictionControls';
-import { FrictionControlsInfo } from '@/components/FrictionControls/FrictionControlsInfo';
 import { BoolInput } from '@/components/Input/BoolInput';
 import { Label } from '@/components/Label/Label';
 import {
@@ -65,14 +63,6 @@ export function FlightControlPanel() {
         onChange={toggleFlightController}
       />
 
-      <Title order={2}>{t('settings-title')}</Title>
-      <Stack gap={'xs'}>
-        <Label name={t('friction-label')} info={<FrictionControlsInfo />} />
-        <Group align={'start'}>
-          <FrictionControls size={'sm'} />
-        </Group>
-      </Stack>
-
       <Stack gap={'xs'}>
         <Label name={t('sensitivity.label')} info={t('sensitivity.description')} />
         <Slider
@@ -94,9 +84,7 @@ export function FlightControlPanel() {
               label: 1
             }
           ]}
-          onChange={(value) => {
-            dispatch(setFlightControllerInputScaleFactor(value));
-          }}
+          onChange={(value) => dispatch(setFlightControllerInputScaleFactor(value))}
         />
       </Stack>
     </Stack>
