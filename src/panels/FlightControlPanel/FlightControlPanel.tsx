@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Group, List, Slider, Space, Stack, Text, Title } from '@mantine/core';
+import { List, Slider, Space, Stack, Text } from '@mantine/core';
 
-import { FrictionControls } from '@/components/FrictionControls/FrictionControls';
-import { FrictionControlsInfo } from '@/components/FrictionControls/FrictionControlsInfo';
 import { BoolInput } from '@/components/Input/BoolInput';
 import { Label } from '@/components/Label/Label';
 import {
