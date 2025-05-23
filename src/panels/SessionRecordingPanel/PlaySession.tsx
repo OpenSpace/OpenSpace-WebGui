@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Group, Select, Stack, Title } from '@mantine/core';
 
 import { BoolInput } from '@/components/Input/BoolInput';
@@ -16,7 +16,8 @@ export function PlaySession() {
   const [loopPlayback, setLoopPlayback] = useState(false);
   const [shouldOutputFrames, setShouldOutputFrames] = useState(false);
   const [outputFramerate, setOutputFramerate] = useState(60);
-  const [filenamePlayback, setFilenamePlayback] = useState<string | null>(null);
+  const { latestFile } = useAppSelector((state) => state.sessionRecording.settings);
+  const [filenamePlayback, setFilenamePlayback] = useState<string | null>(latestFile);
 
   const fileList = useAppSelector((state) => state.sessionRecording.files);
   const recordingState = useSubscribeToSessionRecording();
@@ -24,6 +25,10 @@ export function PlaySession() {
   const isIdle = recordingState === RecordingState.Idle;
   const isPlayingBack =
     recordingState === RecordingState.Paused || recordingState === RecordingState.Playing;
+
+  useEffect(() => {
+    setFilenamePlayback(latestFile);
+  }, [latestFile]);
 
   function onLoopPlaybackChange(shouldLoop: boolean): void {
     if (shouldLoop) {
