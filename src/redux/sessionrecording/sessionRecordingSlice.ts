@@ -18,7 +18,8 @@ const initialState: SessionRecordingState = {
     recordingFileName: '',
     format: 'Ascii',
     overwriteFile: false,
-    latestFile: ''
+    latestFile: '',
+    hideGuiOnPlayback: true
   }
 };
 
@@ -40,7 +41,8 @@ export const sessionRecordingSlice = createSlice({
         format,
         recordingFileName: filename,
         overwriteFile,
-        latestFile
+        latestFile,
+        hideGuiOnPlayback
       } = action.payload;
       if (format !== undefined) {
         state.settings.format = format;
@@ -53,6 +55,9 @@ export const sessionRecordingSlice = createSlice({
       }
       if (latestFile) {
         state.settings.latestFile = latestFile;
+      }
+      if (hideGuiOnPlayback !== undefined) {
+        state.settings.hideGuiOnPlayback = hideGuiOnPlayback;
       }
       return state;
     }
