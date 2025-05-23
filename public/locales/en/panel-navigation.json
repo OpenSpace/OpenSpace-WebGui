@@ -8,8 +8,8 @@
       },
       "title": "Anchor / Aim",
       "info": {
-        "about-icons": "Set an anchor (<anchorIcon/>) that the camera attaches to, and an aim (<aimIcon/>) for the camera to look at. The aim will be kept in the same position as time changes.",
-        "shift-keybind": "When selecting the aim/anchor, the chosen node will be targeted to be centered in the view. Hold <keybind>Shift</keybind> on-click to set anchor/aim without targeting."
+        "about-icons": "Set an anchor (<anchorIcon/>) that the camera attaches to and an aim (<aimIcon/>) for the camera to look at. The aim will be kept in the same position as time progresses.",
+        "shift-keybind": "When selecting the aim/anchor, the chosen node will be targeted to be centered in the view. Hold <keybind>Shift</keybind> while clicking to set anchor/aim without targeting."
       },
       "retarget-anchor-tooltip": "Retarget anchor",
       "retarget-aim-tooltip": "Retarget aim",
@@ -42,7 +42,7 @@
   "navigation-settings": {
     "title": "Navigation Settings",
     "include-non-focusable-label": "Include Non-focusable Nodes in Search",
-    "include-non-focusable-description": "Per default, nodes that are marked as non-focusable from the search in the navigation menu. Checking this option will include them and allowing setting these nodes as focus.",
+    "include-non-focusable-description": "Per default, nodes that are marked as non-focusable from the search in the navigation menu. Checking this option will include them and allow setting these nodes as focus.",
     "camera-path-settings": "Camera Path Settings"
   },
   "remaining-flight-time-indicator": {
