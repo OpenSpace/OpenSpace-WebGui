@@ -81,10 +81,7 @@ export function NodeNavigationButton({
 
   function focus(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     if (!event.shiftKey) {
-      // Using `0` here instead of `nil` as the new more strictly-typed
-      // `setPropertyValueSingle` no longer accepts `nil` as a valid argument due to the
-      // fact that it is not representable in Lua
-      luaApi?.setPropertyValueSingle(RetargetAnchorKey, 0);
+      luaApi?.setPropertyValueSingle(RetargetAnchorKey, null);
     }
     luaApi?.setPropertyValueSingle(NavigationAnchorKey, identifier);
     luaApi?.setPropertyValueSingle(NavigationAimKey, '');

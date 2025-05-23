@@ -244,11 +244,13 @@ export interface openspace {
   scriptScheduler: scriptSchedulerLibrary;
   sessionRecording: sessionRecordingLibrary;
   skybrowser: skybrowserLibrary;
+  sonification: sonificationLibrary;
   space: spaceLibrary;
   spice: spiceLibrary;
   statemachine: statemachineLibrary;
   sync: syncLibrary;
   systemCapabilities: systemCapabilitiesLibrary;
+  telemetry: telemetryLibrary;
   time: timeLibrary;
 
   /**
@@ -349,10 +351,6 @@ export interface openspace {
    * Checks whether the provided file exists.
    */
   fileExists: (file: string) => Promise<boolean>
-  /**
-   * Returns the value the property, identified by the provided URI. Deprecated in favor of the 'propertyValue' function
-   */
-  getPropertyValue: (uri: string) => Promise<string | number | boolean | table>
   /**
    * Get a dictionary containing the current map with custom orderings for the Scene GUI tree. Each key in the dictionary corresponds to a branch in the tree, i.e. a specific GUI path.
    */
@@ -612,7 +610,7 @@ in which the parameter is interpolated. Has to be one of "Linear", "QuadraticEas
 is completed. If a duration larger than 0 was provided, it is at the end of the
 interpolation. If 0 was provided, the script runs immediately.
    */
-  setPropertyValue: (uri: string, value: string | number | boolean | table, duration?: number, easing?: easingfunction, postscript?: string) => Promise<void>
+  setPropertyValue: (uri: string, value: nil | string | number | boolean | table, duration?: number, easing?: easingfunction, postscript?: string) => Promise<void>
   /**
    * Sets the single property identified by the URI to the specified value.
 The `uri` identifies which property is affected by this function call. The second
@@ -641,7 +639,7 @@ in which the parameter is interpolated. Has to be one of "Linear", "QuadraticEas
 change of property value is completed. If a duration larger than 0 was provided, it is
 at the end of the interpolation. If 0 was provided, the script runs immediately.
    */
-  setPropertyValueSingle: (uri: string, value: string | number | boolean | table, duration?: number, easing?: easingfunction, postscript?: string) => Promise<void>
+  setPropertyValueSingle: (uri: string, value: nil | string | number | boolean | table, duration?: number, easing?: easingfunction, postscript?: string) => Promise<void>
   /**
    * Sets the folder used for storing screenshots or session recording frames
    */
@@ -1969,6 +1967,13 @@ interface skybrowserLibrary {
   wwtImageCollectionUrl: () => Promise<table>
 } // interface skybrowserLibrary
 
+interface sonificationLibrary {
+  /**
+   * Adds the given list of planets to the PlanetsSonification internal list of Planets and Moons.
+   */
+  addPlanets: (planets: table) => Promise<void>
+} // interface sonificationLibrary
+
 interface spaceLibrary {
   /**
    * Returns the cartesian world position of a ra dec coordinate with distance. If the coordinate is given as strings the format should be ra 'XhYmZs' and dec 'XdYmZs'. If the coordinate is given as numbers the values should be in degrees.
@@ -2110,6 +2115,13 @@ interface systemCapabilitiesLibrary {
    */
   os: () => Promise<string>
 } // interface systemCapabilitiesLibrary
+
+interface telemetryLibrary {
+  /**
+   * Adds the given list of nodes to the NodesTelemetry's internal list.
+   */
+  addNodes: (nodes: table) => Promise<void>
+} // interface telemetryLibrary
 
 interface timeLibrary {
   /**
