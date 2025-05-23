@@ -3,7 +3,7 @@
   "actions-breadcrumbs": {
     "back-button-aria-label": "Back"
   },
-  "actions-button":{
+  "actions-button": {
     "is-local-tooltip": "Local action"
-  } 
+  }
 }
