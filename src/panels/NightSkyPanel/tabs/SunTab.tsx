@@ -111,7 +111,7 @@ export function SunTab() {
         label={'Choose date'}
         placeholder={'01/01/2001'}
         value={trailDate}
-        onChange={setTrailDate}
+        onChange={(val) => setTrailDate(new Date(val))}
         mt={'sm'}
       />
       <Button

@@ -16,7 +16,6 @@ import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useProperty } from '@/hooks/properties';
 import {
-  ChevronRightIcon,
   DeleteIcon,
   NotificationsIcon,
   SaveIcon,
@@ -35,6 +34,7 @@ import { IconSize, LogLevel } from '@/types/enums';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { useMenuItems, useStoredLayout } from '../../hooks';
+import { MenuDrowdownWrapper } from '../MenuDropdownWrapper';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function ViewMenu() {
@@ -66,63 +66,55 @@ export function ViewMenu() {
   }
 
   return (
-    <TopBarMenuWrapper targetTitle={'View'}>
-      <TopBarMenuWrapper
-        targetTitle={
-          <Menu.Item
-            leftSection={<TaskBarIcon />}
-            rightSection={<ChevronRightIcon size={IconSize.sm} />}
-          >
-            Task Bar
-          </Menu.Item>
-        }
-        position={'right-start'}
-        withinPortal={false}
-        closeOnItemClick={false}
-      >
-        <Menu.Label pr={0}>
-          <Group justify={'space-between'}>
-            Toggle Task Bar Items
-            <Button size={'xs'} onClick={resetTaskbar}>
-              Reset
-            </Button>
-          </Group>
-        </Menu.Label>
-        <DragReorderList
-          id={'viewMenu'}
-          data={menuItems}
-          dragHandlePosition={'right'}
-          keyFunc={(item) => item.id}
-          onDragEnd={({ updatedData }) => {
-            dispatch(setMenuItemsOrder(updatedData));
-          }}
-          renderFunc={(itemConfig) => {
-            const item = menuItemsData[itemConfig.id];
-            return (
-              <Menu.Item
-                key={item.componentID}
-                leftSection={
-                  <Group>
-                    <CheckboxIndicator checked={itemConfig.visible} />
-                    {item.renderIcon?.(IconSize.xs)}
-                  </Group>
-                }
-                onClick={() =>
-                  dispatch(
-                    setMenuItemVisible({
-                      id: itemConfig.id,
-                      visible: !itemConfig.visible
-                    })
-                  )
-                }
-              >
-                {item.title}
-              </Menu.Item>
-            );
-          }}
-          gap={0}
-        />
-      </TopBarMenuWrapper>
+    <TopBarMenuWrapper targetTitle={'View'} closeOnItemClick={false}>
+      <Menu.Sub position={'right-start'} withinPortal={false}>
+        <Menu.Sub.Target>
+          <Menu.Sub.Item leftSection={<TaskBarIcon />}>Task Bar</Menu.Sub.Item>
+        </Menu.Sub.Target>
+
+        <MenuDrowdownWrapper isSubMenu shouldLimitHeight>
+          <Menu.Label pr={0}>
+            <Group justify={'space-between'}>
+              Toggle Task Bar Items
+              <Button size={'xs'} onClick={resetTaskbar}>
+                Reset
+              </Button>
+            </Group>
+          </Menu.Label>
+          <DragReorderList
+            id={'viewMenu'}
+            data={menuItems}
+            dragHandlePosition={'right'}
+            keyFunc={(item) => item.id}
+            onDragEnd={({ updatedData }) => dispatch(setMenuItemsOrder(updatedData))}
+            renderFunc={(itemConfig) => {
+              const item = menuItemsData[itemConfig.id];
+              return (
+                <Menu.Item
+                  key={item.componentID}
+                  leftSection={
+                    <Group>
+                      <CheckboxIndicator checked={itemConfig.visible} />
+                      {item.renderIcon?.(IconSize.xs)}
+                    </Group>
+                  }
+                  onClick={() =>
+                    dispatch(
+                      setMenuItemVisible({
+                        id: itemConfig.id,
+                        visible: !itemConfig.visible
+                      })
+                    )
+                  }
+                >
+                  {item.title}
+                </Menu.Item>
+              );
+            }}
+            gap={0}
+          />
+        </MenuDrowdownWrapper>
+      </Menu.Sub>
 
       <Menu.Item leftSection={<UpArrowIcon />} onClick={loadLayout}>
         Load Task Bar Settings
@@ -134,131 +126,120 @@ export function ViewMenu() {
 
       <Menu.Divider />
 
-      <TopBarMenuWrapper
-        targetTitle={
-          <Menu.Item
-            leftSection={<SettingsIcon />}
-            rightSection={<ChevronRightIcon size={IconSize.sm} />}
-          >
-            GUI Settings
-          </Menu.Item>
-        }
-        position={'right-start'}
-        withinPortal={false}
-        closeOnItemClick={false}
-      >
-        <Menu.Label>
-          <Group gap={'xs'}>
-            Visibility Level
-            <InfoBox>
-              {`Controls what settings will be exposed in the interface. Increase the
+      <Menu.Sub>
+        <Menu.Sub.Target>
+          <Menu.Sub.Item leftSection={<SettingsIcon />}>GUI Settings</Menu.Sub.Item>
+        </Menu.Sub.Target>
+        <Menu.Sub.Dropdown>
+          <Menu.Label>
+            <Group gap={'xs'}>
+              Visibility Level
+              <InfoBox>
+                {`Controls what settings will be exposed in the interface. Increase the
                 level to reveal more advanced settings.`}
-            </InfoBox>
-          </Group>
-        </Menu.Label>
-        <Container>
-          <Radio.Group
-            value={propertyVisibility?.toString()}
-            onChange={(newValue) => setPropertyVisibility(parseInt(newValue))}
-            onKeyDown={(event) => event.stopPropagation()}
-          >
-            <Stack gap={'xs'}>
-              {userLevelOptions ? (
-                Object.entries(userLevelOptions).map(([key, option]) => (
-                  <Radio key={key} aria-label={option} label={option} value={key} />
-                ))
-              ) : (
-                <LoadingBlocks />
-              )}
-            </Stack>
-          </Radio.Group>
-        </Container>
+              </InfoBox>
+            </Group>
+          </Menu.Label>
+          <Container>
+            <Radio.Group
+              value={propertyVisibility?.toString()}
+              onChange={(newValue) => setPropertyVisibility(parseInt(newValue))}
+              onKeyDown={(event) => event.stopPropagation()}
+            >
+              <Stack gap={'xs'}>
+                {userLevelOptions ? (
+                  Object.entries(userLevelOptions).map(([key, option]) => (
+                    <Radio key={key} aria-label={option} label={option} value={key} />
+                  ))
+                ) : (
+                  <LoadingBlocks />
+                )}
+              </Stack>
+            </Radio.Group>
+          </Container>
 
-        <Menu.Label mt={'xs'}>
-          <Group gap={'xs'}>
-            Scale
-            <InfoBox>Increase or decrease the scale of the GUI.</InfoBox>
-          </Group>
-        </Menu.Label>
-        <Container>
-          {guiScale ? (
-            <Slider
-              defaultValue={guiScale}
-              min={0.1}
-              max={2}
-              step={0.01}
-              label={(value) => `${Math.round(value * 100)}%`}
-              onChangeEnd={(value) => setGuiScale(value)}
-              marks={[
-                { value: 0.1, label: '10%' },
-                { value: 1, label: '100%' },
-                { value: 2, label: '200%' }
-              ]}
-              miw={170}
-              mb={'lg'} // Needed for marks to fit in menu
+          <Menu.Label mt={'xs'}>
+            <Group gap={'xs'}>
+              Scale
+              <InfoBox>Increase or decrease the scale of the GUI.</InfoBox>
+            </Group>
+          </Menu.Label>
+          <Container>
+            {guiScale ? (
+              <Slider
+                defaultValue={guiScale}
+                min={0.1}
+                max={2}
+                step={0.01}
+                label={(value) => `${Math.round(value * 100)}%`}
+                onChangeEnd={(value) => setGuiScale(value)}
+                marks={[
+                  { value: 0.1, label: '10%' },
+                  { value: 1, label: '100%' },
+                  { value: 2, label: '200%' }
+                ]}
+                miw={170}
+                mb={'lg'} // Needed for marks to fit in menu
+              />
+            ) : (
+              <LoadingBlocks n={1} />
+            )}
+          </Container>
+        </Menu.Sub.Dropdown>
+      </Menu.Sub>
+
+      <Menu.Sub>
+        <Menu.Sub.Target>
+          <Menu.Sub.Item leftSection={<NotificationsIcon />}>Notifications</Menu.Sub.Item>
+        </Menu.Sub.Target>
+
+        <MenuDrowdownWrapper isSubMenu shouldLimitHeight>
+          <Menu.Label>
+            <Group gap={'xs'}>Notifications</Group>
+          </Menu.Label>
+          <Container>
+            {/* @TODO (2025-05-14, emmbr): Use BoolInput component */}
+            <Checkbox
+              label={'Show Notifications'}
+              checked={logNotifications}
+              onChange={(event) =>
+                dispatch(showNotifications(event.currentTarget.checked))
+              }
+              mb={'xs'}
             />
-          ) : (
-            <LoadingBlocks n={1} />
-          )}
-        </Container>
-      </TopBarMenuWrapper>
-
-      <TopBarMenuWrapper
-        targetTitle={
+          </Container>
+          <Menu.Label>
+            <Group gap={'xs'}>
+              Min OpenSpace Log Level
+              <InfoBox>Controls which messages will be shown from OpenSpace</InfoBox>
+            </Group>
+          </Menu.Label>
+          <Container>
+            <Radio.Group
+              value={notificationLogLevel}
+              onChange={(value) => dispatch(updateLogLevel(value as LogLevel))}
+              mb={'xs'}
+            >
+              <Stack gap={'xs'}>
+                {Object.values(LogLevel).map((logLevel) => (
+                  <Radio
+                    key={logLevel}
+                    value={logLevel}
+                    label={logLevel}
+                    aria-label={logLevel}
+                  />
+                ))}
+              </Stack>
+            </Radio.Group>
+          </Container>
           <Menu.Item
-            leftSection={<NotificationsIcon />}
-            rightSection={<ChevronRightIcon size={IconSize.sm} />}
+            onClick={() => notifications.clean()}
+            leftSection={<DeleteIcon size={IconSize.sm} />}
           >
-            Notifications
+            Clear Notifications
           </Menu.Item>
-        }
-        position={'right-start'}
-        withinPortal={false}
-        closeOnItemClick={false}
-      >
-        <Menu.Label>
-          <Group gap={'xs'}>Notifications</Group>
-        </Menu.Label>
-        <Container>
-          {/* @TODO (2025-05-14, emmbr): Use BoolInput component */}
-          <Checkbox
-            label={'Show Notifications'}
-            checked={logNotifications}
-            onChange={(event) => dispatch(showNotifications(event.currentTarget.checked))}
-            mb={'xs'}
-          />
-        </Container>
-        <Menu.Label>
-          <Group gap={'xs'}>
-            Min OpenSpace Log Level
-            <InfoBox>Controls which messages will be shown from OpenSpace</InfoBox>
-          </Group>
-        </Menu.Label>
-        <Container>
-          <Radio.Group
-            value={notificationLogLevel}
-            onChange={(value) => dispatch(updateLogLevel(value as LogLevel))}
-            mb={'xs'}
-          >
-            <Stack gap={'xs'}>
-              {Object.values(LogLevel).map((logLevel) => (
-                <Radio
-                  key={logLevel}
-                  value={logLevel}
-                  label={logLevel}
-                  aria-label={logLevel}
-                />
-              ))}
-            </Stack>
-          </Radio.Group>
-        </Container>
-        <Menu.Item
-          onClick={() => notifications.clean()}
-          leftSection={<DeleteIcon size={IconSize.sm} />}
-        >
-          Clear Notifications
-        </Menu.Item>
-      </TopBarMenuWrapper>
+        </MenuDrowdownWrapper>
+      </Menu.Sub>
     </TopBarMenuWrapper>
   );
 }
