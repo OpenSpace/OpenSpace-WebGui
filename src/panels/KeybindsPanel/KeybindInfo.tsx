@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Badge, Code, Group, Paper, Table, Text } from '@mantine/core';
 
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
@@ -8,6 +9,9 @@ interface Props {
 }
 
 export function KeybindInfo({ action }: Props) {
+  const { t: tCommon } = useTranslation('common');
+  const { t } = useTranslation('panel-keybinds', { keyPrefix: 'keybind-info' });
+
   return (
     <Paper key={action.identifier} p={'sm'}>
       <Text ml={'xs'} mb={2} fw={'bold'}>
@@ -16,18 +20,18 @@ export function KeybindInfo({ action }: Props) {
       <Table
         data={{
           body: [
-            ['Info:', action.documentation],
+            [`${t('info')}:`, action.documentation],
             [
-              'Is Local:',
+              `${t('is-local')}:`,
               action.isLocal ? (
-                <Badge variant={'filled'}>Yes</Badge>
+                <Badge variant={'filled'}>{tCommon('yes')}</Badge>
               ) : (
-                <Badge variant={'outline'}>No</Badge>
+                <Badge variant={'outline'}>{tCommon('no')}</Badge>
               )
             ],
-            ['GUI Path:', <Code>{action.guiPath}</Code>],
+            [`${t('gui-path')}:`, <Code>{action.guiPath}</Code>],
             [
-              'Identifier:',
+              `${t('identifier')}:`,
               <Group gap={'xs'} wrap={'nowrap'}>
                 <Code style={{ wordBreak: 'break-word' }}>{action.identifier}</Code>
                 <CopyToClipboardButton value={action.identifier} />
