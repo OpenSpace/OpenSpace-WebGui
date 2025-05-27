@@ -3,6 +3,7 @@ import { Group, Select, Stack, Title } from '@mantine/core';
 
 import { BoolInput } from '@/components/Input/BoolInput';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
+import { useSubscribeToProperty } from '@/hooks/properties';
 import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { updateSessionRecordingSettings } from '@/redux/sessionrecording/sessionRecordingSlice';
@@ -11,23 +12,26 @@ import { PlaybackPauseButton } from './Playback/PlaybackPauseButton';
 import { PlaybackPlayButton } from './Playback/PlaybackPlayButton';
 import { PlaybackResumeButton } from './Playback/PlaybackResumeButton';
 import { PlaybackStopButton } from './Playback/PlaybackStopButton';
-import { useShowGUI } from './hooks';
 import { RecordingState } from './types';
 
 export function PlaySession() {
   const [loopPlayback, setLoopPlayback] = useState(false);
   const [shouldOutputFrames, setShouldOutputFrames] = useState(false);
   const [outputFramerate, setOutputFramerate] = useState(60);
-  const { latestFile, hideGuiOnPlayback } = useAppSelector(
+  const { latestFile, hideGuiOnPlayback, hideDashboardsOnPlayback } = useAppSelector(
     (state) => state.sessionRecording.settings
   );
   const [filenamePlayback, setFilenamePlayback] = useState<string | null>(latestFile);
 
   const fileList = useAppSelector((state) => state.sessionRecording.files);
   const recordingState = useSubscribeToSessionRecording();
-  const [prevRecState, setPrevRecState] = useState<RecordingState>(recordingState);
-  const showGUI = useShowGUI();
   const dispatch = useAppDispatch();
+
+  // Subscribe to Properties so that the middleware will be notified on updated values
+  useSubscribeToProperty('Modules.CefWebGui.Visible');
+  useSubscribeToProperty('RenderEngine.ShowLog');
+  useSubscribeToProperty('RenderEngine.ShowVersion');
+  useSubscribeToProperty('Dashboard.IsEnabled');
 
   const isIdle = recordingState === RecordingState.Idle;
   const isPlayingBack =
@@ -39,22 +43,6 @@ export function PlaySession() {
       setFilenamePlayback(latestFile);
     }
   }, [latestFile]);
-
-  // TODO anden88 2025-05-23: Not a fan of this useEffect. Subscribe to the "SessionRecordingPlayback"
-  // somehow? Issue is that it currently resides in the eventsMiddleware so we cant call lua functions
-  useEffect(() => {
-    if (recordingState !== prevRecState) {
-      setPrevRecState(recordingState);
-    }
-
-    if (
-      prevRecState === RecordingState.Playing &&
-      recordingState === RecordingState.Idle &&
-      hideGuiOnPlayback
-    ) {
-      showGUI(true);
-    }
-  }, [recordingState, prevRecState, hideGuiOnPlayback, showGUI, setPrevRecState]);
 
   function onLoopPlaybackChange(shouldLoop: boolean): void {
     if (shouldLoop) {
@@ -113,7 +101,18 @@ export function PlaySession() {
             dispatch(updateSessionRecordingSettings({ hideGuiOnPlayback: value }))
           }
           info={
-            'When checked, hides the GUI and overlays during playback. They will reappear after the recording ends.'
+            'When checked, hides the GUI during playback. It will reappear after the recording ends.'
+          }
+          disabled={isPlayingBack}
+        />
+        <BoolInput
+          label={'Hide dashboards on playback'}
+          value={hideDashboardsOnPlayback}
+          onChange={(value) =>
+            dispatch(updateSessionRecordingSettings({ hideDashboardsOnPlayback: value }))
+          }
+          info={
+            'When checked, hides the dashboard overlays during playback. They will reappear after the recording ends.'
           }
           disabled={isPlayingBack}
         />

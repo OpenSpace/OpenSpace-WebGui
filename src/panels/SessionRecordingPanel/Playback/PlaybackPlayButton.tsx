@@ -2,10 +2,9 @@ import { Button, ButtonProps } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { PlayIcon } from '@/icons/icons';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
+import { showGUI } from '@/redux/sessionrecording/sessionRecordingMiddleware';
 import { RecordingsFolderKey } from '@/util/keys';
-
-import { useShowGUI } from '../hooks';
 
 interface Props extends ButtonProps {
   filename: string | null;
@@ -21,11 +20,8 @@ export function PlaybackPlayButton({
   outputFramerate,
   ...props
 }: Props) {
-  const { hideGuiOnPlayback } = useAppSelector(
-    (state) => state.sessionRecording.settings
-  );
   const luaApi = useOpenSpaceApi();
-  const showGUI = useShowGUI();
+  const dispatch = useAppDispatch();
 
   async function startPlayback(): Promise<void> {
     const shouldWaitForTiles = true;
@@ -35,9 +31,7 @@ export function PlaybackPlayButton({
       return;
     }
 
-    if (hideGuiOnPlayback) {
-      await showGUI(false);
-    }
+    dispatch(showGUI(false));
 
     if (shouldOutputFrames) {
       luaApi?.sessionRecording.startPlayback(
