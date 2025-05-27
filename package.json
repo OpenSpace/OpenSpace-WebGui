@@ -30,7 +30,7 @@
     "i18next-http-backend": "^3.0.2",
     "lodash": "^4.17.21",
     "openspace-api-js": "^0.1.6",
-    "rc-dock": "github:OpenSpace/OpenSpace-WebGui-WindowLayout",
+    "rc-dock": "github:OpenSpace/openSpace-WebGui-WindowLayout",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-error-boundary": "^5.0.0",

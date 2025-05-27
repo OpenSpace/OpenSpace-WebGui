@@ -70,7 +70,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
       const base = rcDocRef.current.find(baseID)! as BoxData;
 
       const tab = createWindowTabData(options.id, options.title, component);
-      const SidePanelDefaultWidth = 300;
+      const SidePanelDefaultWidth = 350;
 
       switch (position) {
         case 'left':
