@@ -8,6 +8,8 @@ import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { updateSessionRecordingSettings } from '@/redux/sessionrecording/sessionRecordingSlice';
 
+import { KeybindButtons } from '../KeybindsPanel/KeybindButtons';
+
 import { PlaybackPauseButton } from './Playback/PlaybackPauseButton';
 import { PlaybackPlayButton } from './Playback/PlaybackPlayButton';
 import { PlaybackResumeButton } from './Playback/PlaybackResumeButton';
@@ -22,6 +24,7 @@ export function PlaySession() {
     (state) => state.sessionRecording.settings
   );
   const [filenamePlayback, setFilenamePlayback] = useState<string | null>(latestFile);
+  const keybinds = useAppSelector((state) => state.actions.keybinds);
 
   const fileList = useAppSelector((state) => state.sessionRecording.files);
   const recordingState = useSubscribeToSessionRecording();
@@ -38,6 +41,9 @@ export function PlaySession() {
     recordingState === RecordingState.Paused || recordingState === RecordingState.Playing;
 
   const isSettingsCombinationDangerous = loopPlayback && hideGuiOnPlayback;
+  const toggleGuiKeybind = keybinds.find(
+    (keybind) => keybind.action === 'os.ToggleMainGui'
+  );
 
   // Update the playback dropdown list to the latest recorded file
   useEffect(() => {
@@ -109,7 +115,7 @@ export function PlaySession() {
         />
         {isSettingsCombinationDangerous && (
           <Alert variant={'light'} color={'orange'} title={'Warning'}>
-            <Text>
+            <Text mb={'xs'}>
               Caution: Enabling both{' '}
               <Text fs={'italic'} span inherit>
                 Loop playback
@@ -119,8 +125,12 @@ export function PlaySession() {
                 Hide GUI
               </Text>{' '}
               will cause the interface to remain hidden indefinitely during playback. To
-              reveal the GUI again, press F1.
+              reveal the GUI again, press:
             </Text>
+            <KeybindButtons
+              selectedKey={toggleGuiKeybind?.key}
+              modifiers={toggleGuiKeybind?.modifiers}
+            />
           </Alert>
         )}
         <BoolInput
