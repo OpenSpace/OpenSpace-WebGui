@@ -2,7 +2,10 @@ import { Button, ButtonProps } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { StopIcon } from '@/icons/icons';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
+import { updateSessionRecordingSettings } from '@/redux/sessionrecording/sessionRecordingSlice';
+import { LogLevel } from '@/types/enums';
 import { RecordingsFolderKey } from '@/util/keys';
 
 interface Props extends ButtonProps {
@@ -14,11 +17,46 @@ export function RecordingStopButton({ filename, ...props }: Props) {
   const { format, overwriteFile } = useAppSelector(
     (state) => state.sessionRecording.settings
   );
+  const dispatch = useAppDispatch();
 
-  function stopRecording(): void {
-    // prettier-ignore
-    luaApi?.absPath(`${RecordingsFolderKey}${filename}`)
-          .then((value) => luaApi?.sessionRecording.stopRecording(value, format, overwriteFile));
+  async function stopRecording(): Promise<void> {
+    let file = filename.trim();
+    const extension = format === 'Ascii' ? '.osrectxt' : '.osrec';
+    const index = file.lastIndexOf('.');
+    const hasExtension = index !== -1;
+
+    if (hasExtension) {
+      const fileExtension = filename.substring(index);
+      if (fileExtension !== extension) {
+        file = filename.concat(extension);
+      }
+    } else {
+      file = filename.concat(extension);
+    }
+
+    try {
+      const filePath = await luaApi?.absPath(`${RecordingsFolderKey}${file}`);
+      if (filePath) {
+        await luaApi?.sessionRecording.stopRecording(filePath, format, overwriteFile);
+        dispatch(updateSessionRecordingSettings({ latestFile: file }));
+      } else {
+        dispatch(
+          handleNotificationLogging(
+            'Error stopping session recording',
+            `Invalid filepath, can't find filepath '${filePath}' for file: '${file}'`,
+            LogLevel.Error
+          )
+        );
+      }
+    } catch (error) {
+      dispatch(
+        handleNotificationLogging(
+          'Error stopping session recording',
+          error,
+          LogLevel.Error
+        )
+      );
+    }
   }
 
   return (

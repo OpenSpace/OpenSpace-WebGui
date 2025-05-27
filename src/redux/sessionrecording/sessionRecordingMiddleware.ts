@@ -6,7 +6,14 @@ import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { ConnectionStatus } from '@/types/enums';
 
-import { SessionRecordingState, updateSessionrecording } from './sessionRecordingSlice';
+import { setPropertyValue } from '../propertytree/properties/propertiesSlice';
+import { RootState } from '../store';
+
+import {
+  SessionRecordingState,
+  updateInitialRecordingSettings,
+  updateSessionrecording
+} from './sessionRecordingSlice';
 
 const subscribeToSessionRecording = createAction<void>('sessionRecording/subscribe');
 const unsubscribeToSessionRecording = createAction<void>('sessionRecording/unsubscribe');
@@ -26,6 +33,86 @@ export const setupSubscription = createAsyncThunk(
         thunkAPI.dispatch(updateSessionrecording(data));
       }
     })();
+  }
+);
+
+export const showGUI = createAsyncThunk(
+  'sessionRecording/showGUI',
+  async (value: boolean, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState;
+    const { initialSettings, settings } = state.sessionRecording;
+
+    const GuiUri = 'Modules.CefWebGui.Visible';
+    const DashboardsUri = 'Dashboard.IsEnabled';
+    const LogUri = 'RenderEngine.ShowLog';
+    const VersionUri = 'RenderEngine.ShowVersion';
+
+    // Get the initial property values before making any changes
+    const gui = state.properties.properties[GuiUri]?.value as boolean | undefined;
+    const dashboards = state.properties.properties[DashboardsUri]?.value as
+      | boolean
+      | undefined;
+    const log = state.properties.properties[LogUri]?.value as boolean | undefined;
+    const version = state.properties.properties[VersionUri]?.value as boolean | undefined;
+
+    if (value === false) {
+      if (
+        log === undefined ||
+        dashboards === undefined ||
+        gui === undefined ||
+        version === undefined
+      ) {
+        return;
+      }
+      // Before hiding GUI we need to store the initial values in store
+      thunkAPI.dispatch(
+        updateInitialRecordingSettings({
+          showGui: gui,
+          showDashboards: dashboards,
+          showLog: log,
+          showVersion: version
+        })
+      );
+
+      if (settings.hideGuiOnPlayback) {
+        thunkAPI.dispatch(setPropertyValue({ uri: GuiUri, value: false }));
+      }
+
+      if (settings.hideDashboardsOnPlayback) {
+        thunkAPI.dispatch(setPropertyValue({ uri: DashboardsUri, value: false }));
+        thunkAPI.dispatch(setPropertyValue({ uri: LogUri, value: false }));
+        thunkAPI.dispatch(setPropertyValue({ uri: VersionUri, value: false }));
+      }
+    }
+
+    if (value === true) {
+      // Set GUI visibility to initial settings again
+      if (settings.hideGuiOnPlayback) {
+        thunkAPI.dispatch(
+          setPropertyValue({
+            uri: GuiUri,
+            value: initialSettings.showGui
+          })
+        );
+      }
+      if (settings.hideDashboardsOnPlayback) {
+        thunkAPI.dispatch(
+          setPropertyValue({
+            uri: DashboardsUri,
+            value: initialSettings.showDashboards
+          })
+        );
+        thunkAPI.dispatch(
+          setPropertyValue({ uri: LogUri, value: initialSettings.showLog })
+        );
+        thunkAPI.dispatch(
+          setPropertyValue({
+            uri: VersionUri,
+            value: initialSettings.showVersion
+          })
+        );
+      }
+    }
   }
 );
 

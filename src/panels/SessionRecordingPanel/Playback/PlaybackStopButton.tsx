@@ -6,9 +6,13 @@ import { StopIcon } from '@/icons/icons';
 export function PlaybackStopButton({ ...props }: ButtonProps) {
   const luaApi = useOpenSpaceApi();
 
+  function stopPlayback() {
+    luaApi?.sessionRecording.stopPlayback();
+  }
+
   return (
     <Button
-      onClick={() => luaApi?.sessionRecording.stopPlayback()}
+      onClick={stopPlayback}
       leftSection={<StopIcon />}
       color={'red'}
       variant={'filled'}
