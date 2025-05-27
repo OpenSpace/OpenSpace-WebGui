@@ -35,7 +35,7 @@ export function FileMenu() {
   }
 
   return (
-    <TopBarMenuWrapper targetTitle={'File'} closeOnItemClick={false}>
+    <TopBarMenuWrapper targetTitle={'File'} closeOnItemClick={true}>
       {!profile.initalized ? (
         <LoadingBlocks n={1} />
       ) : (
@@ -82,6 +82,7 @@ export function FileMenu() {
         leftSection={<ConsoleIcon />}
         aria-checked={isConsoleVisible}
         aria-label={isConsoleVisible ? 'Close console' : 'Open console'}
+        color={isConsoleVisible ? 'var(--mantine-primary-color-4)' : undefined}
       >
         Toggle Console
       </Menu.Item>

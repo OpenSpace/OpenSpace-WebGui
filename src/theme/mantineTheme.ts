@@ -6,6 +6,7 @@ import {
   createTheme,
   CSSVariablesResolver,
   defaultVariantColorsResolver,
+  Divider,
   RangeSlider,
   Slider,
   ThemeIcon,
@@ -96,6 +97,11 @@ export const theme = createTheme({
         position: 'top',
         maw: 300,
         multiline: true
+      }
+    }),
+    Divider: Divider.extend({
+      defaultProps: {
+        'aria-hidden': true
       }
     })
   },
