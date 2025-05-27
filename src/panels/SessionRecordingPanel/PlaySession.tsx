@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Group, Select, Stack, Title } from '@mantine/core';
+import { Alert, Group, Select, Stack, Text, Title } from '@mantine/core';
 
 import { BoolInput } from '@/components/Input/BoolInput';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
@@ -36,6 +36,8 @@ export function PlaySession() {
   const isIdle = recordingState === RecordingState.Idle;
   const isPlayingBack =
     recordingState === RecordingState.Paused || recordingState === RecordingState.Playing;
+
+  const isSettingsCombinationDangerous = loopPlayback && hideGuiOnPlayback;
 
   // Update the playback dropdown list to the latest recorded file
   useEffect(() => {
@@ -105,6 +107,22 @@ export function PlaySession() {
           }
           disabled={isPlayingBack}
         />
+        {isSettingsCombinationDangerous && (
+          <Alert variant={'light'} color={'orange'} title={'Warning'}>
+            <Text>
+              Caution: Enabling both{' '}
+              <Text fs={'italic'} span inherit>
+                Loop playback
+              </Text>{' '}
+              and{' '}
+              <Text fs={'italic'} span inherit>
+                Hide GUI
+              </Text>{' '}
+              will cause the interface to remain hidden indefinitely during playback. To
+              reveal the GUI again, press F1.
+            </Text>
+          </Alert>
+        )}
         <BoolInput
           label={'Hide dashboards on playback'}
           value={hideDashboardsOnPlayback}
