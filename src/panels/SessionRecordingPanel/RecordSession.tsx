@@ -9,7 +9,7 @@ import { updateSessionRecordingSettings } from '@/redux/sessionrecording/session
 
 import { RecordingStopButton } from './Record/RecordingStopButton';
 import { RecordStartButton } from './Record/RecordStartButton';
-import { RecordingState } from './types';
+import { RecordingState, SessionRecordingFormat } from './types';
 
 export function RecordSession() {
   const [filenameRecording, setFilenameRecording] = useState('');
@@ -18,7 +18,6 @@ export function RecordSession() {
     errorMessage: ''
   });
 
-  const dispatch = useAppDispatch();
   const fileList = useAppSelector((state) => state.sessionRecording.files);
   const { overwriteFile, format } = useAppSelector(
     (state) => state.sessionRecording.settings
@@ -26,6 +25,7 @@ export function RecordSession() {
 
   const recordingState = useSubscribeToSessionRecording();
   const luaApi = useOpenSpaceApi();
+  const dispatch = useAppDispatch();
 
   const isIdle = recordingState === RecordingState.Idle;
   const isRecordingState = recordingState === RecordingState.Recording;
@@ -44,7 +44,7 @@ export function RecordSession() {
     luaApi?.sessionRecording.startRecording();
   }
 
-  function isFileUnique(filename: string, fileFormat: 'Ascii' | 'Binary'): boolean {
+  function isFileUnique(filename: string, fileFormat: SessionRecordingFormat): boolean {
     const asciiExtension = '.osrectxt';
     const binaryExtension = '.osrec';
 
@@ -81,7 +81,7 @@ export function RecordSession() {
   }
 
   function onFormatChanged(useTextFormat: boolean): void {
-    const newFormat = useTextFormat ? 'Ascii' : 'Binary';
+    const newFormat: SessionRecordingFormat = useTextFormat ? 'Ascii' : 'Binary';
     dispatch(updateSessionRecordingSettings({ format: newFormat }));
 
     // The filename might be invalid if the format changes so we check it again
@@ -98,8 +98,6 @@ export function RecordSession() {
   function onOverwriteFileChanged(value: boolean): void {
     dispatch(updateSessionRecordingSettings({ overwriteFile: value }));
   }
-
-  // const test = filenameState.invalid;
 
   return (
     <>

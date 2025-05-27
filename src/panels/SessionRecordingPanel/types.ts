@@ -9,7 +9,7 @@ export enum RecordingState {
 
 export interface SessionRecordingSettings {
   recordingFileName: string;
-  format: 'Ascii' | 'Binary';
+  format: SessionRecordingFormat;
   overwriteFile: boolean;
   latestFile: string;
   hideGuiOnPlayback: boolean;
@@ -17,4 +17,5 @@ export interface SessionRecordingSettings {
   latestPlaybackEvent: PlaybackEvent;
 }
 
+export type SessionRecordingFormat = 'Ascii' | 'Binary';
 export type PlaybackEvent = SessionRecordingPlaybackEvent['State'] | 'Uninitialized';
