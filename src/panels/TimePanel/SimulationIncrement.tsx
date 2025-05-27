@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Group, Select } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
 
@@ -16,6 +17,7 @@ export function SimulationIncrement() {
 
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime) ?? 1;
   const updateDeltaTime = useThrottledCallback(updateDeltaTimeNow, 50);
+  const { t } = useTranslation('panel-time', { keyPrefix: 'simulation-increment' });
 
   // Remove Milliseconds as an option to select
   const selectableData = Object.values(TimePart).filter(
@@ -41,7 +43,7 @@ export function SimulationIncrement() {
     <>
       <Group grow mb={'xs'}>
         <Select
-          label={'Display Unit'}
+          label={t('select-unit-label')}
           value={stepSize}
           data={selectableData}
           allowDeselect={false}

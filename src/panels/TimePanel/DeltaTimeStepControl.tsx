@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, NumberFormatter, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -15,6 +16,7 @@ export function DeltaTimeStepsControl() {
 
   const hasNextDeltaTimeStep = useAppSelector((state) => state.time.hasNextDeltaTimeStep);
   const hasPrevDeltaTimeStep = useAppSelector((state) => state.time.hasPrevDeltaTimeStep);
+  const { t } = useTranslation('panel-time', { keyPrefix: 'delta-time-step-control' });
 
   const {
     increment: nextIncrement,
@@ -62,7 +64,7 @@ export function DeltaTimeStepsControl() {
           disabled={!hasPrevDeltaTimeStep}
           size={'lg'}
           w={'100%'}
-          aria-label={'Set previous delta time step'}
+          aria-label={t('previous-step-aria-label')}
         >
           <FastRewindIcon size={IconSize.md} />
         </ActionIcon>
@@ -81,7 +83,7 @@ export function DeltaTimeStepsControl() {
       <ActionIcon
         onClick={togglePause}
         size={'lg'}
-        aria-label={`${isPaused ? 'Play' : 'Pause'} time`}
+        aria-label={`${isPaused ? t('toggle-pause.play') : t('toggle-pause.pause')}`}
         flex={2}
       >
         {isPaused ? <PlayIcon size={IconSize.md} /> : <PauseIcon size={IconSize.md} />}
@@ -92,7 +94,7 @@ export function DeltaTimeStepsControl() {
           disabled={!hasNextDeltaTimeStep}
           size={'lg'}
           w={'100%'}
-          aria-label={'Set next delta time step'}
+          aria-label={t('next-step-aria-label')}
         >
           <FastForwardIcon size={IconSize.md} />
         </ActionIcon>

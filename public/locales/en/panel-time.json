@@ -1,0 +1,46 @@
+{
+  "time-panel": {
+    "select-time-tile": "Select Time",
+    "error": {
+      "outside-range": "Can't interact with dates outside the range April 20, 271821 BC to Sep 13, 275760 AD."
+    },
+    "simulation-speed-title": "Simulation Speed",
+    "realtime": "Realtime",
+    "now": "Now"
+  },
+  "simulation-increment": {
+    "select-unit-label": "Display Unit"
+  },
+  "quick-adjust": {
+    "title": "Quick Adjust"
+  },
+  "delta-time-step-control": {
+    "previous-step-aria-label": "Set previous delta time step",
+    "next-step-aria-label": "Set next delta time step",
+    "toggle-pause": {
+      "play": "Play time",
+      "pause": "Pause time"
+    }
+  },
+  "time-input": {
+    "error": {
+      "invalid-time": {
+        "title": "Invalid time",
+        "message": "Error trying to set time to an invalid date"
+      },
+      "invalid-date": "New date is outside range (April 20, 271821 BC, Sep 13, 275760 AD)",
+      "invalid-year": "Year '{{value}}' is outside allowed year range (April 20, 271821 BC, Sep 13, 275760 AD)"
+    },
+    "lock-time": {
+      "tooltip": "Lock time updates to prevent automatic changes. Use 'Interpolate' or 'Set' to manually apply the selected date and time.",
+      "aria-label": {
+        "locked": "Set date-time input mode to 'locked' mode",
+        "unlocked": "Set date-time input mode to 'unlocked' mode"
+      },
+      "button-labels": {
+        "set": "Set",
+        "interpolate": "Interpolate"
+      }
+    }
+  }
+}

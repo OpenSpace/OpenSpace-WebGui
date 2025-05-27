@@ -7,9 +7,9 @@ import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 
 import { FileMenu } from './Menus/FileMenu';
 import { HelpMenu } from './Menus/HelpMenu';
+import { LocaleSwitcher } from './Menus/LocaleSwitcher';
 import { ViewMenu } from './Menus/ViewMenu';
 import { WindowsMenu } from './Menus/WindowsMenu';
-// import { LocaleSwitcher } from './Menus/LocaleSwitcher';
 
 export function TopMenuBar() {
   return (
@@ -29,7 +29,7 @@ export function TopMenuBar() {
           <WindowsMenu />
           <ViewMenu />
           <HelpMenu />
-          {/* <LocaleSwitcher /> */}
+          <LocaleSwitcher />
         </Group>
         <Box flex={1} style={{ overflow: 'hidden' }}>
           {/* There's space to put something in the center here if we want */}

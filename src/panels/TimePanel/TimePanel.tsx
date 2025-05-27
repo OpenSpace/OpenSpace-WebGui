@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Alert, Button, Divider, Group, Stack, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -12,6 +13,7 @@ import { SimulationIncrement } from './SimulationIncrement';
 export function TimePanel() {
   const status = useAppSelector((state) => state.time.status);
   const backupTimeString = useAppSelector((state) => state.time.timeString);
+  const { t } = useTranslation('panel-time', { keyPrefix: 'time-panel' });
 
   const luaApi = useOpenSpaceApi();
   const { setTime } = useSetOpenSpaceTime();
@@ -36,26 +38,23 @@ export function TimePanel() {
 
   return (
     <>
-      <Title order={2}>Select Time</Title>
+      <Title order={2}>{t('select-time-tile')}</Title>
       {status === TimeStatus.OutsideRange ? (
         <Alert color={'red'}>
           <Stack align={'center'} gap={2} pb={'xs'}>
             <Text>{backupTimeString}</Text>
-            <Text c={'red'}>
-              Can't interact with dates outside the range April 20, 271821 BC to Sep 13,
-              275760 AD.
-            </Text>
+            <Text c={'red'}>{t('error.outside-range')}</Text>
           </Stack>
         </Alert>
       ) : (
         <TimeInput />
       )}
-      <Title order={2}>Simulation Speed</Title>
+      <Title order={2}>{t('simulation-speed-title')}</Title>
       <SimulationIncrement />
       <Divider my={'xs'} />
       <Group grow gap={'xs'}>
-        <Button onClick={realTime}>Realtime</Button>
-        <Button onClick={now}>Now</Button>
+        <Button onClick={realTime}>{t('realtime')}</Button>
+        <Button onClick={now}>{t('now')}</Button>
       </Group>
     </>
   );
