@@ -47,7 +47,7 @@ export function LocationTab() {
   }
 
   function look(direction: LookDirection): void {
-    luaApi?.action.triggerAction(`os.nightsky.Looking'${direction}`);
+    luaApi?.action.triggerAction(`os.nightsky.Looking${direction}`);
   }
 
   if (!luaApi) {
