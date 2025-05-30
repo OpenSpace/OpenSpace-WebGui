@@ -39,7 +39,7 @@ export function LocationTab() {
 
   const iconSize = 10;
   const mapSize = {w: 300, h: 150}
-  const iconOffset = {x: (iconSize+4)/2/mapSize.w, y: iconSize/2/mapSize.h};
+  const iconOffset = {x: (iconSize + 4) / (2 * mapSize.w), y: iconSize / (2 * mapSize.h)};
 
   function dotPosition(): { x: number; y: number } {
     if (currentLong !== undefined && currentLat !== undefined) {
