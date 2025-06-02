@@ -37,11 +37,21 @@ export function LocationTab() {
 
   const anchor = useAnchorNode();
 
+  const iconSize = 10;
+  const mapSize = { w: 300, h: 150 };
+  const iconOffset = {
+    x: (iconSize + 4) / (2 * mapSize.w),
+    y: iconSize / (2 * mapSize.h)
+  };
+
   function dotPosition(): { x: number; y: number } {
     if (currentLong !== undefined && currentLat !== undefined) {
       // Here we are getting the percentage of the map on where to show the marker
       // for example, lat, long of 0,0 winds up with a map position of x: 0.5 and y: 0.5
-      return { x: ((currentLong + 180) / 360) * 100, y: ((90 - currentLat) / 180) * 100 };
+      return {
+        x: ((currentLong + 180) / 360 - iconOffset.x) * 100,
+        y: ((90 - currentLat) / 180 - iconOffset.y) * 100
+      };
     }
     return { x: 0, y: 0 };
   }
@@ -66,14 +76,20 @@ export function LocationTab() {
           <Text size={'md'}>Altitude: {currentAlt?.toFixed(2)}m</Text>
         </Stack>
 
-        <BackgroundImage w={300} h={150} src={'eqcy.png'} radius={'sm'}>
+        <BackgroundImage
+          w={mapSize.w}
+          h={mapSize.h}
+          src={'eqcy.png'}
+          radius={'sm'}
+          styles={{ root: { overflow: 'hidden' } }}
+        >
           <Image
             src={'icon.png'}
             style={{
-              width: '10px',
+              width: iconSize + 'px',
               position: 'relative',
-              left: dotPosition().x - 0.1666666 + '%', //here i was just trying to account for the marker
-              top: dotPosition().y - 0.1666666 + '%' //it should be centered instead of top left corner
+              left: dotPosition().x + '%',
+              top: dotPosition().y + '%'
             }}
           />
         </BackgroundImage>
