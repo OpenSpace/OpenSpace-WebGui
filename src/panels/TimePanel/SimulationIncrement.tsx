@@ -17,12 +17,17 @@ export function SimulationIncrement() {
 
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime) ?? 1;
   const updateDeltaTime = useThrottledCallback(updateDeltaTimeNow, 50);
-  const { t } = useTranslation('panel-time', { keyPrefix: 'simulation-increment' });
+  const { t } = useTranslation('panel-time');
 
   // Remove Milliseconds as an option to select
-  const selectableData = Object.values(TimePart).filter(
-    (value) => value !== TimePart.Milliseconds
-  );
+  const selectableData = Object.values(TimePart)
+    .filter((value) => value !== TimePart.Milliseconds)
+    .map((unit) => {
+      return {
+        value: unit,
+        label: t(`time-parts.${unit}_other`)
+      };
+    });
 
   function updateDeltaTimeNow(value: number) {
     luaApi?.time.interpolateDeltaTime(value);
@@ -43,14 +48,16 @@ export function SimulationIncrement() {
     <>
       <Group grow mb={'xs'}>
         <Select
-          label={t('select-unit-label')}
+          label={t('simulation-increment.select-unit-label')}
           value={stepSize}
           data={selectableData}
           allowDeselect={false}
           onChange={(value) => setStepSize(value! as TimePart)}
         />
         <NumericInput
-          label={`${stepSize} / second`}
+          label={`${t(`time-parts.${stepSize}`, {
+            count: targetDeltaTime / StepSizes[stepSize]
+          })} / ${t('time-parts.Seconds_one').toLocaleLowerCase()}`}
           value={targetDeltaTime / StepSizes[stepSize]}
           onEnter={(newValue) => setDeltaTime(newValue)}
           step={1}

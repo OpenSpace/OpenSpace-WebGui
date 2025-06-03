@@ -1,12 +1,28 @@
 {
-  "time-panel": {
-    "select-time-tile": "Select Time",
-    "error": {
-      "outside-range": "Can't interact with dates outside the range April 20, 271821 BC to Sep 13, 275760 AD."
-    },
-    "simulation-speed-title": "Simulation Speed",
-    "realtime": "Realtime",
-    "now": "Now"
+  "select-time-title": "Select Time",
+  "error": {
+    "outside-range": "Can't interact with dates outside the range April 20, 271821 BC to Sep 13, 275760 AD."
+  },
+  "simulation-speed-title": "Simulation Speed",
+  "realtime": "Realtime",
+  "now": "Now",
+  "time-parts": {
+    "Milliseconds_one": "Milliseconds",
+    "Milliseconds_other": "Milliseconds",
+    "Seconds_one": "Second",
+    "Seconds_other": "Seconds",
+    "Minutes_one": "Minute",
+    "Minutes_other": "Minutes",
+    "Hours_one": "Hour",
+    "Hours_other": "Hours",
+    "Days_one": "Day",
+    "Days_other": "Days",
+    "Weeks_one": "Week",
+    "Weeks_other": "Weeks",
+    "Months_one": "Month",
+    "Months_other": "Months",
+    "Years_one": "Year",
+    "Years_other": "Years"
   },
   "simulation-increment": {
     "select-unit-label": "Display Unit"
@@ -15,11 +31,13 @@
     "title": "Quick Adjust"
   },
   "delta-time-step-control": {
-    "previous-step-aria-label": "Set previous delta time step",
-    "next-step-aria-label": "Set next delta time step",
-    "toggle-pause": {
-      "play": "Play time",
-      "pause": "Pause time"
+    "aria-label": {
+      "previous-step": "Set previous delta time step",
+      "next-step": "et next delta time step",
+      "toggle-pause": {
+        "play": "Play time",
+        "pause": "Pause time"
+      }
     }
   },
   "time-input": {
@@ -42,5 +60,9 @@
         "interpolate": "Interpolate"
       }
     }
+  },
+  "menu-button": {
+    "error": "Date out of range",
+    "paused": "Paused"
   }
 }

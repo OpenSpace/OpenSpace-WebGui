@@ -16,7 +16,7 @@ export function DeltaTimeStepsControl() {
 
   const hasNextDeltaTimeStep = useAppSelector((state) => state.time.hasNextDeltaTimeStep);
   const hasPrevDeltaTimeStep = useAppSelector((state) => state.time.hasPrevDeltaTimeStep);
-  const { t } = useTranslation('panel-time', { keyPrefix: 'delta-time-step-control' });
+  const { t } = useTranslation('panel-time');
 
   const {
     increment: nextIncrement,
@@ -29,8 +29,10 @@ export function DeltaTimeStepsControl() {
     isNegative: isPrevStepNegative
   } = formatDeltaTime(prevDeltaTimeStep);
 
-  const nextLabel = ` ${nextUnit} / second`;
-  const prevLabel = ` ${prevUnit} / second`;
+  const nextLabel =
+    ` ${t(`time-parts.${nextUnit}`, { count: nextIncrement })} / ${t('time-parts.Seconds_one')}`.toLocaleLowerCase();
+  const prevLabel =
+    ` ${t(`time-parts.${prevUnit}`, { count: nextDecrement })} / ${t('time-parts.Seconds_one')}`.toLocaleLowerCase();
 
   function setPrevDeltaTimeStep(event: React.MouseEvent<HTMLElement>) {
     if (event.shiftKey) {
@@ -64,7 +66,7 @@ export function DeltaTimeStepsControl() {
           disabled={!hasPrevDeltaTimeStep}
           size={'lg'}
           w={'100%'}
-          aria-label={t('previous-step-aria-label')}
+          aria-label={t('delta-time-step-control.aria-label.previous-step')}
         >
           <FastRewindIcon size={IconSize.md} />
         </ActionIcon>
@@ -83,7 +85,11 @@ export function DeltaTimeStepsControl() {
       <ActionIcon
         onClick={togglePause}
         size={'lg'}
-        aria-label={`${isPaused ? t('toggle-pause.play') : t('toggle-pause.pause')}`}
+        aria-label={`${
+          isPaused
+            ? t('delta-time-step-control.aria-label.toggle-pause.play')
+            : t('delta-time-step-control.aria-label.toggle-pause.pause')
+        }`}
         flex={2}
       >
         {isPaused ? <PlayIcon size={IconSize.md} /> : <PauseIcon size={IconSize.md} />}
@@ -94,7 +100,7 @@ export function DeltaTimeStepsControl() {
           disabled={!hasNextDeltaTimeStep}
           size={'lg'}
           w={'100%'}
-          aria-label={t('next-step-aria-label')}
+          aria-label={t('delta-time-step-control.aria-label.next-step')}
         >
           <FastForwardIcon size={IconSize.md} />
         </ActionIcon>

@@ -1,3 +1,4 @@
+import common from '@/public/locales/en/common.json';
 import components from '@/public/locales/en/components.json';
 import notifications from '@/public/locales/en/notifications.json';
 import actionPanel from '@/public/locales/en/panel-actions.json';
@@ -12,13 +13,14 @@ import timePanel from '@/public/locales/en/panel-time.json';
  */
 export const resources = {
   en: {
+    common: common,
     components: components,
     notifications: notifications,
     'panel-actions': actionPanel,
     'panel-exoplanets': exoplanetsPanel,
     'panel-flightcontrol': flightControlPanel,
     'panel-geolocation': geolocationPanel,
-    'panel-time': timePanel,
+    'panel-time': timePanel
   }
 } as const;
 

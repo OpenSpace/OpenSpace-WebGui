@@ -13,7 +13,7 @@ import { SimulationIncrement } from './SimulationIncrement';
 export function TimePanel() {
   const status = useAppSelector((state) => state.time.status);
   const backupTimeString = useAppSelector((state) => state.time.timeString);
-  const { t } = useTranslation('panel-time', { keyPrefix: 'time-panel' });
+  const { t } = useTranslation('panel-time');
 
   const luaApi = useOpenSpaceApi();
   const { setTime } = useSetOpenSpaceTime();
@@ -38,7 +38,7 @@ export function TimePanel() {
 
   return (
     <>
-      <Title order={2}>{t('select-time-tile')}</Title>
+      <Title order={2}>{t('select-time-title')}</Title>
       {status === TimeStatus.OutsideRange ? (
         <Alert color={'red'}>
           <Stack align={'center'} gap={2} pb={'xs'}>
