@@ -1,7 +1,7 @@
 {
   "no-mission": {
     "title": "No mission loaded",
-    "description": "Open an asset that contains a mission, or load a mission profile."
+    "description": "Open an asset that contains a mission or load a mission profile."
   },
   "select-mission": {
     "label": "Select mission",
