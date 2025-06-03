@@ -1,0 +1,45 @@
+{
+  "no-mission": {
+    "title": "No mission loaded",
+    "description": "Open an asset that contains a mission, or load a mission profile."
+  },
+  "select-mission": {
+    "label": "Select mission",
+    "placeholder": "Select a mission"
+  },
+  "mission-content": {
+    "overview": "Overview",
+    "display-current-mission-phase": {
+      "label": "Display current phase",
+      "tooltip": "If enabled, the mission phase that is currently happening will be displayed. It will update as time passes."
+    },
+    "out-of-range-data": "No data for the current time range"
+  },
+  "set-time": "Set time",
+  "phase": "Phase",
+  "mission-phase": {
+    "read-more": "Read more",
+    "actions": {
+      "title": "Actions",
+      "no-actions": "This mission has no actions."
+    }
+  },
+  "mission-capture-buttons": {
+    "previous-capture": "Set Time to Previous Capture",
+    "next-capture": "Set Time to Next Capture"
+  },
+  "mission-time-buttons": {
+    "mission": "Mission",
+    "start-phase": "Start of {{phase}}",
+    "end-phase": "End of {{phase}}"
+  },
+  "time-line": {
+    "instrument-tooltip": "Instrument activity",
+    "milestone-tooltip": "Milestone",
+    "aria-labels": {
+      "zoom-in": "Zoom in timeline",
+      "zoom-out": "Zoom out timeline",
+      "reset-zoom": "Full view of the timeline"
+    }
+  }
+}

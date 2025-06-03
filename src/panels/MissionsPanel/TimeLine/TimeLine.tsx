@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group } from '@mantine/core';
 import {
   axisLeft,
@@ -48,6 +49,7 @@ export function TimeLine({
   const zoomRef = useRef<ZoomBehavior<SVGSVGElement, unknown> | null>(null);
   const timeIndicatorRef = useRef<SVGRectElement | null>(null);
   const { height: windowHeight } = useWindowSize();
+  const { t } = useTranslation('panel-missions', { keyPrefix: 'time-line' });
 
   const {
     minLevelWidth,
@@ -174,13 +176,19 @@ export function TimeLine({
   return (
     <div style={{ flexGrow: 0 }}>
       <Group justify={'flex-end'} wrap={'nowrap'} gap={5}>
-        <ActionIcon onClick={() => zoomByButton(0.5)} aria-label={'Zoom in timeline'}>
+        <ActionIcon
+          onClick={() => zoomByButton(0.5)}
+          aria-label={t('aria-labels.zoom-in')}
+        >
           <ZoomOutIcon size={IconSize.sm} />
         </ActionIcon>
-        <ActionIcon onClick={() => zoomByButton(2.0)} aria-label={'Zoom out timeline'}>
+        <ActionIcon
+          onClick={() => zoomByButton(2.0)}
+          aria-label={t('aria-labels.zoom-out')}
+        >
           <ZoomInIcon size={IconSize.sm} />
         </ActionIcon>
-        <ActionIcon onClick={() => reset()} aria-label={'Full view timeline'}>
+        <ActionIcon onClick={() => reset()} aria-label={t('aria-labels.reset-zoom')}>
           <ZoomOutMapIcon size={IconSize.sm} />
         </ActionIcon>
       </Group>

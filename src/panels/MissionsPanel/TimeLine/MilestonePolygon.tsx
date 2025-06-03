@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Text, Tooltip } from '@mantine/core';
 import { ScaleTime } from 'd3';
 
@@ -24,6 +25,7 @@ export function MileStonePolygon({
   displayBorder
 }: Props) {
   const jumpToTime = useJumpToTime();
+  const { t } = useTranslation('panel-missions', { keyPrefix: 'time-line' });
   const { size, borderWidth, color, borderColor } = MileStoneConfig;
   const time = new Date(milestone.date);
   const padding = displayBorder ? borderWidth : 0;
@@ -43,7 +45,7 @@ export function MileStonePolygon({
     <Tooltip
       label={
         <>
-          <Text fw={'bold'}>Milestone</Text>
+          <Text fw={'bold'}>{t('milestone-tooltip')}</Text>
           {milestone.name}
         </>
       }
