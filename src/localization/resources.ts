@@ -4,7 +4,6 @@ import log from '@/public/locales/en/log.json';
 import menu from '@/public/locales/en/menu.json';
 import notifications from '@/public/locales/en/notifications.json';
 import sessionrecording from '@/public/locales/en/sessionrecordingpanel.json';
-import userpanels from '@/public/locales/en/userpanels.json';
 
 /**
  * This object in combination with `i18next.d.ts` enables intellisense and syntax
@@ -17,8 +16,7 @@ export const resources = {
     log: log,
     menu: menu,
     notifications: notifications,
-    sessionrecording: sessionrecording,
-    userpanels: userpanels
+    sessionrecording: sessionrecording
   }
 } as const;
 
