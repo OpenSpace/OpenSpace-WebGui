@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Box, Button, Divider, Group, Text, TextInput } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -22,6 +23,7 @@ export function ScreenSpaceRenderablePanel() {
   const [slideURL, setSlideURL] = useState('');
   const luaApi = useOpenSpaceApi();
   const screenSpacePropertyOwner = usePropertyOwner(ScreenSpaceKey);
+  const { t } = useTranslation('panel-screenspacerenderable');
 
   const renderables = screenSpacePropertyOwner?.subowners ?? [];
   const isButtonDisabled = !slideName || !slideURL;
@@ -65,26 +67,26 @@ export function ScreenSpaceRenderablePanel() {
         <TextInput
           value={slideName}
           onChange={(event) => setSlideName(event.currentTarget.value)}
-          placeholder={'Slide name'}
-          label={'Display name'}
+          placeholder={t('display-name-input.placeholder')}
+          label={t('display-name-input.title')}
         />
         <TextInput
           value={slideURL}
           onChange={(event) => setSlideURL(event.currentTarget.value)}
-          placeholder={'Path / URL'}
-          label={'Path or URL to slide'}
+          placeholder={t('slide-path-input.placeholder')}
+          label={t('slide-path-input.title')}
         />
         <Button
           onClick={addSlide}
           leftSection={<AddPhotoIcon size={IconSize.sm} />}
           disabled={isButtonDisabled}
         >
-          Add Slide
+          {t('slide-path-input.button-label')}
         </Button>
       </Group>
       <Divider my={'xs'} />
       {renderables.length === 0 ? (
-        <Text>No active slides</Text>
+        <Text>{t('added-slides.empty-slides')}</Text>
       ) : (
         renderables.map((uri) => (
           <Group
@@ -102,7 +104,7 @@ export function ScreenSpaceRenderablePanel() {
               onClick={() => removeSlide(uri)}
               color={'red'}
               variant={'outline'}
-              aria-label={`Remove slide ${uri}`}
+              aria-label={t('added-slides.remove-slide-aria-label', { uri })}
             >
               <MinusIcon />
             </ActionIcon>
