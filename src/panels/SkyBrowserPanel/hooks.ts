@@ -1,4 +1,5 @@
 import { useEffect, useTransition } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -23,6 +24,7 @@ import { SkyBrowserImage } from './types';
 export function useWwtImageCollection(): [boolean, SkyBrowserImage[] | undefined] {
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
   const [isPending, startTransition] = useTransition();
+  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'wwt.error' });
 
   const luaApi = useOpenSpaceApi();
   const dispatch = useAppDispatch();
@@ -34,11 +36,11 @@ export function useWwtImageCollection(): [boolean, SkyBrowserImage[] | undefined
       }
       const imgData = await luaApi.skybrowser.listOfImages();
       if (!imgData) {
-        throw new Error(`Couldn't load AAS WorldWide Telescope images!`);
+        throw new Error(t('unable-to-load-wwt'));
       }
       const images = Object.values(imgData) as SkyBrowserImage[];
       if (images.length === 0) {
-        throw new Error('Received 0 AAS WorldWide Telescope images!');
+        throw new Error(t('no-images'));
       }
 
       // Success - we got the images. Adding to redux
@@ -53,9 +55,9 @@ export function useWwtImageCollection(): [boolean, SkyBrowserImage[] | undefined
         });
       }
     } catch (e) {
-      throw Error(`Could not load image collection from OpenSpace. Error: ${e}`);
+      throw Error(t('unable-to-load-images', { e }));
     }
-  }, [luaApi, dispatch, imageList]);
+  }, [luaApi, dispatch, imageList, t]);
 
   const isLoading = isPending || imageList === undefined;
 

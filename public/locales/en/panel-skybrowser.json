@@ -1,0 +1,116 @@
+{
+  "add-browser": {
+    "label": "Add Browser",
+    "description": "Powered by WorldWide Telescope"
+  },
+  "wwt": {
+    "info-overlay": {
+      "loading-wwt": "Loading WorldWide Telescope...",
+      "loading-image-collection": "Loading image collection...",
+      "camera-not-in-solar-system": {
+        "title": "Camera is not in the Solar System.",
+        "description": "You need to be in the Solar System to use the SkyBrowser."
+      }
+    },
+    "telescope-view": {
+      "no-skybrowser": "There are no SkyBrowsers. Create on in the SkyBrowser panel.",
+      "no-id": "No browser selected",
+      "drag-area-aria-label": "Dragging area for WorldWide Telescope",
+      "error": "ERROR: cannot display AAS WorldWide Telescope research app!"
+    },
+    "error": {
+      "no-images": "Received 0 AAS WorldWide Telescope images!",
+      "unable-to-load-wwt": "Couldn't load AAS WorldWide Telescope images!",
+      "unable-to-load-images": "Could not load image collection from OpenSpace. Error: {{error}}"
+    }
+  },
+  "image-list": {
+    "search-images-placeholder_zero": "No images in view",
+    "search-images-placeholder_one": "Search {{imageCount}} image...",
+    "search-images-placeholder_other": "Search {{imageCount}} images...",
+    "no-images-in-view": "No images in view. Try moving the sky target!"
+  },
+  "components": {
+    "image-info": {
+      "aria-label": "More infromation",
+      "label": "Read more"
+    }
+  },
+  "browser-tabs": {
+    "new-browser-tooltip": "Add new browser",
+    "added-image-card": {
+      "opacity": "Opacity",
+      "remove-image": {
+        "aria-label": "Remove {{name}} image",
+        "tooltip": "Delete image"
+      }
+    },
+    "added-image-list": {
+      "no-images": "No images added to this browser"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "this-browser": {
+      "tab-title": "This Browser",
+      "tooltip": "Settings specific for this browser.",
+      "border-radius-input": "Border Radius",
+      "color-input": {
+        "label": "Color",
+        "placeholder": "Set browser color..."
+      },
+      "fov-input": "Vertical Field of View",
+      "right-ascension-input": "Right Ascension",
+      "declination-input": "Declination"
+    },
+    "display-copies": {
+      "tab-title": "Display Copies",
+      "tooltip": "Settings for Display Copies, which are a way to render the WorldWide Telescope view as a ScreenSpaceRenderable.",
+      "copies": {
+        "title": "Add / Remove Display Copies",
+        "add": "Add",
+        "remove": "Remove",
+        "display-copies-settings": {
+          "title": "Add display Copy Settings",
+          "number-of-copies": {
+            "label": "Number of Copies",
+            "tooltip": "Number of copies to add at once."
+          },
+          "position-for-copies": {
+            "tooltip": "his sets the position of the first copy. The additional copies will be evenly spread out on the Azimuth, if isUsingRadiusAzimuthElevation is enabled, otherwise it will spread on the Y axis.",
+            "label": "Position for first copy"
+          }
+        }
+      },
+      "display-settings-title": "Display Settings",
+      "added-copies": "Added Display Copies",
+      "no-copies": "No copies added"
+    },
+    "general": {
+      "tooltip": "General settings for all browsers.",
+      "tab-title": "General"
+    }
+  },
+  "tab-content": {
+    "look-at-skybrowser": {
+      "tooltip": "Look at target",
+      "aria-label": "Look at skybrowser target"
+    },
+    "center-skybrowser": {
+      "tooltip": "Move target to center of view",
+      "aria-label": "Move skybrowser target to center of view"
+    },
+    "zoom-in": "Zoom in",
+    "zoom-out": "Zoom out",
+    "remove-all-images": "Remove all images",
+    "open-telescope-view": "Open telescope view",
+    "skybrowser-settings": {
+      "label": "Skybrowser settings",
+      "aria-label": {
+        "open": "Open Skybrowser settings",
+        "close": "Close Skybrowser settings"
+      },
+      "delete-browser": "Delete Browser"
+    }
+  }
+}

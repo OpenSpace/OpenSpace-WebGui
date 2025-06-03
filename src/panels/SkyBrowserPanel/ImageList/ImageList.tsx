@@ -1,4 +1,5 @@
 import { memo, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Group } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -24,6 +25,7 @@ export const ImageList = memo(function ImageList({ imageList, noImagesDisplay }:
       name: true,
       collection: true
     });
+  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'image-list' });
 
   const renderImageCard = useCallback((image: SkyBrowserImage) => {
     return <ImageCard image={image} />;
@@ -42,7 +44,10 @@ export const ImageList = memo(function ImageList({ imageList, noImagesDisplay }:
     <FilterList>
       <Group>
         <FilterList.InputField
-          placeHolderSearchText={`Search ${imageList.length} image${imageList.length > 1 ? 's' : ''}...`}
+          placeHolderSearchText={t('search-images-placeholder', {
+            imageCount: imageList.length,
+            count: imageList.length
+          })}
           flex={'auto'}
         />
         <FilterList.SearchSettingsMenu
