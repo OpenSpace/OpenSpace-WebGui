@@ -14,7 +14,7 @@ export interface UserPanelsState {
 const initialState: UserPanelsState = {
   isInitialized: false,
   panels: [],
-  addedWebpanels: []
+  addedWebpanels: [{ title: 'OpenSpace Hub', src: 'https://hub.openspaceproject.com/' }]
 };
 
 export const userPanelsSlice = createSlice({
