@@ -3,7 +3,7 @@ import { Menu } from '@mantine/core';
 
 interface Props extends PropsWithChildren {
   /**
-   * If true, limit the height of the dropdown to the window height minus an optoinal
+   * If true, limit the height of the dropdown to the window height minus an optional
    * offset
    */
   shouldLimitHeight?: boolean;
