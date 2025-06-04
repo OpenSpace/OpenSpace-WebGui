@@ -25,7 +25,7 @@ export function MileStonePolygon({
   displayBorder
 }: Props) {
   const jumpToTime = useJumpToTime();
-  const { t } = useTranslation('panel-missions', { keyPrefix: 'time-line' });
+  const { t } = useTranslation('panel-missions', { keyPrefix: 'timeline' });
   const { size, borderWidth, color, borderColor } = MileStoneConfig;
   const time = new Date(milestone.date);
   const padding = displayBorder ? borderWidth : 0;

@@ -33,7 +33,7 @@
     "start-phase": "Start of {{phase}}",
     "end-phase": "End of {{phase}}"
   },
-  "time-line": {
+  "timeline": {
     "instrument-tooltip": "Instrument activity",
     "milestone-tooltip": "Milestone",
     "aria-labels": {

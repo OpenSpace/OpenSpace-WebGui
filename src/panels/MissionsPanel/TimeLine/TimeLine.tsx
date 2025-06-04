@@ -49,7 +49,7 @@ export function TimeLine({
   const zoomRef = useRef<ZoomBehavior<SVGSVGElement, unknown> | null>(null);
   const timeIndicatorRef = useRef<SVGRectElement | null>(null);
   const { height: windowHeight } = useWindowSize();
-  const { t } = useTranslation('panel-missions', { keyPrefix: 'time-line' });
+  const { t } = useTranslation('panel-missions', { keyPrefix: 'timeline' });
 
   const {
     minLevelWidth,
