@@ -6,7 +6,7 @@ import { BoolInput } from '@/components/Input/BoolInput';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 
-import { TimeLine } from './TimeLine/TimeLine';
+import { Timeline } from './Timeline/Timeline';
 import { MissionPhase } from './MissionPhase';
 import { DisplayedPhase, DisplayType, Phase } from './types';
 
@@ -123,7 +123,7 @@ export function MissionContent({ missionOverview }: Props) {
 
   return (
     <Group wrap={'nowrap'} align={'start'} gap={'xs'}>
-      <TimeLine
+      <Timeline
         allPhasesNested={allPhasesNested}
         displayedPhase={displayedPhase}
         missionOverview={missionOverview}

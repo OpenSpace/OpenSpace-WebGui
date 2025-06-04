@@ -2,7 +2,7 @@ import { scaleLinear, ScaleTime } from 'd3';
 
 import { DisplayedPhase, DisplayType, Phase } from '../types';
 
-import { TimeLineConfig } from './config';
+import { TimelineConfig } from './config';
 import { PhaseRectangle } from './PhaseRectangle';
 
 interface Props {
@@ -24,7 +24,7 @@ export function Phases({
   width,
   nestedLevels
 }: Props) {
-  const { margin } = TimeLineConfig;
+  const { margin } = TimelineConfig;
   const xScale = scaleLinear()
     .range([margin.left, width - margin.right])
     .domain([0, nestedLevels]);

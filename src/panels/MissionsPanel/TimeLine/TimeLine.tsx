@@ -19,13 +19,13 @@ import { useWindowSize } from '@/windowmanagement/Window/hooks';
 import { DisplayedPhase, DisplayType, Phase } from '../types';
 
 import { ActivityCircle } from './ActivityCircle';
-import { TimeLineConfig } from './config';
+import { TimelineConfig } from './config';
 import { MileStonePolygon } from './MilestonePolygon';
 import { Phases } from './Phases';
 import { TimeArrow } from './TimeArrow';
 import { TimeIndicator } from './TimeIndicator';
 
-import './TimeLine.css';
+import './Timeline.css';
 
 interface Props {
   allPhasesNested: Phase[][];
@@ -34,7 +34,7 @@ interface Props {
   setDisplayedPhase: (phase: DisplayedPhase) => void;
 }
 
-export function TimeLine({
+export function Timeline({
   allPhasesNested,
   displayedPhase,
   missionOverview,
@@ -60,7 +60,7 @@ export function TimeLine({
     transitionDuration,
     defaultHeight,
     menuHeight
-  } = TimeLineConfig;
+  } = TimelineConfig;
 
   // Depth of nesting for phases
   const nestedLevels = allPhasesNested.length;
