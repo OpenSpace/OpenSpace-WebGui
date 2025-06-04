@@ -96,7 +96,12 @@ export const theme = createTheme({
         transitionProps: { duration: 400, enterDelay: 400 },
         position: 'top',
         maw: 300,
-        multiline: true
+        multiline: true,
+        events: {
+          hover: true,
+          focus: true,
+          touch: true
+        }
       }
     }),
     Divider: Divider.extend({
