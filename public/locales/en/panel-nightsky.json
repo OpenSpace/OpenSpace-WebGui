@@ -1,0 +1,249 @@
+{
+  "tab-headers": {
+    "markings": "Markings",
+    "time": "Time",
+    "location": "Location / View",
+    "stars": "Stars",
+    "solar-system": "Solar System",
+    "sun": "Sun"
+  },
+  "markings": {
+    "button-labels": {
+      "hide-all": "Hide All",
+      "grid": "Grid",
+      "labels": "Labels",
+      "line_one": "Line",
+      "line_other": "Lines"
+    },
+    "alt-az": {
+      "title": "Alt/Az",
+      "buttons": {
+        "meridian": "Meridian",
+        "zenith": "Zenith"
+      }
+    },
+    "ecliptic": {
+      "title": "Ecliptic",
+      "buttons": {
+        "band": "Band"
+      }
+    },
+    "equitorial": {
+      "title": "Equitorial"
+    },
+    "constellations": {
+      "title": "Constellations",
+      "buttons": {
+        "art": "Art"
+      },
+      "aria-labels": {
+        "lines": "Show constellation lines",
+        "labels": "Show constellation labels",
+        "art": "Show constellation art"
+      }
+    },
+    "cardinal-directions": {
+      "title": "Cardinal Directions",
+      "buttons": {
+        "small": "Small",
+        "large": "Large",
+        "marks": "Marks"
+      },
+      "aria-labels": {
+        "small": "Show small cardinal directions",
+        "large": "Show large cardianl directions",
+        "marks": "Show marks on cardinal directions"
+      }
+    }
+  },
+  "location": {
+    "globe-location": {
+      "title": "Globe Location",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "altitude": "Altitude",
+      "meter-abbreviation": "m",
+      "warning": {
+        "title": "Warning!",
+        "description": "You are not on Earth, but on {{name}}."
+      }
+    },
+    "jump-to-position": {
+      "title": "Jump to Position",
+      "north-pole": "North Pole",
+      "equator": "Equator",
+      "south-pole": "South Pole",
+      "tooltip": "To search for a specific location on Earth, use the Geo Location window."
+    },
+    "direction": {
+      "title": "Direction",
+      "look-north": "Look North",
+      "look-east": "Look East",
+      "look-south": "Look South",
+      "look-west": "Look West"
+    },
+    "horizon": {
+      "title": "Horizon",
+      "look-horizion": "Look at Horizon",
+      "level-horizon": "Level Horizon",
+      "look-up": "Look Up"
+    }
+  },
+  "solar-system": {
+    "trails": {
+      "title": "Trails",
+      "buttons": {
+        "hide-trails": "Hide ALL Trails",
+        "show-planet-trails": "Show Planet Trails"
+      }
+    },
+    "labels": {
+      "title": "Labels",
+      "buttons": {
+        "show-labels": "Show Labels",
+        "hide-labels": "Hide Labels"
+      }
+    },
+    "plaents": {
+      "title": "Planets",
+      "buttons": {
+        "show-planets": "Show Night Sky Planets",
+        "hide-planets": "Hide Night Sky Planets"
+      }
+    },
+    "moon": {
+      "title": "Moon",
+      "buttons": {
+        "default-scale": "Default Moon Scale (1x)",
+        "2x-scale": "Enlarge Moon (2x)",
+        "4x-scale": "Enlarge Moon (4x)"
+      },
+      "aria-labels": {
+        "increase-scale": "Increase moon scale",
+        "decrease-scale": "Decrease moon scale"
+      },
+      "error": {
+        "moon-scale-settings": "Could not find Moon scale settings",
+        "moon-shading-settings": "Could not find Moon Perform Shading settings"
+      },
+      "show-phase-input": {
+        "title": "Show Phase",
+        "tooltip": "Uncheck this to show the full moon always. This is equivalent to 'Perform Shading' property on the Moon."
+      }
+    }
+  },
+  "stars": {
+    "visibility": {
+      "title": "Visibility",
+      "input": {
+        "show-stars": "Show Stars",
+        "show-during-day": {
+          "label": "Show During Day",
+          "tooltip": "Check this box to show the stars during daytime"
+        }
+      }
+    },
+    "labels": {
+      "title": "Labels",
+      "input": {
+        "show-labels": "Show Labels",
+        "show-alternate-labels": "Show Alternate Labels"
+      }
+    },
+    "appearance": {
+      "title": "Apperance",
+      "warning": {
+        "title": "Only Night Sky Profile",
+        "description": "The buttons below only work in the 'nightsky' profile. Use the profile editor to edit the actions and adjust the values for your dome."
+      },
+      "buttons": {
+        "default-settings": "Default Settings",
+        "point-like-stars": "More Point Like Stars"
+      }
+    }
+  },
+  "sun": {
+    "glare": {
+      "title": "Glare",
+      "buttons": {
+        "show-glare": "Sow Glare",
+        "hide-glare": "Hide Glare"
+      }
+    },
+    "size": {
+      "title": "Size",
+      "buttons": {
+        "default-size": "Default Angular Size",
+        "large-size": "Large Angular Size",
+        "extra-large-size": "Extra Large Angular Size"
+      },
+      "aria-labels": {
+        "increase-size": "Increase angular size",
+        "decrease-size": "Decrease angular size"
+      },
+      "error": "Could not find Sun Angular Size settings"
+    },
+    "trails": {
+      "title": "Trails",
+      "buttons": {
+        "add-trail": "Add Trail",
+        "add-trail-simulation-date": "Add Trail for Simulation Date",
+        "add-trail-today": "Add Trail for Today",
+        "hide-trails": "Hide All"
+      },
+      "choose-date": "Choose Date",
+      "added-trails": {
+        "title": "Added Sun Trails",
+        "no-trails": "No sun trails"
+      }
+    }
+  },
+  "time": {
+    "simulation-time": {
+      "title": "Simulation Time",
+      "buttons": {
+        "set-now": "Set to Now"
+      },
+      "local": "Local",
+      "timezone": "Timezone",
+      "utc": "UTC",
+      "error": "Date out of range"
+    },
+    "jumps": {
+      "title": "Jumps",
+      "buttons": {
+        "sidereal-day": {
+          "decrease": "Go back in time one sidereal day",
+          "increase": "Go forward in time on sidereal day",
+          "title": "Sidereal Day"
+        },
+        "sidereal-week": {
+          "decrease": "Go back in time one sidereal week",
+          "increase": "Go forward in time one sidereal week",
+          "title": "Sidereal Week"
+        },
+        "solar-day": {
+          "decrease": "Go back in time one solar day",
+          "increase": "Go forward in time one solar day",
+          "title": "Solar Day"
+        },
+        "solar-week": {
+          "decrease": "Go back in time one solar week",
+          "increase": "Go forward in time one solar week",
+          "title": "Solar Week"
+        }
+      }
+    },
+    "diurnal-motion": {
+      "title": "Diurnal Motion",
+      "buttons": {
+        "realtime": "Realtime",
+        "60x": "60x (1 min/sec)",
+        "120x": "120x (2 min/sec)",
+        "300x": "300x (5 min/sec)",
+        "play-pause": "Play / Pause"
+      },
+      "tooltip": "Only some controls are found here. For more control over time, use Time Panel."
+    }
+  }
+}

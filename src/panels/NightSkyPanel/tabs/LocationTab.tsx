@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   BackgroundImage,
@@ -36,6 +37,7 @@ export function LocationTab() {
   useSubscribeToCamera();
 
   const anchor = useAnchorNode();
+  const { t } = useTranslation('panel-nightsky', { keyPrefix: 'location' });
 
   const iconSize = 10;
   const mapSize = { w: 300, h: 150 };
@@ -69,11 +71,18 @@ export function LocationTab() {
       <Group mb={'md'} justify={'space-between'} align={'top'}>
         <Stack gap={5}>
           <Title order={2} mb={'xs'}>
-            Globe Location
+            {t('globe-location.title')}
           </Title>
-          <Text size={'md'}>Latitude: {currentLat?.toFixed(2)}</Text>
-          <Text size={'md'}>Longitude: {currentLong?.toFixed(2)}</Text>
-          <Text size={'md'}>Altitude: {currentAlt?.toFixed(2)}m</Text>
+          <Text size={'md'}>
+            {t('globe-location.latitude')}: {currentLat?.toFixed(2)}
+          </Text>
+          <Text size={'md'}>
+            {t('globe-location.longitude')}: {currentLong?.toFixed(2)}
+          </Text>
+          <Text size={'md'}>
+            {t('globe-location.altitude')}: {currentAlt?.toFixed(2)}
+            {t('globe-location.meter-abbreviation')}
+          </Text>
         </Stack>
 
         <BackgroundImage
@@ -97,8 +106,14 @@ export function LocationTab() {
       <Transition mounted={anchor?.identifier !== 'Earth'} transition={'fade'}>
         {(styles) => (
           <div style={styles}>
-            <Alert w={'100%'} title={'Warning!'} icon={<WarningIcon />}>
-              <Text>{`You are not on Earth, but on ${anchor?.name}.`}</Text>
+            <Alert
+              w={'100%'}
+              title={t('globe-location.warning.title')}
+              icon={<WarningIcon />}
+            >
+              <Text>
+                {t('globe-location.warning.description', { name: anchor?.name })}
+              </Text>
             </Alert>
           </div>
         )}
@@ -106,60 +121,58 @@ export function LocationTab() {
 
       <Divider my={'xs'} mt={5} />
       <Title order={2} mb={'xs'}>
-        Jump to Position
+        {t('jump-to-position.title')}
       </Title>
       <Group gap={'xs'}>
         <Button
           onClick={() => luaApi.action.triggerAction('os.nightsky.position.NorthPole')}
         >
-          North Pole
+          {t('jump-to-position.north-pole')}
         </Button>
         <Button
           onClick={() => luaApi.action.triggerAction('os.nightsky.position.Equator')}
         >
-          Equator
+          {t('jump-to-position.equator')}
         </Button>
         <Button
           onClick={() => luaApi.action.triggerAction('os.nightsky.position.SouthPole')}
         >
-          South Pole
+          {t('jump-to-position.south-pole')}
         </Button>
       </Group>
       <Paper>
         <Alert mt={'md'} p={'sm'} variant={'subtle'} icon={<LocationPinIcon />}>
-          <Text size={'sm'}>
-            To search for a specific location on Earth, use the Geo Location window.
-          </Text>
+          <Text size={'sm'}>{t('jump-to-position.tooltip')}</Text>
         </Alert>
       </Paper>
       <Divider my={'sm'} />
 
       <Title order={2} mb={'xs'}>
-        Direction
+        {t('direction.title')}
       </Title>
       <Group gap={'xs'}>
-        <Button onClick={() => look('North')}>Look North</Button>
-        <Button onClick={() => look('East')}>Look East</Button>
-        <Button onClick={() => look('South')}>Look South</Button>
-        <Button onClick={() => look('West')}>Look West</Button>
+        <Button onClick={() => look('North')}>{t('direction.look-north')}</Button>
+        <Button onClick={() => look('East')}>{t('direction.look-east')}</Button>
+        <Button onClick={() => look('South')}>{t('direction.look-south')}</Button>
+        <Button onClick={() => look('West')}>{t('direction.look-west')}</Button>
       </Group>
       <Title order={2} mt={'sm'} mb={'xs'}>
-        Horizon
+        {t('horizon.title')}
       </Title>
 
       <Group gap={'xs'}>
         <Button
           onClick={() => luaApi.action.triggerAction('os.nightsky.LevelHorizonPitch')}
         >
-          Look at Horizon
+          {t('horizon.look-horizion')}
         </Button>
         <Button
           onClick={() => luaApi.action.triggerAction('os.nightsky.LevelHorizonYaw')}
         >
-          Level Horizon
+          {t('horizon.level-horizon')}
         </Button>
         <Button onClick={() => luaApi.action.triggerAction('os.nightsky.LookUp')}>
-          Look Up
+          {t('horizon.look-up')}
         </Button>
       </Group>
     </>

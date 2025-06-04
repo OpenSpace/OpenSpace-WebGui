@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Alert, Button, Divider, Group, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -17,6 +18,7 @@ export function StarsTab() {
     'BoolProperty',
     'Scene.Stars.Renderable.DimInAtmosphere'
   );
+  const { t } = useTranslation('panel-nightsky', { keyPrefix: 'stars' });
 
   if (!luaApi) {
     return <LoadingBlocks />;
@@ -25,45 +27,44 @@ export function StarsTab() {
   return (
     <>
       <Group mb={'sm'}>
-        <Title order={2}>Visibility</Title>
+        <Title order={2}>{t('visibility.title')}</Title>
         <Group>
           <PropertyOwnerVisibilityCheckbox
             uri={'Scene.Stars.Renderable'}
-            label={'Show Stars'}
+            label={t('visibility.input.show-stars')}
           />
           <BoolInput
-            label={'Show During day'}
-            info={'Check this box to show the stars during daytime'}
+            label={t('visibility.input.show-during-day.label')}
+            info={t('visibility.input.show-during-day.tooltip')}
             value={!starsDimInAtm || false}
             onChange={() => setStarsDimInAtm(!starsDimInAtm)}
           />
         </Group>
       </Group>
       <Group>
-        <Title order={2}>Labels</Title>
+        <Title order={2}>{t('labels.title')}</Title>
         <Group>
           <PropertyOwnerVisibilityCheckbox
             uri={'Scene.StarsLabels.Renderable'}
-            label={'Show Labels'}
+            label={t('labels.input.show-labels')}
           />
           <PropertyOwnerVisibilityCheckbox
             uri={'Scene.StarLabelsAlternate.Renderable'}
-            label={'Show Alternate Labels'}
+            label={t('labels.input.show-alternate-labels')}
           />
         </Group>
       </Group>
       <Divider my={'md'} />
       <Group>
-        <Title order={2}>Appearance</Title>
-        <Alert title={'Only Night Sky Profile'}>
-          The buttons below only work in the 'nightsky' profile. Use the profile editor to
-          edit the actions and adjust the values for your dome.
+        <Title order={2}>{t('appearance.title')}</Title>
+        <Alert title={t('appearance.warning.title')}>
+          {t('appearance.warning.description')}
         </Alert>
         <Button onClick={() => luaApi.action.triggerAction('os.nightsky.DefaultStars')}>
-          Default settings
+          {t('appearance.buttons.default-settings')}
         </Button>
         <Button onClick={() => luaApi.action.triggerAction('os.nightsky.PointlikeStars')}>
-          More point like stars
+          {t('appearance.buttons.point-like-stars')}
         </Button>
       </Group>
     </>

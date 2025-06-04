@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
   Button,
@@ -30,6 +31,7 @@ export function SunTab() {
   );
 
   const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('panel-nightsky', { keyPrefix: 'sun' });
   const sunTrailTag = 'sun_trail';
 
   const addedTrails = Object.values(propertyOwners).filter((owner) =>
@@ -47,68 +49,74 @@ export function SunTab() {
   return (
     <>
       <Title order={2} mb={'xs'}>
-        Glare
+        {t('glare.title')}
       </Title>
       <Group gap={'xs'}>
         <Button
           onClick={() => luaApi.fadeIn('Scene.SunGlare.Renderable')}
           leftSection={<EyeIcon />}
         >
-          Show Glare
+          {t('glare.buttons.show-glare')}
         </Button>
         <Button
           onClick={() => luaApi.fadeOut('Scene.SunGlare.Renderable')}
           leftSection={<EyeOffIcon />}
         >
-          Hide Glare
+          {t('glare.buttons.hide-glare')}
         </Button>
       </Group>
       <Title order={2} mt={'md'} mb={'xs'}>
-        Size
+        {t('size.title')}
       </Title>
       {angularSize !== undefined ? (
         <Group gap={'xs'}>
-          <Button onClick={() => setAngularSize(0.3)}>Default Angular Size</Button>
-          <Button onClick={() => setAngularSize(0.6)}>Large Angular Size</Button>
-          <Button onClick={() => setAngularSize(0.8)}>Extra Large Angular Size</Button>
+          <Button onClick={() => setAngularSize(0.3)}>
+            {t('size.buttons.default-size')}
+          </Button>
+          <Button onClick={() => setAngularSize(0.6)}>
+            {t('size.buttons.large-size')}
+          </Button>
+          <Button onClick={() => setAngularSize(0.8)}>
+            {t('size.buttons.extra-large-size')}
+          </Button>
           <ActionIcon
             onClick={() => setAngularSize(angularSize + 0.1)}
             size={'lg'}
-            aria-label={'Increase angular size'}
+            aria-label={t('size.aria-labels.increase-size')}
           >
             <PlusIcon />
           </ActionIcon>
           <ActionIcon
             onClick={() => setAngularSize(angularSize - 0.1)}
             size={'lg'}
-            aria-label={'Decrease angular size'}
+            aria-label={t('size.aria-labels.decrease-size')}
           >
             <MinusIcon />
           </ActionIcon>
         </Group>
       ) : (
         <>
-          <Text>Could not find Sun Angular Size settings</Text>
+          <Text>{t('size.error')}</Text>
         </>
       )}
 
       <Divider my={'sm'} />
       <Title order={2} mb={'xs'}>
-        Trails
+        {t('trails.title')}
       </Title>
       <Group gap={'xs'}>
         <Button onClick={() => addTrail('NOW')} leftSection={<PlusIcon />}>
-          Add Trail for Simulation Date
+          {t('trails.buttons.add-trail-simulation-date')}
         </Button>
         <Button onClick={() => addTrail('UTC')} leftSection={<PlusIcon />}>
-          Add Trail for Today
+          {t('trails.buttons.add-trail-today')}
         </Button>
       </Group>
 
       <DatePickerInput
         leftSection={<CalendarIcon size={IconSize.sm} />}
         leftSectionPointerEvents={'none'}
-        label={'Choose date'}
+        label={t('trails.choose-date')}
         placeholder={'01/01/2001'}
         value={trailDate}
         onChange={(val) => setTrailDate(new Date(val))}
@@ -120,18 +128,18 @@ export function SunTab() {
         onClick={() => trailDate && addTrail(trailDate.toISOString())}
         mt={'xs'}
       >
-        Add Trail
+        {t('trails.buttons.add-trail')}
       </Button>
 
       <Group mt={'md'} mb={'xs'}>
-        <Title order={3}>Added Sun Trails</Title>
+        <Title order={3}>{t('trails.added-trails.title')}</Title>
         <Button size={'compact-md'} onClick={() => luaApi.fadeOut(`{${sunTrailTag}}`)}>
-          Hide All
+          {t('trails.buttons.hide-trails')}
         </Button>
       </Group>
       <Paper p={'sm'}>
         {addedTrails.length === 0 ? (
-          <Text>No sun trails</Text>
+          <Text>{t('trails.added-trails.no-trails')}</Text>
         ) : (
           <Stack gap={'xs'}>
             {addedTrails.map(
