@@ -4,6 +4,7 @@ import actionPanel from '@/public/locales/en/panel-actions.json';
 import exoplanetsPanel from '@/public/locales/en/panel-exoplanets.json';
 import flightControlPanel from '@/public/locales/en/panel-flightcontrol.json';
 import geolocationPanel from '@/public/locales/en/panel-geolocation.json';
+import missionsPanel from '@/public/locales/en/panel-missions.json';
 import screenspaceRenderablePanel from '@/public/locales/en/panel-screenspacerenderable.json';
 
 /**
@@ -18,6 +19,7 @@ export const resources = {
     'panel-exoplanets': exoplanetsPanel,
     'panel-flightcontrol': flightControlPanel,
     'panel-geolocation': geolocationPanel,
+    'panel-missions': missionsPanel,
     'panel-screenspacerenderable': screenspaceRenderablePanel
   }
 } as const;
