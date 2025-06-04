@@ -1,4 +1,4 @@
-import { Anchor, Container, Menu, Text } from '@mantine/core';
+import { Anchor, CheckboxIndicator, Container, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -35,7 +35,7 @@ export function FileMenu() {
   }
 
   return (
-    <TopBarMenuWrapper targetTitle={'File'} closeOnItemClick={true}>
+    <TopBarMenuWrapper targetTitle={'File'} closeOnItemClick={false}>
       {!profile.initalized ? (
         <LoadingBlocks n={1} />
       ) : (
@@ -80,11 +80,15 @@ export function FileMenu() {
       <Menu.Item
         onClick={toggleLuaConsole}
         leftSection={<ConsoleIcon />}
-        aria-checked={isConsoleVisible}
+        rightSection={
+          <CheckboxIndicator
+            checked={isConsoleVisible}
+            aria-label={isConsoleVisible ? 'Checked' : 'Unchecked'}
+          />
+        }
         aria-label={isConsoleVisible ? 'Close console' : 'Open console'}
-        color={isConsoleVisible ? 'var(--mantine-primary-color-4)' : undefined}
       >
-        Toggle Console
+        Show Console
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item onClick={toggleShutdown} leftSection={<ExitAppIcon />}>
