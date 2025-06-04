@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Checkbox } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -28,6 +29,9 @@ export function CardinalDirectionsBox({ variant, title, icon }: Props) {
     'StringProperty',
     'Scene.CardinalDirectionSphere.Renderable.Texture'
   );
+  const { t } = useTranslation('panel-nightsky', {
+    keyPrefix: 'markings.cardinal-directions.aria-labels'
+  });
 
   const hasLoaded = isVisible !== undefined && texture !== undefined;
 
@@ -38,19 +42,19 @@ export function CardinalDirectionsBox({ variant, title, icon }: Props) {
       showAction: 'os.nightsky.ShowNeswLettersSmall',
       hideAction: 'os.nightsky.HideNesw',
       textureCheck: 'red_small.png',
-      label: 'Show small cardinal directions'
+      label: t('small')
     },
     large: {
       showAction: 'os.nightsky.ShowNeswLetters',
       hideAction: 'os.nightsky.HideNesw',
       textureCheck: 'red.png',
-      label: 'Show large cardinal directions'
+      label: t('large')
     },
     marks: {
       showAction: 'os.nightsky.AddNeswBandMarks',
       hideAction: 'os.nightsky.RemoveNeswBandMarks',
       textureCheck: '_lines_',
-      label: 'Show marks on cardinal directions'
+      label: t('marks')
     }
   };
 

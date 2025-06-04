@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Box, Button, Group, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -22,6 +23,8 @@ export function SolarSystemTab() {
     'Scene.Moon.Scale.Scale'
   );
 
+  const { t } = useTranslation('panel-nightsky', { keyPrefix: 'solar-system' });
+
   function action(identifier: string): void {
     luaApi?.action.triggerAction(identifier);
   }
@@ -33,95 +36,97 @@ export function SolarSystemTab() {
   return (
     <>
       <Title order={2} mb={'xs'}>
-        Trails
+        {t('trails.title')}
       </Title>
       <Group gap={'xs'}>
-        <Button onClick={() => action('os.FadeDownTrails')}>Hide ALL Trails</Button>
+        <Button onClick={() => action('os.FadeDownTrails')}>
+          {t('trails.buttons.hide-trails')}
+        </Button>
         <Button
           onClick={() => {
             luaApi.fadeIn('{planetTrail_solarSystem}');
             luaApi.fadeOut('Scene.EarthTrail.Renderable');
           }}
         >
-          Show Planet Trails
+          {t('trails.buttons.show-planet-trails')}
         </Button>
       </Group>
 
       <Title order={2} mt={'md'} mb={'xs'}>
-        Labels
+        {t('labels.title')}
       </Title>
       <Group gap={'xs'}>
         <Button
           onClick={() => luaApi.fadeIn('{solarsystem_labels}.Renderable')}
           leftSection={<EyeIcon />}
         >
-          Show Labels
+          {t('labels.buttons.show-labels')}
         </Button>
         <Button
           onClick={() => luaApi.fadeOut('{solarsystem_labels}.Renderable')}
           leftSection={<EyeOffIcon />}
         >
-          Hide Labels
+          {t('labels.buttons.hide-labels')}
         </Button>
       </Group>
 
       <Title order={2} mt={'md'} mb={'xs'}>
-        Planets
+        {t('plaents.title')}
       </Title>
       <Group gap={'xs'}>
         <Button
           onClick={() => action('os.nightsky.ShowNightSkyPlanets')}
           leftSection={<EyeIcon />}
         >
-          Show Night Sky Planets
+          {t('plaents.buttons.show-planets')}
         </Button>
         <Button
           onClick={() => action('os.nightsky.HideNightSkyPlanets')}
           leftSection={<EyeOffIcon />}
         >
-          Hide Night Sky Planets
+          {t('plaents.buttons.hide-planets')}
         </Button>
       </Group>
 
       <Title order={2} mt={'md'} mb={'xs'}>
-        Moon
+        {t('moon.title')}
       </Title>
       {moonScale !== undefined ? (
         <Group gap={'xs'}>
-          <Button onClick={() => setMoonScale(1.0)}>Default Scale Moon (1x)</Button>
-          <Button onClick={() => setMoonScale(2.0)}>Enlarge Moon (2x)</Button>
-          <Button onClick={() => setMoonScale(4.0)}>Enlarge Moon (4x)</Button>
+          <Button onClick={() => setMoonScale(1.0)}>
+            {t('moon.buttons.default-scale')}
+          </Button>
+          <Button onClick={() => setMoonScale(2.0)}>{t('moon.buttons.2x-scale')}</Button>
+          <Button onClick={() => setMoonScale(4.0)}>{t('moon.buttons.4x-scale')}</Button>
           <ActionIcon
             onClick={() => setMoonScale(moonScale + 0.5)}
             size={'lg'}
-            aria-label={'Increase moon scale'}
+            aria-label={t('moon.aria-labels.increase-scale')}
           >
             <PlusIcon />
           </ActionIcon>
           <ActionIcon
             onClick={() => setMoonScale(moonScale - 0.5)}
             size={'lg'}
-            aria-label={'Deacrease moon scale'}
+            aria-label={t('moon.aria-labels.decrease-scale')}
           >
             <MinusIcon />
           </ActionIcon>
         </Group>
       ) : (
-        <Text>Could not find Moon scale settings</Text>
+        <Text>{t('moon.error.moon-scale-settings')}</Text>
       )}
 
       <Box mt={'md'}>
         {performShading !== undefined ? (
           <BoolInput
-            label={'Show Phase'}
-            info={
-              'Uncheck this to show the full moon always. This is equivalent to the "Perform Shading" property on the Moon.'
-            }
+            label={t('moon.show-phase-input.title')}
+            info={t('moon.show-phase-input.tooltip')}
             value={performShading || false}
             onChange={setPerformShading}
           />
         ) : (
-          <Text>Could not find Moon Perform Shading settings</Text>
+          <Text>{t('moon.error.moon-shading-settings')}</Text>
         )}
       </Box>
     </>
