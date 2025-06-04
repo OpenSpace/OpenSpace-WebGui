@@ -45,7 +45,6 @@ export const ImageList = memo(function ImageList({ imageList, noImagesDisplay }:
       <Group>
         <FilterList.InputField
           placeHolderSearchText={t('search-images-placeholder', {
-            imageCount: imageList.length,
             count: imageList.length
           })}
           flex={'auto'}

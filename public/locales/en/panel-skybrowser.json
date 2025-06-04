@@ -16,23 +16,23 @@
       "no-skybrowser": "There are no SkyBrowsers. Create on in the SkyBrowser panel.",
       "no-id": "No browser selected",
       "drag-area-aria-label": "Dragging area for WorldWide Telescope",
-      "error": "ERROR: cannot display AAS WorldWide Telescope research app!"
+      "error": "ERROR: Cannot display the AAS WorldWide Telescope research app"
     },
     "error": {
-      "no-images": "Received 0 AAS WorldWide Telescope images!",
-      "unable-to-load-wwt": "Couldn't load AAS WorldWide Telescope images!",
-      "unable-to-load-images": "Could not load image collection from OpenSpace. Error: {{error}}"
+      "no-images": "Received 0 WorldWide Telescope images",
+      "unable-to-load-wwt": "Could not load WorldWide Telescope images",
+      "unable-to-load-images": "Could not load image collection. Error: {{error}}"
     }
   },
   "image-list": {
     "search-images-placeholder_zero": "No images in view",
-    "search-images-placeholder_one": "Search {{imageCount}} image...",
-    "search-images-placeholder_other": "Search {{imageCount}} images...",
-    "no-images-in-view": "No images in view. Try moving the sky target!"
+    "search-images-placeholder_one": "Search {{count}} image...",
+    "search-images-placeholder_other": "Search {{count}} images...",
+    "no-images-in-view": "No images in view. Try moving the sky target"
   },
   "components": {
     "image-info": {
-      "aria-label": "More infromation",
+      "aria-label": "More information",
       "label": "Read more"
     }
   },
@@ -77,7 +77,7 @@
             "tooltip": "Number of copies to add at once."
           },
           "position-for-copies": {
-            "tooltip": "his sets the position of the first copy. The additional copies will be evenly spread out on the Azimuth, if isUsingRadiusAzimuthElevation is enabled, otherwise it will spread on the Y axis.",
+            "tooltip": "This sets the position of the first display copy. The additional copies will be evenly spread out on the Azimuth, if isUsingRadiusAzimuthElevation is enabled, otherwise it will spread on the Y axis.",
             "label": "Position for first copy"
           }
         }
@@ -87,7 +87,7 @@
       "no-copies": "No copies added"
     },
     "general": {
-      "tooltip": "General settings for all browsers.",
+      "tooltip": "General settings for all browsers",
       "tab-title": "General"
     }
   },
