@@ -94,7 +94,10 @@ export function ViewMenu() {
                   key={item.componentID}
                   leftSection={
                     <Group>
-                      <CheckboxIndicator checked={itemConfig.visible} />
+                      <CheckboxIndicator
+                        checked={itemConfig.visible}
+                        aria-label={itemConfig.visible ? 'Checked' : 'Unchecked'}
+                      />
                       {item.renderIcon?.(IconSize.xs)}
                     </Group>
                   }
