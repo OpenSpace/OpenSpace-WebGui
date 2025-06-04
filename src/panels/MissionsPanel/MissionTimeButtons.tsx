@@ -40,13 +40,13 @@ export function MissionTimeButtons({ currentPhase }: Props) {
             onClick={jumpToStartOfPhase}
             leftSection={<GoToStart size={IconSize.xs} />}
           >
-            {t('mission-time-buttons.start-phase', { phaseType })}
+            {t('mission-time-buttons.start-phase', { phase: phaseType })}
           </Button>
           <Button
             onClick={jumpToEndOfPhase}
             rightSection={<GoToEnd size={IconSize.xs} />}
           >
-            {t('mission-time-buttons.end-phase', { phaseType })}
+            {t('mission-time-buttons.end-phase', { phase: phaseType })}
           </Button>
         </Group>
       );
