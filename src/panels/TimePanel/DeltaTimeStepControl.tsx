@@ -68,7 +68,7 @@ export function DeltaTimeStepsControl() {
           disabled={!hasPrevDeltaTimeStep}
           size={'lg'}
           w={'100%'}
-          aria-label={t('delta-time-step-control.aria-label.previous-step')}
+          aria-label={t('delta-time-step-control.aria-labels.previous-step')}
         >
           <FastRewindIcon size={IconSize.md} />
         </ActionIcon>
@@ -89,8 +89,8 @@ export function DeltaTimeStepsControl() {
         size={'lg'}
         aria-label={`${
           isPaused
-            ? t('delta-time-step-control.aria-label.toggle-pause.play')
-            : t('delta-time-step-control.aria-label.toggle-pause.pause')
+            ? t('delta-time-step-control.aria-labels.toggle-pause.play')
+            : t('delta-time-step-control.aria-labels.toggle-pause.pause')
         }`}
         flex={2}
       >
@@ -102,7 +102,7 @@ export function DeltaTimeStepsControl() {
           disabled={!hasNextDeltaTimeStep}
           size={'lg'}
           w={'100%'}
-          aria-label={t('delta-time-step-control.aria-label.next-step')}
+          aria-label={t('delta-time-step-control.aria-labels.next-step')}
         >
           <FastForwardIcon size={IconSize.md} />
         </ActionIcon>

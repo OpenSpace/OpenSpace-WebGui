@@ -28,7 +28,8 @@ export function TimeInput() {
   const luaApi = useOpenSpaceApi();
   const { setTime, interpolateTime } = useSetOpenSpaceTime();
   useSubscribeToTime();
-  const { t } = useTranslation(['panel-time', 'common'], { keyPrefix: 'time-input' });
+  const { t } = useTranslation('panel-time', { keyPrefix: 'time-input' });
+  const { t: tCommon } = useTranslation('common');
   const dispatch = useAppDispatch();
 
   const cappedDate = new Date(cappedTime ?? '');
@@ -246,7 +247,7 @@ export function TimeInput() {
     if (isDateValid(newTime)) {
       setErrorMessage('');
     } else {
-      setErrorMessage(t('error.invalid-year'));
+      setErrorMessage(t('error.invalid-year', { value }));
     }
   }
 
@@ -354,7 +355,7 @@ export function TimeInput() {
               {t('lock-time.button-labels.set')}
             </Button>
             <Button variant={'default'} onClick={() => setUseLock(false)}>
-              {t('common:cancel')}
+              {tCommon('cancel')}
             </Button>
           </Group>
         )}
