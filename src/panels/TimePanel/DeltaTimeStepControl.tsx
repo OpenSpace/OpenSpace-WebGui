@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, NumberFormatter, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -5,6 +6,7 @@ import { FastForwardIcon, FastRewindIcon, PauseIcon, PlayIcon } from '@/icons/ic
 import { useAppSelector } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';
 
+import { useTimePartTranslation } from './hooks';
 import { formatDeltaTime } from './util';
 
 export function DeltaTimeStepsControl() {
@@ -15,6 +17,8 @@ export function DeltaTimeStepsControl() {
 
   const hasNextDeltaTimeStep = useAppSelector((state) => state.time.hasNextDeltaTimeStep);
   const hasPrevDeltaTimeStep = useAppSelector((state) => state.time.hasPrevDeltaTimeStep);
+  const translateTimePart = useTimePartTranslation();
+  const { t } = useTranslation('panel-time');
 
   const {
     increment: nextIncrement,
@@ -27,8 +31,10 @@ export function DeltaTimeStepsControl() {
     isNegative: isPrevStepNegative
   } = formatDeltaTime(prevDeltaTimeStep);
 
-  const nextLabel = ` ${nextUnit} / second`;
-  const prevLabel = ` ${prevUnit} / second`;
+  const nextLabel =
+    ` ${translateTimePart(nextUnit, nextIncrement)} / ${t('time-parts.seconds_one')}`.toLocaleLowerCase();
+  const prevLabel =
+    ` ${translateTimePart(prevUnit, nextDecrement)} / ${t('time-parts.seconds_one')}`.toLocaleLowerCase();
 
   function setPrevDeltaTimeStep(event: React.MouseEvent<HTMLElement>) {
     if (event.shiftKey) {
@@ -62,7 +68,7 @@ export function DeltaTimeStepsControl() {
           disabled={!hasPrevDeltaTimeStep}
           size={'lg'}
           w={'100%'}
-          aria-label={'Set previous delta time step'}
+          aria-label={t('delta-time-step-control.aria-labels.previous-step')}
         >
           <FastRewindIcon size={IconSize.md} />
         </ActionIcon>
@@ -81,7 +87,11 @@ export function DeltaTimeStepsControl() {
       <ActionIcon
         onClick={togglePause}
         size={'lg'}
-        aria-label={`${isPaused ? 'Play' : 'Pause'} time`}
+        aria-label={`${
+          isPaused
+            ? t('delta-time-step-control.aria-labels.toggle-pause.play')
+            : t('delta-time-step-control.aria-labels.toggle-pause.pause')
+        }`}
         flex={2}
       >
         {isPaused ? <PlayIcon size={IconSize.md} /> : <PauseIcon size={IconSize.md} />}
@@ -92,7 +102,7 @@ export function DeltaTimeStepsControl() {
           disabled={!hasNextDeltaTimeStep}
           size={'lg'}
           w={'100%'}
-          aria-label={'Set next delta time step'}
+          aria-label={t('delta-time-step-control.aria-labels.next-step')}
         >
           <FastForwardIcon size={IconSize.md} />
         </ActionIcon>

@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Alert, Button, Group, Paper, Stack, Tooltip } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
@@ -27,6 +28,8 @@ export function TimeInput() {
   const luaApi = useOpenSpaceApi();
   const { setTime, interpolateTime } = useSetOpenSpaceTime();
   useSubscribeToTime();
+  const { t } = useTranslation('panel-time', { keyPrefix: 'time-input' });
+  const { t: tCommon } = useTranslation('common');
   const dispatch = useAppDispatch();
 
   const cappedDate = new Date(cappedTime ?? '');
@@ -72,8 +75,8 @@ export function TimeInput() {
     if (!isDateValid(data.time)) {
       dispatch(
         handleNotificationLogging(
-          'Invalid time',
-          'Error trying to set time to an invalid date',
+          t('error.invalid-time.title'),
+          t('error.invalid-time.message'),
           LogLevel.Warning
         )
       );
@@ -157,9 +160,7 @@ export function TimeInput() {
     if (isDateValid(newTime)) {
       setErrorMessage('');
     } else {
-      setErrorMessage(
-        'New date is outside range (April 20, 271821 BC, Sep 13, 275760 AD)'
-      );
+      setErrorMessage(t('error.invalid-date'));
     }
 
     updateTime({
@@ -220,9 +221,7 @@ export function TimeInput() {
     if (isDateValid(newTime)) {
       setErrorMessage('');
     } else {
-      setErrorMessage(
-        'New date is outside range (April 20, 271821 BC, Sep 13, 275760 AD)'
-      );
+      setErrorMessage(t('error.invalid-date'));
     }
 
     updateTime({
@@ -248,9 +247,7 @@ export function TimeInput() {
     if (isDateValid(newTime)) {
       setErrorMessage('');
     } else {
-      setErrorMessage(
-        `Year '${value}' is outside allowed year range (April 20, 271821 BC, Sep 13, 275760 AD)`
-      );
+      setErrorMessage(t('error.invalid-year', { value }));
     }
   }
 
@@ -262,14 +259,15 @@ export function TimeInput() {
     <Paper bg={'dark.9'} withBorder={isLocked} m={0} p={'xs'}>
       <Stack gap={'xs'}>
         <Group gap={'xs'} justify={'center'}>
-          <Tooltip
-            label={`Lock time updates to prevent automatic changes. Use "Interpolate" or "Set"
-              to manually apply the selected date and time.`}
-          >
+          <Tooltip label={t('lock-time.tooltip')}>
             <ActionIcon
               onClick={toggleLock}
               variant={isLocked ? 'filled' : 'default'}
-              aria-label={`Set date-time input mode to ${isLocked ? 'unlocked' : 'locked'} mode`}
+              aria-label={
+                isLocked
+                  ? t('lock-time.aria-label.unlocked')
+                  : t('lock-time.aria-label.locked')
+              }
             >
               {isLocked ? <LockIcon /> : <LockOpenIcon />}
             </ActionIcon>
@@ -345,7 +343,7 @@ export function TimeInput() {
               }}
               variant={'filled'}
             >
-              Interpolate
+              {t('lock-time.button-labels.interpolate')}
             </Button>
             <Button
               onClick={() => {
@@ -354,10 +352,10 @@ export function TimeInput() {
               }}
               variant={'filled'}
             >
-              Set
+              {t('lock-time.button-labels.set')}
             </Button>
             <Button variant={'default'} onClick={() => setUseLock(false)}>
-              Cancel
+              {tCommon('cancel')}
             </Button>
           </Group>
         )}

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Group, Slider, Text } from '@mantine/core';
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 
 export function QuickAdjustSlider({ onChange, onEnd }: Props) {
   const [sliderValue, setSliderValue] = useState(0);
+  const { t } = useTranslation('panel-time');
 
   const sliderMax = 10;
   const percentagePerStep = 100 / (sliderMax * 2);
@@ -25,7 +27,7 @@ export function QuickAdjustSlider({ onChange, onEnd }: Props) {
           -
         </Text>
         <Text size={'md'} c={'dimmed'}>
-          Quick Adjust
+          {t('quick-adjust.title')}
         </Text>
         <Text size={'md'} c={'dimmed'}>
           +

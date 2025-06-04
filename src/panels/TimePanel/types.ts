@@ -14,7 +14,7 @@ export const StepSizes = {
   [TimePart.Minutes]: 60,
   [TimePart.Hours]: 3600,
   [TimePart.Days]: 86400,
-  [TimePart.Months]: 2678400,
+  [TimePart.Months]: 2628000,
   [TimePart.Years]: 31536000
 };
 

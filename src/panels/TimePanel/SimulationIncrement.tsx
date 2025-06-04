@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Group, Select } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
 
@@ -7,6 +8,7 @@ import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useAppSelector } from '@/redux/hooks';
 
 import { DeltaTimeStepsControl } from './DeltaTimeStepControl';
+import { useTimePartTranslation } from './hooks';
 import { QuickAdjustSlider } from './QuickAdjustSlider';
 import { Decimals, StepSizes, TimePart } from './types';
 
@@ -16,11 +18,18 @@ export function SimulationIncrement() {
 
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime) ?? 1;
   const updateDeltaTime = useThrottledCallback(updateDeltaTimeNow, 50);
+  const translateTimePart = useTimePartTranslation();
+  const { t } = useTranslation('panel-time');
 
   // Remove Milliseconds as an option to select
-  const selectableData = Object.values(TimePart).filter(
-    (value) => value !== TimePart.Milliseconds
-  );
+  const selectableData = Object.values(TimePart)
+    .filter((value) => value !== TimePart.Milliseconds)
+    .map((unit) => {
+      return {
+        value: unit,
+        label: translateTimePart(unit, 2) // Number arbitrary chosen to get pluralization
+      };
+    });
 
   function updateDeltaTimeNow(value: number) {
     luaApi?.time.interpolateDeltaTime(value);
@@ -41,14 +50,17 @@ export function SimulationIncrement() {
     <>
       <Group grow mb={'xs'}>
         <Select
-          label={'Display Unit'}
+          label={t('simulation-increment.select-unit-label')}
           value={stepSize}
           data={selectableData}
           allowDeselect={false}
           onChange={(value) => setStepSize(value! as TimePart)}
         />
         <NumericInput
-          label={`${stepSize} / second`}
+          label={`${translateTimePart(
+            stepSize,
+            targetDeltaTime / StepSizes[stepSize]
+          )} / ${t('time-parts.seconds_one').toLocaleLowerCase()}`}
           value={targetDeltaTime / StepSizes[stepSize]}
           onEnter={(newValue) => setDeltaTime(newValue)}
           step={1}
