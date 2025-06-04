@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BoxData, PanelData, TabData } from 'rc-dock';
 
 import { useProperty } from '@/hooks/properties';
@@ -9,6 +10,7 @@ import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 export const DefaultSgnWindowId = 'defaultSceneGraphNodeWindow';
 
 export function useOpenCurrentSceneNodeWindow() {
+  const { t } = useTranslation('panel-scene', { keyPrefix: 'hooks' });
   const { ref, addWindow, closeWindow, createWindowTabData } = useWindowLayoutProvider();
 
   function openCurrentNodeWindow(content: React.ReactNode) {
@@ -20,7 +22,7 @@ export function useOpenCurrentSceneNodeWindow() {
     if (!existingWindow) {
       addWindow(content, {
         id: DefaultSgnWindowId,
-        title: 'Scene: Selected Node',
+        title: t('selected-node-window-title'),
         position: 'float'
       });
 
@@ -39,7 +41,7 @@ export function useOpenCurrentSceneNodeWindow() {
     } else {
       const newTabData = createWindowTabData(
         DefaultSgnWindowId,
-        'Scene: Selected Node',
+        t('selected-node-window-title'),
         content
       );
       ref.current.updateTab(DefaultSgnWindowId, newTabData, true);
