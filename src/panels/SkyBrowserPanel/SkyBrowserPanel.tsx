@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, LoadingOverlay, Stack, Text, ThemeIcon } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -20,6 +21,7 @@ export function SkyBrowserPanel() {
 
   const { addWindow } = useWindowLayoutProvider();
   const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('panel-skybrowser');
 
   useSkyBrowserData();
 
@@ -56,13 +58,13 @@ export function SkyBrowserPanel() {
           size={'lg'}
           loading={!luaApi || !isInitialized}
         >
-          Add browser
+          {t('add-browser.label')}
         </Button>
         <ThemeIcon size={100} variant={'transparent'}>
           <TelescopeIcon size={'100px'} />
         </ThemeIcon>
         <Text ta={'center'} c={'dimmed'} mt={'lg'}>
-          Powered by WorldWide Telescope
+          {t('add-browser.description')}
         </Text>
       </Stack>
     );

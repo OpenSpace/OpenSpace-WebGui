@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Center, Tabs, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -23,6 +24,7 @@ export function BrowserTabs({ openWorldWideTelescope }: Props) {
     return state.skybrowser.selectedBrowserId;
   });
   const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'browser-tabs' });
 
   return (
     <Tabs
@@ -46,7 +48,7 @@ export function BrowserTabs({ openWorldWideTelescope }: Props) {
             {browserNames[i]}
           </Tabs.Tab>
         ))}
-        <Tooltip label={'Add new browser'}>
+        <Tooltip label={t('new-browser-tooltip')}>
           <Center>
             <ActionIcon
               size={'sm'}

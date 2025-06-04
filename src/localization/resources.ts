@@ -4,6 +4,7 @@ import actionPanel from '@/public/locales/en/panel-actions.json';
 import exoplanetsPanel from '@/public/locales/en/panel-exoplanets.json';
 import flightControlPanel from '@/public/locales/en/panel-flightcontrol.json';
 import geolocationPanel from '@/public/locales/en/panel-geolocation.json';
+import skyBrowserPanel from '@/public/locales/en/panel-skybrowser.json';
 
 /**
  * This object in combination with `i18next.d.ts` enables intellisense and syntax
@@ -16,7 +17,8 @@ export const resources = {
     'panel-actions': actionPanel,
     'panel-exoplanets': exoplanetsPanel,
     'panel-flightcontrol': flightControlPanel,
-    'panel-geolocation': geolocationPanel
+    'panel-geolocation': geolocationPanel,
+    'panel-skybrowser': skyBrowserPanel
   }
 } as const;
 

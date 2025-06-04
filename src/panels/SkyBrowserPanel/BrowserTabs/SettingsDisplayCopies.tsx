@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Badge, Box, Button, Group, InputLabel, Paper, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -21,11 +22,13 @@ export function SettingsDisplayCopies({ id }: Props) {
   const displayCopies = useAppSelector(
     (state) => state.skybrowser.browsers[id]?.displayCopies
   );
-
+  const { t } = useTranslation('panel-skybrowser', {
+    keyPrefix: 'settings.display-copies'
+  });
   return (
     <>
       <Title order={4} mb={'sm'}>
-        Add / Remove Display Copy
+        {t('copies.title')}
       </Title>
       <Group grow preventGrowOverflow={false}>
         <Button
@@ -33,36 +36,40 @@ export function SettingsDisplayCopies({ id }: Props) {
           leftSection={<PlusIcon />}
           flex={1}
         >
-          Add
+          {t('copies.add')}
         </Button>
         <Button
           onClick={() => luaApi?.skybrowser.removeDisplayCopy(id)}
           leftSection={<MinusIcon />}
           flex={1}
         >
-          Remove
+          {t('copies.remove')}
         </Button>
-        <SettingsPopout flex={0} popoverWidth={300} title={'Add Display Copy Settings'}>
+        <SettingsPopout
+          flex={0}
+          popoverWidth={300}
+          title={t('copies.display-copies-settings.title')}
+        >
           <Box p={'sm'}>
             <Group>
               <InputLabel fw={'normal'}>
                 <Text span size={'sm'}>
-                  Number of copies
+                  {t('copies.display-copies-settings.number-of-copies.label')}
                 </Text>
               </InputLabel>
-              <InfoBox>Number of copies to add at once.</InfoBox>
+              <InfoBox>
+                {t('copies.display-copies-settings.number-of-copies.tooltip')}
+              </InfoBox>
             </Group>
             <NumericInput value={nCopies} onEnter={setNCopies} />
             <Group mt={'sm'}>
               <InputLabel fw={'normal'}>
                 <Text span size={'sm'}>
-                  Position for first copy
+                  {t('copies.display-copies-settings.position-for-copies.label')}
                 </Text>
               </InputLabel>
               <InfoBox>
-                {`This sets the position of the first copy. The additional copies will be evenly
-          spread out on the Azimuth, if isUsingRadiusAzimuthElevation is enabled,
-          otherwise it will spread on the Y axis.`}
+                {t('copies.display-copies-settings.position-for-copies.tooltip')}
               </InfoBox>
             </Group>
             <Box pb={'sm'}>
@@ -84,7 +91,7 @@ export function SettingsDisplayCopies({ id }: Props) {
         </SettingsPopout>
       </Group>
       <Title order={4} mt={'md'} mb={'sm'}>
-        Display Settings
+        {t('display-settings-title')}
       </Title>
       <Property uri={`ScreenSpace.${id}.Scale`} />
       <Property uri={`ScreenSpace.${id}.FaceCamera`} />
@@ -94,12 +101,12 @@ export function SettingsDisplayCopies({ id }: Props) {
       <Collapsable
         title={
           <Group>
-            Added Display Copies
+            {t('added-copies')}
             <Badge variant={'default'}>{Object.keys(displayCopies).length}</Badge>
           </Group>
         }
       >
-        {Object.keys(displayCopies).length === 0 && <Text>No copies added</Text>}
+        {Object.keys(displayCopies).length === 0 && <Text>{t('no-copies')}</Text>}
         {Object.entries(displayCopies).map(([key, entry]) => (
           <Paper key={key} p={'sm'} mt={'sm'}>
             <Property uri={`ScreenSpace.${id}.${entry.idShowProperty}`} />

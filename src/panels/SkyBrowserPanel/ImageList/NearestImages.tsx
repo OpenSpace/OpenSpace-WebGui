@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Stack, Text } from '@mantine/core';
 
 import { useAppSelector } from '@/redux/hooks';
@@ -7,9 +8,11 @@ import { ImageList } from './ImageList';
 import { InfoGraphic } from './InfoGraphic';
 
 function NoImagesDisplay() {
+  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'image-list' });
+
   return (
     <Stack h={'100%'}>
-      <Text ta={'center'}>No images in view. Try moving the sky target!</Text>
+      <Text ta={'center'}>{t('no-images-in-view')}</Text>
       <InfoGraphic />
     </Stack>
   );
