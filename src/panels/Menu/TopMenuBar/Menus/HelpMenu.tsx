@@ -52,7 +52,7 @@ export function HelpMenu() {
           target={'_blank'}
           leftSection={<BookIcon />}
           rightSection={<OpenWindowIcon />}
-          aria-description={'(opens in new tab)'}
+          aria-description={'(Opens in new tab)'}
         >
           Open Web Tutorials
         </Menu.Item>
@@ -69,7 +69,7 @@ export function HelpMenu() {
           target={'_blank'}
           leftSection={<FeedbackIcon />}
           rightSection={<OpenWindowIcon />}
-          aria-description={'(opens in new tab)'}
+          aria-description={'(Opens in new tab)'}
         >
           Send Feedback
         </Menu.Item>
@@ -79,7 +79,7 @@ export function HelpMenu() {
           onClick={openGuiInBrowser}
           leftSection={<OpenInBrowserIcon />}
           rightSection={<OpenWindowIcon />}
-          aria-description={'(opens in new tab)'}
+          aria-description={'(Opens in new tab)'}
         >
           Open GUI in Browser
         </Menu.Item>
