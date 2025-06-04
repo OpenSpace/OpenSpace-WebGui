@@ -5,6 +5,7 @@ import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
 
+import { useTimePartTranslation } from '../hooks';
 import { formatDeltaTime } from '../util';
 
 export function TimePanelMenuButtonContent() {
@@ -13,6 +14,7 @@ export function TimePanelMenuButtonContent() {
   const timeString = useAppSelector((state) => state.time.timeString);
 
   const timeCapped = useSubscribeToTime();
+  const translateTimePart = useTimePartTranslation();
   const { t } = useTranslation('panel-time');
 
   const isReady = timeCapped !== undefined || timeString !== undefined;
@@ -40,9 +42,8 @@ export function TimePanelMenuButtonContent() {
     const roundedIncrement = Math.round(increment);
     const sign = isNegative ? '-' : '';
 
-    const unitLabel = t(`time-parts.${unit}`, { count: roundedIncrement });
-
-    return `${sign}${roundedIncrement} ${unitLabel} / ${t('time-parts.Seconds_one')} ${pausedLabel}`.toLocaleLowerCase();
+    const unitLabel = translateTimePart(unit, roundedIncrement);
+    return `${sign}${roundedIncrement} ${unitLabel} / ${t('time-parts.seconds_one')} ${pausedLabel}`.toLocaleLowerCase();
   }
 
   return (

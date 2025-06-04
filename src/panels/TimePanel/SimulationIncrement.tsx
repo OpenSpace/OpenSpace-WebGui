@@ -8,6 +8,7 @@ import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useAppSelector } from '@/redux/hooks';
 
 import { DeltaTimeStepsControl } from './DeltaTimeStepControl';
+import { useTimePartTranslation } from './hooks';
 import { QuickAdjustSlider } from './QuickAdjustSlider';
 import { Decimals, StepSizes, TimePart } from './types';
 
@@ -17,6 +18,7 @@ export function SimulationIncrement() {
 
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime) ?? 1;
   const updateDeltaTime = useThrottledCallback(updateDeltaTimeNow, 50);
+  const translateTimePart = useTimePartTranslation();
   const { t } = useTranslation('panel-time');
 
   // Remove Milliseconds as an option to select
@@ -25,7 +27,7 @@ export function SimulationIncrement() {
     .map((unit) => {
       return {
         value: unit,
-        label: t(`time-parts.${unit}_other`)
+        label: translateTimePart(unit, 2) // Number arbitrary chosen to get pluralization
       };
     });
 
@@ -55,9 +57,10 @@ export function SimulationIncrement() {
           onChange={(value) => setStepSize(value! as TimePart)}
         />
         <NumericInput
-          label={`${t(`time-parts.${stepSize}`, {
-            count: targetDeltaTime / StepSizes[stepSize]
-          })} / ${t('time-parts.Seconds_one').toLocaleLowerCase()}`}
+          label={`${translateTimePart(
+            stepSize,
+            targetDeltaTime / StepSizes[stepSize]
+          )} / ${t('time-parts.seconds_one').toLocaleLowerCase()}`}
           value={targetDeltaTime / StepSizes[stepSize]}
           onEnter={(newValue) => setDeltaTime(newValue)}
           step={1}

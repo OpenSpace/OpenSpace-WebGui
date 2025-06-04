@@ -6,6 +6,7 @@ import { FastForwardIcon, FastRewindIcon, PauseIcon, PlayIcon } from '@/icons/ic
 import { useAppSelector } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';
 
+import { useTimePartTranslation } from './hooks';
 import { formatDeltaTime } from './util';
 
 export function DeltaTimeStepsControl() {
@@ -16,6 +17,7 @@ export function DeltaTimeStepsControl() {
 
   const hasNextDeltaTimeStep = useAppSelector((state) => state.time.hasNextDeltaTimeStep);
   const hasPrevDeltaTimeStep = useAppSelector((state) => state.time.hasPrevDeltaTimeStep);
+  const translateTimePart = useTimePartTranslation();
   const { t } = useTranslation('panel-time');
 
   const {
@@ -30,9 +32,9 @@ export function DeltaTimeStepsControl() {
   } = formatDeltaTime(prevDeltaTimeStep);
 
   const nextLabel =
-    ` ${t(`time-parts.${nextUnit}`, { count: nextIncrement })} / ${t('time-parts.Seconds_one')}`.toLocaleLowerCase();
+    ` ${translateTimePart(nextUnit, nextIncrement)} / ${t('time-parts.seconds_one')}`.toLocaleLowerCase();
   const prevLabel =
-    ` ${t(`time-parts.${prevUnit}`, { count: nextDecrement })} / ${t('time-parts.Seconds_one')}`.toLocaleLowerCase();
+    ` ${translateTimePart(prevUnit, nextDecrement)} / ${t('time-parts.seconds_one')}`.toLocaleLowerCase();
 
   function setPrevDeltaTimeStep(event: React.MouseEvent<HTMLElement>) {
     if (event.shiftKey) {
