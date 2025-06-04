@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Group } from '@mantine/core';
 
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
@@ -12,6 +13,9 @@ interface Props {
 export function MissionCaptureButtons({ mission }: Props) {
   const now = useSubscribeToTime();
   const jumpToTime = useJumpToTime();
+  const { t } = useTranslation('panel-missions', {
+    keyPrefix: 'mission-capture-buttons'
+  });
 
   // Locate the next instrument activity capture
   function getNextCapture() {
@@ -53,12 +57,10 @@ export function MissionCaptureButtons({ mission }: Props) {
   return (
     <Group gap={'xs'} grow preventGrowOverflow={false} my={'xs'}>
       {prevCapture && (
-        <Button onClick={() => jumpToTime(prevCapture)}>
-          Set Time to Previous Capture
-        </Button>
+        <Button onClick={() => jumpToTime(prevCapture)}>{t('previous-capture')}</Button>
       )}
       {nextCapture && (
-        <Button onClick={() => jumpToTime(nextCapture)}>Set Time to Next Capture</Button>
+        <Button onClick={() => jumpToTime(nextCapture)}> {t('next-capture')}</Button>
       )}
     </Group>
   );

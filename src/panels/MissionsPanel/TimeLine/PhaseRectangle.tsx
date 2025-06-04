@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Text, Tooltip } from '@mantine/core';
 import { ScaleLinear, ScaleTime } from 'd3';
 
@@ -30,6 +31,7 @@ export function PhaseRectangle({
   showBorder = false
 }: Props) {
   const jumpToTime = useJumpToTime();
+  const { t } = useTranslation('panel-missions');
   const { borderWidth, borderColor, radius, gap } = PhaseRectangleConfig;
 
   const startTime = new Date(phase.timerange.start);
@@ -65,7 +67,7 @@ export function PhaseRectangle({
     <Tooltip.Floating
       label={
         <>
-          <Text fw={'bold'}>Phase</Text>
+          <Text fw={'bold'}>{t('phase')}</Text>
           {phase.name}
         </>
       }
