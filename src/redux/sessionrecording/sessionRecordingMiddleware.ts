@@ -38,59 +38,57 @@ export const setupSubscription = createAsyncThunk(
 
 export const showGUI = createAsyncThunk(
   'sessionRecording/showGUI',
-  async (value: boolean, thunkAPI) => {
+  async (shouldShowGui: boolean, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     const { initialSettings, settings } = state.sessionRecording;
+    const { properties } = state.properties;
 
-    const GuiUri = 'Modules.CefWebGui.Visible';
-    const DashboardsUri = 'Dashboard.IsEnabled';
-    const LogUri = 'RenderEngine.ShowLog';
-    const VersionUri = 'RenderEngine.ShowVersion';
+    const ShowGuiUri = 'Modules.CefWebGui.Visible';
+    const ShowDashboardsUri = 'Dashboard.IsEnabled';
+    const ShowLogUri = 'RenderEngine.ShowLog';
+    const ShowVersionUri = 'RenderEngine.ShowVersion';
 
     // Get the initial property values before making any changes
-    const gui = state.properties.properties[GuiUri]?.value as boolean | undefined;
-    const dashboards = state.properties.properties[DashboardsUri]?.value as
-      | boolean
-      | undefined;
-    const log = state.properties.properties[LogUri]?.value as boolean | undefined;
-    const version = state.properties.properties[VersionUri]?.value as boolean | undefined;
+    const showGui = properties[ShowGuiUri]?.value as boolean | undefined;
+    const showDashboards = properties[ShowDashboardsUri]?.value as boolean | undefined;
+    const showLog = properties[ShowLogUri]?.value as boolean | undefined;
+    const showVersion = properties[ShowVersionUri]?.value as boolean | undefined;
 
-    if (value === false) {
+    if (!shouldShowGui) {
       if (
-        log === undefined ||
-        dashboards === undefined ||
-        gui === undefined ||
-        version === undefined
+        showLog === undefined ||
+        showDashboards === undefined ||
+        showGui === undefined ||
+        showVersion === undefined
       ) {
         return;
       }
       // Before hiding GUI we need to store the initial values in store
       thunkAPI.dispatch(
         updateInitialRecordingSettings({
-          showGui: gui,
-          showDashboards: dashboards,
-          showLog: log,
-          showVersion: version
+          showGui: showGui,
+          showDashboards: showDashboards,
+          showLog: showLog,
+          showVersion: showVersion
         })
       );
 
+      // Hide Gui
       if (settings.hideGuiOnPlayback) {
-        thunkAPI.dispatch(setPropertyValue({ uri: GuiUri, value: false }));
+        thunkAPI.dispatch(setPropertyValue({ uri: ShowGuiUri, value: false }));
       }
 
       if (settings.hideDashboardsOnPlayback) {
-        thunkAPI.dispatch(setPropertyValue({ uri: DashboardsUri, value: false }));
-        thunkAPI.dispatch(setPropertyValue({ uri: LogUri, value: false }));
-        thunkAPI.dispatch(setPropertyValue({ uri: VersionUri, value: false }));
+        thunkAPI.dispatch(setPropertyValue({ uri: ShowDashboardsUri, value: false }));
+        thunkAPI.dispatch(setPropertyValue({ uri: ShowLogUri, value: false }));
+        thunkAPI.dispatch(setPropertyValue({ uri: ShowVersionUri, value: false }));
       }
-    }
-
-    if (value === true) {
+    } else {
       // Set GUI visibility to initial settings again
       if (settings.hideGuiOnPlayback) {
         thunkAPI.dispatch(
           setPropertyValue({
-            uri: GuiUri,
+            uri: ShowGuiUri,
             value: initialSettings.showGui
           })
         );
@@ -98,16 +96,16 @@ export const showGUI = createAsyncThunk(
       if (settings.hideDashboardsOnPlayback) {
         thunkAPI.dispatch(
           setPropertyValue({
-            uri: DashboardsUri,
+            uri: ShowDashboardsUri,
             value: initialSettings.showDashboards
           })
         );
         thunkAPI.dispatch(
-          setPropertyValue({ uri: LogUri, value: initialSettings.showLog })
+          setPropertyValue({ uri: ShowLogUri, value: initialSettings.showLog })
         );
         thunkAPI.dispatch(
           setPropertyValue({
-            uri: VersionUri,
+            uri: ShowVersionUri,
             value: initialSettings.showVersion
           })
         );
