@@ -1,5 +1,14 @@
-import { useEffect, useState } from 'react';
-import { Alert, Group, Select, Stack, Text, Title } from '@mantine/core';
+import { useEffect, useMemo, useState } from 'react';
+import {
+  Alert,
+  CheckIcon,
+  Group,
+  Select,
+  SelectProps,
+  Stack,
+  Text,
+  Title
+} from '@mantine/core';
 
 import { BoolInput } from '@/components/Input/BoolInput';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
@@ -51,6 +60,40 @@ export function PlaySession() {
       setPlaybackFile(latestFile);
     }
   }, [latestFile]);
+
+  // Store file duplicates in map for quick lookup
+  const fileCounts = useMemo(() => {
+    const map = new Map();
+    fileList.forEach((file) => {
+      const name = file.substring(0, file.lastIndexOf('.'));
+      map.set(name, (map.get(name) || 0) + 1);
+    });
+
+    return map;
+  }, [fileList]);
+
+  const renderSelectOption: SelectProps['renderOption'] = ({ option, checked }) => {
+    const file = option.value;
+    const extensionIndex = file.lastIndexOf('.');
+    const extension = file.substring(extensionIndex);
+    const filename = file.substring(0, extensionIndex);
+
+    const isFileDuplicate = fileCounts.get(filename) > 1;
+
+    return (
+      <Group gap={'xs'}>
+        {checked && <CheckIcon size={12} color={'gray'} />}
+        <Text size={'sm'}>
+          {filename}
+          {isFileDuplicate && (
+            <Text c={'dimmed'} size={'xs'} span>
+              {extension}
+            </Text>
+          )}
+        </Text>
+      </Group>
+    );
+  };
 
   function onLoopPlaybackChange(shouldLoop: boolean): void {
     if (shouldLoop) {
@@ -150,6 +193,7 @@ export function PlaySession() {
             label={'Playback file'}
             placeholder={'Select playback file'}
             data={fileList}
+            renderOption={renderSelectOption}
             onChange={setPlaybackFile}
             searchable
             disabled={!isIdle}
