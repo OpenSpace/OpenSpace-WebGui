@@ -28,8 +28,8 @@
         "band": "Band"
       }
     },
-    "equitorial": {
-      "title": "Equitorial"
+    "equatorial": {
+      "title": "Equatorial"
     },
     "constellations": {
       "title": "Constellations",
@@ -50,8 +50,8 @@
         "marks": "Marks"
       },
       "aria-labels": {
-        "small": "Show small cardinal directions",
-        "large": "Show large cardianl directions",
+        "small": "Show cardinal directions (small)",
+        "large": "Show cardianl directions (large)",
         "marks": "Show marks on cardinal directions"
       }
     }
@@ -84,8 +84,8 @@
     },
     "horizon": {
       "title": "Horizon",
-      "look-horizion": "Look at Horizon",
-      "level-horizon": "Level Horizon",
+      "look-horizon": "Look at Horizon",
+      "level-horizon": "Level the Horizon",
       "look-up": "Look Up"
     }
   },
@@ -93,7 +93,7 @@
     "trails": {
       "title": "Trails",
       "buttons": {
-        "hide-trails": "Hide ALL Trails",
+        "hide-trails": "Hide all Trails",
         "show-planet-trails": "Show Planet Trails"
       }
     },
@@ -128,7 +128,7 @@
       },
       "show-phase-input": {
         "title": "Show Phase",
-        "tooltip": "Uncheck this to show the full moon always. This is equivalent to 'Perform Shading' property on the Moon."
+        "tooltip": "Uncheck this to always show the full moon. This is equivalent to 'Perform Shading' property on the Moon."
       }
     }
   },
@@ -138,7 +138,7 @@
       "input": {
         "show-stars": "Show Stars",
         "show-during-day": {
-          "label": "Show During Day",
+          "label": "Show during Day",
           "tooltip": "Check this box to show the stars during daytime"
         }
       }
@@ -158,7 +158,7 @@
       },
       "buttons": {
         "default-settings": "Default Settings",
-        "point-like-stars": "More Point Like Stars"
+        "point-like-stars": "More Point-like Stars"
       }
     }
   },
@@ -166,7 +166,7 @@
     "glare": {
       "title": "Glare",
       "buttons": {
-        "show-glare": "Sow Glare",
+        "show-glare": "Show Glare",
         "hide-glare": "Hide Glare"
       }
     },
@@ -213,24 +213,24 @@
       "title": "Jumps",
       "buttons": {
         "sidereal-day": {
+          "title": "Sidereal Day",
           "decrease": "Go back in time one sidereal day",
-          "increase": "Go forward in time on sidereal day",
-          "title": "Sidereal Day"
+          "increase": "Go forward in time one sidereal day"
         },
         "sidereal-week": {
+          "title": "Sidereal Week",
           "decrease": "Go back in time one sidereal week",
-          "increase": "Go forward in time one sidereal week",
-          "title": "Sidereal Week"
+          "increase": "Go forward in time one sidereal week"
         },
         "solar-day": {
+          "title": "Solar Day",
           "decrease": "Go back in time one solar day",
-          "increase": "Go forward in time one solar day",
-          "title": "Solar Day"
+          "increase": "Go forward in time one solar day"
         },
         "solar-week": {
+          "title": "Solar Week",
           "decrease": "Go back in time one solar week",
-          "increase": "Go forward in time one solar week",
-          "title": "Solar Week"
+          "increase": "Go forward in time one solar week"
         }
       }
     },
@@ -243,7 +243,7 @@
         "300x": "300x (5 min/sec)",
         "play-pause": "Play / Pause"
       },
-      "tooltip": "Only some controls are found here. For more control over time, use Time Panel."
+      "tooltip": "Only some controls are found here. For more control over time, use the Time Panel."
     }
   }
 }

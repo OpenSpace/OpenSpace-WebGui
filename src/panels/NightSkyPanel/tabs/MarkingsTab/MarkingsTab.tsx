@@ -93,7 +93,7 @@ export function MarkingsTab() {
       </SimpleGrid>
 
       <Title order={2} my={'sm'}>
-        {t('equitorial.title')}
+        {t('equatorial.title')}
       </Title>
       <SimpleGrid cols={4} spacing={'sm'}>
         <NightSkyMarkingBox

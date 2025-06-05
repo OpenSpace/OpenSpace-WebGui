@@ -164,7 +164,7 @@ export function LocationTab() {
         <Button
           onClick={() => luaApi.action.triggerAction('os.nightsky.LevelHorizonPitch')}
         >
-          {t('horizon.look-horizion')}
+          {t('horizon.look-horizon')}
         </Button>
         <Button
           onClick={() => luaApi.action.triggerAction('os.nightsky.LevelHorizonYaw')}
