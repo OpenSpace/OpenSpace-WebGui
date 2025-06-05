@@ -23,7 +23,7 @@ const initialState: SessionRecordingState = {
   files: [],
   state: RecordingState.Idle,
   settings: {
-    recordingFileName: '',
+    recordingFilename: '',
     format: 'Ascii',
     overwriteFile: false,
     latestFile: '',
@@ -58,7 +58,7 @@ export const sessionRecordingSlice = createSlice({
     ) => {
       const {
         format,
-        recordingFileName: filename,
+        recordingFilename: filename,
         overwriteFile,
         latestFile,
         hideGuiOnPlayback,
@@ -68,7 +68,7 @@ export const sessionRecordingSlice = createSlice({
         state.settings.format = format;
       }
       if (filename !== undefined) {
-        state.settings.recordingFileName = filename;
+        state.settings.recordingFilename = filename;
       }
       if (overwriteFile !== undefined) {
         state.settings.overwriteFile = overwriteFile;

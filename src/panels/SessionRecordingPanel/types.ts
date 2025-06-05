@@ -8,7 +8,7 @@ export enum RecordingState {
 }
 
 export interface SessionRecordingSettings {
-  recordingFileName: string;
+  recordingFilename: string;
   format: SessionRecordingFormat;
   overwriteFile: boolean;
   latestFile: string;

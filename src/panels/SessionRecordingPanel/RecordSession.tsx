@@ -63,7 +63,7 @@ export function RecordSession() {
     }
 
     if (isFileUnique(value, format)) {
-      dispatch(updateSessionRecordingSettings({ recordingFileName: value }));
+      dispatch(updateSessionRecordingSettings({ recordingFilename: value }));
       setFilenameState({ invalid: false, errorMessage: '' });
     } else {
       const valueWithExtension = sessionRecordingFilenameWithExtension(value, format);

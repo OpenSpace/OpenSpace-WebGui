@@ -12,13 +12,13 @@ import { sessionRecordingFilenameWithExtension } from '../util';
 
 export function RecordingStopButton({ ...props }: ButtonProps) {
   const luaApi = useOpenSpaceApi();
-  const { format, overwriteFile, recordingFileName } = useAppSelector(
+  const { format, overwriteFile, recordingFilename } = useAppSelector(
     (state) => state.sessionRecording.settings
   );
   const dispatch = useAppDispatch();
 
   async function stopRecording(): Promise<void> {
-    let file = recordingFileName.trim();
+    let file = recordingFilename.trim();
 
     file = sessionRecordingFilenameWithExtension(file, format);
 
