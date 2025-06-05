@@ -6,7 +6,14 @@ import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { ConnectionStatus } from '@/types/enums';
 
-import { SessionRecordingState, updateSessionrecording } from './sessionRecordingSlice';
+import { setPropertyValue } from '../propertytree/properties/propertiesSlice';
+import { RootState } from '../store';
+
+import {
+  SessionRecordingState,
+  updateInitialRecordingSettings,
+  updateSessionrecording
+} from './sessionRecordingSlice';
 
 const subscribeToSessionRecording = createAction<void>('sessionRecording/subscribe');
 const unsubscribeToSessionRecording = createAction<void>('sessionRecording/unsubscribe');
@@ -26,6 +33,84 @@ export const setupSubscription = createAsyncThunk(
         thunkAPI.dispatch(updateSessionrecording(data));
       }
     })();
+  }
+);
+
+export const showGUI = createAsyncThunk(
+  'sessionRecording/showGUI',
+  async (shouldShowGui: boolean, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState;
+    const { initialSettings, settings } = state.sessionRecording;
+    const { properties } = state.properties;
+
+    const ShowGuiUri = 'Modules.CefWebGui.Visible';
+    const ShowDashboardsUri = 'Dashboard.IsEnabled';
+    const ShowLogUri = 'RenderEngine.ShowLog';
+    const ShowVersionUri = 'RenderEngine.ShowVersion';
+
+    // Get the initial property values before making any changes
+    const showGui = properties[ShowGuiUri]?.value as boolean | undefined;
+    const showDashboards = properties[ShowDashboardsUri]?.value as boolean | undefined;
+    const showLog = properties[ShowLogUri]?.value as boolean | undefined;
+    const showVersion = properties[ShowVersionUri]?.value as boolean | undefined;
+
+    if (!shouldShowGui) {
+      if (
+        showLog === undefined ||
+        showDashboards === undefined ||
+        showGui === undefined ||
+        showVersion === undefined
+      ) {
+        return;
+      }
+      // Before hiding GUI we need to store the initial values in store
+      thunkAPI.dispatch(
+        updateInitialRecordingSettings({
+          showGui: showGui,
+          showDashboards: showDashboards,
+          showLog: showLog,
+          showVersion: showVersion
+        })
+      );
+
+      // Hide Gui
+      if (settings.hideGuiOnPlayback) {
+        thunkAPI.dispatch(setPropertyValue({ uri: ShowGuiUri, value: false }));
+      }
+
+      if (settings.hideDashboardsOnPlayback) {
+        thunkAPI.dispatch(setPropertyValue({ uri: ShowDashboardsUri, value: false }));
+        thunkAPI.dispatch(setPropertyValue({ uri: ShowLogUri, value: false }));
+        thunkAPI.dispatch(setPropertyValue({ uri: ShowVersionUri, value: false }));
+      }
+    } else {
+      // Set GUI visibility to initial settings again
+      if (settings.hideGuiOnPlayback) {
+        thunkAPI.dispatch(
+          setPropertyValue({
+            uri: ShowGuiUri,
+            value: initialSettings.showGui
+          })
+        );
+      }
+      if (settings.hideDashboardsOnPlayback) {
+        thunkAPI.dispatch(
+          setPropertyValue({
+            uri: ShowDashboardsUri,
+            value: initialSettings.showDashboards
+          })
+        );
+        thunkAPI.dispatch(
+          setPropertyValue({ uri: ShowLogUri, value: initialSettings.showLog })
+        );
+        thunkAPI.dispatch(
+          setPropertyValue({
+            uri: ShowVersionUri,
+            value: initialSettings.showVersion
+          })
+        );
+      }
+    }
   }
 );
 

@@ -1,7 +1,7 @@
 import { ErrorBoundary } from 'react-error-boundary';
 import { ModalsProvider } from '@mantine/modals';
 
-import { FallbackRender } from '@/components/ErrorFallback/FallbackRender';
+import { fallbackRender } from '@/components/ErrorFallback/FallbackRender';
 import { ConnectionErrorOverlay } from '@/windowmanagement/ConnectionErrorOverlay';
 import { ActionsPanel } from '@/windowmanagement/data/LazyLoads';
 import { Window } from '@/windowmanagement/Window/Window';
@@ -9,7 +9,7 @@ import { Window } from '@/windowmanagement/Window/Window';
 export function ActionsPage() {
   return (
     <ErrorBoundary
-      fallbackRender={FallbackRender}
+      fallbackRender={fallbackRender}
       onReset={() => window.location.reload()}
     >
       <ModalsProvider>

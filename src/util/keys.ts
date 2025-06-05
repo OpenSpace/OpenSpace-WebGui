@@ -30,7 +30,7 @@ export const EnginePropertyVisibilityKey = 'OpenSpaceEngine.PropertyVisibility';
 // eslint-disable-next-line no-template-curly-in-string
 export const UserPanelsFolderKey = '${USER}/webpanels';
 // eslint-disable-next-line no-template-curly-in-string
-export const RecordingsFolderKey = '${RECORDINGS}/';
+export const RecordingsFolderKey = '${RECORDINGS}';
 
 export const WindowsKey = 'Windows';
 export const ScreenSpaceKey = 'ScreenSpace';
