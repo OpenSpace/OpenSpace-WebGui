@@ -8,6 +8,8 @@ import { updateSessionRecordingSettings } from '@/redux/sessionrecording/session
 import { LogLevel } from '@/types/enums';
 import { RecordingsFolderKey } from '@/util/keys';
 
+import { sessionRecordingFilenameWithExtension } from '../util';
+
 interface Props extends ButtonProps {
   filename: string;
 }
@@ -21,21 +23,12 @@ export function RecordingStopButton({ filename, ...props }: Props) {
 
   async function stopRecording(): Promise<void> {
     let file = filename.trim();
-    const extension = format === 'Ascii' ? '.osrectxt' : '.osrec';
-    const index = file.lastIndexOf('.');
-    const hasExtension = index !== -1;
 
-    if (hasExtension) {
-      const fileExtension = filename.substring(index);
-      if (fileExtension !== extension) {
-        file = filename.concat(extension);
-      }
-    } else {
-      file = filename.concat(extension);
-    }
+    file = sessionRecordingFilenameWithExtension(file, format);
 
     try {
-      const filePath = await luaApi?.absPath(`${RecordingsFolderKey}${file}`);
+      const filePath = await luaApi?.absPath(`${RecordingsFolderKey}/${file}`);
+
       if (filePath) {
         await luaApi?.sessionRecording.stopRecording(filePath, format, overwriteFile);
         dispatch(updateSessionRecordingSettings({ latestFile: file }));

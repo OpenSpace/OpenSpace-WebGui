@@ -18,4 +18,5 @@ export interface SessionRecordingSettings {
 }
 
 export type SessionRecordingFormat = 'Ascii' | 'Binary';
+export type SessionRecordingExtension = '.osrectxt' | '.osrec';
 export type PlaybackEvent = SessionRecordingPlaybackEvent['State'] | 'Uninitialized';

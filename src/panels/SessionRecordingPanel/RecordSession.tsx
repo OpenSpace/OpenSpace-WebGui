@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Group, TextInput, Title } from '@mantine/core';
+import { Group, TextInput, Title, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { BoolInput } from '@/components/Input/BoolInput';
@@ -10,6 +10,7 @@ import { updateSessionRecordingSettings } from '@/redux/sessionrecording/session
 import { RecordingStopButton } from './Record/RecordingStopButton';
 import { RecordStartButton } from './Record/RecordStartButton';
 import { RecordingState, SessionRecordingFormat } from './types';
+import { sessionRecordingFilenameWithExtension } from './util';
 
 export function RecordSession() {
   const [filenameRecording, setFilenameRecording] = useState('');
@@ -29,7 +30,7 @@ export function RecordSession() {
 
   const isIdle = recordingState === RecordingState.Idle;
   const isRecordingState = recordingState === RecordingState.Recording;
-  const fileNameIsValid = !filenameState.invalid;
+  const isValidFileName = !filenameState.invalid;
 
   function startRecording(): void {
     if (filenameRecording === '') {
@@ -41,33 +42,22 @@ export function RecordSession() {
       setFilenameState({ invalid: true, errorMessage: 'Filename already exists' });
       return;
     }
+
     luaApi?.sessionRecording.startRecording();
   }
 
   function isFileUnique(filename: string, fileFormat: SessionRecordingFormat): boolean {
-    const asciiExtension = '.osrectxt';
-    const binaryExtension = '.osrec';
-
-    let lowerFileName = filename.toLowerCase();
-
-    const hasExtension =
-      lowerFileName.endsWith(asciiExtension) || lowerFileName.endsWith(binaryExtension);
-
-    // Add the expected extension if it does not exist
-    if (!hasExtension) {
-      const expectedExtension = fileFormat === 'Ascii' ? asciiExtension : binaryExtension;
-      lowerFileName = lowerFileName.concat(expectedExtension);
-    }
+    const lowerCaseFilename = sessionRecordingFilenameWithExtension(filename, fileFormat);
 
     // Check if filename already exists
-    return fileList.every((file) => file.toLowerCase() !== lowerFileName);
+    return fileList.every((file) => file.toLowerCase() !== lowerCaseFilename);
   }
 
   function onFilenameChanged(value: string): void {
     setFilenameRecording(value);
 
     // Remove any error messages if the input field is empty
-    if (!value.trim()) {
+    if (value.trim() === '') {
       setFilenameState({ invalid: false, errorMessage: '' });
       return;
     }
@@ -76,7 +66,11 @@ export function RecordSession() {
       dispatch(updateSessionRecordingSettings({ recordingFileName: value }));
       setFilenameState({ invalid: false, errorMessage: '' });
     } else {
-      setFilenameState({ invalid: true, errorMessage: `File '${value}' already exists` });
+      const valueWithExtension = sessionRecordingFilenameWithExtension(value, format);
+      setFilenameState({
+        invalid: true,
+        errorMessage: `File '${valueWithExtension}' already exists`
+      });
     }
   }
 
@@ -88,9 +82,14 @@ export function RecordSession() {
     if (isFileUnique(filenameRecording, newFormat)) {
       setFilenameState({ invalid: false, errorMessage: '' });
     } else {
+      const fileWithExtension = sessionRecordingFilenameWithExtension(
+        filenameRecording,
+        newFormat
+      );
+
       setFilenameState({
         invalid: true,
-        errorMessage: `File '${filenameRecording}' already exists`
+        errorMessage: `File '${fileWithExtension}' already exists`
       });
     }
   }
@@ -111,14 +110,20 @@ export function RecordSession() {
         mb={'sm'}
       />
       <Group align={'start'} gap={'xs'}>
-        <TextInput
-          value={filenameRecording}
-          placeholder={'Enter recording filename'}
-          aria-label={'Enter recording filename'}
-          onChange={(event) => onFilenameChanged(event.currentTarget.value)}
-          error={filenameState.invalid && filenameState.errorMessage}
-          disabled={!isIdle}
-        />
+        <Tooltip
+          label={
+            'Automatically adds the correct file extension based on the selected file format'
+          }
+        >
+          <TextInput
+            value={filenameRecording}
+            placeholder={'Enter recording filename'}
+            aria-label={'Enter recording filename'}
+            onChange={(event) => onFilenameChanged(event.currentTarget.value)}
+            error={filenameState.invalid && filenameState.errorMessage}
+            disabled={!isIdle}
+          />
+        </Tooltip>
         {isRecordingState ? (
           <RecordingStopButton filename={filenameRecording} />
         ) : (
@@ -132,7 +137,7 @@ export function RecordSession() {
         label={'Overwrite file'}
         value={overwriteFile}
         onChange={onOverwriteFileChanged}
-        disabled={fileNameIsValid}
+        disabled={isValidFileName}
         my={'sm'}
         info={`If you enter a filename that already exists, this checkbox allows you to
           overwrite the existing file.`}

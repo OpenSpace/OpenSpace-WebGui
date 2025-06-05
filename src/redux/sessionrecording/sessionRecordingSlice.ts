@@ -26,8 +26,8 @@ const initialState: SessionRecordingState = {
     format: 'Ascii',
     overwriteFile: false,
     latestFile: '',
-    hideGuiOnPlayback: true,
-    hideDashboardsOnPlayback: true,
+    hideGuiOnPlayback: false,
+    hideDashboardsOnPlayback: false,
     latestPlaybackEvent: 'Uninitialized'
   },
   initialSettings: {

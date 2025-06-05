@@ -25,7 +25,7 @@ export function PlaybackPlayButton({
 
   async function startPlayback(): Promise<void> {
     const shouldWaitForTiles = true;
-    const filePath = await luaApi?.absPath(`${RecordingsFolderKey}${filename}`);
+    const filePath = await luaApi?.absPath(`${RecordingsFolderKey}/${filename}`);
     if (!filePath) {
       // TODO anden88 2025-02-18: notification about error using mantine notification system?
       return;
