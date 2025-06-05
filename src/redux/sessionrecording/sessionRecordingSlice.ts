@@ -3,6 +3,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import {
   PlaybackEvent,
   RecordingState,
+  SessionRecordingExtension,
   SessionRecordingSettings
 } from '@/panels/SessionRecordingPanel/types';
 
@@ -43,7 +44,11 @@ export const sessionRecordingSlice = createSlice({
   initialState,
   reducers: {
     updateSessionrecording: (state, action: PayloadAction<SessionRecordingState>) => {
-      state.files = action.payload.files;
+      const validExtensions: SessionRecordingExtension[] = ['.osrec', '.osrectxt'];
+      // Filter files that only have a valid session recording extension
+      state.files = action.payload.files.filter((file) =>
+        validExtensions.some((ext) => file.endsWith(ext))
+      );
       state.state = action.payload.state;
       return state;
     },
