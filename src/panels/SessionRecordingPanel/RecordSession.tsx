@@ -30,7 +30,7 @@ export function RecordSession() {
 
   const isIdle = recordingState === RecordingState.Idle;
   const isRecordingState = recordingState === RecordingState.Recording;
-  const isValidFileName = !filenameState.invalid;
+  const isValidFilename = !filenameState.invalid;
 
   function startRecording(): void {
     if (filenameRecording === '') {
@@ -137,7 +137,7 @@ export function RecordSession() {
         label={'Overwrite file'}
         value={overwriteFile}
         onChange={onOverwriteFileChanged}
-        disabled={isValidFileName}
+        disabled={isValidFilename}
         my={'sm'}
         info={`If you enter a filename that already exists, this checkbox allows you to
           overwrite the existing file.`}
