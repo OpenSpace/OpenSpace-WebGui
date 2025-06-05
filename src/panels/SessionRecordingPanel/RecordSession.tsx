@@ -125,7 +125,7 @@ export function RecordSession() {
           />
         </Tooltip>
         {isRecordingState ? (
-          <RecordingStopButton filename={filenameRecording} />
+          <RecordingStopButton />
         ) : (
           <RecordStartButton
             onClick={startRecording}

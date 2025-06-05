@@ -10,19 +10,15 @@ import { RecordingsFolderKey } from '@/util/keys';
 
 import { sessionRecordingFilenameWithExtension } from '../util';
 
-interface Props extends ButtonProps {
-  filename: string;
-}
-
-export function RecordingStopButton({ filename, ...props }: Props) {
+export function RecordingStopButton({ ...props }: ButtonProps) {
   const luaApi = useOpenSpaceApi();
-  const { format, overwriteFile } = useAppSelector(
+  const { format, overwriteFile, recordingFileName } = useAppSelector(
     (state) => state.sessionRecording.settings
   );
   const dispatch = useAppDispatch();
 
   async function stopRecording(): Promise<void> {
-    let file = filename.trim();
+    let file = recordingFileName.trim();
 
     file = sessionRecordingFilenameWithExtension(file, format);
 
