@@ -23,7 +23,7 @@ export function PlaySession() {
   const { latestFile, hideGuiOnPlayback, hideDashboardsOnPlayback } = useAppSelector(
     (state) => state.sessionRecording.settings
   );
-  const [filenamePlayback, setFilenamePlayback] = useState<string | null>(latestFile);
+  const [playbackFile, setPlaybackFile] = useState<string | null>(latestFile);
   const keybinds = useAppSelector((state) => state.actions.keybinds);
 
   const fileList = useAppSelector((state) => state.sessionRecording.files);
@@ -48,7 +48,7 @@ export function PlaySession() {
   // Update the playback dropdown list to the latest recorded file
   useEffect(() => {
     if (latestFile) {
-      setFilenamePlayback(latestFile);
+      setPlaybackFile(latestFile);
     }
   }, [latestFile]);
 
@@ -146,17 +146,17 @@ export function PlaySession() {
         />
         <Group gap={'xs'} align={'flex-end'}>
           <Select
-            value={filenamePlayback}
+            value={playbackFile}
             label={'Playback file'}
             placeholder={'Select playback file'}
             data={fileList}
-            onChange={setFilenamePlayback}
+            onChange={setPlaybackFile}
             searchable
             disabled={!isIdle}
           />
           <PlaybackPlayButton
-            disabled={isPlayingBack || !filenamePlayback}
-            filename={filenamePlayback}
+            disabled={isPlayingBack || !playbackFile}
+            filename={playbackFile}
             loopPlayback={loopPlayback}
             shouldOutputFrames={shouldOutputFrames}
             outputFramerate={outputFramerate}
