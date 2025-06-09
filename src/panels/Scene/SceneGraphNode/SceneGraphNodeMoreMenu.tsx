@@ -56,7 +56,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
       title: t('delete-confirm-modal.title'),
       children: (
         <Stack>
-          <Text>{t('delete-confirm-modal.are-you-sure')}</Text>
+          <Text>{t('delete-confirm-modal.are-you-sure')}:</Text>
           <Text fw={500} size={'lg'}>
             {propertyOwner?.name}
           </Text>

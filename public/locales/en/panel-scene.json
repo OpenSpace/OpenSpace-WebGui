@@ -40,7 +40,7 @@
     },
     "delete-confirm-modal": {
       "title": "Delete node",
-      "are-you-sure": "Are you sure you want to remove the scene graph node:",
+      "are-you-sure": "Are you sure you want to remove the scene graph node",
       "this-is-irreversible": "This action is irreversible and will also remove all nodes in the scene tree that depend on this node!"
     },
     "pop-out": "Pop out"
