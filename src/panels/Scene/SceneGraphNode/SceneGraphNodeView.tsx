@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Badge, Box, Group, Tabs, Text, ThemeIcon, Tooltip } from '@mantine/core';
 
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
@@ -23,14 +24,14 @@ export function SceneGraphNodeView({ uri }: Props) {
 
   // The SGN properties that are visible under the current user level setting
   const visibleProperties = useVisibleProperties(propertyOwner);
+  const { t } = useTranslation('panel-scene', {
+    keyPrefix: 'scene-graph-node.node-view'
+  });
 
   if (!propertyOwner) {
     return (
       <Box m={'xs'}>
-        <Text c={'dimmed'}>
-          This scene graph node does not exist. It might have been removed since this view
-          was opened.
-        </Text>
+        <Text c={'dimmed'}>{t('missing-sgn')}</Text>
       </Box>
     );
   }
@@ -62,26 +63,24 @@ export function SceneGraphNodeView({ uri }: Props) {
           <Tooltip
             label={
               hasRenderable
-                ? 'Properties that control the visuals of this object'
-                : 'This scene graph node has no renderable'
+                ? t('tabs.renderable.tooltip.has-renderable')
+                : t('tabs.renderable.tooltip.no-renderable')
             }
           >
             <Tabs.Tab value={TabKeys.Renderable} disabled={!hasRenderable}>
-              Renderable
+              {t('tabs.renderable.title')}
             </Tabs.Tab>
           </Tooltip>
 
-          <Tooltip label={'Properties that control the position, scale, and orientation'}>
-            <Tabs.Tab value={TabKeys.Transform}>Transform</Tabs.Tab>
+          <Tooltip label={t('tabs.transform.tooltip')}>
+            <Tabs.Tab value={TabKeys.Transform}>{t('tabs.transform.title')}</Tabs.Tab>
           </Tooltip>
 
           {timeFrame && (
-            <Tooltip
-              label={'Information about the time frame for when the object is visible'}
-            >
+            <Tooltip label={t('tabs.time-frame.tooltip.tab-tooltip')}>
               <Tabs.Tab value={TabKeys.TimeFrame}>
                 <Group gap={5}>
-                  Time
+                  {t('tabs.time-frame.title')}
                   <ThemeIcon
                     variant={'transparent'}
                     size={'compact-xs'}
@@ -98,13 +97,13 @@ export function SceneGraphNodeView({ uri }: Props) {
             </Tooltip>
           )}
 
-          <Tooltip label={'Information about the scene graph node and its asset'}>
-            <Tabs.Tab value={TabKeys.Info}>Info</Tabs.Tab>
+          <Tooltip label={t('tabs.info.tooltip')}>
+            <Tabs.Tab value={TabKeys.Info}>{t('tabs.info.title')}</Tabs.Tab>
           </Tooltip>
 
           {hasOther && (
-            <Tooltip label={'Other properties of the scene graph node'}>
-              <Tabs.Tab value={TabKeys.Other}>Other</Tabs.Tab>
+            <Tooltip label={t('tabs.other.tooltip')}>
+              <Tabs.Tab value={TabKeys.Other}>{t('tabs.other.title')}</Tabs.Tab>
             </Tooltip>
           )}
         </Tabs.List>
@@ -115,7 +114,7 @@ export function SceneGraphNodeView({ uri }: Props) {
               <PropertyOwnerContent uri={renderable} />
             </Box>
           ) : (
-            <Text m={'xs'}>This scene graph node has no renderable.</Text>
+            <Text m={'xs'}>{t('tabs.renderable.tooltip.no-renderable')}</Text>
           )}
         </Tabs.Panel>
 
@@ -125,7 +124,7 @@ export function SceneGraphNodeView({ uri }: Props) {
               <PropertyOwner key={uri} uri={uri} expandedOnDefault />
             ))
           ) : (
-            <Text m={'xs'}>This scene graph node has no transform</Text>
+            <Text m={'xs'}>{t('tabs.transform.no-transform')}</Text>
           )}
         </Tabs.Panel>
 
@@ -135,12 +134,12 @@ export function SceneGraphNodeView({ uri }: Props) {
           <Tabs.Panel value={TabKeys.TimeFrame}>
             <Box p={'xs'}>
               <Group gap={'xs'}>
-                <Text>Current status:</Text>
+                <Text>{t('tabs.time-frame.current-status')}:</Text>
                 <Tooltip
                   label={
                     isInTimeFrame
-                      ? 'This object is currently active and will be visible'
-                      : 'This object is currently inactive due to its time frame and will not be visible'
+                      ? t('tabs.time-frame.tooltip.active-status')
+                      : t('tabs.time-frame.tooltip.inactive-status')
                   }
                 >
                   <Badge
@@ -155,12 +154,14 @@ export function SceneGraphNodeView({ uri }: Props) {
                     variant={'outline'}
                     color={isInTimeFrame ? 'green' : 'red'}
                   >
-                    {isInTimeFrame ? 'Active' : 'Inactive'}
+                    {isInTimeFrame
+                      ? t('tabs.time-frame.active')
+                      : t('tabs.time-frame.inactive')}
                   </Badge>
                 </Tooltip>
               </Group>
               <Text mt={'xs'} size={'sm'} c={'dimmed'}>
-                The object will not be visible outside the specified time range.
+                {t('tabs.time-frame.info')}
               </Text>
             </Box>
             <PropertyOwner uri={timeFrame.uri} />

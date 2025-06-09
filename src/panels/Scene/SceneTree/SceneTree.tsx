@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
   Box,
@@ -52,6 +53,7 @@ export function SceneTree() {
   const tree = useTree({
     initialExpandedState: getTreeExpandedState(sceneTreeData, initialExpandedNodes)
   });
+  const { t } = useTranslation('panel-scene', { keyPrefix: 'scene-tree' });
 
   const dispatch = useAppDispatch();
 
@@ -78,7 +80,10 @@ export function SceneTree() {
   return (
     <FilterList>
       <Group justify={'space-between'} gap={'xs'} mr={'xs'}>
-        <FilterList.InputField placeHolderSearchText={'Search for a node...'} flex={1} />
+        <FilterList.InputField
+          placeHolderSearchText={t('search-sgn-placeholder')}
+          flex={1}
+        />
         <FilterList.SearchSettingsMenu
           keys={allowedSearchKeys}
           setKey={toggleSearchKey}
@@ -92,20 +97,20 @@ export function SceneTree() {
         right place */}
         <Box pos={'relative'}>
           <Group gap={0} pos={'absolute'} top={0} right={0}>
-            <Tooltip label={'Collapse all'} position={'top'}>
+            <Tooltip label={t('buttons.collapse.tooltip')} position={'top'}>
               <ActionIcon
                 variant={'subtle'}
                 onClick={tree.collapseAllNodes}
-                aria-label={'Collapse all nodes'}
+                aria-label={t('buttons.collapse.aria-label')}
               >
                 <ChevronsUpIcon />
               </ActionIcon>
             </Tooltip>
-            <Tooltip label={'Expand all'} position={'top'}>
+            <Tooltip label={t('buttons.expand.tooltip')} position={'top'}>
               <ActionIcon
                 variant={'subtle'}
                 onClick={tree.expandAllNodes}
-                aria-label={'Expand all nodes'}
+                aria-label={t('buttons.expand.aria-label')}
               >
                 <ChevronsDownIcon />
               </ActionIcon>

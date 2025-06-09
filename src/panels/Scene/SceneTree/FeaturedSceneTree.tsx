@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Tree } from '@mantine/core';
 
 import { useAimNode, useAnchorNode, useFeaturedNodes } from '@/util/propertyTreeHooks';
@@ -14,24 +15,27 @@ export function FeaturedSceneTree() {
   const featuredNodes = useFeaturedNodes();
   const anchorNode = useAnchorNode();
   const aimNode = useAimNode();
+  const { t } = useTranslation('panel-scene', {
+    keyPrefix: 'scene-tree.featured'
+  });
 
   const featuredTreeData: SceneTreeNodeData[] = [];
 
   if (anchorNode) {
     const anchorData = treeDataForSceneGraphNode(anchorNode.name, anchorNode.uri);
-    anchorData.label = 'Current Focus: ' + anchorData.label;
+    anchorData.label = `${t('current-focus')}: ${anchorData.label}`;
     featuredTreeData.push(anchorData);
   }
 
   if (aimNode) {
     const aimData = treeDataForSceneGraphNode(aimNode.name, aimNode.uri);
-    aimData.label = 'Current Aim: ' + aimData.label;
+    aimData.label = `${t('current-aim')}: ${aimData.label}`;
     featuredTreeData.push(aimData);
   }
 
   if (featuredNodes.length > 0) {
     featuredTreeData.push({
-      label: 'Quick Access',
+      label: t('quick-acess'),
       value: SceneTreeGroupPrefixKey + 'interesting',
       children: featuredNodes.map((owner) =>
         treeDataForSceneGraphNode(owner.name, owner.uri)

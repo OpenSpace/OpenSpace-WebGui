@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Anchor,
   Card,
@@ -31,6 +32,10 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
     description.replace(/\\n/g, '').replace(/<br>/g, '');
   }
 
+  const { t } = useTranslation('panel-scene', {
+    keyPrefix: 'scene-graph-node.meta-information'
+  });
+
   const identifier = identifierFromUri(uri);
 
   const documentation = useAppSelector((state) => {
@@ -45,22 +50,22 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   const mainTableData: TableData = {
     body: [
       [
-        'Identifier:',
+        `${t('identifier')}:`,
         <Group justify={'space-between'}>
           {identifier}
           <CopyToClipboardButton value={identifier || ''} />
         </Group>
       ],
       [
-        'URI:',
+        `${t('uri')}:`,
         <Group justify={'space-between'}>
           <Code>{uri}</Code>
           <CopyToClipboardButton value={uri} />
         </Group>
       ],
-      ['About:', description || 'No description found'],
+      [`${t('about')}:`, description || t('no-description')],
       [
-        'Tags:',
+        `${t('tags')}:`,
         <Group gap={'xs'}>
           {propertyOwner?.tags.map((tag) => (
             <Pill key={tag}>
@@ -72,38 +77,38 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
           ))}
         </Group>
       ],
-      ['GUI:', <span style={{ overflowWrap: 'anywhere' }}>{guiPath}</span>]
+      [`${t('gui')}:`, <span style={{ overflowWrap: 'anywhere' }}>{guiPath}</span>]
     ]
   };
 
   const assetMetaTableData: TableData = {
     body: [
-      ['Name:', documentation?.name],
+      [`${t('name')}:`, documentation?.name],
       [
-        'Path:',
+        `${t('path')}:`,
         <span style={{ overflowWrap: 'anywhere' }}>{documentation?.path}</span>,
         documentation?.path && <CopyToClipboardButton value={documentation?.path || ''} />
       ],
-      ['Author:', documentation?.author],
-      ['License:', documentation?.license],
+      [`${t('author')}:`, documentation?.author],
+      [`${t('license')}:`, documentation?.license],
       [
-        'About:',
-        <Spoiler showLabel={'Show more'} hideLabel={'Hide details'}>
+        `${t('about')}:`,
+        <Spoiler showLabel={t('labels.show-more')} hideLabel={t('labels.hide-details')}>
           {documentation?.description}
         </Spoiler>
       ],
       [
-        'Nodes in the asset:',
+        `${t('nodes-in-asset')}:`,
         <Spoiler
-          showLabel={'Show more'}
-          hideLabel={'Hide details'}
+          showLabel={t('labels.show-more')}
+          hideLabel={t('labels.hide-details')}
           style={{ overflowWrap: 'anywhere' }}
         >
           {documentation?.identifiers?.map((id) => id).join(', ')}
         </Spoiler>
       ],
       [
-        'URL:',
+        `${t('url')}:`,
         <Anchor
           href={documentation?.url}
           target={'_blank'}
@@ -118,7 +123,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   // The version field is not relevant for all assets, and should only be displayed if it
   // exists
   if (documentation?.version) {
-    mainTableData.body?.push(['Version:', documentation.version]);
+    mainTableData.body?.push([`${t('version')}:`, documentation.version]);
   }
 
   return (
@@ -130,7 +135,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
         styles={{ td: { verticalAlign: 'top' } }}
       />
       <Card>
-        <Title order={3}>Asset Info</Title>
+        <Title order={3}>{t('title')}</Title>
         <Table data={assetMetaTableData} />
       </Card>
     </>

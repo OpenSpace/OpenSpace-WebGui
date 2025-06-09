@@ -1,3 +1,4 @@
+import { Trans, useTranslation } from 'react-i18next';
 import { ActionIcon, Button, Divider, Group, Menu, Stack, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
@@ -25,6 +26,9 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
   const luaApi = useOpenSpaceApi();
 
   const { addWindow } = useWindowLayoutProvider();
+  const { t } = useTranslation('panel-scene', {
+    keyPrefix: 'scene-graph-node.more-menu'
+  });
 
   if (!propertyOwner) {
     return <></>;
@@ -48,20 +52,24 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
     // @TODO (2025-02-04, emmbr): Maybe include a list of which scene graph nodes will be
     // removed as well?
     modals.openConfirmModal({
-      title: 'Confirm action',
+      title: t('remove-sgn.modal.title'),
       children: (
-        <Stack>
-          <Text>Are you sure you want to remove the scene graph node:</Text>
-          <Text fw={500} size={'lg'}>
-            {propertyOwner?.name}
-          </Text>
-          <Text mt={'xs'}>
-            This action is irreversible and will also remove all nodes in the scene tree
-            that depend on this node!
-          </Text>
-        </Stack>
+        <Trans
+          t={t}
+          i18nKey={'remove-sgn.modal.description'}
+          components={{
+            propertyOwner: (
+              <Text fw={500} size={'lg'}>
+                {propertyOwner?.name}
+              </Text>
+            )
+          }}
+        />
       ),
-      labels: { confirm: 'Remove', cancel: 'Cancel' },
+      labels: {
+        confirm: t('remove-sgn.modal.labels.confirm'),
+        cancel: t('remove-sgn.modal.labels.cancel')
+      },
       confirmProps: { color: 'red', variant: 'filled' },
       onConfirm: () => remove()
     });
@@ -70,7 +78,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
   return (
     <Menu position={'right-start'}>
       <Menu.Target>
-        <ActionIcon size={'sm'} aria-label={'Open node menu'}>
+        <ActionIcon size={'sm'} aria-label={t('aria-label')}>
           <VerticalDotsIcon />
         </ActionIcon>
       </Menu.Target>
@@ -81,7 +89,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
           variant={'filled'}
           leftSection={<OpenWindowIcon size={IconSize.sm} />}
         >
-          Pop out
+          {t('pop-out-button-label')}
         </Button>
         <Divider m={'xs'} />
         <Stack gap={'xs'}>
@@ -113,16 +121,16 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
             variant={'outline'}
             leftSection={<DeleteIcon />}
           >
-            Delete
+            {t('remove-sgn.label')}
           </Button>
           <>
             {anchorNode?.identifier === propertyOwner.identifier ? (
               <Text size={'sm'} c={'dimmed'} w={'100px'}>
-                Cannot delete the current focus node
+                {t('remove-sgn.warning')}
               </Text>
             ) : (
               <InfoBox>
-                Remove this scene graph node (and all its child nodes) from the scene
+                {t('remove-sgn.tooltip')}
                 <CopyUriButton uri={uri} />
               </InfoBox>
             )}

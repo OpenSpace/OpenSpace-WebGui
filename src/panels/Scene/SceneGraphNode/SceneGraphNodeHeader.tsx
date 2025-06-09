@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Group, Text, Tooltip } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
@@ -24,6 +25,7 @@ export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
   const propertyOwner = usePropertyOwner(uri);
   const { timeFrame, isInTimeFrame } = useTimeFrame(uri);
   const isFocusable = useIsSgnFocusable(uri);
+  const { t } = useTranslation('panel-scene', { keyPrefix: 'scene-graph-node.header' });
 
   const renderableUri = propertyOwner?.subowners.find((uri) => isRenderable(uri));
   const hasRenderable = renderableUri !== undefined;
@@ -62,11 +64,7 @@ export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
     <Group gap={'xs'}>
       <PropertyOwnerVisibilityCheckbox uri={renderableUri} />
       {timeFrame && !isInTimeFrame && (
-        <Tooltip
-          label={`This node is hidden because the current time is outside its specified
-            time frame. It will not be visible even if enabled.`}
-          position={'top'}
-        >
+        <Tooltip label={t('time-frame-tooltip')} position={'top'}>
           <ClockOffIcon />
         </Tooltip>
       )}
