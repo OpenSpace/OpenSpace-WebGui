@@ -6,8 +6,11 @@ import exoplanetsPanel from '@/public/locales/en/panel-exoplanets.json';
 import flightControlPanel from '@/public/locales/en/panel-flightcontrol.json';
 import geolocationPanel from '@/public/locales/en/panel-geolocation.json';
 import keybindsPanel from '@/public/locales/en/panel-keybinds.json';
+import missionsPanel from '@/public/locales/en/panel-missions.json';
 import navigationPanel from '@/public/locales/en/panel-navigation.json';
 import scenePanel from '@/public/locales/en/panel-scene.json';
+import screenspaceRenderablePanel from '@/public/locales/en/panel-screenspacerenderable.json';
+import settingsPanel from '@/public/locales/en/panel-settings.json';
 
 /**
  * This object in combination with `i18next.d.ts` enables intellisense and syntax
@@ -24,7 +27,10 @@ export const resources = {
     'panel-geolocation': geolocationPanel,
     'panel-keybinds': keybindsPanel,
     'panel-navigation': navigationPanel,
-    'panel-scene': scenePanel
+    'panel-missions': missionsPanel,
+    'panel-scene': scenePanel,
+    'panel-screenspacerenderable': screenspaceRenderablePanel,
+    'panel-settings': settingsPanel
   }
 } as const;
 

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Anchor, Group, Image, Text, Title } from '@mantine/core';
 
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
@@ -16,6 +17,8 @@ interface Props {
 
 export function MissionPhase({ displayedPhase, missionOverview }: Props) {
   const { width: panelWidth } = useWindowSize();
+  const { t } = useTranslation('panel-missions');
+
   const isMissionOverview = displayedPhase.type === DisplayType.Overview;
   const timeLineWidth = 120;
   const actionButtonHeight = 80;
@@ -56,7 +59,7 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
         <Anchor component={'a'} href={displayedPhase.data.link} target={'_blank'}>
           <Group>
             <OpenWindowIcon />
-            Read more
+            {t('mission-phase.read-more')}
           </Group>
         </Anchor>
       )}
@@ -71,17 +74,17 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
         />
       )}
       <Title order={3} my={'md'}>
-        Set time
+        {t('set-time')}
       </Title>
 
       <MissionTimeButtons currentPhase={displayedPhase} />
       <MissionCaptureButtons mission={missionOverview} />
       <Title order={3} my={'md'}>
-        Actions
+        {t('mission-phase.actions.title')}
       </Title>
       {displayedPhase.data?.actions?.length === 0 &&
         displayedPhase.data.actions.length === 0 && (
-          <Text c={'dimmed'}>This mission has no actions.</Text>
+          <Text c={'dimmed'}>{t('mission-phase.actions.no-actions')}</Text>
         )}
       <DynamicGrid minChildSize={170} gridWidth={panelWidth - timeLineWidth}>
         {/* Show phase specific actions */}

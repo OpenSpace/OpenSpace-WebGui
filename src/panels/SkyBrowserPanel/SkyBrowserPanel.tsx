@@ -43,7 +43,7 @@ export function SkyBrowserPanel() {
       openWorldWideTelescope();
     }
   }, [openWorldWideTelescope, nBrowsers]);
-  console.log(luaApi, isInitialized);
+
   if (nBrowsers === 0) {
     return (
       <Stack h={'100%'} w={'100%'} align={'center'} p={'lg'}>

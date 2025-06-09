@@ -7,7 +7,7 @@ import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
-import { DeleteIcon, OpenInNewIcon, VerticalDotsIcon } from '@/icons/icons';
+import { DeleteIcon, OpenWindowIcon, VerticalDotsIcon } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { displayName, identifierFromUri } from '@/util/propertyTreeHelpers';
@@ -81,7 +81,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
         <Button
           onClick={openInNewWindow}
           variant={'filled'}
-          leftSection={<OpenInNewIcon size={IconSize.sm} />}
+          leftSection={<OpenWindowIcon size={IconSize.sm} />}
         >
           {t('pop-out')}
         </Button>

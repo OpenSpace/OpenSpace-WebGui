@@ -1,4 +1,5 @@
 import { PropertyVisibilityNumber } from '../enums';
+import { Identifier } from '../types';
 
 import { NormalizeToConcreteTypes, PropertyGroups } from './propertyGroups';
 import { PropertyTypes } from './propertyTypes';
@@ -38,6 +39,7 @@ type ViewOptions<T extends keyof PropertyTypes> = PropertyTypes[T] extends {
 type Property<T extends keyof PropertyTypes> = {
   metaData: {
     type: T;
+    identifier: Identifier;
     description: string;
     isReadOnly: boolean;
     guiName: string;

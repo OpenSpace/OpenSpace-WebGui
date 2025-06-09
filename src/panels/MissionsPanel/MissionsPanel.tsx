@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Box, Select, Stack, Text, ThemeIcon, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -11,8 +12,8 @@ export function MissionsPanel() {
   const { isInitialized, missions, selectedMissionIdentifier } = useAppSelector(
     (state) => state.missions
   );
-
   const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('panel-missions');
   const dispatch = useAppDispatch();
 
   const hasMission = isInitialized && Object.values(missions).length > 0;
@@ -28,10 +29,8 @@ export function MissionsPanel() {
   if (!hasMission) {
     return (
       <Stack h={'100%'} w={'100%'} ta={'center'} align={'center'} p={'lg'}>
-        <Title order={2}>No mission loaded</Title>
-        <Text c={'dimmed'}>
-          Open an asset that contains a mission, or load a mission profile.
-        </Text>
+        <Title order={2}>{t('no-mission.title')}</Title>
+        <Text c={'dimmed'}>{t('no-mission.description')}</Text>
         <ThemeIcon size={100} variant={'transparent'}>
           <RocketLaunchIcon size={'100px'} />
         </ThemeIcon>
@@ -46,8 +45,8 @@ export function MissionsPanel() {
     <Box>
       {Object.keys(missions).length > 1 && (
         <Select
-          label={'Selected mission'}
-          placeholder={'Select a mission'}
+          label={t('select-mission.label')}
+          placeholder={t('select-mission.placeholder')}
           data={Object.entries(missions).map(([identifier, mission]) => {
             return { value: identifier, label: mission.name };
           })}

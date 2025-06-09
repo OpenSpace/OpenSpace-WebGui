@@ -16,8 +16,6 @@
       ]
     }
   },
-  "settings-title": "Settings",
-  "friction-label": "Friction control",
   "sensitivity": {
     "label": "Input sensitivity",
     "description": "Controls how sensitive the touch and mouse inputs are"
