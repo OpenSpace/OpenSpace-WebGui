@@ -9,7 +9,6 @@ import { MenuItem, menuItemsData } from '@/windowmanagement/data/MenuItems';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { TaskbarItemConfig } from './types';
-import { has } from 'lodash';
 
 export function useMenuItems() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);
@@ -24,12 +23,11 @@ function useShowWindowOnStart(visible: boolean, menuItem: MenuItem) {
 
   const dispatch = useAppDispatch();
 
-  // Special handling of when a mission file is loaded
   useEffect(() => {
-    // Show the missions button in the taskbar if a mission is loaded
+    // Show the menu button in the taskbar
     dispatch(setMenuItemVisible({ id: menuItem.componentID, visible: visible }));
     if (visible) {
-      // Open the missions window if a mission is loaded
+      // Open the window if it is visible
       addWindow(menuItem.content, {
         id: menuItem.componentID,
         title: menuItem.title,
@@ -45,7 +43,9 @@ export function useStoredLayout() {
   const hasStartedBefore = useAppSelector((state) => state.profile.hasStartedBefore);
   const showGettingsStartedTour =
     hasStartedBefore === undefined ? false : !hasStartedBefore;
+  // Special handling of when the getting started tour should be shown
   useShowWindowOnStart(showGettingsStartedTour, menuItemsData.gettingStartedTour);
+  // Special handling of when a mission file is loaded
   useShowWindowOnStart(hasMission, menuItemsData.mission);
 
   const { openSaveFileDialog, openLoadFileDialog } =
