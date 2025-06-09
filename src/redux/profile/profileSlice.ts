@@ -5,6 +5,7 @@ import { Identifier } from '@/types/types';
 export interface ProfileState {
   initalized: boolean;
   uiPanelVisibility: Record<string, boolean>;
+  hasStartedBefore: boolean;
   markNodes: Identifier[];
   name: string | undefined;
   author: string | undefined;
@@ -18,6 +19,7 @@ export interface ProfileState {
 const initialState: ProfileState = {
   initalized: false,
   uiPanelVisibility: {},
+  hasStartedBefore: false,
   markNodes: [],
   name: undefined,
   author: undefined,
