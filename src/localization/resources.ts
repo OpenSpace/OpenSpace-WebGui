@@ -6,6 +6,7 @@ import flightControlPanel from '@/public/locales/en/panel-flightcontrol.json';
 import geolocationPanel from '@/public/locales/en/panel-geolocation.json';
 import missionsPanel from '@/public/locales/en/panel-missions.json';
 import screenspaceRenderablePanel from '@/public/locales/en/panel-screenspacerenderable.json';
+import settingsPanel from '@/public/locales/en/panel-settings.json';
 
 /**
  * This object in combination with `i18next.d.ts` enables intellisense and syntax
@@ -20,7 +21,8 @@ export const resources = {
     'panel-flightcontrol': flightControlPanel,
     'panel-geolocation': geolocationPanel,
     'panel-missions': missionsPanel,
-    'panel-screenspacerenderable': screenspaceRenderablePanel
+    'panel-screenspacerenderable': screenspaceRenderablePanel,
+    'panel-settings': settingsPanel
   }
 } as const;
 
