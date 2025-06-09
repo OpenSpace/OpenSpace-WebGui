@@ -59,7 +59,7 @@
     },
     "timeframe": {
       "title": "Time",
-      "tooltip": "Information about the time frame for when the object is visible",
+      "tooltip": "Information about the time frame for which the object is visible",
       "status": {
         "label": "Current status",
         "tooltip-active": "This object is currently active and will be visible",
