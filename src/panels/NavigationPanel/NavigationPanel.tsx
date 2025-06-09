@@ -97,7 +97,7 @@ export function NavigationPanel() {
                 label: (
                   <Center h={20}>
                     <AnchorIcon />
-                    <Text c={'dimmed'} size={'sm'}>
+                    <Text c={'dimmed'} size={'sm'} aria-hidden>
                       /
                     </Text>
                     <TelescopeIcon />
