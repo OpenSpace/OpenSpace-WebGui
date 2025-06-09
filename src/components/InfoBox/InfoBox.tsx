@@ -32,7 +32,9 @@ export function InfoBox({ children, w = 320 }: Props & PropsWithChildren) {
         </ActionIcon>
       </Popover.Target>
 
-      <Popover.Dropdown maw={w}>{children}</Popover.Dropdown>
+      <Popover.Dropdown maw={w} style={{ userSelect: 'text' }}>
+        {children}
+      </Popover.Dropdown>
     </Popover>
   );
 }
