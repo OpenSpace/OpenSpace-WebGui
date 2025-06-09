@@ -5,10 +5,11 @@ import { setMenuItemsOrder, setMenuItemVisible } from '@/redux/local/localSlice'
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { LogLevel } from '@/types/enums';
 import { useSaveLoadJsonFiles } from '@/util/fileIOhooks';
-import { menuItemsData } from '@/windowmanagement/data/MenuItems';
+import { MenuItem, menuItemsData } from '@/windowmanagement/data/MenuItems';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { TaskbarItemConfig } from './types';
+import { has } from 'lodash';
 
 export function useMenuItems() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);
@@ -18,31 +19,39 @@ export function useMenuItems() {
   return { menuItems, filteredMenuItems };
 }
 
-export function useStoredLayout() {
-  const menuItems = useAppSelector((state) => state.local.taskbarItems);
-  const hasMission = useAppSelector((state) => state.missions.isInitialized);
+function useShowWindowOnStart(visible: boolean, menuItem: MenuItem) {
   const { addWindow } = useWindowLayoutProvider();
-
-  const { openSaveFileDialog, openLoadFileDialog } =
-    useSaveLoadJsonFiles(handlePickedFile);
 
   const dispatch = useAppDispatch();
 
   // Special handling of when a mission file is loaded
   useEffect(() => {
     // Show the missions button in the taskbar if a mission is loaded
-    dispatch(
-      setMenuItemVisible({ id: menuItemsData.mission.componentID, visible: hasMission })
-    );
-    if (hasMission) {
+    dispatch(setMenuItemVisible({ id: menuItem.componentID, visible: visible }));
+    if (visible) {
       // Open the missions window if a mission is loaded
-      addWindow(menuItemsData.mission.content, {
-        id: menuItemsData.mission.componentID,
-        title: menuItemsData.mission.title,
-        position: menuItemsData.mission.preferredPosition
+      addWindow(menuItem.content, {
+        id: menuItem.componentID,
+        title: menuItem.title,
+        position: menuItem.preferredPosition
       });
     }
-  }, [addWindow, dispatch, hasMission]);
+  }, [addWindow, dispatch, visible, menuItem]);
+}
+
+export function useStoredLayout() {
+  const menuItems = useAppSelector((state) => state.local.taskbarItems);
+  const hasMission = useAppSelector((state) => state.missions.isInitialized);
+  const hasStartedBefore = useAppSelector((state) => state.profile.hasStartedBefore);
+  const showGettingsStartedTour =
+    hasStartedBefore === undefined ? false : !hasStartedBefore;
+  useShowWindowOnStart(showGettingsStartedTour, menuItemsData.gettingStartedTour);
+  useShowWindowOnStart(hasMission, menuItemsData.mission);
+
+  const { openSaveFileDialog, openLoadFileDialog } =
+    useSaveLoadJsonFiles(handlePickedFile);
+
+  const dispatch = useAppDispatch();
 
   function handlePickedFile(content: JSON) {
     if (!content || Object.keys(content).length === 0) {
