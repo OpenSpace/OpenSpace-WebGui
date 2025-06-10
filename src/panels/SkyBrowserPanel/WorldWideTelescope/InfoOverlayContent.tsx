@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Loader, Stack, Text } from '@mantine/core';
+import { Loader, Stack, Text, Title } from '@mantine/core';
 
 import { WwtStatus } from '../types';
 
@@ -31,7 +31,7 @@ export function InfoOverlayContent({ type }: Props) {
   if (type === 'CameraNotInSolarSystem') {
     return (
       <Stack align={'center'} p={'lg'} ta={'center'}>
-        <Text>{t('camera-not-in-solar-system.title')}</Text>
+        <Title order={2}>{t('camera-not-in-solar-system.title')}</Title>
         <Text>{t('camera-not-in-solar-system.description')}</Text>
       </Stack>
     );
