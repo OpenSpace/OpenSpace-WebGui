@@ -12,6 +12,8 @@ import nightskyPanel from '@/public/locales/en/panel-nightsky.json';
 import scenePanel from '@/public/locales/en/panel-scene.json';
 import screenspaceRenderablePanel from '@/public/locales/en/panel-screenspacerenderable.json';
 import settingsPanel from '@/public/locales/en/panel-settings.json';
+import skyBrowserPanel from '@/public/locales/en/panel-skybrowser.json';
+import timePanel from '@/public/locales/en/panel-time.json';
 
 /**
  * This object in combination with `i18next.d.ts` enables intellisense and syntax
@@ -32,7 +34,9 @@ export const resources = {
     'panel-nightsky': nightskyPanel,
     'panel-scene': scenePanel,
     'panel-screenspacerenderable': screenspaceRenderablePanel,
-    'panel-settings': settingsPanel
+    'panel-settings': settingsPanel,
+    'panel-skybrowser': skyBrowserPanel,
+    'panel-time': timePanel
   }
 } as const;
 

@@ -17,7 +17,7 @@ const Year = StepSizes[TimePart.Years];
  */
 export function formatDeltaTime(deltaSeconds: number): {
   increment: number;
-  unit: string;
+  unit: TimePart;
   isNegative: boolean;
 } {
   const isNegative = deltaSeconds < 0;
@@ -27,12 +27,12 @@ export function formatDeltaTime(deltaSeconds: number): {
   // E.g. if the delta time is below 2 hours, we display it in minutes.
   // Or if the delta time is below 2 minutes, we display it in seconds.
   const units = [
-    { limit: Minute * 2, unit: { label: 'second', factor: Second } },
-    { limit: Hour * 2, unit: { label: 'minute', factor: Minute } },
-    { limit: Day * 2, unit: { label: 'hour', factor: Hour } },
-    { limit: Month * 2, unit: { label: 'day', factor: Day } },
-    { limit: Year * 2, unit: { label: 'month', factor: Month } },
-    { limit: Infinity, unit: { label: 'year', factor: Year } }
+    { limit: Minute * 2, unit: { label: TimePart.Seconds, factor: Second } },
+    { limit: Hour * 2, unit: { label: TimePart.Minutes, factor: Minute } },
+    { limit: Day * 2, unit: { label: TimePart.Hours, factor: Hour } },
+    { limit: Month * 2, unit: { label: TimePart.Days, factor: Day } },
+    { limit: Year * 2, unit: { label: TimePart.Months, factor: Month } },
+    { limit: Infinity, unit: { label: TimePart.Years, factor: Year } }
   ];
 
   const result = units.find(({ limit }) => dSeconds < limit);
@@ -46,9 +46,7 @@ export function formatDeltaTime(deltaSeconds: number): {
   // Convert the seconds to the new unit
   const dSecondsInUnit = dSeconds / unit.factor;
 
-  // Pluralize label if the time in the new unit is greater than 1
-  const label = dSecondsInUnit === 1 ? unit.label : `${unit.label}s`;
-  return { increment: dSecondsInUnit, unit: label, isNegative };
+  return { increment: dSecondsInUnit, unit: unit.label, isNegative };
 }
 
 /**

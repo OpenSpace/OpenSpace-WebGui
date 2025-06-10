@@ -1,0 +1,69 @@
+{
+  "select-time-title": "Select Time",
+  "error": {
+    "valid-time-range": "April 20, 271821 BC to Sep 13, 275760 AD",
+    "outside-range": "Can't interact with dates outside the range $t(error.valid-time-range)."
+  },
+  "simulation-speed-title": "Simulation Speed",
+  "realtime": "Realtime",
+  "now": "Now",
+  "time-parts": {
+    "milliseconds_one": "Millisecond",
+    "milliseconds_other": "Milliseconds",
+    "seconds_one": "Second",
+    "seconds_other": "Seconds",
+    "minutes_one": "Minute",
+    "minutes_other": "Minutes",
+    "hours_one": "Hour",
+    "hours_other": "Hours",
+    "days_one": "Day",
+    "days_other": "Days",
+    "weeks_one": "Week",
+    "weeks_other": "Weeks",
+    "months_one": "Month",
+    "months_other": "Months",
+    "years_one": "Year",
+    "years_other": "Years"
+  },
+  "simulation-increment": {
+    "select-unit-label": "Display Unit"
+  },
+  "quick-adjust": {
+    "title": "Quick Adjust"
+  },
+  "delta-time-step-control": {
+    "aria-labels": {
+      "previous-step": "Set previous delta time step",
+      "next-step": "Set next delta time step",
+      "toggle-pause": {
+        "play": "Play time",
+        "pause": "Pause time"
+      }
+    }
+  },
+  "time-input": {
+    "error": {
+      "invalid-time": {
+        "title": "Invalid time",
+        "message": "Error trying to set time to an invalid date"
+      },
+      "invalid-date": "New date is outside range $t(error.valid-time-range)",
+      "invalid-year": "Year '{{value}}' is outside allowed year range $t(error.valid-time-range)"
+    },
+    "lock-time": {
+      "tooltip": "Lock time updates to prevent automatic changes. Use '$t(time-input.lock-time.button-labels.interpolate)' or '$t(time-input.lock-time.button-labels.set)' to manually apply the selected date and time.",
+      "aria-label": {
+        "locked": "Set date-time input mode to 'locked' mode",
+        "unlocked": "Set date-time input mode to 'unlocked' mode"
+      },
+      "button-labels": {
+        "set": "Set",
+        "interpolate": "Interpolate"
+      }
+    }
+  },
+  "menu-button": {
+    "error": "Date out of range",
+    "paused": "Paused"
+  }
+}
