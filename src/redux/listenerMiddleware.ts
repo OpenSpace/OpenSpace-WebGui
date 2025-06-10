@@ -17,6 +17,7 @@ import { addPropertyTreeListener } from './propertytree/propertyTreeMiddleware';
 import { addSessionRecordingListener } from './sessionrecording/sessionRecordingMiddleware';
 import { addSkyBrowserListener } from './skybrowser/skybrowserMiddleware';
 import { addTimeListener } from './time/timeMiddleware';
+import { addUserPanelsListener } from './userpanels/userPanelsMiddleware';
 import { addVersionListener } from './version/versionMiddleware';
 import type { AppDispatch, RootState } from './store';
 
@@ -41,6 +42,7 @@ addPropertyTreeListener(startAppListening);
 addSessionRecordingListener(startAppListening);
 addSkyBrowserListener(startAppListening);
 addTimeListener(startAppListening);
+addUserPanelsListener(startAppListening);
 addVersionListener(startAppListening);
 
 // @TODO (2024-02-17, emmbr): The scene tree currently breaks if this lsitener is added

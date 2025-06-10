@@ -1,15 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  ActionIcon,
-  Button,
-  Divider,
-  Group,
-  Select,
-  Text,
-  TextInput,
-  Title
-} from '@mantine/core';
+import { ActionIcon, Divider, Group, Select, TextInput, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { OpenWindowIcon } from '@/icons/icons';
@@ -22,6 +13,7 @@ import { UserPanelsFolderKey, WindowsKey } from '@/util/keys';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { UserPanel } from './UserPanel';
+import { WebPanelButton } from './WebpanelButton';
 
 export function UserPanelsPanel() {
   const { addWindow } = useWindowLayoutProvider();
@@ -34,7 +26,8 @@ export function UserPanelsPanel() {
   const {
     isInitialized: isDataInitialized,
     addedWebpanels: addedPanels,
-    panels: localPanels
+    panels: localPanels,
+    bookmarks
   } = useAppSelector((state) => state.userPanels);
 
   const { t } = useTranslation('panel-user');
@@ -154,22 +147,33 @@ export function UserPanelsPanel() {
           }
         />
       </Group>
-      <Title mt={'xs'} mb={'xs'} order={3}>
-        {t('recently-opened-panels.title')}
+      <Title my={'xs'} order={3}>
+        {t('bookmarks-title')}
+      </Title>
+      {bookmarks.map((bookmark) => (
+        <WebPanelButton
+          key={`${bookmark.src}${bookmark.title}`}
+          title={bookmark.title}
+          src={bookmark.src}
+          onClick={(title, src) => {
+            addWebPanelWindow(src, title);
+            dispatch(updateRecentWebpanels({ title: title, src: src }));
+          }}
+        />
+      ))}
+      <Title my={'xs'} order={3}>
+        {t('recently-opened-urls-title')}
       </Title>
       {addedPanels.map((panel) => (
-        <Button
+        <WebPanelButton
           key={`${panel.src}${panel.title}`}
-          onClick={() => {
-            addWebPanelWindow(panel.src, panel.title);
-            dispatch(updateRecentWebpanels({ title: panel.title, src: panel.src }));
+          title={panel.title}
+          src={panel.src}
+          onClick={(title, src) => {
+            addWebPanelWindow(src, title);
+            dispatch(updateRecentWebpanels({ title: title, src: src }));
           }}
-          fullWidth
-          mb={'xs'}
-        >
-          <Text m={'xs'}>{panel.title}</Text>
-          <OpenWindowIcon />
-        </Button>
+        />
       ))}
     </>
   );

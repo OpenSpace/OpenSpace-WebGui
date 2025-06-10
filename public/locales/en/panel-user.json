@@ -16,7 +16,6 @@
       "aria-label": "Open web panel"
     }
   },
-  "recently-opened-panels": {
-    "title": "Recently Opened URLs"
-  }
+  "bookmarks-title": "Bookmarks",
+  "recently-opened-urls-title": "Recently Opened URLs"
 }
