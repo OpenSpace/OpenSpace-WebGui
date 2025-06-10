@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Center, Group, SegmentedControl, Text, VisuallyHidden } from '@mantine/core';
 
 import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
@@ -38,6 +39,8 @@ export function NavigationPanel() {
   const [navigationMode, setNavigationMode] = useState(
     shouldStartInAnchorAim ? NavigationMode.AnchorAim : NavigationMode.Focus
   );
+
+  const { t } = useTranslation('panel-navigation');
 
   const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
     useSearchKeySettings<PropertyOwner>({
@@ -85,7 +88,7 @@ export function NavigationPanel() {
                 label: (
                   <Center h={20}>
                     <FocusIcon size={IconSize.sm} />
-                    <VisuallyHidden>Focus mode</VisuallyHidden>
+                    <VisuallyHidden>{t('aria-labels.focus-mode')}</VisuallyHidden>
                   </Center>
                 )
               },
@@ -94,11 +97,11 @@ export function NavigationPanel() {
                 label: (
                   <Center h={20}>
                     <AnchorIcon />
-                    <Text c={'dimmed'} size={'sm'}>
+                    <Text c={'dimmed'} size={'sm'} aria-hidden>
                       /
                     </Text>
                     <TelescopeIcon />
-                    <VisuallyHidden>Anchor & Aim mode</VisuallyHidden>
+                    <VisuallyHidden>{t('aria-labels.anchor-aim-mode')}</VisuallyHidden>
                   </Center>
                 )
               }

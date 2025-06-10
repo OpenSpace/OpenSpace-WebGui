@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Anchor,
   Card,
@@ -5,13 +6,13 @@ import {
   Flex,
   Group,
   Pill,
-  Spoiler,
   Table,
   TableData,
   Title
 } from '@mantine/core';
 
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
+import { ShowMore } from '@/components/ShowMore/ShowMore';
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
@@ -23,6 +24,9 @@ interface Props {
 }
 
 export function SceneGraphNodeMetaInfo({ uri }: Props) {
+  const { t } = useTranslation('panel-scene', {
+    keyPrefix: 'scene-graph-node.meta-info'
+  });
   const propertyOwner = usePropertyOwner(uri);
   const [guiPath] = useProperty('StringProperty', `${uri}.GuiPath`);
 
@@ -45,22 +49,22 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   const mainTableData: TableData = {
     body: [
       [
-        'Identifier:',
+        `${t('info-table.identifier')}:`,
         <Group justify={'space-between'}>
           {identifier}
           <CopyToClipboardButton value={identifier || ''} />
         </Group>
       ],
       [
-        'URI:',
+        `${t('info-table.uri')}:`,
         <Group justify={'space-between'}>
           <Code>{uri}</Code>
           <CopyToClipboardButton value={uri} />
         </Group>
       ],
-      ['About:', description || 'No description found'],
+      [`${t('info-table.about')}:`, description || t('info-table.about-not-found')],
       [
-        'Tags:',
+        `${t('info-table.tags')}:`,
         <Group gap={'xs'}>
           {propertyOwner?.tags.map((tag) => (
             <Pill key={tag}>
@@ -72,38 +76,33 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
           ))}
         </Group>
       ],
-      ['GUI:', <span style={{ overflowWrap: 'anywhere' }}>{guiPath}</span>]
+      [
+        `${t('info-table.gui')}:`,
+        <span style={{ overflowWrap: 'anywhere' }}>{guiPath}</span>
+      ]
     ]
   };
 
   const assetMetaTableData: TableData = {
     body: [
-      ['Name:', documentation?.name],
+      [`${t('asset-info-table.name')}:`, documentation?.name],
       [
-        'Path:',
+        `${t('asset-info-table.path')}:`,
         <span style={{ overflowWrap: 'anywhere' }}>{documentation?.path}</span>,
         documentation?.path && <CopyToClipboardButton value={documentation?.path || ''} />
       ],
-      ['Author:', documentation?.author],
-      ['License:', documentation?.license],
+      [`${t('asset-info-table.author')}:`, documentation?.author],
+      [`${t('asset-info-table.license')}:`, documentation?.license],
       [
-        'About:',
-        <Spoiler showLabel={'Show more'} hideLabel={'Hide details'}>
-          {documentation?.description}
-        </Spoiler>
+        `${t('asset-info-table.about')}:`,
+        <ShowMore>{documentation?.description}</ShowMore>
       ],
       [
-        'Nodes in the asset:',
-        <Spoiler
-          showLabel={'Show more'}
-          hideLabel={'Hide details'}
-          style={{ overflowWrap: 'anywhere' }}
-        >
-          {documentation?.identifiers?.map((id) => id).join(', ')}
-        </Spoiler>
+        `${t('asset-info-table.nodes-in-asset')}:`,
+        <ShowMore>{documentation?.identifiers?.map((id) => id).join(', ')}</ShowMore>
       ],
       [
-        'URL:',
+        `${t('asset-info-table.url')}:`,
         <Anchor
           href={documentation?.url}
           target={'_blank'}
@@ -118,7 +117,10 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   // The version field is not relevant for all assets, and should only be displayed if it
   // exists
   if (documentation?.version) {
-    mainTableData.body?.push(['Version:', documentation.version]);
+    mainTableData.body?.push([
+      `${t('asset-info-table.version')}:`,
+      documentation.version
+    ]);
   }
 
   return (
@@ -130,7 +132,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
         styles={{ td: { verticalAlign: 'top' } }}
       />
       <Card>
-        <Title order={3}>Asset Info</Title>
+        <Title order={3}>{t('asset-info-title')}</Title>
         <Table data={assetMetaTableData} />
       </Card>
     </>

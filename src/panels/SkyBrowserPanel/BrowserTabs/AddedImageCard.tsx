@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, Paper, Slider, Stack, Text, Tooltip } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
 
@@ -20,6 +21,9 @@ export function AddedImageCard({ image, opacity }: Props) {
   const [activeImage, setActiveImage] = useActiveImage();
   const selectedBrowserId = useAppSelector((state) => state.skybrowser.selectedBrowserId);
   const color = useBrowserColorString(selectedBrowserId);
+  const { t } = useTranslation('panel-skybrowser', {
+    keyPrefix: 'browser-tabs.added-image-card'
+  });
 
   const setOpacity = useThrottledCallback(
     (newValue) =>
@@ -59,7 +63,7 @@ export function AddedImageCard({ image, opacity }: Props) {
         />
         <Stack flex={'1 1'} gap={0}>
           <Text c={'dimmed'} size={'sm'}>
-            Opacity
+            {t('opacity')}
           </Text>
           <Slider
             value={opacity}
@@ -70,7 +74,7 @@ export function AddedImageCard({ image, opacity }: Props) {
             label={(value) => value.toFixed(1)}
           />
         </Stack>
-        <Tooltip label={'Delete image'}>
+        <Tooltip label={t('remove-image.tooltip')}>
           <ActionIcon
             color={'red'}
             variant={'outline'}
@@ -80,7 +84,7 @@ export function AddedImageCard({ image, opacity }: Props) {
                 image.url
               )
             }
-            aria-label={`Remove ${image.name} image`}
+            aria-label={t('remove-image.aria-label', { name: image.name })}
           >
             <DeleteIcon />
           </ActionIcon>

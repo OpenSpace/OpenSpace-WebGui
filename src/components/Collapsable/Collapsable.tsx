@@ -18,6 +18,7 @@ interface Props extends PropsWithChildren, MantineStyleProps {
   // Optional content to be rendered to the right of the title.
   rightSection?: React.ReactNode;
 }
+
 export function Collapsable({
   title,
   noTransition,

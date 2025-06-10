@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Group } from '@mantine/core';
 
 import { GoToEnd, GoToStart, TimerIcon } from '@/icons/icons';
@@ -12,6 +13,7 @@ interface Props {
 
 export function MissionTimeButtons({ currentPhase }: Props) {
   const jumpToTime = useJumpToTime();
+  const { t } = useTranslation('panel-missions');
   const isMissionOverview = currentPhase.type === DisplayType.Overview;
 
   function jumpToEndOfPhase() {
@@ -29,20 +31,22 @@ export function MissionTimeButtons({ currentPhase }: Props) {
   switch (currentPhase.type) {
     case DisplayType.Overview:
     case DisplayType.Phase: {
-      const phaseType = isMissionOverview ? 'Mission' : 'Phase';
+      const phaseType = isMissionOverview
+        ? t('mission-time-buttons.mission')
+        : t('phase');
       return (
         <Group wrap={'nowrap'} gap={'xs'}>
           <Button
             onClick={jumpToStartOfPhase}
             leftSection={<GoToStart size={IconSize.xs} />}
           >
-            Start of {phaseType}
+            {t('mission-time-buttons.start-phase', { phase: phaseType })}
           </Button>
           <Button
             onClick={jumpToEndOfPhase}
             rightSection={<GoToEnd size={IconSize.xs} />}
           >
-            End of {phaseType}
+            {t('mission-time-buttons.end-phase', { phase: phaseType })}
           </Button>
         </Group>
       );
@@ -52,7 +56,7 @@ export function MissionTimeButtons({ currentPhase }: Props) {
         <Button onClick={() => jumpToTime(currentPhase.data.date)} fullWidth>
           <Group>
             <TimerIcon />
-            Set Time
+            {t('set-time')}
           </Group>
         </Button>
       );

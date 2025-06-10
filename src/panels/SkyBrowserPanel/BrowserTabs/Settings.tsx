@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   AngleSlider,
   Box,
@@ -49,6 +50,7 @@ export function Settings({ id }: Props) {
   const fov = useBrowserFov(id);
   const radius = useBrowserRadius(id);
   const { ra, dec } = useBrowserCoords(id);
+  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'settings' });
 
   function setColor(newColor: string) {
     const parsedColor = newColor.match(/\d+/g)?.map(Number);
@@ -81,24 +83,22 @@ export function Settings({ id }: Props) {
 
   return (
     <Box py={'xs'}>
-      <Title order={2}>Settings</Title>
+      <Title order={2}>{t('title')}</Title>
       <Tabs defaultValue={'Settings'}>
         <Tabs.List>
-          <Tooltip label={'Settings specific for this browser.'}>
-            <Tabs.Tab value={'Settings'}>This Browser</Tabs.Tab>
+          <Tooltip label={t('this-browser.tooltip')}>
+            <Tabs.Tab value={'Settings'}>{t('this-browser.tab-title')}</Tabs.Tab>
           </Tooltip>
-          <Tooltip
-            label={`Settings for Display Copies, which are a way to render the WorldWide
-                Telescope view as a ScreenSpaceRenderable.`}
-          >
-            <Tabs.Tab value={'Display'}>Display Copies</Tabs.Tab>
+          <Tooltip label={t('display-copies.tooltip')}>
+            <Tabs.Tab value={'Display'}>{t('display-copies.tab-title')}</Tabs.Tab>
           </Tooltip>
-          <Tooltip label={`General settings for all browsers.`}>
-            <Tabs.Tab value={'General'}>General</Tabs.Tab>
+          <Tooltip label={t('general.tooltip')}>
+            <Tabs.Tab value={'General'}>{t('general.tab-title')}</Tabs.Tab>
           </Tooltip>
         </Tabs.List>
         <Box py={'sm'}>
           <Tabs.Panel value={'Settings'}>
+            <InputLabel>{t('this-browser.border-radius-input')}</InputLabel>
             <Group grow>
               <NumericSlider
                 disabled={false}
@@ -111,7 +111,6 @@ export function Settings({ id }: Props) {
               />
               <NumericInput
                 value={radius}
-                label={'Border Radius'}
                 min={0}
                 max={1}
                 step={0.1}
@@ -121,14 +120,14 @@ export function Settings({ id }: Props) {
               />
             </Group>
             <ColorInput
-              label={'Color'}
-              placeholder={'Set browser color...'}
+              label={t('this-browser.color-input.label')}
+              placeholder={t('this-browser.color-input.placeholder')}
               format={'rgb'}
               defaultValue={color}
               onChange={setColor}
               withEyeDropper={false}
             />
-            <InputLabel>Vertical field of view</InputLabel>
+            <InputLabel>{t('this-browser.fov-input')}</InputLabel>
             <Group grow>
               <NumericSlider
                 disabled={false}
@@ -150,11 +149,11 @@ export function Settings({ id }: Props) {
               />
             </Group>
 
-            <InputLabel>Right Ascension</InputLabel>
+            <InputLabel>{t('this-browser.right-ascension-input')}</InputLabel>
             <Group grow my={'xs'} align={'top'}>
               <Center>
                 <AngleSlider
-                  aria-label={'Right Ascension'}
+                  aria-label={t('this-browser.right-ascension-input')}
                   size={40}
                   thumbSize={8}
                   value={parseFloat(ra.toPrecision(3))}
@@ -170,7 +169,7 @@ export function Settings({ id }: Props) {
                 decimalScale={3}
               />
             </Group>
-            <InputLabel>Declination</InputLabel>
+            <InputLabel>{t('this-browser.declination-input')}</InputLabel>
             <Group grow>
               <NumericSlider
                 disabled={false}

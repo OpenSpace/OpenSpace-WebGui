@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
   Box,
@@ -34,13 +35,17 @@ export function SceneTree() {
     sceneTreeFilterDefaults
   );
 
+  const { t } = useTranslation('panel-scene', {
+    keyPrefix: 'scene-tree.scene-tree'
+  });
+
   const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
     useSearchKeySettings<SceneTreeNodeData>({
       label: true,
       guiPath: false
     });
 
-  const keyLabels = { label: 'Name', guiPath: 'GUI Path' };
+  const keyLabels = { label: t('search-keys.name'), guiPath: t('search-keys.guiPath') };
 
   const { sceneTreeData, flatTreeData } = useSceneTreeData(filter);
   const { closeCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
@@ -78,7 +83,10 @@ export function SceneTree() {
   return (
     <FilterList>
       <Group justify={'space-between'} gap={'xs'} mr={'xs'}>
-        <FilterList.InputField placeHolderSearchText={'Search for a node...'} flex={1} />
+        <FilterList.InputField
+          placeHolderSearchText={t('filter-list-placeholder')}
+          flex={1}
+        />
         <FilterList.SearchSettingsMenu
           keys={allowedSearchKeys}
           setKey={toggleSearchKey}
@@ -92,20 +100,20 @@ export function SceneTree() {
         right place */}
         <Box pos={'relative'}>
           <Group gap={0} pos={'absolute'} top={0} right={0}>
-            <Tooltip label={'Collapse all'} position={'top'}>
+            <Tooltip label={t('collapse-all-tooltip')} position={'top'}>
               <ActionIcon
                 variant={'subtle'}
                 onClick={tree.collapseAllNodes}
-                aria-label={'Collapse all nodes'}
+                aria-label={t('collapse-all-aria-label')}
               >
                 <ChevronsUpIcon />
               </ActionIcon>
             </Tooltip>
-            <Tooltip label={'Expand all'} position={'top'}>
+            <Tooltip label={t('expand-all-tooltip')} position={'top'}>
               <ActionIcon
                 variant={'subtle'}
                 onClick={tree.expandAllNodes}
-                aria-label={'Expand all nodes'}
+                aria-label={t('expand-all-aria-label')}
               >
                 <ChevronsDownIcon />
               </ActionIcon>
