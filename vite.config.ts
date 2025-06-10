@@ -15,6 +15,7 @@ export default defineConfig({
       '@/public': '/public',
       '@/redux': '/src/redux',
       '@/types': '/src/types',
+      '@/theme': '/src/theme',
       '@/util': '/src/util',
       '@/windowmanagement': '/src/windowmanagement'
     }

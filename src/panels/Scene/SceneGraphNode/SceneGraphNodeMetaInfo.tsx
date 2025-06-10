@@ -8,6 +8,7 @@ import {
   Spoiler,
   Table,
   TableData,
+  Text,
   Title
 } from '@mantine/core';
 
@@ -15,6 +16,7 @@ import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyTo
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
+import classes from '@/theme/global.module.css';
 import { Uri } from '@/types/types';
 import { identifierFromUri } from '@/util/propertyTreeHelpers';
 
@@ -47,49 +49,61 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
       [
         'Identifier:',
         <Group justify={'space-between'}>
-          {identifier}
+          <Text className={classes.selectable}>{identifier}</Text>
           <CopyToClipboardButton value={identifier || ''} />
         </Group>
       ],
       [
         'URI:',
         <Group justify={'space-between'}>
-          <Code>{uri}</Code>
+          <Code className={classes.selectable}>{uri}</Code>
           <CopyToClipboardButton value={uri} />
         </Group>
       ],
-      ['About:', description || 'No description found'],
+      [
+        'About:',
+        <Text className={classes.selectable}>
+          {description || 'No description found'}
+        </Text>
+      ],
       [
         'Tags:',
         <Group gap={'xs'}>
           {propertyOwner?.tags.map((tag) => (
             <Pill key={tag}>
               <Flex gap={2}>
-                {tag}
+                <Text className={classes.selectable}>{tag}</Text>
                 <CopyToClipboardButton value={tag} />
               </Flex>
             </Pill>
           ))}
         </Group>
       ],
-      ['GUI:', <span style={{ overflowWrap: 'anywhere' }}>{guiPath}</span>]
+      [
+        'GUI:',
+        <Text style={{ overflowWrap: 'anywhere' }} className={classes.selectable}>
+          {guiPath}
+        </Text>
+      ]
     ]
   };
 
   const assetMetaTableData: TableData = {
     body: [
-      ['Name:', documentation?.name],
+      ['Name:', <Text className={classes.selectable}>{documentation?.name}</Text>],
       [
         'Path:',
-        <span style={{ overflowWrap: 'anywhere' }}>{documentation?.path}</span>,
+        <Text style={{ overflowWrap: 'anywhere' }} className={classes.selectable}>
+          {documentation?.path}
+        </Text>,
         documentation?.path && <CopyToClipboardButton value={documentation?.path || ''} />
       ],
-      ['Author:', documentation?.author],
-      ['License:', documentation?.license],
+      ['Author:', <Text className={classes.selectable}>{documentation?.author}</Text>],
+      ['License:', <Text className={classes.selectable}>{documentation?.license}</Text>],
       [
         'About:',
         <Spoiler showLabel={'Show more'} hideLabel={'Hide details'}>
-          {documentation?.description}
+          <Text className={classes.selectable}>{documentation?.description}</Text>
         </Spoiler>
       ],
       [
@@ -99,7 +113,9 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
           hideLabel={'Hide details'}
           style={{ overflowWrap: 'anywhere' }}
         >
-          {documentation?.identifiers?.map((id) => id).join(', ')}
+          <Text className={classes.selectable}>
+            {documentation?.identifiers?.map((id) => id).join(', ')}
+          </Text>
         </Spoiler>
       ],
       [
@@ -108,6 +124,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
           href={documentation?.url}
           target={'_blank'}
           style={{ overflowWrap: 'anywhere' }}
+          className={classes.selectable}
         >
           {documentation?.url}
         </Anchor>
