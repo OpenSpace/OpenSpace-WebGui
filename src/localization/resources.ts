@@ -8,6 +8,7 @@ import geolocationPanel from '@/public/locales/en/panel-geolocation.json';
 import keybindsPanel from '@/public/locales/en/panel-keybinds.json';
 import missionsPanel from '@/public/locales/en/panel-missions.json';
 import navigationPanel from '@/public/locales/en/panel-navigation.json';
+import nightskyPanel from '@/public/locales/en/panel-nightsky.json';
 import scenePanel from '@/public/locales/en/panel-scene.json';
 import screenspaceRenderablePanel from '@/public/locales/en/panel-screenspacerenderable.json';
 import settingsPanel from '@/public/locales/en/panel-settings.json';
@@ -30,6 +31,7 @@ export const resources = {
     'panel-keybinds': keybindsPanel,
     'panel-missions': missionsPanel,
     'panel-navigation': navigationPanel,
+    'panel-nightsky': nightskyPanel,
     'panel-scene': scenePanel,
     'panel-screenspacerenderable': screenspaceRenderablePanel,
     'panel-settings': settingsPanel,

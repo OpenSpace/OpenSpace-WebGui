@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, Button, Divider, Group, Paper, Text, Title } from '@mantine/core';
 import * as GeoTZ from 'browser-geo-tz';
 
@@ -25,6 +26,7 @@ export function TimeTab() {
 
   const luaApi = useOpenSpaceApi();
   const timeCapped = useSubscribeToTime();
+  const { t } = useTranslation('panel-nightsky', { keyPrefix: 'time' });
 
   const date = new Date(timeCapped ?? '');
   const isValidDate = isDateValid(date);
@@ -67,7 +69,7 @@ export function TimeTab() {
     <>
       <Group justify={'space-between'} align={'top'} gap={'xs'} mb={'md'}>
         <Title order={2} size={'xl'}>
-          Simulation Time
+          {t('simulation-time.title')}
         </Title>
         <Button
           onClick={async () => {
@@ -80,24 +82,29 @@ export function TimeTab() {
             }
           }}
         >
-          Set to now
+          {t('simulation-time.buttons.set-now')}
         </Button>
       </Group>
       <Text size={'lg'} fw={'bold'}>
-        Local: {localTimeString()}
+        {t('simulation-time.local')}: {localTimeString()}
       </Text>
-      <Text mb={'lg'}>Timezone: {localArea}</Text>
-      <Text my={'md'}>UTC: {isValidDate ? date.toUTCString() : 'Date out of range'}</Text>
+      <Text mb={'lg'}>
+        {t('simulation-time.timezone')}: {localArea}
+      </Text>
+      <Text my={'md'}>
+        {t('simulation-time.utc')}:{' '}
+        {isValidDate ? date.toUTCString() : t('simulation-time.error')}
+      </Text>
       <Divider />
       <Title order={3} mt={'sm'} mb={'xs'}>
-        Jumps
+        {t('jumps.title')}
       </Title>
       <Group gap={'lg'}>
         <Group gap={'xs'}>
           <PlusMinusActionGroup
-            minusLabel={'Go back in time one sidereal day'}
-            plusLabel={'Go forward in time one sidereal day'}
-            centerLabel={'Sidereal Day'}
+            minusLabel={t('jumps.buttons.sidereal-day.decrease-tooltip')}
+            plusLabel={t('jumps.buttons.sidereal-day.increase-tooltip')}
+            centerLabel={t('jumps.buttons.sidereal-day.title')}
             onClickMinus={() =>
               luaApi.action.triggerAction('os.time.siderealDayDecrease')
             }
@@ -105,9 +112,9 @@ export function TimeTab() {
           />
 
           <PlusMinusActionGroup
-            minusLabel={'Go back in time one sidereal week'}
-            plusLabel={'Go forward in time one sidereal week'}
-            centerLabel={'Sidereal Week'}
+            minusLabel={t('jumps.buttons.sidereal-week.decrease-tooltip')}
+            plusLabel={t('jumps.buttons.solar-week.increase-tooltip')}
+            centerLabel={t('jumps.buttons.sidereal-week.title')}
             onClickMinus={() =>
               luaApi.action.triggerAction('os.time.siderealWeekDecrease')
             }
@@ -118,17 +125,17 @@ export function TimeTab() {
         </Group>
         <Group gap={'xs'}>
           <PlusMinusActionGroup
-            minusLabel={'Go back in time one solar day'}
-            plusLabel={'Go forward in time one solar day'}
-            centerLabel={'Solar Day'}
+            minusLabel={t('jumps.buttons.solar-day.decrease-tooltip')}
+            plusLabel={t('jumps.buttons.solar-day.increase-tooltip')}
+            centerLabel={t('jumps.buttons.solar-day.title')}
             onClickMinus={() => luaApi.action.triggerAction('os.time.SolarDayDecrease')}
             onClickPlus={() => luaApi.action.triggerAction('os.time.SolarDayIncrease')}
           />
 
           <PlusMinusActionGroup
-            minusLabel={'Go back in time one solar week'}
-            plusLabel={'Go forward in time one solar week'}
-            centerLabel={'Solar Week'}
+            minusLabel={t('jumps.buttons.solar-week.decrease-tooltip')}
+            plusLabel={t('jumps.buttons.solar-week.increase-tooltip')}
+            centerLabel={t('jumps.buttons.solar-week.title')}
             onClickMinus={() => luaApi.action.triggerAction('os.time.SolarWeekDecrease')}
             onClickPlus={() => luaApi.action.triggerAction('os.time.SolarWeekIncrease')}
           />
@@ -136,7 +143,7 @@ export function TimeTab() {
       </Group>
       <Divider mt={'sm'} />
       <Title order={3} mt={'sm'} mb={'xs'}>
-        Diurnal Motion
+        {t('diurnal-motion.title')}
       </Title>
       <Group gap={'xs'}>
         <Button
@@ -145,7 +152,7 @@ export function TimeTab() {
             luaApi.time.interpolateDeltaTime(1);
           }}
         >
-          Realtime
+          {t('diurnal-motion.buttons.realtime')}
         </Button>
         <Button
           onClick={() => {
@@ -153,7 +160,7 @@ export function TimeTab() {
             luaApi.time.interpolateDeltaTime(60);
           }}
         >
-          60x (1 min/sec)
+          {t('diurnal-motion.buttons.60x')}
         </Button>
         <Button
           onClick={() => {
@@ -161,7 +168,7 @@ export function TimeTab() {
             luaApi.time.interpolateDeltaTime(120);
           }}
         >
-          120x (2 min/sec)
+          {t('diurnal-motion.buttons.120x')}
         </Button>
         <Button
           onClick={() => {
@@ -169,17 +176,16 @@ export function TimeTab() {
             luaApi.time.interpolateDeltaTime(300);
           }}
         >
-          300x (5 min/sec)
+          {t('diurnal-motion.buttons.300x')}
         </Button>
 
-        <Button onClick={() => luaApi.time.togglePause()}>Play / Pause</Button>
+        <Button onClick={() => luaApi.time.togglePause()}>
+          {t('diurnal-motion.buttons.play-pause')}
+        </Button>
       </Group>
       <Paper>
         <Alert mt={'md'} variant={'subtle'} p={'sm'} icon={<CalendarIcon />}>
-          <Text size={'sm'}>
-            Only some controls are found here. For more control over time, use the Time
-            Panel.
-          </Text>
+          <Text size={'sm'}>{t('diurnal-motion.tooltip')}</Text>
         </Alert>
       </Paper>
     </>
