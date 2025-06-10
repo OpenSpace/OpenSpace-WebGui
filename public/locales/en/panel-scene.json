@@ -1,0 +1,127 @@
+{
+  "hooks": {
+    "selected-node-window-title": "Scene: Selected Node"
+  },
+  "globe-layer": {
+    "error": {
+      "no-property-owner-for-uri": "No property found for URI"
+    },
+    "no-information": "No information"
+  },
+  "scene-graph-node": {
+    "header": {
+      "out-of-timeframe-tooltip": "This node is hidden because the current time is outside its specified time frame. It will not be visible even if enabled."
+    },
+    "meta-info": {
+      "info-table": {
+        "identifier": "Identifier",
+        "uri": "URI",
+        "tags": "Tags",
+        "about": "About",
+        "about-not-found": "No description found",
+        "gui": "GUI"
+      },
+      "asset-info-title": "Asset Info",
+      "asset-info-table": {
+        "name": "Name",
+        "path": "Path",
+        "author": "Author",
+        "license": "License",
+        "about": "About",
+        "nodes-in-asset": "Nodes in the asset",
+        "url": "URL",
+        "version": "Version"
+      }
+    },
+    "more-menu": {
+      "aria-label": "Open node menu",
+      "delete-button": {
+        "label": "Delete",
+        "cannot-delete-current-focus": "Cannot delete the current focus node",
+        "info": "Remove this scene graph node (and all its child nodes) from the scene"
+      },
+      "delete-confirm-modal": {
+        "title": "Delete node",
+        "are-you-sure": "Are you sure you want to remove the scene graph node",
+        "this-is-irreversible": "This action is irreversible and will also remove all nodes in the scene tree that depend on this node!",
+        "remove-button": "Remove",
+        "cancel-button": "Cancel"
+      },
+      "pop-out": "Pop out"
+    },
+    "node-view": {
+      "not-found-info": "This scene graph node does not exist. It might have been removed since this view was opened.",
+      "renderable": {
+        "title": "Renderable",
+        "tooltip": {
+          "has-renderable": "Properties that control the visuals of this object.",
+          "no-renderable": "This scene graph node has no renderable."
+        }
+      },
+      "transform": {
+        "title": "Transform",
+        "tooltip": "Properties that control the position, scale, and orientation of this object.",
+        "no-transform": "This scene graph node has no transform"
+      },
+      "timeframe": {
+        "title": "Time",
+        "tooltip": "Information about the time frame for which the object is visible.",
+        "status": {
+          "label": "Current status",
+          "tooltip": {
+            "active": "This object is currently active.",
+            "inactive": "This object is currently inactive due to its time frame and will not be visible."
+          },
+          "active": "Active",
+          "inactive": "Inactive"
+        },
+        "info": "The object will not be visible outside the specified time range."
+      },
+      "info": {
+        "title": "Info",
+        "tooltip": "Information about the scene graph node and its asset"
+      },
+      "other": {
+        "title": "Other",
+        "tooltip": "Other properties of this scene graph node"
+      }
+    }
+  },
+  "scene-tree": {
+    "featured-scene-tree": {
+      "current-focus-label": "Current Focus",
+      "current-aim-label": "Current Aim",
+      "quick-access-label": "Quick Access"
+    },
+    "scene-tree": {
+      "filter-list-placeholder": "Search for a node...",
+      "search-keys": {
+        "name": "Name",
+        "guiPath": "GUI Path"
+      },
+      "collapse-all-tooltip": "Collapse all",
+      "collapse-all-aria-label": "Collapse all nodes",
+      "expand-all-tooltip": "Expand all",
+      "expand-all-aria-label": "Expand all nodes"
+    },
+    "scene-tree-filters": {
+      "reset-filters": "Reset filters",
+      "settings-tooltip": "Additional settings to filter search results.",
+      "settings-aria-label": "Open search filter settings",
+      "menu-label-filters": "Filters",
+      "show-only-visible": {
+        "label": "Show only visible",
+        "info": "Show only nodes that are currently visible, meaning enabled and not faded out."
+      },
+      "show-only-focusable": {
+        "label": "Show only focusable",
+        "info": "Hide scene graph nodes that are not markes as focusable, meaning that they should not be directly set as the focus node in the scene."
+      },
+      "show-gui-hidden": {
+        "label": "Show objects with GUI hidden flag",
+        "info": "Show scene graph nodes that are marked as hidden in the GUI part of the asset. These are otherwise hidden in the interface."
+      },
+      "menu-label-tags": "Tags"
+    }
+  }
+}

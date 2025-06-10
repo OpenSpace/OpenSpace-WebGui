@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
@@ -24,6 +25,7 @@ export function SettingsPanel() {
     'OptionProperty',
     EnginePropertyVisibilityKey
   );
+  const { t } = useTranslation('panel-settings');
 
   // Get all the top property owners, that are not part of the scene
   const topLevelPropertyOwners = useMemo(
@@ -78,7 +80,7 @@ export function SettingsPanel() {
 
   return (
     <FilterList>
-      <FilterList.InputField placeHolderSearchText={'Search for a setting...'} />
+      <FilterList.InputField placeHolderSearchText={t('search-settings-placeholder')} />
       <FilterList.Favorites>
         {topLevelPropertyOwners.map((uri) => (
           <PropertyOwner uri={uri} key={uri} />

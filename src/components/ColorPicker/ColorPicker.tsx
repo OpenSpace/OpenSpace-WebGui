@@ -9,13 +9,12 @@ import {
   Popover,
   RGBA,
   Select,
-  Stack,
-  toRgba
+  Stack
 } from '@mantine/core';
 import { ColorFormat } from 'node_modules/@mantine/core/lib/components/ColorPicker/ColorPicker.types';
 
 import { IconSize } from '@/types/enums';
-import { rgbaToColor, rgbaToFormat, toFormat } from '@/util/colorHelper';
+import { rgbaToColor, rgbaToFormat, rgbStringToRgba, toFormat } from '@/util/colorHelper';
 
 import styles from './ColorPicker.module.css';
 
@@ -83,7 +82,12 @@ export function ColorPicker({ color, disabled, onChange, withAlpha }: Props) {
     setValue(c);
     setTextEditToCurrentFormat(c);
     if (onChange) {
-      onChange(toRgba(c));
+      // Convert the color string to RGBA format
+      // @TODO (ylvse, 2025-05-27): We could use the `toRgba` function from Mantine here,
+      // but it has a bug right now where the alpha value is set to 1 if the alpha value is set to 0.
+      // This is a workaround for that bug. Once the bug is fixed, we can use that function instead.
+      // Track here https://github.com/mantinedev/mantine/pull/7906
+      onChange(rgbStringToRgba(c));
     }
   }
 

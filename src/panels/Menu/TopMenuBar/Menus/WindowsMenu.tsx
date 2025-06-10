@@ -12,7 +12,7 @@ export function WindowsMenu() {
   const { menuItems } = useMenuItems();
 
   return (
-    <TopBarMenuWrapper closeOnItemClick targetTitle={'Windows'}>
+    <TopBarMenuWrapper closeOnItemClick targetTitle={'Windows'} shouldLimitHeight>
       <Menu.Label>Add New Window</Menu.Label>
       {menuItems.map((itemConfig) => {
         const item = menuItemsData[itemConfig.id];
