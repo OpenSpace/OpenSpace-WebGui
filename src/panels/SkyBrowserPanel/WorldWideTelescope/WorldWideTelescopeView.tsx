@@ -74,9 +74,8 @@ export function WorldWideTelescopeView() {
         aria-label={t('drag-area-aria-label')}
         style={{
           cursor: isDragging ? 'grabbing' : 'grab',
-          padding: '0px',
-          margin: '0px',
-          position: 'absolute'
+          height: '100%',
+          width: '100%'
         }}
         className={styles.dragArea}
         {...bindGestures()}
@@ -89,8 +88,8 @@ export function WorldWideTelescopeView() {
           src={'http://wwt.openspaceproject.com/1/gui/'}
           allow={'accelerometer; clipboard-write; gyroscope'}
           allowFullScreen
-          height={height}
-          width={width}
+          height={'100%'}
+          width={'100%'}
           style={{
             border: '0px solid transparent',
             pointerEvents: 'none',

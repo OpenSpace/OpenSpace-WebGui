@@ -1,0 +1,15 @@
+{
+  "display-name-input": {
+    "title": "Display name",
+    "placeholder": "Slide name"
+  },
+  "slide-path-input": {
+    "title": "Path or URL to slide",
+    "placeholder": "Path / URL",
+    "button-label": "Add slide"
+  },
+  "added-slides": {
+    "empty-slides": "No active slides",
+    "remove-slide-aria-label": "Remove slide"
+  }
+}

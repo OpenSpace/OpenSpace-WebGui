@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Tooltip } from '@mantine/core';
 import { ScaleTime } from 'd3';
 
@@ -13,10 +14,11 @@ interface Props {
 }
 export function ActivityCircle({ capture, yScale, marginLeft, scale }: Props) {
   const jumpToTime = useJumpToTime();
+  const { t } = useTranslation('panel-missions', { keyPrefix: 'timeline' });
   const { radius, color, xOffset } = ActivityCircleConfig;
 
   return (
-    <Tooltip label={'Instrument Activity'}>
+    <Tooltip label={t('instrument-tooltip')}>
       <ellipse
         cx={marginLeft - xOffset}
         cy={yScale(new Date(capture))}

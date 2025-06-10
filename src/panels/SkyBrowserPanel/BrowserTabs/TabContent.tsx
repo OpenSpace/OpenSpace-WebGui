@@ -6,7 +6,7 @@ import {
   DeleteIcon,
   EyeIcon,
   MoveTargetIcon,
-  OpenInNewIcon,
+  OpenWindowIcon,
   SettingsIcon,
   ZoomInIcon,
   ZoomOutIcon
@@ -120,7 +120,7 @@ export function TabContent({
               onClick={openWorldWideTelescope}
               aria-label={t('open-telescope-view')}
             >
-              <OpenInNewIcon />
+              <OpenWindowIcon />
             </ActionIcon>
           </Tooltip>
         </ActionIcon.Group>

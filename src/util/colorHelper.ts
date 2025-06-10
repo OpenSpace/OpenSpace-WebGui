@@ -42,3 +42,11 @@ export function toFormat(color: string, format: ColorFormat): string {
   const hsva = parseColor(color);
   return convertHsvaTo(format, hsva);
 }
+
+export function rgbStringToRgba(color: string): RGBA {
+  const [r, g, b, a] = color
+    .replace(/[^0-9,./]/g, '')
+    .split(/[/,]/)
+    .map(Number);
+  return { r, g, b, a: a === undefined ? 1 : a };
+}
