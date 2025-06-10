@@ -102,8 +102,8 @@ export function TimeTab() {
       <Group gap={'lg'}>
         <Group gap={'xs'}>
           <PlusMinusActionGroup
-            minusLabel={t('jumps.buttons.sidereal-day.decrease')}
-            plusLabel={t('jumps.buttons.sidereal-day.increase')}
+            minusLabel={t('jumps.buttons.sidereal-day.decrease-tooltip')}
+            plusLabel={t('jumps.buttons.sidereal-day.increase-tooltip')}
             centerLabel={t('jumps.buttons.sidereal-day.title')}
             onClickMinus={() =>
               luaApi.action.triggerAction('os.time.siderealDayDecrease')
@@ -112,8 +112,8 @@ export function TimeTab() {
           />
 
           <PlusMinusActionGroup
-            minusLabel={t('jumps.buttons.sidereal-week.decrease')}
-            plusLabel={t('jumps.buttons.solar-week.increase')}
+            minusLabel={t('jumps.buttons.sidereal-week.decrease-tooltip')}
+            plusLabel={t('jumps.buttons.solar-week.increase-tooltip')}
             centerLabel={t('jumps.buttons.sidereal-week.title')}
             onClickMinus={() =>
               luaApi.action.triggerAction('os.time.siderealWeekDecrease')
@@ -125,16 +125,16 @@ export function TimeTab() {
         </Group>
         <Group gap={'xs'}>
           <PlusMinusActionGroup
-            minusLabel={t('jumps.buttons.solar-day.decrease')}
-            plusLabel={t('jumps.buttons.solar-day.increase')}
+            minusLabel={t('jumps.buttons.solar-day.decrease-tooltip')}
+            plusLabel={t('jumps.buttons.solar-day.increase-tooltip')}
             centerLabel={t('jumps.buttons.solar-day.title')}
             onClickMinus={() => luaApi.action.triggerAction('os.time.SolarDayDecrease')}
             onClickPlus={() => luaApi.action.triggerAction('os.time.SolarDayIncrease')}
           />
 
           <PlusMinusActionGroup
-            minusLabel={t('jumps.buttons.solar-week.decrease')}
-            plusLabel={t('jumps.buttons.solar-week.increase')}
+            minusLabel={t('jumps.buttons.solar-week.decrease-tooltip')}
+            plusLabel={t('jumps.buttons.solar-week.increase-tooltip')}
             centerLabel={t('jumps.buttons.solar-week.title')}
             onClickMinus={() => luaApi.action.triggerAction('os.time.SolarWeekDecrease')}
             onClickPlus={() => luaApi.action.triggerAction('os.time.SolarWeekIncrease')}

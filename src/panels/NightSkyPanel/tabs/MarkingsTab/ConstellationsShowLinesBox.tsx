@@ -30,7 +30,7 @@ export function ConstellationShowLinesBox({ title, icon }: Props) {
     'Scene.Constellations.Renderable.DrawElements'
   );
   const { t } = useTranslation('panel-nightsky', {
-    keyPrefix: 'markings.constellations.aria-labels'
+    keyPrefix: 'markings.constellations'
   });
 
   function checkboxChange(checked: boolean) {
@@ -47,7 +47,7 @@ export function ConstellationShowLinesBox({ title, icon }: Props) {
         <Checkbox
           onChange={(event) => checkboxChange(event.currentTarget.checked)}
           checked={isVisible && elementsEnabled}
-          aria-label={t('lines')}
+          aria-label={t('aria-labels.lines')}
         />
       }
       title={title}

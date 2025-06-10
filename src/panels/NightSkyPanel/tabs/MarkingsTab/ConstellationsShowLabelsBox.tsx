@@ -23,7 +23,7 @@ export function ConstellationsShowLabelsBox({ title, icon }: Props) {
   const propertyOwner = usePropertyOwner(uri);
   const { isVisible } = usePropertyOwnerVisibility(uri);
   const { t } = useTranslation('panel-nightsky', {
-    keyPrefix: 'markings.constellations.aria-labels'
+    keyPrefix: 'markings.constellations'
   });
 
   function checkboxChange(checked: boolean) {
@@ -40,7 +40,7 @@ export function ConstellationsShowLabelsBox({ title, icon }: Props) {
         <Checkbox
           onChange={(event) => checkboxChange(event.currentTarget.checked)}
           checked={isVisible}
-          aria-label={t('labels')}
+          aria-label={t('aria-labels.labels')}
         />
       }
       title={title}

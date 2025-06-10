@@ -15,7 +15,7 @@
       "line_one": "Line",
       "line_other": "Lines"
     },
-    "alt-az": {
+    "altitude-azimuth": {
       "title": "Alt/Az",
       "buttons": {
         "meridian": "Meridian",
@@ -119,8 +119,8 @@
         "4x-scale": "Enlarge Moon (4x)"
       },
       "aria-labels": {
-        "increase-scale": "Increase moon scale",
-        "decrease-scale": "Decrease moon scale"
+        "increase-scale": "Increase Moon scale",
+        "decrease-scale": "Decrease Moon scale"
       },
       "error": {
         "moon-scale-settings": "Could not find Moon scale settings",
@@ -214,23 +214,23 @@
       "buttons": {
         "sidereal-day": {
           "title": "Sidereal Day",
-          "decrease": "Go back in time one sidereal day",
-          "increase": "Go forward in time one sidereal day"
+          "decrease-tooltip": "Go back in time one sidereal day",
+          "increase-tooltip": "Go forward in time one sidereal day"
         },
         "sidereal-week": {
           "title": "Sidereal Week",
-          "decrease": "Go back in time one sidereal week",
-          "increase": "Go forward in time one sidereal week"
+          "decrease-tooltip": "Go back in time one sidereal week",
+          "increase-tooltip": "Go forward in time one sidereal week"
         },
         "solar-day": {
           "title": "Solar Day",
-          "decrease": "Go back in time one solar day",
-          "increase": "Go forward in time one solar day"
+          "decrease-tooltip": "Go back in time one solar day",
+          "increase-tooltip": "Go forward in time one solar day"
         },
         "solar-week": {
           "title": "Solar Week",
-          "decrease": "Go back in time one solar week",
-          "increase": "Go forward in time one solar week"
+          "decrease-tooltip": "Go back in time one solar week",
+          "increase-tooltip": "Go forward in time one solar week"
         }
       }
     },
@@ -238,9 +238,9 @@
       "title": "Diurnal Motion",
       "buttons": {
         "realtime": "Realtime",
-        "60x": "60x (1 min/sec)",
-        "120x": "120x (2 min/sec)",
-        "300x": "300x (5 min/sec)",
+        "60x": "60x (1 min/s)",
+        "120x": "120x (2 min/s)",
+        "300x": "300x (5 min/s)",
         "play-pause": "Play / Pause"
       },
       "tooltip": "Only some controls are found here. For more control over time, use the Time Panel."

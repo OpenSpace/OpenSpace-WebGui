@@ -30,7 +30,7 @@ export function CardinalDirectionsBox({ variant, title, icon }: Props) {
     'Scene.CardinalDirectionSphere.Renderable.Texture'
   );
   const { t } = useTranslation('panel-nightsky', {
-    keyPrefix: 'markings.cardinal-directions.aria-labels'
+    keyPrefix: 'markings.cardinal-directions'
   });
 
   const hasLoaded = isVisible !== undefined && texture !== undefined;
@@ -42,19 +42,19 @@ export function CardinalDirectionsBox({ variant, title, icon }: Props) {
       showAction: 'os.nightsky.ShowNeswLettersSmall',
       hideAction: 'os.nightsky.HideNesw',
       textureCheck: 'red_small.png',
-      label: t('small')
+      label: t('aria-labels.small')
     },
     large: {
       showAction: 'os.nightsky.ShowNeswLetters',
       hideAction: 'os.nightsky.HideNesw',
       textureCheck: 'red.png',
-      label: t('large')
+      label: t('aria-labels.large')
     },
     marks: {
       showAction: 'os.nightsky.AddNeswBandMarks',
       hideAction: 'os.nightsky.RemoveNeswBandMarks',
       textureCheck: '_lines_',
-      label: t('marks')
+      label: t('aria-labels.marks')
     }
   };
 

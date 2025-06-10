@@ -41,7 +41,7 @@ export function MarkingsTab() {
         <LoadingBlocks n={1} />
       )}
       <Title order={2} my={'sm'}>
-        {t('alt-az.title')}
+        {t('altitude-azimuth.title')}
       </Title>
       <SimpleGrid cols={4} spacing={'sm'}>
         <NightSkyMarkingBox
@@ -50,7 +50,7 @@ export function MarkingsTab() {
           identifier={'AltAzGrid'}
         />
         <NightSkyMarkingBox
-          title={t('alt-az.buttons.meridian')}
+          title={t('altitude-azimuth.buttons.meridian')}
           icon={<LineIcon size={IconSize.md} />}
           identifier={'MeridianPlane'}
         />
@@ -60,7 +60,7 @@ export function MarkingsTab() {
           identifier={'AltAzGridLabels'}
         />
         <NightSkyMarkingBox
-          title={t('alt-az.buttons.zenith')}
+          title={t('altitude-azimuth.buttons.zenith')}
           icon={<SingleDotIcon size={IconSize.md} />}
           identifier={'ZenithDot'}
         />
