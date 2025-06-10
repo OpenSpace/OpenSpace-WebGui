@@ -1,0 +1,54 @@
+{
+  "aria-labels": {
+    "focus-mode": "Focus mode",
+    "anchor-aim-mode": "Anchor & Aim mode"
+  },
+  "anchor-aim": {
+    "anchor-aim-view": {
+      "error": {
+        "no-anchor-aim-property": "Anchor or aim property property does not exist"
+      },
+      "title": "Anchor / Aim",
+      "info": {
+        "about-icons": "Set an anchor (<anchorIcon/>) that the camera attaches to and an aim (<aimIcon/>) for the camera to look at. The aim will be kept in the same position as time progresses.",
+        "shift-keybind": "When selecting the aim/anchor, the chosen node will be targeted to be centered in the view. Hold <keybind>Shift</keybind> while clicking to set anchor/aim without targeting."
+      },
+      "retarget-anchor-tooltip": "Retarget anchor",
+      "retarget-aim-tooltip": "Retarget aim",
+      "retarget-aim-tooltip-no-aim": "No aim is set",
+      "no-aim": "No aim",
+      "filter-list-placeholder": "Search for a new anchor/aim..."
+    },
+    "anchor-aim-list-entry": {
+      "anchor-tooltip": "Set and target anchor",
+      "anchor-aria-label": "Set anchor to",
+      "aim-tooltip": "Set and target aim",
+      "aim-aria-label": "Set aim to"
+    },
+    "focus-view": {
+      "title": "Focus",
+      "info":  {
+        "click-focus-button": "Click the <focusIcon /> button to focus/retarget object.",
+        "shift-keybind": "Hold <keybind>Shift</keybind> when clicking to set as focus/anchor without retargeting.",
+        "ctrl-keybind": "Hold <keybind>Ctrl</keybind> when clicking to keep current camera velocities."
+      },
+      "filter-list-placeholder": "Search for a new focus..."
+    }
+  },
+  "menu-button": {
+    "no-anchor": "No anchor",
+    "focus": "Focus",
+    "anchor": "Anchor",
+    "aim": "Aim"
+  },
+  "navigation-settings": {
+    "title": "Navigation Settings",
+    "include-non-focusable-label": "Include Non-focusable Nodes in Search",
+    "include-non-focusable-description": "Per default, nodes that are marked as non-focusable from the search in the navigation menu. Checking this option will include them and allow setting these nodes as focus.",
+    "camera-path-settings": "Camera Path Settings"
+  },
+  "remaining-flight-time-indicator": {
+    "flying-to": "Flying to {{target}}",
+    "remaining-time": "{{seconds}} s"
+  }
+}

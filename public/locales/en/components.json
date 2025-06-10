@@ -136,5 +136,9 @@
   },
   "settings-popout": {
     "aria-label": "Open settings"
+  },
+  "show-more": {
+    "less": "Less",
+    "more": "More"
   }
 }

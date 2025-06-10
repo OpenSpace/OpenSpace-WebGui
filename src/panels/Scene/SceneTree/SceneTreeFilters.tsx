@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
   Button,
@@ -5,7 +6,6 @@ import {
   Menu,
   MultiSelect,
   Stack,
-  Title,
   Tooltip
 } from '@mantine/core';
 
@@ -28,6 +28,10 @@ interface Props {
 export function SceneTreeFilters({ setFilter, filter }: Props) {
   const tags = useAppSelector((state) => state.groups.tags);
 
+  const { t } = useTranslation('panel-scene', {
+    keyPrefix: 'scene-tree.scene-tree-filters'
+  });
+
   const sortedTags = Array.from(tags).sort();
   const hasFilters = hasActiveFilters({ ...filter }) || filter.showOnlyVisible;
 
@@ -39,50 +43,48 @@ export function SceneTreeFilters({ setFilter, filter }: Props) {
     <Group>
       {hasFilters && (
         <Button size={'compact-sm'} onClick={clearFilters}>
-          Reset filters
+          {t('reset-filters')}
         </Button>
       )}
       <Menu position={'right-start'} withArrow closeOnItemClick={false}>
         <Menu.Target>
-          <Tooltip label={'Additional settings to filter search result'}>
-            <ActionIcon aria-label={'Open search filter menu'}>
+          <Tooltip label={t('settings-tooltip')}>
+            <ActionIcon aria-label={t('settings-aria-label')}>
               <FilterIcon />
             </ActionIcon>
           </Tooltip>
         </Menu.Target>
         <Menu.Dropdown maw={'330px'}>
-          <Menu.Label>Filters</Menu.Label>
+          <Menu.Label>{t('menu-label-filters')}</Menu.Label>
           <Stack px={'xs'} gap={'xs'}>
             <BoolInput
-              label={'Show only visible'}
+              label={t('show-only-visible.label')}
               value={filter.showOnlyVisible}
               onChange={(value) => setFilter({ showOnlyVisible: value })}
-              info={`Show only nodes that are currenlty visible, meaning enabled and not
-                faded out.`}
+              info={t('show-only-visible.info')}
             />
             <BoolInput
-              label={'Show only focusable'}
+              label={t('show-only-focusable.label')}
               value={filter.onlyFocusable || false}
               onChange={(value) => setFilter({ onlyFocusable: value })}
-              info={`Hide scene graph nodes that are not markes as focusable, meaning that
-                they cannot be directly set as the focus node in the scene.`}
+              info={t('show-only-focusable.info')}
             />
             <BoolInput
-              label={'Show objects with GUI hidden flag'}
+              label={t('show-gui-hidden.label')}
               value={filter.includeGuiHiddenNodes || false}
               onChange={(value) => setFilter({ includeGuiHiddenNodes: value })}
-              info={`Show scene graph nodes that are marked as hidden in the GUI part of
-                the asset. These are otherwise hidden in the interface.`}
-            />
-            <Title order={3}>Tags</Title>
-            <MultiSelect
-              data={sortedTags}
-              value={filter.tags}
-              onChange={(newTags) => setFilter({ tags: newTags })}
-              clearable
-              searchable
+              info={t('show-gui-hidden.info')}
             />
           </Stack>
+          <Menu.Label>{t('menu-label-tags')}</Menu.Label>
+          <MultiSelect
+            data={sortedTags}
+            value={filter.tags}
+            onChange={(newTags) => setFilter({ tags: newTags })}
+            clearable
+            searchable
+            px={'xs'}
+          />
         </Menu.Dropdown>
       </Menu>
     </Group>
