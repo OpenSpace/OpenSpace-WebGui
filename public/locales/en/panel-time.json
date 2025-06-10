@@ -8,7 +8,7 @@
   "realtime": "Realtime",
   "now": "Now",
   "time-parts": {
-    "milliseconds_one": "Milliseconds",
+    "milliseconds_one": "Millisecond",
     "milliseconds_other": "Milliseconds",
     "seconds_one": "Second",
     "seconds_other": "Seconds",
