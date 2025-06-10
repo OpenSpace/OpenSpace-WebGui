@@ -88,7 +88,7 @@ export function NavigationPanel() {
                 label: (
                   <Center h={20}>
                     <FocusIcon size={IconSize.sm} />
-                    <VisuallyHidden>{t('hidden-label-focus')}</VisuallyHidden>
+                    <VisuallyHidden>{t('aria-labels.focus-mode')}</VisuallyHidden>
                   </Center>
                 )
               },
@@ -101,7 +101,7 @@ export function NavigationPanel() {
                       /
                     </Text>
                     <TelescopeIcon />
-                    <VisuallyHidden>{t('hidden-label-anchor-aim')}</VisuallyHidden>
+                    <VisuallyHidden>{t('aria-labels.anchor-aim-mode')}</VisuallyHidden>
                   </Center>
                 )
               }

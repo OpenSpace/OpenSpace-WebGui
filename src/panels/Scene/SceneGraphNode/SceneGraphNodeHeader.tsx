@@ -22,7 +22,7 @@ interface Props {
 }
 
 export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
-  const { t } = useTranslation('panel-scene', { keyPrefix: 'scene-graph-node-header' });
+  const { t } = useTranslation('panel-scene', { keyPrefix: 'scene-graph-node.header' });
   const propertyOwner = usePropertyOwner(uri);
   const { timeFrame, isInTimeFrame } = useTimeFrame(uri);
   const isFocusable = useIsSgnFocusable(uri);

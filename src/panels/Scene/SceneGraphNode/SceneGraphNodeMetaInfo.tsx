@@ -26,7 +26,7 @@ interface Props {
 export function SceneGraphNodeMetaInfo({ uri }: Props) {
   const { t: tCommon } = useTranslation('common');
   const { t } = useTranslation('panel-scene', {
-    keyPrefix: 'scene-graph-node-meta-info'
+    keyPrefix: 'scene-graph-node.meta-info'
   });
   const propertyOwner = usePropertyOwner(uri);
   const [guiPath] = useProperty('StringProperty', `${uri}.GuiPath`);

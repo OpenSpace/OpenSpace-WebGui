@@ -8,74 +8,80 @@
     },
     "no-information": "No information"
   },
-  "scene-graph-node-header": {
-    "out-of-timeframe-tooltip": "This node is hidden because the current time is outside its specified time frame. It will not be visible even if enabled."
-  },
-  "scene-graph-node-meta-info": {
-    "info-table": {
-      "identifier": "Identifier",
-      "uri": "URI",
-      "tags" : "Tags",
-      "about": "About",
-      "about-not-found": "No description found",
-      "gui":  "GUI"
+  "scene-graph-node": {
+    "header": {
+      "out-of-timeframe-tooltip": "This node is hidden because the current time is outside its specified time frame. It will not be visible even if enabled."
     },
-    "asset-info-title": "Asset Info",
-    "asset-info-table": {
-      "name": "Name",
-      "path": "Path",
-      "author": "Author",
-      "license": "License",
-      "about": "About",
-      "nodes-in-asset": "Nodes in the asset",
-      "url": "URL",
-      "version": "Version"
-    }
-  },
-  "scene-graph-node-more-menu": {
-    "aria-label": "Open node menu",
-    "delete-button": {
-      "cannot-delete-current-focus": "Cannot delete the current focus node",
-      "info": "Remove this scene graph node (and all its child nodes) from the scene"
-    },
-    "delete-confirm-modal": {
-      "title": "Delete node",
-      "are-you-sure": "Are you sure you want to remove the scene graph node",
-      "this-is-irreversible": "This action is irreversible and will also remove all nodes in the scene tree that depend on this node!"
-    },
-    "pop-out": "Pop out"
-  },
-  "scene-graph-node-view": {
-    "not-found-info": "This scene graph node does not exist. It might have been removed since this view was opened.",
-    "renderable": {
-      "title": "Renderable",
-      "tooltip": "Properties that control the visuals of this object",
-      "no-renderable": "This scene graph node has no renderable"
-    },
-    "transform": {
-      "title": "Transform",
-      "tooltip": "Properties that control the position, scale, and orientation of this object",
-      "no-transform": "This scene graph node has no transform"
-    },
-    "timeframe": {
-      "title": "Time",
-      "tooltip": "Information about the time frame for which the object is visible",
-      "status": {
-        "label": "Current status",
-        "tooltip-active": "This object is currently active and will be visible",
-        "tooltip-inactive": "This object is currently inactive due to its time frame and will not be visible",
-        "active": "Active",
-        "inactive": "Inactive"
+    "meta-info": {
+      "info-table": {
+        "identifier": "Identifier",
+        "uri": "URI",
+        "tags" : "Tags",
+        "about": "About",
+        "about-not-found": "No description found",
+        "gui":  "GUI"
       },
-      "info": "The object will not be visible outside the specified time range."
+      "asset-info-title": "Asset Info",
+      "asset-info-table": {
+        "name": "Name",
+        "path": "Path",
+        "author": "Author",
+        "license": "License",
+        "about": "About",
+        "nodes-in-asset": "Nodes in the asset",
+        "url": "URL",
+        "version": "Version"
+      }
     },
-    "info": {
-      "title": "Info",
-      "tooltip": "Information about the scene graph node and its asset"
+    "more-menu": {
+      "aria-label": "Open node menu",
+      "delete-button": {
+        "cannot-delete-current-focus": "Cannot delete the current focus node",
+        "info": "Remove this scene graph node (and all its child nodes) from the scene"
+      },
+      "delete-confirm-modal": {
+        "title": "Delete node",
+        "are-you-sure": "Are you sure you want to remove the scene graph node",
+        "this-is-irreversible": "This action is irreversible and will also remove all nodes in the scene tree that depend on this node!"
+      },
+      "pop-out": "Pop out"
     },
-    "other": {
-      "title": "Other",
-      "tooltip": "Other properties of this scene graph node"
+    "node-view": {
+      "not-found-info": "This scene graph node does not exist. It might have been removed since this view was opened.",
+      "renderable": {
+        "title": "Renderable",
+        "tooltip": {
+          "has-renderable": "Properties that control the visuals of this object",
+          "no-renderable": "This scene graph node has no renderable"
+        }
+      },
+      "transform": {
+        "title": "Transform",
+        "tooltip": "Properties that control the position, scale, and orientation of this object",
+        "no-transform": "This scene graph node has no transform"
+      },
+      "timeframe": {
+        "title": "Time",
+        "tooltip": "Information about the time frame for which the object is visible",
+        "status": {
+          "label": "Current status",
+          "tooltip": {
+            "active": "This object is currently active and will be visible",
+            "inactive": "This object is currently inactive due to its time frame and will not be visible"
+          },
+          "active": "Active",
+          "inactive": "Inactive"
+        },
+        "info": "The object will not be visible outside the specified time range."
+      },
+      "info": {
+        "title": "Info",
+        "tooltip": "Information about the scene graph node and its asset"
+      },
+      "other": {
+        "title": "Other",
+        "tooltip": "Other properties of this scene graph node"
+      }
     }
   },
   "scene-tree": {
@@ -106,7 +112,7 @@
       },
       "show-only-focusable": {
         "label": "Show only focusable",
-        "info": "Hide scene graph nodes that are not markes as focusable, meaning that they cannot be directly set as the focus node in the scene."
+        "info": "Hide scene graph nodes that are not markes as focusable, meaning that they should not be directly set as the focus node in the scene."
       },
       "show-gui-hidden": {
         "label": "Show objects with GUI hidden flag",

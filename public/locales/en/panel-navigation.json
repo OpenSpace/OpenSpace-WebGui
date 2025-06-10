@@ -1,6 +1,8 @@
 {
-  "hidden-label-focus": "Focus mode",
-  "hidden-label-anchor-aim": "Anchor & Aim mode",
+  "aria-labels": {
+    "focus-mode": "Focus mode",
+    "anchor-aim-mode": "Anchor & Aim mode"
+  },
   "anchor-aim": {
     "anchor-aim-view": {
       "error": {

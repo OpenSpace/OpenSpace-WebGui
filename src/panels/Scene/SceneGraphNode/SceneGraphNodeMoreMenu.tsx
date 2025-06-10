@@ -23,7 +23,7 @@ interface Props {
 export function SceneGraphNodeMoreMenu({ uri }: Props) {
   const { t: tCommon } = useTranslation('common');
   const { t } = useTranslation('panel-scene', {
-    keyPrefix: 'scene-graph-node-more-menu'
+    keyPrefix: 'scene-graph-node.more-menu'
   });
   const propertyOwner = usePropertyOwner(uri);
   const anchorNode = useAnchorNode();

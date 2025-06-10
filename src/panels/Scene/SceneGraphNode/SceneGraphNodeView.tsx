@@ -19,7 +19,9 @@ interface Props {
 }
 
 export function SceneGraphNodeView({ uri }: Props) {
-  const { t } = useTranslation('panel-scene', { keyPrefix: 'scene-graph-node-view' });
+  const { t } = useTranslation('panel-scene', {
+    keyPrefix: 'scene-graph-node.node-view'
+  });
   const propertyOwner = usePropertyOwner(uri);
   const { timeFrame, isInTimeFrame } = useTimeFrame(uri);
 
@@ -60,7 +62,9 @@ export function SceneGraphNodeView({ uri }: Props) {
         <Tabs.List>
           <Tooltip
             label={
-              hasRenderable ? t('renderable.tooltip') : t('renderable.no-renderable')
+              hasRenderable
+                ? t('renderable.tooltip.has-renderable')
+                : t('renderable.tooltip.no-renderable')
             }
           >
             <Tabs.Tab value={TabKeys.Renderable} disabled={!hasRenderable}>
@@ -110,7 +114,7 @@ export function SceneGraphNodeView({ uri }: Props) {
               <PropertyOwnerContent uri={renderable} />
             </Box>
           ) : (
-            <Text m={'xs'}>{t('renderable.no-renderable')}</Text>
+            <Text m={'xs'}>{t('renderable.tooltip.no-renderable')}</Text>
           )}
         </Tabs.Panel>
 
@@ -134,8 +138,8 @@ export function SceneGraphNodeView({ uri }: Props) {
                 <Tooltip
                   label={
                     isInTimeFrame
-                      ? t('timeframe.status.tooltip-active')
-                      : t('timeframe.status.tooltip-inactive')
+                      ? t('timeframe.status.tooltip.active')
+                      : t('timeframe.status.tooltip.inactive')
                   }
                 >
                   <Badge
