@@ -14,6 +14,8 @@ import {
 } from '@/redux/propertytree/propertyTreeMiddleware';
 import { ConnectionStatus, LogLevel } from '@/types/enums';
 
+import { showGUI } from '../sessionrecording/sessionRecordingMiddleware';
+
 import { EventData } from './types';
 
 let eventTopic: Topic;
@@ -54,6 +56,11 @@ export const setupEventsSubscription = createAsyncThunk(
         case 'MissionAdded':
         case 'MissionRemoved':
           thunkAPI.dispatch(refreshMissions());
+          break;
+        case 'SessionRecordingPlayback':
+          if (data.State === 'Finished') {
+            thunkAPI.dispatch(showGUI(true));
+          }
           break;
         default:
           break;

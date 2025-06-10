@@ -122,7 +122,7 @@ type ScheduledScriptExecutedEvent = {
   Script: string;
 };
 
-type SessionRecordingPlaybackEvent = {
+export type SessionRecordingPlaybackEvent = {
   Event: 'SessionRecordingPlayback';
   State: 'Started' | 'Paused' | 'Resumed' | 'Finished';
 };
