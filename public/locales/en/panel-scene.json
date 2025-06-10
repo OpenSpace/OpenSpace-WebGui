@@ -54,23 +54,23 @@
       "renderable": {
         "title": "Renderable",
         "tooltip": {
-          "has-renderable": "Properties that control the visuals of this object",
-          "no-renderable": "This scene graph node has no renderable"
+          "has-renderable": "Properties that control the visuals of this object.",
+          "no-renderable": "This scene graph node has no renderable."
         }
       },
       "transform": {
         "title": "Transform",
-        "tooltip": "Properties that control the position, scale, and orientation of this object",
+        "tooltip": "Properties that control the position, scale, and orientation of this object.",
         "no-transform": "This scene graph node has no transform"
       },
       "timeframe": {
         "title": "Time",
-        "tooltip": "Information about the time frame for which the object is visible",
+        "tooltip": "Information about the time frame for which the object is visible.",
         "status": {
           "label": "Current status",
           "tooltip": {
-            "active": "This object is currently active and will be visible",
-            "inactive": "This object is currently inactive due to its time frame and will not be visible"
+            "active": "This object is currently active.",
+            "inactive": "This object is currently inactive due to its time frame and will not be visible."
           },
           "active": "Active",
           "inactive": "Inactive"
@@ -106,7 +106,7 @@
     },
     "scene-tree-filters": {
       "reset-filters": "Reset filters",
-      "settings-tooltip": "Additional settings to filter search results",
+      "settings-tooltip": "Additional settings to filter search results.",
       "settings-aria-label": "Open search filter settings",
       "menu-label-filters": "Filters",
       "show-only-visible": {

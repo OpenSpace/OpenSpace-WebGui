@@ -6,7 +6,6 @@ import {
   Menu,
   MultiSelect,
   Stack,
-  Title,
   Tooltip
 } from '@mantine/core';
 
