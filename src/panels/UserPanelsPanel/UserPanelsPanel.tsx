@@ -14,7 +14,10 @@ import {
 import { useOpenSpaceApi } from '@/api/hooks';
 import { OpenWindowIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { intializeUserPanels, openWebpanel } from '@/redux/userpanels/userPanelsSlice';
+import {
+  intializeUserPanels,
+  updateRecentWebpanels
+} from '@/redux/userpanels/userPanelsSlice';
 import { UserPanelsFolderKey, WindowsKey } from '@/util/keys';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
@@ -70,7 +73,7 @@ export function UserPanelsPanel() {
     }
     const src = `http://${window.location.host}/webpanels/${selectedPanel}/index.html`;
 
-    openPanel(src, selectedPanel);
+    addWebPanelWindow(src, selectedPanel);
 
     setSelectedPanel(null);
   }
@@ -83,14 +86,14 @@ export function UserPanelsPanel() {
     const src = startsWithHttp ? panelURL : `http://${panelURL}`;
     const title = urlPanelTitle === '' ? src : urlPanelTitle;
 
-    openPanel(src, title);
+    addWebPanelWindow(src, title);
 
     setPanelURL('');
     setUrlPanelTitle('');
-    dispatch(openWebpanel({ title: title, src: src }));
+    dispatch(updateRecentWebpanels({ title: title, src: src }));
   }
 
-  function openPanel(src: string, title: string) {
+  function addWebPanelWindow(src: string, title: string) {
     addWindow(<UserPanel src={src} title={title} />, {
       title: title,
       position: 'right',
@@ -158,8 +161,8 @@ export function UserPanelsPanel() {
         <Button
           key={`${panel.src}${panel.title}`}
           onClick={() => {
-            openPanel(panel.src, panel.title);
-            dispatch(openWebpanel({ title: panel.title, src: panel.src }));
+            addWebPanelWindow(panel.src, panel.title);
+            dispatch(updateRecentWebpanels({ title: panel.title, src: panel.src }));
           }}
           fullWidth
           mb={'xs'}

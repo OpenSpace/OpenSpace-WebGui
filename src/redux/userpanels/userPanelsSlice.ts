@@ -26,7 +26,7 @@ export const userPanelsSlice = createSlice({
       state.isInitialized = true;
       return state;
     },
-    openWebpanel: (state, action: PayloadAction<WebPanel>) => {
+    updateRecentWebpanels: (state, action: PayloadAction<WebPanel>) => {
       function isEqualToPayload(item: WebPanel) {
         return item.src === action.payload.src && item.title === action.payload.title;
       }
@@ -45,5 +45,5 @@ export const userPanelsSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function, replaces the `Actions/index.js`
-export const { intializeUserPanels, openWebpanel } = userPanelsSlice.actions;
+export const { intializeUserPanels, updateRecentWebpanels } = userPanelsSlice.actions;
 export const userPanelsReducer = userPanelsSlice.reducer;
