@@ -21,7 +21,6 @@ interface Props {
 }
 
 export function SceneGraphNodeMoreMenu({ uri }: Props) {
-  const { t: tCommon } = useTranslation('common');
   const { t } = useTranslation('panel-scene', {
     keyPrefix: 'scene-graph-node.more-menu'
   });
@@ -63,7 +62,10 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
           <Text mt={'xs'}>{t('delete-confirm-modal.this-is-irreversible')}</Text>
         </Stack>
       ),
-      labels: { confirm: tCommon('remove'), cancel: tCommon('cancel') },
+      labels: {
+        confirm: t('delete-confirm-modal.remove-button'),
+        cancel: t('delete-confirm-modal.cancel-button')
+      },
       confirmProps: { color: 'red', variant: 'filled' },
       onConfirm: () => remove()
     });
@@ -115,7 +117,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
             variant={'outline'}
             leftSection={<DeleteIcon />}
           >
-            {tCommon('delete')}
+            {t('delete-button.label')}
           </Button>
           <>
             {anchorNode?.identifier === propertyOwner.identifier ? (

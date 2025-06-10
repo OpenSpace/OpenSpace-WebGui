@@ -9,7 +9,6 @@ interface Props {
 }
 
 export function KeybindInfo({ action }: Props) {
-  const { t: tCommon } = useTranslation('common');
   const { t } = useTranslation('panel-keybinds', { keyPrefix: 'keybind-info' });
 
   return (
@@ -22,11 +21,11 @@ export function KeybindInfo({ action }: Props) {
           body: [
             [`${t('info')}:`, action.documentation],
             [
-              `${t('is-local')}:`,
+              `${t('is-local.title')}:`,
               action.isLocal ? (
-                <Badge variant={'filled'}>{tCommon('yes')}</Badge>
+                <Badge variant={'filled'}>{t('is-local.yes')}</Badge>
               ) : (
-                <Badge variant={'outline'}>{tCommon('no')}</Badge>
+                <Badge variant={'outline'}>{t('is-local.no')}</Badge>
               )
             ],
             [`${t('gui-path')}:`, <Code>{action.guiPath}</Code>],

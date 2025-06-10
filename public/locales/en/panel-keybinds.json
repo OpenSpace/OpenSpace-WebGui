@@ -5,7 +5,11 @@
     "gui-path": "GUI Path",
     "identifier": "Identifier",
     "info": "Info",
-    "is-local": "Is Local"
+    "is-local": {
+      "title": "Is Local",
+      "yes": "Yes",
+      "no": "No"
+    }
   },
   "keyboard-layout": {
     "selected-keybind-title": "Selected Keybind",

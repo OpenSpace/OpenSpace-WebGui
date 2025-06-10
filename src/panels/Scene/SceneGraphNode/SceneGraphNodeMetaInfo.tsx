@@ -6,13 +6,13 @@ import {
   Flex,
   Group,
   Pill,
-  Spoiler,
   Table,
   TableData,
   Title
 } from '@mantine/core';
 
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
+import { ShowMore } from '@/components/ShowMore/ShowMore';
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
@@ -24,7 +24,6 @@ interface Props {
 }
 
 export function SceneGraphNodeMetaInfo({ uri }: Props) {
-  const { t: tCommon } = useTranslation('common');
   const { t } = useTranslation('panel-scene', {
     keyPrefix: 'scene-graph-node.meta-info'
   });
@@ -96,19 +95,11 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
       [`${t('asset-info-table.license')}:`, documentation?.license],
       [
         `${t('asset-info-table.about')}:`,
-        <Spoiler showLabel={tCommon('show-more')} hideLabel={tCommon('hide-details')}>
-          {documentation?.description}
-        </Spoiler>
+        <ShowMore>{documentation?.description}</ShowMore>
       ],
       [
         `${t('asset-info-table.nodes-in-asset')}:`,
-        <Spoiler
-          showLabel={tCommon('show-more')}
-          hideLabel={tCommon('hide-details')}
-          style={{ overflowWrap: 'anywhere' }}
-        >
-          {documentation?.identifiers?.map((id) => id).join(', ')}
-        </Spoiler>
+        <ShowMore>{documentation?.identifiers?.map((id) => id).join(', ')}</ShowMore>
       ],
       [
         `${t('asset-info-table.url')}:`,
