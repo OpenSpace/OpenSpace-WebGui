@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -27,6 +28,9 @@ export function AddedImagesList({ id }: Props) {
   const selectedImages = useSelectedImages(id);
   const opacities = useOpacities(id);
   const activeImage = useAppSelector((state) => state.skybrowser.activeImage);
+  const { t } = useTranslation('panel-skybrowser', {
+    keyPrefix: 'browser-tabs.added-image-list'
+  });
 
   const onDragEnd = useCallback(
     async ({ newIndex, id }: OnDragEndProps<number>) => {
@@ -60,7 +64,7 @@ export function AddedImagesList({ id }: Props) {
 
   return (
     <Box my={'md'}>
-      {selectedImages.length === 0 && 'No images added to this browser'}
+      {selectedImages.length === 0 && t('no-images')}
       <DragReorderList<number>
         onDragEnd={onDragEnd}
         id={'selectedImages'}

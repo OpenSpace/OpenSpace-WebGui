@@ -11,6 +11,7 @@ import navigationPanel from '@/public/locales/en/panel-navigation.json';
 import scenePanel from '@/public/locales/en/panel-scene.json';
 import screenspaceRenderablePanel from '@/public/locales/en/panel-screenspacerenderable.json';
 import settingsPanel from '@/public/locales/en/panel-settings.json';
+import skyBrowserPanel from '@/public/locales/en/panel-skybrowser.json';
 
 /**
  * This object in combination with `i18next.d.ts` enables intellisense and syntax
@@ -26,11 +27,12 @@ export const resources = {
     'panel-flightcontrol': flightControlPanel,
     'panel-geolocation': geolocationPanel,
     'panel-keybinds': keybindsPanel,
-    'panel-navigation': navigationPanel,
     'panel-missions': missionsPanel,
+    'panel-navigation': navigationPanel,
     'panel-scene': scenePanel,
     'panel-screenspacerenderable': screenspaceRenderablePanel,
-    'panel-settings': settingsPanel
+    'panel-settings': settingsPanel,
+    'panel-skybrowser': skyBrowserPanel
   }
 } as const;
 

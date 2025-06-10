@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, CloseIcon, Group, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -36,6 +37,7 @@ export function TabContent({
   const browserIds = useSkyBrowserIds();
 
   const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'tab-content' });
   const zoomStep = 5;
 
   if (fov === undefined || browserId === '') {
@@ -76,68 +78,72 @@ export function TabContent({
     <>
       <Group justify={'space-between'}>
         <ActionIcon.Group>
-          <Tooltip label={'Look at target'}>
+          <Tooltip label={t('look-at-skybrowser.tooltip')}>
             <ActionIcon
               onClick={() => luaApi?.skybrowser.adjustCamera(browserId)}
-              aria-label={'Look at skybrowser target'}
+              aria-label={t('look-at-skybrowser.aria-label')}
             >
               <EyeIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip label={'Move target to center of view'}>
+          <Tooltip label={t('center-skybrowser.tooltip')}>
             <ActionIcon
               onClick={() => luaApi?.skybrowser.centerTargetOnScreen(browserId)}
-              aria-label={'Move skybrowser target to center of view'}
+              aria-label={t('center-skybrowser.aria-label')}
             >
               <MoveTargetIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip label={'Zoom in'}>
+          <Tooltip label={t('zoom-in')}>
             <ActionIcon
               onClick={() => zoom(browserId, fov - zoomStep)}
-              aria-label={'Zoom in'}
+              aria-label={t('zoom-in')}
             >
               <ZoomInIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip label={'Zoom out'}>
+          <Tooltip label={t('zoom-out')}>
             <ActionIcon
               onClick={() => zoom(browserId, fov + zoomStep)}
-              aria-label={'Zoom out'}
+              aria-label={t('zoom-out')}
             >
               <ZoomOutIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip label={'Remove all images'}>
-            <ActionIcon onClick={removeAllImages} aria-label={'Remove all images'}>
+          <Tooltip label={t('remove-all-images')}>
+            <ActionIcon onClick={removeAllImages} aria-label={t('remove-all-images')}>
               <DeleteIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip label={'Open telescope view'}>
+          <Tooltip label={t('open-telescope-view')}>
             <ActionIcon
               onClick={openWorldWideTelescope}
-              aria-label={'Open telescope view'}
+              aria-label={t('open-telescope-view')}
             >
               <OpenWindowIcon />
             </ActionIcon>
           </Tooltip>
         </ActionIcon.Group>
         <Group>
-          <Tooltip label={'Skybrowser settings'}>
+          <Tooltip label={t('skybrowser-settings.label')}>
             <ActionIcon
               onClick={() => setShowSettings((old) => !old)}
               variant={showSettings ? 'filled' : 'default'}
-              aria-label={`${showSettings ? 'Close' : 'Open'} skybrowser settings`}
+              aria-label={`${
+                showSettings
+                  ? t('skybrowser-settings.aria-label.close')
+                  : t('skybrowser-settings.aria-label.open')
+              }`}
             >
               <SettingsIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip label={'Delete browser'}>
+          <Tooltip label={t('skybrowser-settings.delete-browser')}>
             <ActionIcon
               onClick={deleteBrowser}
               color={'red'}
               variant={'light'}
-              aria-label={'Delete browser'}
+              aria-label={t('skybrowser-settings.delete-browser')}
             >
               <CloseIcon />
             </ActionIcon>

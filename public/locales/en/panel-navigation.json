@@ -27,7 +27,7 @@
     },
     "focus-view": {
       "title": "Focus",
-      "info":  {
+      "info": {
         "click-focus-button": "Click the <focusIcon /> button to focus/retarget object.",
         "shift-keybind": "Hold <keybind>Shift</keybind> when clicking to set as focus/anchor without retargeting.",
         "ctrl-keybind": "Hold <keybind>Ctrl</keybind> when clicking to keep current camera velocities."

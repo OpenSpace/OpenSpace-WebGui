@@ -16,10 +16,10 @@
       "info-table": {
         "identifier": "Identifier",
         "uri": "URI",
-        "tags" : "Tags",
+        "tags": "Tags",
         "about": "About",
         "about-not-found": "No description found",
-        "gui":  "GUI"
+        "gui": "GUI"
       },
       "asset-info-title": "Asset Info",
       "asset-info-table": {
@@ -93,7 +93,7 @@
       "current-aim-label": "Current Aim",
       "quick-access-label": "Quick Access"
     },
-    "scene-tree":{
+    "scene-tree": {
       "filter-list-placeholder": "Search for a node...",
       "search-keys": {
         "name": "Name",
