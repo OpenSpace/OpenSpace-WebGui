@@ -71,20 +71,20 @@ export function SolarSystemTab() {
       </Group>
 
       <Title order={2} mt={'md'} mb={'xs'}>
-        {t('plaents.title')}
+        {t('planets.title')}
       </Title>
       <Group gap={'xs'}>
         <Button
           onClick={() => action('os.nightsky.ShowNightSkyPlanets')}
           leftSection={<EyeIcon />}
         >
-          {t('plaents.buttons.show-planets')}
+          {t('planets.buttons.show-planets')}
         </Button>
         <Button
           onClick={() => action('os.nightsky.HideNightSkyPlanets')}
           leftSection={<EyeOffIcon />}
         >
-          {t('plaents.buttons.hide-planets')}
+          {t('planets.buttons.hide-planets')}
         </Button>
       </Group>
 

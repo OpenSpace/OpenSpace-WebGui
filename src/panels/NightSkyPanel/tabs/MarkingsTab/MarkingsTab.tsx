@@ -35,7 +35,7 @@ export function MarkingsTab() {
           leftSection={<EyeOffIcon />}
           onClick={() => luaApi.action.triggerAction('os.nightsky.HideAllMarkings')}
         >
-          {t('button-labels.hide-all')}
+          {t('common-button-labels.hide-all')}
         </Button>
       ) : (
         <LoadingBlocks n={1} />
@@ -45,7 +45,7 @@ export function MarkingsTab() {
       </Title>
       <SimpleGrid cols={4} spacing={'sm'}>
         <NightSkyMarkingBox
-          title={t('button-labels.grid')}
+          title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.md} />}
           identifier={'AltAzGrid'}
         />
@@ -55,7 +55,7 @@ export function MarkingsTab() {
           identifier={'MeridianPlane'}
         />
         <NightSkyMarkingBox
-          title={t('button-labels.labels')}
+          title={t('common-button-labels.labels')}
           icon={<AbcIcon size={IconSize.md} />}
           identifier={'AltAzGridLabels'}
         />
@@ -71,17 +71,17 @@ export function MarkingsTab() {
       </Title>
       <SimpleGrid cols={4} spacing={'sm'}>
         <NightSkyMarkingBox
-          title={t('button-labels.grid')}
+          title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.md} />}
           identifier={'EclipticSphere'}
         />
         <NightSkyMarkingBox
-          title={t('button-labels.line_one')}
+          title={t('common-button-labels.line_one')}
           icon={<LineIcon size={IconSize.md} />}
           identifier={'EclipticLine'}
         />
         <NightSkyMarkingBox
-          title={t('button-labels.labels')}
+          title={t('common-button-labels.labels')}
           icon={<AbcIcon size={IconSize.md} />}
           identifier={'EclipticSphereLabels'}
         />
@@ -97,17 +97,17 @@ export function MarkingsTab() {
       </Title>
       <SimpleGrid cols={4} spacing={'sm'}>
         <NightSkyMarkingBox
-          title={t('button-labels.grid')}
+          title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.md} />}
           identifier={'EquatorialSphere'}
         />
         <NightSkyMarkingBox
-          title={t('button-labels.line_one')}
+          title={t('common-button-labels.line_one')}
           icon={<LineIcon size={IconSize.md} />}
           identifier={'EquatorialLine'}
         />
         <NightSkyMarkingBox
-          title={t('button-labels.labels')}
+          title={t('common-button-labels.labels')}
           icon={<AbcIcon size={IconSize.md} />}
           identifier={'EquatorialSphereLabels'}
         />
@@ -118,12 +118,12 @@ export function MarkingsTab() {
       </Title>
       <SimpleGrid cols={4} spacing={'sm'}>
         <NightSkyMarkingBox
-          title={t('button-labels.grid')}
+          title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.md} />}
           identifier={'ConstellationBounds'}
         />
         <ConstellationShowLinesBox
-          title={t('button-labels.line_other')}
+          title={t('common-button-labels.line_other')}
           icon={<PencilIcon size={IconSize.md} />}
         />
         <ConstellationsShowArtBox
@@ -131,7 +131,7 @@ export function MarkingsTab() {
           icon={<PaintBrushIcon size={IconSize.md} />}
         />
         <ConstellationsShowLabelsBox
-          title={t('button-labels.labels')}
+          title={t('common-button-labels.labels')}
           icon={<AbcIcon size={IconSize.md} />}
         />
       </SimpleGrid>

@@ -8,7 +8,7 @@
     "sun": "Sun"
   },
   "markings": {
-    "button-labels": {
+    "common-button-labels": {
       "hide-all": "Hide All",
       "grid": "Grid",
       "labels": "Labels",
@@ -104,7 +104,7 @@
         "hide-labels": "Hide Labels"
       }
     },
-    "plaents": {
+    "planets": {
       "title": "Planets",
       "buttons": {
         "show-planets": "Show Night Sky Planets",
@@ -194,7 +194,7 @@
       "choose-date": "Choose Date",
       "added-trails": {
         "title": "Added Sun Trails",
-        "no-trails": "No sun trails"
+        "no-trails": "No Sun trails"
       }
     }
   },
