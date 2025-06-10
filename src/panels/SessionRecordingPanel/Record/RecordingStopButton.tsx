@@ -19,7 +19,6 @@ export function RecordingStopButton({ ...props }: ButtonProps) {
 
   async function stopRecording(): Promise<void> {
     let file = recordingFilename.trim();
-
     file = sessionRecordingFilenameWithExtension(file, format);
 
     try {

@@ -43,3 +43,28 @@ export function sessionRecordingFilenameWithExtension(
 
   return lowerCaseFilename;
 }
+
+/**
+ * Parses a filename into its base name and extension, and determines whether it is a
+ * duplicate
+ * @param file The full filename including extension (e.g., 'foo.osrec')
+ * @param fileCounts A map of base filenames (without extension) to the number of times
+ * they appear
+ * @returns An object containing the base filename, thefile extension (including the dot),
+ * and a bolean indicating whether the base filename occurs more than once
+ */
+export function parseFilename(
+  file: string,
+  fileCounts: Map<string, number>
+): { filename: string; extension: string; isFileDuplicate: boolean } {
+  const extensionIndex = file.lastIndexOf('.');
+  const hasExtension = extensionIndex !== -1;
+
+  const filename = hasExtension ? file.substring(0, extensionIndex) : file;
+  const extension = hasExtension ? file.substring(extensionIndex) : '';
+
+  const count = fileCounts.get(filename) ?? 0;
+  const isFileDuplicate = count > 1;
+
+  return { filename, extension, isFileDuplicate };
+}

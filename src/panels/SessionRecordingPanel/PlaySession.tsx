@@ -24,6 +24,7 @@ import { PlaybackPlayButton } from './Playback/PlaybackPlayButton';
 import { PlaybackResumeButton } from './Playback/PlaybackResumeButton';
 import { PlaybackStopButton } from './Playback/PlaybackStopButton';
 import { RecordingState } from './types';
+import { parseFilename } from './util';
 
 export function PlaySession() {
   const [loopPlayback, setLoopPlayback] = useState(false);
@@ -40,6 +41,8 @@ export function PlaySession() {
   const dispatch = useAppDispatch();
 
   // Subscribe to Properties so that the middleware will be notified on updated values
+  // Important! These properties have to be kept in sync with the properties used in the
+  // middleware
   useSubscribeToProperty('Modules.CefWebGui.Visible');
   useSubscribeToProperty('RenderEngine.ShowLog');
   useSubscribeToProperty('RenderEngine.ShowVersion');
@@ -63,7 +66,7 @@ export function PlaySession() {
 
   // Store file duplicates in map for quick lookup
   const fileCounts = useMemo(() => {
-    const map = new Map();
+    const map = new Map<string, number>();
     fileList.forEach((file) => {
       const name = file.substring(0, file.lastIndexOf('.'));
       map.set(name, (map.get(name) || 0) + 1);
@@ -72,13 +75,18 @@ export function PlaySession() {
     return map;
   }, [fileList]);
 
+  const fileListSelectData = useMemo(() => {
+    return fileList.map((file) => {
+      const { filename, isFileDuplicate } = parseFilename(file, fileCounts);
+      const label = isFileDuplicate ? file : filename;
+
+      return { value: file, label: label };
+    });
+  }, [fileList, fileCounts]);
+
   const renderSelectOption: SelectProps['renderOption'] = ({ option, checked }) => {
     const file = option.value;
-    const extensionIndex = file.lastIndexOf('.');
-    const extension = file.substring(extensionIndex);
-    const filename = file.substring(0, extensionIndex);
-
-    const isFileDuplicate = fileCounts.get(filename) > 1;
+    const { filename, extension, isFileDuplicate } = parseFilename(file, fileCounts);
 
     return (
       <Group gap={'xs'}>
@@ -192,7 +200,7 @@ export function PlaySession() {
             value={playbackFile}
             label={'Playback file'}
             placeholder={'Select playback file'}
-            data={fileList}
+            data={fileListSelectData}
             renderOption={renderSelectOption}
             onChange={setPlaybackFile}
             searchable
