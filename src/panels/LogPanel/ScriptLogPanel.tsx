@@ -25,13 +25,13 @@ export function ScriptLogPanel() {
 
   const fetchScriptLogEntries = useCallback(async () => {
     // eslint-disable-next-line no-template-curly-in-string
-    const fileName = await luaApi?.absPath('${LOGS}/ScriptLog.txt');
+    const filename = await luaApi?.absPath('${LOGS}/ScriptLog.txt');
 
-    if (!fileName) {
+    if (!filename) {
       return;
     }
 
-    const data = (await luaApi?.readFileLines(fileName)) as FileLines;
+    const data = (await luaApi?.readFileLines(filename)) as FileLines;
 
     if (!data) {
       return;

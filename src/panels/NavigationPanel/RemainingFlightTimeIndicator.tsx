@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Group, Text } from '@mantine/core';
 
 import { usePropertyOwner } from '@/hooks/propertyOwner';
@@ -13,6 +14,10 @@ interface Props {
 }
 
 export function RemainingFlightTimeIndicator({ compact = true }: Props) {
+  const { t } = useTranslation('panel-navigation', {
+    keyPrefix: 'remaining-flight-time-indicator'
+  });
+
   const { target: pathTargetNode, remainingTime: remainingTimeForPath } =
     useSubscribeToCameraPath();
 
@@ -27,9 +32,11 @@ export function RemainingFlightTimeIndicator({ compact = true }: Props) {
           {pathTargetNodeName}
         </Text>
       ) : (
-        <Text ta={'center'}>Flying to {pathTargetNodeName}</Text>
+        <Text ta={'center'}>{t('flying-to', { target: pathTargetNodeName })}</Text>
       )}
-      <Text style={{ textWrap: 'nowrap' }}>{remainingTimeForPath} s</Text>
+      <Text style={{ textWrap: 'nowrap' }}>
+        {t('remaining-time', { seconds: remainingTimeForPath })}
+      </Text>
     </Group>
   );
 }

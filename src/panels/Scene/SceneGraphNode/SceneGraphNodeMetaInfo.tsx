@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Anchor,
   Card,
@@ -5,7 +6,6 @@ import {
   Flex,
   Group,
   Pill,
-  Spoiler,
   Table,
   TableData,
   Text,
@@ -13,6 +13,7 @@ import {
 } from '@mantine/core';
 
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
+import { ShowMore } from '@/components/ShowMore/ShowMore';
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
@@ -25,6 +26,9 @@ interface Props {
 }
 
 export function SceneGraphNodeMetaInfo({ uri }: Props) {
+  const { t } = useTranslation('panel-scene', {
+    keyPrefix: 'scene-graph-node.meta-info'
+  });
   const propertyOwner = usePropertyOwner(uri);
   const [guiPath] = useProperty('StringProperty', `${uri}.GuiPath`);
 
@@ -47,7 +51,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   const mainTableData: TableData = {
     body: [
       [
-        <Text size={'sm'}>Identifier:</Text>,
+        <Text size={'sm'}>{t('info-table.identifier')}:</Text>,
         <Group justify={'space-between'}>
           <Text className={styles.selectable} size={'sm'}>
             {identifier}
@@ -56,18 +60,20 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
         </Group>
       ],
       [
-        <Text size={'sm'}>URI:</Text>,
+        <Text size={'sm'}>{t('info-table.uri')}:</Text>,
         <Group justify={'space-between'}>
           <Code className={styles.selectable}>{uri}</Code>
           <CopyToClipboardButton value={uri} />
         </Group>
       ],
       [
-        <Text size={'sm'}>About:</Text>,
-        <Text className={styles.selectable}>{description || 'No description found'}</Text>
+        <Text size={'sm'}>{t('info-table.about')}:</Text>,
+        <Text className={styles.selectable}>
+          {description || t('info-table.about-not-found')}
+        </Text>
       ],
       [
-        <Text size={'sm'}>Tags:</Text>,
+        <Text size={'sm'}>{t('info-table.tags')}:</Text>,
         <Group gap={'xs'}>
           {propertyOwner?.tags.map((tag) => (
             <Pill key={tag}>
@@ -80,7 +86,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
         </Group>
       ],
       [
-        <Text size={'sm'}>GUI:</Text>,
+        <Text size={'sm'}>{t('info-table.gui')}:</Text>,
         <Text
           style={{ overflowWrap: 'anywhere' }}
           className={styles.selectable}
@@ -95,13 +101,13 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   const assetMetaTableData: TableData = {
     body: [
       [
-        <Text size={'sm'}>Name:</Text>,
+        <Text size={'sm'}>{t('asset-info-table.name')}:</Text>,
         <Text className={styles.selectable} size={'sm'}>
           {documentation?.name}
         </Text>
       ],
       [
-        <Text size={'sm'}>Path:</Text>,
+        <Text size={'sm'}>{t('asset-info-table.path')}:</Text>,
         <Text
           style={{ overflowWrap: 'anywhere' }}
           className={styles.selectable}
@@ -112,39 +118,35 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
         documentation?.path && <CopyToClipboardButton value={documentation?.path || ''} />
       ],
       [
-        <Text size={'sm'}>Author:</Text>,
+        <Text size={'sm'}>{t('asset-info-table.author')}:</Text>,
         <Text className={styles.selectable} size={'sm'}>
           {documentation?.author}
         </Text>
       ],
       [
-        <Text size={'sm'}>License:</Text>,
+        <Text size={'sm'}>{t('asset-info-table.license')}:</Text>,
         <Text className={styles.selectable} size={'sm'}>
           {documentation?.license}
         </Text>
       ],
       [
-        <Text size={'sm'}>About:</Text>,
-        <Spoiler showLabel={'Show more'} hideLabel={'Hide details'}>
+        <Text size={'sm'}>{t('asset-info-table.about')}:</Text>,
+        <ShowMore>
           <Text className={styles.selectable} size={'sm'}>
             {documentation?.description}
           </Text>
-        </Spoiler>
+        </ShowMore>
       ],
       [
-        <Text size={'sm'}>Nodes in the asset:</Text>,
-        <Spoiler
-          showLabel={'Show more'}
-          hideLabel={'Hide details'}
-          style={{ overflowWrap: 'anywhere' }}
-        >
+        <Text size={'sm'}>{t('asset-info-table.nodes-in-asset')}:</Text>,
+        <ShowMore>
           <Text className={styles.selectable} size={'sm'}>
             {documentation?.identifiers?.map((id) => id).join(', ')}
           </Text>
-        </Spoiler>
+        </ShowMore>
       ],
       [
-        <Text size={'sm'}>URL:</Text>,
+        <Text size={'sm'}>{t('asset-info-table.url')}:</Text>,
         <Anchor
           href={documentation?.url}
           target={'_blank'}
@@ -161,7 +163,10 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   // The version field is not relevant for all assets, and should only be displayed if it
   // exists
   if (documentation?.version) {
-    mainTableData.body?.push(['Version:', documentation.version]);
+    mainTableData.body?.push([
+      `${t('asset-info-table.version')}:`,
+      documentation.version
+    ]);
   }
 
   return (
@@ -173,7 +178,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
         styles={{ td: { verticalAlign: 'top' } }}
       />
       <Card>
-        <Title order={3}>Asset Info</Title>
+        <Title order={3}>{t('asset-info-title')}</Title>
         <Table data={assetMetaTableData} />
       </Card>
     </>

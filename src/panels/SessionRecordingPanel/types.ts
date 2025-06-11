@@ -1,3 +1,5 @@
+import { SessionRecordingPlaybackEvent } from '@/redux/events/types';
+
 export enum RecordingState {
   Idle = 'idle',
   Recording = 'recording',
@@ -6,7 +8,15 @@ export enum RecordingState {
 }
 
 export interface SessionRecordingSettings {
-  recordingFileName: string;
-  format: 'Ascii' | 'Binary';
+  recordingFilename: string;
+  format: SessionRecordingFormat;
   overwriteFile: boolean;
+  latestFile: string;
+  hideGuiOnPlayback: boolean;
+  hideDashboardsOnPlayback: boolean;
+  latestPlaybackEvent: PlaybackEvent;
 }
+
+export type SessionRecordingFormat = 'Ascii' | 'Binary';
+export type SessionRecordingExtension = '.osrectxt' | '.osrec';
+export type PlaybackEvent = SessionRecordingPlaybackEvent['State'] | 'Uninitialized';

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Group, Stack, Text } from '@mantine/core';
 
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
@@ -5,6 +6,9 @@ import { IconSize } from '@/types/enums';
 import { useAimNode, useAnchorNode } from '@/util/propertyTreeHooks';
 
 export function NavigationPanelMenuButtonContent() {
+  const { t } = useTranslation('panel-navigation', {
+    keyPrefix: 'menu-button'
+  });
   const aimNode = useAimNode();
   const anchorNode = useAnchorNode();
   const hasDistinctAim = aimNode && aimNode.identifier !== anchorNode?.identifier;
@@ -18,7 +22,7 @@ export function NavigationPanelMenuButtonContent() {
           <Stack gap={0} maw={130} ta={'start'}>
             <Text truncate>{anchorNode?.name}</Text>
             <Text fw={500} size={'xs'} c={'dimmed'}>
-              Anchor
+              {t('anchor')}
             </Text>
           </Stack>
         </Group>
@@ -27,7 +31,7 @@ export function NavigationPanelMenuButtonContent() {
           <Stack gap={0} maw={130} ta={'start'}>
             <Text truncate>{aimNode?.name}</Text>
             <Text fw={500} size={'xs'} c={'dimmed'}>
-              Aim
+              {t('aim')}
             </Text>
           </Stack>
         </Group>
@@ -42,7 +46,7 @@ export function NavigationPanelMenuButtonContent() {
       <Stack gap={0} maw={130} ta={'start'}>
         <Text truncate>{anchorNode?.name}</Text>
         <Text fw={500} size={'xs'} c={'dimmed'}>
-          Focus
+          {t('focus')}
         </Text>
       </Stack>
     </Group>

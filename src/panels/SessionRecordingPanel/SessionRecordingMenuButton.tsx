@@ -3,7 +3,6 @@ import { Group } from '@mantine/core';
 import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
 import { VideocamIcon } from '@/icons/icons';
 import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
-import { useAppSelector } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';
 
 import { PlaybackPauseButton } from './Playback/PlaybackPauseButton';
@@ -19,12 +18,8 @@ interface Props {
 export function SessionRecordingMenuButton({ id }: Props) {
   const recordingState = useSubscribeToSessionRecording();
 
-  const { recordingFileName: fileName } = useAppSelector(
-    (state) => state.sessionRecording.settings
-  );
-
   if (recordingState === RecordingState.Recording) {
-    return <RecordingStopButton filename={fileName} size={'xl'} />;
+    return <RecordingStopButton size={'xl'} />;
   }
 
   if (recordingState === RecordingState.Paused) {

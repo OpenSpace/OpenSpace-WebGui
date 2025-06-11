@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Group, Stack, Text } from '@mantine/core';
 
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
@@ -17,6 +18,9 @@ interface Props {
 }
 
 export function NavigationPanelMenuButton({ id }: Props) {
+  const { t } = useTranslation('panel-navigation', {
+    keyPrefix: 'menu-button'
+  });
   const engineMode = useSubscribeToEngineMode();
   const anchorNode = useAnchorNode();
 
@@ -37,7 +41,7 @@ export function NavigationPanelMenuButton({ id }: Props) {
       <TaskBarMenuButton id={id} leftSection={<FocusIcon size={IconSize.lg} />}>
         <Stack gap={0}>
           <LoadingBlocks n={1} w={84} />
-          <Text ta={'left'}>Focus</Text>
+          <Text ta={'left'}>{t('focus')}</Text>
         </Stack>
       </TaskBarMenuButton>
     );

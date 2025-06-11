@@ -50,7 +50,7 @@ export const ScreenSpaceRenderablePanel = lazy(() =>
   )
 );
 export const SessionRecordingPanel = lazy(() =>
-  import('@/panels/SessionRecordingPanel/SessionRecordingPane').then((module) => ({
+  import('@/panels/SessionRecordingPanel/SessionRecordingPanel').then((module) => ({
     default: module.SessionRecordingPanel
   }))
 );
