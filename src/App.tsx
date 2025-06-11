@@ -12,9 +12,11 @@ import { RoutesPage } from './pages/RoutesPage';
 import { store } from './redux/store';
 import { cssVariablesResolver, theme } from './theme/mantineTheme';
 
-import 'rc-dock/dist/rc-dock-dark.css';
+import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
+import './App.css';
+import 'rc-dock/dist/rc-dock-dark.css';
 
 function App() {
   return (

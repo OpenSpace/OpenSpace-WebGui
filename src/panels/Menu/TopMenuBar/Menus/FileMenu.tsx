@@ -6,6 +6,7 @@ import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useProperty } from '@/hooks/properties';
 import { ChevronRightIcon, ConsoleIcon, ExitAppIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
+import styles from '@/theme/global.module.css';
 import { IconSize } from '@/types/enums';
 
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
@@ -52,24 +53,41 @@ export function FileMenu() {
             closeOnItemClick={false}
           >
             <Container py={'xs'} px={'xs'} maw={300}>
-              <Text>{profile.name}</Text>
+              <Text className={styles.selectable}>{profile.name}</Text>
               <Menu.Divider />
               {profile.description && (
-                <Text size={'sm'} mb={'xs'}>
+                <Text size={'sm'} mb={'xs'} className={styles.selectable}>
                   {profile.description}
                 </Text>
               )}
-              {profile.author && <Text size={'sm'}>Author: {profile.author}</Text>}
-              {profile.license && <Text size={'sm'}>License: {profile.license}</Text>}
+              {profile.author && (
+                <Text size={'sm'} className={styles.selectable}>
+                  Author: {profile.author}
+                </Text>
+              )}
+              {profile.license && (
+                <Text size={'sm'} className={styles.selectable}>
+                  License: {profile.license}
+                </Text>
+              )}
               {profile.url && (
-                <Text size={'sm'}>
+                <Text size={'sm'} className={styles.selectable}>
                   URL:{' '}
-                  <Anchor href={profile.url} target={'_blank'}>
+                  <Anchor
+                    href={profile.url}
+                    target={'_blank'}
+                    className={styles.selectable}
+                  >
                     {profile.url}
                   </Anchor>
                 </Text>
               )}
-              <Text size={'xs'} mt={'xs'} style={{ wordBreak: 'break-word' }}>
+              <Text
+                size={'xs'}
+                mt={'xs'}
+                style={{ wordBreak: 'break-word' }}
+                className={styles.selectable}
+              >
                 {profile.filePath}
               </Text>
             </Container>

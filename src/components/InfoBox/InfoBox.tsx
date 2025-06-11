@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { ActionIcon, Popover } from '@mantine/core';
 
 import { InformationIcon } from '@/icons/icons';
+import styles from '@/theme/global.module.css';
 
 interface Props {
   w?: number;
@@ -32,7 +33,9 @@ export function InfoBox({ children, w = 320 }: Props & PropsWithChildren) {
         </ActionIcon>
       </Popover.Target>
 
-      <Popover.Dropdown maw={w}>{children}</Popover.Dropdown>
+      <Popover.Dropdown maw={w} className={styles.selectable}>
+        {children}
+      </Popover.Dropdown>
     </Popover>
   );
 }

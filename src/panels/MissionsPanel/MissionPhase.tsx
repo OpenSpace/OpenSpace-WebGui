@@ -4,6 +4,7 @@ import { Anchor, Group, Image, Text, Title } from '@mantine/core';
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { OpenWindowIcon } from '@/icons/icons';
 import { ActionsButton } from '@/panels/ActionsPanel/ActionsButton';
+import styles from '@/theme/global.module.css';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { MissionCaptureButtons } from './MissionCaptureButtons';
@@ -52,9 +53,15 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
 
   return (
     <>
-      <Title order={3}>{title()}</Title>
-      <Text c={'dimmed'}>{timeString()}</Text>
-      <Text my={'xs'}>{displayedPhase.data.description}</Text>
+      <Title order={3} className={styles.selectable}>
+        {title()}
+      </Title>
+      <Text c={'dimmed'} className={styles.selectable}>
+        {timeString()}
+      </Text>
+      <Text my={'xs'} className={styles.selectable}>
+        {displayedPhase.data.description}
+      </Text>
       {displayedPhase.data.link && (
         <Anchor component={'a'} href={displayedPhase.data.link} target={'_blank'}>
           <Group>

@@ -8,6 +8,7 @@ import {
   Pill,
   Table,
   TableData,
+  Text,
   Title
 } from '@mantine/core';
 
@@ -16,6 +17,7 @@ import { ShowMore } from '@/components/ShowMore/ShowMore';
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
+import styles from '@/theme/global.module.css';
 import { Uri } from '@/types/types';
 import { identifierFromUri } from '@/util/propertyTreeHelpers';
 
@@ -49,27 +51,34 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   const mainTableData: TableData = {
     body: [
       [
-        `${t('info-table.identifier')}:`,
+        <Text size={'sm'}>{t('info-table.identifier')}:</Text>,
         <Group justify={'space-between'}>
-          {identifier}
+          <Text className={styles.selectable} size={'sm'}>
+            {identifier}
+          </Text>
           <CopyToClipboardButton value={identifier || ''} />
         </Group>
       ],
       [
-        `${t('info-table.uri')}:`,
+        <Text size={'sm'}>{t('info-table.uri')}:</Text>,
         <Group justify={'space-between'}>
-          <Code>{uri}</Code>
+          <Code className={styles.selectable}>{uri}</Code>
           <CopyToClipboardButton value={uri} />
         </Group>
       ],
-      [`${t('info-table.about')}:`, description || t('info-table.about-not-found')],
       [
-        `${t('info-table.tags')}:`,
+        <Text size={'sm'}>{t('info-table.about')}:</Text>,
+        <Text className={styles.selectable}>
+          {description || t('info-table.about-not-found')}
+        </Text>
+      ],
+      [
+        <Text size={'sm'}>{t('info-table.tags')}:</Text>,
         <Group gap={'xs'}>
           {propertyOwner?.tags.map((tag) => (
             <Pill key={tag}>
               <Flex gap={2}>
-                {tag}
+                <span className={styles.selectable}>{tag}</span>
                 <CopyToClipboardButton value={tag} />
               </Flex>
             </Pill>
@@ -77,36 +86,73 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
         </Group>
       ],
       [
-        `${t('info-table.gui')}:`,
-        <span style={{ overflowWrap: 'anywhere' }}>{guiPath}</span>
+        <Text size={'sm'}>{t('info-table.gui')}:</Text>,
+        <Text
+          style={{ overflowWrap: 'anywhere' }}
+          className={styles.selectable}
+          size={'sm'}
+        >
+          {guiPath}
+        </Text>
       ]
     ]
   };
 
   const assetMetaTableData: TableData = {
     body: [
-      [`${t('asset-info-table.name')}:`, documentation?.name],
       [
-        `${t('asset-info-table.path')}:`,
-        <span style={{ overflowWrap: 'anywhere' }}>{documentation?.path}</span>,
+        <Text size={'sm'}>{t('asset-info-table.name')}:</Text>,
+        <Text className={styles.selectable} size={'sm'}>
+          {documentation?.name}
+        </Text>
+      ],
+      [
+        <Text size={'sm'}>{t('asset-info-table.path')}:</Text>,
+        <Text
+          style={{ overflowWrap: 'anywhere' }}
+          className={styles.selectable}
+          size={'sm'}
+        >
+          {documentation?.path}
+        </Text>,
         documentation?.path && <CopyToClipboardButton value={documentation?.path || ''} />
       ],
-      [`${t('asset-info-table.author')}:`, documentation?.author],
-      [`${t('asset-info-table.license')}:`, documentation?.license],
       [
-        `${t('asset-info-table.about')}:`,
-        <ShowMore>{documentation?.description}</ShowMore>
+        <Text size={'sm'}>{t('asset-info-table.author')}:</Text>,
+        <Text className={styles.selectable} size={'sm'}>
+          {documentation?.author}
+        </Text>
       ],
       [
-        `${t('asset-info-table.nodes-in-asset')}:`,
-        <ShowMore>{documentation?.identifiers?.map((id) => id).join(', ')}</ShowMore>
+        <Text size={'sm'}>{t('asset-info-table.license')}:</Text>,
+        <Text className={styles.selectable} size={'sm'}>
+          {documentation?.license}
+        </Text>
       ],
       [
-        `${t('asset-info-table.url')}:`,
+        <Text size={'sm'}>{t('asset-info-table.about')}:</Text>,
+        <ShowMore>
+          <Text className={styles.selectable} size={'sm'}>
+            {documentation?.description}
+          </Text>
+        </ShowMore>
+      ],
+      [
+        <Text size={'sm'}>{t('asset-info-table.nodes-in-asset')}:</Text>,
+        <ShowMore>
+          <Text className={styles.selectable} size={'sm'}>
+            {documentation?.identifiers?.map((id) => id).join(', ')}
+          </Text>
+        </ShowMore>
+      ],
+      [
+        <Text size={'sm'}>{t('asset-info-table.url')}:</Text>,
         <Anchor
           href={documentation?.url}
           target={'_blank'}
           style={{ overflowWrap: 'anywhere' }}
+          className={styles.selectable}
+          size={'sm'}
         >
           {documentation?.url}
         </Anchor>

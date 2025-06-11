@@ -7,7 +7,7 @@ import { AirplaneIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { sgnUri } from '@/util/propertyTreeHelpers';
 
-import classes from './RemainingFlightTimeIndicator.module.css';
+import styles from './RemainingFlightTimeIndicator.module.css';
 
 interface Props {
   compact?: boolean;
@@ -25,7 +25,7 @@ export function RemainingFlightTimeIndicator({ compact = true }: Props) {
     usePropertyOwner(sgnUri(pathTargetNode))?.name ?? pathTargetNode;
 
   return (
-    <Group className={classes.blinking} wrap={'nowrap'} gap={'xs'} p={'xs'}>
+    <Group className={styles.blinking} wrap={'nowrap'} gap={'xs'} p={'xs'}>
       <AirplaneIcon style={{ flexShrink: 0 }} size={IconSize.lg} />
       {compact ? (
         <Text truncate maw={130}>
