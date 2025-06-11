@@ -5,7 +5,7 @@ import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { ChevronDownIcon, ChevronRightIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
-import classes from './CollapsableHeader.module.css';
+import styles from './CollapsableHeader.module.css';
 
 interface Props extends MantineStyleProps {
   expanded: boolean;
@@ -26,7 +26,7 @@ export function CollapsableHeader({
   const { t } = useTranslation('components', { keyPrefix: 'collapsable-header' });
 
   return (
-    <Group wrap={'nowrap'} gap={0} className={classes.header} {...styleProps}>
+    <Group wrap={'nowrap'} gap={0} className={styles.header} {...styleProps}>
       <ActionIcon
         variant={'transparent'}
         onClick={toggle}

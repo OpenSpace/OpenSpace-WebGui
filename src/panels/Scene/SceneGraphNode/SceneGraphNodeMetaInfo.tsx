@@ -16,7 +16,7 @@ import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyTo
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
-import classes from '@/theme/global.module.css';
+import styles from '@/theme/global.module.css';
 import { Uri } from '@/types/types';
 import { identifierFromUri } from '@/util/propertyTreeHelpers';
 
@@ -49,7 +49,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
       [
         <Text size={'sm'}>Identifier:</Text>,
         <Group justify={'space-between'}>
-          <Text className={classes.selectable} size={'sm'}>
+          <Text className={styles.selectable} size={'sm'}>
             {identifier}
           </Text>
           <CopyToClipboardButton value={identifier || ''} />
@@ -58,15 +58,13 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
       [
         <Text size={'sm'}>URI:</Text>,
         <Group justify={'space-between'}>
-          <Code className={classes.selectable}>{uri}</Code>
+          <Code className={styles.selectable}>{uri}</Code>
           <CopyToClipboardButton value={uri} />
         </Group>
       ],
       [
         <Text size={'sm'}>About:</Text>,
-        <Text className={classes.selectable}>
-          {description || 'No description found'}
-        </Text>
+        <Text className={styles.selectable}>{description || 'No description found'}</Text>
       ],
       [
         <Text size={'sm'}>Tags:</Text>,
@@ -74,7 +72,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
           {propertyOwner?.tags.map((tag) => (
             <Pill key={tag}>
               <Flex gap={2}>
-                <span className={classes.selectable}>{tag}</span>
+                <span className={styles.selectable}>{tag}</span>
                 <CopyToClipboardButton value={tag} />
               </Flex>
             </Pill>
@@ -85,7 +83,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
         <Text size={'sm'}>GUI:</Text>,
         <Text
           style={{ overflowWrap: 'anywhere' }}
-          className={classes.selectable}
+          className={styles.selectable}
           size={'sm'}
         >
           {guiPath}
@@ -98,7 +96,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
     body: [
       [
         <Text size={'sm'}>Name:</Text>,
-        <Text className={classes.selectable} size={'sm'}>
+        <Text className={styles.selectable} size={'sm'}>
           {documentation?.name}
         </Text>
       ],
@@ -106,7 +104,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
         <Text size={'sm'}>Path:</Text>,
         <Text
           style={{ overflowWrap: 'anywhere' }}
-          className={classes.selectable}
+          className={styles.selectable}
           size={'sm'}
         >
           {documentation?.path}
@@ -115,20 +113,20 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
       ],
       [
         <Text size={'sm'}>Author:</Text>,
-        <Text className={classes.selectable} size={'sm'}>
+        <Text className={styles.selectable} size={'sm'}>
           {documentation?.author}
         </Text>
       ],
       [
         <Text size={'sm'}>License:</Text>,
-        <Text className={classes.selectable} size={'sm'}>
+        <Text className={styles.selectable} size={'sm'}>
           {documentation?.license}
         </Text>
       ],
       [
         <Text size={'sm'}>About:</Text>,
         <Spoiler showLabel={'Show more'} hideLabel={'Hide details'}>
-          <Text className={classes.selectable} size={'sm'}>
+          <Text className={styles.selectable} size={'sm'}>
             {documentation?.description}
           </Text>
         </Spoiler>
@@ -140,7 +138,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
           hideLabel={'Hide details'}
           style={{ overflowWrap: 'anywhere' }}
         >
-          <Text className={classes.selectable} size={'sm'}>
+          <Text className={styles.selectable} size={'sm'}>
             {documentation?.identifiers?.map((id) => id).join(', ')}
           </Text>
         </Spoiler>
@@ -151,7 +149,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
           href={documentation?.url}
           target={'_blank'}
           style={{ overflowWrap: 'anywhere' }}
-          className={classes.selectable}
+          className={styles.selectable}
           size={'sm'}
         >
           {documentation?.url}
