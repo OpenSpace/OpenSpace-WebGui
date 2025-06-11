@@ -37,13 +37,35 @@ export function ScreenSpaceRenderablePanel() {
       Type: 'ScreenSpaceImageLocal'
     };
 
-    const isHttpSlide = slideURL.indexOf('http') === 0;
+    let urlOrPath = slideURL;
+    if (slideURL.startsWith("data:image/")) {
+      let url = slideURL;
+      // Someone tried to paste a base64 encoded image. It starts with the text:
+      // data:image/{png/jpeg};base,
+      // followed by the rest of the image data in base64 encoding
+      url = url.substring("data:image/".length);
+
+      let filetype = url.substring(0, url.indexOf(";"));
+      if (filetype !== "png" && filetype !== "jpeg") {
+        // signal error about unknown file type
+      }
+
+      // Remove the remaining header information, at which point it becomes the data
+      let data = url.substring(url.indexOf(",") + 1);
+
+      let tempPath = await luaApi?.absPath("${TEMPORARY}")
+      let localPath = `${tempPath}/screenspace-slide-${slideName}.${filetype}`;
+      await luaApi?.saveBase64File(localPath, data);
+      urlOrPath = localPath;
+    }
+
+    const isHttpSlide = urlOrPath.indexOf('http') === 0;
     if (isHttpSlide) {
       renderable.Type = 'ScreenSpaceImageOnline';
-      renderable.URL = slideURL;
+      renderable.URL = urlOrPath;
     } else {
       renderable.Type = 'ScreenSpaceImageLocal';
-      renderable.TexturePath = slideURL;
+      renderable.TexturePath = urlOrPath;
     }
 
     luaApi?.addScreenSpaceRenderable(renderable);
