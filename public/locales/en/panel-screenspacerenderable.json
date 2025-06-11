@@ -11,5 +11,9 @@
   "added-slides": {
     "empty-slides": "No active slides",
     "remove-slide-aria-label": "Remove slide"
+  },
+  "error": {
+    "title": "Erorr invalid base64 encoding format",
+    "description": "Cannot parse invalid format '{{format}}', supported base64 encoding images are 'png' and 'jpeg'"
   }
 }
