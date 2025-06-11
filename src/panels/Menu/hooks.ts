@@ -43,9 +43,9 @@ export function useStoredLayout() {
   const hasStartedBefore = useAppSelector((state) => state.profile.hasStartedBefore);
   const showGettingsStartedTour =
     hasStartedBefore === undefined ? false : !hasStartedBefore;
-  // Special handling of when the getting started tour should be shown
+  // Special handling to show getting started tour on startup if first time running
   useShowWindowOnStart(showGettingsStartedTour, menuItemsData.gettingStartedTour);
-  // Special handling of when a mission file is loaded
+  // Special handling to show mission panel if the started profile includes a mission file
   useShowWindowOnStart(hasMission, menuItemsData.mission);
 
   const { openSaveFileDialog, openLoadFileDialog } =
