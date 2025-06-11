@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Group, TextInput, Title, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -26,6 +27,7 @@ export function RecordSession() {
 
   const recordingState = useSubscribeToSessionRecording();
   const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('panel-sessionrecording', { keyPrefix: 'record-session' });
   const dispatch = useAppDispatch();
 
   const isIdle = recordingState === RecordingState.Idle;
@@ -34,12 +36,18 @@ export function RecordSession() {
 
   function startRecording(): void {
     if (filenameRecording === '') {
-      setFilenameState({ invalid: true, errorMessage: 'Filename cannot be empty' });
+      setFilenameState({
+        invalid: true,
+        errorMessage: t('error-messages.empty-filename')
+      });
       return;
     }
 
     if (!overwriteFile && !isFileUnique(filenameRecording, format)) {
-      setFilenameState({ invalid: true, errorMessage: 'Filename already exists' });
+      setFilenameState({
+        invalid: true,
+        errorMessage: t('error-messages.duplicate', { filename: filenameRecording })
+      });
       return;
     }
 
@@ -69,7 +77,7 @@ export function RecordSession() {
       const valueWithExtension = sessionRecordingFilenameWithExtension(value, format);
       setFilenameState({
         invalid: true,
-        errorMessage: `File '${valueWithExtension}' already exists`
+        errorMessage: t('error-messages.duplicate', { filename: valueWithExtension })
       });
     }
   }
@@ -89,7 +97,7 @@ export function RecordSession() {
 
       setFilenameState({
         invalid: true,
-        errorMessage: `File '${fileWithExtension}' already exists`
+        errorMessage: t('error-messages.duplicate', { filename: fileWithExtension })
       });
     }
   }
@@ -105,20 +113,16 @@ export function RecordSession() {
       </Title>
       <BoolInput
         value={format === 'Ascii'}
-        label={'Use text file format'}
+        label={t('format-checkbox-label')}
         onChange={onFormatChanged}
         mb={'sm'}
       />
       <Group align={'start'} gap={'xs'}>
-        <Tooltip
-          label={
-            'Automatically adds the correct file extension based on the selected file format'
-          }
-        >
+        <Tooltip label={t('filename-input.tooltip')}>
           <TextInput
             value={filenameRecording}
-            placeholder={'Enter recording filename'}
-            aria-label={'Enter recording filename'}
+            placeholder={t('filename-input.aria-label')}
+            aria-label={t('filename-input.aria-label')}
             onChange={(event) => onFilenameChanged(event.currentTarget.value)}
             error={filenameState.invalid && filenameState.errorMessage}
             disabled={!isIdle}
@@ -134,13 +138,12 @@ export function RecordSession() {
         )}
       </Group>
       <BoolInput
-        label={'Overwrite file'}
+        label={t('overwrite-file.label')}
         value={overwriteFile}
         onChange={onOverwriteFileChanged}
         disabled={isValidFilename}
         my={'sm'}
-        info={`If you enter a filename that already exists, this checkbox allows you to
-          overwrite the existing file.`}
+        info={t('overwrite-file.tooltip')}
       />
     </>
   );

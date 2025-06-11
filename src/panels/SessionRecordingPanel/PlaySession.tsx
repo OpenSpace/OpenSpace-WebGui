@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import {
   Alert,
   CheckIcon,
@@ -38,6 +39,7 @@ export function PlaySession() {
 
   const fileList = useAppSelector((state) => state.sessionRecording.files);
   const recordingState = useSubscribeToSessionRecording();
+  const { t } = useTranslation('panel-sessionrecording', { keyPrefix: 'play-session' });
   const dispatch = useAppDispatch();
 
   // Subscribe to Properties so that the middleware will be notified on updated values
@@ -128,78 +130,74 @@ export function PlaySession() {
       </Title>
       <Stack gap={'xs'}>
         <BoolInput
-          label={'Loop playback'}
+          label={t('loop-playback-label')}
           value={loopPlayback}
           onChange={onLoopPlaybackChange}
           disabled={!isIdle}
         />
         <Group>
           <BoolInput
-            label={'Output frames'}
+            label={t('output-frames.label')}
             value={shouldOutputFrames}
             onChange={onShouldUpdateFramesChange}
             disabled={!isIdle}
-            info={`If checked, the specified number of frames will be recorded as
-              screenshots and saved to disk. Per default, they are saved in the
-              user/screenshots folder. This feature can not be used together with
-              'Loop playback'`}
+            info={t('output-frames.tooltip')}
           />
           <NumericInput
             value={outputFramerate}
-            placeholder={'Framerate'}
-            aria-label={'Set framerate'}
+            placeholder={t('framerate.placeholder')}
+            aria-label={t('framerate.aria-label')}
             onEnter={(value) => setOutputFramerate(value)}
             w={80}
             disabled={!shouldOutputFrames || !isIdle}
           />
         </Group>
         <BoolInput
-          label={'Hide GUI on playback'}
+          label={t('hide-gui-on-playback.label')}
           value={hideGuiOnPlayback}
           onChange={(value) =>
             dispatch(updateSessionRecordingSettings({ hideGuiOnPlayback: value }))
           }
-          info={
-            'When checked, hides the GUI during playback. It will reappear after the recording ends.'
-          }
+          info={t('hide-gui-on-playback.tooltip')}
           disabled={isPlayingBack}
         />
         {isSettingsCombinationDangerous && (
-          <Alert variant={'light'} color={'orange'} title={'Warning'}>
-            <Text mb={'xs'}>
-              Caution: Enabling both{' '}
-              <Text fs={'italic'} span inherit>
-                Loop playback
-              </Text>{' '}
-              and{' '}
-              <Text fs={'italic'} span inherit>
-                Hide GUI
-              </Text>{' '}
-              will cause the interface to remain hidden indefinitely during playback. To
-              reveal the GUI again, press:
+          <Alert
+            variant={'light'}
+            color={'orange'}
+            title={t('settings-combination-warning.title')}
+          >
+            <Text>
+              <Trans
+                t={t}
+                i18nKey={'settings-combination-warning.description'}
+                components={{
+                  keybind: (
+                    <KeybindButtons
+                      selectedKey={toggleGuiKeybind?.key}
+                      modifiers={toggleGuiKeybind?.modifiers}
+                    />
+                  ),
+                  italic: <Text fs={'italic'} span inherit></Text>
+                }}
+              />
             </Text>
-            <KeybindButtons
-              selectedKey={toggleGuiKeybind?.key}
-              modifiers={toggleGuiKeybind?.modifiers}
-            />
           </Alert>
         )}
         <BoolInput
-          label={'Hide dashboards on playback'}
+          label={t('hide-dashboards-on-playback.label')}
           value={hideDashboardsOnPlayback}
           onChange={(value) =>
             dispatch(updateSessionRecordingSettings({ hideDashboardsOnPlayback: value }))
           }
-          info={
-            'When checked, hides the dashboard overlays during playback. They will reappear after the recording ends.'
-          }
+          info={t('hide-dashboards-on-playback.tooltip')}
           disabled={isPlayingBack}
         />
         <Group gap={'xs'} align={'flex-end'}>
           <Select
             value={playbackFile}
-            label={'Playback file'}
-            placeholder={'Select playback file'}
+            label={t('playback-file.label')}
+            placeholder={t('playback-file.placeholder')}
             data={fileListSelectData}
             renderOption={renderSelectOption}
             onChange={setPlaybackFile}

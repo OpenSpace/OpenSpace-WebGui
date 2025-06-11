@@ -1,0 +1,60 @@
+{
+  "button-labels": {
+    "play": "Play",
+    "pause": "Pause",
+    "resume": "Resume",
+    "stop-playback": "Stop Playback",
+    "record": "Record"
+  },
+  "play-session": {
+    "title": "Play",
+    "loop-playback-label": "Loop playback",
+    "output-frames": {
+      "label": "Output frames",
+      "tooltip": "If checked, the specified number of frames will be recorded as screenshots and saved to disk. Per default, they are saved in the user/screenshots folder. This feature can not be used together with '$t(play-session.loop-playback-label)'."
+    },
+    "framerate": {
+      "placeholder": "Framerate",
+      "aria-label": "Set framerate"
+    },
+    "hide-gui-on-playback": {
+      "label": "Hide GUI on playback",
+      "tooltip": "When checked, hides the GUI during playback. It will reappear after the recording ends."
+    },
+    "hide-dashboards-on-playback": {
+      "label": "Hide dashboards on playback",
+      "tooltip": "When checked, hides the dashboard overlays during playback. They will reappear after the recording ends."
+    },
+    "settings-combination-warning": {
+      "title": "Warning",
+      "description": "Enabling both <italic>$t(play-session.loop-playback-label)</italic> and <italic>$t(play-session.hide-gui-on-playback.label)</italic> will cause the interface to remain hidden indefinitely during playback. To reveal the GUI again, press: <keybind>"
+    },
+    "playback-file": {
+      "label": "Playback file",
+      "placeholder": "Select playback file"
+    }
+  },
+  "record-session": {
+    "title": "Record",
+    "format-checkbox-label": "Use text file format",
+    "filename-input": {
+      "aria-label": "Enter recording filename",
+      "tooltip": "Automatically adds the correct file extension based on the selected file format."
+    },
+    "overwrite-file": {
+      "label": "Overwrite file",
+      "tooltip": "If you enter a filename that already exists, this checkbox allows you to overwrite the existing file."
+    },
+    "error-messages": {
+      "empty-filename": "Filename cannot be empty",
+      "duplicate": "File '{{filename}}' already exists"
+    }
+  },
+  "recording-stop-button": {
+    "label": "Stop Recording",
+    "error-messages": {
+      "title": "Error stopping session recording",
+      "invalid-filepath": "Invalid filepath, cannot find filepath '{{filepath}}' for file: '{{file}}'"
+    }
+  }
+}
