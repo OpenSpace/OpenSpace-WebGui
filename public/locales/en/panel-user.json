@@ -1,0 +1,21 @@
+{
+  "local-panels": {
+    "title": "Open Local Panel",
+    "select-panel-placeholder": "Select panel",
+    "aria-label": "Open local panel"
+  },
+  "web-panels": {
+    "title": "Open From URL",
+    "input": {
+      "title": "Title (optional)",
+      "placeholder": "Panel title (optional)"
+    },
+    "url": {
+      "title": "URL",
+      "placeholder": "Panel URL (for example, https://example.com/)",
+      "aria-label": "Open web panel"
+    }
+  },
+  "bookmarks-title": "Bookmarks",
+  "recently-opened-urls-title": "Recently Opened URLs"
+}
