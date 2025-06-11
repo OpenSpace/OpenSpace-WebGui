@@ -18,15 +18,15 @@ export function useMenuItems() {
   return { menuItems, filteredMenuItems };
 }
 
-function useShowWindowOnStart(visible: boolean, menuItem: MenuItem) {
+function useShowWindowOnStart(shouldShow: boolean, menuItem: MenuItem) {
   const { addWindow } = useWindowLayoutProvider();
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     // Show the menu button in the taskbar
-    dispatch(setMenuItemVisible({ id: menuItem.componentID, visible: visible }));
-    if (visible) {
+    dispatch(setMenuItemVisible({ id: menuItem.componentID, visible: shouldShow }));
+    if (shouldShow) {
       // Open the window if it is visible
       addWindow(menuItem.content, {
         id: menuItem.componentID,
@@ -34,7 +34,7 @@ function useShowWindowOnStart(visible: boolean, menuItem: MenuItem) {
         position: menuItem.preferredPosition
       });
     }
-  }, [addWindow, dispatch, visible, menuItem]);
+  }, [addWindow, dispatch, shouldShow, menuItem]);
 }
 
 export function useStoredLayout() {
