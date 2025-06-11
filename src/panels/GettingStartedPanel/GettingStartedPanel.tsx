@@ -1,19 +1,28 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Group, Stack } from '@mantine/core';
 
 import { Layout } from '@/components/Layout/Layout';
 import { ArrowLeftIcon, ArrowRightIcon } from '@/icons/icons';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
-import { ContentSteps } from './Steps/ContentSteps';
-import { IntroductionSteps } from './Steps/IntroductionSteps';
-import { NavigationSteps } from './Steps/NavigationSteps';
-import { TimeSteps } from './Steps/TimeSteps';
+import { useContentSteps } from './Steps/ContentSteps';
+import { useIntroductionSteps } from './Steps/IntroductionSteps';
+import { useNavigationSteps } from './Steps/NavigationSteps';
+import { useTimeSteps } from './Steps/TimeSteps';
 import { Chapters } from './Chapters';
 
 export function GettingStartedPanel() {
   const [step, setStep] = useState(0);
   const { closeWindow } = useWindowLayoutProvider();
+
+  const IntroductionSteps = useIntroductionSteps();
+  const NavigationSteps = useNavigationSteps();
+  const TimeSteps = useTimeSteps();
+  const ContentSteps = useContentSteps();
+
+  const { t } = useTranslation('panel-gettingstartedtour');
+
   const Sections = [IntroductionSteps, NavigationSteps, TimeSteps, ContentSteps];
   const steps = Sections.flat();
 
@@ -63,14 +72,14 @@ export function GettingStartedPanel() {
             disabled={isFirstStep}
             leftSection={<ArrowLeftIcon />}
           >
-            Previous
+            {t('previous-button')}
           </Button>
           <Button
             onClick={onClickNext}
             variant={'filled'}
             rightSection={!isLastStep && <ArrowRightIcon />}
           >
-            {isLastStep ? 'Finish' : 'Next'}
+            {isLastStep ? t('finish-button') : t('next-button')}
           </Button>
         </Group>
       </Layout.FixedSection>

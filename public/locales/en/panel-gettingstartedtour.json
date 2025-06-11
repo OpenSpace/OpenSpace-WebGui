@@ -1,0 +1,77 @@
+{
+  "previous-button": "Previous",
+  "next-button": "Next",
+  "finish-button": "Finish",
+  "mouse-descriptions": {
+    "altitude": "The altitude is displayed at the top left corner of the screen. Right click and drag to go closer or further away.",
+    "navigation": "The latitude and longitude are displayed at the top left corner of the screen. Left click and drag to orbit."
+  },
+  "tasks": {
+
+  },
+  "steps": {
+    "content": {
+      "intro": {
+        "title": "Content",
+        "text": "In this chapter we will learn about the objects we can see in OpenSpace."
+      },
+      "scene-menu": {
+        "intro": "All the content in OpenSpace can be found in the Scene menu",
+        "search": "You can search for objects in the top search bar. The results are going to look like this",
+        "focus-info": "You can focus on objects by clicking the focus icon",
+        "focus-button-aria-label": "Focus object",
+        "checkbox-info": "To toggle the visibility, click on the checkbox next to the object name"
+      },
+      "visibility": {
+        "intro": "You can turn on and off content by checking and unchecking their corresponding checkboxes.",
+        "task": {
+          "label": "Turn off the trail of Earth",
+          "tip": "To toggle the visibility, click on the checkbox"
+        }
+      },
+      "appearance": {
+        "intro": "All objects have <italic>properties</italic>, which make it possible to alter the behavior or appearance of an object. These properties can include size, color, opacity, etc.",
+        "task": {
+          "label": "Change the color of the trail of Mars",
+          "tip": "The setting for the trail color can be found at:"
+        }
+      },
+      "surfaces": {
+        "intro": "Let's take a look at the surface of Mars."
+      },
+      "globebrowsing": {
+        "title": "Globe Browsing",
+        "intro": "The feature that enables us to look at maps on planets is called <italic>GlobeBrowsing</italic>.",
+        "about-maps": "Planets can have multiple map layers that show different data. Planets also have height maps, which show elevation. Different maps can have different resolutions.",
+        "about-layer-servers": "The default layers in OpenSpace are generally named after the satellite or instrument on a satellite that captured the map. The name [Utah] or [Sweden] states on which server the map is located. It is usually faster to choose the server closest to you."
+      },
+      "layers": {
+        "intro": "Go to the Mars layers:",
+        "intro-layer-ordering": "The layers are ordered, and the layer furthest down in the menu is shown at the top of the globe.",
+        "task": {
+          "label": "Turn on the ColorLayer '{{layerName}}'",
+          "tip": "You need access to the internet to display the maps. They might need a few seconds to load."
+        }
+      },
+      "explore-constellations": {
+        "intro": "All content is not turned on by default. Explore the menus and see what you can find!",
+        "task": {
+          "label": "Turn on Constellation Lines"
+        },
+        "look-around": "You might want to take a look around to look at the constellations!",
+        "look-around-mouse-hint": "Left click and drag while holding CTRL to look around freely."
+      },
+      "conclusion": {
+        "intro": "Well done! Now you are ready to explore the Universe on your own. Some ideas to get you started:",
+        "ideas": [
+          "Explore the surface of Mars",
+          "Go to your home town",
+          "Go to the end of the Universe",
+          "Turn on the Sun's orbit in the Milky Way"
+        ],
+        "links": "You can also browse more in-depth <tutorialsLink>video tutorials on YouTube</tutorialsLink>, or check out the <docsLink>documentation</docsLink>.",
+        "happy-exploring": "Happy exploring!"
+      }
+    }
+  }
+}
