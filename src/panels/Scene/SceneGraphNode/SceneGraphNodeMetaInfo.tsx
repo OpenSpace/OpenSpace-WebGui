@@ -47,32 +47,34 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   const mainTableData: TableData = {
     body: [
       [
-        'Identifier:',
+        <Text size={'sm'}>Identifier:</Text>,
         <Group justify={'space-between'}>
-          <Text className={classes.selectable}>{identifier}</Text>
+          <Text className={classes.selectable} size={'sm'}>
+            {identifier}
+          </Text>
           <CopyToClipboardButton value={identifier || ''} />
         </Group>
       ],
       [
-        'URI:',
+        <Text size={'sm'}>URI:</Text>,
         <Group justify={'space-between'}>
           <Code className={classes.selectable}>{uri}</Code>
           <CopyToClipboardButton value={uri} />
         </Group>
       ],
       [
-        'About:',
+        <Text size={'sm'}>About:</Text>,
         <Text className={classes.selectable}>
           {description || 'No description found'}
         </Text>
       ],
       [
-        'Tags:',
+        <Text size={'sm'}>Tags:</Text>,
         <Group gap={'xs'}>
           {propertyOwner?.tags.map((tag) => (
             <Pill key={tag}>
               <Flex gap={2}>
-                <Text className={classes.selectable}>{tag}</Text>
+                <span className={classes.selectable}>{tag}</span>
                 <CopyToClipboardButton value={tag} />
               </Flex>
             </Pill>
@@ -80,8 +82,12 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
         </Group>
       ],
       [
-        'GUI:',
-        <Text style={{ overflowWrap: 'anywhere' }} className={classes.selectable}>
+        <Text size={'sm'}>GUI:</Text>,
+        <Text
+          style={{ overflowWrap: 'anywhere' }}
+          className={classes.selectable}
+          size={'sm'}
+        >
           {guiPath}
         </Text>
       ]
@@ -90,41 +96,63 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
 
   const assetMetaTableData: TableData = {
     body: [
-      ['Name:', <Text className={classes.selectable}>{documentation?.name}</Text>],
       [
-        'Path:',
-        <Text style={{ overflowWrap: 'anywhere' }} className={classes.selectable}>
+        <Text size={'sm'}>Name:</Text>,
+        <Text className={classes.selectable} size={'sm'}>
+          {documentation?.name}
+        </Text>
+      ],
+      [
+        <Text size={'sm'}>Path:</Text>,
+        <Text
+          style={{ overflowWrap: 'anywhere' }}
+          className={classes.selectable}
+          size={'sm'}
+        >
           {documentation?.path}
         </Text>,
         documentation?.path && <CopyToClipboardButton value={documentation?.path || ''} />
       ],
-      ['Author:', <Text className={classes.selectable}>{documentation?.author}</Text>],
-      ['License:', <Text className={classes.selectable}>{documentation?.license}</Text>],
       [
-        'About:',
+        <Text size={'sm'}>Author:</Text>,
+        <Text className={classes.selectable} size={'sm'}>
+          {documentation?.author}
+        </Text>
+      ],
+      [
+        <Text size={'sm'}>License:</Text>,
+        <Text className={classes.selectable} size={'sm'}>
+          {documentation?.license}
+        </Text>
+      ],
+      [
+        <Text size={'sm'}>About:</Text>,
         <Spoiler showLabel={'Show more'} hideLabel={'Hide details'}>
-          <Text className={classes.selectable}>{documentation?.description}</Text>
+          <Text className={classes.selectable} size={'sm'}>
+            {documentation?.description}
+          </Text>
         </Spoiler>
       ],
       [
-        'Nodes in the asset:',
+        <Text size={'sm'}>Nodes in the asset:</Text>,
         <Spoiler
           showLabel={'Show more'}
           hideLabel={'Hide details'}
           style={{ overflowWrap: 'anywhere' }}
         >
-          <Text className={classes.selectable}>
+          <Text className={classes.selectable} size={'sm'}>
             {documentation?.identifiers?.map((id) => id).join(', ')}
           </Text>
         </Spoiler>
       ],
       [
-        'URL:',
+        <Text size={'sm'}>URL:</Text>,
         <Anchor
           href={documentation?.url}
           target={'_blank'}
           style={{ overflowWrap: 'anywhere' }}
           className={classes.selectable}
+          size={'sm'}
         >
           {documentation?.url}
         </Anchor>
