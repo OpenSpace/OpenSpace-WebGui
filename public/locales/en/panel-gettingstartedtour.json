@@ -6,8 +6,44 @@
     "altitude": "The altitude is displayed at the top left corner of the screen. Right click and drag to go closer or further away.",
     "navigation": "The latitude and longitude are displayed at the top left corner of the screen. Left click and drag to orbit."
   },
+  "components": {
+    "clear-sky-button": {
+      "info": "Is it hard to find? Try clearing the sky",
+      "label": "Clear Sky"
+    },
+    "current-altitude": {
+      "label": "Current altitude"
+    },
+    "current-focus": {
+      "label": "Current focus",
+      "none": "None"
+    },
+    "current-lat-long": {
+      "label": "Current position (lat, long)"
+    }
+  },
   "tasks": {
-
+    "altitude": {
+      "label-higher": "Go to an altitude higher than {{altitude}} on {{object}}",
+      "label-lower": "Go to an altitude lower than {{altitude}} on {{object}}"
+    },
+    "delta-time": {
+      "label": "Change the delta time for the simulation speed"
+    },
+    "year": {
+      "label": "Change the year"
+    },
+    "focus": {
+      "label": "Focus on {{object}}"
+    },
+    "navigation": {
+      "label-lat": "Go to {{latitude}}° latitude",
+      "label-long": "Go to {{longitude}}° longitude",
+      "label-lat-long": "Go to {{latitude}}° latitude and {{longitude}}° longitude"
+    },
+    "pause-time": {
+      "label": "Pause the time!"
+    }
   },
   "steps": {
     "introduction": {

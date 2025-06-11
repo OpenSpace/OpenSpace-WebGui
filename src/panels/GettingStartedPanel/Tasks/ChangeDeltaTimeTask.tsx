@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useAppSelector } from '@/redux/hooks';
 
 import { TaskCheckbox } from './Components/TaskCheckbox';
@@ -7,10 +9,9 @@ export function ChangeDeltaTimeTask() {
   const deltaTime = useAppSelector((state) => state.time.deltaTime);
   const taskCompleted = useTrackChange(deltaTime);
 
-  return (
-    <TaskCheckbox
-      taskCompleted={taskCompleted}
-      label={'Change the delta time for the simulation speed'}
-    />
-  );
+  const { t } = useTranslation('panel-gettingstartedtour', {
+    keyPrefix: 'tasks.delta-time'
+  });
+
+  return <TaskCheckbox taskCompleted={taskCompleted} label={t('label')} />;
 }

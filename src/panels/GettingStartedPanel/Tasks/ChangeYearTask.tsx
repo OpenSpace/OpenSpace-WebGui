@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 
 import { TaskCheckbox } from './Components/TaskCheckbox';
@@ -9,5 +11,9 @@ export function ChangeYearTask() {
 
   const taskCompleted = useTrackChange(year);
 
-  return <TaskCheckbox taskCompleted={taskCompleted} label={`Change the year`} />;
+  const { t } = useTranslation('panel-gettingstartedtour', {
+    keyPrefix: 'tasks.year'
+  });
+
+  return <TaskCheckbox taskCompleted={taskCompleted} label={t('label')} />;
 }
