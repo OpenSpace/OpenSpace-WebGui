@@ -1,4 +1,4 @@
-export const TimeLineConfig = {
+export const TimelineConfig = {
   // Set the dimensions and margins of the graph
   margin: {
     top: 10,

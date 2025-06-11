@@ -5,7 +5,7 @@ import { setMenuItemsOrder, setMenuItemVisible } from '@/redux/local/localSlice'
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { LogLevel } from '@/types/enums';
 import { useSaveLoadJsonFiles } from '@/util/fileIOhooks';
-import { menuItemsData } from '@/windowmanagement/data/MenuItems';
+import { MenuItem, menuItemsData } from '@/windowmanagement/data/MenuItems';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { TaskbarItemConfig } from './types';
@@ -18,31 +18,40 @@ export function useMenuItems() {
   return { menuItems, filteredMenuItems };
 }
 
+function useShowWindowOnStart(shouldShow: boolean, menuItem: MenuItem) {
+  const { addWindow } = useWindowLayoutProvider();
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    // Show the menu button in the taskbar
+    dispatch(setMenuItemVisible({ id: menuItem.componentID, visible: shouldShow }));
+    if (shouldShow) {
+      // Open the window if it is visible
+      addWindow(menuItem.content, {
+        id: menuItem.componentID,
+        title: menuItem.title,
+        position: menuItem.preferredPosition
+      });
+    }
+  }, [addWindow, dispatch, shouldShow, menuItem]);
+}
+
 export function useStoredLayout() {
   const menuItems = useAppSelector((state) => state.local.taskbarItems);
   const hasMission = useAppSelector((state) => state.missions.isInitialized);
-  const { addWindow } = useWindowLayoutProvider();
+  const hasStartedBefore = useAppSelector((state) => state.profile.hasStartedBefore);
+  const showGettingsStartedTour =
+    hasStartedBefore === undefined ? false : !hasStartedBefore;
+  // Special handling to show getting started tour on startup if first time running
+  useShowWindowOnStart(showGettingsStartedTour, menuItemsData.gettingStartedTour);
+  // Special handling to show mission panel if the started profile includes a mission file
+  useShowWindowOnStart(hasMission, menuItemsData.mission);
 
   const { openSaveFileDialog, openLoadFileDialog } =
     useSaveLoadJsonFiles(handlePickedFile);
 
   const dispatch = useAppDispatch();
-
-  // Special handling of when a mission file is loaded
-  useEffect(() => {
-    // Show the missions button in the taskbar if a mission is loaded
-    dispatch(
-      setMenuItemVisible({ id: menuItemsData.mission.componentID, visible: hasMission })
-    );
-    if (hasMission) {
-      // Open the missions window if a mission is loaded
-      addWindow(menuItemsData.mission.content, {
-        id: menuItemsData.mission.componentID,
-        title: menuItemsData.mission.title,
-        position: menuItemsData.mission.preferredPosition
-      });
-    }
-  }, [addWindow, dispatch, hasMission]);
 
   function handlePickedFile(content: JSON) {
     if (!content || Object.keys(content).length === 0) {

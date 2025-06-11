@@ -7,6 +7,7 @@ import {
   FeedbackIcon,
   InformationCircleOutlineIcon,
   OpenInBrowserIcon,
+  OpenWindowIcon,
   RouteIcon
 } from '@/icons/icons';
 import { useWebGuiUrl } from '@/util/networkingHooks';
@@ -45,12 +46,14 @@ export function HelpMenu() {
           }
           target={'_blank'}
           leftSection={<BookIcon />}
+          rightSection={<OpenWindowIcon />}
+          aria-description={'(Opens in new tab)'}
         >
           Open Web Tutorials
         </Menu.Item>
         <Menu.Item
-          leftSection={<RouteIcon style={{ transform: 'scale(-1)' }} />}
           onClick={openGettingStartedTour}
+          leftSection={<RouteIcon style={{ transform: 'scale(-1)' }} />}
         >
           Open Getting Started Tour
         </Menu.Item>
@@ -60,12 +63,19 @@ export function HelpMenu() {
           href={'http://data.openspaceproject.com/feedback'}
           target={'_blank'}
           leftSection={<FeedbackIcon />}
+          rightSection={<OpenWindowIcon />}
+          aria-description={'(Opens in new tab)'}
         >
           Send Feedback
         </Menu.Item>
         <Menu.Divider />
 
-        <Menu.Item onClick={openGuiInBrowser} leftSection={<OpenInBrowserIcon />}>
+        <Menu.Item
+          onClick={openGuiInBrowser}
+          leftSection={<OpenInBrowserIcon />}
+          rightSection={<OpenWindowIcon />}
+          aria-description={'(Opens in new tab)'}
+        >
           Open GUI in Browser
         </Menu.Item>
 

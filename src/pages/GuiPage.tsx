@@ -2,14 +2,14 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 
-import { FallbackRender } from '@/components/ErrorFallback/FallbackRender';
+import { fallbackRender } from '@/components/ErrorFallback/FallbackRender';
 import { WindowLayout } from '@/windowmanagement/WindowLayout/WindowLayout';
 import { WindowLayoutProvider } from '@/windowmanagement/WindowLayout/WindowLayoutProvider';
 
 export function GuiPage() {
   return (
     <ErrorBoundary
-      fallbackRender={FallbackRender}
+      fallbackRender={fallbackRender}
       onReset={() => window.location.reload()}
     >
       <Notifications autoClose={6000} />

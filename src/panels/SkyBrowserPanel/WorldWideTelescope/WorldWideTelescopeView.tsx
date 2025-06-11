@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { LoadingOverlay, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -30,6 +31,7 @@ export function WorldWideTelescopeView() {
 
   const luaApi = useOpenSpaceApi();
   const { visible, type: overlayType } = useOverlayStatus();
+  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'wwt.telescope-view' });
 
   // A bunch of hooks that pass messages to WWT when our redux state changes
   useUpdateAim(id);
@@ -49,13 +51,13 @@ export function WorldWideTelescopeView() {
   if (nBrowsers === 0) {
     return (
       <Text ta={'center'} m={'lg'}>
-        There are no SkyBrowsers. Create one in the SkyBrowser panel.
+        {t('no-skybrowser')}
       </Text>
     );
   }
 
   if (id === '') {
-    return <Text m={'lg'}>No browser selected</Text>;
+    return <Text m={'lg'}>{t('no-id')}</Text>;
   }
 
   return (
@@ -69,12 +71,11 @@ export function WorldWideTelescopeView() {
         transitionProps={{ transition: 'fade', duration: 500 }}
       />
       <div
-        aria-label={'Dragging area for WorldWideTelescope'}
+        aria-label={t('drag-area-aria-label')}
         style={{
           cursor: isDragging ? 'grabbing' : 'grab',
-          padding: '0px',
-          margin: '0px',
-          position: 'absolute'
+          height: '100%',
+          width: '100%'
         }}
         className={styles.dragArea}
         {...bindGestures()}
@@ -87,15 +88,15 @@ export function WorldWideTelescopeView() {
           src={'http://wwt.openspaceproject.com/1/gui/'}
           allow={'accelerometer; clipboard-write; gyroscope'}
           allowFullScreen
-          height={height}
-          width={width}
+          height={'100%'}
+          width={'100%'}
           style={{
             border: '0px solid transparent',
             pointerEvents: 'none',
             colorScheme: 'normal'
           }}
         >
-          <p>ERROR: cannot display AAS WorldWide Telescope research app!</p>
+          <p>{t('error')}</p>
         </iframe>
       </div>
     </>

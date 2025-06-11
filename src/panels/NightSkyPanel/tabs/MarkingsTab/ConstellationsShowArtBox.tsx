@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Checkbox } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -22,6 +23,9 @@ export function ConstellationsShowArtBox({ title, icon }: Props) {
   const uri = sgnRenderableUri(sgnUri('ImageConstellation-Ori'));
   const propertyOwner = usePropertyOwner(uri);
   const { isVisible } = usePropertyOwnerVisibility(uri);
+  const { t } = useTranslation('panel-nightsky', {
+    keyPrefix: 'markings.constellations'
+  });
 
   function checkboxChange(checked: boolean) {
     if (checked) {
@@ -37,7 +41,7 @@ export function ConstellationsShowArtBox({ title, icon }: Props) {
         <Checkbox
           onChange={(event) => checkboxChange(event.currentTarget.checked)}
           checked={isVisible}
-          aria-label={'Show constellation art'}
+          aria-label={t('aria-labels.art')}
         />
       }
       title={title}

@@ -47,20 +47,24 @@ export function useProperty<T extends PropertyTypeKey>(
     );
   }
 
+  useSubscribeToProperty(uri);
   const dispatch = useAppDispatch();
   // Subscribe to the property
   const ThrottleMs = 1000 / 60;
-
-  useEffect(() => {
-    dispatch(subscribeToProperty({ uri }));
-    return () => {
-      dispatch(unsubscribeToProperty({ uri }));
-    };
-  }, [dispatch, uri]);
 
   const setValue = useThrottledCallback((value: PropertyOrPropertyGroup<T>['value']) => {
     dispatch(setPropertyValue({ uri, value }));
   }, ThrottleMs);
 
   return [prop?.value, setValue, prop?.metaData];
+}
+
+export function useSubscribeToProperty(uri: Uri) {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(subscribeToProperty({ uri }));
+    return () => {
+      dispatch(unsubscribeToProperty({ uri }));
+    };
+  }, [dispatch, uri]);
 }

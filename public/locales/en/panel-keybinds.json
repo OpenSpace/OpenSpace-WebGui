@@ -1,0 +1,24 @@
+{
+  "keyboard-view-tab-title": "Keyboard View",
+  "list-view-tab-title": "List View",
+  "keybind-info": {
+    "gui-path": "GUI Path",
+    "identifier": "Identifier",
+    "info": "Info",
+    "is-local": {
+      "title": "Is Local",
+      "yes": "Yes",
+      "no": "No"
+    }
+  },
+  "keyboard-layout": {
+    "selected-keybind-title": "Selected Keybind",
+    "mapped-actions-title": "Mapped Actions",
+    "no-mapped-action-text": "No action is associated with this keybind.",
+    "no-key-selected-text": "No key selected. Select a key to see its action."
+  },
+  "list-layout": {
+    "filter-list-placeholder": "Search for a keybind...",
+    "selected-placeholder": "Select a keybind to see more info"
+  }
+}

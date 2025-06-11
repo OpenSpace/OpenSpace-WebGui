@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Group, Title } from '@mantine/core';
 
 import { BoolInput } from '@/components/Input/BoolInput';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 
-import { TimeLine } from './TimeLine/TimeLine';
+import { Timeline } from './Timeline/Timeline';
 import { MissionPhase } from './MissionPhase';
 import { DisplayedPhase, DisplayType, Phase } from './types';
 
@@ -23,6 +24,7 @@ export function MissionContent({ missionOverview }: Props) {
     type: undefined,
     data: undefined
   });
+  const { t } = useTranslation('panel-missions', { keyPrefix: 'mission-content' });
 
   // Reset phases when selected mission is changed
   useEffect(() => {
@@ -121,7 +123,7 @@ export function MissionContent({ missionOverview }: Props) {
 
   return (
     <Group wrap={'nowrap'} align={'start'} gap={'xs'}>
-      <TimeLine
+      <Timeline
         allPhasesNested={allPhasesNested}
         displayedPhase={displayedPhase}
         missionOverview={missionOverview}
@@ -135,15 +137,14 @@ export function MissionContent({ missionOverview }: Props) {
               setPhaseManually({ type: DisplayType.Overview, data: missionOverview })
             }
           >
-            Overview
+            {t('overview')}
           </Button>
         </Group>
         <BoolInput
-          label={'Display current phase'}
+          label={t('display-current-mission-phase.label')}
           value={displayCurrentPhase}
           onChange={toggleCurrentPhase}
-          info={`If enabled, the mission phase that is currently happening will be displayed.
-            It will update as time passes.`}
+          info={t('display-current-mission-phase.tooltip')}
           mb={'xs'}
         />
         {displayedPhase.data ? (
@@ -152,7 +153,7 @@ export function MissionContent({ missionOverview }: Props) {
             missionOverview={missionOverview}
           />
         ) : (
-          'No data for the current time range'
+          t('out-of-range-data')
         )}
       </ScrollBox>
     </Group>
