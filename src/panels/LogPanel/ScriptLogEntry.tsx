@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Code, Group, Text, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -16,6 +17,7 @@ interface Props {
 export function ScriptLogEntry({ script, index, isSelected, onToggleSelection }: Props) {
   const luaApi = useOpenSpaceApi();
   const [expanded, setExpanded] = useState(false);
+  const { t } = useTranslation('panel-scriptlog', { keyPrefix: 'script-entry' });
 
   function runScript() {
     luaApi?.scheduleScript(script, 0);
@@ -25,7 +27,7 @@ export function ScriptLogEntry({ script, index, isSelected, onToggleSelection }:
     <Group wrap={'nowrap'} align={'start'} gap={'xs'}>
       <BoolInput
         value={isSelected}
-        ariaLabel={`Select script ${index}`}
+        ariaLabel={`${t('aria-labels.select-script')}: ${index}`}
         onChange={() => onToggleSelection(index)}
       />
       <Code color={'dark.7'} w={'100%'}>
@@ -39,12 +41,12 @@ export function ScriptLogEntry({ script, index, isSelected, onToggleSelection }:
         </Text>
       </Code>
       <CopyToClipboardButton value={script} />
-      <Tooltip label={'Rerun script'}>
+      <Tooltip label={t('aria-labels.select-script')}>
         <ActionIcon
           onClick={runScript}
           variant={'light'}
           color={'green'}
-          aria-label={'Rerun script'}
+          aria-label={t('aria-labels.select-script')}
           size={'sm'}
         >
           <RerunScriptIcon />
