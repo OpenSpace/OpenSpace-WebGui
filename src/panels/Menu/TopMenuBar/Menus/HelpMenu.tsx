@@ -2,7 +2,6 @@ import { Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import { About } from '@/components/About/About';
-import { useProperty } from '@/hooks/properties';
 import {
   BookIcon,
   FeedbackIcon,
@@ -10,6 +9,7 @@ import {
   OpenInBrowserIcon,
   RouteIcon
 } from '@/icons/icons';
+import { useWebGuiUrl } from '@/util/networkingHooks';
 import { GettingStartedPanel } from '@/windowmanagement/data/LazyLoads';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
@@ -17,17 +17,12 @@ import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function HelpMenu() {
   const [showAbout, { open, close }] = useDisclosure(false);
+  const webGuiUrl = useWebGuiUrl();
 
-  const [portProperty] = useProperty('IntProperty', 'Modules.WebGui.Port');
-  const [addressProperty] = useProperty('StringProperty', 'Modules.WebGui.Address');
   const { addWindow } = useWindowLayoutProvider();
 
   function openGuiInBrowser() {
-    const port = portProperty ?? 4680;
-    const address = addressProperty ?? 'localhost';
-
-    const link = `http://${address}:${port}`;
-    window.open(link, '_blank');
+    window.open(webGuiUrl, '_blank');
   }
 
   function openGettingStartedTour() {

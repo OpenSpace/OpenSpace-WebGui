@@ -10,6 +10,7 @@ import {
   updateRecentWebpanels
 } from '@/redux/userpanels/userPanelsSlice';
 import { UserPanelsFolderKey, WindowsKey } from '@/util/keys';
+import { useWebGuiUrl } from '@/util/networkingHooks';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { UserPanel } from './UserPanel';
@@ -26,12 +27,17 @@ export function UserPanelsPanel() {
   const {
     isInitialized: isDataInitialized,
     addedWebpanels: addedPanels,
-    panels: localPanels,
-    bookmarks
+    panels: localPanels
   } = useAppSelector((state) => state.userPanels);
+  const webGuiUrl = useWebGuiUrl();
 
   const { t } = useTranslation('panel-user');
   const dispatch = useAppDispatch();
+
+  const bookmarks = [
+    { title: 'OpenSpace Hub', src: 'https://hub.openspaceproject.com/' },
+    { title: 'ShowComposer', src: `${webGuiUrl}/showcomposer` }
+  ];
 
   useEffect(() => {
     // Collect all folder paths in the USER folder

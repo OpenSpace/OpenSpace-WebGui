@@ -9,14 +9,12 @@ export interface UserPanelsState {
   isInitialized: boolean;
   panels: string[];
   addedWebpanels: WebPanel[];
-  bookmarks: WebPanel[];
 }
 
 const initialState: UserPanelsState = {
   isInitialized: false,
   panels: [],
-  addedWebpanels: [],
-  bookmarks: [{ title: 'OpenSpace Hub', src: 'https://hub.openspaceproject.com/' }]
+  addedWebpanels: []
 };
 
 export const userPanelsSlice = createSlice({
@@ -42,24 +40,10 @@ export const userPanelsSlice = createSlice({
       // Add to front
       state.addedWebpanels.splice(0, 0, action.payload);
       return state;
-    },
-    addShowcomposerBookmark: (
-      state,
-      action: PayloadAction<{ address: string; port: number }>
-    ) => {
-      if (state.bookmarks.find((bookmark) => bookmark.title === 'Showcomposer')) {
-        return state; // Showcomposer bookmark already exists
-      } else {
-        const { address, port } = action.payload;
-        const src = `http://${address}:${port}/showcomposer`;
-        state.bookmarks.push({ title: 'Showcomposer', src });
-        return state;
-      }
     }
   }
 });
 
 // Action creators are generated for each case reducer function, replaces the `Actions/index.js`
-export const { intializeUserPanels, updateRecentWebpanels, addShowcomposerBookmark } =
-  userPanelsSlice.actions;
+export const { intializeUserPanels, updateRecentWebpanels } = userPanelsSlice.actions;
 export const userPanelsReducer = userPanelsSlice.reducer;
