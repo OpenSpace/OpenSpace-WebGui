@@ -10,6 +10,93 @@
 
   },
   "steps": {
+    "introduction": {
+      "welcome": "Welcome to OpenSpace! Let's get started with exploring the observable Universe.",
+      "topics": {
+        "intro": "In this tutorial we will cover the following topics",
+        "sections": {
+          "navigation": "Navigation",
+          "time": "Time",
+          "content": "Content"
+        }
+      },
+      "about-tasks": {
+        "intro": "In each section, there will be some tasks designed to teach you how to use OpenSpace. Once you have fulfilled the task, the checkbox will be marked as completed.",
+        "task-label-example": "This is a task!",
+        "task-label-complete": "This is a completed task!"
+      },
+      "lets-go": "Let's dive right in!"
+    },
+    "navigation": {
+      "intro": {
+        "title": "Navigation",
+        "text": "In this chapter we will learn how to navigate in OpenSpace."
+      },
+      "zoom-in": {
+        "intro": "Let's go closer to Earth!"
+      },
+      "go-to-greenland": {
+        "intro": "Now let's go to Greenland! Rotate around the Earth until you find it."
+      },
+      "roll-camera": {
+        "intro": "You have two options for rolling the camera to change the orientation",
+        "option-scroll-wheel": "Scroll click and drag",
+        "option-shift": "Left click and drag + SHIFT"
+      },
+      "look-around": {
+        "intro": "To look around freely, press <keybind>ctrl</keybind> and left click drag"
+      },
+      "change-focus": {
+        "intro": "Now it's time to look around in space!",
+        "task": {
+          "tip": "Open the navigation menu and click on the \"Focus\" button to focus on the Moon. The navigation menu can be found in the bottom bar"
+        }
+      },
+      "move-closer": {
+        "intro": "Now that we are focused on the Moon, let's move closer to it."
+      },
+      "conclusion": {
+        "intro": "Great! You have learned how to navigate in OpenSpace. You can now zoom in and out, rotate around objects, change focus, and look around freely.",
+        "next-step": "Now let's learn how to control time."
+      }
+    },
+    "time": {
+      "intro": {
+        "title": "Time",
+        "text": "In this chapter we will learn how to change the time in OpenSpace."
+      },
+      "view-solar-system": {
+        "intro": "But first, let's move to a good viewing point. Let's take a look at the Solar System from above."
+      },
+      "change-time": {
+        "intro": "Ok, now we can start changing the time. You can view the past as well as the future. Let's start by opening the Time Panel and changing the year.",
+        "task": {
+          "tip-time-panel": "To open the Time Panel, click on this icon in the taskbar",
+          "tip-year-input": "Change the year by changing the value of the year in the time input"
+        },
+        "hint-reset-time": "You can reset the time by pressing \"Now\""
+      },
+      "change-speed": {
+        "intro": " You can also change how fast time is playing. This is known as the <italic>simulation speed</italic> of the application, and the time increment is called the <italic>delta time</italic>.",
+        "task": {
+          "tip": "These buttons in the Time Panel adjust the delta time",
+          "rewind-aria-label": "Rewind time",
+          "forward-aria-label": "Fast forward time"
+        },
+        "hint-reset-speed": "You can reset the simulation speed by pressing \"Real Time\""
+      },
+      "pause-time": {
+        "intro": "You can also pause the time.",
+        "task": {
+          "tip": "In the Time Panel, click the pause button <pauseButton/> to pause time.to pause time."
+        },
+        "hint-speed-not-zero": "Note: simulation speed is not set to 0 when you pause."
+      },
+      "conclusion": {
+        "intro": "Fantastic! Now you can move around in both space and time.",
+        "next-step": "Let's look at some content!"
+      }
+    },
     "content": {
       "intro": {
         "title": "Content",

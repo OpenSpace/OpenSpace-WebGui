@@ -1,4 +1,5 @@
-import { Center, Group, Kbd, List, Text, Title } from '@mantine/core';
+import { Trans, useTranslation } from 'react-i18next';
+import { Center, Group, Kbd, List, Space, Text, Title } from '@mantine/core';
 
 import { NavigationPanelMenuButtonContent } from '@/panels/NavigationPanel/MenuButton/NavigationPanelMenuButtonContent';
 
@@ -17,35 +18,41 @@ import { NavigationTask } from '../Tasks/NavigationTask';
 import { ClickBlocker } from './ClickBlocker';
 
 export function useNavigationSteps(): React.ReactNode[] {
+  const { t } = useTranslation('panel-gettingstartedtour', {
+    keyPrefix: 'steps.navigation'
+  });
+
   return [
     <>
-      <Title>Navigation</Title>
-      In this chapter we will learn about navigating in OpenSpace.
+      <Title>{t('intro.title')}</Title>
+      <Text>{t('intro.text')}</Text>
     </>,
     <>
-      <Text>Let's go closer to Earth!</Text>
+      <Text>{t('zoom-in.intro')}</Text>
+      {/* @TODO (2025-06-11) translate altitude unit */}
       <AltitudeTask anchor={'Earth'} altitude={3500} unit={'km'} compare={'lower'} />
       <CurrentAltitude />
       <AltitudeMouse />
     </>,
     <>
-      <Text>Let's go to Greenland!</Text>
+      <Text>{t('go-to-greenland.intro')}</Text>
       <NavigationTask
         anchor={'Earth'}
         lat={{ value: 72, min: 55, max: 110 }}
         long={{ value: -44, min: -70, max: -20 }}
       />
       <CurrentLatLong />
-      <ClearSkyButton />
       <NavigationMouse />
+      <Space mt={'sm'} />
+      <ClearSkyButton />
     </>,
     <>
-      <Text>You have two options for rolling the camera:</Text>
+      <Text>{t('roll-camera.intro')}:</Text>
       <List type={'ordered'} withPadding w={'100%'}>
         <List.Item>
           <Group justify={'space-between'}>
             <Text fs={'italic'} flex={1}>
-              Scroll click and drag
+              {t('roll-camera.option-scroll-wheel')}
             </Text>
             <Mouse mouseClick={'scroll'} arrowDir={'horizontal'} m={'lg'} />
           </Group>
@@ -53,7 +60,7 @@ export function useNavigationSteps(): React.ReactNode[] {
         <List.Item>
           <Group>
             <Text flex={1} fs={'italic'}>
-              Left click and drag + shift
+              {t('roll-camera.option-shift')}
             </Text>
             <MouseWithModifier
               mouseClick={'left'}
@@ -66,7 +73,12 @@ export function useNavigationSteps(): React.ReactNode[] {
     </>,
     <>
       <Text>
-        To look around freely, press <Kbd mx={'xs'}>ctrl</Kbd> and left click drag:
+        <Trans
+          t={t}
+          i18nKey={'look-around.intro'}
+          components={{ keybind: <Kbd mx={'xs'} /> }}
+        />
+        :
       </Text>
       <Center>
         <MouseWithModifier
@@ -77,25 +89,24 @@ export function useNavigationSteps(): React.ReactNode[] {
       </Center>
     </>,
     <>
-      <Text>Now it's time to look around in space!</Text>
+      <Text>{t('change-focus.intro')}</Text>
       <FocusTask anchor={'Moon'} />
       <CurrentFocus />
-      <Text>
-        Open the navigation menu and click on the "Focus" button to focus on the Moon. The
-        navigation menu can be found in the bottom bar:
-        <ClickBlocker p={'xs'} withBorder>
-          <NavigationPanelMenuButtonContent />
-        </ClickBlocker>
-      </Text>
+      <Text>{t('change-focus.task.tip')}:</Text>
+      <ClickBlocker p={'xs'} withBorder>
+        <NavigationPanelMenuButtonContent />
+      </ClickBlocker>
     </>,
     <>
-      <Text>Let's go closer to the Moon!</Text>
+      <Text>{t('move-closer.intro')}</Text>
+      {/* @TODO (2025-06-11) translate altitude unit */}
       <AltitudeTask anchor={'Moon'} altitude={3500} unit={'km'} compare={'lower'} />
       <CurrentFocus />
       <CurrentAltitude />
     </>,
     <>
-      Great! Now you now how to navigate in OpenSpace. Let's move on to changing the time!
+      <Text>{t('conclusion.intro')}</Text>
+      <Text>{t('conclusion.next-step')}</Text>
     </>
   ];
 }
