@@ -178,7 +178,7 @@ export function PlaySession() {
                       modifiers={toggleGuiKeybind?.modifiers}
                     />
                   ),
-                  italic: <Text fs={'italic'} span inherit></Text>
+                  italic: <Text fs={'italic'} span inherit />
                 }}
               />
             </Text>
