@@ -2,7 +2,7 @@
  *                                                                                       *
  * OpenSpace-api-js                                                                      *
  *                                                                                       *
- * Copyright (c) 2024-2024                                                               *
+ * Copyright (c) 2024-2025                                                               *
  *                                                                                       *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this  *
  * software and associated documentation files (the "Software"), to deal in the Software *
@@ -219,7 +219,10 @@ type custompropertytype = any;
 type integer = number;
 type vec2 = [number, number];
 type vec3 = [number, number, number];
+type vec4 = [number, number, number, number];
+type mat2x2 = { 1: number; 2: number; 3: number; 4: number; };
 type mat3x3 = { 1: number; 2: number; 3: number; 4: number; 5: number;6: number; 7: number; 8: number; 9: number; };
+type mat4x4 = { 1: number; 2: number; 3: number; 4: number; 5: number;6: number; 7: number; 8: number; 9: number; 10: number; 11: number;12: number; 13: number; 14: number; 15: number; 16: number; };
 type translation = object;
 type spicekernel = path;
 
@@ -390,9 +393,15 @@ export interface openspace {
    */
   isMaster: () => Promise<boolean>
   /**
-   * Returns the strings of the script that are bound to the passed key and whether they were local or remote key binds.
+   * Returns the identifiers of the action that are bound to the passed key and whether they were local or remote key binds. If no key is provided, all bound keybindings are returned instead.
+
+\\param key The key for which to return the keybindings. If no key is provided, all keybindings are returned
    */
-  keyBindings: (key: string) => Promise<string[]>
+  keyBindings: (key?: string) => Promise<string[]>
+  /**
+   * Returns the keybinds to which the provided action is bound. As actions can be bound to multiple keys, this function returns a list of all keys
+   */
+  keyBindingsForAction: (action: string) => Promise<string[]>
   /**
    * Returns the current layer server from the configuration
    */
@@ -1041,7 +1050,7 @@ The format and column names in the CSV should be the same as the ones provided b
 
 When dowloading the data from the archive we recommend including all columns, since a few required ones are not selected by default.
 
-\\param csvFile A path to the CSV file to load the data from.
+\\param csvFile A path to the CSV file to load the data from
 
 \\return A list of objects of the type [ExoplanetSystemData](#exoplanets_exoplanet_system_data), that can be used to create the scene graph nodes for the exoplanet systems
    */
@@ -1049,13 +1058,13 @@ When dowloading the data from the archive we recommend including all columns, si
   /**
    * Remove a loaded exoplanet system.
 
-\\param starName The name of the host star for the system to remove.
+\\param starName The name of the host star for the system to remove
    */
   removeExoplanetSystem: (starName: string) => Promise<void>
   /**
    * Return an object containing the information needed to add a specific exoplanet system. The data is retrieved from the module's prepared datafile for exoplanets. This file is in a binary format, for fast retrieval during runtime.
 
-\\param starName The name of the star to get the information for.
+\\param starName The name of the star to get the information for
 
 \\return An object of the type [ExoplanetSystemData](#exoplanets_exoplanet_system_data) that can be used to create the scene graph nodes for the exoplanet system
    */
@@ -1571,7 +1580,7 @@ This is done by triggering another script that handles the logic.
   /**
    * Fade rendering to black, jump to the specified node, and then fade in. This is done by triggering another script that handles the logic.
 
-\\param navigationState A [NavigationState](#core_navigation_state) to jump to. \\param useTimeStamp if true, and the provided NavigationState includes a timestamp, the time will be set as well. \\param fadeDuration An optional duration for the fading. If not included, the property in Navigation Handler will be used.
+\\param navigationState A [NavigationState](#core_navigation_state) to jump to \\param useTimeStamp if true, and the provided NavigationState includes a timestamp, the time will be set as well \\param fadeDuration An optional duration for the fading. If not included, the property in Navigation Handler will be used
    */
   jumpToNavigationState: (navigationState: table, useTimeStamp?: boolean, fadeDuration?: number) => Promise<void>
   /**
@@ -1643,13 +1652,13 @@ Per default, the camera will retarget to center the focus node in the view. The 
   /**
    * Fly linearly to a specific distance in relation to the focus node.
 
-\\param distance The distance to fly to, in meters above the bounding sphere. \\param duration An optional duration for the motion to take, in seconds.
+\\param distance The distance to fly to, in meters above the bounding sphere \\param duration An optional duration for the motion to take, in seconds
    */
   zoomToDistance: (distance: number, duration?: number) => Promise<void>
   /**
    * Fly linearly to a specific distance in relation to the focus node, given as a relative value based on the size of the object rather than in meters.
 
-\\param distance The distance to fly to, given as a multiple of the bounding sphere of the current focus node bounding sphere. A value of 1 will result in a position at a distance of one times the size of the bounding sphere away from the object. \\param duration An optional duration for the motion, in seconds.
+\\param distance The distance to fly to, given as a multiple of the bounding sphere of the current focus node bounding sphere. A value of 1 will result in a position at a distance of one times the size of the bounding sphere away from the object \\param duration An optional duration for the motion, in seconds
    */
   zoomToDistanceRelative: (distance: number, duration?: number) => Promise<void>
   /**
