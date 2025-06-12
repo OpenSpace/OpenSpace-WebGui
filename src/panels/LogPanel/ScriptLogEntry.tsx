@@ -17,7 +17,7 @@ interface Props {
 export function ScriptLogEntry({ script, index, isSelected, onToggleSelection }: Props) {
   const luaApi = useOpenSpaceApi();
   const [expanded, setExpanded] = useState(false);
-  const { t } = useTranslation('panel-scriptlog', { keyPrefix: 'script-entry' });
+  const { t } = useTranslation('panel-scriptlog', { keyPrefix: 'script-log-entry' });
 
   function runScript() {
     luaApi?.scheduleScript(script, 0);
@@ -41,12 +41,12 @@ export function ScriptLogEntry({ script, index, isSelected, onToggleSelection }:
         </Text>
       </Code>
       <CopyToClipboardButton value={script} />
-      <Tooltip label={t('aria-labels.select-script')}>
+      <Tooltip label={t('aria-labels.rerun-script')}>
         <ActionIcon
           onClick={runScript}
           variant={'light'}
           color={'green'}
-          aria-label={t('aria-labels.select-script')}
+          aria-label={t('aria-labels.rerun-script')}
           size={'sm'}
         >
           <RerunScriptIcon />
