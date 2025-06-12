@@ -93,7 +93,9 @@ export const ContentSteps = [
       path={[
         <>
           <SceneIcon size={IconSize.sm} />
-          <Text ml={'xs'}>Scene</Text>
+          <Text span ml={'xs'}>
+            Scene
+          </Text>
         </>,
         'Mars Trail',
         'Renderable',
@@ -132,7 +134,9 @@ export const ContentSteps = [
       path={[
         <>
           <SceneIcon size={IconSize.sm} />
-          <Text ml={'xs'}>Scene</Text>
+          <Text span ml={'xs'}>
+            Scene
+          </Text>
         </>,
         'Mars',
         'Renderable',
