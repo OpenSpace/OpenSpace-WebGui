@@ -5,8 +5,10 @@ import { TaskCheckbox } from '../Tasks/Components/TaskCheckbox';
 
 export const IntroductionSteps: React.ReactNode[] = [
   <Stack align={'center'}>
-    <Image src={'openspace-logo.png'} w={200} h={300} my={'lg'} />
-    <Text size={'lg'}>Let's get started with exploring the observable Universe!</Text>
+    <Image src={'/images/openspace-logo.png'} h={180} fit={'contain'} my={'lg'} />
+    <Text size={'lg'} ta={'center'}>
+      Let's get started with exploring the observable Universe!
+    </Text>
   </Stack>,
   <>
     <Text>In this tutorial we will cover the following topics:</Text>
