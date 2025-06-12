@@ -9,5 +9,11 @@ export function useTrackChange<T>(value: T | undefined) {
     }
   }, [value, startValue]);
 
+  if (Array.isArray(value) && Array.isArray(startValue)) {
+    return (
+      startValue !== undefined &&
+      (startValue.length !== value.length || startValue.some((v, i) => v !== value[i]))
+    );
+  }
   return startValue !== undefined && startValue !== value;
 }
