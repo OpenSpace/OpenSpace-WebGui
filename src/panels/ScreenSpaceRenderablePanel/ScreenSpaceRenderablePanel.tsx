@@ -6,7 +6,9 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { AddPhotoIcon, MinusIcon } from '@/icons/icons';
-import { IconSize } from '@/types/enums';
+import { useAppDispatch } from '@/redux/hooks';
+import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
+import { IconSize, LogLevel } from '@/types/enums';
 import { Identifier, Uri } from '@/types/types';
 import { ScreenSpaceKey } from '@/util/keys';
 
@@ -24,6 +26,7 @@ export function ScreenSpaceRenderablePanel() {
   const luaApi = useOpenSpaceApi();
   const screenSpacePropertyOwner = usePropertyOwner(ScreenSpaceKey);
   const { t } = useTranslation('panel-screenspacerenderable');
+  const dispatch = useAppDispatch();
 
   const renderables = screenSpacePropertyOwner?.subowners ?? [];
   const isButtonDisabled = !slideName || !slideURL;
@@ -37,13 +40,43 @@ export function ScreenSpaceRenderablePanel() {
       Type: 'ScreenSpaceImageLocal'
     };
 
-    const isHttpSlide = slideURL.indexOf('http') === 0;
+    let urlOrPath = slideURL;
+    if (slideURL.startsWith('data:image/')) {
+      let url = slideURL;
+      // Someone tried to paste a base64 encoded image. It starts with the text:
+      // data:image/{png/jpeg};base,
+      // followed by the rest of the image data in base64 encoding
+      url = url.substring('data:image/'.length);
+
+      const filetype = url.substring(0, url.indexOf(';'));
+      if (filetype !== 'png' && filetype !== 'jpeg') {
+        dispatch(
+          handleNotificationLogging(
+            t('error.title'),
+            t('error.description', { format: filetype }),
+            LogLevel.Error
+          )
+        );
+        return;
+      }
+
+      // Remove the remaining header information, at which point it becomes the data
+      const data = url.substring(url.indexOf(',') + 1);
+
+      // eslint-disable-next-line no-template-curly-in-string
+      const tempPath = await luaApi?.absPath('${TEMPORARY}');
+      const localPath = `${tempPath}/screenspace-slide-${slideName}.${filetype}`;
+      await luaApi?.saveBase64File(localPath, data);
+      urlOrPath = localPath;
+    }
+
+    const isHttpSlide = urlOrPath.indexOf('http') === 0;
     if (isHttpSlide) {
       renderable.Type = 'ScreenSpaceImageOnline';
-      renderable.URL = slideURL;
+      renderable.URL = urlOrPath;
     } else {
       renderable.Type = 'ScreenSpaceImageLocal';
-      renderable.TexturePath = slideURL;
+      renderable.TexturePath = urlOrPath;
     }
 
     luaApi?.addScreenSpaceRenderable(renderable);
