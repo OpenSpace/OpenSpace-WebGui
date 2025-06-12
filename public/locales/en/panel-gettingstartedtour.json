@@ -42,7 +42,7 @@
       "label-lat-long": "Go to {{latitude}}° latitude and {{longitude}}° longitude"
     },
     "pause-time": {
-      "label": "Pause the time!"
+      "label": "Pause the time"
     }
   },
   "steps": {
@@ -124,9 +124,9 @@
       "pause-time": {
         "intro": "You can also pause the time.",
         "task": {
-          "tip": "In the Time Panel, click the pause button <pauseButton/> to pause time.to pause time."
+          "tip": "In the Time Panel, click the pause button <pauseButton/> to pause time."
         },
-        "hint-speed-not-zero": "Note: simulation speed is not set to 0 when you pause."
+        "hint-speed-not-zero": "Note: The simulation speed is not set to 0 when you pause."
       },
       "conclusion": {
         "intro": "Fantastic! Now you can move around in both space and time.",
@@ -146,7 +146,7 @@
         "checkbox-info": "To toggle the visibility, click on the checkbox next to the object name"
       },
       "visibility": {
-        "intro": "You can turn on and off content by checking and unchecking their corresponding checkboxes.",
+        "intro": "You can turn content on and off by checking and unchecking their corresponding checkboxes.",
         "task": {
           "label": "Turn off the trail of Earth",
           "tip": "To toggle the visibility, click on the checkbox"
@@ -170,18 +170,18 @@
       },
       "layers": {
         "intro": "Go to the Mars layers:",
-        "intro-layer-ordering": "The layers are ordered, and the layer furthest down in the menu is shown at the top of the globe.",
+        "intro-layer-ordering": "The layers are ordered with the layer furthest down in the menu is shown at the top of the globe.",
         "task": {
           "label": "Turn on the ColorLayer '{{layerName}}'",
           "tip": "You need access to the internet to display the maps. They might need a few seconds to load."
         }
       },
       "explore-constellations": {
-        "intro": "All content is not turned on by default. Explore the menus and see what you can find!",
+        "intro": "All content is not turned on by default. Explore the menus and see what you can find.",
         "task": {
           "label": "Turn on Constellation Lines"
         },
-        "look-around": "You might want to take a look around to look at the constellations!",
+        "look-around": "You might want to take a look around to look at the constellations.",
         "look-around-mouse-hint": "Left click and drag while holding CTRL to look around freely."
       },
       "conclusion": {
