@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -21,6 +22,7 @@ export function HelpMenu() {
   const webGuiUrl = useWebGuiUrl();
 
   const { addWindow } = useWindowLayoutProvider();
+  const { t } = useTranslation('menu', { keyPrefix: 'help-menu' });
 
   function openGuiInBrowser() {
     window.open(webGuiUrl, '_blank');
@@ -47,15 +49,15 @@ export function HelpMenu() {
           target={'_blank'}
           leftSection={<BookIcon />}
           rightSection={<OpenWindowIcon />}
-          aria-description={'(Opens in new tab)'}
+          aria-description={t('external-tab-aria-label')}
         >
-          Open Web Tutorials
+          {t('tutorials')}
         </Menu.Item>
         <Menu.Item
           onClick={openGettingStartedTour}
           leftSection={<RouteIcon style={{ transform: 'scale(-1)' }} />}
         >
-          Open Getting Started Tour
+          {t('getting-started')}
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item
@@ -64,9 +66,9 @@ export function HelpMenu() {
           target={'_blank'}
           leftSection={<FeedbackIcon />}
           rightSection={<OpenWindowIcon />}
-          aria-description={'(Opens in new tab)'}
+          aria-description={t('external-tab-aria-label')}
         >
-          Send Feedback
+          {t('send-feedback')}
         </Menu.Item>
         <Menu.Divider />
 
@@ -74,14 +76,14 @@ export function HelpMenu() {
           onClick={openGuiInBrowser}
           leftSection={<OpenInBrowserIcon />}
           rightSection={<OpenWindowIcon />}
-          aria-description={'(Opens in new tab)'}
+          aria-description={t('external-tab-aria-label')}
         >
-          Open GUI in Browser
+          {t('open-gui')}
         </Menu.Item>
 
         <Menu.Divider />
         <Menu.Item onClick={open} leftSection={<InformationCircleOutlineIcon />}>
-          About
+          {t('about')}
         </Menu.Item>
       </TopBarMenuWrapper>
     </>

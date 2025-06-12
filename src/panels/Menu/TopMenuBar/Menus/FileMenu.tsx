@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Anchor, CheckboxIndicator, Container, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
@@ -10,7 +11,6 @@ import styles from '@/theme/global.module.css';
 import { IconSize } from '@/types/enums';
 
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
-import { useTranslation } from 'react-i18next';
 
 export function FileMenu() {
   const profile = useAppSelector((state) => state.profile);

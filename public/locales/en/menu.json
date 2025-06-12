@@ -26,5 +26,63 @@
         "cancel": "Cancel"
       }
     }
+  },
+  "help-menu": {
+    "title": "Help",
+    "tutorials": "Open Web Tutorials",
+    "getting-started": "Open Getting Started Tour",
+    "send-feedback": "Send Feedback",
+    "open-gui": "Open GUI in Browser",
+    "about": "About",
+    "external-tab-aria-label": "(Opens in new tab)"
+  },
+  "language": {
+    "label": "Language"
+  },
+  "view-menu": {
+    "title": "View",
+    "task-bar": {
+      "label": "Task Bar",
+      "toggle-items": "Toggle Task Bar Items",
+      "reset": "Reset",
+      "aria-labels": {
+        "checked": "Checked",
+        "unchecked": "Unchecked"
+      },
+      "load-settings": "Load Task Bar Settings",
+      "save-settings": "Save Task Bar Settings"
+    },
+    "gui-settings": {
+      "label": "GUI Settings",
+      "visibility-level": {
+        "label": "Visibility Level",
+        "tooltip": "Controls what settings will be exposed in the interface. Increase the level to reveal more advanced settings."
+      }
+    },
+    "scale-settings": {
+      "label": "Scale",
+      "tooltip": "Increase or decrease the scale of the GUI."
+    },
+    "notifications": {
+      "label": "Notifications",
+      "show-notifications": "Show Notifications",
+      "log-level": {
+        "label": "Min OpenSpace Log Level",
+        "tooltip": "Controls which messages will be shown from OpenSpace."
+      },
+      "clear-notifications": "Clear Notifications"
+    }
+  },
+  "windows-menu": {
+    "title": "Windows",
+    "add-new-window": "Add New Window"
+  },
+  "hooks-error": {
+    "title": "Error loading JSON file",
+    "messages": {
+      "empty-file": "File is empty",
+      "invalid-length": "Inavlid layout file: Length does not match",
+      "inavlid-ids": "Invalid layout file: All IDs must match panel IDs"
+    }
   }
 }
