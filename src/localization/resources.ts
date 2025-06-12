@@ -1,5 +1,6 @@
 import common from '@/public/locales/en/common.json';
 import components from '@/public/locales/en/components.json';
+import menu from '@/public/locales/en/menu.json';
 import notifications from '@/public/locales/en/notifications.json';
 import actionPanel from '@/public/locales/en/panel-actions.json';
 import exoplanetsPanel from '@/public/locales/en/panel-exoplanets.json';
@@ -24,6 +25,7 @@ export const resources = {
   en: {
     common: common,
     components: components,
+    menu: menu,
     notifications: notifications,
     'panel-actions': actionPanel,
     'panel-exoplanets': exoplanetsPanel,

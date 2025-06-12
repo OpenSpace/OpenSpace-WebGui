@@ -1,0 +1,30 @@
+{
+  "file-menu": {
+    "title": "File",
+    "profile-label": "Profile",
+    "about": {
+      "label": "About",
+      "author": "Author",
+      "license": "License",
+      "url": "URL"
+    },
+    "toggle-console": {
+      "label": "Show Console",
+      "aria-labels": {
+        "checked": "Checked",
+        "unchecked": "Unchecked",
+        "open-console": "Open console",
+        "close-console": "Close console"
+      }
+    },
+    "quit-openspace": {
+      "label": "Quit OpenSpace",
+      "modal": {
+        "title": "Confirm action",
+        "description": "Are you sure you want to quit OpenSpace?",
+        "confirm": "Quit",
+        "cancel": "Cancel"
+      }
+    }
+  }
+}
