@@ -534,6 +534,12 @@ export interface openspace {
    */
   resolveShortcut: (path: path) => Promise<path>
   /**
+   * This function takes a base64 encoded data string, decodes it and saves the resulting data to the provided filepath.
+
+\\param filePath The location where the data will be saved. Any file that already exists in that location will be overwritten \\param base64Data The base64 encoded data that should be saved to the provided file
+   */
+  saveBase64File: (filepath: path, base64Data: string) => Promise<void>
+  /**
    * Collects all changes that have been made since startup, including all property changes and assets required, requested, or removed. All changes will be added to the profile that OpenSpace was started with, and the new saved file will contain all of this information. If the argument is provided, the settings will be saved into new profile with that name. If the argument is blank, the current profile will be saved to a backup file and the original profile will be overwritten. The second argument determines if a file that already exists should be overwritten, which is 'false' by default.
    */
   saveSettingsToProfile: (saveFilePath?: string, overwrite?: boolean) => Promise<void>
