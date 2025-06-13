@@ -72,14 +72,14 @@ export function GettingStartedPanel() {
             disabled={isFirstStep}
             leftSection={<ArrowLeftIcon />}
           >
-            {t('previous-button')}
+            {t('button-labels.previous')}
           </Button>
           <Button
             onClick={onClickNext}
             variant={'filled'}
             rightSection={!isLastStep && <ArrowRightIcon />}
           >
-            {isLastStep ? t('finish-button') : t('next-button')}
+            {isLastStep ? t('button-labels.finish') : t('button-labels.next')}
           </Button>
         </Group>
       </Layout.FixedSection>

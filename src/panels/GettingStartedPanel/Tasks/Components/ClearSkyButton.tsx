@@ -27,7 +27,7 @@ export function ClearSkyButton() {
 
   return (
     <Group>
-      <Text>{t('info')}:</Text>
+      <Text>{t('tip')}:</Text>
       <Button
         size={'lg'}
         leftSection={<SunIcon size={IconSize.md} />}

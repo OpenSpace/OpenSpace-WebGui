@@ -55,7 +55,7 @@ export function useContentSteps(): React.ReactNode[] {
         <SceneGraphNodeHeader uri={'Scene.Earth'} />
       </ClickBlocker>
       <Group>
-        <Text>{t('scene-menu.focus-info')}:</Text>
+        <Text>{t('scene-menu.focus-tip')}:</Text>
         <ActionIcon
           size={'sm'}
           style={{ pointerEvents: 'none' }}
@@ -66,7 +66,7 @@ export function useContentSteps(): React.ReactNode[] {
         </ActionIcon>
       </Group>
       <Group>
-        <Text>{t('scene-menu.checkbox-info')}:</Text>{' '}
+        <Text>{t('scene-menu.checkbox-tip')}:</Text>{' '}
         <Checkbox checked readOnly style={{ pointerEvents: 'none' }} />
       </Group>
     </Stack>,
