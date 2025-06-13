@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, ButtonProps } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -15,6 +16,9 @@ export function RecordingStopButton({ ...props }: ButtonProps) {
   const { format, overwriteFile, recordingFilename } = useAppSelector(
     (state) => state.sessionRecording.settings
   );
+  const { t } = useTranslation('panel-sessionrecording', {
+    keyPrefix: 'recording-stop-button'
+  });
   const dispatch = useAppDispatch();
 
   async function stopRecording(): Promise<void> {
@@ -30,19 +34,15 @@ export function RecordingStopButton({ ...props }: ButtonProps) {
       } else {
         dispatch(
           handleNotificationLogging(
-            'Error stopping session recording',
-            `Invalid filepath, can't find filepath '${filePath}' for file: '${file}'`,
+            t('error-messages.title'),
+            t('error-messages.invalid-filepath', { filepath: filePath, file: file }),
             LogLevel.Error
           )
         );
       }
     } catch (error) {
       dispatch(
-        handleNotificationLogging(
-          'Error stopping session recording',
-          error,
-          LogLevel.Error
-        )
+        handleNotificationLogging(t('error-messages.title'), error, LogLevel.Error)
       );
     }
   }
@@ -55,7 +55,7 @@ export function RecordingStopButton({ ...props }: ButtonProps) {
       variant={'filled'}
       {...props}
     >
-      Stop Recording
+      {t('label')}
     </Button>
   );
 }
