@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Anchor, CheckboxIndicator, Container, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
@@ -20,6 +21,7 @@ export function FileMenu() {
     'BoolProperty',
     'LuaConsole.IsVisible'
   );
+  const { t } = useTranslation('menu', { keyPrefix: 'file-menu' });
 
   function toggleLuaConsole() {
     setIsConsoleVisible(!isConsoleVisible);
@@ -27,9 +29,12 @@ export function FileMenu() {
 
   function toggleShutdown() {
     return modals.openConfirmModal({
-      title: 'Confirm action',
-      children: <Text>Are you sure you want to quit OpenSpace?</Text>,
-      labels: { confirm: 'Quit', cancel: 'Cancel' },
+      title: t('quit-openspace.modal.title'),
+      children: <Text>{t('quit-openspace.modal.description')}</Text>,
+      labels: {
+        confirm: t('quit-openspace.modal.confirm'),
+        cancel: t('quit-openspace.modal.cancel')
+      },
       confirmProps: { color: 'red', variant: 'filled' },
       onConfirm: () => luaApi?.toggleShutdown()
     });
@@ -41,11 +46,13 @@ export function FileMenu() {
         <LoadingBlocks n={1} />
       ) : (
         <>
-          <Menu.Label>Profile: {profile.name}</Menu.Label>
+          <Menu.Label>
+            {t('profile-label')}: {profile.name}
+          </Menu.Label>
           <TopBarMenuWrapper
             targetTitle={
               <Menu.Item rightSection={<ChevronRightIcon size={IconSize.sm} />}>
-                About
+                {t('about.label')}
               </Menu.Item>
             }
             position={'right-start'}
@@ -62,17 +69,17 @@ export function FileMenu() {
               )}
               {profile.author && (
                 <Text size={'sm'} className={styles.selectable}>
-                  Author: {profile.author}
+                  {t('about.author')}: {profile.author}
                 </Text>
               )}
               {profile.license && (
                 <Text size={'sm'} className={styles.selectable}>
-                  License: {profile.license}
+                  {t('about.license')}: {profile.license}
                 </Text>
               )}
               {profile.url && (
                 <Text size={'sm'} className={styles.selectable}>
-                  URL:{' '}
+                  {t('about.url')}:{' '}
                   <Anchor
                     href={profile.url}
                     target={'_blank'}
@@ -101,16 +108,24 @@ export function FileMenu() {
         rightSection={
           <CheckboxIndicator
             checked={isConsoleVisible}
-            aria-label={isConsoleVisible ? 'Checked' : 'Unchecked'}
+            aria-label={
+              isConsoleVisible
+                ? t('toggle-console.aria-labels.checked')
+                : t('toggle-console.aria-labels.unchecked')
+            }
           />
         }
-        aria-label={isConsoleVisible ? 'Close console' : 'Open console'}
+        aria-label={
+          isConsoleVisible
+            ? t('toggle-console.aria-labels.close-console')
+            : t('toggle-console.aria-labels.open-console')
+        }
       >
-        Show Console
+        {t('toggle-console.label')}
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item onClick={toggleShutdown} leftSection={<ExitAppIcon />}>
-        Quit OpenSpace
+        {t('quit-openspace.label')}
       </Menu.Item>
     </TopBarMenuWrapper>
   );

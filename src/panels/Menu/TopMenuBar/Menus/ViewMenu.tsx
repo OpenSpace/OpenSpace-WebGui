@@ -1,6 +1,6 @@
+import { useTranslation } from 'react-i18next';
 import {
   Button,
-  Checkbox,
   CheckboxIndicator,
   Container,
   Group,
@@ -13,6 +13,7 @@ import { notifications } from '@mantine/notifications';
 
 import { DragReorderList } from '@/components/DragReorderList/DragReorderList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { BoolInput } from '@/components/Input/BoolInput';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useProperty } from '@/hooks/properties';
 import {
@@ -52,6 +53,7 @@ export function ViewMenu() {
   );
 
   const { loadLayout, saveLayout } = useStoredLayout();
+  const { t } = useTranslation('menu', { keyPrefix: 'view-menu' });
   const dispatch = useAppDispatch();
 
   const userLevelOptions = propertyVisibilityMetadata?.additionalData.options;
@@ -66,18 +68,20 @@ export function ViewMenu() {
   }
 
   return (
-    <TopBarMenuWrapper targetTitle={'View'} closeOnItemClick={false}>
+    <TopBarMenuWrapper targetTitle={t('title')} closeOnItemClick={false}>
       <Menu.Sub position={'right-start'} withinPortal={false}>
         <Menu.Sub.Target>
-          <Menu.Sub.Item leftSection={<TaskBarIcon />}>Task Bar</Menu.Sub.Item>
+          <Menu.Sub.Item leftSection={<TaskBarIcon />}>
+            {t('task-bar.label')}
+          </Menu.Sub.Item>
         </Menu.Sub.Target>
 
         <MenuDrowdownWrapper isSubMenu shouldLimitHeight>
           <Menu.Label pr={0}>
             <Group justify={'space-between'}>
-              Toggle Task Bar Items
+              {t('task-bar.toggle-items')}
               <Button size={'xs'} onClick={resetTaskbar}>
-                Reset
+                {t('task-bar.reset')}
               </Button>
             </Group>
           </Menu.Label>
@@ -96,7 +100,11 @@ export function ViewMenu() {
                     <Group>
                       <CheckboxIndicator
                         checked={itemConfig.visible}
-                        aria-label={itemConfig.visible ? 'Checked' : 'Unchecked'}
+                        aria-label={
+                          itemConfig.visible
+                            ? t('task-bar.aria-labels.checked')
+                            : t('task-bar.aria-labels.unchecked')
+                        }
                       />
                       {item.renderIcon?.(IconSize.xs)}
                     </Group>
@@ -120,27 +128,26 @@ export function ViewMenu() {
       </Menu.Sub>
 
       <Menu.Item leftSection={<UpArrowIcon />} onClick={loadLayout}>
-        Load Task Bar Settings
+        {t('task-bar.load-settings')}
       </Menu.Item>
 
       <Menu.Item leftSection={<SaveIcon />} onClick={saveLayout}>
-        Save Task Bar Settings
+        {t('task-bar.save-settings')}
       </Menu.Item>
 
       <Menu.Divider />
 
       <Menu.Sub>
         <Menu.Sub.Target>
-          <Menu.Sub.Item leftSection={<SettingsIcon />}>GUI Settings</Menu.Sub.Item>
+          <Menu.Sub.Item leftSection={<SettingsIcon />}>
+            {t('gui-settings.label')}
+          </Menu.Sub.Item>
         </Menu.Sub.Target>
         <Menu.Sub.Dropdown>
           <Menu.Label>
             <Group gap={'xs'}>
-              Visibility Level
-              <InfoBox>
-                {`Controls what settings will be exposed in the interface. Increase the
-                level to reveal more advanced settings.`}
-              </InfoBox>
+              {t('gui-settings.visibility-level.label')}
+              <InfoBox>{t('gui-settings.visibility-level.tooltip')}</InfoBox>
             </Group>
           </Menu.Label>
           <Container>
@@ -163,8 +170,8 @@ export function ViewMenu() {
 
           <Menu.Label mt={'xs'}>
             <Group gap={'xs'}>
-              Scale
-              <InfoBox>Increase or decrease the scale of the GUI.</InfoBox>
+              {t('scale-settings.label')}
+              <InfoBox>{t('scale-settings.tooltip')}</InfoBox>
             </Group>
           </Menu.Label>
           <Container>
@@ -193,28 +200,26 @@ export function ViewMenu() {
 
       <Menu.Sub>
         <Menu.Sub.Target>
-          <Menu.Sub.Item leftSection={<NotificationsIcon />}>Notifications</Menu.Sub.Item>
+          <Menu.Sub.Item leftSection={<NotificationsIcon />}>
+            {t('notifications.label')}
+          </Menu.Sub.Item>
         </Menu.Sub.Target>
 
         <MenuDrowdownWrapper isSubMenu shouldLimitHeight>
           <Menu.Label>
-            <Group gap={'xs'}>Notifications</Group>
+            <Group gap={'xs'}>{t('notifications.label')}</Group>
           </Menu.Label>
           <Container>
-            {/* @TODO (2025-05-14, emmbr): Use BoolInput component */}
-            <Checkbox
-              label={'Show Notifications'}
-              checked={logNotifications}
-              onChange={(event) =>
-                dispatch(showNotifications(event.currentTarget.checked))
-              }
-              mb={'xs'}
+            <BoolInput
+              value={logNotifications}
+              label={t('notifications.show-notifications')}
+              onChange={(value) => dispatch(showNotifications(value))}
             />
           </Container>
           <Menu.Label>
             <Group gap={'xs'}>
-              Min OpenSpace Log Level
-              <InfoBox>Controls which messages will be shown from OpenSpace</InfoBox>
+              {t('notifications.log-level.label')}
+              <InfoBox>{t('notifications.log-level.tooltip')}</InfoBox>
             </Group>
           </Menu.Label>
           <Container>
@@ -239,7 +244,7 @@ export function ViewMenu() {
             onClick={() => notifications.clean()}
             leftSection={<DeleteIcon size={IconSize.sm} />}
           >
-            Clear Notifications
+            {t('notifications.clear-notifications')}
           </Menu.Item>
         </MenuDrowdownWrapper>
       </Menu.Sub>

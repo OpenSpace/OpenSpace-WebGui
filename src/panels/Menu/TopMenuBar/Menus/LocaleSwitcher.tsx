@@ -26,17 +26,17 @@ export function LocaleSwitcher() {
   return (
     <TopBarMenuWrapper
       targetTitle={
-        <ActionIcon size={'input-xs'} variant={'menubar'}>
+        <ActionIcon size={'input-xs'} variant={'menubar'} aria-label={'Select language'}>
           {languageIcon()}
         </ActionIcon>
       }
     >
-      <Menu.Label>Language</Menu.Label>
       {Object.entries(SupportedLanguages).map(([code, info]) => (
         <Menu.Item
           key={code}
           leftSection={info.icon}
           onClick={() => changeLanguage(code)}
+          aria-label={info.language}
         >
           {info.language}
         </Menu.Item>
