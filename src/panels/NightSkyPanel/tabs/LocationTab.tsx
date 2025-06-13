@@ -88,12 +88,12 @@ export function LocationTab() {
         <BackgroundImage
           w={mapSize.w}
           h={mapSize.h}
-          src={'eqcy.png'}
+          src={'/images/eqcy.png'}
           radius={'sm'}
           styles={{ root: { overflow: 'hidden' } }}
         >
           <Image
-            src={'icon.png'}
+            src={'/images/icon.png'}
             style={{
               width: iconSize + 'px',
               position: 'relative',
