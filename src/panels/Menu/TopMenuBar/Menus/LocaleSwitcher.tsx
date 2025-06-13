@@ -8,7 +8,7 @@ import { IconSize } from '@/types/enums';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function LocaleSwitcher() {
-  const { t, i18n } = useTranslation('menu');
+  const { i18n } = useTranslation();
 
   function languageIcon(): React.JSX.Element {
     const { language } = i18n;
@@ -26,17 +26,17 @@ export function LocaleSwitcher() {
   return (
     <TopBarMenuWrapper
       targetTitle={
-        <ActionIcon size={'input-xs'} variant={'menubar'}>
+        <ActionIcon size={'input-xs'} variant={'menubar'} aria-label={'Select language'}>
           {languageIcon()}
         </ActionIcon>
       }
     >
-      <Menu.Label>{t('language.label')}</Menu.Label>
       {Object.entries(SupportedLanguages).map(([code, info]) => (
         <Menu.Item
           key={code}
           leftSection={info.icon}
           onClick={() => changeLanguage(code)}
+          aria-label={info.language}
         >
           {info.language}
         </Menu.Item>
