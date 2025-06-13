@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Button, Group, Text, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -22,6 +23,7 @@ export function ScriptLogPanel() {
   const [selectedScripts, setSelectedScripts] = useState<Set<number>>(new Set());
 
   const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('panel-scriptlog');
 
   const fetchScriptLogEntries = useCallback(async () => {
     // eslint-disable-next-line no-template-curly-in-string
@@ -104,9 +106,7 @@ export function ScriptLogPanel() {
       <Layout.FixedSection mb={'xs'}>
         <Group wrap={'nowrap'} justify={'space-between'} align={'start'} gap={'xs'}>
           <Group gap={'xs'}>
-            <Tooltip
-              label={'Run all the selected scripts in sequential order, bottom to top'}
-            >
+            <Tooltip label={t('run-scripts.tooltip')}>
               <Button
                 onClick={runSelectedScripts}
                 rightSection={<RerunScriptIcon />}
@@ -114,7 +114,7 @@ export function ScriptLogPanel() {
                 variant={'filled'}
                 color={'green'}
               >
-                Run
+                {t('run-scripts.label')}
               </Button>
             </Tooltip>
             <CopyToClipboardButton
@@ -124,12 +124,12 @@ export function ScriptLogPanel() {
                       .map((index) => scriptLogEntries[index])
                       .reverse()
                       .join('\n')
-                  : 'No script selected'
+                  : t('copy-to-clipboard-error')
               }
               showLabel
               disabled={selectedScripts.size === 0}
             />
-            <Tooltip label={'Clears all selected scripts'}>
+            <Tooltip label={t('clear-selected-scripts.tooltip')}>
               <Button
                 onClick={() => setSelectedScripts(new Set())}
                 rightSection={<CancelIcon />}
@@ -137,42 +137,32 @@ export function ScriptLogPanel() {
                 variant={'light'}
                 color={'gray'}
               >
-                Clear
+                {t('clear-selected-scripts.label')}
               </Button>
             </Tooltip>
           </Group>
           <InfoBox>
-            <Text mb={'xs'}>
-              This script log has been cleaned for ease of use. Some entries may have been
-              filtered out unintentionally.
-            </Text>
-            <Text mb={'xs'}>
-              Entries are listed from latest to oldest (top to bottom). Running multiple
-              scripts at once will run them in the order bottom to top.
-            </Text>
-            <Text>
-              To view the complete log or previous runs, check the{' '}
-              <Text fs={'italic'} span>
-                OpenSpace/logs
-              </Text>{' '}
-              folder.
-            </Text>
+            {t('script-log-tooltip', { returnObjects: true }).map((paragraph, index) => (
+              <Text key={index} mb={'xs'}>
+                {paragraph}
+              </Text>
+            ))}
           </InfoBox>
         </Group>
       </Layout.FixedSection>
       <Layout.GrowingSection>
         <FilterList isLoading={scriptLogEntries === undefined}>
           <Group gap={'xs'}>
-            <Tooltip label={'Refresh script log'}>
+            <Tooltip label={t('refresh-scripts-tooltip')}>
               <ActionIcon
                 onClick={fetchScriptLogEntries}
-                aria-label={'Refresh script log'}
+                aria-label={t('refresh-scripts-tooltip')}
               >
                 <RefreshIcon />
               </ActionIcon>
             </Tooltip>
             <FilterList.InputField
-              placeHolderSearchText={'Search for a script'}
+              placeHolderSearchText={t('search-scripts-placeholder')}
               flex={1}
             />
           </Group>
