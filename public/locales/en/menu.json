@@ -77,11 +77,11 @@
     "title": "Windows",
     "add-new-window": "Add New Window"
   },
-  "hooks-error": {
+  "error-load-taskbar-layout": {
     "title": "Error loading JSON file",
     "messages": {
       "empty-file": "File is empty",
-      "invalid-length": "Inavlid layout file: Length does not match",
+      "invalid-length": "Invalid layout file: Length does not match",
       "inavlid-ids": "Invalid layout file: All IDs must match panel IDs"
     }
   }

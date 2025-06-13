@@ -52,7 +52,7 @@ export function useStoredLayout() {
   const { openSaveFileDialog, openLoadFileDialog } =
     useSaveLoadJsonFiles(handlePickedFile);
 
-  const { t } = useTranslation('menu', { keyPrefix: 'hooks-error' });
+  const { t } = useTranslation('menu', { keyPrefix: 'error-load-taskbar-layout' });
   const dispatch = useAppDispatch();
 
   function handlePickedFile(content: JSON) {
