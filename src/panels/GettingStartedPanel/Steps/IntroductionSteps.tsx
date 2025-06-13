@@ -11,8 +11,10 @@ export function useIntroductionSteps(): React.ReactNode[] {
 
   return [
     <Stack align={'center'}>
-      <Image src={'openspace-logo.png'} w={200} h={300} my={'lg'} />
-      <Text size={'lg'}>{t('welcome')}</Text>
+      <Image src={'/images/openspace-logo.png'} h={180} fit={'contain'} my={'lg'} />
+      <Text size={'lg'} ta={'center'}>
+        {t('welcome')}
+      </Text>
     </Stack>,
     <>
       <Text>{t('topics.intro')}:</Text>

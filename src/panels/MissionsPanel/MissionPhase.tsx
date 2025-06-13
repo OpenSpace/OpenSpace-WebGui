@@ -76,7 +76,7 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
           mah={'300px'}
           src={displayedPhase.data.image}
           alt={'Image text not available'}
-          fallbackSrc={'placeholder.svg'}
+          fallbackSrc={'/images/placeholder.svg'}
           fit={'contain'}
         />
       )}
