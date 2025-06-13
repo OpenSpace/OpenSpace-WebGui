@@ -16,17 +16,17 @@ export function GettingStartedPanel() {
   const [step, setStep] = useState(0);
   const { closeWindow } = useWindowLayoutProvider();
 
-  const IntroductionSteps = useIntroductionSteps();
-  const NavigationSteps = useNavigationSteps();
-  const TimeSteps = useTimeSteps();
-  const ContentSteps = useContentSteps();
+  const introductionSteps = useIntroductionSteps();
+  const navigationSteps = useNavigationSteps();
+  const timeSteps = useTimeSteps();
+  const contentSteps = useContentSteps();
 
   const { t } = useTranslation('panel-gettingstartedtour');
 
-  const Sections = [IntroductionSteps, NavigationSteps, TimeSteps, ContentSteps];
-  const steps = Sections.flat();
+  const sections = [introductionSteps, navigationSteps, timeSteps, contentSteps];
+  const steps = sections.flat();
 
-  const sectionBreaks = Sections.map((section) =>
+  const sectionBreaks = sections.map((section) =>
     section[0] ? steps.indexOf(section[0]) : -1
   );
 
@@ -59,7 +59,7 @@ export function GettingStartedPanel() {
       <Layout.GrowingSection>
         <Stack gap={'xs'} h={'100%'} style={{ overflowY: 'auto' }} p={'md'}>
           <Chapters
-            section={isLastStep ? Sections.length : section}
+            section={isLastStep ? sections.length : section}
             setSection={setSection}
           />
           {steps[step]}
