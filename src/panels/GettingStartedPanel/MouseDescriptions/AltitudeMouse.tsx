@@ -1,14 +1,18 @@
+import { useTranslation } from 'react-i18next';
 import { Box, Group, Text } from '@mantine/core';
 
 import { Mouse } from './Mouse';
 
 export function AltitudeMouse() {
+  const { t } = useTranslation('panel-gettingstartedtour', {
+    keyPrefix: 'mouse-descriptions'
+  });
+
   return (
     <Group>
       <Box flex={2}>
         <Text c={'dimmed'} fs={'italic'}>
-          The altitude is displayed at the top left corner of the screen. Right click and
-          drag to go closer or further away.
+          {t('altitude')}
         </Text>
       </Box>
       <Box flex={1}>

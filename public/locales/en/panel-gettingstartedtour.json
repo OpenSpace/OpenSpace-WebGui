@@ -1,0 +1,200 @@
+{
+  "previous-button": "Previous",
+  "next-button": "Next",
+  "finish-button": "Finish",
+  "mouse-descriptions": {
+    "altitude": "The altitude is displayed at the top left corner of the screen. Right click and drag to go closer or further away.",
+    "navigation": "The latitude and longitude are displayed at the top left corner of the screen. Left click and drag to orbit."
+  },
+  "components": {
+    "clear-sky-button": {
+      "info": "Is it hard to find? Try clearing the sky",
+      "label": "Clear Sky"
+    },
+    "current-altitude": {
+      "label": "Current altitude"
+    },
+    "current-focus": {
+      "label": "Current focus",
+      "none": "None"
+    },
+    "current-lat-long": {
+      "label": "Current position (lat, long)"
+    }
+  },
+  "tasks": {
+    "altitude": {
+      "label-higher": "Go to an altitude higher than {{altitude}} on {{object}}",
+      "label-lower": "Go to an altitude lower than {{altitude}} on {{object}}"
+    },
+    "delta-time": {
+      "label": "Change the delta time for the simulation speed"
+    },
+    "year": {
+      "label": "Change the year"
+    },
+    "focus": {
+      "label": "Focus on {{object}}"
+    },
+    "navigation": {
+      "label-lat": "Go to {{latitude}}° latitude",
+      "label-long": "Go to {{longitude}}° longitude",
+      "label-lat-long": "Go to {{latitude}}° latitude and {{longitude}}° longitude"
+    },
+    "pause-time": {
+      "label": "Pause the time"
+    }
+  },
+  "steps": {
+    "introduction": {
+      "welcome": "Welcome to OpenSpace! Let's get started with exploring the observable Universe.",
+      "topics": {
+        "intro": "In this tutorial we will cover the following topics",
+        "sections": {
+          "navigation": "Navigation",
+          "time": "Time",
+          "content": "Content"
+        }
+      },
+      "about-tasks": {
+        "intro": "In each section, there will be some tasks designed to teach you how to use OpenSpace. Once you have fulfilled the task, the checkbox will be marked as completed.",
+        "task-label-example": "This is a task!",
+        "task-label-complete": "This is a completed task!"
+      },
+      "lets-go": "Let's dive right in!"
+    },
+    "navigation": {
+      "intro": {
+        "title": "Navigation",
+        "text": "In this chapter we will learn how to navigate in OpenSpace."
+      },
+      "zoom-in": {
+        "intro": "Let's go closer to Earth!"
+      },
+      "go-to-greenland": {
+        "intro": "Now let's go to Greenland! Rotate around the Earth until you find it."
+      },
+      "roll-camera": {
+        "intro": "You have two options for rolling the camera to change the orientation",
+        "option-scroll-wheel": "Scroll click and drag",
+        "option-shift": "Left click and drag + SHIFT"
+      },
+      "look-around": {
+        "intro": "To look around freely, press <keybind>ctrl</keybind> and left click drag"
+      },
+      "change-focus": {
+        "intro": "Now it's time to look around in space!",
+        "task": {
+          "tip": "Open the navigation menu and click on the \"Focus\" button to focus on the Moon. The navigation menu can be found in the bottom bar"
+        }
+      },
+      "move-closer": {
+        "intro": "Now that we are focused on the Moon, let's move closer to it."
+      },
+      "conclusion": {
+        "intro": "Great! You have learned how to navigate in OpenSpace. You can now zoom in and out, rotate around objects, change focus, and look around freely.",
+        "next-step": "Now let's learn how to control time."
+      }
+    },
+    "time": {
+      "intro": {
+        "title": "Time",
+        "text": "In this chapter we will learn how to change the time in OpenSpace."
+      },
+      "view-solar-system": {
+        "intro": "But first, let's move to a good viewing point. Let's take a look at the Solar System from above."
+      },
+      "change-time": {
+        "intro": "Ok, now we can start changing the time. You can view the past as well as the future. Let's start by opening the Time Panel and changing the year.",
+        "task": {
+          "tip-time-panel": "To open the Time Panel, click on this icon in the taskbar",
+          "tip-year-input": "Change the year by changing the value of the year in the time input"
+        },
+        "hint-reset-time": "You can reset the time by pressing \"Now\""
+      },
+      "change-speed": {
+        "intro": " You can also change how fast time is playing. This is known as the <italic>simulation speed</italic> of the application, and the time increment is called the <italic>delta time</italic>.",
+        "task": {
+          "tip": "These buttons in the Time Panel adjust the delta time",
+          "rewind-aria-label": "Rewind time",
+          "forward-aria-label": "Fast forward time"
+        },
+        "hint-reset-speed": "You can reset the simulation speed by pressing \"Real Time\""
+      },
+      "pause-time": {
+        "intro": "You can also pause the time.",
+        "task": {
+          "tip": "In the Time Panel, click the pause button <pauseButton/> to pause time."
+        },
+        "hint-speed-not-zero": "Note: The simulation speed is not set to 0 when you pause."
+      },
+      "conclusion": {
+        "intro": "Fantastic! Now you can move around in both space and time.",
+        "next-step": "Let's look at some content!"
+      }
+    },
+    "content": {
+      "intro": {
+        "title": "Content",
+        "text": "In this chapter we will learn about the objects we can see in OpenSpace."
+      },
+      "scene-menu": {
+        "intro": "All the content in OpenSpace can be found in the Scene menu",
+        "search": "You can search for objects in the top search bar. The results are going to look like this",
+        "focus-info": "You can focus on objects by clicking the focus icon",
+        "focus-button-aria-label": "Focus object",
+        "checkbox-info": "To toggle the visibility, click on the checkbox next to the object name"
+      },
+      "visibility": {
+        "intro": "You can turn content on and off by checking and unchecking their corresponding checkboxes.",
+        "task": {
+          "label": "Turn off the trail of Earth",
+          "tip": "To toggle the visibility, click on the checkbox"
+        }
+      },
+      "appearance": {
+        "intro": "All objects have <italic>properties</italic>, which make it possible to alter the behavior or appearance of an object. These properties can include size, color, opacity, etc.",
+        "task": {
+          "label": "Change the color of the trail of Mars",
+          "tip": "The setting for the trail color can be found at:"
+        }
+      },
+      "surfaces": {
+        "intro": "Let's take a look at the surface of Mars."
+      },
+      "globebrowsing": {
+        "title": "Globe Browsing",
+        "intro": "The feature that enables us to look at maps on planets is called <italic>GlobeBrowsing</italic>.",
+        "about-maps": "Planets can have multiple map layers that show different data. Planets also have height maps, which show elevation. Different maps can have different resolutions.",
+        "about-layer-servers": "The default layers in OpenSpace are generally named after the satellite or instrument on a satellite that captured the map. The name [Utah] or [Sweden] states on which server the map is located. It is usually faster to choose the server closest to you."
+      },
+      "layers": {
+        "intro": "Go to the Mars layers:",
+        "intro-layer-ordering": "The layers are ordered with the layer furthest down in the menu is shown at the top of the globe.",
+        "task": {
+          "label": "Turn on the ColorLayer '{{layerName}}'",
+          "tip": "You need access to the internet to display the maps. They might need a few seconds to load."
+        }
+      },
+      "explore-constellations": {
+        "intro": "All content is not turned on by default. Explore the menus and see what you can find.",
+        "task": {
+          "label": "Turn on Constellation Lines"
+        },
+        "look-around": "You might want to take a look around to look at the constellations.",
+        "look-around-mouse-hint": "Left click and drag while holding CTRL to look around freely."
+      },
+      "conclusion": {
+        "intro": "Well done! Now you are ready to explore the Universe on your own. Some ideas to get you started:",
+        "ideas": [
+          "Explore the surface of Mars",
+          "Go to your home town",
+          "Go to the end of the Universe",
+          "Turn on the Sun's orbit in the Milky Way"
+        ],
+        "links": "You can also browse more in-depth <tutorialsLink>video tutorials on YouTube</tutorialsLink>, or check out the <docsLink>documentation</docsLink>.",
+        "happy-exploring": "Happy exploring!"
+      }
+    }
+  }
+}

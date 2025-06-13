@@ -1,17 +1,19 @@
 import { useProperty } from '@/hooks/properties';
+import { PropertyTypeKey } from '@/types/Property/property';
 
 import { TaskCheckbox } from './Components/TaskCheckbox';
+import { useTrackChange } from './hooks';
 
 interface Props {
-  uri: string;
-  finalValue: boolean;
   label: string;
+  uri: string;
+  propertyType: PropertyTypeKey;
 }
 
-export function SetBoolPropertyTask({ label, uri, finalValue }: Props) {
-  const [value] = useProperty('BoolProperty', uri);
+export function ChangePropertyTask({ label, uri, propertyType }: Props) {
+  const [value] = useProperty(propertyType, uri);
 
-  const taskCompleted = value === finalValue;
+  const taskCompleted = useTrackChange(value);
 
   return <TaskCheckbox taskCompleted={taskCompleted} label={label} />;
 }

@@ -1,4 +1,7 @@
+import { useTranslation } from 'react-i18next';
+
 import { useProperty } from '@/hooks/properties';
+import { useSceneGraphNode } from '@/hooks/propertyOwner';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 import { NavigationAnchorKey } from '@/util/keys';
@@ -18,7 +21,12 @@ export function AltitudeTask({ anchor, unit, altitude, compare }: Props) {
   const currentUnit = useAppSelector((state) => state.camera.altitudeUnit);
   const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
 
+  const anchorNode = useSceneGraphNode(anchor);
   useSubscribeToCamera();
+
+  const { t } = useTranslation('panel-gettingstartedtour', {
+    keyPrefix: 'tasks.altitude'
+  });
 
   const hasCorrectNode =
     currentAnchor !== undefined && currentAnchor !== '' && currentAnchor === anchor;
@@ -29,7 +37,10 @@ export function AltitudeTask({ anchor, unit, altitude, compare }: Props) {
   return (
     <TaskCheckbox
       taskCompleted={taskCompleted}
-      label={`Go to an altitude ${compare} than ${altitude} ${unit} on ${anchor}!`}
+      label={t(compare === 'higher' ? 'label-higher' : 'label-lower', {
+        altitude: `${altitude} ${unit}`,
+        object: anchorNode?.name
+      })}
     />
   );
 }

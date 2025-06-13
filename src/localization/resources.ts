@@ -5,6 +5,7 @@ import actionPanel from '@/public/locales/en/panel-actions.json';
 import exoplanetsPanel from '@/public/locales/en/panel-exoplanets.json';
 import flightControlPanel from '@/public/locales/en/panel-flightcontrol.json';
 import geolocationPanel from '@/public/locales/en/panel-geolocation.json';
+import gettingStartedTourPanel from '@/public/locales/en/panel-gettingstartedtour.json';
 import keybindsPanel from '@/public/locales/en/panel-keybinds.json';
 import missionsPanel from '@/public/locales/en/panel-missions.json';
 import navigationPanel from '@/public/locales/en/panel-navigation.json';
@@ -29,6 +30,7 @@ export const resources = {
     'panel-exoplanets': exoplanetsPanel,
     'panel-flightcontrol': flightControlPanel,
     'panel-geolocation': geolocationPanel,
+    'panel-gettingstartedtour': gettingStartedTourPanel,
     'panel-keybinds': keybindsPanel,
     'panel-missions': missionsPanel,
     'panel-navigation': navigationPanel,

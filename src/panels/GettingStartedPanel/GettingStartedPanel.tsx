@@ -1,23 +1,32 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Group, Stack } from '@mantine/core';
 
 import { Layout } from '@/components/Layout/Layout';
 import { ArrowLeftIcon, ArrowRightIcon } from '@/icons/icons';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
-import { ContentSteps } from './Steps/ContentSteps';
-import { IntroductionSteps } from './Steps/IntroductionSteps';
-import { NavigationSteps } from './Steps/NavigationSteps';
-import { TimeSteps } from './Steps/TimeSteps';
+import { useContentSteps } from './Steps/ContentSteps';
+import { useIntroductionSteps } from './Steps/IntroductionSteps';
+import { useNavigationSteps } from './Steps/NavigationSteps';
+import { useTimeSteps } from './Steps/TimeSteps';
 import { Chapters } from './Chapters';
 
 export function GettingStartedPanel() {
   const [step, setStep] = useState(0);
   const { closeWindow } = useWindowLayoutProvider();
-  const Sections = [IntroductionSteps, NavigationSteps, TimeSteps, ContentSteps];
-  const steps = Sections.flat();
 
-  const sectionBreaks = Sections.map((section) =>
+  const introductionSteps = useIntroductionSteps();
+  const navigationSteps = useNavigationSteps();
+  const timeSteps = useTimeSteps();
+  const contentSteps = useContentSteps();
+
+  const { t } = useTranslation('panel-gettingstartedtour');
+
+  const sections = [introductionSteps, navigationSteps, timeSteps, contentSteps];
+  const steps = sections.flat();
+
+  const sectionBreaks = sections.map((section) =>
     section[0] ? steps.indexOf(section[0]) : -1
   );
 
@@ -50,7 +59,7 @@ export function GettingStartedPanel() {
       <Layout.GrowingSection>
         <Stack gap={'xs'} h={'100%'} style={{ overflowY: 'auto' }} p={'md'}>
           <Chapters
-            section={isLastStep ? Sections.length : section}
+            section={isLastStep ? sections.length : section}
             setSection={setSection}
           />
           {steps[step]}
@@ -63,14 +72,14 @@ export function GettingStartedPanel() {
             disabled={isFirstStep}
             leftSection={<ArrowLeftIcon />}
           >
-            Previous
+            {t('previous-button')}
           </Button>
           <Button
             onClick={onClickNext}
             variant={'filled'}
             rightSection={!isLastStep && <ArrowRightIcon />}
           >
-            {isLastStep ? 'Finish' : 'Next'}
+            {isLastStep ? t('finish-button') : t('next-button')}
           </Button>
         </Group>
       </Layout.FixedSection>
