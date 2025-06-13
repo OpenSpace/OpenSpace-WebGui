@@ -1,0 +1,24 @@
+{
+  "run-scripts": {
+    "label": "Run",
+    "tooltip": "Run all the selected scripts in sequential order from bottom to top."
+  },
+  "clear-selected-scripts": {
+    "label": "Clear",
+    "tooltip": "Clears all selected scripts"
+  },
+  "copy-to-clipboard-error": "No script selected",
+  "script-log-tooltip": [
+    "This script log has been cleaned for ease of use. Some entries may have been filtered out unintentionally.",
+    "Entries are listed from latest to oldest (top to bottom). Running multiple scripts at once will run them in reverse order.",
+    "To view the complete log or previous runs, check the OpenSpace/logs folder."
+  ],
+  "refresh-scripts-tooltip": "Refresh script log",
+  "search-scripts-placeholder": "Search for a script",
+  "script-log-entry": {
+    "aria-labels": {
+      "select-script": "Select script",
+      "rerun-script": "Rerun script"
+    }
+  }
+}

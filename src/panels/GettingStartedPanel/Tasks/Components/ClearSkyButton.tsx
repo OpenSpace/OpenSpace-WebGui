@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Group, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -11,6 +12,10 @@ export function ClearSkyButton() {
     'Scene.Earth.Renderable.Layers.ColorLayers.Blue_Marble'
   );
 
+  const { t } = useTranslation('panel-gettingstartedtour', {
+    keyPrefix: 'components.clear-sky-button'
+  });
+
   function showBlueMarble() {
     luaApi?.action.triggerAction('os.earth_global_illumination');
     luaApi?.setPropertyValue(
@@ -22,13 +27,13 @@ export function ClearSkyButton() {
 
   return (
     <Group>
-      <Text>Is it hard to find? Try clearing the sky:</Text>
+      <Text>{t('tip')}:</Text>
       <Button
         size={'lg'}
         leftSection={<SunIcon size={IconSize.md} />}
         onClick={showBlueMarble}
       >
-        Clear sky
+        {t('label')}
       </Button>
     </Group>
   );

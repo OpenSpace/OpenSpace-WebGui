@@ -11,7 +11,6 @@ interface Props extends PropsWithChildren, MantineStyleProps {
 export function ClickBlocker({ withBorder = false, children, ...styleProps }: Props) {
   return (
     <Paper
-      mt={'md'}
       w={'fit-content'}
       withBorder={withBorder}
       bg={'transparent'}
