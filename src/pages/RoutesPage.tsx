@@ -1,6 +1,6 @@
 import { AppShell, Group, Image, NavLink, Title } from '@mantine/core';
 
-import { DashboardIcon, HomeIcon } from '@/icons/icons';
+import { DashboardIcon, HomeIcon, PenIcon } from '@/icons/icons';
 
 export function RoutesPage() {
   return (
@@ -15,7 +15,7 @@ export function RoutesPage() {
       <AppShell.Header>
         <Group h={'100%'} px={'md'}>
           <Image
-            src={'/images/openspace-logo.png'}
+            src={`${import.meta.env.BASE_URL}images/openspace-logo.png`}
             alt={'OpenSpace logo'}
             h={30}
             w={40}
@@ -27,16 +27,22 @@ export function RoutesPage() {
 
       <AppShell.Navbar p={'md'}>
         <NavLink
-          href={'/frontend'}
+          href={'/gui'}
           label={'GUI'}
           leftSection={<HomeIcon />}
           description={'The regular OpenSpace GUI'}
         />
         <NavLink
-          href={'/actions'}
+          href={'/gui/actions'}
           label={'Actions'}
           description={'Actions panel opened up as a page'}
           leftSection={<DashboardIcon />}
+        />
+        <NavLink
+          href={'/showcomposer'}
+          label={'ShowComposer'}
+          description={'ShowComposer opened up as a page'}
+          leftSection={<PenIcon />}
         />
       </AppShell.Navbar>
       <AppShell.Main>

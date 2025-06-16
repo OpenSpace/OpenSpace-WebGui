@@ -11,7 +11,12 @@ export function useIntroductionSteps(): React.ReactNode[] {
 
   return [
     <Stack align={'center'}>
-      <Image src={'/images/openspace-logo.png'} h={180} fit={'contain'} my={'lg'} />
+      <Image
+        src={`${import.meta.env.BASE_URL}images/openspace-logo.png`}
+        h={180}
+        fit={'contain'}
+        my={'lg'}
+      />
       <Text size={'lg'} ta={'center'}>
         {t('welcome')}
       </Text>
