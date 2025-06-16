@@ -31,7 +31,9 @@ function App() {
             defaultColorScheme={'dark'}
             cssVariablesResolver={cssVariablesResolver}
           >
-            <BrowserRouter basename="/gui">
+            <BrowserRouter
+              basename={import.meta.env.MODE === 'production' ? '/gui' : '/'}
+            >
               <Routes>
                 <Route index element={<GuiPage />} />
                 <Route path={'routes'} element={<RoutesPage />} />

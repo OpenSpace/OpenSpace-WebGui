@@ -15,7 +15,7 @@ export function RoutesPage() {
       <AppShell.Header>
         <Group h={'100%'} px={'md'}>
           <Image
-            src={'/images/openspace-logo.png'}
+            src={`${import.meta.env.BASE_URL}/images/openspace-logo.png`}
             alt={'OpenSpace logo'}
             h={30}
             w={40}
