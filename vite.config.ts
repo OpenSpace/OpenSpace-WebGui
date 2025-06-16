@@ -24,7 +24,7 @@ export default defineConfig({
     host: true, // Allows access from both localhost and 127.0.0.1
     port: 4690
   },
-  base: './',
+  base: '/gui',
   build: {
     rollupOptions: {
       output: {

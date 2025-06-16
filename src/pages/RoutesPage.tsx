@@ -27,13 +27,13 @@ export function RoutesPage() {
 
       <AppShell.Navbar p={'md'}>
         <NavLink
-          href={'/frontend'}
+          href={'/gui'}
           label={'GUI'}
           leftSection={<HomeIcon />}
           description={'The regular OpenSpace GUI'}
         />
         <NavLink
-          href={'/actions'}
+          href={'/gui/actions'}
           label={'Actions'}
           description={'Actions panel opened up as a page'}
           leftSection={<DashboardIcon />}
