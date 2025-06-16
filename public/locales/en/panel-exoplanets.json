@@ -1,5 +1,5 @@
 {
-  "exoplanet-search-placeholder": "Search among {{numberStars}} host stars...",
+  "exoplanet-search-placeholder": "Search {{numberStars}} host stars...",
   "added-systems": {
     "title": "Added Systems",
     "no-active-systems": "No active systems"
