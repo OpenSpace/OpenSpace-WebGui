@@ -85,7 +85,9 @@ export function ExoplanetsPanel() {
       <ResizeableContent defaultHeight={300}>
         <FilterList isLoading={allSystemNames.length === 0}>
           <FilterList.InputField
-            placeHolderSearchText={t('exoplanet-search-placeholder')}
+            placeHolderSearchText={t('exoplanet-search-placeholder', {
+              numberStars: allSystemNames.length
+            })}
           />
           <FilterList.SearchResults
             data={allSystemNames}
