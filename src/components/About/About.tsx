@@ -10,6 +10,7 @@ interface Props {
 }
 
 export function About({ opened, close }: Props) {
+  console.log(import.meta.env.BASE_URL);
   const openSpaceVersion = useAppSelector((state) => state.version.openSpaceVersion);
   const { t } = useTranslation('components', { keyPrefix: 'about' });
 
@@ -38,7 +39,7 @@ export function About({ opened, close }: Props) {
       <Grid>
         <Grid.Col span={4}>
           <Image
-            src={`${import.meta.env.BASE_URL}/images/openspace-logo.png`}
+            src={`${import.meta.env.BASE_URL}images/openspace-logo.png`}
             alt={t('logo-alt-text')}
             w={'100%'}
           />
