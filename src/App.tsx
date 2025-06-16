@@ -39,7 +39,7 @@ function App() {
                 <Route path={'routes'} element={<RoutesPage />} />
                 <Route path={'actions'} element={<ActionsPage />} />
                 {/* Fallback route for any undefined paths */}
-                <Route path="*" element={<GuiPage />} />
+                <Route path={'*'} element={<GuiPage />} />
               </Routes>
             </BrowserRouter>
           </MantineProvider>

@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 import { Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -6,6 +7,7 @@ import { About } from '@/components/About/About';
 import {
   BookIcon,
   FeedbackIcon,
+  HomeIcon,
   InformationCircleOutlineIcon,
   OpenInBrowserIcon,
   OpenWindowIcon,
@@ -20,12 +22,13 @@ import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 export function HelpMenu() {
   const [showAbout, { open, close }] = useDisclosure(false);
   const webGuiUrl = useWebGuiUrl();
+  const navigation = useNavigate();
 
   const { addWindow } = useWindowLayoutProvider();
   const { t } = useTranslation('menu', { keyPrefix: 'help-menu' });
 
   function openGuiInBrowser() {
-    window.open(webGuiUrl, '_blank');
+    window.open(`${webGuiUrl}/gui`, '_blank');
   }
 
   function openGettingStartedTour() {
@@ -59,6 +62,10 @@ export function HelpMenu() {
         >
           {t('getting-started')}
         </Menu.Item>
+        <Menu.Item onClick={() => navigation('/routes')} leftSection={<HomeIcon />}>
+          {t('routes')}
+        </Menu.Item>
+
         <Menu.Divider />
         <Menu.Item
           component={'a'}

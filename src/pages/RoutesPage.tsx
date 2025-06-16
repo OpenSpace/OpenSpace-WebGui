@@ -1,6 +1,6 @@
 import { AppShell, Group, Image, NavLink, Title } from '@mantine/core';
 
-import { DashboardIcon, HomeIcon } from '@/icons/icons';
+import { DashboardIcon, HomeIcon, PenIcon } from '@/icons/icons';
 
 export function RoutesPage() {
   return (
@@ -37,6 +37,12 @@ export function RoutesPage() {
           label={'Actions'}
           description={'Actions panel opened up as a page'}
           leftSection={<DashboardIcon />}
+        />
+        <NavLink
+          href={'/showcomposer'}
+          label={'ShowComposer'}
+          description={'ShowComposer opened up as a page'}
+          leftSection={<PenIcon />}
         />
       </AppShell.Navbar>
       <AppShell.Main>

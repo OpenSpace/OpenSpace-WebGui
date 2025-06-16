@@ -14,7 +14,7 @@ export function useWebGuiUrl(): string {
   useEffect(() => {
     const port = portProperty ?? 4680;
     const address = addressProperty ?? 'localhost';
-    setLink(`http://${address}:${port}/gui`);
+    setLink(`http://${address}:${port}`);
   }, [portProperty, addressProperty]);
 
   return link;
