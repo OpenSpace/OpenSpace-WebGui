@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { Text } from '@mantine/core';
 
 import { ChevronRightIcon } from '@/icons/icons';
@@ -12,12 +13,13 @@ export function FolderPath({ path }: Props) {
   return (
     <Text style={{ display: 'flex', alignItems: 'center' }}>
       {path.map((element, index) => (
-        <>
+        <Fragment key={index}>
+          {/* If it's not the first element, add a chevron icon */}
           {index > 0 && (
             <ChevronRightIcon size={IconSize.sm} style={{ margin: '0 4px' }} />
           )}
           {element}
-        </>
+        </Fragment>
       ))}
     </Text>
   );

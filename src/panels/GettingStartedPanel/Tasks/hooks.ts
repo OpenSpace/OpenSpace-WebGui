@@ -9,5 +9,17 @@ export function useTrackChange<T>(value: T | undefined) {
     }
   }, [value, startValue]);
 
-  return startValue !== undefined && startValue !== value;
+  // If we have not initialized the startValue, we are still in initialization phase
+  // so we don't want to detect changes yet
+  if (startValue === undefined) {
+    return false;
+  }
+
+  if (Array.isArray(value) && Array.isArray(startValue)) {
+    return (
+      // If the arrays are of different lengths or if any element is different
+      startValue.length !== value.length || startValue.some((v, i) => v !== value[i])
+    );
+  }
+  return startValue !== value;
 }
