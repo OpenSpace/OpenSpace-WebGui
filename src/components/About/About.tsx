@@ -37,7 +37,11 @@ export function About({ opened, close }: Props) {
     >
       <Grid>
         <Grid.Col span={4}>
-          <Image src={'openspace-logo.png'} alt={t('logo-alt-text')} w={'100%'} />
+          <Image
+            src={`${import.meta.env.BASE_URL}images/openspace-logo.png`}
+            alt={t('logo-alt-text')}
+            w={'100%'}
+          />
         </Grid.Col>
         <Grid.Col span={8}>
           <Stack gap={'xs'}>

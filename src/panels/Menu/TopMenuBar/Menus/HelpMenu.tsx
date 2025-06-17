@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 import { Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -5,6 +7,7 @@ import { About } from '@/components/About/About';
 import {
   BookIcon,
   FeedbackIcon,
+  HomeIcon,
   InformationCircleOutlineIcon,
   OpenInBrowserIcon,
   OpenWindowIcon,
@@ -19,11 +22,13 @@ import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 export function HelpMenu() {
   const [showAbout, { open, close }] = useDisclosure(false);
   const webGuiUrl = useWebGuiUrl();
+  const navigation = useNavigate();
 
   const { addWindow } = useWindowLayoutProvider();
+  const { t } = useTranslation('menu', { keyPrefix: 'help-menu' });
 
   function openGuiInBrowser() {
-    window.open(webGuiUrl, '_blank');
+    window.open(`${webGuiUrl}/gui`, '_blank');
   }
 
   function openGettingStartedTour() {
@@ -47,16 +52,20 @@ export function HelpMenu() {
           target={'_blank'}
           leftSection={<BookIcon />}
           rightSection={<OpenWindowIcon />}
-          aria-description={'(Opens in new tab)'}
+          aria-description={t('external-tab-aria-label')}
         >
-          Open Web Tutorials
+          {t('tutorials')}
         </Menu.Item>
         <Menu.Item
           onClick={openGettingStartedTour}
           leftSection={<RouteIcon style={{ transform: 'scale(-1)' }} />}
         >
-          Open Getting Started Tour
+          {t('getting-started')}
         </Menu.Item>
+        <Menu.Item onClick={() => navigation('/routes')} leftSection={<HomeIcon />}>
+          {t('routes')}
+        </Menu.Item>
+
         <Menu.Divider />
         <Menu.Item
           component={'a'}
@@ -64,9 +73,9 @@ export function HelpMenu() {
           target={'_blank'}
           leftSection={<FeedbackIcon />}
           rightSection={<OpenWindowIcon />}
-          aria-description={'(Opens in new tab)'}
+          aria-description={t('external-tab-aria-label')}
         >
-          Send Feedback
+          {t('send-feedback')}
         </Menu.Item>
         <Menu.Divider />
 
@@ -74,14 +83,14 @@ export function HelpMenu() {
           onClick={openGuiInBrowser}
           leftSection={<OpenInBrowserIcon />}
           rightSection={<OpenWindowIcon />}
-          aria-description={'(Opens in new tab)'}
+          aria-description={t('external-tab-aria-label')}
         >
-          Open GUI in Browser
+          {t('open-gui')}
         </Menu.Item>
 
         <Menu.Divider />
         <Menu.Item onClick={open} leftSection={<InformationCircleOutlineIcon />}>
-          About
+          {t('about')}
         </Menu.Item>
       </TopBarMenuWrapper>
     </>

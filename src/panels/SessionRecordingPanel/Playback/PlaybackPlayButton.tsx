@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, ButtonProps } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -21,6 +22,7 @@ export function PlaybackPlayButton({
   ...props
 }: Props) {
   const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('panel-sessionrecording', { keyPrefix: 'button-labels' });
   const dispatch = useAppDispatch();
 
   async function startPlayback(): Promise<void> {
@@ -47,7 +49,7 @@ export function PlaybackPlayButton({
 
   return (
     <Button onClick={startPlayback} leftSection={<PlayIcon />} {...props}>
-      Play
+      {t('play')}
     </Button>
   );
 }

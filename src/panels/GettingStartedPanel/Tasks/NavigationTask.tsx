@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useProperty } from '@/hooks/properties';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
@@ -26,6 +28,11 @@ export function NavigationTask({ anchor, lat, long }: RequiredProps) {
     (state) => state.camera
   );
   const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
+  useSubscribeToCamera();
+
+  const { t } = useTranslation('panel-gettingstartedtour', {
+    keyPrefix: 'tasks.navigation'
+  });
 
   const hasCorrectNode = currentAnchor === anchor;
   // If the lat and long are not provided, we don't need to check them, so set them
@@ -35,15 +42,16 @@ export function NavigationTask({ anchor, lat, long }: RequiredProps) {
 
   const taskCompleted = hasCorrectLongitude && hasCorrectLatitude && hasCorrectNode;
 
-  useSubscribeToCamera();
+  let label = '';
+  if (lat && long) {
+    label = t('label-lat-long', { latitude: lat.value, longitude: long.value });
+  } else if (long && !lat) {
+    label = t('label-long', { longitude: long.value });
+  } else if (!long && lat) {
+    label = t('label-lat', { latitude: lat.value });
+  } else {
+    throw new Error('Either lat or long must be provided');
+  }
 
-  const latLabel = lat?.value ? `latitude: ${lat.value}` : '';
-  const longLabel = long?.value ? `longitude: ${long.value}` : '';
-
-  return (
-    <TaskCheckbox
-      taskCompleted={taskCompleted}
-      label={`Go to ${latLabel} ${longLabel}`}
-    />
-  );
+  return <TaskCheckbox taskCompleted={taskCompleted} label={label} />;
 }

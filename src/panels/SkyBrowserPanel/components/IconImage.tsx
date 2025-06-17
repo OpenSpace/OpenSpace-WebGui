@@ -15,7 +15,11 @@ export function IconImage({ url, onClick, icon, h, w, ...props }: Props) {
   return (
     <UnstyledButton onClick={onClick} h={h} w={w} className={styles.iconImage}>
       <AspectRatio ratio={96 / 45} pos={'relative'}>
-        <Image src={url} fallbackSrc={'placeholder.svg'} {...props} />
+        <Image
+          src={url}
+          fallbackSrc={`${import.meta.env.BASE_URL}images/placeholder.svg`}
+          {...props}
+        />
         <ThemeIcon pos={'absolute'} top={0} right={0} size={'sm'}>
           {icon}
         </ThemeIcon>

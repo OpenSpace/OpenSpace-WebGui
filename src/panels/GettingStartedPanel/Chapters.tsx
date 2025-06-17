@@ -19,15 +19,12 @@ export function Chapters({
         stepBody: {
           display: 'none'
         },
-
         step: {
           padding: 0
         },
-
         stepIcon: {
           borderWidth: 4
         },
-
         separator: {
           marginLeft: -2,
           marginRight: -2,
@@ -35,16 +32,10 @@ export function Chapters({
         }
       }}
     >
-      <Stepper.Step label={'Introduction'}></Stepper.Step>
-      <Stepper.Step
-        label={'Navigation'}
-        icon={<AirplaneIcon size={IconSize.md} />}
-      ></Stepper.Step>
-      <Stepper.Step label={'Time'} icon={<TimerIcon size={IconSize.md} />}></Stepper.Step>
-      <Stepper.Step
-        label={'Content'}
-        icon={<SceneIcon size={IconSize.md} />}
-      ></Stepper.Step>
+      <Stepper.Step label={'Introduction'} />
+      <Stepper.Step label={'Navigation'} icon={<AirplaneIcon size={IconSize.md} />} />
+      <Stepper.Step label={'Time'} icon={<TimerIcon size={IconSize.md} />} />
+      <Stepper.Step label={'Content'} icon={<SceneIcon size={IconSize.md} />} />
     </Stepper>
   );
 }
