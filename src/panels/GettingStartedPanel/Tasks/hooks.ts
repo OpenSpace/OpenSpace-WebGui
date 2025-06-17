@@ -21,6 +21,5 @@ export function useTrackChange<T>(value: T | undefined) {
       startValue.length !== value.length || startValue.some((v, i) => v !== value[i])
     );
   }
-  const isSameValue = startValue === value;
-  return !isSameValue;
+  return startValue !== value;
 }
