@@ -17,7 +17,7 @@ export function IconImage({ url, onClick, icon, h, w, ...props }: Props) {
       <AspectRatio ratio={96 / 45} pos={'relative'}>
         <Image
           src={url}
-          fallbackSrc={`${import.meta.env.BASE_URL}images/placeholder.svg`}
+          fallbackSrc={`${import.meta.env.BASE_URL}/images/placeholder.svg`}
           {...props}
         />
         <ThemeIcon pos={'absolute'} top={0} right={0} size={'sm'}>

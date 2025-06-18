@@ -2,7 +2,7 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(() => {
   return {
     plugins: [react()],
     resolve: {
@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => {
       host: true, // Allows access from both localhost and 127.0.0.1
       port: 4690
     },
-    base: mode === 'development' ? '/' : '/gui/',
+    base: '/gui',
     build: {
       rollupOptions: {
         output: {
