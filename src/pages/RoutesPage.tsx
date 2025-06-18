@@ -42,10 +42,11 @@ export function RoutesPage() {
           component={Link}
         />
         <NavLink
-          href={'/showcomposer'}
+          to={'/showcomposer'}
           label={'ShowComposer'}
           description={'ShowComposer opened up as a page'}
           leftSection={<PenIcon />}
+          component={Link}
         />
       </AppShell.Navbar>
       <AppShell.Main>
