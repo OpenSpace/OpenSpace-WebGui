@@ -31,13 +31,12 @@ function App() {
             defaultColorScheme={'dark'}
             cssVariablesResolver={cssVariablesResolver}
           >
-            <BrowserRouter
-              basename={import.meta.env.MODE === 'production' ? '/gui' : '/'}
-            >
+            <BrowserRouter>
               <Routes>
-                <Route index element={<GuiPage />} />
                 <Route path={'routes'} element={<RoutesPage />} />
-                <Route path={'actions'} element={<ActionsPage />} />
+                <Route path={'/gui'} element={<GuiPage />}>
+                  <Route path={'actions'} element={<ActionsPage />} />
+                </Route>
                 {/* Fallback route for any undefined paths */}
                 <Route path={'*'} element={<GuiPage />} />
               </Routes>
