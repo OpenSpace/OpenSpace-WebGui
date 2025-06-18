@@ -33,7 +33,7 @@ export function RoutesPage() {
           description={'The regular OpenSpace GUI'}
         />
         <NavLink
-          href={'/gui/actions'}
+          href={'/gui/#/actions'}
           label={'Actions'}
           description={'Actions panel opened up as a page'}
           target={'_blank'}

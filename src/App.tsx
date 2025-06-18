@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { HashRouter, Route, Routes } from 'react-router';
 import { MantineProvider } from '@mantine/core';
 
 import '@/localization/config';
@@ -31,7 +31,7 @@ function App() {
             defaultColorScheme={'dark'}
             cssVariablesResolver={cssVariablesResolver}
           >
-            <BrowserRouter basename={'/gui'}>
+            <HashRouter>
               <Routes>
                 <Route index element={<GuiPage />} />
                 <Route path={'routes'} element={<RoutesPage />} />
@@ -39,7 +39,7 @@ function App() {
                 {/* Fallback route for any undefined paths */}
                 <Route path={'*'} element={<GuiPage />} />
               </Routes>
-            </BrowserRouter>
+            </HashRouter>
           </MantineProvider>
         </StrictMode>
       </LuaApiProvider>
