@@ -27,7 +27,7 @@ export function RoutesPage() {
 
       <AppShell.Navbar p={'md'}>
         <NavLink
-          href={'/gui'}
+          href={'/gui/'}
           label={'GUI'}
           leftSection={<HomeIcon />}
           description={'The regular OpenSpace GUI'}

@@ -32,7 +32,7 @@ function App() {
             cssVariablesResolver={cssVariablesResolver}
           >
             <BrowserRouter
-              basename={import.meta.env.MODE === 'production' ? '/gui' : '/'}
+              basename={import.meta.env.MODE === 'development' ? '/gui' : '/'}
             >
               <Routes>
                 <Route index element={<GuiPage />} />
