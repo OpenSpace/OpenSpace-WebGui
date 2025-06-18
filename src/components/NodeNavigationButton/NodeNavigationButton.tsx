@@ -18,7 +18,6 @@ import {
 } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
 import { Identifier } from '@/types/types';
-import { NavigationAimKey, NavigationAnchorKey, RetargetAnchorKey } from '@/util/keys';
 
 interface BaseProps {
   type: NavigationType;
@@ -80,11 +79,9 @@ export function NodeNavigationButton({
   const { t } = useTranslation('components', { keyPrefix: 'node-navigation-button' });
 
   function focus(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    if (!event.shiftKey) {
-      luaApi?.setPropertyValueSingle(RetargetAnchorKey, null);
-    }
-    luaApi?.setPropertyValueSingle(NavigationAnchorKey, identifier);
-    luaApi?.setPropertyValueSingle(NavigationAimKey, '');
+    const shouldRetarget = !event.shiftKey;
+    const shouldResetVelocities = !event.ctrlKey;
+    luaApi?.navigation.setFocus(identifier, shouldRetarget, shouldResetVelocities);
     // event.stopPropagation(); TODO: why do we need to explicitly stop propagating here?
     onFinish?.();
   }
