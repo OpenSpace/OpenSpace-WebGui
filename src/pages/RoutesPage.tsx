@@ -1,4 +1,3 @@
-import { Link } from 'react-router';
 import { AppShell, Group, Image, NavLink, Title } from '@mantine/core';
 
 import { DashboardIcon, HomeIcon, PenIcon } from '@/icons/icons';
@@ -28,19 +27,17 @@ export function RoutesPage() {
 
       <AppShell.Navbar p={'md'}>
         <NavLink
-          to={'/'}
+          href={'/gui/'}
           label={'GUI'}
           leftSection={<HomeIcon />}
           description={'The regular OpenSpace GUI'}
-          component={Link}
         />
         <NavLink
-          to={'/actions'}
+          href={'/gui/actions'}
           label={'Actions'}
           description={'Actions panel opened up as a page'}
           target={'_blank'}
           leftSection={<DashboardIcon />}
-          component={Link}
         />
         <NavLink
           href={'/showcomposer'}
