@@ -38,15 +38,16 @@ export function RoutesPage() {
           to={'/actions'}
           label={'Actions'}
           description={'Actions panel opened up as a page'}
+          target={'_blank'}
           leftSection={<DashboardIcon />}
           component={Link}
         />
         <NavLink
-          to={'/showcomposer'}
+          href={'/showcomposer'}
           label={'ShowComposer'}
           description={'ShowComposer opened up as a page'}
+          target={'_blank'}
           leftSection={<PenIcon />}
-          component={Link}
         />
       </AppShell.Navbar>
       <AppShell.Main>
