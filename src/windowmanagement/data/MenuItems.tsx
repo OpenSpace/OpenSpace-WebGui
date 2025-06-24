@@ -210,7 +210,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     renderIcon: (size) => <RouteIcon size={size} style={{ transform: 'scale(-1)' }} />,
     preferredPosition: 'float',
     floatPosition: { offsetY: 150, offsetX: 350, width: 600, height: 500 },
-    defaultVisible: true
+    defaultVisible: false
   },
   scriptLogPanel: {
     title: 'Script Log',
