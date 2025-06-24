@@ -4,9 +4,10 @@ import { Alert, Button, Divider, Group, Stack, Text, Title } from '@mantine/core
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { RecordingPlaybackOverlay } from '@/components/RecordingPlaybackOverlay/RecordingPlaybackOverlay';
+import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { useSetOpenSpaceTime } from '@/hooks/util';
 import { useAppSelector } from '@/redux/hooks';
-import { TimeStatus } from '@/types/enums';
+import { EngineMode, TimeStatus } from '@/types/enums';
 
 import { TimeInput } from './TimeInput/TimeInput';
 import { SimulationIncrement } from './SimulationIncrement';
@@ -18,6 +19,9 @@ export function TimePanel() {
 
   const luaApi = useOpenSpaceApi();
   const { setTime } = useSetOpenSpaceTime();
+  const engineMode = useSubscribeToEngineMode();
+
+  const isInFlight = engineMode === EngineMode.CameraPath;
 
   function realTime(event: React.MouseEvent<HTMLElement>) {
     if (event.shiftKey) {
@@ -48,14 +52,16 @@ export function TimePanel() {
           </Stack>
         </Alert>
       ) : (
-        <TimeInput />
+        <TimeInput disabled={isInFlight} />
       )}
       <Title order={2}>{t('simulation-speed-title')}</Title>
       <SimulationIncrement />
       <Divider my={'xs'} />
       <Group grow gap={'xs'}>
         <Button onClick={realTime}>{t('realtime')}</Button>
-        <Button onClick={now}>{t('now')}</Button>
+        <Button onClick={now} disabled={isInFlight}>
+          {t('now')}
+        </Button>
       </Group>
       <RecordingPlaybackOverlay text={t('cannot-change-on-playback')} />
     </>
