@@ -131,9 +131,7 @@ export function NavigationPanel() {
           />
         )}
       </Layout.GrowingSection>
-      <RecordingPlaybackOverlay
-        text={'Cannot navigate while session recording is playing...'}
-      />
+      <RecordingPlaybackOverlay text={t('cannot-change-on-playback')} />
     </Layout>
   );
 }

@@ -7,6 +7,7 @@
   "simulation-speed-title": "Simulation Speed",
   "realtime": "Realtime",
   "now": "Now",
+  "cannot-change-on-playback": "Cannot change time while session recording is playing...",
   "time-parts": {
     "milliseconds_one": "Millisecond",
     "milliseconds_other": "Milliseconds",

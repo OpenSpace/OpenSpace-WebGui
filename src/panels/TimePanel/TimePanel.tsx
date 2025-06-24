@@ -57,9 +57,7 @@ export function TimePanel() {
         <Button onClick={realTime}>{t('realtime')}</Button>
         <Button onClick={now}>{t('now')}</Button>
       </Group>
-      <RecordingPlaybackOverlay
-        text={'Cannot change time while session recording is playing...'}
-      />
+      <RecordingPlaybackOverlay text={t('cannot-change-on-playback')} />
     </>
   );
 }
