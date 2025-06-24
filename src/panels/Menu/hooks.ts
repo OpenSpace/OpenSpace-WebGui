@@ -32,7 +32,8 @@ function useShowWindowOnStart(shouldShow: boolean, menuItem: MenuItem) {
       addWindow(menuItem.content, {
         id: menuItem.componentID,
         title: menuItem.title,
-        position: menuItem.preferredPosition
+        position: menuItem.preferredPosition,
+        floatPosition: menuItem.floatPosition
       });
     }
   }, [addWindow, dispatch, shouldShow, menuItem]);
