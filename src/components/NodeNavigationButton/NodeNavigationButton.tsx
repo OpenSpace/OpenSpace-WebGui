@@ -10,13 +10,14 @@ import {
 } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import {
   AirplaneIcon,
   FocusIcon,
   FrameFocusIcon,
   LightningFlashIcon
 } from '@/icons/icons';
-import { NavigationType } from '@/types/enums';
+import { EngineMode, NavigationType } from '@/types/enums';
 import { Identifier } from '@/types/types';
 
 interface BaseProps {
@@ -75,8 +76,11 @@ export function NodeNavigationButton({
   style,
   disabled
 }: NodeNavigationButtonProps) {
+  const engineMode = useSubscribeToEngineMode();
   const luaApi = useOpenSpaceApi();
   const { t } = useTranslation('components', { keyPrefix: 'node-navigation-button' });
+
+  const isInPlayback = engineMode === EngineMode.SessionRecordingPlayback;
 
   function focus(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     const shouldRetarget = !event.shiftKey;
@@ -199,7 +203,7 @@ export function NodeNavigationButton({
           size={size}
           style={style}
           justify={justify}
-          disabled={disabled}
+          disabled={disabled || isInPlayback}
           variant={variant ?? 'filled'}
         >
           {showLabel && content.title}
@@ -210,7 +214,7 @@ export function NodeNavigationButton({
           size={size}
           variant={variant}
           style={style}
-          disabled={disabled}
+          disabled={disabled || isInPlayback}
           aria-label={content.title}
         >
           {content.icon}

@@ -1,7 +1,7 @@
 import { LoadingOverlay, Stack, Text, ThemeIcon } from '@mantine/core';
 
+import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { VideocamIcon } from '@/icons/icons';
-import { useAppSelector } from '@/redux/hooks';
 import styles from '@/theme/global.module.css';
 import { EngineMode, IconSize } from '@/types/enums';
 
@@ -10,14 +10,13 @@ interface Props {
 }
 
 export function RecordingPlaybackOverlay({ text }: Props) {
-  const engineMode = useAppSelector((state) => state.engineMode.mode);
+  const engineMode = useSubscribeToEngineMode();
 
-  const isPlayingBackSessionRecording =
-    engineMode === EngineMode.SessionRecordingPlayback;
+  const isInPlayback = engineMode === EngineMode.SessionRecordingPlayback;
 
   return (
     <LoadingOverlay
-      visible={isPlayingBackSessionRecording}
+      visible={isInPlayback}
       overlayProps={{ blur: 5 }}
       loaderProps={{
         children: (
