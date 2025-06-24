@@ -3,6 +3,7 @@ import { Alert, Button, Divider, Group, Stack, Text, Title } from '@mantine/core
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
+import { RecordingPlaybackOverlay } from '@/components/RecordingPlaybackOverlay/RecordingPlaybackOverlay';
 import { useSetOpenSpaceTime } from '@/hooks/util';
 import { useAppSelector } from '@/redux/hooks';
 import { TimeStatus } from '@/types/enums';
@@ -56,6 +57,9 @@ export function TimePanel() {
         <Button onClick={realTime}>{t('realtime')}</Button>
         <Button onClick={now}>{t('now')}</Button>
       </Group>
+      <RecordingPlaybackOverlay
+        text={'Cannot change time while session recording is playing...'}
+      />
     </>
   );
 }

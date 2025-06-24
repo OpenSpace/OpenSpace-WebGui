@@ -6,6 +6,7 @@ import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
+import { RecordingPlaybackOverlay } from '@/components/RecordingPlaybackOverlay/RecordingPlaybackOverlay';
 import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes/hooks';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
@@ -130,6 +131,9 @@ export function NavigationPanel() {
           />
         )}
       </Layout.GrowingSection>
+      <RecordingPlaybackOverlay
+        text={'Cannot navigate while session recording is playing...'}
+      />
     </Layout>
   );
 }
