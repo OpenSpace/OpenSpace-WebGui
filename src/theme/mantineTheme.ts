@@ -108,7 +108,17 @@ export const theme = createTheme({
       defaultProps: {
         'aria-hidden': true
       }
-    })
+    }),
+    Notification: {
+      styles: {
+        title: {
+          userSelect: 'text'
+        },
+        description: {
+          userSelect: 'text'
+        }
+      }
+    }
   },
   headings: {
     sizes: {
