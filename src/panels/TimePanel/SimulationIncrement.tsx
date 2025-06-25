@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Group, Select } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
@@ -15,9 +15,13 @@ import { Decimals, StepSizes, TimePart } from './types';
 export function SimulationIncrement() {
   const luaApi = useOpenSpaceApi();
   const [stepSize, setStepSize] = useState<TimePart>(TimePart.Seconds);
-  const [beforeAdjust, setBeforeAdjust] = useState<number | null>(null);
+
+  // Store the value before the quick adjust started, so we can restore it after
+  // the quick adjust is done. We don't want this to trigger a re-render, so use a ref
+  const beforeAdjustRef = useRef<number | null>(null);
 
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime) ?? 1;
+
   const updateDeltaTime = useThrottledCallback(updateDeltaTimeNow, 50);
   const translateTimePart = useTimePartTranslation();
   const { t } = useTranslation('panel-time');
@@ -38,16 +42,16 @@ export function SimulationIncrement() {
 
   function setDeltaTime(value: number) {
     const deltaTime = value * StepSizes[stepSize];
-
     updateDeltaTime(deltaTime);
   }
 
   function onQuickAdjust(value: number) {
-    if (beforeAdjust === null) {
-      setBeforeAdjust(targetDeltaTime);
+    if (beforeAdjustRef.current === null) {
+      beforeAdjustRef.current = targetDeltaTime;
+    } else {
+      const quickAdjust = StepSizes[stepSize] * value ** 5;
+      updateDeltaTime(targetDeltaTime + quickAdjust);
     }
-    const quickAdjust = StepSizes[stepSize] * value ** 5;
-    updateDeltaTime(targetDeltaTime + quickAdjust);
   }
 
   return (
@@ -74,10 +78,10 @@ export function SimulationIncrement() {
       <QuickAdjustSlider
         onChange={onQuickAdjust}
         onEnd={() => {
-          if (beforeAdjust !== null) {
-            updateDeltaTime(beforeAdjust);
+          if (beforeAdjustRef.current !== null) {
+            updateDeltaTime(beforeAdjustRef.current);
           }
-          setBeforeAdjust(null);
+          beforeAdjustRef.current = null;
         }}
       />
       <DeltaTimeStepsControl />
