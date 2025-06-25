@@ -46,12 +46,8 @@ export function SimulationIncrement() {
   }
 
   function onQuickAdjust(value: number) {
-    if (beforeAdjustRef.current === null) {
-      beforeAdjustRef.current = targetDeltaTime;
-    } else {
-      const quickAdjust = StepSizes[stepSize] * value ** 5;
-      updateDeltaTime(targetDeltaTime + quickAdjust);
-    }
+    const quickAdjust = StepSizes[stepSize] * value ** 5;
+    updateDeltaTime(targetDeltaTime + quickAdjust);
   }
 
   return (
@@ -76,6 +72,9 @@ export function SimulationIncrement() {
         />
       </Group>
       <QuickAdjustSlider
+        onChangeStart={() => {
+          beforeAdjustRef.current = targetDeltaTime;
+        }}
         onChange={onQuickAdjust}
         onEnd={() => {
           if (beforeAdjustRef.current !== null) {
