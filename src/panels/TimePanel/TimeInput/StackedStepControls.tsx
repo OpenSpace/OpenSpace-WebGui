@@ -6,9 +6,16 @@ import { StepControlButton } from '@/components/Input/NumericInput/StepControlBu
 interface Props extends PropsWithChildren, MantineStyleProps {
   onChange: (change: number) => void;
   step?: number;
+  disabled?: boolean;
 }
 
-export function StackedStepControls({ onChange, step, children, ...styleProps }: Props) {
+export function StackedStepControls({
+  onChange,
+  step,
+  disabled,
+  children,
+  ...styleProps
+}: Props) {
   return (
     <Stack gap={5} align={'center'} {...styleProps}>
       <StepControlButton
@@ -18,6 +25,7 @@ export function StackedStepControls({ onChange, step, children, ...styleProps }:
         w={'100%'}
         variant={'light'}
         color={'gray'}
+        disabled={disabled}
       />
       {children}
       <StepControlButton
@@ -27,6 +35,7 @@ export function StackedStepControls({ onChange, step, children, ...styleProps }:
         w={'100%'}
         variant={'light'}
         color={'gray'}
+        disabled={disabled}
       />
     </Stack>
   );

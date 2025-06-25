@@ -4,10 +4,9 @@ import { Group, Text } from '@mantine/core';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useSubscribeToCameraPath } from '@/hooks/topicSubscriptions';
 import { AirplaneIcon } from '@/icons/icons';
+import styles from '@/theme/global.module.css';
 import { IconSize } from '@/types/enums';
 import { sgnUri } from '@/util/propertyTreeHelpers';
-
-import styles from './RemainingFlightTimeIndicator.module.css';
 
 interface Props {
   compact?: boolean;

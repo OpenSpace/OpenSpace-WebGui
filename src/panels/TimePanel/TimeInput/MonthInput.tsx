@@ -24,12 +24,14 @@ interface Props extends MantineStyleProps {
   month: number;
   onInputChangeStep: (change: number) => void;
   onInputChange: (value: number) => void;
+  disabled?: boolean;
 }
 
 export function MonthInput({
   month,
   onInputChange,
   onInputChangeStep,
+  disabled,
   ...styleProps
 }: Props) {
   const { value: storedMonth, setValue: setStoredMonth } = usePropListeningState(month);
@@ -89,12 +91,13 @@ export function MonthInput({
   }
 
   return (
-    <StackedStepControls onChange={onInputChangeStep}>
+    <StackedStepControls onChange={onInputChangeStep} disabled={disabled}>
       <StringInput
         value={monthLabel(storedMonth)}
         onEnter={onInput}
         onKeyDown={onKeyDown}
         errorCheck={(value) => !isValidMonth(parseMonthTextInput(value))}
+        disabled={disabled}
         {...styleProps}
       />
     </StackedStepControls>
