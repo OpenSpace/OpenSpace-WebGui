@@ -14,7 +14,7 @@ export function KeybindsPanel() {
   const { ref, height: tabsHeight } = useElementSize();
 
   return (
-    <Tabs radius={'md'} defaultValue={'keyboardLayout'}>
+    <Tabs defaultValue={'keyboardLayout'}>
       <Tabs.List ref={ref}>
         <Tabs.Tab value={'keyboardLayout'}>{t('keyboard-view-tab-title')}</Tabs.Tab>
         <Tabs.Tab value={'listLayout'}>{t('list-view-tab-title')}</Tabs.Tab>
