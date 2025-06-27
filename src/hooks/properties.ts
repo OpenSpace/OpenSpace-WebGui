@@ -102,7 +102,7 @@ function useShouldShowModal<T extends PropertyTypeKey>(
   }
 
   let shouldShowModal = false;
-  const {needsConfirmation} = metaData;
+  const { needsConfirmation } = metaData;
 
   switch (showConfirmationModal) {
     case ShowPropertyConfirmationModals.Never:
@@ -114,8 +114,8 @@ function useShouldShowModal<T extends PropertyTypeKey>(
       shouldShowModal = needsConfirmation === 'Yes' || needsConfirmation === 'Always';
       break;
     case ShowPropertyConfirmationModals.Always:
-      // Always show modal regardless of the property setting
-      shouldShowModal = true;
+      // Always show modal except when the property is explicitly set to never
+      shouldShowModal = needsConfirmation !== 'Never';
       break;
     default:
       throw new Error(

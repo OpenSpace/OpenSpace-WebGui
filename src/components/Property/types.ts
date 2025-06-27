@@ -7,7 +7,7 @@ export interface PropertyProps {
 }
 
 // Confirmation setting for individual properties
-export type PropertyConfirmation = 'No' | 'Yes' | 'Always';
+export type PropertyConfirmation = 'No' | 'Never' | 'Yes' | 'Always';
 
 // Global confirmation settings for properties
 export enum ShowPropertyConfirmationModals {
