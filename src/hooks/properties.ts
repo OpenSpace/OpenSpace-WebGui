@@ -92,8 +92,7 @@ function useShouldShowModal<T extends PropertyTypeKey>(
   metaData: PropertyOrPropertyGroup<T>['metaData'] | undefined
 ): boolean {
   const showConfirmationModal = useAppSelector(
-    (state) =>
-      state.properties.properties['OpenSpaceEngine.ShowPropertyConfirmationModals']
+    (state) => state.properties.properties['OpenSpaceEngine.ShowPropertyConfirmation']
   )?.value as ShowPropertyConfirmationModals | undefined;
 
   // Don't show modal if we can't find the global settings or the metadata
