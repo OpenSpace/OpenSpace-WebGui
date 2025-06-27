@@ -10,7 +10,7 @@ interface Props {
 }
 
 export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
-  const { isVisible, setVisiblity } = usePropertyOwnerVisibility(uri);
+  const { isVisible, setVisibility } = usePropertyOwnerVisibility(uri);
 
   // This is the value that is shown in the checkbox, it is not necessarily the same as
   // the isVisible value, since the checkbox can be in a transition state
@@ -28,7 +28,7 @@ export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
   }
 
   function updateValue(shouldBeEnabled: boolean, isImmediate: boolean) {
-    setVisiblity(shouldBeEnabled, isImmediate);
+    setVisibility(shouldBeEnabled, isImmediate);
     setChecked(shouldBeEnabled);
   }
 
