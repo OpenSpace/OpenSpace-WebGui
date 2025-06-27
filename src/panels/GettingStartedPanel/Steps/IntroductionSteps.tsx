@@ -1,13 +1,17 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, List, Stack, Text } from '@mantine/core';
+import { Alert, Image, List, Stack, Text } from '@mantine/core';
+
+import { useAppSelector } from '@/redux/hooks';
 
 import { TaskCheckbox } from '../Tasks/Components/TaskCheckbox';
 
 export function useIntroductionSteps(): React.ReactNode[] {
+  const profileName = useAppSelector((state) => state.profile.name);
   const { t } = useTranslation('panel-gettingstartedtour', {
     keyPrefix: 'steps.introduction'
   });
+  const isDefaultProfile = profileName === 'Default';
 
   return [
     <Stack align={'center'}>
@@ -36,6 +40,15 @@ export function useIntroductionSteps(): React.ReactNode[] {
     </>,
     <>
       <Text>{t('lets-go')}</Text>
+      {!isDefaultProfile && (
+        <Alert
+          variant={'light'}
+          color={'orange'}
+          title={t('other-profile-warning.title')}
+        >
+          <Text>{t('other-profile-warning.description')}</Text>
+        </Alert>
+      )}
     </>
   ];
 }

@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Group, Stack } from '@mantine/core';
 
+import { useOpenSpaceApi } from '@/api/hooks';
 import { Layout } from '@/components/Layout/Layout';
+import { usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { ArrowLeftIcon, ArrowRightIcon } from '@/icons/icons';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
@@ -20,6 +22,10 @@ export function GettingStartedPanel() {
   const navigationSteps = useNavigationSteps();
   const timeSteps = useTimeSteps();
   const contentSteps = useContentSteps();
+  const luaApi = useOpenSpaceApi();
+  const { setVisibility: setVisibleEsriViirsCombo } = usePropertyOwnerVisibility(
+    'Scene.Earth.Renderable.Layers.ColorLayers.ESRI_VIIRS_Combo'
+  );
 
   const { t } = useTranslation('panel-gettingstartedtour');
 
@@ -37,6 +43,17 @@ export function GettingStartedPanel() {
 
   const isFirstStep = step === 0;
   const isLastStep = step === steps.length - 1;
+  const isLastIntroductionStep = step === introductionSteps.length - 1;
+
+  function nextButtonLabel(): string {
+    if (isLastIntroductionStep) {
+      return t('button-labels.start');
+    }
+    if (isLastStep) {
+      return t('button-labels.finish');
+    }
+    return t('button-labels.next');
+  }
 
   function setSection(section: number) {
     setStep(sectionBreaks[section] ?? 0);
@@ -46,12 +63,33 @@ export function GettingStartedPanel() {
     if (isLastStep) {
       closeWindow('gettingStartedTour');
     } else {
+      if (isLastIntroductionStep) {
+        setupGettingStartedTour();
+      }
       setStep(step + 1);
     }
   }
 
   function onClickPrev() {
     setStep(step - 1);
+  }
+
+  function setupGettingStartedTour(): void {
+    luaApi?.navigation.jumpTo('Earth');
+    luaApi?.action.triggerAction('os.earth_standard_illumination');
+    luaApi?.setPropertyValue(
+      'Scene.Earth.Renderable.Layers.ColorLayers.*.Enabled',
+      false
+    );
+    setVisibleEsriViirsCombo(true);
+    luaApi?.time.setPause(false);
+    luaApi?.time.interpolateDeltaTime(1);
+    luaApi?.fadeIn('Scene.EarthTrail.Renderable');
+    luaApi?.setPropertyValue(
+      'Scene.Mars.Renderable.Layers.ColorLayers.CTX_Mosaic_Sweden.Enabled',
+      false
+    );
+    luaApi?.fadeOut('Scene.Constellations.Renderable');
   }
 
   return (
@@ -79,7 +117,7 @@ export function GettingStartedPanel() {
             variant={'filled'}
             rightSection={!isLastStep && <ArrowRightIcon />}
           >
-            {isLastStep ? t('button-labels.finish') : t('button-labels.next')}
+            {nextButtonLabel()}
           </Button>
         </Group>
       </Layout.FixedSection>
