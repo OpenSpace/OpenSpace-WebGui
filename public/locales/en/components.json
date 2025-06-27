@@ -129,6 +129,12 @@
     "property-label": {
       "read-only-tooltip": "This property is read-only, meaning that it's not intended to be changed.",
       "read-only-label": "Read-only"
+    },
+    "confirmation-modal": {
+      "title": "Confirm Change",
+      "description": "You are about to change the value of '{{propertyName}}'. This property is marked as sensitive and requires confirmation. Do you want to proceed?",
+      "confirm": "Confirm",
+      "cancel": "Cancel"
     }
   },
   "resizeable-content": {
