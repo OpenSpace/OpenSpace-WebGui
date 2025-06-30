@@ -1,4 +1,7 @@
+import { Text } from '@mantine/core';
+
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
+import styles from '@/theme/global.module.css';
 import { Uri } from '@/types/types';
 
 interface Props {
@@ -13,7 +16,9 @@ interface Props {
 export function PropertyDescription({ uri, description }: Props) {
   return (
     <>
-      {description}
+      <Text style={{ wordBreak: 'break-word' }} className={styles.selectable}>
+        {description}
+      </Text>
       {uri && <CopyUriButton uri={uri} />}
     </>
   );
