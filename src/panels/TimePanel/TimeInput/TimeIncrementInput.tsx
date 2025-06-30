@@ -9,6 +9,7 @@ interface Props extends MantineStyleProps, NumberInputProps {
   min?: number;
   max?: number;
   step?: number;
+  disabled?: boolean;
   onInputEnter: (value: number) => void;
   onInputChangeStep: (change: number) => void;
   onInputChange?: (value: number | string) => void;
@@ -21,6 +22,7 @@ export function TimeIncrementInput({
   onInputChangeStep,
   onInputChange,
   onInputBlur,
+  disabled,
   min,
   max,
   step,
@@ -28,7 +30,12 @@ export function TimeIncrementInput({
   ...props
 }: Props) {
   return (
-    <StackedStepControls onChange={onInputChangeStep} step={step} {...style}>
+    <StackedStepControls
+      onChange={onInputChangeStep}
+      step={step}
+      disabled={disabled}
+      {...style}
+    >
       <NumericInput
         value={value}
         onEnter={onInputEnter}
@@ -39,6 +46,7 @@ export function TimeIncrementInput({
         min={min}
         max={max}
         step={step}
+        disabled={disabled}
         {...props}
       />
     </StackedStepControls>

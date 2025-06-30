@@ -2,9 +2,10 @@ import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, NumberFormatter, Stack, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { FastForwardIcon, FastRewindIcon, PauseIcon, PlayIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
-import { IconSize } from '@/types/enums';
+import { EngineMode, IconSize } from '@/types/enums';
 
 import { useTimePartTranslation } from './hooks';
 import { formatDeltaTime } from './util';
@@ -17,6 +18,10 @@ export function DeltaTimeStepsControl() {
 
   const hasNextDeltaTimeStep = useAppSelector((state) => state.time.hasNextDeltaTimeStep);
   const hasPrevDeltaTimeStep = useAppSelector((state) => state.time.hasPrevDeltaTimeStep);
+
+  const engineMode = useSubscribeToEngineMode();
+  const isInFlight = engineMode === EngineMode.CameraPath;
+
   const translateTimePart = useTimePartTranslation();
   const { t } = useTranslation('panel-time');
 
@@ -93,6 +98,7 @@ export function DeltaTimeStepsControl() {
             : t('delta-time-step-control.aria-labels.toggle-pause.pause')
         }`}
         flex={2}
+        disabled={isInFlight}
       >
         {isPaused ? <PlayIcon size={IconSize.md} /> : <PauseIcon size={IconSize.md} />}
       </ActionIcon>

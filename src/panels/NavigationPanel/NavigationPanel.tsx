@@ -6,7 +6,9 @@ import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
+import { RecordingPlaybackOverlay } from '@/components/RecordingPlaybackOverlay/RecordingPlaybackOverlay';
 import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes/hooks';
+import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { EngineMode, IconSize } from '@/types/enums';
@@ -24,8 +26,6 @@ enum NavigationMode {
 }
 
 export function NavigationPanel() {
-  const engineMode = useAppSelector((state) => state.engineMode.mode);
-
   const shouldStartInAnchorAim = useAppSelector((state) => {
     const aimProp = state.properties.properties[NavigationAimKey];
     const anchorProp = state.properties.properties[NavigationAnchorKey];
@@ -39,6 +39,8 @@ export function NavigationPanel() {
   const [navigationMode, setNavigationMode] = useState(
     shouldStartInAnchorAim ? NavigationMode.AnchorAim : NavigationMode.Focus
   );
+
+  const engineMode = useSubscribeToEngineMode();
 
   const { t } = useTranslation('panel-navigation');
 
@@ -130,6 +132,7 @@ export function NavigationPanel() {
           />
         )}
       </Layout.GrowingSection>
+      <RecordingPlaybackOverlay text={t('cannot-change-on-playback')} />
     </Layout>
   );
 }

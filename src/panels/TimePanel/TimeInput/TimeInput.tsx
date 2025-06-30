@@ -18,7 +18,11 @@ import { maxDaysInMonth } from '../util';
 import { MonthInput } from './MonthInput';
 import { TimeIncrementInput } from './TimeIncrementInput';
 
-export function TimeInput() {
+interface Props {
+  disabled?: boolean;
+}
+
+export function TimeInput({ disabled }: Props) {
   const [isLocked, setUseLock] = useState(false);
   const [pendingTime, setPendingTime] = useState(new Date());
   const [isHoldingShift, setIsHoldingShift] = useState(false);
@@ -285,12 +289,14 @@ export function TimeInput() {
               }}
               error={errorMessage !== ''}
               w={65}
+              disabled={disabled}
             />
             <MonthInput
               month={time.getUTCMonth()}
               onInputChange={(value) => onTimeInput(TimePart.Months, value)}
               onInputChangeStep={(change) => onTimeInputRelative(TimePart.Months, change)}
               w={55}
+              disabled={disabled}
             />
 
             <TimeIncrementInput
@@ -300,6 +306,7 @@ export function TimeInput() {
               min={1}
               max={maxDaysInMonth(time.getUTCFullYear(), time.getUTCMonth())}
               w={40}
+              disabled={disabled}
             />
           </Group>
           <Group gap={5} wrap={'nowrap'}>
@@ -310,6 +317,7 @@ export function TimeInput() {
               min={0}
               max={24}
               w={40}
+              disabled={disabled}
             />
             <TimeIncrementInput
               value={time.getUTCMinutes()}
@@ -320,6 +328,7 @@ export function TimeInput() {
               min={0}
               max={60}
               w={40}
+              disabled={disabled}
             />
             <TimeIncrementInput
               value={time.getUTCSeconds()}
@@ -330,6 +339,7 @@ export function TimeInput() {
               min={0}
               max={60}
               w={40}
+              disabled={disabled}
             />
           </Group>
         </Group>
@@ -337,20 +347,22 @@ export function TimeInput() {
         {isLocked && (
           <Group gap={'xs'} grow>
             <Button
+              variant={'filled'}
               onClick={() => {
                 interpolateToPendingTime();
                 setUseLock(false);
               }}
-              variant={'filled'}
+              disabled={disabled}
             >
               {t('lock-time.button-labels.interpolate')}
             </Button>
             <Button
+              variant={'filled'}
               onClick={() => {
                 setToPendingTime();
                 setUseLock(false);
               }}
-              variant={'filled'}
+              disabled={disabled}
             >
               {t('lock-time.button-labels.set')}
             </Button>
