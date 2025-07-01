@@ -1,26 +1,29 @@
 import { useTranslation } from 'react-i18next';
 import { Tabs, Title } from '@mantine/core';
-import { AnchorPanel } from './AnchorPanel';
-import { CustomCoordinates } from './CustomCoordinates';
+
+import { EarthPanel } from './AnchorPanels/EarthPanel/EarthPanel';
 import { AddedCustomNodes } from './AddedCustomNodes';
+import { CustomCoordinates } from './CustomCoordinates';
 
 const SearchPlaceKey = 'Search Place';
 const CustomCoordinatesKey = 'Custom Coordinates';
 const MapsKey = 'Map';
 
 export function GeoLocationPanel() {
-  const { t } = useTranslation('panel-geolocation', { keyPrefix: 'earth-panel' });
+  const { t } = useTranslation('panel-geolocation');
 
   return (
     <>
-      <Tabs variant={'outline'} defaultValue={SearchPlaceKey} radius={'md'}>
+      <Tabs defaultValue={SearchPlaceKey}>
         <Tabs.List>
-          <Tabs.Tab value={SearchPlaceKey}>{t('tab-search')}</Tabs.Tab>
-          <Tabs.Tab value={CustomCoordinatesKey}>{t('tab-custom-coordinates')}</Tabs.Tab>
-          <Tabs.Tab value={MapsKey}>Map</Tabs.Tab>
+          <Tabs.Tab value={SearchPlaceKey}>{t('tab-labels.search')}</Tabs.Tab>
+          <Tabs.Tab value={CustomCoordinatesKey}>
+            {t('tab-labels.custom-coordinates')}
+          </Tabs.Tab>
+          <Tabs.Tab value={MapsKey}>{t('tab-labels.location')}</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value={SearchPlaceKey}>
-          <AnchorPanel />
+          <EarthPanel />
         </Tabs.Panel>
         <Tabs.Panel value={CustomCoordinatesKey}>
           <CustomCoordinates />

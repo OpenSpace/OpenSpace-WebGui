@@ -3,10 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { Button, Group, Stack, TextInput } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PlusIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
+
 import { useCreateSceneGraphNode } from './hooks';
 import { addressUTF8 } from './util';
 
@@ -16,7 +18,7 @@ export function CustomCoordinates() {
   const [altitude, setAltitude] = useState(0);
   const [customName, setCustomName] = useState('');
   const { t } = useTranslation('panel-geolocation', {
-    keyPrefix: 'earth-panel.custom-coordinates'
+    keyPrefix: 'custom-coordinates'
   });
   const altitudeInMeter = altitude * 1000;
   const previewCustomName = t('node-name-placeholder', { latitude, longitude, altitude });
@@ -25,7 +27,7 @@ export function CustomCoordinates() {
   const addSceneGraphNode = useCreateSceneGraphNode();
 
   if (!anchor) {
-    return <></>;
+    return <LoadingBlocks />;
   }
 
   function onClick() {

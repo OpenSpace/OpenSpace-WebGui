@@ -3,11 +3,11 @@ import { ActionIcon, Group, Text } from '@mantine/core';
 
 import { MinusIcon } from '@/icons/icons';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
-import { identifierFromUri, sgnUri } from '@/util/propertyTreeHelpers';
-import { useRemoveSceneGraphNodeModal } from '@/util/useRemoveSceneGraphNode';
-import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { useAppSelector } from '@/redux/hooks';
 import { GeoLocationGroupKey } from '@/util/keys';
+import { identifierFromUri, sgnUri } from '@/util/propertyTreeHelpers';
+import { useAnchorNode } from '@/util/propertyTreeHooks';
+import { useRemoveSceneGraphNodeModal } from '@/util/useRemoveSceneGraphNode';
 
 export function AddedCustomNodes() {
   const groups = useAppSelector((state) => state.groups.groups);
@@ -20,7 +20,7 @@ export function AddedCustomNodes() {
   const addedCustomNodes = geoLocationOwners ?? [];
 
   const { t } = useTranslation('panel-geolocation', {
-    keyPrefix: 'earth-panel.added-custom-nodes'
+    keyPrefix: 'added-custom-nodes'
   });
 
   return addedCustomNodes.length === 0 ? (

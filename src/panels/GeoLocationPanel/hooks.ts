@@ -1,15 +1,21 @@
+import { useTranslation } from 'react-i18next';
+
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useIsSceneGraphNodeAdded } from '@/hooks/propertyOwner';
-import { Identifier } from '@/types/types';
-import { createSceneGraphNodeTable } from './util';
 import { useAppDispatch } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { LogLevel } from '@/types/enums';
+import { Identifier } from '@/types/types';
+
+import { createSceneGraphNodeTable } from './util';
 
 export function useCreateSceneGraphNode() {
   const isSceneGraphNodeAdded = useIsSceneGraphNodeAdded();
   const luaApi = useOpenSpaceApi();
   const dispatch = useAppDispatch();
+  const { t } = useTranslation('panel-geolocation', {
+    keyPrefix: 'notifications.duplicate-scene-graph-node'
+  });
 
   function addFocusNode(
     globe: Identifier,
@@ -22,8 +28,8 @@ export function useCreateSceneGraphNode() {
     if (isSceneGraphNodeAdded(identifier)) {
       dispatch(
         handleNotificationLogging(
-          'Warning',
-          `Cannot add focus node, a node with identifier: '${identifier}' already exists.`,
+          t('title'),
+          t('description', { identifier }),
           LogLevel.Warning
         )
       );

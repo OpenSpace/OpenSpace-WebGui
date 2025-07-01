@@ -1,8 +1,9 @@
-import { useOpenSpaceApi } from '@/api/hooks';
-import { Identifier } from '@/types/types';
+import { useTranslation } from 'react-i18next';
 import { Stack, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { useTranslation } from 'react-i18next';
+
+import { useOpenSpaceApi } from '@/api/hooks';
+import { Identifier } from '@/types/types';
 
 export function useRemoveSceneGraphNodeModal() {
   const luaApi = useOpenSpaceApi();

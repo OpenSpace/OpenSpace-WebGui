@@ -1,11 +1,17 @@
 {
-  "select-anchor-label": "Select an anchor",
-  "no-anchor-panel": "Currently there is no data for locations on {{anchor}}",
+  "tab-labels": {
+    "search": "Search Place",
+    "custom-coordinates": "Custom Coordinates",
+    "location": "Location"
+  },
+  "added-nodes-title": "Added Nodes",
   "earth-panel": {
-    "tab-search": "Search Place",
-    "tab-custom-coordinates": "Custom Coordinates",
     "search": {
-      "input-placeholder": "Search places...",
+      "title": "Search Places on Earth",
+      "input": {
+        "aria-label": "Search places on Earth",
+        "placeholder": "Search places..."
+      },
       "button-label": "Search",
       "filter-placeholder": "Filter search",
       "no-result": "Nothing found. Try another search!",
@@ -16,22 +22,29 @@
         "altitude-input-label": "Custom altitude (km)"
       }
     },
-    "added-nodes-title": "Added Nodes",
-    "earth-entry-aria-label": {
-      "add": "Add focus node {{name}}",
-      "remove": "Remove focus node {{name}}"
-    },
-    "custom-coordinates": {
-      "latitude-label": "Latitude (deg)",
-      "longitude-label": "Longitude (deg)",
-      "altitude-label": "Altitude (km)",
-      "node-name-label": "Node name (optional)",
-      "node-name-placeholder": "Custom Coordinate ({{latitude}}, {{longitude}}, {{altitude}}km)",
-      "add-focus-button-label": "Add Focus"
-    },
-    "added-custom-nodes": {
-      "empty-nodes": "No added nodes",
-      "remove-node-aria-label": "Remove node"
+    "earth-entry": {
+      "aria-label": {
+        "add": "Add focus node {{name}}",
+        "remove": "Remove focus node {{name}}"
+      }
+    }
+  },
+  "custom-coordinates": {
+    "latitude-label": "Latitude (deg)",
+    "longitude-label": "Longitude (deg)",
+    "altitude-label": "Altitude (km)",
+    "node-name-label": "Node name (optional)",
+    "node-name-placeholder": "Custom Coordinate ({{latitude}}, {{longitude}}, {{altitude}}km)",
+    "add-focus-button-label": "Add Focus"
+  },
+  "added-custom-nodes": {
+    "empty-nodes": "No added nodes",
+    "remove-node-aria-label": "Remove node"
+  },
+  "notifications": {
+    "duplicate-scene-graph-node": {
+      "title": "Warning",
+      "description": "Cannot add focus node, a node with identifier '{{identifier}}' already exists."
     }
   }
 }

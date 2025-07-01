@@ -3,15 +3,16 @@ import { ActionIcon, Group, Text, Tooltip } from '@mantine/core';
 import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
+import { useIsSceneGraphNodeAdded } from '@/hooks/propertyOwner';
 import { MinusIcon, PlusIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
+import { useAnchorNode } from '@/util/propertyTreeHooks';
+import { useRemoveSceneGraphNodeModal } from '@/util/useRemoveSceneGraphNode';
+
+import { useCreateSceneGraphNode } from '../../hooks';
+import { addressUTF8 } from '../../util';
 
 import { Candidate, Extent } from './types';
-import { addressUTF8 } from '../../util';
-import { useIsSceneGraphNodeAdded } from '@/hooks/propertyOwner';
-import { useCreateSceneGraphNode } from '../../hooks';
-import { useRemoveSceneGraphNodeModal } from '@/util/useRemoveSceneGraphNode';
-import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 interface Props {
   place: Candidate;
@@ -28,7 +29,7 @@ export function EarthEntry({ place, useCustomAltitude, customAltitude }: Props) 
   const anchor = useAnchorNode();
 
   const { t } = useTranslation('panel-geolocation', {
-    keyPrefix: 'earth-panel.earth-entry-aria-label'
+    keyPrefix: 'earth-panel.earth-entry'
   });
   const address = place.attributes.LongLabel;
   const identifier = addressUTF8(address);
@@ -79,7 +80,9 @@ export function EarthEntry({ place, useCustomAltitude, customAltitude }: Props) 
         />
         <Tooltip
           label={
-            isSgnAdded ? t('remove', { name: address }) : t('add', { name: address })
+            isSgnAdded
+              ? t('aria-label.remove', { name: address })
+              : t('aria-label.add', { name: address })
           }
         >
           <ActionIcon
@@ -91,7 +94,9 @@ export function EarthEntry({ place, useCustomAltitude, customAltitude }: Props) 
             color={isSgnAdded ? 'red' : 'blue'}
             variant={'subtle'}
             aria-label={
-              isSgnAdded ? t('remove', { name: address }) : t('add', { name: address })
+              isSgnAdded
+                ? t('aria-label.remove', { name: address })
+                : t('aria-label.add', { name: address })
             }
             disabled={anchor?.identifier === identifier}
           >

@@ -53,10 +53,10 @@ export function EarthPanel() {
 
   return (
     <>
-      <Title order={2}>{'Search Places on Earth'}</Title>
+      <Title order={2}>{t('search.title')}</Title>
       <TextInput
-        aria-label={'Search places on Earth'}
-        placeholder={t('search.input-placeholder')}
+        aria-label={t('search.input.aria-label')}
+        placeholder={t('search.input.placeholder')}
         onKeyDown={(event) => {
           if (event.key === 'Enter') {
             getPlaces();

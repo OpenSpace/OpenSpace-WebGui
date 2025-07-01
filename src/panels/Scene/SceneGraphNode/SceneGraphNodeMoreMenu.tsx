@@ -10,10 +10,10 @@ import { IconSize, NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { displayName, identifierFromUri } from '@/util/propertyTreeHelpers';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
+import { useRemoveSceneGraphNodeModal } from '@/util/useRemoveSceneGraphNode';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { SceneGraphNodeView } from './SceneGraphNodeView';
-import { useRemoveSceneGraphNodeModal } from '@/util/useRemoveSceneGraphNode';
 
 interface Props {
   uri: Uri;
