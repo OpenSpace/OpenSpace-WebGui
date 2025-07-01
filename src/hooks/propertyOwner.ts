@@ -22,6 +22,21 @@ export function useSceneGraphNode(identifier: Identifier): PropertyOwner | undef
 }
 
 /**
+ * Returns a function that checks whether a scene graph node with the given identifier
+ * exists among the propertyOwners.
+ */
+export function useIsSceneGraphNodeAdded() {
+  const { propertyOwners } = useAppSelector((state) => state.propertyOwners);
+
+  function isSceneGraphNodeAdded(identifier: Identifier): boolean {
+    const uri = sgnUri(identifier);
+    return uri in propertyOwners;
+  }
+
+  return isSceneGraphNodeAdded;
+}
+
+/**
  * Return true if the property owner has any visible children, according to the current
  * visibility level setting.
  */

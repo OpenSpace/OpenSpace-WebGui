@@ -18,8 +18,8 @@
     },
     "added-nodes-title": "Added Nodes",
     "earth-entry-aria-label": {
-      "add": "Add node",
-      "remove": "Remove node"
+      "add": "Add focus node {{name}}",
+      "remove": "Remove focus node {{name}}"
     },
     "custom-coordinates": {
       "latitude-label": "Latitude (deg)",

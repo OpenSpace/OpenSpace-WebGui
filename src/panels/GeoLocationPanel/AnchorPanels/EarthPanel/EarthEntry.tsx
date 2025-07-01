@@ -5,40 +5,38 @@ import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { MinusIcon, PlusIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
-import { Identifier } from '@/types/types';
 
 import { Candidate, Extent } from './types';
-import { addressUTF8 } from './util';
+import { addressUTF8 } from '../../util';
+import { useIsSceneGraphNodeAdded } from '@/hooks/propertyOwner';
+import { useCreateSceneGraphNode } from '../../hooks';
+import { useRemoveSceneGraphNodeModal } from '@/util/useRemoveSceneGraphNode';
+import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 interface Props {
   place: Candidate;
-  isCustomAltitude: boolean;
+  useCustomAltitude: boolean;
   customAltitude: number;
-  currentAnchor: Identifier;
-  isSceneGraphNodeAdded: (identifier: Identifier) => boolean;
-  addFocusNode: (identifier: Identifier, lat: number, long: number, alt: number) => void;
-  removeFocusNode: (identifier: Identifier) => void;
 }
 
-export function EarthEntry({
-  place,
-  isCustomAltitude,
-  customAltitude,
-  currentAnchor,
-  isSceneGraphNodeAdded,
-  addFocusNode,
-  removeFocusNode
-}: Props) {
+const EarthGlobeIdentifier = 'Earth';
+
+export function EarthEntry({ place, useCustomAltitude, customAltitude }: Props) {
+  const isSceneGraphNodeAdded = useIsSceneGraphNodeAdded();
+  const addSceneGraphNode = useCreateSceneGraphNode();
+  const removesceneGraphNode = useRemoveSceneGraphNodeModal();
+  const anchor = useAnchorNode();
+
   const { t } = useTranslation('panel-geolocation', {
     keyPrefix: 'earth-panel.earth-entry-aria-label'
   });
   const address = place.attributes.LongLabel;
-  const addressUtf8 = addressUTF8(address);
+  const identifier = addressUTF8(address);
 
-  const isAdded = isSceneGraphNodeAdded(addressUtf8);
+  const isSgnAdded = isSceneGraphNodeAdded(identifier);
   const lat = place.location.y;
   const long = place.location.x;
-  const alt = isCustomAltitude ? customAltitude * 1000 : calculateAltitude(place.extent);
+  const alt = useCustomAltitude ? customAltitude * 1000 : calculateAltitude(place.extent);
 
   function calculateAltitude(extent: Extent): number {
     // Get lat long corners of polygon
@@ -67,30 +65,39 @@ export function EarthEntry({
       <Group gap={'xs'} wrap={'nowrap'}>
         <NodeNavigationButton
           type={NavigationType.FlyGeo}
-          identifier={currentAnchor}
+          identifier={EarthGlobeIdentifier}
           latitude={lat}
           longitude={long}
           altitude={alt}
         />
         <NodeNavigationButton
           type={NavigationType.JumpGeo}
-          identifier={currentAnchor}
+          identifier={EarthGlobeIdentifier}
           latitude={lat}
           longitude={long}
           altitude={alt}
         />
-        <ActionIcon
-          onClick={() =>
-            isAdded
-              ? removeFocusNode(addressUtf8)
-              : addFocusNode(addressUtf8, lat, long, alt)
+        <Tooltip
+          label={
+            isSgnAdded ? t('remove', { name: address }) : t('add', { name: address })
           }
-          color={isAdded ? 'red' : 'blue'}
-          variant={'subtle'}
-          aria-label={`${isAdded ? t('remove') : t('add')}: ${address}`}
         >
-          {isAdded ? <MinusIcon /> : <PlusIcon />}
-        </ActionIcon>
+          <ActionIcon
+            onClick={() =>
+              isSgnAdded
+                ? removesceneGraphNode(identifier)
+                : addSceneGraphNode(EarthGlobeIdentifier, identifier, lat, long, alt)
+            }
+            color={isSgnAdded ? 'red' : 'blue'}
+            variant={'subtle'}
+            aria-label={
+              isSgnAdded ? t('remove', { name: address }) : t('add', { name: address })
+            }
+            disabled={anchor?.identifier === identifier}
+          >
+            {isSgnAdded ? <MinusIcon /> : <PlusIcon />}
+          </ActionIcon>
+        </Tooltip>
       </Group>
     </Group>
   );

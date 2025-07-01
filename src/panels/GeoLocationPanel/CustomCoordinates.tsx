@@ -6,18 +6,11 @@ import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PlusIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
-import { Identifier } from '@/types/types';
+import { useAnchorNode } from '@/util/propertyTreeHooks';
+import { useCreateSceneGraphNode } from './hooks';
+import { addressUTF8 } from './util';
 
-interface Props {
-  currentAnchor: Identifier;
-  onAddFocusNodeCallback: (
-    address: string,
-    latitude: number,
-    longitude: number,
-    altitude: number
-  ) => void;
-}
-export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Props) {
+export function CustomCoordinates() {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const [altitude, setAltitude] = useState(0);
@@ -28,9 +21,27 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
   const altitudeInMeter = altitude * 1000;
   const previewCustomName = t('node-name-placeholder', { latitude, longitude, altitude });
 
+  const anchor = useAnchorNode();
+  const addSceneGraphNode = useCreateSceneGraphNode();
+
+  if (!anchor) {
+    return <></>;
+  }
+
   function onClick() {
-    const address = customName || previewCustomName;
-    onAddFocusNodeCallback(address, latitude, longitude, altitudeInMeter);
+    const identifier = customName || previewCustomName;
+
+    if (!anchor) {
+      return;
+    }
+
+    addSceneGraphNode(
+      anchor.identifier,
+      addressUTF8(identifier),
+      latitude,
+      longitude,
+      altitudeInMeter
+    );
   }
 
   return (
@@ -70,7 +81,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
         <NodeNavigationButton
           type={NavigationType.FlyGeo}
           showLabel
-          identifier={currentAnchor}
+          identifier={anchor.identifier}
           latitude={latitude}
           longitude={longitude}
           altitude={altitudeInMeter}
@@ -78,7 +89,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
         <NodeNavigationButton
           type={NavigationType.JumpGeo}
           showLabel
-          identifier={currentAnchor}
+          identifier={anchor.identifier}
           latitude={latitude}
           longitude={longitude}
           altitude={altitudeInMeter}
