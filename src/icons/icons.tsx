@@ -108,12 +108,14 @@ export {
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
 export {
   TbAbc as AbcIcon,
+  TbBrowserPlus as AddBrowserIcon,
   TbClock as ClockIcon,
   TbClockX as ClockOffIcon,
   TbCompass as CompassMarksIcon,
   TbSphere as LineIcon,
   TbCube as SceneIcon,
-  TbScript as ScriptLogIcon
+  TbScript as ScriptLogIcon,
+  TbWorldWww as WebIcon
 } from 'react-icons/tb';
 export {
   VscFeedback as FeedbackIcon,
