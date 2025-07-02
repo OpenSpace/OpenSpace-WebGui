@@ -16,8 +16,8 @@ export function KeybindInfo({ action }: Props) {
 
   return (
     <Paper key={action.identifier} p={'sm'}>
-      <Group justify={'space-between'} align={'center'} mb={'xs'}>
-        <Text ml={'xs'} mb={2} fw={'bold'} className={styles.selectable}>
+      <Group justify={'space-between'} align={'center'} mb={'xs'} ml={'xs'}>
+        <Text mb={2} fw={'bold'} className={styles.selectable}>
           {action.name}
         </Text>
         <KeybindButtons selectedKey={action.key} modifiers={action.modifiers} />
