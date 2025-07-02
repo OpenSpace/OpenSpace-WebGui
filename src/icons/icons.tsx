@@ -1,7 +1,7 @@
 export {
   BsWindowSidebar as PanelIcon,
   BsFillRecordFill as SingleDotIcon,
-  BsWindowDock as TaskBarIcon,
+  BsWindowDock as ToolbarIcon,
   BsThreeDotsVertical as VerticalDotsIcon,
   BsFillXCircleFill as XCircleIcon
 } from 'react-icons/bs';

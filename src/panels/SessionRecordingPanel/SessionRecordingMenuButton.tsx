@@ -2,7 +2,7 @@ import { Group } from '@mantine/core';
 
 import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
 import { VideocamIcon } from '@/icons/icons';
-import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
+import { ToolbarMenuButton } from '@/panels/Menu/Toolbar/ToolbarMenuButton';
 import { IconSize } from '@/types/enums';
 
 import { PlaybackPauseButton } from './Playback/PlaybackPauseButton';
@@ -41,8 +41,8 @@ export function SessionRecordingMenuButton({ id }: Props) {
   }
 
   return (
-    <TaskBarMenuButton id={id}>
+    <ToolbarMenuButton id={id}>
       <VideocamIcon size={IconSize.lg} />
-    </TaskBarMenuButton>
+    </ToolbarMenuButton>
   );
 }

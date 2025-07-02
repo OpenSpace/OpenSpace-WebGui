@@ -31,8 +31,8 @@ export const addProfileListener = (startListening: AppStartListening) => {
 
       // Panel visibility settings
       Object.entries(action.payload.uiPanelVisibility).forEach(([key, value]) => {
-        const { taskbarItems } = listenerApi.getState().local;
-        const item = taskbarItems.find((item) => item.id === key);
+        const { toolbarItems } = listenerApi.getState().local;
+        const item = toolbarItems.find((item) => item.id === key);
 
         if (item) {
           listenerApi.dispatch(setMenuItemVisible({ id: key, visible: value }));
