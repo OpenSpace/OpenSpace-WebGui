@@ -1,5 +1,5 @@
 import Keyboard, { KeyboardButtonTheme } from 'react-simple-keyboard';
-import { Flex, Stack } from '@mantine/core';
+import { Flex, ScrollArea, Stack } from '@mantine/core';
 
 import { useAppSelector } from '@/redux/hooks';
 import { KeybindInfoType } from '@/types/types';
@@ -140,48 +140,50 @@ export function FullKeyboard({
   }
 
   return (
-    <Flex className={'simple-keyboard-background'} my={'lg'}>
-      <Keyboard
-        baseClass={'simple-keyboard-main'}
-        layoutName={'default'}
-        buttonTheme={buttonHighlights()}
-        layout={{ default: KeyboardLayout }}
-        display={KeyboardDisplayNames}
-        onKeyPress={onKeyPress}
-        {...commonKeyboardOptions}
-      />
-      <Stack justify={'space-between'}>
+    <ScrollArea mb={'xs'}>
+      <Flex className={'simple-keyboard-background'} my={'lg'}>
         <Keyboard
-          baseClass={'simple-keyboard-control'}
+          baseClass={'simple-keyboard-main'}
+          layoutName={'default'}
           buttonTheme={buttonHighlights()}
-          layout={{ default: ControlPadLayout }}
+          layout={{ default: KeyboardLayout }}
+          display={KeyboardDisplayNames}
           onKeyPress={onKeyPress}
           {...commonKeyboardOptions}
         />
-        <Keyboard
-          baseClass={'simple-keyboard-arrows'}
-          buttonTheme={buttonHighlights()}
-          layout={{ default: ArrowsLayout }}
-          onKeyPress={onKeyPress}
-          {...commonKeyboardOptions}
-        />
-      </Stack>
-      <Flex align={'flex-end'}>
-        <Keyboard
-          baseClass={'simple-keyboard-numpad'}
-          buttonTheme={buttonHighlights()}
-          onKeyPress={onKeyPress}
-          layout={{ default: NumpadLayout }}
-          {...commonKeyboardOptions}
-        />
-        <Keyboard
-          baseClass={'simple-keyboard-numpadEnd'}
-          buttonTheme={buttonHighlights()}
-          layout={{ default: NumpadEndLayout }}
-          onKeyPress={onKeyPress}
-          {...commonKeyboardOptions}
-        />
+        <Stack justify={'space-between'}>
+          <Keyboard
+            baseClass={'simple-keyboard-control'}
+            buttonTheme={buttonHighlights()}
+            layout={{ default: ControlPadLayout }}
+            onKeyPress={onKeyPress}
+            {...commonKeyboardOptions}
+          />
+          <Keyboard
+            baseClass={'simple-keyboard-arrows'}
+            buttonTheme={buttonHighlights()}
+            layout={{ default: ArrowsLayout }}
+            onKeyPress={onKeyPress}
+            {...commonKeyboardOptions}
+          />
+        </Stack>
+        <Flex align={'flex-end'}>
+          <Keyboard
+            baseClass={'simple-keyboard-numpad'}
+            buttonTheme={buttonHighlights()}
+            onKeyPress={onKeyPress}
+            layout={{ default: NumpadLayout }}
+            {...commonKeyboardOptions}
+          />
+          <Keyboard
+            baseClass={'simple-keyboard-numpadEnd'}
+            buttonTheme={buttonHighlights()}
+            layout={{ default: NumpadEndLayout }}
+            onKeyPress={onKeyPress}
+            {...commonKeyboardOptions}
+          />
+        </Flex>
       </Flex>
-    </Flex>
+    </ScrollArea>
   );
 }
