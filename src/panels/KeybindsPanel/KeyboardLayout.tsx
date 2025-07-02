@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Container, Divider, Grid, Group, Stack, Text, Title } from '@mantine/core';
+import { Container, Divider, Group, Stack, Text, Title } from '@mantine/core';
 
-import { Action } from '@/types/types';
+import { KeybindInfoType } from '@/types/types';
 
 import { FullKeyboard } from './FullKeyboard/FullKeyboard';
 import { KeybindButtons } from './KeybindButtons';
 import { KeybindInfo } from './KeybindInfo';
 
 export function KeyboardLayout() {
-  const [selectedActions, setSelectedActions] = useState<Action[]>([]);
+  const [selectedActions, setSelectedActions] = useState<KeybindInfoType[]>([]);
   const [activeModifiers, setActiveModifiers] = useState<string[]>([]);
   const [selectedKey, setSelectedKey] = useState<string>('');
 
@@ -34,11 +34,11 @@ export function KeyboardLayout() {
         <Stack flex={1}>
           <Title order={2}>{t('mapped-actions-title')}:</Title>
           {selectedActions.length > 0 ? (
-            <Grid mx={'xs'}>
+            <Stack mx={'xs'}>
               {selectedActions.map((selectedAction) => (
                 <KeybindInfo key={selectedAction.identifier} action={selectedAction} />
               ))}
-            </Grid>
+            </Stack>
           ) : (
             <Text>
               {hasSelectedKeys ? t('no-mapped-action-text') : t('no-key-selected-text')}

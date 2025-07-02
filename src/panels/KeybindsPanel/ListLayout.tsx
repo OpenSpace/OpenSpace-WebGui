@@ -7,13 +7,13 @@ import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
 import { useAppSelector } from '@/redux/hooks';
-import { Action, KeybindInfoType, KeybindModifiers } from '@/types/types';
+import { KeybindInfoType, KeybindModifiers } from '@/types/types';
 
 import { KeybindInfo } from './KeybindInfo';
 import { KeybindListEntry } from './ListEntry';
 
 export function ListLayout() {
-  const [selectedAction, setSelectedAction] = useState<Action | null>(null);
+  const [selectedAction, setSelectedAction] = useState<KeybindInfoType | null>(null);
   const [modifiersFilter, setModifiersFilter] = useState<KeybindModifiers>([]);
   const keybinds = useAppSelector((state) => state.actions.keybinds);
   const actions = useAppSelector((state) => state.actions.actions);
@@ -47,7 +47,7 @@ export function ListLayout() {
     .filter((info) => !!info) // Filter any undefined objects
     .sort((a, b) => (a.key > b.key ? 1 : -1));
 
-  function onClick(action: Action): void {
+  function onClick(action: KeybindInfoType): void {
     if (action.identifier === selectedAction?.identifier) {
       setSelectedAction(null);
     } else {
@@ -57,7 +57,7 @@ export function ListLayout() {
 
   return (
     <Group align={'top'} px={'xs'} h={'100%'}>
-      <Layout pt={'xs'} flex={2}>
+      <Layout pt={'xs'} flex={1.3}>
         <FilterList>
           <Layout.FixedSection>
             <Group gap={'xs'}>

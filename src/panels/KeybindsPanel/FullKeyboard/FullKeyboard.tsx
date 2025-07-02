@@ -2,7 +2,7 @@ import Keyboard, { KeyboardButtonTheme } from 'react-simple-keyboard';
 import { Flex, Stack } from '@mantine/core';
 
 import { useAppSelector } from '@/redux/hooks';
-import { Action } from '@/types/types';
+import { KeybindInfoType } from '@/types/types';
 
 import {
   ArrowsLayout,
@@ -24,7 +24,7 @@ import 'react-simple-keyboard/build/css/index.css';
 import './FullKeyboard.css';
 
 interface Props {
-  setSelectedActions: (action: Action[]) => void;
+  setSelectedActions: (action: KeybindInfoType[]) => void;
   setActiveModifiers: (modifiers: string[]) => void;
   activeModifiers: string[];
   selectedKey: string;
@@ -51,19 +51,30 @@ export function FullKeyboard({
     }
   }
 
-  function getActionsForKey(key: string): Action[] {
-    // Find all action identifiers matching the given key and current modifiers
+  function getActionsForKey(key: string): KeybindInfoType[] {
+    // Find all action identifiers matching the given key and current modifiers.
+    // If no modifiers are active, it will match all keybinds with the given key.
     const currentKeybinds = keybinds.filter(
       (keybind) =>
         keybind.key &&
-        arraysEqual(activeModifiers, keybind.modifiers) &&
+        (activeModifiers.length > 0
+          ? arraysEqual(activeModifiers, keybind.modifiers)
+          : true) &&
         equals(keybind.key, key)
     );
 
     // Find the matching actions for the current keybind
-    const currentActions = currentKeybinds.map((keybind) =>
-      actions.find((actions) => actions.identifier === keybind.action)
-    );
+    const currentActions = currentKeybinds.map((keybind) => {
+      const action = actions.find((actions) => actions.identifier === keybind.action);
+      if (!action) {
+        return undefined; // If no action is found, return undefined
+      }
+      // Combine the keybind and action data into one object
+      return {
+        ...keybind,
+        ...action
+      };
+    });
     // Remove the undefined items that were created from false matches
     return currentActions.filter((action) => action !== undefined);
   }
