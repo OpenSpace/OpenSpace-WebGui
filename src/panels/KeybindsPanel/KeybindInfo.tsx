@@ -15,7 +15,7 @@ export function KeybindInfo({ action }: Props) {
   const { t } = useTranslation('panel-keybinds', { keyPrefix: 'keybind-info' });
 
   return (
-    <Paper key={action.identifier} p={'sm'} maw={'800px'}>
+    <Paper key={action.identifier} p={'sm'}>
       <Group justify={'space-between'} align={'center'} mb={'xs'}>
         <Text ml={'xs'} mb={2} fw={'bold'} className={styles.selectable}>
           {action.name}

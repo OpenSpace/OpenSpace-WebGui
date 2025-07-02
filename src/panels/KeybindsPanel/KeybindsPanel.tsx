@@ -13,6 +13,10 @@ export function KeybindsPanel() {
   const { height: windowHeight } = useWindowSize();
   const { ref, height: tabsHeight } = useElementSize();
 
+  // The size of the tabs list is not completely correct for some reason, use a
+  // factor to adjust the height of the panels so that there is no overflow
+  const panelHeight = windowHeight - tabsHeight * 2.0;
+
   return (
     <Tabs defaultValue={'keyboardLayout'}>
       <Tabs.List ref={ref}>
@@ -20,10 +24,10 @@ export function KeybindsPanel() {
         <Tabs.Tab value={'listLayout'}>{t('list-view-tab-title')}</Tabs.Tab>
       </Tabs.List>
 
-      <Tabs.Panel value={'keyboardLayout'}>
+      <Tabs.Panel value={'keyboardLayout'} h={panelHeight}>
         <KeyboardLayout />
       </Tabs.Panel>
-      <Tabs.Panel value={'listLayout'} h={windowHeight - tabsHeight}>
+      <Tabs.Panel value={'listLayout'} h={panelHeight}>
         <ListLayout />
       </Tabs.Panel>
     </Tabs>
