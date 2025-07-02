@@ -140,8 +140,8 @@ export function FullKeyboard({
   }
 
   return (
-    <ScrollArea mb={'xs'}>
-      <Flex className={'simple-keyboard-background'} my={'lg'}>
+    <ScrollArea>
+      <Flex className={'simple-keyboard-background'} my={'xs'}>
         <Keyboard
           baseClass={'simple-keyboard-main'}
           layoutName={'default'}

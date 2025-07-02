@@ -57,7 +57,7 @@ export function ListLayout() {
 
   return (
     <Group align={'top'} px={'xs'} h={'100%'}>
-      <Layout pt={'xs'} flex={1.3}>
+      <Layout pt={'xs'} flex={1.5}>
         <FilterList>
           <Layout.FixedSection>
             <Group gap={'xs'}>

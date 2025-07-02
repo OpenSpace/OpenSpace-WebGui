@@ -31,7 +31,7 @@ export function KeyboardLayout() {
         </Layout.FixedSection>
 
         <Layout.GrowingSection>
-          <Group align={'top'}>
+          <Group align={'top'} mt={'xs'}>
             <Stack>
               <Title order={2}>{t('selected-keybind-title')}:</Title>
               <KeybindButtons selectedKey={selectedKey} modifiers={activeModifiers} />
