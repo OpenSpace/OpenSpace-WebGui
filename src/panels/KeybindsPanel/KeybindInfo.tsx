@@ -27,7 +27,9 @@ export function KeybindInfo({ action }: Props) {
           body: [
             [
               <Text size={'sm'}>{t('info')}:</Text>,
-              <Text size={'sm'} className={styles.selectable}>
+              // Using a custom, large, width for the longest text to make the
+              // table look better, and multiple stavked tables align better
+              <Text size={'sm'} className={styles.selectable} miw={'400px'}>
                 {action.documentation}
               </Text>
             ],
