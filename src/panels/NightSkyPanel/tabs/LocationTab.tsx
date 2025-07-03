@@ -1,11 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import {
   Alert,
-  BackgroundImage,
   Button,
   Divider,
   Group,
-  Image,
   Paper,
   Stack,
   Text,
@@ -15,6 +13,7 @@ import {
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
+import { Map } from '@/components/Map/Map';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { LocationPinIcon, WarningIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
@@ -39,25 +38,6 @@ export function LocationTab() {
   const anchor = useAnchorNode();
   const { t } = useTranslation('panel-nightsky', { keyPrefix: 'location' });
 
-  const iconSize = 10;
-  const mapSize = { w: 300, h: 150 };
-  const iconOffset = {
-    x: (iconSize + 4) / (2 * mapSize.w),
-    y: iconSize / (2 * mapSize.h)
-  };
-
-  function dotPosition(): { x: number; y: number } {
-    if (currentLong !== undefined && currentLat !== undefined) {
-      // Here we are getting the percentage of the map on where to show the marker
-      // for example, lat, long of 0,0 winds up with a map position of x: 0.5 and y: 0.5
-      return {
-        x: ((currentLong + 180) / 360 - iconOffset.x) * 100,
-        y: ((90 - currentLat) / 180 - iconOffset.y) * 100
-      };
-    }
-    return { x: 0, y: 0 };
-  }
-
   function look(direction: LookDirection): void {
     luaApi?.action.triggerAction(`os.nightsky.Looking${direction}`);
   }
@@ -69,7 +49,7 @@ export function LocationTab() {
   return (
     <>
       <Group mb={'md'} justify={'space-between'} align={'top'}>
-        <Stack gap={5}>
+        <Stack gap={5} mb={'md'}>
           <Title order={2} mb={'xs'}>
             {t('globe-location.title')}
           </Title>
@@ -84,24 +64,7 @@ export function LocationTab() {
             {t('globe-location.meter-abbreviation')}
           </Text>
         </Stack>
-
-        <BackgroundImage
-          w={mapSize.w}
-          h={mapSize.h}
-          src={`${import.meta.env.BASE_URL}/images/eqcy.png`}
-          radius={'sm'}
-          styles={{ root: { overflow: 'hidden' } }}
-        >
-          <Image
-            src={`${import.meta.env.BASE_URL}/images/icon.png`}
-            style={{
-              width: iconSize + 'px',
-              position: 'relative',
-              left: dotPosition().x + '%',
-              top: dotPosition().y + '%'
-            }}
-          />
-        </BackgroundImage>
+        <Map showViewDirection={false} iconSize={20} />
       </Group>
       <Transition mounted={anchor?.identifier !== 'Earth'} transition={'fade'}>
         {(styles) => (

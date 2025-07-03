@@ -72,6 +72,17 @@
       }
     }
   },
+  "map": {
+    "no-map": {
+      "title": "Unavailable Map",
+      "description": "No map found for scene graph node '{{name}}'"
+    },
+    "aria-labels": {
+      "map": "Map of {{mapName}}",
+      "view-direction": "Cone showing the view direction of the OpenSpace camera",
+      "openspace-icon": "OpenSpace icon showing the position on the map"
+    }
+  },
   "node-navigation-button": {
     "jump": {
       "title": "Jump to",

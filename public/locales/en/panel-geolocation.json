@@ -44,10 +44,6 @@
     "label": "Add focus"
   },
   "map-location": {
-    "no-map": {
-      "title": "Unavailable Map",
-      "description": "No map found for scene graph node '{{name}}'"
-    },
     "globe-location": {
       "title": "Globe Location",
       "latitude": "Latitude",
@@ -56,9 +52,6 @@
       "kilometer-abbreviation": "km"
     },
     "aria-labels": {
-      "map": "Map of {{mapName}}",
-      "view-direction": "Cone showing the view direction of the OpenSpace camera",
-      "openspace-icon": "OpenSpace icon showing the position on the map",
       "mouse-icon": "Icon showing the camera position on the map"
     },
     "mouse-location": "Mouse Location",
