@@ -13,13 +13,15 @@ interface Props {
   latitude: number;
   longitude: number;
   altitude: number;
+  onClick?: () => void;
 }
 export function AddSceneGraphNodeButton({
   globe,
   identifier,
   latitude,
   longitude,
-  altitude
+  altitude,
+  onClick
 }: Props) {
   const addSceneGraphNode = useCreateSceneGraphNode();
   const { t } = useTranslation('panel-geolocation', {
@@ -27,9 +29,10 @@ export function AddSceneGraphNodeButton({
   });
   return (
     <Button
-      onClick={() =>
-        addSceneGraphNode(globe, addressUTF8(identifier), latitude, longitude, altitude)
-      }
+      onClick={() => {
+        addSceneGraphNode(globe, addressUTF8(identifier), latitude, longitude, altitude);
+        onClick?.();
+      }}
       size={'sm'}
       leftSection={<PlusIcon />}
     >

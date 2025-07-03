@@ -211,6 +211,7 @@ export function MapLocation() {
             latitude={mouseLatLong.latitude}
             longitude={mouseLatLong.longitude}
             altitude={mouseAltitudeInMeter}
+            onClick={() => setCustomName('')}
           />
         </Group>
       </Stack>
