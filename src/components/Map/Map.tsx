@@ -13,31 +13,7 @@ import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { useCameraLatLong } from '@/redux/camera/hooks';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
-type Source = string;
-const maps: Record<string, Source> = {
-  callisto: 'callisto.jpg',
-  dione: 'dione.jpg',
-  earth: 'earth_bluemarble.jpg',
-  enceladus: 'enceladus.jpg',
-  europa: 'europa.jpg',
-  ganymede: 'ganymede.jpg',
-  iapetus: 'iapetus.jpg',
-  io: 'io.jpg',
-  jupiter: 'jupiter.jpg',
-  mars: 'mars.jpg',
-  mercury: 'mercury.jpg',
-  mimas: 'mimas.jpg',
-  moon: 'moon.jpg',
-  neptune: 'neptune.jpg',
-  phobos: 'phobos.jpg',
-  rhea: 'rhea.jpg',
-  saturn: 'saturn.jpg',
-  tethys: 'tethys.jpg',
-  titan: 'titan.jpg',
-  triton: 'triton.jpg',
-  uranus: 'uranus.jpg',
-  venus: 'venus.jpg'
-};
+import { MapData } from './data';
 
 // The fewer decimals we can get away with, the less the component will rerender due to
 // precision issues. 7 decimals gives ~1 cm accuracy in lat & long when copying values.
@@ -68,7 +44,7 @@ export function Map({
   useSubscribeToCamera();
 
   const anchor = useAnchorNode();
-  const map = maps[anchor?.identifier?.toLowerCase() ?? ''];
+  const map = MapData[anchor?.identifier?.toLowerCase() ?? ''];
   const { t } = useTranslation('components', { keyPrefix: 'map' });
 
   const hasViewDirection = viewLatitude !== undefined && viewLongitude !== undefined;

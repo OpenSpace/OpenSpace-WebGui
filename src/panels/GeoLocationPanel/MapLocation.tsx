@@ -5,6 +5,7 @@ import { Box, Group, Stack, Text, TextInput, Title } from '@mantine/core';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
+import { MapData } from '@/components/Map/data';
 import { Map } from '@/components/Map/Map';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
@@ -49,6 +50,7 @@ export function MapLocation() {
     return <LoadingBlocks />;
   }
 
+  const isMapInteractable = anchor.identifier.toLowerCase() in MapData;
   const mouseIconSize = 25;
 
   const mouseLatLong = mapCoordsToLatLong(mouseMarker.x, mouseMarker.y);
@@ -62,14 +64,14 @@ export function MapLocation() {
   });
 
   function handleMapDrag(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    if (!isDragging.current || !backgroundImageRef.current) {
+    if (!isDragging.current || !backgroundImageRef.current || !isMapInteractable) {
       return;
     }
     handleMapClick(event);
   }
 
   function handleMapClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    if (!backgroundImageRef.current) {
+    if (!backgroundImageRef.current || !isMapInteractable) {
       return;
     }
     const { clientWidth: width, clientHeight: height } = backgroundImageRef.current;
@@ -152,19 +154,21 @@ export function MapLocation() {
         style={{ overflow: 'hidden', position: 'relative' }}
       >
         <Map />
-        {mouseMarker.x !== undefined && mouseMarker.y !== undefined && (
-          <FocusIcon
-            style={{
-              width: mouseIconSize,
-              height: mouseIconSize,
-              position: 'absolute',
-              left: `${mouseMarker.x * 100}%`,
-              top: `${mouseMarker.y * 100}%`,
-              transform: 'translate(-50%, -50%)'
-            }}
-            aria-label={t('aria-labels.mouse-icon')}
-          />
-        )}
+        {isMapInteractable &&
+          mouseMarker.x !== undefined &&
+          mouseMarker.y !== undefined && (
+            <FocusIcon
+              style={{
+                width: mouseIconSize,
+                height: mouseIconSize,
+                position: 'absolute',
+                left: `${mouseMarker.x * 100}%`,
+                top: `${mouseMarker.y * 100}%`,
+                transform: 'translate(-50%, -50%)'
+              }}
+              aria-label={t('aria-labels.mouse-icon')}
+            />
+          )}
       </Box>
       <Stack gap={'xs'}>
         <Group>
