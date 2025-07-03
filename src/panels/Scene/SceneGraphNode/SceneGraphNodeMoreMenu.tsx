@@ -73,14 +73,16 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
               showLabel
             />
           </Group>
-          <NodeNavigationButton
-            type={NavigationType.Frame}
-            identifier={propertyOwner.identifier}
-            showLabel
-          />
+          <Group gap={'xs'}>
+            <NodeNavigationButton
+              type={NavigationType.Frame}
+              identifier={propertyOwner.identifier}
+              showLabel
+            />
+          </Group>
         </Stack>
         <Divider m={'xs'} />
-        <Group>
+        <Group gap={'xs'}>
           <Button
             size={'sm'}
             disabled={anchorNode?.identifier === propertyOwner.identifier}
@@ -91,18 +93,15 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
           >
             {t('delete-button.label')}
           </Button>
-          <>
-            {anchorNode?.identifier === propertyOwner.identifier ? (
-              <Text size={'sm'} c={'dimmed'} w={'100px'}>
-                {t('delete-button.cannot-delete-current-focus')}
-              </Text>
-            ) : (
-              <InfoBox>
-                {t('delete-button.info')}
-                <CopyUriButton uri={uri} />
-              </InfoBox>
-            )}
-          </>
+          <InfoBox>
+            {t('delete-button.info')}
+            <CopyUriButton uri={uri} />
+          </InfoBox>
+          {anchorNode?.identifier === propertyOwner.identifier && (
+            <Text size={'sm'} c={'dimmed'} m={'xs'} w={'100px'}>
+              {t('delete-button.cannot-delete-current-focus')}
+            </Text>
+          )}
         </Group>
       </Menu.Dropdown>
     </Menu>
