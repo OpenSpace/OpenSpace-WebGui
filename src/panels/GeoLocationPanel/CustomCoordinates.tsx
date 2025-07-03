@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Group, Stack, TextInput } from '@mantine/core';
+import { Group, Stack, TextInput } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
-import { PlusIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
-import { useCreateSceneGraphNode } from './hooks';
-import { addressUTF8 } from './util';
+import { AddSceneGraphNodeButton } from './AddSceneGraphNodeButton';
 
 export function CustomCoordinates() {
   const [latitude, setLatitude] = useState(0);
@@ -21,30 +19,18 @@ export function CustomCoordinates() {
     keyPrefix: 'custom-coordinates'
   });
   const altitudeInMeter = altitude * 1000;
-  const previewCustomName = t('node-name-placeholder', { latitude, longitude, altitude });
 
   const anchor = useAnchorNode();
-  const addSceneGraphNode = useCreateSceneGraphNode();
 
   if (!anchor) {
     return <LoadingBlocks />;
   }
-
-  function onClick() {
-    const identifier = customName || previewCustomName;
-
-    if (!anchor) {
-      return;
-    }
-
-    addSceneGraphNode(
-      anchor.identifier,
-      addressUTF8(identifier),
-      latitude,
-      longitude,
-      altitudeInMeter
-    );
-  }
+  const previewCustomName = t('node-name-placeholder', {
+    anchor: anchor.name,
+    latitude,
+    longitude,
+    altitude
+  });
 
   return (
     <Stack gap={'xs'}>
@@ -96,9 +82,13 @@ export function CustomCoordinates() {
           longitude={longitude}
           altitude={altitudeInMeter}
         />
-        <Button onClick={onClick} size={'sm'} leftSection={<PlusIcon />}>
-          {t('add-focus-button-label')}
-        </Button>
+        <AddSceneGraphNodeButton
+          globe={anchor.identifier}
+          identifier={customName || previewCustomName}
+          latitude={latitude}
+          longitude={longitude}
+          altitude={altitudeInMeter}
+        />
       </Group>
     </Stack>
   );

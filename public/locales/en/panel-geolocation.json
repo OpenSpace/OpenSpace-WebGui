@@ -2,7 +2,7 @@
   "tab-labels": {
     "search": "Search Place",
     "custom-coordinates": "Custom Coordinates",
-    "location": "Location"
+    "map-location": "Map Location"
   },
   "added-nodes-title": "Added Nodes",
   "earth-panel": {
@@ -34,12 +34,37 @@
     "longitude-label": "Longitude (deg)",
     "altitude-label": "Altitude (km)",
     "node-name-label": "Node name (optional)",
-    "node-name-placeholder": "Custom Coordinate ({{latitude}}, {{longitude}}, {{altitude}}km)",
-    "add-focus-button-label": "Add Focus"
+    "node-name-placeholder": "Custom Coordinate {{anchor}} ({{latitude}}, {{longitude}}, {{altitude}}km)"
   },
   "added-custom-nodes": {
     "empty-nodes": "No added nodes",
     "remove-node-aria-label": "Remove node"
+  },
+  "add-scene-graph-node-button": {
+    "label": "Add focus"
+  },
+  "map-location": {
+    "no-map": {
+      "title": "Unavailable Map",
+      "description": "No map found for scene graph node '{{name}}'"
+    },
+    "globe-location": {
+      "title": "Globe Location",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "altitude": "Altitude",
+      "kilometer-abbreviation": "km"
+    },
+    "aria-labels": {
+      "map": "Map of {{mapName}}",
+      "view-direction": "Cone showing the view direction of the OpenSpace camera",
+      "openspace-icon": "OpenSpace icon showing the position on the map",
+      "mouse-icon": "Icon showing the camera position on the map"
+    },
+    "mouse-location": "Mouse Location",
+    "altitude-label": "$t(custom-coordinates.altitude-label)",
+    "node-name-label": "$t(custom-coordinates.node-name-label)",
+    "node-name-placeholder": "$t(custom-coordinates.node-name-placeholder)"
   },
   "notifications": {
     "duplicate-scene-graph-node": {
