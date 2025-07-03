@@ -35,19 +35,19 @@ const maps: Record<string, Source> = {
   iapetus: 'iapetus.jpg',
   io: 'io.jpg',
   jupiter: 'jupiter.jpg',
+  mars: 'mars.jpg',
+  mercury: 'mercury.jpg',
   mimas: 'mimas.jpg',
+  moon: 'moon.jpg',
   neptune: 'neptune.jpg',
+  phobos: 'phobos.jpg',
   rhea: 'rhea.jpg',
   saturn: 'saturn.jpg',
   tethys: 'tethys.jpg',
-  titan: 'titan.png',
-  uranus: 'uranus.jpg',
-  venus: 'venus.jpg',
+  titan: 'titan.jpg',
   triton: 'triton.jpg',
-  phobos: 'phobos.jpg',
-  mercury: 'mercury.jpg',
-  moon: 'moon.jpg',
-  mars: 'mars.png'
+  uranus: 'uranus.jpg',
+  venus: 'venus.jpg'
 };
 
 // The fewer decimals we can get away with, the less the component will rerender due to
