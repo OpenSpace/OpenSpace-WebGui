@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useThrottledCallback } from '@mantine/hooks';
+import { modals } from '@mantine/modals';
 
+import { ShowPropertyConfirmationModals } from '@/components/Property/types';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   subscribeToProperty,
@@ -36,6 +39,9 @@ export function useProperty<T extends PropertyTypeKey>(
   (value: PropertyOrPropertyGroup<T>['value']) => void,
   PropertyOrPropertyGroup<T>['metaData'] | undefined
 ] {
+  const { t } = useTranslation('components', {
+    keyPrefix: 'property'
+  });
   // Get the value from Redux
   const prop = useAppSelector((state) => state.properties.properties[uri]) as
     | PropertyOrPropertyGroup<T>
@@ -47,13 +53,24 @@ export function useProperty<T extends PropertyTypeKey>(
     );
   }
 
+  const shouldShowModal = useShouldShowModal(prop?.metaData);
   useSubscribeToProperty(uri);
   const dispatch = useAppDispatch();
   // Subscribe to the property
   const ThrottleMs = 1000 / 60;
 
   const setValue = useThrottledCallback((value: PropertyOrPropertyGroup<T>['value']) => {
-    dispatch(setPropertyValue({ uri, value }));
+    if (shouldShowModal) {
+      modals.openConfirmModal({
+        title: t('confirmation-modal.title'),
+        children: t('confirmation-modal.description', { propertyName: prop?.metaData.guiName }),
+        labels: { confirm: t('confirmation-modal.confirm'), cancel: t('confirmation-modal.cancel') },
+        confirmProps: { color: 'red', variant: 'filled' },
+        onConfirm: () => dispatch(setPropertyValue({ uri, value }))
+      });
+    } else {
+      dispatch(setPropertyValue({ uri, value }));
+    }
   }, ThrottleMs);
 
   return [prop?.value, setValue, prop?.metaData];
@@ -67,4 +84,41 @@ export function useSubscribeToProperty(uri: Uri) {
       dispatch(unsubscribeToProperty({ uri }));
     };
   }, [dispatch, uri]);
+}
+
+function useShouldShowModal<T extends PropertyTypeKey>(
+  metaData: PropertyOrPropertyGroup<T>['metaData'] | undefined
+): boolean {
+  const showConfirmationModal = useAppSelector(
+    (state) => state.properties.properties['OpenSpaceEngine.ShowPropertyConfirmation']
+  )?.value as ShowPropertyConfirmationModals | undefined;
+
+  // Don't show modal if we can't find the global settings or the metadata
+  if (showConfirmationModal === undefined || metaData === undefined) {
+    return false;
+  }
+
+  let shouldShowModal = false;
+  const { needsConfirmation } = metaData;
+
+  switch (showConfirmationModal) {
+    case ShowPropertyConfirmationModals.Never:
+      // Never show modal except when the property is explicitly set to always
+      shouldShowModal = needsConfirmation === 'Always';
+      break;
+    case ShowPropertyConfirmationModals.Default:
+      // Follow the property setting
+      shouldShowModal = needsConfirmation === 'Yes' || needsConfirmation === 'Always';
+      break;
+    case ShowPropertyConfirmationModals.Always:
+      // Always show modal except when the property is explicitly set to never
+      shouldShowModal = needsConfirmation !== 'Never';
+      break;
+    default:
+      throw new Error(
+        `Unhandled showConfirmationModal value: '${showConfirmationModal}'`
+      );
+  }
+
+  return shouldShowModal;
 }

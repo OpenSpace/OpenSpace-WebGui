@@ -1,3 +1,5 @@
+import { PropertyConfirmation } from '@/components/Property/types';
+
 import { PropertyVisibilityNumber } from '../enums';
 import { Identifier } from '../types';
 
@@ -44,7 +46,7 @@ type Property<T extends keyof PropertyTypes> = {
     isReadOnly: boolean;
     guiName: string;
     group: string;
-    needsConfirmation: boolean;
+    needsConfirmation: PropertyConfirmation;
     visibility: PropertyVisibility;
   } & AdditionalData<T> &
     ViewOptions<T>;
