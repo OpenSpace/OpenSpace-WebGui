@@ -1,37 +1,36 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Group, Stack, TextInput } from '@mantine/core';
+import { Group, Stack, TextInput } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
-import { PlusIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
-import { Identifier } from '@/types/types';
+import { useAnchorNode } from '@/util/propertyTreeHooks';
 
-interface Props {
-  currentAnchor: Identifier;
-  onAddFocusNodeCallback: (
-    address: string,
-    latitude: number,
-    longitude: number,
-    altitude: number
-  ) => void;
-}
-export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Props) {
+import { AddSceneGraphNodeButton } from './AddSceneGraphNodeButton';
+
+export function CustomCoordinates() {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const [altitude, setAltitude] = useState(0);
   const [customName, setCustomName] = useState('');
   const { t } = useTranslation('panel-geolocation', {
-    keyPrefix: 'earth-panel.custom-coordinates'
+    keyPrefix: 'custom-coordinates'
   });
   const altitudeInMeter = altitude * 1000;
-  const previewCustomName = t('node-name-placeholder', { latitude, longitude, altitude });
 
-  function onClick() {
-    const address = customName || previewCustomName;
-    onAddFocusNodeCallback(address, latitude, longitude, altitudeInMeter);
+  const anchor = useAnchorNode();
+
+  if (!anchor) {
+    return <LoadingBlocks />;
   }
+  const previewCustomName = t('node-name-placeholder', {
+    anchor: anchor.name,
+    latitude,
+    longitude,
+    altitude
+  });
 
   return (
     <Stack gap={'xs'}>
@@ -70,7 +69,7 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
         <NodeNavigationButton
           type={NavigationType.FlyGeo}
           showLabel
-          identifier={currentAnchor}
+          identifier={anchor.identifier}
           latitude={latitude}
           longitude={longitude}
           altitude={altitudeInMeter}
@@ -78,14 +77,18 @@ export function CustomCoordinates({ currentAnchor, onAddFocusNodeCallback }: Pro
         <NodeNavigationButton
           type={NavigationType.JumpGeo}
           showLabel
-          identifier={currentAnchor}
+          identifier={anchor.identifier}
           latitude={latitude}
           longitude={longitude}
           altitude={altitudeInMeter}
         />
-        <Button onClick={onClick} size={'sm'} leftSection={<PlusIcon />}>
-          {t('add-focus-button-label')}
-        </Button>
+        <AddSceneGraphNodeButton
+          globe={anchor.identifier}
+          identifier={customName || previewCustomName}
+          latitude={latitude}
+          longitude={longitude}
+          altitude={altitudeInMeter}
+        />
       </Group>
     </Stack>
   );

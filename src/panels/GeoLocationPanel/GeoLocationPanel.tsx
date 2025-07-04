@@ -1,36 +1,42 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Divider, Select, Text } from '@mantine/core';
+import { Tabs, Title } from '@mantine/core';
 
 import { EarthPanel } from './AnchorPanels/EarthPanel/EarthPanel';
+import { AddedCustomNodes } from './AddedCustomNodes';
+import { CustomCoordinates } from './CustomCoordinates';
+import { MapLocation } from './MapLocation';
+
+const SearchPlaceKey = 'Search Place';
+const CustomCoordinatesKey = 'Custom Coordinates';
+const MapsKey = 'Map';
 
 export function GeoLocationPanel() {
-  const [currentAnchorOption, setCurrentAnchorOption] = useState('Earth');
   const { t } = useTranslation('panel-geolocation');
-  const anchorOptions = ['Earth'];
-  const anchorPanelContent = anchorPanel();
-
-  function anchorPanel() {
-    switch (currentAnchorOption) {
-      case 'Earth':
-        return <EarthPanel currentAnchor={currentAnchorOption} />;
-      default:
-        return <Text>{t('no-anchor-panel', { currentAnchorOption })}</Text>;
-    }
-  }
 
   return (
     <>
-      <Select
-        data={anchorOptions}
-        value={currentAnchorOption}
-        onChange={(value) => setCurrentAnchorOption(value!)}
-        allowDeselect={false}
-        label={t('select-anchor-label')}
-        w={'100%'}
-      />
-      <Divider my={'xs'} />
-      {anchorPanelContent}
+      <Tabs defaultValue={SearchPlaceKey}>
+        <Tabs.List>
+          <Tabs.Tab value={SearchPlaceKey}>{t('tab-labels.search')}</Tabs.Tab>
+          <Tabs.Tab value={CustomCoordinatesKey}>
+            {t('tab-labels.custom-coordinates')}
+          </Tabs.Tab>
+          <Tabs.Tab value={MapsKey}>{t('tab-labels.map-location')}</Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value={SearchPlaceKey}>
+          <EarthPanel />
+        </Tabs.Panel>
+        <Tabs.Panel value={CustomCoordinatesKey}>
+          <CustomCoordinates />
+        </Tabs.Panel>
+        <Tabs.Panel value={MapsKey}>
+          <MapLocation />
+        </Tabs.Panel>
+      </Tabs>
+      <Title order={2} my={'xs'}>
+        {t('added-nodes-title')}
+      </Title>
+      <AddedCustomNodes />
     </>
   );
 }
