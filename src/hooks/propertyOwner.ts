@@ -70,19 +70,24 @@ export function usePropertyOwnerVisibility(uri: Uri) {
     'BoolProperty',
     enabledPropertyUri(uri)
   );
-  const [fadePropertyValue] = useProperty('FloatProperty', fadePropertyUri(uri));
+  const [fadePropertyValue, setFadePropertyValue] = useProperty(
+    'FloatProperty',
+    fadePropertyUri(uri)
+  );
   const isFadeable = fadePropertyValue !== undefined;
 
   const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
 
   function setVisibility(shouldShow: boolean, isImmediate: boolean = false) {
-    const fadeTime = isImmediate ? 0 : undefined;
     if (!isFadeable) {
       setEnabledProperty(shouldShow);
+    } else if (isImmediate) {
+      setEnabledProperty(shouldShow);
+      setFadePropertyValue(shouldShow ? 1.0 : 0.0);
     } else if (shouldShow) {
-      luaApi?.fadeIn(uri, fadeTime);
+      luaApi?.fadeIn(uri);
     } else {
-      luaApi?.fadeOut(uri, fadeTime);
+      luaApi?.fadeOut(uri);
     }
   }
 
