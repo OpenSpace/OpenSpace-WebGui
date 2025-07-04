@@ -2,7 +2,8 @@
   "button-labels": {
     "previous": "Previous",
     "next": "Next",
-    "finish": "Finish"
+    "finish": "Finish",
+    "start": "Start"
   },
   "mouse-descriptions": {
     "altitude": "The altitude is displayed at the top left corner of the screen. Right click and drag to go closer or further away.",
@@ -63,7 +64,12 @@
         "task-label-example": "This is a task!",
         "task-label-complete": "This is a completed task!"
       },
-      "lets-go": "Let's dive right in!"
+      "lets-go": "Let's dive right in!",
+      "setup-tour": "Go to Start of Tour",
+      "other-profile-warning": {
+        "title": "Warning",
+        "description": "You are not using the Default profile. Some tour steps may not work as expected. If you encounter issues, please restart OpenSpace using the Default profile."
+      }
     },
     "navigation": {
       "intro": {

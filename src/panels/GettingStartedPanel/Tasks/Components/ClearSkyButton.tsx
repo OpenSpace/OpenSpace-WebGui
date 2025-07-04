@@ -8,7 +8,7 @@ import { IconSize } from '@/types/enums';
 
 export function ClearSkyButton() {
   const luaApi = useOpenSpaceApi();
-  const { setVisiblity: setVisibleBlueMarble } = usePropertyOwnerVisibility(
+  const { setVisibility: setVisibleBlueMarble } = usePropertyOwnerVisibility(
     'Scene.Earth.Renderable.Layers.ColorLayers.Blue_Marble'
   );
 

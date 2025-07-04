@@ -37,6 +37,17 @@ export function GettingStartedPanel() {
 
   const isFirstStep = step === 0;
   const isLastStep = step === steps.length - 1;
+  const isLastIntroductionStep = step === introductionSteps.length - 1;
+
+  function nextButtonLabel(): string {
+    if (isLastIntroductionStep) {
+      return t('button-labels.start');
+    }
+    if (isLastStep) {
+      return t('button-labels.finish');
+    }
+    return t('button-labels.next');
+  }
 
   function setSection(section: number) {
     setStep(sectionBreaks[section] ?? 0);
@@ -77,9 +88,10 @@ export function GettingStartedPanel() {
           <Button
             onClick={onClickNext}
             variant={'filled'}
-            rightSection={!isLastStep && <ArrowRightIcon />}
+            rightSection={!isLastStep && !isLastIntroductionStep && <ArrowRightIcon />}
+            color={!isLastStep && !isLastIntroductionStep ? 'blue' : 'green'}
           >
-            {isLastStep ? t('button-labels.finish') : t('button-labels.next')}
+            {nextButtonLabel()}
           </Button>
         </Group>
       </Layout.FixedSection>
