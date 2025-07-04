@@ -75,21 +75,25 @@ export function GettingStartedPanel() {
   }
 
   function setupGettingStartedTour(): void {
-    luaApi?.navigation.jumpTo('Earth');
-    luaApi?.action.triggerAction('os.earth_standard_illumination');
-    luaApi?.setPropertyValue(
-      'Scene.Earth.Renderable.Layers.ColorLayers.*.Enabled',
-      false
-    );
-    setVisibleEsriViirsCombo(true);
-    luaApi?.time.setPause(false);
-    luaApi?.time.interpolateDeltaTime(1);
-    luaApi?.fadeIn('Scene.EarthTrail.Renderable');
-    luaApi?.setPropertyValue(
-      'Scene.Mars.Renderable.Layers.ColorLayers.CTX_Mosaic_Sweden.Enabled',
-      false
-    );
-    luaApi?.fadeOut('Scene.Constellations.Renderable');
+    luaApi?.setPropertyValueSingle('RenderEngine.BlackoutFactor', 0.0, 1.0);
+    setTimeout(() => {
+      luaApi?.navigation.jumpTo('Earth');
+      luaApi?.action.triggerAction('os.earth_standard_illumination');
+      luaApi?.setPropertyValue(
+        'Scene.Earth.Renderable.Layers.ColorLayers.*.Enabled',
+        false
+      );
+      setVisibleEsriViirsCombo(true);
+      luaApi?.time.setPause(false);
+      luaApi?.time.interpolateDeltaTime(1);
+      luaApi?.fadeIn('Scene.EarthTrail.Renderable');
+      luaApi?.setPropertyValue(
+        'Scene.Mars.Renderable.Layers.ColorLayers.CTX_Mosaic_Sweden.Enabled',
+        false
+      );
+      luaApi?.fadeOut('Scene.Constellations.Renderable');
+      luaApi?.setPropertyValueSingle('RenderEngine.BlackoutFactor', 1.0, 1.0);
+    }, 1000);
   }
 
   return (
@@ -115,7 +119,8 @@ export function GettingStartedPanel() {
           <Button
             onClick={onClickNext}
             variant={'filled'}
-            rightSection={!isLastStep && <ArrowRightIcon />}
+            rightSection={!isLastStep && !isLastIntroductionStep && <ArrowRightIcon />}
+            color={!isLastStep && !isLastIntroductionStep ? 'blue' : 'green'}
           >
             {nextButtonLabel()}
           </Button>
