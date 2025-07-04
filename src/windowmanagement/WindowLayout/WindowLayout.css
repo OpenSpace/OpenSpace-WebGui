@@ -13,6 +13,12 @@ body {
     &.dock-panel-dropping .dock-bar {
       opacity: 0;
     }
+
+    /* Hide the bar at the top of the window that otherwise is used to move windows
+       around. We don't want it for the transparent headless view */
+    .drag-initiator {
+      display: none;
+    }
   }
 }
 
