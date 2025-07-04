@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Group, Stack, Text, TextInput, Title } from '@mantine/core';
 
@@ -10,7 +10,7 @@ import { Map } from '@/components/Map/Map';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { FocusIcon } from '@/icons/icons';
-import { useCameraLatLong } from '@/redux/camera/hooks';
+import { useCameraLatLong as useCameraCoordinatesLowPrecision } from '@/redux/camera/hooks';
 import { NavigationType } from '@/types/enums';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
@@ -39,12 +39,18 @@ export function MapLocation() {
   const {
     latitude: currentLat,
     longitude: currentLong,
-    altitude: currentAltitude
-  } = useCameraLatLong(DecimalPrecision);
+    altitude: currentAltitude,
+    altitudeUnit
+  } = useCameraCoordinatesLowPrecision(DecimalPrecision);
   const anchor = useAnchorNode();
   useSubscribeToCamera();
 
   const { t } = useTranslation('panel-geolocation', { keyPrefix: 'map-location' });
+  useEffect(() => {
+    // Reset mouse marker when anchor changes
+    setMouseMarker({ x: undefined, y: undefined });
+    setMouseAltitude(0);
+  }, [anchor]);
 
   if (!anchor) {
     return <LoadingBlocks />;
@@ -119,7 +125,7 @@ export function MapLocation() {
           </Text>
           <Text size={'md'}>
             {t('globe-location.altitude')}: {currentAltitude?.toFixed(2)}
-            {t('globe-location.kilometer-abbreviation')}
+            {altitudeUnit}
           </Text>
         </Stack>
         <Stack gap={0}>

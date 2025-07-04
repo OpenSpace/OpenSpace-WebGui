@@ -3,9 +3,8 @@ import { shallowEqual } from 'react-redux';
 import { useAppSelector } from '../hooks';
 
 export function useCameraLatLong(decimals: number) {
-  const { latitude, longitude, viewLatitude, viewLongitude, altitude } = useAppSelector(
-    (state) => {
-      const { latitude, longitude, viewLatitude, viewLongitude, altitude } = state.camera;
+  const { latitude, longitude, viewLatitude, viewLongitude, altitude, altitudeUnit } =
+    useAppSelector((state) => {
       // Round to # decimal places
       const roundTo = (num: number | undefined, decimals: number) => {
         if (num === undefined) {
@@ -15,15 +14,14 @@ export function useCameraLatLong(decimals: number) {
       };
 
       return {
-        latitude: roundTo(latitude, decimals),
-        longitude: roundTo(longitude, decimals),
-        viewLatitude: roundTo(viewLatitude, decimals),
-        viewLongitude: roundTo(viewLongitude, decimals),
-        altitude: roundTo(altitude, decimals)
+        latitude: roundTo(state.camera.latitude, decimals),
+        longitude: roundTo(state.camera.longitude, decimals),
+        viewLatitude: roundTo(state.camera.viewLatitude, decimals),
+        viewLongitude: roundTo(state.camera.viewLongitude, decimals),
+        altitude: roundTo(state.camera.altitude, decimals),
+        altitudeUnit: state.camera.altitudeUnit
       };
-    },
-    shallowEqual
-  );
+    }, shallowEqual);
 
-  return { latitude, longitude, viewLatitude, viewLongitude, altitude };
+  return { latitude, longitude, viewLatitude, viewLongitude, altitude, altitudeUnit };
 }

@@ -75,11 +75,11 @@
   "map": {
     "no-map": {
       "title": "Unavailable Map",
-      "description": "No map found for scene graph node '{{name}}'"
+      "description": "No map found for '{{name}}'"
     },
     "aria-labels": {
       "map": "Map of {{mapName}}",
-      "view-direction": "Cone showing the view direction of the OpenSpace camera",
+      "view-direction": "Cone showing the view direction of the camera",
       "openspace-icon": "OpenSpace icon showing the position on the map"
     }
   },

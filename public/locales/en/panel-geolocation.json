@@ -62,7 +62,7 @@
   "notifications": {
     "duplicate-scene-graph-node": {
       "title": "Warning",
-      "description": "Cannot add focus node, a node with identifier '{{identifier}}' already exists."
+      "description": "Cannot add focus node. A node with identifier '{{identifier}}' already exists."
     }
   }
 }
