@@ -76,13 +76,12 @@ export function usePropertyOwnerVisibility(uri: Uri) {
   const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
 
   function setVisiblity(shouldShow: boolean, isImmediate: boolean = false) {
-    const fadeTime = isImmediate ? 0 : undefined;
-    if (!isFadeable) {
+    if (!isFadeable || isImmediate) {
       setEnabledProperty(shouldShow);
     } else if (shouldShow) {
-      luaApi?.fadeIn(uri, fadeTime);
+      luaApi?.fadeIn(uri);
     } else {
-      luaApi?.fadeOut(uri, fadeTime);
+      luaApi?.fadeOut(uri);
     }
   }
 
