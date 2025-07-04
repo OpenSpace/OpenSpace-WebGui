@@ -65,6 +65,7 @@
         "task-label-complete": "This is a completed task!"
       },
       "lets-go": "Let's dive right in!",
+      "setup-tour": "Go to Start of Tour",
       "other-profile-warning": {
         "title": "Warning",
         "description": "You are not using the Default profile. Some tour steps may not work as expected. If you encounter issues, please restart OpenSpace using the Default profile."

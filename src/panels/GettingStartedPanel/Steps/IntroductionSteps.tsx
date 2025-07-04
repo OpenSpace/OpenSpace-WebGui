@@ -1,17 +1,44 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Image, List, Stack, Text } from '@mantine/core';
+import { Alert, Button, Image, List, Stack, Text } from '@mantine/core';
 
+import { useOpenSpaceApi } from '@/api/hooks';
+import { usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 
 import { TaskCheckbox } from '../Tasks/Components/TaskCheckbox';
 
 export function useIntroductionSteps(): React.ReactNode[] {
   const profileName = useAppSelector((state) => state.profile.name);
+  const luaApi = useOpenSpaceApi();
+  const { setVisibility: setVisibleEsriViirsCombo } = usePropertyOwnerVisibility(
+    'Scene.Earth.Renderable.Layers.ColorLayers.ESRI_VIIRS_Combo'
+  );
   const { t } = useTranslation('panel-gettingstartedtour', {
     keyPrefix: 'steps.introduction'
   });
   const isDefaultProfile = profileName === 'Default';
+
+  function setupGettingStartedTour(): void {
+    luaApi?.setPropertyValueSingle('RenderEngine.BlackoutFactor', 0.0, 1.0);
+    setTimeout(() => {
+      luaApi?.action.triggerAction('os.earth_standard_illumination');
+      luaApi?.setPropertyValue(
+        'Scene.Earth.Renderable.Layers.ColorLayers.*.Enabled',
+        false
+      );
+      setVisibleEsriViirsCombo(true);
+      luaApi?.time.setPause(false);
+      luaApi?.time.interpolateDeltaTime(1);
+      luaApi?.fadeIn('Scene.EarthTrail.Renderable');
+      luaApi?.setPropertyValue(
+        'Scene.Mars.Renderable.Layers.ColorLayers.CTX_Mosaic_Sweden.Enabled',
+        false
+      );
+      luaApi?.fadeOut('Scene.Constellations.Renderable');
+      luaApi?.navigation.jumpTo('Earth');
+    }, 1000);
+  }
 
   return [
     <Stack align={'center'}>
@@ -40,6 +67,9 @@ export function useIntroductionSteps(): React.ReactNode[] {
     </>,
     <>
       <Text>{t('lets-go')}</Text>
+      <Button size={'md'} mx={'auto'} my={'xs'} onClick={setupGettingStartedTour}>
+        {t('setup-tour')}
+      </Button>
       {!isDefaultProfile && (
         <Alert
           variant={'light'}
