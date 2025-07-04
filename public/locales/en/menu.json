@@ -40,15 +40,15 @@
   "view-menu": {
     "title": "View",
     "task-bar": {
-      "label": "Task Bar",
-      "toggle-items": "Toggle Task Bar Items",
+      "label": "Toolbar",
+      "toggle-items": "Toggle Toolbar Items",
       "reset": "Reset",
       "aria-labels": {
         "checked": "Checked",
         "unchecked": "Unchecked"
       },
-      "load-settings": "Load Task Bar Settings",
-      "save-settings": "Save Task Bar Settings"
+      "load-settings": "Load Toolbar Settings",
+      "save-settings": "Save Toolbar Settings"
     },
     "gui-settings": {
       "label": "GUI Settings",
@@ -75,7 +75,7 @@
     "title": "Windows",
     "add-new-window": "Add New Window"
   },
-  "error-load-taskbar-layout": {
+  "error-load-toolbar-layout": {
     "title": "Error loading JSON file",
     "messages": {
       "empty-file": "File is empty",

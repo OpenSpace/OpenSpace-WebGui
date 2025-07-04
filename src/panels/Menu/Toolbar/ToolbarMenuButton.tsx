@@ -8,9 +8,9 @@ interface Props extends ButtonProps {
   id: string;
 }
 
-export function TaskBarMenuButton({ id, children, ...props }: Props) {
+export function ToolbarMenuButton({ id, children, ...props }: Props) {
   const itemConfig = useAppSelector((state) =>
-    state.local.taskbarItems.find((config) => config.id === id)
+    state.local.toolbarItems.find((config) => config.id === id)
   );
   const { addWindow, closeWindow } = useWindowLayoutProvider();
 

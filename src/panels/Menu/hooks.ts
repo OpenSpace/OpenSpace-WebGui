@@ -9,10 +9,10 @@ import { useSaveLoadJsonFiles } from '@/util/fileIOhooks';
 import { MenuItem, menuItemsData } from '@/windowmanagement/data/MenuItems';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
-import { TaskbarItemConfig } from './types';
+import { ToolbarItemConfig } from './types';
 
 export function useMenuItems() {
-  const menuItems = useAppSelector((state) => state.local.taskbarItems);
+  const menuItems = useAppSelector((state) => state.local.toolbarItems);
 
   const filteredMenuItems = menuItems.filter((item) => item.visible);
 
@@ -25,7 +25,7 @@ function useShowWindowOnStart(shouldShow: boolean, menuItem: MenuItem) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // Show the menu button in the taskbar
+    // Show the menu button in the toolbar
     dispatch(setMenuItemVisible({ id: menuItem.componentID, visible: shouldShow }));
     if (shouldShow) {
       // Open the window if it is visible
@@ -40,7 +40,7 @@ function useShowWindowOnStart(shouldShow: boolean, menuItem: MenuItem) {
 }
 
 export function useStoredLayout() {
-  const menuItems = useAppSelector((state) => state.local.taskbarItems);
+  const menuItems = useAppSelector((state) => state.local.toolbarItems);
   const hasMission = useAppSelector((state) => state.missions.isInitialized);
   const hasStartedBefore = useAppSelector((state) => state.profile.hasStartedBefore);
   const showGettingsStartedTour =
@@ -53,7 +53,7 @@ export function useStoredLayout() {
   const { openSaveFileDialog, openLoadFileDialog } =
     useSaveLoadJsonFiles(handlePickedFile);
 
-  const { t } = useTranslation('menu', { keyPrefix: 'error-load-taskbar-layout' });
+  const { t } = useTranslation('menu', { keyPrefix: 'error-load-toolbar-layout' });
   const dispatch = useAppDispatch();
 
   function handlePickedFile(content: JSON) {
@@ -63,7 +63,7 @@ export function useStoredLayout() {
       );
       return;
     }
-    const newLayout = Object.values(content) as TaskbarItemConfig[];
+    const newLayout = Object.values(content) as ToolbarItemConfig[];
     if (newLayout.length !== menuItems.length) {
       dispatch(
         handleNotificationLogging(
@@ -92,7 +92,7 @@ export function useStoredLayout() {
   async function saveLayout() {
     // Our lua function can't read the object if it is an array so
     // we need to convert it to an object
-    const object = menuItems.reduce<Record<string, TaskbarItemConfig>>(
+    const object = menuItems.reduce<Record<string, ToolbarItemConfig>>(
       (accumulator, item, index) => {
         accumulator[index.toString()] = item;
         return accumulator;

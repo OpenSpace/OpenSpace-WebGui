@@ -6,9 +6,9 @@ import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { useMenuItems } from '../hooks';
 
-import { TaskBarMenuButton } from './TaskBarMenuButton';
+import { ToolbarMenuButton } from './ToolbarMenuButton';
 
-export function TaskBar() {
+export function Toolbar() {
   const { filteredMenuItems } = useMenuItems();
 
   return (
@@ -36,9 +36,9 @@ export function TaskBar() {
               {item?.renderMenuButton ? (
                 item.renderMenuButton(item.componentID)
               ) : (
-                <TaskBarMenuButton id={item.componentID}>
+                <ToolbarMenuButton id={item.componentID}>
                   {item.renderIcon ? item.renderIcon(IconSize.lg) : item.title}
-                </TaskBarMenuButton>
+                </ToolbarMenuButton>
               )}
             </Box>
           );

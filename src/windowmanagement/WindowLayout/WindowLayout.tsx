@@ -2,7 +2,7 @@ import { CloseButton, Stack } from '@mantine/core';
 import DockLayout, { DockContext, LayoutData, PanelData, TabGroup } from 'rc-dock';
 
 import { FlightController } from '@/panels/FlightControlPanel/FlightController';
-import { TaskBar } from '@/panels/Menu/TaskBar/TaskBar';
+import { Toolbar } from '@/panels/Menu/Toolbar/Toolbar';
 import { TopMenuBar } from '@/panels/Menu/TopMenuBar/TopMenuBar';
 import { useAppDispatch } from '@/redux/hooks';
 import { setMenuItemOpen } from '@/redux/local/localSlice';
@@ -115,7 +115,7 @@ export function WindowLayout() {
           />
         </div>
 
-        <TaskBar />
+        <Toolbar />
       </Stack>
     </>
   );

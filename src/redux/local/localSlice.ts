@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { TaskbarItemConfig } from '@/panels/Menu/types';
+import { ToolbarItemConfig } from '@/panels/Menu/types';
 import { Uri } from '@/types/types';
 
-import { createDefaultTaskbar } from './util';
+import { createDefaultToolbar } from './util';
 
 export interface LocalState {
   menus: {
@@ -16,7 +16,7 @@ export interface LocalState {
     expandedGroups: string[];
     currentlySelectedNode: Uri | null;
   };
-  taskbarItems: TaskbarItemConfig[];
+  toolbarItems: ToolbarItemConfig[];
 }
 
 const initialState: LocalState = {
@@ -31,15 +31,15 @@ const initialState: LocalState = {
     expandedGroups: [],
     currentlySelectedNode: null
   },
-  taskbarItems: createDefaultTaskbar()
+  toolbarItems: createDefaultToolbar()
 };
 
 export const localSlice = createSlice({
   name: 'local',
   initialState,
   reducers: {
-    resetTaskbarItems: (state) => {
-      state.taskbarItems = createDefaultTaskbar();
+    resetToolbarItems: (state) => {
+      state.toolbarItems = createDefaultToolbar();
       return state;
     },
     storeSceneTreeNodeExpanded: (state, action: PayloadAction<string[]>) => {
@@ -58,21 +58,21 @@ export const localSlice = createSlice({
       state,
       action: PayloadAction<{ id: string; visible: boolean }>
     ) => {
-      const item = state.taskbarItems.find((item) => item.id === action.payload.id);
+      const item = state.toolbarItems.find((item) => item.id === action.payload.id);
       if (item) {
         item.visible = action.payload.visible;
       }
       return state;
     },
     setMenuItemOpen: (state, action: PayloadAction<{ id: string; open: boolean }>) => {
-      const item = state.taskbarItems.find((item) => item.id === action.payload.id);
+      const item = state.toolbarItems.find((item) => item.id === action.payload.id);
       if (item) {
         item.isOpen = action.payload.open;
       }
       return state;
     },
-    setMenuItemsOrder: (state, action: PayloadAction<TaskbarItemConfig[]>) => {
-      state.taskbarItems = action.payload;
+    setMenuItemsOrder: (state, action: PayloadAction<ToolbarItemConfig[]>) => {
+      state.toolbarItems = action.payload;
       return state;
     }
   }
@@ -80,7 +80,7 @@ export const localSlice = createSlice({
 
 // Action creators are generated for each case reducer function, replaces the `Actions/index.js`
 export const {
-  resetTaskbarItems,
+  resetToolbarItems,
   storeSceneTreeNodeExpanded,
   setSceneTreeSelectedNode,
   setOnlyFocusableInNavMenu,

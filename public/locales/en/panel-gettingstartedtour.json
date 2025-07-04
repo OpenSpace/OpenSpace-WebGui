@@ -109,7 +109,7 @@
       "change-time": {
         "intro": "Ok, now we can start changing the time. You can view the past as well as the future. Let's start by opening the Time Panel and changing the year.",
         "task": {
-          "tip-time-panel": "To open the Time Panel, click on this icon in the taskbar",
+          "tip-time-panel": "To open the Time Panel, click on this icon in the toolbar",
           "tip-year-input": "Change the year by changing the value of the year in the time input"
         },
         "hint-reset-time": "You can reset the time by pressing \"Now\""

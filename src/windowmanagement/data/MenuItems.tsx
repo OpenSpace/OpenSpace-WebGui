@@ -21,7 +21,7 @@ import {
   VideocamIcon
 } from '@/icons/icons';
 import { DevPanel } from '@/panels/DevPanel/DevPanel';
-import { TaskBarMenuButton } from '@/panels/Menu/TaskBar/TaskBarMenuButton';
+import { ToolbarMenuButton } from '@/panels/Menu/Toolbar/ToolbarMenuButton';
 import { NavigationPanelMenuButton } from '@/panels/NavigationPanel/MenuButton/NavigationPanelMenuButton';
 import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
 import { TimePanelMenuButtonContent } from '@/panels/TimePanel/MenuButton/TimePanelMenuButtonContent';
@@ -58,7 +58,7 @@ export interface MenuItem {
   preferredPosition: WindowLayoutPosition; // Where this panel is instantiated
   floatPosition?: FloatWindowPosition; // Preferred position and size of a floating window given in px,
   // the offset is computed from the panels top left corner to the bottom right corner of the main window
-  defaultVisible: boolean; // Whether this panel is visible in the taskbar on startup
+  defaultVisible: boolean; // Whether this panel is visible in the toolbar on startup
   visible?: boolean; // TODO: investigate whether this is needed (as of 2024-10-23 its not being used)
 }
 
@@ -68,9 +68,9 @@ export const menuItemsData: Record<string, MenuItem> = {
     componentID: 'scene',
     content: <Scene />,
     renderMenuButton: (id) => (
-      <TaskBarMenuButton id={id} leftSection={<SceneIcon size={IconSize.lg} />}>
+      <ToolbarMenuButton id={id} leftSection={<SceneIcon size={IconSize.lg} />}>
         Scene
-      </TaskBarMenuButton>
+      </ToolbarMenuButton>
     ),
     renderIcon: (size) => <SceneIcon size={size} />,
     preferredPosition: 'left',
@@ -81,9 +81,9 @@ export const menuItemsData: Record<string, MenuItem> = {
     componentID: 'settings',
     content: <SettingsPanel />,
     renderMenuButton: (id) => (
-      <TaskBarMenuButton id={id} leftSection={<SettingsIcon size={IconSize.lg} />}>
+      <ToolbarMenuButton id={id} leftSection={<SettingsIcon size={IconSize.lg} />}>
         Settings
-      </TaskBarMenuButton>
+      </ToolbarMenuButton>
     ),
     renderIcon: (size) => <SettingsIcon size={size} />,
     preferredPosition: 'left',
@@ -104,9 +104,9 @@ export const menuItemsData: Record<string, MenuItem> = {
     componentID: 'timePanel',
     content: <TimePanel />,
     renderMenuButton: (id) => (
-      <TaskBarMenuButton id={id}>
+      <ToolbarMenuButton id={id}>
         <TimePanelMenuButtonContent />
-      </TaskBarMenuButton>
+      </ToolbarMenuButton>
     ),
     renderIcon: (size) => <CalendarIcon size={size} />,
     preferredPosition: 'float',

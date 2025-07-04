@@ -21,12 +21,12 @@ import {
   NotificationsIcon,
   SaveIcon,
   SettingsIcon,
-  TaskBarIcon,
+  ToolbarIcon,
   UpArrowIcon
 } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
-  resetTaskbarItems,
+  resetToolbarItems,
   setMenuItemsOrder,
   setMenuItemVisible
 } from '@/redux/local/localSlice';
@@ -39,7 +39,7 @@ import { MenuDrowdownWrapper } from '../MenuDropdownWrapper';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function ViewMenu() {
-  const defaultTaskbar = useAppSelector((state) => state.profile.uiPanelVisibility);
+  const defaultToolbar = useAppSelector((state) => state.profile.uiPanelVisibility);
   const logNotifications = useAppSelector((state) => state.logging.showNotifications);
   const notificationLogLevel = useAppSelector((state) => state.logging.logLevel);
 
@@ -58,11 +58,11 @@ export function ViewMenu() {
 
   const userLevelOptions = propertyVisibilityMetadata?.additionalData.options;
 
-  function resetTaskbar() {
-    dispatch(resetTaskbarItems());
+  function resetToolbar() {
+    dispatch(resetToolbarItems());
 
     // Panel visibility settings
-    Object.entries(defaultTaskbar).forEach(([key, value]) => {
+    Object.entries(defaultToolbar).forEach(([key, value]) => {
       dispatch(setMenuItemVisible({ id: key, visible: value }));
     });
   }
@@ -71,7 +71,7 @@ export function ViewMenu() {
     <TopBarMenuWrapper targetTitle={t('title')} closeOnItemClick={false}>
       <Menu.Sub position={'right-start'} withinPortal={false}>
         <Menu.Sub.Target>
-          <Menu.Sub.Item leftSection={<TaskBarIcon />}>
+          <Menu.Sub.Item leftSection={<ToolbarIcon />}>
             {t('task-bar.label')}
           </Menu.Sub.Item>
         </Menu.Sub.Target>
@@ -80,7 +80,7 @@ export function ViewMenu() {
           <Menu.Label pr={0}>
             <Group justify={'space-between'}>
               {t('task-bar.toggle-items')}
-              <Button size={'xs'} onClick={resetTaskbar}>
+              <Button size={'xs'} onClick={resetToolbar}>
                 {t('task-bar.reset')}
               </Button>
             </Group>
