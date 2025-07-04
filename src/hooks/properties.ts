@@ -40,7 +40,7 @@ export function useProperty<T extends PropertyTypeKey>(
   PropertyOrPropertyGroup<T>['metaData'] | undefined
 ] {
   const { t } = useTranslation('components', {
-    keyPrefix: 'property.confirmation-modal'
+    keyPrefix: 'property'
   });
   // Get the value from Redux
   const prop = useAppSelector((state) => state.properties.properties[uri]) as
@@ -62,13 +62,11 @@ export function useProperty<T extends PropertyTypeKey>(
   const setValue = useThrottledCallback((value: PropertyOrPropertyGroup<T>['value']) => {
     if (shouldShowModal) {
       modals.openConfirmModal({
-        title: t('title'),
-        children: t('description', { propertyName: prop?.metaData.guiName }),
-        labels: { confirm: t('confirm'), cancel: t('cancel') },
+        title: t('confirmation-modal.title'),
+        children: t('confirmation-modal.description', { propertyName: prop?.metaData.guiName }),
+        labels: { confirm: t('confirmation-modal.confirm'), cancel: t('confirmation-modal.cancel') },
         confirmProps: { color: 'red', variant: 'filled' },
-        onConfirm: () => {
-          dispatch(setPropertyValue({ uri, value }));
-        }
+        onConfirm: () => dispatch(setPropertyValue({ uri, value }))
       });
     } else {
       dispatch(setPropertyValue({ uri, value }));
