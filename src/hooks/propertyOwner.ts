@@ -78,7 +78,7 @@ export function usePropertyOwnerVisibility(uri: Uri) {
 
   const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
 
-  function setVisiblity(shouldShow: boolean, isImmediate: boolean = false) {
+  function setVisibility(shouldShow: boolean, isImmediate: boolean = false) {
     if (!isFadeable) {
       setEnabledProperty(shouldShow);
     } else if (isImmediate) {
@@ -93,6 +93,6 @@ export function usePropertyOwnerVisibility(uri: Uri) {
 
   return {
     isVisible,
-    setVisiblity
+    setVisibility
   };
 }
