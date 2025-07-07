@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useProperty } from '@/hooks/properties';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setMenuItemsConfig, setMenuItemVisible } from '@/redux/local/localSlice';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
@@ -10,7 +11,6 @@ import { MenuItem, menuItemsData } from '@/windowmanagement/data/MenuItems';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { MenuItemConfig } from './types';
-import { useProperty } from '@/hooks/properties';
 
 export function useMenuItems(): (MenuItemConfig & MenuItem)[] {
   const menuItems = useAppSelector((state) => state.local.menuItemsConfig);

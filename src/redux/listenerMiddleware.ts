@@ -9,6 +9,7 @@ import { addEngineModeListener } from './enginemode/engineModeMiddleware';
 import { addEventsListener } from './events/eventsMiddleware';
 import { addFlightControllerListener } from './flightcontroller/flightControllerMiddleware';
 import { addGroupsListener } from './groups/groupsSliceMiddleware';
+import { addLocalListener } from './local/localMiddleware';
 import { addLoggingListener } from './logging/loggingMiddleware';
 import { addMissionsListener } from './missions/missionsMiddleware';
 import { addProfileListener } from './profile/profileMiddleware';
@@ -18,8 +19,6 @@ import { addSessionRecordingListener } from './sessionrecording/sessionRecording
 import { addSkyBrowserListener } from './skybrowser/skybrowserMiddleware';
 import { addTimeListener } from './time/timeMiddleware';
 import { addVersionListener } from './version/versionMiddleware';
-import { addLocalListener } from './local/localMiddleware';
-
 import type { AppDispatch, RootState } from './store';
 
 export const listenerMiddleware = createListenerMiddleware();
