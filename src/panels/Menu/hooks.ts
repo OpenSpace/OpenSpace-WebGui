@@ -17,7 +17,7 @@ export function useMenuItems(): (MenuItemConfig & MenuItem)[] {
   const [userLevel] = useProperty('OptionProperty', 'OpenSpaceEngine.PropertyVisibility');
 
   // Filter the menu items based on the user level
-  const menuItemsDataWithUserLevel = menuItems.filter((item) => {
+  const menuItemsAtUserLevel = menuItems.filter((item) => {
     // Always include the item if it is not advanced
     if (!menuItemsData[item.id].advanced) {
       return true;
@@ -27,11 +27,11 @@ export function useMenuItems(): (MenuItemConfig & MenuItem)[] {
     }
   });
 
-  const test: (MenuItemConfig & MenuItem)[] = menuItemsDataWithUserLevel.map((item) => {
+  const result: (MenuItemConfig & MenuItem)[] = menuItemsAtUserLevel.map((item) => {
     return { ...item, ...menuItemsData[item.id] };
   });
 
-  return test;
+  return result;
 }
 
 function useShowWindowOnStart(shouldShow: boolean, menuItem: MenuItem) {
