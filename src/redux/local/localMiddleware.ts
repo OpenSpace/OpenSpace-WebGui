@@ -14,8 +14,11 @@ export const addLocalListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onOpenConnection,
     effect: async (_, listenerApi) => {
-      // When the connection opens, we can reset the toolbar items to their default configuration
-      listenerApi.dispatch(resetMenuItemConfig());
+      // When the connection opens, we need to create a default configuration for the menu items
+      // if it has not been set yet.
+      if (listenerApi.getState().local.menuItemsConfig.length === 0) {
+        listenerApi.dispatch(resetMenuItemConfig());
+      }
     }
   });
 
@@ -30,7 +33,7 @@ export const addLocalListener = (startListening: AppStartListening) => {
         isOpen: false
       }));
 
-      // Set the default configuration from the profile settings
+      // Override the default configuration from the profile settings
       const defaultVisibleItems = listenerApi.getState().profile.uiPanelVisibility;
       const defaultConfig = menuItemsConfig.map((item) => ({
         ...item,
