@@ -1,6 +1,5 @@
 import { Button, ButtonProps } from '@mantine/core';
 
-import { useAppSelector } from '@/redux/hooks';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { useMenuItems } from '../hooks';
@@ -10,9 +9,6 @@ interface Props extends ButtonProps {
 }
 
 export function ToolbarMenuButton({ id, children, ...props }: Props) {
-  const itemConfig = useAppSelector((state) =>
-    state.local.menuItemsConfig.find((config) => config.id === id)
-  );
   const menuItems = useMenuItems();
   const { addWindow, closeWindow } = useWindowLayoutProvider();
 
@@ -55,7 +51,7 @@ export function ToolbarMenuButton({ id, children, ...props }: Props) {
       variant={'menubar'}
       aria-label={item.title}
       style={{
-        borderBottom: itemConfig?.isOpen
+        borderBottom: item?.isOpen
           ? 'var(--openspace-border-active)'
           : 'var(--openspace-border-active-placeholder)',
         borderRadius: 0
