@@ -1,8 +1,9 @@
 import { Button, ButtonProps } from '@mantine/core';
 
 import { useAppSelector } from '@/redux/hooks';
-import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
+
+import { useMenuItems } from '../hooks';
 
 interface Props extends ButtonProps {
   id: string;
@@ -10,17 +11,21 @@ interface Props extends ButtonProps {
 
 export function ToolbarMenuButton({ id, children, ...props }: Props) {
   const itemConfig = useAppSelector((state) =>
-    state.local.toolbarItems.find((config) => config.id === id)
+    state.local.menuItemsConfig.find((config) => config.id === id)
   );
+  const menuItems = useMenuItems();
   const { addWindow, closeWindow } = useWindowLayoutProvider();
 
-  const item = menuItemsData[id];
+  const item = menuItems.find((item) => item.id === id);
 
   if (!item) {
     throw new Error(`No menu item found for id: '${id}'`);
   }
 
   function onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    if (!item) {
+      return;
+    }
     if (event.shiftKey) {
       closeWindow(item.componentID);
     } else {
@@ -34,6 +39,9 @@ export function ToolbarMenuButton({ id, children, ...props }: Props) {
   }
 
   function onRightClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    if (!item) {
+      return;
+    }
     event.preventDefault();
     closeWindow(item.componentID);
   }

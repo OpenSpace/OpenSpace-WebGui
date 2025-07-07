@@ -18,6 +18,8 @@ import { addSessionRecordingListener } from './sessionrecording/sessionRecording
 import { addSkyBrowserListener } from './skybrowser/skybrowserMiddleware';
 import { addTimeListener } from './time/timeMiddleware';
 import { addVersionListener } from './version/versionMiddleware';
+import { addLocalListener } from './local/localMiddleware';
+
 import type { AppDispatch, RootState } from './store';
 
 export const listenerMiddleware = createListenerMiddleware();
@@ -42,6 +44,7 @@ addSessionRecordingListener(startAppListening);
 addSkyBrowserListener(startAppListening);
 addTimeListener(startAppListening);
 addVersionListener(startAppListening);
+addLocalListener(startAppListening);
 
 // @TODO (2024-02-17, emmbr): The scene tree currently breaks if this lsitener is added
 // before the property tree listener. This should be investigated, and fixed so that

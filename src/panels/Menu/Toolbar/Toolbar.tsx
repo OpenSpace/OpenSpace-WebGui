@@ -2,14 +2,14 @@ import { alpha, Box, Flex } from '@mantine/core';
 
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { IconSize } from '@/types/enums';
-import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { useMenuItems } from '../hooks';
 
 import { ToolbarMenuButton } from './ToolbarMenuButton';
 
 export function Toolbar() {
-  const { filteredMenuItems } = useMenuItems();
+  const menuItems = useMenuItems();
+  const visibleMenuItems = menuItems.filter((item) => item.visible);
 
   return (
     <ScrollBox direction={'horizontal'}>
@@ -18,9 +18,8 @@ export function Toolbar() {
           whiteSpace: 'nowrap'
         }}
       >
-        {filteredMenuItems.map((itemConfig, i) => {
-          const isLastItem = i === filteredMenuItems.length - 1;
-          const item = menuItemsData[itemConfig.id];
+        {visibleMenuItems.map((item, i) => {
+          const isLastItem = i === menuItems.length - 1;
           return (
             // The wrapper box is needed here so custom menu buttons like the play/pause,
             // are playing nicely with the rest of the buttons. For example the
