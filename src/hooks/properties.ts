@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { useThrottledCallback } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 
-import { ShowPropertyConfirmationModals } from '@/components/Property/types';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   subscribeToProperty,
@@ -63,8 +62,13 @@ export function useProperty<T extends PropertyTypeKey>(
     if (shouldShowModal) {
       modals.openConfirmModal({
         title: t('confirmation-modal.title'),
-        children: t('confirmation-modal.description', { propertyName: prop?.metaData.guiName }),
-        labels: { confirm: t('confirmation-modal.confirm'), cancel: t('confirmation-modal.cancel') },
+        children: t('confirmation-modal.description', {
+          propertyName: prop?.metaData.guiName
+        }),
+        labels: {
+          confirm: t('confirmation-modal.confirm'),
+          cancel: t('confirmation-modal.cancel')
+        },
         confirmProps: { color: 'red', variant: 'filled' },
         onConfirm: () => dispatch(setPropertyValue({ uri, value }))
       });
@@ -91,34 +95,14 @@ function useShouldShowModal<T extends PropertyTypeKey>(
 ): boolean {
   const showConfirmationModal = useAppSelector(
     (state) => state.properties.properties['OpenSpaceEngine.ShowPropertyConfirmation']
-  )?.value as ShowPropertyConfirmationModals | undefined;
+  )?.value as boolean | undefined;
+
+  useSubscribeToProperty('OpenSpaceEngine.ShowPropertyConfirmation');
 
   // Don't show modal if we can't find the global settings or the metadata
   if (showConfirmationModal === undefined || metaData === undefined) {
     return false;
   }
 
-  let shouldShowModal = false;
-  const { needsConfirmation } = metaData;
-
-  switch (showConfirmationModal) {
-    case ShowPropertyConfirmationModals.Never:
-      // Never show modal except when the property is explicitly set to always
-      shouldShowModal = needsConfirmation === 'Always';
-      break;
-    case ShowPropertyConfirmationModals.Default:
-      // Follow the property setting
-      shouldShowModal = needsConfirmation === 'Yes' || needsConfirmation === 'Always';
-      break;
-    case ShowPropertyConfirmationModals.Always:
-      // Always show modal except when the property is explicitly set to never
-      shouldShowModal = needsConfirmation !== 'Never';
-      break;
-    default:
-      throw new Error(
-        `Unhandled showConfirmationModal value: '${showConfirmationModal}'`
-      );
-  }
-
-  return shouldShowModal;
+  return metaData.needsConfirmation && showConfirmationModal;
 }
