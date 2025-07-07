@@ -60,6 +60,7 @@ export interface MenuItem {
   // the offset is computed from the panels top left corner to the bottom right corner of the main window
   defaultVisible: boolean; // Whether this panel is visible in the toolbar on startup
   visible?: boolean; // TODO: investigate whether this is needed (as of 2024-10-23 its not being used)
+  advanced?: boolean; // Whether this panel is considered advanced and should only be shown to users with a high enough visibility level
 }
 
 export const menuItemsData: Record<string, MenuItem> = {
@@ -218,7 +219,8 @@ export const menuItemsData: Record<string, MenuItem> = {
     content: <ScriptLogPanel />,
     renderIcon: (size) => <ScriptLogIcon size={size} />,
     preferredPosition: 'right',
-    defaultVisible: false
+    defaultVisible: false,
+    advanced: true
   }
 };
 

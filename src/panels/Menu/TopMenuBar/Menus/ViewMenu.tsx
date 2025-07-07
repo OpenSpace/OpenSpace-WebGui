@@ -25,25 +25,20 @@ import {
   UpArrowIcon
 } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import {
-  resetToolbarItems,
-  setMenuItemsOrder,
-  setMenuItemVisible
-} from '@/redux/local/localSlice';
+import { resetMenuItemConfig } from '@/redux/local/localMiddleware';
+import { setMenuItemsConfig, setMenuItemVisible } from '@/redux/local/localSlice';
 import { showNotifications, updateLogLevel } from '@/redux/logging/loggingSlice';
 import { IconSize, LogLevel } from '@/types/enums';
-import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { useMenuItems, useStoredLayout } from '../../hooks';
 import { MenuDrowdownWrapper } from '../MenuDropdownWrapper';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function ViewMenu() {
-  const defaultToolbar = useAppSelector((state) => state.profile.uiPanelVisibility);
   const logNotifications = useAppSelector((state) => state.logging.showNotifications);
   const notificationLogLevel = useAppSelector((state) => state.logging.logLevel);
 
-  const { menuItems } = useMenuItems();
+  const menuItems = useMenuItems();
   const [propertyVisibility, setPropertyVisibility, propertyVisibilityMetadata] =
     useProperty('OptionProperty', 'OpenSpaceEngine.PropertyVisibility');
 
@@ -59,12 +54,7 @@ export function ViewMenu() {
   const userLevelOptions = propertyVisibilityMetadata?.additionalData.options;
 
   function resetToolbar() {
-    dispatch(resetToolbarItems());
-
-    // Panel visibility settings
-    Object.entries(defaultToolbar).forEach(([key, value]) => {
-      dispatch(setMenuItemVisible({ id: key, visible: value }));
-    });
+    dispatch(resetMenuItemConfig());
   }
 
   return (
@@ -90,18 +80,17 @@ export function ViewMenu() {
             data={menuItems}
             dragHandlePosition={'right'}
             keyFunc={(item) => item.id}
-            onDragEnd={({ updatedData }) => dispatch(setMenuItemsOrder(updatedData))}
-            renderFunc={(itemConfig) => {
-              const item = menuItemsData[itemConfig.id];
+            onDragEnd={({ updatedData }) => dispatch(setMenuItemsConfig(updatedData))}
+            renderFunc={(item) => {
               return (
                 <Menu.Item
                   key={item.componentID}
                   leftSection={
                     <Group>
                       <CheckboxIndicator
-                        checked={itemConfig.visible}
+                        checked={item.visible}
                         aria-label={
-                          itemConfig.visible
+                          item.visible
                             ? t('task-bar.aria-labels.checked')
                             : t('task-bar.aria-labels.unchecked')
                         }
@@ -112,8 +101,8 @@ export function ViewMenu() {
                   onClick={() =>
                     dispatch(
                       setMenuItemVisible({
-                        id: itemConfig.id,
-                        visible: !itemConfig.visible
+                        id: item.id,
+                        visible: !item.visible
                       })
                     )
                   }

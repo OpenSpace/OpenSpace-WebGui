@@ -1,4 +1,4 @@
-export interface ToolbarItemConfig {
+export interface MenuItemConfig {
   id: string;
   // The name of the menu item. This will show up in the OpenSpace launcher.
   name: string;

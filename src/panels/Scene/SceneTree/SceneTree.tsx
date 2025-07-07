@@ -16,7 +16,7 @@ import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { ChevronsDownIcon, ChevronsUpIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { storeSceneTreeNodeExpanded } from '@/redux/local/localSlice';
+import { setSceneTreeNodeExpanded } from '@/redux/local/localSlice';
 
 import { useOpenCurrentSceneNodeWindow } from '../hooks';
 
@@ -69,7 +69,7 @@ export function SceneTree() {
         .filter(([key, isOpen]) => key.startsWith(SceneTreeGroupPrefixKey) && isOpen)
         .map(([key]) => key); // Save expanded state on unmount
 
-      dispatch(storeSceneTreeNodeExpanded(expandedGroups));
+      dispatch(setSceneTreeNodeExpanded(expandedGroups));
     };
   }, [dispatch, tree.expandedState]);
 
