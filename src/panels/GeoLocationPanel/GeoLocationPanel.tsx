@@ -1,21 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Overlay, Text, TextInput, Title, Transition } from '@mantine/core';
+import { Box, Button, TextInput, Title } from '@mantine/core';
 
-import { EarthPanel } from './AnchorPanels/EarthPanel/EarthPanel';
 import { AddedCustomNodes } from './AddedCustomNodes';
-import { MapLocation, MouseMarker } from './MapLocation';
+import { MapLocation } from './MapLocation';
 import { CustomCoordinates } from './CustomCoordinates';
 import { useEffect, useState } from 'react';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { useDisclosure, useElementSize } from '@mantine/hooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
-import { SearchOverlay } from './SearchOverlay';
-
-export type Coordinates = {
-  lat: number;
-  long: number;
-  alt: number;
-};
+import { SearchOverlay } from './AnchorPanels/EarthPanel/SearchOverlay';
+import { Coordinates, MouseMarker } from './types';
 
 export function GeoLocationPanel() {
   const { t } = useTranslation('panel-geolocation');
@@ -27,20 +21,27 @@ export function GeoLocationPanel() {
   });
   const [customName, setCustomName] = useState('');
   const [mouseMarker, setMouseMarker] = useState<MouseMarker>(undefined);
-  const anchor = useAnchorNode();
-  const [visible, { open, close, toggle }] = useDisclosure(false);
-
+  // Search string is the input value, search is the actual search term
+  // that is used to fetch results. This is to not trigger a search
+  // on every keystroke, but only when the user presses enter or clicks the search.
+  const [searchString, setSearchString] = useState('');
   const [search, setSearch] = useState('');
 
-  const { height: windowHeight } = useWindowSize();
+  const [visible, { open, close, toggle }] = useDisclosure(false);
 
+  const { height: windowHeight } = useWindowSize();
   const { ref: topRef, height: topHeight } = useElementSize();
+
+  const anchor = useAnchorNode();
+
   const isOnEarth = anchor?.name === 'Earth';
 
   useEffect(() => {
     // Reset mouse marker when anchor changes
     setMouseMarker(undefined);
     setSearch('');
+    setSearchString('');
+    setCustomName('');
   }, [anchor]);
 
   function openIfNotOpen() {
@@ -65,12 +66,14 @@ export function GeoLocationPanel() {
           mouseMarker={mouseMarker}
           setMouseMarker={setMouseMarker}
         />
-
         <TextInput
+          value={searchString}
+          onChange={(e) => setSearchString(e.currentTarget.value)}
           disabled={!isOnEarth}
           my={'md'}
           onKeyDown={(event) => {
             if (event.key === 'Enter') {
+              setSearch(event.currentTarget.value);
               openIfNotOpen();
             }
           }}
@@ -79,10 +82,6 @@ export function GeoLocationPanel() {
               ? 'Search locations on Earth'
               : `No search available for ${anchor?.name}`
           }
-          onChange={(event) => {
-            setSearch(event.target.value);
-            search !== '' ? openIfNotOpen() : close();
-          }}
           onClick={() => search !== '' && toggle()}
           rightSection={
             <Button disabled={!isOnEarth} onClick={openIfNotOpen}>
@@ -105,8 +104,8 @@ export function GeoLocationPanel() {
         <CustomCoordinates
           customName={customName}
           setCustomName={setCustomName}
-          coordinates={coordinates}
           setCoordinates={setCoordinates}
+          coordinates={coordinates}
         />
         <Title mt={'md'} mb={'sm'}>
           Added nodes

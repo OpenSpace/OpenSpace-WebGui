@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Group, Text, TextInput, Title } from '@mantine/core';
+import { Button, Text } from '@mantine/core';
 import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -15,11 +15,13 @@ import { ArcGISJSON, Candidate } from './types';
 export function EarthPanel({
   onClick,
   onHover,
-  search
+  search,
+  mah
 }: {
   onClick: (lat: number, long: number, altitude: number, name: string) => void;
   onHover: (lat: number, long: number) => void;
   search: string;
+  mah?: number;
 }) {
   const [places, setPlaces] = useState<Candidate[]>([]);
 
@@ -28,9 +30,7 @@ export function EarthPanel({
 
   // When opening the panel with a search query, set the input value and fetch places
   useEffect(() => {
-    if (search.length > 2) {
-      getPlaces(search);
-    }
+    getPlaces(search);
   }, [search]);
 
   async function getPlaces(input: string): Promise<void> {
@@ -79,26 +79,8 @@ export function EarthPanel({
 
   return (
     <>
-      {/* <TextInput
-          aria-label={t('search.input.aria-label')}
-          placeholder={t('search.input.placeholder')}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              getPlaces(inputValue);
-            }
-          }}
-          onChange={(event) => setInputValue(event.target.value)}
-          rightSection={
-            <Button onClick={() => getPlaces(inputValue)}>
-              {t('search.button-label')}
-            </Button>
-          }
-          value={inputValue}
-          rightSectionWidth={'md'}
-        /> */}
-
       {places.length > 0 ? (
-        <FilterList>
+        <FilterList mah={mah}>
           <FilterList.InputField placeHolderSearchText={t('search.filter-placeholder')} />
           <FilterList.SearchResults
             data={places}
@@ -110,8 +92,8 @@ export function EarthPanel({
                 variant={'default'}
                 onClick={() => {
                   onClick(
-                    place.location.x,
                     place.location.y,
+                    place.location.x,
                     calculateAltitude(place.extent),
                     place.attributes.LongLabel
                   );
@@ -120,12 +102,6 @@ export function EarthPanel({
               >
                 {place.attributes.LongLabel}
               </Button>
-              // <EarthEntry
-              //   key={place.attributes.LongLabel}
-              //   place={place}
-              //   useCustomAltitude={useCustomAltitude}
-              //   customAltitude={customAltitude}
-              // />
             )}
             matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
           >

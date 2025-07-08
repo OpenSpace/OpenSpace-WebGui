@@ -14,18 +14,23 @@ import { useCameraLatLong } from '@/redux/camera/hooks';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { MapData } from './data';
+import { PropsWithChildren } from 'react';
 
 // The fewer decimals we can get away with, the less the component will rerender due to
 // precision issues. 7 decimals gives ~1 cm accuracy in lat & long when copying values.
 // https://blis.com/precision-matters-critical-importance-decimal-places-five-lowest-go/
 const DecimalPrecision = 7;
 
-interface Props extends MantineStyleProps {
+interface Props extends MantineStyleProps, PropsWithChildren {
   // Settings for the OpenSpace marker and view cone
   iconSize?: number;
   coneWidth?: number;
   coneHeight?: number;
   showViewDirection?: boolean;
+  ref?: React.Ref<HTMLDivElement> | React.RefObject<HTMLDivElement>;
+  style?: React.CSSProperties;
+  onMouseOut?: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onMouseMove?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 export function Map({
@@ -33,6 +38,11 @@ export function Map({
   coneWidth = 45,
   coneHeight = 30,
   showViewDirection = true,
+  onMouseMove,
+  onMouseOut,
+  ref,
+  children,
+  style,
   ...styleProps
 }: Props) {
   const {
@@ -41,6 +51,7 @@ export function Map({
     viewLatitude,
     viewLongitude
   } = useCameraLatLong(DecimalPrecision);
+
   useSubscribeToCamera();
 
   const anchor = useAnchorNode();
@@ -72,7 +83,16 @@ export function Map({
   }
 
   return (
-    <AspectRatio ratio={16 / 9} mx={'auto'} miw={300} {...styleProps}>
+    <AspectRatio
+      ratio={16 / 9}
+      mx={'auto'}
+      miw={300}
+      {...styleProps}
+      ref={ref}
+      style={style}
+      onMouseOut={onMouseOut}
+      onMouseMove={onMouseMove}
+    >
       <BackgroundImage
         src={`${import.meta.env.BASE_URL}/images/maps/${map}`}
         style={{ position: 'relative' }}
@@ -117,6 +137,7 @@ export function Map({
             aria-label={t('aria-labels.openspace-icon')}
           />
         </Box>
+        {children}
       </BackgroundImage>
     </AspectRatio>
   );

@@ -8,7 +8,7 @@ import { NavigationType } from '@/types/enums';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { AddSceneGraphNodeButton } from './AddSceneGraphNodeButton';
-import { Coordinates } from './GeoLocationPanel';
+import { Coordinates } from './types';
 
 export function CustomCoordinates({
   customName,

@@ -1,5 +1,5 @@
 import { Box, Overlay, Transition } from '@mantine/core';
-import { EarthPanel } from './AnchorPanels/EarthPanel/EarthPanel';
+import { EarthPanel } from './EarthPanel';
 import { useClickOutside } from '@mantine/hooks';
 
 export function SearchOverlay({
@@ -22,11 +22,11 @@ export function SearchOverlay({
   const ref = useClickOutside(() => close());
 
   function coordsToMapCoords(latitude: number, longitude: number) {
-    setMouseMarker({
-      x: (longitude + 180) / 360,
-      y: (90 - latitude) / 180
-    });
+    const x = (longitude + 180) / 360;
+    const y = (90 - latitude) / 180;
+    setMouseMarker({ x, y });
   }
+
   return (
     <>
       {visible && (
@@ -44,9 +44,9 @@ export function SearchOverlay({
                   mx={'sm'}
                   p={'sm'}
                   bg={'dark.8'}
-                  style={{ borderRadius: '8px' }}
+                  style={{ borderRadius: '8px', overflow: 'auto' }}
                   ref={ref}
-                  h={h}
+                  mah={h}
                 >
                   <EarthPanel
                     search={search}
