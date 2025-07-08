@@ -7,8 +7,9 @@ import { MapLocation, MouseMarker } from './MapLocation';
 import { CustomCoordinates } from './CustomCoordinates';
 import { useEffect, useState } from 'react';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
-import { useClickOutside, useDisclosure, useElementSize } from '@mantine/hooks';
+import { useDisclosure, useElementSize } from '@mantine/hooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
+import { SearchOverlay } from './SearchOverlay';
 
 export type Coordinates = {
   lat: number;
@@ -31,10 +32,9 @@ export function GeoLocationPanel() {
 
   const [search, setSearch] = useState('');
 
-  const ref = useClickOutside(() => close());
+  const { height: windowHeight } = useWindowSize();
 
   const { ref: topRef, height: topHeight } = useElementSize();
-  const { height: windowHeight } = useWindowSize();
   const isOnEarth = anchor?.name === 'Earth';
 
   useEffect(() => {
@@ -42,13 +42,6 @@ export function GeoLocationPanel() {
     setMouseMarker(undefined);
     setSearch('');
   }, [anchor]);
-
-  function coordsToMapCoords(latitude: number, longitude: number) {
-    setMouseMarker({
-      x: (longitude + 180) / 360,
-      y: (90 - latitude) / 180
-    });
-  }
 
   function openIfNotOpen() {
     if (!visible) {
@@ -99,53 +92,16 @@ export function GeoLocationPanel() {
           rightSectionWidth={'md'}
         />
       </Box>
-      {/* Search overlay */}
       <Box pos={'relative'}>
-        {visible && (
-          <Overlay backgroundOpacity={0} blur={1}>
-            <Transition
-              mounted={visible}
-              transition="fade"
-              duration={400}
-              timingFunction="ease"
-            >
-              {(styles) => (
-                <div style={styles}>
-                  <Box
-                    bd={'1px solid dark.5'}
-                    mx={'sm'}
-                    p={'sm'}
-                    bg={'dark.8'}
-                    style={{ borderRadius: '8px' }}
-                    ref={ref}
-                    h={(windowHeight - topHeight) * 0.6}
-                  >
-                    {anchor?.name === 'Earth' ? (
-                      <EarthPanel
-                        search={search}
-                        onHover={(lat, long) => {
-                          coordsToMapCoords(lat, long);
-                        }}
-                        onClick={(lat, long, alt, name) => {
-                          setCoordinates({
-                            lat,
-                            long,
-                            alt
-                          });
-                          setCustomName(name);
-                          close();
-                        }}
-                      />
-                    ) : (
-                      <Text>No data for {anchor?.name}</Text>
-                    )}
-                  </Box>
-                </div>
-              )}
-            </Transition>
-          </Overlay>
-        )}
-
+        <SearchOverlay
+          h={(windowHeight - topHeight) * 0.7}
+          setCustomName={setCustomName}
+          setCoordinates={setCoordinates}
+          setMouseMarker={setMouseMarker}
+          search={search}
+          visible={visible}
+          close={close}
+        />
         <CustomCoordinates
           customName={customName}
           setCustomName={setCustomName}
