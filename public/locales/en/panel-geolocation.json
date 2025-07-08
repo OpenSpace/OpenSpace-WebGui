@@ -1,6 +1,6 @@
 {
   "tab-labels": {
-    "search": "Search Place",
+    "search": "Search Earth",
     "custom-coordinates": "Custom Coordinates",
     "map-location": "Map Location"
   },
@@ -30,10 +30,13 @@
     }
   },
   "custom-coordinates": {
-    "latitude-label": "Latitude (deg)",
-    "longitude-label": "Longitude (deg)",
-    "altitude-label": "Altitude (km)",
-    "node-name-label": "Node name (optional)",
+    "latitude-label": "Latitude",
+    "longitude-label": "Longitude",
+    "altitude-label": "Altitude",
+    "node-name-label": "Node name",
+    "label-degrees": "(deg)",
+    "label-kilometers": "(km)",
+    "label-optional": "(optional)",
     "node-name-placeholder": "Custom Coordinate {{anchor}} ({{latitude}}, {{longitude}}, {{altitude}}km)"
   },
   "added-custom-nodes": {

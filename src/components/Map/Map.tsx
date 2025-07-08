@@ -44,6 +44,7 @@ export function Map({
   useSubscribeToCamera();
 
   const anchor = useAnchorNode();
+
   const map = MapData[anchor?.identifier?.toLowerCase() ?? ''];
   const { t } = useTranslation('components', { keyPrefix: 'map' });
 
@@ -74,7 +75,7 @@ export function Map({
     <AspectRatio ratio={16 / 9} mx={'auto'} miw={300} {...styleProps}>
       <BackgroundImage
         src={`${import.meta.env.BASE_URL}/images/maps/${map}`}
-        style={{ overflow: 'hidden', position: 'relative' }}
+        style={{ position: 'relative' }}
         aria-label={t('aria-labels.map', { mapName: anchor.name })}
       >
         <Box

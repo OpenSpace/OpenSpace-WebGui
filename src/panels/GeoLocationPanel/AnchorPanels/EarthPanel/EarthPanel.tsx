@@ -1,33 +1,44 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Group, NumberInput, Text, TextInput, Title } from '@mantine/core';
+import { Button, Group, Text, TextInput, Title } from '@mantine/core';
+import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
-import { BoolInput } from '@/components/Input/BoolInput';
-import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
-import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
 import { useAppDispatch } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { LogLevel } from '@/types/enums';
+import { Extent } from './types';
 
-import { EarthEntry } from './EarthEntry';
 import { ArcGISJSON, Candidate } from './types';
 
-export function EarthPanel() {
-  const [inputValue, setInputValue] = useState('');
-  const [useCustomAltitude, setUseCustomAltitude] = useState(false);
-  const [customAltitude, setCustomAltitude] = useState(300);
+export function EarthPanel({
+  onClick,
+  onHover,
+  search
+}: {
+  onClick: (lat: number, long: number, altitude: number, name: string) => void;
+  onHover: (lat: number, long: number) => void;
+  search: string;
+}) {
   const [places, setPlaces] = useState<Candidate[]>([]);
+
   const { t } = useTranslation('panel-geolocation', { keyPrefix: 'earth-panel' });
   const dispatch = useAppDispatch();
 
-  async function getPlaces(): Promise<void> {
-    if (!inputValue) {
+  // When opening the panel with a search query, set the input value and fetch places
+  useEffect(() => {
+    if (search.length > 2) {
+      getPlaces(search);
+    }
+  }, [search]);
+
+  async function getPlaces(input: string): Promise<void> {
+    if (!input) {
       setPlaces([]);
       return;
     }
-    const searchString = inputValue.replaceAll(' ', '+');
+    const searchString = input.replaceAll(' ', '+');
     try {
       const response = await fetch(
         `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?SingleLine=${searchString}&category=&outFields=*&forStorage=false&f=json`
@@ -44,79 +55,83 @@ export function EarthPanel() {
         }
         return false;
       });
-
       setPlaces(uniquePlaces);
     } catch (error) {
       dispatch(handleNotificationLogging('Error fetching data', error, LogLevel.Error));
     }
   }
 
+  function calculateAltitude(extent: Extent): number {
+    // Get lat long corners of polygon
+    const nw = new LatLng(extent.ymax, extent.xmin);
+    const ne = new LatLng(extent.ymax, extent.xmax);
+    const sw = new LatLng(extent.ymin, extent.xmin);
+    const se = new LatLng(extent.ymin, extent.xmax);
+    // Distances are in meters
+    const height = computeDistanceBetween(nw, sw);
+    const lengthBottom = computeDistanceBetween(sw, se);
+    const lengthTop = computeDistanceBetween(nw, ne);
+    const maxLength = Math.max(lengthBottom, lengthTop);
+    const largestDist = Math.max(height, maxLength);
+    // 0.61 is the radian of 35 degrees - half of the standard horizontal field of view in OpenSpace
+    return (0.5 * largestDist) / Math.tan(0.610865238);
+  }
+
   return (
     <>
-      <Title order={2}>{t('search.title')}</Title>
-      <TextInput
-        aria-label={t('search.input.aria-label')}
-        placeholder={t('search.input.placeholder')}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter') {
-            getPlaces();
+      {/* <TextInput
+          aria-label={t('search.input.aria-label')}
+          placeholder={t('search.input.placeholder')}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              getPlaces(inputValue);
+            }
+          }}
+          onChange={(event) => setInputValue(event.target.value)}
+          rightSection={
+            <Button onClick={() => getPlaces(inputValue)}>
+              {t('search.button-label')}
+            </Button>
           }
-        }}
-        onChange={(event) => setInputValue(event.target.value)}
-        rightSection={<Button onClick={getPlaces}>{t('search.button-label')}</Button>}
-        rightSectionWidth={'md'}
-      />
-
-      <Group justify={'space-between'}>
-        <Title order={3} my={'xs'}>
-          {t('search.results-title')}
-        </Title>
-        <SettingsPopout>
-          <BoolInput
-            label={t('search.settings.altitude-checkbox')}
-            value={useCustomAltitude}
-            onChange={setUseCustomAltitude}
-            info={t('search.settings.tooltip')}
-            m={'xs'}
-          />
-          <NumberInput
-            value={customAltitude}
-            onChange={(value) => {
-              if (typeof value === 'number') {
-                setCustomAltitude(value);
-              }
-            }}
-            label={t('search.settings.altitude-input-label')}
-            disabled={!useCustomAltitude}
-            defaultValue={300}
-            min={0}
-            m={'xs'}
-          />
-        </SettingsPopout>
-      </Group>
+          value={inputValue}
+          rightSectionWidth={'md'}
+        /> */}
 
       {places.length > 0 ? (
-        <ResizeableContent defaultHeight={250}>
-          <FilterList>
-            <FilterList.InputField
-              placeHolderSearchText={t('search.filter-placeholder')}
-            />
-            <FilterList.SearchResults
-              data={places}
-              renderElement={(place) => (
-                <EarthEntry
-                  key={place.attributes.LongLabel}
-                  place={place}
-                  useCustomAltitude={useCustomAltitude}
-                  customAltitude={customAltitude}
-                />
-              )}
-              matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
-            >
-              <FilterList.SearchResults.VirtualList />
-            </FilterList.SearchResults>
-          </FilterList>
-        </ResizeableContent>
+        <FilterList>
+          <FilterList.InputField placeHolderSearchText={t('search.filter-placeholder')} />
+          <FilterList.SearchResults
+            data={places}
+            renderElement={(place) => (
+              <Button
+                w={'100%'}
+                mb={3}
+                justify="left"
+                variant={'default'}
+                onClick={() => {
+                  onClick(
+                    place.location.x,
+                    place.location.y,
+                    calculateAltitude(place.extent),
+                    place.attributes.LongLabel
+                  );
+                }}
+                onMouseOverCapture={() => onHover(place.location.y, place.location.x)}
+              >
+                {place.attributes.LongLabel}
+              </Button>
+              // <EarthEntry
+              //   key={place.attributes.LongLabel}
+              //   place={place}
+              //   useCustomAltitude={useCustomAltitude}
+              //   customAltitude={customAltitude}
+              // />
+            )}
+            matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
+          >
+            <FilterList.SearchResults.VirtualList />
+          </FilterList.SearchResults>
+        </FilterList>
       ) : (
         <Text>{t('search.no-result')}</Text>
       )}
