@@ -137,6 +137,7 @@ export function NodeNavigationButton({
   }
 
   function jumpToGeo() {
+    console.log(latitude, longitude);
     if (type !== NavigationType.FlyGeo && type !== NavigationType.JumpGeo) {
       return;
     }

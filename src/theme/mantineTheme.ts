@@ -9,6 +9,7 @@ import {
   Divider,
   RangeSlider,
   Slider,
+  Tabs,
   ThemeIcon,
   Tooltip,
   VariantColorsResolver
@@ -83,6 +84,11 @@ export const theme = createTheme({
           outline: 'none',
           border: 'none'
         }
+      }
+    }),
+    TabsList: Tabs.List.extend({
+      defaultProps: {
+        mb: 'xs'
       }
     }),
     ThemeIcon: ThemeIcon.extend({

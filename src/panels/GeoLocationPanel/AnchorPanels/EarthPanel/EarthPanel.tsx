@@ -1,61 +1,43 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Group, NumberInput, Tabs, Text, TextInput, Title } from '@mantine/core';
+import { Button, Text } from '@mantine/core';
+import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 
-import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
-import { BoolInput } from '@/components/Input/BoolInput';
-import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
-import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { LogLevel } from '@/types/enums';
-import { Identifier } from '@/types/types';
-import { GeoLocationGroupKey, ScenePrefixKey } from '@/util/keys';
 
-import { AddedCustomNodes } from './AddedCustomNodes';
-import { CustomCoordinates } from './CustomCoordinates';
-import { EarthEntry } from './EarthEntry';
-import { ArcGISJSON, Candidate } from './types';
-import { addressUTF8 } from './util';
+import { ArcGISJSON, Candidate, Extent } from './types';
 
-interface Props {
-  currentAnchor: Identifier;
-}
-
-export function EarthPanel({ currentAnchor }: Props) {
-  const [inputValue, setInputValue] = useState('');
-  const [isCustomAltitude, setIsCustomAltitude] = useState(false);
-  const [customAltitude, setCustomAltitude] = useState(300);
+export function EarthPanel({
+  onClick,
+  onHover,
+  search
+}: {
+  onClick: (lat: number, long: number, altitude: number, name: string) => void;
+  onHover: (lat: number, long: number) => void;
+  search: string;
+  mah?: number;
+}) {
   const [places, setPlaces] = useState<Candidate[]>([]);
-  const luaApi = useOpenSpaceApi();
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-  const groups = useAppSelector((state) => state.groups.groups);
+
   const { t } = useTranslation('panel-geolocation', { keyPrefix: 'earth-panel' });
   const dispatch = useAppDispatch();
+  const performSearch = useCallback(getPlaces, [dispatch]);
 
-  const geoLocationOwners = groups[GeoLocationGroupKey]?.propertyOwners.map((uri) => {
-    const index = uri.indexOf(ScenePrefixKey);
-    if (index === -1) {
-      // Not sure if this fallback is necessary since all of our uri:s will have the
-      // prefix key pre-pended to them. If this is not the case, something else is
-      // probably broken
-      return uri;
-    }
-    return uri.substring(index + ScenePrefixKey.length);
-  });
+  // When opening the panel with a search query, set the input value and fetch places
+  useEffect(() => {
+    performSearch(search);
+  }, [search, performSearch]);
 
-  const addedCustomNodes = geoLocationOwners ?? [];
-  const SearchPlaceKey = 'Search Place';
-  const CustomCoordinatesKey = 'Custom Coordinates';
-
-  async function getPlaces(): Promise<void> {
-    if (!inputValue) {
+  async function getPlaces(input: string): Promise<void> {
+    if (!input) {
       setPlaces([]);
       return;
     }
-    const searchString = inputValue.replaceAll(' ', '+');
+    const searchString = input.replaceAll(' ', '+');
     try {
       const response = await fetch(
         `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?SingleLine=${searchString}&category=&outFields=*&forStorage=false&f=json`
@@ -72,163 +54,62 @@ export function EarthPanel({ currentAnchor }: Props) {
         }
         return false;
       });
-
       setPlaces(uniquePlaces);
     } catch (error) {
       dispatch(handleNotificationLogging('Error fetching data', error, LogLevel.Error));
     }
   }
 
-  function addFocusNode(
-    identifier: Identifier,
-    lat: number,
-    long: number,
-    alt: number
-  ): void {
-    // Don't try to add scene graph node if it already exists
-    if (isSceneGraphNodeAdded(identifier)) {
-      return;
-    }
-    luaApi?.addSceneGraphNode(
-      createSceneGraphNodeTable(currentAnchor, identifier, lat, long, alt)
-    );
-  }
-
-  function removeFocusNode(identifier: Identifier): void {
-    if (!isSceneGraphNodeAdded(identifier)) {
-      return;
-    }
-    luaApi?.removeSceneGraphNode(identifier);
-  }
-
-  function isSceneGraphNodeAdded(identifier: Identifier): boolean {
-    return `${ScenePrefixKey}${identifier}` in propertyOwners;
-  }
-
-  function createSceneGraphNodeTable(
-    globe: Identifier,
-    identifier: Identifier,
-    lat: number,
-    long: number,
-    alt: number
-  ) {
-    const table = {
-      Identifier: identifier,
-      Parent: globe,
-      Transform: {
-        Translation: {
-          Type: 'GlobeTranslation',
-          Globe: globe,
-          Latitude: lat,
-          Longitude: long,
-          Altitude: 0
-        }
-      },
-      InteractionSphere: 0,
-      BoundingSphere: alt,
-      GUI: {
-        Path: GeoLocationGroupKey
-      }
-    };
-
-    return table;
+  function calculateAltitude(extent: Extent): number {
+    // Get lat long corners of polygon
+    const nw = new LatLng(extent.ymax, extent.xmin);
+    const ne = new LatLng(extent.ymax, extent.xmax);
+    const sw = new LatLng(extent.ymin, extent.xmin);
+    const se = new LatLng(extent.ymin, extent.xmax);
+    // Distances are in meters
+    const height = computeDistanceBetween(nw, sw);
+    const lengthBottom = computeDistanceBetween(sw, se);
+    const lengthTop = computeDistanceBetween(nw, ne);
+    const maxLength = Math.max(lengthBottom, lengthTop);
+    const largestDist = Math.max(height, maxLength);
+    // 0.61 is the radian of 35 degrees - half of the standard horizontal field of view in OpenSpace
+    return (0.5 * largestDist) / Math.tan(0.610865238);
   }
 
   return (
     <>
-      <Tabs variant={'outline'} radius={'md'} defaultValue={SearchPlaceKey}>
-        <Tabs.List>
-          <Tabs.Tab value={SearchPlaceKey}>{t('tab-search')}</Tabs.Tab>
-          <Tabs.Tab value={CustomCoordinatesKey}>{t('tab-custom-coordinates')}</Tabs.Tab>
-        </Tabs.List>
-
-        <Tabs.Panel value={SearchPlaceKey}>
-          <TextInput
-            placeholder={t('search.input-placeholder')}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter') {
-                getPlaces();
-              }
-            }}
-            onChange={(event) => setInputValue(event.target.value)}
-            rightSection={<Button onClick={getPlaces}>{t('search.button-label')}</Button>}
-            rightSectionWidth={'md'}
-            my={'xs'}
-          />
-
-          <Group justify={'space-between'}>
-            <Title order={3} my={'xs'}>
-              {t('search.results-title')}
-            </Title>
-            <SettingsPopout>
-              <BoolInput
-                label={t('search.settings.altitude-checkbox')}
-                value={isCustomAltitude}
-                onChange={setIsCustomAltitude}
-                info={t('search.settings.tooltip')}
-                m={'xs'}
-              />
-              <NumberInput
-                value={customAltitude}
-                onChange={(value) => {
-                  if (typeof value === 'number') {
-                    setCustomAltitude(value);
-                  }
+      {places.length > 0 ? (
+        <FilterList>
+          <FilterList.InputField placeHolderSearchText={t('search.filter-placeholder')} />
+          <FilterList.SearchResults
+            data={places}
+            renderElement={(place) => (
+              <Button
+                w={'100%'}
+                mb={3}
+                justify={'left'}
+                variant={'default'}
+                onClick={() => {
+                  onClick(
+                    place.location.y,
+                    place.location.x,
+                    calculateAltitude(place.extent),
+                    place.attributes.LongLabel
+                  );
                 }}
-                label={t('search.settings.altitude-input-label')}
-                disabled={!isCustomAltitude}
-                defaultValue={300}
-                min={0}
-                m={'xs'}
-              />
-            </SettingsPopout>
-          </Group>
-
-          {places.length > 0 ? (
-            <ResizeableContent defaultHeight={250}>
-              <FilterList>
-                <FilterList.InputField
-                  placeHolderSearchText={t('search.filter-placeholder')}
-                />
-                <FilterList.SearchResults
-                  data={places}
-                  renderElement={(place) => (
-                    <EarthEntry
-                      key={place.attributes.LongLabel}
-                      place={place}
-                      isCustomAltitude={isCustomAltitude}
-                      customAltitude={customAltitude}
-                      currentAnchor={currentAnchor}
-                      isSceneGraphNodeAdded={isSceneGraphNodeAdded}
-                      addFocusNode={addFocusNode}
-                      removeFocusNode={removeFocusNode}
-                    />
-                  )}
-                  matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
-                >
-                  <FilterList.SearchResults.VirtualList />
-                </FilterList.SearchResults>
-              </FilterList>
-            </ResizeableContent>
-          ) : (
-            <Text>{t('search.no-result')}</Text>
-          )}
-        </Tabs.Panel>
-        <Tabs.Panel value={CustomCoordinatesKey}>
-          <CustomCoordinates
-            currentAnchor={currentAnchor}
-            onAddFocusNodeCallback={(address, lat, long, alt) => {
-              const identifier = addressUTF8(address);
-              addFocusNode(identifier, lat, long, alt);
-            }}
-          />
-        </Tabs.Panel>
-      </Tabs>
-
-      <Title order={2} my={'xs'}>
-        {t('added-nodes-title')}
-      </Title>
-      <AddedCustomNodes addedNodes={addedCustomNodes} removeFocusNode={removeFocusNode} />
+                onMouseOverCapture={() => onHover(place.location.y, place.location.x)}
+              >
+                {place.attributes.LongLabel}
+              </Button>
+            )}
+            matcherFunc={generateMatcherFunctionByKeys(['address', 'attributes'])}
+          >
+            <FilterList.SearchResults.VirtualList />
+          </FilterList.SearchResults>
+        </FilterList>
+      ) : (
+        <Text>{t('search.no-result')}</Text>
+      )}
     </>
   );
 }

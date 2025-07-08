@@ -1,8 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Button, Divider, Group, Menu, Stack, Text } from '@mantine/core';
-import { modals } from '@mantine/modals';
 
-import { useOpenSpaceApi } from '@/api/hooks';
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
@@ -12,6 +10,7 @@ import { IconSize, NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { displayName, identifierFromUri } from '@/util/propertyTreeHelpers';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
+import { useRemoveSceneGraphNodeModal } from '@/util/useRemoveSceneGraphNode';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { SceneGraphNodeView } from './SceneGraphNodeView';
@@ -21,14 +20,14 @@ interface Props {
 }
 
 export function SceneGraphNodeMoreMenu({ uri }: Props) {
+  const propertyOwner = usePropertyOwner(uri);
+  const anchorNode = useAnchorNode();
+  const confirmRemoveSgn = useRemoveSceneGraphNodeModal();
+
+  const { addWindow } = useWindowLayoutProvider();
   const { t } = useTranslation('panel-scene', {
     keyPrefix: 'scene-graph-node.more-menu'
   });
-  const propertyOwner = usePropertyOwner(uri);
-  const anchorNode = useAnchorNode();
-  const luaApi = useOpenSpaceApi();
-
-  const { addWindow } = useWindowLayoutProvider();
 
   if (!propertyOwner) {
     return <></>;
@@ -41,33 +40,6 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
       id: 'sgn-' + uri,
       title: name,
       position: 'float'
-    });
-  }
-
-  function remove() {
-    luaApi?.removeSceneGraphNode(identifierFromUri(uri));
-  }
-
-  function onRemove() {
-    // @TODO (2025-02-04, emmbr): Maybe include a list of which scene graph nodes will be
-    // removed as well?
-    modals.openConfirmModal({
-      title: t('delete-confirm-modal.title'),
-      children: (
-        <Stack>
-          <Text>{t('delete-confirm-modal.are-you-sure')}:</Text>
-          <Text fw={500} size={'lg'}>
-            {propertyOwner?.name}
-          </Text>
-          <Text mt={'xs'}>{t('delete-confirm-modal.this-is-irreversible')}</Text>
-        </Stack>
-      ),
-      labels: {
-        confirm: t('delete-confirm-modal.remove-button'),
-        cancel: t('delete-confirm-modal.cancel-button')
-      },
-      confirmProps: { color: 'red', variant: 'filled' },
-      onConfirm: () => remove()
     });
   }
 
@@ -114,7 +86,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
           <Button
             size={'sm'}
             disabled={anchorNode?.identifier === propertyOwner.identifier}
-            onClick={onRemove}
+            onClick={() => confirmRemoveSgn(identifierFromUri(uri), propertyOwner.name)}
             color={'red'}
             variant={'outline'}
             leftSection={<DeleteIcon />}

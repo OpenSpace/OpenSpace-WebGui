@@ -1,0 +1,15 @@
+.viewCone {
+  fill: url(#Gradient1);
+}
+.stop1 {
+  stop-color: var(--mantine-primary-color-8);
+  stop-opacity: 1;
+}
+.stop2 {
+  stop-color: var(--mantine-primary-color-3);
+  stop-opacity: 0.5;
+}
+.stop3 {
+  stop-color: var(--mantine-primary-color-3);
+  stop-opacity: 0;
+}
