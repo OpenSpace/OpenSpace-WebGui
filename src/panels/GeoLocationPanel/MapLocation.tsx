@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useMouse, useMove } from '@mantine/hooks';
 
 import { MapData } from '@/components/Map/data';
 import { Map } from '@/components/Map/Map';
 import { FocusIcon } from '@/icons/icons';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
-import { useMouse, useMove } from '@mantine/hooks';
+
 import { MouseMarker } from './types';
+import { MapMarker } from './MapMarker';
+import { useTranslation } from 'react-i18next';
 
 export function MapLocation({
   onClick,
@@ -20,10 +22,9 @@ export function MapLocation({
   const { ref } = useMove(handleClick);
   const [isHovering, setIsHovering] = useState(false);
   const { ref: refMove, x: xHover, y: yHover } = useMouse();
+  const { t } = useTranslation('panel-geolocation', { keyPrefix: 'map-location' });
 
   const anchor = useAnchorNode();
-
-  const { t } = useTranslation('panel-geolocation', { keyPrefix: 'map-location' });
 
   const isMapInteractable =
     anchor?.identifier && anchor.identifier.toLowerCase() in MapData;
@@ -60,36 +61,22 @@ export function MapLocation({
       style={{
         overflow: 'hidden',
         position: 'relative',
-        cursor: 'pointer',
-        backgroundColor: 'pink'
+        cursor: 'pointer'
       }}
     >
-      {isMapInteractable && mouseMarker !== undefined && (
-        <FocusIcon
-          style={{
-            width: mouseIconSize,
-            height: mouseIconSize,
-            position: 'absolute',
-            left: `${mouseMarker.x * 100}%`,
-            top: `${mouseMarker.y * 100}%`,
-            transform: 'translate(-50%, -50%)'
-          }}
-          aria-label={t('aria-labels.mouse-icon')}
-        />
+      {isMapInteractable && mouseMarker && (
+        <MapMarker left={`${mouseMarker.x * 100}%`} top={`${mouseMarker.y * 100}%`}>
+          <FocusIcon size={mouseIconSize} aria-label={t('aria-labels.mouse-icon')} />
+        </MapMarker>
       )}
       {isMapInteractable && isHovering && (
-        <FocusIcon
-          style={{
-            width: mouseIconSize,
-            height: mouseIconSize,
-            position: 'absolute',
-            left: xHover,
-            top: yHover,
-            transform: 'translate(-50%, -50%)',
-            opacity: 0.5
-          }}
-          aria-label={t('aria-labels.mouse-icon')}
-        />
+        <MapMarker left={xHover} top={yHover}>
+          <FocusIcon
+            size={mouseIconSize}
+            opacity={0.5}
+            aria-label={t('aria-labels.mouse-icon')}
+          />
+        </MapMarker>
       )}
     </Map>
   );

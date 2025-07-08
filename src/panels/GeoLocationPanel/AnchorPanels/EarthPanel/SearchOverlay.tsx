@@ -1,6 +1,7 @@
 import { Box, Overlay, Transition } from '@mantine/core';
-import { EarthPanel } from './EarthPanel';
 import { useClickOutside } from '@mantine/hooks';
+
+import { EarthPanel } from './EarthPanel';
 
 export function SearchOverlay({
   search,
@@ -33,9 +34,9 @@ export function SearchOverlay({
         <Overlay backgroundOpacity={0} blur={1}>
           <Transition
             mounted={visible}
-            transition="fade"
+            transition={'fade'}
             duration={400}
-            timingFunction="ease"
+            timingFunction={'ease'}
           >
             {(styles) => (
               <div style={styles}>

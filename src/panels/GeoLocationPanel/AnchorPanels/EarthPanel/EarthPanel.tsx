@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Text } from '@mantine/core';
 import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
@@ -8,15 +8,13 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { useAppDispatch } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { LogLevel } from '@/types/enums';
-import { Extent } from './types';
 
-import { ArcGISJSON, Candidate } from './types';
+import { ArcGISJSON, Candidate, Extent } from './types';
 
 export function EarthPanel({
   onClick,
   onHover,
-  search,
-  mah
+  search
 }: {
   onClick: (lat: number, long: number, altitude: number, name: string) => void;
   onHover: (lat: number, long: number) => void;
@@ -27,11 +25,12 @@ export function EarthPanel({
 
   const { t } = useTranslation('panel-geolocation', { keyPrefix: 'earth-panel' });
   const dispatch = useAppDispatch();
+  const performSearch = useCallback(getPlaces, [dispatch]);
 
   // When opening the panel with a search query, set the input value and fetch places
   useEffect(() => {
-    getPlaces(search);
-  }, [search]);
+    performSearch(search);
+  }, [search, performSearch]);
 
   async function getPlaces(input: string): Promise<void> {
     if (!input) {
@@ -80,7 +79,7 @@ export function EarthPanel({
   return (
     <>
       {places.length > 0 ? (
-        <FilterList mah={mah}>
+        <FilterList>
           <FilterList.InputField placeHolderSearchText={t('search.filter-placeholder')} />
           <FilterList.SearchResults
             data={places}
@@ -88,7 +87,7 @@ export function EarthPanel({
               <Button
                 w={'100%'}
                 mb={3}
-                justify="left"
+                justify={'left'}
                 variant={'default'}
                 onClick={() => {
                   onClick(

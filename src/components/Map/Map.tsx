@@ -1,3 +1,4 @@
+import { PropsWithChildren } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Alert,
@@ -14,7 +15,8 @@ import { useCameraLatLong } from '@/redux/camera/hooks';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { MapData } from './data';
-import { PropsWithChildren } from 'react';
+import { MapMarker } from '@/panels/GeoLocationPanel/MapMarker';
+import styles from './Map.module.css';
 
 // The fewer decimals we can get away with, the less the component will rerender due to
 // precision issues. 7 decimals gives ~1 cm accuracy in lat & long when copying values.
@@ -98,45 +100,55 @@ export function Map({
         style={{ position: 'relative' }}
         aria-label={t('aria-labels.map', { mapName: anchor.name })}
       >
-        <Box
-          style={{
-            position: 'absolute',
-            left: `${osMarkerPosition.x * 100}%`,
-            top: `${osMarkerPosition.y * 100}%`,
-            width: 0,
-            height: 0,
-            transform: `rotate(${angleDeg}deg)`
-          }}
+        <MapMarker
+          left={`${osMarkerPosition.x * 100}%`}
+          top={`${osMarkerPosition.y * 100}%`}
         >
-          {showViewDirection && hasViewDirection && (
-            <svg
-              width={coneWidth}
-              height={coneHeight}
-              viewBox={`0 0 ${coneWidth} ${coneHeight}`}
-              style={{
-                transform: `translate(-50%, ${-coneHeight - iconSize / 4}px)`
-              }}
-              aria-label={t('aria-labels.view-direction')}
-            >
-              <polygon
-                points={`${coneWidth / 2},${coneHeight} 0,0 ${coneWidth},0`}
-                fill={'rgba(68, 175, 105, 0.7)'}
-              />
-            </svg>
-          )}
-          <Image
-            src={`${import.meta.env.BASE_URL}/images/icon.png`}
+          <Box
             style={{
-              width: iconSize,
-              height: iconSize,
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              transform: 'translate(-50%, -50%)'
+              width: 0,
+              height: 0,
+              transform: `rotate(${angleDeg}deg)`
             }}
-            aria-label={t('aria-labels.openspace-icon')}
-          />
-        </Box>
+          >
+            {showViewDirection && hasViewDirection && (
+              <svg
+                width={coneWidth}
+                height={coneHeight}
+                viewBox={`0 0 ${coneWidth} ${coneHeight}`}
+                style={{
+                  transform: `translate(-50%, ${-coneHeight - iconSize / 4}px)`
+                }}
+                aria-label={t('aria-labels.view-direction')}
+              >
+                <defs>
+                  <radialGradient id="Gradient1" gradientTransform="scale(1, 2)">
+                    <stop className={styles.stop1} offset="0%" />
+                    <stop className={styles.stop2} offset="80%" />
+                    <stop className={styles.stop3} offset="100%" />
+                  </radialGradient>
+                </defs>
+
+                <polygon
+                  points={`${coneWidth},0 ${coneWidth / 2},${coneHeight} 0,0`}
+                  fill={`url(#Gradient1)`} // Use the gradient defined above
+                />
+              </svg>
+            )}
+            <Image
+              src={`${import.meta.env.BASE_URL}/images/icon.png`}
+              style={{
+                width: iconSize,
+                height: iconSize,
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                transform: 'translate(-50%, -50%)'
+              }}
+              aria-label={t('aria-labels.openspace-icon')}
+            />
+          </Box>
+        </MapMarker>
         {children}
       </BackgroundImage>
     </AspectRatio>

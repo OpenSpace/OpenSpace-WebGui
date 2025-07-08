@@ -1,9 +1,4 @@
 {
-  "tab-labels": {
-    "search": "Search Earth",
-    "custom-coordinates": "Custom Coordinates",
-    "map-location": "Map Location"
-  },
   "added-nodes-title": "Added Nodes",
   "earth-panel": {
     "search": {
@@ -37,7 +32,9 @@
     "label-degrees": "(deg)",
     "label-kilometers": "(km)",
     "label-optional": "(optional)",
-    "node-name-placeholder": "Custom Coordinate {{anchor}} ({{latitude}}, {{longitude}}, {{altitude}}km)"
+    "node-name-placeholder": "Custom Coordinate {{anchor}} ({{latitude}}, {{longitude}}, {{altitude}}km)",
+    "search-placeholder": "Search locations on Earth",
+    "search-placeholder-disabled": "No search available for {{anchor}}"
   },
   "added-custom-nodes": {
     "empty-nodes": "No added nodes",

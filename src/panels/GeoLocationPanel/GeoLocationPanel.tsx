@@ -1,14 +1,15 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, TextInput, Title } from '@mantine/core';
-
-import { AddedCustomNodes } from './AddedCustomNodes';
-import { MapLocation } from './MapLocation';
-import { CustomCoordinates } from './CustomCoordinates';
-import { useEffect, useState } from 'react';
-import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { useDisclosure, useElementSize } from '@mantine/hooks';
+
+import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
+
 import { SearchOverlay } from './AnchorPanels/EarthPanel/SearchOverlay';
+import { AddedCustomNodes } from './AddedCustomNodes';
+import { CustomCoordinates } from './CustomCoordinates';
+import { MapLocation } from './MapLocation';
 import { Coordinates, MouseMarker } from './types';
 
 export function GeoLocationPanel() {
@@ -79,13 +80,15 @@ export function GeoLocationPanel() {
           }}
           placeholder={
             isOnEarth
-              ? 'Search locations on Earth'
-              : `No search available for ${anchor?.name}`
+              ? t('custom-coordinates.search-placeholder')
+              : t('custom-coordinates.search-placeholder-disabled', {
+                  anchor: anchor?.name
+                })
           }
           onClick={() => search !== '' && toggle()}
           rightSection={
             <Button disabled={!isOnEarth} onClick={openIfNotOpen}>
-              Search
+              {t('earth-panel.search.button-label')}
             </Button>
           }
           rightSectionWidth={'md'}
@@ -108,7 +111,7 @@ export function GeoLocationPanel() {
           coordinates={coordinates}
         />
         <Title mt={'md'} mb={'sm'}>
-          Added nodes
+          {t('added-nodes-title')}
         </Title>
         <AddedCustomNodes />
       </Box>
