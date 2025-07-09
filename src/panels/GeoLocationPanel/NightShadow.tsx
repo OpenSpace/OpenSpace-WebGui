@@ -1,4 +1,4 @@
-import { useEffect,useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
@@ -58,12 +58,6 @@ export function NightShadow({ width, height }: { width: number; height: number }
     if (!center) {
       return;
     }
-    svg
-      .append('circle')
-      .attr('cx', center[0])
-      .attr('cy', center[1])
-      .attr('r', 5)
-      .attr('fill', 'red');
   }, [subSolarLatitude, subSolarLongitude, width, height]);
 
   return (
