@@ -11,11 +11,12 @@ import {
 } from '@mantine/core';
 
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
+import { MapMarker } from '@/panels/GeoLocationPanel/MapMarker';
 import { useCameraLatLong } from '@/redux/camera/hooks';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { MapData } from './data';
-import { MapMarker } from '@/panels/GeoLocationPanel/MapMarker';
+
 import styles from './Map.module.css';
 
 // The fewer decimals we can get away with, the less the component will rerender due to
@@ -110,10 +111,10 @@ export function Map({
                 aria-label={t('aria-labels.view-direction')}
               >
                 <defs>
-                  <radialGradient id="Gradient1" gradientTransform="scale(1, 2)">
-                    <stop className={styles.stop1} offset="0%" />
-                    <stop className={styles.stop2} offset="80%" />
-                    <stop className={styles.stop3} offset="100%" />
+                  <radialGradient id={"Gradient1"} gradientTransform={"scale(1, 2)"}>
+                    <stop className={styles.stop1} offset={"0%"} />
+                    <stop className={styles.stop2} offset={"80%"} />
+                    <stop className={styles.stop3} offset={"100%"} />
                   </radialGradient>
                 </defs>
 

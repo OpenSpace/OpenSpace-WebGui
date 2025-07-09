@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Box } from '@mantine/core';
 import { useElementSize, useMouse, useMove } from '@mantine/hooks';
 
 import { MapData } from '@/components/Map/data';
@@ -6,11 +8,9 @@ import { Map } from '@/components/Map/Map';
 import { FocusIcon } from '@/icons/icons';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
-import { MouseMarker } from './types';
 import { MapMarker } from './MapMarker';
-import { useTranslation } from 'react-i18next';
 import { NightShadow } from './NightShadow';
-import { Box } from '@mantine/core';
+import { MouseMarker } from './types';
 
 export function MapLocation({
   onClick,

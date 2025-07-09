@@ -1,5 +1,5 @@
-import { Box } from '@mantine/core';
 import { PropsWithChildren } from 'react';
+import { Box } from '@mantine/core';
 
 interface Props extends PropsWithChildren {
   left: number | string;
