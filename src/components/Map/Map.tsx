@@ -31,8 +31,6 @@ interface Props extends MantineStyleProps, PropsWithChildren {
   showViewDirection?: boolean;
   ref?: React.Ref<HTMLDivElement> | React.RefObject<HTMLDivElement>;
   style?: React.CSSProperties;
-  onMouseOut?: (event: React.MouseEvent<HTMLDivElement>) => void;
-  onMouseMove?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 export function Map({
@@ -40,8 +38,6 @@ export function Map({
   coneWidth = 45,
   coneHeight = 30,
   showViewDirection = true,
-  onMouseMove,
-  onMouseOut,
   ref,
   children,
   style,
@@ -85,21 +81,13 @@ export function Map({
   }
 
   return (
-    <AspectRatio
-      ratio={16 / 9}
-      mx={'auto'}
-      miw={300}
-      {...styleProps}
-      ref={ref}
-      style={style}
-      onMouseOut={onMouseOut}
-      onMouseMove={onMouseMove}
-    >
+    <AspectRatio ratio={2} mx={'auto'} miw={300} {...styleProps} ref={ref} style={style}>
       <BackgroundImage
         src={`${import.meta.env.BASE_URL}/images/maps/${map}`}
         style={{ position: 'relative' }}
         aria-label={t('aria-labels.map', { mapName: anchor.name })}
       >
+        {children}
         <MapMarker
           left={`${osMarkerPosition.x * 100}%`}
           top={`${osMarkerPosition.y * 100}%`}
@@ -149,7 +137,6 @@ export function Map({
             />
           </Box>
         </MapMarker>
-        {children}
       </BackgroundImage>
     </AspectRatio>
   );

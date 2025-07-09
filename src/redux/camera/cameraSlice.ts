@@ -7,6 +7,8 @@ export interface CameraState {
   altitudeUnit: string | undefined;
   viewLatitude: number | undefined;
   viewLongitude: number | undefined;
+  subSolarLatitude: number | undefined;
+  subSolarLongitude: number | undefined;
 }
 
 const initialState: CameraState = {
@@ -15,7 +17,9 @@ const initialState: CameraState = {
   altitude: undefined,
   altitudeUnit: undefined,
   viewLatitude: undefined,
-  viewLongitude: undefined
+  viewLongitude: undefined,
+  subSolarLatitude: undefined,
+  subSolarLongitude: undefined
 };
 
 // @TODO: (ylvse 2024-10-14) - This topic should be called something more specific.
@@ -31,6 +35,8 @@ export const cameraSlice = createSlice({
       state.altitudeUnit = action.payload.altitudeUnit;
       state.viewLatitude = action.payload.viewLatitude;
       state.viewLongitude = action.payload.viewLongitude;
+      state.subSolarLatitude = action.payload.subSolarLatitude;
+      state.subSolarLongitude = action.payload.subSolarLongitude;
       return state;
     }
   }

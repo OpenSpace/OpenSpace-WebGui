@@ -13,7 +13,8 @@ export function MapMarker({ left, top, children }: Props) {
         position: 'absolute',
         left,
         top,
-        transform: 'translate(-50%, -50%)'
+        transform: 'translate(-50%, -50%)',
+        zIndex: 1000
       }}
     >
       {children}

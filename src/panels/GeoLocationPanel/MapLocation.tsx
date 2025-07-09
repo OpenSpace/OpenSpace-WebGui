@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useMouse, useMove } from '@mantine/hooks';
+import { useElementSize, useMouse, useMove } from '@mantine/hooks';
 
 import { MapData } from '@/components/Map/data';
 import { Map } from '@/components/Map/Map';
@@ -9,6 +9,8 @@ import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { MouseMarker } from './types';
 import { MapMarker } from './MapMarker';
 import { useTranslation } from 'react-i18next';
+import { NightShadow } from './NightShadow';
+import { Box } from '@mantine/core';
 
 export function MapLocation({
   onClick,
@@ -19,8 +21,9 @@ export function MapLocation({
   setMouseMarker: (marker: MouseMarker) => void;
   onClick?: (latitude: number, longitude: number) => void;
 }) {
-  const { ref } = useMove(handleClick);
   const [isHovering, setIsHovering] = useState(false);
+  const { ref } = useMove(handleClick);
+  const { ref: refSize, height, width } = useElementSize();
   const { ref: refMove, x: xHover, y: yHover } = useMouse();
   const { t } = useTranslation('panel-geolocation', { keyPrefix: 'map-location' });
 
@@ -50,34 +53,38 @@ export function MapLocation({
   }
 
   return (
-    <Map
-      ref={(el) => {
-        ref.current = el;
-        refMove.current = el;
-      }}
-      onMouseOut={() => setIsHovering(false)}
-      onMouseMove={() => setIsHovering(true)}
-      bd={'1px solid gray.7'}
-      style={{
-        overflow: 'hidden',
-        position: 'relative',
-        cursor: 'pointer'
-      }}
-    >
-      {isMapInteractable && mouseMarker && (
-        <MapMarker left={`${mouseMarker.x * 100}%`} top={`${mouseMarker.y * 100}%`}>
-          <FocusIcon size={mouseIconSize} aria-label={t('aria-labels.mouse-icon')} />
-        </MapMarker>
-      )}
-      {isMapInteractable && isHovering && (
-        <MapMarker left={xHover} top={yHover}>
-          <FocusIcon
-            size={mouseIconSize}
-            opacity={0.5}
-            aria-label={t('aria-labels.mouse-icon')}
-          />
-        </MapMarker>
-      )}
-    </Map>
+    <Box ref={refSize}>
+      <Box
+        ref={refMove}
+        onMouseLeave={() => setIsHovering(false)}
+        onMouseMove={() => setIsHovering(true)}
+      >
+        <Map
+          ref={ref}
+          bd={'1px solid gray.7'}
+          style={{
+            overflow: 'hidden',
+            position: 'relative',
+            cursor: 'pointer'
+          }}
+        >
+          <NightShadow width={width} height={height} />
+          {isMapInteractable && mouseMarker && (
+            <MapMarker left={`${mouseMarker.x * 100}%`} top={`${mouseMarker.y * 100}%`}>
+              <FocusIcon size={mouseIconSize} aria-label={t('aria-labels.mouse-icon')} />
+            </MapMarker>
+          )}
+          {isMapInteractable && isHovering && (
+            <MapMarker left={xHover} top={yHover}>
+              <FocusIcon
+                size={mouseIconSize}
+                opacity={0.5}
+                aria-label={t('aria-labels.mouse-icon')}
+              />
+            </MapMarker>
+          )}
+        </Map>
+      </Box>
+    </Box>
   );
 }
