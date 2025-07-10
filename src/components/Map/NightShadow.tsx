@@ -31,7 +31,7 @@ export function NightShadow({ width, height }: { width: number; height: number }
     const duskCircle = d3
       .geoCircle()
       .center(nightCenter)
-      .radius(95) // Technically, this should be 90 degrees, but we use 95 to make it align with the shadow in the rendering
+      .radius(95) // Technically this should be 90 degrees, but we use 95 to make it align with the shadow in the rendering
       .precision(0.5)();
 
     const nightCircle = d3
@@ -54,10 +54,6 @@ export function NightShadow({ width, height }: { width: number; height: number }
       .attr('fill', 'black')
       .attr('opacity', 0.3)
       .attr('d', geoGenerator);
-    const center = projection([subSolarLongitude, subSolarLatitude]);
-    if (!center) {
-      return;
-    }
   }, [subSolarLatitude, subSolarLongitude, width, height]);
 
   return (

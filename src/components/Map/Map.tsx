@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Alert,
@@ -17,7 +17,9 @@ import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { MapData } from './data';
 
-import styles from './Map.module.css';
+import { ViewCone } from './ViewCone';
+import { NightShadow } from '@/components/Map/NightShadow';
+import { useElementSize } from '@mantine/hooks';
 
 // The fewer decimals we can get away with, the less the component will rerender due to
 // precision issues. 7 decimals gives ~1 cm accuracy in lat & long when copying values.
@@ -30,14 +32,14 @@ interface Props extends MantineStyleProps, PropsWithChildren {
   coneWidth?: number;
   coneHeight?: number;
   showViewDirection?: boolean;
-  ref?: React.Ref<HTMLDivElement> | React.RefObject<HTMLDivElement>;
+  ref?: React.RefObject<HTMLDivElement>;
   style?: React.CSSProperties;
 }
 
 export function Map({
   iconSize = 25,
   coneWidth = 45,
-  coneHeight = 30,
+  coneHeight = 45,
   showViewDirection = true,
   ref,
   children,
@@ -50,9 +52,11 @@ export function Map({
     viewLatitude,
     viewLongitude
   } = useCameraLatLong(DecimalPrecision);
+  const refSize = useRef<HTMLDivElement>(null);
+  const width = refSize?.current?.clientWidth;
+  const height = refSize?.current?.clientHeight;
 
   useSubscribeToCamera();
-
   const anchor = useAnchorNode();
 
   const map = MapData[anchor?.identifier?.toLowerCase() ?? ''];
@@ -62,6 +66,8 @@ export function Map({
   const osMarkerPosition = openSpaceMarkerPosition();
   const angle = hasViewDirection ? Math.atan2(viewLongitude, viewLatitude) : 0;
   const angleDeg = angle * (180.0 / Math.PI);
+  // Remove jumping between 0 and -180 degrees when looking straight at surface
+  const cleanedAngle = Math.abs(angleDeg) === 180 ? 0 : angleDeg;
 
   function openSpaceMarkerPosition(): { x: number; y: number } {
     if (currentLong !== undefined && currentLat !== undefined) {
@@ -82,7 +88,21 @@ export function Map({
   }
 
   return (
-    <AspectRatio ratio={2} mx={'auto'} miw={300} {...styleProps} ref={ref} style={style}>
+    <AspectRatio
+      ratio={2}
+      mx={'auto'}
+      miw={300}
+      {...styleProps}
+      ref={(el) => {
+        if (ref && el) {
+          ref.current = el;
+        }
+        if (refSize && el) {
+          refSize.current = el;
+        }
+      }}
+      style={style}
+    >
       <BackgroundImage
         src={`${import.meta.env.BASE_URL}/images/maps/${map}`}
         style={{ position: 'relative' }}
@@ -97,33 +117,9 @@ export function Map({
             style={{
               width: 0,
               height: 0,
-              transform: `rotate(${angleDeg}deg)`
+              transform: `rotate(${cleanedAngle}deg)`
             }}
           >
-            {showViewDirection && hasViewDirection && (
-              <svg
-                width={coneWidth}
-                height={coneHeight}
-                viewBox={`0 0 ${coneWidth} ${coneHeight}`}
-                style={{
-                  transform: `translate(-50%, ${-coneHeight - iconSize / 4}px)`
-                }}
-                aria-label={t('aria-labels.view-direction')}
-              >
-                <defs>
-                  <radialGradient id={"Gradient1"} gradientTransform={"scale(1, 2)"}>
-                    <stop className={styles.stop1} offset={"0%"} />
-                    <stop className={styles.stop2} offset={"80%"} />
-                    <stop className={styles.stop3} offset={"100%"} />
-                  </radialGradient>
-                </defs>
-
-                <polygon
-                  points={`${coneWidth},0 ${coneWidth / 2},${coneHeight} 0,0`}
-                  fill={`url(#Gradient1)`} // Use the gradient defined above
-                />
-              </svg>
-            )}
             <Image
               src={`${import.meta.env.BASE_URL}/images/icon.png`}
               style={{
@@ -138,6 +134,10 @@ export function Map({
             />
           </Box>
         </MapMarker>
+        {width && height && showViewDirection && hasViewDirection && (
+          <ViewCone width={width} height={height} />
+        )}
+        {width && height && <NightShadow width={width} height={height} />}
       </BackgroundImage>
     </AspectRatio>
   );
