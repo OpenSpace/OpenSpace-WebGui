@@ -50,14 +50,19 @@ export function ViewCone({ width, height }: { width: number; height: number }) {
     ) {
       return;
     }
+    const maxConeLength = 40; // Maximum length of the view cone in pixels
+    if (viewLength > 0.3) {
+      return;
+    }
+    const convertedViewLength = 1 + viewLength;
     const center = projection([
-      longitude + viewLongitude * viewLength * 40,
-      latitude + viewLength * viewLatitude * 40
+      longitude + viewLongitude * convertedViewLength * maxConeLength,
+      latitude + viewLatitude * convertedViewLength * maxConeLength
     ]);
     if (!center) {
       return;
     }
-    const radius = width / 70;
+    const radius = width / 40;
 
     svg
       .append('circle')

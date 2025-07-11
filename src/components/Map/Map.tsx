@@ -19,7 +19,6 @@ import { MapData } from './data';
 
 import { ViewCone } from './ViewCone';
 import { NightShadow } from '@/components/Map/NightShadow';
-import { useElementSize } from '@mantine/hooks';
 
 // The fewer decimals we can get away with, the less the component will rerender due to
 // precision issues. 7 decimals gives ~1 cm accuracy in lat & long when copying values.
@@ -108,6 +107,7 @@ export function Map({
         style={{ position: 'relative' }}
         aria-label={t('aria-labels.map', { mapName: anchor.name })}
       >
+        {width && height && <NightShadow width={width} height={height} />}
         {children}
         <MapMarker
           left={`${osMarkerPosition.x * 100}%`}
@@ -137,7 +137,6 @@ export function Map({
         {width && height && showViewDirection && hasViewDirection && (
           <ViewCone width={width} height={height} />
         )}
-        {width && height && <NightShadow width={width} height={height} />}
       </BackgroundImage>
     </AspectRatio>
   );

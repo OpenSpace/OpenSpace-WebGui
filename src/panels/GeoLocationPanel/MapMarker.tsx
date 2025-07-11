@@ -4,9 +4,10 @@ import { Box } from '@mantine/core';
 interface Props extends PropsWithChildren {
   left: number | string;
   top: number | string;
+  styleProps?: React.CSSProperties;
 }
 
-export function MapMarker({ left, top, children }: Props) {
+export function MapMarker({ left, top, children, styleProps }: Props) {
   return (
     <Box
       style={{
@@ -14,7 +15,8 @@ export function MapMarker({ left, top, children }: Props) {
         left,
         top,
         transform: 'translate(-50%, -50%)',
-        zIndex: 1000
+        zIndex: 1000,
+        ...styleProps
       }}
     >
       {children}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box } from '@mantine/core';
+import { Box, ThemeIcon } from '@mantine/core';
 import { useMouse, useMove } from '@mantine/hooks';
 
 import { MapData } from '@/components/Map/data';
@@ -66,17 +66,29 @@ export function MapLocation({
         }}
       >
         {isMapInteractable && mouseMarker && (
-          <MapMarker left={`${mouseMarker.x * 100}%`} top={`${mouseMarker.y * 100}%`}>
-            <FocusIcon size={mouseIconSize} aria-label={t('aria-labels.mouse-icon')} />
+          <MapMarker
+            left={`${mouseMarker.x * 100}%`}
+            top={`${mouseMarker.y * 100}%`}
+            styleProps={{ mixBlendMode: 'difference' }}
+          >
+            <ThemeIcon variant="transparent" color="white">
+              <FocusIcon size={mouseIconSize} aria-label={t('aria-labels.mouse-icon')} />
+            </ThemeIcon>
           </MapMarker>
         )}
         {isMapInteractable && isHovering && (
-          <MapMarker left={xHover} top={yHover}>
-            <FocusIcon
-              size={mouseIconSize}
-              opacity={0.5}
-              aria-label={t('aria-labels.mouse-icon')}
-            />
+          <MapMarker
+            left={xHover}
+            top={yHover}
+            styleProps={{ mixBlendMode: 'difference' }}
+          >
+            <ThemeIcon variant="transparent" color="white">
+              <FocusIcon
+                size={mouseIconSize}
+                opacity={0.8}
+                aria-label={t('aria-labels.mouse-icon')}
+              />
+            </ThemeIcon>
           </MapMarker>
         )}
       </Map>

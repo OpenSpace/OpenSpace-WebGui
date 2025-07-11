@@ -44,15 +44,15 @@ export function NightShadow({ width, height }: { width: number; height: number }
     svg
       .append('path')
       .datum(nightCircle)
-      .attr('fill', 'black')
-      .attr('opacity', 0.3)
+      .attr('fill', 'var(--mantine-color-dark-9)')
+      .attr('opacity', 0.4)
       .attr('d', geoGenerator);
 
     svg
       .append('path')
       .datum(duskCircle)
-      .attr('fill', 'black')
-      .attr('opacity', 0.3)
+      .attr('fill', 'var(--mantine-color-dark-9)')
+      .attr('opacity', 0.4)
       .attr('d', geoGenerator);
   }, [subSolarLatitude, subSolarLongitude, width, height]);
 
