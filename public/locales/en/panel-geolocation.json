@@ -33,7 +33,7 @@
     "label-kilometers": "(km)",
     "label-optional": "(optional)",
     "node-name-placeholder": "Custom Coordinate {{anchor}} ({{latitude}}, {{longitude}}, {{altitude}}km)",
-    "search-placeholder": "Search locations on Earth",
+    "search-placeholder": "Search locations on {{anchor}}",
     "search-placeholder-disabled": "No search available for {{anchor}}"
   },
   "added-custom-nodes": {

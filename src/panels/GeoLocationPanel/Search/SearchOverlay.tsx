@@ -1,7 +1,7 @@
 import { Box, Overlay, Transition } from '@mantine/core';
 import { useClickOutside } from '@mantine/hooks';
 
-import { EarthPanel } from './EarthPanel';
+import { GeoSearch } from './GeoSearch';
 
 export function SearchOverlay({
   search,
@@ -49,7 +49,7 @@ export function SearchOverlay({
                   ref={ref}
                   mah={h}
                 >
-                  <EarthPanel
+                  <GeoSearch
                     search={search}
                     onHover={(lat, long) => {
                       coordsToMapCoords(lat, long);

@@ -1,12 +1,48 @@
+import { useEffect, useRef } from 'react';
+import * as d3 from 'd3';
+
+import { useProperty } from '@/hooks/properties';
+import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { useCameraLatLong } from '@/redux/camera/hooks';
 import { useAppSelector } from '@/redux/hooks';
-import * as d3 from 'd3';
-import { useEffect, useRef } from 'react';
+import { useAnchorNode } from '@/util/propertyTreeHooks';
 
-export function ViewCone({ width, height }: { width: number; height: number }) {
+// TODO: ylvse 2025-07-11 Rewrite this as a React component that uses hooks instead of D3 directly.
+export function ViewCone({
+  width,
+  height,
+  coneWidth,
+  coneHeight
+}: {
+  width: number;
+  height: number;
+  coneWidth: number;
+  coneHeight: number;
+}) {
   const ref = useRef(null);
   const { latitude, longitude, viewLatitude, viewLongitude } = useCameraLatLong(7);
   const viewLength = useAppSelector((state) => state.camera.viewLength);
+  const anchor = useAnchorNode();
+  const [interactionSphere] = useProperty(
+    'DoubleProperty',
+    `Scene.${anchor?.identifier}.EvaluatedInteractionSphere`
+  );
+  const { altitudeMeters } = useAppSelector((state) => state.camera);
+  useSubscribeToCamera();
+  const shouldShowCone =
+    altitudeMeters && interactionSphere && altitudeMeters < interactionSphere * 3;
+
+  useEffect(() => {
+    if (shouldShowCone) {
+      d3.select('#circle')
+        .style('opacity', 0)
+        .transition()
+        .duration(1000)
+        .style('opacity', 1);
+    } else {
+      d3.select('#circle').transition().duration(1000).style('opacity', 0);
+    }
+  }, [shouldShowCone]);
 
   useEffect(() => {
     const svg = d3.select(ref.current);
@@ -50,22 +86,22 @@ export function ViewCone({ width, height }: { width: number; height: number }) {
     ) {
       return;
     }
-    const maxConeLength = 40; // Maximum length of the view cone in pixels
     if (viewLength > 0.3) {
       return;
     }
     const convertedViewLength = 1 + viewLength;
     const center = projection([
-      longitude + viewLongitude * convertedViewLength * maxConeLength,
-      latitude + viewLatitude * convertedViewLength * maxConeLength
+      longitude + viewLongitude * convertedViewLength * coneHeight,
+      latitude + viewLatitude * convertedViewLength * coneHeight
     ]);
     if (!center) {
       return;
     }
-    const radius = width / 40;
+    const radius = coneWidth;
 
     svg
       .append('circle')
+      .attr('id', 'circle')
       .attr('cx', center[0])
       .attr('cy', center[1])
       .attr('r', radius + 2)
@@ -123,7 +159,17 @@ export function ViewCone({ width, height }: { width: number; height: number }) {
       .append('polygon')
       .attr('points', [base1, base2, tip].map((p) => p.join(',')).join(' '))
       .attr('fill', 'url(#linearGradient)'); // Use the gradient defined in the SVG defs;
-  }, [width, height, latitude, longitude, viewLatitude, viewLongitude, viewLength]);
+  }, [
+    width,
+    height,
+    latitude,
+    longitude,
+    viewLatitude,
+    viewLongitude,
+    viewLength,
+    coneWidth,
+    coneHeight
+  ]);
 
   return (
     <svg

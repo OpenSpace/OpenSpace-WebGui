@@ -6,7 +6,8 @@ import { useDisclosure, useElementSize } from '@mantine/hooks';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
-import { SearchOverlay } from './AnchorPanels/EarthPanel/SearchOverlay';
+import { SearchOverlay } from './Search/SearchOverlay';
+import { ET_URL } from './Search/util';
 import { AddedCustomNodes } from './AddedCustomNodes';
 import { CustomCoordinates } from './CustomCoordinates';
 import { MapLocation } from './MapLocation';
@@ -27,7 +28,7 @@ export function GeoLocationPanel() {
   // on every keystroke, but only when the user presses enter or clicks the search.
   const [searchString, setSearchString] = useState('');
   const [search, setSearch] = useState('');
-
+  const [searchExists, setSearchExists] = useState(false);
   const [visible, { open, close, toggle }] = useDisclosure(false);
 
   const { height: windowHeight } = useWindowSize();
@@ -35,9 +36,21 @@ export function GeoLocationPanel() {
 
   const anchor = useAnchorNode();
 
-  const isOnEarth = anchor?.name === 'Earth';
-
   useEffect(() => {
+    async function fetchData() {
+      if (!anchor) return;
+      try {
+        const dataExists = await fetch(`${ET_URL}${anchor.name.toLowerCase()}`);
+        const { hasData } = await dataExists.json();
+        const isOnEarth = anchor.name === 'Earth';
+
+        setSearchExists(hasData || isOnEarth);
+      } catch (e) {
+        console.error('Error fetching data:', e);
+        setSearchExists(false);
+      }
+    }
+    fetchData();
     // Reset mouse marker when anchor changes
     setMouseMarker(undefined);
     setSearch('');
@@ -70,7 +83,7 @@ export function GeoLocationPanel() {
         <TextInput
           value={searchString}
           onChange={(e) => setSearchString(e.currentTarget.value)}
-          disabled={!isOnEarth}
+          disabled={!searchExists}
           my={'md'}
           onKeyDown={(event) => {
             if (event.key === 'Enter') {
@@ -79,15 +92,15 @@ export function GeoLocationPanel() {
             }
           }}
           placeholder={
-            isOnEarth
-              ? t('custom-coordinates.search-placeholder')
+            searchExists
+              ? t('custom-coordinates.search-placeholder', { anchor: anchor?.name })
               : t('custom-coordinates.search-placeholder-disabled', {
                   anchor: anchor?.name
                 })
           }
           onClick={() => search !== '' && toggle()}
           rightSection={
-            <Button disabled={!isOnEarth} onClick={openIfNotOpen}>
+            <Button disabled={!searchExists} onClick={openIfNotOpen}>
               {t('earth-panel.search.button-label')}
             </Button>
           }

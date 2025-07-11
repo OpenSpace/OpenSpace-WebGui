@@ -10,15 +10,14 @@ import {
   Text
 } from '@mantine/core';
 
+import { NightShadow } from '@/components/Map/NightShadow';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { MapMarker } from '@/panels/GeoLocationPanel/MapMarker';
 import { useCameraLatLong } from '@/redux/camera/hooks';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { MapData } from './data';
-
 import { ViewCone } from './ViewCone';
-import { NightShadow } from '@/components/Map/NightShadow';
 
 // The fewer decimals we can get away with, the less the component will rerender due to
 // precision issues. 7 decimals gives ~1 cm accuracy in lat & long when copying values.
@@ -135,7 +134,12 @@ export function Map({
           </Box>
         </MapMarker>
         {width && height && showViewDirection && hasViewDirection && (
-          <ViewCone width={width} height={height} />
+          <ViewCone
+            width={width}
+            height={height}
+            coneWidth={coneWidth}
+            coneHeight={coneHeight}
+          />
         )}
       </BackgroundImage>
     </AspectRatio>

@@ -71,7 +71,7 @@ export function MapLocation({
             top={`${mouseMarker.y * 100}%`}
             styleProps={{ mixBlendMode: 'difference' }}
           >
-            <ThemeIcon variant="transparent" color="white">
+            <ThemeIcon variant={'transparent'} color={'white'}>
               <FocusIcon size={mouseIconSize} aria-label={t('aria-labels.mouse-icon')} />
             </ThemeIcon>
           </MapMarker>
@@ -82,7 +82,7 @@ export function MapLocation({
             top={yHover}
             styleProps={{ mixBlendMode: 'difference' }}
           >
-            <ThemeIcon variant="transparent" color="white">
+            <ThemeIcon variant={'transparent'} color={'white'}>
               <FocusIcon
                 size={mouseIconSize}
                 opacity={0.8}

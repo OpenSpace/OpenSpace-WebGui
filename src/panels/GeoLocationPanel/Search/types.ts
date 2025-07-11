@@ -27,3 +27,12 @@ export interface Extent {
   ymax: number;
   ymin: number;
 }
+
+export interface MatchedLocation {
+  name: string;
+  centerLatitude: number;
+  centerLongitude: number;
+  diameter?: number; // For extra-terrestrial locations, this is used to calculate altitude
+  extent?: Extent; // For Earth locations, this is used to calculate altitude
+  origin: string;
+}

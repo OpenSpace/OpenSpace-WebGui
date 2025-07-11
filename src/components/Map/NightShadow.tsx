@@ -4,6 +4,7 @@ import * as d3 from 'd3';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 
+// TODO: ylvse 2025-07-11 Rewrite this as a React component that uses hooks instead of D3 directly.
 export function NightShadow({ width, height }: { width: number; height: number }) {
   const { subSolarLatitude, subSolarLongitude } = useAppSelector((state) => state.camera);
 
