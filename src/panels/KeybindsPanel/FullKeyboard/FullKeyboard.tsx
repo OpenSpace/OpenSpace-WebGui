@@ -52,8 +52,8 @@ export function FullKeyboard({
   }
 
   function getActionsForKey(key: string): KeybindInfoType[] {
-    // Find all action identifiers matching the given key and current modifiers.
-    // If no modifiers are active, it will match all keybinds with the given key.
+    // Find all action identifiers matching the given key and current modifiers
+    // If no modifiers are active, it will match all keybinds with the given key
     const currentKeybinds = keybinds.filter(
       (keybind) =>
         keybind.key &&
