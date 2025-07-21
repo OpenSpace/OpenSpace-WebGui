@@ -17,16 +17,13 @@ import {
   fetchPlacesEarth
 } from './util';
 
-export function GeoSearch({
-  onClick,
-  onHover,
-  search
-}: {
+interface Props {
   onClick: (lat: number, long: number, altitude: number, name: string) => void;
   onHover: (lat: number, long: number) => void;
   search: string;
-  mah?: number;
-}) {
+}
+
+export function GeoSearch({ onClick, onHover, search }: Props) {
   const [places, setPlaces] = useState<MatchedLocation[]>([]);
 
   const { t } = useTranslation('panel-geolocation', { keyPrefix: 'earth-panel' });
