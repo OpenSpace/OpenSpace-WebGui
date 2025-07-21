@@ -24,12 +24,22 @@ import { ViewCone } from './ViewCone';
 // https://blis.com/precision-matters-critical-importance-decimal-places-five-lowest-go/
 const DecimalPrecision = 7;
 
+// Settings for the OpenSpace marker and view cone
 interface Props extends MantineStyleProps, PropsWithChildren {
-  // Settings for the OpenSpace marker and view cone
+  // The size of the OpenSpace icon indicating the current camera position in pixels
   iconSize?: number;
+
+  // The width of the cone indicating the camera direction. The width represents how wide
+  // the cone will be at the maximum height. In approximate pixels
   coneWidth?: number;
+
+  // The height of the cone indicating the camera direction. The height is used for the
+  // distance how far away from the icon the cone should reach. In approximate pixels
   coneHeight?: number;
+
+  // This value signals whether the cone showing the camera direction should be shown
   showViewDirection?: boolean;
+
   ref?: React.RefObject<HTMLDivElement>;
   style?: React.CSSProperties;
 }
@@ -61,21 +71,20 @@ export function Map({
   const { t } = useTranslation('components', { keyPrefix: 'map' });
 
   const hasViewDirection = viewLatitude !== undefined && viewLongitude !== undefined;
-  const osMarkerPosition = openSpaceMarkerPosition();
+  const markerPosition = (() => {
+    if (currentLong === undefined || currentLat === undefined) {
+      return { x: 0, y: 0 };
+    }
+
+    return {
+      x: (currentLong + 180) / 360,
+      y: (90 - currentLat) / 180
+    };
+  })();
   const angle = hasViewDirection ? Math.atan2(viewLongitude, viewLatitude) : 0;
   const angleDeg = angle * (180.0 / Math.PI);
   // Remove jumping between 0 and -180 degrees when looking straight at surface
   const cleanedAngle = Math.abs(angleDeg) === 180 ? 0 : angleDeg;
-
-  function openSpaceMarkerPosition(): { x: number; y: number } {
-    if (currentLong !== undefined && currentLat !== undefined) {
-      return {
-        x: (currentLong + 180) / 360,
-        y: (90 - currentLat) / 180
-      };
-    }
-    return { x: 0, y: 0 };
-  }
 
   if (!map || !anchor) {
     return (
@@ -104,13 +113,13 @@ export function Map({
       <BackgroundImage
         src={`${import.meta.env.BASE_URL}/images/maps/${map}`}
         style={{ position: 'relative' }}
-        aria-label={t('aria-labels.map', { mapName: anchor.name })}
+        aria-label={t('aria-labels.map', { name: anchor.name })}
       >
         {width && height && <NightShadow width={width} height={height} />}
         {children}
         <MapMarker
-          left={`${osMarkerPosition.x * 100}%`}
-          top={`${osMarkerPosition.y * 100}%`}
+          left={`${markerPosition.x * 100}%`}
+          top={`${markerPosition.y * 100}%`}
         >
           <Box
             style={{

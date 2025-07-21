@@ -15,6 +15,7 @@ interface Props {
   altitude: number;
   onClick?: () => void;
 }
+
 export function AddSceneGraphNodeButton({
   globe,
   identifier,
@@ -27,6 +28,7 @@ export function AddSceneGraphNodeButton({
   const { t } = useTranslation('panel-geolocation', {
     keyPrefix: 'add-scene-graph-node-button'
   });
+
   return (
     <Button
       onClick={() => {

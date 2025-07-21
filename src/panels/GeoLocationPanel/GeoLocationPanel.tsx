@@ -11,18 +11,18 @@ import { ET_URL } from './Search/util';
 import { AddedCustomNodes } from './AddedCustomNodes';
 import { CustomCoordinates } from './CustomCoordinates';
 import { MapLocation } from './MapLocation';
-import { Coordinates, MouseMarker } from './types';
+import { GeoCoordinates, MouseMarkerPosition } from './types';
 
 export function GeoLocationPanel() {
   const { t } = useTranslation('panel-geolocation');
 
-  const [coordinates, setCoordinates] = useState<Coordinates>({
+  const [coordinates, setCoordinates] = useState<GeoCoordinates>({
     lat: 0,
     long: 0,
     alt: 0
   });
   const [customName, setCustomName] = useState('');
-  const [mouseMarker, setMouseMarker] = useState<MouseMarker>(undefined);
+  const [mouseMarker, setMouseMarker] = useState<MouseMarkerPosition>(undefined);
   // Search string is the input value, search is the actual search term
   // that is used to fetch results. This is to not trigger a search
   // on every keystroke, but only when the user presses enter or clicks the search.
@@ -46,7 +46,6 @@ export function GeoLocationPanel() {
 
         setSearchExists(hasData || isOnEarth);
       } catch (e) {
-        console.error('Error fetching data:', e);
         setSearchExists(false);
       }
     }
@@ -69,7 +68,7 @@ export function GeoLocationPanel() {
       <Box ref={topRef}>
         <MapLocation
           onClick={(lat, long) => {
-            setCoordinates((old) => {
+            setCoordinates((old : GeoCoordinates) => {
               return {
                 lat,
                 long,

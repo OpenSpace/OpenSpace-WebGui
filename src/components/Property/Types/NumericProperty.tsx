@@ -6,7 +6,7 @@ import { validSliderExtent } from '@/components/Input/NumericInput/NumericSlider
 import { PropertyProps } from '@/components/Property/types';
 import { useProperty } from '@/hooks/properties';
 import { usePropListeningState } from '@/hooks/util';
-import { roundNumberToDecimalPlaces, stepToDecimalPlaces } from '@/util/numeric';
+import { roundTo, stepToDecimalPlaces } from '@/util/numeric';
 
 interface Props extends PropertyProps {
   isInt?: boolean;
@@ -53,7 +53,7 @@ export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
           <Paper px={'sm'} py={5} flex={1}>
             <Text size={'sm'}>
               <NumberFormatter
-                value={roundNumberToDecimalPlaces(currentValue, decimalPlaces)}
+                value={roundTo(currentValue, decimalPlaces).toString()}
               />
             </Text>
           </Paper>
@@ -62,7 +62,7 @@ export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
             value={currentValue}
             valueLabel={(numberValue) =>
               numberValue !== undefined
-                ? roundNumberToDecimalPlaces(numberValue, decimalPlaces)
+                ? roundTo(numberValue, decimalPlaces).toString()
                 : ''
             }
             min={min}

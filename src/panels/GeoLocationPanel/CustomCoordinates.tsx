@@ -8,13 +8,13 @@ import { NavigationType } from '@/types/enums';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { AddSceneGraphNodeButton } from './AddSceneGraphNodeButton';
-import { Coordinates } from './types';
+import { GeoCoordinates } from './types';
 
 interface Props {
   customName: string;
   setCustomName: (value: string) => void;
-  coordinates: Coordinates;
-  setCoordinates: (value: Coordinates) => void;
+  coordinates: GeoCoordinates;
+  setCoordinates: (value: GeoCoordinates) => void;
 }
 
 export function CustomCoordinates({

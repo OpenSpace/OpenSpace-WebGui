@@ -9,11 +9,11 @@ import { FocusIcon } from '@/icons/icons';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { MapMarker } from './MapMarker';
-import { MouseMarker } from './types';
+import { MouseMarkerPosition } from './types';
 
 interface Props {
-  mouseMarker: MouseMarker;
-  setMouseMarker: (marker: MouseMarker) => void;
+  mouseMarker: MouseMarkerPosition;
+  setMouseMarker: (marker: MouseMarkerPosition) => void;
   onClick?: (latitude: number, longitude: number) => void;
 }
 
