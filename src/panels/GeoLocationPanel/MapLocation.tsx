@@ -11,15 +11,13 @@ import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { MapMarker } from './MapMarker';
 import { MouseMarker } from './types';
 
-export function MapLocation({
-  onClick,
-  mouseMarker,
-  setMouseMarker
-}: {
+interface Props {
   mouseMarker: MouseMarker;
   setMouseMarker: (marker: MouseMarker) => void;
   onClick?: (latitude: number, longitude: number) => void;
-}) {
+}
+
+export function MapLocation({ onClick, mouseMarker, setMouseMarker }: Props) {
   const [isHovering, setIsHovering] = useState(false);
   const { ref } = useMove(handleClick);
   const { ref: refMove, x: xHover, y: yHover } = useMouse();
