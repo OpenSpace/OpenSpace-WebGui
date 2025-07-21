@@ -23,9 +23,11 @@ export function AddedCustomNodes() {
     keyPrefix: 'added-custom-nodes'
   });
 
-  return addedCustomNodes.length === 0 ? (
-    <Text>{t('empty-nodes')}</Text>
-  ) : (
+  if (addedCustomNodes.length === 0) {
+    return <Text>{t('empty-nodes')}</Text>;
+  }
+
+  return (
     <>
       {addedCustomNodes.map((identifier) => (
         <Group key={identifier} wrap={'nowrap'} grow preventGrowOverflow={false}>
