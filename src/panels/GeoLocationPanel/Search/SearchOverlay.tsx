@@ -53,9 +53,7 @@ export function SearchOverlay({
                 >
                   <GeoSearch
                     search={search}
-                    onHover={(lat, long) => {
-                      coordsToMapCoords(lat, long);
-                    }}
+                    onHover={(lat, long) => coordsToMapCoords(lat, long)}
                     onClick={(lat, long, alt, name) => {
                       setCoordinates({
                         lat,
