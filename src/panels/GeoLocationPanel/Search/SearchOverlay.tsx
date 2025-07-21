@@ -3,6 +3,16 @@ import { useClickOutside } from '@mantine/hooks';
 
 import { GeoSearch } from './GeoSearch';
 
+interface Props {
+  search: string;
+  h: number;
+  visible: boolean;
+  close: () => void;
+  setMouseMarker: ({ x, y }: { x: number; y: number }) => void;
+  setCoordinates: (coordinates: { lat: number; long: number; alt: number }) => void;
+  setCustomName: (name: string) => void;
+}
+
 export function SearchOverlay({
   search,
   visible,
@@ -11,15 +21,7 @@ export function SearchOverlay({
   setMouseMarker,
   setCoordinates,
   setCustomName
-}: {
-  search: string;
-  h: number;
-  visible: boolean;
-  close: () => void;
-  setMouseMarker: ({ x, y }: { x: number; y: number }) => void;
-  setCoordinates: (coordinates: { lat: number; long: number; alt: number }) => void;
-  setCustomName: (name: string) => void;
-}) {
+}: Props) {
   const ref = useClickOutside(() => close());
 
   function coordsToMapCoords(latitude: number, longitude: number) {
