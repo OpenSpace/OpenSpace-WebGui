@@ -2,10 +2,13 @@ import { useTranslation } from 'react-i18next';
 import { Badge, Code, Group, Paper, Table, Text } from '@mantine/core';
 
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
-import { Action } from '@/types/types';
+import styles from '@/theme/global.module.css';
+import { KeybindInfoType } from '@/types/types';
+
+import { KeybindButtons } from './KeybindButtons';
 
 interface Props {
-  action: Action;
+  action: KeybindInfoType;
 }
 
 export function KeybindInfo({ action }: Props) {
@@ -13,26 +16,41 @@ export function KeybindInfo({ action }: Props) {
 
   return (
     <Paper key={action.identifier} p={'sm'}>
-      <Text ml={'xs'} mb={2} fw={'bold'}>
-        {action.name}
-      </Text>
+      <Group justify={'space-between'} align={'center'} mb={'xs'} ml={'xs'}>
+        <Text mb={2} fw={'bold'} className={styles.selectable}>
+          {action.name}
+        </Text>
+        <KeybindButtons selectedKey={action.key} modifiers={action.modifiers} />
+      </Group>
       <Table
         data={{
           body: [
-            [`${t('info')}:`, action.documentation],
             [
-              `${t('is-local.title')}:`,
+              <Text size={'sm'}>{t('info')}:</Text>,
+              // Using a custom, large, width for the longest text to make the
+              // table look better, and multiple stacked tables align better
+              <Text size={'sm'} className={styles.selectable} miw={'300px'}>
+                {action.documentation}
+              </Text>
+            ],
+            [
+              <Text size={'sm'}>{t('is-local.title')}:</Text>,
               action.isLocal ? (
                 <Badge variant={'filled'}>{t('is-local.yes')}</Badge>
               ) : (
                 <Badge variant={'outline'}>{t('is-local.no')}</Badge>
               )
             ],
-            [`${t('gui-path')}:`, <Code>{action.guiPath}</Code>],
             [
-              `${t('identifier')}:`,
+              <Text size={'sm'}>{t('gui-path')}:</Text>,
+              <Code className={styles.selectable}>{action.guiPath}</Code>
+            ],
+            [
+              <Text size={'sm'}>{t('identifier')}:</Text>,
               <Group gap={'xs'} wrap={'nowrap'}>
-                <Code style={{ wordBreak: 'break-word' }}>{action.identifier}</Code>
+                <Code className={styles.selectable} style={{ wordBreak: 'break-word' }}>
+                  {action.identifier}
+                </Code>
                 <CopyToClipboardButton value={action.identifier} />
               </Group>
             ]
