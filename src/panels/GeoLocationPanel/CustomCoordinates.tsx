@@ -10,17 +10,19 @@ import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { AddSceneGraphNodeButton } from './AddSceneGraphNodeButton';
 import { Coordinates } from './types';
 
+interface Props {
+  customName: string;
+  setCustomName: (value: string) => void;
+  coordinates: Coordinates;
+  setCoordinates: (value: Coordinates) => void;
+}
+
 export function CustomCoordinates({
   customName,
   setCustomName,
   coordinates,
   setCoordinates
-}: {
-  customName: string;
-  setCustomName: (value: string) => void;
-  coordinates: Coordinates;
-  setCoordinates: (value: Coordinates) => void;
-}) {
+}: Props) {
   const { t } = useTranslation('panel-geolocation', {
     keyPrefix: 'custom-coordinates'
   });
