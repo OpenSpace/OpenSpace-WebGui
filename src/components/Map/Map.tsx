@@ -26,7 +26,10 @@ const DecimalPrecision = 7;
 
 // Settings for the OpenSpace marker and view cone
 interface Props extends MantineStyleProps, PropsWithChildren {
-  // The size of the OpenSpace icon indicating the current camera position in pixels
+  // The URL to the image used as the icon indicating the current camera position
+  iconPath?: string;
+
+  // The size of the icon indicating the current camera position in pixels
   iconSize?: number;
 
   // The width of the cone indicating the camera direction. The width represents how wide
@@ -45,6 +48,7 @@ interface Props extends MantineStyleProps, PropsWithChildren {
 }
 
 export function Map({
+  iconPath = `${import.meta.env.BASE_URL}/images/icon.png`,
   iconSize = 25,
   coneWidth = 45,
   coneHeight = 45,
@@ -129,7 +133,7 @@ export function Map({
             }}
           >
             <Image
-              src={`${import.meta.env.BASE_URL}/images/icon.png`}
+              src={iconPath}
               style={{
                 width: iconSize,
                 height: iconSize,
