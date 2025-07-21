@@ -16,7 +16,7 @@ export function createSceneGraphNodeTable(
   long: number,
   alt: number
 ) {
-  const table = {
+  return {
     Identifier: identifier,
     Parent: globe,
     Transform: {
@@ -34,6 +34,4 @@ export function createSceneGraphNodeTable(
       Path: GeoLocationGroupKey
     }
   };
-
-  return table;
 }
