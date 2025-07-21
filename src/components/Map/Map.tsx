@@ -50,8 +50,8 @@ interface Props extends MantineStyleProps, PropsWithChildren {
 export function Map({
   iconPath = `${import.meta.env.BASE_URL}/images/icon.png`,
   iconSize = 25,
-  coneWidth = 45,
-  coneHeight = 45,
+  coneWidth = 25,
+  coneHeight = 25,
   showViewDirection = true,
   ref,
   children,
