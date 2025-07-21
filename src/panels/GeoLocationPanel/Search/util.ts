@@ -2,7 +2,7 @@ import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 
 import { ArcGISJSON, Extent, MatchedLocation } from './types';
 
-export const ET_URL = 'http://localhost:3000/1/search/';
+export const ET_URL = 'https://geocode.openspaceproject.com/1/search/';
 
 const ARC_GIS_URL =
   'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates';
