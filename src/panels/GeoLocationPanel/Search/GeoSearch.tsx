@@ -58,7 +58,7 @@ export function GeoSearch({ onClick, onHover, search }: Props) {
   }
 
   if (places.length === 0) {
-    return <Text>{t('empty-results')}</Text>;
+    return <Text size={'sm'}>{t('empty-results')}</Text>;
   }
 
   return (
