@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Checkbox } from '@mantine/core';
+import { useWindowEvent } from '@mantine/hooks';
 
 import { usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
@@ -17,15 +18,22 @@ export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
   const [checked, setChecked] = useState(isVisible);
   const [isImmediate, setIsImmediate] = useState(false);
 
+  useWindowEvent('keydown', (event: KeyboardEvent) => {
+    if (event.key === 'Shift' && !event.repeat) {
+      setIsImmediate(true);
+    }
+  });
+
+  useWindowEvent('keyup', (event: KeyboardEvent) => {
+    if (event.key === 'Shift' && !event.repeat) {
+      setIsImmediate(false);
+    }
+  });
+
   // If the visibility is changed elsewhere we need to update the checkbox
   useEffect(() => {
     setChecked(isVisible);
   }, [isVisible]);
-
-  if (isVisible === undefined) {
-    // This is the case when there is no enabled or fade property => don't render checkbox
-    return <></>;
-  }
 
   function updateValue(shouldBeEnabled: boolean, isImmediate: boolean) {
     setVisibility(shouldBeEnabled, isImmediate);
@@ -33,26 +41,21 @@ export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
   }
 
   function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === 'Shift') {
-      setIsImmediate(true);
-    }
     // Set the value when the user presses enter
     if (event.key === 'Enter') {
       updateValue(!event.currentTarget.checked, isImmediate);
     }
   }
 
-  function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === 'Shift') {
-      setIsImmediate(false);
-    }
+  if (isVisible === undefined) {
+    // This is the case when there is no enabled or fade property => don't render checkbox
+    return <></>;
   }
 
   return (
     <Checkbox
       checked={checked}
       onKeyDown={onKeyDown}
-      onKeyUp={onKeyUp}
       onChange={(event) => updateValue(event.currentTarget.checked, isImmediate)}
       label={label}
     />
