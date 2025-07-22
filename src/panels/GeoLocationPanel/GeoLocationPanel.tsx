@@ -80,17 +80,14 @@ export function GeoLocationPanel() {
               openIfNotOpen();
             }
           }}
-          placeholder={
-            searchExists
-              ? t('custom-coordinates.search-placeholder', { anchor: anchor?.name })
-              : t('custom-coordinates.search-placeholder-disabled', {
-                  anchor: anchor?.name
-                })
-          }
+          placeholder={t(
+            searchExists ? 'search.placeholder' : 'search.placeholder-disabled',
+            { anchor: anchor?.name }
+          )}
           onClick={() => search !== '' && toggle()}
           rightSection={
             <Button disabled={!searchExists} onClick={openIfNotOpen}>
-              {t('earth-panel.search.button-label')}
+              {t('search.button-label')}
             </Button>
           }
           rightSectionWidth={'md'}

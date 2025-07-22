@@ -1,28 +1,9 @@
 {
   "added-nodes-title": "Added Nodes",
-  "earth-panel": {
-    "search": {
-      "title": "Search Places on Earth",
-      "input": {
-        "aria-label": "Search places on Earth",
-        "placeholder": "Search places..."
-      },
-      "button-label": "Search",
-      "filter-placeholder": "Filter search",
-      "no-result": "Nothing found. Try another search!",
-      "results-title": "Results",
-      "settings": {
-        "tooltip": "Calculates an appropriate altitude automatically if unchecked",
-        "altitude-checkbox": "Use custom altitude",
-        "altitude-input-label": "Custom altitude (km)"
-      }
-    },
-    "earth-entry": {
-      "aria-label": {
-        "add": "Add focus node {{name}}",
-        "remove": "Remove focus node {{name}}"
-      }
-    }
+  "search": {
+    "button-label": "Search",
+    "placeholder": "Search locations on {{anchor}}",
+    "placeholder-disabled": "No search available for {{anchor}}"
   },
   "custom-coordinates": {
     "latitude-label": "Latitude",
@@ -32,9 +13,7 @@
     "label-degrees": "(deg)",
     "label-kilometers": "(km)",
     "label-optional": "(optional)",
-    "node-name-placeholder": "Custom Coordinate {{anchor}} ({{latitude}}, {{longitude}}, {{altitude}}km)",
-    "search-placeholder": "Search locations on {{anchor}}",
-    "search-placeholder-disabled": "No search available for {{anchor}}"
+    "node-name-placeholder": "Custom Coordinate {{anchor}} ({{latitude}}, {{longitude}}, {{altitude}}km)"
   },
   "added-custom-nodes": {
     "empty-nodes": "No added nodes",

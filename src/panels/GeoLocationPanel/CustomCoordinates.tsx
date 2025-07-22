@@ -68,7 +68,7 @@ export function CustomCoordinates({
         <NumericInput
           label={
             <>
-              {t('latitude-label')}{' '}
+              {t('longitude-label')}{' '}
               <span
                 style={{
                   fontWeight: 'normal',
