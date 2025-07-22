@@ -82,6 +82,11 @@ export function GeoLocationPanel() {
                 setSearch(event.currentTarget.value);
                 openIfNotOpen();
               }
+              if (event.key === 'Escape') {
+                setSearchString('');
+                close();
+                event.currentTarget.blur();
+              }
             }}
             placeholder={t(
               searchExists ? 'search.placeholder' : 'search.placeholder-disabled',

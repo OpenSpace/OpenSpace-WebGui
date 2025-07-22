@@ -100,6 +100,12 @@ export function CustomCoordinates({
             </Text>
           </>
         }
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') {
+            setCustomName('');
+            event.currentTarget.blur();
+          }
+        }}
         placeholder={previewCustomName}
       />
       <Group gap={'xs'} grow>
