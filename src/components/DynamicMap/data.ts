@@ -2,7 +2,7 @@ type Source = string;
 export const MapData: Record<string, Source> = {
   callisto: 'callisto.jpg',
   dione: 'dione.jpg',
-  earth: 'earth_bluemarble.jpg',
+  earth: 'earth.jpg',
   enceladus: 'enceladus.jpg',
   europa: 'europa.jpg',
   ganymede: 'ganymede.jpg',
