@@ -122,6 +122,14 @@ export function ViewCone({ width, height, coneWidth, coneHeight }: Props) {
     const base1 = [center[0] + px * radius, center[1] + py * radius];
     const base2 = [center[0] - px * radius, center[1] - py * radius];
 
+    // If the camera is too far away, don't draw the cone as this will lead to errors
+    const isValidCone =
+      length > 0 &&
+      !isNaN(base1[0]) &&
+      !isNaN(base1[1]) &&
+      !isNaN(base2[0]) &&
+      !isNaN(base2[1]);
+
     const linearGradient = defs
       .append('linearGradient')
       .attr('id', 'linearGradient')
@@ -152,10 +160,12 @@ export function ViewCone({ width, height, coneWidth, coneHeight }: Props) {
       .attr('stop-color', 'var(--mantine-primary-color-8)')
       .attr('stop-opacity', 0);
 
-    svg
-      .append('polygon')
-      .attr('points', [base1, base2, tip].map((p) => p.join(',')).join(' '))
-      .attr('fill', 'url(#linearGradient)'); // Use the gradient defined in the SVG defs;
+    if (isValidCone) {
+      svg
+        .append('polygon')
+        .attr('points', [base1, base2, tip].map((p) => p.join(',')).join(' '))
+        .attr('fill', 'url(#linearGradient)'); // Use the gradient defined in the SVG defs;
+    }
   }, [
     width,
     height,
