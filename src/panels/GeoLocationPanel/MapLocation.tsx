@@ -5,10 +5,10 @@ import { useMouse, useMove } from '@mantine/hooks';
 
 import { MapData } from '@/components/Map/data';
 import { Map } from '@/components/Map/Map';
+import { MapMarker } from '@/components/Map/MapMarker';
 import { FocusIcon } from '@/icons/icons';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
-import { MapMarker } from './MapMarker';
 import { MouseMarkerPosition } from './types';
 
 interface Props {
@@ -34,8 +34,7 @@ export function MapLocation({ onClick, mouseMarker, setMouseMarker }: Props) {
     if (!coords) {
       return;
     }
-    const { latitude, longitude } = coords;
-    onClick?.(latitude, longitude);
+    onClick?.(coords.latitude, coords.longitude);
     setMouseMarker({ x, y });
   }
 

@@ -10,9 +10,9 @@ import {
   Text
 } from '@mantine/core';
 
+import { MapMarker } from '@/components/Map/MapMarker';
 import { NightShadow } from '@/components/Map/NightShadow';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
-import { MapMarker } from '@/panels/GeoLocationPanel/MapMarker';
 import { useCameraLatLong } from '@/redux/camera/hooks';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
