@@ -96,7 +96,10 @@ export function GeoLocationPanel() {
             rightSection={
               searchString && (
                 <ClearButton
-                  onClick={() => setSearchString('')}
+                  onClick={() => {
+                    setSearchString('');
+                    setSearch('');
+                  }}
                   ariaLabel={t('search.aria-labels.clear-button')}
                 />
               )
