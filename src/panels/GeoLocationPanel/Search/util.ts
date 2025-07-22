@@ -3,12 +3,19 @@ import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 import { ArcGISJSON, Extent, MatchedLocation } from './types';
 
 // URL to the geolocation service other celestial bodies than Earth
-export const ET_GEOLOCATION_URL = 'https://geocode.openspaceproject.com/1/search/';
+const ET_GEOLOCATION_URL = 'https://geocode.openspaceproject.com/1/search/';
 
 // URL to the geolocation service for Earth
 const ARC_GIS_GEOLOCATION_URL =
   'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates';
 
+/**
+ * Get a list of places on Earth, based on the search string. Uses the ArcGIS geolocation
+ * service.
+ *
+ * @param searchString The search string to query the ArcGIS geolocation service
+ * @returns a list of matched locations
+ */
 export async function fetchPlacesEarth(searchString: string): Promise<MatchedLocation[]> {
   const response = await fetch(
     `${ARC_GIS_GEOLOCATION_URL}?SingleLine=${searchString}&category=&outFields=*&forStorage=false&f=json`
@@ -32,6 +39,43 @@ export async function fetchPlacesEarth(searchString: string): Promise<MatchedLoc
     name: place.attributes.LongLabel,
     origin: ''
   }));
+}
+
+/**
+ * Get a list of places on other celestial bodies than Earth, based on the search string.
+ * Uses the OpenSpace geolocation service.
+ *
+ * @param globeName The name of the celestial body to search on
+ * @param searchString The search string to query the OpenSpace geolocation service
+ * @returns a list of matched locations
+ */
+export async function fetchPlacesExtraTerrestrial(
+  globeName: string,
+  searchString: string
+): Promise<MatchedLocation[]> {
+  const json = await fetch(
+    `${ET_GEOLOCATION_URL}${globeName}?query=${searchString}`
+  ).then((res) => res.json());
+  return json.result;
+}
+
+/**
+ * Checks if the given object has geolocation data available.
+ *
+ * @param globeName The name of the celestial body to check
+ * @returns true if geolocation data is available, false otherwise
+ */
+export async function hasGeoLocationData(objectName: string): Promise<boolean> {
+  if (objectName === 'Earth') {
+    return true; // Earth uses a different service, and always has geolocation data
+  }
+  try {
+    const response = await fetch(`${ET_GEOLOCATION_URL}${objectName}`);
+    const data = await response.json();
+    return data.hasData;
+  } catch {
+    return false;
+  }
 }
 
 export function calculateAltitudeExtraTerrestial(

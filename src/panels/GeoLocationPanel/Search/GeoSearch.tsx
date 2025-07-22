@@ -13,8 +13,8 @@ import { MatchedLocation } from './types';
 import {
   calculateAltitudeEarth,
   calculateAltitudeExtraTerrestial,
-  ET_GEOLOCATION_URL,
-  fetchPlacesEarth
+  fetchPlacesEarth,
+  fetchPlacesExtraTerrestrial
 } from './util';
 
 interface Props {
@@ -30,6 +30,7 @@ export function GeoSearch({ onClick, onHover, search }: Props) {
   const dispatch = useAppDispatch();
   const anchor = useAnchorNode();
   const performSearch = useCallback(getPlaces, [dispatch, anchor]);
+
   // When opening the panel with a search query, set the input value and fetch places
   useEffect(() => {
     performSearch(search);
@@ -42,18 +43,22 @@ export function GeoSearch({ onClick, onHover, search }: Props) {
     }
     const searchString = input.replaceAll(' ', '+');
     try {
-      if (!searchString || !anchor?.name) return;
-      if (anchor && anchor.name === 'Earth') {
-        const uniquePlaces = await fetchPlacesEarth(searchString);
-        setPlaces(uniquePlaces);
-      } else {
-        const uniquePlaces = await fetch(
-          `${ET_GEOLOCATION_URL}${anchor.name}?query=${searchString}`
-        ).then((res) => res.json());
-        setPlaces(uniquePlaces.result);
+      if (!anchor?.name) {
+        return;
       }
+      const searchResult =
+        anchor.name === 'Earth'
+          ? await fetchPlacesEarth(searchString)
+          : await fetchPlacesExtraTerrestrial(anchor.name, searchString);
+      setPlaces(searchResult);
     } catch (error) {
-      dispatch(handleNotificationLogging('Error fetching data', error, LogLevel.Error));
+      dispatch(
+        handleNotificationLogging(
+          'Error fetching geo location data',
+          error,
+          LogLevel.Error
+        )
+      );
     }
   }
 

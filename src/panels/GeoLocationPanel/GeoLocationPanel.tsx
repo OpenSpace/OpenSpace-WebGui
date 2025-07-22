@@ -7,7 +7,7 @@ import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { SearchOverlay } from './Search/SearchOverlay';
-import { ET_GEOLOCATION_URL } from './Search/util';
+import { hasGeoLocationData } from './Search/util';
 import { AddedCustomNodes } from './AddedCustomNodes';
 import { CustomCoordinates } from './CustomCoordinates';
 import { MapLocation } from './MapLocation';
@@ -37,23 +37,11 @@ export function GeoLocationPanel() {
   const anchor = useAnchorNode();
 
   useEffect(() => {
-    async function fetchData() {
-      if (!anchor) {
-        return;
-      }
-      try {
-        const dataExists = await fetch(
-          `${ET_GEOLOCATION_URL}${anchor.name.toLowerCase()}`
-        );
-        const { hasData } = await dataExists.json();
-        const isOnEarth = anchor.name === 'Earth';
-
-        setSearchExists(hasData || isOnEarth);
-      } catch {
-        setSearchExists(false);
-      }
+    // If the anchor changes, check if it has geolocation data
+    if (anchor) {
+      hasGeoLocationData(anchor.name).then((hasData) => setSearchExists(hasData));
     }
-    fetchData();
+
     // Reset mouse marker when anchor changes
     setMouseMarker(undefined);
     setSearch('');
