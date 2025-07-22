@@ -1,6 +1,6 @@
 import { AppShell, Group, Image, NavLink, Title } from '@mantine/core';
 
-import { DashboardIcon, HomeIcon, OpenWindowIcon, PenIcon } from '@/icons/icons';
+import { DashboardIcon, HomeIcon, MapIcon, OpenWindowIcon, PenIcon } from '@/icons/icons';
 
 export function RoutesPage() {
   return (
@@ -32,6 +32,7 @@ export function RoutesPage() {
           leftSection={<HomeIcon />}
           description={'The regular OpenSpace GUI'}
         />
+
         <NavLink
           href={'/gui/#/actions'}
           label={'Actions'}
@@ -40,6 +41,7 @@ export function RoutesPage() {
           leftSection={<DashboardIcon />}
           rightSection={<OpenWindowIcon />}
         />
+
         {/* Note that this link does not work in dev mode, since it's not part of this
             website; it's another OpenSpace-hosted site */}
         <NavLink
@@ -48,6 +50,17 @@ export function RoutesPage() {
           description={'ShowComposer opened up as a page'}
           target={'_blank'}
           leftSection={<PenIcon />}
+          rightSection={<OpenWindowIcon />}
+        />
+
+        <NavLink
+          href={'/gui/#/map'}
+          label={'Map'}
+          description={
+            'Page showing a map of the current focus with a camera position marker. Works for some solar system bodies.'
+          }
+          target={'_blank'}
+          leftSection={<MapIcon />}
           rightSection={<OpenWindowIcon />}
         />
       </AppShell.Navbar>

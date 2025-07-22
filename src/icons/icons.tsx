@@ -71,6 +71,7 @@ export {
   MdLocationOn as LocationPinIcon,
   MdLock as LockIcon,
   MdLockOpen as LockOpenIcon,
+  MdMap as MapIcon,
   MdFilterCenterFocus as MoveTargetIcon,
   MdNightlight as NightIcon,
   MdNotifications as NotificationsIcon,
