@@ -6,6 +6,7 @@ import {
   BackgroundImage,
   Box,
   Image,
+  LoadingOverlay,
   MantineStyleProps,
   Text
 } from '@mantine/core';
@@ -94,6 +95,15 @@ export function DynamicMap({
   const angleDeg = angle * (180.0 / Math.PI);
   // Remove jumping between 0 and -180 degrees when looking straight at surface
   const cleanedAngle = Math.abs(angleDeg) === 180 ? 0 : angleDeg;
+
+  if (!anchor) {
+    return (
+      <AspectRatio ratio={2} {...styleProps} style={style}>
+        <BackgroundImage src={''} />
+        <LoadingOverlay visible={true} />
+      </AspectRatio>
+    );
+  }
 
   if (!map || !anchor) {
     return (
