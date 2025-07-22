@@ -79,8 +79,6 @@ export async function hasGeoLocationData(objectName: string): Promise<boolean> {
 }
 
 export function calculateAltitudeExtraTerrestial(
-  lat: number,
-  long: number,
   diameter: number
 ): number {
   // @TODO: (ylvse 2025-07-11) Do something smart here with the radius of the celestial body
@@ -109,11 +107,7 @@ export function computeAltitude(place: MatchedLocation) {
   if (place.extent) {
     return calculateAltitudeEarth(place.extent);
   } else if (place.diameter) {
-    return calculateAltitudeExtraTerrestial(
-      place.centerLatitude,
-      place.centerLongitude,
-      place.diameter
-    );
+    return calculateAltitudeExtraTerrestial(place.diameter);
   }
   return 0; // Default altitude if no diameter or extent is provided
 }
