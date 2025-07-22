@@ -2,14 +2,16 @@ import { computeDistanceBetween, LatLng } from 'spherical-geometry-js';
 
 import { ArcGISJSON, Extent, MatchedLocation } from './types';
 
-export const ET_URL = 'https://geocode.openspaceproject.com/1/search/';
+// URL to the geolocation service other celestial bodies than Earth
+export const ET_GEOLOCATION_URL = 'https://geocode.openspaceproject.com/1/search/';
 
-const ARC_GIS_URL =
+// URL to the geolocation service for Earth
+const ARC_GIS_GEOLOCATION_URL =
   'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates';
 
 export async function fetchPlacesEarth(searchString: string): Promise<MatchedLocation[]> {
   const response = await fetch(
-    `${ARC_GIS_URL}?SingleLine=${searchString}&category=&outFields=*&forStorage=false&f=json`
+    `${ARC_GIS_GEOLOCATION_URL}?SingleLine=${searchString}&category=&outFields=*&forStorage=false&f=json`
   );
   const arcGISJson: ArcGISJSON = await response.json();
   // Remove any duplicates from search result
@@ -23,14 +25,13 @@ export async function fetchPlacesEarth(searchString: string): Promise<MatchedLoc
     }
     return false;
   });
-  return uniquePlaces.map((place) => {
-    return {
-      centerLatitude: place.location.y,
-      centerLongitude: place.location.x,
-      name: place.attributes.LongLabel,
-      origin: ''
-    };
-  });
+
+  return uniquePlaces.map((place) => ({
+    centerLatitude: place.location.y,
+    centerLongitude: place.location.x,
+    name: place.attributes.LongLabel,
+    origin: ''
+  }));
 }
 
 export function calculateAltitudeExtraTerrestial(

@@ -121,10 +121,7 @@ export function Map({
       >
         {width && height && <NightShadow width={width} height={height} />}
         {children}
-        <MapMarker
-          left={`${markerPosition.x * 100}%`}
-          top={`${markerPosition.y * 100}%`}
-        >
+        <MapMarker left={`${markerPosition.x * 100}%`} top={`${markerPosition.y * 100}%`}>
           <Box
             style={{
               width: 0,

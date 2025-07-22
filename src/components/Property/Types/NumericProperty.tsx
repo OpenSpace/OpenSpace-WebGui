@@ -52,9 +52,7 @@ export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
         {readOnly ? (
           <Paper px={'sm'} py={5} flex={1}>
             <Text size={'sm'}>
-              <NumberFormatter
-                value={roundTo(currentValue, decimalPlaces).toString()}
-              />
+              <NumberFormatter value={roundTo(currentValue, decimalPlaces).toString()} />
             </Text>
           </Paper>
         ) : (

@@ -13,7 +13,7 @@ import { MatchedLocation } from './types';
 import {
   calculateAltitudeEarth,
   calculateAltitudeExtraTerrestial,
-  ET_URL,
+  ET_GEOLOCATION_URL,
   fetchPlacesEarth
 } from './util';
 
@@ -48,7 +48,7 @@ export function GeoSearch({ onClick, onHover, search }: Props) {
         setPlaces(uniquePlaces);
       } else {
         const uniquePlaces = await fetch(
-          `${ET_URL}${anchor.name}?query=${searchString}`
+          `${ET_GEOLOCATION_URL}${anchor.name}?query=${searchString}`
         ).then((res) => res.json());
         setPlaces(uniquePlaces.result);
       }

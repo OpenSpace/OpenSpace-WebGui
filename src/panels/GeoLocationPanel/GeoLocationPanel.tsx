@@ -7,7 +7,7 @@ import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { SearchOverlay } from './Search/SearchOverlay';
-import { ET_URL } from './Search/util';
+import { ET_GEOLOCATION_URL } from './Search/util';
 import { AddedCustomNodes } from './AddedCustomNodes';
 import { CustomCoordinates } from './CustomCoordinates';
 import { MapLocation } from './MapLocation';
@@ -38,14 +38,18 @@ export function GeoLocationPanel() {
 
   useEffect(() => {
     async function fetchData() {
-      if (!anchor) return;
+      if (!anchor) {
+        return;
+      }
       try {
-        const dataExists = await fetch(`${ET_URL}${anchor.name.toLowerCase()}`);
+        const dataExists = await fetch(
+          `${ET_GEOLOCATION_URL}${anchor.name.toLowerCase()}`
+        );
         const { hasData } = await dataExists.json();
         const isOnEarth = anchor.name === 'Earth';
 
         setSearchExists(hasData || isOnEarth);
-      } catch (e) {
+      } catch {
         setSearchExists(false);
       }
     }
@@ -67,15 +71,13 @@ export function GeoLocationPanel() {
     <>
       <Box ref={topRef}>
         <MapLocation
-          onClick={(lat, long) => {
-            setCoordinates((old : GeoCoordinates) => {
-              return {
-                lat,
-                long,
-                alt: old.alt
-              };
-            });
-          }}
+          onClick={(lat, long) =>
+            setCoordinates((old: GeoCoordinates) => ({
+              lat,
+              long,
+              alt: old.alt
+            }))
+          }
           mouseMarker={mouseMarker}
           setMouseMarker={setMouseMarker}
         />

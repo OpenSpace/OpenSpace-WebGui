@@ -7,18 +7,15 @@ import { useCameraLatLong } from '@/redux/camera/hooks';
 import { useAppSelector } from '@/redux/hooks';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
-// TODO: ylvse 2025-07-11 Rewrite this as a React component that uses hooks instead of D3 directly.
-export function ViewCone({
-  width,
-  height,
-  coneWidth,
-  coneHeight
-}: {
+interface Props {
   width: number;
   height: number;
   coneWidth: number;
   coneHeight: number;
-}) {
+}
+
+// TODO: ylvse 2025-07-11 Rewrite this as a React component that uses hooks instead of D3 directly.
+export function ViewCone({ width, height, coneWidth, coneHeight }: Props) {
   const ref = useRef(null);
   const { latitude, longitude, viewLatitude, viewLongitude } = useCameraLatLong(7);
   const viewLength = useAppSelector((state) => state.camera.viewLength);
