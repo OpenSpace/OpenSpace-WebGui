@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Button, MantineStyleProps, TextInput } from '@mantine/core';
+import { Button, MantineStyleProps, TextInput } from '@mantine/core';
 
-import { CancelIcon } from '@/icons/icons';
+import { ClearButton } from '../ClearButton/ClearButton';
 
 import { useFilterListProvider } from './hooks';
 
@@ -18,15 +18,10 @@ function InputButton({ showMoreButton }: InputButtonProps) {
 
   if (isSearching) {
     return (
-      <ActionIcon
-        size={'lg'}
-        variant={'subtle'}
-        color={'gray'}
+      <ClearButton
         onClick={() => setSearchString('')}
-        aria-label={t('cancel-button-aria-label')}
-      >
-        <CancelIcon />
-      </ActionIcon>
+        ariaLabel={t('cancel-button-aria-label')}
+      />
     );
   }
 

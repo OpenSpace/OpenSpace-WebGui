@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, TextInput, Title } from '@mantine/core';
+import { ActionIcon, Box, Group, Stack, TextInput, Title } from '@mantine/core';
 import { useDisclosure, useElementSize } from '@mantine/hooks';
 
+import { ClearButton } from '@/components/ClearButton/ClearButton';
+import { SearchIcon } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
@@ -56,7 +59,7 @@ export function GeoLocationPanel() {
   }
 
   return (
-    <>
+    <Stack gap={'xs'}>
       <Box ref={topRef}>
         <MapLocation
           onClick={(lat, long) =>
@@ -69,29 +72,42 @@ export function GeoLocationPanel() {
           mouseMarker={mouseMarker}
           setMouseMarker={setMouseMarker}
         />
-        <TextInput
-          value={searchString}
-          onChange={(e) => setSearchString(e.currentTarget.value)}
-          disabled={!searchExists}
-          my={'md'}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              setSearch(event.currentTarget.value);
-              openIfNotOpen();
+        <Group gap={'xs'} wrap={'nowrap'} mt={'xs'}>
+          <TextInput
+            value={searchString}
+            onChange={(e) => setSearchString(e.currentTarget.value)}
+            disabled={!searchExists}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                setSearch(event.currentTarget.value);
+                openIfNotOpen();
+              }
+            }}
+            placeholder={t(
+              searchExists ? 'search.placeholder' : 'search.placeholder-disabled',
+              { anchor: anchor?.name }
+            )}
+            onClick={() => search !== '' && toggle()}
+            rightSection={
+              searchString && (
+                <ClearButton
+                  onClick={() => setSearchString('')}
+                  ariaLabel={t('search.aria-labels.clear-button')}
+                />
+              )
             }
-          }}
-          placeholder={t(
-            searchExists ? 'search.placeholder' : 'search.placeholder-disabled',
-            { anchor: anchor?.name }
-          )}
-          onClick={() => search !== '' && toggle()}
-          rightSection={
-            <Button disabled={!searchExists} onClick={openIfNotOpen}>
-              {t('search.button-label')}
-            </Button>
-          }
-          rightSectionWidth={'md'}
-        />
+            rightSectionWidth={'md'}
+            flex={1}
+          />
+          <ActionIcon
+            disabled={!searchExists}
+            onClick={openIfNotOpen}
+            size={'lg'}
+            aria-label={t('search.aria-labels.search-button')}
+          >
+            <SearchIcon size={IconSize.sm} />
+          </ActionIcon>
+        </Group>
       </Box>
       <Box pos={'relative'}>
         <SearchOverlay
@@ -114,6 +130,6 @@ export function GeoLocationPanel() {
         </Title>
         <AddedCustomNodes />
       </Box>
-    </>
+    </Stack>
   );
 }

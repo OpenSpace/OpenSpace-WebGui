@@ -1,7 +1,10 @@
 {
   "added-nodes-title": "Added Nodes",
   "search": {
-    "button-label": "Search",
+    "aria-labels": {
+      "search-button": "Search",
+      "clear-button": "Clear search input"
+    },
     "placeholder": "Search locations on {{anchor}}",
     "placeholder-disabled": "No search available for {{anchor}}"
   },

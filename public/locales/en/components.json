@@ -6,6 +6,9 @@
     "fetching-version-number": "Fetching OpenSpace version...",
     "custom-version-number": "Custom"
   },
+  "clear-button": {
+    "aria-label": "Clear"
+  },
   "collapsable-header": {
     "chevron-aria-label": {
       "open": "Open",

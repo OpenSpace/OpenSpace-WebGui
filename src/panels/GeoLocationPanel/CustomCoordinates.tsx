@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Group, Stack, TextInput } from '@mantine/core';
+import { Group, Stack, Text, TextInput } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
@@ -43,20 +43,14 @@ export function CustomCoordinates({
 
   return (
     <Stack gap={'xs'}>
-      <Group grow gap={'xs'} align={'end'}>
+      <Group grow gap={'xs'}>
         <NumericInput
           label={
             <>
               {t('latitude-label')}{' '}
-              <span
-                style={{
-                  fontWeight: 'normal',
-                  color: 'var(--mantine-color-dark-2)',
-                  fontSize: 'var(--mantine-h6-font-size)'
-                }}
-              >
+              <Text c={'dimmed'} span size={'xs'}>
                 {t('label-degrees')}
-              </span>
+              </Text>
             </>
           }
           value={lat}
@@ -69,15 +63,9 @@ export function CustomCoordinates({
           label={
             <>
               {t('longitude-label')}{' '}
-              <span
-                style={{
-                  fontWeight: 'normal',
-                  color: 'var(--mantine-color-dark-2)',
-                  fontSize: 'var(--mantine-h6-font-size)'
-                }}
-              >
+              <Text c={'dimmed'} span size={'xs'}>
                 {t('label-degrees')}
-              </span>
+              </Text>
             </>
           }
           value={long}
@@ -90,15 +78,9 @@ export function CustomCoordinates({
           label={
             <>
               {t('altitude-label')}{' '}
-              <span
-                style={{
-                  fontWeight: 'normal',
-                  color: 'var(--mantine-color-dark-2)',
-                  fontSize: 'var(--mantine-h6-font-size)'
-                }}
-              >
+              <Text c={'dimmed'} span size={'xs'}>
                 {t('label-kilometers')}
-              </span>
+              </Text>
             </>
           }
           value={alt}
@@ -113,20 +95,14 @@ export function CustomCoordinates({
         label={
           <>
             {t('node-name-label')}{' '}
-            <span
-              style={{
-                fontWeight: 'normal',
-                color: 'var(--mantine-color-dark-2)',
-                fontSize: 'var(--mantine-h6-font-size)'
-              }}
-            >
+            <Text c={'dimmed'} span size={'xs'}>
               {t('label-optional')}
-            </span>
+            </Text>
           </>
         }
         placeholder={previewCustomName}
       />
-      <Group gap={'xs'} mt={'md'} grow>
+      <Group gap={'xs'} grow>
         <NodeNavigationButton
           type={NavigationType.FlyGeo}
           showLabel

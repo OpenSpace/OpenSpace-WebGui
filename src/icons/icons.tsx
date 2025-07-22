@@ -83,6 +83,7 @@ export {
   MdOutlineRefresh as RefreshIcon,
   MdOutlineReplay as ReplayIcon,
   MdRocketLaunch as RocketLaunchIcon,
+  MdSearch as SearchIcon,
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
   MdSunny as SunIcon,
