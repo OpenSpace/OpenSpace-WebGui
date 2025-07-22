@@ -6,7 +6,13 @@
       "clear-button": "Clear search input"
     },
     "placeholder": "Search locations on {{anchor}}",
-    "placeholder-disabled": "No search available for {{anchor}}"
+    "placeholder-disabled": "No search available for {{anchor}}",
+    "empty-results": "No results found. Try another search!",
+    "notifications": {
+      "error-geolocation-data": {
+        "title": "Error fetching geo location data"
+      }
+    }
   },
   "custom-coordinates": {
     "latitude-label": "Latitude",

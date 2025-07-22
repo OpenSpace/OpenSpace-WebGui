@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Button } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
+import { Button, Text } from '@mantine/core';
 
 import { useAppDispatch } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
@@ -20,7 +21,10 @@ export function GeoSearch({ onClick, onHover, search }: Props) {
 
   const dispatch = useAppDispatch();
   const anchor = useAnchorNode();
-  const performSearch = useCallback(getPlaces, [dispatch, anchor]);
+
+  const { t } = useTranslation('panel-geolocation', { keyPrefix: 'search' });
+
+  const performSearch = useCallback(getPlaces, [dispatch, anchor, t]);
 
   // When opening the panel with a search query, set the input value and fetch places
   useEffect(() => {
@@ -45,12 +49,16 @@ export function GeoSearch({ onClick, onHover, search }: Props) {
     } catch (error) {
       dispatch(
         handleNotificationLogging(
-          'Error fetching geo location data',
+          t('notifications.error-geolocation-data.title'),
           error,
           LogLevel.Error
         )
       );
     }
+  }
+
+  if (places.length === 0) {
+    return <Text>{t('empty-results')}</Text>;
   }
 
   return (

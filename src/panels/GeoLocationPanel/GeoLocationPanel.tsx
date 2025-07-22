@@ -17,8 +17,6 @@ import { MapLocation } from './MapLocation';
 import { GeoCoordinates, MouseMarkerPosition } from './types';
 
 export function GeoLocationPanel() {
-  const { t } = useTranslation('panel-geolocation');
-
   const [coordinates, setCoordinates] = useState<GeoCoordinates>({
     lat: 0,
     long: 0,
@@ -38,6 +36,8 @@ export function GeoLocationPanel() {
   const { ref: topRef, height: topHeight } = useElementSize();
 
   const anchor = useAnchorNode();
+
+  const { t } = useTranslation('panel-geolocation');
 
   useEffect(() => {
     // If the anchor changes, check if it has geolocation data
