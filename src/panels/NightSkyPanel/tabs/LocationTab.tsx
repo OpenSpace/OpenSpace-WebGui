@@ -12,8 +12,8 @@ import {
 } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { DynamicMap } from '@/components/DynamicMap/DynamicMap';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
-import { Map } from '@/components/Map/Map';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { LocationPinIcon, WarningIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
@@ -64,7 +64,7 @@ export function LocationTab() {
             {t('globe-location.meter-abbreviation')}
           </Text>
         </Stack>
-        <Map showViewDirection={false} iconSize={20} />
+        <DynamicMap showViewDirection={false} iconSize={20} />
       </Group>
       <Transition mounted={anchor?.identifier !== 'Earth'} transition={'fade'}>
         {(styles) => (

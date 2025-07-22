@@ -10,8 +10,8 @@ import {
   Text
 } from '@mantine/core';
 
-import { MapMarker } from '@/components/Map/MapMarker';
-import { NightShadow } from '@/components/Map/NightShadow';
+import { MapMarker } from '@/components/DynamicMap/MapMarker';
+import { NightShadow } from '@/components/DynamicMap/NightShadow';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { useCameraLatLong } from '@/redux/camera/hooks';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
@@ -47,7 +47,12 @@ interface Props extends MantineStyleProps, PropsWithChildren {
   style?: React.CSSProperties;
 }
 
-export function Map({
+/**
+ * A dynamic map component that displays the current camera position and view direction ¨
+ * on a map of the current anchor node. It also shows the night shadow on the map,
+ * dynamically computed from the sun position.
+ */
+export function DynamicMap({
   iconPath = `${import.meta.env.BASE_URL}/images/icon.png`,
   iconSize = 25,
   coneWidth = 25,

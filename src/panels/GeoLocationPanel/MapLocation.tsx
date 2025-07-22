@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Box, ThemeIcon } from '@mantine/core';
 import { useMouse, useMove } from '@mantine/hooks';
 
-import { MapData } from '@/components/Map/data';
-import { Map } from '@/components/Map/Map';
-import { MapMarker } from '@/components/Map/MapMarker';
+import { MapData } from '@/components/DynamicMap/data';
+import { DynamicMap } from '@/components/DynamicMap/DynamicMap';
+import { MapMarker } from '@/components/DynamicMap/MapMarker';
 import { FocusIcon } from '@/icons/icons';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
@@ -53,7 +53,7 @@ export function MapLocation({ onClick, mouseMarker, setMouseMarker }: Props) {
       onMouseLeave={() => setIsHovering(false)}
       onMouseMove={() => setIsHovering(true)}
     >
-      <Map
+      <DynamicMap
         ref={ref}
         bd={'1px solid gray.7'}
         style={{
@@ -88,7 +88,7 @@ export function MapLocation({ onClick, mouseMarker, setMouseMarker }: Props) {
             </ThemeIcon>
           </MapMarker>
         )}
-      </Map>
+      </DynamicMap>
     </Box>
   );
 }
