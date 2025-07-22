@@ -25,11 +25,16 @@ export function createSceneGraphNodeTable(
         Globe: globe,
         Latitude: lat,
         Longitude: long,
+        // Altitude is set to zero, to put the node on the surface of the globe. This is
+        // needed for nicely flying to it (showing the globe in focus).
+        // @TODO (2025-07-22, emmbr) We should come up with a better solution for this,
+        // so that we can set the altitude to the actual altitude of the place
         Altitude: 0
       }
     },
-    InteractionSphere: 0,
-    BoundingSphere: alt,
+    // Instead, we add the altitude to the interaction sphere, so that it limits how close
+    // we can move to the planet
+    InteractionSphere: alt,
     GUI: {
       Path: GeoLocationGroupKey
     }
