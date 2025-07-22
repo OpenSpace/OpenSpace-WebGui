@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Button, Text } from '@mantine/core';
+import { Button } from '@mantine/core';
 
-import { FilterList } from '@/components/FilterList/FilterList';
-import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { useAppDispatch } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { LogLevel } from '@/types/enums';
@@ -21,7 +18,6 @@ interface Props {
 export function GeoSearch({ onClick, onHover, search }: Props) {
   const [places, setPlaces] = useState<MatchedLocation[]>([]);
 
-  const { t } = useTranslation('panel-geolocation', { keyPrefix: 'earth-panel' });
   const dispatch = useAppDispatch();
   const anchor = useAnchorNode();
   const performSearch = useCallback(getPlaces, [dispatch, anchor]);
@@ -59,37 +55,24 @@ export function GeoSearch({ onClick, onHover, search }: Props) {
 
   return (
     <>
-      {places.length > 0 ? (
-        <FilterList>
-          <FilterList.InputField placeHolderSearchText={t('search.filter-placeholder')} />
-          <FilterList.SearchResults
-            data={places}
-            renderElement={(place: MatchedLocation) => {
-              const { centerLatitude, centerLongitude, name } = place;
-              return (
-                <Button
-                  w={'100%'}
-                  mb={3}
-                  justify={'left'}
-                  variant={'default'}
-                  onClick={() => {
-                    const altitude = computeAltitude(place);
-                    onClick(centerLatitude, centerLongitude, altitude, name);
-                  }}
-                  onMouseOverCapture={() => onHover(centerLatitude, centerLongitude)}
-                >
-                  {name}
-                </Button>
-              );
+      {places.map((place) => {
+        const { centerLatitude, centerLongitude, name } = place;
+        return (
+          <Button
+            w={'100%'}
+            mb={3}
+            justify={'left'}
+            variant={'default'}
+            onClick={() => {
+              const altitude = computeAltitude(place);
+              onClick(centerLatitude, centerLongitude, altitude, name);
             }}
-            matcherFunc={generateMatcherFunctionByKeys(['name'])}
+            onMouseOverCapture={() => onHover(centerLatitude, centerLongitude)}
           >
-            <FilterList.SearchResults.VirtualList />
-          </FilterList.SearchResults>
-        </FilterList>
-      ) : (
-        <Text>{t('search.no-result')}</Text>
-      )}
+            {name}
+          </Button>
+        );
+      })}
     </>
   );
 }
