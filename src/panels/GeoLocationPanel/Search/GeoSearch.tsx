@@ -76,6 +76,7 @@ export function GeoSearch({ onClick, onHover, search }: Props) {
               onClick(centerLatitude, centerLongitude, altitude, name);
             }}
             onMouseOverCapture={() => onHover(centerLatitude, centerLongitude)}
+            key={`${centerLatitude}-${centerLongitude}-${name}`}
           >
             {name}
           </Button>
