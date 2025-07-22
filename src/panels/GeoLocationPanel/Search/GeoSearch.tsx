@@ -10,12 +10,7 @@ import { LogLevel } from '@/types/enums';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { MatchedLocation } from './types';
-import {
-  calculateAltitudeEarth,
-  calculateAltitudeExtraTerrestial,
-  fetchPlacesEarth,
-  fetchPlacesExtraTerrestrial
-} from './util';
+import { computeAltitude, fetchPlacesEarth, fetchPlacesExtraTerrestrial } from './util';
 
 interface Props {
   onClick: (lat: number, long: number, altitude: number, name: string) => void;
@@ -78,16 +73,7 @@ export function GeoSearch({ onClick, onHover, search }: Props) {
                   justify={'left'}
                   variant={'default'}
                   onClick={() => {
-                    const altitudeET =
-                      place?.diameter &&
-                      calculateAltitudeExtraTerrestial(
-                        centerLatitude,
-                        centerLongitude,
-                        place.diameter
-                      );
-                    const altitudeEarth =
-                      place?.extent && calculateAltitudeEarth(place.extent);
-                    const altitude = altitudeET ?? altitudeEarth ?? 0;
+                    const altitude = computeAltitude(place);
                     onClick(centerLatitude, centerLongitude, altitude, name);
                   }}
                   onMouseOverCapture={() => onHover(centerLatitude, centerLongitude)}

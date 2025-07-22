@@ -102,3 +102,18 @@ export function calculateAltitudeEarth(extent: Extent): number {
   // 0.61 is the radian of 35 degrees - half of the standard horizontal field of view in OpenSpace
   return (0.5 * largestDist) / Math.tan(0.610865238);
 }
+
+export function computeAltitude(place: MatchedLocation) {
+  // If the place is on Earth, it will have the extent property, otherwise it will have
+  // the diameter property
+  if (place.extent) {
+    return calculateAltitudeEarth(place.extent);
+  } else if (place.diameter) {
+    return calculateAltitudeExtraTerrestial(
+      place.centerLatitude,
+      place.centerLongitude,
+      place.diameter
+    );
+  }
+  return 0; // Default altitude if no diameter or extent is provided
+}
