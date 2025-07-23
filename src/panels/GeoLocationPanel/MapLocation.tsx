@@ -4,10 +4,8 @@ import { Box, ThemeIcon } from '@mantine/core';
 import { useMouse, useMove } from '@mantine/hooks';
 
 import { DynamicMap } from '@/components/DynamicMap/DynamicMap';
-import { useMapPath } from '@/components/DynamicMap/hooks';
 import { MapMarker } from '@/components/DynamicMap/MapMarker';
 import { FocusIcon } from '@/icons/icons';
-import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { MouseMarkerPosition } from './types';
 
@@ -22,9 +20,6 @@ export function MapLocation({ onClick, mouseMarker, setMouseMarker }: Props) {
   const { ref } = useMove(handleClick);
   const { ref: refMove, x: xHover, y: yHover } = useMouse();
   const { t } = useTranslation('panel-geolocation', { keyPrefix: 'map-location' });
-
-  const anchor = useAnchorNode();
-  const [, mapExists] = useMapPath(anchor);
 
   const mouseIconSize = 25;
 
@@ -61,7 +56,7 @@ export function MapLocation({ onClick, mouseMarker, setMouseMarker }: Props) {
           cursor: 'pointer'
         }}
       >
-        {mapExists && mouseMarker && (
+        {mouseMarker && (
           <MapMarker
             left={`${mouseMarker.x * 100}%`}
             top={`${mouseMarker.y * 100}%`}
@@ -72,7 +67,7 @@ export function MapLocation({ onClick, mouseMarker, setMouseMarker }: Props) {
             </ThemeIcon>
           </MapMarker>
         )}
-        {mapExists && isHovering && (
+        {isHovering && (
           <MapMarker
             left={xHover}
             top={yHover}
