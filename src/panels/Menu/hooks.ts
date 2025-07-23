@@ -23,7 +23,7 @@ export function useMenuItems(): (MenuItemConfig & MenuItem)[] {
       return true;
     } else {
       // For advanced items, check the user level
-      return userLevel && userLevel > 2;
+      return userLevel && userLevel > PropertyVisibilityNumber.User;
     }
   });
 
