@@ -6,6 +6,9 @@
     "fetching-version-number": "Fetching OpenSpace version...",
     "custom-version-number": "Custom"
   },
+  "clear-button": {
+    "aria-label": "Clear"
+  },
   "collapsable-header": {
     "chevron-aria-label": {
       "open": "Open",
@@ -70,6 +73,17 @@
         "increment": "Increment value",
         "decrement": "Decrement value"
       }
+    }
+  },
+  "map": {
+    "no-map": {
+      "title": "Unavailable Map",
+      "description": "No map found for '{{name}}'"
+    },
+    "aria-labels": {
+      "map": "Map of {{name}}",
+      "view-direction": "Cone showing the view direction of the camera",
+      "openspace-icon": "OpenSpace icon showing the position on the map"
     }
   },
   "node-navigation-button": {

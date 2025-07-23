@@ -8,6 +8,7 @@ import '@/localization/config';
 import { LuaApiProvider } from './api/LuaApiProvider';
 import { ActionsPage } from './pages/ActionsPage';
 import { GuiPage } from './pages/GuiPage';
+import { MapPage } from './pages/MapPage';
 import { RoutesPage } from './pages/RoutesPage';
 import { store } from './redux/store';
 import { cssVariablesResolver, theme } from './theme/mantineTheme';
@@ -36,6 +37,7 @@ function App() {
                 <Route index element={<GuiPage />} />
                 <Route path={'routes'} element={<RoutesPage />} />
                 <Route path={'actions'} element={<ActionsPage />} />
+                <Route path={'map'} element={<MapPage />} />
                 {/* Fallback route for any undefined paths */}
                 <Route path={'*'} element={<GuiPage />} />
               </Routes>

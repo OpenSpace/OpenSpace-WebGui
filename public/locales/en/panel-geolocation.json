@@ -1,37 +1,56 @@
 {
-  "select-anchor-label": "Select an anchor",
-  "no-anchor-panel": "Currently there is no data for locations on {{anchor}}",
-  "earth-panel": {
-    "tab-search": "Search Place",
-    "tab-custom-coordinates": "Custom Coordinates",
-    "search": {
-      "input-placeholder": "Search places...",
-      "button-label": "Search",
-      "filter-placeholder": "Filter search",
-      "no-result": "Nothing found. Try another search!",
-      "results-title": "Results",
-      "settings": {
-        "tooltip": "Calculates an appropriate altitude automatically if unchecked",
-        "altitude-checkbox": "Use custom altitude",
-        "altitude-input-label": "Custom altitude (km)"
+  "added-nodes-title": "Added Nodes",
+  "search": {
+    "aria-labels": {
+      "search-button": "Search",
+      "clear-button": "Clear search input"
+    },
+    "placeholder": "Search locations on {{anchor}}",
+    "placeholder-disabled": "No search available for {{anchor}}",
+    "empty-results": "No results found. Try another search!",
+    "notifications": {
+      "error-geolocation-data": {
+        "title": "Error fetching geo location data"
       }
+    }
+  },
+  "custom-coordinates": {
+    "latitude-label": "Latitude",
+    "longitude-label": "Longitude",
+    "altitude-label": "Altitude",
+    "node-name-label": "Node name",
+    "label-degrees": "(deg)",
+    "label-kilometers": "(km)",
+    "label-optional": "(optional)",
+    "node-name-placeholder": "Custom Coordinate {{anchor}} ({{latitude}}, {{longitude}}, {{altitude}}km)"
+  },
+  "added-custom-nodes": {
+    "empty-nodes": "No added nodes",
+    "remove-node-aria-label": "Remove node"
+  },
+  "add-scene-graph-node-button": {
+    "label": "Add focus"
+  },
+  "map-location": {
+    "globe-location": {
+      "title": "Globe Location",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "altitude": "Altitude",
+      "kilometer-abbreviation": "km"
     },
-    "added-nodes-title": "Added Nodes",
-    "earth-entry-aria-label": {
-      "add": "Add node",
-      "remove": "Remove node"
+    "aria-labels": {
+      "mouse-icon": "Icon showing the camera position on the map"
     },
-    "custom-coordinates": {
-      "latitude-label": "Latitude (deg)",
-      "longitude-label": "Longitude (deg)",
-      "altitude-label": "Altitude (km)",
-      "node-name-label": "Node name (optional)",
-      "node-name-placeholder": "Custom Coordinate ({{latitude}}, {{longitude}}, {{altitude}}km)",
-      "add-focus-button-label": "Add Focus"
-    },
-    "added-custom-nodes": {
-      "empty-nodes": "No added nodes",
-      "remove-node-aria-label": "Remove node"
+    "mouse-location": "Mouse Location",
+    "altitude-label": "$t(custom-coordinates.altitude-label)",
+    "node-name-label": "$t(custom-coordinates.node-name-label)",
+    "node-name-placeholder": "$t(custom-coordinates.node-name-placeholder)"
+  },
+  "notifications": {
+    "duplicate-scene-graph-node": {
+      "title": "Warning",
+      "description": "Cannot add focus node. A node with identifier '{{identifier}}' already exists."
     }
   }
 }

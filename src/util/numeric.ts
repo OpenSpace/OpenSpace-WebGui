@@ -6,6 +6,7 @@ export function stepToDecimalPlaces(step: number): number {
   return stepStr.split('.').pop()?.length ?? 0;
 }
 
-export function roundNumberToDecimalPlaces(num: number, decimalPlaces: number): string {
-  return parseFloat(num.toFixed(decimalPlaces)).toString();
+// Round to # decimal places
+export function roundTo(num: number, decimalPlaces: number): number {
+  return parseFloat(num.toFixed(decimalPlaces));
 }

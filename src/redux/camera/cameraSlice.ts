@@ -5,13 +5,25 @@ export interface CameraState {
   longitude: number | undefined;
   altitude: number | undefined;
   altitudeUnit: string | undefined;
+  viewLatitude: number | undefined;
+  viewLongitude: number | undefined;
+  subSolarLatitude: number | undefined;
+  subSolarLongitude: number | undefined;
+  viewLength: number | undefined;
+  altitudeMeters: number | undefined;
 }
 
 const initialState: CameraState = {
   latitude: undefined,
   longitude: undefined,
   altitude: undefined,
-  altitudeUnit: undefined
+  altitudeUnit: undefined,
+  viewLatitude: undefined,
+  viewLongitude: undefined,
+  subSolarLatitude: undefined,
+  subSolarLongitude: undefined,
+  viewLength: undefined,
+  altitudeMeters: undefined
 };
 
 // @TODO: (ylvse 2024-10-14) - This topic should be called something more specific.
@@ -25,6 +37,13 @@ export const cameraSlice = createSlice({
       state.latitude = action.payload.latitude;
       state.longitude = action.payload.longitude;
       state.altitudeUnit = action.payload.altitudeUnit;
+      state.viewLatitude = action.payload.viewLatitude;
+      state.viewLongitude = action.payload.viewLongitude;
+      state.subSolarLatitude = action.payload.subSolarLatitude;
+      state.subSolarLongitude = action.payload.subSolarLongitude;
+      state.viewLength = action.payload.viewLength;
+      state.altitudeMeters = action.payload.altitudeMeters;
+      return state;
     }
   }
 });

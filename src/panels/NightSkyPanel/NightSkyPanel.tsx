@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Tabs } from '@mantine/core';
+import { Tabs } from '@mantine/core';
 
 import { LocationTab } from './tabs/LocationTab';
 import { MarkingsTab } from './tabs/MarkingsTab/MarkingsTab';
@@ -22,26 +22,24 @@ export function NightSkyPanel() {
         <Tabs.Tab value={'sun'}>{t('sun')}</Tabs.Tab>
       </Tabs.List>
 
-      <Box p={'xs'}>
-        <Tabs.Panel value={'markings'}>
-          <MarkingsTab />
-        </Tabs.Panel>
-        <Tabs.Panel value={'location'}>
-          <LocationTab />
-        </Tabs.Panel>
-        <Tabs.Panel value={'stars'}>
-          <StarsTab />
-        </Tabs.Panel>
-        <Tabs.Panel value={'time'}>
-          <TimeTab />
-        </Tabs.Panel>
-        <Tabs.Panel value={'solarsystem'}>
-          <SolarSystemTab />
-        </Tabs.Panel>
-        <Tabs.Panel value={'sun'}>
-          <SunTab />
-        </Tabs.Panel>
-      </Box>
+      <Tabs.Panel value={'markings'}>
+        <MarkingsTab />
+      </Tabs.Panel>
+      <Tabs.Panel value={'location'}>
+        <LocationTab />
+      </Tabs.Panel>
+      <Tabs.Panel value={'stars'}>
+        <StarsTab />
+      </Tabs.Panel>
+      <Tabs.Panel value={'time'}>
+        <TimeTab />
+      </Tabs.Panel>
+      <Tabs.Panel value={'solarsystem'}>
+        <SolarSystemTab />
+      </Tabs.Panel>
+      <Tabs.Panel value={'sun'}>
+        <SunTab />
+      </Tabs.Panel>
     </Tabs>
   );
 }
