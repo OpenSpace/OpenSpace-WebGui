@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Box, ThemeIcon } from '@mantine/core';
 import { useMouse, useMove } from '@mantine/hooks';
 
-import { MapData } from '@/components/DynamicMap/data';
 import { DynamicMap } from '@/components/DynamicMap/DynamicMap';
+import { useMapPath } from '@/components/DynamicMap/hooks';
 import { MapMarker } from '@/components/DynamicMap/MapMarker';
 import { FocusIcon } from '@/icons/icons';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
@@ -24,9 +24,8 @@ export function MapLocation({ onClick, mouseMarker, setMouseMarker }: Props) {
   const { t } = useTranslation('panel-geolocation', { keyPrefix: 'map-location' });
 
   const anchor = useAnchorNode();
+  const [, mapExists] = useMapPath(anchor);
 
-  const isMapInteractable =
-    anchor?.identifier && anchor.identifier.toLowerCase() in MapData;
   const mouseIconSize = 25;
 
   function handleClick({ x, y }: { x: number; y: number }) {
@@ -62,7 +61,7 @@ export function MapLocation({ onClick, mouseMarker, setMouseMarker }: Props) {
           cursor: 'pointer'
         }}
       >
-        {isMapInteractable && mouseMarker && (
+        {mapExists && mouseMarker && (
           <MapMarker
             left={`${mouseMarker.x * 100}%`}
             top={`${mouseMarker.y * 100}%`}
@@ -73,7 +72,7 @@ export function MapLocation({ onClick, mouseMarker, setMouseMarker }: Props) {
             </ThemeIcon>
           </MapMarker>
         )}
-        {isMapInteractable && isHovering && (
+        {mapExists && isHovering && (
           <MapMarker
             left={xHover}
             top={yHover}

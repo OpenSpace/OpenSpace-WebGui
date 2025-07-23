@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFileDialog } from '@mantine/hooks';
 import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
@@ -105,4 +106,22 @@ export function useSaveLoadJsonFiles(handlePickedFile: (content: JSON) => void) 
   }
 
   return { openSaveFileDialog, openLoadFileDialog };
+}
+
+/**
+ * Check if an image exists at a given URL.
+ * @param url The URL of the image to check.
+ * @returns A boolean indicating whether the image exists.
+ */
+export function useImageExists(url: string): boolean {
+  const [exists, setExists] = useState(false);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => setExists(true);
+    img.onerror = () => setExists(false);
+  }, [url]);
+
+  return exists;
 }

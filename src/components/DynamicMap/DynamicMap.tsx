@@ -17,7 +17,7 @@ import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { useCameraLatLong } from '@/redux/camera/hooks';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
-import { MapData } from './data';
+import { useMapPath } from './hooks';
 import { ViewCone } from './ViewCone';
 
 // The fewer decimals we can get away with, the less the component will rerender due to
@@ -77,7 +77,8 @@ export function DynamicMap({
   useSubscribeToCamera();
   const anchor = useAnchorNode();
 
-  const map = MapData[anchor?.identifier?.toLowerCase() ?? ''];
+  const [mapPath, mapExists] = useMapPath(anchor);
+
   const { t } = useTranslation('components', { keyPrefix: 'map' });
 
   const hasViewDirection = viewLatitude !== undefined && viewLongitude !== undefined;
@@ -105,7 +106,7 @@ export function DynamicMap({
     );
   }
 
-  if (!map || !anchor) {
+  if (!mapExists || !anchor) {
     return (
       <Alert variant={'light'} color={'orange'} title={t('no-map.title')}>
         <Text>{t('no-map.description', { name: anchor?.name })}</Text>
@@ -130,7 +131,7 @@ export function DynamicMap({
       style={style}
     >
       <BackgroundImage
-        src={`${import.meta.env.BASE_URL}/images/maps/${map}`}
+        src={mapPath}
         style={{ position: 'relative' }}
         aria-label={t('aria-labels.map', { name: anchor.name })}
       >
