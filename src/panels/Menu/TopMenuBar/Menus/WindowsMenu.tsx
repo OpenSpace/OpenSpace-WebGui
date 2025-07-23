@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { Box, CloseButton, Group, Menu } from '@mantine/core';
 
 import { IconSize } from '@/types/enums';
-import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { useMenuItems } from '../../hooks';
@@ -10,14 +9,13 @@ import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function WindowsMenu() {
   const { addWindow, closeWindow } = useWindowLayoutProvider();
-  const { menuItems } = useMenuItems();
+  const menuItems = useMenuItems();
   const { t } = useTranslation('menu', { keyPrefix: 'windows-menu' });
 
   return (
     <TopBarMenuWrapper closeOnItemClick targetTitle={t('title')} shouldLimitHeight>
       <Menu.Label>{t('add-new-window')}</Menu.Label>
-      {menuItems.map((itemConfig) => {
-        const item = menuItemsData[itemConfig.id];
+      {menuItems.map((item) => {
         return (
           <Group key={item.componentID} gap={5}>
             <Menu.Item
@@ -31,7 +29,7 @@ export function WindowsMenu() {
                 })
               }
               style={{
-                borderLeft: itemConfig.isOpen
+                borderLeft: item.isOpen
                   ? 'var(--openspace-border-active)'
                   : 'var(--openspace-border-active-placeholder)',
                 borderRadius: 0
@@ -41,7 +39,7 @@ export function WindowsMenu() {
               {item.title}
             </Menu.Item>
             <Box w={IconSize.md}>
-              {itemConfig.isOpen && (
+              {item.isOpen && (
                 <CloseButton
                   onClick={() => closeWindow(item.componentID)}
                   size={IconSize.md}

@@ -9,6 +9,7 @@ import { addEngineModeListener } from './enginemode/engineModeMiddleware';
 import { addEventsListener } from './events/eventsMiddleware';
 import { addFlightControllerListener } from './flightcontroller/flightControllerMiddleware';
 import { addGroupsListener } from './groups/groupsSliceMiddleware';
+import { addLocalListener } from './local/localMiddleware';
 import { addLoggingListener } from './logging/loggingMiddleware';
 import { addMissionsListener } from './missions/missionsMiddleware';
 import { addProfileListener } from './profile/profileMiddleware';
@@ -42,6 +43,7 @@ addSessionRecordingListener(startAppListening);
 addSkyBrowserListener(startAppListening);
 addTimeListener(startAppListening);
 addVersionListener(startAppListening);
+addLocalListener(startAppListening);
 
 // @TODO (2024-02-17, emmbr): The scene tree currently breaks if this lsitener is added
 // before the property tree listener. This should be investigated, and fixed so that
