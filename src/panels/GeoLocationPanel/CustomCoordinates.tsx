@@ -43,7 +43,7 @@ export function CustomCoordinates({
 
   return (
     <Stack gap={'xs'}>
-      <Group grow gap={'xs'}>
+      <Group grow gap={'xs'} align={'end'}>
         <NumericInput
           label={
             <>
