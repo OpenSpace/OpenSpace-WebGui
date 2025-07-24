@@ -13,7 +13,17 @@ export function ThreePartHeader({ title, leftSection, rightSection }: Props) {
     <Group justify={'left'} gap={'xs'} wrap={'nowrap'}>
       {leftSection}
       <Flex flex={1} miw={0}>
-        {typeof title === 'string' ? <TruncatedText>{title}</TruncatedText> : title}
+        {typeof title === 'string' ? (
+          <TruncatedText
+            ta={'left'}
+            style={{ textWrap: 'pretty', overflowWrap: 'anywhere' }}
+            lineClamp={1}
+          >
+            {title}
+          </TruncatedText>
+        ) : (
+          title
+        )}
       </Flex>
       {rightSection}
     </Group>
