@@ -15,6 +15,7 @@ import { Decimals, StepSizes, TimePart } from './types';
 export function SimulationIncrement() {
   const luaApi = useOpenSpaceApi();
   const [stepSize, setStepSize] = useState<TimePart>(TimePart.Seconds);
+  const [beforeAdjust, setBeforeAdjust] = useState<number | null>(null);
 
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime) ?? 1;
   const updateDeltaTime = useThrottledCallback(updateDeltaTimeNow, 50);
@@ -42,6 +43,9 @@ export function SimulationIncrement() {
   }
 
   function onQuickAdjust(value: number) {
+    if (beforeAdjust === null) {
+      setBeforeAdjust(targetDeltaTime);
+    }
     const quickAdjust = StepSizes[stepSize] * value ** 5;
     updateDeltaTime(targetDeltaTime + quickAdjust);
   }
@@ -69,7 +73,12 @@ export function SimulationIncrement() {
       </Group>
       <QuickAdjustSlider
         onChange={onQuickAdjust}
-        onEnd={() => updateDeltaTime(targetDeltaTime)}
+        onEnd={() => {
+          if (beforeAdjust !== null) {
+            updateDeltaTime(beforeAdjust);
+          }
+          setBeforeAdjust(null);
+        }}
       />
       <DeltaTimeStepsControl />
     </>
