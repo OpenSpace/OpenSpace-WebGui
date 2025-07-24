@@ -16,7 +16,9 @@ export function TruncatedText({ tooltipProps, children, ...rest }: Props) {
   const [ref] = useResizeObserver();
 
   const showTooltip: boolean =
-    ref.current && ref.current.scrollWidth > ref.current.clientWidth;
+    ref.current &&
+    (ref.current.scrollWidth > ref.current.clientWidth ||
+      ref.current.scrollHeight > ref.current.clientHeight);
 
   return (
     <Tooltip
