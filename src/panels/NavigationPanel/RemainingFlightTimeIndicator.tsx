@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Group, Text } from '@mantine/core';
 
+import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useSubscribeToCameraPath } from '@/hooks/topicSubscriptions';
 import { AirplaneIcon } from '@/icons/icons';
@@ -27,9 +28,7 @@ export function RemainingFlightTimeIndicator({ compact = true }: Props) {
     <Group className={styles.blinking} wrap={'nowrap'} gap={'xs'} p={'xs'}>
       <AirplaneIcon style={{ flexShrink: 0 }} size={IconSize.lg} />
       {compact ? (
-        <Text truncate maw={130}>
-          {pathTargetNodeName}
-        </Text>
+        <TruncatedText maw={130}>{pathTargetNodeName}</TruncatedText>
       ) : (
         <Text ta={'center'}>{t('flying-to', { target: pathTargetNodeName })}</Text>
       )}

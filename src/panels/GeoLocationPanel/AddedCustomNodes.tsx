@@ -30,7 +30,13 @@ export function AddedCustomNodes() {
   return (
     <>
       {addedCustomNodes.map((identifier) => (
-        <Group key={identifier} wrap={'nowrap'} grow preventGrowOverflow={false}>
+        <Group
+          key={identifier}
+          gap={'xs'}
+          wrap={'nowrap'}
+          grow
+          preventGrowOverflow={false}
+        >
           <ActionIcon
             variant={'light'}
             size={'sm'}

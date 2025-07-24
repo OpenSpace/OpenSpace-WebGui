@@ -1,4 +1,6 @@
-import { Flex, Group, Text } from '@mantine/core';
+import { Flex, Group } from '@mantine/core';
+
+import { TruncatedText } from '../TruncatedText/TruncatedText';
 
 interface Props {
   title: React.ReactNode;
@@ -8,17 +10,17 @@ interface Props {
 
 export function ThreePartHeader({ title, leftSection, rightSection }: Props) {
   return (
-    <Group justify={'space-between'} gap={'xs'} wrap={'nowrap'}>
+    <Group justify={'left'} gap={'xs'} wrap={'nowrap'}>
       {leftSection}
-      <Flex flex={1}>
+      <Flex flex={1} miw={0}>
         {typeof title === 'string' ? (
-          <Text
+          <TruncatedText
             ta={'left'}
             style={{ textWrap: 'pretty', overflowWrap: 'anywhere' }}
             lineClamp={1}
           >
             {title}
-          </Text>
+          </TruncatedText>
         ) : (
           title
         )}

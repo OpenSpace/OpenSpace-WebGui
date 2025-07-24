@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { Button, Group, Text, Tooltip } from '@mantine/core';
+import { Button, Group, Tooltip } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
+import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useIsSgnFocusable } from '@/hooks/sceneGraphNodes/hooks';
 import { ClockOffIcon } from '@/icons/icons';
@@ -49,13 +50,13 @@ export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
       justify={'start'}
       flex={1}
     >
-      <Text
+      <TruncatedText
         ta={'left'}
         style={{ textWrap: 'pretty', overflowWrap: 'anywhere', wordBreak: 'break-word' }}
         lineClamp={3}
       >
         {name}
-      </Text>
+      </TruncatedText>
     </Button>
   );
 

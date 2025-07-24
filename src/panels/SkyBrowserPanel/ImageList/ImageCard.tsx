@@ -1,6 +1,7 @@
-import { Card, Group, Text, Tooltip } from '@mantine/core';
+import { Card, Group, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { PlusIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
@@ -38,7 +39,7 @@ export function ImageCard({ image }: Props) {
       <Card.Section p={'xs'}>
         <Group wrap={'nowrap'}>
           <Tooltip label={image.name}>
-            <Text truncate={'end'}>{image.name}</Text>
+            <TruncatedText>{image.name}</TruncatedText>
           </Tooltip>
           <ImageInfoPopover image={image} />
         </Group>

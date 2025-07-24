@@ -1,7 +1,8 @@
-import { Stack, Text } from '@mantine/core';
+import { Stack } from '@mantine/core';
 
 import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { removeLastWordFromUri } from '@/util/propertyTreeHelpers';
 
 import { SearchItemType } from './util';
@@ -19,9 +20,7 @@ export function SettingsSearchListItem({ type, uri }: Props) {
   const isSubowner = type == SearchItemType.SubPropertyOwner;
   return (
     <Stack gap={0}>
-      <Text truncate c={'dimmed'}>
-        {removeLastWordFromUri(uri)}
-      </Text>
+      <TruncatedText c={'dimmed'}>{removeLastWordFromUri(uri)}</TruncatedText>
       {isSubowner ? <PropertyOwner uri={uri} /> : <Property uri={uri} />}
     </Stack>
   );

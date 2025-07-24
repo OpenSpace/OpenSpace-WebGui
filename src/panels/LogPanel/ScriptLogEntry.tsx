@@ -6,6 +6,7 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 import { BoolInput } from '@/components/Input/BoolInput';
 import { RerunScriptIcon } from '@/icons/icons';
+import styles from '@/theme/global.module.css';
 
 interface Props {
   script: string;
@@ -32,6 +33,7 @@ export function ScriptLogEntry({ script, index, isSelected, onToggleSelection }:
       />
       <Code color={'dark.7'} w={'100%'}>
         <Text
+          className={styles.selectable}
           truncate={expanded ? undefined : 'end'}
           onClick={() => setExpanded(!expanded)}
           style={{ cursor: 'pointer', wordBreak: 'break-all' }}

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Group, Stack, Text } from '@mantine/core';
 
+import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { useAimNode, useAnchorNode } from '@/util/propertyTreeHooks';
@@ -20,7 +21,7 @@ export function NavigationPanelMenuButtonContent() {
         <Group gap={5} align={'center'}>
           <AnchorIcon size={IconSize.md} />
           <Stack gap={0} maw={130} ta={'start'}>
-            <Text truncate>{anchorNode?.name}</Text>
+            <TruncatedText>{anchorNode?.name}</TruncatedText>
             <Text fw={500} size={'xs'} c={'dimmed'}>
               {t('anchor')}
             </Text>
@@ -29,7 +30,7 @@ export function NavigationPanelMenuButtonContent() {
         <Group gap={5}>
           <TelescopeIcon size={IconSize.md} />
           <Stack gap={0} maw={130} ta={'start'}>
-            <Text truncate>{aimNode?.name}</Text>
+            <TruncatedText>{aimNode?.name}</TruncatedText>
             <Text fw={500} size={'xs'} c={'dimmed'}>
               {t('aim')}
             </Text>
@@ -44,7 +45,7 @@ export function NavigationPanelMenuButtonContent() {
     <Group>
       <FocusIcon size={IconSize.lg} />
       <Stack gap={0} maw={130} ta={'start'}>
-        <Text truncate>{anchorNode?.name}</Text>
+        <TruncatedText>{anchorNode?.name}</TruncatedText>
         <Text fw={500} size={'xs'} c={'dimmed'}>
           {t('focus')}
         </Text>

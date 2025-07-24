@@ -107,7 +107,8 @@ export const theme = createTheme({
           hover: true,
           focus: true,
           touch: true
-        }
+        },
+        style: { overflowWrap: 'anywhere' }
       }
     }),
     Divider: Divider.extend({

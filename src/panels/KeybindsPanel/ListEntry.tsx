@@ -1,5 +1,6 @@
-import { Button, Text } from '@mantine/core';
+import { Button } from '@mantine/core';
 
+import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { KeybindInfoType } from '@/types/types';
 
 import { KeybindButtons } from './KeybindButtons';
@@ -22,7 +23,7 @@ export function KeybindListEntry({ keybind, onClick, isSelected }: Props) {
       }
       justify={'space-between'}
     >
-      <Text truncate>{keybind.name}</Text>
+      <TruncatedText>{keybind.name}</TruncatedText>
     </Button>
   );
 }

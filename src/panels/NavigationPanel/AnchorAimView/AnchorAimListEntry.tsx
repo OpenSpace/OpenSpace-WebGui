@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Group, MantineStyleProps, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Group, MantineStyleProps, Tooltip } from '@mantine/core';
 
+import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
 import { Identifier, PropertyOwner } from '@/types/types';
 
@@ -34,9 +35,9 @@ export function AnchorAimListEntry({
 
   return (
     <Group gap={'xs'} key={node.identifier} {...styleProps}>
-      <Text flex={1} truncate pl={'xs'}>
+      <TruncatedText flex={1} pl={'xs'}>
         {node.name}
-      </Text>
+      </TruncatedText>
       <Tooltip label={t('anchor-tooltip')} openDelay={600}>
         <ActionIcon
           aria-label={`${t('anchor-aria-label')}: ${node.name}`}
