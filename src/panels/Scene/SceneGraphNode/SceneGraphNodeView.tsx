@@ -55,10 +55,10 @@ export function SceneGraphNodeView({ uri }: Props) {
 
   return (
     <>
-      <Box mt={'xs'} mb={'xs'}>
+      <Box>
         <SceneGraphNodeHeader uri={uri} />
       </Box>
-      <Tabs mt={'xs'} defaultValue={defaultTab}>
+      <Tabs mt={5} defaultValue={defaultTab}>
         <Tabs.List>
           <Tooltip
             label={
