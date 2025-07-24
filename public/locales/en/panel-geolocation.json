@@ -25,8 +25,7 @@
     "node-name-placeholder": "Custom Coordinate {{anchor}} ({{latitude}}, {{longitude}}, {{altitude}}km)"
   },
   "added-custom-nodes": {
-    "empty-nodes": "No added nodes",
-    "remove-node-aria-label": "Remove node"
+    "empty-nodes": "No added nodes"
   },
   "add-scene-graph-node-button": {
     "label": "Add focus"
