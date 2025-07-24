@@ -1,6 +1,7 @@
-import { Button, Group, MantineStyleProps, Text } from '@mantine/core';
+import { Button, Group, MantineStyleProps } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
+import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { FocusIcon } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Identifier, PropertyOwner } from '@/types/types';
@@ -39,7 +40,7 @@ export function FocusEntry({
         disabled={disableFocus}
         miw={70}
       >
-        <Text truncate>{entry.name}</Text>
+        <TruncatedText>{entry.name}</TruncatedText>
       </Button>
 
       <Group gap={'xs'}>
