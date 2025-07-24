@@ -21,11 +21,7 @@ export function TruncatedText({ tooltipProps, children, ...rest }: Props) {
       ref.current.scrollHeight > ref.current.clientHeight);
 
   return (
-    <Tooltip
-      label={children}
-      {...tooltipProps}
-      style={{ display: showTooltip ? 'block' : 'none' }}
-    >
+    <Tooltip label={children} {...tooltipProps} display={showTooltip ? 'block' : 'none'}>
       <Text truncate {...rest} ref={ref}>
         {children}
       </Text>
