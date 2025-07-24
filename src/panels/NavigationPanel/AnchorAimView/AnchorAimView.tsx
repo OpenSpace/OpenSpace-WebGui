@@ -3,6 +3,7 @@ import { Button, Divider, Group, Kbd, Space, Text, Title, Tooltip } from '@manti
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { useProperty } from '@/hooks/properties';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
@@ -111,7 +112,7 @@ export function AnchorAimView({
             disabled={isInFlight}
             miw={100}
           >
-            <Text truncate>{anchorNode?.name}</Text>
+            <TruncatedText>{anchorNode?.name}</TruncatedText>
           </Button>
         </Tooltip>
 
@@ -128,7 +129,7 @@ export function AnchorAimView({
             miw={100}
           >
             {aimNode ? (
-              <Text truncate>{aimNode.name}</Text>
+              <TruncatedText>{aimNode.name}</TruncatedText>
             ) : (
               <Text c={'dimmed'}>{t('no-aim')}</Text>
             )}
