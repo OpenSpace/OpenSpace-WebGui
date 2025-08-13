@@ -48,6 +48,7 @@ import {
   TimePanel,
   UserPanelsPanel
 } from './LazyLoads';
+import { SessionRecordingKeyframesPanel } from '@/panels/SessionRecordingKeyframesPanel/SessionRecordingKeyframesPanel';
 
 export interface MenuItem {
   title: string; // Title of the rc-dock tab
@@ -221,6 +222,13 @@ export const menuItemsData: Record<string, MenuItem> = {
     preferredPosition: 'right',
     defaultVisible: false,
     advanced: true
+  },
+  keyframesPanel: {
+    title: 'Session Recording Keyframes',
+    componentID: 'keyframesPanel',
+    content: <SessionRecordingKeyframesPanel />,
+    preferredPosition: 'right',
+    defaultVisible: true
   }
 };
 
