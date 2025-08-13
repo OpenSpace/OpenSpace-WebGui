@@ -10,8 +10,6 @@ export function SessionRecordingKeyframesPanel() {
 
   const [file, setFile] = useState<string>('');
   const [keyframes, setKeyframes] = useState<KeyframeEntry[]>([]);
-  const ref = useRef<HTMLDivElement>(null);
-  console.log(ref.current?.clientWidth);
 
   async function onMove(index: number, newTime: number) {
     if (!luaApi) {
