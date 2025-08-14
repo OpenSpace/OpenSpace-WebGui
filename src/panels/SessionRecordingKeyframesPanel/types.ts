@@ -1,6 +1,7 @@
 interface Entry {
   Timestamp: number;
   SimulationTime: number;
+  selected?: boolean;
 }
 
 interface CameraEntry extends Entry {
