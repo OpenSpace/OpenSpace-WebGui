@@ -53,6 +53,12 @@ export function SessionRecordingKeyframesPanel() {
 
       <Timeline keyframes={keyframes} onMove={onMove} onSelect={onSelect} />
       <KeyframeInfo keyframe={selectedKeyframe} />
+      <Button onClick={() => luaApi?.keyframeRecording.play()}>Play</Button>
+      <Button onClick={() => luaApi?.keyframeRecording.pause()}>Pause</Button>
+      <Button onClick={() => luaApi?.sessionRecording.setPlaybackPause(false)}>
+        Resume
+      </Button>
+      <Button onClick={() => luaApi?.sessionRecording.stopPlayback()}>Stop</Button>
     </>
   );
 }
