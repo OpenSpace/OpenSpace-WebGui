@@ -93,6 +93,7 @@ export const Property = memo(({ uri }: Props) => {
         <PropertyLabel
           name={meta.guiName}
           description={meta.description}
+          visibility={meta.visibility}
           readOnly={meta.isReadOnly}
           uri={uri}
         />

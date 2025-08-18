@@ -5,15 +5,17 @@ import { Label } from '@/components/Label/Label';
 import { Uri } from '@/types/types';
 
 import { PropertyDescription } from './PropertyDescription';
+import { PropertyVisibility } from '@/types/Property/property';
 
 interface Props {
   name: string;
   uri: Uri;
   description?: string;
+  visibility: PropertyVisibility;
   readOnly?: boolean;
 }
 
-export function PropertyLabel({ name, uri, description, readOnly = false }: Props) {
+export function PropertyLabel({ name, uri, description, visibility, readOnly = false }: Props) {
   const { t } = useTranslation('components', { keyPrefix: 'property.property-label' });
 
   return (
@@ -30,7 +32,7 @@ export function PropertyLabel({ name, uri, description, readOnly = false }: Prop
           )}
         </>
       }
-      info={<PropertyDescription uri={uri} description={description || ''} />}
+      info={<PropertyDescription uri={uri} description={description || ''} visibility={visibility} />}
     />
   );
 }
