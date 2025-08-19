@@ -6,17 +6,27 @@ import { Playhead } from './Playhead';
 interface Props {
   keyframes: KeyframeEntry[];
   tickInterval?: number;
+  selectedKeyframe: KeyframeEntry | undefined;
   onMove: (id: number, newTime: number) => void;
   onSelect: (keyframe: KeyframeEntry) => void;
 }
 
-export function Timeline({ keyframes, tickInterval = 5, onMove, onSelect }: Props) {
+export function Timeline({
+  keyframes,
+  tickInterval = 5,
+  selectedKeyframe,
+  onMove,
+  onSelect
+}: Props) {
   const [draggingId, setDraggingId] = useState<number | null>(null);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; time: number } | null>(
     null
   );
   const [playHeadTime, setPlayHeadTime] = useState(0);
   const [draggingPlayHead, setDraggingPlayHead] = useState(false);
+  // State to keep track if we need to make an update or not - avoids updating data if
+  // we only selected a keyframe
+  const [keyframeInitialTime, setKeyframeInitialTime] = useState<number | null>(null);
 
   // Svg sizes
   const width = 800;
@@ -38,6 +48,7 @@ export function Timeline({ keyframes, tickInterval = 5, onMove, onSelect }: Prop
 
   function onKeyframeStartDrag(index: number, startX: number) {
     onSelect(keyframes[index]);
+    setKeyframeInitialTime(keyframes[index].Timestamp);
     setDraggingId(index);
     setTooltip({ x: startX, y: height / 2 - 15, time: keyframes[index].Timestamp });
   }
@@ -52,7 +63,11 @@ export function Timeline({ keyframes, tickInterval = 5, onMove, onSelect }: Prop
   }
 
   function onKeyframeDragEnd() {
-    if (draggingId !== null && tooltip !== null) {
+    if (
+      draggingId !== null &&
+      tooltip !== null &&
+      keyframeInitialTime !== tooltip.time // Only update if we actually moved
+    ) {
       onMove(draggingId, tooltip.time);
     }
 
@@ -120,7 +135,7 @@ export function Timeline({ keyframes, tickInterval = 5, onMove, onSelect }: Prop
             height={size}
             fill={isCameraEntry(kf) ? 'blue' : 'green'}
             strokeWidth={2}
-            stroke={kf.selected ? 'white' : 'none'}
+            stroke={kf.Id === selectedKeyframe?.Id ? 'white' : 'none'}
             cursor={draggingId !== null ? 'grabbing' : 'grab'}
             onMouseDown={(event) => {
               onKeyframeStartDrag(index, event.nativeEvent.offsetX);
