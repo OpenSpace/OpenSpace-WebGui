@@ -151,12 +151,15 @@
       "cancel": "Cancel"
     },
     "visibility": {
-      "Hidden": "Hidden",
-      "Developer": "Developer",
-      "AdvancedUser": "Advanced User",
-      "User": "User",
-      "NoviceUser": "Novice User",
-      "Always": "Always"
+      "title": "Visibility",
+      "levels": {
+        "Hidden": "Hidden",
+        "Developer": "Developer",
+        "AdvancedUser": "Advanced User",
+        "User": "User",
+        "NoviceUser": "Novice User",
+        "Always": "Always"
+      }
     }
   },
   "resizeable-content": {
