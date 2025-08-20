@@ -50,6 +50,16 @@ export function SessionRecordingKeyframesPanel() {
         label={'Load keyframes file'}
       />
 
+      <Button onClick={() => luaApi?.keyframeRecording.addCameraKeyframe(5)}>
+        Add Camera Keyframe
+      </Button>
+
+      <StringInput
+        onEnter={(value) => luaApi?.keyframeRecording.addScriptKeyframe(5, value)}
+        value=""
+        label={'Add Script Keyframe'}
+      />
+
       <Timeline
         keyframes={keyframes}
         selectedKeyframe={selectedKeyframe}
