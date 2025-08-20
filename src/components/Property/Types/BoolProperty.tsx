@@ -16,7 +16,13 @@ export function BoolProperty({ uri, readOnly }: PropertyProps) {
       value={value}
       onChange={setValue}
       label={meta.guiName}
-      info={<PropertyDescription uri={uri} description={meta.description} visibility={meta.visibility} />}
+      info={
+        <PropertyDescription
+          uri={uri}
+          description={meta.description}
+          visibility={meta.visibility}
+        />
+      }
       disabled={readOnly}
     />
   );
