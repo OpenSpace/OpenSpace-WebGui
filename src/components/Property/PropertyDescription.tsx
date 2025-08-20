@@ -3,8 +3,8 @@ import { Text, Group } from '@mantine/core';
 
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import styles from '@/theme/global.module.css';
-import { Uri } from '@/types/types';
 import { PropertyVisibility } from '@/types/Property/property';
+import { Uri } from '@/types/types';
 
 interface Props {
   uri: Uri;
