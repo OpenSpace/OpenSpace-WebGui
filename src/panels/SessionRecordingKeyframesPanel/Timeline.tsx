@@ -2,35 +2,44 @@ import { isCameraEntry, KeyframeEntry } from './types';
 import { Tick } from './Tick';
 import { useState } from 'react';
 import { Playhead } from './Playhead';
+import { Keyframe } from './Keyframe';
 
 interface Props {
   keyframes: KeyframeEntry[];
   tickInterval?: number;
-  selectedKeyframe: KeyframeEntry | undefined;
-  onMove: (id: number, newTime: number) => void;
-  onSelect: (keyframe: KeyframeEntry) => void;
+  selectedKeyframeIDs: number[];
+  playheadTime: number;
+
+  onSelectKeyframes: (ids: number[], isAdditive: boolean) => void;
+  onMoveKeyframes: (ids: number[], delta: number) => void;
+  onPlayheadChange: (time: number) => void;
 }
 
 export function Timeline({
   keyframes,
   tickInterval = 5,
-  selectedKeyframe,
-  onMove,
-  onSelect
+  selectedKeyframeIDs,
+  playheadTime,
+  onSelectKeyframes,
+  onMoveKeyframes,
+  onPlayheadChange
 }: Props) {
-  const [draggingId, setDraggingId] = useState<number | null>(null);
+  const [draggingIds, setDraggingIds] = useState<number[] | null>(null);
+  const [dragStartX, setDragStartX] = useState<number | null>(null);
+
   const [tooltip, setTooltip] = useState<{ x: number; y: number; time: number } | null>(
     null
   );
-  const [playHeadTime, setPlayHeadTime] = useState(0);
-  const [draggingPlayHead, setDraggingPlayHead] = useState(false);
-  // State to keep track if we need to make an update or not - avoids updating data if
-  // we only selected a keyframe
-  const [keyframeInitialTime, setKeyframeInitialTime] = useState<number | null>(null);
+
+  const [draggingPlayhead, setDraggingPlayhead] = useState(false);
 
   // Svg sizes
   const width = 800;
-  const height = 200;
+  const rowHeight = 80;
+  const axisHeight = 50;
+  const height = axisHeight + rowHeight;
+  const keyframeHeight = 20;
+  const keyframeWidth = 20;
   const totalDuration = Math.max(...keyframes.map((k) => k.Timestamp), 60);
 
   const ticks: number[] = [];
@@ -46,56 +55,87 @@ export function Timeline({
     return (x / width) * totalDuration;
   }
 
-  function onKeyframeStartDrag(index: number, startX: number) {
-    onSelect(keyframes[index]);
-    setKeyframeInitialTime(keyframes[index].Timestamp);
-    setDraggingId(index);
-    setTooltip({ x: startX, y: height / 2 - 15, time: keyframes[index].Timestamp });
+  function toYPos(index: number) {
+    const yBase = rowHeight * index;
+    return axisHeight + yBase + rowHeight / 2;
   }
 
-  function onKeyframeDragMove(clientX: number) {
-    if (draggingId === null) {
+  function onKeyframeMouseDown(event: React.MouseEvent, kf: KeyframeEntry) {
+    event.stopPropagation();
+
+    const isAdditive = event.ctrlKey || event.metaKey;
+    // Update selection
+    onSelectKeyframes([kf.Id], isAdditive);
+
+    if (isAdditive) {
+      setDraggingIds(
+        selectedKeyframeIDs.includes(kf.Id)
+          ? selectedKeyframeIDs
+          : [...selectedKeyframeIDs, kf.Id]
+      );
+    } else {
+      setDraggingIds([kf.Id]);
+    }
+
+    const startXPos = toXPos(kf.Timestamp);
+    setDragStartX(startXPos);
+    setTooltip({
+      x: startXPos,
+      y: toYPos(0) - keyframeHeight,
+      time: kf.Timestamp
+    });
+  }
+
+  function onMouseMove(event: React.MouseEvent) {
+    const clientX = event.nativeEvent.offsetX;
+    const clientY = event.nativeEvent.offsetY;
+
+    // If we're dragging the playhead in the axis area
+    if (draggingPlayhead && clientY <= axisHeight) {
+      const newTime = Math.max(0, Math.min(totalDuration, toTime(clientX)));
+      onPlayheadChange(newTime);
+      setTooltip({ x: clientX + 25, y: axisHeight - 10, time: newTime });
+      return;
+    }
+
+    if (!draggingIds || dragStartX === null) {
       return;
     }
 
     const newTime = Math.max(0, Math.min(totalDuration, toTime(clientX)));
-    setTooltip({ x: toXPos(newTime), y: height / 2 - 15, time: newTime });
+    const clampedXPos = toXPos(newTime);
+    setTooltip({ x: clampedXPos, y: toYPos(0) - keyframeHeight, time: newTime });
   }
 
-  function onKeyframeDragEnd() {
-    if (
-      draggingId !== null &&
-      tooltip !== null &&
-      keyframeInitialTime !== tooltip.time // Only update if we actually moved
-    ) {
-      onMove(draggingId, tooltip.time);
+  function onMouseUp() {
+    // Update keyframes if they were moved
+    if (draggingIds && dragStartX !== null && tooltip !== null) {
+      const startTime = toTime(dragStartX);
+      const newTime = tooltip.time;
+
+      const delta = newTime - startTime;
+      if (Math.abs(delta) > 0.01) {
+        onMoveKeyframes(draggingIds, delta);
+      }
     }
 
-    setDraggingId(null);
+    setDraggingIds(null);
     setTooltip(null);
+    setDragStartX(null);
+    setDraggingPlayhead(false);
   }
 
-  function onPlayheadStartDrag(clientX: number) {
-    if (draggingId !== null) {
-      return;
-    }
-    setDraggingPlayHead(true);
+  function onBackgroundClick() {
+    onSelectKeyframes([], false);
+    setDraggingIds(null);
+  }
+
+  function onAxisMouseDown(event: React.MouseEvent) {
+    const clientX = event.nativeEvent.offsetX;
     const newTime = Math.max(0, Math.min(totalDuration, toTime(clientX)));
-    setPlayHeadTime(newTime);
-    setTooltip({ x: clientX, y: height / 2 - 15, time: newTime });
-  }
-
-  function onPlayheadDragMove(clientX: number) {
-    if (!draggingPlayHead) {
-      return;
-    }
-    const newTime = Math.max(0, Math.min(totalDuration, toTime(clientX)));
-    setPlayHeadTime(newTime);
-    setTooltip({ x: clientX, y: height / 2 - 15, time: newTime });
-  }
-
-  function onPlayheadDragEnd() {
-    setDraggingPlayHead(false);
+    setTooltip({ x: clientX + 25, y: axisHeight - 10, time: newTime });
+    setDraggingPlayhead(true);
+    onPlayheadChange(newTime);
   }
 
   return (
@@ -103,72 +143,68 @@ export function Timeline({
       width={width}
       height={height}
       style={{ border: '1px solid #ccc', background: '#fafafa20' }}
-      onMouseUp={() => {
-        onKeyframeDragEnd();
-        onPlayheadDragEnd();
-      }}
-      onMouseLeave={() => {
-        onKeyframeDragEnd();
-        onPlayheadDragEnd();
-      }}
-      onMouseMove={(event) => {
-        onKeyframeDragMove(event.nativeEvent.offsetX);
-        onPlayheadDragMove(event.nativeEvent.offsetX);
-      }}
-      onMouseDown={(event) => onPlayheadStartDrag(event.nativeEvent.offsetX)}
-      cursor={draggingPlayHead || draggingId !== null ? 'grabbing' : 'default'}
+      onMouseUp={onMouseUp}
+      onMouseLeave={onMouseUp}
+      onMouseMove={onMouseMove}
+      onMouseDown={onBackgroundClick}
+      cursor={draggingPlayhead ? 'grabbing' : 'default'}
     >
-      {ticks.map((t) => {
-        return <Tick key={t} time={t} xPos={toXPos(t)} height={height} />;
-      })}
+      <g onMouseDown={onAxisMouseDown} cursor={draggingPlayhead ? 'grabbing' : 'grab'}>
+        <rect x={0} y={0} width={width} height={axisHeight} fill="#fafafa20" />
+        {ticks.map((t) => {
+          return <Tick key={t} time={t} xPos={toXPos(t)} height={axisHeight} />;
+        })}
+      </g>
 
-      <Playhead xPos={toXPos(playHeadTime)} height={height} />
-
-      {keyframes.map((kf, index) => {
-        const size = 20;
+      {keyframes.map((kf) => {
         return (
-          <rect
-            key={kf.Timestamp}
-            x={toXPos(kf.Timestamp) - size / 2}
-            y={height / 2 - size / 2}
-            width={size}
-            height={size}
-            fill={isCameraEntry(kf) ? 'blue' : 'green'}
-            strokeWidth={2}
-            stroke={kf.Id === selectedKeyframe?.Id ? 'white' : 'none'}
-            cursor={draggingId !== null ? 'grabbing' : 'grab'}
-            onMouseDown={(event) => {
-              onKeyframeStartDrag(index, event.nativeEvent.offsetX);
-              event.stopPropagation();
-            }}
+          <Keyframe
+            key={kf.Id}
+            x={toXPos(kf.Timestamp) - keyframeWidth / 2}
+            y={toYPos(0) - keyframeHeight / 2}
+            width={keyframeWidth}
+            height={keyframeHeight}
+            isSelected={selectedKeyframeIDs.includes(kf.Id)}
+            cursor={draggingIds !== null ? 'grabbing' : 'grab'}
+            keyframeInfo={kf}
+            onMouseDown={onKeyframeMouseDown}
           />
         );
       })}
 
       {tooltip && (
         <g>
-          {draggingId !== null ? (
-            <>
-              <rect
-                x={tooltip.x - 10}
-                y={height / 2 - 10}
-                width={20}
-                height={20}
-                opacity={0.6}
-                fill={isCameraEntry(keyframes[draggingId]) ? 'blue' : 'green'}
-                cursor={draggingId !== null ? 'grabbing' : 'grab'}
-              />
-              <text x={tooltip.x} y={tooltip.y} fill={'white'} textAnchor="middle">
-                {tooltip.time.toFixed(2)}s
-              </text>
-            </>
-          ) : (
-            <text x={tooltip.x + 2} y={tooltip.y} fill={'white'}>
-              {tooltip.time.toFixed(2)}s
-            </text>
-          )}
+          {draggingIds &&
+            draggingIds.map((id) => {
+              const kf = keyframes.find((kf) => kf.Id === id);
+              if (!kf) {
+                return null;
+              }
+
+              const delta = tooltip.time - toTime(dragStartX!);
+
+              return (
+                <Keyframe
+                  key={id}
+                  x={toXPos(kf.Timestamp + delta) - keyframeWidth / 2}
+                  y={toYPos(0) - keyframeHeight / 2}
+                  width={keyframeWidth}
+                  height={keyframeHeight}
+                  opacity={0.5}
+                  cursor={draggingIds !== null ? 'grabbing' : 'grab'}
+                  isSelected={false}
+                  keyframeInfo={kf}
+                />
+              );
+            })}
+
+          <text x={tooltip.x} y={tooltip.y} fill={'white'} textAnchor="middle">
+            {tooltip.time.toFixed(2)}s
+          </text>
         </g>
       )}
+
+      <Playhead xPos={toXPos(playheadTime)} height={height} />
     </svg>
   );
 }

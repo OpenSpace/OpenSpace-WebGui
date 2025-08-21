@@ -3,17 +3,19 @@ import { isCameraEntry, KeyframeEntry } from './types';
 import { useOpenSpaceApi } from '@/api/hooks';
 
 interface Props {
-  keyframe: KeyframeEntry | null;
+  id: number;
   keyframes: KeyframeEntry[];
 }
 
-export function KeyframeInfo({ keyframe, keyframes }: Props) {
+export function KeyframeInfo({ id, keyframes }: Props) {
   const luaApi = useOpenSpaceApi();
 
-  if (keyframe === null) {
+  const keyframe = keyframes.find((kf) => kf.Id === id);
+  const index = keyframes.findIndex((kf) => kf.Id === id);
+
+  if (keyframe === undefined || index === -1) {
     return <></>;
   }
-  const index = keyframes.findIndex((kf) => kf.Id === keyframe?.Id);
 
   const isCameraKeyframe = isCameraEntry(keyframe);
 

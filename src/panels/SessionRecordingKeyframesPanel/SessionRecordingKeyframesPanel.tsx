@@ -12,17 +12,24 @@ export function SessionRecordingKeyframesPanel() {
 
   const [file, setFile] = useState<string>('');
   const [keyframes, setKeyframes] = useState<KeyframeEntry[]>([]);
-  const [selectedKeyframeID, setSelectedKeyframeID] = useState<number | null>(null);
+  const [selectedKeyframeIDs, setSelectedKeyframeIDs] = useState<number[]>([]);
+  const [playheadTime, setPlayheadTime] = useState(0);
 
-  const selectedKeyframe = keyframes.find((kf) => kf.Id === selectedKeyframeID);
-
-  async function onMove(index: number, newTime: number) {
+  async function onMove(ids: number[], delta: number) {
     if (!luaApi) {
       return;
     }
 
-    await luaApi.keyframeRecording.moveKeyframe(index, newTime);
-    await getKeyframes();
+    for (const id of ids) {
+      const index = keyframes.findIndex((kf) => kf.Id === id);
+      if (index === -1) {
+        continue;
+      }
+      const kfTime = keyframes[index].Timestamp;
+      const newTime = kfTime + delta;
+      await luaApi.keyframeRecording.moveKeyframe(index, newTime);
+      await getKeyframes();
+    }
   }
 
   async function getKeyframes() {
@@ -31,10 +38,6 @@ export function SessionRecordingKeyframesPanel() {
       const kfs = Object.values(obj) as KeyframeEntry[];
       setKeyframes(kfs);
     }
-  }
-
-  function onSelect(keyframe: KeyframeEntry) {
-    setSelectedKeyframeID(keyframe.Id);
   }
 
   return (
@@ -50,7 +53,7 @@ export function SessionRecordingKeyframesPanel() {
         label={'Load keyframes file'}
       />
 
-      <Button onClick={() => luaApi?.keyframeRecording.addCameraKeyframe(5)}>
+      <Button onClick={() => luaApi?.keyframeRecording.addCameraKeyframe(playheadTime)}>
         Add Camera Keyframe
       </Button>
 
@@ -62,13 +65,21 @@ export function SessionRecordingKeyframesPanel() {
 
       <Timeline
         keyframes={keyframes}
-        selectedKeyframe={selectedKeyframe}
-        onMove={onMove}
-        onSelect={onSelect}
+        selectedKeyframeIDs={selectedKeyframeIDs}
+        playheadTime={playheadTime}
+        onPlayheadChange={setPlayheadTime}
+        onMoveKeyframes={onMove}
+        onSelectKeyframes={(ids, isAdditive) => {
+          if (isAdditive) {
+            setSelectedKeyframeIDs((prev) => [...new Set([...prev, ...ids])]);
+          } else {
+            setSelectedKeyframeIDs(ids);
+          }
+        }}
       />
-      {selectedKeyframe && (
-        <KeyframeInfo keyframe={selectedKeyframe} keyframes={keyframes} />
-      )}
+      {selectedKeyframeIDs.map((id) => (
+        <KeyframeInfo key={id} id={id} keyframes={keyframes} />
+      ))}
       <Group my={'xs'} gap={'xs'}>
         <ActionIcon
           onClick={async () => {
