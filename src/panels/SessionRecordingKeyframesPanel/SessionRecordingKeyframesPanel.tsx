@@ -1,11 +1,13 @@
-import { useOpenSpaceApi } from '@/api/hooks';
-import { ActionIcon, Button, Group } from '@mantine/core';
 import { useState } from 'react';
-import { KeyframeEntry } from './types';
-import { Timeline } from './Timeline';
+import { ActionIcon, Button, Group } from '@mantine/core';
+
+import { useOpenSpaceApi } from '@/api/hooks';
 import { StringInput } from '@/components/Input/StringInput';
-import { KeyframeInfo } from './KeyframeInfo';
 import { PauseIcon, PlayIcon, StopIcon } from '@/icons/icons';
+
+import { KeyframeInfo } from './KeyframeInfo';
+import { Timeline } from './Timeline';
+import { KeyframeEntry } from './types';
 
 export function SessionRecordingKeyframesPanel() {
   const luaApi = useOpenSpaceApi();
@@ -59,7 +61,7 @@ export function SessionRecordingKeyframesPanel() {
 
       <StringInput
         onEnter={(value) => luaApi?.keyframeRecording.addScriptKeyframe(5, value)}
-        value=""
+        value={""}
         label={'Add Script Keyframe'}
       />
 

@@ -1,8 +1,9 @@
-import { isCameraEntry, KeyframeEntry } from './types';
-import { Tick } from './Tick';
 import { useState } from 'react';
-import { Playhead } from './Playhead';
+
 import { Keyframe } from './Keyframe';
+import { Playhead } from './Playhead';
+import { Tick } from './Tick';
+import { isCameraEntry, KeyframeEntry } from './types';
 
 interface Props {
   keyframes: KeyframeEntry[];
@@ -150,7 +151,7 @@ export function Timeline({
       cursor={draggingPlayhead ? 'grabbing' : 'default'}
     >
       <g onMouseDown={onAxisMouseDown} cursor={draggingPlayhead ? 'grabbing' : 'grab'}>
-        <rect x={0} y={0} width={width} height={axisHeight} fill="#fafafa20" />
+        <rect x={0} y={0} width={width} height={axisHeight} fill={"#fafafa20"} />
         {ticks.map((t) => {
           return <Tick key={t} time={t} xPos={toXPos(t)} height={axisHeight} />;
         })}
@@ -198,7 +199,7 @@ export function Timeline({
               );
             })}
 
-          <text x={tooltip.x} y={tooltip.y} fill={'white'} textAnchor="middle">
+          <text x={tooltip.x} y={tooltip.y} fill={'white'} textAnchor={"middle"}>
             {tooltip.time.toFixed(2)}s
           </text>
         </g>

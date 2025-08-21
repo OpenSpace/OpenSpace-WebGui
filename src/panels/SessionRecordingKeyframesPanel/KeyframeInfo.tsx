@@ -1,6 +1,8 @@
 import { Button, Text, Title } from '@mantine/core';
-import { isCameraEntry, KeyframeEntry } from './types';
+
 import { useOpenSpaceApi } from '@/api/hooks';
+
+import { isCameraEntry, KeyframeEntry } from './types';
 
 interface Props {
   id: number;

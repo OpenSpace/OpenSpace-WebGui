@@ -23,6 +23,7 @@ import {
 import { DevPanel } from '@/panels/DevPanel/DevPanel';
 import { ToolbarMenuButton } from '@/panels/Menu/Toolbar/ToolbarMenuButton';
 import { NavigationPanelMenuButton } from '@/panels/NavigationPanel/MenuButton/NavigationPanelMenuButton';
+import { SessionRecordingKeyframesPanel } from '@/panels/SessionRecordingKeyframesPanel/SessionRecordingKeyframesPanel';
 import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
 import { TimePanelMenuButtonContent } from '@/panels/TimePanel/MenuButton/TimePanelMenuButtonContent';
 import { IconSize } from '@/types/enums';
@@ -48,7 +49,6 @@ import {
   TimePanel,
   UserPanelsPanel
 } from './LazyLoads';
-import { SessionRecordingKeyframesPanel } from '@/panels/SessionRecordingKeyframesPanel/SessionRecordingKeyframesPanel';
 
 export interface MenuItem {
   title: string; // Title of the rc-dock tab

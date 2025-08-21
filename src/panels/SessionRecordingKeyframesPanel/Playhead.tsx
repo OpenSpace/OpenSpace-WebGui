@@ -10,7 +10,7 @@ export function Playhead({ xPos, height }: Props) {
         cx={xPos}
         cy={10}
         r={10}
-        fill="#009dffff"
+        fill={"#009dffff"}
         // cursor={draggingPlayHead ? 'grabbing' : 'grab'}
       />
       <rect
@@ -18,7 +18,7 @@ export function Playhead({ xPos, height }: Props) {
         y={0}
         width={2}
         height={height}
-        fill="#009dffff"
+        fill={"#009dffff"}
         // cursor={draggingPlayHead ? 'grabbing' : 'grab'}
       />
     </g>
