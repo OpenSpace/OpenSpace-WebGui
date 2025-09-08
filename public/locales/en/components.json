@@ -149,6 +149,17 @@
       "description": "You are about to change the value of '{{propertyName}}'. Do you want to proceed?",
       "confirm": "Confirm",
       "cancel": "Cancel"
+    },
+    "visibility": {
+      "title": "Visibility",
+      "levels": {
+        "Hidden": "Hidden",
+        "Developer": "Developer",
+        "AdvancedUser": "Advanced User",
+        "User": "User",
+        "NoviceUser": "Novice User",
+        "Always": "Always"
+      }
     }
   },
   "resizeable-content": {
