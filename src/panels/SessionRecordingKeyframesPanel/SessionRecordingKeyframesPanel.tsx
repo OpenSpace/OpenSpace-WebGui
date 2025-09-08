@@ -22,6 +22,7 @@ export function SessionRecordingKeyframesPanel() {
       return;
     }
 
+    // Find the keyframe indices and move them
     for (const id of ids) {
       const index = keyframes.findIndex((kf) => kf.Id === id);
       if (index === -1) {
@@ -30,6 +31,7 @@ export function SessionRecordingKeyframesPanel() {
       const kfTime = keyframes[index].Timestamp;
       const newTime = kfTime + delta;
       await luaApi.keyframeRecording.moveKeyframe(index, newTime);
+      // Keyframes may have changed order after moving, so we refresh the list
       await getKeyframes();
     }
   }
@@ -54,17 +56,22 @@ export function SessionRecordingKeyframesPanel() {
         value={file}
         label={'Load keyframes file'}
       />
-
-      <Button onClick={() => luaApi?.keyframeRecording.addCameraKeyframe(playheadTime)}>
+      <Button
+        onClick={() => {
+          luaApi?.keyframeRecording.addCameraKeyframe(playheadTime);
+          getKeyframes();
+        }}
+      >
         Add Camera Keyframe
       </Button>
-
       <StringInput
-        onEnter={(value) => luaApi?.keyframeRecording.addScriptKeyframe(5, value)}
-        value={""}
+        onEnter={(value) => {
+          luaApi?.keyframeRecording.addScriptKeyframe(playheadTime, value);
+          getKeyframes();
+        }}
+        value={''}
         label={'Add Script Keyframe'}
       />
-
       <Timeline
         keyframes={keyframes}
         selectedKeyframeIDs={selectedKeyframeIDs}
@@ -73,15 +80,13 @@ export function SessionRecordingKeyframesPanel() {
         onMoveKeyframes={onMove}
         onSelectKeyframes={(ids, isAdditive) => {
           if (isAdditive) {
+            // Add keyframe to selection
             setSelectedKeyframeIDs((prev) => [...new Set([...prev, ...ids])]);
           } else {
             setSelectedKeyframeIDs(ids);
           }
         }}
       />
-      {selectedKeyframeIDs.map((id) => (
-        <KeyframeInfo key={id} id={id} keyframes={keyframes} />
-      ))}
       <Group my={'xs'} gap={'xs'}>
         <ActionIcon
           onClick={async () => {
@@ -102,6 +107,9 @@ export function SessionRecordingKeyframesPanel() {
           <StopIcon />
         </ActionIcon>
       </Group>
+      {selectedKeyframeIDs.map((id) => (
+        <KeyframeInfo key={id} id={id} keyframes={keyframes} />
+      ))}
     </>
   );
 }
