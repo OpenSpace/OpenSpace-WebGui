@@ -1,8 +1,13 @@
-import { Box, Tabs } from '@mantine/core';
+import { Box, FileInput, Tabs } from '@mantine/core';
 
 import { PropertyTest } from './Subpanels/PropertyTest';
+import { useSubscribeToDownloadEvent } from '@/hooks/topicSubscriptions';
 
 export function DevPanel() {
+  useSubscribeToDownloadEvent();
+
+  console.log('Rerender devpanel');
+
   return (
     <Tabs defaultValue={'propertyTest'}>
       <Tabs.List>
@@ -13,6 +18,8 @@ export function DevPanel() {
         <Tabs.Panel value={'propertyTest'}>
           <PropertyTest />
         </Tabs.Panel>
+
+        <FileInput label="Select files"></FileInput>
       </Box>
     </Tabs>
   );
