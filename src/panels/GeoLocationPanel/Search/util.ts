@@ -78,9 +78,7 @@ export async function hasGeoLocationData(objectName: string): Promise<boolean> {
   }
 }
 
-export function calculateAltitudeExtraTerrestial(
-  diameter: number
-): number {
+export function calculateAltitudeExtraTerrestial(diameter: number): number {
   // @TODO: (ylvse 2025-07-11) Do something smart here with the radius of the celestial body
   return 2 * diameter;
 }
