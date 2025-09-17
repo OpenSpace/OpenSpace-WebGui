@@ -1,0 +1,18 @@
+{
+  "asset-search-placeholder": "Search for an asset...",
+  "folder": {
+    "title": "Folders",
+    "empty": "No more folders"
+  },
+  "assets": {
+    "title": "Assets",
+    "empty": "No assets here"
+  },
+  "breadcrumbs": {
+    "aria-labels": {
+      "back": "Back",
+      "home": "Home",
+      "breadcrumb": "Navigate to {{path}}"
+    }
+  }
+}

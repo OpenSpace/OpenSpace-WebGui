@@ -8,6 +8,7 @@ import {
   ExoplanetIcon,
   ExpandArrowsIcon,
   FocusIcon,
+  FolderIcon,
   InsertPhotoIcon,
   KeyboardIcon,
   LocationPinIcon,
@@ -31,6 +32,7 @@ import { FloatWindowPosition, WindowLayoutPosition } from '../WindowLayout/types
 
 import {
   ActionsPanel,
+  AssetsFolderPanel,
   ExoplanetsPanel,
   FlightControlPanel,
   GeoLocationPanel,
@@ -221,6 +223,14 @@ export const menuItemsData: Record<string, MenuItem> = {
     preferredPosition: 'right',
     defaultVisible: false,
     advanced: true
+  },
+  assetsFolderPanel: {
+    title: 'Assets',
+    componentID: 'assetsFolderPanel',
+    content: <AssetsFolderPanel />,
+    renderIcon: (size) => <FolderIcon size={size} />,
+    preferredPosition: 'right',
+    defaultVisible: false
   }
 };
 
