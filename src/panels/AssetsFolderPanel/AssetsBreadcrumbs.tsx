@@ -21,7 +21,7 @@ export function AssetsBreadcrumbs({ navigationPath, navigateTo }: Props) {
       </ActionIcon>
       <Breadcrumbs separatorMargin={0} separator={'>'}>
         <Button
-          variant={"subtle"}
+          variant={'subtle'}
           p={2}
           onClick={() => navigateTo(0)}
           aria-label={t('aria-labels.home')}
@@ -32,7 +32,7 @@ export function AssetsBreadcrumbs({ navigationPath, navigateTo }: Props) {
           <Button
             key={`${pathName}_${i}`}
             p={2}
-            variant={"subtle"}
+            variant={'subtle'}
             onClick={() => navigateTo(i + 1)}
             aria-label={t('aria-labels.breadcrumb', { path: pathName })}
           >

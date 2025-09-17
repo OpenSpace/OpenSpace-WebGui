@@ -28,7 +28,10 @@ export {
   IoInformation as InformationIcon,
   IoTelescopeOutline as TelescopeIcon
 } from 'react-icons/io5';
-export { LuFilePlus2 as AddFileIcon } from 'react-icons/lu';
+export {
+  LuFilePlus2 as AddFileIcon,
+  LuFolderOpen as OpenFolderIcon
+} from 'react-icons/lu';
 export {
   MdPublic as AddExoplanetIcon,
   MdOutlineAddPhotoAlternate as AddPhotoIcon,

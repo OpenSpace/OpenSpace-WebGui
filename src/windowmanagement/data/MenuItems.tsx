@@ -8,11 +8,11 @@ import {
   ExoplanetIcon,
   ExpandArrowsIcon,
   FocusIcon,
-  FolderIcon,
   InsertPhotoIcon,
   KeyboardIcon,
   LocationPinIcon,
   NightSkyIcon,
+  OpenFolderIcon,
   RocketLaunchIcon,
   RouteIcon,
   SceneIcon,
@@ -228,7 +228,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     title: 'Assets',
     componentID: 'assetsFolderPanel',
     content: <AssetsFolderPanel />,
-    renderIcon: (size) => <FolderIcon size={size} />,
+    renderIcon: (size) => <OpenFolderIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: false
   }
