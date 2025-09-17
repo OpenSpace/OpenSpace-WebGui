@@ -2,5 +2,19 @@
   "error": {
     "fetch-lua-api": "Error fetching OpenSpace API",
     "parsing-file": "Error parsing file"
+  },
+  "download-event": {
+    "title": {
+      "finished": "Download Finished",
+      "failed": "Download Failed",
+      "started": "Started Downloading '{{file}}'",
+      "progress": "Download in Progress '{{file}}'"
+    },
+    "message": {
+      "finished": "Finished downloading '{{file}}'",
+      "failed": "Failed to download file: '{{file}}'",
+      "started": "Waiting to download '{{file}}'",
+      "progress": "Downloading {{bytes}} Mb / {{total}} Mb"
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { use, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { subscribeToCamera, unsubscribeToCamera } from '@/redux/camera/cameraMiddleware';
 import {
@@ -15,7 +15,6 @@ import {
   unsubscribeToSessionRecording
 } from '@/redux/sessionrecording/sessionRecordingMiddleware';
 import { subscribeToTime, unsubscribeToTime } from '@/redux/time/timeMiddleware';
-import { subscribeToDownloadEvent, unsubscribeToDownloadEvent } from '@/redux/downloadevent/downloadEventMiddleware';
 
 export function useSubscribeToCamera() {
   const dispatch = useAppDispatch();
@@ -78,15 +77,4 @@ export function useSubscribeToSessionRecording() {
   }, [dispatch]);
 
   return recordingState;
-}
-
-export function useSubscribeToDownloadEvent() {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(subscribeToDownloadEvent());
-    return () => {
-      dispatch(unsubscribeToDownloadEvent());
-    };
-  }, [dispatch]);
 }

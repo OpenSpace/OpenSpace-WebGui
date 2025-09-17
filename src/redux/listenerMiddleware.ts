@@ -5,6 +5,7 @@ import { addCameraListener } from './camera/cameraMiddleware';
 import { addCameraPathListener } from './camerapath/cameraPathMiddleware';
 import { addConnectionListener } from './connection/connectionMiddleware';
 import { addDocumentationListener } from './documentation/documentationMiddleware';
+import { addDownloadEventListener } from './downloadevent/downloadEventMiddleware';
 import { addEngineModeListener } from './enginemode/engineModeMiddleware';
 import { addEventsListener } from './events/eventsMiddleware';
 import { addFlightControllerListener } from './flightcontroller/flightControllerMiddleware';
@@ -20,7 +21,6 @@ import { addSkyBrowserListener } from './skybrowser/skybrowserMiddleware';
 import { addTimeListener } from './time/timeMiddleware';
 import { addVersionListener } from './version/versionMiddleware';
 import type { AppDispatch, RootState } from './store';
-import { addDownloadEventListener } from './downloadevent/downloadEventMiddleware';
 
 export const listenerMiddleware = createListenerMiddleware();
 export type AppStartListening = TypedStartListening<RootState, AppDispatch>;
