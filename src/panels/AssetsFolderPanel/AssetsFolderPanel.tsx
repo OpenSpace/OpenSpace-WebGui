@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Divider, Stack, Text, Title } from '@mantine/core';
 
+import { useOpenSpaceApi } from '@/api/hooks';
 import { FolderIcon } from '@/icons/icons';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { DynamicGrid } from '../../components/DynamicGrid/DynamicGrid';
+import { FilterList } from '../../components/FilterList/FilterList';
+import { Layout } from '../../components/Layout/Layout';
 import { LoadingBlocks } from '../../components/LoadingBlocks/LoadingBlocks';
 
+import { AssetButton } from './AssetButton';
+import { AssetsBreadcrumbs } from './AssetsBreadcrumbs';
 import { useAssetFolders } from './hooks';
 import { Asset, AssetFolderNavigationState } from './types';
 import { collectAssets, getCurrentFolder } from './util';
-import { AssetsBreadcrumbs } from './AssetsBreadcrumbs';
-import { Layout } from '../../components/Layout/Layout';
-import { FilterList } from '../../components/FilterList/FilterList';
-import { useWindowSize } from '@/windowmanagement/Window/hooks';
-import { useOpenSpaceApi } from '@/api/hooks';
-import { AssetButton } from './AssetButton';
-import { useTranslation } from 'react-i18next';
 
 export function AssetsFolderPanel() {
   const luaApi = useOpenSpaceApi();

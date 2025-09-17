@@ -1,6 +1,8 @@
 import { Button, Card, Group, Text } from '@mantine/core';
-import { Asset } from './types';
+
 import { CopyToClipboardButton } from '../../components/CopyToClipboardButton/CopyToClipboardButton';
+
+import { Asset } from './types';
 
 interface Props {
   onClick: () => void;
