@@ -1,4 +1,4 @@
-import { Box, FileInput, Tabs } from '@mantine/core';
+import { Box, Tabs } from '@mantine/core';
 
 import { PropertyTest } from './Subpanels/PropertyTest';
 
@@ -13,8 +13,6 @@ export function DevPanel() {
         <Tabs.Panel value={'propertyTest'}>
           <PropertyTest />
         </Tabs.Panel>
-
-        <FileInput label={'Select files'}></FileInput>
       </Box>
     </Tabs>
   );
