@@ -1,6 +1,6 @@
 import { Button, Card, Group, Text } from '@mantine/core';
 
-import { CopyToClipboardButton } from '../../components/CopyToClipboardButton/CopyToClipboardButton';
+import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 
 import { Asset } from './types';
 

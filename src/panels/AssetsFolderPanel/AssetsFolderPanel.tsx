@@ -3,13 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { Button, Divider, Stack, Text, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
+import { FilterList } from '@/components/FilterList/FilterList';
+import { Layout } from '@/components/Layout/Layout';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { FolderIcon } from '@/icons/icons';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
-
-import { DynamicGrid } from '../../components/DynamicGrid/DynamicGrid';
-import { FilterList } from '../../components/FilterList/FilterList';
-import { Layout } from '../../components/Layout/Layout';
-import { LoadingBlocks } from '../../components/LoadingBlocks/LoadingBlocks';
 
 import { AssetButton } from './AssetButton';
 import { AssetsBreadcrumbs } from './AssetsBreadcrumbs';
