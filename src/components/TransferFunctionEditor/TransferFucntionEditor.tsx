@@ -17,6 +17,7 @@ const Keys: TFKey[] = [
   { id: 'key2', scalar: 0.25, alpha: 0.25, color: '#ff0000' },
   { id: 'key3', scalar: 0.5, alpha: 0.5, color: '#00ff00' },
   { id: 'key4', scalar: 0.75, alpha: 0.75, color: '#0000ff' },
+  { id: 'key4', scalar: 0.85, alpha: 0.3, color: '#0000ff' },
   { id: 'key5', scalar: 1.0, alpha: 1.0, color: '#ffffff' }
 ];
 
@@ -35,36 +36,40 @@ export function TransferFunctionEditor() {
   const opacityGradientOffset = 20;
   const oacityGradientWidth = 10;
 
-  const xScale = d3.scaleLinear().domain([0, 1]).range([0, innerWidth]);
-  const yScale = d3.scaleLinear().domain([0, 1]).range([innerHeight, 0]);
+  const scalarToX = d3.scaleLinear().domain([0, 1]).range([0, innerWidth]);
+  const alphaToY = d3.scaleLinear().domain([0, 1]).range([innerHeight, 0]);
 
   useEffect(() => {
     if (alphaAxisRef.current) {
-      const axis = d3.axisRight(yScale).ticks(3).tickSizeOuter(0);
+      const axis = d3.axisRight(alphaToY).ticks(3).tickSizeOuter(0);
       d3.select(alphaAxisRef.current).call(axis);
     }
-  }, [yScale]);
+  }, [alphaToY]);
 
   return (
-    <svg width={width} height={height} style={{ background: '#440000ff' }}>
+    <svg width={width} height={height} style={{ background: '#3f3d3de1' }}>
       <defs>
-        <linearGradient id="alphaGrad" x1="0" x2="0" y1="0" y2="1">
+        <linearGradient id="alphaGradient" x1="0" x2="0" y1="0" y2="1">
           <stop offset="0%" stopColor="#fff" stopOpacity={1} />
           <stop offset="100%" stopColor="#000" stopOpacity={0} />
         </linearGradient>
+
+        <clipPath id="plotAreaClip">
+          <rect x={0} y={0} width={innerWidth} height={innerHeight} />
+        </clipPath>
       </defs>
 
       {/* Alpha gradient right axis */}
       <rect
-        x={width - padding.right + oacityGradientWidth / 2}
+        x={width - padding.right + oacityGradientWidth / 2} // TODO: position with half width or not?
         y={padding.top + opacityGradientOffset / 2}
         width={oacityGradientWidth}
         height={innerHeight - opacityGradientOffset}
-        fill={'url(#alphaGrad)'}
+        fill={'url(#alphaGradient)'}
       />
       <g
         ref={alphaAxisRef}
-        transform={`translate(${width - padding.right}, ${padding.top})`}
+        transform={`translate(${width - padding.right + 2}, ${padding.top})`}
       />
 
       {/* Plot area - taking into account the padding  */}
@@ -72,15 +77,36 @@ export function TransferFunctionEditor() {
         <Histogram data={HistogramData} width={innerWidth} height={innerHeight} />
 
         {/* Transferfunction keys */}
-        {Keys.map((key) => (
-          <circle
-            key={key.id}
-            cx={xScale(key.scalar)}
-            cy={yScale(key.alpha)}
-            r={10}
-            fill={key.color}
-          />
-        ))}
+        <g clipPath={'url(#plotAreaClip)'}>
+          {Keys.map((key, i) => {
+            const next = Keys[i + 1];
+
+            return (
+              <>
+                {next && (
+                  <line
+                    key={`${key.id}-line`}
+                    x1={scalarToX(key.scalar)}
+                    y1={alphaToY(key.alpha)}
+                    x2={scalarToX(next.scalar)}
+                    y2={alphaToY(next.alpha)}
+                    stroke="#0000007a"
+                    strokeWidth={1.5}
+                  />
+                )}
+                <circle
+                  key={key.id}
+                  cx={scalarToX(key.scalar)}
+                  cy={alphaToY(key.alpha)}
+                  r={10}
+                  fill={key.color}
+                  stroke={'#000'}
+                  strokeWidth={1.0}
+                />
+              </>
+            );
+          })}
+        </g>
       </g>
     </svg>
   );

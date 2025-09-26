@@ -60,9 +60,9 @@ export function Histogram({ width, height, data }: Props) {
       <g ref={yGridRef} strokeOpacity={0.3} />
       <path
         d={area(bins) ?? ''}
-        fill={'#070b0fc5'}
+        fill={'#50adf87b'}
         fillOpacity={0.5}
-        stroke="#70b2e9d3"
+        stroke="#1d78c3ff"
       />
 
       <g ref={xAxisRef} transform={`translate(0,${height})`} />
