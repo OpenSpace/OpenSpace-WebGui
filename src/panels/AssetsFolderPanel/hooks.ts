@@ -91,19 +91,24 @@ export function useAssetFolders() {
       const dataDir = await luaApi?.absPath('${ASSETS}');
       // eslint-disable-next-line no-template-curly-in-string
       const userDir = await luaApi?.absPath('${USER_ASSETS}');
-
       if (dataDir) {
-        let dataFolder = await fetchFolderData(dataDir);
-        dataFolder.name = 'OpenSpace assets';
-        dataFolder = pruneEmptyFolders(dataFolder)!;
-        rootFolder.subFolders.push(dataFolder);
-      }
+        let dataFolder: Folder | null = await fetchFolderData(dataDir);
+        dataFolder = pruneEmptyFolders(dataFolder);
 
+        if (dataFolder) {
+          dataFolder.name = 'OpenSpace assets';
+          rootFolder.subFolders.push(dataFolder);
+        }
+      }
+      
       if (userDir) {
-        let userFolder = await fetchFolderData(userDir);
-        userFolder.name = 'User assets';
-        userFolder = pruneEmptyFolders(userFolder)!;
-        rootFolder.subFolders.push(userFolder);
+        let userFolder: Folder | null = await fetchFolderData(userDir);
+        userFolder = pruneEmptyFolders(userFolder);
+        
+        if (userFolder) {
+          userFolder.name = 'User assets';
+          rootFolder.subFolders.push(userFolder);
+        }
       }
 
       setRootFolder(rootFolder);
