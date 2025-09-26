@@ -23,22 +23,20 @@ const Keys: TFKey[] = [
 export function TransferFunctionEditor() {
   const alphaAxisRef = useRef<SVGGElement | null>(null);
 
+  // TODO: set based on panel size ?
   const width = 700;
   const height = 500;
 
-  const innerWidth = width - 40;
-  const innerHeight = height - 40;
+  // Plot area settings
   const padding = { top: 15, right: 25, bottom: 20, left: 25 };
+  const innerWidth = width - padding.left - padding.right;
+  const innerHeight = height - padding.top - padding.bottom;
+  // Opacity gradient settings
+  const opacityGradientOffset = 20;
+  const oacityGradientWidth = 10;
 
-  const xScale = d3
-    .scaleLinear()
-    .domain([0, 1])
-    .range([0, width - padding.left - padding.right]);
-
-  const yScale = d3
-    .scaleLinear()
-    .domain([0, 1])
-    .range([height - padding.top - padding.bottom, 0]);
+  const xScale = d3.scaleLinear().domain([0, 1]).range([0, innerWidth]);
+  const yScale = d3.scaleLinear().domain([0, 1]).range([innerHeight, 0]);
 
   useEffect(() => {
     if (alphaAxisRef.current) {
@@ -46,9 +44,6 @@ export function TransferFunctionEditor() {
       d3.select(alphaAxisRef.current).call(axis);
     }
   }, [yScale]);
-
-  const OpacityGradientOffset = 20;
-  const OpacityGradientWidth = 10;
 
   return (
     <svg width={width} height={height} style={{ background: '#440000ff' }}>
@@ -61,10 +56,10 @@ export function TransferFunctionEditor() {
 
       {/* Alpha gradient right axis */}
       <rect
-        x={width - padding.right + OpacityGradientWidth / 2}
-        y={padding.top + OpacityGradientOffset / 2}
-        width={OpacityGradientWidth}
-        height={height - padding.top - padding.bottom - OpacityGradientOffset}
+        x={width - padding.right + oacityGradientWidth / 2}
+        y={padding.top + opacityGradientOffset / 2}
+        width={oacityGradientWidth}
+        height={innerHeight - opacityGradientOffset}
         fill={'url(#alphaGrad)'}
       />
       <g
@@ -72,18 +67,21 @@ export function TransferFunctionEditor() {
         transform={`translate(${width - padding.right}, ${padding.top})`}
       />
 
-      <Histogram data={HistogramData} width={width} height={height} padding={padding} />
+      {/* Plot area - taking into account the padding  */}
+      <g transform={`translate(${padding.left}, ${padding.top})`}>
+        <Histogram data={HistogramData} width={innerWidth} height={innerHeight} />
 
-      {/* Transferfunction keys */}
-      {Keys.map((key) => (
-        <circle
-          key={key.id}
-          cx={xScale(key.scalar) + padding.left}
-          cy={yScale(key.alpha) + padding.top}
-          r={10}
-          fill={key.color}
-        />
-      ))}
+        {/* Transferfunction keys */}
+        {Keys.map((key) => (
+          <circle
+            key={key.id}
+            cx={xScale(key.scalar)}
+            cy={yScale(key.alpha)}
+            r={10}
+            fill={key.color}
+          />
+        ))}
+      </g>
     </svg>
   );
 }

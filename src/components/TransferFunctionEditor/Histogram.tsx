@@ -5,15 +5,9 @@ interface Props {
   width: number;
   height: number;
   data: number[];
-  padding: {
-    top: number;
-    right: number;
-    bottom: number;
-    left: number;
-  };
 }
 
-export function Histogram({ width, height, data, padding }: Props) {
+export function Histogram({ width, height, data }: Props) {
   const xAxisRef = useRef<SVGGElement | null>(null);
   const yAxisRef = useRef<SVGGElement | null>(null);
   const yGridRef = useRef<SVGGElement | null>(null);
@@ -23,12 +17,12 @@ export function Histogram({ width, height, data, padding }: Props) {
   const xScale = d3
     .scaleLinear()
     .domain([bins[0].x0 ?? 0, bins[bins.length - 1].x0 ?? 100])
-    .range([0, width - padding.left - padding.right]);
+    .range([0, width]);
 
   const yScale = d3
     .scaleLinear()
     .domain([0, d3.max(bins, (d) => d.length) ?? 0])
-    .range([height - padding.top - padding.bottom, 0]);
+    .range([height, 0]);
 
   useEffect(() => {
     if (xAxisRef.current) {
@@ -47,7 +41,7 @@ export function Histogram({ width, height, data, padding }: Props) {
       const grid = d3
         .axisLeft(yScale)
         .ticks(10)
-        .tickSize(-(width - padding.left - padding.right))
+        .tickSize(-width)
         .tickFormat(() => ''); // Hide labels
 
       d3.select(yGridRef.current).call(grid);
@@ -62,7 +56,7 @@ export function Histogram({ width, height, data, padding }: Props) {
     .curve(d3.curveMonotoneX);
 
   return (
-    <g transform={`translate(${padding.left}, ${padding.top})`}>
+    <g>
       <g ref={yGridRef} strokeOpacity={0.3} />
       <path
         d={area(bins) ?? ''}
@@ -71,7 +65,7 @@ export function Histogram({ width, height, data, padding }: Props) {
         stroke="#70b2e9d3"
       />
 
-      <g ref={xAxisRef} transform={`translate(0,${yScale(0)})`} />
+      <g ref={xAxisRef} transform={`translate(0,${height})`} />
       <g ref={yAxisRef} />
     </g>
   );
