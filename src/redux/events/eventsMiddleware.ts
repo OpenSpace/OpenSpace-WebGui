@@ -6,15 +6,16 @@ import { getAction } from '@/redux/actions/actionsMiddleware';
 import { removeAction } from '@/redux/actions/actionsSlice';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
+import { setSceneTreeNodeVisibility } from '@/redux/local/localSlice';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { refreshMissions } from '@/redux/missions/missionsMiddleware';
 import {
   addUriToPropertyTree,
   removeUriFromPropertyTree
 } from '@/redux/propertytree/propertyTreeMiddleware';
+import { showGUI } from '@/redux/sessionrecording/sessionRecordingMiddleware';
 import { ConnectionStatus, LogLevel } from '@/types/enums';
-
-import { showGUI } from '../sessionrecording/sessionRecordingMiddleware';
+import { sgnRenderableUri, sgnUri } from '@/util/propertyTreeHelpers';
 
 import { EventData } from './types';
 
@@ -61,6 +62,22 @@ export const setupEventsSubscription = createAsyncThunk(
           if (data.State === 'Finished') {
             thunkAPI.dispatch(showGUI(true));
           }
+          break;
+        case 'RenderableDisabled':
+          thunkAPI.dispatch(
+            setSceneTreeNodeVisibility({
+              uri: sgnRenderableUri(sgnUri(data.Node)),
+              isVisible: false
+            })
+          );
+          break;
+        case 'RenderableEnabled':
+          thunkAPI.dispatch(
+            setSceneTreeNodeVisibility({
+              uri: sgnRenderableUri(sgnUri(data.Node)),
+              isVisible: true
+            })
+          );
           break;
         default:
           break;
