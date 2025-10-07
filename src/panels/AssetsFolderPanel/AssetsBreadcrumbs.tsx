@@ -7,6 +7,7 @@ interface Props {
   navigationPath: string[];
   navigateTo: (depth: number) => void;
 }
+
 export function AssetsBreadcrumbs({ navigationPath, navigateTo }: Props) {
   const { t } = useTranslation('panel-assets', { keyPrefix: 'breadcrumbs' });
 
@@ -28,15 +29,15 @@ export function AssetsBreadcrumbs({ navigationPath, navigateTo }: Props) {
         >
           <HomeIcon />
         </Button>
-        {navigationPath.map((pathName, i) => (
+        {navigationPath.map((folderName, i) => (
           <Button
-            key={`${pathName}_${i}`}
+            key={`${folderName}_${i}`}
             p={2}
             variant={'subtle'}
             onClick={() => navigateTo(i + 1)}
-            aria-label={t('aria-labels.breadcrumb', { path: pathName })}
+            aria-label={t('aria-labels.breadcrumb', { path: folderName })}
           >
-            {pathName}
+            {folderName}
           </Button>
         ))}
       </Breadcrumbs>

@@ -6,6 +6,7 @@ interface Props {
   color?: MantineColor;
   animated?: boolean;
 }
+
 export function DownloadEventNotificationBody({
   message,
   downloadProgress,

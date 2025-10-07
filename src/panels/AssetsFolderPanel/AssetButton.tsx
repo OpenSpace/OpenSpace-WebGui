@@ -8,6 +8,7 @@ interface Props {
   onClick: () => void;
   asset: Asset;
 }
+
 export function AssetButton({ asset, onClick }: Props) {
   return (
     <Card h={80} p={4}>

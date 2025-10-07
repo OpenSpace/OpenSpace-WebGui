@@ -14,7 +14,7 @@ import { AssetButton } from './AssetButton';
 import { AssetsBreadcrumbs } from './AssetsBreadcrumbs';
 import { useAssetFolders } from './hooks';
 import { Asset, AssetFolderNavigationState } from './types';
-import { collectAssets, getCurrentFolder } from './util';
+import { collectAssets, currentFolder } from './util';
 
 export function AssetsFolderPanel() {
   const luaApi = useOpenSpaceApi();
@@ -40,8 +40,8 @@ export function AssetsFolderPanel() {
     return <LoadingBlocks />;
   }
 
-  const currentFolder = getCurrentFolder(nav.root, nav.currentPath);
-  const nestedAssetsInCurrentFolder = collectAssets(currentFolder);
+  const navigatedFolder = currentFolder(nav.root, nav.currentPath);
+  const nestedAssetsInCurrentFolder = collectAssets(navigatedFolder);
 
   function loadAsset(asset: Asset): void {
     luaApi?.asset.add(asset.path);
@@ -68,11 +68,11 @@ export function AssetsFolderPanel() {
             <Title order={2} mb={'xs'}>
               {t('folder.title')}
             </Title>
-            {currentFolder.subFolders.length === 0 && (
+            {navigatedFolder.subFolders.length === 0 && (
               <Text c={'dimmed'}>{t('folder.empty')}</Text>
             )}
             <DynamicGrid spacing={'xs'} verticalSpacing={'xs'} minChildSize={170}>
-              {currentFolder.subFolders.map((folder) => (
+              {navigatedFolder.subFolders.map((folder) => (
                 <Button
                   key={folder.name}
                   onClick={() =>
@@ -95,11 +95,11 @@ export function AssetsFolderPanel() {
             <Title order={2} mb={'xs'}>
               {t('assets.title')}
             </Title>
-            {currentFolder.assets.length === 0 && (
+            {navigatedFolder.assets.length === 0 && (
               <Text c={'dimmed'}>{t('assets.empty')}</Text>
             )}
             <DynamicGrid spacing={'xs'} verticalSpacing={'xs'} minChildSize={170}>
-              {currentFolder.assets.map((asset) => (
+              {navigatedFolder.assets.map((asset) => (
                 <AssetButton
                   key={asset.name}
                   asset={asset}

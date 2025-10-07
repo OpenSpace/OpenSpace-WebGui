@@ -122,7 +122,7 @@ export const setupDownloadEventSubcription = createAsyncThunk(
             });
           } else {
             // We've already started downloading but frontend may not have been connected
-            // yet, or Gui was refreshed during download.
+            // yet, or Gui was refreshed during download
             notifications.show({
               id: data.id,
               title: i18n.t('download-event.title.progress', {

@@ -1,5 +1,9 @@
 {
   "asset-search-placeholder": "Search for an asset...",
+  "folder-names": {
+    "built-in": "Built-in assets",
+    "user": "User assets"
+  },
   "folder": {
     "title": "Folders",
     "empty": "No more folders"

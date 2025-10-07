@@ -14,7 +14,7 @@
       "finished": "Finished downloading '{{file}}'",
       "failed": "Failed to download file: '{{file}}'",
       "started": "Waiting to download '{{file}}'",
-      "progress": "Downloading {{bytes}} Mb / {{total}} Mb"
+      "progress": "Downloading {{bytes}} MB / {{total}} MB"
     }
   }
 }

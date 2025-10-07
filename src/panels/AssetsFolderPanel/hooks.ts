@@ -1,32 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 
 import { Asset, Folder } from './types';
+import { pathName, pruneEmptyFolders } from './util';
 
 export function useAssetFolders() {
   const luaApi = useOpenSpaceApi();
   const [rootFolder, setRootFolder] = useState<Folder | null>(null);
+  const { t } = useTranslation('panel-assets', { keyPrefix: 'folder-names' });
 
-  useEffect(() => {
-    /**
-     * Returns the folder name or file name of a given a path
-     * e.g., C:/foo/bar -> bar and C:/foo/bar.asset -> bar.asset
-     */
-    function pathName(path: string): string {
-      const sanitizedPath = path.replaceAll('\\', '/');
-      const nameStartPos = sanitizedPath.lastIndexOf('/');
-
-      const name = sanitizedPath.substring(nameStartPos + 1);
-      return name;
-    }
-
-    /**
-     * Recursively fetch all folders and assets in a given directory
-     * @param directoryPath Directory to fetch folders and assets from
-     * @returns A nested Folder
-     */
-    async function fetchFolderData(directoryPath: string): Promise<Folder> {
+  /**
+   * Recursively fetch all folders and assets in a given directory
+   * @param directoryPath Directory to fetch folders and assets from
+   * @returns A nested Folder
+   */
+  const fetchFolderData = useCallback(
+    async (directoryPath: string): Promise<Folder> => {
       const name = pathName(directoryPath);
 
       let subFolderPaths = await luaApi?.walkDirectoryFolders(directoryPath);
@@ -53,69 +44,52 @@ export function useAssetFolders() {
         subFolders: subFolders,
         assets: assets
       };
+    },
+    [luaApi]
+  );
+
+  const buildFolderStructure = useCallback(async () => {
+    if (!luaApi) {
+      return;
     }
 
-    /**
-     * Recursively prune empty folders from data structure. Empty folders are those
-     * without subfolders or assets
-     * @param folder to potentially prune
-     * @returns a pruned Folder version without empty subfolders
-     */
-    function pruneEmptyFolders(folder: Folder): Folder | null {
-      // Recursively prune subfolders
-      const prunedSubFolders = folder.subFolders
-        .map(pruneEmptyFolders)
-        .filter((folder) => folder !== null);
+    const rootFolder: Folder = {
+      path: '',
+      name: 'Home',
+      subFolders: [],
+      assets: []
+    };
+    
+    // eslint-disable-next-line no-template-curly-in-string
+    const dataDir = await luaApi.absPath('${ASSETS}');
+    // eslint-disable-next-line no-template-curly-in-string
+    const userDir = await luaApi.absPath('${USER_ASSETS}');
+    if (dataDir) {
+      let dataFolder: Folder | null = await fetchFolderData(dataDir);
+      dataFolder = pruneEmptyFolders(dataFolder);
 
-      const prunedFolder: Folder = {
-        ...folder,
-        subFolders: prunedSubFolders
-      };
-
-      // Folder is empty if it has no subfolders or any assets
-      if (prunedFolder.subFolders.length === 0 && prunedFolder.assets.length === 0) {
-        return null;
+      if (dataFolder) {
+        dataFolder.name = t('built-in');
+        rootFolder.subFolders.push(dataFolder);
       }
-
-      return prunedFolder;
     }
 
-    async function buildFolderStructure() {
-      const rootFolder: Folder = {
-        path: '',
-        name: 'Home',
-        subFolders: [],
-        assets: []
-      };
-      // eslint-disable-next-line no-template-curly-in-string
-      const dataDir = await luaApi?.absPath('${ASSETS}');
-      // eslint-disable-next-line no-template-curly-in-string
-      const userDir = await luaApi?.absPath('${USER_ASSETS}');
-      if (dataDir) {
-        let dataFolder: Folder | null = await fetchFolderData(dataDir);
-        dataFolder = pruneEmptyFolders(dataFolder);
+    if (userDir) {
+      let userFolder: Folder | null = await fetchFolderData(userDir);
+      userFolder = pruneEmptyFolders(userFolder);
 
-        if (dataFolder) {
-          dataFolder.name = 'OpenSpace assets';
-          rootFolder.subFolders.push(dataFolder);
-        }
+      if (userFolder) {
+        userFolder.name = t('user');
+        rootFolder.subFolders.push(userFolder);
       }
-      
-      if (userDir) {
-        let userFolder: Folder | null = await fetchFolderData(userDir);
-        userFolder = pruneEmptyFolders(userFolder);
-        
-        if (userFolder) {
-          userFolder.name = 'User assets';
-          rootFolder.subFolders.push(userFolder);
-        }
-      }
-
-      setRootFolder(rootFolder);
     }
 
+    setRootFolder(rootFolder);
+  }, [luaApi, fetchFolderData, t]);
+
+  useEffect(() => {
     buildFolderStructure();
-  }, [luaApi]);
+  }, [buildFolderStructure]);
 
   return rootFolder;
 }
