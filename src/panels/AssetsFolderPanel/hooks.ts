@@ -59,7 +59,7 @@ export function useAssetFolders() {
       subFolders: [],
       assets: []
     };
-    
+
     // eslint-disable-next-line no-template-curly-in-string
     const dataDir = await luaApi.absPath('${ASSETS}');
     // eslint-disable-next-line no-template-curly-in-string

@@ -1,13 +1,12 @@
 import { Asset, Folder } from './types';
 
-
 /**
  * Traverse the folder hierarchy from the given root according to the specified path,
  * returning the folder at that location
- * 
+ *
  * @param root The folder to begin traversal from
  * @param path An array of folder names representing the path to traverse
- * @returns The folder located at the given path, or the last valid folder if the path is incomplete 
+ * @returns The folder located at the given path, or the last valid folder if the path is incomplete
  */
 export function currentFolder(root: Folder, path: string[]): Folder {
   let current = root;
@@ -21,10 +20,9 @@ export function currentFolder(root: Folder, path: string[]): Folder {
   return current;
 }
 
-
 /**
  * Recursively collect all assets from the given folder and its subfolders
- * 
+ *
  * @param folder The root folder to collect assets from
  * @returns An array containing all assets within the folder and its descendants
  */
@@ -41,7 +39,7 @@ export function collectAssets(folder: Folder): Asset[] {
 
 /**
  * Extracts and returns the final segment (file or folder name) from a given path
- * 
+ *
  * @param path The full path string (e.g., "C:/foo/bar" or "C:/foo/bar.asset")
  * @returns The final name segment of the path (e.g., "bar" or "bar.asset")
  */
