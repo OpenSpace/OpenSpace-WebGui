@@ -30,6 +30,7 @@ export {
 } from 'react-icons/io5';
 export {
   LuFilePlus2 as AddFileIcon,
+  LuFileText as FileTextIcon,
   LuFolderOpen as OpenFolderIcon
 } from 'react-icons/lu';
 export {
@@ -44,6 +45,7 @@ export {
   MdCancel as CancelIcon,
   MdCheckBox as CheckBoxCheckedIcon,
   MdCheckBoxOutlineBlank as CheckBoxUncheckedIcon,
+  MdCheck as CheckIcon,
   MdExpandMore as ChevronDownIcon,
   MdChevronLeft as ChevronLeftIcon,
   MdChevronRight as ChevronRightIcon,

@@ -18,5 +18,8 @@
       "home": "Home",
       "breadcrumb": "Navigate to {{path}}"
     }
+  },
+  "asset-entry": {
+    "copy-tooltip-label": "Copy path"
   }
 }

@@ -13,6 +13,7 @@ import {
   removeUriFromPropertyTree
 } from '@/redux/propertytree/propertyTreeMiddleware';
 import { ConnectionStatus, LogLevel } from '@/types/enums';
+import { eventBus } from '@/util/eventBus';
 
 import { showGUI } from '../sessionrecording/sessionRecordingMiddleware';
 
@@ -61,6 +62,9 @@ export const setupEventsSubscription = createAsyncThunk(
           if (data.State === 'Finished') {
             thunkAPI.dispatch(showGUI(true));
           }
+          break;
+        case 'AssetLoadingFinished':
+          eventBus.emit(data.Event);
           break;
         default:
           break;

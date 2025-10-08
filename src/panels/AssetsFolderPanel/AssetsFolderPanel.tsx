@@ -1,31 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Divider, Stack, Text, Title } from '@mantine/core';
 
-import { useOpenSpaceApi } from '@/api/hooks';
-import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
-import { FolderIcon } from '@/icons/icons';
-import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
-import { AssetButton } from './AssetButton';
 import { AssetsBreadcrumbs } from './AssetsBreadcrumbs';
+import { AssetsEntry } from './AssetsEntry';
+import { FolderEntry } from './FolderEntry';
 import { useAssetFolders } from './hooks';
 import { Asset, AssetFolderNavigationState } from './types';
 import { collectAssets, currentFolder } from './util';
 
 export function AssetsFolderPanel() {
-  const luaApi = useOpenSpaceApi();
   const rootFolder = useAssetFolders();
   const [nav, setNav] = useState<AssetFolderNavigationState>();
-  const { width } = useWindowSize();
   const { t } = useTranslation('panel-assets');
-
-  const cardWidth = 170;
-  const maxColumns = 10;
-  const columns = Math.max(Math.min(Math.floor(width / cardWidth), maxColumns), 1);
 
   useEffect(() => {
     if (rootFolder) {
@@ -43,85 +33,62 @@ export function AssetsFolderPanel() {
   const navigatedFolder = currentFolder(nav.root, nav.currentPath);
   const nestedAssetsInCurrentFolder = collectAssets(navigatedFolder);
 
-  function loadAsset(asset: Asset): void {
-    luaApi?.asset.add(asset.path);
-  }
-
   function wordInString(test: Asset, search: string): boolean {
     return test.path.toLowerCase().includes(search.toLowerCase());
+  }
+
+  function navigateTo(depth: number) {
+    if (!nav) {
+      return;
+    }
+    setNav({ ...nav, currentPath: nav.currentPath.slice(0, depth) });
+  }
+
+  function goBack() {
+    if (!nav) {
+      return;
+    }
+
+    navigateTo(nav.currentPath.length - 1);
   }
 
   return (
     <Layout>
       <Layout.FixedSection>
-        <AssetsBreadcrumbs
-          navigationPath={nav.currentPath}
-          navigateTo={(depth: number) =>
-            setNav({ ...nav, currentPath: nav.currentPath.slice(0, depth) })
-          }
-        />
+        <AssetsBreadcrumbs navigationPath={nav.currentPath} navigateTo={navigateTo} />
       </Layout.FixedSection>
       <Layout.GrowingSection>
         <FilterList>
           <FilterList.InputField placeHolderSearchText={t('asset-search-placeholder')} />
           <FilterList.Favorites>
-            <Title order={2} mb={'xs'}>
-              {t('folder.title')}
-            </Title>
-            {navigatedFolder.subFolders.length === 0 && (
-              <Text c={'dimmed'}>{t('folder.empty')}</Text>
+            {navigatedFolder !== rootFolder && (
+              <FolderEntry text={'..'} onClick={goBack} />
             )}
-            <DynamicGrid spacing={'xs'} verticalSpacing={'xs'} minChildSize={170}>
-              {navigatedFolder.subFolders.map((folder) => (
-                <Button
-                  key={folder.name}
-                  onClick={() =>
-                    setNav({ ...nav, currentPath: [...nav.currentPath, folder.name] })
-                  }
-                  leftSection={<FolderIcon />}
-                  h={80}
-                >
-                  <Text
-                    lineClamp={3}
-                    style={{ whiteSpace: 'wrap', wordBreak: 'break-all' }}
-                  >
-                    {folder.name}
-                  </Text>
-                </Button>
-              ))}
-            </DynamicGrid>
+            {navigatedFolder.subFolders.map((folder) => (
+              <FolderEntry
+                key={folder.path}
+                text={folder.name}
+                onClick={() =>
+                  setNav({ ...nav, currentPath: [...nav.currentPath, folder.name] })
+                }
+              />
+            ))}
 
-            <Divider mt={'xs'} />
-            <Title order={2} mb={'xs'}>
-              {t('assets.title')}
-            </Title>
-            {navigatedFolder.assets.length === 0 && (
-              <Text c={'dimmed'}>{t('assets.empty')}</Text>
-            )}
-            <DynamicGrid spacing={'xs'} verticalSpacing={'xs'} minChildSize={170}>
-              {navigatedFolder.assets.map((asset) => (
-                <AssetButton
-                  key={asset.name}
-                  asset={asset}
-                  onClick={() => loadAsset(asset)}
-                />
-              ))}
-            </DynamicGrid>
-            <Stack my={'xs'} gap={'xs'}></Stack>
+            {navigatedFolder.assets.map((asset) => (
+              <AssetsEntry key={asset.path} asset={asset} />
+            ))}
           </FilterList.Favorites>
 
           <FilterList.SearchResults
-            data={nestedAssetsInCurrentFolder}
+            data={nestedAssetsInCurrentFolder.sort((a, b) =>
+              a.name.localeCompare(b.name)
+            )}
             renderElement={(asset: Asset) => (
-              <AssetButton
-                key={asset.name}
-                asset={asset}
-                onClick={() => loadAsset(asset)}
-              />
+              <AssetsEntry key={asset.name} asset={asset} />
             )}
             matcherFunc={wordInString}
           >
-            <FilterList.SearchResults.VirtualGrid gap={'xs'} columns={columns} />
+            <FilterList.SearchResults.VirtualList />
           </FilterList.SearchResults>
         </FilterList>
       </Layout.GrowingSection>
