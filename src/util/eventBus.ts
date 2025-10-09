@@ -21,6 +21,7 @@ class EventBus {
     this.listeners[event] = this.listeners[event]?.filter((h) => h !== handler) || [];
   }
 
+  // @TODO (anden88 2025-10-09): Do we want to pass the event payload to the handler?
   emit(event: EventType) {
     this.listeners[event]?.forEach((handler) => handler());
   }
