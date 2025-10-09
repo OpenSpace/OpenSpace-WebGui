@@ -56,6 +56,7 @@ export {
   MdDashboard as DashboardIcon,
   MdDelete as DeleteIcon,
   MdDragHandle as DragHandleIcon,
+  MdOutlineErrorOutline as ErrorIcon,
   MdExitToApp as ExitAppIcon,
   MdHdrStrong as ExoplanetIcon,
   MdOpenWith as ExpandArrowsIcon,

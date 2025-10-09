@@ -4,11 +4,12 @@ import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
 import { DownloadEventNotificationBody } from '@/components/Notifications/DownloadEventNotificationBody';
+import { CheckIcon, ErrorIcon } from '@/icons/icons';
 import i18n from '@/localization/config';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { RootState } from '@/redux/store';
-import { ConnectionStatus } from '@/types/enums';
+import { ConnectionStatus, IconSize } from '@/types/enums';
 import { roundTo } from '@/util/numeric';
 
 import { DownloadEvent, DownloadType } from './types';
@@ -55,6 +56,11 @@ export const setupDownloadEventSubcription = createAsyncThunk(
               });
 
           const color = isFinished ? 'green' : 'red';
+          const icon = isFinished ? (
+            <CheckIcon size={IconSize.sm} />
+          ) : (
+            <ErrorIcon size={IconSize.sm} />
+          );
 
           notifications.update({
             id: downloads[data.id],
@@ -69,6 +75,7 @@ export const setupDownloadEventSubcription = createAsyncThunk(
                 animated={false}
               />
             ),
+            icon: icon,
             autoClose: true,
             loading: false,
             color: color
