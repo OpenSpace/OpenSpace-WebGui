@@ -59,10 +59,12 @@ export const setupDownloadEventSubcription = createAsyncThunk(
           notifications.update({
             id: downloads[data.id],
             title: title,
-            message: (
+            message: isFinished ? (
+              message
+            ) : (
               <DownloadEventNotificationBody
                 message={message}
-                downloadProgress={isFinished ? 100 : 50}
+                downloadProgress={50}
                 color={color}
                 animated={false}
               />
