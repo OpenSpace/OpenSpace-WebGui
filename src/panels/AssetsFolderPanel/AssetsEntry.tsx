@@ -1,10 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, CheckIcon, Group, Loader, ThemeIcon } from '@mantine/core';
+import {
+  Button,
+  CheckIcon,
+  Group,
+  Loader,
+  Text,
+  ThemeIcon,
+  Tooltip
+} from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
-import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { FileTextIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { eventBus } from '@/util/eventBus';
@@ -54,17 +61,19 @@ export function AssetsEntry({ asset }: Props) {
 
   return (
     <Group gap={'xs'}>
-      <Button
-        leftSection={<FileTextIcon size={IconSize.xs} />}
-        onClick={loadAsset}
-        variant={'subtle'}
-        justify={'left'}
-        size={'compact-sm'}
-        mb={3}
-        flex={1}
-      >
-        <TruncatedText>{asset.name}</TruncatedText>
-      </Button>
+      <Tooltip label={asset.path} position={'top-start'}>
+        <Button
+          leftSection={<FileTextIcon size={IconSize.sm} />}
+          onClick={loadAsset}
+          variant={'subtle'}
+          justify={'left'}
+          size={'compact-sm'}
+          mb={3}
+          flex={1}
+        >
+          <Text truncate>{asset.name}</Text>
+        </Button>
+      </Tooltip>
       {loading && <Loader size={'xs'} />}
       {loaded && (
         <ThemeIcon color={'teal'} variant={'subtle'}>

@@ -12,7 +12,7 @@ export function AssetsBreadcrumbs({ navigationPath, navigateTo }: Props) {
   const { t } = useTranslation('panel-assets', { keyPrefix: 'breadcrumbs' });
 
   return (
-    <Group mb={'xs'} gap={'xs'} wrap={"nowrap"} align={"top"}>
+    <Group mb={'xs'} gap={'xs'} wrap={'nowrap'} align={'top'}>
       <ActionIcon
         onClick={() => navigateTo(navigationPath.length - 1)}
         aria-label={t('aria-labels.back')}
