@@ -4,13 +4,13 @@ import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
 import { DownloadEventNotificationBody } from '@/components/Notifications/DownloadEventNotificationBody';
+import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { CheckIcon, ErrorIcon } from '@/icons/icons';
 import i18n from '@/localization/config';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { RootState } from '@/redux/store';
 import { ConnectionStatus, IconSize } from '@/types/enums';
-import { roundTo } from '@/util/numeric';
 
 import { DownloadEvent, DownloadType } from './types';
 
@@ -39,43 +39,44 @@ export const setupDownloadEventSubcription = createAsyncThunk(
         const downloadedMb = data.downloadedBytes / (1024 * 1024);
         const totalMb = data.totalBytes ? data.totalBytes / (1024 * 1024) : -1;
 
-        if (data.type === DownloadType.Finished || data.type === DownloadType.Failed) {
-          const isFinished = data.type === DownloadType.Finished;
+        if (data.type === DownloadType.Finished) {
+          notifications.update({
+            id: downloads[data.id],
+            title: i18n.t('download-event.title.finished', { ns: 'notifications' }),
+            message: (
+              <TruncatedText tooltipProps={{ zIndex: 1000 }}>
+                {i18n.t('download-event.message.finished', {
+                  ns: 'notifications',
+                  file: data.id
+                })}
+              </TruncatedText>
+            ),
+            icon: <CheckIcon size={IconSize.sm} />,
+            autoClose: true,
+            loading: false,
+            color: 'green'
+          });
+          delete downloads[data.id];
+        }
 
-          const title = isFinished
-            ? i18n.t('download-event.title.finished', { ns: 'notifications' })
-            : i18n.t('download-event.title.failed', { ns: 'notifications' });
-          const message = isFinished
-            ? i18n.t('download-event.message.finished', {
-                ns: 'notifications',
-                file: data.id
-              })
-            : i18n.t('download-event.message.failed', {
-                ns: 'notifications',
-                file: data.id
-              });
-
-          const color = isFinished ? 'green' : 'red';
-          const icon = isFinished ? (
-            <CheckIcon size={IconSize.sm} />
-          ) : (
-            <ErrorIcon size={IconSize.sm} />
-          );
+        if (data.type === DownloadType.Failed) {
+          const color = 'red';
 
           notifications.update({
             id: downloads[data.id],
-            title: title,
-            message: isFinished ? (
-              message
-            ) : (
+            title: i18n.t('download-event.title.failed', { ns: 'notifications' }),
+            message: (
               <DownloadEventNotificationBody
-                message={message}
+                message={i18n.t('download-event.message.failed', {
+                  ns: 'notifications',
+                  file: data.id
+                })}
                 downloadProgress={50}
                 color={color}
                 animated={false}
               />
             ),
-            icon: icon,
+            icon: <ErrorIcon size={IconSize.sm} />,
             autoClose: true,
             loading: false,
             color: color
@@ -119,10 +120,10 @@ export const setupDownloadEventSubcription = createAsyncThunk(
                 <DownloadEventNotificationBody
                   message={i18n.t('download-event.message.progress', {
                     ns: 'notifications',
-                    bytes: roundTo(downloadedMb, 2),
-                    total: roundTo(totalMb, 2)
+                    file: data.id
                   })}
-                  downloadProgress={(downloadedMb / totalMb) * 100}
+                  downloadedSize={downloadedMb}
+                  totalSize={totalMb}
                 />
               ),
               autoClose: false,
@@ -142,10 +143,10 @@ export const setupDownloadEventSubcription = createAsyncThunk(
                 <DownloadEventNotificationBody
                   message={i18n.t('download-event.message.progress', {
                     ns: 'notifications',
-                    bytes: roundTo(downloadedMb, 2),
-                    total: roundTo(totalMb, 2)
+                    file: data.id
                   })}
-                  downloadProgress={(downloadedMb / totalMb) * 100}
+                  downloadedSize={downloadedMb}
+                  totalSize={totalMb}
                 />
               ),
               autoClose: false,

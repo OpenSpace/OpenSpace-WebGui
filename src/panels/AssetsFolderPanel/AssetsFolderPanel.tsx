@@ -4,13 +4,15 @@ import { useTranslation } from 'react-i18next';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
+import { FolderBackIcon } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
 
 import { AssetsBreadcrumbs } from './AssetsBreadcrumbs';
 import { AssetsEntry } from './AssetsEntry';
 import { FolderEntry } from './FolderEntry';
 import { useAssetFolders } from './hooks';
 import { Asset, AssetFolderNavigationState } from './types';
-import { collectAssets, currentFolder } from './util';
+import { collectAssets, findNavigatedFolder } from './util';
 
 export function AssetsFolderPanel() {
   const rootFolder = useAssetFolders();
@@ -30,7 +32,7 @@ export function AssetsFolderPanel() {
     return <LoadingBlocks />;
   }
 
-  const navigatedFolder = currentFolder(nav.root, nav.currentPath);
+  const navigatedFolder = findNavigatedFolder(nav.root, nav.currentPath);
   const nestedAssetsInCurrentFolder = collectAssets(navigatedFolder);
 
   function wordInString(test: Asset, search: string): boolean {
@@ -62,7 +64,11 @@ export function AssetsFolderPanel() {
           <FilterList.InputField placeHolderSearchText={t('asset-search-placeholder')} />
           <FilterList.Favorites>
             {navigatedFolder !== rootFolder && (
-              <FolderEntry text={'..'} onClick={goBack} />
+              <FolderEntry
+                text={'..'}
+                onClick={goBack}
+                icon={<FolderBackIcon size={IconSize.sm} />}
+              />
             )}
             {navigatedFolder.subFolders.map((folder) => (
               <FolderEntry

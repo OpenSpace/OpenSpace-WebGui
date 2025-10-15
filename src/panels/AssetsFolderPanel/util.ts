@@ -5,12 +5,13 @@ import { Asset, Folder } from './types';
  * returning the folder at that location
  *
  * @param root The folder to begin traversal from
- * @param path An array of folder names representing the path to traverse
- * @returns The folder located at the given path, or the last valid folder if the path is incomplete
+ * @param navPath An array of folder names representing the path to traverse
+ * @returns The folder located at the given path, or the last valid folder if the path is
+ * incomplete
  */
-export function currentFolder(root: Folder, path: string[]): Folder {
+export function findNavigatedFolder(root: Folder, navPath: string[]): Folder {
   let current = root;
-  for (const segment of path) {
+  for (const segment of navPath) {
     const next = current.subFolders.find((f) => f.name === segment);
     if (!next) {
       break;
@@ -43,12 +44,11 @@ export function collectAssets(folder: Folder): Asset[] {
  * @param path The full path string (e.g., "C:/foo/bar" or "C:/foo/bar.asset")
  * @returns The final name segment of the path (e.g., "bar" or "bar.asset")
  */
-export function pathName(path: string): string {
+export function baseName(path: string): string {
   const sanitizedPath = path.replaceAll('\\', '/');
   const nameStartPos = sanitizedPath.lastIndexOf('/');
 
-  const name = sanitizedPath.substring(nameStartPos + 1);
-  return name;
+  return sanitizedPath.substring(nameStartPos + 1);
 }
 
 /**

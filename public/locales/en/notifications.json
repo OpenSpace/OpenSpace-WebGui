@@ -7,14 +7,14 @@
     "title": {
       "finished": "Download Finished",
       "failed": "Download Failed",
-      "started": "Started Downloading '{{file}}'",
-      "progress": "Download in Progress '{{file}}'"
+      "started": "Started Downloading",
+      "progress": "Downloading..."
     },
     "message": {
       "finished": "Finished downloading '{{file}}'",
       "failed": "Failed to download file: '{{file}}'",
       "started": "Waiting to download '{{file}}'",
-      "progress": "Downloading {{bytes}} MB / {{total}} MB"
+      "progress": "Downloading file '{{file}}'"
     }
   }
 }

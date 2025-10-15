@@ -55,7 +55,7 @@ export function AssetsEntry({ asset }: Props) {
   return (
     <Group gap={'xs'}>
       <Button
-        leftSection={<FileTextIcon />}
+        leftSection={<FileTextIcon size={IconSize.xs} />}
         onClick={loadAsset}
         variant={'subtle'}
         justify={'left'}

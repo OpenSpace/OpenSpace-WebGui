@@ -4,8 +4,8 @@ type EventHandler = () => void;
 type EventType = EventData['Event'];
 
 /**
- * This class can be used to subscribe to events in components, for now it does not get
- * any data with the specific event but rather a notification that it happened
+ * This class can be used to subscribe to OpenSpace events in components. For now, it does
+ * not get any data with the event, but rather just a notification that it happened
  */
 class EventBus {
   private listeners: Partial<Record<EventType, EventHandler[]>> = {};

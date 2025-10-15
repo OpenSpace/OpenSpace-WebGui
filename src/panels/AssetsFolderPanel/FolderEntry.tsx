@@ -2,16 +2,18 @@ import { Button } from '@mantine/core';
 
 import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { FolderIcon } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
 
 interface Props {
   text: string;
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  icon?: React.ReactNode;
 }
 
-export function FolderEntry({ text, onClick }: Props) {
+export function FolderEntry({ text, onClick, icon }: Props) {
   return (
     <Button
-      leftSection={<FolderIcon />}
+      leftSection={icon ?? <FolderIcon size={IconSize.sm} />}
       onClick={onClick}
       variant={'subtle'}
       fullWidth

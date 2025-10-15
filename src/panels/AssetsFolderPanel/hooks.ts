@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useOpenSpaceApi } from '@/api/hooks';
 
 import { Asset, Folder } from './types';
-import { pathName, pruneEmptyFolders } from './util';
+import { baseName, pruneEmptyFolders } from './util';
 
 export function useAssetFolders() {
   const luaApi = useOpenSpaceApi();
@@ -18,7 +18,7 @@ export function useAssetFolders() {
    */
   const fetchFolderData = useCallback(
     async (directoryPath: string): Promise<Folder> => {
-      const name = pathName(directoryPath);
+      const name = baseName(directoryPath);
 
       let subFolderPaths = await luaApi?.walkDirectoryFolders(directoryPath);
       let assetsPaths = await luaApi?.walkDirectoryFiles(directoryPath);
@@ -31,7 +31,7 @@ export function useAssetFolders() {
       const assets: Asset[] =
         assetsPaths.map((path) => ({
           path,
-          name: pathName(path)
+          name: baseName(path)
         })) ?? [];
 
       const subFolders: Folder[] = subFolderPaths

@@ -31,6 +31,8 @@ export {
 export {
   LuFilePlus2 as AddFileIcon,
   LuFileText as FileTextIcon,
+  LuFolderUp as FolderBackIcon,
+  LuFolder as FolderIcon,
   LuFolderOpen as OpenFolderIcon
 } from 'react-icons/lu';
 export {
@@ -65,7 +67,6 @@ export {
   MdFastForward as FastForwardIcon,
   MdFastRewind as FastRewindIcon,
   MdFilterAlt as FilterIcon,
-  MdFolder as FolderIcon,
   MdFilterCenterFocus as FrameFocusIcon,
   MdOutlineInsertPhoto as InsertPhotoIcon,
   MdKeyboard as KeyboardIcon,

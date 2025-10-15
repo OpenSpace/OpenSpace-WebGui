@@ -1,22 +1,51 @@
-import { MantineColor, Progress, Text } from '@mantine/core';
+import { MantineColor, Progress } from '@mantine/core';
 
-interface Props {
+import { roundTo } from '@/util/numeric';
+
+import { TruncatedText } from '../TruncatedText/TruncatedText';
+
+interface Base {
   message: string;
-  downloadProgress: number;
   color?: MantineColor;
   animated?: boolean;
 }
 
+interface WithSize extends Base {
+  downloadedSize: number;
+  totalSize: number;
+  downloadProgress?: never;
+}
+
+interface WithProgress extends Base {
+  downloadProgress: number;
+  downloadedSize?: never;
+  totalSize?: never;
+}
+
+type Props = WithSize | WithProgress;
+
 export function DownloadEventNotificationBody({
   message,
-  downloadProgress,
   color,
-  animated = true
+  animated = true,
+  downloadedSize,
+  totalSize,
+  downloadProgress
 }: Props) {
+  const downloadedProgress = downloadProgress ?? (downloadedSize / totalSize) * 100;
+  const showDownloadTextProgress =
+    downloadedSize !== undefined && totalSize !== undefined;
+
   return (
     <>
-      <Text>{message}</Text>
-      <Progress value={downloadProgress} color={color} animated={animated} striped />
+      <TruncatedText tooltipProps={{ zIndex: 1000 }}>{message}</TruncatedText>
+      {showDownloadTextProgress && (
+        <TruncatedText tooltipProps={{ zIndex: 1000 }}>
+          {roundTo(downloadedSize, 2)} MB / {roundTo(totalSize, 2)} MB
+        </TruncatedText>
+      )}
+
+      <Progress value={downloadedProgress} color={color} animated={animated} striped />
     </>
   );
 }
