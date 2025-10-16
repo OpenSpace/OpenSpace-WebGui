@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Breadcrumbs, Button, Group } from '@mantine/core';
+import { Breadcrumbs, Button } from '@mantine/core';
 
-import { HomeIcon, UpArrowIcon } from '@/icons/icons';
+import { HomeIcon } from '@/icons/icons';
 
 interface Props {
   navigationPath: string[];
@@ -12,37 +12,28 @@ export function AssetsBreadcrumbs({ navigationPath, navigateTo }: Props) {
   const { t } = useTranslation('panel-assets', { keyPrefix: 'breadcrumbs' });
 
   return (
-    <Group mb={'xs'} gap={'xs'} wrap={'nowrap'} align={'top'}>
-      <ActionIcon
-        onClick={() => navigateTo(navigationPath.length - 1)}
-        aria-label={t('aria-labels.back')}
-        disabled={navigationPath.length === 0}
+    <Breadcrumbs separatorMargin={0} separator={'/'} mb={'xs'}>
+      <Button
+        variant={'subtle'}
+        p={2}
+        onClick={() => navigateTo(0)}
+        aria-label={t('aria-labels.home')}
+        size={'compact-sm'}
       >
-        <UpArrowIcon />
-      </ActionIcon>
-      <Breadcrumbs separatorMargin={0} separator={'/'}>
+        <HomeIcon />
+      </Button>
+      {navigationPath.map((folderName, i) => (
         <Button
-          variant={'subtle'}
+          key={`${folderName}_${i}`}
           p={2}
-          onClick={() => navigateTo(0)}
-          aria-label={t('aria-labels.home')}
+          variant={'subtle'}
+          onClick={() => navigateTo(i + 1)}
+          aria-label={t('aria-labels.breadcrumb', { path: folderName })}
           size={'compact-sm'}
         >
-          <HomeIcon />
+          {folderName}
         </Button>
-        {navigationPath.map((folderName, i) => (
-          <Button
-            key={`${folderName}_${i}`}
-            p={2}
-            variant={'subtle'}
-            onClick={() => navigateTo(i + 1)}
-            aria-label={t('aria-labels.breadcrumb', { path: folderName })}
-            size={'compact-sm'}
-          >
-            {folderName}
-          </Button>
-        ))}
-      </Breadcrumbs>
-    </Group>
+      ))}
+    </Breadcrumbs>
   );
 }
