@@ -10,18 +10,33 @@ type EventType = EventData['Event'];
 class EventBus {
   private listeners: Partial<Record<EventType, EventHandler[]>> = {};
 
-  on(event: EventType, handler: EventHandler) {
+  /**
+   * Subscribes a callback function to a specific event, the function is called each time
+   * the event is emitted
+   * @param event
+   * @param handler
+   */
+  subscribe(event: EventType, handler: EventHandler) {
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }
     this.listeners[event].push(handler);
   }
 
-  off(event: EventType, handler: EventHandler) {
+  /**
+   * Removes a function callback from a specific event subcription
+   * @param event Event to unsubscribe from
+   * @param handler The callback function handler to remove
+   */
+  unsubscribe(event: EventType, handler: EventHandler) {
     this.listeners[event] = this.listeners[event]?.filter((h) => h !== handler) || [];
   }
 
   // @TODO (anden88 2025-10-09): Do we want to pass the event payload to the handler?
+  /**
+   * Emits an event to all subscribed listeners
+   * @param event
+   */
   emit(event: EventType) {
     this.listeners[event]?.forEach((handler) => handler());
   }

@@ -6,6 +6,7 @@ import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { FolderBackIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
+import { caseInsensitiveSubstring } from '@/util/stringmatcher';
 
 import { AssetsBreadcrumbs } from './AssetsBreadcrumbs';
 import { AssetsEntry } from './AssetsEntry';
@@ -15,8 +16,8 @@ import { Asset, AssetFolderNavigationState } from './types';
 import { collectAssets, findNavigatedFolder } from './util';
 
 export function AssetsFolderPanel() {
-  const rootFolder = useAssetFolders();
   const [nav, setNav] = useState<AssetFolderNavigationState>();
+  const rootFolder = useAssetFolders();
   const { t } = useTranslation('panel-assets');
 
   useEffect(() => {
@@ -34,10 +35,6 @@ export function AssetsFolderPanel() {
 
   const navigatedFolder = findNavigatedFolder(nav.root, nav.currentPath);
   const nestedAssetsInCurrentFolder = collectAssets(navigatedFolder);
-
-  function wordInString(test: Asset, search: string): boolean {
-    return test.path.toLowerCase().includes(search.toLowerCase());
-  }
 
   function navigateTo(depth: number) {
     if (!nav) {
@@ -86,13 +83,11 @@ export function AssetsFolderPanel() {
           </FilterList.Favorites>
 
           <FilterList.SearchResults
-            data={nestedAssetsInCurrentFolder.sort((a, b) =>
-              a.name.localeCompare(b.name)
-            )}
+            data={nestedAssetsInCurrentFolder}
             renderElement={(asset: Asset) => (
               <AssetsEntry key={asset.name} asset={asset} />
             )}
-            matcherFunc={wordInString}
+            matcherFunc={(asset, search) => caseInsensitiveSubstring(asset.path, search)}
           >
             <FilterList.SearchResults.VirtualList />
           </FilterList.SearchResults>

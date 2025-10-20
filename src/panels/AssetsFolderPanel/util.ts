@@ -21,13 +21,7 @@ export function findNavigatedFolder(root: Folder, navPath: string[]): Folder {
   return current;
 }
 
-/**
- * Recursively collect all assets from the given folder and its subfolders
- *
- * @param folder The root folder to collect assets from
- * @returns An array containing all assets within the folder and its descendants
- */
-export function collectAssets(folder: Folder): Asset[] {
+function internalCollectAssets(folder: Folder): Asset[] {
   // Collect this folders assets
   let assets: Asset[] = [...folder.assets];
 
@@ -36,6 +30,18 @@ export function collectAssets(folder: Folder): Asset[] {
     assets = assets.concat(collectAssets(subFolder));
   }
   return assets;
+}
+
+/**
+ * Recursively collect all assets from the given folder and its subfolders
+ *
+ * @param folder The root folder to collect assets from
+ * @returns An array containing all assets within the folder and its descendants sorted
+ * by name
+ */
+export function collectAssets(folder: Folder): Asset[] {
+  const assets = internalCollectAssets(folder);
+  return assets.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 /**

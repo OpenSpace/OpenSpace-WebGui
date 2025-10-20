@@ -8,21 +8,19 @@ interface Props {
   showLabel?: boolean;
   disabled?: boolean;
   copyTooltipLabel?: string;
-  copiedTooltipLabel?: string;
 }
 
 export function CopyToClipboardButton({
   value,
   showLabel,
   disabled,
-  copyTooltipLabel,
-  copiedTooltipLabel
+  copyTooltipLabel
 }: Props) {
   const { t } = useTranslation('components', { keyPrefix: 'copy-to-clipboard-button' });
 
   function tooltipLabel(copied: boolean) {
     if (copied) {
-      return copiedTooltipLabel ?? t('tooltip.copied');
+      return t('tooltip.copied');
     }
     return copyTooltipLabel ?? t('tooltip.copy');
   }

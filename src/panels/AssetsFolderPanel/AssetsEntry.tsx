@@ -23,10 +23,19 @@ interface Props {
 }
 
 export function AssetsEntry({ asset }: Props) {
-  const luaApi = useOpenSpaceApi();
   const [loaded, setLoaded] = useState<boolean | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
+  const luaApi = useOpenSpaceApi();
   const { t } = useTranslation('panel-assets', { keyPrefix: 'asset-entry' });
+
+  // Get the initial load state of this asset
+  useEffect(() => {
+    async function initialLoadedState() {
+      setLoaded(await luaApi?.asset.isLoaded(asset.path));
+    }
+
+    initialLoadedState();
+  }, [luaApi, asset.path]);
 
   useEffect(() => {
     async function handleAssetEvent() {
@@ -35,19 +44,14 @@ export function AssetsEntry({ asset }: Props) {
       if (isNowLoaded) {
         setLoading(false);
         setLoaded(true);
-        eventBus.off('AssetLoadingFinished', handleAssetEvent);
+        eventBus.unsubscribe('AssetLoadingFinished', handleAssetEvent);
       }
     }
 
-    async function initialLoadedState() {
-      setLoaded(await luaApi?.asset.isLoaded(asset.path));
-    }
-
-    initialLoadedState();
-    eventBus.on('AssetLoadingFinished', handleAssetEvent);
+    eventBus.subscribe('AssetLoadingFinished', handleAssetEvent);
 
     return () => {
-      eventBus.off('AssetLoadingFinished', handleAssetEvent);
+      eventBus.unsubscribe('AssetLoadingFinished', handleAssetEvent);
     };
   }, [luaApi, asset.path]);
 

@@ -7,8 +7,8 @@ import { Asset, Folder } from './types';
 import { baseName, pruneEmptyFolders } from './util';
 
 export function useAssetFolders() {
+  const [folderStructure, setFolderStructure] = useState<Folder | null>(null);
   const luaApi = useOpenSpaceApi();
-  const [rootFolder, setRootFolder] = useState<Folder | null>(null);
   const { t } = useTranslation('panel-assets', { keyPrefix: 'folder-names' });
 
   /**
@@ -78,18 +78,26 @@ export function useAssetFolders() {
       let userFolder: Folder | null = await fetchFolderData(userDir);
       userFolder = pruneEmptyFolders(userFolder);
 
-      if (userFolder) {
-        userFolder.name = t('user');
-        rootFolder.subFolders.push(userFolder);
+      // Ensure user folder is present even if empty
+      if (!userFolder) {
+        userFolder = {
+          path: userDir,
+          name: '',
+          subFolders: [],
+          assets: []
+        };
       }
+
+      userFolder.name = t('user');
+      rootFolder.subFolders.push(userFolder);
     }
 
-    setRootFolder(rootFolder);
+    setFolderStructure(rootFolder);
   }, [luaApi, fetchFolderData, t]);
 
   useEffect(() => {
     buildFolderStructure();
   }, [buildFolderStructure]);
 
-  return rootFolder;
+  return folderStructure;
 }

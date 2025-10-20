@@ -36,82 +36,88 @@ export const setupDownloadEventSubcription = createAsyncThunk(
           continue;
         }
 
-        const downloadedMb = data.downloadedBytes / (1024 * 1024);
-        const totalMb = data.totalBytes ? data.totalBytes / (1024 * 1024) : -1;
+        const megabyte = 1024 * 1024;
+        const downloadedMb = data.downloadedBytes / megabyte;
+        const totalMb = data.totalBytes ? data.totalBytes / megabyte : -1;
 
-        if (data.type === DownloadType.Finished) {
-          notifications.update({
-            id: downloads[data.id],
-            title: i18n.t('download-event.title.finished', { ns: 'notifications' }),
-            message: (
-              <TruncatedText tooltipProps={{ zIndex: 1000 }}>
-                {i18n.t('download-event.message.finished', {
-                  ns: 'notifications',
-                  file: data.id
-                })}
-              </TruncatedText>
-            ),
-            icon: <CheckIcon size={IconSize.sm} />,
-            autoClose: true,
-            loading: false,
-            color: 'green'
-          });
-          delete downloads[data.id];
-        }
-
-        if (data.type === DownloadType.Failed) {
-          const color = 'red';
-
-          notifications.update({
-            id: downloads[data.id],
-            title: i18n.t('download-event.title.failed', { ns: 'notifications' }),
-            message: (
-              <DownloadEventNotificationBody
-                message={i18n.t('download-event.message.failed', {
-                  ns: 'notifications',
-                  file: data.id
-                })}
-                downloadProgress={50}
-                color={color}
-                animated={false}
-              />
-            ),
-            icon: <ErrorIcon size={IconSize.sm} />,
-            autoClose: true,
-            loading: false,
-            color: color
-          });
-
-          delete downloads[data.id];
-        }
-
-        if (data.type === DownloadType.Started && !downloads[data.id]) {
-          notifications.show({
-            id: data.id,
-            title: i18n.t('download-event.title.started', {
-              ns: 'notifications',
-              file: data.id
-            }),
-            message: (
-              <DownloadEventNotificationBody
-                message={i18n.t('download-event.message.started', {
-                  ns: 'notifications',
-                  file: data.id
-                })}
-                downloadProgress={0}
-              />
-            ),
-            autoClose: false,
-            loading: true,
-            color: 'white'
-          });
-          downloads[data.id] = data.id;
-        }
-
-        if (data.type === DownloadType.Progress) {
-          if (downloads[data.id]) {
+        switch (data.type) {
+          case DownloadType.Finished:
             notifications.update({
-              id: data.id,
+              id: downloads[data.id],
+              title: i18n.t('download-event.title.finished', { ns: 'notifications' }),
+              message: (
+                <TruncatedText tooltipProps={{ zIndex: 1000 }}>
+                  {i18n.t('download-event.message.finished', {
+                    ns: 'notifications',
+                    file: data.id
+                  })}
+                </TruncatedText>
+              ),
+              icon: <CheckIcon size={IconSize.sm} />,
+              autoClose: true,
+              loading: false,
+              color: 'green'
+            });
+            delete downloads[data.id];
+            break;
+
+          case DownloadType.Failed:
+            {
+              const color = 'red';
+
+              notifications.update({
+                id: downloads[data.id],
+                title: i18n.t('download-event.title.failed', { ns: 'notifications' }),
+                message: (
+                  <DownloadEventNotificationBody
+                    message={i18n.t('download-event.message.failed', {
+                      ns: 'notifications',
+                      file: data.id
+                    })}
+                    downloadProgress={50}
+                    color={color}
+                    animated={false}
+                  />
+                ),
+                icon: <ErrorIcon size={IconSize.sm} />,
+                autoClose: true,
+                loading: false,
+                color: color
+              });
+
+              delete downloads[data.id];
+            }
+            break;
+
+          case DownloadType.Started:
+            if (!downloads[data.id]) {
+              downloads[data.id] = data.id;
+
+              notifications.show({
+                id: downloads[data.id],
+                title: i18n.t('download-event.title.started', {
+                  ns: 'notifications',
+                  file: data.id
+                }),
+                message: (
+                  <DownloadEventNotificationBody
+                    message={i18n.t('download-event.message.started', {
+                      ns: 'notifications',
+                      file: data.id
+                    })}
+                    downloadProgress={0}
+                  />
+                ),
+                autoClose: false,
+                loading: true,
+                color: 'white'
+              });
+            }
+
+            break;
+          case DownloadType.Progress: {
+            const notificationData = {
+              id: '',
               title: i18n.t('download-event.title.progress', {
                 ns: 'notifications',
                 file: data.id
@@ -129,32 +135,22 @@ export const setupDownloadEventSubcription = createAsyncThunk(
               autoClose: false,
               loading: true,
               color: 'white'
-            });
-          } else {
-            // We've already started downloading but frontend may not have been connected
-            // yet, or Gui was refreshed during download
-            notifications.show({
-              id: data.id,
-              title: i18n.t('download-event.title.progress', {
-                ns: 'notifications',
-                file: data.id
-              }),
-              message: (
-                <DownloadEventNotificationBody
-                  message={i18n.t('download-event.message.progress', {
-                    ns: 'notifications',
-                    file: data.id
-                  })}
-                  downloadedSize={downloadedMb}
-                  totalSize={totalMb}
-                />
-              ),
-              autoClose: false,
-              loading: true,
-              color: 'white'
-            });
-            downloads[data.id] = data.id;
+            };
+
+            if (downloads[data.id]) {
+              notificationData.id = downloads[data.id];
+              notifications.update(notificationData);
+            } else {
+              // We've already started downloading but frontend may not have been connected
+              // yet, or Gui was refreshed during download
+              downloads[data.id] = data.id;
+              notificationData.id = data.id;
+              notifications.show(notificationData);
+            }
+            break;
           }
+          default:
+            throw new Error(`Unknown download event type: ${data.type}`);
         }
       }
     })();
