@@ -1,10 +1,10 @@
 import { useState } from 'react';
+import { Tooltip } from '@mantine/core';
 
 import { Keyframe } from './Keyframe';
 import { Playhead } from './Playhead';
 import { Tick } from './Tick';
 import { KeyframeEntry } from './types';
-import { Tooltip } from '@mantine/core';
 
 interface Props {
   keyframes: KeyframeEntry[];
@@ -208,9 +208,8 @@ export function Timeline({
 
       {keyframes.map((kf) => {
         return (
-          <Tooltip label={kf.Timestamp.toFixed(2)}>
+          <Tooltip label={kf.Timestamp.toFixed(2)} key={kf.Id}>
             <Keyframe
-              key={kf.Id}
               x={toXPos(kf.Timestamp) - keyframeWidth / 2}
               y={toYPos(0) - keyframeHeight / 2}
               width={keyframeWidth}

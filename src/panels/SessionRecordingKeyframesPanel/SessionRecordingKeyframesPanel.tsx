@@ -1,39 +1,39 @@
 import { useState } from 'react';
-import { ActionIcon, Button, Group } from '@mantine/core';
+import { Button } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { StringInput } from '@/components/Input/StringInput';
-import { PauseIcon, PlayIcon, StopIcon } from '@/icons/icons';
 
 import { KeyframeInfo } from './KeyframeInfo';
+import { PlaybackControls } from './PlaybackControls';
 import { Timeline } from './Timeline';
 import { KeyframeEntry } from './types';
 
 export function SessionRecordingKeyframesPanel() {
-  const luaApi = useOpenSpaceApi();
-
   const [file, setFile] = useState<string>('');
   const [keyframes, setKeyframes] = useState<KeyframeEntry[]>([]);
   const [selectedKeyframeIDs, setSelectedKeyframeIDs] = useState<number[]>([]);
   const [playheadTime, setPlayheadTime] = useState(0);
 
-  async function onMove(ids: number[], delta: number) {
+  const luaApi = useOpenSpaceApi();
+
+  async function moveKeyframes(ids: number[], delta: number) {
     if (!luaApi) {
       return;
     }
 
-    // Find the keyframe indices and move them
     for (const id of ids) {
-      const index = keyframes.findIndex((kf) => kf.Id === id);
-      if (index === -1) {
+      const keyframe = keyframes.find((kf) => kf.Id === id);
+
+      if (!keyframe) {
         continue;
       }
-      const kfTime = keyframes[index].Timestamp;
+      const kfTime = keyframe.Timestamp;
       const newTime = kfTime + delta;
-      await luaApi.keyframeRecording.moveKeyframe(index, newTime);
-      // Keyframes may have changed order after moving, so we refresh the list
-      await getKeyframes();
+
+      await luaApi.keyframeRecording.moveKeyframeById(id, newTime);
     }
+    await getKeyframes();
   }
 
   async function getKeyframes() {
@@ -71,13 +71,14 @@ export function SessionRecordingKeyframesPanel() {
         }}
         value={''}
         label={'Add Script Keyframe'}
+        placeholder={'Type your script here'}
       />
       <Timeline
         keyframes={keyframes}
         selectedKeyframeIDs={selectedKeyframeIDs}
         playheadTime={playheadTime}
         onPlayheadChange={setPlayheadTime}
-        onMoveKeyframes={onMove}
+        onMoveKeyframes={moveKeyframes}
         onSelectKeyframes={(ids, isAdditive) => {
           if (isAdditive) {
             // Add keyframe to selection
@@ -87,26 +88,9 @@ export function SessionRecordingKeyframesPanel() {
           }
         }}
       />
-      <Group my={'xs'} gap={'xs'}>
-        <ActionIcon
-          onClick={async () => {
-            const isPlayback = await luaApi?.sessionRecording.isPlayingBack();
-            if (isPlayback) {
-              luaApi?.sessionRecording.setPlaybackPause(false);
-            } else {
-              luaApi?.keyframeRecording.play();
-            }
-          }}
-        >
-          <PlayIcon />
-        </ActionIcon>
-        <ActionIcon onClick={() => luaApi?.keyframeRecording.pause()}>
-          <PauseIcon />
-        </ActionIcon>
-        <ActionIcon onClick={() => luaApi?.sessionRecording.stopPlayback()}>
-          <StopIcon />
-        </ActionIcon>
-      </Group>
+
+      <PlaybackControls />
+
       {selectedKeyframeIDs.map((id) => (
         <KeyframeInfo key={id} id={id} keyframes={keyframes} />
       ))}
