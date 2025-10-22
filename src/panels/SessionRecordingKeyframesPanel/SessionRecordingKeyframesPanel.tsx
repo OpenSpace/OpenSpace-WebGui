@@ -16,7 +16,6 @@ export function SessionRecordingKeyframesPanel() {
   const [playheadTime, setPlayheadTime] = useState(0);
 
   const luaApi = useOpenSpaceApi();
-
   async function moveKeyframes(ids: number[], delta: number) {
     if (!luaApi) {
       return;
@@ -29,7 +28,7 @@ export function SessionRecordingKeyframesPanel() {
         continue;
       }
       const kfTime = keyframe.Timestamp;
-      const newTime = kfTime + delta;
+      const newTime = Math.max(0, kfTime + delta);
 
       await luaApi.keyframeRecording.moveKeyframeById(id, newTime);
     }
