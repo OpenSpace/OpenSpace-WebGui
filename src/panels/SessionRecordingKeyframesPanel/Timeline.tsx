@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { Tooltip } from '@mantine/core';
+import { ActionIcon, Stack, Tooltip } from '@mantine/core';
+import { useHotkeys } from '@mantine/hooks';
+
+import { HomeIcon } from '@/icons/icons';
 
 import { Keyframe } from './Keyframe';
 import { Playhead } from './Playhead';
@@ -33,12 +36,20 @@ export function Timeline({
   );
   const [draggingPlayhead, setDraggingPlayhead] = useState(false);
 
+  const [multiSelection, setMultiSelection] = useState(false);
+  const [multiSelectionPos, setMultiSelectionPos] = useState<[number, number] | null>(
+    null
+  );
+
+  // State to control the timeline moving sideways
   const [panning, setPanning] = useState(false);
   const [panStartX, setPanStartX] = useState<number | null>(null);
   const [panOffset, setPanOffset] = useState(0);
 
-  const [scale, setScale] = useState(10); // Scale represent pixels per second
-  const [offset, setOffset] = useState(-10); // Offset in seconds, viewport start
+  const [scale, setScale] = useState(20); // Scale represent pixels per second
+  const [offset, setOffset] = useState(-0.5); // Offset in seconds, viewport start
+
+  useHotkeys([['esc', () => cancelMove()]], []);
 
   // Svg sizes
   const width = 800;
@@ -105,6 +116,32 @@ export function Timeline({
     const clientX = event.nativeEvent.offsetX;
     const clientY = event.nativeEvent.offsetY;
 
+    if (multiSelection) {
+      const [x1] = multiSelectionPos!;
+      const x2 = clientX;
+
+      setMultiSelectionPos([x1, x2]);
+
+      const selectionXMin = Math.min(x1, x2);
+      const selectionXMax = Math.max(x1, x2);
+
+      // Get the keyframes covered by the selection area
+      const coveredKeyframes = keyframes.filter((kf) => {
+        const kfX = toXPos(kf.Timestamp);
+
+        const kfStart = kfX - keyframeWidth / 2;
+        const kfEnd = kfX + keyframeWidth / 2;
+
+        // Is the keyframe bounds overlapping the selection area
+        return kfEnd >= selectionXMin && kfStart <= selectionXMax;
+      });
+
+      onSelectKeyframes(
+        coveredKeyframes.map((kf) => kf.Id),
+        false
+      );
+    }
+
     if (panning) {
       const deltaX = event.clientX - panStartX!;
       setOffset(panOffset - deltaX / scale);
@@ -145,14 +182,26 @@ export function Timeline({
     setDragStartX(null);
     setDraggingPlayhead(false);
     setPanning(false);
+    setMultiSelection(false);
+    setMultiSelectionPos(null);
   }
 
-  function onBackgroundClick() {
-    onSelectKeyframes([], false);
+  function cancelMove() {
     setDraggingIds(null);
+    setTooltip(null);
+    setDragStartX(null);
+  }
+
+  function onBackgroundClick(event: React.MouseEvent) {
+    setMultiSelection(true);
+    setMultiSelectionPos([event.nativeEvent.offsetX, event.nativeEvent.offsetX]);
+
+    // onSelectKeyframes([], false);
+    // setDraggingIds(null);
   }
 
   function onAxisMouseDown(event: React.MouseEvent) {
+    event.stopPropagation();
     // We're draggin the timeline
     if (event.shiftKey) {
       setPanning(true);
@@ -188,74 +237,99 @@ export function Timeline({
   }
 
   return (
-    <svg
-      width={width}
-      height={height}
-      style={{ border: '1px solid #ccc', background: '#fafafa20' }}
-      onMouseUp={onMouseUp}
-      onMouseLeave={onMouseUp}
-      onMouseMove={onMouseMove}
-      onMouseDown={onBackgroundClick}
-      onWheel={onWheel}
-      cursor={draggingPlayhead ? 'grabbing' : 'default'}
-    >
-      <g onMouseDown={onAxisMouseDown} cursor={draggingPlayhead ? 'grabbing' : 'grab'}>
-        <rect x={0} y={0} width={width} height={axisHeight} fill={'#fafafa20'} />
-        {ticks.map((t) => {
-          return <Tick key={t} time={t} xPos={toXPos(t)} height={axisHeight} />;
-        })}
-      </g>
-
-      {keyframes.map((kf) => {
-        return (
-          <Tooltip label={kf.Timestamp.toFixed(2)} key={kf.Id}>
-            <Keyframe
-              x={toXPos(kf.Timestamp) - keyframeWidth / 2}
-              y={toYPos(0) - keyframeHeight / 2}
-              width={keyframeWidth}
-              height={keyframeHeight}
-              isSelected={selectedKeyframeIDs.includes(kf.Id)}
-              cursor={draggingIds !== null ? 'grabbing' : 'grab'}
-              keyframeInfo={kf}
-              onMouseDown={onKeyframeMouseDown}
-            />
-          </Tooltip>
-        );
-      })}
-
-      {tooltip && (
-        <g>
-          {draggingIds &&
-            draggingIds.map((id) => {
-              const kf = keyframes.find((kf) => kf.Id === id);
-              if (!kf) {
-                return null;
-              }
-
-              const delta = tooltip.time - toTime(dragStartX!);
-
-              return (
-                <Keyframe
-                  key={id}
-                  x={toXPos(kf.Timestamp + delta) - keyframeWidth / 2}
-                  y={toYPos(0) - keyframeHeight / 2}
-                  width={keyframeWidth}
-                  height={keyframeHeight}
-                  opacity={0.5}
-                  cursor={draggingIds !== null ? 'grabbing' : 'grab'}
-                  isSelected={false}
-                  keyframeInfo={kf}
-                />
-              );
-            })}
-
-          <text x={tooltip.x} y={tooltip.y} fill={'white'} textAnchor={'middle'}>
-            {tooltip.time.toFixed(2)}s
-          </text>
+    <Stack>
+      <ActionIcon
+        onClick={() => {
+          setScale(20);
+          setOffset(-0.5);
+        }}
+        aria-label={'Reset view'}
+      >
+        <HomeIcon />
+      </ActionIcon>
+      <svg
+        width={width}
+        height={height}
+        style={{ border: '1px solid #ccc', background: '#fafafa20' }}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseUp}
+        onMouseMove={onMouseMove}
+        onMouseDown={onBackgroundClick}
+        onWheel={onWheel}
+        cursor={draggingPlayhead ? 'grabbing' : multiSelection ? 'ew-resize' : 'default'}
+      >
+        <g onMouseDown={onAxisMouseDown} cursor={draggingPlayhead ? 'grabbing' : 'grab'}>
+          <rect x={0} y={0} width={width} height={axisHeight} fill={'#fafafa20'} />
+          {ticks.map((t) => {
+            return <Tick key={t} time={t} xPos={toXPos(t)} height={axisHeight} />;
+          })}
         </g>
-      )}
 
-      <Playhead xPos={toXPos(playheadTime)} height={height} />
-    </svg>
+        {keyframes.map((kf) => {
+          return (
+            <Tooltip label={kf.Timestamp.toFixed(2)} key={kf.Id}>
+              <Keyframe
+                x={toXPos(kf.Timestamp) - keyframeWidth / 2}
+                y={toYPos(0) - keyframeHeight / 2}
+                width={keyframeWidth}
+                height={keyframeHeight}
+                isSelected={selectedKeyframeIDs.includes(kf.Id)}
+                cursor={draggingIds !== null ? 'grabbing' : 'grab'}
+                keyframeInfo={kf}
+                onMouseDown={onKeyframeMouseDown}
+              />
+            </Tooltip>
+          );
+        })}
+
+        {tooltip && (
+          <g>
+            {draggingIds &&
+              draggingIds.map((id) => {
+                const kf = keyframes.find((kf) => kf.Id === id);
+                if (!kf) {
+                  return null;
+                }
+
+                const delta = tooltip.time - toTime(dragStartX!);
+
+                return (
+                  <Keyframe
+                    key={id}
+                    x={toXPos(kf.Timestamp + delta) - keyframeWidth / 2}
+                    y={toYPos(0) - keyframeHeight / 2}
+                    width={keyframeWidth}
+                    height={keyframeHeight}
+                    opacity={0.5}
+                    cursor={draggingIds !== null ? 'grabbing' : 'grab'}
+                    isSelected={false}
+                    keyframeInfo={kf}
+                  />
+                );
+              })}
+
+            <text x={tooltip.x} y={tooltip.y} fill={'white'} textAnchor={'middle'}>
+              {tooltip.time.toFixed(2)}s
+            </text>
+          </g>
+        )}
+
+        <Playhead xPos={toXPos(playheadTime)} height={height} />
+        {multiSelection && (
+          <rect
+            x={
+              multiSelectionPos![0] < multiSelectionPos![1]
+                ? multiSelectionPos![0]
+                : multiSelectionPos![1]
+            }
+            width={Math.abs(multiSelectionPos![1] - multiSelectionPos![0])}
+            y={0}
+            height={height}
+            fill={'#57caff9f'}
+            pointerEvents={'none'}
+          />
+        )}
+      </svg>
+    </Stack>
   );
 }

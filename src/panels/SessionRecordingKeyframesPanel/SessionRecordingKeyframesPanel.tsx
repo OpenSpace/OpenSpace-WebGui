@@ -72,6 +72,7 @@ export function SessionRecordingKeyframesPanel() {
         value={''}
         label={'Add Script Keyframe'}
         placeholder={'Type your script here'}
+        mb={'xs'}
       />
       <Timeline
         keyframes={keyframes}
