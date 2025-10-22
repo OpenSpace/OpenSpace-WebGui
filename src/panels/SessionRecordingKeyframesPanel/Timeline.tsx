@@ -8,6 +8,7 @@ import { Keyframe } from './Keyframe';
 import { Playhead } from './Playhead';
 import { Tick } from './Tick';
 import { KeyframeEntry } from './types';
+import { computeTicks } from './util';
 
 interface Props {
   keyframes: KeyframeEntry[];
@@ -64,14 +65,7 @@ export function Timeline({
   const viewportEnd = offset + width / scale;
 
   // Generate ticks based on the visible viewport
-  const ticks: number[] = [];
-  for (
-    let t = Math.max(0, Math.floor(viewportStart / tickInterval) * tickInterval);
-    t <= viewportEnd;
-    t += tickInterval
-  ) {
-    ticks.push(t);
-  }
+  const ticks = computeTicks(viewportStart, viewportEnd, tickInterval);
 
   function toXPos(t: number) {
     return (t - offset) * scale; // Convert time to pixel position
