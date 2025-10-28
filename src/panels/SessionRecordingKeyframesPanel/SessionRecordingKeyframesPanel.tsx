@@ -46,6 +46,17 @@ export function SessionRecordingKeyframesPanel() {
   return (
     <>
       <Button onClick={getKeyframes}>Update keyframes</Button>
+      <Button
+        onClick={async () => {
+          const newData = await luaApi?.keyframeRecording.reduceKeyframes();
+          if (newData) {
+            setKeyframes(Object.values(newData) as KeyframeEntry[]);
+          }
+          console.log(Object.values(newData).length);
+        }}
+      >
+        Simplify keyframes
+      </Button>
       <StringInput
         onEnter={async (value) => {
           await luaApi?.keyframeRecording.loadSequence(value);
@@ -55,6 +66,7 @@ export function SessionRecordingKeyframesPanel() {
         value={file}
         label={'Load keyframes file'}
       />
+
       <Button
         onClick={() => {
           luaApi?.keyframeRecording.addCameraKeyframe(playheadTime);
@@ -90,6 +102,18 @@ export function SessionRecordingKeyframesPanel() {
       />
 
       <PlaybackControls />
+
+      {selectedKeyframeIDs.length > 1 && (
+        <Button
+          onClick={() => {
+            for (const id of selectedKeyframeIDs) {
+              luaApi?.keyframeRecording.removeKeyframeById(id);
+            }
+          }}
+        >
+          Delete multiple
+        </Button>
+      )}
 
       {selectedKeyframeIDs.map((id) => (
         <KeyframeInfo key={id} id={id} keyframes={keyframes} />
