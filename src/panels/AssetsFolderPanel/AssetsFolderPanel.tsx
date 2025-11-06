@@ -87,7 +87,12 @@ export function AssetsFolderPanel() {
             renderElement={(asset: Asset) => (
               <AssetsEntry key={asset.name} asset={asset} />
             )}
-            matcherFunc={(asset, search) => caseInsensitiveSubstring(asset.path, search)}
+            matcherFunc={(asset, search) =>
+              search
+                .split(' ')
+                .filter((term) => term.length > 0)
+                .every((term) => caseInsensitiveSubstring(asset.path, term))
+            }
           >
             <FilterList.SearchResults.VirtualList />
           </FilterList.SearchResults>
