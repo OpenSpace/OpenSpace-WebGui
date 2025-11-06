@@ -46,7 +46,7 @@ export const setupDownloadEventSubcription = createAsyncThunk(
               id: downloads[data.id],
               title: i18n.t('download-event.title.finished', { ns: 'notifications' }),
               message: (
-                <TruncatedText tooltipProps={{ zIndex: 1000 }}>
+                <TruncatedText>
                   {i18n.t('download-event.message.finished', {
                     ns: 'notifications',
                     file: data.id

@@ -38,9 +38,9 @@ export function DownloadEventNotificationBody({
 
   return (
     <>
-      <TruncatedText tooltipProps={{ zIndex: 1000 }}>{message}</TruncatedText>
+      <TruncatedText>{message}</TruncatedText>
       {showDownloadTextProgress && (
-        <TruncatedText tooltipProps={{ zIndex: 1000 }}>
+        <TruncatedText>
           {roundTo(downloadedSize, 2)} MB / {roundTo(totalSize, 2)} MB
         </TruncatedText>
       )}
