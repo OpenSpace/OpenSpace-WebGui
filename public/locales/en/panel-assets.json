@@ -19,6 +19,12 @@
     }
   },
   "asset-entry": {
-    "copy-tooltip-label": "Copy path"
+    "copy-tooltip-label": "Copy path",
+    "aria-labels": {
+      "add": "Add asset '{{assetName}}'",
+      "added": "Asset '{{assetName}}' added",
+      "remove": "Remove asset '{{assetName}}'",
+      "reload": "Reload asset '{{assetName}}'"
+    }
   }
 }

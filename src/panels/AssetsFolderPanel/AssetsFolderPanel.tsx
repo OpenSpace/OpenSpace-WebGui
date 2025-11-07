@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Box } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { Layout } from '@/components/Layout/Layout';
@@ -76,10 +77,11 @@ export function AssetsFolderPanel() {
                 }
               />
             ))}
-
-            {navigatedFolder.assets.map((asset) => (
-              <AssetsEntry key={asset.path} asset={asset} />
-            ))}
+            <Box mb={'xs'}>
+              {navigatedFolder.assets.map((asset) => (
+                <AssetsEntry key={asset.path} asset={asset} />
+              ))}
+            </Box>
           </FilterList.Favorites>
 
           <FilterList.SearchResults

@@ -14,3 +14,10 @@ export interface AssetFolderNavigationState {
   root: Folder;
   currentPath: string[];
 }
+
+export enum AssetLoadState {
+  NotLoaded,
+  Loading,
+  Loaded,
+  Error
+}
