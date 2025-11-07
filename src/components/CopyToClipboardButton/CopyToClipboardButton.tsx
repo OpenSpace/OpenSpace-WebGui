@@ -46,6 +46,7 @@ export function CopyToClipboardButton({
               variant={'subtle'}
               onClick={copy}
               disabled={disabled}
+              aria-label={tooltipLabel(copied)}
             >
               <CopyIcon />
             </ActionIcon>
