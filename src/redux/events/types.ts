@@ -21,6 +21,11 @@ type AssetLoadingFinishedEvent = {
   Event: 'AssetLoadingFinished';
 };
 
+export type AssetLoadingErrorEvent = {
+  Event: 'AssetLoadingError';
+  AssetPath: string;
+};
+
 type CameraFocusTransitionEvent = {
   Event: 'CameraFocusTransition';
   Node: Identifier;
@@ -136,6 +141,7 @@ export type EventData =
   | ActionRemovedEvent
   | ApplicationShutdownEvent
   | AssetLoadingFinishedEvent
+  | AssetLoadingErrorEvent
   | CameraFocusTransitionEvent
   | CameraMovedPositionEvent
   | CameraPathFinishedEvent
