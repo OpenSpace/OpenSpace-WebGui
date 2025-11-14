@@ -25,6 +25,11 @@ interface Props {
   asset: Asset;
 }
 
+// TODO AssetUnloadingFinished for example load base and base_keybindings if base is removed
+// and then base_keybindings is removed as well. Only keybindings asset will update its status.
+// if we have an event we can listen on the other assets that were required by the removed asset
+// to also remove them
+
 export function AssetsEntry({ asset }: Props) {
   const [loadState, setLoadState] = useState<AssetLoadState>(AssetLoadState.NotLoaded);
   const [isRootAsset, setIsRootAsset] = useState<boolean>(false);
@@ -111,7 +116,7 @@ export function AssetsEntry({ asset }: Props) {
 
   async function loadAsset() {
     // Do nothing if asset is already loaded or loading
-    if (loadState === AssetLoadState.Loaded || loadState === AssetLoadState.Loading) {
+    if (isRootAsset || loadState === AssetLoadState.Loading) {
       return;
     }
     // If the asset failed to load we try to reload it
@@ -132,13 +137,19 @@ export function AssetsEntry({ asset }: Props) {
     loadStateRef.current = AssetLoadState.Loading;
   }
 
-  function removeAsset() {
+  async function removeAsset() {
     if (loadState === AssetLoadState.NotLoaded) {
       return;
     }
-    luaApi?.asset.remove(asset.path);
-    setLoadState(AssetLoadState.NotLoaded);
-    loadStateRef.current = AssetLoadState.NotLoaded;
+    await luaApi?.asset.remove(asset.path);
+    const isKeptAlive = await luaApi?.asset.isLoaded(asset.path);
+    if (isKeptAlive) {
+      setLoadState(AssetLoadState.Loaded); // TODO: asset might be kept alive by another asset
+      loadStateRef.current = AssetLoadState.Loaded;
+    } else {
+      setLoadState(AssetLoadState.NotLoaded); // TODO: asset might be kept alive by another asset
+      loadStateRef.current = AssetLoadState.NotLoaded;
+    }
     setIsRootAsset(false);
   }
 
@@ -158,7 +169,6 @@ export function AssetsEntry({ asset }: Props) {
           <Text truncate>{asset.name}</Text>
         </Button>
       </Tooltip>
-      {loadState === AssetLoadState.Loading && <Loader size={'xs'} />}
 
       {(loadState === AssetLoadState.Error || isRootAsset) && (
         <ActionIcon
@@ -180,6 +190,7 @@ export function AssetsEntry({ asset }: Props) {
           <DeleteIcon />
         </ActionIcon>
       )}
+      {loadState === AssetLoadState.Loading && <Loader size={'xs'} />}
       {loadState === AssetLoadState.Loaded && (
         <ThemeIcon
           color={'teal'}
