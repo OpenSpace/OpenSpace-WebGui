@@ -159,15 +159,7 @@ export function AssetsEntry({ asset }: Props) {
         </Button>
       </Tooltip>
       {loadState === AssetLoadState.Loading && <Loader size={'xs'} />}
-      {loadState === AssetLoadState.Loaded && (
-        <ThemeIcon
-          color={'teal'}
-          variant={'subtle'}
-          aria-label={t('aria-labels.added', { assetName: asset.name })}
-        >
-          <CheckIcon size={IconSize.xs} />
-        </ThemeIcon>
-      )}
+
       {(loadState === AssetLoadState.Error || isRootAsset) && (
         <ActionIcon
           onClick={reloadAsset}
@@ -187,6 +179,15 @@ export function AssetsEntry({ asset }: Props) {
         >
           <DeleteIcon />
         </ActionIcon>
+      )}
+      {loadState === AssetLoadState.Loaded && (
+        <ThemeIcon
+          color={'teal'}
+          variant={'subtle'}
+          aria-label={t('aria-labels.added', { assetName: asset.name })}
+        >
+          <CheckIcon size={IconSize.xs} />
+        </ThemeIcon>
       )}
       <CopyToClipboardButton
         value={asset.path.replaceAll('\\', '/')}
