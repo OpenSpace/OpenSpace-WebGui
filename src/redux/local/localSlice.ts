@@ -15,6 +15,7 @@ export interface LocalState {
     currentlySelectedNode: Uri | null;
   };
   menuItemsConfig: MenuItemConfig[];
+  sceneTreeVisible: Record<Uri, boolean>;
 }
 
 const initialState: LocalState = {
@@ -29,13 +30,35 @@ const initialState: LocalState = {
     expandedGroups: [],
     currentlySelectedNode: null
   },
-  menuItemsConfig: []
+  menuItemsConfig: [],
+  sceneTreeVisible: {}
 };
 
 export const localSlice = createSlice({
   name: 'local',
   initialState,
   reducers: {
+    addSceneTreeNode: (state, action: PayloadAction<{ tree: Record<Uri, boolean> }>) => {
+      const { tree } = action.payload;
+      state.sceneTreeVisible = { ...state.sceneTreeVisible, ...tree };
+      return state;
+    },
+    removeSceneTreeNode: (state, action: PayloadAction<{ uri: Uri }>) => {
+      const { uri } = action.payload;
+      delete state.sceneTreeVisible[uri];
+      return state;
+    },
+    setSceneTreeNodeVisibility: (
+      state,
+      action: PayloadAction<{ uri: Uri; isVisible: boolean }>
+    ) => {
+      const { uri, isVisible } = action.payload;
+      state.sceneTreeVisible[uri] = isVisible;
+    },
+    clearSceneTree: (state) => {
+      state.sceneTreeVisible = {};
+      return state;
+    },
     setSceneTreeNodeExpanded: (state, action: PayloadAction<string[]>) => {
       state.sceneTree.expandedGroups = action.payload;
       return state;
@@ -79,6 +102,10 @@ export const {
   setOnlyFocusableInNavMenu,
   setMenuItemVisible,
   setMenuItemOpen,
-  setMenuItemsConfig
+  setMenuItemsConfig,
+  addSceneTreeNode,
+  setSceneTreeNodeVisibility,
+  clearSceneTree,
+  removeSceneTreeNode
 } = localSlice.actions;
 export const localReducer = localSlice.reducer;

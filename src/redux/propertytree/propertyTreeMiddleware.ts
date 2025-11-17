@@ -4,6 +4,11 @@ import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { refreshGroups } from '@/redux/groups/groupsSliceMiddleware';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
+import {
+  addSceneTreeNode,
+  clearSceneTree,
+  removeSceneTreeNode
+} from '@/redux/local/localSlice';
 import { AnyProperty } from '@/types/Property/property';
 import {
   OpenSpacePropertyOwner,
@@ -13,7 +18,13 @@ import {
   Uri
 } from '@/types/types';
 import { rootOwnerKey } from '@/util/keys';
-import { isGlobeLayer, removeLastWordFromUri } from '@/util/propertyTreeHelpers';
+import {
+  enabledPropertyUri,
+  fadePropertyUri,
+  isGlobeLayer,
+  isRenderable,
+  removeLastWordFromUri
+} from '@/util/propertyTreeHelpers';
 
 import {
   addProperties,
@@ -60,9 +71,24 @@ export const addUriToPropertyTree = createAsyncThunk(
       propertyOwners.forEach((p) => {
         propertyOwnerMap[p.uri] = p;
       });
+
+      const sceneTree: Record<Uri, boolean> = {};
+      propertyOwners.forEach((p) => {
+        if (!isRenderable(p.uri)) {
+          return;
+        }
+        const fade = propertiesMap[fadePropertyUri(p.uri)]?.value as undefined | number;
+        const enabled = propertiesMap[enabledPropertyUri(p.uri)]?.value as
+          | undefined
+          | boolean;
+        const isVisible = enabled === true && fade !== undefined && fade > 0;
+        sceneTree[p.uri] = isVisible;
+      });
+
       return {
         properties: propertiesMap,
-        propertyOwners: propertyOwnerMap
+        propertyOwners: propertyOwnerMap,
+        sceneTree
       };
     } else {
       // Property
@@ -71,7 +97,8 @@ export const addUriToPropertyTree = createAsyncThunk(
 
       return {
         properties: propertiesMap,
-        propertyOwners: null
+        propertyOwners: null,
+        sceneTree: null
       };
     }
   }
@@ -127,6 +154,9 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
       if (action.payload?.properties) {
         listenerApi.dispatch(addProperties(action.payload.properties));
       }
+      if (action.payload?.sceneTree) {
+        listenerApi.dispatch(addSceneTreeNode({ tree: action.payload.sceneTree }));
+      }
     }
   });
 
@@ -137,6 +167,7 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
 
       listenerApi.dispatch(removePropertyOwners({ uris: [uri] }));
       listenerApi.dispatch(removeProperties({ uris: [uri] }));
+      listenerApi.dispatch(removeSceneTreeNode({ uri }));
       listenerApi.dispatch(refreshGroups());
     }
   });
@@ -145,6 +176,7 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
     effect: (_, listenerApi) => {
       listenerApi.dispatch(clearProperties());
       listenerApi.dispatch(clearPropertyOwners());
+      listenerApi.dispatch(clearSceneTree());
       listenerApi.dispatch(addUriToPropertyTree(rootOwnerKey));
     }
   });

@@ -1,10 +1,10 @@
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
 import { Identifier, PropertyOwner, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
 import {
-  checkVisiblity,
   enabledPropertyUri,
   fadePropertyUri,
   hasVisibleChildren,
@@ -80,25 +80,22 @@ export function useVisibleProperties(propertyOwner: PropertyOwner | undefined): 
  */
 export function usePropertyOwnerVisibility(uri: Uri) {
   const luaApi = useOpenSpaceApi();
-
-  const [enabledPropertyValue, setEnabledProperty] = useProperty(
-    'BoolProperty',
-    enabledPropertyUri(uri)
+  const isVisible = useAppSelector((state) => state.local.sceneTreeVisible?.[uri]);
+  const isFadeable = useAppSelector(
+    (state) => state.properties.properties[fadePropertyUri(uri)] !== undefined
   );
-  const [fadePropertyValue, setFadePropertyValue] = useProperty(
-    'FloatProperty',
-    fadePropertyUri(uri)
-  );
-  const isFadeable = fadePropertyValue !== undefined;
-
-  const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
+  const dispatch = useAppDispatch();
 
   function setVisibility(shouldShow: boolean, isImmediate: boolean = false) {
     if (!isFadeable) {
-      setEnabledProperty(shouldShow);
+      // Just setting the value of the property here to avoid subscriptions
+      dispatch(setPropertyValue({ uri: enabledPropertyUri(uri), value: shouldShow }));
     } else if (isImmediate) {
-      setEnabledProperty(shouldShow);
-      setFadePropertyValue(shouldShow ? 1.0 : 0.0);
+      // Just setting the value of the properties here to avoid subscriptions
+      dispatch(setPropertyValue({ uri: enabledPropertyUri(uri), value: shouldShow }));
+      dispatch(
+        setPropertyValue({ uri: fadePropertyUri(uri), value: shouldShow ? 1.0 : 0.0 })
+      );
     } else if (shouldShow) {
       luaApi?.fadeIn(uri);
     } else {
