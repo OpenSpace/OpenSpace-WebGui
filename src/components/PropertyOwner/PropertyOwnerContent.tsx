@@ -8,6 +8,7 @@ import { Uri } from '@/types/types';
 import { isGlobeLayersUri } from '@/util/propertyTreeHelpers';
 
 import { PropertyOwner } from './PropertyOwner';
+import { VideoPlayerComponent } from './VideoPlayerComponent';
 
 interface Props {
   uri: Uri;
@@ -26,7 +27,13 @@ export function PropertyOwnerContent({ uri, hideSubowners = false }: Props) {
   );
 
   const visibleProperties = useVisibleProperties(propertyOwner);
-  const subowners = propertyOwner.subowners ?? [];
+  let subowners = propertyOwner.subowners ?? [];
+
+  // Separate video player subowner if it exists, so we can render a custom component
+  const videoPlayerUri = subowners.find((subowner) => subowner.endsWith('VideoPlayer'));
+  if (videoPlayerUri) {
+    subowners = subowners.filter((subowner) => subowner !== videoPlayerUri);
+  }
 
   // First handle any custom content types that has a special treatment, like GlobeLayers
   if (isGlobeLayers) {
@@ -35,6 +42,7 @@ export function PropertyOwnerContent({ uri, hideSubowners = false }: Props) {
 
   return (
     <Box>
+      {videoPlayerUri && <VideoPlayerComponent uri={videoPlayerUri} />}
       {!hideSubowners && subowners.length > 0 && (
         <Box>
           {subowners.map((subowner) => (
