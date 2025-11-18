@@ -31,7 +31,7 @@ export function PropertyOwnerContent({
     isGlobeLayersUri(uri, state.properties.properties)
   );
 
-  const visibleProperties = useVisibleProperties(propertyOwner);
+  let visibleProperties = useVisibleProperties(propertyOwner);
   let subowners = propertyOwner.subowners ?? [];
 
   if (filterSubowners) {
@@ -39,9 +39,21 @@ export function PropertyOwnerContent({
   }
 
   // Separate video player subowner if it exists, so we can render a custom component
-  const videoPlayerUri = subowners.find((subowner) => subowner.endsWith('VideoPlayer'));
-  if (videoPlayerUri) {
-    subowners = subowners.filter((subowner) => subowner !== videoPlayerUri);
+  let videoPlayerUri = subowners.find((subowner) => subowner.endsWith('VideoPlayer'));
+
+  if (uri.endsWith('TileProvider')) {
+    // If the current property owner is a TileProvider, we don't want to render
+    // the VideoPlayer component here, since it will be rendered at the GlobeLayer level
+    videoPlayerUri = undefined;
+  }
+
+  // Special handling to hide certain properties from the VideoPlayer property owner,
+  // since we render them in a custom way in the VideoPlayerComponent
+  if (propertyOwner.identifier === 'VideoPlayer') {
+    const PropertiesToHide = ['.Play', '.Pause', '.GoToStart'];
+    visibleProperties = visibleProperties.filter(
+      (propUri) => !PropertiesToHide.some((s) => propUri.endsWith(s))
+    );
   }
 
   // First handle any custom content types that has a special treatment, like GlobeLayers

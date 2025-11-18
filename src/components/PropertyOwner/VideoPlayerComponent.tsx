@@ -1,21 +1,15 @@
-import { IoPause, IoPlay, IoPlaySkipBack } from 'react-icons/io5';
-import { MdLoop, MdOutlineReplay } from 'react-icons/md';
+import { IoPause, IoPlay } from 'react-icons/io5';
+import { MdReplay } from 'react-icons/md';
 import { PiSpeakerSimpleHighFill, PiSpeakerSimpleSlashFill } from 'react-icons/pi';
-import {
-  ActionIcon,
-  Card,
-  Group,
-  MantineStyleProps,
-  Title,
-  Tooltip,
-  VisuallyHidden
-} from '@mantine/core';
+import { TbRepeat, TbRepeatOff } from 'react-icons/tb';
+import { ActionIcon, Card, Group, MantineStyleProps, Tooltip } from '@mantine/core';
 
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 
 import { InfoBox } from '../InfoBox/InfoBox';
+import { Label } from '../Label/Label';
 
 interface Props extends MantineStyleProps {
   /* The URI of the Video Player property owner */
@@ -31,7 +25,6 @@ export function VideoPlayerComponent({ uri, ...styleProps }: Props) {
   const [, triggerPlay] = useProperty('TriggerProperty', `${uri}.Play`);
   const [, triggerPause] = useProperty('TriggerProperty', `${uri}.Pause`);
   const [, triggerGoToStart] = useProperty('TriggerProperty', `${uri}.GoToStart`);
-  const [, triggerReload] = useProperty('TriggerProperty', `${uri}.Reload`);
   const [loop, setLoop] = useProperty('BoolProperty', `${uri}.LoopVideo`);
   const [playAudio, setPlayAudio] = useProperty('BoolProperty', `${uri}.PlayAudio`);
 
@@ -40,18 +33,11 @@ export function VideoPlayerComponent({ uri, ...styleProps }: Props) {
   }
 
   return (
-    <Group wrap={'nowrap'} {...styleProps}>
-      <Card withBorder p={'xs'} bg={'dark'}>
-        <VisuallyHidden>
-          <Title order={3}>{propertyOwner.name}</Title>
-        </VisuallyHidden>
+    <Group pl={'xs'} wrap={'nowrap'} {...styleProps}>
+      <Card withBorder p={'xs'} bg={'transparent'}>
         <Group gap={'xs'}>
+          <Label name={'Video'} />
           <ActionIcon.Group>
-            <Tooltip label={'Jump to start (and pause)'} openDelay={600}>
-              <ActionIcon onClick={() => triggerGoToStart(null)}>
-                <IoPlaySkipBack />
-              </ActionIcon>
-            </Tooltip>
             <Tooltip label={'Play'} openDelay={600}>
               <ActionIcon onClick={() => triggerPlay(null)}>
                 <IoPlay />
@@ -63,35 +49,30 @@ export function VideoPlayerComponent({ uri, ...styleProps }: Props) {
               </ActionIcon>
             </Tooltip>
           </ActionIcon.Group>
-
-          <Tooltip
-            label={'Reload video. May be useful if there are playback issues.'}
-            openDelay={600}
-          >
-            <ActionIcon onClick={() => triggerReload(null)} size={'sm'}>
-              <MdOutlineReplay />
+          <Tooltip label={'Jump to start (and pause)'} openDelay={600}>
+            <ActionIcon onClick={() => triggerGoToStart(null)} size={'sm'}>
+              <MdReplay />
             </ActionIcon>
           </Tooltip>
-
           <Group gap={5}>
             {/* TODO: Make a ToggleActionIcon component */}
-            <Tooltip label={'Loop video'} openDelay={600}>
+            <Tooltip label={'Toggle loop'} openDelay={600}>
               <ActionIcon
-                size={'sm'}
                 variant={loop ? 'filled' : 'light'}
                 role={'switch'}
                 aria-checked={loop}
+                size={'sm'}
                 onClick={() => setLoop(!loop)}
               >
-                <MdLoop />
+                {loop ? <TbRepeat /> : <TbRepeatOff />}
               </ActionIcon>
             </Tooltip>
-            <Tooltip label={'Play audio'} openDelay={600}>
+            <Tooltip label={'Toggle audio'} openDelay={600}>
               <ActionIcon
-                size={'sm'}
                 variant={playAudio ? 'filled' : 'light'}
                 role={'switch'}
                 aria-checked={playAudio}
+                size={'sm'}
                 onClick={() => setPlayAudio(!playAudio)}
               >
                 {playAudio ? <PiSpeakerSimpleHighFill /> : <PiSpeakerSimpleSlashFill />}

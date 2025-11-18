@@ -26,7 +26,6 @@ export function GlobeLayer({ uri }: Props) {
   const videoPlayerUri = tileProvider?.subowners.find((subowner) =>
     subowner.endsWith('VideoPlayer')
   );
-  const isVideoLayer = videoPlayerUri !== undefined;
 
   const { isVisible } = usePropertyOwnerVisibility(uri);
 
@@ -53,15 +52,7 @@ export function GlobeLayer({ uri }: Props) {
       noTransition
     >
       {videoPlayerUri && <VideoPlayerComponent uri={videoPlayerUri} my={'xs'} />}
-      {/* @TODO (2025-11-18, emmbr) Better/custom handling of different types of layers.
-       This currently hides the entire tile provider for video layers, which is not ideal
-       if we add more properties to this tile provider. How about never including the
-       tile provider in the UI and instead do something else to highlight type specific
-       settings? */}
-      <PropertyOwnerContent
-        uri={uri}
-        filterSubowners={isVideoLayer ? [tileProviderUri] : undefined}
-      />
+      <PropertyOwnerContent uri={uri} />
     </Collapsable>
   );
 }
