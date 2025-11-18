@@ -1,7 +1,15 @@
 import { IoPause, IoPlay, IoPlaySkipBack } from 'react-icons/io5';
 import { MdLoop, MdOutlineReplay } from 'react-icons/md';
 import { PiSpeakerSimpleHighFill, PiSpeakerSimpleSlashFill } from 'react-icons/pi';
-import { ActionIcon, Card, Group, Title, Tooltip, VisuallyHidden } from '@mantine/core';
+import {
+  ActionIcon,
+  Card,
+  Group,
+  MantineStyleProps,
+  Title,
+  Tooltip,
+  VisuallyHidden
+} from '@mantine/core';
 
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
@@ -9,7 +17,7 @@ import { Uri } from '@/types/types';
 
 import { InfoBox } from '../InfoBox/InfoBox';
 
-interface Props {
+interface Props extends MantineStyleProps {
   /* The URI of the Video Player property owner */
   uri: Uri;
 }
@@ -17,7 +25,7 @@ interface Props {
 /**
  * A custom component to render video player controls for a Video Player property owner.
  */
-export function VideoPlayerComponent({ uri }: Props) {
+export function VideoPlayerComponent({ uri, ...styleProps }: Props) {
   const propertyOwner = usePropertyOwner(uri);
 
   const [, triggerPlay] = useProperty('TriggerProperty', `${uri}.Play`);
@@ -32,31 +40,34 @@ export function VideoPlayerComponent({ uri }: Props) {
   }
 
   return (
-    <Group wrap={'nowrap'}>
+    <Group wrap={'nowrap'} {...styleProps}>
       <Card withBorder p={'xs'} bg={'dark'}>
         <VisuallyHidden>
           <Title order={3}>{propertyOwner.name}</Title>
         </VisuallyHidden>
         <Group gap={'xs'}>
           <ActionIcon.Group>
-            <Tooltip label={'Jump to start (and pause)'}>
+            <Tooltip label={'Jump to start (and pause)'} openDelay={600}>
               <ActionIcon onClick={() => triggerGoToStart(null)}>
                 <IoPlaySkipBack />
               </ActionIcon>
             </Tooltip>
-            <Tooltip label={'Play'}>
+            <Tooltip label={'Play'} openDelay={600}>
               <ActionIcon onClick={() => triggerPlay(null)}>
                 <IoPlay />
               </ActionIcon>
             </Tooltip>
-            <Tooltip label={'Pause'}>
+            <Tooltip label={'Pause'} openDelay={600}>
               <ActionIcon onClick={() => triggerPause(null)}>
                 <IoPause />
               </ActionIcon>
             </Tooltip>
           </ActionIcon.Group>
 
-          <Tooltip label={'Reload video. May be useful if there are playback issues.'}>
+          <Tooltip
+            label={'Reload video. May be useful if there are playback issues.'}
+            openDelay={600}
+          >
             <ActionIcon onClick={() => triggerReload(null)} size={'sm'}>
               <MdOutlineReplay />
             </ActionIcon>
@@ -64,7 +75,7 @@ export function VideoPlayerComponent({ uri }: Props) {
 
           <Group gap={5}>
             {/* TODO: Make a ToggleActionIcon component */}
-            <Tooltip label={'Loop video'}>
+            <Tooltip label={'Loop video'} openDelay={600}>
               <ActionIcon
                 size={'sm'}
                 variant={loop ? 'filled' : 'light'}
@@ -75,7 +86,7 @@ export function VideoPlayerComponent({ uri }: Props) {
                 <MdLoop />
               </ActionIcon>
             </Tooltip>
-            <Tooltip label={'Play audio'}>
+            <Tooltip label={'Play audio'} openDelay={600}>
               <ActionIcon
                 size={'sm'}
                 variant={playAudio ? 'filled' : 'light'}

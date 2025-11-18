@@ -13,9 +13,14 @@ import { VideoPlayerComponent } from './VideoPlayerComponent';
 interface Props {
   uri: Uri;
   hideSubowners?: boolean;
+  filterSubowners?: [Uri]; // a list of subowner URIs to filter out
 }
 
-export function PropertyOwnerContent({ uri, hideSubowners = false }: Props) {
+export function PropertyOwnerContent({
+  uri,
+  hideSubowners = false,
+  filterSubowners
+}: Props) {
   const propertyOwner = usePropertyOwner(uri);
 
   if (!propertyOwner) {
@@ -28,6 +33,10 @@ export function PropertyOwnerContent({ uri, hideSubowners = false }: Props) {
 
   const visibleProperties = useVisibleProperties(propertyOwner);
   let subowners = propertyOwner.subowners ?? [];
+
+  if (filterSubowners) {
+    subowners = subowners.filter((subUri) => !filterSubowners.includes(subUri));
+  }
 
   // Separate video player subowner if it exists, so we can render a custom component
   const videoPlayerUri = subowners.find((subowner) => subowner.endsWith('VideoPlayer'));

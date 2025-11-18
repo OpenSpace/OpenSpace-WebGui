@@ -5,6 +5,7 @@ import { Collapsable } from '@/components/Collapsable/Collapsable';
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
+import { VideoPlayerComponent } from '@/components/PropertyOwner/VideoPlayerComponent';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
@@ -17,6 +18,15 @@ interface Props {
 export function GlobeLayer({ uri }: Props) {
   const { t } = useTranslation('panel-scene', { keyPrefix: 'globe-layer' });
   const propertyOwner = usePropertyOwner(uri);
+
+  // Check for VideoPlayer subowner, which in this case would live in the tile provider.
+  // We want to render a custom video player component at the top level of the GlobeLayer.
+  const tileProviderUri = `${uri}.TileProvider`;
+  const tileProvider = usePropertyOwner(tileProviderUri);
+  const videoPlayerUri = tileProvider?.subowners.find((subowner) =>
+    subowner.endsWith('VideoPlayer')
+  );
+  const isVideoLayer = videoPlayerUri !== undefined;
 
   const { isVisible } = usePropertyOwnerVisibility(uri);
 
@@ -42,7 +52,16 @@ export function GlobeLayer({ uri }: Props) {
       }
       noTransition
     >
-      <PropertyOwnerContent uri={uri} />
+      {videoPlayerUri && <VideoPlayerComponent uri={videoPlayerUri} my={'xs'} />}
+      {/* @TODO (2025-11-18, emmbr) Better/custom handling of different types of layers.
+       This currently hides the entire tile provider for video layers, which is not ideal
+       if we add more properties to this tile provider. How about never including the
+       tile provider in the UI and instead do something else to highlight type specific
+       settings? */}
+      <PropertyOwnerContent
+        uri={uri}
+        filterSubowners={isVideoLayer ? [tileProviderUri] : undefined}
+      />
     </Collapsable>
   );
 }
