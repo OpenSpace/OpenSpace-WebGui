@@ -17,12 +17,18 @@ type ApplicationShutdownEvent = {
   State: 'Started' | 'Aborted' | 'Finished';
 };
 
-type AssetLoadingFinishedEvent = {
+export type AssetLoadingFinishedEvent = {
   Event: 'AssetLoadingFinished';
+  AssetPath: string;
 };
 
 export type AssetLoadingErrorEvent = {
   Event: 'AssetLoadingError';
+  AssetPath: string;
+};
+
+export type AssetUnloadingFinishedEvent = {
+  Event: 'AssetUnloadingFinished';
   AssetPath: string;
 };
 
@@ -142,6 +148,7 @@ export type EventData =
   | ApplicationShutdownEvent
   | AssetLoadingFinishedEvent
   | AssetLoadingErrorEvent
+  | AssetUnloadingFinishedEvent
   | CameraFocusTransitionEvent
   | CameraMovedPositionEvent
   | CameraPathFinishedEvent

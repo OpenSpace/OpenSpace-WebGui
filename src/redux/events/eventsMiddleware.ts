@@ -69,6 +69,9 @@ export const setupEventsSubscription = createAsyncThunk(
         case 'AssetLoadingError':
           eventBus.emit(data);
           break;
+        case 'AssetUnloadingFinished':
+          eventBus.emit(data);
+          break;
         default:
           break;
       }
