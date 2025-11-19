@@ -54,55 +54,48 @@ Script to add a layer is the following
         addFunc("WaterMasks");
 */
 
-import { useOpenSpaceApi } from '@/api/hooks';
-import { useProperty } from '@/hooks/properties';
-import { NavigationAnchorKey } from '@/util/keys';
-import { Select } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import {
-  Capability,
-  GlobeBrowsingNodes,
-  LayerType,
-  OpenSpaceCapabilities,
-  OpenSpaceGlobeBrowsingNodes
-} from './types';
-import { CapabilityEntry } from './CapabilityEntry';
+import { Button, Group, Select } from '@mantine/core';
+
+import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
-import { useAppSelector } from '@/redux/hooks';
-import { sgnGuiPath } from '@/hooks/sceneGraphNodes/util';
-import { useActiveLayers, useRenderableGlobes } from './hooks';
+import { useProperty } from '@/hooks/properties';
+import { NavigationAnchorKey } from '@/util/keys';
+
+import { CapabilityEntry } from './CapabilityEntry';
+import {
+  useActiveLayers,
+  useCapabilities,
+  useGlobeWMSInfo,
+  useRenderableGlobes
+} from './hooks';
+import { Capability, LayerType } from './types';
+import { capabilityName } from './util';
 
 export function GlobeBrowsingPanel() {
   // Default to Earth WMS
   const [selectedGlobe, setSelectedGlobe] = useState<string | null>(null);
   const [selectedWMS, setSelectedWMS] = useState<string | null>(null);
 
-  const [globeWMS, setGlobeWMS] = useState<UrlInfo[]>([]);
-  const [capabilities, setCapabilities] = useState<Capability[]>([]);
   const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
 
   const globeBrowsingNodes = useRenderableGlobes();
-  const activeLayers = useActiveLayers(selectedGlobe);
-
+  const globeWMS = useGlobeWMSInfo(selectedGlobe);
+  const capabilities = useCapabilities(selectedWMS);
+  const { activeLayers, refresh: refreshActiveLayers } = useActiveLayers(selectedGlobe);
   const luaApi = useOpenSpaceApi();
 
-  // Fetches the WMS servers for the currently selected globe
   useEffect(() => {
-    async function getGlobeWMSInfo() {
-      if (!selectedGlobe) {
-        return;
-      }
-      const urlInfo = await luaApi?.globebrowsing.urlInfo(selectedGlobe);
-      const WMSInfo = Object.values(urlInfo) as UrlInfo[];
-      setGlobeWMS(WMSInfo);
-      // Default select the first one in the list
-      setSelectedWMS(WMSInfo[0].name);
+    // Default select the first WMS server in the list whenever we get a new server info
+    if (globeWMS.length > 0) {
+      setSelectedWMS(globeWMS[0].name);
+    } else {
+      setSelectedWMS(null);
     }
-
-    getGlobeWMSInfo();
-  }, [selectedGlobe]);
+  }, [globeWMS]);
 
   // Sets default selected globe node
   useEffect(() => {
@@ -117,31 +110,12 @@ export function GlobeBrowsingPanel() {
     setSelectedGlobe(selectGlobe);
   }, [globeBrowsingNodes]);
 
-  useEffect(() => {});
-
-  // Fetches capabilities for the selected globe and WMS
-  useEffect(() => {
-    async function fetchCapabilities() {
-      if (!selectedWMS) {
-        return;
-      }
-      const WMSCapabilities = (await luaApi?.globebrowsing.capabilitiesWMS(
-        selectedWMS
-      )) as unknown as OpenSpaceCapabilities;
-      const capabilities = Object.values(WMSCapabilities).sort((a, b) =>
-        a.Name.localeCompare(b.Name)
-      );
-      setCapabilities(capabilities);
-    }
-    fetchCapabilities();
-  }, [selectedWMS]);
-
   function addLayer(cap: Capability, layerType: LayerType) {
     if (!selectedGlobe) {
       return;
     }
 
-    const layerName = cap.Name.replaceAll('.', '-').replaceAll(' ', '');
+    const layerName = capabilityName(cap.Name);
 
     luaApi?.globebrowsing.addLayer(selectedGlobe, layerType, {
       Identifier: layerName,
@@ -149,6 +123,19 @@ export function GlobeBrowsingPanel() {
       FilePath: cap.URL,
       Enabled: true
     });
+    refreshActiveLayers();
+  }
+
+  function removeLayer(layerType: LayerType, layerName: string) {
+    if (!selectedGlobe) {
+      return;
+    }
+
+    luaApi?.globebrowsing.deleteLayer(
+      selectedGlobe,
+      layerType,
+      capabilityName(layerName)
+    );
   }
 
   if (!globeBrowsingNodes) {
@@ -156,51 +143,71 @@ export function GlobeBrowsingPanel() {
   }
 
   return (
-    <>
-      <Select
-        value={selectedGlobe}
-        data={[
-          {
-            group: 'Globes with WMS',
-            items: globeBrowsingNodes.identifiers.slice(
-              0,
-              globeBrowsingNodes.firstIndexWithoutUrl
-            )
-          },
-          {
-            group: 'Globes without WMS',
-            items: globeBrowsingNodes.identifiers.slice(
-              globeBrowsingNodes.firstIndexWithoutUrl
-            )
-          }
-        ]}
-        onChange={(value) => setSelectedGlobe(value)}
-        allowDeselect={false}
-      />
-      <Select
-        value={selectedWMS}
-        data={globeWMS.map((info) => {
-          return { value: info.name, label: `${info.name} (${info.url})` };
-        })}
-        onChange={(value) => setSelectedWMS(value)}
-        allowDeselect={false}
-      />
-      <FilterList>
-        <FilterList.InputField placeHolderSearchText="Search WMS" />
-        <FilterList.SearchResults
-          data={capabilities}
-          renderElement={(capability) => (
-            <CapabilityEntry
-              capability={capability}
-              onClick={addLayer}
-              key={capability.URL}
-            />
-          )}
-          matcherFunc={generateMatcherFunctionByKeys(['Name'])}
-        >
-          <FilterList.SearchResults.VirtualList />
-        </FilterList.SearchResults>
-      </FilterList>
-    </>
+    <Layout>
+      <Layout.FixedSection>
+        <Group gap={'xs'}>
+          <Select
+            value={selectedGlobe}
+            data={[
+              {
+                group: 'Globes with WMS',
+                items: globeBrowsingNodes.identifiers.slice(
+                  0,
+                  globeBrowsingNodes.firstIndexWithoutUrl
+                )
+              },
+              {
+                group: 'Globes without WMS',
+                items: globeBrowsingNodes.identifiers.slice(
+                  globeBrowsingNodes.firstIndexWithoutUrl
+                )
+              }
+            ]}
+            onChange={(value) => setSelectedGlobe(value)}
+            allowDeselect={false}
+            flex={1}
+          />
+          <Button
+            onClick={() => {
+              if (!currentAnchor) {
+                return;
+              }
+              if (globeBrowsingNodes.identifiers.includes(currentAnchor)) {
+                setSelectedGlobe(currentAnchor);
+              }
+            }}
+          >
+            From Focus
+          </Button>
+        </Group>
+        <Select
+          value={selectedWMS}
+          data={globeWMS.map((info) => {
+            return { value: info.name, label: `${info.name} (${info.url})` };
+          })}
+          onChange={(value) => setSelectedWMS(value)}
+          allowDeselect={false}
+        />
+      </Layout.FixedSection>
+      <Layout.GrowingSection>
+        <FilterList>
+          <FilterList.InputField placeHolderSearchText={'Search WMS'} />
+          <FilterList.SearchResults
+            data={capabilities}
+            renderElement={(capability) => (
+              <CapabilityEntry
+                capability={capability}
+                onClick={addLayer}
+                activeLayers={activeLayers}
+                key={capability.URL}
+              />
+            )}
+            matcherFunc={generateMatcherFunctionByKeys(['Name'])}
+          >
+            <FilterList.SearchResults.VirtualList />
+          </FilterList.SearchResults>
+        </FilterList>
+      </Layout.GrowingSection>
+    </Layout>
   );
 }
