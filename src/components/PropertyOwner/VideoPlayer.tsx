@@ -20,7 +20,7 @@ interface Props extends MantineStyleProps {
 /**
  * A custom component to render video player controls for a Video Player property owner.
  */
-export function VideoPlayerComponent({ uri, ...styleProps }: Props) {
+export function VideoPlayer({ uri, ...styleProps }: Props) {
   const propertyOwner = usePropertyOwner(uri);
 
   const [, triggerPlay] = useProperty('TriggerProperty', `${uri}.Play`);

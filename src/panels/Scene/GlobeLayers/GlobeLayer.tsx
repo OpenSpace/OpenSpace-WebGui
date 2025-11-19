@@ -5,7 +5,7 @@ import { Collapsable } from '@/components/Collapsable/Collapsable';
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
-import { VideoPlayerComponent } from '@/components/PropertyOwner/VideoPlayerComponent';
+import { VideoPlayer } from '@/components/PropertyOwner/VideoPlayer';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
@@ -51,7 +51,7 @@ export function GlobeLayer({ uri }: Props) {
       }
       noTransition
     >
-      {videoPlayerUri && <VideoPlayerComponent uri={videoPlayerUri} my={'xs'} />}
+      {videoPlayerUri && <VideoPlayer uri={videoPlayerUri} my={'xs'} />}
       <PropertyOwnerContent uri={uri} />
     </Collapsable>
   );

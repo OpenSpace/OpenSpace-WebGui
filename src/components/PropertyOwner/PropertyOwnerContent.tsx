@@ -8,19 +8,14 @@ import { Uri } from '@/types/types';
 import { isGlobeLayersUri } from '@/util/propertyTreeHelpers';
 
 import { PropertyOwner } from './PropertyOwner';
-import { VideoPlayerComponent } from './VideoPlayerComponent';
+import { VideoPlayer } from './VideoPlayer';
 
 interface Props {
   uri: Uri;
   hideSubowners?: boolean;
-  filterSubowners?: [Uri]; // a list of subowner URIs to filter out
 }
 
-export function PropertyOwnerContent({
-  uri,
-  hideSubowners = false,
-  filterSubowners
-}: Props) {
+export function PropertyOwnerContent({ uri, hideSubowners = false }: Props) {
   const propertyOwner = usePropertyOwner(uri);
 
   if (!propertyOwner) {
@@ -32,20 +27,14 @@ export function PropertyOwnerContent({
   );
 
   let visibleProperties = useVisibleProperties(propertyOwner);
-  let subowners = propertyOwner.subowners ?? [];
+  const subowners = propertyOwner.subowners ?? [];
 
-  if (filterSubowners) {
-    subowners = subowners.filter((subUri) => !filterSubowners.includes(subUri));
-  }
-
-  // Separate video player subowner if it exists, so we can render a custom component
-  let videoPlayerUri = subowners.find((subowner) => subowner.endsWith('VideoPlayer'));
-
-  if (uri.endsWith('TileProvider')) {
-    // If the current property owner is a TileProvider, we don't want to render
-    // the VideoPlayer component here, since it will be rendered at the GlobeLayer level
-    videoPlayerUri = undefined;
-  }
+  // Separate video player subowner if it exists, so we can render a custom component.
+  // Note that we don't want to do this if the current property owner is the TileProvider
+  // since in that case the VideoPlayer would be rendered at the GlobeLayer level.
+  const videoPlayerUri = uri.endsWith('.TileProvider')
+    ? undefined
+    : subowners.find((subowner) => subowner.endsWith('.VideoPlayer'));
 
   // Special handling to hide certain properties from the VideoPlayer property owner,
   // since we render them in a custom way in the VideoPlayerComponent
@@ -63,7 +52,7 @@ export function PropertyOwnerContent({
 
   return (
     <Box>
-      {videoPlayerUri && <VideoPlayerComponent uri={videoPlayerUri} />}
+      {videoPlayerUri && <VideoPlayer uri={videoPlayerUri} mb={'xs'} />}
       {!hideSubowners && subowners.length > 0 && (
         <Box>
           {subowners.map((subowner) => (
