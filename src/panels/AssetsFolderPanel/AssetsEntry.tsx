@@ -35,6 +35,11 @@ export function AssetsEntry({ asset }: Props) {
   const luaApi = useOpenSpaceApi();
   const { t } = useTranslation('panel-assets', { keyPrefix: 'asset-entry' });
 
+  const fetchParents = useCallback(async () => {
+    const requiredBy = await luaApi?.asset.parents(asset.path);
+    setParents(Object.values(requiredBy ?? []));
+  }, [luaApi, asset.path]);
+
   // Get the initial load state of this asset
   useEffect(() => {
     async function initialLoadedState() {
@@ -102,11 +107,6 @@ export function AssetsEntry({ asset }: Props) {
       eventBus.unsubscribe('AssetLoading', onAssetLoadingEvent);
     };
   }, [luaApi, loadState, isRootAsset, asset.path, fetchParents]);
-
-  const fetchParents = useCallback(async () => {
-    const requiredBy = await luaApi?.asset.parents(asset.path);
-    setParents(Object.values(requiredBy));
-  }, [luaApi, asset.path]);
 
   async function loadAsset() {
     // Do nothing if asset is already loaded or loading
