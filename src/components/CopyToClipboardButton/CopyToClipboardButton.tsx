@@ -8,13 +8,15 @@ interface Props {
   showLabel?: boolean;
   disabled?: boolean;
   copyTooltipLabel?: string;
+  copyLabel?: string;
 }
 
 export function CopyToClipboardButton({
   value,
   showLabel,
   disabled,
-  copyTooltipLabel
+  copyTooltipLabel,
+  copyLabel
 }: Props) {
   const { t } = useTranslation('components', { keyPrefix: 'copy-to-clipboard-button' });
 
@@ -37,7 +39,7 @@ export function CopyToClipboardButton({
               rightSection={<CopyIcon />}
               disabled={disabled}
             >
-              {t('label')}
+              {copyLabel ?? t('label')}
             </Button>
           ) : (
             <ActionIcon
