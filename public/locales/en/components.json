@@ -162,6 +162,33 @@
       }
     }
   },
+  "property-owner": {
+    "video-player": {
+      "label": "Video",
+      "play-button": {
+        "tooltip": "Play",
+        "aria-label": "Play video"
+      },
+      "pause-button": {
+        "tooltip": "Pause",
+        "aria-label": "Pause video"
+      },
+      "restart-button": {
+        "tooltip": "Jump to start (and pause)",
+        "aria-label": "Jump to start (and pause)"
+      },
+      "loop-toggle": {
+        "tooltip-on": "Is looping",
+        "tooltip-off": "Looping disabled",
+        "aria-label": "Toggle loop"
+      },
+      "audio-toggle": {
+        "tooltip-on": "Is playing audio",
+        "tooltip-off": "Audio is muted",
+        "aria-label": "Toggle audio"
+      }
+    }
+  },
   "resizeable-content": {
     "aria-label": "Resize window (keyboard control not suppored)"
   },

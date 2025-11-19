@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { IoPause, IoPlay } from 'react-icons/io5';
 import { MdReplay } from 'react-icons/md';
 import { PiSpeakerSimpleHighFill, PiSpeakerSimpleSlashFill } from 'react-icons/pi';
@@ -21,6 +22,9 @@ interface Props extends MantineStyleProps {
  * A custom component to render video player controls for a Video Player property owner.
  */
 export function VideoPlayer({ uri, ...styleProps }: Props) {
+  const { t } = useTranslation('components', {
+    keyPrefix: 'property-owner.video-player'
+  });
   const propertyOwner = usePropertyOwner(uri);
 
   const [, triggerPlay] = useProperty('TriggerProperty', `${uri}.Play`);
@@ -39,39 +43,50 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
         <Group gap={'xs'}>
           <Label name={'Video'} />
           <ActionIcon.Group>
-            <Tooltip label={'Play'} openDelay={600}>
-              <ActionIcon onClick={() => triggerPlay(null)} aria-label={'Play'}>
+            <Tooltip label={t('play-button.tooltip')} openDelay={600}>
+              <ActionIcon
+                onClick={() => triggerPlay(null)}
+                aria-label={t('play-button.aria-label')}
+              >
                 <IoPlay />
               </ActionIcon>
             </Tooltip>
-            <Tooltip label={'Pause'} openDelay={600}>
-              <ActionIcon onClick={() => triggerPause(null)} aria-label={'Pause'}>
+            <Tooltip label={t('pause-button.tooltip')} openDelay={600}>
+              <ActionIcon
+                onClick={() => triggerPause(null)}
+                aria-label={t('pause-button.aria-label')}
+              >
                 <IoPause />
               </ActionIcon>
             </Tooltip>
           </ActionIcon.Group>
-          <Tooltip label={'Jump to start (and pause)'} openDelay={600}>
+          <Tooltip label={t('restart-button.tooltip')} openDelay={600}>
             <ActionIcon
               onClick={() => triggerGoToStart(null)}
               size={'sm'}
-              aria-label={'Jump to start (and pause)'}
+              aria-label={t('restart-button.aria-label')}
             >
               <MdReplay />
             </ActionIcon>
           </Tooltip>
           <Group gap={5}>
-            <Tooltip label={loop ? 'Is looping' : 'Looping disabled'} openDelay={600}>
+            <Tooltip
+              label={loop ? t('loop-toggle.tooltip-on') : t('loop-toggle.tooltip-off')}
+              openDelay={600}
+            >
               <ToggleActionIcon
                 isOn={loop ?? false}
                 iconOn={<TbRepeat />}
                 iconOff={<TbRepeatOff />}
                 onClick={setLoop}
                 size={'sm'}
-                aria-label={'Toggle loop'}
+                aria-label={t('loop-toggle.aria-label')}
               />
             </Tooltip>
             <Tooltip
-              label={playAudio ? 'Is playing audio' : 'Audio is muted'}
+              label={
+                playAudio ? t('audio-toggle.tooltip-on') : t('audio-toggle.tooltip-off')
+              }
               openDelay={600}
             >
               <ToggleActionIcon
@@ -80,7 +95,7 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
                 iconOff={<PiSpeakerSimpleSlashFill />}
                 onClick={setPlayAudio}
                 size={'sm'}
-                aria-label={'Toggle audio'}
+                aria-label={t('audio-toggle.aria-label')}
               />
             </Tooltip>
           </Group>
