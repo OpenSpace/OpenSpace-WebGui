@@ -162,17 +162,17 @@ export function AssetsEntry({ asset }: Props) {
 
   function onRemoveAssetModal() {
     modals.openConfirmModal({
-      title: 'Remove Asset',
+      title: t('remove-asset-modal.title'),
       children: (
         <Stack>
-          <Text>Are you sure you want to remove the asset:</Text>
+          <Text>{t('remove-asset-modal.description')}:</Text>
           <Text>{asset.name}</Text>
           <Text style={{ wordBreak: 'break-all' }}>{asset.path}</Text>
         </Stack>
       ),
       labels: {
-        confirm: 'Remove',
-        cancel: 'Cancel'
+        confirm: t('remove-asset-modal.confirm'),
+        cancel: t('remove-asset-modal.cancel')
       },
       confirmProps: { color: 'red', variant: 'filled' },
       onConfirm: removeAsset
@@ -201,10 +201,7 @@ export function AssetsEntry({ asset }: Props) {
           label={
             parents.length > 0 ? (
               <>
-                <Text>
-                  This asset is required by additional assets, removing it will have no
-                  effect until the following assets are removed:
-                </Text>
+                <Text>{t('tooltips.remove.has-parents')}</Text>
                 {parents.map((parent) => (
                   <Text key={parent} size={'xs'} style={{ wordBreak: 'break-all' }}>
                     {parent}
@@ -212,7 +209,7 @@ export function AssetsEntry({ asset }: Props) {
                 ))}
               </>
             ) : (
-              <Text>Remove Asset</Text>
+              <Text>{t('tooltips.remove.no-parents')}</Text>
             )
           }
         >
@@ -227,9 +224,9 @@ export function AssetsEntry({ asset }: Props) {
           </ActionIcon>
         </Tooltip>
       )}
-      {loadState === AssetLoadState.Loading && <Loader size={'xs'} />}
+      {loadState === AssetLoadState.Loading && <Loader size={'xs'} mr={5} />}
       {loadState === AssetLoadState.Loaded && (
-        <Tooltip label={'Asset is loaded'}>
+        <Tooltip label={t('tooltips.added')}>
           <ThemeIcon
             color={'teal'}
             variant={'subtle'}
@@ -240,9 +237,8 @@ export function AssetsEntry({ asset }: Props) {
         </Tooltip>
       )}
       {loadState === AssetLoadState.Error && (
-        <WarningIcon tooltipText={'Asset failed to load'} />
+        <WarningIcon tooltipText={t('tooltips.error')} />
       )}
-
       <AssetEntryMenu
         asset={asset}
         parents={parents}

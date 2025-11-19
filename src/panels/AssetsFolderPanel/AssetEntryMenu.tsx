@@ -17,21 +17,21 @@ interface Props {
 }
 
 export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }: Props) {
-  const { t } = useTranslation('panel-assets', { keyPrefix: 'asset-entry' });
+  const { t } = useTranslation('panel-assets', { keyPrefix: 'asset-entry-menu' });
 
   function onReloadAssetModal() {
     modals.openConfirmModal({
-      title: 'Reload Asset',
+      title: t('reload-assset-modal.title'),
       children: (
         <Stack>
-          <Text>Are you sure you want to reload the asset:</Text>
+          <Text>{t('reload-assset-modal.description')}</Text>
           <Text>{asset.name}</Text>
           <Text style={{ wordBreak: 'break-all' }}>{asset.path}</Text>
         </Stack>
       ),
       labels: {
-        confirm: 'Reload',
-        cancel: 'Cancel'
+        confirm: t('reload-assset-modal.confirm'),
+        cancel: t('reload-assset-modal.cancel')
       },
       confirmProps: { color: 'orange', variant: 'filled' },
       onConfirm: reloadAsset
@@ -52,10 +52,7 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
               label={
                 parents.length > 0 ? (
                   <>
-                    <Text>
-                      Cannot reload an asset required by other assets. The following
-                      assets must first be removed:
-                    </Text>
+                    <Text>{t('reload-button.tooltip.has-parents')}</Text>
                     {parents.map((parent) => (
                       <Text key={parent} size={'xs'} style={{ wordBreak: 'break-all' }}>
                         {parent}
@@ -63,17 +60,17 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
                     ))}
                   </>
                 ) : (
-                  <Text>Reload asset</Text>
+                  <Text>{t('reload-button.tooltip.no-parents')}</Text>
                 )
               }
             >
               <Button
                 onClick={onReloadAssetModal}
-                aria-label={t('aria-labels.reload', { assetName: asset.name })}
+                aria-label={t('reload-button.aria-label', { assetName: asset.name })}
                 disabled={parents.length > 0}
                 leftSection={<MdOutlineRefresh size={IconSize.sm} />}
               >
-                Reload
+                {t('reload-button.label')}
               </Button>
             </Tooltip>
           )}
