@@ -1,28 +1,26 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MdOutlineRefresh } from 'react-icons/md';
 import {
   ActionIcon,
   Button,
   CheckIcon,
   Group,
   Loader,
+  Stack,
   Text,
   ThemeIcon,
   Tooltip
 } from '@mantine/core';
+import { modals } from '@mantine/modals';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
+import { WarningIcon } from '@/components/WarningIcon/WarningIcon';
 import { DeleteIcon, FileTextIcon } from '@/icons/icons';
-import {
-  AssetLoadingErrorEvent,
-  AssetLoadingFinishedEvent,
-  AssetUnloadingFinishedEvent
-} from '@/redux/events/types';
+import { AssetLoadingEvent } from '@/redux/events/types';
 import { IconSize } from '@/types/enums';
 import { eventBus } from '@/util/eventBus';
 
+import { AssetEntryMenu } from './AssetEntryMenu';
 import { Asset, AssetLoadState } from './types';
 
 interface Props {
@@ -33,13 +31,9 @@ export function AssetsEntry({ asset }: Props) {
   const [loadState, setLoadState] = useState<AssetLoadState>(AssetLoadState.NotLoaded);
   const [isRootAsset, setIsRootAsset] = useState<boolean>(false);
   const [parents, setParents] = useState<string[]>([]);
+
   const luaApi = useOpenSpaceApi();
   const { t } = useTranslation('panel-assets', { keyPrefix: 'asset-entry' });
-
-  const fetchInterestedParents = useCallback(async () => {
-    const requiredBy = await luaApi?.asset.interestedParents(asset.path);
-    setParents(Object.values(requiredBy));
-  }, [luaApi, asset.path]);
 
   // Get the initial load state of this asset
   useEffect(() => {
@@ -63,7 +57,7 @@ export function AssetsEntry({ asset }: Props) {
       const rootAssets = Object.values(assets).map((path) => path.replaceAll('\\', '/'));
       const isRoot = rootAssets.includes(asset.path.replaceAll('\\', '/'));
       if (isRoot) {
-        fetchInterestedParents();
+        fetchParents();
       }
       setIsRootAsset(isRoot);
     }
@@ -71,70 +65,48 @@ export function AssetsEntry({ asset }: Props) {
     if (loadState === AssetLoadState.Loaded || loadState === AssetLoadState.Error) {
       checkIsRootAsset();
     }
-  }, [luaApi, loadState, asset.path, fetchInterestedParents]);
+  }, [luaApi, loadState, asset.path, fetchParents]);
 
-  // Subscribe to AssetLoadingFinished event, handle callback
+  // Subscribe to AssetLoading event, handle callback
   useEffect(() => {
-    async function onAssetLoadedEvent(data: AssetLoadingFinishedEvent) {
+    async function onAssetLoadingEvent(data: AssetLoadingEvent) {
       if (data.AssetPath.replaceAll('\\', '/') === asset.path.replaceAll('\\', '/')) {
-        setLoadState(AssetLoadState.Loaded);
+        switch (data.State) {
+          case 'Loaded':
+            setLoadState(AssetLoadState.Loaded);
+            break;
+          case 'Loading':
+            setLoadState(AssetLoadState.Loading);
+            break;
+          case 'Unloaded':
+            setLoadState(AssetLoadState.NotLoaded);
+            break;
+          case 'Error':
+            setLoadState(AssetLoadState.Error);
+            break;
+          default:
+            throw new Error(`Unhandled Asset load state: '${data.State}'`);
+        }
       } else {
         // Some other asset was loaded, we must recheck if this asset is required by the
         // newly added assets
         if (isRootAsset) {
-          fetchInterestedParents();
+          fetchParents();
         }
       }
     }
 
-    eventBus.subscribe('AssetLoadingFinished', onAssetLoadedEvent);
+    eventBus.subscribe('AssetLoading', onAssetLoadingEvent);
 
     return () => {
-      eventBus.unsubscribe('AssetLoadingFinished', onAssetLoadedEvent);
+      eventBus.unsubscribe('AssetLoading', onAssetLoadingEvent);
     };
-  }, [luaApi, loadState, isRootAsset, asset.path, fetchInterestedParents]);
+  }, [luaApi, loadState, isRootAsset, asset.path, fetchParents]);
 
-  // Subscribe to AssestLoadingError event, handle callback
-  useEffect(() => {
-    function onAssetErrorEvent(data: AssetLoadingErrorEvent) {
-      if (data.AssetPath.replaceAll('\\', '/') === asset.path.replaceAll('\\', '/')) {
-        setLoadState(AssetLoadState.Error);
-      } else {
-        // Some other asset was loaded, we must recheck if this asset is required by the
-        // newly added assets
-        if (isRootAsset) {
-          fetchInterestedParents();
-        }
-      }
-    }
-
-    eventBus.subscribe('AssetLoadingError', onAssetErrorEvent);
-
-    return () => {
-      eventBus.unsubscribe('AssetLoadingError', onAssetErrorEvent);
-    };
-  }, [isRootAsset, asset.path, fetchInterestedParents]);
-
-  // Subscribe to AssetUnloadingFinished event, handle callback
-  useEffect(() => {
-    function onAssetUnloadedEvent(data: AssetUnloadingFinishedEvent) {
-      if (data.AssetPath.replaceAll('\\', '/') === asset.path.replaceAll('\\', '/')) {
-        setLoadState(AssetLoadState.NotLoaded);
-      } else {
-        // Some other asset was unloaded, we must recheck if this asset is still required
-        // by any assets
-        if (isRootAsset) {
-          fetchInterestedParents();
-        }
-      }
-    }
-
-    eventBus.subscribe('AssetUnloadingFinished', onAssetUnloadedEvent);
-
-    return () => {
-      eventBus.unsubscribe('AssetUnloadingFinished', onAssetUnloadedEvent);
-    };
-  }, [isRootAsset, asset.path, fetchInterestedParents]);
+  const fetchParents = useCallback(async () => {
+    const requiredBy = await luaApi?.asset.parents(asset.path);
+    setParents(Object.values(requiredBy));
+  }, [luaApi, asset.path]);
 
   async function loadAsset() {
     // Do nothing if asset is already loaded or loading
@@ -155,7 +127,7 @@ export function AssetsEntry({ asset }: Props) {
         setLoadState(AssetLoadState.Loading);
       }
       luaApi?.asset.add(asset.path);
-      fetchInterestedParents();
+      fetchParents();
     }
   }
 
@@ -188,6 +160,25 @@ export function AssetsEntry({ asset }: Props) {
     setIsRootAsset(false);
   }
 
+  function onRemoveAssetModal() {
+    modals.openConfirmModal({
+      title: 'Remove Asset',
+      children: (
+        <Stack>
+          <Text>Are you sure you want to remove the asset:</Text>
+          <Text>{asset.name}</Text>
+          <Text style={{ wordBreak: 'break-all' }}>{asset.path}</Text>
+        </Stack>
+      ),
+      labels: {
+        confirm: 'Remove',
+        cancel: 'Cancel'
+      },
+      confirmProps: { color: 'red', variant: 'filled' },
+      onConfirm: removeAsset
+    });
+  }
+
   return (
     <Group gap={0}>
       <Tooltip label={asset.path} position={'top-start'}>
@@ -205,37 +196,6 @@ export function AssetsEntry({ asset }: Props) {
         </Button>
       </Tooltip>
 
-      {(loadState === AssetLoadState.Error || isRootAsset) && (
-        <Tooltip
-          label={
-            parents.length > 0 ? (
-              <>
-                <Text>
-                  Cannot reload an asset required by other assets. The following assets
-                  must first be removed:
-                </Text>
-                {parents.map((parent) => (
-                  <Text key={parent} size={'xs'} style={{ wordBreak: 'break-all' }}>
-                    {parent}
-                  </Text>
-                ))}
-              </>
-            ) : (
-              <Text>Reload asset</Text>
-            )
-          }
-        >
-          <ActionIcon
-            onClick={reloadAsset}
-            color={loadState === AssetLoadState.Error ? 'red' : 'orange'}
-            variant={'subtle'}
-            aria-label={t('aria-labels.reload', { assetName: asset.name })}
-            disabled={parents.length > 0}
-          >
-            <MdOutlineRefresh size={IconSize.sm} />
-          </ActionIcon>
-        </Tooltip>
-      )}
       {isRootAsset && (
         <Tooltip
           label={
@@ -257,7 +217,7 @@ export function AssetsEntry({ asset }: Props) {
           }
         >
           <ActionIcon
-            onClick={removeAsset}
+            onClick={onRemoveAssetModal}
             variant={'subtle'}
             color={'red'}
             aria-label={t('aria-labels.remove', { assetName: asset.name })}
@@ -279,9 +239,15 @@ export function AssetsEntry({ asset }: Props) {
           </ThemeIcon>
         </Tooltip>
       )}
-      <CopyToClipboardButton
-        value={asset.path.replaceAll('\\', '/')}
-        copyTooltipLabel={t('copy-tooltip-label')}
+      {loadState === AssetLoadState.Error && (
+        <WarningIcon tooltipText={'Asset failed to load'} />
+      )}
+
+      <AssetEntryMenu
+        asset={asset}
+        parents={parents}
+        showReloadButton={isRootAsset}
+        reloadAsset={reloadAsset}
       />
     </Group>
   );
