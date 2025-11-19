@@ -10,6 +10,7 @@ import { Uri } from '@/types/types';
 
 import { InfoBox } from '../InfoBox/InfoBox';
 import { Label } from '../Label/Label';
+import { ToggleActionIcon } from '../ToggleActionIcon/ToggleActionIcon';
 
 interface Props extends MantineStyleProps {
   /* The URI of the Video Player property owner */
@@ -39,44 +40,48 @@ export function VideoPlayerComponent({ uri, ...styleProps }: Props) {
           <Label name={'Video'} />
           <ActionIcon.Group>
             <Tooltip label={'Play'} openDelay={600}>
-              <ActionIcon onClick={() => triggerPlay(null)}>
+              <ActionIcon onClick={() => triggerPlay(null)} aria-label={'Play'}>
                 <IoPlay />
               </ActionIcon>
             </Tooltip>
             <Tooltip label={'Pause'} openDelay={600}>
-              <ActionIcon onClick={() => triggerPause(null)}>
+              <ActionIcon onClick={() => triggerPause(null)} aria-label={'Pause'}>
                 <IoPause />
               </ActionIcon>
             </Tooltip>
           </ActionIcon.Group>
           <Tooltip label={'Jump to start (and pause)'} openDelay={600}>
-            <ActionIcon onClick={() => triggerGoToStart(null)} size={'sm'}>
+            <ActionIcon
+              onClick={() => triggerGoToStart(null)}
+              size={'sm'}
+              aria-label={'Jump to start (and pause)'}
+            >
               <MdReplay />
             </ActionIcon>
           </Tooltip>
           <Group gap={5}>
-            {/* TODO: Make a ToggleActionIcon component */}
-            <Tooltip label={'Toggle loop'} openDelay={600}>
-              <ActionIcon
-                variant={loop ? 'filled' : 'light'}
-                role={'switch'}
-                aria-checked={loop}
+            <Tooltip label={loop ? 'Is looping' : 'Looping disabled'} openDelay={600}>
+              <ToggleActionIcon
+                isOn={loop ?? false}
+                iconOn={<TbRepeat />}
+                iconOff={<TbRepeatOff />}
+                onClick={setLoop}
                 size={'sm'}
-                onClick={() => setLoop(!loop)}
-              >
-                {loop ? <TbRepeat /> : <TbRepeatOff />}
-              </ActionIcon>
+                aria-label={'Toggle loop'}
+              />
             </Tooltip>
-            <Tooltip label={'Toggle audio'} openDelay={600}>
-              <ActionIcon
-                variant={playAudio ? 'filled' : 'light'}
-                role={'switch'}
-                aria-checked={playAudio}
+            <Tooltip
+              label={playAudio ? 'Is playing audio' : 'Audio is muted'}
+              openDelay={600}
+            >
+              <ToggleActionIcon
+                isOn={playAudio ?? false}
+                iconOn={<PiSpeakerSimpleHighFill />}
+                iconOff={<PiSpeakerSimpleSlashFill />}
+                onClick={setPlayAudio}
                 size={'sm'}
-                onClick={() => setPlayAudio(!playAudio)}
-              >
-                {playAudio ? <PiSpeakerSimpleHighFill /> : <PiSpeakerSimpleSlashFill />}
-              </ActionIcon>
+                aria-label={'Toggle audio'}
+              />
             </Tooltip>
           </Group>
         </Group>
