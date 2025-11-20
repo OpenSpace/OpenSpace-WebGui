@@ -55,7 +55,7 @@ Script to add a layer is the following
 */
 
 import { useEffect, useState } from 'react';
-import { Button, Group, Select } from '@mantine/core';
+import { Button, Group, Select, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -72,7 +72,7 @@ import {
   useGlobeWMSInfo,
   useRenderableGlobes
 } from './hooks';
-import { Capability, LayerType } from './types';
+import { Capability, LayerType, layerTypes } from './types';
 import { capabilityName } from './util';
 
 export function GlobeBrowsingPanel() {
@@ -110,14 +110,14 @@ export function GlobeBrowsingPanel() {
     setSelectedGlobe(selectGlobe);
   }, [globeBrowsingNodes]);
 
-  function addLayer(cap: Capability, layerType: LayerType) {
+  async function addLayer(cap: Capability, layerType: LayerType) {
     if (!selectedGlobe) {
       return;
     }
 
     const layerName = capabilityName(cap.Name);
 
-    luaApi?.globebrowsing.addLayer(selectedGlobe, layerType, {
+    await luaApi?.globebrowsing.addLayer(selectedGlobe, layerType, {
       Identifier: layerName,
       Name: cap.Name,
       FilePath: cap.URL,
@@ -126,16 +126,19 @@ export function GlobeBrowsingPanel() {
     refreshActiveLayers();
   }
 
-  function removeLayer(layerType: LayerType, layerName: string) {
+  async function removeLayer(name: string) {
     if (!selectedGlobe) {
       return;
     }
 
-    luaApi?.globebrowsing.deleteLayer(
-      selectedGlobe,
-      layerType,
-      capabilityName(layerName)
-    );
+    const layerName = capabilityName(name);
+    for (const layerType of layerTypes) {
+      if (activeLayers[layerType].includes(layerName)) {
+        await luaApi?.globebrowsing.deleteLayer(selectedGlobe, layerType, layerName);
+      }
+    }
+
+    refreshActiveLayers();
   }
 
   if (!globeBrowsingNodes) {
@@ -189,6 +192,10 @@ export function GlobeBrowsingPanel() {
           allowDeselect={false}
         />
       </Layout.FixedSection>
+      <Group justify={"space-between"}>
+        <Title>Name</Title>
+        <Title>Add as</Title>
+      </Group>
       <Layout.GrowingSection>
         <FilterList>
           <FilterList.InputField placeHolderSearchText={'Search WMS'} />
@@ -197,14 +204,15 @@ export function GlobeBrowsingPanel() {
             renderElement={(capability) => (
               <CapabilityEntry
                 capability={capability}
-                onClick={addLayer}
+                onAdd={addLayer}
+                onRemove={removeLayer}
                 activeLayers={activeLayers}
                 key={capability.URL}
               />
             )}
             matcherFunc={generateMatcherFunctionByKeys(['Name'])}
           >
-            <FilterList.SearchResults.VirtualList />
+            <FilterList.SearchResults.VirtualList gap={3} />
           </FilterList.SearchResults>
         </FilterList>
       </Layout.GrowingSection>
