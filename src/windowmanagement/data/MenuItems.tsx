@@ -8,6 +8,7 @@ import {
   ExoplanetIcon,
   ExpandArrowsIcon,
   FocusIcon,
+  GlobeIcon,
   InsertPhotoIcon,
   KeyboardIcon,
   LocationPinIcon,
@@ -35,6 +36,7 @@ import {
   FlightControlPanel,
   GeoLocationPanel,
   GettingStartedPanel,
+  GlobeBrowsingPanel,
   KeybindsPanel,
   MissionsPanel,
   NavigationPanel,
@@ -221,6 +223,14 @@ export const menuItemsData: Record<string, MenuItem> = {
     preferredPosition: 'right',
     defaultVisible: false,
     advanced: true
+  },
+  globeBrowsingPanel: {
+    title: 'Globe Browsing',
+    componentID: 'globeBrowsingPanel',
+    content: <GlobeBrowsingPanel />,
+    renderIcon: (size) => <GlobeIcon size={size} />,
+    preferredPosition: 'right',
+    defaultVisible: false
   }
 };
 
