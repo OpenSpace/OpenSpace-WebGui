@@ -105,10 +105,10 @@ export function SunTab() {
         {t('trails.title')}
       </Title>
       <Group gap={'xs'}>
-        <Button onClick={() => addTrail('NOW')} leftSection={<PlusIcon />}>
+        <Button onClick={() => addTrail('UTC')} leftSection={<PlusIcon />}>
           {t('trails.buttons.add-trail-simulation-date')}
         </Button>
-        <Button onClick={() => addTrail('UTC')} leftSection={<PlusIcon />}>
+        <Button onClick={() => addTrail('NOW')} leftSection={<PlusIcon />}>
           {t('trails.buttons.add-trail-today')}
         </Button>
       </Group>
