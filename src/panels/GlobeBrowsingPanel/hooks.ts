@@ -68,23 +68,22 @@ export function useRenderableGlobes() {
   );
   const luaApi = useOpenSpaceApi();
 
-  useEffect(() => {
-    async function fetchRenderableGlobes() {
-      const nodes =
-        (await luaApi?.globebrowsing.globeNodes()) as OpenSpaceGlobeBrowsingNodes;
-      const renderableGlobesIdentifiers = Object.values(nodes.identifiers);
-      const { firstIndexWithoutUrl } = nodes;
+  const fetchRenderableGlobes = useCallback(async () => {
+    const nodes = (await luaApi?.globebrowsing.globes()) as OpenSpaceGlobeBrowsingNodes;
+    const renderableGlobesIdentifiers = Object.values(nodes.identifiers);
+    const { firstIndexWithoutUrl } = nodes;
 
-      setGlobeBrowsingNodes({
-        firstIndexWithoutUrl,
-        identifiers: renderableGlobesIdentifiers
-      });
-    }
-
-    fetchRenderableGlobes();
+    setGlobeBrowsingNodes({
+      firstIndexWithoutUrl,
+      identifiers: renderableGlobesIdentifiers
+    });
   }, [luaApi]);
 
-  return globeBrowsingNodes;
+  useEffect(() => {
+    fetchRenderableGlobes();
+  }, [fetchRenderableGlobes]);
+
+  return { globeBrowsingNodes, refresh: fetchRenderableGlobes };
 }
 
 /**
@@ -96,20 +95,20 @@ export function useGlobeWMSInfo(globe: string | null) {
   const [globeWMS, setGlobeWMS] = useState<UrlInfo[]>([]);
   const luaApi = useOpenSpaceApi();
 
-  useEffect(() => {
-    async function getGlobeWMSInfo() {
-      if (!globe) {
-        return;
-      }
-      const urlInfo = await luaApi?.globebrowsing.urlInfo(globe);
-      const WMSInfo = Object.values(urlInfo) as UrlInfo[];
-      setGlobeWMS(WMSInfo);
+  const fetchGlobeWMSInfo = useCallback(async () => {
+    if (!globe) {
+      return;
     }
-
-    getGlobeWMSInfo();
+    const urlInfo = await luaApi?.globebrowsing.urlInfo(globe);
+    const WMSInfo = Object.values(urlInfo) as UrlInfo[];
+    setGlobeWMS(WMSInfo);
   }, [luaApi, globe]);
 
-  return globeWMS;
+  useEffect(() => {
+    fetchGlobeWMSInfo();
+  }, [fetchGlobeWMSInfo]);
+
+  return { globeWMS, refresh: fetchGlobeWMSInfo };
 }
 
 /**

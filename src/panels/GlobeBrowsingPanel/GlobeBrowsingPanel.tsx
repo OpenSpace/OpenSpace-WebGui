@@ -1,61 +1,7 @@
-/*
-Get all renderable globes -> all renderable gloves and then filter them eg.
-
-We want the globes that has a WMS server to be shown at the top of this list
--> basically sort based on if URL exists or not for that particular globe
-
-This list selects the node of which we want to add WMS maps to.
-
-Also add a button that selects the node from the current focus node, if the focus is not a globe -- do nothing
-
-Serverlist - gets the server urls for a specific globe,
-
-Server is selected by name
-
-Add Server - adds a new server with a name and a server URL
-Set it to the selected server
-
-Delete server - Removes the currently selected server
-
-Script to add a layer is the following
-
-    auto addFunc = [n = _currentNode, &l](const std::string& type) {
-        std::string layerName = l.name;
-        std::replace(layerName.begin(), layerName.end(), '.', '-');
-        layerName.erase(
-            std::remove(layerName.begin(), layerName.end(), ' '),
-            layerName.end()
-        );
-        const std::string script = std::format(
-            "openspace.globebrowsing.addLayer(\
-                    '{}', \
-                    '{}', \
-                    {{ \
-                        Identifier = '{}',\
-                        Name = '{}',\
-                        FilePath = '{}',\
-                        Enabled = true\
-                    }}\
-                );",
-            n,
-            type,
-            layerName,
-            l.name,
-            l.url
-        );
-        global::scriptEngine->queueScript(script);
-    };
-
-    where the type is:
-        addFunc("ColorLayers");
-        addFunc("NightLayers");
-        addFunc("Overlays");
-        addFunc("HeightLayers");
-        addFunc("WaterMasks");
-*/
-
 import { useEffect, useState } from 'react';
-import { Button, Group, Select, Title } from '@mantine/core';
+import { ActionIcon, Button, Group, Select, Stack, Text, Tooltip } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { modals } from '@mantine/modals';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -63,8 +9,11 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useProperty } from '@/hooks/properties';
+import { DeleteIcon, FocusIcon } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
 import { NavigationAnchorKey } from '@/util/keys';
 
+import { AddServerModal } from './AddServerModal';
 import { CapabilityEntry } from './CapabilityEntry';
 import {
   useActiveLayers,
@@ -80,26 +29,38 @@ export function GlobeBrowsingPanel() {
   const [selectedGlobe, setSelectedGlobe] = useState<string | null>(null);
   const [selectedWMS, setSelectedWMS] = useState<string | null>(null);
 
-  const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
-
-  const globeBrowsingNodes = useRenderableGlobes();
-  const globeWMS = useGlobeWMSInfo(selectedGlobe);
+  const { globeBrowsingNodes, refresh: refreshGlobeBrowsingNodes } =
+    useRenderableGlobes();
+  const { globeWMS, refresh: refreshWMSInfo } = useGlobeWMSInfo(selectedGlobe);
   const capabilities = useCapabilities(selectedWMS);
   const { activeLayers, refresh: refreshActiveLayers } = useActiveLayers(selectedGlobe);
+
+  const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
+  const [opened, { open, close }] = useDisclosure(false);
   const luaApi = useOpenSpaceApi();
 
+  const isAnchorRenderableGlobe =
+    currentAnchor !== undefined &&
+    globeBrowsingNodes?.identifiers.includes(currentAnchor);
+
   useEffect(() => {
+    // Don't update if the selected WMS server still exists
+    if (selectedWMS !== null && globeWMS.find((info) => info.name === selectedWMS)) {
+      return;
+    }
+
     // Default select the first WMS server in the list whenever we get a new server info
     if (globeWMS.length > 0) {
       setSelectedWMS(globeWMS[0].name);
     } else {
       setSelectedWMS(null);
+      refreshGlobeBrowsingNodes();
     }
-  }, [globeWMS]);
+  }, [globeWMS, selectedWMS, refreshGlobeBrowsingNodes]);
 
   // Sets default selected globe node
   useEffect(() => {
-    if (!globeBrowsingNodes) {
+    if (!globeBrowsingNodes || selectedGlobe) {
       return;
     }
     // Set Earth as default selected if it is loaded in the scene
@@ -108,7 +69,7 @@ export function GlobeBrowsingPanel() {
       : globeBrowsingNodes.identifiers[0];
 
     setSelectedGlobe(selectGlobe);
-  }, [globeBrowsingNodes]);
+  }, [globeBrowsingNodes, selectedGlobe]);
 
   async function addLayer(cap: Capability, layerType: LayerType) {
     if (!selectedGlobe) {
@@ -141,81 +102,128 @@ export function GlobeBrowsingPanel() {
     refreshActiveLayers();
   }
 
+  async function onAddServer(name: string, url: string) {
+    if (!selectedGlobe) {
+      return;
+    }
+    await luaApi?.globebrowsing.loadWMSCapabilities(name, selectedGlobe, url);
+    refreshWMSInfo();
+    setSelectedWMS(name);
+    refreshGlobeBrowsingNodes();
+    close();
+  }
+
+  function removeServerModal() {
+    if (!selectedWMS) {
+      return;
+    }
+    modals.openConfirmModal({
+      title: 'Remove server',
+      children: <Text>Are you sure you want to remove '{selectedWMS}' server?</Text>,
+      labels: {
+        confirm: 'Remove',
+        cancel: 'Cancel'
+      },
+      onConfirm: async () => {
+        await luaApi?.globebrowsing.removeWMSServer(selectedWMS);
+        refreshWMSInfo();
+      },
+      confirmProps: { color: 'red', variant: 'filled' }
+    });
+  }
+
   if (!globeBrowsingNodes) {
     return <LoadingBlocks />;
   }
 
   return (
-    <Layout>
-      <Layout.FixedSection>
-        <Group gap={'xs'}>
-          <Select
-            value={selectedGlobe}
-            data={[
-              {
-                group: 'Globes with WMS',
-                items: globeBrowsingNodes.identifiers.slice(
-                  0,
-                  globeBrowsingNodes.firstIndexWithoutUrl
-                )
-              },
-              {
-                group: 'Globes without WMS',
-                items: globeBrowsingNodes.identifiers.slice(
-                  globeBrowsingNodes.firstIndexWithoutUrl
-                )
-              }
-            ]}
-            onChange={(value) => setSelectedGlobe(value)}
-            allowDeselect={false}
-            flex={1}
-          />
-          <Button
-            onClick={() => {
-              if (!currentAnchor) {
-                return;
-              }
-              if (globeBrowsingNodes.identifiers.includes(currentAnchor)) {
-                setSelectedGlobe(currentAnchor);
-              }
-            }}
-          >
-            From Focus
-          </Button>
-        </Group>
-        <Select
-          value={selectedWMS}
-          data={globeWMS.map((info) => {
-            return { value: info.name, label: `${info.name} (${info.url})` };
-          })}
-          onChange={(value) => setSelectedWMS(value)}
-          allowDeselect={false}
-        />
-      </Layout.FixedSection>
-      <Group justify={"space-between"}>
-        <Title>Name</Title>
-        <Title>Add as</Title>
-      </Group>
-      <Layout.GrowingSection>
-        <FilterList>
-          <FilterList.InputField placeHolderSearchText={'Search WMS'} />
-          <FilterList.SearchResults
-            data={capabilities}
-            renderElement={(capability) => (
-              <CapabilityEntry
-                capability={capability}
-                onAdd={addLayer}
-                onRemove={removeLayer}
-                activeLayers={activeLayers}
-                key={capability.URL}
+    <>
+      <AddServerModal opened={opened} close={close} onAddServer={onAddServer} />
+      <Layout>
+        <Layout.FixedSection>
+          <Stack gap={'xs'} mb={'xs'}>
+            <Group gap={'xs'}>
+              <Select
+                value={selectedGlobe}
+                data={[
+                  {
+                    group: '',
+                    items: globeBrowsingNodes.identifiers.slice(
+                      0,
+                      globeBrowsingNodes.firstIndexWithoutUrl
+                    )
+                  },
+                  {
+                    group: 'Globes without server',
+                    items: globeBrowsingNodes.identifiers.slice(
+                      globeBrowsingNodes.firstIndexWithoutUrl
+                    )
+                  }
+                ]}
+                onChange={(value) => setSelectedGlobe(value)}
+                allowDeselect={false}
+                flex={1}
               />
-            )}
-            matcherFunc={generateMatcherFunctionByKeys(['Name'])}
-          >
-            <FilterList.SearchResults.VirtualList gap={3} />
-          </FilterList.SearchResults>
-        </FilterList>
-      </Layout.GrowingSection>
-    </Layout>
+              <Tooltip
+                label={
+                  isAnchorRenderableGlobe
+                    ? 'Select from current focus'
+                    : 'Only works if the focus is a globe'
+                }
+              >
+                <ActionIcon
+                  onClick={() => {
+                    if (isAnchorRenderableGlobe) {
+                      setSelectedGlobe(currentAnchor);
+                    }
+                  }}
+                  disabled={!isAnchorRenderableGlobe}
+                  size={'input-sm'}
+                >
+                  <FocusIcon size={IconSize.sm} />
+                </ActionIcon>
+              </Tooltip>
+            </Group>
+            <Group gap={'xs'}>
+              <Select
+                value={selectedWMS}
+                data={globeWMS.map((info) => {
+                  return { value: info.name, label: `${info.name} (${info.url})` };
+                })}
+                onChange={(value) => setSelectedWMS(value)}
+                allowDeselect={false}
+                flex={1}
+              />
+              <Button onClick={open}>Add server</Button>
+              <Tooltip label={`Remove WMS Server: '${selectedWMS}'`}>
+                <ActionIcon size={'input-sm'}>
+                  <DeleteIcon onClick={removeServerModal} size={IconSize.sm} />
+                </ActionIcon>
+              </Tooltip>
+            </Group>
+          </Stack>
+        </Layout.FixedSection>
+        <Layout.GrowingSection>
+          <FilterList>
+            <FilterList.InputField placeHolderSearchText={'Search WMS layers...'} />
+            <FilterList.SearchResults
+              data={capabilities}
+              renderElement={(capability) => (
+                <CapabilityEntry
+                  capability={capability}
+                  onAdd={addLayer}
+                  onRemove={removeLayer}
+                  activeLayers={activeLayers}
+                  key={capability.URL}
+                />
+              )}
+              matcherFunc={generateMatcherFunctionByKeys(['Name'])}
+            >
+              <FilterList.SearchResults.VirtualList gap={3} />
+            </FilterList.SearchResults>
+          </FilterList>
+        </Layout.GrowingSection>
+      </Layout>
+    </>
   );
 }
