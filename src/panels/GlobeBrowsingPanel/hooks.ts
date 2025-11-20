@@ -100,6 +100,9 @@ export function useGlobeWMSInfo(globe: string | null) {
       return;
     }
     const urlInfo = await luaApi?.globebrowsing.urlInfo(globe);
+    if (!urlInfo) {
+      return;
+    }
     const WMSInfo = Object.values(urlInfo) as UrlInfo[];
     setGlobeWMS(WMSInfo);
   }, [luaApi, globe]);
