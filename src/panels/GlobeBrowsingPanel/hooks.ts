@@ -6,6 +6,7 @@ import {
   Capability,
   GlobeBrowsingNodes,
   LayerType,
+  layerTypes,
   OpenSpaceCapabilities,
   OpenSpaceGlobeBrowsingNodes,
   UrlInfo
@@ -33,23 +34,15 @@ export function useActiveLayers(globeIdentifier: string | null) {
       return;
     }
 
-    const categories: LayerType[] = [
-      'ColorLayers',
-      'NightLayers',
-      'Overlays',
-      'HeightLayers',
-      'WaterMasks'
-    ] as const;
-
     const results = await Promise.all(
-      categories.map((cat) => luaApi.globebrowsing.layers(globeIdentifier, cat))
+      layerTypes.map((type) => luaApi.globebrowsing.layers(globeIdentifier, type))
     );
 
     const layers = Object.fromEntries(
-      categories.map((cat, index) => {
+      layerTypes.map((layerType, index) => {
         const layerObj = results[index] ?? {};
         const layerList = Object.values(layerObj);
-        return [cat, layerList];
+        return [layerType, layerList];
       })
     ) as Record<LayerType, string[]>;
 

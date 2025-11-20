@@ -20,9 +20,12 @@ export interface UrlInfo {
   url: string; //
 }
 
-export type LayerType =
-  | 'ColorLayers'
-  | 'NightLayers'
-  | 'Overlays'
-  | 'HeightLayers'
-  | 'WaterMasks';
+export const layerTypes = [
+  'ColorLayers',
+  'NightLayers',
+  'Overlays',
+  'HeightLayers',
+  'WaterMasks'
+] as const;
+
+export type LayerType = (typeof layerTypes)[number];
