@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Group, Modal, Stack } from '@mantine/core';
 
 import { StringInput } from '@/components/Input/StringInput';
@@ -12,6 +13,7 @@ interface Props {
 export function AddServerModal({ opened, close, onAddServer }: Props) {
   const [serverName, setServerName] = useState('');
   const [serverUrl, setServerUrl] = useState('');
+  const { t } = useTranslation('panel-globebrowsing', { keyPrefix: 'add-server-modal' });
 
   function addServer() {
     if (serverName !== '' && serverUrl !== '') {
@@ -32,7 +34,7 @@ export function AddServerModal({ opened, close, onAddServer }: Props) {
       <Modal.Overlay />
       <Modal.Content>
         <Modal.Header>
-          <Modal.Title>Add New Server</Modal.Title>
+          <Modal.Title>{t('title')}</Modal.Title>
           <Modal.CloseButton />
         </Modal.Header>
         <Modal.Body>
@@ -40,16 +42,16 @@ export function AddServerModal({ opened, close, onAddServer }: Props) {
             <StringInput
               onEnter={setServerName}
               value={serverName}
-              placeholder={'Server name'}
+              placeholder={t('placeholders.name')}
             />
             <StringInput
               onEnter={setServerUrl}
               value={serverUrl}
-              placeholder={'Server Url'}
+              placeholder={t('placeholders.url')}
             />
             <Group>
-              <Button onClick={addServer}>Add server</Button>
-              <Button onClick={onClose}>Cancel</Button>
+              <Button onClick={addServer}>{t('buttons.add')}</Button>
+              <Button onClick={onClose}>{t('buttons.cancel')}</Button>
             </Group>
           </Stack>
         </Modal.Body>

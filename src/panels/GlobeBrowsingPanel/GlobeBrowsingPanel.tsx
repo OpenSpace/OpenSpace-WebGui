@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Button, Group, Select, Stack, Text, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
@@ -38,6 +39,7 @@ export function GlobeBrowsingPanel() {
   const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
   const [opened, { open, close }] = useDisclosure(false);
   const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('panel-globebrowsing');
 
   const isAnchorRenderableGlobe =
     currentAnchor !== undefined &&
@@ -118,11 +120,13 @@ export function GlobeBrowsingPanel() {
       return;
     }
     modals.openConfirmModal({
-      title: 'Remove server',
-      children: <Text>Are you sure you want to remove '{selectedWMS}' server?</Text>,
+      title: t('remove-server-modal.title'),
+      children: (
+        <Text>{t('remove-server-modal.description', { serverName: selectedWMS })}</Text>
+      ),
       labels: {
-        confirm: 'Remove',
-        cancel: 'Cancel'
+        confirm: t('remove-server-modal.confirm'),
+        cancel: t('remove-server-modal.cancel')
       },
       onConfirm: async () => {
         await luaApi?.globebrowsing.removeWMSServer(selectedWMS);
@@ -154,7 +158,7 @@ export function GlobeBrowsingPanel() {
                     )
                   },
                   {
-                    group: 'Globes without server',
+                    group: t('select-globe.no-server-group'),
                     items: globeBrowsingNodes.identifiers.slice(
                       globeBrowsingNodes.firstIndexWithoutUrl
                     )
@@ -167,8 +171,8 @@ export function GlobeBrowsingPanel() {
               <Tooltip
                 label={
                   isAnchorRenderableGlobe
-                    ? 'Select from current focus'
-                    : 'Only works if the focus is a globe'
+                    ? t('select-globe.tooltips.valid-focus')
+                    : t('select-globe.tooltips.invalid-focus')
                 }
               >
                 <ActionIcon
@@ -194,8 +198,12 @@ export function GlobeBrowsingPanel() {
                 allowDeselect={false}
                 flex={1}
               />
-              <Button onClick={open}>Add server</Button>
-              <Tooltip label={`Remove WMS Server: '${selectedWMS}'`}>
+              <Button onClick={open}>{t('add-server-button')}</Button>
+              <Tooltip
+                label={t('select-globe.tooltips.remove-server', {
+                  serverName: selectedWMS
+                })}
+              >
                 <ActionIcon size={'input-sm'}>
                   <DeleteIcon onClick={removeServerModal} size={IconSize.sm} />
                 </ActionIcon>
@@ -205,7 +213,7 @@ export function GlobeBrowsingPanel() {
         </Layout.FixedSection>
         <Layout.GrowingSection>
           <FilterList>
-            <FilterList.InputField placeHolderSearchText={'Search WMS layers...'} />
+            <FilterList.InputField placeHolderSearchText={t('filter-list-placeholder')} />
             <FilterList.SearchResults
               data={capabilities}
               renderElement={(capability) => (

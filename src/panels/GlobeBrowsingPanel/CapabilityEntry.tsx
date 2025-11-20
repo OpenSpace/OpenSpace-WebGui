@@ -1,4 +1,5 @@
 import { memo, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, Menu, Tooltip } from '@mantine/core';
 
 import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
@@ -36,6 +37,10 @@ interface LayerGroupData {
  */
 export const CapabilityEntry = memo(
   ({ capability, activeLayers, onAdd, onRemove }: Props) => {
+    const { t } = useTranslation('panel-globebrowsing', {
+      keyPrefix: 'capability-entry'
+    });
+
     const layerGroups: LayerGroupData[] = useMemo(
       () => [
         {
@@ -80,7 +85,7 @@ export const CapabilityEntry = memo(
           {capability.Name}
         </TruncatedText>
         {addedGroups.length > 0 && (
-          <Tooltip label={'Remove all layers'}>
+          <Tooltip label={t('tooltips.remove-layers')}>
             <ActionIcon
               onClick={() => onRemove(capability.Name)}
               color={'red'}
@@ -90,7 +95,7 @@ export const CapabilityEntry = memo(
             </ActionIcon>
           </Tooltip>
         )}
-        <Tooltip label={'Add as color layer'}>
+        <Tooltip label={t('tooltips.add-color-layer')}>
           <ActionIcon
             onClick={() => onAdd(capability, 'ColorLayers')}
             disabled={isInLayer('ColorLayers')}
@@ -105,11 +110,11 @@ export const CapabilityEntry = memo(
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Label>Add as:</Menu.Label>
+            <Menu.Label>{t('menu-add-label')}</Menu.Label>
             {layerGroups.map((group) => {
               const isInLayerGroup = isInLayer(group.id);
               return isInLayerGroup ? (
-                <Tooltip label={'Layer is already added to this group'} key={group.id}>
+                <Tooltip label={t('tooltips.layer-exists')} key={group.id}>
                   <Menu.Item
                     leftSection={group.icon}
                     onClick={() => onAdd(capability, group.id)}

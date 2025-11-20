@@ -1,0 +1,37 @@
+{
+  "select-globe": {
+    "no-server-group": "Globes without server",
+    "tooltips": {
+      "valid-focus": "Select from current foucs",
+      "invalid-focus": "Only works if the focus is a globe",
+      "remove-server": "Remove server: '{{serverName}}'"
+    }
+  },
+  "add-server-button": "Add server",
+  "filter-list-placeholder": "Search for a layer...",
+  "remove-server-modal": {
+    "title": "Remove server",
+    "description": "Are you sure you want to remove '{{serverName}}' server?",
+    "confirm": "Remove",
+    "cancel": "Cancel"
+  },
+  "add-server-modal": {
+    "title": "Add New Server",
+    "placeholders": {
+      "name": "Server name",
+      "url": "Server Url"
+    },
+    "buttons": {
+      "add": "Add server",
+      "cancel": "Cancel"
+    }
+  },
+  "capability-entry": {
+    "tooltips": {
+      "remove-layers": "Remove all layers",
+      "add-color-layer": "Add as color layer",
+      "layer-exists": "Layer is already added to this group"
+    },
+    "menu-add-label": "Add as:"
+  }
+}
