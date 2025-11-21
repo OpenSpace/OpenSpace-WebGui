@@ -5,6 +5,7 @@ import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlic
 import { Identifier, PropertyOwner, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
 import {
+  checkVisiblity,
   enabledPropertyUri,
   fadePropertyUri,
   hasVisibleChildren,
@@ -96,6 +97,44 @@ export function usePropertyOwnerVisibility(uri: Uri) {
       dispatch(
         setPropertyValue({ uri: fadePropertyUri(uri), value: shouldShow ? 1.0 : 0.0 })
       );
+    } else if (shouldShow) {
+      luaApi?.fadeIn(uri);
+    } else {
+      luaApi?.fadeOut(uri);
+    }
+  }
+
+  return {
+    isVisible,
+    setVisibility
+  };
+}
+
+/**
+ * Check if the property ower is visible, based on the current visibility level setting.
+ * Also provides a function to set the visibility of the property owner.
+ */
+export function useGlobeLayerVisibility(uri: Uri) {
+  const luaApi = useOpenSpaceApi();
+
+  const [enabledPropertyValue, setEnabledProperty] = useProperty(
+    'BoolProperty',
+    enabledPropertyUri(uri)
+  );
+  const [fadePropertyValue, setFadePropertyValue] = useProperty(
+    'FloatProperty',
+    fadePropertyUri(uri)
+  );
+  const isFadeable = fadePropertyValue !== undefined;
+
+  const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
+
+  function setVisibility(shouldShow: boolean, isImmediate: boolean = false) {
+    if (!isFadeable) {
+      setEnabledProperty(shouldShow);
+    } else if (isImmediate) {
+      setEnabledProperty(shouldShow);
+      setFadePropertyValue(shouldShow ? 1.0 : 0.0);
     } else if (shouldShow) {
       luaApi?.fadeIn(uri);
     } else {
