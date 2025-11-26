@@ -6,8 +6,8 @@ type EventType = EventData['Event'];
 type EventPayload<E extends EventType> = Extract<EventData, { Event: E }>;
 
 /**
- * This class can be used to subscribe to OpenSpace events in components. For now, it does
- * not get any data with the event, but rather just a notification that it happened
+ * This class can be used to subscribe to OpenSpace events in components. Corresponding
+ * event data is passed to the subscribed callback functions when an event is emitted.
  */
 class EventBus {
   private listeners: {
@@ -16,25 +16,27 @@ class EventBus {
 
   /**
    * Subscribes a callback function to a specific event, the function is called each time
-   * the event is emitted
-   * @param event
-   * @param handler
+   * the event is emitted.
+   * 
+   * @param event Event to subscribe to
+   * @param callback The callback function to invoke when the event is emitted
    */
-  subscribe<E extends EventType>(event: E, handler: (data: EventPayload<E>) => void) {
+  subscribe<E extends EventType>(event: E, callback: (data: EventPayload<E>) => void) {
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }
-    this.listeners[event].push(handler);
+    this.listeners[event].push(callback);
   }
 
   /**
-   * Removes a function callback from a specific event subcription
+   * Removes a function callback from a specific event subcription.
+   * 
    * @param event Event to unsubscribe from
-   * @param handler The callback function handler to remove
+   * @param callback The callback function handle to remove
    */
-  unsubscribe<E extends EventType>(event: E, handler: (data: EventPayload<E>) => void) {
-    const handlers = this.listeners[event];
-    if (!handlers) {
+  unsubscribe<E extends EventType>(event: E, callback: (data: EventPayload<E>) => void) {
+    const callbacks = this.listeners[event];
+    if (!callbacks) {
       return;
     }
     // TODO (anden88, 2025-11-06): See if we can do some other type of casting here to
@@ -44,13 +46,13 @@ class EventBus {
     // Type '((data: EventPayload<E>) => void)[]' is not assignable to type '{
     // ActionAdded?: ((data: ActionAddedEvent) => void)[] | undefined;
     // ActionRemoved?: ((data: ActionRemovedEvent) => void)[] | undefined; ... }
-    this.listeners[event] = handlers.filter((h) => h !== handler) as typeof handlers;
+    this.listeners[event] = callbacks.filter((h) => h !== callback) as typeof callbacks;
   }
 
-  // @TODO (anden88 2025-10-09): Do we want to pass the event payload to the handler?
   /**
-   * Emits an event to all subscribed listeners
-   * @param event
+   * Emits an event to all subscribed listeners.
+   * 
+   * @param data The event data to emit
    */
   emit<E extends EventType>(data: EventPayload<E>) {
     this.listeners[data.Event]?.forEach((handler) => handler(data));

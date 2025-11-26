@@ -1,27 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  ActionIcon,
-  Button,
-  CheckIcon,
-  Group,
-  Loader,
-  Stack,
-  Text,
-  ThemeIcon,
-  Tooltip
-} from '@mantine/core';
-import { modals } from '@mantine/modals';
+import { Button, Group, Text, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { WarningIcon } from '@/components/WarningIcon/WarningIcon';
-import { DeleteIcon, FileTextIcon } from '@/icons/icons';
+import { FileTextIcon } from '@/icons/icons';
 import { AssetLoadingEvent } from '@/redux/events/types';
 import { IconSize } from '@/types/enums';
 import { eventBus } from '@/util/eventBus';
 
+import { Asset, AssetLoadState } from '../types';
+
 import { AssetEntryMenu } from './AssetEntryMenu';
-import { Asset, AssetLoadState } from './types';
+import { AssetLoadingStateIcon } from './AssetLoadingStateIcon';
+import { AssetRemoveButton } from './AssetRemoveButton';
 
 interface Props {
   asset: Asset;
@@ -61,6 +52,7 @@ export function AssetsEntry({ asset }: Props) {
       }
       const rootAssets = Object.values(assets).map((path) => path.replaceAll('\\', '/'));
       const isRoot = rootAssets.includes(asset.path.replaceAll('\\', '/'));
+
       if (isRoot) {
         fetchParents();
       }
@@ -106,7 +98,7 @@ export function AssetsEntry({ asset }: Props) {
     return () => {
       eventBus.unsubscribe('AssetLoading', onAssetLoadingEvent);
     };
-  }, [luaApi, loadState, isRootAsset, asset.path, fetchParents]);
+  }, [isRootAsset, asset.path, fetchParents]);
 
   async function loadAsset() {
     // Do nothing if asset is already loaded or loading
@@ -116,22 +108,24 @@ export function AssetsEntry({ asset }: Props) {
     // If the asset failed to load we try to reload it
     if (loadState === AssetLoadState.Error) {
       reloadAsset();
-    } else {
-      // If this asset was already loaded by something else and we try to add it again
-      // i.e., add it as a root asset. OpenSpace will not actually call any load or
-      // initialize on this asset so we will never recieve the callbacks. Hence we
-      // manually mark it as a root asset.
-      if (loadState === AssetLoadState.Loaded) {
-        setIsRootAsset(true);
-      } else {
-        setLoadState(AssetLoadState.Loading);
-      }
-      luaApi?.asset.add(asset.path);
-      fetchParents();
+      return;
     }
+
+    // If this asset was already loaded by something else and we try to add it again
+    // i.e., add it as a root asset. OpenSpace will not actually call any load or
+    // initialize on this asset so we will never recieve the callbacks. Hence we
+    // manually mark it as a root asset.
+    if (loadState === AssetLoadState.Loaded) {
+      setIsRootAsset(true);
+    } else {
+      setLoadState(AssetLoadState.Loading);
+    }
+
+    await luaApi?.asset.add(asset.path);
+    fetchParents();
   }
 
-  async function reloadAsset() {
+  function reloadAsset() {
     if (loadState === AssetLoadState.Loading) {
       return;
     }
@@ -160,25 +154,6 @@ export function AssetsEntry({ asset }: Props) {
     setIsRootAsset(false);
   }
 
-  function onRemoveAssetModal() {
-    modals.openConfirmModal({
-      title: t('remove-asset-modal.title'),
-      children: (
-        <Stack>
-          <Text>{t('remove-asset-modal.description')}:</Text>
-          <Text>{asset.name}</Text>
-          <Text style={{ wordBreak: 'break-all' }}>{asset.path}</Text>
-        </Stack>
-      ),
-      labels: {
-        confirm: t('remove-asset-modal.confirm'),
-        cancel: t('remove-asset-modal.cancel')
-      },
-      confirmProps: { color: 'red', variant: 'filled' },
-      onConfirm: removeAsset
-    });
-  }
-
   return (
     <Group gap={0}>
       <Tooltip label={asset.path} position={'top-start'}>
@@ -195,50 +170,10 @@ export function AssetsEntry({ asset }: Props) {
           <Text truncate>{asset.name}</Text>
         </Button>
       </Tooltip>
-
       {isRootAsset && (
-        <Tooltip
-          label={
-            parents.length > 0 ? (
-              <>
-                <Text>{t('tooltips.remove.has-parents')}</Text>
-                {parents.map((parent) => (
-                  <Text key={parent} size={'xs'} style={{ wordBreak: 'break-all' }}>
-                    {parent}
-                  </Text>
-                ))}
-              </>
-            ) : (
-              <Text>{t('tooltips.remove.no-parents')}</Text>
-            )
-          }
-        >
-          <ActionIcon
-            onClick={onRemoveAssetModal}
-            variant={'subtle'}
-            color={'red'}
-            aria-label={t('aria-labels.remove', { assetName: asset.name })}
-            disabled={parents.length > 0}
-          >
-            <DeleteIcon />
-          </ActionIcon>
-        </Tooltip>
+        <AssetRemoveButton asset={asset} parents={parents} onRemoveAsset={removeAsset} />
       )}
-      {loadState === AssetLoadState.Loading && <Loader size={'xs'} mr={5} />}
-      {loadState === AssetLoadState.Loaded && (
-        <Tooltip label={t('tooltips.added')}>
-          <ThemeIcon
-            color={'teal'}
-            variant={'subtle'}
-            aria-label={t('aria-labels.added', { assetName: asset.name })}
-          >
-            <CheckIcon size={IconSize.xs} />
-          </ThemeIcon>
-        </Tooltip>
-      )}
-      {loadState === AssetLoadState.Error && (
-        <WarningIcon tooltipText={t('tooltips.error')} />
-      )}
+      <AssetLoadingStateIcon loadState={loadState} asset={asset} />
       <AssetEntryMenu
         asset={asset}
         parents={parents}

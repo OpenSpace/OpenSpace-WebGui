@@ -7,7 +7,7 @@ import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyTo
 import { VerticalDotsIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
-import { Asset } from './types';
+import { Asset } from '../types';
 
 interface Props {
   asset: Asset;
@@ -25,8 +25,9 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
       children: (
         <Stack>
           <Text>{t('reload-assset-modal.description')}</Text>
-          <Text>{asset.name}</Text>
-          <Text style={{ wordBreak: 'break-all' }}>{asset.path}</Text>
+          <Text fw={500} size={'lg'}>
+            {asset.name}
+          </Text>
         </Stack>
       ),
       labels: {

@@ -24,7 +24,7 @@
     },
     "tooltips": {
       "remove": {
-        "has-parents": "This asset is required by additional assets, removing it will have no effect until the following assets are removed:",
+        "has-parents": "This asset is required by other assets. To remove it, the following assets must first be removed:",
         "no-parents": "Remove asset"
       },
       "added": "Asset is added",

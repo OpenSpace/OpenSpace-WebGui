@@ -2,7 +2,7 @@ import { Asset, Folder } from './types';
 
 /**
  * Traverse the folder hierarchy from the given root according to the specified path,
- * returning the folder at that location
+ * returning the folder at that location.
  *
  * @param root The folder to begin traversal from
  * @param navPath An array of folder names representing the path to traverse
@@ -33,7 +33,7 @@ function internalCollectAssets(folder: Folder): Asset[] {
 }
 
 /**
- * Recursively collect all assets from the given folder and its subfolders
+ * Recursively collect all assets from the given folder and its subfolders.
  *
  * @param folder The root folder to collect assets from
  * @returns An array containing all assets within the folder and its descendants sorted
@@ -45,7 +45,7 @@ export function collectAssets(folder: Folder): Asset[] {
 }
 
 /**
- * Extracts and returns the final segment (file or folder name) from a given path
+ * Extracts and returns the final segment (file or folder name) from a given path.
  *
  * @param path The full path string (e.g., "C:/foo/bar" or "C:/foo/bar.asset")
  * @returns The final name segment of the path (e.g., "bar" or "bar.asset")
@@ -59,7 +59,8 @@ export function baseName(path: string): string {
 
 /**
  * Recursively prune empty folders from data structure. Empty folders are those
- * without subfolders or assets
+ * without subfolders or assets.
+ *
  * @param folder to potentially prune
  * @returns a pruned Folder version without empty subfolders
  */

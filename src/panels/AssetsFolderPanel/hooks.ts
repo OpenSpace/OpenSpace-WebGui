@@ -40,9 +40,9 @@ export function useAssetFolders() {
 
       return {
         path: directoryPath,
-        name: name,
-        subFolders: subFolders,
-        assets: assets
+        name,
+        subFolders,
+        assets
       };
     },
     [luaApi]

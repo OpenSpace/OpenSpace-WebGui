@@ -9,8 +9,8 @@ import { FolderBackIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { caseInsensitiveSubstring } from '@/util/stringmatcher';
 
+import { AssetsEntry } from './AssetEntry/AssetsEntry';
 import { AssetsBreadcrumbs } from './AssetsBreadcrumbs';
-import { AssetsEntry } from './AssetsEntry';
 import { FolderEntry } from './FolderEntry';
 import { useAssetFolders } from './hooks';
 import { Asset, AssetFolderNavigationState } from './types';
@@ -48,7 +48,6 @@ export function AssetsFolderPanel() {
     if (!nav) {
       return;
     }
-
     navigateTo(nav.currentPath.length - 1);
   }
 

@@ -41,7 +41,7 @@ export const setupDownloadEventSubcription = createAsyncThunk(
         const totalMb = data.totalBytes ? data.totalBytes / megabyte : -1;
 
         switch (data.type) {
-          case DownloadType.Finished:
+          case DownloadType.Finished: {
             notifications.update({
               id: downloads[data.id],
               title: i18n.t('download-event.title.finished', { ns: 'notifications' }),
@@ -60,36 +60,34 @@ export const setupDownloadEventSubcription = createAsyncThunk(
             });
             delete downloads[data.id];
             break;
+          }
+          case DownloadType.Failed: {
+            const color = 'red';
 
-          case DownloadType.Failed:
-            {
-              const color = 'red';
+            notifications.update({
+              id: downloads[data.id],
+              title: i18n.t('download-event.title.failed', { ns: 'notifications' }),
+              message: (
+                <DownloadEventNotificationBody
+                  message={i18n.t('download-event.message.failed', {
+                    ns: 'notifications',
+                    file: data.id
+                  })}
+                  downloadProgress={50}
+                  color={color}
+                  animated={false}
+                />
+              ),
+              icon: <ErrorIcon size={IconSize.sm} />,
+              autoClose: true,
+              loading: false,
+              color: color
+            });
 
-              notifications.update({
-                id: downloads[data.id],
-                title: i18n.t('download-event.title.failed', { ns: 'notifications' }),
-                message: (
-                  <DownloadEventNotificationBody
-                    message={i18n.t('download-event.message.failed', {
-                      ns: 'notifications',
-                      file: data.id
-                    })}
-                    downloadProgress={50}
-                    color={color}
-                    animated={false}
-                  />
-                ),
-                icon: <ErrorIcon size={IconSize.sm} />,
-                autoClose: true,
-                loading: false,
-                color: color
-              });
-
-              delete downloads[data.id];
-            }
+            delete downloads[data.id];
             break;
-
-          case DownloadType.Started:
+          }
+          case DownloadType.Started: {
             if (!downloads[data.id]) {
               downloads[data.id] = data.id;
 
@@ -113,8 +111,8 @@ export const setupDownloadEventSubcription = createAsyncThunk(
                 color: 'white'
               });
             }
-
             break;
+          }
           case DownloadType.Progress: {
             const notificationData = {
               id: '',
