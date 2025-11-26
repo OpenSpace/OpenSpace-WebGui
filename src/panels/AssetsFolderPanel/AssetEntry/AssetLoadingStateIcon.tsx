@@ -32,7 +32,6 @@ export function AssetLoadingStateIcon({ loadState, asset }: Props) {
     case AssetLoadState.Error:
       return <WarningIcon tooltipText={t('tooltips.error')} />;
     default:
-      break;
+      return <></>;
   }
-  return null;
 }

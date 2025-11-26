@@ -17,7 +17,7 @@ class EventBus {
   /**
    * Subscribes a callback function to a specific event, the function is called each time
    * the event is emitted.
-   * 
+   *
    * @param event Event to subscribe to
    * @param callback The callback function to invoke when the event is emitted
    */
@@ -30,7 +30,7 @@ class EventBus {
 
   /**
    * Removes a function callback from a specific event subcription.
-   * 
+   *
    * @param event Event to unsubscribe from
    * @param callback The callback function handle to remove
    */
@@ -51,7 +51,7 @@ class EventBus {
 
   /**
    * Emits an event to all subscribed listeners.
-   * 
+   *
    * @param data The event data to emit
    */
   emit<E extends EventType>(data: EventPayload<E>) {

@@ -18,6 +18,13 @@ interface Props {
   asset: Asset;
 }
 
+const stateMap: Record<AssetLoadingEvent['State'], AssetLoadState> = {
+  Loaded: AssetLoadState.Loaded,
+  Loading: AssetLoadState.Loading,
+  Unloaded: AssetLoadState.NotLoaded,
+  Error: AssetLoadState.Error
+};
+
 export function AssetsEntry({ asset }: Props) {
   const [loadState, setLoadState] = useState<AssetLoadState>(AssetLoadState.NotLoaded);
   const [isRootAsset, setIsRootAsset] = useState<boolean>(false);
@@ -68,22 +75,11 @@ export function AssetsEntry({ asset }: Props) {
   useEffect(() => {
     async function onAssetLoadingEvent(data: AssetLoadingEvent) {
       if (data.AssetPath.replaceAll('\\', '/') === asset.path.replaceAll('\\', '/')) {
-        switch (data.State) {
-          case 'Loaded':
-            setLoadState(AssetLoadState.Loaded);
-            break;
-          case 'Loading':
-            setLoadState(AssetLoadState.Loading);
-            break;
-          case 'Unloaded':
-            setLoadState(AssetLoadState.NotLoaded);
-            break;
-          case 'Error':
-            setLoadState(AssetLoadState.Error);
-            break;
-          default:
-            throw new Error(`Unhandled Asset load state: '${data.State}'`);
+        const state = stateMap[data.State];
+        if (!state) {
+          throw new Error(`Unhandled Asset load state: '${data.State}'`);
         }
+        setLoadState(state);
       } else {
         // Some other asset was loaded, we must recheck if this asset is required by the
         // newly added assets
