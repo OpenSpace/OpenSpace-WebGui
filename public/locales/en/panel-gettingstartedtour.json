@@ -171,7 +171,7 @@
         "intro": "Let's take a look at the surface of Mars."
       },
       "globebrowsing": {
-        "title": "Globe Browsing",
+        "title": "GlobeBrowsing",
         "intro": "The feature that enables us to look at maps on planets is called <italic>GlobeBrowsing</italic>.",
         "about-maps": "Planets can have multiple map layers that show different data. Planets also have height maps, which show elevation. Different maps can have different resolutions.",
         "about-layer-servers": "The default layers in OpenSpace are generally named after the satellite or instrument on a satellite that captured the map. The name [Utah] or [Sweden] states on which server the map is located. It is usually faster to choose the server closest to you."

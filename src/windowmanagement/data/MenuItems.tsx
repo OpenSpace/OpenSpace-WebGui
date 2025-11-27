@@ -225,7 +225,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     advanced: true
   },
   globeBrowsingPanel: {
-    title: 'Globe Browsing',
+    title: 'GlobeBrowsing',
     componentID: 'globeBrowsingPanel',
     content: <GlobeBrowsingPanel />,
     renderIcon: (size) => <GlobeIcon size={size} />,
