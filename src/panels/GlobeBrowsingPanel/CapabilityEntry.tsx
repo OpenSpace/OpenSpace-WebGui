@@ -80,7 +80,15 @@ export const CapabilityEntry = memo(
     const addedGroups = layerTypes.filter((layerType) => isInLayer(layerType));
 
     return (
-      <Group gap={'xs'} justify={'space-between'} wrap={'nowrap'} align={'top'}>
+      <Group
+        gap={'xs'}
+        justify={'space-between'}
+        wrap={'nowrap'}
+        align={'top'}
+        style={{ borderBottom: '1px solid var(--mantine-color-dark-5)' }}
+        pt={2}
+        pb={5}
+      >
         <TruncatedText flex={1} miw={150}>
           {capability.Name}
         </TruncatedText>
