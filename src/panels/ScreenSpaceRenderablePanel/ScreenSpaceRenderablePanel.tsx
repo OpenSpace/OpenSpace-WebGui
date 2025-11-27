@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { ActionIcon, Box, Divider, Group, Tabs, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { InsertPhotoIcon, MinusIcon, WebIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
@@ -10,6 +9,7 @@ import { Uri } from '@/types/types';
 import { ScreenSpaceKey } from '@/util/keys';
 
 import { ImageTab } from './ImageTab';
+import { ScreenSpaceRenderable } from './ScreenSpaceRenderable';
 import { WebpageTab } from './WebpageTab';
 
 export function ScreenSpaceRenderablePanel() {
@@ -65,7 +65,7 @@ export function ScreenSpaceRenderablePanel() {
             align={'top'}
           >
             <Box flex={1}>
-              <PropertyOwner uri={uri} />
+              <ScreenSpaceRenderable uri={uri} />
             </Box>
             <ActionIcon
               onClick={() => removeSlide(uri)}
