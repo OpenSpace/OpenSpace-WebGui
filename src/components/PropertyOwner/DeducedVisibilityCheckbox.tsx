@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Checkbox } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
-import { useGlobeLayerVisibility } from '@/hooks/propertyOwner';
+import { useDeducedVisibility } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 
 interface Props {
@@ -10,8 +10,8 @@ interface Props {
   label?: React.ReactNode;
 }
 
-export function GlobeLayerVisibilityCheckbox({ uri, label }: Props) {
-  const { isVisible, setVisibility } = useGlobeLayerVisibility(uri);
+export function DeducedVisibilityCheckbox({ uri, label }: Props) {
+  const { isVisible, setVisibility } = useDeducedVisibility(uri);
 
   // This is the value that is shown in the checkbox, it is not necessarily the same as
   // the isVisible value, since the checkbox can be in a transition state

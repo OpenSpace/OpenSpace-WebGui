@@ -5,11 +5,11 @@ import { Collapsable } from '@/components/Collapsable/Collapsable';
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
-import { useGlobeLayerVisibility, usePropertyOwner } from '@/hooks/propertyOwner';
+import { useDeducedVisibility, usePropertyOwner } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
 
-import { GlobeLayerVisibilityCheckbox } from './GlobeLayerVisibilityCheckbox';
+import { DeducedVisibilityCheckbox } from '../../../components/PropertyOwner/DeducedVisibilityCheckbox';
 
 interface Props {
   uri: Uri;
@@ -19,7 +19,7 @@ export function GlobeLayer({ uri }: Props) {
   const { t } = useTranslation('panel-scene', { keyPrefix: 'globe-layer' });
   const propertyOwner = usePropertyOwner(uri);
 
-  const { isVisible } = useGlobeLayerVisibility(uri);
+  const { isVisible } = useDeducedVisibility(uri);
 
   if (!propertyOwner) {
     throw Error(`${t('error.no-property-owner-for-uri')}: ${uri}`);
@@ -32,7 +32,7 @@ export function GlobeLayer({ uri }: Props) {
   return (
     <Collapsable
       title={<Text c={textColor}>{displayName(propertyOwner)}</Text>}
-      leftSection={<GlobeLayerVisibilityCheckbox uri={uri} />}
+      leftSection={<DeducedVisibilityCheckbox uri={uri} />}
       rightSection={
         <Group wrap={'nowrap'}>
           <InfoBox>

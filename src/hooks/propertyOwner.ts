@@ -114,7 +114,7 @@ export function usePropertyOwnerVisibility(uri: Uri) {
  * Check if the property ower is visible, based on the current visibility level setting.
  * Also provides a function to set the visibility of the property owner.
  */
-export function useGlobeLayerVisibility(uri: Uri) {
+export function useDeducedVisibility(uri: Uri) {
   const luaApi = useOpenSpaceApi();
 
   const [enabledPropertyValue, setEnabledProperty] = useProperty(

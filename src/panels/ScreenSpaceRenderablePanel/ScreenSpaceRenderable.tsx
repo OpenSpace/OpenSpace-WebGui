@@ -8,7 +8,7 @@ import { useHasVisibleChildren, usePropertyOwner } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
 
-import { GlobeLayerVisibilityCheckbox } from '../Scene/GlobeLayers/GlobeLayerVisibilityCheckbox';
+import { DeducedVisibilityCheckbox } from '../../components/PropertyOwner/DeducedVisibilityCheckbox';
 
 export function ScreenSpaceRenderable({ uri }: { uri: Uri }) {
   const propertyOwner = usePropertyOwner(uri);
@@ -28,7 +28,7 @@ export function ScreenSpaceRenderable({ uri }: { uri: Uri }) {
   return (
     <Collapsable
       title={displayName(propertyOwner)}
-      leftSection={<GlobeLayerVisibilityCheckbox uri={uri} />}
+      leftSection={<DeducedVisibilityCheckbox uri={uri} />}
       rightSection={
         propertyOwner.description && (
           <InfoBox>
