@@ -1,17 +1,21 @@
 import { useTranslation } from 'react-i18next';
-import { IoPause, IoPlay } from 'react-icons/io5';
-import { MdReplay } from 'react-icons/md';
-import { PiSpeakerSimpleHighFill, PiSpeakerSimpleSlashFill } from 'react-icons/pi';
-import { TbRepeat, TbRepeatOff } from 'react-icons/tb';
 import { ActionIcon, Card, Group, MantineStyleProps, Tooltip } from '@mantine/core';
 
+import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { Label } from '@/components/Label/Label';
+import { ToggleActionIcon } from '@/components/ToggleActionIcon/ToggleActionIcon';
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
+import {
+  PauseIcon,
+  PlayIcon,
+  RepeatIcon,
+  RepeatOffIcon,
+  ReplayIcon,
+  SoundIcon,
+  SoundOffIcon
+} from '@/icons/icons';
 import { Uri } from '@/types/types';
-
-import { InfoBox } from '../InfoBox/InfoBox';
-import { Label } from '../Label/Label';
-import { ToggleActionIcon } from '../ToggleActionIcon/ToggleActionIcon';
 
 interface Props extends MantineStyleProps {
   /* The URI of the Video Player property owner */
@@ -48,7 +52,7 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
                 onClick={() => triggerPlay(null)}
                 aria-label={t('play-button.aria-label')}
               >
-                <IoPlay />
+                <PlayIcon />
               </ActionIcon>
             </Tooltip>
             <Tooltip label={t('pause-button.tooltip')} openDelay={600}>
@@ -56,7 +60,7 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
                 onClick={() => triggerPause(null)}
                 aria-label={t('pause-button.aria-label')}
               >
-                <IoPause />
+                <PauseIcon />
               </ActionIcon>
             </Tooltip>
           </ActionIcon.Group>
@@ -66,7 +70,7 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
               size={'sm'}
               aria-label={t('restart-button.aria-label')}
             >
-              <MdReplay />
+              <ReplayIcon />
             </ActionIcon>
           </Tooltip>
           <Group gap={5}>
@@ -76,8 +80,8 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
             >
               <ToggleActionIcon
                 isOn={loop ?? false}
-                iconOn={<TbRepeat />}
-                iconOff={<TbRepeatOff />}
+                iconOn={<RepeatIcon />}
+                iconOff={<RepeatOffIcon />}
                 onClick={setLoop}
                 size={'sm'}
                 aria-label={t('loop-toggle.aria-label')}
@@ -91,8 +95,8 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
             >
               <ToggleActionIcon
                 isOn={playAudio ?? false}
-                iconOn={<PiSpeakerSimpleHighFill />}
-                iconOff={<PiSpeakerSimpleSlashFill />}
+                iconOn={<SoundIcon />}
+                iconOff={<SoundOffIcon />}
                 onClick={setPlayAudio}
                 size={'sm'}
                 aria-label={t('audio-toggle.aria-label')}

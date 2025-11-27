@@ -5,7 +5,6 @@ interface Props extends ActionIconProps {
   iconOn: React.ReactNode;
   iconOff: React.ReactNode;
   onClick: (isOn: boolean) => void;
-  'aria-label': string;
 }
 
 export function ToggleActionIcon({ isOn, iconOn, iconOff, onClick, ...props }: Props) {
