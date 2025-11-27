@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { Button, Group, Tooltip } from '@mantine/core';
 
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
-import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
@@ -15,6 +14,7 @@ import { displayName, isRenderable } from '@/util/propertyTreeHelpers';
 import { useTimeFrame } from '../hooks';
 
 import { SceneGraphNodeMoreMenu } from './SceneGraphNodeMoreMenu';
+import { SceneGraphNodeVisibilityCheckbox } from './SceneGraphNodeVisibilityCheckbox';
 
 interface Props {
   uri: Uri;
@@ -63,7 +63,7 @@ export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
   // TODO: Make sure that the timeframe information is accessible
   const visibilityControl = hasRenderable && (
     <Group gap={'xs'}>
-      <PropertyOwnerVisibilityCheckbox uri={renderableUri} />
+      <SceneGraphNodeVisibilityCheckbox uri={renderableUri} />
       {timeFrame && !isInTimeFrame && (
         <Tooltip label={t('out-of-timeframe-tooltip')} position={'top'}>
           <ClockOffIcon />

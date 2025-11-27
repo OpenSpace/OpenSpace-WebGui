@@ -5,6 +5,7 @@ import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlic
 import { Identifier, PropertyOwner, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
 import {
+  checkVisiblity,
   enabledPropertyUri,
   fadePropertyUri,
   hasVisibleChildren,
@@ -79,6 +80,40 @@ export function useVisibleProperties(propertyOwner: PropertyOwner | undefined): 
  * Also provides a function to set the visibility of the property owner.
  */
 export function usePropertyOwnerVisibility(uri: Uri) {
+  const luaApi = useOpenSpaceApi();
+
+  const [enabledPropertyValue, setEnabledProperty] = useProperty(
+    'BoolProperty',
+    enabledPropertyUri(uri)
+  );
+  const [fadePropertyValue, setFadePropertyValue] = useProperty(
+    'FloatProperty',
+    fadePropertyUri(uri)
+  );
+  const isFadeable = fadePropertyValue !== undefined;
+
+  const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
+
+  function setVisibility(shouldShow: boolean, isImmediate: boolean = false) {
+    if (!isFadeable) {
+      setEnabledProperty(shouldShow);
+    } else if (isImmediate) {
+      setEnabledProperty(shouldShow);
+      setFadePropertyValue(shouldShow ? 1.0 : 0.0);
+    } else if (shouldShow) {
+      luaApi?.fadeIn(uri);
+    } else {
+      luaApi?.fadeOut(uri);
+    }
+  }
+
+  return {
+    isVisible,
+    setVisibility
+  };
+}
+
+export function useSceneGraphNodeVisibility(uri: Uri) {
   const luaApi = useOpenSpaceApi();
   const isVisible = useAppSelector((state) => state.local.sceneTreeVisible?.[uri]);
   const isFadeable = useAppSelector(
