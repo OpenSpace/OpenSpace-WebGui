@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Card, Group, MantineStyleProps, Tooltip } from '@mantine/core';
 
-import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { Label } from '@/components/Label/Label';
 import { ToggleActionIcon } from '@/components/ToggleActionIcon/ToggleActionIcon';
 import { useProperty } from '@/hooks/properties';
@@ -105,9 +104,6 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
           </Group>
         </Group>
       </Card>
-      <InfoBox>
-        This object includes a video that can be played back using these controls.
-      </InfoBox>
     </Group>
   );
 }
