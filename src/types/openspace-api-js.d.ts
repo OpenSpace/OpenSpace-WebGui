@@ -225,6 +225,7 @@ type mat3x3 = { 1: number; 2: number; 3: number; 4: number; 5: number;6: number;
 type mat4x4 = { 1: number; 2: number; 3: number; 4: number; 5: number;6: number; 7: number; 8: number; 9: number; 10: number; 11: number;12: number; 13: number; 14: number; 15: number; 16: number; };
 type translation = object;
 type spicekernel = path;
+type easingfunction = "Linear" | "QuadraticEaseIn" | "QuadraticEaseOut" |"QuadraticEaseInOut" | "CubicEaseIn" | "CubicEaseOut" | "CubicEaseInOut"|"QuarticEaseIn" | "QuarticEaseOut" | "QuarticEaseInOut" | "QuinticEaseIn" |"QuinticEaseOut" | "QuinticEaseInOut" | "SineEaseIn" | "SineEaseOut" | "SineEaseInOut" |"CircularEaseIn" | "CircularEaseOut" | "CircularEaseInOut" | "ExponentialEaseIn" | "ExponentialEaseOut" | "ExponentialEaseInOut" | "ElasticEaseIn" | "ElasticEaseOut" |"ElasticEaseInOut" | "BounceEaseIn" | "BounceEaseOut" | "BounceEaseInOut"
 
 export interface openspace {
   action: actionLibrary;
@@ -329,7 +330,7 @@ export interface openspace {
   /**
    * Downloads a file from Lua interpreter
    */
-  downloadFile: (url: string, savePath: string, waitForCompletion?: boolean) => Promise<void>
+  downloadFile: (url: string, savePath: string, waitForCompletion?: boolean, overrideExistingFile?: boolean) => Promise<void>
   /**
    * Extracts the DPI scaling for either the GUI window or if there is no dedicated GUI window, the first window.
    */
@@ -458,11 +459,25 @@ export interface openspace {
    */
   printWarning: (...args: any[]) => Promise<void>
   /**
-   * Returns a list of property identifiers that match the passed regular expression. The `uri` identifies the property or properties that are returned by this function and can include both wildcards `*` which match anything, as well as tags (`{tag}`) which match scene graph nodes that have this tag. There is also the ability to combine two tags through the `&`, `|`, and `~` operators. `{tag1&tag2}` will match anything that has the tag1 and the tag2. `{tag1|tag2}` will match anything that has the tag1 or the tag 2, and `{tag1~tag2}` will match anything that has tag1 but not tag2. If no wildcards or tags are provided at most one property value will be changed. With wildcards or tags all properties that match the URI are changed instead.
+   * Returns the name of the profile with which OpenSpace was started.
+   */
+  profileName: () => Promise<string>
+  /**
+   * Returns the full path of the profile with which OpenSpace was started.
+   */
+  profilePath: () => Promise<path>
+  /**
+   * Returns a list of property identifiers that match the passed regular expression. The `uri` identifies the property or properties that are returned by this function and can include both wildcards `*` which match anything, as well as tags (`{tag}`) which match scene graph nodes that have this tag. There is also the ability to combine two tags through the `&`, `|`, and `~` operators. `{tag1&tag2}` will match anything that has both tags `tag1` and `tag2`. `{tag1|tag2}` will match anything that has `tag1` or `tag2`, and `{tag1~tag2}` will match anything that has `tag1` but not `tag2`. If no wildcards or tags are provided at most one property identifier will be returned. With wildcards or tags, the identifiers of all properties that match the URI are returned instead.
 
-\\param uri The URI that identifies the property or properties whose values should be changed. The URI can contain 0 or 1 wildcard `*` characters or a tag expression (`{tag}`) that identifies a property owner.
+\\param uri The URI that identifies the property or properties to get. The URI can contain 0 or 1 wildcard `*` characters or a tag expression (`{tag}`) that identifies a property owner. \\ return A list of property URIs
    */
   property: (uri: string) => Promise<string[]>
+  /**
+   * Returns a list of property owner identifiers that match the passed regular expression. The `uri` identifies the property owner or owner that are returned by this function and can include both wildcards `*` which match anything, as well as tags (`{tag}`) which match scene graph nodes that have this tag. There is also the ability to combine two tags through the `&`, `|`, and `~` operators. `{tag1&tag2}` will match anything that has both tags `tag1` and `tag2`. `{tag1|tag2}` will match anything that has the tag `tag1` or `tag2`, * and `{tag1~tag2}` will match anything that has `tag1` but not `tag2`. If no wildcards or tags are provided at most one property owner identifier will be returned. With wildcards or tags, the identifiers of all property owners that match the URI are returned instead.
+
+\\param uri The URI that identifies the property owner or owners to get. The URI can contain 0 or 1 wildcard `*` characters or a tag expression (`{tag}`) that identifies a property owner. \\ return A list of property owner URIs
+   */
+  propertyOwner: (uri: string) => Promise<string[]>
   /**
    * Returns the value of the property identified by the provided URI. This function will provide an error message if no property matching the URI is found.
    */
@@ -538,7 +553,7 @@ export interface openspace {
 
 \\param filePath The location where the data will be saved. Any file that already exists in that location will be overwritten \\param base64Data The base64 encoded data that should be saved to the provided file
    */
-  saveBase64File: (filepath: path, base64Data: string) => Promise<void>
+  saveBase64File: (filePath: path, base64Data: string) => Promise<void>
   /**
    * Collects all changes that have been made since startup, including all property changes and assets required, requested, or removed. All changes will be added to the profile that OpenSpace was started with, and the new saved file will contain all of this information. If the argument is provided, the settings will be saved into new profile with that name. If the argument is blank, the current profile will be saved to a backup file and the original profile will be overwritten. The second argument determines if a file that already exists should be overwritten, which is 'false' by default.
    */
@@ -625,7 +640,7 @@ in which the parameter is interpolated. Has to be one of "Linear", "QuadraticEas
 is completed. If a duration larger than 0 was provided, it is at the end of the
 interpolation. If 0 was provided, the script runs immediately.
    */
-  setPropertyValue: (uri: string, value: nil | string | number | boolean | table, duration?: number, easing?: easingfunction, postscript?: string) => Promise<void>
+  setPropertyValue: (uri: string, value: null | string | number | boolean | table, duration?: number, easing?: easingfunction, postscript?: string) => Promise<void>
   /**
    * Sets the single property identified by the URI to the specified value.
 The `uri` identifies which property is affected by this function call. The second
@@ -654,7 +669,7 @@ in which the parameter is interpolated. Has to be one of "Linear", "QuadraticEas
 change of property value is completed. If a duration larger than 0 was provided, it is
 at the end of the interpolation. If 0 was provided, the script runs immediately.
    */
-  setPropertyValueSingle: (uri: string, value: nil | string | number | boolean | table, duration?: number, easing?: easingfunction, postscript?: string) => Promise<void>
+  setPropertyValueSingle: (uri: string, value: null | string | number | boolean | table, duration?: number, easing?: easingfunction, postscript?: string) => Promise<void>
   /**
    * Sets the folder used for storing screenshots or session recording frames
    */
@@ -833,13 +848,13 @@ interface audioLibrary {
   /**
    * Starts playing the audio file located and the provided \\p path. The \\p loop parameter determines whether the file is only played once, or on a loop. The sound is later referred to by the \\p identifier name. The audio file will be played in \"background\" mode, which means that each channel will be played at full volume. To play a video using spatial audio, use the #playAudio3d function instead.
 
-\\param path The audio file that should be played \\param identifier The name for the sound that is used to refer to the sound \\param loop If `Yes` then the song will be played in a loop until the program is closed or the playing is stopped through the #stopAudio function
+\\param path The audio file that should be played \\param identifier The name for the sound that is used to refer to the sound \\param shouldLoop If `Yes` then the song will be played in a loop until the program is closed or the playing is stopped through the #stopAudio function
    */
   playAudio: (path: path, identifier: string, shouldLoop?: boolean) => Promise<void>
   /**
    * Starts playing the audio file located and the provided \\p path. The \\p loop parameter determines whether the file is only played once, or on a loop. The sound is later referred to by the \\p identifier name. The \\p position parameter determines the spatial location of the sound in a meter-based coordinate system. The position of the listener is (0,0,0) with the forward direction along the +y axis. This means that the \"left\" channel in a stereo setting is towards -x and the \"right\" channel towards x. This default value can be customized through the #set3dListenerParameters function. If you want to play a video without spatial audio, use the #playAudio function instead.
 
-\\param path The audio file that should be played \\param identifier The name for the sound that is used to refer to the sound \\param position The position of the audio file in the 3D environment \\param loop If `Yes` then the song will be played in a loop until the program is closed or the playing is stopped through the #stopAudio function
+\\param path The audio file that should be played \\param identifier The name for the sound that is used to refer to the sound \\param position The position of the audio file in the 3D environment \\param shouldLoop If `Yes` then the song will be played in a loop until the program is closed or the playing is stopped through the #stopAudio function
    */
   playAudio3d: (path: path, identifier: string, position: vec3, shouldLoop?: boolean) => Promise<void>
   /**
@@ -861,7 +876,7 @@ interface audioLibrary {
   /**
    * Updates the 3D position of a track started through the #playAudio3d function. See that function and the #set3dListenerParameters function for a complete description. The \\p identifier must be a name for a sound that was started through the #playAudio3d function.
 
-\\param handle A valid handle for a track started through the #playAudio3d function \\param position The new position from which the track originates
+\\param identifier A valid identifier for a track started through the #playAudio3d function \\param position The new position from which the track originates
    */
   set3dSourcePosition: (identifier: string, position: vec3) => Promise<void>
   /**
@@ -873,7 +888,7 @@ interface audioLibrary {
   /**
    * Controls whether the track referred to by the \\p identifier should be looping or just be played once. If a track is converted to not looping, it will finish playing until the end of the file. The \\p identifier must be a name for a sound that was started through the #playAudio or #playAudio3d functions.
 
-\\param identifier The identifier to the track that should be stopped \\param loop If `Yes` then the song will be played in a loop until the program is closed or the playing is stopped through the #stopAudio function
+\\param identifier The identifier to the track that should be stopped \\param shouldLoop If `Yes` then the song will be played in a loop until the program is closed or the playing is stopped through the #stopAudio function
    */
   setLooping: (identifier: string, shouldLoop: boolean) => Promise<void>
   /**
@@ -881,17 +896,19 @@ interface audioLibrary {
 
 \\param channel The channel whose speaker's position should be changed \\param position The new position for the speaker
    */
-  setSpeakerPosition: (handle: integer, position: vec3) => Promise<void>
+  setSpeakerPosition: (channel: integer, position: vec3) => Promise<void>
   /**
    * Sets the volume of the track referred to by \\p handle to the new \\p volume. The volume should be a number bigger than 0, where 1 is the maximum volume level. The \\p fade controls whether the volume change should be immediately (if it is 0) or over how many seconds it should change. The default is for it to change over 500 ms.
 
-\\param handle The handle to the track whose volume should be changed \\param volume The new volume level. Must be greater or equal to 0 \\param fade How much time the fade from the current volume to the new volume should take
+\\param identifier The identifier to the track whose volume should be changed \\param volume The new volume level. Must be greater or equal to 0 \\param fade How much time the fade from the current volume to the new volume should take
    */
   setVolume: (identifier: string, volume: number, fade?: number) => Promise<void>
   /**
-   * Returns the position for the speaker of the provided \\p channel. \\return The position for the speaker of the provided \\p channel
+   * Returns the position for the speaker of the provided \\p channel.
+
+\\param channel The channel for which the position should be returned \\return The position for the speaker of the provided \\p channel
    */
-  speakerPosition: (handle: integer) => Promise<vec3>
+  speakerPosition: (channel: integer) => Promise<vec3>
   /**
    * Stops all currently playing tracks. After this function, none of the identifiers used to previously play a sound a valid any longer, but can still be used by the #playAudio or #playAudio3d functions to start a new sound. This function behaves the same way as if manually calling #stopAudio on all of the sounds that have been started.
    */
@@ -905,7 +922,7 @@ interface audioLibrary {
   /**
    * Returns the volume for the track referred to by the \\p handle. The number returned will be greater or equal to 0.
 
-\\return The volume for the track referred to by the \\p handle, which will be greater or equal to 0
+\\param identifier The identifier to the track whose volume should be returned \\return The volume for the track referred to by the \\p handle, which will be greater or equal to 0
    */
   volume: (identifier: string) => Promise<number>
 } // interface audioLibrary
@@ -956,7 +973,7 @@ interface debuggingLibrary {
  current focus node is used instead.
  \\param scale An optional parameter that specifies the size of the coordinate axes,
  in meters. If not specified, the size is set to 2.5 times the
- interaction sphere of the selected node.
+ bounding sphere of the selected node.
    */
   createCoordinateAxes: (nodeIdentifier?: string, scale?: number) => Promise<void>
   /**
@@ -1238,6 +1255,12 @@ interface globebrowsingLibrary {
    */
   geoPositionForCamera: (useEyePosition?: boolean) => Promise<[number, number, number]>
   /**
+   * Returns an object containing a list of all loaded `RenderableGlobe` sorted with respect to WMS server info followed by alphabetical order. The index `firstIndexWithoutUrl` indicates the first item in the list that does not have WMS server info.
+
+\\return Table containing a list of `renderableGlobe` identifiers, and an index indicating the first item in the list that does not have a WMS server
+   */
+  globes: () => Promise<table>
+  /**
    * Go to the chunk on a globe with given index x, y, level.
 
 \\param globeIdentifier The identifier of the scene graph node for the globe \\param x The x value of the tile index \\param y The y value of the tile index \\param level The level of the tile index
@@ -1329,6 +1352,14 @@ The `source` and `destination` parameters can also be the identifiers of the lay
  positions. Otherwise, it will not.
    */
   setNodePositionFromCamera: (nodeIdentifer: string, useAltitude?: boolean) => Promise<void>
+  /**
+   * Return a list of all WMS servers associated with the `renderableGlobe` globe.
+
+\\param globe The identifier of the `renderableGlobe` to fetch WMS servers for
+
+\\return A list of WMS server info containing its name and url
+   */
+  urlInfo: (globe: string) => Promise<table[]>
 } // interface globebrowsingLibrary
 
 interface iswaLibrary {
@@ -1422,35 +1453,33 @@ interface modulesLibrary {
 
 interface navigationLibrary {
   /**
-   * Directly adds to the global roll of the camera. This is a rotation around the line between the focus node and the camera (not always the same as the camera view direction)
+   * Adds an instantaneous impulse to the global roll of the camera. This is a rotation around the line between the focus node and the camera. This is almost always the same as the forward direction of the camera, unless a local rotation has panned the camera away from the focus object. The global roll corresponds to using the middle mouse button and moving the mouse left and right. The unit for the provided parameter is somewhat arbitrary and the magnitude depends on the explicit use-case (continuously executing this function vs an individual impulse), but typically a range of [-250, 250] produces reasonable results.
 
-\\param value the value to add
+\\param value A positive value rolls the camera to the left and a negative value rolls the camera to the right
    */
   addGlobalRoll: (value: number) => Promise<void>
   /**
-   * Directly add to the global rotation of the camera (around the focus node).
+   * Adds an instantaneous impulse to the global rotation of the camera (around the focus node). This type of rotation corresponds to using the left mouse button and moving the mouse to rotate around the current focus object. The units for the provided parameters are somewhat arbitrary and the magnitude depends on the explicit use-case (continuously executing this function vs an individual impulse), but typically a range of [-500, 500] produces reasonable results.
 
-\\param xValue the value to add in the x-direction (a positive value rotates to the right and a negative value to the left) \\param yValue the value to add in the y-direction (a positive value rotates the focus upwards and a negative value downwards)
+\\param horizontal The value to add in the x-direction (a positive value rotates to the right and a negative value to the left) \\param vertical The value to add in the y-direction (a positive value rotates the focus upwards and a negative value downwards)
    */
-  addGlobalRotation: (xValue: number, yValue: number) => Promise<void>
+  addGlobalRotation: (horizontal: number, vertical: number) => Promise<void>
   /**
-   * Directly adds to the local roll of the camera. This is the rotation around the camera's forward/view direction.
+   * Adds an instantaneous impulse to the local roll of the camera. This is the rotation around the camera's forward direction and corresponds to using the middle mouse button and pressing and holding the middle mouse button while moving the mouse to the left and right. The unit for the provided parameter is somewhat arbitrary and the magnitude depends on the explicit use-case (continuously executing this function vs an individual impulse), but typically a range of [-250, 250] produces reasonable results.
 
-\\param value the value to add
+\\param value A positive value rolls the camera to the left and a negative value rolls the camera to the right
    */
   addLocalRoll: (value: number) => Promise<void>
   /**
-   * Directly adds to the local rotation of the camera (around the camera's current position).
+   * Adds an instantaneous impulse to the local rotation of the camera (around the camera's current position). This type of rotation corresponds to using the left mouse button and pressing the Ctrl key while moving mouse to rotate around the current camera position. The units for the provided parameters are somewhat arbitrary and the magnitude depends on the explicit use-case (continuously executing this function vs an individual impulse), but typically a range of [-250, 250] produces reasonable results.
 
-\\param xValue the value to add in the x-direction (a positive value rotates to the left and a negative value to the right) \\param yValue the value to add in the y-direction (a positive value rotates the camera upwards and a negative value downwards)
+\\param horizontal The value to add in the x-direction (a positive value rotates to the left and a negative value to the right) \\param vertical The value to add in the y-direction (a positive value rotates the camera upwards and a negative value downwards)
    */
-  addLocalRotation: (xValue: number, yValue: number) => Promise<void>
+  addLocalRotation: (horizontal: number, vertical: number) => Promise<void>
   /**
-   * Directly adds to the truck movement of the camera. This is the movement along the line from the camera to the focus node.
+   * Adds an instantaneous impulse to create a truck movement of the camera. This is the movement along the line from the camera to the focus node and corresponds to using the right mouse button and moving the mous up and down. The unit for the provided parameter is somewhat arbitrary and the magnitude depends on the explicit use-case (continuously executing this function vs an individual impulse), but typically a range of [-1000, 1000] produces reasonable results.
 
-A positive value moves the camera closer to the focus, and a negative value moves the camera further away.
-
-\\param value the value to add
+\\param value A positive value moves the camera closer to the focus node, and a negative value moves the camera further away.
    */
   addTruckMovement: (value: number) => Promise<void>
   /**
@@ -1818,9 +1847,9 @@ interface sessionRecordingLibrary {
    */
   setPlaybackPause: (pause: boolean) => Promise<void>
   /**
-   * Starts a playback session with keyframe times that are relative to the time since the recording was started (the same relative time applies to the playback). When playback starts, the simulation time is automatically set to what it was at recording time. The string argument is the filename to pull playback keyframes from (the file path is relative to the RECORDINGS variable specified in the config file). If a second input value of true is given, then playback will continually loop until it is manually stopped.
+   * Starts a playback session with keyframe times that are relative to the time since the recording was started (the same relative time applies to the playback). When playback starts, the simulation time is automatically set to what it was at recording time. The file argument is the filename to the session recording file. If a second input value of true is given, then playback will continually loop until it is manually stopped.
    */
-  startPlayback: (file: string, loop?: boolean, shouldWaitForTiles?: boolean, screenshotFps?: integer) => Promise<void>
+  startPlayback: (file: path, loop?: boolean, shouldWaitForTiles?: boolean, screenshotFps?: integer) => Promise<void>
   /**
    * Starts a recording session. The string argument is the filename used for the file where the recorded keyframes are saved.
    */
@@ -2226,7 +2255,7 @@ Note that providing time zone using the Z format is not supported. UTC is assume
 
 \\param time The time to set. If the parameter is a number, the value is the number of seconds past the J2000 epoch. If it is a string, it has to be a valid ISO 8601-like date string of the format YYYY-MM-DDTHH:MN:SS. \\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for time interpolation specified in the TimeManager.
    */
-  interpolateTime: (time: string | number, interpolationDutation?: number) => Promise<void>
+  interpolateTime: (time: string | number, interpolationDuration?: number) => Promise<void>
   /**
    * Increment the current simulation time by the specified number of seconds, using interpolation.
 
@@ -2296,11 +2325,11 @@ Note that providing time zone using the Z format is not supported. UTC is assume
    */
   setTime: (time: number | string) => Promise<void>
   /**
-   * Returns the current time as an date string of the form (YYYY MON DDTHR:MN:SC.### ::RND) as returned by SPICE.
+   * Returns the current time as an date string. The format of the returned string can be adjusted by providing the format picture. The default picture that is used will be (YYYY MON DDTHR:MN:SC.### ::RND). See https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/timout_c.html for documentation on how the format string can be formatted
 
 \\return The current time, in the format used by SPICE (YYYY MON DDTHR:MN:SC.### ::RND)
    */
-  SPICE: () => Promise<string>
+  SPICE: (format?: string) => Promise<string>
   /**
    * Toggle the pause function, i.e. if the simulation is paused it will resume, and otherwise it will be paused. Note that to pause means temporarily setting the delta time to 0, and unpausing means restoring it to whatever delta time value is set.
    */
