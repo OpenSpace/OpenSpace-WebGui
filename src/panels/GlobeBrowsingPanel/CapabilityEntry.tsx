@@ -2,6 +2,7 @@ import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, Menu, Tooltip } from '@mantine/core';
 
+import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
 import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import {
   ColorPaletteIcon,
@@ -19,7 +20,7 @@ import { capabilityName } from './util';
 
 interface Props {
   capability: Capability;
-  activeLayers: Record<LayerType, string[]>;
+  addedLayers: Record<LayerType, string[]>;
   onAdd: (cap: Capability, layerType: LayerType) => void;
   onRemove: (name: string) => void;
 }
@@ -31,12 +32,16 @@ interface LayerGroupData {
 }
 
 /**
+ * Represents a layer entry from the WTMS server
+ *
  * Even though this component is quite small and lightweight there can be thousands of
- * capability entries so to try and reduce some of the lag that occured we memo this
+ * capability enstries so to try and reduce some of the lag that occured we memo this
  * component.
  */
 export const CapabilityEntry = memo(
-  ({ capability, activeLayers, onAdd, onRemove }: Props) => {
+  ({ capability, addedLayers, onAdd, onRemove }: Props) => {
+    const addedGroups = layerTypes.filter((layerType) => isInLayerGroup(layerType));
+
     const { t } = useTranslation('panel-globebrowsing', {
       keyPrefix: 'capability-entry'
     });
@@ -66,18 +71,16 @@ export const CapabilityEntry = memo(
         {
           id: 'WaterMasks',
           icon: <WaterIcon />,
-          label: 'Water Masks'
+          label: 'Water mask'
         }
       ],
       []
     );
 
-    function isInLayer(layerType: LayerType) {
+    function isInLayerGroup(layerType: LayerType) {
       const name = capabilityName(capability.Name);
-      return activeLayers[layerType].includes(name);
+      return addedLayers[layerType].includes(name);
     }
-
-    const addedGroups = layerTypes.filter((layerType) => isInLayer(layerType));
 
     return (
       <Group
@@ -106,7 +109,7 @@ export const CapabilityEntry = memo(
         <Tooltip label={t('tooltips.add-color-layer')}>
           <ActionIcon
             onClick={() => onAdd(capability, 'ColorLayers')}
-            disabled={isInLayer('ColorLayers')}
+            disabled={isInLayerGroup('ColorLayers')}
           >
             <PlusIcon />
           </ActionIcon>
@@ -119,19 +122,12 @@ export const CapabilityEntry = memo(
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Label>{t('menu-add-label')}</Menu.Label>
-            {layerGroups.map((group) => {
-              const isInLayerGroup = isInLayer(group.id);
-              return isInLayerGroup ? (
-                <Tooltip label={t('tooltips.layer-exists')} key={group.id}>
-                  <Menu.Item
-                    leftSection={group.icon}
-                    onClick={() => onAdd(capability, group.id)}
-                    disabled
-                  >
-                    {group.label}
-                  </Menu.Item>
-                </Tooltip>
-              ) : (
+            {layerGroups.map((group) => (
+              <MaybeTooltip
+                showTooltip={isInLayerGroup(group.id)}
+                label={t('tooltips.layer-exists')}
+                key={group.id}
+              >
                 <Menu.Item
                   leftSection={group.icon}
                   onClick={() => onAdd(capability, group.id)}
@@ -139,8 +135,8 @@ export const CapabilityEntry = memo(
                 >
                   {group.label}
                 </Menu.Item>
-              );
-            })}
+              </MaybeTooltip>
+            ))}
           </Menu.Dropdown>
         </Menu>
       </Group>

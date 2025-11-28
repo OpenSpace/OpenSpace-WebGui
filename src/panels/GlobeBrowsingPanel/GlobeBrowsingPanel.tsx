@@ -17,7 +17,7 @@ import { NavigationAnchorKey } from '@/util/keys';
 import { AddServerModal } from './AddServerModal';
 import { CapabilityEntry } from './CapabilityEntry';
 import {
-  useActiveLayers,
+  useAddedLayers,
   useCapabilities,
   useGlobeWMSInfo,
   useRenderableGlobes
@@ -34,7 +34,7 @@ export function GlobeBrowsingPanel() {
     useRenderableGlobes();
   const { globeWMS, refresh: refreshWMSInfo } = useGlobeWMSInfo(selectedGlobe);
   const capabilities = useCapabilities(selectedWMS);
-  const { activeLayers, refresh: refreshActiveLayers } = useActiveLayers(selectedGlobe);
+  const { addedLayers, refresh: refreshAddedLayers } = useAddedLayers(selectedGlobe);
 
   const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
   const [opened, { open, close }] = useDisclosure(false);
@@ -86,7 +86,7 @@ export function GlobeBrowsingPanel() {
       FilePath: cap.URL,
       Enabled: true
     });
-    refreshActiveLayers();
+    refreshAddedLayers();
   }
 
   async function removeLayer(name: string) {
@@ -96,12 +96,12 @@ export function GlobeBrowsingPanel() {
 
     const layerName = capabilityName(name);
     for (const layerType of layerTypes) {
-      if (activeLayers[layerType].includes(layerName)) {
+      if (addedLayers[layerType].includes(layerName)) {
         await luaApi?.globebrowsing.deleteLayer(selectedGlobe, layerType, layerName);
       }
     }
 
-    refreshActiveLayers();
+    refreshAddedLayers();
   }
 
   async function onAddServer(name: string, url: string) {
@@ -191,9 +191,10 @@ export function GlobeBrowsingPanel() {
             <Group gap={'xs'}>
               <Select
                 value={selectedWMS}
-                data={globeWMS.map((info) => {
-                  return { value: info.name, label: `${info.name} (${info.url})` };
-                })}
+                data={globeWMS.map((info) => ({
+                  value: info.name,
+                  label: `${info.name} (${info.url})`
+                }))}
                 onChange={(value) => setSelectedWMS(value)}
                 allowDeselect={false}
                 flex={1}
@@ -221,7 +222,7 @@ export function GlobeBrowsingPanel() {
                   capability={capability}
                   onAdd={addLayer}
                   onRemove={removeLayer}
-                  activeLayers={activeLayers}
+                  addedLayers={addedLayers}
                   key={capability.URL}
                 />
               )}

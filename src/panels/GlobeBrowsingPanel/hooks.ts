@@ -19,8 +19,8 @@ import {
  * @returns An object containing all layers in their respective group: 'ColorLayers',
  * 'HeightLayers', 'Overlays', 'HeightLayers', 'WaterMasks'
  */
-export function useActiveLayers(globeIdentifier: string | null) {
-  const [activeLayers, setActiveLayers] = useState<Record<LayerType, string[]>>({
+export function useAddedLayers(globeIdentifier: string | null) {
+  const [addedLayers, setAddedLayers] = useState<Record<LayerType, string[]>>({
     ColorLayers: [],
     NightLayers: [],
     Overlays: [],
@@ -46,14 +46,14 @@ export function useActiveLayers(globeIdentifier: string | null) {
       })
     ) as Record<LayerType, string[]>;
 
-    setActiveLayers(layers);
+    setAddedLayers(layers);
   }, [luaApi, globeIdentifier]);
 
   useEffect(() => {
     fetchLayers();
   }, [fetchLayers]);
 
-  return { activeLayers, refresh: fetchLayers };
+  return { addedLayers, refresh: fetchLayers };
 }
 
 /**
