@@ -1,0 +1,51 @@
+{
+  "asset-search-placeholder": "Search for an asset...",
+  "folder-names": {
+    "built-in": "Built-in assets",
+    "user": "User assets"
+  },
+  "breadcrumbs": {
+    "aria-labels": {
+      "home": "Home",
+      "breadcrumb": "Navigate to {{path}}"
+    }
+  },
+  "asset-entry": {
+    "remove-asset-modal": {
+      "title": "Remove Asset",
+      "description": "Are you sure you want to remove the asset",
+      "confirm": "Remove",
+      "cancel": "Cancel"
+    },
+    "aria-labels": {
+      "add": "Add asset '{{assetName}}'",
+      "added": "Asset '{{assetName}}' is added",
+      "remove": "Remove asset '{{assetName}}'"
+    },
+    "tooltips": {
+      "remove": {
+        "has-parents": "This asset is required by other assets. To remove it, the following assets must first be removed:",
+        "no-parents": "Remove asset"
+      },
+      "added": "Asset is added",
+      "error": "Asset failed to load"
+    }
+  },
+  "asset-entry-menu": {
+    "reload-assset-modal": {
+      "title": "Reload Asset",
+      "description": "Are you sure you want to reload the asset",
+      "confirm": "Reload",
+      "cancel": "Cancel"
+    },
+    "reload-button": {
+      "tooltip": {
+        "has-parents": "Cannot reload an asset required by other assets. The following assets must first be removed:",
+        "no-parents": "Reload asset"
+      },
+      "label": "Reload",
+      "aria-label": "Reload asset '{{assetName}}'"
+    },
+    "copy-tooltip-label": "Copy path"
+  }
+}

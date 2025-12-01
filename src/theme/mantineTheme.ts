@@ -108,6 +108,7 @@ export const theme = createTheme({
           focus: true,
           touch: true
         },
+        zIndex: 5000,
         style: { overflowWrap: 'anywhere' }
       }
     }),
