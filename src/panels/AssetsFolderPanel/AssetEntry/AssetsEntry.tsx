@@ -76,7 +76,7 @@ export function AssetsEntry({ asset }: Props) {
     async function onAssetLoadingEvent(data: AssetLoadingEvent) {
       if (data.AssetPath.replaceAll('\\', '/') === asset.path.replaceAll('\\', '/')) {
         const state = stateMap[data.State];
-        if (!state) {
+        if (state === undefined) {
           throw new Error(`Unhandled Asset load state: '${data.State}'`);
         }
         setLoadState(state);
