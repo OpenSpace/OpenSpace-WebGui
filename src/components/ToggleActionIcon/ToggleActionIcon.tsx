@@ -12,7 +12,7 @@ export function ToggleActionIcon({ isOn, iconOn, iconOff, onClick, ...props }: P
     <ActionIcon
       variant={isOn ? 'filled' : 'light'}
       role={'switch'}
-      aria-checked={isOn}
+      aria-pressed={isOn}
       onClick={() => onClick(!isOn)}
       {...props}
     >

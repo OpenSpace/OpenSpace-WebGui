@@ -178,14 +178,14 @@
         "aria-label": "Jump to start (and pause)"
       },
       "loop-toggle": {
-        "tooltip-on": "Video is looping",
-        "tooltip-off": "Looping is disabled",
-        "aria-label": "Toggle loop"
+        "tooltip-on": "Disable loop",
+        "tooltip-off": "Loop video",
+        "aria-label": "Loop video"
       },
       "audio-toggle": {
-        "tooltip-on": "Audio is enabled",
-        "tooltip-off": "Audio is muted",
-        "aria-label": "Toggle audio"
+        "tooltip-on": "Mute audio",
+        "tooltip-off": "Enable audio",
+        "aria-label": "Audio"
       }
     }
   },
