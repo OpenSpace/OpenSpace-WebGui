@@ -22,6 +22,7 @@ export function SceneGraphNodeView({ uri }: Props) {
   const { t } = useTranslation('panel-scene', {
     keyPrefix: 'scene-graph-node.node-view'
   });
+
   const propertyOwner = usePropertyOwner(uri);
   const { timeFrame, isInTimeFrame } = useTimeFrame(uri);
 

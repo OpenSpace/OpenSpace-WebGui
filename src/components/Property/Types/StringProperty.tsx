@@ -6,8 +6,9 @@ import { PropertyProps } from '@/components/Property/types';
 import { useProperty } from '@/hooks/properties';
 
 export function StringProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setValue, meta] = useProperty('StringProperty', uri);
   const { t } = useTranslation('components', { keyPrefix: 'property.string-property' });
+
+  const [value, setValue, meta] = useProperty('StringProperty', uri);
 
   if (value === undefined || !meta) {
     return <></>;

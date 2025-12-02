@@ -31,13 +31,13 @@ import {
 } from './types';
 
 export function SceneTree() {
-  const [filter, setFilter] = useSetState<SceneTreeFilterSettings>(
-    sceneTreeFilterDefaults
-  );
-
   const { t } = useTranslation('panel-scene', {
     keyPrefix: 'scene-tree.scene-tree'
   });
+
+  const [filter, setFilter] = useSetState<SceneTreeFilterSettings>(
+    sceneTreeFilterDefaults
+  );
 
   const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
     useSearchKeySettings<SceneTreeNodeData>({

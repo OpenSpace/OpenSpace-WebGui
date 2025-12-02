@@ -24,15 +24,15 @@ function isWithinRange(value: number | undefined, range: { min: number; max: num
 }
 
 export function NavigationTask({ anchor, lat, long }: RequiredProps) {
+  const { t } = useTranslation('panel-gettingstartedtour', {
+    keyPrefix: 'tasks.navigation'
+  });
+
   const { latitude: currentLat, longitude: currentLong } = useAppSelector(
     (state) => state.camera
   );
   const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
   useSubscribeToCamera();
-
-  const { t } = useTranslation('panel-gettingstartedtour', {
-    keyPrefix: 'tasks.navigation'
-  });
 
   const hasCorrectNode = currentAnchor === anchor;
   // If the lat and long are not provided, we don't need to check them, so set them

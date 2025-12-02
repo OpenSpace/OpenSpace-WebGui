@@ -12,13 +12,14 @@ import { useProperty } from '@/hooks/properties';
 // identifier of the action, so leaving for now
 
 export function StarsTab() {
+  const { t } = useTranslation('panel-nightsky', { keyPrefix: 'stars' });
+
   const luaApi = useOpenSpaceApi();
 
   const [starsDimInAtm, setStarsDimInAtm] = useProperty(
     'BoolProperty',
     'Scene.Stars.Renderable.DimInAtmosphere'
   );
-  const { t } = useTranslation('panel-nightsky', { keyPrefix: 'stars' });
 
   if (!luaApi) {
     return <LoadingBlocks />;

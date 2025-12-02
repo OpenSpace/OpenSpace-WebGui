@@ -5,8 +5,9 @@ import { PropertyProps } from '@/components/Property/types';
 import { useProperty } from '@/hooks/properties';
 
 export function OptionProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setValue, meta] = useProperty('OptionProperty', uri);
   const { t } = useTranslation('components', { keyPrefix: 'property.option-property' });
+
+  const [value, setValue, meta] = useProperty('OptionProperty', uri);
 
   if (!meta || value === undefined || !meta.additionalData) {
     return <></>;

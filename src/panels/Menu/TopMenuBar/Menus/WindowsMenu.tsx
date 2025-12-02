@@ -8,9 +8,10 @@ import { useMenuItems } from '../../hooks';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function WindowsMenu() {
+  const { t } = useTranslation('menu', { keyPrefix: 'windows-menu' });
+
   const { addWindow, closeWindow } = useWindowLayoutProvider();
   const menuItems = useMenuItems();
-  const { t } = useTranslation('menu', { keyPrefix: 'windows-menu' });
 
   return (
     <TopBarMenuWrapper closeOnItemClick targetTitle={t('title')} shouldLimitHeight>

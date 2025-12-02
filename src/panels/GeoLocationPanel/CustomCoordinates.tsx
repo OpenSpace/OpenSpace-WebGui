@@ -23,9 +23,8 @@ export function CustomCoordinates({
   coordinates,
   setCoordinates
 }: Props) {
-  const { t } = useTranslation('panel-geolocation', {
-    keyPrefix: 'custom-coordinates'
-  });
+  const { t } = useTranslation('panel-geolocation', { keyPrefix: 'custom-coordinates' });
+
   const { lat, long, alt } = coordinates;
   const altitudeInMeter = alt * 1000;
 

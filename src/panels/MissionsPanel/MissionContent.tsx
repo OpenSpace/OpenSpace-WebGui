@@ -15,6 +15,8 @@ interface Props {
 }
 
 export function MissionContent({ missionOverview }: Props) {
+  const { t } = useTranslation('panel-missions', { keyPrefix: 'mission-content' });
+
   const [displayedPhase, setDisplayedPhase] = useState<DisplayedPhase>({
     type: DisplayType.Overview,
     data: missionOverview
@@ -24,7 +26,6 @@ export function MissionContent({ missionOverview }: Props) {
     type: undefined,
     data: undefined
   });
-  const { t } = useTranslation('panel-missions', { keyPrefix: 'mission-content' });
 
   // Reset phases when selected mission is changed
   useEffect(() => {

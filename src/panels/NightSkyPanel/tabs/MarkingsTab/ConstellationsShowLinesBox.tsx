@@ -19,6 +19,10 @@ interface Props {
 // identifier of the action, so leaving for now
 
 export function ConstellationShowLinesBox({ title, icon }: Props) {
+  const { t } = useTranslation('panel-nightsky', {
+    keyPrefix: 'markings.constellations'
+  });
+
   const luaApi = useOpenSpaceApi();
 
   const uri = sgnRenderableUri(sgnUri('Constellations'));
@@ -29,9 +33,6 @@ export function ConstellationShowLinesBox({ title, icon }: Props) {
     'BoolProperty',
     'Scene.Constellations.Renderable.DrawElements'
   );
-  const { t } = useTranslation('panel-nightsky', {
-    keyPrefix: 'markings.constellations'
-  });
 
   function checkboxChange(checked: boolean) {
     if (checked) {

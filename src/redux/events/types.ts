@@ -17,8 +17,10 @@ type ApplicationShutdownEvent = {
   State: 'Started' | 'Aborted' | 'Finished';
 };
 
-type AssetLoadingFinishedEvent = {
-  Event: 'AssetLoadingFinished';
+export type AssetLoadingEvent = {
+  Event: 'AssetLoading';
+  AssetPath: string;
+  State: 'Loaded' | 'Loading' | 'Unloaded' | 'Error';
 };
 
 type CameraFocusTransitionEvent = {
@@ -135,7 +137,7 @@ export type EventData =
   | ActionAddedEvent
   | ActionRemovedEvent
   | ApplicationShutdownEvent
-  | AssetLoadingFinishedEvent
+  | AssetLoadingEvent
   | CameraFocusTransitionEvent
   | CameraMovedPositionEvent
   | CameraPathFinishedEvent

@@ -12,6 +12,8 @@ import { EyeIcon, EyeOffIcon, MinusIcon, PlusIcon } from '@/icons/icons';
 // identifier of the action, so leaving for now
 
 export function SolarSystemTab() {
+  const { t } = useTranslation('panel-nightsky', { keyPrefix: 'solar-system' });
+
   const luaApi = useOpenSpaceApi();
 
   const [performShading, setPerformShading] = useProperty(
@@ -22,8 +24,6 @@ export function SolarSystemTab() {
     'DoubleProperty',
     'Scene.Moon.Scale.Scale'
   );
-
-  const { t } = useTranslation('panel-nightsky', { keyPrefix: 'solar-system' });
 
   function action(identifier: string): void {
     luaApi?.action.triggerAction(identifier);

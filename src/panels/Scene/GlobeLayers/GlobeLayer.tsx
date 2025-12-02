@@ -17,6 +17,7 @@ interface Props {
 
 export function GlobeLayer({ uri }: Props) {
   const { t } = useTranslation('panel-scene', { keyPrefix: 'globe-layer' });
+
   const propertyOwner = usePropertyOwner(uri);
 
   // Check for VideoPlayer subowner, which in this case would live in the tile provider.

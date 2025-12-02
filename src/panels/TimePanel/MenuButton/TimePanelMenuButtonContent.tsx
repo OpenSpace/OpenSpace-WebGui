@@ -9,13 +9,14 @@ import { useTimePartTranslation } from '../hooks';
 import { formatDeltaTime } from '../util';
 
 export function TimePanelMenuButtonContent() {
+  const { t } = useTranslation('panel-time');
+
   const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime);
   const isPaused = useAppSelector((state) => state.time.isPaused);
   const timeString = useAppSelector((state) => state.time.timeString);
 
   const timeCapped = useSubscribeToTime();
   const translateTimePart = useTimePartTranslation();
-  const { t } = useTranslation('panel-time');
 
   const isReady = timeCapped !== undefined || timeString !== undefined;
 

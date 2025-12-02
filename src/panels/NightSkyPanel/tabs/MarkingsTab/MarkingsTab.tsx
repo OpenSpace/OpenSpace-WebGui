@@ -25,8 +25,9 @@ import { ConstellationShowLinesBox } from './ConstellationsShowLinesBox';
 import { NightSkyMarkingBox } from './MarkingBox';
 
 export function MarkingsTab() {
-  const luaApi = useOpenSpaceApi();
   const { t } = useTranslation('panel-nightsky', { keyPrefix: 'markings' });
+
+  const luaApi = useOpenSpaceApi();
 
   return (
     <Box maw={600}>

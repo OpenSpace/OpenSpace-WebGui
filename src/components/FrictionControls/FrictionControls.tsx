@@ -9,10 +9,11 @@ interface Props {
 }
 
 export function FrictionControls({ size }: Props) {
+  const { t } = useTranslation('components', { keyPrefix: 'friction-controls' });
+
   const [rotation, setRotation] = useProperty('BoolProperty', RotationalFrictionKey);
   const [zoom, setZoom] = useProperty('BoolProperty', ZoomFrictionKey);
   const [roll, setRoll] = useProperty('BoolProperty', RollFrictionKey);
-  const { t } = useTranslation('components', { keyPrefix: 'friction-controls' });
 
   return (
     <>

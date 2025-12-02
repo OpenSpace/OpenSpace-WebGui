@@ -14,11 +14,11 @@ import {
 } from '@/util/keys';
 
 export function NavigationSettings() {
+  const { t } = useTranslation('panel-navigation', { keyPrefix: 'navigation-settings' });
+
   const showOnlyFocusableInSearch = useAppSelector(
     (state) => state.local.menus.navigation.onlyFocusable
   );
-
-  const { t } = useTranslation('panel-navigation', { keyPrefix: 'navigation-settings' });
 
   const dispatch = useAppDispatch();
 

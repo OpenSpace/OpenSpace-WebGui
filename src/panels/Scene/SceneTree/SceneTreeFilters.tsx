@@ -26,11 +26,11 @@ interface Props {
 }
 
 export function SceneTreeFilters({ setFilter, filter }: Props) {
-  const tags = useAppSelector((state) => state.groups.tags);
-
   const { t } = useTranslation('panel-scene', {
     keyPrefix: 'scene-tree.scene-tree-filters'
   });
+
+  const tags = useAppSelector((state) => state.groups.tags);
 
   const sortedTags = Array.from(tags).sort();
   const hasFilters = hasActiveFilters({ ...filter }) || filter.showOnlyVisible;

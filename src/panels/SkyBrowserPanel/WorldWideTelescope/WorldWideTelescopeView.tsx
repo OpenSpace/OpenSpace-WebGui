@@ -21,6 +21,8 @@ import { InfoOverlayContent } from './InfoOverlayContent';
 import styles from './WorldWideTelescope.module.css';
 
 export function WorldWideTelescopeView() {
+  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'wwt.telescope-view' });
+
   const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
   const id = useAppSelector((state) => state.skybrowser.selectedBrowserId);
 
@@ -31,7 +33,6 @@ export function WorldWideTelescopeView() {
 
   const luaApi = useOpenSpaceApi();
   const { visible, type: overlayType } = useOverlayStatus();
-  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'wwt.telescope-view' });
 
   // A bunch of hooks that pass messages to WWT when our redux state changes
   useUpdateAim(id);

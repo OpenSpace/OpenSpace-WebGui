@@ -13,9 +13,10 @@ import { TimeInput } from './TimeInput/TimeInput';
 import { SimulationIncrement } from './SimulationIncrement';
 
 export function TimePanel() {
+  const { t } = useTranslation('panel-time');
+
   const status = useAppSelector((state) => state.time.status);
   const backupTimeString = useAppSelector((state) => state.time.timeString);
-  const { t } = useTranslation('panel-time');
 
   const luaApi = useOpenSpaceApi();
   const { setTime } = useSetOpenSpaceTime();

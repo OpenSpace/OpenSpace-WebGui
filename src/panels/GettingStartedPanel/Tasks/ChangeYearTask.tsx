@@ -6,14 +6,12 @@ import { TaskCheckbox } from './Components/TaskCheckbox';
 import { useTrackChange } from './hooks';
 
 export function ChangeYearTask() {
+  const { t } = useTranslation('panel-gettingstartedtour', { keyPrefix: 'tasks.year' });
+
   const now = useSubscribeToTime();
   const year = now && new Date(now).getUTCFullYear();
 
   const taskCompleted = useTrackChange(year);
-
-  const { t } = useTranslation('panel-gettingstartedtour', {
-    keyPrefix: 'tasks.year'
-  });
 
   return <TaskCheckbox taskCompleted={taskCompleted} label={t('label')} />;
 }

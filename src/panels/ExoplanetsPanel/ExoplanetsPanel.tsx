@@ -19,12 +19,13 @@ import { ExoplanetEntry } from './ExoplanetEntry';
 import { ExoplanetsSettings } from './ExoplanetsSettings';
 
 export function ExoplanetsPanel() {
+  const { t } = useTranslation('panel-exoplanets');
+
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const isDataInitialized = useAppSelector((state) => state.exoplanets.isInitialized);
   const allSystemNames = useAppSelector((state) => state.exoplanets.data);
   const [aim, setAim] = useProperty('StringProperty', NavigationAimKey);
   const [anchor, setAnchor] = useProperty('StringProperty', NavigationAnchorKey);
-  const { t } = useTranslation('panel-exoplanets');
 
   const luaApi = useOpenSpaceApi();
 

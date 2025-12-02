@@ -19,18 +19,17 @@ interface Props {
 }
 
 export function AddedImagesList({ id }: Props) {
-  const luaApi = useOpenSpaceApi();
-  const browserId = useAppSelector((state) => {
-    return state.skybrowser.selectedBrowserId;
-  });
-
-  const imageList = useAppSelector((state) => state.skybrowser.imageList);
-  const selectedImages = useSelectedImages(id);
-  const opacities = useOpacities(id);
-  const activeImage = useAppSelector((state) => state.skybrowser.activeImage);
   const { t } = useTranslation('panel-skybrowser', {
     keyPrefix: 'browser-tabs.added-image-list'
   });
+
+  const browserId = useAppSelector((state) => state.skybrowser.selectedBrowserId);
+  const imageList = useAppSelector((state) => state.skybrowser.imageList);
+  const activeImage = useAppSelector((state) => state.skybrowser.activeImage);
+
+  const selectedImages = useSelectedImages(id);
+  const opacities = useOpacities(id);
+  const luaApi = useOpenSpaceApi();
 
   const onDragEnd = useCallback(
     async ({ newIndex, id }: OnDragEndProps<number>) => {

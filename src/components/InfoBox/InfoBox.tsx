@@ -10,8 +10,9 @@ interface Props {
 }
 
 export function InfoBox({ children, w = 320 }: Props & PropsWithChildren) {
-  const [opened, setOpened] = useState(false);
   const { t } = useTranslation('components', { keyPrefix: 'info-box' });
+
+  const [opened, setOpened] = useState(false);
 
   return (
     <Popover

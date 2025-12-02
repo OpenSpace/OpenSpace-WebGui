@@ -30,8 +30,9 @@ export function PhaseRectangle({
   phase,
   showBorder = false
 }: Props) {
-  const jumpToTime = useJumpToTime();
   const { t } = useTranslation('panel-missions');
+
+  const jumpToTime = useJumpToTime();
   const { borderWidth, borderColor, radius, gap } = PhaseRectangleConfig;
 
   const startTime = new Date(phase.timerange.start);

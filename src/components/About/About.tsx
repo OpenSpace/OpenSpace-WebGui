@@ -10,8 +10,9 @@ interface Props {
 }
 
 export function About({ opened, close }: Props) {
-  const openSpaceVersion = useAppSelector((state) => state.version.openSpaceVersion);
   const { t } = useTranslation('components', { keyPrefix: 'about' });
+
+  const openSpaceVersion = useAppSelector((state) => state.version.openSpaceVersion);
 
   function osVersionNumber(): string {
     if (!openSpaceVersion) {

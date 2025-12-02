@@ -17,8 +17,9 @@ interface Props {
 }
 
 export function MissionPhase({ displayedPhase, missionOverview }: Props) {
-  const { width: panelWidth } = useWindowSize();
   const { t } = useTranslation('panel-missions');
+
+  const { width: panelWidth } = useWindowSize();
 
   const isMissionOverview = displayedPhase.type === DisplayType.Overview;
   const timeLineWidth = 120;

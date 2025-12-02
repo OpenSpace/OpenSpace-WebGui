@@ -24,10 +24,11 @@ export function AddSceneGraphNodeButton({
   altitude,
   onClick
 }: Props) {
-  const addSceneGraphNode = useCreateSceneGraphNode();
   const { t } = useTranslation('panel-geolocation', {
     keyPrefix: 'add-scene-graph-node-button'
   });
+
+  const addSceneGraphNode = useCreateSceneGraphNode();
 
   return (
     <Button

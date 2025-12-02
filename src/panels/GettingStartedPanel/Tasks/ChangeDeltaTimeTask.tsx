@@ -6,12 +6,12 @@ import { TaskCheckbox } from './Components/TaskCheckbox';
 import { useTrackChange } from './hooks';
 
 export function ChangeDeltaTimeTask() {
-  const deltaTime = useAppSelector((state) => state.time.deltaTime);
-  const taskCompleted = useTrackChange(deltaTime);
-
   const { t } = useTranslation('panel-gettingstartedtour', {
     keyPrefix: 'tasks.delta-time'
   });
+
+  const deltaTime = useAppSelector((state) => state.time.deltaTime);
+  const taskCompleted = useTrackChange(deltaTime);
 
   return <TaskCheckbox taskCompleted={taskCompleted} label={t('label')} />;
 }

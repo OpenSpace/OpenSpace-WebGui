@@ -10,11 +10,11 @@ import { KeybindButtons } from './KeybindButtons';
 import { KeybindInfo } from './KeybindInfo';
 
 export function KeyboardLayout() {
+  const { t } = useTranslation('panel-keybinds', { keyPrefix: 'keyboard-layout' });
+
   const [selectedActions, setSelectedActions] = useState<KeybindInfoType[]>([]);
   const [activeModifiers, setActiveModifiers] = useState<string[]>([]);
   const [selectedKey, setSelectedKey] = useState<string>('');
-
-  const { t } = useTranslation('panel-keybinds', { keyPrefix: 'keyboard-layout' });
 
   const hasSelectedKeys = selectedKey !== '' || activeModifiers.length > 0;
   return (

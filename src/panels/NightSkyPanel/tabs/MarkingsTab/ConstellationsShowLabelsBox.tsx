@@ -17,14 +17,15 @@ interface Props {
 // identifier of the action, so leaving for now
 
 export function ConstellationsShowLabelsBox({ title, icon }: Props) {
+  const { t } = useTranslation('panel-nightsky', {
+    keyPrefix: 'markings.constellations'
+  });
+
   const luaApi = useOpenSpaceApi();
 
   const uri = 'Scene.Constellations.Renderable.Labels';
   const propertyOwner = usePropertyOwner(uri);
   const { isVisible } = usePropertyOwnerVisibility(uri);
-  const { t } = useTranslation('panel-nightsky', {
-    keyPrefix: 'markings.constellations'
-  });
 
   function checkboxChange(checked: boolean) {
     if (checked) {

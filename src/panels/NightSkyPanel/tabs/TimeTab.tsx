@@ -16,6 +16,8 @@ import { isDateValid } from '@/redux/time/util';
 // identifier of the action, so leaving for now
 
 export function TimeTab() {
+  const { t } = useTranslation('panel-nightsky', { keyPrefix: 'time' });
+
   const [lastLat, setLastLat] = useState<number>(0);
   const [lastLong, setLastong] = useState<number>(0);
   const [localArea, setLocalArea] = useState<string>('UTC');
@@ -26,7 +28,6 @@ export function TimeTab() {
 
   const luaApi = useOpenSpaceApi();
   const timeCapped = useSubscribeToTime();
-  const { t } = useTranslation('panel-nightsky', { keyPrefix: 'time' });
 
   const date = new Date(timeCapped ?? '');
   const isValidDate = isDateValid(date);

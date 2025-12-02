@@ -23,17 +23,20 @@ interface Props {
 }
 
 export function TimeInput({ disabled }: Props) {
+  const { t } = useTranslation('panel-time', { keyPrefix: 'time-input' });
+  const { t: tCommon } = useTranslation('common');
+
+  const cappedTime = useAppSelector((state) => state.time.timeCapped);
+
   const [isLocked, setUseLock] = useState(false);
   const [pendingTime, setPendingTime] = useState(new Date());
   const [isHoldingShift, setIsHoldingShift] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const cappedTime = useAppSelector((state) => state.time.timeCapped);
   const luaApi = useOpenSpaceApi();
   const { setTime, interpolateTime } = useSetOpenSpaceTime();
   useSubscribeToTime();
-  const { t } = useTranslation('panel-time', { keyPrefix: 'time-input' });
-  const { t: tCommon } = useTranslation('common');
+
   const dispatch = useAppDispatch();
 
   const cappedDate = new Date(cappedTime ?? '');

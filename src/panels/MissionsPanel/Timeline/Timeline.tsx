@@ -40,6 +40,8 @@ export function Timeline({
   missionOverview,
   setDisplayedPhase
 }: Props) {
+  const { t } = useTranslation('panel-missions', { keyPrefix: 'timeline' });
+
   const [scale, setScale] = useState(1);
   const [translation, setTranslation] = useState(0);
   const now = useSubscribeToTime();
@@ -49,7 +51,6 @@ export function Timeline({
   const zoomRef = useRef<ZoomBehavior<SVGSVGElement, unknown> | null>(null);
   const timeIndicatorRef = useRef<SVGRectElement | null>(null);
   const { height: windowHeight } = useWindowSize();
-  const { t } = useTranslation('panel-missions', { keyPrefix: 'timeline' });
 
   const {
     minLevelWidth,

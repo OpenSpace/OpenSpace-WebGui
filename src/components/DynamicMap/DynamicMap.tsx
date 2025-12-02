@@ -64,6 +64,8 @@ export function DynamicMap({
   style,
   ...styleProps
 }: Props) {
+  const { t } = useTranslation('components', { keyPrefix: 'map' });
+
   const {
     latitude: currentLat,
     longitude: currentLong,
@@ -78,8 +80,6 @@ export function DynamicMap({
   const anchor = useAnchorNode();
 
   const [mapPath, mapExists] = useMapPath(anchor);
-
-  const { t } = useTranslation('components', { keyPrefix: 'map' });
 
   const hasViewDirection = viewLatitude !== undefined && viewLongitude !== undefined;
   const markerPosition = (() => {

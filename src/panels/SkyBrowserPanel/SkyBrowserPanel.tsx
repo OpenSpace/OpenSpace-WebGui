@@ -15,13 +15,14 @@ import { WwtProvider } from './WorldWideTelescope/WwtProvider/WwtProvider';
 import { useSkyBrowserData } from './hooks';
 
 export function SkyBrowserPanel() {
+  const { t } = useTranslation('panel-skybrowser');
+
   const isInitialized = useAppSelector((state) => state.skybrowser.isInitialized);
   const nBrowsers = useAppSelector((state) => state.skybrowser.browserIds.length);
   const isInSolarSystem = useAppSelector((state) => state.skybrowser.cameraInSolarSystem);
 
   const { addWindow } = useWindowLayoutProvider();
   const luaApi = useOpenSpaceApi();
-  const { t } = useTranslation('panel-skybrowser');
 
   useSkyBrowserData();
 
