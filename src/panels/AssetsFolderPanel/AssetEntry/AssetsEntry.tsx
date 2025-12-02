@@ -26,12 +26,13 @@ const stateMap: Record<AssetLoadingEvent['State'], AssetLoadState> = {
 };
 
 export function AssetsEntry({ asset }: Props) {
+  const { t } = useTranslation('panel-assets', { keyPrefix: 'asset-entry' });
+
   const [loadState, setLoadState] = useState<AssetLoadState>(AssetLoadState.NotLoaded);
   const [isRootAsset, setIsRootAsset] = useState<boolean>(false);
   const [parents, setParents] = useState<string[]>([]);
 
   const luaApi = useOpenSpaceApi();
-  const { t } = useTranslation('panel-assets', { keyPrefix: 'asset-entry' });
 
   const fetchParents = useCallback(async () => {
     const requiredBy = await luaApi?.asset.parents(asset.path);

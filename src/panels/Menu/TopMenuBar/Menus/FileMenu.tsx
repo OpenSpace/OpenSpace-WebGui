@@ -13,6 +13,8 @@ import { IconSize } from '@/types/enums';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function FileMenu() {
+  const { t } = useTranslation('menu', { keyPrefix: 'file-menu' });
+
   const profile = useAppSelector((state) => state.profile);
 
   const luaApi = useOpenSpaceApi();
@@ -21,7 +23,6 @@ export function FileMenu() {
     'BoolProperty',
     'LuaConsole.IsVisible'
   );
-  const { t } = useTranslation('menu', { keyPrefix: 'file-menu' });
 
   function toggleLuaConsole() {
     setIsConsoleVisible(!isConsoleVisible);

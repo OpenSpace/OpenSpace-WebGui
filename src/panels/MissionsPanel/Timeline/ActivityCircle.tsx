@@ -13,8 +13,9 @@ interface Props {
   scale: number;
 }
 export function ActivityCircle({ capture, yScale, marginLeft, scale }: Props) {
-  const jumpToTime = useJumpToTime();
   const { t } = useTranslation('panel-missions', { keyPrefix: 'timeline' });
+
+  const jumpToTime = useJumpToTime();
   const { radius, color, xOffset } = ActivityCircleConfig;
 
   return (

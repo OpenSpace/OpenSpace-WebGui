@@ -11,12 +11,12 @@ interface Props {
 }
 
 export function FocusTask({ anchor }: Props) {
-  const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
-  const anchorNode = useSceneGraphNode(anchor);
-
   const { t } = useTranslation('panel-gettingstartedtour', {
     keyPrefix: 'tasks.focus'
   });
+
+  const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
+  const anchorNode = useSceneGraphNode(anchor);
 
   const taskCompleted =
     currentAnchor !== undefined && currentAnchor !== '' && currentAnchor === anchor;

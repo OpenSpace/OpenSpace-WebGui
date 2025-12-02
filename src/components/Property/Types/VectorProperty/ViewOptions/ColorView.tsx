@@ -40,10 +40,11 @@ export function ColorView({
   additionalData,
   isInt
 }: Props) {
-  const [isError, setIsError] = useState(false);
   const { t } = useTranslation('components', {
     keyPrefix: 'property.vector-property.color-view'
   });
+
+  const [isError, setIsError] = useState(false);
 
   const isOutsideRange = value.some((v) => v < 0 || v > 1);
   const currentColor: RGBA = openspaceColorToRgba(value);

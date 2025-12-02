@@ -19,13 +19,14 @@ import { SettingsSearchListItem } from './SettingsSearchListItem';
 import { collectSearchableItems, SearchItem, SearchItemType } from './util';
 
 export function SettingsPanel() {
+  const { t } = useTranslation('panel-settings');
+
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
   const propertyOverview = useAppSelector((state) => state.properties.propertyOverview);
   const [visiblityLevelSetting] = useProperty(
     'OptionProperty',
     EnginePropertyVisibilityKey
   );
-  const { t } = useTranslation('panel-settings');
 
   // Get all the top property owners, that are not part of the scene
   const topLevelPropertyOwners = useMemo(

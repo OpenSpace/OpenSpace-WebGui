@@ -20,14 +20,15 @@ interface Props {
 }
 
 export function SceneGraphNodeMoreMenu({ uri }: Props) {
+  const { t } = useTranslation('panel-scene', {
+    keyPrefix: 'scene-graph-node.more-menu'
+  });
+
   const propertyOwner = usePropertyOwner(uri);
   const anchorNode = useAnchorNode();
   const confirmRemoveSgn = useRemoveSceneGraphNodeModal();
 
   const { addWindow } = useWindowLayoutProvider();
-  const { t } = useTranslation('panel-scene', {
-    keyPrefix: 'scene-graph-node.more-menu'
-  });
 
   if (!propertyOwner) {
     return <></>;

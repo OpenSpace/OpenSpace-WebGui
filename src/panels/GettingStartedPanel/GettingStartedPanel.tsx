@@ -13,6 +13,8 @@ import { useTimeSteps } from './Steps/TimeSteps';
 import { Chapters } from './Chapters';
 
 export function GettingStartedPanel() {
+  const { t } = useTranslation('panel-gettingstartedtour');
+
   const [step, setStep] = useState(0);
   const { closeWindow } = useWindowLayoutProvider();
 
@@ -20,8 +22,6 @@ export function GettingStartedPanel() {
   const navigationSteps = useNavigationSteps();
   const timeSteps = useTimeSteps();
   const contentSteps = useContentSteps();
-
-  const { t } = useTranslation('panel-gettingstartedtour');
 
   const sections = [introductionSteps, navigationSteps, timeSteps, contentSteps];
   const steps = sections.flat();

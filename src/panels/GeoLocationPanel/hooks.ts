@@ -10,12 +10,13 @@ import { Identifier } from '@/types/types';
 import { createSceneGraphNodeTable } from './util';
 
 export function useCreateSceneGraphNode() {
-  const isSceneGraphNodeAdded = useIsSceneGraphNodeAdded();
-  const luaApi = useOpenSpaceApi();
-  const dispatch = useAppDispatch();
   const { t } = useTranslation('panel-geolocation', {
     keyPrefix: 'notifications.duplicate-scene-graph-node'
   });
+
+  const isSceneGraphNodeAdded = useIsSceneGraphNodeAdded();
+  const luaApi = useOpenSpaceApi();
+  const dispatch = useAppDispatch();
 
   function addFocusNode(
     globe: Identifier,

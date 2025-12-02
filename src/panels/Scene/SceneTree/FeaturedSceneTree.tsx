@@ -15,6 +15,7 @@ export function FeaturedSceneTree() {
   const { t } = useTranslation('panel-scene', {
     keyPrefix: 'scene-tree.featured-scene-tree'
   });
+
   const featuredNodes = useFeaturedNodes();
   const anchorNode = useAnchorNode();
   const aimNode = useAimNode();

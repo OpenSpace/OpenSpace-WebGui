@@ -6,10 +6,12 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { Identifier } from '@/types/types';
 
 export function useRemoveSceneGraphNodeModal() {
-  const luaApi = useOpenSpaceApi();
   const { t } = useTranslation('panel-scene', {
     keyPrefix: 'scene-graph-node.more-menu'
   });
+
+  const luaApi = useOpenSpaceApi();
+
   // @TODO (2025-02-04, emmbr): Maybe include a list of which scene graph nodes will be
   // removed as well?
   function removeSceneGraphNode(

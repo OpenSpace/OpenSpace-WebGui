@@ -16,10 +16,11 @@ interface Props {
 }
 
 export function ActionsButton({ uri, action: _action, height }: Props) {
+  const { t } = useTranslation('panel-actions', { keyPrefix: 'actions-button' });
+
   const openspaceApi = useOpenSpaceApi();
   const allActions = useAppSelector((state) => state.actions.actions);
   const keybinds = useAppSelector((state) => state.actions.keybinds);
-  const { t } = useTranslation('panel-actions', { keyPrefix: 'actions-button' });
 
   const action = uri ? allActions.find((action) => action.identifier === uri) : _action;
   const keybind = keybinds.find((_keybind) => _keybind.action === action?.identifier);

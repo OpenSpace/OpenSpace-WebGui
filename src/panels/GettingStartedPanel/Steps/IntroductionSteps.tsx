@@ -9,14 +9,16 @@ import { useAppSelector } from '@/redux/hooks';
 import { TaskCheckbox } from '../Tasks/Components/TaskCheckbox';
 
 export function useIntroductionSteps(): React.ReactNode[] {
+  const { t } = useTranslation('panel-gettingstartedtour', {
+    keyPrefix: 'steps.introduction'
+  });
+
   const profileName = useAppSelector((state) => state.profile.name);
   const luaApi = useOpenSpaceApi();
   const { setVisibility: setVisibleEsriViirsCombo } = usePropertyOwnerVisibility(
     'Scene.Earth.Renderable.Layers.ColorLayers.ESRI_VIIRS_Combo'
   );
-  const { t } = useTranslation('panel-gettingstartedtour', {
-    keyPrefix: 'steps.introduction'
-  });
+
   const isDefaultProfile = profileName === 'Default';
 
   function setupGettingStartedTour(): void {

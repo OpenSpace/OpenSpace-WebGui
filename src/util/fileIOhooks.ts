@@ -10,7 +10,6 @@ import { LogLevel } from '@/types/enums';
 
 function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void {
   const { t } = useTranslation('notifications', { keyPrefix: 'error' });
-  const dispatch = useAppDispatch();
 
   const fileDialog = useFileDialog({
     multiple: false,
@@ -18,6 +17,8 @@ function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void 
     resetOnOpen: true,
     onChange: readFile
   });
+
+  const dispatch = useAppDispatch();
 
   async function readFile(contents: FileList | null) {
     try {
@@ -97,8 +98,9 @@ async function openSaveFileDialogInternal(
 // Exporting these as a hook as they seem to belong in the same file,
 // even though only on of them is a hook
 export function useSaveLoadJsonFiles(handlePickedFile: (content: JSON) => void) {
-  const openLoadFileDialog = useLoadJsonFile(handlePickedFile);
   const { t } = useTranslation('notifications', { keyPrefix: 'error' });
+
+  const openLoadFileDialog = useLoadJsonFile(handlePickedFile);
   const dispatch = useAppDispatch();
 
   async function openSaveFileDialog(contents: JSON) {

@@ -16,6 +16,7 @@ interface Props {
 
 export function GlobeLayer({ uri }: Props) {
   const { t } = useTranslation('panel-scene', { keyPrefix: 'globe-layer' });
+
   const propertyOwner = usePropertyOwner(uri);
 
   const { isVisible } = usePropertyOwnerVisibility(uri);

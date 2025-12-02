@@ -13,24 +13,25 @@ import { QuickAdjustSlider } from './QuickAdjustSlider';
 import { Decimals, StepSizes, TimePart } from './types';
 
 export function SimulationIncrement() {
-  const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('panel-time');
+
+  const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime) ?? 1;
+
   const [stepSize, setStepSize] = useState<TimePart>(TimePart.Seconds);
   const [beforeAdjust, setBeforeAdjust] = useState<number | null>(null);
 
-  const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime) ?? 1;
   const updateDeltaTime = useThrottledCallback(updateDeltaTimeNow, 50);
   const translateTimePart = useTimePartTranslation();
-  const { t } = useTranslation('panel-time');
+
+  const luaApi = useOpenSpaceApi();
 
   // Remove Milliseconds as an option to select
   const selectableData = Object.values(TimePart)
     .filter((value) => value !== TimePart.Milliseconds)
-    .map((unit) => {
-      return {
-        value: unit,
-        label: translateTimePart(unit, 2) // Number arbitrary chosen to get pluralization
-      };
-    });
+    .map((unit) => ({
+      value: unit,
+      label: translateTimePart(unit, 2) // Number arbitrary chosen to get pluralization
+    }));
 
   function updateDeltaTimeNow(value: number) {
     luaApi?.time.interpolateDeltaTime(value);

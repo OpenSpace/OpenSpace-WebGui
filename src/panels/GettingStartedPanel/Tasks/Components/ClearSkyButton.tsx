@@ -7,14 +7,14 @@ import { SunIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
 export function ClearSkyButton() {
+  const { t } = useTranslation('panel-gettingstartedtour', {
+    keyPrefix: 'components.clear-sky-button'
+  });
+
   const luaApi = useOpenSpaceApi();
   const { setVisibility: setVisibleBlueMarble } = usePropertyOwnerVisibility(
     'Scene.Earth.Renderable.Layers.ColorLayers.Blue_Marble'
   );
-
-  const { t } = useTranslation('panel-gettingstartedtour', {
-    keyPrefix: 'components.clear-sky-button'
-  });
 
   function showBlueMarble() {
     luaApi?.action.triggerAction('os.earth_global_illumination');

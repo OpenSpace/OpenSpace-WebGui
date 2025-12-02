@@ -10,6 +10,8 @@ import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { useRemoveSceneGraphNodeModal } from '@/util/useRemoveSceneGraphNode';
 
 export function AddedCustomNodes() {
+  const { t } = useTranslation('panel-geolocation', { keyPrefix: 'added-custom-nodes' });
+
   const groups = useAppSelector((state) => state.groups.groups);
   const anchor = useAnchorNode();
   const removeSceneGraphNode = useRemoveSceneGraphNodeModal();
@@ -18,10 +20,6 @@ export function AddedCustomNodes() {
     identifierFromUri(uri)
   );
   const addedCustomNodes = geoLocationOwners ?? [];
-
-  const { t } = useTranslation('panel-geolocation', {
-    keyPrefix: 'added-custom-nodes'
-  });
 
   if (addedCustomNodes.length === 0) {
     return <Text>{t('empty-nodes')}</Text>;

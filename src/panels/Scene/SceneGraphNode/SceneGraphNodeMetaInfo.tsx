@@ -29,6 +29,7 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   const { t } = useTranslation('panel-scene', {
     keyPrefix: 'scene-graph-node.meta-info'
   });
+
   const propertyOwner = usePropertyOwner(uri);
   const [guiPath] = useProperty('StringProperty', `${uri}.GuiPath`);
 

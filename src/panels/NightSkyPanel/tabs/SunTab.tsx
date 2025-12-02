@@ -22,6 +22,8 @@ import { IconSize } from '@/types/enums';
 import { sgnUri } from '@/util/propertyTreeHelpers';
 
 export function SunTab() {
+  const { t } = useTranslation('panel-nightsky', { keyPrefix: 'sun' });
+
   const [trailDate, setTrailDate] = useState<Date | null>(null);
   const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
 
@@ -31,7 +33,6 @@ export function SunTab() {
   );
 
   const luaApi = useOpenSpaceApi();
-  const { t } = useTranslation('panel-nightsky', { keyPrefix: 'sun' });
   const sunTrailTag = 'sun_trail';
 
   const addedTrails = Object.values(propertyOwners).filter((owner) =>

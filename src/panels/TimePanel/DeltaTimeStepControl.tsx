@@ -11,7 +11,8 @@ import { useTimePartTranslation } from './hooks';
 import { formatDeltaTime } from './util';
 
 export function DeltaTimeStepsControl() {
-  const luaApi = useOpenSpaceApi();
+  const { t } = useTranslation('panel-time');
+
   const nextDeltaTimeStep = useAppSelector((state) => state.time.nextDeltaTimeStep) ?? 0;
   const prevDeltaTimeStep = useAppSelector((state) => state.time.prevDeltaTimeStep) ?? 0;
   const isPaused = useAppSelector((state) => state.time.isPaused);
@@ -19,11 +20,11 @@ export function DeltaTimeStepsControl() {
   const hasNextDeltaTimeStep = useAppSelector((state) => state.time.hasNextDeltaTimeStep);
   const hasPrevDeltaTimeStep = useAppSelector((state) => state.time.hasPrevDeltaTimeStep);
 
+  const luaApi = useOpenSpaceApi();
   const engineMode = useSubscribeToEngineMode();
   const isInFlight = engineMode === EngineMode.CameraPath;
 
   const translateTimePart = useTimePartTranslation();
-  const { t } = useTranslation('panel-time');
 
   const {
     increment: nextIncrement,

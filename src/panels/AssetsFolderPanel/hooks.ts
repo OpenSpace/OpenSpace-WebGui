@@ -7,9 +7,10 @@ import { Asset, Folder } from './types';
 import { baseName, pruneEmptyFolders } from './util';
 
 export function useAssetFolders() {
+  const { t } = useTranslation('panel-assets', { keyPrefix: 'folder-names' });
+
   const [folderStructure, setFolderStructure] = useState<Folder | null>(null);
   const luaApi = useOpenSpaceApi();
-  const { t } = useTranslation('panel-assets', { keyPrefix: 'folder-names' });
 
   /**
    * Recursively fetch all folders and assets in a given directory

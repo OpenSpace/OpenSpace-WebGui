@@ -20,6 +20,10 @@ interface Props {
 // identifier of the action, so leaving for now
 
 export function CardinalDirectionsBox({ variant, title, icon }: Props) {
+  const { t } = useTranslation('panel-nightsky', {
+    keyPrefix: 'markings.cardinal-directions'
+  });
+
   const luaApi = useOpenSpaceApi();
 
   const { isVisible } = usePropertyOwnerVisibility(
@@ -29,9 +33,6 @@ export function CardinalDirectionsBox({ variant, title, icon }: Props) {
     'StringProperty',
     'Scene.CardinalDirectionSphere.Renderable.Texture'
   );
-  const { t } = useTranslation('panel-nightsky', {
-    keyPrefix: 'markings.cardinal-directions'
-  });
 
   const hasLoaded = isVisible !== undefined && texture !== undefined;
 

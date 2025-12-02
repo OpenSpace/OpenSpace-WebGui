@@ -11,8 +11,9 @@ interface Props {
 }
 
 export function ExoplanetsSettings({ hasAddedExoplanets }: Props) {
-  const luaApi = useOpenSpaceApi();
   const { t } = useTranslation('panel-exoplanets', { keyPrefix: 'exoplanets-settings' });
+
+  const luaApi = useOpenSpaceApi();
 
   const [showHabitableZone, setShowHabitableZone] = useProperty(
     'BoolProperty',

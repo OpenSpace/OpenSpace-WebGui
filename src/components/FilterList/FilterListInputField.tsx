@@ -10,9 +10,10 @@ interface InputButtonProps {
 }
 
 function InputButton({ showMoreButton }: InputButtonProps) {
+  const { t } = useTranslation('components', { keyPrefix: 'filter-list.input-field' });
+
   const { searchString, setSearchString, showDataInstead, toggleShowDataInstead } =
     useFilterListProvider();
-  const { t } = useTranslation('components', { keyPrefix: 'filter-list.input-field' });
 
   const isSearching = searchString !== '';
 

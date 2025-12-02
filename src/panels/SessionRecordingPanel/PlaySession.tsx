@@ -28,6 +28,8 @@ import { RecordingState } from './types';
 import { parseFilename } from './util';
 
 export function PlaySession() {
+  const { t } = useTranslation('panel-sessionrecording', { keyPrefix: 'play-session' });
+
   const [loopPlayback, setLoopPlayback] = useState(false);
   const [shouldOutputFrames, setShouldOutputFrames] = useState(false);
   const [outputFramerate, setOutputFramerate] = useState(60);
@@ -39,7 +41,6 @@ export function PlaySession() {
 
   const fileList = useAppSelector((state) => state.sessionRecording.files);
   const recordingState = useSubscribeToSessionRecording();
-  const { t } = useTranslation('panel-sessionrecording', { keyPrefix: 'play-session' });
   const dispatch = useAppDispatch();
 
   // Subscribe to Properties so that the middleware will be notified on updated values

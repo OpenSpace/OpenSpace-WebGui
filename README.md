@@ -82,6 +82,7 @@ We apply a custom theme to the Mantine components. If you are building a separat
 ### Hooks Order
  - For cleaner code, we adhere to the following **hooks order** whenever possible. In some situations, a hook is derived from a "lower order" hook, in which case the order can be swapped.
  - Order:
+   - useTranslation
    - useAppSelector
    - useState
    - useContext

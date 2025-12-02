@@ -5,8 +5,9 @@ import { PropertyProps } from '@/components/Property/types';
 import { useProperty } from '@/hooks/properties';
 
 export function IntListProperty({ uri, readOnly }: PropertyProps) {
-  const [value, setValue, meta] = useProperty('IntListProperty', uri);
   const { t } = useTranslation('components', { keyPrefix: 'property.list-property' });
+
+  const [value, setValue, meta] = useProperty('IntListProperty', uri);
 
   if (value === undefined) {
     return <></>;

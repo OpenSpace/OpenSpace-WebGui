@@ -15,16 +15,20 @@ import { useAppSelector } from '@/redux/hooks';
 interface Props {
   id: string;
 }
+
 export function SettingsDisplayCopies({ id }: Props) {
-  const [newPosition, setNewPosition] = useState<[number, number, number]>([0, 0, -2]);
-  const [nCopies, setNCopies] = useState(1);
-  const luaApi = useOpenSpaceApi();
-  const displayCopies = useAppSelector(
-    (state) => state.skybrowser.browsers[id]?.displayCopies
-  );
   const { t } = useTranslation('panel-skybrowser', {
     keyPrefix: 'settings.display-copies'
   });
+
+  const displayCopies = useAppSelector(
+    (state) => state.skybrowser.browsers[id]?.displayCopies
+  );
+
+  const [newPosition, setNewPosition] = useState<[number, number, number]>([0, 0, -2]);
+  const [nCopies, setNCopies] = useState(1);
+  const luaApi = useOpenSpaceApi();
+
   return (
     <>
       <Title order={4} mb={'sm'}>

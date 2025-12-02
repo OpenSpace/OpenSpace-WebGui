@@ -16,9 +16,10 @@ interface Props {
 }
 
 export function ScriptLogEntry({ script, index, isSelected, onToggleSelection }: Props) {
+  const { t } = useTranslation('panel-scriptlog', { keyPrefix: 'script-log-entry' });
+
   const luaApi = useOpenSpaceApi();
   const [expanded, setExpanded] = useState(false);
-  const { t } = useTranslation('panel-scriptlog', { keyPrefix: 'script-log-entry' });
 
   function runScript() {
     luaApi?.scheduleScript(script, 0);

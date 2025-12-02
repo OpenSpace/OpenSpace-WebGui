@@ -9,11 +9,12 @@ import { setSelectedMission } from '@/redux/missions/missionsSlice';
 import { MissionContent } from './MissionContent';
 
 export function MissionsPanel() {
+  const { t } = useTranslation('panel-missions');
+
   const { isInitialized, missions, selectedMissionIdentifier } = useAppSelector(
     (state) => state.missions
   );
   const luaApi = useOpenSpaceApi();
-  const { t } = useTranslation('panel-missions');
   const dispatch = useAppDispatch();
 
   const hasMission = isInitialized && Object.values(missions).length > 0;

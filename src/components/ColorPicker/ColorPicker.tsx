@@ -58,12 +58,13 @@ interface Props {
 }
 
 export function ColorPicker({ color, disabled, onChange, withAlpha }: Props) {
+  const { t } = useTranslation('components', { keyPrefix: 'color-picker' });
+
   const defaultFormat = withAlpha ? 'rgba' : 'rgb';
 
   const [format, setFormat] = useState<ColorFormat>(defaultFormat);
   const [value, setValue] = useState(rgbaToColor(color, withAlpha));
   const [textEditValue, setTextEditValue] = useState(rgbaToColor(color, withAlpha));
-  const { t } = useTranslation('components', { keyPrefix: 'color-picker' });
 
   const formats = withAlpha ? ['rgba', 'hexa', 'hsla'] : ['rgb', 'hex', 'hsl'];
 

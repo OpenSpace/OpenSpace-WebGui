@@ -17,9 +17,10 @@ import { Asset, AssetFolderNavigationState } from './types';
 import { collectAssets, findNavigatedFolder } from './util';
 
 export function AssetsFolderPanel() {
+  const { t } = useTranslation('panel-assets');
+
   const [nav, setNav] = useState<AssetFolderNavigationState>();
   const rootFolder = useAssetFolders();
-  const { t } = useTranslation('panel-assets');
 
   useEffect(() => {
     if (rootFolder) {

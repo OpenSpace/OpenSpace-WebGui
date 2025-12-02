@@ -16,10 +16,11 @@ interface Props {
 }
 
 export function MapLocation({ onClick, mouseMarker, setMouseMarker }: Props) {
+  const { t } = useTranslation('panel-geolocation', { keyPrefix: 'map-location' });
+
   const [isHovering, setIsHovering] = useState(false);
   const { ref } = useMove(handleClick);
   const { ref: refMove, x: xHover, y: yHover } = useMouse();
-  const { t } = useTranslation('panel-geolocation', { keyPrefix: 'map-location' });
 
   const mouseIconSize = 25;
 

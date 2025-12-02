@@ -6,13 +6,14 @@ import { useProperty } from '@/hooks/properties';
 import { usePropListeningState } from '@/hooks/util';
 
 export function SelectionProperty({ uri, readOnly }: PropertyProps) {
+  const { t } = useTranslation('components', {
+    keyPrefix: 'property.selection-property'
+  });
+
   const [value, setValue, meta] = useProperty('SelectionProperty', uri);
   const { value: currentValue, setValue: setCurrentValue } = usePropListeningState<
     string[] | undefined
   >(value);
-  const { t } = useTranslation('components', {
-    keyPrefix: 'property.selection-property'
-  });
 
   if (!value || !meta || currentValue === undefined) {
     return <></>;

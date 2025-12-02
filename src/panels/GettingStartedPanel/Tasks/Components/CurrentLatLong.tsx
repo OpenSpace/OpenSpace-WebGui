@@ -4,13 +4,13 @@ import { Group, NumberFormatter, Text } from '@mantine/core';
 import { useAppSelector } from '@/redux/hooks';
 
 export function CurrentLatLong() {
-  const { latitude: currentLat, longitude: currentLong } = useAppSelector(
-    (state) => state.camera
-  );
-
   const { t } = useTranslation('panel-gettingstartedtour', {
     keyPrefix: 'components.current-lat-long'
   });
+
+  const { latitude: currentLat, longitude: currentLong } = useAppSelector(
+    (state) => state.camera
+  );
 
   return (
     <Text>

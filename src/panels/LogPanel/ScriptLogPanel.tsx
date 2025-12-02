@@ -17,13 +17,14 @@ import { ScriptLogEntry } from './ScriptLogEntry';
 type FileLines = Record<string, string> | undefined;
 
 export function ScriptLogPanel() {
+  const { t } = useTranslation('panel-scriptlog');
+
   const [scriptLogEntries, setScriptLogEntries] = useState<string[] | undefined>(
     undefined
   );
   const [selectedScripts, setSelectedScripts] = useState<Set<number>>(new Set());
 
   const luaApi = useOpenSpaceApi();
-  const { t } = useTranslation('panel-scriptlog');
 
   const fetchScriptLogEntries = useCallback(async () => {
     // eslint-disable-next-line no-template-curly-in-string

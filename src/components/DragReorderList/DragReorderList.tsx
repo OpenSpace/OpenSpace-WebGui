@@ -31,8 +31,9 @@ export function DragReorderList<T>({
   dragHandlePosition = 'left',
   gap = 'xs'
 }: Props<T>) {
-  const { value: localCache, setValue: setLocalCache } = usePropListeningState(data);
   const { t } = useTranslation('components', { keyPrefix: 'drag-reorder-list' });
+
+  const { value: localCache, setValue: setLocalCache } = usePropListeningState(data);
 
   async function handleDragEnd(result: DropResult<string>) {
     if (!result.destination || result.source.index === result.destination.index) {

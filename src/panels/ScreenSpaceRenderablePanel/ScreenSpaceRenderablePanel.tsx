@@ -13,9 +13,10 @@ import { ImageTab } from './ImageTab';
 import { WebpageTab } from './WebpageTab';
 
 export function ScreenSpaceRenderablePanel() {
+  const { t } = useTranslation('panel-screenspacerenderable');
+
   const luaApi = useOpenSpaceApi();
   const screenSpacePropertyOwner = usePropertyOwner(ScreenSpaceKey);
-  const { t } = useTranslation('panel-screenspacerenderable');
 
   const renderables = screenSpacePropertyOwner?.subowners ?? [];
 

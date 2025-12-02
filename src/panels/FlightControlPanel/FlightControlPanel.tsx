@@ -11,11 +11,12 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 export function FlightControlPanel() {
+  const { t } = useTranslation('panel-flightcontrol');
+
   const isControllerEnabled = useAppSelector((state) => state.flightController.isEnabled);
   const mouseScaleFactor = useAppSelector(
     (state) => state.flightController.inputScaleFactor
   );
-  const { t } = useTranslation('panel-flightcontrol');
 
   const dispatch = useAppDispatch();
 

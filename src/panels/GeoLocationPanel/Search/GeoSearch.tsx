@@ -17,12 +17,12 @@ interface Props {
 }
 
 export function GeoSearch({ onClick, onHover, search }: Props) {
+  const { t } = useTranslation('panel-geolocation', { keyPrefix: 'search' });
+
   const [places, setPlaces] = useState<MatchedLocation[]>([]);
 
   const dispatch = useAppDispatch();
   const anchor = useAnchorNode();
-
-  const { t } = useTranslation('panel-geolocation', { keyPrefix: 'search' });
 
   const performSearch = useCallback(getPlaces, [dispatch, anchor, t]);
 

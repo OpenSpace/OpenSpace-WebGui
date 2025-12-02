@@ -26,6 +26,8 @@ import { LookDirection } from '../types';
 // identifier of the action, so leaving for now
 
 export function LocationTab() {
+  const { t } = useTranslation('panel-nightsky', { keyPrefix: 'location' });
+
   const {
     latitude: currentLat,
     longitude: currentLong,
@@ -36,7 +38,6 @@ export function LocationTab() {
   useSubscribeToCamera();
 
   const anchor = useAnchorNode();
-  const { t } = useTranslation('panel-nightsky', { keyPrefix: 'location' });
 
   function look(direction: LookDirection): void {
     luaApi?.action.triggerAction(`os.nightsky.Looking${direction}`);

@@ -21,8 +21,9 @@ export function PlaybackPlayButton({
   outputFramerate,
   ...props
 }: Props) {
-  const luaApi = useOpenSpaceApi();
   const { t } = useTranslation('panel-sessionrecording', { keyPrefix: 'button-labels' });
+
+  const luaApi = useOpenSpaceApi();
   const dispatch = useAppDispatch();
 
   async function startPlayback(): Promise<void> {

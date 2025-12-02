@@ -12,8 +12,9 @@ interface Props {
 }
 
 export function MissionTimeButtons({ currentPhase }: Props) {
-  const jumpToTime = useJumpToTime();
   const { t } = useTranslation('panel-missions');
+
+  const jumpToTime = useJumpToTime();
   const isMissionOverview = currentPhase.type === DisplayType.Overview;
 
   function jumpToEndOfPhase() {
