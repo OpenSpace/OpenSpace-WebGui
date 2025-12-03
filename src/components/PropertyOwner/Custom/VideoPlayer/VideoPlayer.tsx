@@ -67,7 +67,7 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
     <Group pl={'xs'} wrap={'nowrap'} {...styleProps}>
       <Group gap={'xs'} py={'xs'}>
         <ActionIcon.Group>
-          <Tooltip label={t('play-button.tooltip')} openDelay={600}>
+          <Tooltip label={t('play-button.tooltip')}>
             <ActionIcon
               onClick={() => triggerPlay(null)}
               aria-label={t('play-button.aria-label')}
@@ -75,7 +75,7 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
               <PlayIcon />
             </ActionIcon>
           </Tooltip>
-          <Tooltip label={t('pause-button.tooltip')} openDelay={600}>
+          <Tooltip label={t('pause-button.tooltip')}>
             <ActionIcon
               onClick={() => triggerPause(null)}
               aria-label={t('pause-button.aria-label')}
@@ -84,7 +84,7 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
             </ActionIcon>
           </Tooltip>
         </ActionIcon.Group>
-        <Tooltip label={t('restart-button.tooltip')} openDelay={600}>
+        <Tooltip label={t('restart-button.tooltip')}>
           <ActionIcon
             onClick={() => triggerGoToStart(null)}
             size={'sm'}
@@ -94,7 +94,7 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
           </ActionIcon>
         </Tooltip>
         <Group gap={5}>
-          <Tooltip label={t('loop-toggle.tooltip')} openDelay={600}>
+          <Tooltip label={t('loop-toggle.tooltip')}>
             <ToggleActionIcon
               isOn={loop ?? false}
               iconOn={<RepeatIcon />}
@@ -104,7 +104,7 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
               aria-label={t('loop-toggle.aria-label')}
             />
           </Tooltip>
-          <Tooltip label={t('audio-toggle.tooltip')} openDelay={600}>
+          <Tooltip label={t('audio-toggle.tooltip')}>
             <ToggleActionIcon
               isOn={playAudio ?? false}
               iconOn={<SoundIcon />}
