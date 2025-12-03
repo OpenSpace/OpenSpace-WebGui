@@ -1,4 +1,8 @@
-import { useHasVisibleChildren, usePropertyOwner } from '@/hooks/propertyOwner';
+import {
+  useHasVisibleChildren,
+  usePropertyOwner,
+  useVisibleProperties
+} from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
 import { displayName, isGlobeLayersUri } from '@/util/propertyTreeHelpers';
@@ -32,6 +36,8 @@ export function PropertyOwner({
   );
 
   const hasVisibleChildren = useHasVisibleChildren(uri);
+  const visibleProperties = useVisibleProperties(propertyOwner);
+  const subowners = hideSubowners ? [] : (propertyOwner.subowners ?? []);
 
   // If there is no content to show for the current visibility settings, we don't want to
   // render this property owner
@@ -53,7 +59,7 @@ export function PropertyOwner({
   }
 
   if (onlyContent) {
-    return <PropertyOwnerContent uri={uri} hideSubowners={hideSubowners} />;
+    return <PropertyOwnerContent properties={visibleProperties} subowners={subowners} />;
   }
 
   return (
@@ -62,7 +68,7 @@ export function PropertyOwner({
       title={displayName(propertyOwner)}
       expandedOnDefault={expandedOnDefault}
     >
-      <PropertyOwnerContent uri={uri} hideSubowners={hideSubowners} />
+      <PropertyOwnerContent properties={visibleProperties} subowners={subowners} />
     </PropertyOwnerCollapsable>
   );
 }

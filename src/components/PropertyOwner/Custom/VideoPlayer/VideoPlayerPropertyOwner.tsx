@@ -1,11 +1,9 @@
-import { Box } from '@mantine/core';
-
-import { Property } from '@/components/Property/Property';
-import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerCollapsable } from '@/components/PropertyOwner/PropertyOwnerCollapsable';
 import { usePropertyOwner, useVisibleProperties } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
+
+import { PropertyOwnerContent } from '../../PropertyOwnerContent';
 
 import { VideoPlayer } from './VideoPlayer';
 
@@ -38,20 +36,7 @@ export function VideoPlayerPropertyOwner({ uri, expandedOnDefault = false }: Pro
       expandedOnDefault={expandedOnDefault}
     >
       <VideoPlayer uri={uri} />
-      {subowners.length > 0 && (
-        <Box>
-          {subowners.map((subowner) => (
-            <PropertyOwner key={subowner} uri={subowner} />
-          ))}
-        </Box>
-      )}
-      {visibleProperties.length > 0 && (
-        <Box ml={'xs'} mt={'xs'}>
-          {visibleProperties.map((property) => (
-            <Property key={property} uri={property} />
-          ))}
-        </Box>
-      )}
+      <PropertyOwnerContent properties={visibleProperties} subowners={subowners} />
     </PropertyOwnerCollapsable>
   );
 }
