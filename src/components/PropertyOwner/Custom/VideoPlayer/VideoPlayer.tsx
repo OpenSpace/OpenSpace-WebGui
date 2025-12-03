@@ -64,60 +64,58 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
   }
 
   return (
-    <Group pl={'xs'} gap={'xs'} wrap={'nowrap'} {...styleProps}>
-      <Card withBorder p={'xs'} bg={'transparent'}>
-        <Group gap={'xs'}>
-          <ActionIcon.Group>
-            <Tooltip label={t('play-button.tooltip')} openDelay={600}>
-              <ActionIcon
-                onClick={() => triggerPlay(null)}
-                aria-label={t('play-button.aria-label')}
-              >
-                <PlayIcon />
-              </ActionIcon>
-            </Tooltip>
-            <Tooltip label={t('pause-button.tooltip')} openDelay={600}>
-              <ActionIcon
-                onClick={() => triggerPause(null)}
-                aria-label={t('pause-button.aria-label')}
-              >
-                <PauseIcon />
-              </ActionIcon>
-            </Tooltip>
-          </ActionIcon.Group>
-          <Tooltip label={t('restart-button.tooltip')} openDelay={600}>
+    <Group pl={'xs'} wrap={'nowrap'} {...styleProps}>
+      <Group gap={'xs'} py={'xs'}>
+        <ActionIcon.Group>
+          <Tooltip label={t('play-button.tooltip')} openDelay={600}>
             <ActionIcon
-              onClick={() => triggerGoToStart(null)}
-              size={'sm'}
-              aria-label={t('restart-button.aria-label')}
+              onClick={() => triggerPlay(null)}
+              aria-label={t('play-button.aria-label')}
             >
-              <ReplayIcon />
+              <PlayIcon />
             </ActionIcon>
           </Tooltip>
-          <Group gap={5}>
-            <Tooltip label={t('loop-toggle.tooltip')} openDelay={600}>
-              <ToggleActionIcon
-                isOn={loop ?? false}
-                iconOn={<RepeatIcon />}
-                iconOff={<RepeatOffIcon />}
-                onClick={setLoop}
-                size={'sm'}
-                aria-label={t('loop-toggle.aria-label')}
-              />
-            </Tooltip>
-            <Tooltip label={t('audio-toggle.tooltip')} openDelay={600}>
-              <ToggleActionIcon
-                isOn={playAudio ?? false}
-                iconOn={<SoundIcon />}
-                iconOff={<SoundOffIcon />}
-                onClick={setPlayAudio}
-                size={'sm'}
-                aria-label={t('audio-toggle.aria-label')}
-              />
-            </Tooltip>
-          </Group>
+          <Tooltip label={t('pause-button.tooltip')} openDelay={600}>
+            <ActionIcon
+              onClick={() => triggerPause(null)}
+              aria-label={t('pause-button.aria-label')}
+            >
+              <PauseIcon />
+            </ActionIcon>
+          </Tooltip>
+        </ActionIcon.Group>
+        <Tooltip label={t('restart-button.tooltip')} openDelay={600}>
+          <ActionIcon
+            onClick={() => triggerGoToStart(null)}
+            size={'sm'}
+            aria-label={t('restart-button.aria-label')}
+          >
+            <ReplayIcon />
+          </ActionIcon>
+        </Tooltip>
+        <Group gap={5}>
+          <Tooltip label={t('loop-toggle.tooltip')} openDelay={600}>
+            <ToggleActionIcon
+              isOn={loop ?? false}
+              iconOn={<RepeatIcon />}
+              iconOff={<RepeatOffIcon />}
+              onClick={setLoop}
+              size={'sm'}
+              aria-label={t('loop-toggle.aria-label')}
+            />
+          </Tooltip>
+          <Tooltip label={t('audio-toggle.tooltip')} openDelay={600}>
+            <ToggleActionIcon
+              isOn={playAudio ?? false}
+              iconOn={<SoundIcon />}
+              iconOff={<SoundOffIcon />}
+              onClick={setPlayAudio}
+              size={'sm'}
+              aria-label={t('audio-toggle.aria-label')}
+            />
+          </Tooltip>
         </Group>
-      </Card>
+      </Group>
       <InfoBox>
         <Text size={'sm'} mb={'xs'}>
           {t('info-box.description')}
