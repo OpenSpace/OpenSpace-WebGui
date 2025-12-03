@@ -2,11 +2,10 @@ import React, { PropsWithChildren } from 'react';
 import { Box } from '@mantine/core';
 
 import { Collapsable } from '@/components/Collapsable/Collapsable';
+import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
-
-import CopyUriButton from '../CopyUriButton/CopyUriButton';
 
 import { PropertyOwnerVisibilityCheckbox } from './VisiblityCheckbox';
 

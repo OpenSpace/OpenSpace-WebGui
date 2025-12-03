@@ -1,12 +1,11 @@
 import { Box } from '@mantine/core';
 
 import { Property } from '@/components/Property/Property';
+import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { PropertyOwnerCollapsable } from '@/components/PropertyOwner/PropertyOwnerCollapsable';
 import { usePropertyOwner, useVisibleProperties } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
-
-import { PropertyOwner } from '../../PropertyOwner';
-import { PropertyOwnerCollapsable } from '../../PropertyOwnerCollapsable';
 
 import { VideoPlayer } from './VideoPlayer';
 

@@ -1,5 +1,6 @@
 import { Box } from '@mantine/core';
 
+import { PropertyOwnerCollapsable } from '@/components/PropertyOwner/PropertyOwnerCollapsable';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import {
   ColorPaletteIcon,
@@ -10,8 +11,6 @@ import {
 } from '@/icons/icons';
 import { Uri } from '@/types/types';
 import { displayName, sgnIdentifierFromSubownerUri } from '@/util/propertyTreeHelpers';
-
-import { PropertyOwnerCollapsable } from '../../PropertyOwnerCollapsable';
 
 import { GlobeLayerGroup } from './GlobeLayersGroup';
 
