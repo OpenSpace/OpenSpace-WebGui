@@ -37,6 +37,9 @@ interface Props {
   uri: Uri;
 }
 
+/**
+ * A custom component to render a Globe Layers property owner.
+ */
 export function GlobeLayersPropertyOwner({ uri }: Props) {
   const globeIdentifier = sgnIdentifierFromSubownerUri(uri);
 

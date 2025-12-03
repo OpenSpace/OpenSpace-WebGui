@@ -20,10 +20,10 @@ export function PropertyDescription({ uri, description, visibility }: Props) {
   const { t } = useTranslation('components', { keyPrefix: 'property.visibility' });
   return (
     <>
-      <Text style={{ wordBreak: 'break-word' }} className={styles.selectable}>
+      <Text size={'sm'} style={{ wordBreak: 'break-word' }} className={styles.selectable}>
         {description}
       </Text>
-      {uri && <CopyUriButton uri={uri} />}
+      {uri && <CopyUriButton uri={uri} pt={'sm'} />}
       <Group gap={'xs'} mt={'xs'}>
         <Text size={'xs'}>{t('title')}:</Text>
         <Badge size={'xs'}>{t(`levels.${visibility}`)}</Badge>

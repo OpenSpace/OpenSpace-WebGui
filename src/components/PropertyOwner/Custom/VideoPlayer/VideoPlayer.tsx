@@ -1,7 +1,17 @@
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Card, Group, MantineStyleProps, Tooltip } from '@mantine/core';
+import {
+  ActionIcon,
+  Card,
+  Grid,
+  Group,
+  MantineStyleProps,
+  Text,
+  ThemeIcon,
+  Tooltip
+} from '@mantine/core';
 
-import { Label } from '@/components/Label/Label';
+import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { ToggleActionIcon } from '@/components/ToggleActionIcon/ToggleActionIcon';
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
@@ -28,23 +38,35 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
   const { t } = useTranslation('components', {
     keyPrefix: 'property-owner.video-player'
   });
+
   const propertyOwner = usePropertyOwner(uri);
 
-  const [, triggerPlay] = useProperty('TriggerProperty', `${uri}.Play`);
-  const [, triggerPause] = useProperty('TriggerProperty', `${uri}.Pause`);
-  const [, triggerGoToStart] = useProperty('TriggerProperty', `${uri}.GoToStart`);
-  const [loop, setLoop] = useProperty('BoolProperty', `${uri}.LoopVideo`);
-  const [playAudio, setPlayAudio] = useProperty('BoolProperty', `${uri}.PlayAudio`);
+  const playUri = `${uri}.Play`;
+  const pauseUri = `${uri}.Pause`;
+  const goToStartUri = `${uri}.GoToStart`;
+  const loopUri = `${uri}.LoopVideo`;
+  const playAudioUri = `${uri}.PlayAudio`;
+
+  const [, triggerPlay, playMeta] = useProperty('TriggerProperty', playUri);
+  const [, triggerPause, pauseMeta] = useProperty('TriggerProperty', pauseUri);
+  const [, triggerGoToStart, goToStartMeta] = useProperty(
+    'TriggerProperty',
+    goToStartUri
+  );
+  const [loop, setLoop, loopMeta] = useProperty('BoolProperty', loopUri);
+  const [playAudio, setPlayAudio, playAudioMeta] = useProperty(
+    'BoolProperty',
+    playAudioUri
+  );
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);
   }
 
   return (
-    <Group pl={'xs'} wrap={'nowrap'} {...styleProps}>
+    <Group pl={'xs'} gap={'xs'} wrap={'nowrap'} {...styleProps}>
       <Card withBorder p={'xs'} bg={'transparent'}>
         <Group gap={'xs'}>
-          <Label name={'Video'} />
           <ActionIcon.Group>
             <Tooltip label={t('play-button.tooltip')} openDelay={600}>
               <ActionIcon
@@ -73,10 +95,7 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
             </ActionIcon>
           </Tooltip>
           <Group gap={5}>
-            <Tooltip
-              label={loop ? t('loop-toggle.tooltip-on') : t('loop-toggle.tooltip-off')}
-              openDelay={600}
-            >
+            <Tooltip label={t('loop-toggle.tooltip')} openDelay={600}>
               <ToggleActionIcon
                 isOn={loop ?? false}
                 iconOn={<RepeatIcon />}
@@ -86,12 +105,7 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
                 aria-label={t('loop-toggle.aria-label')}
               />
             </Tooltip>
-            <Tooltip
-              label={
-                playAudio ? t('audio-toggle.tooltip-on') : t('audio-toggle.tooltip-off')
-              }
-              openDelay={600}
-            >
+            <Tooltip label={t('audio-toggle.tooltip')} openDelay={600}>
               <ToggleActionIcon
                 isOn={playAudio ?? false}
                 iconOn={<SoundIcon />}
@@ -104,6 +118,36 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
           </Group>
         </Group>
       </Card>
+      <InfoBox>
+        <Text size={'sm'} mb={'xs'}>
+          {t('info-box.description')}
+        </Text>
+        <Text size={'sm'}>{t('info-box.properties-title')}:</Text>
+        <Grid align={'center'} gutter={2}>
+          {[
+            { uri: playUri, icon: <PlayIcon />, meta: playMeta },
+            { uri: pauseUri, icon: <PauseIcon />, meta: pauseMeta },
+            { uri: goToStartUri, icon: <ReplayIcon />, meta: goToStartMeta },
+            {
+              uri: loopUri,
+              icon: <RepeatIcon />,
+              meta: loopMeta
+            },
+            { uri: playAudioUri, icon: <SoundIcon />, meta: playAudioMeta }
+          ].map(({ uri: propUri, icon, meta }) => (
+            <>
+              <Grid.Col span={1.5}>
+                <Tooltip label={meta?.guiName} openDelay={600}>
+                  <ThemeIcon>{icon}</ThemeIcon>
+                </Tooltip>
+              </Grid.Col>
+              <Grid.Col span={10.5}>
+                {propUri && <CopyUriButton uri={propUri} pt={2} />}
+              </Grid.Col>
+            </>
+          ))}
+        </Grid>
+      </InfoBox>
     </Group>
   );
 }

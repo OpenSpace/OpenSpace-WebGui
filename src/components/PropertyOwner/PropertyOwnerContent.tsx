@@ -1,14 +1,14 @@
 import { Box } from '@mantine/core';
 
 import { Property } from '@/components/Property/Property';
+import { GlobeLayersPropertyOwner } from '@/components/PropertyOwner/Custom/GlobeLayers/GlobeLayersPropertyOwner';
 import { usePropertyOwner, useVisibleProperties } from '@/hooks/propertyOwner';
-import { GlobeLayersPropertyOwner } from '@/panels/Scene/GlobeLayers/GlobeLayersPropertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
 import { isGlobeLayersUri } from '@/util/propertyTreeHelpers';
 
+import { VideoPlayerPropertyOwner } from './Custom/VideoPlayer/VideoPlayerPropertyOwner';
 import { PropertyOwner } from './PropertyOwner';
-import { VideoPlayer } from './VideoPlayer';
 
 interface Props {
   uri: Uri;
@@ -26,33 +26,19 @@ export function PropertyOwnerContent({ uri, hideSubowners = false }: Props) {
     isGlobeLayersUri(uri, state.properties.properties)
   );
 
-  let visibleProperties = useVisibleProperties(propertyOwner);
+  const visibleProperties = useVisibleProperties(propertyOwner);
   const subowners = propertyOwner.subowners ?? [];
 
-  // Separate video player subowner if it exists, so we can render a custom component.
-  // Note that we don't want to do this if the current property owner is the TileProvider
-  // since in that case the VideoPlayer would be rendered at the GlobeLayer level.
-  const videoPlayerUri = uri.endsWith('.TileProvider')
-    ? undefined
-    : subowners.find((subowner) => subowner.endsWith('.VideoPlayer'));
-
-  // Special handling to hide certain properties from the VideoPlayer property owner,
-  // since we render them in a custom way in the VideoPlayerComponent
-  if (propertyOwner.identifier === 'VideoPlayer') {
-    const PropertiesToHide = ['.Play', '.Pause', '.GoToStart'];
-    visibleProperties = visibleProperties.filter(
-      (propUri) => !PropertiesToHide.some((s) => propUri.endsWith(s))
-    );
-  }
-
+  // TODO: Move to propertyOwner instead of content
   // First handle any custom content types that has a special treatment, like GlobeLayers
   if (isGlobeLayers) {
     return <GlobeLayersPropertyOwner uri={uri} />;
+  } else if (propertyOwner.identifier === 'VideoPlayer') {
+    return <VideoPlayerPropertyOwner uri={uri} />;
   }
 
   return (
     <Box>
-      {videoPlayerUri && <VideoPlayer uri={videoPlayerUri} mb={'xs'} />}
       {!hideSubowners && subowners.length > 0 && (
         <Box>
           {subowners.map((subowner) => (

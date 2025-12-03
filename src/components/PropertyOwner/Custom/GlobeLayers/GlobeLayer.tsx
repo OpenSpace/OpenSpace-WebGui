@@ -5,7 +5,6 @@ import { Collapsable } from '@/components/Collapsable/Collapsable';
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
-import { VideoPlayer } from '@/components/PropertyOwner/VideoPlayer';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
@@ -19,15 +18,6 @@ export function GlobeLayer({ uri }: Props) {
   const { t } = useTranslation('panel-scene', { keyPrefix: 'globe-layer' });
 
   const propertyOwner = usePropertyOwner(uri);
-
-  // Check for VideoPlayer subowner, which in this case would live in the tile provider.
-  // We want to render a custom video player component at the top level of the GlobeLayer.
-  const tileProviderUri = `${uri}.TileProvider`;
-  const tileProvider = usePropertyOwner(tileProviderUri);
-  const videoPlayerUri = tileProvider?.subowners.find((subowner) =>
-    subowner.endsWith('VideoPlayer')
-  );
-
   const { isVisible } = usePropertyOwnerVisibility(uri);
 
   if (!propertyOwner) {
@@ -52,7 +42,6 @@ export function GlobeLayer({ uri }: Props) {
       }
       noTransition
     >
-      {videoPlayerUri && <VideoPlayer uri={videoPlayerUri} my={'xs'} />}
       <PropertyOwnerContent uri={uri} />
     </Collapsable>
   );
