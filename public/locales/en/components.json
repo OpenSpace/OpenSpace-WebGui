@@ -186,7 +186,7 @@
         "aria-label": "Audio"
       },
       "info-box": {
-        "description": "Controls for video playback.",
+        "description": "Properties for controlling video playback.",
         "properties-title": "Properties"
       }
     }

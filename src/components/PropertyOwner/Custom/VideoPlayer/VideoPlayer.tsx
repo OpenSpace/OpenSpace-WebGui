@@ -1,3 +1,4 @@
+import { Fragment } from 'react/jsx-runtime';
 import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
@@ -119,7 +120,6 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
         <Text size={'sm'} mb={'xs'}>
           {t('info-box.description')}
         </Text>
-        <Text size={'sm'}>{t('info-box.properties-title')}:</Text>
         <Grid align={'center'} gutter={2}>
           {[
             { uri: playUri, icon: <PlayIcon />, meta: playMeta },
@@ -132,7 +132,7 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
             },
             { uri: playAudioUri, icon: <SoundIcon />, meta: playAudioMeta }
           ].map(({ uri: propUri, icon, meta }) => (
-            <>
+            <Fragment key={propUri}>
               <Grid.Col span={1.5}>
                 <Tooltip label={meta?.guiName} openDelay={600}>
                   <ThemeIcon>{icon}</ThemeIcon>
@@ -141,7 +141,7 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
               <Grid.Col span={10.5}>
                 {propUri && <CopyUriButton uri={propUri} pt={2} />}
               </Grid.Col>
-            </>
+            </Fragment>
           ))}
         </Grid>
       </InfoBox>
