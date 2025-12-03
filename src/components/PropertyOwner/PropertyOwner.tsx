@@ -11,13 +11,14 @@ import { PropertyOwnerContent } from './PropertyOwnerContent';
 interface Props {
   uri: Uri;
   expandedOnDefault?: boolean;
-  noHeader?: boolean;
+  onlyContent?: boolean;
   hideSubowners?: boolean;
 }
 
 export function PropertyOwner({
   uri,
   expandedOnDefault = false,
+  onlyContent = false,
   hideSubowners = false
 }: Props) {
   const propertyOwner = usePropertyOwner(uri);
@@ -49,6 +50,10 @@ export function PropertyOwner({
   // layers, expand tile poviders per default (to show layer type specific properties)
   if (propertyOwner.identifier === 'TileProvider') {
     expandedOnDefault = true;
+  }
+
+  if (onlyContent) {
+    return <PropertyOwnerContent uri={uri} hideSubowners={hideSubowners} />;
   }
 
   return (
