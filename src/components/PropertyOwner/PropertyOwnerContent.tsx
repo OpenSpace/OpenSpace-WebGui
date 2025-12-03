@@ -1,13 +1,9 @@
 import { Box } from '@mantine/core';
 
 import { Property } from '@/components/Property/Property';
-import { GlobeLayersPropertyOwner } from '@/components/PropertyOwner/Custom/GlobeLayers/GlobeLayersPropertyOwner';
 import { usePropertyOwner, useVisibleProperties } from '@/hooks/propertyOwner';
-import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
-import { isGlobeLayersUri } from '@/util/propertyTreeHelpers';
 
-import { VideoPlayerPropertyOwner } from './Custom/VideoPlayer/VideoPlayerPropertyOwner';
 import { PropertyOwner } from './PropertyOwner';
 
 interface Props {
@@ -22,20 +18,8 @@ export function PropertyOwnerContent({ uri, hideSubowners = false }: Props) {
     throw Error(`No property owner found for uri: ${uri}`);
   }
 
-  const isGlobeLayers = useAppSelector((state) =>
-    isGlobeLayersUri(uri, state.properties.properties)
-  );
-
   const visibleProperties = useVisibleProperties(propertyOwner);
   const subowners = propertyOwner.subowners ?? [];
-
-  // TODO: Move to propertyOwner instead of content
-  // First handle any custom content types that has a special treatment, like GlobeLayers
-  if (isGlobeLayers) {
-    return <GlobeLayersPropertyOwner uri={uri} />;
-  } else if (propertyOwner.identifier === 'VideoPlayer') {
-    return <VideoPlayerPropertyOwner uri={uri} />;
-  }
 
   return (
     <Box>

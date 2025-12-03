@@ -1,28 +1,34 @@
-import { Box } from '@mantine/core';
-
-import { Collapsable } from '@/components/Collapsable/Collapsable';
-import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { useHasVisibleChildren, usePropertyOwner } from '@/hooks/propertyOwner';
+import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
-import { displayName } from '@/util/propertyTreeHelpers';
+import { displayName, isGlobeLayersUri } from '@/util/propertyTreeHelpers';
 
-import CopyUriButton from '../CopyUriButton/CopyUriButton';
-
+import { GlobeLayersPropertyOwner } from './Custom/GlobeLayers/GlobeLayersPropertyOwner';
+import { VideoPlayerPropertyOwner } from './Custom/VideoPlayer/VideoPlayerPropertyOwner';
+import { PropertyOwnerCollapsable } from './PropertyOwnerCollapsable';
 import { PropertyOwnerContent } from './PropertyOwnerContent';
-import { PropertyOwnerVisibilityCheckbox } from './VisiblityCheckbox';
 
 interface Props {
   uri: Uri;
   expandedOnDefault?: boolean;
-  withHeader?: boolean;
+  noHeader?: boolean;
+  hideSubowners?: boolean;
 }
 
-export function PropertyOwner({ uri, expandedOnDefault = false }: Props) {
+export function PropertyOwner({
+  uri,
+  expandedOnDefault = false,
+  hideSubowners = false
+}: Props) {
   const propertyOwner = usePropertyOwner(uri);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);
   }
+
+  const isGlobeLayers = useAppSelector((state) =>
+    isGlobeLayersUri(uri, state.properties.properties)
+  );
 
   const hasVisibleChildren = useHasVisibleChildren(uri);
 
@@ -32,24 +38,26 @@ export function PropertyOwner({ uri, expandedOnDefault = false }: Props) {
     return <></>;
   }
 
+  // First handle any custom content types that has a special treatment, like GlobeLayers
+  if (isGlobeLayers) {
+    return <GlobeLayersPropertyOwner uri={uri} />;
+  } else if (propertyOwner.identifier === 'VideoPlayer') {
+    return <VideoPlayerPropertyOwner uri={uri} expandedOnDefault={true} />;
+  }
+
+  // @TODO (2025-12-03, emmbr) Until we have a better structure for tile providers and
+  // layers, expand tile poviders per default (to show layer type specific properties)
+  if (propertyOwner.identifier === 'TileProvider') {
+    expandedOnDefault = true;
+  }
+
   return (
-    <Collapsable
+    <PropertyOwnerCollapsable
+      uri={uri}
       title={displayName(propertyOwner)}
-      leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
-      rightSection={
-        propertyOwner.description && (
-          <InfoBox>
-            {propertyOwner.description}
-            <CopyUriButton uri={uri} />
-          </InfoBox>
-        )
-      }
-      defaultOpen={expandedOnDefault}
-      noTransition
+      expandedOnDefault={expandedOnDefault}
     >
-      <Box style={{ borderLeft: '2px solid var(--mantine-color-gray-8)' }}>
-        <PropertyOwnerContent uri={uri} />
-      </Box>
-    </Collapsable>
+      <PropertyOwnerContent uri={uri} hideSubowners={hideSubowners} />
+    </PropertyOwnerCollapsable>
   );
 }

@@ -1,21 +1,24 @@
-import { Box, MantineStyleProps } from '@mantine/core';
+import { Box } from '@mantine/core';
 
 import { Property } from '@/components/Property/Property';
 import { usePropertyOwner, useVisibleProperties } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
+import { displayName } from '@/util/propertyTreeHelpers';
 
 import { PropertyOwner } from '../../PropertyOwner';
+import { PropertyOwnerCollapsable } from '../../PropertyOwnerCollapsable';
 
 import { VideoPlayer } from './VideoPlayer';
 
-interface Props extends MantineStyleProps {
+interface Props {
   uri: Uri;
+  expandedOnDefault?: boolean;
 }
 
 /**
  * A custom component to render a Video Player property owner.
  */
-export function VideoPlayerPropertyOwner({ uri, ...styleProps }: Props) {
+export function VideoPlayerPropertyOwner({ uri, expandedOnDefault = false }: Props) {
   const propertyOwner = usePropertyOwner(uri);
 
   if (!propertyOwner) {
@@ -30,8 +33,12 @@ export function VideoPlayerPropertyOwner({ uri, ...styleProps }: Props) {
   const subowners = propertyOwner.subowners ?? [];
 
   return (
-    <Box>
-      <VideoPlayer uri={uri} {...styleProps} />
+    <PropertyOwnerCollapsable
+      uri={uri}
+      title={displayName(propertyOwner)}
+      expandedOnDefault={expandedOnDefault}
+    >
+      <VideoPlayer uri={uri} />
       {subowners.length > 0 && (
         <Box>
           {subowners.map((subowner) => (
@@ -46,6 +53,6 @@ export function VideoPlayerPropertyOwner({ uri, ...styleProps }: Props) {
           ))}
         </Box>
       )}
-    </Box>
+    </PropertyOwnerCollapsable>
   );
 }
