@@ -54,7 +54,7 @@ export function GlobeLayerGroup({ uri, globe, icon }: Props) {
       }
       noTransition
     >
-      <Card withBorder bg={'transparent'} mt={'xs'} p={'xs'} pl={0}>
+      <Card withBorder bg={'transparent'} mt={5} p={5} pl={0}>
         <LayerList layers={layers} layerGroup={propertyOwner.identifier} globe={globe} />
       </Card>
 
