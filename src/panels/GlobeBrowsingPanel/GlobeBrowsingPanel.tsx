@@ -1,18 +1,30 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Button, Group, Select, Stack, Text, Tooltip } from '@mantine/core';
+import {
+  ActionIcon,
+  Button,
+  Group,
+  Menu,
+  Select,
+  Stack,
+  Text,
+  Tooltip
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useProperty } from '@/hooks/properties';
-import { DeleteIcon, FocusIcon } from '@/icons/icons';
+import { DeleteIcon, FocusIcon, ServerIcon, VerticalDotsIcon } from '@/icons/icons';
+import styles from '@/theme/global.module.css';
 import { IconSize } from '@/types/enums';
 import { NavigationAnchorKey } from '@/util/keys';
+import { makeIdentifier } from '@/util/text';
 
 import { AddServerModal } from './AddServerModal';
 import { CapabilityEntry } from './CapabilityEntry';
@@ -23,7 +35,6 @@ import {
   useRenderableGlobes
 } from './hooks';
 import { Capability, LayerType, layerTypes } from './types';
-import { capabilityName } from './util';
 
 export function GlobeBrowsingPanel() {
   // Default to Earth WMS
@@ -45,6 +56,7 @@ export function GlobeBrowsingPanel() {
     currentAnchor !== undefined &&
     globeBrowsingNodes?.identifiers.includes(currentAnchor);
 
+  // Select a default available WMS server for a specific globe
   useEffect(() => {
     // Don't update if the selected WMS server still exists
     if (selectedWMS !== null && globeWMS.find((info) => info.name === selectedWMS)) {
@@ -78,7 +90,7 @@ export function GlobeBrowsingPanel() {
       return;
     }
 
-    const layerName = capabilityName(cap.Name);
+    const layerName = makeIdentifier(cap.Name);
 
     await luaApi?.globebrowsing.addLayer(selectedGlobe, layerType, {
       Identifier: layerName,
@@ -94,7 +106,7 @@ export function GlobeBrowsingPanel() {
       return;
     }
 
-    const layerName = capabilityName(name);
+    const layerName = makeIdentifier(name);
     for (const layerType of layerTypes) {
       if (addedLayers[layerType].includes(layerName)) {
         await luaApi?.globebrowsing.deleteLayer(selectedGlobe, layerType, layerName);
@@ -175,40 +187,51 @@ export function GlobeBrowsingPanel() {
                     : t('select-globe.tooltips.invalid-focus')
                 }
               >
-                <ActionIcon
+                <Button
                   onClick={() => {
                     if (isAnchorRenderableGlobe) {
                       setSelectedGlobe(currentAnchor);
                     }
                   }}
                   disabled={!isAnchorRenderableGlobe}
-                  size={'input-sm'}
+                  leftSection={<FocusIcon size={IconSize.xs} />}
+                  px={'xs'}
                 >
-                  <FocusIcon size={IconSize.sm} />
-                </ActionIcon>
+                  From focus
+                </Button>
               </Tooltip>
             </Group>
             <Group gap={'xs'}>
               <Select
                 value={selectedWMS}
-                data={globeWMS.map((info) => ({
-                  value: info.name,
-                  label: `${info.name} (${info.url})`
-                }))}
+                data={globeWMS.map((info) => info.name)}
                 onChange={(value) => setSelectedWMS(value)}
                 allowDeselect={false}
                 flex={1}
               />
-              <Button onClick={open}>{t('add-server-button')}</Button>
-              <Tooltip
-                label={t('select-globe.tooltips.remove-server', {
-                  serverName: selectedWMS
-                })}
-              >
-                <ActionIcon size={'input-sm'}>
-                  <DeleteIcon onClick={removeServerModal} size={IconSize.sm} />
-                </ActionIcon>
-              </Tooltip>
+              <InfoBox>
+                <Text>{t('server-info')}</Text>
+                <Text className={styles.selectable} style={{ wordBreak: 'break-word' }}>
+                  {globeWMS.find((info) => info.name === selectedWMS)?.url}
+                </Text>
+              </InfoBox>
+              <Menu position={'right-start'}>
+                <Menu.Target>
+                  <ActionIcon>
+                    <VerticalDotsIcon />
+                  </ActionIcon>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Stack gap={'xs'}>
+                    <Button onClick={open} leftSection={<ServerIcon />}>
+                      {t('button-labels.add-server')}
+                    </Button>
+                    <Button onClick={removeServerModal} leftSection={<DeleteIcon />}>
+                      {t('button-labels.remove-server')}
+                    </Button>
+                  </Stack>
+                </Menu.Dropdown>
+              </Menu>
             </Group>
           </Stack>
         </Layout.FixedSection>

@@ -14,7 +14,8 @@ import {
 
 /**
  * Fetches all layers currently loaded on the globe given by `globeIdentifier`grouped by
- * their respective `LayerType`
+ * their respective `LayerType`.
+ *
  * @param globeIdentifier The globe to get layers for
  * @returns An object containing all layers in their respective group: 'ColorLayers',
  * 'HeightLayers', 'Overlays', 'HeightLayers', 'WaterMasks'
@@ -57,7 +58,8 @@ export function useAddedLayers(globeIdentifier: string | null) {
 }
 
 /**
- * Fetches all renderable that is of type `renderableGlobe`
+ * Fetches all renderable that is of type `renderableGlobe`.
+ *
  * @returns An object containing an array of identifiers for all globes currently loaded
  * in the scene and the index for the first globe in the list without an attached WMS
  * server
@@ -69,6 +71,9 @@ export function useRenderableGlobes() {
   const luaApi = useOpenSpaceApi();
 
   const fetchRenderableGlobes = useCallback(async () => {
+    if (!luaApi) {
+      return;
+    }
     const nodes = (await luaApi?.globebrowsing.globes()) as OpenSpaceGlobeBrowsingNodes;
     const renderableGlobesIdentifiers = Object.values(nodes.identifiers);
     const { firstIndexWithoutUrl } = nodes;
@@ -87,7 +92,8 @@ export function useRenderableGlobes() {
 }
 
 /**
- * Fetches the WMS server information for a given renderable globe
+ * Fetches the WMS server information for a given renderable globe.
+ *
  * @param globe The globe to get WMS server info for
  * @returns An array containing WMS server info names and URLs
  */
@@ -115,7 +121,8 @@ export function useGlobeWMSInfo(globe: string | null) {
 }
 
 /**
- * Fetches the layer capabilities for a given WMS server name
+ * Fetches the layer capabilities for a given WMS server name.
+ *
  * @param WMSServer The name of the server to fetch capabilities for
  * @returns An array of capabilities for the given WMS server
  */

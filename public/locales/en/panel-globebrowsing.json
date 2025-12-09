@@ -3,11 +3,14 @@
     "no-server-group": "Globes without server",
     "tooltips": {
       "valid-focus": "Select from current foucs",
-      "invalid-focus": "Only works if the focus is a globe",
-      "remove-server": "Remove server: '{{serverName}}'"
+      "invalid-focus": "Only works if the focus is a globe"
     }
   },
-  "add-server-button": "Add server",
+  "server-info": "Server URL:",
+  "button-labels": {
+    "add-server": "Add new server",
+    "remove-server": "Remove current server"
+  },
   "filter-list-placeholder": "Search for a layer...",
   "remove-server-modal": {
     "title": "Remove server",

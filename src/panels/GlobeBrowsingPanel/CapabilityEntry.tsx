@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Group, Menu, Tooltip } from '@mantine/core';
+import { ActionIcon, Box, Group, Menu, Tooltip } from '@mantine/core';
 
 import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
 import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
@@ -14,9 +14,9 @@ import {
   VerticalDotsIcon,
   WaterIcon
 } from '@/icons/icons';
+import { makeIdentifier } from '@/util/text';
 
 import { Capability, LayerType, layerTypes } from './types';
-import { capabilityName } from './util';
 
 interface Props {
   capability: Capability;
@@ -78,7 +78,7 @@ export const CapabilityEntry = memo(
     );
 
     function isInLayerGroup(layerType: LayerType) {
-      const name = capabilityName(capability.Name);
+      const name = makeIdentifier(capability.Name);
       return addedLayers[layerType].includes(name);
     }
 
@@ -129,9 +129,30 @@ export const CapabilityEntry = memo(
                 key={group.id}
               >
                 <Menu.Item
-                  leftSection={group.icon}
-                  onClick={() => onAdd(capability, group.id)}
                   key={group.id}
+                  onClick={() => onAdd(capability, group.id)}
+                  leftSection={
+                    <Box
+                      style={{
+                        position: 'relative',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: 14,
+                        height: 14
+                      }}
+                    >
+                      {group.icon}
+                      <PlusIcon
+                        style={{
+                          position: 'absolute',
+                          top: -4,
+                          right: -4
+                        }}
+                        size={8}
+                      />
+                    </Box>
+                  }
                 >
                   {group.label}
                 </Menu.Item>

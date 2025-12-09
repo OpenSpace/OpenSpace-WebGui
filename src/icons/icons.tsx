@@ -118,6 +118,7 @@ export {
   TbSphere as LineIcon,
   TbCube as SceneIcon,
   TbScript as ScriptLogIcon,
+  TbServer as ServerIcon,
   TbWorldWww as WebIcon
 } from 'react-icons/tb';
 export {
