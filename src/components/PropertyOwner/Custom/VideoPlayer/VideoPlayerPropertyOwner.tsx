@@ -1,9 +1,8 @@
+import { PropertyOwnerChildren } from '@/components/PropertyOwner/PropertyOwnerChildren';
 import { PropertyOwnerCollapsable } from '@/components/PropertyOwner/PropertyOwnerCollapsable';
 import { usePropertyOwner, useVisibleProperties } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
-
-import { PropertyOwnerContent } from '../../PropertyOwnerContent';
 
 import { VideoPlayer } from './VideoPlayer';
 
@@ -36,7 +35,7 @@ export function VideoPlayerPropertyOwner({ uri, expandedOnDefault = false }: Pro
       expandedOnDefault={expandedOnDefault}
     >
       <VideoPlayer uri={uri} />
-      <PropertyOwnerContent properties={visibleProperties} subowners={subowners} />
+      <PropertyOwnerChildren properties={visibleProperties} subowners={subowners} />
     </PropertyOwnerCollapsable>
   );
 }

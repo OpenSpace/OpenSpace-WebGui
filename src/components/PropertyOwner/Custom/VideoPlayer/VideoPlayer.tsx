@@ -27,13 +27,9 @@ import {
 import { Uri } from '@/types/types';
 
 interface Props extends MantineStyleProps {
-  /* The URI of the Video Player property owner */
   uri: Uri;
 }
 
-/**
- * A custom component to render video player controls for a Video Player property owner.
- */
 export function VideoPlayer({ uri, ...styleProps }: Props) {
   const { t } = useTranslation('components', {
     keyPrefix: 'property-owner.video-player'
@@ -62,6 +58,20 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);
   }
+
+  // Data for the different properties that the controls represent, to show in the
+  // info box
+  const propertyData = [
+    { uri: playUri, icon: <PlayIcon />, meta: playMeta },
+    { uri: pauseUri, icon: <PauseIcon />, meta: pauseMeta },
+    { uri: goToStartUri, icon: <ReplayIcon />, meta: goToStartMeta },
+    {
+      uri: loopUri,
+      icon: <RepeatIcon />,
+      meta: loopMeta
+    },
+    { uri: playAudioUri, icon: <SoundIcon />, meta: playAudioMeta }
+  ];
 
   return (
     <Group pl={'xs'} wrap={'nowrap'} {...styleProps}>
@@ -121,17 +131,7 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
           {t('info-box.description')}
         </Text>
         <Grid align={'center'} gutter={2}>
-          {[
-            { uri: playUri, icon: <PlayIcon />, meta: playMeta },
-            { uri: pauseUri, icon: <PauseIcon />, meta: pauseMeta },
-            { uri: goToStartUri, icon: <ReplayIcon />, meta: goToStartMeta },
-            {
-              uri: loopUri,
-              icon: <RepeatIcon />,
-              meta: loopMeta
-            },
-            { uri: playAudioUri, icon: <SoundIcon />, meta: playAudioMeta }
-          ].map(({ uri: propUri, icon, meta }) => (
+          {propertyData.map(({ uri: propUri, icon, meta }) => (
             <Fragment key={propUri}>
               <Grid.Col span={1.5}>
                 <Tooltip label={meta?.guiName} openDelay={600}>

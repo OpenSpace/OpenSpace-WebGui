@@ -4,7 +4,7 @@ import { Group, Text } from '@mantine/core';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
+import { PropertyOwnerChildren } from '@/components/PropertyOwner/PropertyOwnerChildren';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import {
   usePropertyOwner,
@@ -49,7 +49,7 @@ export function GlobeLayer({ uri }: Props) {
       }
       noTransition
     >
-      <PropertyOwnerContent properties={visibleProperties} subowners={subowners} />
+      <PropertyOwnerChildren properties={visibleProperties} subowners={subowners} />
     </Collapsable>
   );
 }

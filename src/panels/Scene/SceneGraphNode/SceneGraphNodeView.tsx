@@ -111,7 +111,7 @@ export function SceneGraphNodeView({ uri }: Props) {
         <Tabs.Panel value={TabKeys.Renderable}>
           {hasRenderable ? (
             <Box mt={'xs'}>
-              <PropertyOwner uri={renderable} onlyContent />
+              <PropertyOwner uri={renderable} showOnlyChildren />
             </Box>
           ) : (
             <Text m={'xs'}>{t('renderable.tooltip.no-renderable')}</Text>
@@ -172,7 +172,7 @@ export function SceneGraphNodeView({ uri }: Props) {
           <Tabs.Panel value={TabKeys.Other}>
             {/* This tab shows the properties scene graph node, without any of the
                 subowners */}
-            <PropertyOwner uri={uri} onlyContent hideSubowners />
+            <PropertyOwner uri={uri} showOnlyChildren hideSubowners />
           </Tabs.Panel>
         )}
 

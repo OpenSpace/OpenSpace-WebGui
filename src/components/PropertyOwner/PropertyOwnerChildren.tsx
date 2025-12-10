@@ -10,7 +10,7 @@ interface Props {
   subowners: Uri[];
 }
 
-export function PropertyOwnerContent({ properties, subowners }: Props) {
+export function PropertyOwnerChildren({ properties, subowners }: Props) {
   return (
     <>
       {subowners.length > 0 && (

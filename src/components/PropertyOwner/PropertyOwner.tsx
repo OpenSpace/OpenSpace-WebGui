@@ -9,20 +9,20 @@ import { displayName, isGlobeLayersUri } from '@/util/propertyTreeHelpers';
 
 import { GlobeLayersPropertyOwner } from './Custom/GlobeLayers/GlobeLayersPropertyOwner';
 import { VideoPlayerPropertyOwner } from './Custom/VideoPlayer/VideoPlayerPropertyOwner';
+import { PropertyOwnerChildren } from './PropertyOwnerChildren';
 import { PropertyOwnerCollapsable } from './PropertyOwnerCollapsable';
-import { PropertyOwnerContent } from './PropertyOwnerContent';
 
 interface Props {
   uri: Uri;
   expandedOnDefault?: boolean;
-  onlyContent?: boolean;
+  showOnlyChildren?: boolean;
   hideSubowners?: boolean;
 }
 
 export function PropertyOwner({
   uri,
   expandedOnDefault = false,
-  onlyContent = false,
+  showOnlyChildren = false,
   hideSubowners = false
 }: Props) {
   const propertyOwner = usePropertyOwner(uri);
@@ -58,8 +58,8 @@ export function PropertyOwner({
     expandedOnDefault = true;
   }
 
-  if (onlyContent) {
-    return <PropertyOwnerContent properties={visibleProperties} subowners={subowners} />;
+  if (showOnlyChildren) {
+    return <PropertyOwnerChildren properties={visibleProperties} subowners={subowners} />;
   }
 
   return (
@@ -68,7 +68,7 @@ export function PropertyOwner({
       title={displayName(propertyOwner)}
       expandedOnDefault={expandedOnDefault}
     >
-      <PropertyOwnerContent properties={visibleProperties} subowners={subowners} />
+      <PropertyOwnerChildren properties={visibleProperties} subowners={subowners} />
     </PropertyOwnerCollapsable>
   );
 }
