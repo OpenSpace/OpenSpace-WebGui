@@ -7,7 +7,7 @@ import { IconSize } from '@/types/enums';
 type DecoratorPosition = 'top-left' | 'top-right';
 
 interface Props extends PropsWithChildren {
-  decorator?: React.ReactNode;
+  renderDecorator?: (size: number) => React.JSX.Element;
   position?: DecoratorPosition;
   size?: MantineSize;
 }
@@ -38,7 +38,7 @@ const MappedDecoratorSize: Record<MantineSize, number> = {
 
 export function DecoratedIcon({
   children,
-  decorator,
+  renderDecorator,
   position = 'top-right',
   size = 'xs'
 }: Props) {
@@ -63,7 +63,11 @@ export function DecoratedIcon({
     >
       {children}
       <Box pos={'absolute'} style={mappedDecoratorPositionCSS[position]}>
-        {decorator ?? <PlusIcon size={MappedDecoratorSize[size]} />}
+        {renderDecorator ? (
+          renderDecorator(MappedDecoratorSize[size])
+        ) : (
+          <PlusIcon size={MappedDecoratorSize[size]} />
+        )}
       </Box>
     </Box>
   );
