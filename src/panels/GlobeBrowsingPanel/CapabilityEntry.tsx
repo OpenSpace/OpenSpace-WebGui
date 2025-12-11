@@ -17,6 +17,7 @@ import {
 import { makeIdentifier } from '@/util/text';
 
 import { Capability, LayerType, layerTypes } from './types';
+import { DecoratedIcon } from '@/components/DecoratedIcon/DecoratedIcon';
 
 interface Props {
   capability: Capability;
@@ -132,26 +133,29 @@ export const CapabilityEntry = memo(
                   key={group.id}
                   onClick={() => onAdd(capability, group.id)}
                   leftSection={
-                    <Box
-                      style={{
-                        position: 'relative',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: 14,
-                        height: 14
-                      }}
-                    >
-                      {group.icon}
-                      <PlusIcon
+                    <>
+                      <Box
                         style={{
-                          position: 'absolute',
-                          top: -4,
-                          right: -4
+                          position: 'relative',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: 14,
+                          height: 14
                         }}
-                        size={8}
-                      />
-                    </Box>
+                      >
+                        {group.icon}
+                        <PlusIcon
+                          style={{
+                            position: 'absolute',
+                            top: -4,
+                            right: -4
+                          }}
+                          size={8}
+                        />
+                      </Box>
+                      <DecoratedIcon>{group.icon}</DecoratedIcon>
+                    </>
                   }
                 >
                   {group.label}
