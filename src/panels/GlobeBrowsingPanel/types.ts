@@ -19,13 +19,3 @@ export interface UrlInfo {
   name: string; // Name of the WMS server
   url: string; //
 }
-
-export const layerTypes = [
-  'ColorLayers',
-  'NightLayers',
-  'Overlays',
-  'HeightLayers',
-  'WaterMasks'
-] as const;
-
-export type LayerType = (typeof layerTypes)[number];

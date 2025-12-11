@@ -1,37 +1,8 @@
-import {
-  ColorPaletteIcon,
-  LandscapeIcon,
-  LayersIcon,
-  NightIcon,
-  WaterIcon
-} from '@/icons/icons';
+import { layerGroups } from '@/data/GlobeLayers';
 import { Uri } from '@/types/types';
 import { sgnIdentifierFromSubownerUri } from '@/util/propertyTreeHelpers';
 
 import { GlobeLayerGroup } from './GlobeLayersGroup';
-
-const layerGroups = [
-  {
-    id: 'ColorLayers',
-    icon: <ColorPaletteIcon />
-  },
-  {
-    id: 'HeightLayers',
-    icon: <LandscapeIcon />
-  },
-  {
-    id: 'NightLayers',
-    icon: <NightIcon />
-  },
-  {
-    id: 'Overlays',
-    icon: <LayersIcon />
-  },
-  {
-    id: 'WaterMasks',
-    icon: <WaterIcon />
-  }
-];
 
 interface Props {
   uri: Uri;

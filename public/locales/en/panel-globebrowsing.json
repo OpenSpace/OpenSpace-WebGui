@@ -9,7 +9,8 @@
   "server-info": "Server URL:",
   "button-labels": {
     "add-server": "Add new server",
-    "remove-server": "Remove current server"
+    "remove-server": "Remove current server",
+    "from-focus": "From focus"
   },
   "filter-list-placeholder": "Search for a layer...",
   "remove-server-modal": {

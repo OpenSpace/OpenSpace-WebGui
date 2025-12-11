@@ -23,6 +23,7 @@ import { useProperty } from '@/hooks/properties';
 import { DeleteIcon, FocusIcon, ServerIcon, VerticalDotsIcon } from '@/icons/icons';
 import styles from '@/theme/global.module.css';
 import { IconSize } from '@/types/enums';
+import { LayerType, layerTypes } from '@/types/globeLayers';
 import { NavigationAnchorKey } from '@/util/keys';
 import { makeIdentifier } from '@/util/text';
 
@@ -34,10 +35,11 @@ import {
   useGlobeWMSInfo,
   useRenderableGlobes
 } from './hooks';
-import { Capability, LayerType, layerTypes } from './types';
+import { Capability } from './types';
 
 export function GlobeBrowsingPanel() {
   // Default to Earth WMS
+  const { t } = useTranslation('panel-globebrowsing');
   const [selectedGlobe, setSelectedGlobe] = useState<string | null>(null);
   const [selectedWMS, setSelectedWMS] = useState<string | null>(null);
 
@@ -50,7 +52,6 @@ export function GlobeBrowsingPanel() {
   const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
   const [opened, { open, close }] = useDisclosure(false);
   const luaApi = useOpenSpaceApi();
-  const { t } = useTranslation('panel-globebrowsing');
 
   const isAnchorRenderableGlobe =
     currentAnchor !== undefined &&
@@ -197,7 +198,7 @@ export function GlobeBrowsingPanel() {
                   leftSection={<FocusIcon size={IconSize.xs} />}
                   px={'xs'}
                 >
-                  From focus
+                  {t('button-labels.from-focus')}
                 </Button>
               </Tooltip>
             </Group>

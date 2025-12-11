@@ -1,23 +1,16 @@
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, Menu, Tooltip } from '@mantine/core';
 
 import { DecoratedIcon } from '@/components/DecoratedIcon/DecoratedIcon';
 import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
 import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
-import {
-  ColorPaletteIcon,
-  DeleteIcon,
-  LandscapeIcon,
-  LayersIcon,
-  NightIcon,
-  PlusIcon,
-  VerticalDotsIcon,
-  WaterIcon
-} from '@/icons/icons';
+import { layerGroups } from '@/data/GlobeLayers';
+import { DeleteIcon, PlusIcon, VerticalDotsIcon } from '@/icons/icons';
+import { LayerType, layerTypes } from '@/types/globeLayers';
 import { makeIdentifier } from '@/util/text';
 
-import { Capability, LayerType, layerTypes } from './types';
+import { Capability } from './types';
 
 interface Props {
   capability: Capability;
@@ -26,57 +19,20 @@ interface Props {
   onRemove: (name: string) => void;
 }
 
-interface LayerGroupData {
-  id: LayerType;
-  icon: React.JSX.Element;
-  label: string;
-}
-
 /**
- * Represents a layer entry from the WTMS server
+ * Represents a layer entry from the WTMS server.
  *
  * Even though this component is quite small and lightweight there can be thousands of
- * capability enstries so to try and reduce some of the lag that occured we memo this
+ * capability entries so to try and reduce some of the lag that occurred we memo this
  * component.
  */
 export const CapabilityEntry = memo(
   ({ capability, addedLayers, onAdd, onRemove }: Props) => {
-    const addedGroups = layerTypes.filter((layerType) => isInLayerGroup(layerType));
-
     const { t } = useTranslation('panel-globebrowsing', {
       keyPrefix: 'capability-entry'
     });
 
-    const layerGroups: LayerGroupData[] = useMemo(
-      () => [
-        {
-          id: 'ColorLayers',
-          icon: <ColorPaletteIcon />,
-          label: 'Color layer'
-        },
-        {
-          id: 'HeightLayers',
-          icon: <LandscapeIcon />,
-          label: 'Height layer'
-        },
-        {
-          id: 'NightLayers',
-          icon: <NightIcon />,
-          label: 'Night layer'
-        },
-        {
-          id: 'Overlays',
-          icon: <LayersIcon />,
-          label: 'Overlay layer'
-        },
-        {
-          id: 'WaterMasks',
-          icon: <WaterIcon />,
-          label: 'Water mask'
-        }
-      ],
-      []
-    );
+    const addedGroups = layerTypes.filter((layerType) => isInLayerGroup(layerType));
 
     function isInLayerGroup(layerType: LayerType) {
       const name = makeIdentifier(capability.Name);

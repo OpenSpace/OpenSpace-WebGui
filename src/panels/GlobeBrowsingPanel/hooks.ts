@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { LayerType, layerTypes } from '@/types/globeLayers';
 
 import {
   Capability,
   GlobeBrowsingNodes,
-  LayerType,
-  layerTypes,
   OpenSpaceCapabilities,
   OpenSpaceGlobeBrowsingNodes,
   UrlInfo
