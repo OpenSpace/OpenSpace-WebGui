@@ -38,8 +38,8 @@ import {
 import { Capability } from './types';
 
 export function GlobeImageryBrowserPanel() {
-  // Default to Earth WMS
   const { t } = useTranslation('panel-globeimagerybrowser');
+  // Default to Earth WMS
   const [selectedGlobe, setSelectedGlobe] = useState<string | null>(null);
   const [selectedWMS, setSelectedWMS] = useState<string | null>(null);
 
