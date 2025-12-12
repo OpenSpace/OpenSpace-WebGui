@@ -1,7 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { LayerType, layerTypes } from '@/types/globeLayers';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
+import { Identifier } from '@/types/types';
+import { sgnRenderableUri, sgnUri } from '@/util/propertyTreeHelpers';
 
 import {
   Capability,
@@ -19,41 +21,33 @@ import {
  * @returns An object containing all layers in their respective group: 'ColorLayers',
  * 'HeightLayers', 'Overlays', 'HeightLayers', 'WaterMasks'
  */
-export function useAddedLayers(globeIdentifier: string | null) {
-  const [addedLayers, setAddedLayers] = useState<Record<LayerType, string[]>>({
-    ColorLayers: [],
-    NightLayers: [],
-    Overlays: [],
-    HeightLayers: [],
-    WaterMasks: []
-  });
-  const luaApi = useOpenSpaceApi();
+export function useAddedLayers(globeIdentifier: Identifier | null) {
+  const uri = useMemo(
+    () =>
+      globeIdentifier ? `${sgnRenderableUri(sgnUri(globeIdentifier))}.Layers` : null,
+    [globeIdentifier]
+  );
 
-  const fetchLayers = useCallback(async () => {
-    if (!globeIdentifier || !luaApi) {
-      return;
-    }
+  const ColorLayers = usePropertyOwner(`${uri}.ColorLayers`);
+  const NightLayers = usePropertyOwner(`${uri}.NightLayers`);
+  const Overlays = usePropertyOwner(`${uri}.Overlays`);
+  const HeightLayers = usePropertyOwner(`${uri}.HeightLayers`);
+  const WaterMasks = usePropertyOwner(`${uri}.WaterMasks`);
 
-    const results = await Promise.all(
-      layerTypes.map((type) => luaApi.globebrowsing.layers(globeIdentifier, type))
-    );
+  function layerNames(layers: string[]) {
+    return layers.map((layer) => layer.substring(layer.lastIndexOf('.') + 1));
+  }
 
-    const layers = Object.fromEntries(
-      layerTypes.map((layerType, index) => {
-        const layerObj = results[index] ?? {};
-        const layerList = Object.values(layerObj);
-        return [layerType, layerList];
-      })
-    ) as Record<LayerType, string[]>;
-
-    setAddedLayers(layers);
-  }, [luaApi, globeIdentifier]);
-
-  useEffect(() => {
-    fetchLayers();
-  }, [fetchLayers]);
-
-  return { addedLayers, refresh: fetchLayers };
+  return useMemo(
+    () => ({
+      ColorLayers: layerNames(ColorLayers?.subowners ?? []),
+      NightLayers: layerNames(NightLayers?.subowners ?? []),
+      Overlays: layerNames(Overlays?.subowners ?? []),
+      HeightLayers: layerNames(HeightLayers?.subowners ?? []),
+      WaterMasks: layerNames(WaterMasks?.subowners ?? [])
+    }),
+    [ColorLayers, NightLayers, Overlays, HeightLayers, WaterMasks]
+  );
 }
 
 /**

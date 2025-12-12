@@ -47,7 +47,7 @@ export function GlobeBrowsingPanel() {
     useRenderableGlobes();
   const { globeWMS, refresh: refreshWMSInfo } = useGlobeWMSInfo(selectedGlobe);
   const capabilities = useCapabilities(selectedWMS);
-  const { addedLayers, refresh: refreshAddedLayers } = useAddedLayers(selectedGlobe);
+  const addedLayers = useAddedLayers(selectedGlobe);
 
   const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
   const [opened, { open, close }] = useDisclosure(false);
@@ -99,7 +99,6 @@ export function GlobeBrowsingPanel() {
       FilePath: cap.URL,
       Enabled: true
     });
-    refreshAddedLayers();
   }
 
   async function removeLayer(name: string) {
@@ -113,8 +112,6 @@ export function GlobeBrowsingPanel() {
         await luaApi?.globebrowsing.deleteLayer(selectedGlobe, layerType, layerName);
       }
     }
-
-    refreshAddedLayers();
   }
 
   async function onAddServer(name: string, url: string) {
