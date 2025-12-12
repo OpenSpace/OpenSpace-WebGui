@@ -28,7 +28,7 @@ interface Props {
  */
 export const CapabilityEntry = memo(
   ({ capability, addedLayers, onAdd, onRemove }: Props) => {
-    const { t } = useTranslation('panel-globebrowsing', {
+    const { t } = useTranslation('panel-globeimagerybrowser', {
       keyPrefix: 'capability-entry'
     });
 

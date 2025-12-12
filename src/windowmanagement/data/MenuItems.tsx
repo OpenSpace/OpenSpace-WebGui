@@ -36,7 +36,7 @@ import {
   FlightControlPanel,
   GeoLocationPanel,
   GettingStartedPanel,
-  GlobeBrowsingPanel,
+  GlobeImageryBrowserPanel,
   KeybindsPanel,
   MissionsPanel,
   NavigationPanel,
@@ -224,10 +224,10 @@ export const menuItemsData: Record<string, MenuItem> = {
     defaultVisible: false,
     advanced: true
   },
-  globeBrowsingPanel: {
-    title: 'GlobeBrowsing',
-    componentID: 'globeBrowsingPanel',
-    content: <GlobeBrowsingPanel />,
+  globeImageryBrowserPanel: {
+    title: 'Globe Imagery Browser',
+    componentID: 'globeImageryBrowserPanel',
+    content: <GlobeImageryBrowserPanel />,
     renderIcon: (size) => <GlobeIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: false

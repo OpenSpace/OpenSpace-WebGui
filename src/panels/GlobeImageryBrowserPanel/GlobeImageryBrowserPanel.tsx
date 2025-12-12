@@ -37,9 +37,9 @@ import {
 } from './hooks';
 import { Capability } from './types';
 
-export function GlobeBrowsingPanel() {
+export function GlobeImageryBrowserPanel() {
   // Default to Earth WMS
-  const { t } = useTranslation('panel-globebrowsing');
+  const { t } = useTranslation('panel-globeimagerybrowser');
   const [selectedGlobe, setSelectedGlobe] = useState<string | null>(null);
   const [selectedWMS, setSelectedWMS] = useState<string | null>(null);
 

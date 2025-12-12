@@ -13,7 +13,9 @@ interface Props {
 export function AddServerModal({ opened, close, onAddServer }: Props) {
   const [serverName, setServerName] = useState('');
   const [serverUrl, setServerUrl] = useState('');
-  const { t } = useTranslation('panel-globebrowsing', { keyPrefix: 'add-server-modal' });
+  const { t } = useTranslation('panel-globeimagerybrowser', {
+    keyPrefix: 'add-server-modal'
+  });
 
   function addServer() {
     if (serverName !== '' && serverUrl !== '') {
