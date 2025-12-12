@@ -170,7 +170,7 @@
       "surfaces": {
         "intro": "Let's take a look at the surface of Mars."
       },
-      "globebrowsing": {
+      "globe-imagery-browser": {
         "title": "Globe Imagery Browser",
         "intro": "The feature that enables us to look at maps on planets is called <italic>Globe Imagery Browser</italic>.",
         "about-maps": "Planets can have multiple map layers that show different data. Planets also have height maps, which show elevation. Different maps can have different resolutions.",

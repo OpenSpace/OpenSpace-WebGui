@@ -116,12 +116,16 @@ export function useContentSteps(): React.ReactNode[] {
       <AltitudeMouse />
     </>,
     <>
-      <Text fw={'bold'}>{t('globebrowsing.title')}</Text>
+      <Text fw={'bold'}>{t('globe-imagery-browser.title')}</Text>
       <Text>
-        <Trans t={t} i18nKey={'globebrowsing.intro'} components={{ italic: <i /> }} />
+        <Trans
+          t={t}
+          i18nKey={'globe-imagery-browser.intro'}
+          components={{ italic: <i /> }}
+        />
       </Text>
-      <Text>{t('globebrowsing.about-maps')}</Text>
-      <Text>{t('globebrowsing.about-layer-servers')}</Text>
+      <Text>{t('globe-imagery-browser.about-maps')}</Text>
+      <Text>{t('globe-imagery-browser.about-layer-servers')}</Text>
     </>,
     <>
       <Text>{t('layers.intro')}</Text>
