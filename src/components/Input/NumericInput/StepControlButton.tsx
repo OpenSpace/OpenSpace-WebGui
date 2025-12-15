@@ -31,12 +31,13 @@ export function StepControlButton({
   tabIndex,
   ...props
 }: Props) {
+  const { t } = useTranslation('components', { keyPrefix: 'input.step-control-button' });
+
   const stepInterval = useInterval(() => onStepLoop(), stepHoldInterval);
   const { start: startStepInterval, clear: clearTimeout } = useTimeout(
     () => stepInterval.start(),
     stepHoldDelay
   );
-  const { t } = useTranslation('components', { keyPrefix: 'input.step-control-button' });
   const onStepDone = useCallback((): void => {
     clearTimeout();
     if (stepInterval.active) {

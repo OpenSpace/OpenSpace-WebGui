@@ -35,6 +35,8 @@ import { MenuDrowdownWrapper } from '../MenuDropdownWrapper';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function ViewMenu() {
+  const { t } = useTranslation('menu', { keyPrefix: 'view-menu' });
+
   const logNotifications = useAppSelector((state) => state.logging.showNotifications);
   const notificationLogLevel = useAppSelector((state) => state.logging.logLevel);
 
@@ -48,7 +50,7 @@ export function ViewMenu() {
   );
 
   const { loadLayout, saveLayout } = useStoredLayout();
-  const { t } = useTranslation('menu', { keyPrefix: 'view-menu' });
+
   const dispatch = useAppDispatch();
 
   const userLevelOptions = propertyVisibilityMetadata?.additionalData.options;

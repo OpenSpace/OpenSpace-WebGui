@@ -5,8 +5,9 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { PlayIcon } from '@/icons/icons';
 
 export function PlaybackResumeButton({ ...props }: ButtonProps) {
-  const luaApi = useOpenSpaceApi();
   const { t } = useTranslation('panel-sessionrecording', { keyPrefix: 'button-labels' });
+
+  const luaApi = useOpenSpaceApi();
 
   return (
     <Button

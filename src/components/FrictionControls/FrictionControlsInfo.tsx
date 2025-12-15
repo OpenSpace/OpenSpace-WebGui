@@ -5,8 +5,9 @@ import { KeybindButtons } from '@/panels/KeybindsPanel/KeybindButtons';
 import { useAppSelector } from '@/redux/hooks';
 
 export function FrictionControlsInfo() {
-  const keybinds = useAppSelector((state) => state.actions.keybinds);
   const { t } = useTranslation('components');
+
+  const keybinds = useAppSelector((state) => state.actions.keybinds);
 
   const rotationKeybind = keybinds.find(
     (keybind) => keybind.action === 'os.ToggleRotationFriction'

@@ -3,7 +3,7 @@ import { Text, TextProps, Tooltip, TooltipProps } from '@mantine/core';
 import { useResizeObserver } from '@mantine/hooks';
 
 interface Props extends PropsWithChildren, TextProps {
-  tooltipProps?: TooltipProps;
+  tooltipProps?: Partial<TooltipProps>;
 }
 
 /**

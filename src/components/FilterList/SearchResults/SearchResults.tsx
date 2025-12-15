@@ -26,8 +26,9 @@ export function SearchResults<T>({
   noResultsDisplay,
   children
 }: Props<T>) {
-  const { showFavorites, isLoading, searchString } = useFilterListProvider();
   const { t } = useTranslation('components', { keyPrefix: 'filter-list.search-results' });
+
+  const { showFavorites, isLoading, searchString } = useFilterListProvider();
 
   // Memoizing this function so we don't need to recreate it when
   // the renderElement function changes

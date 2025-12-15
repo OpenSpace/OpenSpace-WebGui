@@ -55,6 +55,8 @@ function useShowWindowOnStart(shouldShow: boolean, menuItem: MenuItem) {
 }
 
 export function useStoredLayout() {
+  const { t } = useTranslation('menu', { keyPrefix: 'error-load-toolbar-layout' });
+
   const menuItems = useAppSelector((state) => state.local.menuItemsConfig);
   const hasMission = useAppSelector((state) => state.missions.isInitialized);
   const hasStartedBefore = useAppSelector((state) => state.profile.hasStartedBefore);
@@ -68,7 +70,6 @@ export function useStoredLayout() {
   const { openSaveFileDialog, openLoadFileDialog } =
     useSaveLoadJsonFiles(handlePickedFile);
 
-  const { t } = useTranslation('menu', { keyPrefix: 'error-load-toolbar-layout' });
   const dispatch = useAppDispatch();
 
   function handlePickedFile(content: JSON) {

@@ -17,21 +17,22 @@ import { UserPanel } from './UserPanel';
 import { WebPanelButton } from './WebpanelButton';
 
 export function UserPanelsPanel() {
-  const { addWindow } = useWindowLayoutProvider();
+  const { t } = useTranslation('panel-user');
 
-  const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
-  const [panelURL, setPanelURL] = useState<string>('');
-  const [urlPanelTitle, setUrlPanelTitle] = useState<string>('');
-
-  const luaApi = useOpenSpaceApi();
   const {
     isInitialized: isDataInitialized,
     addedWebpanels: addedPanels,
     panels: localPanels
   } = useAppSelector((state) => state.userPanels);
+
+  const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
+  const [panelURL, setPanelURL] = useState<string>('');
+  const [urlPanelTitle, setUrlPanelTitle] = useState<string>('');
+
+  const { addWindow } = useWindowLayoutProvider();
+  const luaApi = useOpenSpaceApi();
   const webGuiUrl = useWebGuiUrl();
 
-  const { t } = useTranslation('panel-user');
   const dispatch = useAppDispatch();
 
   const bookmarks = [

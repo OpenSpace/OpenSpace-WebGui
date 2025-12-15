@@ -26,6 +26,8 @@ enum NavigationMode {
 }
 
 export function NavigationPanel() {
+  const { t } = useTranslation('panel-navigation');
+
   const shouldStartInAnchorAim = useAppSelector((state) => {
     const aimProp = state.properties.properties[NavigationAimKey];
     const anchorProp = state.properties.properties[NavigationAnchorKey];
@@ -41,8 +43,6 @@ export function NavigationPanel() {
   );
 
   const engineMode = useSubscribeToEngineMode();
-
-  const { t } = useTranslation('panel-navigation');
 
   const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
     useSearchKeySettings<PropertyOwner>({

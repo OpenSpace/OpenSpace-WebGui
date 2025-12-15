@@ -15,10 +15,11 @@ interface ScreenSpaceBrowser {
 }
 
 export function WebpageTab() {
+  const { t } = useTranslation('panel-screenspacerenderable');
+
   const [slideName, setSlideName] = useState('');
   const [slideURL, setSlideURL] = useState('');
   const luaApi = useOpenSpaceApi();
-  const { t } = useTranslation('panel-screenspacerenderable');
 
   const isAddButtonDisabled = !slideName || !slideURL;
 

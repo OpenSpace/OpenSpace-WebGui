@@ -41,6 +41,8 @@ interface Props {
 }
 
 export function Settings({ id }: Props) {
+  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'settings' });
+
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
   const targetId = useAppSelector((state) => state.skybrowser.browsers[id]?.targetId);
 
@@ -50,7 +52,6 @@ export function Settings({ id }: Props) {
   const fov = useBrowserFov(id);
   const radius = useBrowserRadius(id);
   const { ra, dec } = useBrowserCoords(id);
-  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'settings' });
 
   function setColor(newColor: string) {
     const parsedColor = newColor.match(/\d+/g)?.map(Number);

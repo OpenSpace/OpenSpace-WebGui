@@ -11,11 +11,12 @@ interface Props {
 }
 
 export function MissionCaptureButtons({ mission }: Props) {
-  const now = useSubscribeToTime();
-  const jumpToTime = useJumpToTime();
   const { t } = useTranslation('panel-missions', {
     keyPrefix: 'mission-capture-buttons'
   });
+
+  const now = useSubscribeToTime();
+  const jumpToTime = useJumpToTime();
 
   // Locate the next instrument activity capture
   function getNextCapture() {

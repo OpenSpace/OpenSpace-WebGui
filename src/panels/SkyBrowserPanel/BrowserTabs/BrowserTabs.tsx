@@ -16,15 +16,16 @@ interface Props {
 }
 
 export function BrowserTabs({ openWorldWideTelescope }: Props) {
+  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'browser-tabs' });
+
+  const selectedBrowserId = useAppSelector((state) => state.skybrowser.selectedBrowserId);
+
   const [showSettings, setShowSettings] = useState(false);
+
   const browsersIds = useSkyBrowserIds();
   const browserNames = useSkyBrowserNames();
   const browserColors = useSkyBrowserColors();
-  const selectedBrowserId = useAppSelector((state) => {
-    return state.skybrowser.selectedBrowserId;
-  });
   const luaApi = useOpenSpaceApi();
-  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'browser-tabs' });
 
   return (
     <Tabs

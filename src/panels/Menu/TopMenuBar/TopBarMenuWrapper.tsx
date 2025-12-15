@@ -28,6 +28,7 @@ export function TopBarMenuWrapper({
       offset={offset}
       withArrow={withArrow}
       arrowPosition={arrowPosition}
+      trigger={'click-hover'}
       {...props}
     >
       <Menu.Target ref={ref}>

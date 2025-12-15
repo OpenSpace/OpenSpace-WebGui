@@ -19,17 +19,19 @@ interface Props {
 // Generic component for all the image lists
 // Memoizing this as it is very expensive
 export const ImageList = memo(function ImageList({ imageList, noImagesDisplay }: Props) {
+  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'image-list' });
+
   const { width } = useWindowSize();
   const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
     useSearchKeySettings<SkyBrowserImage>({
       name: true,
       collection: true
     });
-  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'image-list' });
 
-  const renderImageCard = useCallback((image: SkyBrowserImage) => {
-    return <ImageCard image={image} />;
-  }, []);
+  const renderImageCard = useCallback(
+    (image: SkyBrowserImage) => <ImageCard image={image} />,
+    []
+  );
 
   const matcherFunc = useMemo(
     () => generateMatcherFunctionByKeys(selectedSearchKeys),

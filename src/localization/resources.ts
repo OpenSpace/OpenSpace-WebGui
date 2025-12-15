@@ -3,6 +3,7 @@ import components from '@/public/locales/en/components.json';
 import menu from '@/public/locales/en/menu.json';
 import notifications from '@/public/locales/en/notifications.json';
 import actionPanel from '@/public/locales/en/panel-actions.json';
+import assetsFolderPanel from '@/public/locales/en/panel-assets.json';
 import exoplanetsPanel from '@/public/locales/en/panel-exoplanets.json';
 import flightControlPanel from '@/public/locales/en/panel-flightcontrol.json';
 import geolocationPanel from '@/public/locales/en/panel-geolocation.json';
@@ -32,6 +33,7 @@ export const resources = {
     menu: menu,
     notifications: notifications,
     'panel-actions': actionPanel,
+    'panel-assets': assetsFolderPanel,
     'panel-exoplanets': exoplanetsPanel,
     'panel-flightcontrol': flightControlPanel,
     'panel-geolocation': geolocationPanel,

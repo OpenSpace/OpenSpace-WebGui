@@ -35,11 +35,12 @@ export function AnchorAimView({
   toggleKey,
   allowedKeys
 }: Props) {
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-  const engineMode = useSubscribeToEngineMode();
   const { t } = useTranslation('panel-navigation', {
     keyPrefix: 'anchor-aim.anchor-aim-view'
   });
+
+  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+  const engineMode = useSubscribeToEngineMode();
 
   const [anchor, setAnchor] = useProperty('StringProperty', NavigationAnchorKey);
   const [aim, setAim] = useProperty('StringProperty', NavigationAimKey);

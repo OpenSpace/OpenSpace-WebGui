@@ -13,6 +13,7 @@ import {
   KeyboardIcon,
   LocationPinIcon,
   NightSkyIcon,
+  OpenFolderIcon,
   RocketLaunchIcon,
   RouteIcon,
   SceneIcon,
@@ -32,6 +33,7 @@ import { FloatWindowPosition, WindowLayoutPosition } from '../WindowLayout/types
 
 import {
   ActionsPanel,
+  AssetsFolderPanel,
   ExoplanetsPanel,
   FlightControlPanel,
   GeoLocationPanel,
@@ -229,6 +231,14 @@ export const menuItemsData: Record<string, MenuItem> = {
     componentID: 'globeImageryBrowserPanel',
     content: <GlobeImageryBrowserPanel />,
     renderIcon: (size) => <GlobeIcon size={size} />,
+    preferredPosition: 'right',
+    defaultVisible: false
+  },
+  assetsFolderPanel: {
+    title: 'Assets',
+    componentID: 'assetsFolderPanel',
+    content: <AssetsFolderPanel />,
+    renderIcon: (size) => <OpenFolderIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: false
   }

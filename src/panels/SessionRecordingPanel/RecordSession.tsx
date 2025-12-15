@@ -14,6 +14,8 @@ import { RecordingState, SessionRecordingFormat } from './types';
 import { sessionRecordingFilenameWithExtension } from './util';
 
 export function RecordSession() {
+  const { t } = useTranslation('panel-sessionrecording', { keyPrefix: 'record-session' });
+
   const [filenameRecording, setFilenameRecording] = useState('');
   const [filenameState, setFilenameState] = useState({
     invalid: false,
@@ -27,7 +29,6 @@ export function RecordSession() {
 
   const recordingState = useSubscribeToSessionRecording();
   const luaApi = useOpenSpaceApi();
-  const { t } = useTranslation('panel-sessionrecording', { keyPrefix: 'record-session' });
   const dispatch = useAppDispatch();
 
   const isIdle = recordingState === RecordingState.Idle;

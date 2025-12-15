@@ -29,7 +29,13 @@ export {
   IoInformation as InformationIcon,
   IoTelescopeOutline as TelescopeIcon
 } from 'react-icons/io5';
-export { LuFilePlus2 as AddFileIcon } from 'react-icons/lu';
+export {
+  LuFilePlus2 as AddFileIcon,
+  LuFileText as FileTextIcon,
+  LuFolderUp as FolderBackIcon,
+  LuFolder as FolderIcon,
+  LuFolderOpen as OpenFolderIcon
+} from 'react-icons/lu';
 export {
   MdPublic as AddExoplanetIcon,
   MdOutlineAddPhotoAlternate as AddPhotoIcon,
@@ -42,6 +48,7 @@ export {
   MdCancel as CancelIcon,
   MdCheckBox as CheckBoxCheckedIcon,
   MdCheckBoxOutlineBlank as CheckBoxUncheckedIcon,
+  MdCheck as CheckIcon,
   MdExpandMore as ChevronDownIcon,
   MdChevronLeft as ChevronLeftIcon,
   MdChevronRight as ChevronRightIcon,
@@ -52,6 +59,7 @@ export {
   MdDashboard as DashboardIcon,
   MdDelete as DeleteIcon,
   MdDragHandle as DragHandleIcon,
+  MdOutlineErrorOutline as ErrorIcon,
   MdExitToApp as ExitAppIcon,
   MdHdrStrong as ExoplanetIcon,
   MdOpenWith as ExpandArrowsIcon,
@@ -60,7 +68,6 @@ export {
   MdFastForward as FastForwardIcon,
   MdFastRewind as FastRewindIcon,
   MdFilterAlt as FilterIcon,
-  MdFolder as FolderIcon,
   MdFilterCenterFocus as FrameFocusIcon,
   MdOutlineInsertPhoto as InsertPhotoIcon,
   MdKeyboard as KeyboardIcon,
@@ -108,6 +115,10 @@ export {
   PiMouseRightClickThin as RightClickMouseIcon,
   PiMouseMiddleClickThin as ScrollClickMouseIcon
 } from 'react-icons/pi';
+export {
+  PiSpeakerSimpleHighFill as SoundIcon,
+  PiSpeakerSimpleSlashFill as SoundOffIcon
+} from 'react-icons/pi';
 export { RiFocus3Line as FocusIcon, RiRouteLine as RouteIcon } from 'react-icons/ri';
 export {
   TbAbc as AbcIcon,
@@ -116,6 +127,8 @@ export {
   TbClockX as ClockOffIcon,
   TbCompass as CompassMarksIcon,
   TbSphere as LineIcon,
+  TbRepeat as RepeatIcon,
+  TbRepeatOff as RepeatOffIcon,
   TbCube as SceneIcon,
   TbScript as ScriptLogIcon,
   TbServer as ServerIcon,

@@ -22,9 +22,10 @@ import {
 import { SkyBrowserImage } from './types';
 
 export function useWwtImageCollection(): [boolean, SkyBrowserImage[] | undefined] {
+  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'wwt.error' });
+
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
   const [isPending, startTransition] = useTransition();
-  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'wwt.error' });
 
   const luaApi = useOpenSpaceApi();
   const dispatch = useAppDispatch();

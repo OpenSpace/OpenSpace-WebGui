@@ -11,6 +11,7 @@ export const DefaultSgnWindowId = 'defaultSceneGraphNodeWindow';
 
 export function useOpenCurrentSceneNodeWindow() {
   const { t } = useTranslation('panel-scene', { keyPrefix: 'hooks' });
+
   const { ref, addWindow, closeWindow, createWindowTabData } = useWindowLayoutProvider();
 
   function openCurrentNodeWindow(content: React.ReactNode) {

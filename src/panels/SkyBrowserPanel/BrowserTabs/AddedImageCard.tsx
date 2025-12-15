@@ -16,14 +16,16 @@ interface Props {
   selected: boolean;
   opacity: number;
 }
+
 export function AddedImageCard({ image, opacity }: Props) {
+  const { t } = useTranslation('panel-skybrowser', {
+    keyPrefix: 'browser-tabs.added-image-card'
+  });
+
   const luaApi = useOpenSpaceApi();
   const [activeImage, setActiveImage] = useActiveImage();
   const selectedBrowserId = useAppSelector((state) => state.skybrowser.selectedBrowserId);
   const color = useBrowserColorString(selectedBrowserId);
-  const { t } = useTranslation('panel-skybrowser', {
-    keyPrefix: 'browser-tabs.added-image-card'
-  });
 
   const setOpacity = useThrottledCallback(
     (newValue) =>

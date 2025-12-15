@@ -783,6 +783,10 @@ interface assetLibrary {
    */
   isLoaded: (assetName: string) => Promise<boolean>
   /**
+   * Returns the path to all parents that are still interested in this Asset e.g., through 'asset.require()'
+   */
+  parents: (assetName: string) => Promise<path[]>
+  /**
    * Reloads the asset with the specified name. If the asset was previously loaded explicity it will be removed and then re-added. If the asset was not previously loaded, it will only be loaded instead.
    */
   reload: (assetName: string) => Promise<void>

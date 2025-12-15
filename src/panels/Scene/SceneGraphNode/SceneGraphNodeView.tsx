@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { Badge, Box, Group, Tabs, Text, ThemeIcon, Tooltip } from '@mantine/core';
 
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
-import { PropertyOwnerContent } from '@/components/PropertyOwner/PropertyOwnerContent';
 import { usePropertyOwner, useVisibleProperties } from '@/hooks/propertyOwner';
 import { ClockIcon, ClockOffIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
@@ -22,6 +21,7 @@ export function SceneGraphNodeView({ uri }: Props) {
   const { t } = useTranslation('panel-scene', {
     keyPrefix: 'scene-graph-node.node-view'
   });
+
   const propertyOwner = usePropertyOwner(uri);
   const { timeFrame, isInTimeFrame } = useTimeFrame(uri);
 
@@ -111,7 +111,7 @@ export function SceneGraphNodeView({ uri }: Props) {
         <Tabs.Panel value={TabKeys.Renderable}>
           {hasRenderable ? (
             <Box mt={'xs'}>
-              <PropertyOwnerContent uri={renderable} />
+              <PropertyOwner uri={renderable} showOnlyChildren />
             </Box>
           ) : (
             <Text m={'xs'}>{t('renderable.tooltip.no-renderable')}</Text>
@@ -172,7 +172,7 @@ export function SceneGraphNodeView({ uri }: Props) {
           <Tabs.Panel value={TabKeys.Other}>
             {/* This tab shows the properties scene graph node, without any of the
                 subowners */}
-            <PropertyOwnerContent uri={uri} hideSubowners />
+            <PropertyOwner uri={uri} showOnlyChildren hideSubowners />
           </Tabs.Panel>
         )}
 

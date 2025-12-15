@@ -20,6 +20,7 @@ export function FilterListSearchSettingsMenu<T extends object>({
   const { t } = useTranslation('components', {
     keyPrefix: 'filter-list.search-settings-menu'
   });
+
   const noKeyIsSelected = Object.values(keys).every((value) => value === false);
 
   return (

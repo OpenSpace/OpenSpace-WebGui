@@ -12,13 +12,15 @@ import { RecordingsFolderKey } from '@/util/keys';
 import { sessionRecordingFilenameWithExtension } from '../util';
 
 export function RecordingStopButton({ ...props }: ButtonProps) {
-  const luaApi = useOpenSpaceApi();
-  const { format, overwriteFile, recordingFilename } = useAppSelector(
-    (state) => state.sessionRecording.settings
-  );
   const { t } = useTranslation('panel-sessionrecording', {
     keyPrefix: 'recording-stop-button'
   });
+
+  const { format, overwriteFile, recordingFilename } = useAppSelector(
+    (state) => state.sessionRecording.settings
+  );
+  const luaApi = useOpenSpaceApi();
+
   const dispatch = useAppDispatch();
 
   async function stopRecording(): Promise<void> {

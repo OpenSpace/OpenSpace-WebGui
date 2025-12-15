@@ -13,12 +13,12 @@ import { KeybindInfo } from './KeybindInfo';
 import { KeybindListEntry } from './ListEntry';
 
 export function ListLayout() {
+  const { t } = useTranslation('panel-keybinds', { keyPrefix: 'list-layout' });
+
   const [selectedAction, setSelectedAction] = useState<KeybindInfoType | null>(null);
   const [modifiersFilter, setModifiersFilter] = useState<KeybindModifiers>([]);
   const keybinds = useAppSelector((state) => state.actions.keybinds);
   const actions = useAppSelector((state) => state.actions.actions);
-
-  const { t } = useTranslation('panel-keybinds', { keyPrefix: 'list-layout' });
 
   const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
     useSearchKeySettings<KeybindInfoType>({

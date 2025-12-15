@@ -17,16 +17,16 @@ interface Props {
 }
 
 export function AltitudeTask({ anchor, unit, altitude, compare }: Props) {
+  const { t } = useTranslation('panel-gettingstartedtour', {
+    keyPrefix: 'tasks.altitude'
+  });
+
   const currentAltitude = useAppSelector((state) => state.camera.altitude);
   const currentUnit = useAppSelector((state) => state.camera.altitudeUnit);
   const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
 
   const anchorNode = useSceneGraphNode(anchor);
   useSubscribeToCamera();
-
-  const { t } = useTranslation('panel-gettingstartedtour', {
-    keyPrefix: 'tasks.altitude'
-  });
 
   const hasCorrectNode =
     currentAnchor !== undefined && currentAnchor !== '' && currentAnchor === anchor;

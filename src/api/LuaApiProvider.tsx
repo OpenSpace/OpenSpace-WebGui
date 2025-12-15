@@ -13,9 +13,10 @@ import { ConnectionStatus, LogLevel } from '@/types/enums';
 import { LuaApiContext } from './LuaApiContext';
 
 export function LuaApiProvider({ children }: PropsWithChildren) {
+  const { t } = useTranslation('notifications', { keyPrefix: 'error' });
+
   const [luaApi, setLuaApi] = useState<OpenSpace.openspace | null>(null);
   const isConnected = useIsConnectionStatus(ConnectionStatus.Connected);
-  const { t } = useTranslation('notifications', { keyPrefix: 'error' });
   const dispatch = useAppDispatch();
 
   // Connect to OpenSpace

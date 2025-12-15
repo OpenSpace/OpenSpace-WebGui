@@ -5,8 +5,9 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { PauseIcon } from '@/icons/icons';
 
 export function PlaybackPauseButton({ ...props }: ButtonProps) {
-  const luaApi = useOpenSpaceApi();
   const { t } = useTranslation('panel-sessionrecording', { keyPrefix: 'button-labels' });
+
+  const luaApi = useOpenSpaceApi();
 
   return (
     <Button

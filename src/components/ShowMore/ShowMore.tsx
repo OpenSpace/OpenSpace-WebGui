@@ -7,6 +7,7 @@ export function ShowMore({ children, ...props }: Props) {
   const { t } = useTranslation('components', {
     keyPrefix: 'show-more'
   });
+
   return (
     <Spoiler
       showLabel={t('more')}

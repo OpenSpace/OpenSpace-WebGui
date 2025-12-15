@@ -25,9 +25,10 @@ export function ResizeableContent({
   children,
   ...props
 }: Props) {
+  const { t } = useTranslation('components', { keyPrefix: 'resizeable-content' });
+
   const [height, setHeight] = useState(defaultHeight);
   const { pointerEvents: windowPointer } = useWindowSize();
-  const { t } = useTranslation('components', { keyPrefix: 'resizeable-content' });
 
   const contentRef = useRef<HTMLDivElement>(null);
   const resizerRef = useRef<HTMLDivElement>(null);

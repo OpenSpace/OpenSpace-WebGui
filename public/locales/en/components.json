@@ -162,6 +162,34 @@
       }
     }
   },
+  "property-owner": {
+    "video-player": {
+      "label": "Video",
+      "play-button": {
+        "tooltip": "Play",
+        "aria-label": "Play video"
+      },
+      "pause-button": {
+        "tooltip": "Pause",
+        "aria-label": "Pause video"
+      },
+      "restart-button": {
+        "tooltip": "Jump to start (and pause)",
+        "aria-label": "Jump to start (and pause)"
+      },
+      "loop-toggle": {
+        "tooltip": "Toggle looping",
+        "aria-label": "Loop video"
+      },
+      "audio-toggle": {
+        "tooltip": "Toggle audio",
+        "aria-label": "Audio"
+      },
+      "info-box": {
+        "description": "Properties for controlling video playback."
+      }
+    }
+  },
   "resizeable-content": {
     "aria-label": "Resize window (keyboard control not suppored)"
   },

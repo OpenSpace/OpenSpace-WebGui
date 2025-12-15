@@ -76,9 +76,10 @@ export function NodeNavigationButton({
   style,
   disabled
 }: NodeNavigationButtonProps) {
+  const { t } = useTranslation('components', { keyPrefix: 'node-navigation-button' });
+
   const engineMode = useSubscribeToEngineMode();
   const luaApi = useOpenSpaceApi();
-  const { t } = useTranslation('components', { keyPrefix: 'node-navigation-button' });
 
   const isInPlayback = engineMode === EngineMode.SessionRecordingPlayback;
 

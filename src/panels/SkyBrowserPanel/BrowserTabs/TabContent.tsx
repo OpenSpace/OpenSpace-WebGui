@@ -31,13 +31,14 @@ export function TabContent({
   openWorldWideTelescope,
   browserId
 }: Props) {
+  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'tab-content' });
+
   const selectedImages = useSelectedImages(browserId);
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
   const fov = useBrowserFov(browserId);
   const browserIds = useSkyBrowserIds();
 
   const luaApi = useOpenSpaceApi();
-  const { t } = useTranslation('panel-skybrowser', { keyPrefix: 'tab-content' });
   const zoomStep = 5;
 
   if (fov === undefined || browserId === '') {

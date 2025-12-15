@@ -20,12 +20,13 @@ import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function HelpMenu() {
+  const { t } = useTranslation('menu', { keyPrefix: 'help-menu' });
+
   const [showAbout, { open, close }] = useDisclosure(false);
   const webGuiUrl = useWebGuiUrl();
   const navigation = useNavigate();
 
   const { addWindow } = useWindowLayoutProvider();
-  const { t } = useTranslation('menu', { keyPrefix: 'help-menu' });
 
   function openGuiInBrowser() {
     window.open(`${webGuiUrl}/gui`, '_blank');

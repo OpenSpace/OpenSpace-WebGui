@@ -37,13 +37,14 @@ export function NumericInput({
   valueLabel,
   ...props
 }: Props) {
+  const { t } = useTranslation('components', { keyPrefix: 'input.numeric-input' });
+
   const {
     value: storedValue,
     setValue: setStoredValue,
     setIsEditing,
     isEditing
   } = usePropListeningState<number | undefined>(value);
-  const { t } = useTranslation('components', { keyPrefix: 'input.numeric-input' });
 
   const shouldClamp = props.clampBehavior === 'strict';
 

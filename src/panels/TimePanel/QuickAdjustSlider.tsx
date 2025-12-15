@@ -8,8 +8,9 @@ interface Props {
 }
 
 export function QuickAdjustSlider({ onChange, onEnd }: Props) {
-  const [sliderValue, setSliderValue] = useState(0);
   const { t } = useTranslation('panel-time');
+
+  const [sliderValue, setSliderValue] = useState(0);
 
   const sliderMax = 10;
   const percentagePerStep = 100 / (sliderMax * 2);
