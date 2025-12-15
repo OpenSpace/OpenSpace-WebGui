@@ -14,6 +14,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { DecoratedIcon } from '@/components/DecoratedIcon/DecoratedIcon';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
@@ -30,7 +31,7 @@ import { makeIdentifier } from '@/util/text';
 import { AddServerModal } from './AddServerModal';
 import { CapabilityEntry } from './CapabilityEntry';
 import {
-  useAddedLayers,
+  useAddedLayersIdentifiers,
   useCapabilities,
   useGlobeWMSInfo,
   useRenderableGlobes
@@ -47,7 +48,7 @@ export function GlobeImageryBrowserPanel() {
     useRenderableGlobes();
   const { globeWMS, refresh: refreshWMSInfo } = useGlobeWMSInfo(selectedGlobe);
   const capabilities = useCapabilities(selectedWMS);
-  const addedLayers = useAddedLayers(selectedGlobe);
+  const addedLayers = useAddedLayersIdentifiers(selectedGlobe);
 
   const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
   const [opened, { open, close }] = useDisclosure(false);
@@ -56,6 +57,14 @@ export function GlobeImageryBrowserPanel() {
   const isAnchorRenderableGlobe =
     currentAnchor !== undefined &&
     globeBrowsingNodes?.identifiers.includes(currentAnchor);
+
+  const globesWithServer = globeBrowsingNodes
+    ? globeBrowsingNodes.identifiers.slice(0, globeBrowsingNodes.firstIndexWithoutUrl)
+    : [];
+
+  const globesWithoutServer = globeBrowsingNodes
+    ? globeBrowsingNodes.identifiers.slice(globeBrowsingNodes.firstIndexWithoutUrl)
+    : [];
 
   // Select a default available WMS server for a specific globe
   useEffect(() => {
@@ -86,17 +95,17 @@ export function GlobeImageryBrowserPanel() {
     setSelectedGlobe(selectGlobe);
   }, [globeBrowsingNodes, selectedGlobe]);
 
-  async function addLayer(cap: Capability, layerType: LayerType) {
+  async function addLayer(capability: Capability, layerType: LayerType) {
     if (!selectedGlobe) {
       return;
     }
 
-    const layerName = makeIdentifier(cap.Name);
+    const layerName = makeIdentifier(capability.Name);
 
     await luaApi?.globebrowsing.addLayer(selectedGlobe, layerType, {
       Identifier: layerName,
-      Name: cap.Name,
-      FilePath: cap.URL,
+      Name: capability.Name,
+      FilePath: capability.URL,
       Enabled: true
     });
   }
@@ -162,16 +171,11 @@ export function GlobeImageryBrowserPanel() {
                 data={[
                   {
                     group: '',
-                    items: globeBrowsingNodes.identifiers.slice(
-                      0,
-                      globeBrowsingNodes.firstIndexWithoutUrl
-                    )
+                    items: globesWithServer
                   },
                   {
                     group: t('select-globe.no-server-group'),
-                    items: globeBrowsingNodes.identifiers.slice(
-                      globeBrowsingNodes.firstIndexWithoutUrl
-                    )
+                    items: globesWithoutServer
                   }
                 ]}
                 onChange={(value) => setSelectedGlobe(value)}
@@ -204,6 +208,8 @@ export function GlobeImageryBrowserPanel() {
                 value={selectedWMS}
                 data={globeWMS.map((info) => info.name)}
                 onChange={(value) => setSelectedWMS(value)}
+                placeholder={t('select-server.placeholder')}
+                nothingFoundMessage={t('select-server.nothing-found')}
                 allowDeselect={false}
                 flex={1}
               />
@@ -221,10 +227,23 @@ export function GlobeImageryBrowserPanel() {
                 </Menu.Target>
                 <Menu.Dropdown>
                   <Stack gap={'xs'}>
-                    <Button onClick={open} leftSection={<ServerIcon />}>
+                    <Button
+                      onClick={open}
+                      leftSection={
+                        <DecoratedIcon offset={{ x: 0, y: 1 }}>
+                          <ServerIcon />
+                        </DecoratedIcon>
+                      }
+                      justify={'left'}
+                    >
                       {t('button-labels.add-server')}
                     </Button>
-                    <Button onClick={removeServerModal} leftSection={<DeleteIcon />}>
+                    <Button
+                      onClick={removeServerModal}
+                      leftSection={<DeleteIcon />}
+                      justify={'left'}
+                      disabled={selectedWMS === null}
+                    >
                       {t('button-labels.remove-server')}
                     </Button>
                   </Stack>
@@ -234,24 +253,28 @@ export function GlobeImageryBrowserPanel() {
           </Stack>
         </Layout.FixedSection>
         <Layout.GrowingSection>
-          <FilterList>
-            <FilterList.InputField placeHolderSearchText={t('filter-list-placeholder')} />
-            <FilterList.SearchResults
-              data={capabilities}
-              renderElement={(capability) => (
-                <CapabilityEntry
-                  capability={capability}
-                  onAdd={addLayer}
-                  onRemove={removeLayer}
-                  addedLayers={addedLayers}
-                  key={capability.URL}
-                />
-              )}
-              matcherFunc={generateMatcherFunctionByKeys(['Name'])}
-            >
-              <FilterList.SearchResults.VirtualList gap={3} />
-            </FilterList.SearchResults>
-          </FilterList>
+          {capabilities.length > 0 && (
+            <FilterList>
+              <FilterList.InputField
+                placeHolderSearchText={t('filter-list-placeholder')}
+              />
+              <FilterList.SearchResults
+                data={capabilities}
+                renderElement={(capability) => (
+                  <CapabilityEntry
+                    capability={capability}
+                    onAdd={addLayer}
+                    onRemove={removeLayer}
+                    addedLayers={addedLayers}
+                    key={capability.URL}
+                  />
+                )}
+                matcherFunc={generateMatcherFunctionByKeys(['Name'])}
+              >
+                <FilterList.SearchResults.VirtualList gap={3} />
+              </FilterList.SearchResults>
+            </FilterList>
+          )}
         </Layout.GrowingSection>
       </Layout>
     </>

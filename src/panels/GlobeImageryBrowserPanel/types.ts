@@ -15,7 +15,11 @@ export interface GlobeBrowsingNodes {
   identifiers: string[];
 }
 
+/**
+ * @TODO (anden88 2025-12-15): `UrlInfo` is kind of a bad name imo, but this is what it is
+ * called on the engine side. Name refers to the WMS server name and the url the WMS url.
+ */
 export interface UrlInfo {
-  name: string; // Name of the WMS server
-  url: string; //
+  name: string;
+  url: string;
 }

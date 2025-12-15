@@ -1,12 +1,12 @@
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Group, Menu, Tooltip } from '@mantine/core';
+import { ActionIcon, Button, Group, Menu, Stack, Tooltip } from '@mantine/core';
 
 import { DecoratedIcon } from '@/components/DecoratedIcon/DecoratedIcon';
 import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
 import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { layerGroups } from '@/data/GlobeLayers';
-import { DeleteIcon, PlusIcon, VerticalDotsIcon } from '@/icons/icons';
+import { ColorPaletteIcon, DeleteIcon, VerticalDotsIcon } from '@/icons/icons';
 import { LayerType, layerTypes } from '@/types/globeLayers';
 import { makeIdentifier } from '@/util/text';
 
@@ -68,7 +68,9 @@ export const CapabilityEntry = memo(
             onClick={() => onAdd(capability, 'ColorLayers')}
             disabled={isInLayerGroup('ColorLayers')}
           >
-            <PlusIcon />
+            <DecoratedIcon>
+              <ColorPaletteIcon />
+            </DecoratedIcon>
           </ActionIcon>
         </Tooltip>
         <Menu position={'right-start'}>
@@ -78,23 +80,25 @@ export const CapabilityEntry = memo(
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Label>{t('menu-add-label')}</Menu.Label>
-            {layerGroups.map((group) => (
-              <MaybeTooltip
-                showTooltip={isInLayerGroup(group.id)}
-                label={t('tooltips.layer-exists')}
-                key={group.id}
-              >
-                <Menu.Item
+            <Menu.Label>{t('menu-add-label')}:</Menu.Label>
+            <Stack gap={'xs'}>
+              {layerGroups.map((group) => (
+                <MaybeTooltip
+                  showTooltip={isInLayerGroup(group.id)}
+                  label={t('tooltips.layer-exists')}
                   key={group.id}
-                  onClick={() => onAdd(capability, group.id)}
-                  leftSection={<DecoratedIcon>{group.icon}</DecoratedIcon>}
-                  disabled={isInLayerGroup(group.id)}
                 >
-                  {group.label}
-                </Menu.Item>
-              </MaybeTooltip>
-            ))}
+                  <Button
+                    key={group.id}
+                    onClick={() => onAdd(capability, group.id)}
+                    leftSection={<DecoratedIcon>{group.icon}</DecoratedIcon>}
+                    disabled={isInLayerGroup(group.id)}
+                  >
+                    {group.label}
+                  </Button>
+                </MaybeTooltip>
+              ))}
+            </Stack>
           </Menu.Dropdown>
         </Menu>
       </Group>

@@ -7,7 +7,7 @@ export function camelCaseToRegularText(camelCase: string): string {
 }
 
 /**
- * Converts the input string into an identifier friendly version. Mimicing the OpenSpace
+ * Converts the input string into an identifier friendly version. Mimicking the OpenSpace
  * Lua function `MakeIdentifier` https://docs.openspaceproject.com/latest/reference/scripting-api/openspace.html#makeidentifier
  *
  * @param input The input string to convert

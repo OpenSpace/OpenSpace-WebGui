@@ -6,6 +6,10 @@
       "invalid-focus": "Only works if the focus is a globe"
     }
   },
+  "select-server": {
+    "placeholder": "Select server",
+    "nothing-found": "No servers available for the selected globe"
+  },
   "server-info": "Server URL:",
   "button-labels": {
     "add-server": "Add new server",
@@ -14,7 +18,7 @@
   },
   "filter-list-placeholder": "Search for a layer...",
   "remove-server-modal": {
-    "title": "Remove server",
+    "title": "Remove Server",
     "description": "Are you sure you want to remove the '{{serverName}}' server?",
     "confirm": "Remove",
     "cancel": "Cancel"
@@ -36,6 +40,6 @@
       "add-color-layer": "Add as color layer",
       "layer-exists": "Layer is already added to this group"
     },
-    "menu-add-label": "Add as:"
+    "menu-add-label": "Add as"
   }
 }

@@ -14,25 +14,25 @@ import {
 } from './types';
 
 /**
- * Fetches all layers currently loaded on the globe given by `globeIdentifier`grouped by
+ * Fetches all layers currently loaded on the globe given by `globeIdentifier`, grouped by
  * their respective `LayerType`.
  *
  * @param globeIdentifier The globe to get layers for
  * @returns An object containing all layers in their respective group: 'ColorLayers',
  * 'HeightLayers', 'Overlays', 'HeightLayers', 'WaterMasks'
  */
-export function useAddedLayers(globeIdentifier: Identifier | null) {
+export function useAddedLayersIdentifiers(globeIdentifier: Identifier | null) {
   const uri = useMemo(
     () =>
       globeIdentifier ? `${sgnRenderableUri(sgnUri(globeIdentifier))}.Layers` : null,
     [globeIdentifier]
   );
 
-  const ColorLayers = usePropertyOwner(`${uri}.ColorLayers`);
-  const NightLayers = usePropertyOwner(`${uri}.NightLayers`);
-  const Overlays = usePropertyOwner(`${uri}.Overlays`);
-  const HeightLayers = usePropertyOwner(`${uri}.HeightLayers`);
-  const WaterMasks = usePropertyOwner(`${uri}.WaterMasks`);
+  const colorLayers = usePropertyOwner(`${uri}.ColorLayers`);
+  const nightLayers = usePropertyOwner(`${uri}.NightLayers`);
+  const overlays = usePropertyOwner(`${uri}.Overlays`);
+  const heightLayers = usePropertyOwner(`${uri}.HeightLayers`);
+  const waterMasks = usePropertyOwner(`${uri}.WaterMasks`);
 
   function layerNames(layers: string[]) {
     return layers.map((layer) => layer.substring(layer.lastIndexOf('.') + 1));
@@ -40,13 +40,13 @@ export function useAddedLayers(globeIdentifier: Identifier | null) {
 
   return useMemo(
     () => ({
-      ColorLayers: layerNames(ColorLayers?.subowners ?? []),
-      NightLayers: layerNames(NightLayers?.subowners ?? []),
-      Overlays: layerNames(Overlays?.subowners ?? []),
-      HeightLayers: layerNames(HeightLayers?.subowners ?? []),
-      WaterMasks: layerNames(WaterMasks?.subowners ?? [])
+      ColorLayers: layerNames(colorLayers?.subowners ?? []),
+      NightLayers: layerNames(nightLayers?.subowners ?? []),
+      Overlays: layerNames(overlays?.subowners ?? []),
+      HeightLayers: layerNames(heightLayers?.subowners ?? []),
+      WaterMasks: layerNames(waterMasks?.subowners ?? [])
     }),
-    [ColorLayers, NightLayers, Overlays, HeightLayers, WaterMasks]
+    [colorLayers, nightLayers, overlays, heightLayers, waterMasks]
   );
 }
 

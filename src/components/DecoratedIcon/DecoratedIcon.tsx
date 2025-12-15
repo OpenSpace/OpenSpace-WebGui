@@ -4,12 +4,13 @@ import { Box, MantineSize } from '@mantine/core';
 import { PlusIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
-type DecoratorPosition = 'top-left' | 'top-right';
+type DecoratorPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 
 interface Props extends PropsWithChildren {
   renderDecorator?: (size: number) => React.JSX.Element;
   position?: DecoratorPosition;
   size?: MantineSize;
+  offset?: { x: number; y: number };
 }
 
 const MappedWrapperSize: Record<MantineSize, number> = {
@@ -21,7 +22,7 @@ const MappedWrapperSize: Record<MantineSize, number> = {
 };
 
 const MappedDecoratorPosition: Record<MantineSize, { x: number; y: number }> = {
-  xs: { x: 6, y: 12 },
+  xs: { x: 6, y: 11 },
   sm: { x: 6, y: 10 },
   md: { x: 6, y: 8 },
   lg: { x: 6, y: 6 },
@@ -40,14 +41,17 @@ export function DecoratedIcon({
   children,
   renderDecorator,
   position = 'top-right',
-  size = 'xs'
+  size = 'xs',
+  offset = { x: 0, y: 0 }
 }: Props) {
   const wrapperSize = MappedWrapperSize[size];
-  const { x: offsetX, y: offestY } = MappedDecoratorPosition[size];
+  const { x: offsetX, y: offsetY } = MappedDecoratorPosition[size];
 
   const mappedDecoratorPositionCSS: Record<DecoratorPosition, React.CSSProperties> = {
-    'top-left': { top: -offestY, left: -offsetX },
-    'top-right': { top: -offestY, right: -offsetX }
+    'top-left': { top: -offsetY + offset.y, left: -offsetX + offset.x },
+    'top-right': { top: -offsetY + offset.y, right: -offsetX + offset.x },
+    'bottom-left': { bottom: -offsetY + offset.y, left: -offsetX + offset.x },
+    'bottom-right': { bottom: -offsetY + offset.y, right: -offsetX + offset.x }
   };
 
   return (

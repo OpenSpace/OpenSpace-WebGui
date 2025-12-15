@@ -41,7 +41,7 @@
         "info": "Remove this scene graph node (and all its child nodes) from the scene"
       },
       "delete-confirm-modal": {
-        "title": "Delete node",
+        "title": "Delete Node",
         "are-you-sure": "Are you sure you want to remove the scene graph node",
         "this-is-irreversible": "This action is irreversible and will also remove all nodes in the scene tree that depend on this node!",
         "remove-button": "Remove",
