@@ -221,7 +221,7 @@ export function GlobeImageryBrowserPanel() {
               </InfoBox>
               <Menu position={'right-start'}>
                 <Menu.Target>
-                  <ActionIcon>
+                  <ActionIcon aria-label={t('server-menu')}>
                     <VerticalDotsIcon />
                   </ActionIcon>
                 </Menu.Target>

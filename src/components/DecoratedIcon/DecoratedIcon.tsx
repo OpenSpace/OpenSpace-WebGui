@@ -22,7 +22,7 @@ const MappedWrapperSize: Record<MantineSize, number> = {
 };
 
 const MappedDecoratorPosition: Record<MantineSize, { x: number; y: number }> = {
-  xs: { x: 6, y: 11 },
+  xs: { x: 6, y: 10 },
   sm: { x: 6, y: 10 },
   md: { x: 6, y: 8 },
   lg: { x: 6, y: 6 },

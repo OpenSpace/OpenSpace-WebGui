@@ -11,6 +11,7 @@
     "nothing-found": "No servers available for the selected globe"
   },
   "server-info": "Server URL:",
+  "server-menu": "Open server menu",
   "button-labels": {
     "add-server": "Add new server",
     "remove-server": "Remove current server",
@@ -39,6 +40,12 @@
       "remove-layers": "Remove all layers",
       "add-color-layer": "Add as color layer",
       "layer-exists": "Layer is already added to this group"
+    },
+    "aria-labels": {
+      "remove-layers": "Remove all layers for '{{layerName}}'",
+      "add-color-layer": "Add '{{layerName}}' as color layer",
+      "layer-menu": "Open layer menu",
+      "add-layer": "Add as {{layerType}}"
     },
     "menu-add-label": "Add as"
   }

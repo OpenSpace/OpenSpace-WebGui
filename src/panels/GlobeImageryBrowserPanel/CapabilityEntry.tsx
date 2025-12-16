@@ -58,6 +58,7 @@ export const CapabilityEntry = memo(
               onClick={() => onRemove(capability.Name)}
               color={'red'}
               variant={'light'}
+              aria-label={t('aria-labels.remove-layers', { layerName: capability.Name })}
             >
               <DeleteIcon />
             </ActionIcon>
@@ -67,6 +68,7 @@ export const CapabilityEntry = memo(
           <ActionIcon
             onClick={() => onAdd(capability, 'ColorLayers')}
             disabled={isInLayerGroup('ColorLayers')}
+            aria-label={t('aria-labels.add-color-layer', { layerName: capability.Name })}
           >
             <DecoratedIcon>
               <ColorPaletteIcon />
@@ -75,7 +77,7 @@ export const CapabilityEntry = memo(
         </Tooltip>
         <Menu position={'right-start'}>
           <Menu.Target>
-            <ActionIcon>
+            <ActionIcon aria-label={t('aria-labels.layer-menu')}>
               <VerticalDotsIcon />
             </ActionIcon>
           </Menu.Target>
@@ -91,8 +93,12 @@ export const CapabilityEntry = memo(
                   <Button
                     key={group.id}
                     onClick={() => onAdd(capability, group.id)}
-                    leftSection={<DecoratedIcon>{group.icon}</DecoratedIcon>}
+                    leftSection={
+                      <DecoratedIcon offset={{ x: 1, y: 2 }}>{group.icon}</DecoratedIcon>
+                    }
                     disabled={isInLayerGroup(group.id)}
+                    justify={'left'}
+                    aria-label={t('aria-labels.add-layer', { layerType: group.label })}
                   >
                     {group.label}
                   </Button>
