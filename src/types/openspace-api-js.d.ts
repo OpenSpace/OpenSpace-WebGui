@@ -1259,6 +1259,12 @@ interface globebrowsingLibrary {
    */
   geoPositionForCamera: (useEyePosition?: boolean) => Promise<[number, number, number]>
   /**
+   * Returns an object containing a list of all loaded `RenderableGlobe` sorted with respect to WMS server info followed by alphabetical order. The index `firstIndexWithoutUrl` indicates the first item in the list that does not have WMS server info.
+
+\\return Table containing a list of `renderableGlobe` identifiers, and an index indicating the first item in the list that does not have a WMS server
+   */
+  globes: () => Promise<table>
+  /**
    * Go to the chunk on a globe with given index x, y, level.
 
 \\param globeIdentifier The identifier of the scene graph node for the globe \\param x The x value of the tile index \\param y The y value of the tile index \\param level The level of the tile index
@@ -1350,6 +1356,14 @@ The `source` and `destination` parameters can also be the identifiers of the lay
  positions. Otherwise, it will not.
    */
   setNodePositionFromCamera: (nodeIdentifer: string, useAltitude?: boolean) => Promise<void>
+  /**
+   * Return a list of all WMS servers associated with the `renderableGlobe` globe.
+
+\\param globe The identifier of the `renderableGlobe` to fetch WMS servers for
+
+\\return A list of WMS server info containing its name and url
+   */
+  urlInfo: (globe: string) => Promise<table[]>
 } // interface globebrowsingLibrary
 
 interface iswaLibrary {

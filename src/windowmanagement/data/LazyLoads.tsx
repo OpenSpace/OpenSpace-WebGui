@@ -88,3 +88,9 @@ export const ScriptLogPanel = lazy(() =>
     default: module.ScriptLogPanel
   }))
 );
+
+export const GlobeImageryBrowserPanel = lazy(() =>
+  import('@/panels/GlobeImageryBrowserPanel/GlobeImageryBrowserPanel').then((module) => ({
+    default: module.GlobeImageryBrowserPanel
+  }))
+);

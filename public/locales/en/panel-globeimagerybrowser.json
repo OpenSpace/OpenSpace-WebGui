@@ -1,0 +1,52 @@
+{
+  "select-globe": {
+    "no-server-group": "Globes without server",
+    "tooltips": {
+      "valid-focus": "Select from current foucs",
+      "invalid-focus": "Only works if the focus is a globe"
+    }
+  },
+  "select-server": {
+    "placeholder": "Select server",
+    "nothing-found": "No servers available for the selected globe"
+  },
+  "server-info": "Server URL:",
+  "server-menu": "Open server menu",
+  "button-labels": {
+    "add-server": "Add new server",
+    "remove-server": "Remove current server",
+    "from-focus": "From focus"
+  },
+  "filter-list-placeholder": "Search for a layer...",
+  "remove-server-modal": {
+    "title": "Remove Server",
+    "description": "Are you sure you want to remove the '{{serverName}}' server?",
+    "confirm": "Remove",
+    "cancel": "Cancel"
+  },
+  "add-server-modal": {
+    "title": "Add New Server",
+    "placeholders": {
+      "name": "Server name",
+      "url": "Server URL"
+    },
+    "buttons": {
+      "add": "Add server",
+      "cancel": "Cancel"
+    }
+  },
+  "capability-entry": {
+    "tooltips": {
+      "remove-layers": "Remove all layers",
+      "add-color-layer": "Add as color layer",
+      "layer-exists": "Layer is already added to this group"
+    },
+    "aria-labels": {
+      "remove-layers": "Remove all layers for '{{layerName}}'",
+      "add-color-layer": "Add '{{layerName}}' as color layer",
+      "layer-menu": "Open layer menu",
+      "add-layer": "Add as {{layerType}}"
+    },
+    "menu-add-label": "Add as"
+  }
+}

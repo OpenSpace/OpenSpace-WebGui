@@ -23,6 +23,7 @@ export { GiNightSky as NightSkyIcon, GiPencil as PencilIcon } from 'react-icons/
 export { GoBrowser as BrowserIcon } from 'react-icons/go';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
 export { ImSphere as GridSphereIcon } from 'react-icons/im';
+export { IoMdGlobe as GlobeIcon } from 'react-icons/io';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoInformation as InformationIcon,
@@ -130,6 +131,7 @@ export {
   TbRepeatOff as RepeatOffIcon,
   TbCube as SceneIcon,
   TbScript as ScriptLogIcon,
+  TbServer as ServerIcon,
   TbWorldWww as WebIcon
 } from 'react-icons/tb';
 export {

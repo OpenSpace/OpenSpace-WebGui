@@ -1,41 +1,12 @@
 import { Box } from '@mantine/core';
 
 import { PropertyOwnerCollapsable } from '@/components/PropertyOwner/PropertyOwnerCollapsable';
+import { layerGroups } from '@/data/GlobeLayers';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
-import {
-  ColorPaletteIcon,
-  LandscapeIcon,
-  LayersIcon,
-  NightIcon,
-  WaterIcon
-} from '@/icons/icons';
 import { Uri } from '@/types/types';
 import { displayName, sgnIdentifierFromSubownerUri } from '@/util/propertyTreeHelpers';
 
 import { GlobeLayerGroup } from './GlobeLayersGroup';
-
-const layerGroups = [
-  {
-    id: 'ColorLayers',
-    icon: <ColorPaletteIcon />
-  },
-  {
-    id: 'HeightLayers',
-    icon: <LandscapeIcon />
-  },
-  {
-    id: 'NightLayers',
-    icon: <NightIcon />
-  },
-  {
-    id: 'Overlays',
-    icon: <LayersIcon />
-  },
-  {
-    id: 'WaterMasks',
-    icon: <WaterIcon />
-  }
-];
 
 interface Props {
   uri: Uri;

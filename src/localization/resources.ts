@@ -8,6 +8,7 @@ import exoplanetsPanel from '@/public/locales/en/panel-exoplanets.json';
 import flightControlPanel from '@/public/locales/en/panel-flightcontrol.json';
 import geolocationPanel from '@/public/locales/en/panel-geolocation.json';
 import gettingStartedTourPanel from '@/public/locales/en/panel-gettingstartedtour.json';
+import globeImageryBrowserPanel from '@/public/locales/en/panel-globeimagerybrowser.json';
 import keybindsPanel from '@/public/locales/en/panel-keybinds.json';
 import missionsPanel from '@/public/locales/en/panel-missions.json';
 import navigationPanel from '@/public/locales/en/panel-navigation.json';
@@ -37,6 +38,7 @@ export const resources = {
     'panel-flightcontrol': flightControlPanel,
     'panel-geolocation': geolocationPanel,
     'panel-gettingstartedtour': gettingStartedTourPanel,
+    'panel-globeimagerybrowser': globeImageryBrowserPanel,
     'panel-keybinds': keybindsPanel,
     'panel-missions': missionsPanel,
     'panel-navigation': navigationPanel,
