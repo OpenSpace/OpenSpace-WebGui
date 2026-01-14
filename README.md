@@ -67,13 +67,13 @@ We apply a custom theme to the Mantine components. If you are building a separat
  - Avoid passing JSX as props, function arguments, or return values unless absolutely necessary, and only if the JSX is small.
  - Avoid storing JSX in variables unless necessary.
  - If a component becomes complex, consider breaking it into smaller components and/or leveraging hooks.
- - As much as possible, adhere to accessibility standards for contrast, keyboard navigation, etc. See additional information here (TODO link to contribute/accessibility readme).
+ - As much as possible, adhere to accessibility standards for contrast, keyboard navigation, etc. See additional information [here](https://docs.openspaceproject.com/latest/contribute/development/ui-accessibility.html).
 
  - Follow the **Hooks Order** as much as possible.
 
 ## Guide: how to add a new panel
   - Create a panel by making a new component and place it in a folder in the `src/panels` folder. The folder name should be the same as the component name. For example, if you create a new panel called `MyPanel`, create a folder called `MyPanel` and place the component in there. The panel name should end with "Panel": `MyPanel` is okay, but `MyComponent` is not.
-  * Hooks, types and util functions that only are used in that panel can be placed in the same folder. If you have a lot of files, consider creating subfolders for hooks, types and utils.
+  * Hooks, types, and util functions that are only used in that panel can be placed in the same folder. If you have a lot of files, consider creating subfolders for hooks, types, and utils.
   - Include the panel in `src/windowmanagement/data/LazyLoads.tsx` and `src/windowmanagement/data/MenuItems.tsx`. This will make it appear in the menus.
   - We also need to add the panel to the OpenSpace Launcher. To do this, save a layout file by clicking `View > Save Toolbar Settings` and overwrite the JSON file at `OpenSpace > data > web > default_ui_panels.json`.
   - This change in the engine needs to be committed to an engine branch.
@@ -95,9 +95,9 @@ We apply a custom theme to the Mantine components. If you are building a separat
    - functions
 
 ## OpenSpace JavaScript API
-We now support a TypeScript version of our [JavaScript API](https://github.com/OpenSpace/openspace-api-js). Since the API updates frequently with new OpenSpace Lua functions, we've decided to keep a manual copy of the TypeScript API in this repository. As such, we need to manually update the API declaration file from time to time, to get correct and proper syntax highlighting when calling Lua functions.
+We now support a TypeScript version of our [JavaScript API](https://github.com/OpenSpace/openspace-api-js). Since the API is frequently updated with new OpenSpace Lua functions, we've decided to maintain a manual copy of the TypeScript API in this repository. As such, we need to manually update the API declaration file periodically to ensure correct and proper syntax highlighting when calling Lua functions.
 
-Follow the steps here (TODO: link to api-js readme describing steps to generate file)
+Follow these [steps](https://github.com/OpenSpace/openspace-api-js/tree/master/script) to generate a new TypeScript file.
 
 ## Deploy
 TODO Steps:
