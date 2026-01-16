@@ -13,7 +13,6 @@ import {
 
 import { BoolInput } from '@/components/Input/BoolInput';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
-import { useSubscribeToProperty } from '@/hooks/properties';
 import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { updateSessionRecordingSettings } from '@/redux/sessionrecording/sessionRecordingSlice';
@@ -42,14 +41,6 @@ export function PlaySession() {
   const fileList = useAppSelector((state) => state.sessionRecording.files);
   const recordingState = useSubscribeToSessionRecording();
   const dispatch = useAppDispatch();
-
-  // Subscribe to Properties so that the middleware will be notified on updated values
-  // Important! These properties have to be kept in sync with the properties used in the
-  // middleware
-  useSubscribeToProperty('Modules.CefWebGui.Visible');
-  useSubscribeToProperty('RenderEngine.ShowLog');
-  useSubscribeToProperty('RenderEngine.ShowVersion');
-  useSubscribeToProperty('Dashboard.IsEnabled');
 
   const isIdle = recordingState === RecordingState.Idle;
   const isPlayingBack =

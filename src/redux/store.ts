@@ -13,8 +13,8 @@ import { localReducer } from './local/localSlice';
 import { loggingReducer } from './logging/loggingSlice';
 import { missionsReducer } from './missions/missionsSlice';
 import { profileReducer } from './profile/profileSlice';
-import { propertiesReducer } from './propertytree/properties/propertiesSlice';
-import { propertyOwnersReducer } from './propertytree/propertyowner/propertyOwnerSlice';
+import { propertyOwnerReducer } from './propertyTreeTest/propertyOwnerSlice';
+import { propertyReducer } from './propertyTreeTest/propertySlice';
 import { sessionRecordingReducer } from './sessionrecording/sessionRecordingSlice';
 import { skyBrowserReducer } from './skybrowser/skybrowserSlice';
 import { timeReducer } from './time/timeSlice';
@@ -37,13 +37,13 @@ export const store = configureStore({
     logging: loggingReducer,
     missions: missionsReducer,
     profile: profileReducer,
-    properties: propertiesReducer,
-    propertyOwners: propertyOwnersReducer,
     sessionRecording: sessionRecordingReducer,
     skybrowser: skyBrowserReducer,
     time: timeReducer,
     userPanels: userPanelsReducer,
-    version: versionReducer
+    version: versionReducer,
+    properties: propertyReducer,
+    propertyOwners: propertyOwnerReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([listenerMiddleware.middleware]),

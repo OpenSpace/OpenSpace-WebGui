@@ -1,14 +1,12 @@
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useThrottledCallback } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
-  subscribeToProperty,
-  unsubscribeToProperty
-} from '@/redux/propertytree/properties/propertiesMiddleware';
-import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
+  propertySelectors,
+  updateOne
+} from '@/redux/propertyTreeTest/propertyTreeTestSlice';
 import { PropertyOrPropertyGroup, PropertyTypeKey } from '@/types/Property/property';
 import { PropertyGroupsRuntime } from '@/types/Property/propertyGroups';
 import { Uri } from '@/types/types';
@@ -42,9 +40,11 @@ export function useProperty<T extends PropertyTypeKey>(
     keyPrefix: 'property'
   });
   // Get the value from Redux
-  const prop = useAppSelector((state) => state.properties.properties[uri]) as
+  const prop = useAppSelector((state) => propertySelectors.selectById(state, uri)) as
     | PropertyOrPropertyGroup<T>
     | undefined;
+
+  const dispatch = useAppDispatch();
 
   if (!validatePropertyType(type, prop)) {
     throw new Error(
@@ -53,8 +53,6 @@ export function useProperty<T extends PropertyTypeKey>(
   }
 
   const shouldShowModal = useShouldShowModal(prop?.metaData);
-  useSubscribeToProperty(uri);
-  const dispatch = useAppDispatch();
   // Subscribe to the property
   const ThrottleMs = 1000 / 60;
 
@@ -70,34 +68,24 @@ export function useProperty<T extends PropertyTypeKey>(
           cancel: t('confirmation-modal.cancel')
         },
         confirmProps: { color: 'red', variant: 'filled' },
-        onConfirm: () => dispatch(setPropertyValue({ uri, value }))
+        onConfirm: () => dispatch(updateOne({ id: uri, changes: { value } }))
       });
     } else {
-      dispatch(setPropertyValue({ uri, value }));
+      dispatch(updateOne({ id: uri, changes: { value } }));
     }
   }, ThrottleMs);
 
   return [prop?.value, setValue, prop?.metaData];
 }
 
-export function useSubscribeToProperty(uri: Uri) {
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(subscribeToProperty({ uri }));
-    return () => {
-      dispatch(unsubscribeToProperty({ uri }));
-    };
-  }, [dispatch, uri]);
-}
-
 function useShouldShowModal<T extends PropertyTypeKey>(
   metaData: PropertyOrPropertyGroup<T>['metaData'] | undefined
 ): boolean {
   const showConfirmationModal = useAppSelector(
-    (state) => state.properties.properties['OpenSpaceEngine.ShowPropertyConfirmation']
-  )?.value as boolean | undefined;
-
-  useSubscribeToProperty('OpenSpaceEngine.ShowPropertyConfirmation');
+    (state) =>
+      propertySelectors.selectById(state, 'OpenSpaceEngine.ShowPropertyConfirmation')
+        ?.value
+  ) as boolean | undefined;
 
   // Don't show modal if we can't find the global settings or the metadata
   if (showConfirmationModal === undefined || metaData === undefined) {
