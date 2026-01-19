@@ -1,4 +1,5 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { throttle } from 'lodash';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
@@ -18,6 +19,7 @@ import { isGlobeLayer, removeLastWordFromUri } from '@/util/uris';
 
 import { upsertMany as upsertManyPropertyOwners } from './propertyOwnerSlice';
 import {
+  updateOne,
   updateOne as updateProperty,
   upsertMany as upsertManyProperties
 } from './propertySlice';
@@ -59,6 +61,15 @@ function flattenPropertyTree(propertyOwner: OpenSpacePropertyOwner) {
   return { propertyOwners, properties };
 }
 
+const throttleUpdate = throttle((api, property) => {
+  api.dispatch(
+    updateProperty({
+      id: property.property,
+      changes: { value: property.value }
+    })
+  );
+}, 200);
+
 export const setupSubscription = createAsyncThunk(
   'propertyTreeTest/setupSubscription',
   async (_, thunkAPI) => {
@@ -74,11 +85,8 @@ export const setupSubscription = createAsyncThunk(
           thunkAPI.dispatch(upsertManyProperties(properties));
           thunkAPI.dispatch(upsertManyPropertyOwners(propertyOwners));
         } else {
-          const property = data as { uri: Uri; value: AnyProperty['value'] };
-          console.log(property);
-          thunkAPI.dispatch(
-            updateProperty({ id: property.uri, changes: { value: property.value } })
-          );
+          const property = data as { property: Uri; value: AnyProperty['value'] };
+          throttleUpdate(thunkAPI, property);
         }
       }
     })();
@@ -161,22 +169,12 @@ export const addPropertyTreeTestListener = (startListening: AppStartListening) =
     }
   });
 
-  // startListening({
-  //   matcher: isAnyOf(updateProperty),
-  //   effect: async (
-  //     action: PayloadAction<{
-  //       payload: Update<AnyProperty, string>;
-  //       type: 'propertyTree/updateOne';
-  //     }>
-  //   ) => {
-  //     console.log('Property tree test updated:', action);
-  //     try {
-  //       api.setProperty(action.payload.id, action.payload.changes.value);
-  //     } catch (error) {
-  //       console.error('Failed to set property:', error);
-  //     }
-  //   }
-  // });
+  startListening({
+    matcher: updateOne.match,
+    effect: (action) => {
+      api.setProperty(action.payload.id, action.payload.changes.value);
+    }
+  });
 
   startListening({
     actionCreator: subscribeToPropertyTreeTest,
