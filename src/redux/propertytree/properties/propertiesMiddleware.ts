@@ -5,6 +5,7 @@ import { Topic } from 'openspace-api-js';
 import { api } from '@/api/api';
 import { onCloseConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
+import { propertySelectors } from '@/redux/propertyTreeTest/propertySlice';
 import { RootState } from '@/redux/store';
 import { ConnectionStatus } from '@/types/enums';
 import { AnyProperty } from '@/types/Property/property';
@@ -140,7 +141,7 @@ function tryPromoteSubscription(
   }
 
   // True if property exists, false otherwise
-  const propertyInTree = !!state.properties.properties[uri];
+  const propertyInTree = !!propertySelectors.selectById(state, uri);
 
   if (subscriptionInfo.state === SubscriptionState.Orphan && propertyInTree) {
     subscriptionInfo.subscription = setupSubscription(dispatch, uri);

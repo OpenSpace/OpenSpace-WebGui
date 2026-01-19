@@ -11,6 +11,7 @@ import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes/hooks';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
+import { propertySelectors } from '@/redux/propertyTreeTest/propertySlice';
 import { EngineMode, IconSize } from '@/types/enums';
 import { PropertyOwner } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
@@ -29,8 +30,8 @@ export function NavigationPanel() {
   const { t } = useTranslation('panel-navigation');
 
   const shouldStartInAnchorAim = useAppSelector((state) => {
-    const aimProp = state.properties.properties[NavigationAimKey];
-    const anchorProp = state.properties.properties[NavigationAnchorKey];
+    const aimProp = propertySelectors.selectById(state, NavigationAimKey);
+    const anchorProp = propertySelectors.selectById(state, NavigationAnchorKey);
     return aimProp?.value !== anchorProp?.value && aimProp?.value !== '';
   });
 

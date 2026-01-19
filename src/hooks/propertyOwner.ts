@@ -1,19 +1,16 @@
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
+import { propertyOwnerSelectors } from '@/redux/propertyTreeTest/propertyOwnerSlice';
+import { propertySelectors } from '@/redux/propertyTreeTest/propertySlice';
 import { Identifier, PropertyOwner, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
-import {
-  checkVisiblity,
-  enabledPropertyUri,
-  fadePropertyUri,
-  hasVisibleChildren,
-  isPropertyVisible,
-  sgnUri
-} from '@/util/propertyTreeHelpers';
+import { checkVisiblity, isPropertyVisible } from '@/util/propertyTreeHelpers';
+import { hasVisibleChildren } from '@/util/propertyTreeSelectors';
+import { enabledPropertyUri, fadePropertyUri, sgnUri } from '@/util/uris';
 
 export function usePropertyOwner(uri: Uri): PropertyOwner | undefined {
-  return useAppSelector((state) => state.propertyOwners.propertyOwners[uri]);
+  return useAppSelector((state) => propertyOwnerSelectors.selectById(state, uri));
 }
 
 export function useSceneGraphNode(identifier: Identifier): PropertyOwner | undefined {
@@ -25,12 +22,14 @@ export function useSceneGraphNode(identifier: Identifier): PropertyOwner | undef
  * Returns a function that checks whether a scene graph node with the given identifier
  * exists among the propertyOwners.
  */
-export function useIsSceneGraphNodeAdded() {
-  const { propertyOwners } = useAppSelector((state) => state.propertyOwners);
+export function useIsSceneGraphNodeAdded(): (id: Identifier) => boolean {
+  const propertyOwners = useAppSelector((state) =>
+    propertyOwnerSelectors.selectAll(state)
+  );
 
   function isSceneGraphNodeAdded(identifier: Identifier): boolean {
     const uri = sgnUri(identifier);
-    return uri in propertyOwners;
+    return propertyOwners.findIndex((po) => po.uri === uri) !== -1;
   }
 
   return isSceneGraphNodeAdded;
@@ -48,10 +47,10 @@ export function useHasVisibleChildren(propertyOwnerUri: Uri): boolean {
 
   return useAppSelector((state) =>
     hasVisibleChildren(
+      propertyOwnerSelectors.selectEntities(state),
+      propertySelectors.selectEntities(state),
       propertyOwnerUri,
-      visibilityLevelSetting,
-      state.propertyOwners.propertyOwners,
-      state.properties.propertyOverview
+      visibilityLevelSetting
     )
   );
 }
@@ -66,10 +65,12 @@ export function useVisibleProperties(propertyOwner: PropertyOwner | undefined): 
     EnginePropertyVisibilityKey
   );
 
-  const propertyOverview = useAppSelector((state) => state.properties.propertyOverview);
+  const allProperties = useAppSelector((state) =>
+    propertySelectors.selectEntities(state)
+  );
   return (
     propertyOwner?.properties.filter((p) =>
-      isPropertyVisible(propertyOverview[p], visibilityLevelSetting)
+      isPropertyVisible(allProperties[p].metaData.visibility, visibilityLevelSetting)
     ) ?? []
   );
 }

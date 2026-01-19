@@ -48,6 +48,7 @@ export function SceneTree() {
   const keyLabels = { label: t('search-keys.name'), guiPath: t('search-keys.guiPath') };
 
   const { sceneTreeData, flatTreeData } = useSceneTreeData(filter);
+
   const { closeCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
 
   const initialExpandedNodes = useAppSelector(

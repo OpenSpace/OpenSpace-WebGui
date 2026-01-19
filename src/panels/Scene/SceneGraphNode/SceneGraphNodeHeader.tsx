@@ -10,7 +10,8 @@ import { useIsSgnFocusable } from '@/hooks/sceneGraphNodes/hooks';
 import { ClockOffIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
-import { displayName, isRenderable } from '@/util/propertyTreeHelpers';
+import { displayName } from '@/util/propertyTreeHelpers';
+import { isRenderable } from '@/util/uris';
 
 import { useTimeFrame } from '../hooks';
 

@@ -1,39 +1,34 @@
-import { propertyOwnerSelectors } from '@/redux/propertyTreeTest/propertyOwnerSlice';
-import { propertySelectors } from '@/redux/propertyTreeTest/propertySlice';
-import { RootState } from '@/redux/store';
-import { PropertyOverview, Uri } from '@/types/types';
+import { AnyProperty } from '@/types/Property/property';
+import { Properties, PropertyOwner, Uri } from '@/types/types';
 
 import { checkVisiblity, isPropertyVisible } from './propertyTreeHelpers';
 import { enabledPropertyUri, fadePropertyUri, sgnRenderableUri } from './uris';
 
-export function isPropertyOwnerActive(state: RootState, uri: Uri): boolean {
-  const enabledValue = propertySelectors.selectById(state, enabledPropertyUri(uri))
-    ?.value as boolean | undefined;
-  const fadeValue = propertySelectors.selectById(state, fadePropertyUri(uri))?.value as
-    | number
-    | undefined;
+export function isPropertyOwnerActive(properties: Properties, uri: Uri): boolean {
+  const enabledValue = properties[enabledPropertyUri(uri)]?.value as boolean | undefined;
+  const fadeValue = properties[fadePropertyUri(uri)]?.value as number | undefined;
   return checkVisiblity(enabledValue, fadeValue) || false;
 }
 
 /**
  * Is the SGN currently visible, based on its enabled and fade properties?
  */
-export function isSgnVisible(state: RootState, uri: Uri): boolean {
+export function isSgnVisible(properties: Properties, uri: Uri): boolean {
   const renderableUri = sgnRenderableUri(uri);
-  return isPropertyOwnerActive(state, renderableUri);
+  return isPropertyOwnerActive(properties, renderableUri);
 }
 
 export function hasVisibleChildren(
-  state: RootState,
+  propertyOwners: Record<Uri, PropertyOwner>,
+  properties: Record<Uri, AnyProperty>,
   ownerUri: Uri,
-  visiblitySetting: number | undefined,
-  propertyOverview: PropertyOverview
+  visiblitySetting: number | undefined
 ): boolean {
   let queue: Uri[] = [ownerUri];
 
   while (queue.length > 0) {
     const currentOwner = queue.shift()!;
-    const propertyOwner = propertyOwnerSelectors.selectById(state, currentOwner);
+    const propertyOwner = propertyOwners[currentOwner];
 
     if (!propertyOwner) continue;
 
@@ -41,7 +36,7 @@ export function hasVisibleChildren(
     if (
       visiblitySetting &&
       propertyOwner.properties.some((uri: Uri) =>
-        isPropertyVisible(propertyOverview[uri], visiblitySetting)
+        isPropertyVisible(properties[uri].metaData.visibility, visiblitySetting)
       )
     ) {
       return true;

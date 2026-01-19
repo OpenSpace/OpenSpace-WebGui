@@ -13,7 +13,7 @@ import {
   Uri
 } from '@/types/types';
 import { rootOwnerKey } from '@/util/keys';
-import { isGlobeLayer, removeLastWordFromUri } from '@/util/propertyTreeHelpers';
+import { isGlobeLayer, removeLastWordFromUri } from '@/util/uris';
 
 import {
   addProperties,

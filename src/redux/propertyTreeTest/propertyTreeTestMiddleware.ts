@@ -1,10 +1,4 @@
-import {
-  createAction,
-  createAsyncThunk,
-  isAnyOf,
-  PayloadAction,
-  Update
-} from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
@@ -12,9 +6,21 @@ import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { ConnectionStatus } from '@/types/enums';
 import { AnyProperty } from '@/types/Property/property';
-import { OpenSpacePropertyOwner, PropertyOwner, Uri } from '@/types/types';
+import {
+  OpenSpacePropertyOwner,
+  Properties,
+  PropertyOwner,
+  PropertyOwners,
+  Uri
+} from '@/types/types';
+import { rootOwnerKey } from '@/util/keys';
+import { isGlobeLayer, removeLastWordFromUri } from '@/util/uris';
 
-import { updateOne, upsertMany } from './propertySlice';
+import { upsertMany as upsertManyPropertyOwners } from './propertyOwnerSlice';
+import {
+  updateOne as updateProperty,
+  upsertMany as upsertManyProperties
+} from './propertySlice';
 
 const subscribeToPropertyTreeTest = createAction<void>('propertyTreeTest/subscribe');
 const unsubscribeToPropertyTreeTest = createAction<void>('propertyTreeTest/unsubscribe');
@@ -65,11 +71,60 @@ export const setupSubscription = createAsyncThunk(
           const { propertyOwners, properties } = flattenPropertyTree(
             data.payload as OpenSpacePropertyOwner
           );
-          thunkAPI.dispatch(upsertMany(properties));
+          thunkAPI.dispatch(upsertManyProperties(properties));
+          thunkAPI.dispatch(upsertManyPropertyOwners(propertyOwners));
+        } else {
+          const property = data as { uri: Uri; value: AnyProperty['value'] };
+          console.log(property);
+          thunkAPI.dispatch(
+            updateProperty({ id: property.uri, changes: { value: property.value } })
+          );
         }
-        // thunkAPI.dispatch(updateSessionrecording(data));
       }
     })();
+  }
+);
+
+export const addUriToPropertyTree = createAsyncThunk(
+  'propertyTreeTest/addUri',
+  async (uri: Uri) => {
+    let uriToFetch = uri;
+    // If the uri is to a layer, we want to get the parent property owner.
+    // This is to preserve the order of the layers.
+    if (isGlobeLayer(uri)) {
+      uriToFetch = removeLastWordFromUri(uri);
+    }
+
+    const response = (await api.getProperty(uriToFetch)) as
+      | AnyProperty
+      | OpenSpacePropertyOwner;
+
+    // Property Owner
+    if ('properties' in response) {
+      const { properties, propertyOwners } = flattenPropertyTree(response);
+      const propertiesMap: Properties = {};
+
+      properties.forEach((p) => {
+        propertiesMap[p.uri] = p;
+      });
+      const propertyOwnerMap: PropertyOwners = {};
+      propertyOwners.forEach((p) => {
+        propertyOwnerMap[p.uri] = p;
+      });
+      return {
+        properties: propertiesMap,
+        propertyOwners: propertyOwnerMap
+      };
+    } else {
+      // Property
+      const propertiesMap: Properties = {};
+      propertiesMap[response.uri] = response;
+
+      return {
+        properties: propertiesMap,
+        propertyOwners: null
+      };
+    }
   }
 );
 
@@ -89,26 +144,39 @@ export const addPropertyTreeTestListener = (startListening: AppStartListening) =
     effect: async (_, listenerApi) => {
       // if (nSubscribers > 0) {
       listenerApi.dispatch(setupSubscription());
+      listenerApi.dispatch(addUriToPropertyTree(rootOwnerKey));
       // }
     }
   });
 
   startListening({
-    matcher: isAnyOf(updateOne),
-    effect: async (
-      action: PayloadAction<{
-        payload: Update<AnyProperty, string>;
-        type: 'propertyTree/updateOne';
-      }>
-    ) => {
-      console.log('Property tree test updated:', action);
-      try {
-        api.setProperty(action.payload.id, action.payload.changes.value);
-      } catch (error) {
-        console.error('Failed to set property:', error);
+    actionCreator: addUriToPropertyTree.fulfilled,
+    effect: (action, listenerApi) => {
+      if (action.payload?.propertyOwners) {
+        listenerApi.dispatch(upsertManyPropertyOwners(action.payload.propertyOwners));
+      }
+      if (action.payload?.properties) {
+        listenerApi.dispatch(upsertManyProperties(action.payload.properties));
       }
     }
   });
+
+  // startListening({
+  //   matcher: isAnyOf(updateProperty),
+  //   effect: async (
+  //     action: PayloadAction<{
+  //       payload: Update<AnyProperty, string>;
+  //       type: 'propertyTree/updateOne';
+  //     }>
+  //   ) => {
+  //     console.log('Property tree test updated:', action);
+  //     try {
+  //       api.setProperty(action.payload.id, action.payload.changes.value);
+  //     } catch (error) {
+  //       console.error('Failed to set property:', error);
+  //     }
+  //   }
+  // });
 
   startListening({
     actionCreator: subscribeToPropertyTreeTest,

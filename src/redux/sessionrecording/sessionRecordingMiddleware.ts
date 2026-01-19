@@ -7,6 +7,7 @@ import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { ConnectionStatus } from '@/types/enums';
 
 import { setPropertyValue } from '../propertytree/properties/propertiesSlice';
+import { propertySelectors } from '../propertyTreeTest/propertySlice';
 import { RootState } from '../store';
 
 import {
@@ -41,7 +42,7 @@ export const showGUI = createAsyncThunk(
   async (shouldShowGui: boolean, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     const { initialSettings, settings } = state.sessionRecording;
-    const { properties } = state.properties;
+    const properties = propertySelectors.selectEntities(state);
 
     const ShowGuiUri = 'Modules.CefWebGui.Visible';
     const ShowDashboardsUri = 'Dashboard.IsEnabled';

@@ -2,6 +2,8 @@ import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 
 import { PropertyOwner } from '@/types/types';
 
+import { RootState } from '../store';
+
 // Property owners
 export const propertyOwnerAdapter = createEntityAdapter({
   selectId: (o: PropertyOwner) => o.uri,
@@ -26,5 +28,5 @@ export const { upsertMany, upsertOne, removeOne, reset, updateOne } =
 export const propertyOwnerReducer = propertyOwners.reducer;
 
 export const propertyOwnerSelectors = propertyOwnerAdapter.getSelectors(
-  (state: any) => state.propertyOwners
+  (state: RootState) => state.propertyOwners
 );

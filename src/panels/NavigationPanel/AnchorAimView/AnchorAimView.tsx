@@ -8,6 +8,7 @@ import { useProperty } from '@/hooks/properties';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
+import { propertyOwnerSelectors } from '@/redux/propertyTreeTest/propertyOwnerSlice';
 import { EngineMode, IconSize } from '@/types/enums';
 import { Identifier, PropertyOwner } from '@/types/types';
 import {
@@ -16,7 +17,7 @@ import {
   RetargetAimKey,
   RetargetAnchorKey
 } from '@/util/keys';
-import { sgnUri } from '@/util/propertyTreeHelpers';
+import { sgnUri } from '@/util/uris';
 
 import { AnchorAimListEntry } from './AnchorAimListEntry';
 
@@ -39,7 +40,9 @@ export function AnchorAimView({
     keyPrefix: 'anchor-aim.anchor-aim-view'
   });
 
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+  const propertyOwners = useAppSelector((state) =>
+    propertyOwnerSelectors.selectEntities(state)
+  );
   const engineMode = useSubscribeToEngineMode();
 
   const [anchor, setAnchor] = useProperty('StringProperty', NavigationAnchorKey);

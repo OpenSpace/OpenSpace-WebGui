@@ -4,7 +4,8 @@ import { PropertyOwnerCollapsable } from '@/components/PropertyOwner/PropertyOwn
 import { layerGroups } from '@/data/GlobeLayers';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
-import { displayName, sgnIdentifierFromSubownerUri } from '@/util/propertyTreeHelpers';
+import { displayName } from '@/util/propertyTreeHelpers';
+import { sgnIdentifierFromSubownerUri } from '@/util/uris';
 
 import { GlobeLayerGroup } from './GlobeLayersGroup';
 

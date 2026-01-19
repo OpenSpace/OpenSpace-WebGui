@@ -6,7 +6,7 @@ import { usePropertyOwner, useVisibleProperties } from '@/hooks/propertyOwner';
 import { ClockIcon, ClockOffIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
-import { isRenderable, isSgnTransform } from '@/util/propertyTreeHelpers';
+import { isRenderable, isSgnTransform } from '@/util/uris';
 
 import { useTimeFrame } from '../hooks';
 

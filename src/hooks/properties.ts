@@ -3,10 +3,7 @@ import { useThrottledCallback } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import {
-  propertySelectors,
-  updateOne
-} from '@/redux/propertyTreeTest/propertyTreeTestSlice';
+import { propertySelectors, updateOne } from '@/redux/propertyTreeTest/propertySlice';
 import { PropertyOrPropertyGroup, PropertyTypeKey } from '@/types/Property/property';
 import { PropertyGroupsRuntime } from '@/types/Property/propertyGroups';
 import { Uri } from '@/types/types';

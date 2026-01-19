@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 
 import { useAppSelector } from '@/redux/hooks';
+import { propertyOwnerSelectors } from '@/redux/propertyTreeTest/propertyOwnerSlice';
+import { propertySelectors } from '@/redux/propertyTreeTest/propertySlice';
 import { PropertyOwner, SceneGraphNodeGuiSettings, Uri } from '@/types/types';
 
 import { SceneGraphNodesFilters } from './types';
@@ -13,7 +15,9 @@ import {
 
 export function useIsSgnFocusable(uri: Uri): boolean {
   return (
-    useAppSelector((state) => isSgnFocusable(uri, state.properties.properties)) || false
+    useAppSelector((state) =>
+      isSgnFocusable(uri, propertySelectors.selectEntities(state))
+    ) || false
   );
 }
 
@@ -26,7 +30,9 @@ export function useSceneGraphNodes({
   onlyFocusable = false,
   tags = []
 }: SceneGraphNodesFilters = {}): PropertyOwner[] {
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+  const propertyOwners = useAppSelector((state) =>
+    propertyOwnerSelectors.selectEntities(state)
+  );
   const sgnGuiSettings = useSceneGraphNodeGuiSettings();
 
   return useMemo(() => {
@@ -68,8 +74,10 @@ export function useSceneGraphNodes({
  * we could potentially clean this up a bit.
  */
 export function useSceneGraphNodeGuiSettings(): SceneGraphNodeGuiSettings {
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-  const properties = useAppSelector((state) => state.properties.properties);
+  const propertyOwners = useAppSelector((state) =>
+    propertyOwnerSelectors.selectEntities(state)
+  );
+  const properties = useAppSelector((state) => propertySelectors.selectEntities(state));
 
   return useMemo(() => {
     const sceneUris: Uri[] = propertyOwners.Scene?.subowners ?? [];

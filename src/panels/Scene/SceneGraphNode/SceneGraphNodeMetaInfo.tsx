@@ -19,7 +19,7 @@ import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import styles from '@/theme/global.module.css';
 import { Uri } from '@/types/types';
-import { identifierFromUri } from '@/util/propertyTreeHelpers';
+import { identifierFromUri } from '@/util/uris';
 
 interface Props {
   uri: Uri;

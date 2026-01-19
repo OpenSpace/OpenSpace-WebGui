@@ -5,7 +5,7 @@ import { Checkbox } from '@mantine/core';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
-import { sgnRenderableUri, sgnUri } from '@/util/propertyTreeHelpers';
+import { sgnRenderableUri, sgnUri } from '@/util/uris';
 
 import { MarkingBoxLayout } from './MarkingBoxLayout';
 

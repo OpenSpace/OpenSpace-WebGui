@@ -1,7 +1,7 @@
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { Identifier } from '@/types/types';
-import { sgnRenderableUri, sgnUri } from '@/util/propertyTreeHelpers';
+import { sgnRenderableUri, sgnUri } from '@/util/uris';
 
 import { MarkingBoxLayout } from './MarkingBoxLayout';
 

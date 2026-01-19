@@ -1,4 +1,4 @@
-import { Identifier,Uri } from '@/types/types';
+import { Identifier, Uri } from '@/types/types';
 
 import { ScenePrefixKey } from './keys';
 
