@@ -131,7 +131,12 @@ export function SceneTree() {
       <FilterList.SearchResults
         data={flatTreeData}
         renderElement={(node: SceneTreeNodeData) => (
-          <SceneTreeNodeContent key={node.value} node={node} expanded={false} />
+          <SceneTreeNodeContent
+            key={node.value}
+            node={node}
+            expanded={false}
+            tree={tree}
+          />
         )}
         matcherFunc={generateMatcherFunctionByKeys(selectedSearchKeys)}
       >

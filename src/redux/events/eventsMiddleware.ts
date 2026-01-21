@@ -8,13 +8,13 @@ import { onCloseConnection, onOpenConnection } from '@/redux/connection/connecti
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { refreshMissions } from '@/redux/missions/missionsMiddleware';
-import {
-  addUriToPropertyTree,
-  removeUriFromPropertyTree
-} from '@/redux/propertytree/propertyTreeMiddleware';
 import { ConnectionStatus, LogLevel } from '@/types/enums';
 import { eventBus } from '@/util/eventBus';
 
+import {
+  addUriToPropertyTree,
+  removeUriFromPropertyTree
+} from '../propertyTreeTest/propertyTreeTestMiddleware';
 import { showGUI } from '../sessionrecording/sessionRecordingMiddleware';
 
 import { EventData } from './types';

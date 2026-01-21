@@ -1,9 +1,30 @@
 import { PropertyVisibilityNumber } from '@/types/enums';
-import { PropertyOwner } from '@/types/types';
+import { PropertyOwner, Visibility } from '@/types/types';
 
 // Visible means that the object is enabled, based on the values of its enabled and fade
 // properties (which both may be undefined)
-export function checkVisiblity(
+export function checkVisibilityTest(
+  enabled: boolean | undefined,
+  fade: number | undefined
+): Visibility | undefined {
+  // Enabled is required, but fade can be optional
+  if (enabled === undefined) {
+    return undefined;
+  }
+  if (fade == undefined) {
+    return 'Visible';
+  }
+  if (enabled === true && fade < 1 && fade > 0) {
+    return 'Fading';
+  }
+  if (enabled === false || fade === 0) {
+    return 'Hidden';
+  } else return 'Visible';
+}
+
+// Visible means that the object is enabled, based on the values of its enabled and fade
+// properties (which both may be undefined)
+export function checkVisibility(
   enabled: boolean | undefined,
   fade: number | undefined
 ): boolean | undefined {

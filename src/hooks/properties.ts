@@ -3,8 +3,8 @@ import { useThrottledCallback } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { propertySelectors, updateOne } from '@/redux/propertyTreeTest/propertySlice';
-import { PropertyOrPropertyGroup, PropertyTypeKey } from '@/types/Property/property';
+import { propertySelectors } from '@/redux/propertyTreeTest/propertySlice';
+import { setPropertyValue } from '@/redux/propertyTreeTest/propertyTreeTestMiddleware';
 import { PropertyGroupsRuntime } from '@/types/Property/propertyGroups';
 import { Uri } from '@/types/types';
 
@@ -65,10 +65,10 @@ export function useProperty<T extends PropertyTypeKey>(
           cancel: t('confirmation-modal.cancel')
         },
         confirmProps: { color: 'red', variant: 'filled' },
-        onConfirm: () => dispatch(updateOne({ id: uri, changes: { value } }))
+        onConfirm: () => dispatch(setPropertyValue({ uri, value }))
       });
     } else {
-      dispatch(updateOne({ id: uri, changes: { value } }));
+      dispatch(setPropertyValue({ uri, value }));
     }
   }, ThrottleMs);
 

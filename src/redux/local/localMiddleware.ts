@@ -1,13 +1,33 @@
 import { createAction } from '@reduxjs/toolkit';
 
+import { PropertyOwner } from '@/types/types';
+import { checkVisibilityTest } from '@/util/propertyTreeHelpers';
+import {
+  enabledPropertyUri,
+  fadePropertyUri,
+  isEnabledPropertyUri,
+  isFadePropertyUri,
+  isRenderable,
+  isSceneGraphNode,
+  isSceneGraphNodeProperty,
+  removeLastWordFromUri,
+  sgnIdentifierFromSubownerUri,
+  sgnRenderableUri,
+  sgnUri
+} from '@/util/uris';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { onOpenConnection } from '../connection/connectionSlice';
 import { AppStartListening } from '../listenerMiddleware';
+import { upsertMany, upsertOne } from '../propertyTreeTest/propertyOwnerSlice';
+import { propertySelectors, updateOne } from '../propertyTreeTest/propertySlice';
 
-import { setMenuItemsConfig } from './localSlice';
+import { setMenuItemsConfig, setVisibility } from './localSlice';
 
 export const resetMenuItemConfig = createAction<void>('local/resetMenu');
+const setVisibilityForUri = createAction<{ uri: string; value?: boolean | number }>(
+  'local/setVisibilityForUri'
+);
 
 export const addLocalListener = (startListening: AppStartListening) => {
   // Create default toolbar items configuration upon startup
@@ -18,6 +38,87 @@ export const addLocalListener = (startListening: AppStartListening) => {
       // menu items if it has not been set yet
       if (listenerApi.getState().local.menuItemsConfig.length === 0) {
         listenerApi.dispatch(resetMenuItemConfig());
+      }
+    }
+  });
+
+  startListening({
+    matcher: upsertMany.match,
+    effect: async (action, listenerApi) => {
+      const owners: PropertyOwner[] = Array.isArray(action.payload)
+        ? action.payload
+        : Object.values(action.payload);
+      for (const owner of owners) {
+        if (isSceneGraphNode(owner.uri)) {
+          listenerApi.dispatch(setVisibilityForUri({ uri: owner.uri }));
+        }
+      }
+    }
+  });
+
+  startListening({
+    matcher: upsertOne.match,
+    effect: async (action, listenerApi) => {
+      const { uri } = action.payload;
+      if (isSceneGraphNode(uri)) {
+        listenerApi.dispatch(setVisibilityForUri({ uri }));
+      }
+    }
+  });
+
+  startListening({
+    matcher: updateOne.match,
+    effect: async (action, listenerApi) => {
+      const uri = action.payload.id;
+      const { value } = action.payload.changes;
+
+      if (
+        (isSceneGraphNodeProperty(uri) && typeof value === 'number') ||
+        typeof value === 'boolean'
+      ) {
+        listenerApi.dispatch(setVisibilityForUri({ uri, value }));
+      }
+    }
+  });
+
+  startListening({
+    actionCreator: setVisibilityForUri,
+    effect: async (action, listenerApi) => {
+      const { uri, value } = action.payload;
+
+      let currentEnabled;
+      let currentFade;
+      const parent = removeLastWordFromUri(uri);
+
+      if (isSceneGraphNode(uri) && value === undefined) {
+        currentEnabled = propertySelectors.selectById(
+          listenerApi.getState(),
+          enabledPropertyUri(sgnRenderableUri(uri))
+        )?.value as boolean;
+        currentFade = propertySelectors.selectById(
+          listenerApi.getState(),
+          fadePropertyUri(sgnRenderableUri(uri))
+        )?.value as number;
+      } else if (isFadePropertyUri(uri)) {
+        currentEnabled = propertySelectors.selectById(
+          listenerApi.getState(),
+          enabledPropertyUri(parent)
+        )?.value as boolean;
+        currentFade = value as number;
+      } else if (isEnabledPropertyUri(uri)) {
+        currentFade = propertySelectors.selectById(
+          listenerApi.getState(),
+          fadePropertyUri(parent)
+        )?.value as number;
+        currentEnabled = value as boolean;
+      }
+      const visibility = checkVisibilityTest(currentEnabled, currentFade);
+      if (
+        listenerApi.getState().local.sceneTree.visibility[uri] !== visibility &&
+        visibility !== undefined
+      ) {
+        const sceneGraphNodeUri = sgnUri(sgnIdentifierFromSubownerUri(uri));
+        listenerApi.dispatch(setVisibility({ uri: sceneGraphNodeUri, visibility }));
       }
     }
   });

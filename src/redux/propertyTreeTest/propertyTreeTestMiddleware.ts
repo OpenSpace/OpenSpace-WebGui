@@ -19,13 +19,19 @@ import { isGlobeLayer, removeLastWordFromUri } from '@/util/uris';
 
 import { upsertMany as upsertManyPropertyOwners } from './propertyOwnerSlice';
 import {
-  updateOne,
   updateOne as updateProperty,
   upsertMany as upsertManyProperties
 } from './propertySlice';
 
 const subscribeToPropertyTreeTest = createAction<void>('propertyTreeTest/subscribe');
 const unsubscribeToPropertyTreeTest = createAction<void>('propertyTreeTest/unsubscribe');
+export const setPropertyValue = createAction<{ uri: Uri; value: AnyProperty['value'] }>(
+  'propertyTreeTest/setProperty'
+);
+
+export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(
+  'propertyTreeTest/removeUri'
+);
 
 let topic: Topic;
 let nSubscribers = 0;
@@ -61,14 +67,19 @@ function flattenPropertyTree(propertyOwner: OpenSpacePropertyOwner) {
   return { propertyOwners, properties };
 }
 
-const throttleUpdate = throttle((api, property) => {
-  api.dispatch(
-    updateProperty({
-      id: property.property,
-      changes: { value: property.value }
-    })
-  );
-}, 200);
+// TODO (ylvse 21-01-2026): Throttling should not be done in redux, which should reflect the true state as closely as possible.
+// However, doing it here for now to reduce the number of re-renders caused by rapid property updates.
+const throttleUpdate = throttle(
+  (thunkAPI, property: { property: Uri; value: AnyProperty['value'] }) => {
+    thunkAPI.dispatch(
+      updateProperty({
+        id: property.property,
+        changes: { value: property.value }
+      })
+    );
+  },
+  200
+);
 
 export const setupSubscription = createAsyncThunk(
   'propertyTreeTest/setupSubscription',
@@ -170,9 +181,15 @@ export const addPropertyTreeTestListener = (startListening: AppStartListening) =
   });
 
   startListening({
-    matcher: updateOne.match,
-    effect: (action) => {
-      api.setProperty(action.payload.id, action.payload.changes.value);
+    actionCreator: setPropertyValue,
+    effect: (action, listenerApi) => {
+      api.setProperty(action.payload.uri, action.payload.value);
+      listenerApi.dispatch(
+        updateProperty({
+          id: action.payload.uri,
+          changes: { value: action.payload.value }
+        })
+      );
     }
   });
 

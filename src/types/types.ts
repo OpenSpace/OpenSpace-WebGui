@@ -1,5 +1,7 @@
 import { AnyProperty } from './Property/property';
 
+export type Visibility = 'Visible' | 'Hidden' | 'Fading';
+
 export type Uri = string;
 export type Identifier = string;
 

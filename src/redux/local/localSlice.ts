@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { MenuItemConfig } from '@/panels/Menu/types';
-import { Uri } from '@/types/types';
+import { Uri, Visibility } from '@/types/types';
 
 export interface LocalState {
   menus: {
@@ -13,6 +13,7 @@ export interface LocalState {
   sceneTree: {
     expandedGroups: string[];
     currentlySelectedNode: Uri | null;
+    visibility: Record<Uri, Visibility>;
   };
   menuItemsConfig: MenuItemConfig[];
 }
@@ -27,7 +28,8 @@ const initialState: LocalState = {
   // want to do it as of now to avoid PR conflicts
   sceneTree: {
     expandedGroups: [],
-    currentlySelectedNode: null
+    currentlySelectedNode: null,
+    visibility: {}
   },
   menuItemsConfig: []
 };
@@ -36,6 +38,13 @@ export const localSlice = createSlice({
   name: 'local',
   initialState,
   reducers: {
+    setVisibility: (
+      state,
+      action: PayloadAction<{ uri: Uri; visibility: Visibility }>
+    ) => {
+      state.sceneTree.visibility[action.payload.uri] = action.payload.visibility;
+      return state;
+    },
     setSceneTreeNodeExpanded: (state, action: PayloadAction<string[]>) => {
       state.sceneTree.expandedGroups = action.payload;
       return state;
@@ -79,6 +88,7 @@ export const {
   setOnlyFocusableInNavMenu,
   setMenuItemVisible,
   setMenuItemOpen,
-  setMenuItemsConfig
+  setMenuItemsConfig,
+  setVisibility
 } = localSlice.actions;
 export const localReducer = localSlice.reducer;

@@ -1,13 +1,13 @@
 import { AnyProperty } from '@/types/Property/property';
 import { Properties, PropertyOwner, Uri } from '@/types/types';
 
-import { checkVisiblity, isPropertyVisible } from './propertyTreeHelpers';
+import { checkVisibility, isPropertyVisible } from './propertyTreeHelpers';
 import { enabledPropertyUri, fadePropertyUri, sgnRenderableUri } from './uris';
 
 export function isPropertyOwnerActive(properties: Properties, uri: Uri): boolean {
   const enabledValue = properties[enabledPropertyUri(uri)]?.value as boolean | undefined;
   const fadeValue = properties[fadePropertyUri(uri)]?.value as number | undefined;
-  return checkVisiblity(enabledValue, fadeValue) || false;
+  return checkVisibility(enabledValue, fadeValue) || false;
 }
 
 /**

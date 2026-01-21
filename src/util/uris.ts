@@ -46,6 +46,18 @@ export function guiOrderingNumberUri(uri: Uri): string {
   return `${uri}.UseGuiOrdering`;
 }
 
+export function isFadePropertyUri(uri: Uri): boolean {
+  return uri.endsWith('.Fade');
+}
+
+export function isEnabledPropertyUri(uri: Uri): boolean {
+  return uri.endsWith('.Enabled');
+}
+
+export function isSceneGraphNodeProperty(uri: Uri): boolean {
+  return uri.startsWith(ScenePrefixKey) && uri.split('.').length > 2;
+}
+
 export function isSceneGraphNode(uri: Uri): boolean {
   return uri.startsWith(ScenePrefixKey) && uri.split('.').length === 2;
 }

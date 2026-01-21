@@ -1,13 +1,22 @@
+import { useCallback } from 'react';
+
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { propertyOwnerSelectors } from '@/redux/propertyTreeTest/propertyOwnerSlice';
 import { propertySelectors } from '@/redux/propertyTreeTest/propertySlice';
+import { setPropertyValue } from '@/redux/propertyTreeTest/propertyTreeTestMiddleware';
 import { Identifier, PropertyOwner, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
-import { checkVisiblity, isPropertyVisible } from '@/util/propertyTreeHelpers';
+import { checkVisibility, isPropertyVisible } from '@/util/propertyTreeHelpers';
 import { hasVisibleChildren } from '@/util/propertyTreeSelectors';
-import { enabledPropertyUri, fadePropertyUri, sgnUri } from '@/util/uris';
+import {
+  enabledPropertyUri,
+  fadePropertyUri,
+  removeLastWordFromUri,
+  sgnRenderableUri,
+  sgnUri
+} from '@/util/uris';
 
 export function usePropertyOwner(uri: Uri): PropertyOwner | undefined {
   return useAppSelector((state) => propertyOwnerSelectors.selectById(state, uri));
@@ -80,33 +89,36 @@ export function useVisibleProperties(propertyOwner: PropertyOwner | undefined): 
  * Also provides a function to set the visibility of the property owner.
  */
 export function usePropertyOwnerVisibility(uri: Uri) {
+  // Not using the useProperty hooks here to minimize re-renders
+  const fadeUri = fadePropertyUri(uri);
+  const enabledUri = enabledPropertyUri(uri);
+
   const luaApi = useOpenSpaceApi();
 
-  const [enabledPropertyValue, setEnabledProperty] = useProperty(
-    'BoolProperty',
-    enabledPropertyUri(uri)
+  const isVisible = useAppSelector(
+    (state) => state.local.sceneTree.visibility[removeLastWordFromUri(uri)]
   );
-  const [fadePropertyValue, setFadePropertyValue] = useProperty(
-    'FloatProperty',
-    fadePropertyUri(uri)
+  const isFadeable = useAppSelector((state) => {
+    return propertySelectors.selectById(state, fadeUri) !== undefined;
+  });
+
+  const dispatch = useAppDispatch();
+
+  const setVisibility = useCallback(
+    (shouldShow: boolean, isImmediate: boolean = false) => {
+      if (!isFadeable) {
+        dispatch(setPropertyValue({ uri: enabledUri, value: shouldShow }));
+      } else if (isImmediate) {
+        dispatch(setPropertyValue({ uri: enabledUri, value: shouldShow }));
+        dispatch(setPropertyValue({ uri: fadeUri, value: shouldShow ? 1.0 : 0.0 }));
+      } else if (shouldShow) {
+        luaApi?.fadeIn(uri);
+      } else {
+        luaApi?.fadeOut(uri);
+      }
+    },
+    [dispatch, enabledUri, fadeUri, isFadeable, luaApi, uri]
   );
-  const isFadeable = fadePropertyValue !== undefined;
-
-  const isVisible = checkVisiblity(enabledPropertyValue, fadePropertyValue);
-
-  function setVisibility(shouldShow: boolean, isImmediate: boolean = false) {
-    if (!isFadeable) {
-      setEnabledProperty(shouldShow);
-    } else if (isImmediate) {
-      setEnabledProperty(shouldShow);
-      setFadePropertyValue(shouldShow ? 1.0 : 0.0);
-    } else if (shouldShow) {
-      luaApi?.fadeIn(uri);
-    } else {
-      luaApi?.fadeOut(uri);
-    }
-  }
-
   return {
     isVisible,
     setVisibility

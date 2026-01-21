@@ -11,11 +11,10 @@ interface Props {
 }
 
 export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
-  const { isVisible, setVisibility } = usePropertyOwnerVisibility(uri);
-
   // This is the value that is shown in the checkbox, it is not necessarily the same as
   // the isVisible value, since the checkbox can be in a transition state
-  const [checked, setChecked] = useState(isVisible);
+  const { isVisible, setVisibility } = usePropertyOwnerVisibility(uri);
+  const [checked, setChecked] = useState(isVisible === 'Visible');
   const [isImmediate, setIsImmediate] = useState(false);
 
   useWindowEvent('keydown', (event: KeyboardEvent) => {
@@ -32,7 +31,7 @@ export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
 
   // If the visibility is changed elsewhere we need to update the checkbox
   useEffect(() => {
-    setChecked(isVisible);
+    setChecked(isVisible === 'Visible');
   }, [isVisible]);
 
   function updateValue(shouldBeEnabled: boolean, isImmediate: boolean) {
@@ -55,6 +54,7 @@ export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
   return (
     <Checkbox
       checked={checked}
+      indeterminate={isVisible === 'Fading'}
       onKeyDown={onKeyDown}
       onChange={(event) => updateValue(event.currentTarget.checked, isImmediate)}
       label={label}
