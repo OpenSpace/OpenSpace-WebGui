@@ -5,6 +5,7 @@ import { modals } from '@mantine/modals';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { propertySelectors } from '@/redux/propertyTreeTest/propertySlice';
 import { setPropertyValue } from '@/redux/propertyTreeTest/propertyTreeTestMiddleware';
+import { PropertyOrPropertyGroup, PropertyTypeKey } from '@/types/Property/property';
 import { PropertyGroupsRuntime } from '@/types/Property/propertyGroups';
 import { Uri } from '@/types/types';
 

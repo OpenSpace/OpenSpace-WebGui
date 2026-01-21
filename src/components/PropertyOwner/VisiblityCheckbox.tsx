@@ -13,9 +13,13 @@ interface Props {
 export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
   // This is the value that is shown in the checkbox, it is not necessarily the same as
   // the isVisible value, since the checkbox can be in a transition state
-  const { isVisible, setVisibility } = usePropertyOwnerVisibility(uri);
-  const [checked, setChecked] = useState(isVisible === 'Visible');
+  const { visibility, setVisibility } = usePropertyOwnerVisibility(uri);
+  const [checked, setChecked] = useState(visibility === 'Visible');
   const [isImmediate, setIsImmediate] = useState(false);
+
+  useEffect(() => {
+    setChecked(visibility === 'Visible');
+  }, [visibility]);
 
   useWindowEvent('keydown', (event: KeyboardEvent) => {
     if (event.key === 'Shift' && !event.repeat) {
@@ -29,11 +33,6 @@ export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
     }
   });
 
-  // If the visibility is changed elsewhere we need to update the checkbox
-  useEffect(() => {
-    setChecked(isVisible === 'Visible');
-  }, [isVisible]);
-
   function updateValue(shouldBeEnabled: boolean, isImmediate: boolean) {
     setVisibility(shouldBeEnabled, isImmediate);
     setChecked(shouldBeEnabled);
@@ -46,7 +45,7 @@ export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
     }
   }
 
-  if (isVisible === undefined) {
+  if (visibility === undefined) {
     // This is the case when there is no enabled or fade property => don't render checkbox
     return <></>;
   }
@@ -54,7 +53,7 @@ export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
   return (
     <Checkbox
       checked={checked}
-      indeterminate={isVisible === 'Fading'}
+      indeterminate={visibility === 'Fading'}
       onKeyDown={onKeyDown}
       onChange={(event) => updateValue(event.currentTarget.checked, isImmediate)}
       label={label}

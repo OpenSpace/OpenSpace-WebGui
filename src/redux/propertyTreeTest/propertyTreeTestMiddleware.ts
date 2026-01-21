@@ -1,5 +1,4 @@
-import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { throttle } from 'lodash';
+import { createAction, createAsyncThunk, Update } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
@@ -17,8 +16,10 @@ import {
 import { rootOwnerKey } from '@/util/keys';
 import { isGlobeLayer, removeLastWordFromUri } from '@/util/uris';
 
+import { PropertyBatcher } from './propertyBatcher';
 import { upsertMany as upsertManyPropertyOwners } from './propertyOwnerSlice';
 import {
+  updateMany as updateManyProperties,
   updateOne as updateProperty,
   upsertMany as upsertManyProperties
 } from './propertySlice';
@@ -67,26 +68,22 @@ function flattenPropertyTree(propertyOwner: OpenSpacePropertyOwner) {
   return { propertyOwners, properties };
 }
 
-// TODO (ylvse 21-01-2026): Throttling should not be done in redux, which should reflect the true state as closely as possible.
-// However, doing it here for now to reduce the number of re-renders caused by rapid property updates.
-const throttleUpdate = throttle(
-  (thunkAPI, property: { property: Uri; value: AnyProperty['value'] }) => {
-    thunkAPI.dispatch(
-      updateProperty({
-        id: property.property,
-        changes: { value: property.value }
-      })
-    );
-  },
-  200
-);
-
 export const setupSubscription = createAsyncThunk(
   'propertyTreeTest/setupSubscription',
   async (_, thunkAPI) => {
     topic = api.startTopic('propertyTree', {
       event: 'start_subscription'
     });
+    const batchTime = 50; // milliseconds
+
+    function updateFunc(updates: Update<AnyProperty, string>[]) {
+      thunkAPI.dispatch(updateManyProperties(updates));
+    }
+
+    // Instead of throttling each property update, we batch them together
+    // This ensures we don't miss any updates
+    const batcher = new PropertyBatcher(updateFunc, batchTime);
+
     (async () => {
       for await (const data of topic.iterator()) {
         if (data.event === 'root') {
@@ -97,7 +94,10 @@ export const setupSubscription = createAsyncThunk(
           thunkAPI.dispatch(upsertManyPropertyOwners(propertyOwners));
         } else {
           const property = data as { property: Uri; value: AnyProperty['value'] };
-          throttleUpdate(thunkAPI, property);
+          batcher.add({
+            id: property.property,
+            changes: { value: property.value }
+          });
         }
       }
     })();

@@ -8,13 +8,12 @@ import { propertySelectors } from '@/redux/propertyTreeTest/propertySlice';
 import { setPropertyValue } from '@/redux/propertyTreeTest/propertyTreeTestMiddleware';
 import { Identifier, PropertyOwner, Uri } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
-import { checkVisibility, isPropertyVisible } from '@/util/propertyTreeHelpers';
+import { isPropertyVisible } from '@/util/propertyTreeHelpers';
 import { hasVisibleChildren } from '@/util/propertyTreeSelectors';
 import {
   enabledPropertyUri,
   fadePropertyUri,
   removeLastWordFromUri,
-  sgnRenderableUri,
   sgnUri
 } from '@/util/uris';
 
@@ -95,7 +94,7 @@ export function usePropertyOwnerVisibility(uri: Uri) {
 
   const luaApi = useOpenSpaceApi();
 
-  const isVisible = useAppSelector(
+  const visibility = useAppSelector(
     (state) => state.local.sceneTree.visibility[removeLastWordFromUri(uri)]
   );
   const isFadeable = useAppSelector((state) => {
@@ -120,7 +119,7 @@ export function usePropertyOwnerVisibility(uri: Uri) {
     [dispatch, enabledUri, fadeUri, isFadeable, luaApi, uri]
   );
   return {
-    isVisible,
+    visibility,
     setVisibility
   };
 }

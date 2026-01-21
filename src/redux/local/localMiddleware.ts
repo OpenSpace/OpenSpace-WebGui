@@ -7,7 +7,6 @@ import {
   fadePropertyUri,
   isEnabledPropertyUri,
   isFadePropertyUri,
-  isRenderable,
   isSceneGraphNode,
   isSceneGraphNodeProperty,
   removeLastWordFromUri,
@@ -20,7 +19,11 @@ import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 import { onOpenConnection } from '../connection/connectionSlice';
 import { AppStartListening } from '../listenerMiddleware';
 import { upsertMany, upsertOne } from '../propertyTreeTest/propertyOwnerSlice';
-import { propertySelectors, updateOne } from '../propertyTreeTest/propertySlice';
+import {
+  propertySelectors,
+  updateMany,
+  updateOne
+} from '../propertyTreeTest/propertySlice';
 
 import { setMenuItemsConfig, setVisibility } from './localSlice';
 
@@ -82,6 +85,22 @@ export const addLocalListener = (startListening: AppStartListening) => {
   });
 
   startListening({
+    matcher: updateMany.match,
+    effect: async (action, listenerApi) => {
+      for (const update of action.payload) {
+        const uri = update.id;
+        const { value } = update.changes;
+        if (
+          (isSceneGraphNodeProperty(uri) && typeof value === 'number') ||
+          typeof value === 'boolean'
+        ) {
+          listenerApi.dispatch(setVisibilityForUri({ uri, value }));
+        }
+      }
+    }
+  });
+
+  startListening({
     actionCreator: setVisibilityForUri,
     effect: async (action, listenerApi) => {
       const { uri, value } = action.payload;
@@ -113,6 +132,8 @@ export const addLocalListener = (startListening: AppStartListening) => {
         currentEnabled = value as boolean;
       }
       const visibility = checkVisibilityTest(currentEnabled, currentFade);
+
+      // Update the scene tree visibility if it has changed
       if (
         listenerApi.getState().local.sceneTree.visibility[uri] !== visibility &&
         visibility !== undefined
