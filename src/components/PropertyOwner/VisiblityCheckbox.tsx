@@ -45,7 +45,6 @@ export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
 
   function updateValue(shouldBeEnabled: boolean, isImmediate: boolean) {
     setVisibility(shouldBeEnabled, isImmediate);
-    setChecked(shouldBeEnabled);
   }
 
   function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {

@@ -15,7 +15,7 @@ function sweepWedge(value: number, center: number = 50): string {
   const rad = ((angle - 90) * Math.PI) / 180;
 
   // BIG radius so wedge covers entire rect
-  const R = 200;
+  const R = 400;
 
   const x = center + R * Math.cos(rad);
   const y = center + R * Math.sin(rad);
