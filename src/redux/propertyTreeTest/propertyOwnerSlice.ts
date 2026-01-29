@@ -1,4 +1,9 @@
-import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  createEntityAdapter,
+  createSlice,
+  PayloadAction,
+  Update
+} from '@reduxjs/toolkit';
 
 import { PropertyOwner, Uri } from '@/types/types';
 
@@ -18,20 +23,34 @@ const propertyOwners = createSlice({
     reset: propertyOwnerAdapter.removeAll,
     updateOne: propertyOwnerAdapter.updateOne,
     setInitialState: propertyOwnerAdapter.upsertMany,
-    addPropertyOwner: (state, action: PayloadAction<PropertyOwner>) => {
-      const owner = action.payload;
+    addPropertyOwners: (state, action: PayloadAction<PropertyOwner[]>) => {
+      // First, upsert all owners at once
+      propertyOwnerAdapter.upsertMany(state, action.payload);
 
-      propertyOwnerAdapter.upsertOne(state, owner);
-      // Ensure the parents of the uri have the links to the new entry
-      // Get parent uri
-      const periodPos = owner.uri.lastIndexOf('.');
-      const parentUri = owner.uri.substring(0, periodPos);
+      // Update links in the state to reflect new subowners in parents
+      const parentUpdates = new Map();
 
-      // If that parent exists and the link doesn't exist, add the link to the parent
-      const parentExists = parentUri in state.entities;
-      if (parentExists && !state.entities[parentUri].subowners.includes(owner.uri)) {
-        state.entities[parentUri].subowners.push(owner.uri);
+      for (const owner of action.payload) {
+        const periodPos = owner.uri.lastIndexOf('.');
+        const parentUri = owner.uri.substring(0, periodPos);
+
+        if (state.entities[parentUri]) {
+          if (!parentUpdates.has(parentUri)) {
+            parentUpdates.set(parentUri, new Set(state.entities[parentUri].subowners));
+          }
+          parentUpdates.get(parentUri).add(owner.uri);
+        }
       }
+
+      // Use updateMany with the adapter
+      const updates: Update<PropertyOwner, string>[] = Array.from(
+        parentUpdates.entries()
+      ).map(([uri, subowners]) => ({
+        id: uri,
+        changes: { subowners: Array.from(subowners) }
+      }));
+
+      propertyOwnerAdapter.updateMany(state, updates);
 
       return state;
     },
@@ -59,7 +78,7 @@ const propertyOwners = createSlice({
 });
 
 export const {
-  addPropertyOwner,
+  addPropertyOwners,
   setInitialState,
   removePropertyOwners,
   reset,

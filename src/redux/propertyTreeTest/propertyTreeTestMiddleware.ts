@@ -2,9 +2,8 @@ import { createAction, createAsyncThunk, Update } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
-import { onOpenConnection } from '@/redux/connection/connectionSlice';
+import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
-import { ConnectionStatus } from '@/types/enums';
 import { AnyProperty } from '@/types/Property/property';
 import {
   OpenSpacePropertyOwner,
@@ -22,7 +21,7 @@ import { setSceneGraphNodesVisibility } from '../local/localSlice';
 
 import { PropertyBatcher } from './propertyBatcher';
 import {
-  addPropertyOwner,
+  addPropertyOwners,
   reset as resetPropertyOwners,
   setInitialState
 } from './propertyOwnerSlice';
@@ -33,8 +32,6 @@ import {
   upsertMany as upsertManyProperties
 } from './propertySlice';
 
-const subscribeToPropertyTreeTest = createAction<void>('propertyTreeTest/subscribe');
-const unsubscribeToPropertyTreeTest = createAction<void>('propertyTreeTest/unsubscribe');
 export const setPropertyValue = createAction<{ uri: Uri; value: AnyProperty['value'] }>(
   'propertyTreeTest/setProperty'
 );
@@ -44,7 +41,6 @@ export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(
 );
 
 let topic: Topic;
-let nSubscribers = 0;
 
 function calculateVisibility(propertyOwners: PropertyOwner[], properties: Properties) {
   const sceneGraphNodes = propertyOwners.filter((p) => isSceneGraphNode(p.uri));
@@ -200,12 +196,17 @@ export const addPropertyTreeTestListener = (startListening: AppStartListening) =
   startListening({
     actionCreator: onOpenConnection,
     effect: async (_, listenerApi) => {
-      // if (nSubscribers > 0) {
       listenerApi.dispatch(resetPropertyOwners());
       listenerApi.dispatch(resetProperties());
       listenerApi.dispatch(getRoot());
       listenerApi.dispatch(setupSubscription());
-      // }
+    }
+  });
+
+  startListening({
+    actionCreator: onCloseConnection,
+    effect: () => {
+      unsubscribe();
     }
   });
 
@@ -213,9 +214,7 @@ export const addPropertyTreeTestListener = (startListening: AppStartListening) =
     actionCreator: addUriToPropertyTree.fulfilled,
     effect: (action, listenerApi) => {
       if (action.payload?.propertyOwners) {
-        for (const owner of action.payload.propertyOwners) {
-          listenerApi.dispatch(addPropertyOwner(owner));
-        }
+        listenerApi.dispatch(addPropertyOwners(action.payload.propertyOwners));
       }
       if (action.payload?.properties) {
         listenerApi.dispatch(upsertManyProperties(action.payload.properties));
@@ -227,6 +226,7 @@ export const addPropertyTreeTestListener = (startListening: AppStartListening) =
     actionCreator: setPropertyValue,
     effect: (action, listenerApi) => {
       api.setProperty(action.payload.uri, action.payload.value);
+      // Optimistically update the property value in the store
       listenerApi.dispatch(
         updateProperty({
           id: action.payload.uri,
@@ -235,27 +235,4 @@ export const addPropertyTreeTestListener = (startListening: AppStartListening) =
       );
     }
   });
-
-  startListening({
-    actionCreator: subscribeToPropertyTreeTest,
-    effect: async (_, listenerApi) => {
-      ++nSubscribers;
-      const { connectionStatus } = listenerApi.getState().connection;
-      if (nSubscribers === 1 && connectionStatus === ConnectionStatus.Connected) {
-        listenerApi.dispatch(setupSubscription());
-      }
-    }
-  });
-
-  startListening({
-    actionCreator: unsubscribeToPropertyTreeTest,
-    effect: async () => {
-      --nSubscribers;
-      if (nSubscribers === 0) {
-        unsubscribe();
-      }
-    }
-  });
 };
-
-export { subscribeToPropertyTreeTest, unsubscribeToPropertyTreeTest };
