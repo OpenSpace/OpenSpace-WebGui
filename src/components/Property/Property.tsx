@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { Stack } from '@mantine/core';
 
 import { useAppSelector } from '@/redux/hooks';
-import { propertySelectors } from '@/redux/propertyTreeTest/propertySlice';
+import { propertySelectors } from '@/redux/propertyTree/propertySlice';
 import { Uri } from '@/types/types';
 
 import { BoolProperty } from './Types/BoolProperty';

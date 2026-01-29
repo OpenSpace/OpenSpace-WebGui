@@ -11,7 +11,7 @@ import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes/hooks';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
-import { propertySelectors } from '@/redux/propertyTreeTest/propertySlice';
+import { propertySelectors } from '@/redux/propertyTree/propertySlice';
 import { EngineMode, IconSize } from '@/types/enums';
 import { PropertyOwner } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';

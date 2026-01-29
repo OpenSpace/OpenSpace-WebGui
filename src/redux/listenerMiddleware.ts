@@ -14,7 +14,7 @@ import { addLocalListener } from './local/localMiddleware';
 import { addLoggingListener } from './logging/loggingMiddleware';
 import { addMissionsListener } from './missions/missionsMiddleware';
 import { addProfileListener } from './profile/profileMiddleware';
-import { addPropertyTreeTestListener } from './propertyTreeTest/propertyTreeTestMiddleware';
+import { addPropertyTreeTestListener } from './propertyTree/propertyTreeMiddleware';
 import { addSessionRecordingListener } from './sessionrecording/sessionRecordingMiddleware';
 import { addSkyBrowserListener } from './skybrowser/skybrowserMiddleware';
 import { addTimeListener } from './time/timeMiddleware';

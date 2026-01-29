@@ -8,7 +8,7 @@ import { useProperty } from '@/hooks/properties';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
-import { propertyOwnerSelectors } from '@/redux/propertyTreeTest/propertyOwnerSlice';
+import { propertyOwnerSelectors } from '@/redux/propertyTree/propertyOwnerSlice';
 import { EngineMode, IconSize } from '@/types/enums';
 import { Identifier, PropertyOwner } from '@/types/types';
 import {

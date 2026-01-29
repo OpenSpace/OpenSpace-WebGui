@@ -5,9 +5,9 @@ import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { RootState } from '@/redux/store';
 import { PropertyOwner } from '@/types/types';
 
-import { propertyOwnerSelectors } from '../propertyTreeTest/propertyOwnerSlice';
-import { propertySelectors } from '../propertyTreeTest/propertySlice';
-import { addUriToPropertyTree } from '../propertyTreeTest/propertyTreeTestMiddleware';
+import { propertyOwnerSelectors } from '../propertyTree/propertyOwnerSlice';
+import { propertySelectors } from '../propertyTree/propertySlice';
+import { addUriToPropertyTree } from '../propertyTree/propertyTreeMiddleware';
 
 import { setGroups, setTags } from './groupsSlice';
 

@@ -4,7 +4,7 @@ import { useWindowEvent } from '@mantine/hooks';
 
 import { usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
-import { propertySelectors } from '@/redux/propertyTreeTest/propertySlice';
+import { propertySelectors } from '@/redux/propertyTree/propertySlice';
 import { Uri } from '@/types/types';
 import { fadePropertyUri } from '@/util/uris';
 

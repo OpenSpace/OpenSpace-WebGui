@@ -18,7 +18,7 @@ import { useProperty } from '@/hooks/properties';
 import { CalendarIcon, EyeIcon, EyeOffIcon, MinusIcon, PlusIcon } from '@/icons/icons';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { useAppSelector } from '@/redux/hooks';
-import { propertyOwnerSelectors } from '@/redux/propertyTreeTest/propertyOwnerSlice';
+import { propertyOwnerSelectors } from '@/redux/propertyTree/propertyOwnerSlice';
 import { IconSize } from '@/types/enums';
 import { sgnUri } from '@/util/uris';
 

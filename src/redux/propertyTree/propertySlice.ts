@@ -18,14 +18,22 @@ const properties = createSlice({
     upsertMany: propertyAdapter.upsertMany,
     upsertOne: propertyAdapter.upsertOne,
     removeOne: propertyAdapter.removeOne,
+    removeMany: propertyAdapter.removeMany,
     reset: propertyAdapter.removeAll,
     updateOne: propertyAdapter.updateOne,
     updateMany: propertyAdapter.updateMany
   }
 });
 
-export const { upsertMany, upsertOne, removeOne, reset, updateOne, updateMany } =
-  properties.actions;
+export const {
+  upsertMany,
+  upsertOne,
+  removeOne,
+  removeMany,
+  reset,
+  updateOne,
+  updateMany
+} = properties.actions;
 export const propertyReducer = properties.reducer;
 
 export const propertySelectors = propertyAdapter.getSelectors(

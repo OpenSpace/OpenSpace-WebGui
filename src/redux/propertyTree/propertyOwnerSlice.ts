@@ -10,6 +10,7 @@ import { PropertyOwner, Uri } from '@/types/types';
 import { RootState } from '../store';
 
 // Property owners
+// Entity adapter creates a slice with CRUD operations and selectors
 export const propertyOwnerAdapter = createEntityAdapter({
   selectId: (o: PropertyOwner) => o.uri,
   // Keep the "all IDs" array sorted based on uri
@@ -55,23 +56,41 @@ const propertyOwners = createSlice({
       return state;
     },
     removePropertyOwners: (state, action: PayloadAction<{ uris: Uri[] }>) => {
-      action.payload.uris.forEach((uri) => {
-        // Delete this particular property owner
-        delete state.entities[uri];
+      const urisToRemove = new Set<string>();
+      const parentUpdates = new Map<string, string[]>();
 
-        // Delete the parent's link to the property owner
+      // Collect all URIs to remove (including nested subowners)
+      action.payload.uris.forEach((uri) => {
+        urisToRemove.add(uri);
+
+        // Find all nested subowners (flattened children)
+        const allUris = Object.keys(state.entities);
+        const related = allUris.filter((value) => value.startsWith(`${uri}.`));
+        related.forEach((subOwnerUri) => urisToRemove.add(subOwnerUri));
+
+        // Prepare parent link removal
         const periodPos = uri.lastIndexOf('.');
         const parentUri = uri.substring(0, periodPos);
-        const index = state.entities[parentUri]?.subowners.indexOf(uri) ?? -1;
-        // If found, remove parent link
-        if (index > -1) {
-          state.entities[parentUri]!.subowners.splice(index, 1);
-        }
 
-        // Delete subowners that have been flattened
-        const related = Object.keys(state).filter((value) => value.includes(`${uri}.`));
-        related.forEach((subOwnerUri) => delete state.entities[subOwnerUri]);
+        if (state.entities[parentUri]) {
+          const currentSubowners = state.entities[parentUri].subowners;
+          const updatedSubowners = currentSubowners.filter((subUri) => subUri !== uri);
+          parentUpdates.set(parentUri, updatedSubowners);
+        }
       });
+
+      // Remove all property owners at once
+      propertyOwnerAdapter.removeMany(state, Array.from(urisToRemove));
+
+      // Update parent links
+      const updates: Update<PropertyOwner, string>[] = Array.from(
+        parentUpdates.entries()
+      ).map(([uri, subowners]) => ({
+        id: uri,
+        changes: { subowners }
+      }));
+
+      propertyOwnerAdapter.updateMany(state, updates);
       return state;
     }
   }

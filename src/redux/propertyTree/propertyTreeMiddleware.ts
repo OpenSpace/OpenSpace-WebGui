@@ -22,10 +22,12 @@ import { setSceneGraphNodesVisibility } from '../local/localSlice';
 import { PropertyBatcher } from './propertyBatcher';
 import {
   addPropertyOwners,
+  removePropertyOwners,
   reset as resetPropertyOwners,
   setInitialState
 } from './propertyOwnerSlice';
 import {
+  removeMany,
   reset as resetProperties,
   updateMany as updateManyProperties,
   updateOne as updateProperty,
@@ -219,6 +221,15 @@ export const addPropertyTreeTestListener = (startListening: AppStartListening) =
       if (action.payload?.properties) {
         listenerApi.dispatch(upsertManyProperties(action.payload.properties));
       }
+    }
+  });
+
+  startListening({
+    actionCreator: removeUriFromPropertyTree,
+    effect: (action, listenerApi) => {
+      const uriToRemove = action.payload.uri;
+      listenerApi.dispatch(removePropertyOwners({ uris: [uriToRemove] }));
+      listenerApi.dispatch(removeMany([uriToRemove]));
     }
   });
 

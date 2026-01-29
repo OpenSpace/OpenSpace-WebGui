@@ -16,11 +16,7 @@ import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { onOpenConnection } from '../connection/connectionSlice';
 import { AppStartListening } from '../listenerMiddleware';
-import {
-  propertySelectors,
-  updateMany,
-  updateOne
-} from '../propertyTreeTest/propertySlice';
+import { propertySelectors, updateMany, updateOne } from '../propertyTree/propertySlice';
 
 import { setMenuItemsConfig, setVisibility } from './localSlice';
 

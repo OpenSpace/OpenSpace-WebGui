@@ -4,7 +4,7 @@ import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { SceneTree } from '@/panels/Scene/SceneTree/SceneTree';
 import { useAppSelector } from '@/redux/hooks';
-import { propertyOwnerSelectors } from '@/redux/propertyTreeTest/propertyOwnerSlice';
+import { propertyOwnerSelectors } from '@/redux/propertyTree/propertyOwnerSlice';
 
 import { FeaturedSceneTree } from './SceneTree/FeaturedSceneTree';
 

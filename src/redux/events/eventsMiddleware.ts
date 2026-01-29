@@ -14,7 +14,7 @@ import { eventBus } from '@/util/eventBus';
 import {
   addUriToPropertyTree,
   removeUriFromPropertyTree
-} from '../propertyTreeTest/propertyTreeTestMiddleware';
+} from '../propertyTree/propertyTreeMiddleware';
 import { showGUI } from '../sessionrecording/sessionRecordingMiddleware';
 
 import { EventData } from './types';
