@@ -13,7 +13,7 @@ export interface LocalState {
   sceneTree: {
     expandedGroups: string[];
     currentlySelectedNode: Uri | null;
-    visibility: Record<Uri, Visibility>;
+    visibility: Record<Uri, Visibility | undefined>;
   };
   menuItemsConfig: MenuItemConfig[];
 }
@@ -38,6 +38,12 @@ export const localSlice = createSlice({
   name: 'local',
   initialState,
   reducers: {
+    setSceneGraphNodesVisibility: (
+      state,
+      action: PayloadAction<Record<Uri, Visibility | undefined>>
+    ) => {
+      state.sceneTree.visibility = action.payload;
+    },
     setVisibility: (
       state,
       action: PayloadAction<{ uri: Uri; visibility: Visibility }>
@@ -89,6 +95,7 @@ export const {
   setMenuItemVisible,
   setMenuItemOpen,
   setMenuItemsConfig,
-  setVisibility
+  setVisibility,
+  setSceneGraphNodesVisibility
 } = localSlice.actions;
 export const localReducer = localSlice.reducer;

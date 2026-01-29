@@ -1,13 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import { PropertyOwner } from '@/types/types';
 import { checkVisibilityTest } from '@/util/propertyTreeHelpers';
 import {
   enabledPropertyUri,
   fadePropertyUri,
   isEnabledPropertyUri,
   isFadePropertyUri,
-  isSceneGraphNode,
   isSceneGraphNodeProperty,
   removeLastWordFromUri,
   sgnIdentifierFromSubownerUri,
@@ -18,7 +16,6 @@ import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { onOpenConnection } from '../connection/connectionSlice';
 import { AppStartListening } from '../listenerMiddleware';
-import { upsertMany, upsertOne } from '../propertyTreeTest/propertyOwnerSlice';
 import {
   propertySelectors,
   updateMany,
@@ -46,39 +43,17 @@ export const addLocalListener = (startListening: AppStartListening) => {
   });
 
   startListening({
-    matcher: upsertMany.match,
-    effect: async (action, listenerApi) => {
-      const owners: PropertyOwner[] = Array.isArray(action.payload)
-        ? action.payload
-        : Object.values(action.payload);
-      for (const owner of owners) {
-        if (isSceneGraphNode(owner.uri)) {
-          listenerApi.dispatch(setVisibilityForUri({ uri: owner.uri }));
-        }
-      }
-    }
-  });
-
-  startListening({
-    matcher: upsertOne.match,
-    effect: async (action, listenerApi) => {
-      const { uri } = action.payload;
-      if (isSceneGraphNode(uri)) {
-        listenerApi.dispatch(setVisibilityForUri({ uri }));
-      }
-    }
-  });
-
-  startListening({
     matcher: updateOne.match,
     effect: async (action, listenerApi) => {
       const uri = action.payload.id;
       const { value } = action.payload.changes;
 
-      if (
-        (isSceneGraphNodeProperty(uri) && typeof value === 'number') ||
-        typeof value === 'boolean'
-      ) {
+      const isSceneGraphNodeProp = isSceneGraphNodeProperty(uri);
+      const isFadeOrEnabled =
+        (isFadePropertyUri(uri) && typeof value === 'number') ||
+        (isEnabledPropertyUri(uri) && typeof value === 'boolean');
+
+      if (isSceneGraphNodeProp && isFadeOrEnabled) {
         listenerApi.dispatch(setVisibilityForUri({ uri, value }));
       }
     }
@@ -90,10 +65,13 @@ export const addLocalListener = (startListening: AppStartListening) => {
       for (const update of action.payload) {
         const uri = update.id;
         const { value } = update.changes;
-        if (
-          (isSceneGraphNodeProperty(uri) && typeof value === 'number') ||
-          typeof value === 'boolean'
-        ) {
+
+        const isSceneGraphNodeProp = isSceneGraphNodeProperty(uri);
+        const isFadeOrEnabled =
+          (isFadePropertyUri(uri) && typeof value === 'number') ||
+          (isEnabledPropertyUri(uri) && typeof value === 'boolean');
+
+        if (isSceneGraphNodeProp && isFadeOrEnabled) {
           listenerApi.dispatch(setVisibilityForUri({ uri, value }));
         }
       }
@@ -103,42 +81,42 @@ export const addLocalListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: setVisibilityForUri,
     effect: async (action, listenerApi) => {
+      // The uri can be either Fade, Enabled, or the scene graph node itself
       const { uri, value } = action.payload;
+
+      const isFadeProperty = isFadePropertyUri(uri);
+      const isEnabledProperty = isEnabledPropertyUri(uri);
+
+      const sceneGraphNodeUri = sgnUri(sgnIdentifierFromSubownerUri(uri));
+      const renderableUri = sgnRenderableUri(sceneGraphNodeUri);
 
       let currentEnabled;
       let currentFade;
-      const parent = removeLastWordFromUri(uri);
 
-      if (isSceneGraphNode(uri) && value === undefined) {
-        currentEnabled = propertySelectors.selectById(
-          listenerApi.getState(),
-          enabledPropertyUri(sgnRenderableUri(uri))
-        )?.value as boolean;
-        currentFade = propertySelectors.selectById(
-          listenerApi.getState(),
-          fadePropertyUri(sgnRenderableUri(uri))
-        )?.value as number;
-      } else if (isFadePropertyUri(uri)) {
-        currentEnabled = propertySelectors.selectById(
-          listenerApi.getState(),
-          enabledPropertyUri(parent)
-        )?.value as boolean;
-        currentFade = value as number;
-      } else if (isEnabledPropertyUri(uri)) {
-        currentFade = propertySelectors.selectById(
-          listenerApi.getState(),
-          fadePropertyUri(parent)
-        )?.value as number;
+      if (isEnabledProperty) {
         currentEnabled = value as boolean;
+      } else {
+        currentEnabled = propertySelectors.selectById(
+          listenerApi.getState(),
+          enabledPropertyUri(renderableUri)
+        )?.value as boolean;
       }
+
+      if (isFadeProperty) {
+        currentFade = value as number;
+      } else {
+        currentFade = propertySelectors.selectById(
+          listenerApi.getState(),
+          fadePropertyUri(renderableUri)
+        )?.value as number;
+      }
+
       const visibility = checkVisibilityTest(currentEnabled, currentFade);
+      const prevVisibility =
+        listenerApi.getState().local.sceneTree.visibility[removeLastWordFromUri(uri)];
 
       // Update the scene tree visibility if it has changed
-      if (
-        listenerApi.getState().local.sceneTree.visibility[uri] !== visibility &&
-        visibility !== undefined
-      ) {
-        const sceneGraphNodeUri = sgnUri(sgnIdentifierFromSubownerUri(uri));
+      if (prevVisibility !== visibility && visibility !== undefined) {
         listenerApi.dispatch(setVisibility({ uri: sceneGraphNodeUri, visibility }));
       }
     }

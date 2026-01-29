@@ -10,14 +10,23 @@ import {
   OpenSpacePropertyOwner,
   Properties,
   PropertyOwner,
-  PropertyOwners,
-  Uri
+  Uri,
+  Visibility
 } from '@/types/types';
 import { rootOwnerKey } from '@/util/keys';
-import { isGlobeLayer, removeLastWordFromUri } from '@/util/uris';
+import { checkVisibilityTest } from '@/util/propertyTreeHelpers';
+import { isGlobeLayer, isSceneGraphNode, removeLastWordFromUri } from '@/util/uris';
+
+import { refreshGroups } from '../groups/groupsSliceMiddleware';
+import { setSceneGraphNodesVisibility } from '../local/localSlice';
 
 import { PropertyBatcher } from './propertyBatcher';
-import { upsertMany as upsertManyPropertyOwners } from './propertyOwnerSlice';
+import {
+  addPropertyOwner,
+  reset as resetPropertyOwners,
+  setInitialState
+} from './propertyOwnerSlice';
+import { reset as resetProperties } from './propertySlice';
 import {
   updateMany as updateManyProperties,
   updateOne as updateProperty,
@@ -33,6 +42,22 @@ export const setPropertyValue = createAction<{ uri: Uri; value: AnyProperty['val
 export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(
   'propertyTreeTest/removeUri'
 );
+
+function calculateVisibility(propertyOwners: PropertyOwner[], properties: Properties) {
+  const sceneGraphNodes = propertyOwners.filter((p) => isSceneGraphNode(p.uri));
+  const visibility = sceneGraphNodes.map((sgn) => {
+    const fade = properties[`${sgn.uri}.Renderable.Fade`]?.value as number | undefined;
+    const enabled = properties[`${sgn.uri}.Renderable.Enabled`]?.value as
+      | boolean
+      | undefined;
+    return checkVisibilityTest(enabled, fade);
+  });
+  const visibilityMap: Record<Uri, Visibility | undefined> = {};
+  sceneGraphNodes.forEach((sgn, i) => {
+    visibilityMap[sgn.uri] = visibility[i];
+  });
+  return visibilityMap;
+}
 
 let topic: Topic;
 let nSubscribers = 0;
@@ -76,7 +101,7 @@ export const setupSubscription = createAsyncThunk(
     });
     const batchTime = 50; // milliseconds
 
-    function updateFunc(updates: Update<AnyProperty, string>[]) {
+    function updateFunc(updates: Update<AnyProperty, Uri>[]) {
       thunkAPI.dispatch(updateManyProperties(updates));
     }
 
@@ -90,10 +115,20 @@ export const setupSubscription = createAsyncThunk(
           const { propertyOwners, properties } = flattenPropertyTree(
             data.payload as OpenSpacePropertyOwner
           );
+          const propertiesMap: Properties = {};
+
+          properties.forEach((p) => {
+            propertiesMap[p.uri] = p;
+          });
+          const visibilityMap = calculateVisibility(propertyOwners, propertiesMap);
+
           thunkAPI.dispatch(upsertManyProperties(properties));
-          thunkAPI.dispatch(upsertManyPropertyOwners(propertyOwners));
+          thunkAPI.dispatch(setInitialState(propertyOwners));
+          thunkAPI.dispatch(setSceneGraphNodesVisibility(visibilityMap));
+          thunkAPI.dispatch(refreshGroups());
         } else {
           const property = data as { property: Uri; value: AnyProperty['value'] };
+
           batcher.add({
             id: property.property,
             changes: { value: property.value }
@@ -108,6 +143,7 @@ export const addUriToPropertyTree = createAsyncThunk(
   'propertyTreeTest/addUri',
   async (uri: Uri) => {
     let uriToFetch = uri;
+
     // If the uri is to a layer, we want to get the parent property owner.
     // This is to preserve the order of the layers.
     if (isGlobeLayer(uri)) {
@@ -126,13 +162,13 @@ export const addUriToPropertyTree = createAsyncThunk(
       properties.forEach((p) => {
         propertiesMap[p.uri] = p;
       });
-      const propertyOwnerMap: PropertyOwners = {};
-      propertyOwners.forEach((p) => {
-        propertyOwnerMap[p.uri] = p;
-      });
+
+      const visibility = calculateVisibility(propertyOwners, propertiesMap);
+
       return {
         properties: propertiesMap,
-        propertyOwners: propertyOwnerMap
+        propertyOwners,
+        visibility
       };
     } else {
       // Property
@@ -162,6 +198,8 @@ export const addPropertyTreeTestListener = (startListening: AppStartListening) =
     actionCreator: onOpenConnection,
     effect: async (_, listenerApi) => {
       // if (nSubscribers > 0) {
+      listenerApi.dispatch(resetPropertyOwners());
+      listenerApi.dispatch(resetProperties());
       listenerApi.dispatch(setupSubscription());
       listenerApi.dispatch(addUriToPropertyTree(rootOwnerKey));
       // }
@@ -172,7 +210,9 @@ export const addPropertyTreeTestListener = (startListening: AppStartListening) =
     actionCreator: addUriToPropertyTree.fulfilled,
     effect: (action, listenerApi) => {
       if (action.payload?.propertyOwners) {
-        listenerApi.dispatch(upsertManyPropertyOwners(action.payload.propertyOwners));
+        for (const owner of action.payload.propertyOwners) {
+          listenerApi.dispatch(addPropertyOwner(owner));
+        }
       }
       if (action.payload?.properties) {
         listenerApi.dispatch(upsertManyProperties(action.payload.properties));
