@@ -43,6 +43,9 @@ export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(
   'propertyTreeTest/removeUri'
 );
 
+let topic: Topic;
+let nSubscribers = 0;
+
 function calculateVisibility(propertyOwners: PropertyOwner[], properties: Properties) {
   const sceneGraphNodes = propertyOwners.filter((p) => isSceneGraphNode(p.uri));
   const visibility = sceneGraphNodes.map((sgn) => {
@@ -58,9 +61,6 @@ function calculateVisibility(propertyOwners: PropertyOwner[], properties: Proper
   });
   return visibilityMap;
 }
-
-let topic: Topic;
-let nSubscribers = 0;
 
 function flattenPropertyTree(propertyOwner: OpenSpacePropertyOwner) {
   let propertyOwners: PropertyOwner[] = [];
@@ -111,33 +111,36 @@ export const setupSubscription = createAsyncThunk(
 
     (async () => {
       for await (const data of topic.iterator()) {
-        if (data.event === 'root') {
-          const { propertyOwners, properties } = flattenPropertyTree(
-            data.payload as OpenSpacePropertyOwner
-          );
-          const propertiesMap: Properties = {};
+        const property = data as { property: Uri; value: AnyProperty['value'] };
 
-          properties.forEach((p) => {
-            propertiesMap[p.uri] = p;
-          });
-          const visibilityMap = calculateVisibility(propertyOwners, propertiesMap);
-
-          thunkAPI.dispatch(upsertManyProperties(properties));
-          thunkAPI.dispatch(setInitialState(propertyOwners));
-          thunkAPI.dispatch(setSceneGraphNodesVisibility(visibilityMap));
-          thunkAPI.dispatch(refreshGroups());
-        } else {
-          const property = data as { property: Uri; value: AnyProperty['value'] };
-
-          batcher.add({
-            id: property.property,
-            changes: { value: property.value }
-          });
-        }
+        batcher.add({
+          id: property.property,
+          changes: { value: property.value }
+        });
       }
     })();
   }
 );
+
+const getRoot = createAsyncThunk('propertyTreeTest/getRoot', async (_, thunkAPI) => {
+  const response = (await api.getProperty(rootOwnerKey)) as
+    | AnyProperty
+    | OpenSpacePropertyOwner;
+  const { propertyOwners, properties } = flattenPropertyTree(
+    response as OpenSpacePropertyOwner
+  );
+  const propertiesMap: Properties = {};
+
+  properties.forEach((p) => {
+    propertiesMap[p.uri] = p;
+  });
+  const visibilityMap = calculateVisibility(propertyOwners, propertiesMap);
+
+  thunkAPI.dispatch(upsertManyProperties(properties));
+  thunkAPI.dispatch(setInitialState(propertyOwners));
+  thunkAPI.dispatch(setSceneGraphNodesVisibility(visibilityMap));
+  thunkAPI.dispatch(refreshGroups());
+});
 
 export const addUriToPropertyTree = createAsyncThunk(
   'propertyTreeTest/addUri',
@@ -200,8 +203,8 @@ export const addPropertyTreeTestListener = (startListening: AppStartListening) =
       // if (nSubscribers > 0) {
       listenerApi.dispatch(resetPropertyOwners());
       listenerApi.dispatch(resetProperties());
+      listenerApi.dispatch(getRoot());
       listenerApi.dispatch(setupSubscription());
-      listenerApi.dispatch(addUriToPropertyTree(rootOwnerKey));
       // }
     }
   });
