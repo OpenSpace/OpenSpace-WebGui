@@ -11,8 +11,6 @@ import { AnyProperty } from '@/types/Property/property';
 /**
  * @class PropertyBatcher
  * @description A class that batches property updates to avoid flooding the Redux store with too many updates.
- * This approach is preferred over throttling as it ensures no values are missed.
- * However, a better solution would be to implement throttling in React instead of Redux.
  *
  * @constructor
  * @param {number} [flushDelay=50] - The delay in milliseconds before flushing the updates to the Redux store.

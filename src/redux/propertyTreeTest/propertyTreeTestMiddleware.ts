@@ -26,8 +26,8 @@ import {
   reset as resetPropertyOwners,
   setInitialState
 } from './propertyOwnerSlice';
-import { reset as resetProperties } from './propertySlice';
 import {
+  reset as resetProperties,
   updateMany as updateManyProperties,
   updateOne as updateProperty,
   upsertMany as upsertManyProperties
