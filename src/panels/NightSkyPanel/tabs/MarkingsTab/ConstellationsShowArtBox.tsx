@@ -26,7 +26,7 @@ export function ConstellationsShowArtBox({ title, icon }: Props) {
 
   const uri = sgnRenderableUri(sgnUri('ImageConstellation-Ori'));
   const propertyOwner = usePropertyOwner(uri);
-  const { isVisible } = usePropertyOwnerVisibility(uri);
+  const { visibility } = usePropertyOwnerVisibility(uri);
 
   function checkboxChange(checked: boolean) {
     if (checked) {
@@ -41,7 +41,7 @@ export function ConstellationsShowArtBox({ title, icon }: Props) {
       checkbox={
         <Checkbox
           onChange={(event) => checkboxChange(event.currentTarget.checked)}
-          checked={isVisible}
+          checked={visibility === 'Visible'}
           aria-label={t('aria-labels.art')}
         />
       }
