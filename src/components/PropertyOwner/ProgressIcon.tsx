@@ -12,19 +12,33 @@ function sweepWedge(value: number, center: number = 50): string {
   if (value <= 0) return '';
 
   const angle = Math.min(360, (value / 100) * 360);
-  const rad = ((angle - 90) * Math.PI) / 180;
 
-  // BIG radius so wedge covers entire rect
-  const R = 400;
+  // Special case: full circle
+  if (angle >= 360) {
+    return `M ${center} ${center} m -${center} 0 a ${center} ${center} 0 1 0 ${center * 2} 0 a ${center} ${center} 0 1 0 -${center * 2} 0`;
+  }
 
-  const x = center + R * Math.cos(rad);
-  const y = center + R * Math.sin(rad);
+  // Use a radius that extends well beyond the viewBox
+  const R = 200;
+
+  // Start angle at top (12 o'clock = -90 degrees)
+  const startAngle = -90;
+  const endAngle = startAngle + angle;
+
+  const startRad = (startAngle * Math.PI) / 180;
+  const endRad = (endAngle * Math.PI) / 180;
+
+  const x1 = center + R * Math.cos(startRad);
+  const y1 = center + R * Math.sin(startRad);
+  const x2 = center + R * Math.cos(endRad);
+  const y2 = center + R * Math.sin(endRad);
+
   const largeArc = angle > 180 ? 1 : 0;
 
   return `
     M ${center} ${center}
-    L ${center} ${center - R}
-    A ${R} ${R} 0 ${largeArc} 1 ${x} ${y}
+    L ${x1} ${y1}
+    A ${R} ${R} 0 ${largeArc} 1 ${x2} ${y2}
     Z
   `;
 }
