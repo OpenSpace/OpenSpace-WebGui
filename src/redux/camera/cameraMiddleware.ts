@@ -1,4 +1,5 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { throttle } from 'lodash';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
@@ -21,9 +22,14 @@ export const setupSubscription = createAsyncThunk(
     topic = api.startTopic('camera', {
       event: 'start_subscription'
     });
+
+    const throttleUpdates = throttle((data: CameraState) => {
+      thunkApi.dispatch(updateCamera(data));
+    }, 500);
+
     (async () => {
       for await (const data of topic.iterator() as AsyncIterable<CameraState>) {
-        thunkApi.dispatch(updateCamera(data));
+        throttleUpdates(data);
       }
     })();
   }

@@ -14,12 +14,12 @@ import {
 
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 import { ShowMore } from '@/components/ShowMore/ShowMore';
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import styles from '@/theme/global.module.css';
 import { Uri } from '@/types/types';
-import { identifierFromUri } from '@/util/propertyTreeHelpers';
+import { identifierFromUri } from '@/util/uris';
 
 interface Props {
   uri: Uri;
@@ -31,9 +31,9 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   });
 
   const propertyOwner = usePropertyOwner(uri);
-  const [guiPath] = useProperty('StringProperty', `${uri}.GuiPath`);
+  const guiPath = usePropertyValue('StringProperty', `${uri}.GuiPath`);
+  const description = usePropertyValue('StringProperty', `${uri}.GuiDescription`);
 
-  const [description] = useProperty('StringProperty', `${uri}.GuiDescription`);
   if (description) {
     description.replace(/\\n/g, '').replace(/<br>/g, '');
   }

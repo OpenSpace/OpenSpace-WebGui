@@ -1,11 +1,12 @@
+import { usePropertyValue } from '@/hooks/properties';
 import {
   useHasVisibleChildren,
   usePropertyOwner,
   useVisibleProperties
 } from '@/hooks/propertyOwner';
-import { useAppSelector } from '@/redux/hooks';
 import { Uri } from '@/types/types';
-import { displayName, isGlobeLayersUri } from '@/util/propertyTreeHelpers';
+import { displayName } from '@/util/propertyTreeHelpers';
+import { isGlobeLayersUri, isTypeRenderableGlobe, parentTypeUri } from '@/util/uris';
 
 import { GlobeLayersPropertyOwner } from './Custom/GlobeLayers/GlobeLayersPropertyOwner';
 import { VideoPlayerPropertyOwner } from './Custom/VideoPlayer/VideoPlayerPropertyOwner';
@@ -31,9 +32,12 @@ export function PropertyOwner({
     throw Error(`No property owner found for uri: ${uri}`);
   }
 
-  const isGlobeLayers = useAppSelector((state) =>
-    isGlobeLayersUri(uri, state.properties.properties)
-  );
+  const parentType = usePropertyValue('StringProperty', parentTypeUri(uri));
+
+  const isGlobeLayers =
+    parentType !== undefined &&
+    isTypeRenderableGlobe(parentType) &&
+    isGlobeLayersUri(uri);
 
   const hasVisibleChildren = useHasVisibleChildren(uri);
   const visibleProperties = useVisibleProperties(propertyOwner);

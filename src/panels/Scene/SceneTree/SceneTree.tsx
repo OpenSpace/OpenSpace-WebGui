@@ -48,6 +48,7 @@ export function SceneTree() {
   const keyLabels = { label: t('search-keys.name'), guiPath: t('search-keys.guiPath') };
 
   const { sceneTreeData, flatTreeData } = useSceneTreeData(filter);
+
   const { closeCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
 
   const initialExpandedNodes = useAppSelector(
@@ -130,7 +131,12 @@ export function SceneTree() {
       <FilterList.SearchResults
         data={flatTreeData}
         renderElement={(node: SceneTreeNodeData) => (
-          <SceneTreeNodeContent key={node.value} node={node} expanded={false} />
+          <SceneTreeNodeContent
+            key={node.value}
+            node={node}
+            expanded={false}
+            tree={tree}
+          />
         )}
         matcherFunc={generateMatcherFunctionByKeys(selectedSearchKeys)}
       >

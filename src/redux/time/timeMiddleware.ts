@@ -1,4 +1,5 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { throttle } from 'lodash';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
@@ -22,9 +23,15 @@ export const setupSubscription = createAsyncThunk(
       event: 'start_subscription'
     });
 
+    // We want to prevent dispatching updates too frequently as it is a performance bottleneck
+    // Since we only update the time in the UI every second, throttling to 500ms is sufficient
+    const throttleUpdate = throttle((data: OpenSpaceTimeState) => {
+      thunkAPI.dispatch(updateTime(data));
+    }, 500);
+
     (async () => {
       for await (const data of timeTopic.iterator() as AsyncIterable<OpenSpaceTimeState>) {
-        thunkAPI.dispatch(updateTime(data));
+        throttleUpdate(data);
       }
     })();
   }

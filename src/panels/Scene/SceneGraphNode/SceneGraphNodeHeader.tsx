@@ -5,12 +5,17 @@ import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavi
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
-import { usePropertyOwner } from '@/hooks/propertyOwner';
+import {
+  usePropertyOwner,
+  useSceneGraphNodeVisibility,
+  useSetPropertyOwnerVisibility
+} from '@/hooks/propertyOwner';
 import { useIsSgnFocusable } from '@/hooks/sceneGraphNodes/hooks';
 import { ClockOffIcon } from '@/icons/icons';
 import { NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
-import { displayName, isRenderable } from '@/util/propertyTreeHelpers';
+import { displayName } from '@/util/propertyTreeHelpers';
+import { isRenderable, sgnRenderableUri } from '@/util/uris';
 
 import { useTimeFrame } from '../hooks';
 
@@ -28,6 +33,8 @@ export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
   const propertyOwner = usePropertyOwner(uri);
   const { timeFrame, isInTimeFrame } = useTimeFrame(uri);
   const isFocusable = useIsSgnFocusable(uri);
+  const visibility = useSceneGraphNodeVisibility(uri);
+  const setVisibility = useSetPropertyOwnerVisibility(sgnRenderableUri(uri));
 
   const renderableUri = propertyOwner?.subowners.find((uri) => isRenderable(uri));
   const hasRenderable = renderableUri !== undefined;
@@ -64,7 +71,11 @@ export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
   // TODO: Make sure that the timeframe information is accessible
   const visibilityControl = hasRenderable && (
     <Group gap={'xs'}>
-      <PropertyOwnerVisibilityCheckbox uri={renderableUri} />
+      <PropertyOwnerVisibilityCheckbox
+        uri={renderableUri}
+        visibility={visibility}
+        setVisibility={setVisibility}
+      />
       {timeFrame && !isInTimeFrame && (
         <Tooltip label={t('out-of-timeframe-tooltip')} position={'top'}>
           <ClockOffIcon />
