@@ -2,20 +2,12 @@ import { AnyProperty } from '@/types/Property/property';
 import { Properties, PropertyOwner, Uri } from '@/types/types';
 
 import { checkVisibility, isPropertyVisible } from './propertyTreeHelpers';
-import { enabledPropertyUri, fadePropertyUri, sgnRenderableUri } from './uris';
+import { enabledPropertyUri, fadePropertyUri } from './uris';
 
 export function isPropertyOwnerVisible(properties: Properties, uri: Uri): boolean {
   const enabledValue = properties[enabledPropertyUri(uri)]?.value as boolean | undefined;
   const fadeValue = properties[fadePropertyUri(uri)]?.value as number | undefined;
   return checkVisibility(enabledValue, fadeValue) || false;
-}
-
-/**
- * Is the SGN currently visible, based on its enabled and fade properties?
- */
-export function isSgnVisible(properties: Properties, uri: Uri): boolean {
-  const renderableUri = sgnRenderableUri(uri);
-  return isPropertyOwnerActive(properties, renderableUri);
 }
 
 export function hasVisibleChildren(

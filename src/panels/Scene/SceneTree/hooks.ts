@@ -12,7 +12,6 @@ import {
   PropertyOwner,
   PropertyOwners
 } from '@/types/types';
-import { isSgnVisible } from '@/util/propertyTreeSelectors';
 
 import {
   isGroupNode,
@@ -28,6 +27,12 @@ export function useSceneTreeData(filter: SceneTreeFilterSettings) {
   const propertyOwners = useAppSelector((state) =>
     propertyOwnerSelectors.selectEntities(state)
   );
+  const visibilitySceneGraphNodes = useAppSelector(
+    (state) => state.local.sceneTree.visibility
+  );
+  const visibleUris = Object.entries(visibilitySceneGraphNodes)
+    .filter(([, visibility]) => visibility === 'Visible')
+    .map(([uri]) => uri);
   const groups = useAppSelector((state) => state.groups.groups);
   const customGuiOrdering = useAppSelector((state) => state.groups.customGroupOrdering);
 
@@ -42,9 +47,9 @@ export function useSceneTreeData(filter: SceneTreeFilterSettings) {
   const visibilityFilteredNodes = useMemo(
     () =>
       filter.showOnlyVisible
-        ? filteredSceneGraphNodes.filter((node) => isSgnVisible(properties, node.uri))
+        ? filteredSceneGraphNodes.filter((node) => visibleUris.includes(node.uri))
         : filteredSceneGraphNodes,
-    [filteredSceneGraphNodes, properties, filter.showOnlyVisible]
+    [filteredSceneGraphNodes, visibleUris, filter.showOnlyVisible]
   );
 
   // Create the tree data from the groups and the filtered scene graph nodes
