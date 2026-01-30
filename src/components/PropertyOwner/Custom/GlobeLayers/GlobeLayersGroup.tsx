@@ -7,7 +7,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { propertySelectors } from '@/redux/propertyTree/propertySlice';
 import { Identifier, Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
-import { isPropertyOwnerActive } from '@/util/propertyTreeSelectors';
+import { isPropertyOwnerVisible } from '@/util/propertyTreeSelectors';
 
 import { LayerList } from './LayersList';
 
@@ -30,7 +30,7 @@ export function GlobeLayerGroup({ uri, globe, icon }: Props) {
   const nActiveLayers = useAppSelector(
     (state) =>
       layers.filter((layer) =>
-        isPropertyOwnerActive(propertySelectors.selectEntities(state), layer)
+        isPropertyOwnerVisible(propertySelectors.selectEntities(state), layer)
       ).length
   );
 

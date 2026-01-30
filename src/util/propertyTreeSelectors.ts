@@ -4,7 +4,7 @@ import { Properties, PropertyOwner, Uri } from '@/types/types';
 import { checkVisibility, isPropertyVisible } from './propertyTreeHelpers';
 import { enabledPropertyUri, fadePropertyUri, sgnRenderableUri } from './uris';
 
-export function isPropertyOwnerActive(properties: Properties, uri: Uri): boolean {
+export function isPropertyOwnerVisible(properties: Properties, uri: Uri): boolean {
   const enabledValue = properties[enabledPropertyUri(uri)]?.value as boolean | undefined;
   const fadeValue = properties[fadePropertyUri(uri)]?.value as number | undefined;
   return checkVisibility(enabledValue, fadeValue) || false;
