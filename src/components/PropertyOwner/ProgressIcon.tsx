@@ -1,11 +1,10 @@
-import { rem } from '@mantine/core';
+import { useId } from 'react';
 
 type RadialSweepIconProps = {
   value: number; // 0–100
-  size?: number | string;
+  size?: number;
   color?: string;
   background?: string;
-  radius?: number;
 };
 
 function sweepWedge(value: number, center: number = 50): string {
@@ -19,7 +18,7 @@ function sweepWedge(value: number, center: number = 50): string {
   }
 
   // Use a radius that extends well beyond the viewBox
-  const R = 200;
+  const R = 300;
 
   // Start angle at top (12 o'clock = -90 degrees)
   const startAngle = -90;
@@ -47,17 +46,19 @@ export function RadialSweepIcon({
   value,
   size = 12,
   color = '#2196F3',
-  background = '#ffffff',
-  radius = 1
+  background = '#ffffff'
 }: RadialSweepIconProps) {
+  // Creates a value between 0 and 100 (percentage)
   const clamped = Math.max(0, Math.min(100, value));
-  const pxSize = typeof size === 'number' ? rem(size) : size;
   const sizeNumber = 100;
+  // Using an id for the mask to avoid collisions with other instances
+  const maskId = useId();
 
   return (
-    <svg width={pxSize} height={pxSize} viewBox={'0 0 100 100'}>
+    <svg width={size} height={size} viewBox={'0 0 100 100'} shapeRendering={'crispEdges'}>
       <defs>
-        <mask id={'sweep-mask'} maskUnits={'userSpaceOnUse'}>
+        {/* Uses black and white to create a mask */}
+        <mask id={maskId} maskUnits={'userSpaceOnUse'}>
           {/* Hidden by default */}
           <rect width={'100'} height={'100'} fill={'black'} />
 
@@ -71,15 +72,14 @@ export function RadialSweepIcon({
       </defs>
 
       {/* Background */}
-      <rect width={sizeNumber} height={sizeNumber} rx={radius} fill={background} />
+      <rect width={sizeNumber} height={sizeNumber} fill={background} />
 
-      {/* Foreground (fully rectangular fill) */}
+      {/* Foreground (fully rectangular fill) masked by the mask above */}
       <rect
         width={sizeNumber}
         height={sizeNumber}
-        rx={radius}
         fill={color}
-        mask={'url(#sweep-mask)'}
+        mask={`url(#${maskId})`}
       />
     </svg>
   );

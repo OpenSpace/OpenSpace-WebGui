@@ -62,7 +62,7 @@ export function PropertyOwnerVisibilityCheckbox({
   if (visibility === 'Fading' && fade !== undefined) {
     return (
       <ActionIcon size={20}>
-        <RadialSweepIcon value={fade * 100} background={'transparent'} />
+        <RadialSweepIcon value={fade * 100} background={'transparent'} size={20} />
       </ActionIcon>
     );
   }
