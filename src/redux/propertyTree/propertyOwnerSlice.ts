@@ -9,8 +9,19 @@ import { PropertyOwner, Uri } from '@/types/types';
 
 import { RootState } from '../store';
 
-// Property owners
-// Entity adapter creates a slice with CRUD operations and selectors
+/**
+ * Entity adapter for managing PropertyOwner entities in Redux state.
+ *
+ * An entity adapter is a Redux Toolkit utility that provides a standardized way to manage
+ * normalized collections of items in state. It generates reducers and selectors for common
+ * CRUD operations (Create, Read, Update, Delete) on a collection of entities.
+ *
+ * This adapter:
+ * - Uses the `uri` property of PropertyOwner objects as the unique identifier
+ * - Maintains the "all IDs" array in sorted order by `uri` using locale-aware string comparison
+ *
+ * @see {@link https://redux-toolkit.js.org/api/createEntityAdapter} for more information on entity adapters
+ */
 export const propertyOwnerAdapter = createEntityAdapter({
   selectId: (o: PropertyOwner) => o.uri,
   // Keep the "all IDs" array sorted based on uri

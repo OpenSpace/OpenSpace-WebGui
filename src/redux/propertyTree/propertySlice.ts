@@ -4,7 +4,19 @@ import { AnyProperty } from '@/types/Property/property';
 
 import { RootState } from '../store';
 
-// Properties
+/**
+ * Entity adapter for managing Property entities in Redux state.
+ *
+ * An entity adapter is a Redux Toolkit utility that provides a standardized way to manage
+ * normalized collections of items in state. It generates reducers and selectors for common
+ * CRUD operations (Create, Read, Update, Delete) on a collection of entities.
+ *
+ * This adapter:
+ * - Uses the `uri` property of Property objects as the unique identifier
+ * - Maintains the "all IDs" array in sorted order by `uri` using locale-aware string comparison
+ *
+ * @see {@link https://redux-toolkit.js.org/api/createEntityAdapter} for more information on entity adapters
+ */
 export const propertyAdapter = createEntityAdapter({
   selectId: (p: AnyProperty) => p.uri,
   // Keep the "all IDs" array sorted based on uri
@@ -34,6 +46,7 @@ export const {
   updateOne,
   updateMany
 } = properties.actions;
+
 export const propertyReducer = properties.reducer;
 
 export const propertySelectors = propertyAdapter.getSelectors(
