@@ -26,6 +26,31 @@ function validatePropertyType<T>(
   return true;
 }
 
+/**
+ * Retrieves the value of a property from Redux state with type validation.
+ * @template T - The expected type of the property.
+ * @param type - The expected type to validate against.
+ * @param uri - The unique identifier of the property to retrieve.
+ * @returns The property value if found and type-valid, otherwise undefined.
+ * @throws {Error} When the property type does not match the expected type.
+ */
+export function usePropertyValue<T extends PropertyTypeKey>(
+  type: T,
+  uri: Uri
+): PropertyOrPropertyGroup<T>['value'] | undefined {
+  // Get the value from Redux
+  const prop = useAppSelector((state) => propertySelectors.selectById(state, uri)) as
+    | PropertyOrPropertyGroup<T>
+    | undefined;
+
+  if (!validatePropertyType(type, prop)) {
+    throw new Error(
+      `Tried to access property with uri "${uri}" as type "${type}", but it is of type "${prop?.metaData.type}"`
+    );
+  }
+  return prop?.value;
+}
+
 export function useProperty<T extends PropertyTypeKey>(
   type: T,
   uri: Uri
@@ -42,13 +67,12 @@ export function useProperty<T extends PropertyTypeKey>(
     | PropertyOrPropertyGroup<T>
     | undefined;
 
-  const dispatch = useAppDispatch();
-
   if (!validatePropertyType(type, prop)) {
     throw new Error(
       `Tried to access property with uri "${uri}" as type "${type}", but it is of type "${prop?.metaData.type}"`
     );
   }
+  const dispatch = useAppDispatch();
 
   const shouldShowModal = useShouldShowModal(prop?.metaData);
   // Subscribe to the property
@@ -79,11 +103,10 @@ export function useProperty<T extends PropertyTypeKey>(
 function useShouldShowModal<T extends PropertyTypeKey>(
   metaData: PropertyOrPropertyGroup<T>['metaData'] | undefined
 ): boolean {
-  const showConfirmationModal = useAppSelector(
-    (state) =>
-      propertySelectors.selectById(state, 'OpenSpaceEngine.ShowPropertyConfirmation')
-        ?.value
-  ) as boolean | undefined;
+  const showConfirmationModal = usePropertyValue(
+    'BoolProperty',
+    'OpenSpaceEngine.ShowPropertyConfirmation'
+  );
 
   // Don't show modal if we can't find the global settings or the metadata
   if (showConfirmationModal === undefined || metaData === undefined) {

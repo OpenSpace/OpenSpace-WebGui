@@ -194,7 +194,7 @@ function unsubscribe() {
   topic.cancel();
 }
 
-export const addPropertyTreeTestListener = (startListening: AppStartListening) => {
+export const addPropertyTreeListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onOpenConnection,
     effect: async (_, listenerApi) => {

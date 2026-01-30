@@ -89,7 +89,7 @@ export function useVisibleProperties(propertyOwner: PropertyOwner | undefined): 
  * @param uri - The URI of the scene graph node for which the visibility is being queried.
  * @returns The visibility status of the scene graph node, or undefined if not found.
  */
-export function useSceneGraphNodeVisible(uri: Uri): Visibility | undefined {
+export function useSceneGraphNodeVisibility(uri: Uri): Visibility | undefined {
   const visibility = useAppSelector((state) => {
     return state.local.sceneTree.visibility[uri];
   });
@@ -110,7 +110,9 @@ export function useSceneGraphNodeVisible(uri: Uri): Visibility | undefined {
  * setVisibility(true); // Fade in
  * setVisibility(false, true); // Immediately hide
  */
-export function useSetPropertyOwnerVisibility(uri: Uri) {
+export function useSetPropertyOwnerVisibility(
+  uri: Uri
+): (shouldShow: boolean, isImmediate?: boolean) => void {
   // Not using the useProperty hooks here to minimize re-renders
   const fadeUri = fadePropertyUri(uri);
   const enabledUri = enabledPropertyUri(uri);

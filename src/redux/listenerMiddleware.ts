@@ -14,7 +14,7 @@ import { addLocalListener } from './local/localMiddleware';
 import { addLoggingListener } from './logging/loggingMiddleware';
 import { addMissionsListener } from './missions/missionsMiddleware';
 import { addProfileListener } from './profile/profileMiddleware';
-import { addPropertyTreeTestListener } from './propertyTree/propertyTreeMiddleware';
+import { addPropertyTreeListener } from './propertyTree/propertyTreeMiddleware';
 import { addSessionRecordingListener } from './sessionrecording/sessionRecordingMiddleware';
 import { addSkyBrowserListener } from './skybrowser/skybrowserMiddleware';
 import { addTimeListener } from './time/timeMiddleware';
@@ -43,7 +43,7 @@ addSkyBrowserListener(startAppListening);
 addTimeListener(startAppListening);
 addVersionListener(startAppListening);
 addLocalListener(startAppListening);
-addPropertyTreeTestListener(startAppListening);
+addPropertyTreeListener(startAppListening);
 
 // @TODO (2024-02-17, emmbr): The scene tree currently breaks if this lsitener is added
 // before the property tree listener. This should be investigated, and fixed so that

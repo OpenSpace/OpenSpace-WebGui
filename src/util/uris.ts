@@ -87,7 +87,7 @@ export function parentTypeUri(uri: Uri): string {
   return `${renderableUri}.Type`;
 }
 
-export function isUriRenderableGlobe(uri: Uri): boolean {
+export function isTypeRenderableGlobe(uri: Uri): boolean {
   return uri === 'RenderableGlobe';
 }
 

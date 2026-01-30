@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { ActionIcon, Checkbox } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
-import { useAppSelector } from '@/redux/hooks';
-import { propertySelectors } from '@/redux/propertyTree/propertySlice';
+import { usePropertyValue } from '@/hooks/properties';
 import { Uri, Visibility } from '@/types/types';
 import { fadePropertyUri } from '@/util/uris';
 
@@ -26,12 +25,8 @@ export function PropertyOwnerVisibilityCheckbox({
   // the visibility value, since the checkbox can be in a transition state
   const [checked, setChecked] = useState(visibility === 'Visible');
   const [isImmediate, setIsImmediate] = useState(false);
-  const fade = useAppSelector(
-    (state) =>
-      propertySelectors.selectById(state, fadePropertyUri(uri))?.value as
-        | number
-        | undefined
-  );
+  const fade = usePropertyValue('FloatProperty', fadePropertyUri(uri));
+
   useEffect(() => {
     setChecked(visibility === 'Visible');
   }, [visibility]);

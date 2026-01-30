@@ -7,7 +7,7 @@ import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import {
   usePropertyOwner,
-  useSceneGraphNodeVisible,
+  useSceneGraphNodeVisibility,
   useSetPropertyOwnerVisibility
 } from '@/hooks/propertyOwner';
 import { useIsSgnFocusable } from '@/hooks/sceneGraphNodes/hooks';
@@ -33,7 +33,7 @@ export function SceneGraphNodeHeader({ uri, onClick, label }: Props) {
   const propertyOwner = usePropertyOwner(uri);
   const { timeFrame, isInTimeFrame } = useTimeFrame(uri);
   const isFocusable = useIsSgnFocusable(uri);
-  const visibility = useSceneGraphNodeVisible(uri);
+  const visibility = useSceneGraphNodeVisibility(uri);
   const setVisibility = useSetPropertyOwnerVisibility(sgnRenderableUri(uri));
 
   const renderableUri = propertyOwner?.subowners.find((uri) => isRenderable(uri));
