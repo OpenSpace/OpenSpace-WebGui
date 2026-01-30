@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react';
 import { ActionIcon, Checkbox } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
-import { usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { propertySelectors } from '@/redux/propertyTree/propertySlice';
-import { Uri } from '@/types/types';
+import { Uri, Visibility } from '@/types/types';
 import { fadePropertyUri } from '@/util/uris';
 
 import { RadialSweepIcon } from './ProgressIcon';
@@ -13,12 +12,18 @@ import { RadialSweepIcon } from './ProgressIcon';
 interface Props {
   uri: Uri;
   label?: React.ReactNode;
+  visibility: Visibility | undefined;
+  setVisibility: (shouldBeEnabled: boolean, isImmediate: boolean) => void;
 }
 
-export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
+export function PropertyOwnerVisibilityCheckbox({
+  uri,
+  label,
+  visibility,
+  setVisibility
+}: Props) {
   // This is the value that is shown in the checkbox, it is not necessarily the same as
-  // the isVisible value, since the checkbox can be in a transition state
-  const { visibility, setVisibility } = usePropertyOwnerVisibility(uri);
+  // the visibility value, since the checkbox can be in a transition state
   const [checked, setChecked] = useState(visibility === 'Visible');
   const [isImmediate, setIsImmediate] = useState(false);
   const fade = useAppSelector(

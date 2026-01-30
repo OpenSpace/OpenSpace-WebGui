@@ -6,14 +6,14 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { propertyOwnerSelectors } from '@/redux/propertyTree/propertyOwnerSlice';
 import { propertySelectors } from '@/redux/propertyTree/propertySlice';
 import { setPropertyValue } from '@/redux/propertyTree/propertyTreeMiddleware';
-import { Identifier, PropertyOwner, Uri } from '@/types/types';
+import { Identifier, PropertyOwner, Uri, Visibility } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
-import { isPropertyVisible } from '@/util/propertyTreeHelpers';
+import { checkVisibilityTest, isPropertyVisible } from '@/util/propertyTreeHelpers';
 import { hasVisibleChildren } from '@/util/propertyTreeSelectors';
 import {
   enabledPropertyUri,
   fadePropertyUri,
-  removeLastWordFromUri,
+  isSceneGraphNode,
   sgnUri
 } from '@/util/uris';
 
@@ -84,19 +84,39 @@ export function useVisibleProperties(propertyOwner: PropertyOwner | undefined): 
 }
 
 /**
- * Check if the property ower is visible, based on the current visibility level setting.
- * Also provides a function to set the visibility of the property owner.
+ * Retrieves the visibility status of a scene graph node based on its URI.
+ *
+ * @param uri - The URI of the scene graph node for which the visibility is being queried.
+ * @returns The visibility status of the scene graph node, or undefined if not found.
  */
-export function usePropertyOwnerVisibility(uri: Uri) {
+export function useSceneGraphNodeVisible(uri: Uri): Visibility | undefined {
+  const visibility = useAppSelector((state) => {
+    return state.local.sceneTree.visibility[uri];
+  });
+  if (!isSceneGraphNode(uri)) {
+    throw Error(`URI '${uri}' is not a valid scene graph node URI`);
+  }
+  return visibility;
+}
+
+/**
+ * Creates a function that sets the visibility of a property owner by controlling its fade and enabled properties.
+ *
+ * @param uri - The URI of the property owner that directly owns the fade and enabled properties
+ * @returns A callback function that sets the visibility state, with optional immediate mode
+ *
+ * @example
+ * const setVisibility = useSetPropertyOwnerVisibility(ownerUri);
+ * setVisibility(true); // Fade in
+ * setVisibility(false, true); // Immediately hide
+ */
+export function useSetPropertyOwnerVisibility(uri: Uri) {
   // Not using the useProperty hooks here to minimize re-renders
   const fadeUri = fadePropertyUri(uri);
   const enabledUri = enabledPropertyUri(uri);
 
   const luaApi = useOpenSpaceApi();
 
-  const visibility = useAppSelector(
-    (state) => state.local.sceneTree.visibility[removeLastWordFromUri(uri)]
-  );
   const isFadeable = useAppSelector((state) => {
     return propertySelectors.selectById(state, fadeUri) !== undefined;
   });
@@ -118,6 +138,34 @@ export function usePropertyOwnerVisibility(uri: Uri) {
     },
     [dispatch, enabledUri, fadeUri, isFadeable, luaApi, uri]
   );
+
+  return setVisibility;
+}
+
+/**
+ * Check if the property owner is visible, based on the current visibility level setting.
+ * Also provides a function to set the visibility of the property owner.
+ *
+ * @param uri - The URI of the property owner for which visibility is being checked.
+ * @returns An object containing the visibility status and a function to set the visibility.
+ */
+export function usePropertyOwnerVisibility(uri: Uri) {
+  // Not using the useProperty hooks here to minimize re-renders
+  const fadeUri = fadePropertyUri(uri);
+  const enabledUri = enabledPropertyUri(uri);
+
+  const visibility = useAppSelector((state) => {
+    const enabled = propertySelectors.selectById(state, enabledUri)?.value as
+      | boolean
+      | undefined;
+    const fade = propertySelectors.selectById(state, fadeUri)?.value as
+      | number
+      | undefined;
+    return checkVisibilityTest(enabled, fade);
+  });
+
+  const setVisibility = useSetPropertyOwnerVisibility(uri);
+
   return {
     visibility,
     setVisibility

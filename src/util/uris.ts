@@ -55,7 +55,11 @@ export function isEnabledPropertyUri(uri: Uri): boolean {
 }
 
 export function isSceneGraphNodeProperty(uri: Uri): boolean {
-  return uri.startsWith(ScenePrefixKey) && uri.split('.').length > 2;
+  return (
+    uri.startsWith(ScenePrefixKey) &&
+    uri.split('.').length > 2 &&
+    removeLastWordFromUri(uri).endsWith('.Renderable')
+  );
 }
 
 export function isSceneGraphNode(uri: Uri): boolean {
