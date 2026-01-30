@@ -9,8 +9,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { propertyOwnerSelectors } from '@/redux/propertyTree/propertyOwnerSlice';
 import { propertySelectors } from '@/redux/propertyTree/propertySlice';
 import { EnginePropertyVisibilityKey, ScenePrefixKey } from '@/util/keys';
-import { isPropertyVisible } from '@/util/propertyTreeHelpers';
-import { hasVisibleChildren } from '@/util/propertyTreeSelectors';
+import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelpers';
 import { checkCaseInsensitiveSubstringList } from '@/util/stringmatcher';
 import { identifierFromUri, isTopLevelPropertyOwner } from '@/util/uris';
 

@@ -8,8 +8,11 @@ import { propertySelectors } from '@/redux/propertyTree/propertySlice';
 import { setPropertyValue } from '@/redux/propertyTree/propertyTreeMiddleware';
 import { Identifier, PropertyOwner, Uri, Visibility } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
-import { checkVisibilityTest, isPropertyVisible } from '@/util/propertyTreeHelpers';
-import { hasVisibleChildren } from '@/util/propertyTreeSelectors';
+import {
+  checkVisibilityTest,
+  hasVisibleChildren,
+  isPropertyVisible
+} from '@/util/propertyTreeHelpers';
 import {
   enabledPropertyUri,
   fadePropertyUri,

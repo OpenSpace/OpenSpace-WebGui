@@ -6,8 +6,7 @@ import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { propertySelectors } from '@/redux/propertyTree/propertySlice';
 import { Identifier, Uri } from '@/types/types';
-import { displayName } from '@/util/propertyTreeHelpers';
-import { isPropertyOwnerVisible } from '@/util/propertyTreeSelectors';
+import { displayName, isPropertyOwnerVisible } from '@/util/propertyTreeHelpers';
 
 import { LayerList } from './LayersList';
 
