@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Text } from '@mantine/core';
 
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { useSceneGraphNode } from '@/hooks/propertyOwner';
 import { NavigationAnchorKey } from '@/util/keys';
 
@@ -10,7 +10,7 @@ export function CurrentFocus() {
     keyPrefix: 'components.current-focus'
   });
 
-  const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
+  const currentAnchor = usePropertyValue('StringProperty', NavigationAnchorKey);
   const currentAnchorNode = useSceneGraphNode(currentAnchor ?? '');
 
   return (

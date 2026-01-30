@@ -27,7 +27,7 @@ export function ConstellationShowLinesBox({ title, icon }: Props) {
 
   const uri = sgnRenderableUri(sgnUri('Constellations'));
   const propertyOwner = usePropertyOwner(uri);
-  const { isVisible } = usePropertyOwnerVisibility(uri);
+  const { visibility } = usePropertyOwnerVisibility(uri);
 
   const [elementsEnabled, setElementsEnabled] = useProperty(
     'BoolProperty',
@@ -47,7 +47,7 @@ export function ConstellationShowLinesBox({ title, icon }: Props) {
       checkbox={
         <Checkbox
           onChange={(event) => checkboxChange(event.currentTarget.checked)}
-          checked={isVisible && elementsEnabled}
+          checked={visibility === 'Visible' && elementsEnabled}
           aria-label={t('aria-labels.lines')}
         />
       }

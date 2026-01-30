@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { propertyOwnerSelectors } from '@/redux/propertyTree/propertyOwnerSlice';
 import { propertySelectors } from '@/redux/propertyTree/propertySlice';
@@ -48,7 +48,7 @@ export function useIsSceneGraphNodeAdded(): (id: Identifier) => boolean {
  * visibility level setting.
  */
 export function useHasVisibleChildren(propertyOwnerUri: Uri): boolean {
-  const [visibilityLevelSetting] = useProperty(
+  const visibilityLevelSetting = usePropertyValue(
     'OptionProperty',
     EnginePropertyVisibilityKey
   );
@@ -68,7 +68,7 @@ export function useHasVisibleChildren(propertyOwnerUri: Uri): boolean {
  * current visiblitity level setting. Also subscribe to changes for the visiblity level.
  */
 export function useVisibleProperties(propertyOwner: PropertyOwner | undefined): Uri[] {
-  const [visibilityLevelSetting] = useProperty(
+  const visibilityLevelSetting = usePropertyValue(
     'OptionProperty',
     EnginePropertyVisibilityKey
   );
@@ -113,7 +113,6 @@ export function useSceneGraphNodeVisibility(uri: Uri): Visibility | undefined {
 export function useSetPropertyOwnerVisibility(
   uri: Uri
 ): (shouldShow: boolean, isImmediate?: boolean) => void {
-  // Not using the useProperty hooks here to minimize re-renders
   const fadeUri = fadePropertyUri(uri);
   const enabledUri = enabledPropertyUri(uri);
 
@@ -125,6 +124,7 @@ export function useSetPropertyOwnerVisibility(
 
   const dispatch = useAppDispatch();
 
+  // Not using the useProperty hooks here to minimize re-renders
   const setVisibility = useCallback(
     (shouldShow: boolean, isImmediate: boolean = false) => {
       if (!isFadeable) {
@@ -152,10 +152,10 @@ export function useSetPropertyOwnerVisibility(
  * @returns An object containing the visibility status and a function to set the visibility.
  */
 export function usePropertyOwnerVisibility(uri: Uri) {
-  // Not using the useProperty hooks here to minimize re-renders
   const fadeUri = fadePropertyUri(uri);
   const enabledUri = enabledPropertyUri(uri);
 
+  // Not using the useProperty hooks here to minimize re-renders
   const visibility = useAppSelector((state) => {
     const enabled = propertySelectors.selectById(state, enabledUri)?.value as
       | boolean

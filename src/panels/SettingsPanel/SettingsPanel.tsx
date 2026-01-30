@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { propertyOwnerSelectors } from '@/redux/propertyTree/propertyOwnerSlice';
 import { propertySelectors } from '@/redux/propertyTree/propertySlice';
@@ -26,7 +26,7 @@ export function SettingsPanel() {
 
   const properties = useAppSelector((state) => propertySelectors.selectEntities(state));
 
-  const [visiblityLevelSetting] = useProperty(
+  const visiblityLevelSetting = usePropertyValue(
     'OptionProperty',
     EnginePropertyVisibilityKey
   );

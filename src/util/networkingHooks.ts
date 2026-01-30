@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 
 /**
  * @returns The Web GUI URL using the address and port properties, falling back to
  * localhost:4680 if not available.
  */
 export function useWebGuiUrl(): string {
-  const [portProperty] = useProperty('IntProperty', 'Modules.WebGui.Port');
-  const [addressProperty] = useProperty('StringProperty', 'Modules.WebGui.Address');
+  const portProperty = usePropertyValue('IntProperty', 'Modules.WebGui.Port');
+  const addressProperty = usePropertyValue('StringProperty', 'Modules.WebGui.Address');
   const [link, setLink] = useState('http://localhost:4680');
 
   useEffect(() => {

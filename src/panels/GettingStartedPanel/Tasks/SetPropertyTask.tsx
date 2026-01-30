@@ -1,4 +1,4 @@
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { PropertyTypes } from '@/types/Property/propertyTypes';
 
 import { TaskCheckbox } from './Components/TaskCheckbox';
@@ -16,7 +16,7 @@ export function SetPropertyTask<T extends keyof PropertyTypes>({
   propertyType,
   finalValue
 }: Props<T>) {
-  const [value] = useProperty(propertyType, uri);
+  const value = usePropertyValue(propertyType, uri);
 
   const taskCompleted = value === finalValue;
 

@@ -1,4 +1,4 @@
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import { propertyOwnerSelectors } from '@/redux/propertyTree/propertyOwnerSlice';
 import { PropertyOwner } from '@/types/types';
@@ -18,7 +18,7 @@ export function useFeaturedNodes(): PropertyOwner[] {
 }
 
 export function useAnchorNode() {
-  const [anchor] = useProperty('StringProperty', NavigationAnchorKey);
+  const anchor = usePropertyValue('StringProperty', NavigationAnchorKey);
   const anchorNode = useAppSelector((state) =>
     propertyOwnerSelectors.selectById(state, sgnUri(anchor))
   );
@@ -26,7 +26,7 @@ export function useAnchorNode() {
 }
 
 export function useAimNode() {
-  const [aim] = useProperty('StringProperty', NavigationAimKey);
+  const aim = usePropertyValue('StringProperty', NavigationAimKey);
   const aimNode = useAppSelector((state) =>
     propertyOwnerSelectors.selectById(state, sgnUri(aim))
   );

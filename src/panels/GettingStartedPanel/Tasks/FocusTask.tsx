@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { useSceneGraphNode } from '@/hooks/propertyOwner';
 import { NavigationAnchorKey } from '@/util/keys';
 
@@ -15,7 +15,7 @@ export function FocusTask({ anchor }: Props) {
     keyPrefix: 'tasks.focus'
   });
 
-  const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
+  const currentAnchor = usePropertyValue('StringProperty', NavigationAnchorKey);
   const anchorNode = useSceneGraphNode(anchor);
 
   const taskCompleted =
