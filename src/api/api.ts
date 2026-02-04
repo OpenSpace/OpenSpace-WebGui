@@ -17,3 +17,4 @@ const address = window?.OpenSpaceEnvironment?.wsAddress || 'localhost';
 const port = window?.OpenSpaceEnvironment?.wsPort || 4682;
 
 export const api = OpenSpaceApi(address, port);
+export { address };

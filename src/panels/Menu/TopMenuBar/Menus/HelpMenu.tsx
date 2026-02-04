@@ -4,6 +4,8 @@ import { Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import { About } from '@/components/About/About';
+import { QRCode } from '@/components/QRCode/QRCode';
+
 import {
   BookIcon,
   FeedbackIcon,
@@ -11,6 +13,7 @@ import {
   InformationCircleOutlineIcon,
   OpenInBrowserIcon,
   OpenWindowIcon,
+  PhoneIcon,
   RouteIcon
 } from '@/icons/icons';
 import { useWebGuiUrl } from '@/util/networkingHooks';
@@ -23,6 +26,7 @@ export function HelpMenu() {
   const { t } = useTranslation('menu', { keyPrefix: 'help-menu' });
 
   const [showAbout, { open, close }] = useDisclosure(false);
+  const [showQRCode, { open: openQRCode, close: closeQRCode }] = useDisclosure(false);
   const webGuiUrl = useWebGuiUrl();
   const navigation = useNavigate();
 
@@ -43,6 +47,7 @@ export function HelpMenu() {
   return (
     <>
       <About opened={showAbout} close={close} />
+      <QRCode opened={showQRCode} close={closeQRCode} />
 
       <TopBarMenuWrapper targetTitle={'Help'}>
         <Menu.Item
@@ -88,11 +93,16 @@ export function HelpMenu() {
         >
           {t('open-gui')}
         </Menu.Item>
+        <Menu.Item onClick={openQRCode} leftSection={<PhoneIcon />}>
+          {t('qrcode')}
+        </Menu.Item>
 
         <Menu.Divider />
         <Menu.Item onClick={open} leftSection={<InformationCircleOutlineIcon />}>
           {t('about')}
         </Menu.Item>
+
+
       </TopBarMenuWrapper>
     </>
   );

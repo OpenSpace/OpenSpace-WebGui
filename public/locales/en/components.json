@@ -190,6 +190,13 @@
       }
     }
   },
+  "qrcode": {
+    "modal-title": "Mobile QR Code",
+    "qr-alt-text": "OpenSpace Routes Page",
+    "qr-ip-warning-title": "About IP Addresses",
+    "qr-ip-warning-info": "To use this QR code, you must set the enter the IP address of your computer in the openspace.cfg file. Look under {ModuleConfigurations} {WebGui} {Address} and change \"localhost\" to your computer ip address i.e. \"192.168.1.100\".",
+    "mobile-action-panel-description": "Use this QR code to launch OpenSpace controls on your mobile device such as the actions panel, show composer or map viewer."
+  },
   "resizeable-content": {
     "aria-label": "Resize window (keyboard control not suppored)"
   },
