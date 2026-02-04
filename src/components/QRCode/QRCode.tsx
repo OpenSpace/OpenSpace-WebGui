@@ -43,10 +43,13 @@ export function QRCode({ opened, close }: Props) {
         <Grid.Col span={8}>
           <Stack gap={'xs'}>
             <Title order={1}>{t('qr-alt-text')}</Title>
-            <Text>{t('mobile-action-panel-description')}</Text>
+            <Text>{t('qrcode-panel-description')}</Text>
             
             <Alert variant={'light'} color={'blue'} title={t('qr-ip-warning-title')}>
-                <Text>{t('qr-ip-warning-info')}</Text>
+                <Text>{t('qr-ip-warning-text')}</Text>
+            </Alert>
+             <Alert variant={'light'} color={'blue'} title={t('qr-allow-warning-title')}>
+                <Text>{t('qr-allow-warning-text')}</Text>
             </Alert>
           </Stack>
         </Grid.Col>
