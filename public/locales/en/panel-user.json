@@ -1,11 +1,11 @@
 {
   "local-panels": {
-    "title": "Open Local Panel",
+    "title": "Add Local Panel",
     "select-panel-placeholder": "Select panel",
     "aria-label": "Open local panel"
   },
   "web-panels": {
-    "title": "Open From URL",
+    "title": "Add From URL",
     "input": {
       "title": "Title (optional)",
       "placeholder": "Panel title (optional)"
@@ -14,6 +14,18 @@
       "title": "URL",
       "placeholder": "Panel URL (for example, https://example.com/)",
       "aria-label": "Open web panel"
+    }
+  },
+  "add-buttons": {
+    "new-window": {
+      "label": "New Window",
+      "tooltip": "Open in new window",
+      "aria-label": "Open panel in new window"
+    },
+    "browser": {
+      "label": "Browser",
+      "tooltip": "Open in browser",
+      "aria-label": "Open panel in browser"
     }
   },
   "bookmarks-title": "Bookmarks",

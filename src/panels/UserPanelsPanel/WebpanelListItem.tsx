@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, Tooltip } from '@mantine/core';
 
 import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
@@ -11,17 +12,25 @@ interface Props {
 }
 
 export function WebPanelListItem({ title, src, onNewWindow, onBrowser }: Props) {
+  const { t } = useTranslation('panel-user');
+
   return (
     <Group mb={5} wrap={'nowrap'} key={`${src}${title}`}>
       <TruncatedText flex={1}>{title}</TruncatedText>
       <Group gap={'xs'}>
-        <Tooltip label={'Open in new window'}>
-          <ActionIcon onClick={() => onNewWindow(src, title)}>
+        <Tooltip label={t('add-buttons.new-window.tooltip')}>
+          <ActionIcon
+            onClick={() => onNewWindow(src, title)}
+            aria-label={t('add-buttons.new-window.aria-label')}
+          >
             <OpenWindowIcon />
           </ActionIcon>
         </Tooltip>
-        <Tooltip label={'Open in browser'}>
-          <ActionIcon onClick={() => onBrowser(src, title)}>
+        <Tooltip label={t('add-buttons.browser.tooltip')}>
+          <ActionIcon
+            onClick={() => onBrowser(src, title)}
+            aria-label={t('add-buttons.browser.aria-label')}
+          >
             <OpenInBrowserIcon />
           </ActionIcon>
         </Tooltip>

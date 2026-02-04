@@ -129,10 +129,10 @@ export function UserPanelsPanel() {
       <Tabs defaultValue={'local'}>
         <Tabs.List>
           <Tabs.Tab value={'local'} leftSection={<OpenWindowIcon size={IconSize.sm} />}>
-            Add Local Panel
+            {t('local-panels.title')}
           </Tabs.Tab>
           <Tabs.Tab value={'url'} leftSection={<WebIcon size={IconSize.sm} />}>
-            Add From URL
+            {t('web-panels.title')}
           </Tabs.Tab>
         </Tabs.List>
 
@@ -150,14 +150,14 @@ export function UserPanelsPanel() {
                 disabled={!selectedPanel}
                 leftSection={<OpenWindowIcon />}
               >
-                New Window
+                {t('add-buttons.new-window.label')}
               </Button>
               <Button
                 onClick={() => addLocalPanel(true)}
                 disabled={!selectedPanel}
                 leftSection={<OpenInBrowserIcon />}
               >
-                Browser
+                {t('add-buttons.browser.label')}
               </Button>
             </Group>
           </Tabs.Panel>
@@ -183,14 +183,14 @@ export function UserPanelsPanel() {
                 disabled={!panelURL}
                 leftSection={<OpenWindowIcon />}
               >
-                New Window
+                {t('add-buttons.new-window.label')}
               </Button>
               <Button
                 onClick={() => addWebPanel(true)}
                 disabled={!panelURL}
                 leftSection={<OpenInBrowserIcon />}
               >
-                Browser
+                {t('add-buttons.browser.label')}
               </Button>
             </Group>
           </Tabs.Panel>
