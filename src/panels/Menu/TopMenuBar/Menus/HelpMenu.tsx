@@ -101,8 +101,6 @@ export function HelpMenu() {
         <Menu.Item onClick={open} leftSection={<InformationCircleOutlineIcon />}>
           {t('about')}
         </Menu.Item>
-
-
       </TopBarMenuWrapper>
     </>
   );
