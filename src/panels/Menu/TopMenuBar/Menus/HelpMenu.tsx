@@ -10,7 +10,6 @@ import {
   HomeIcon,
   InformationCircleOutlineIcon,
   OpenInBrowserIcon,
-  OpenWindowIcon,
   RouteIcon
 } from '@/icons/icons';
 import { useWebGuiUrl } from '@/util/networkingHooks';
@@ -52,7 +51,7 @@ export function HelpMenu() {
           }
           target={'_blank'}
           leftSection={<BookIcon />}
-          rightSection={<OpenWindowIcon />}
+          rightSection={<OpenInBrowserIcon />}
           aria-description={t('external-tab-aria-label')}
         >
           {t('tutorials')}
@@ -73,7 +72,7 @@ export function HelpMenu() {
           href={'http://data.openspaceproject.com/feedback'}
           target={'_blank'}
           leftSection={<FeedbackIcon />}
-          rightSection={<OpenWindowIcon />}
+          rightSection={<OpenInBrowserIcon />}
           aria-description={t('external-tab-aria-label')}
         >
           {t('send-feedback')}
@@ -83,7 +82,7 @@ export function HelpMenu() {
         <Menu.Item
           onClick={openGuiInBrowser}
           leftSection={<OpenInBrowserIcon />}
-          rightSection={<OpenWindowIcon />}
+          rightSection={<OpenInBrowserIcon />}
           aria-description={t('external-tab-aria-label')}
         >
           {t('open-gui')}
