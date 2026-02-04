@@ -20,7 +20,7 @@ export const StepSizes = {
 
 export const Decimals = {
   [TimePart.Milliseconds]: 0,
-  [TimePart.Seconds]: 0,
+  [TimePart.Seconds]: 1,
   [TimePart.Minutes]: 3,
   [TimePart.Hours]: 4,
   [TimePart.Days]: 5,
