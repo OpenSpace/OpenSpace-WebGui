@@ -9,6 +9,7 @@ import { FileMenu } from './Menus/FileMenu';
 import { HelpMenu } from './Menus/HelpMenu';
 import { ViewMenu } from './Menus/ViewMenu';
 import { WindowsMenu } from './Menus/WindowsMenu';
+import { IdleBehaviorToggle } from './IdleBehaviorToggle';
 // import { LocaleSwitcher } from './Menus/LocaleSwitcher';
 
 export function TopMenuBar() {
@@ -35,10 +36,15 @@ export function TopMenuBar() {
           {/* There's space to put something in the center here if we want */}
         </Box>
         <Group flex={1} wrap={'nowrap'} align={'center'} justify={'end'} mr={'xs'}>
-          <FrictionControls size={'xs'} />
-          <InfoBox>
-            <FrictionControlsInfo />
-          </InfoBox>
+          <Group gap={'xl'}>
+            <IdleBehaviorToggle />
+            <Group>
+              <FrictionControls size={'xs'} />
+              <InfoBox>
+                <FrictionControlsInfo />
+              </InfoBox>
+            </Group>
+          </Group>
         </Group>
       </Flex>
     </ScrollBox>
