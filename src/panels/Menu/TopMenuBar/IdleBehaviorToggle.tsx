@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Chip, Group, Text } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
@@ -7,18 +8,18 @@ import { useAppSelector } from '@/redux/hooks';
 import styles from '@/theme/global.module.css';
 
 export function IdleBehaviorToggle() {
+  const { t } = useTranslation('menu', { keyPrefix: 'idle-behavior-toggle' });
+
   const [apply, setApply] = useProperty(
     'BoolProperty',
     'NavigationHandler.OrbitalNavigator.IdleBehavior.ApplyIdleBehavior'
   );
 
   const keybinds = useAppSelector((state) => state.actions.keybinds);
-
-  // TODO: Fix keybind
   const keybind = keybinds.find((keybind) => keybind.action === 'os.ToggleIdleBehavior');
 
   return (
-    <Group gap={'xs'}>
+    <Group gap={'xs'} wrap={'nowrap'}>
       <Chip
         checked={apply}
         onChange={setApply}
@@ -26,23 +27,17 @@ export function IdleBehaviorToggle() {
         variant={apply ? 'light' : 'transparent'}
         className={apply ? styles.blinking : undefined}
       >
-        Idle behavior
+        {t('label')}
       </Chip>
       <InfoBox>
         <Text size={'md'} fw={'bold'}>
-          Idle behavior:
+          {t('info.heading')}
         </Text>
-        <Text>
-          When enabled, the camera will auto-rotate around the current focus until the
-          next navigation interaction.
-        </Text>
-        <Text mt={'sm'}>
-          Idle behavior can be set to trigger automatically after inactivity. See Orbital
-          Navigator settings for this and other options, including speed.
-        </Text>
+        <Text>{t('info.description-1')}</Text>
+        <Text mt={'sm'}>{t('info.description-2')}</Text>
         {keybind && (
           <Group mt={'sm'}>
-            <Text fw={'bold'}>Toggle keybind:</Text>
+            <Text fw={'bold'}>{t('info.keybind-label')}</Text>
             <KeybindButtons keybind={keybind} />
           </Group>
         )}

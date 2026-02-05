@@ -36,9 +36,9 @@ export function TopMenuBar() {
           {/* There's space to put something in the center here if we want */}
         </Box>
         <Group flex={1} wrap={'nowrap'} align={'center'} justify={'end'} mr={'xs'}>
-          <Group gap={'xl'}>
+          <Group gap={'lg'} wrap={'nowrap'}>
             <IdleBehaviorToggle />
-            <Group>
+            <Group wrap={'nowrap'} gap={'xs'}>
               <FrictionControls size={'xs'} />
               <InfoBox>
                 <FrictionControlsInfo />
