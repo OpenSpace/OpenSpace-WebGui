@@ -40,7 +40,7 @@ export function TimePanelMenuButtonContent() {
     }
 
     const { increment, unit, isNegative } = formatDeltaTime(targetDeltaTime);
-    const roundedIncrement = Math.round(increment);
+    const roundedIncrement = increment > 1 ? Math.round(increment) : increment;
     const sign = isNegative ? '-' : '';
 
     const unitLabel = translateTimePart(unit, roundedIncrement);
