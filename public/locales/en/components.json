@@ -194,9 +194,11 @@
     "modal-title": "Mobile QR Code",
     "alt-text": "OpenSpace Routes Page",
     "ip-warning-title": "Setting the GUI IP Address",
-    "ip-warning-text": "To use this QR code, you must enter the local IP address of your computer into the openspace.cfg. Look under ModuleConfigurations/WebGui/Address and change \"localhost\" to your computer ip address i.e. \"192.168.1.100\".  (To find it, open a terminal and type \"ipconfig\" on Windows or \"ifconfig\" on Mac/Linux.)",
+    "ip-warning-text": "To use this QR code, you must enter the local IP address of your computer into the openspace.cfg.",
+    "ip-warning-text-2": "Look under ModuleConfigurations/WebGui/Address and change \"localhost\" to your computer ip address i.e. \"192.168.1.100\".  (To find it, open a terminal and type \"ipconfig\" on Windows or \"ifconfig\" on Mac/Linux.)",
+    "ip-warning-text-3": "NOTE: after entering this value, the GUI within OpenSpace will stop working unless you change the allowed devices (described below).",
     "allow-warning-title": "Setting the allowed devices",
-    "allow-warning-text": "By default, devices other than your computer are blocked. You must either change the 'Default Access' setting to 'Allow' or add your device's address to the 'Allow Addresses' list. (This can also be changed permanently in openspace.cfg file)",
+    "allow-warning-text": "By default, devices other than your computer are blocked. You must either change the 'Default Access' setting to 'Allow' or add your device's address AND your computer's address to the 'Allow Addresses' list. (This can also be changed permanently in openspace.cfg file)",
     "panel-description": "Use this QR code to launch OpenSpace controls on your mobile device such as the Actions Panel, ShowComposer or Map Viewer."
   },
   "resizeable-content": {

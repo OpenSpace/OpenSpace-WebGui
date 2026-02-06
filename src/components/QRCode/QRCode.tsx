@@ -54,6 +54,12 @@ export function QRCode({ opened, close }: Props) {
               <Text pb={'md'} className={styles.selectable}>
                 {t('ip-warning-text')}
               </Text>
+              <Text pb={'md'} className={styles.selectable}>
+                {t('ip-warning-text-2')}
+              </Text>
+              <Text pb={'md'} className={styles.selectable}>
+                {t('ip-warning-text-3')}
+              </Text>
               <Divider my={'sm'} />
               <Text pb={'sm'}>Current Address Value:</Text>
               <StringProperty uri={'Modules.WebGui.Address'} readOnly={true} />
