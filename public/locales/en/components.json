@@ -197,7 +197,7 @@
     "qr-ip-warning-text": "To use this QR code, you mustenter the IP address of your computer in the openspace.cfg file. Look under ModuleConfigurations/WebGui/Address and change \"localhost\" to your computer ip address i.e. \"192.168.1.100\".",
     "qr-allow-warning-title": "Setting the allowed devices",
     "qr-allow-warning-text": "Also in the openspace.cfg you must edit {ModuleConfigurations} {Server} {Interfaces} look for \"DefaultWebSocketInterface\" and either change DefaultAccess = \"Deny\", to DefaultAccess = \"Allow\", or add BOTH your computer ip address and mobile device address into the AllowAddresses list.",
-    "qrcode-panel-description": "Use this QR code to launch OpenSpace controls on your mobile device such as the actions panel, show composer or map viewer."
+    "qrcode-panel-description": "Use this QR code to launch OpenSpace controls on your mobile device such as the Actions Panel, ShowComposer or Map Viewer."
   },
   "resizeable-content": {
     "aria-label": "Resize window (keyboard control not suppored)"
