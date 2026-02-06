@@ -47,6 +47,7 @@ export function QRCode({ opened, close }: Props) {
             
             <Alert variant={'light'} color={'blue'} title={t('qr-ip-warning-title')}>
                 <Text>{t('qr-ip-warning-text')}</Text>
+                <Property uri="Modules.WebGui.Address" />
             </Alert>
              <Alert variant={'light'} color={'blue'} title={t('qr-allow-warning-title')}>
                 <Text>{t('qr-allow-warning-text')}</Text>
