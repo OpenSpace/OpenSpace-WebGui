@@ -1,7 +1,12 @@
 import { useTranslation } from 'react-i18next';
-import { Alert, Grid, Modal, Stack, Text, Title } from '@mantine/core';
-import { address } from '@/api/api';
-import {QRCodeSVG} from 'qrcode.react';
+import { Alert, Divider, Grid, Modal, Stack, Text, Title } from '@mantine/core';
+import { QRCodeSVG } from 'qrcode.react';
+
+import { Property } from '@/components/Property/Property';
+import { useProperty } from '@/hooks/properties';
+import styles from '@/theme/global.module.css';
+
+import { StringProperty } from '../Property/Types/StringProperty';
 
 interface Props {
   opened: boolean;
@@ -10,47 +15,59 @@ interface Props {
 
 export function QRCode({ opened, close }: Props) {
   const { t } = useTranslation('components', { keyPrefix: 'qrcode' });
-  const port = window?.location?.port || 4680;
+  const [port] = useProperty('IntProperty', 'Modules.WebGui.Port');
+  const [address] = useProperty('StringProperty', 'Modules.WebGui.Address');
+
   return (
     <Modal
       opened={opened}
       onClose={close}
-      title={t('modal-title')}
       size={'40%'}
       closeButtonProps={{ 'aria-label': 'Close QR Code' }}
     >
       <Grid>
-        <Grid.Col span={4}>
-           <QRCodeSVG
-            value={`http://${address}:${port}/gui/#/routes/`}
-            title={t('qr-alt-text')}
-            size={128}
-            bgColor={"#ffffff"}
-            fgColor={"#000000"}
-            level={"L"}
-            imageSettings={{
+        <Grid.Col span={12}>
+          <Stack gap={'xs'} align={'center'}>
+            <Title order={1}>{t('modal-title')}</Title>
+            <QRCodeSVG
+              value={`http://${address}:${port}/gui/#/routes/`}
+              title={t('alt-text')}
+              size={192}
+              bgColor={'#ffffff'}
+              fgColor={'#000000'}
+              level={'L'}
+              imageSettings={{
                 src: `${import.meta.env.BASE_URL}/images/icon.png`,
                 x: undefined,
                 y: undefined,
                 height: 24,
                 width: 24,
                 opacity: 1,
-                excavate: true,
-            }}
+                excavate: true
+              }}
             />
+            <Text p={'md'} className={styles.selectable}>
+              {t('panel-description')}
+            </Text>
 
-        </Grid.Col>
-        <Grid.Col span={8}>
-          <Stack gap={'xs'}>
-            <Title order={1}>{t('qr-alt-text')}</Title>
-            <Text>{t('qrcode-panel-description')}</Text>
-            
-            <Alert variant={'light'} color={'blue'} title={t('qr-ip-warning-title')}>
-                <Text>{t('qr-ip-warning-text')}</Text>
-                <Property uri="Modules.WebGui.Address" />
+            <Alert variant={'light'} color={'blue'} title={t('ip-warning-title')}>
+              <Text pb={'md'} className={styles.selectable}>
+                {t('ip-warning-text')}
+              </Text>
+              <Divider my={'sm'} />
+              <Text pb={'sm'}>Current Address Value:</Text>
+              <StringProperty uri={'Modules.WebGui.Address'} readOnly={true} />
             </Alert>
-             <Alert variant={'light'} color={'blue'} title={t('qr-allow-warning-title')}>
-                <Text>{t('qr-allow-warning-text')}</Text>
+            <Alert variant={'light'} color={'blue'} title={t('allow-warning-title')}>
+              <Text pb={'md'} className={styles.selectable}>
+                {t('allow-warning-text')}
+              </Text>
+              <Property
+                uri={'Modules.Server.Interfaces.DefaultWebSocketInterface.DefaultAccess'}
+              />
+              <Property
+                uri={'Modules.Server.Interfaces.DefaultWebSocketInterface.AllowAddresses'}
+              />
             </Alert>
           </Stack>
         </Grid.Col>

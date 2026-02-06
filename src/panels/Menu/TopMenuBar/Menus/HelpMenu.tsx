@@ -5,7 +5,6 @@ import { useDisclosure } from '@mantine/hooks';
 
 import { About } from '@/components/About/About';
 import { QRCode } from '@/components/QRCode/QRCode';
-
 import {
   BookIcon,
   FeedbackIcon,
