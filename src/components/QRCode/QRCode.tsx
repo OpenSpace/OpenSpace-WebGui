@@ -51,17 +51,17 @@ export function QRCode({ opened, close }: Props) {
             </Text>
 
             <Alert variant={'light'} color={'blue'} title={t('ip-warning-title')}>
-              <Text pb={'md'} className={styles.selectable}>
+              <Text pb={'md'}>
                 {t('ip-warning-text')}
               </Text>
               <Text pb={'md'} className={styles.selectable}>
                 {t('ip-warning-text-2')}
               </Text>
-              <Text pb={'md'} className={styles.selectable}>
+              <Text pb={'md'}>
                 {t('ip-warning-text-3')}
               </Text>
               <Divider my={'sm'} />
-              <Text pb={'sm'}>Current Address Value:</Text>
+              <Text pb={'sm'}>{t('current-address-value')}</Text>
               <StringProperty uri={'Modules.WebGui.Address'} readOnly={true} />
             </Alert>
             <Alert variant={'light'} color={'blue'} title={t('allow-warning-title')}>
