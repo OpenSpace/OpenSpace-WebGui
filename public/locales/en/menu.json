@@ -35,6 +35,7 @@
     "send-feedback": "Send Feedback",
     "open-gui": "Open GUI in Browser",
     "about": "About",
+    "qrcode": "Mobile QR Code",
     "external-tab-aria-label": "(Opens in new tab)"
   },
   "view-menu": {
