@@ -200,6 +200,7 @@
     "ip-warning-text-2": "Look under ModuleConfigurations/WebGui/Address and change \"localhost\" to your computer ip address i.e. \"192.168.1.100\".  (To find it, open a terminal and type \"ipconfig\" on Windows or \"ifconfig\" on Mac/Linux.)",
     "ip-warning-text-3": "NOTE: after entering this value, the GUI within OpenSpace will stop working unless you change the allowed devices (described below).",
     "modal-title": "Mobile QR Code",
+    "close-button-aria-label": "Close QR Code",
     "panel-description": "Use this QR code to launch OpenSpace controls on your mobile device such as the Actions Panel, ShowComposer or Map Viewer."
   },
   "resizeable-content": {

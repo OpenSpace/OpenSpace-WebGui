@@ -22,8 +22,8 @@ export function QRCode({ opened, close }: Props) {
     <Modal
       opened={opened}
       onClose={close}
-      size={'40%'}
-      closeButtonProps={{ 'aria-label': 'Close QR Code' }}
+      size={'xl'}
+      closeButtonProps={{ 'aria-label': t('close-button-aria-label') }}
     >
       <Grid>
         <Grid.Col span={12}>
