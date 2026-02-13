@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, LoadingOverlay, Stack, Text, ThemeIcon } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { useProperty } from '@/hooks/properties';
 import { PlusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
@@ -23,6 +24,11 @@ export function SkyBrowserPanel() {
 
   const { addWindow } = useWindowLayoutProvider();
   const luaApi = useOpenSpaceApi();
+
+  const shouldHideDisplayCopies = useProperty(
+    'BoolProperty',
+    'Modules.SkyBrowser.HideTargetsBrowsersWithGui'
+  );
 
   useSkyBrowserData();
 
@@ -46,6 +52,19 @@ export function SkyBrowserPanel() {
       openWorldWideTelescope();
     }
   }, [openWorldWideTelescope, nBrowsers]);
+
+  // Hide/show display copies when panel is opened/closed
+  useEffect(() => {
+    if (shouldHideDisplayCopies) {
+      luaApi?.skybrowser.showAllTargetsAndBrowsers(true);
+    }
+
+    return () => {
+      if (shouldHideDisplayCopies) {
+        luaApi?.skybrowser.showAllTargetsAndBrowsers(false);
+      }
+    };
+  }, [shouldHideDisplayCopies, luaApi]);
 
   if (nBrowsers === 0) {
     return (
