@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  Alert,
   Box,
   Button,
   Divider,
@@ -13,7 +14,7 @@ import {
 } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { OpenInBrowserIcon, OpenWindowIcon, WebIcon } from '@/icons/icons';
+import { AttentionIcon, OpenInBrowserIcon, OpenWindowIcon, WebIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   intializeUserPanels,
@@ -139,9 +140,15 @@ export function UserPanelsPanel() {
 
         <Box>
           <Tabs.Panel value={'local'}>
+            {localPanels.length === 0 && (
+              <Alert mb={'xs'} icon={<AttentionIcon />}>
+                {t('local-panels.no-panels')}
+              </Alert>
+            )}
             <Select
               placeholder={t('local-panels.select-panel-placeholder')}
               data={localPanels}
+              disabled={localPanels.length === 0}
               onChange={setSelectedPanel}
               value={selectedPanel}
             />

@@ -2,7 +2,8 @@
   "local-panels": {
     "title": "Add Local Panel",
     "select-panel-placeholder": "Select panel",
-    "aria-label": "Open local panel"
+    "aria-label": "Open local panel",
+    "no-panels": "No local web panels found. Add one as a folder in the webpanels directory inside your user folder to see it here."
   },
   "web-panels": {
     "title": "Add From URL",
