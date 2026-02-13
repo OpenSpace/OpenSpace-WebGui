@@ -5,8 +5,8 @@ import { MinusIcon } from '@/icons/icons';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { useAppSelector } from '@/redux/hooks';
 import { GeoLocationGroupKey } from '@/util/keys';
-import { identifierFromUri, sgnUri } from '@/util/propertyTreeHelpers';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
+import { identifierFromUri, sgnUri } from '@/util/uris';
 import { useRemoveSceneGraphNodeModal } from '@/util/useRemoveSceneGraphNode';
 
 export function AddedCustomNodes() {

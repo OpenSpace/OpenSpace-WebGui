@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setMenuItemsConfig, setMenuItemVisible } from '@/redux/local/localSlice';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
@@ -14,7 +14,10 @@ import { MenuItemConfig } from './types';
 
 export function useMenuItems(): (MenuItemConfig & MenuItem)[] {
   const menuItems = useAppSelector((state) => state.local.menuItemsConfig);
-  const [userLevel] = useProperty('OptionProperty', 'OpenSpaceEngine.PropertyVisibility');
+  const userLevel = usePropertyValue(
+    'OptionProperty',
+    'OpenSpaceEngine.PropertyVisibility'
+  );
 
   // Filter the menu items based on the user level
   const menuItemsAtUserLevel = menuItems.filter((item) => {

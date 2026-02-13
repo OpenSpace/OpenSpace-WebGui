@@ -4,8 +4,9 @@ import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { Property } from '@/components/Property/Property';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
+import { propertySelectors } from '@/redux/propertyTree/propertySlice';
 import { Identifier, Uri } from '@/types/types';
-import { displayName, isPropertyOwnerActive } from '@/util/propertyTreeHelpers';
+import { displayName, isPropertyOwnerVisible } from '@/util/propertyTreeHelpers';
 
 import { LayerList } from './LayersList';
 
@@ -27,8 +28,9 @@ export function GlobeLayerGroup({ uri, globe, icon }: Props) {
 
   const nActiveLayers = useAppSelector(
     (state) =>
-      layers.filter((layer) => isPropertyOwnerActive(layer, state.properties.properties))
-        .length
+      layers.filter((layer) =>
+        isPropertyOwnerVisible(propertySelectors.selectEntities(state), layer)
+      ).length
   );
 
   return (

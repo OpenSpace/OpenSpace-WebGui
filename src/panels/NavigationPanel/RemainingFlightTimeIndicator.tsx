@@ -7,7 +7,7 @@ import { useSubscribeToCameraPath } from '@/hooks/topicSubscriptions';
 import { AirplaneIcon } from '@/icons/icons';
 import styles from '@/theme/global.module.css';
 import { IconSize } from '@/types/enums';
-import { sgnUri } from '@/util/propertyTreeHelpers';
+import { sgnUri } from '@/util/uris';
 
 interface Props {
   compact?: boolean;

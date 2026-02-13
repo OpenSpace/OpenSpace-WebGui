@@ -6,6 +6,7 @@ import { BoolInput } from '@/components/Input/BoolInput';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { useProperty } from '@/hooks/properties';
+import { usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 
 // @TODO (2025-05-19, emmbr) This component needs logic for checking if the used actions
 // exist. However, for this we need to be able to access the actions state using the
@@ -15,6 +16,15 @@ export function StarsTab() {
   const { t } = useTranslation('panel-nightsky', { keyPrefix: 'stars' });
 
   const luaApi = useOpenSpaceApi();
+
+  const { visibility: starsVisibility, setVisibility: starsSetVisibility } =
+    usePropertyOwnerVisibility('Scene.Stars.Renderable');
+  const { visibility: starsLabelsVisibility, setVisibility: starsLabelsSetVisibility } =
+    usePropertyOwnerVisibility('Scene.Stars.Renderable');
+  const {
+    visibility: starsLabelsAlternateVisibility,
+    setVisibility: starsLabelsAlternateSetVisibility
+  } = usePropertyOwnerVisibility('Scene.Stars.Renderable');
 
   const [starsDimInAtm, setStarsDimInAtm] = useProperty(
     'BoolProperty',
@@ -33,6 +43,8 @@ export function StarsTab() {
           <PropertyOwnerVisibilityCheckbox
             uri={'Scene.Stars.Renderable'}
             label={t('visibility.input.show-stars')}
+            visibility={starsVisibility}
+            setVisibility={starsSetVisibility}
           />
           <BoolInput
             label={t('visibility.input.show-during-day.label')}
@@ -48,10 +60,14 @@ export function StarsTab() {
           <PropertyOwnerVisibilityCheckbox
             uri={'Scene.StarsLabels.Renderable'}
             label={t('labels.input.show-labels')}
+            visibility={starsLabelsVisibility}
+            setVisibility={starsLabelsSetVisibility}
           />
           <PropertyOwnerVisibilityCheckbox
             uri={'Scene.StarLabelsAlternate.Renderable'}
             label={t('labels.input.show-alternate-labels')}
+            visibility={starsLabelsAlternateVisibility}
+            setVisibility={starsLabelsAlternateSetVisibility}
           />
         </Group>
       </Group>

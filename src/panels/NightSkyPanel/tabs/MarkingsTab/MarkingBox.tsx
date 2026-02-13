@@ -1,7 +1,7 @@
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
-import { usePropertyOwner } from '@/hooks/propertyOwner';
+import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { Identifier } from '@/types/types';
-import { sgnRenderableUri, sgnUri } from '@/util/propertyTreeHelpers';
+import { sgnRenderableUri, sgnUri } from '@/util/uris';
 
 import { MarkingBoxLayout } from './MarkingBoxLayout';
 
@@ -17,10 +17,17 @@ interface Props {
 export function NightSkyMarkingBox({ title, icon, identifier }: Props) {
   const uri = sgnRenderableUri(sgnUri(identifier));
   const propertyOwner = usePropertyOwner(uri);
+  const { visibility, setVisibility } = usePropertyOwnerVisibility(uri);
 
   return (
     <MarkingBoxLayout
-      checkbox={<PropertyOwnerVisibilityCheckbox uri={uri} />}
+      checkbox={
+        <PropertyOwnerVisibilityCheckbox
+          uri={uri}
+          visibility={visibility}
+          setVisibility={setVisibility}
+        />
+      }
       title={title}
       icon={icon}
       isLoading={!propertyOwner}
