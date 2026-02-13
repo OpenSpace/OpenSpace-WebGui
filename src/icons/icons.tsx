@@ -107,6 +107,7 @@ export {
   MdZoomOutMap as ZoomOutMapIcon
 } from 'react-icons/md';
 export {
+  PiWarningCircle as AttentionIcon,
   PiBookOpenText as BookIcon,
   PiCompassBold as CompassLargeIcon,
   PiCompass as CompassSmallIcon,

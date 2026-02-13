@@ -1,20 +1,32 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Divider, Group, Select, TextInput, Title } from '@mantine/core';
+import {
+  Alert,
+  Box,
+  Button,
+  Divider,
+  Group,
+  Select,
+  Tabs,
+  TextInput,
+  Title,
+  Tooltip
+} from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { OpenWindowIcon } from '@/icons/icons';
+import { AttentionIcon, OpenInBrowserIcon, OpenWindowIcon, WebIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   intializeUserPanels,
   updateRecentWebpanels
 } from '@/redux/userpanels/userPanelsSlice';
+import { IconSize } from '@/types/enums';
 import { UserPanelsFolderKey, WindowsKey } from '@/util/keys';
 import { useWebGuiUrl } from '@/util/networkingHooks';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { UserPanel } from './UserPanel';
-import { WebPanelButton } from './WebpanelButton';
+import { WebPanelListItem } from './WebpanelListItem';
 
 export function UserPanelsPanel() {
   const { t } = useTranslation('panel-user');
@@ -67,18 +79,22 @@ export function UserPanelsPanel() {
     }
   }, [dispatch, isDataInitialized, luaApi]);
 
-  function addLocalPanel() {
+  function addLocalPanel(inBrowser?: boolean) {
     if (!selectedPanel) {
       return;
     }
-    const src = `http://${window.location.host}/webpanels/${selectedPanel}/index.html`;
+    const src = `${webGuiUrl}/webpanels/${selectedPanel}/index.html`;
 
-    addWebPanelWindow(src, selectedPanel);
+    if (inBrowser) {
+      openInBrowser(src, selectedPanel);
+    } else {
+      openInNewWindow(src, selectedPanel);
+    }
 
     setSelectedPanel(null);
   }
 
-  function addWebPanel() {
+  function addWebPanel(inBrowser?: boolean) {
     if (!panelURL) {
       return;
     }
@@ -86,100 +102,142 @@ export function UserPanelsPanel() {
     const src = startsWithHttp ? panelURL : `http://${panelURL}`;
     const title = urlPanelTitle === '' ? src : urlPanelTitle;
 
-    addWebPanelWindow(src, title);
+    if (inBrowser) {
+      openInBrowser(src, title);
+    } else {
+      openInNewWindow(src, title);
+    }
 
     setPanelURL('');
     setUrlPanelTitle('');
-    dispatch(updateRecentWebpanels({ title: title, src: src }));
   }
 
-  function addWebPanelWindow(src: string, title: string) {
+  function openInBrowser(src: string, title: string) {
+    window.open(src, '_blank');
+    dispatch(updateRecentWebpanels({ title, src }));
+  }
+
+  function openInNewWindow(src: string, title: string) {
     addWindow(<UserPanel src={src} title={title} />, {
       title: title,
       position: 'right',
       id: title
     });
+    dispatch(updateRecentWebpanels({ title, src }));
   }
 
   return (
     <>
+      <Tabs defaultValue={'local'}>
+        <Tabs.List>
+          <Tabs.Tab value={'local'} leftSection={<OpenWindowIcon size={IconSize.sm} />}>
+            {t('local-panels.title')}
+          </Tabs.Tab>
+          <Tabs.Tab value={'url'} leftSection={<WebIcon size={IconSize.sm} />}>
+            {t('web-panels.title')}
+          </Tabs.Tab>
+        </Tabs.List>
+
+        <Box>
+          <Tabs.Panel value={'local'}>
+            {localPanels.length === 0 && (
+              <Alert mb={'xs'} icon={<AttentionIcon />}>
+                {t('local-panels.no-panels')}
+              </Alert>
+            )}
+            <Select
+              placeholder={t('local-panels.select-panel-placeholder')}
+              data={localPanels}
+              disabled={localPanels.length === 0}
+              onChange={setSelectedPanel}
+              value={selectedPanel}
+            />
+            <Group mt={'xs'} gap={'xs'}>
+              <Tooltip label={t('add-buttons.new-window.tooltip')}>
+                <Button
+                  onClick={() => addLocalPanel(false)}
+                  disabled={!selectedPanel}
+                  leftSection={<OpenWindowIcon />}
+                >
+                  {t('add-buttons.new-window.label')}
+                </Button>
+              </Tooltip>
+              <Tooltip label={t('add-buttons.browser.tooltip')}>
+                <Button
+                  onClick={() => addLocalPanel(true)}
+                  disabled={!selectedPanel}
+                  leftSection={<OpenInBrowserIcon />}
+                >
+                  {t('add-buttons.browser.label')}
+                </Button>
+              </Tooltip>
+            </Group>
+          </Tabs.Panel>
+
+          <Tabs.Panel value={'url'}>
+            <TextInput
+              value={urlPanelTitle}
+              label={t('web-panels.input.title')}
+              placeholder={t('web-panels.input.placeholder')}
+              onChange={(e) => setUrlPanelTitle(e.target.value)}
+            />
+            <TextInput
+              value={panelURL}
+              label={t('web-panels.url.title')}
+              withAsterisk
+              placeholder={t('web-panels.url.placeholder')}
+              onChange={(e) => setPanelURL(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && addWebPanel()}
+              flex={1}
+            />
+            <Group gap={'xs'} mt={'xs'}>
+              <Tooltip label={t('add-buttons.new-window.tooltip')}>
+                <Button
+                  onClick={() => addWebPanel(false)}
+                  disabled={!panelURL}
+                  leftSection={<OpenWindowIcon />}
+                >
+                  {t('add-buttons.new-window.label')}
+                </Button>
+              </Tooltip>
+              <Tooltip label={t('add-buttons.browser.tooltip')}>
+                <Button
+                  onClick={() => addWebPanel(true)}
+                  disabled={!panelURL}
+                  leftSection={<OpenInBrowserIcon />}
+                >
+                  {t('add-buttons.browser.label')}
+                </Button>
+              </Tooltip>
+            </Group>
+          </Tabs.Panel>
+        </Box>
+      </Tabs>
+      <Divider my={'xs'} />
       <Title my={'xs'} order={2}>
-        {t('local-panels.title')}
-      </Title>
-      <Group align={'flex-end'}>
-        <Select
-          placeholder={t('local-panels.select-panel-placeholder')}
-          data={localPanels}
-          onChange={setSelectedPanel}
-          value={selectedPanel}
-          flex={1}
-          onKeyDown={(e) => e.key === 'Enter' && addLocalPanel()}
-        />
-        <ActionIcon
-          onClick={addLocalPanel}
-          disabled={!selectedPanel}
-          size={'lg'}
-          aria-label={t('local-panels.aria-label')}
-        >
-          <OpenWindowIcon />
-        </ActionIcon>
-      </Group>
-      <Divider my={'md'} />
-      <Title order={2} my={'xs'}>
-        {t('web-panels.title')}
-      </Title>
-      <TextInput
-        value={urlPanelTitle}
-        label={t('web-panels.input.title')}
-        placeholder={t('web-panels.input.placeholder')}
-        onChange={(e) => setUrlPanelTitle(e.target.value)}
-      />
-      <Group align={'flex-end'} justify={'space-between'}>
-        <TextInput
-          value={panelURL}
-          label={t('web-panels.url.title')}
-          placeholder={t('web-panels.url.placeholder')}
-          onChange={(e) => setPanelURL(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && addWebPanel()}
-          flex={1}
-          rightSection={
-            <ActionIcon
-              onClick={addWebPanel}
-              disabled={!panelURL}
-              size={'lg'}
-              aria-label={t('web-panels.url.aria-label')}
-            >
-              <OpenWindowIcon />
-            </ActionIcon>
-          }
-        />
-      </Group>
-      <Title my={'xs'} order={3}>
         {t('bookmarks-title')}
       </Title>
       {bookmarks.map((bookmark) => (
-        <WebPanelButton
+        <WebPanelListItem
           key={`${bookmark.src}${bookmark.title}`}
           title={bookmark.title}
           src={bookmark.src}
-          onClick={(title, src) => {
-            addWebPanelWindow(src, title);
-            dispatch(updateRecentWebpanels({ title: title, src: src }));
-          }}
+          onNewWindow={openInNewWindow}
+          onBrowser={openInBrowser}
         />
       ))}
-      <Title my={'xs'} order={3}>
-        {t('recently-opened-urls-title')}
+
+      <Divider my={'xs'} />
+      <Title my={'xs'} order={2}>
+        {t('recently-opened-title')}
       </Title>
       {addedPanels.map((panel) => (
-        <WebPanelButton
+        <WebPanelListItem
           key={`${panel.src}${panel.title}`}
           title={panel.title}
           src={panel.src}
-          onClick={(title, src) => {
-            addWebPanelWindow(src, title);
-            dispatch(updateRecentWebpanels({ title: title, src: src }));
-          }}
+          onNewWindow={openInNewWindow}
+          onBrowser={openInBrowser}
         />
       ))}
     </>
