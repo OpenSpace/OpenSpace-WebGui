@@ -8,7 +8,8 @@ import {
   Select,
   Tabs,
   TextInput,
-  Title
+  Title,
+  Tooltip
 } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -145,20 +146,24 @@ export function UserPanelsPanel() {
               value={selectedPanel}
             />
             <Group mt={'xs'} gap={'xs'}>
-              <Button
-                onClick={() => addLocalPanel(false)}
-                disabled={!selectedPanel}
-                leftSection={<OpenWindowIcon />}
-              >
-                {t('add-buttons.new-window.label')}
-              </Button>
-              <Button
-                onClick={() => addLocalPanel(true)}
-                disabled={!selectedPanel}
-                leftSection={<OpenInBrowserIcon />}
-              >
-                {t('add-buttons.browser.label')}
-              </Button>
+              <Tooltip label={t('add-buttons.new-window.tooltip')}>
+                <Button
+                  onClick={() => addLocalPanel(false)}
+                  disabled={!selectedPanel}
+                  leftSection={<OpenWindowIcon />}
+                >
+                  {t('add-buttons.new-window.label')}
+                </Button>
+              </Tooltip>
+              <Tooltip label={t('add-buttons.browser.tooltip')}>
+                <Button
+                  onClick={() => addLocalPanel(true)}
+                  disabled={!selectedPanel}
+                  leftSection={<OpenInBrowserIcon />}
+                >
+                  {t('add-buttons.browser.label')}
+                </Button>
+              </Tooltip>
             </Group>
           </Tabs.Panel>
 
@@ -172,26 +177,31 @@ export function UserPanelsPanel() {
             <TextInput
               value={panelURL}
               label={t('web-panels.url.title')}
+              withAsterisk
               placeholder={t('web-panels.url.placeholder')}
               onChange={(e) => setPanelURL(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && addWebPanel()}
               flex={1}
             />
             <Group gap={'xs'} mt={'xs'}>
-              <Button
-                onClick={() => addWebPanel(false)}
-                disabled={!panelURL}
-                leftSection={<OpenWindowIcon />}
-              >
-                {t('add-buttons.new-window.label')}
-              </Button>
-              <Button
-                onClick={() => addWebPanel(true)}
-                disabled={!panelURL}
-                leftSection={<OpenInBrowserIcon />}
-              >
-                {t('add-buttons.browser.label')}
-              </Button>
+              <Tooltip label={t('add-buttons.new-window.tooltip')}>
+                <Button
+                  onClick={() => addWebPanel(false)}
+                  disabled={!panelURL}
+                  leftSection={<OpenWindowIcon />}
+                >
+                  {t('add-buttons.new-window.label')}
+                </Button>
+              </Tooltip>
+              <Tooltip label={t('add-buttons.browser.tooltip')}>
+                <Button
+                  onClick={() => addWebPanel(true)}
+                  disabled={!panelURL}
+                  leftSection={<OpenInBrowserIcon />}
+                >
+                  {t('add-buttons.browser.label')}
+                </Button>
+              </Tooltip>
             </Group>
           </Tabs.Panel>
         </Box>

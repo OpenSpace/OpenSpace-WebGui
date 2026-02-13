@@ -7,7 +7,7 @@
   "web-panels": {
     "title": "Add From URL",
     "input": {
-      "title": "Title (optional)",
+      "title": "Title",
       "placeholder": "Panel title (optional)"
     },
     "url": {
