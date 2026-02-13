@@ -6,6 +6,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { About } from '@/components/About/About';
 import {
   BookIcon,
+  BrowserIcon,
   FeedbackIcon,
   HomeIcon,
   InformationCircleOutlineIcon,
@@ -81,7 +82,7 @@ export function HelpMenu() {
 
         <Menu.Item
           onClick={openGuiInBrowser}
-          leftSection={<OpenInBrowserIcon />}
+          leftSection={<BrowserIcon />}
           rightSection={<OpenInBrowserIcon />}
           aria-description={t('external-tab-aria-label')}
         >
