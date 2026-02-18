@@ -87,8 +87,10 @@
     "label": "Idle behavior",
     "info": {
       "heading": "Idle behavior",
-      "description-1": "When enabled, the camera will auto-rotate around the current focus until the next navigation interaction.",
-      "description-2": "Idle behavior can be set to trigger automatically after inactivity. See Orbital Navigator settings for this and other options, including speed.",
+      "description": [
+        "When enabled, the camera will auto-rotate around the current focus until the next navigation interaction.",
+        "Idle behavior can be set to trigger automatically after inactivity. See Orbital Navigator settings for this and other options, including speed."
+      ],
       "keybind-label": "Toggle keybind"
     }
   }

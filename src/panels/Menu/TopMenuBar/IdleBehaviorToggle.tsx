@@ -10,7 +10,7 @@ import styles from '@/theme/global.module.css';
 export function IdleBehaviorToggle() {
   const { t } = useTranslation('menu', { keyPrefix: 'idle-behavior-toggle' });
 
-  const [apply, setApply] = useProperty(
+  const [applyIdleBehavior, setApplyIdleBehavior] = useProperty(
     'BoolProperty',
     'NavigationHandler.OrbitalNavigator.IdleBehavior.ApplyIdleBehavior'
   );
@@ -21,11 +21,11 @@ export function IdleBehaviorToggle() {
   return (
     <Group gap={'xs'} wrap={'nowrap'}>
       <Chip
-        checked={apply}
-        onChange={setApply}
+        checked={applyIdleBehavior}
+        onChange={setApplyIdleBehavior}
         size={'xs'}
-        variant={apply ? 'light' : 'transparent'}
-        className={apply ? styles.blinking : undefined}
+        variant={applyIdleBehavior ? 'light' : 'transparent'}
+        className={applyIdleBehavior ? styles.blinking : undefined}
       >
         {t('label')}
       </Chip>
@@ -33,10 +33,13 @@ export function IdleBehaviorToggle() {
         <Text size={'md'} fw={'bold'}>
           {t('info.heading')}
         </Text>
-        <Text>{t('info.description-1')}</Text>
-        <Text mt={'sm'}>{t('info.description-2')}</Text>
+        {t('info.description', { returnObjects: true }).map((text, index) => (
+          <Text key={index} mb={'xs'}>
+            {text}
+          </Text>
+        ))}
         {keybind && (
-          <Group mt={'sm'}>
+          <Group>
             <Text fw={'bold'}>{t('info.keybind-label')}</Text>
             <KeybindButtons keybind={keybind} />
           </Group>
