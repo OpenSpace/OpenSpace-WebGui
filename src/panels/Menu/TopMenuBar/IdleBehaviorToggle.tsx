@@ -41,7 +41,7 @@ export function IdleBehaviorToggle() {
         {keybind && (
           <Group>
             <Text fw={'bold'}>{t('info.keybind-label')}</Text>
-            <KeybindButtons keybind={keybind} />
+            <KeybindButtons selectedKey={keybind.key} modifiers={keybind.modifiers} />
           </Group>
         )}
       </InfoBox>

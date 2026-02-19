@@ -29,19 +29,28 @@ export function FrictionControlsInfo() {
         {rotationKeybind && (
           <Group justify={'space-between'}>
             <Text fw={'bold'}>{t('friction-controls.rotation-label')}:</Text>
-            <KeybindButtons keybind={rotationKeybind} />
+            <KeybindButtons
+              selectedKey={rotationKeybind.key}
+              modifiers={rotationKeybind.modifiers}
+            />
           </Group>
         )}
         {zoomKeybind && (
           <Group justify={'space-between'}>
             <Text fw={'bold'}>{t('friction-controls.zoom-label')}:</Text>
-            <KeybindButtons keybind={zoomKeybind} />
+            <KeybindButtons
+              selectedKey={zoomKeybind.key}
+              modifiers={zoomKeybind.modifiers}
+            />
           </Group>
         )}
         {rollKeybind && (
           <Group justify={'space-between'}>
             <Text fw={'bold'}>{t('friction-controls.roll-label')}:</Text>
-            <KeybindButtons keybind={rollKeybind} />
+            <KeybindButtons
+              selectedKey={rollKeybind.key}
+              modifiers={rollKeybind.modifiers}
+            />
           </Group>
         )}
       </Stack>

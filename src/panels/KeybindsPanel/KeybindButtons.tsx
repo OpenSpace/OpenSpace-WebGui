@@ -1,24 +1,27 @@
 import { Fragment } from 'react/jsx-runtime';
 import { Group, Kbd, MantineStyleProps, Text } from '@mantine/core';
 
-import { Keybind } from '@/types/types';
-
 import { KeyboardDisplayNames } from './FullKeyboard/data';
 import { keyToOpenSpaceKey } from './FullKeyboard/util';
 
 interface KeybindButtonsProps extends MantineStyleProps {
-  keybind: Keybind;
+  selectedKey?: string;
+  modifiers?: string[];
 }
 
-export function KeybindButtons({ keybind, ...styleProps }: KeybindButtonsProps) {
+export function KeybindButtons({
+  selectedKey = '',
+  modifiers = [],
+  ...styleProps
+}: KeybindButtonsProps) {
   // Get the display version of the simple-keyboard input key
   const displayKey =
-    keybind.key in KeyboardDisplayNames
-      ? KeyboardDisplayNames[keybind.key as keyof typeof KeyboardDisplayNames]
-      : keyToOpenSpaceKey(keybind.key);
+    selectedKey in KeyboardDisplayNames
+      ? KeyboardDisplayNames[selectedKey as keyof typeof KeyboardDisplayNames]
+      : keyToOpenSpaceKey(selectedKey);
 
   // Remove empty string if selected key is ""
-  const allKeys = [...keybind.modifiers, displayKey].filter((kbd) => kbd);
+  const allKeys = [...modifiers, displayKey].filter((kbd) => kbd);
 
   return (
     <Group wrap={'nowrap'} gap={'xs'} {...styleProps}>
