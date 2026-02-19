@@ -1,14 +1,10 @@
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useThrottledCallback } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import {
-  subscribeToProperty,
-  unsubscribeToProperty
-} from '@/redux/propertytree/properties/propertiesMiddleware';
-import { setPropertyValue } from '@/redux/propertytree/properties/propertiesSlice';
+import { propertySelectors } from '@/redux/propertyTree/propertySlice';
+import { setPropertyValue } from '@/redux/propertyTree/propertyTreeMiddleware';
 import { PropertyOrPropertyGroup, PropertyTypeKey } from '@/types/Property/property';
 import { PropertyGroupsRuntime } from '@/types/Property/propertyGroups';
 import { Uri } from '@/types/types';
@@ -30,6 +26,31 @@ function validatePropertyType<T>(
   return true;
 }
 
+/**
+ * Retrieves the value of a property from Redux state with type validation.
+ * @template T - The expected type of the property.
+ * @param type - The expected type to validate against.
+ * @param uri - The unique identifier of the property to retrieve.
+ * @returns The property value if found and type-valid, otherwise undefined.
+ * @throws {Error} When the property type does not match the expected type.
+ */
+export function usePropertyValue<T extends PropertyTypeKey>(
+  type: T,
+  uri: Uri
+): PropertyOrPropertyGroup<T>['value'] | undefined {
+  // Get the value from Redux
+  const prop = useAppSelector((state) => propertySelectors.selectById(state, uri)) as
+    | PropertyOrPropertyGroup<T>
+    | undefined;
+
+  if (!validatePropertyType(type, prop)) {
+    throw new Error(
+      `Tried to access property with uri "${uri}" as type "${type}", but it is of type "${prop?.metaData.type}"`
+    );
+  }
+  return prop?.value;
+}
+
 export function useProperty<T extends PropertyTypeKey>(
   type: T,
   uri: Uri
@@ -42,7 +63,7 @@ export function useProperty<T extends PropertyTypeKey>(
     keyPrefix: 'property'
   });
   // Get the value from Redux
-  const prop = useAppSelector((state) => state.properties.properties[uri]) as
+  const prop = useAppSelector((state) => propertySelectors.selectById(state, uri)) as
     | PropertyOrPropertyGroup<T>
     | undefined;
 
@@ -51,10 +72,9 @@ export function useProperty<T extends PropertyTypeKey>(
       `Tried to access property with uri "${uri}" as type "${type}", but it is of type "${prop?.metaData.type}"`
     );
   }
+  const dispatch = useAppDispatch();
 
   const shouldShowModal = useShouldShowModal(prop?.metaData);
-  useSubscribeToProperty(uri);
-  const dispatch = useAppDispatch();
   // Subscribe to the property
   const ThrottleMs = 1000 / 60;
 
@@ -80,24 +100,13 @@ export function useProperty<T extends PropertyTypeKey>(
   return [prop?.value, setValue, prop?.metaData];
 }
 
-export function useSubscribeToProperty(uri: Uri) {
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(subscribeToProperty({ uri }));
-    return () => {
-      dispatch(unsubscribeToProperty({ uri }));
-    };
-  }, [dispatch, uri]);
-}
-
 function useShouldShowModal<T extends PropertyTypeKey>(
   metaData: PropertyOrPropertyGroup<T>['metaData'] | undefined
 ): boolean {
-  const showConfirmationModal = useAppSelector(
-    (state) => state.properties.properties['OpenSpaceEngine.ShowPropertyConfirmation']
-  )?.value as boolean | undefined;
-
-  useSubscribeToProperty('OpenSpaceEngine.ShowPropertyConfirmation');
+  const showConfirmationModal = usePropertyValue(
+    'BoolProperty',
+    'OpenSpaceEngine.ShowPropertyConfirmation'
+  );
 
   // Don't show modal if we can't find the global settings or the metadata
   if (showConfirmationModal === undefined || metaData === undefined) {

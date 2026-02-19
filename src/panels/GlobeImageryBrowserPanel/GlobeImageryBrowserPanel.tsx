@@ -20,7 +20,7 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { DeleteIcon, FocusIcon, ServerIcon, VerticalDotsIcon } from '@/icons/icons';
 import styles from '@/theme/global.module.css';
 import { IconSize } from '@/types/enums';
@@ -50,7 +50,7 @@ export function GlobeImageryBrowserPanel() {
   const capabilities = useCapabilities(selectedWMS);
   const addedLayers = useAddedLayersIdentifiers(selectedGlobe);
 
-  const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
+  const currentAnchor = usePropertyValue('StringProperty', NavigationAnchorKey);
   const [opened, { open, close }] = useDisclosure(false);
   const luaApi = useOpenSpaceApi();
 

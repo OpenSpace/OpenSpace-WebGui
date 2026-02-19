@@ -1,5 +1,7 @@
 import { AnyProperty } from './Property/property';
 
+export type Visibility = 'Visible' | 'Hidden' | 'Fading';
+
 export type Uri = string;
 export type Identifier = string;
 
@@ -53,12 +55,12 @@ export interface PropertyOverviewData {
   visibility: number;
 }
 
-export interface PropertyOverview {
-  [uri: string]: PropertyOverviewData;
+export interface Properties {
+  [key: Uri]: AnyProperty;
 }
 
-export interface Properties {
-  [key: Uri]: AnyProperty | undefined;
+export interface PropertyOwners {
+  [key: Uri]: PropertyOwner;
 }
 
 export interface PropertyOwner {
@@ -69,10 +71,6 @@ export interface PropertyOwner {
   subowners: Uri[];
   tags: string[];
   uri: Uri;
-}
-
-export interface PropertyOwners {
-  [key: Uri]: PropertyOwner | undefined;
 }
 
 export interface SceneGraphNodeGuiSettings {
