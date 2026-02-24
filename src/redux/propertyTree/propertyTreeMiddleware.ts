@@ -14,7 +14,7 @@ import {
 } from '@/types/types';
 import { Batcher } from '@/util/batcher';
 import { rootOwnerKey } from '@/util/keys';
-import { checkVisibilityTest } from '@/util/propertyTreeHelpers';
+import { checkVisibility } from '@/util/propertyTreeHelpers';
 import { isGlobeLayer, isSceneGraphNode, removeLastWordFromUri } from '@/util/uris';
 
 import { refreshGroups } from '../groups/groupsSliceMiddleware';
@@ -51,7 +51,7 @@ function calculateVisibility(propertyOwners: PropertyOwner[], properties: Proper
     const enabled = properties[`${sgn.uri}.Renderable.Enabled`]?.value as
       | boolean
       | undefined;
-    return checkVisibilityTest(enabled, fade);
+    return checkVisibility(enabled, fade);
   });
   const visibilityMap: Record<Uri, Visibility | undefined> = {};
   sceneGraphNodes.forEach((sgn, i) => {
@@ -220,6 +220,7 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
       if (action.payload?.properties) {
         listenerApi.dispatch(upsertManyProperties(action.payload.properties));
       }
+      listenerApi.dispatch(refreshGroups());
     }
   });
 
@@ -229,6 +230,7 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
       const uriToRemove = action.payload.uri;
       listenerApi.dispatch(removePropertyOwners({ uris: [uriToRemove] }));
       listenerApi.dispatch(removeMany([uriToRemove]));
+      listenerApi.dispatch(refreshGroups());
     }
   });
 

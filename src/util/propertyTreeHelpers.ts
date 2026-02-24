@@ -6,7 +6,7 @@ import { enabledPropertyUri, fadePropertyUri } from './uris';
 
 // Visible means that the object is enabled, based on the values of its enabled and fade
 // properties (which both may be undefined)
-export function checkVisibilityTest(
+export function checkVisibility(
   enabled: boolean | undefined,
   fade: number | undefined
 ): Visibility | undefined {
@@ -14,7 +14,7 @@ export function checkVisibilityTest(
   if (enabled === undefined) {
     return undefined;
   }
-  if (fade == undefined) {
+  if (fade === undefined) {
     return 'Visible';
   }
   if (enabled === true && fade < 1 && fade > 0) {
@@ -23,22 +23,6 @@ export function checkVisibilityTest(
   if (enabled === false || fade === 0) {
     return 'Hidden';
   } else return 'Visible';
-}
-
-// Visible means that the object is enabled, based on the values of its enabled and fade
-// properties (which both may be undefined)
-export function checkVisibility(
-  enabled: boolean | undefined,
-  fade: number | undefined
-): boolean | undefined {
-  // Enabled is required, but fade can be optional
-  if (enabled === undefined) {
-    return undefined;
-  }
-  if (fade == undefined) {
-    return enabled;
-  }
-  return enabled && fade > 0;
 }
 
 // Returns whether a property matches the current visiblity settings
@@ -60,7 +44,7 @@ export function displayName(propertyOwner: PropertyOwner): string {
 export function isPropertyOwnerVisible(properties: Properties, uri: Uri): boolean {
   const enabledValue = properties[enabledPropertyUri(uri)]?.value as boolean | undefined;
   const fadeValue = properties[fadePropertyUri(uri)]?.value as number | undefined;
-  return checkVisibility(enabledValue, fadeValue) || false;
+  return checkVisibility(enabledValue, fadeValue) === 'Visible';
 }
 
 export function hasVisibleChildren(

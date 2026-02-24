@@ -1,13 +1,12 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import { checkVisibilityTest } from '@/util/propertyTreeHelpers';
+import { checkVisibility } from '@/util/propertyTreeHelpers';
 import {
   enabledPropertyUri,
   fadePropertyUri,
   isEnabledPropertyUri,
   isFadePropertyUri,
   isSceneGraphNodeProperty,
-  removeLastWordFromUri,
   sgnIdentifierFromSubownerUri,
   sgnRenderableUri,
   sgnUri
@@ -107,9 +106,9 @@ export const addLocalListener = (startListening: AppStartListening) => {
         )?.value as number;
       }
 
-      const visibility = checkVisibilityTest(currentEnabled, currentFade);
+      const visibility = checkVisibility(currentEnabled, currentFade);
       const prevVisibility =
-        listenerApi.getState().local.sceneTree.visibility[removeLastWordFromUri(uri)];
+        listenerApi.getState().local.sceneTree.visibility[sceneGraphNodeUri];
 
       // Update the scene tree visibility if it has changed
       if (prevVisibility !== visibility && visibility !== undefined) {

@@ -20,11 +20,11 @@ export function StarsTab() {
   const { visibility: starsVisibility, setVisibility: starsSetVisibility } =
     usePropertyOwnerVisibility('Scene.Stars.Renderable');
   const { visibility: starsLabelsVisibility, setVisibility: starsLabelsSetVisibility } =
-    usePropertyOwnerVisibility('Scene.Stars.Renderable');
+    usePropertyOwnerVisibility('Scene.StarsLabels.Renderable');
   const {
     visibility: starsLabelsAlternateVisibility,
     setVisibility: starsLabelsAlternateSetVisibility
-  } = usePropertyOwnerVisibility('Scene.Stars.Renderable');
+  } = usePropertyOwnerVisibility('Scene.StarLabelsAlternate.Renderable');
 
   const [starsDimInAtm, setStarsDimInAtm] = useProperty(
     'BoolProperty',

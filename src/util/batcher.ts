@@ -6,22 +6,25 @@ import { Update } from '@reduxjs/toolkit';
 // TODO: @ylvse (21/1/2026) - However, a better approach would be to throttle in
 // React instead of Redux, but I haven't been able to figure out a good way to do that.
 
+
 /**
- * @class Batcher
- * @description A class that batches updates to avoid flooding the
- * Redux store with too many updates.
+ * A batching utility that collects updates and flushes them in batches after a delay.
  *
- * @constructor
- * @param {number} [flushDelay=50] - The delay in milliseconds before
- * flushing the updates to the Redux store.
+ * This class buffers multiple updates and executes them together to reduce the frequency
+ * of update function calls. Updates with the same ID will overwrite previous updates.
  *
- * @method add
- * @param {Update<T, string>} update - The update to be added to the batch.
- * @param {function} dispatch - The Redux dispatch function used to send actions to the store.
+ * @template T - The type of data contained in the updates
  *
- * @method flush
- * @param {function} dispatch - The Redux dispatch function used to send actions to the store.
- * @returns {void}
+ * @example
+ * ```typescript
+ * const batcher = new Batcher((updates) => {
+ *   console.log('Processing', updates.length, 'updates');
+ * }, 100);
+ *
+ * batcher.add({ id: 'item1', data: someData });
+ * batcher.add({ id: 'item2', data: otherData });
+ * // Updates are flushed after 100ms
+ * ```
  */
 export class Batcher<T> {
   private buffer = new Map<string, Update<T, string>>();

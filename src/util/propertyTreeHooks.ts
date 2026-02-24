@@ -14,7 +14,7 @@ export function useFeaturedNodes(): PropertyOwner[] {
     propertyOwnerSelectors.selectEntities(state)
   );
   const markedNodes = useAppSelector((state) => state.profile.markNodes);
-  return markedNodes.map((uri) => propertyOwners[sgnUri(uri)]);
+  return markedNodes.map((uri) => propertyOwners[sgnUri(uri)]).filter((po) => po !== undefined);
 }
 
 export function useAnchorNode() {

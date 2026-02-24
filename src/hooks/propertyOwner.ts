@@ -9,7 +9,7 @@ import { setPropertyValue } from '@/redux/propertyTree/propertyTreeMiddleware';
 import { Identifier, PropertyOwner, Uri, Visibility } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
 import {
-  checkVisibilityTest,
+  checkVisibility,
   hasVisibleChildren,
   isPropertyVisible
 } from '@/util/propertyTreeHelpers';
@@ -166,7 +166,7 @@ export function usePropertyOwnerVisibility(uri: Uri) {
     const fade = propertySelectors.selectById(state, fadeUri)?.value as
       | number
       | undefined;
-    return checkVisibilityTest(enabled, fade);
+    return checkVisibility(enabled, fade);
   });
 
   const setVisibility = useSetPropertyOwnerVisibility(uri);
