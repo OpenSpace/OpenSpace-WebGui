@@ -12,6 +12,7 @@ import {
   Uri,
   Visibility
 } from '@/types/types';
+import { Batcher } from '@/util/batcher';
 import { rootOwnerKey } from '@/util/keys';
 import { checkVisibilityTest } from '@/util/propertyTreeHelpers';
 import { isGlobeLayer, isSceneGraphNode, removeLastWordFromUri } from '@/util/uris';
@@ -19,7 +20,6 @@ import { isGlobeLayer, isSceneGraphNode, removeLastWordFromUri } from '@/util/ur
 import { refreshGroups } from '../groups/groupsSliceMiddleware';
 import { setSceneGraphNodesVisibility } from '../local/localSlice';
 
-import { PropertyBatcher } from './propertyBatcher';
 import {
   addPropertyOwners,
   removePropertyOwners,
@@ -97,7 +97,6 @@ export const setupSubscription = createAsyncThunk(
     topic = api.startTopic('propertyTree', {
       event: 'start_subscription'
     });
-    const batchTime = 50; // milliseconds
 
     function updateFunc(updates: Update<AnyProperty, Uri>[]) {
       thunkAPI.dispatch(updateManyProperties(updates));
@@ -105,7 +104,7 @@ export const setupSubscription = createAsyncThunk(
 
     // Instead of throttling each property update, we batch them together
     // This ensures we don't miss any updates
-    const batcher = new PropertyBatcher(updateFunc, batchTime);
+    const batcher = new Batcher<AnyProperty>(updateFunc);
 
     (async () => {
       for await (const data of topic.iterator()) {
