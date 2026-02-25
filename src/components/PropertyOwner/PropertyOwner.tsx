@@ -1,9 +1,10 @@
-import { usePropertyValue } from '@/hooks/properties';
 import {
   useHasVisibleChildren,
   usePropertyOwner,
   useVisibleProperties
 } from '@/hooks/propertyOwner';
+import { useAppSelector } from '@/redux/hooks';
+import { propertySelectors } from '@/redux/propertyTree/propertySlice';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
 import { isGlobeLayersUri, isTypeRenderableGlobe, parentTypeUri } from '@/util/uris';
@@ -32,10 +33,16 @@ export function PropertyOwner({
     throw Error(`No property owner found for uri: ${uri}`);
   }
 
-  const parentType = usePropertyValue('StringProperty', parentTypeUri(uri));
+  const parentType = useAppSelector(
+    (state) =>
+      propertySelectors.selectById(state, parentTypeUri(uri))?.value as
+        | string
+        | number
+        | undefined
+  );
 
   const isGlobeLayers =
-    parentType !== undefined &&
+    typeof parentType === "string" &&
     isTypeRenderableGlobe(parentType) &&
     isGlobeLayersUri(uri);
 
