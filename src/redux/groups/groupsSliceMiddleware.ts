@@ -7,7 +7,6 @@ import { PropertyOwner } from '@/types/types';
 
 import { propertyOwnerSelectors } from '../propertyTree/propertyOwnerSlice';
 import { propertySelectors } from '../propertyTree/propertySlice';
-import { addUriToPropertyTree } from '../propertyTree/propertyTreeMiddleware';
 
 import { setGroups, setTags } from './groupsSlice';
 
@@ -22,12 +21,6 @@ function collectExistingTags(propertyOwners: PropertyOwner[]) {
 }
 
 export const addGroupsListener = (startListening: AppStartListening) => {
-  startListening({
-    actionCreator: addUriToPropertyTree.fulfilled,
-    effect: (_, listenerApi) => {
-      listenerApi.dispatch(refreshGroups());
-    }
-  });
   startListening({
     actionCreator: refreshGroups,
     effect: (_, listenerApi) => {
