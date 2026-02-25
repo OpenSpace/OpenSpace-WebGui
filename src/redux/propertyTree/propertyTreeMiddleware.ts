@@ -167,6 +167,8 @@ export const addUriToPropertyTree = createAsyncThunk(
         propertiesMap[p.uri] = p;
       });
 
+      // Calculate if visibility for the scene graph node, if the added property owner is one.
+      // This will be an empty object if not.
       const visibility = calculateSgnVisibilityMap(propertyOwners, propertiesMap);
 
       return {
