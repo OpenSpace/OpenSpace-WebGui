@@ -226,6 +226,9 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
       if (action.payload?.properties) {
         listenerApi.dispatch(upsertManyProperties(action.payload.properties));
       }
+      if (action.payload?.visibility) {
+        listenerApi.dispatch(setSceneGraphNodesVisibility(action.payload.visibility));
+      }
       listenerApi.dispatch(refreshGroups());
     }
   });
