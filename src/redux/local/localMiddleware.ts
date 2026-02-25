@@ -17,7 +17,7 @@ import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { onOpenConnection } from '../connection/connectionSlice';
 import { AppStartListening } from '../listenerMiddleware';
-import { removePropertyOwners } from '../propertyTree/propertyOwnerSlice';
+import { addPropertyOwners, removePropertyOwners } from '../propertyTree/propertyOwnerSlice';
 import { propertySelectors, updateMany, updateOne } from '../propertyTree/propertySlice';
 
 import { removeSceneGraphNode, setMenuItemsConfig, setVisibility } from './localSlice';
@@ -66,6 +66,23 @@ export const addLocalListener = (startListening: AppStartListening) => {
   });
 
   startListening({
+    matcher: addPropertyOwners.match,
+    effect: async (action, listenerApi) => {
+      const propertyOwners = action.payload;
+        for (const owner of propertyOwners) {
+          if (isSceneGraphNode(owner.uri)) {
+            const renderable = sgnRenderableUri(owner.uri);
+            const fade = propertySelectors.selectById(listenerApi.getState(), fadePropertyUri(renderable));
+            const enabled = propertySelectors.selectById(listenerApi.getState(), enabledPropertyUri(renderable));
+            const visibility = checkVisibility(enabled?.value as boolean | undefined, fade?.value as number | undefined);
+            if (visibility !== undefined) {
+              listenerApi.dispatch(setVisibility({ uri: owner.uri, visibility }));
+            }
+          }
+        }
+  }});
+
+  startListening({
     matcher: removePropertyOwners.match,
     effect: async (action, listenerApi) => {
       const { uris } = action.payload;
@@ -75,6 +92,7 @@ export const addLocalListener = (startListening: AppStartListening) => {
           }
         }
   }});
+
 
   startListening({
     matcher: updateMany.match,
