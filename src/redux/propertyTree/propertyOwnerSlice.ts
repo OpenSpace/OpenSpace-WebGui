@@ -63,7 +63,6 @@ const propertyOwners = createSlice({
       }));
 
       propertyOwnerAdapter.updateMany(state, updates);
-
       return state;
     },
     removePropertyOwners: (state, action: PayloadAction<{ uris: Uri[] }>) => {

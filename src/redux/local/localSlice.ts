@@ -43,9 +43,11 @@ export const localSlice = createSlice({
       action: PayloadAction<Record<Uri, Visibility | undefined>>
     ) => {
       state.sceneTree.visibility = action.payload;
+      return state;
     },
     removeSceneGraphNode: (state, action: PayloadAction<Uri>) => {
       delete state.sceneTree.visibility[action.payload];
+      return state;
     },
     setVisibility: (
       state,

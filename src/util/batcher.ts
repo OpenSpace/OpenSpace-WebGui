@@ -7,9 +7,9 @@ import { Update } from '@reduxjs/toolkit';
 // React instead of Redux, but I haven't been able to figure out a good way to do that.
 
 /**
- * A batching utility that collects updates and flushes them in batches after a delay.
+ * Collects updates and flushes them in batches after a delay.
  *
- * This class buffers multiple updates and executes them together to reduce the frequency
+ * Buffers multiple updates and executes them together to reduce the frequency
  * of update function calls. Updates with the same ID will overwrite previous updates.
  *
  * @template T - The type of data contained in the updates

@@ -2,7 +2,6 @@ import { Identifier, Uri } from '@/types/types';
 
 import { ScenePrefixKey } from './keys';
 
-// TODO: Maybe move some of these to a "uriHelpers" file?
 export function identifierFromUri(uri: Uri): Identifier {
   // The identifier is always the last word in the URI
   const identifier = uri.split('.').pop();
