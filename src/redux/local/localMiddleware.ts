@@ -22,14 +22,14 @@ import { propertySelectors, updateMany, updateOne } from '../propertyTree/proper
 
 import { removeSceneGraphNode, setMenuItemsConfig, setVisibility } from './localSlice';
 
-function sgnUpdatedVisibilityProperty(uri: string, value: Partial<AnyProperty>) {
+function sgnUpdatedVisibilityProperty(uri: string, value: AnyProperty["value"]) {
   const isSceneGraphNodeProp = isSceneGraphNodeProperty(uri);
   if (!isSceneGraphNodeProp) {
     return false;
   }
-  const isFadeOrEnabled =
-    (isFadePropertyUri(uri) && typeof value === 'number') ||
-    (isEnabledPropertyUri(uri) && typeof value === 'boolean');
+  const isFade = isFadePropertyUri(uri) && typeof value === 'number';
+  const isEnabled = isEnabledPropertyUri(uri) && typeof value === 'boolean';
+  const isFadeOrEnabled = isFade || isEnabled;
   if (!isFadeOrEnabled) {
     return false;
   }
@@ -37,7 +37,7 @@ function sgnUpdatedVisibilityProperty(uri: string, value: Partial<AnyProperty>) 
 }
 
 export const resetMenuItemConfig = createAction<void>('local/resetMenu');
-const shouldUpdateVisibilityForUri = createAction<{
+const updateSgnVisibility = createAction<{
   uri: string;
   value?: boolean | number;
 }>('local/setVisibilityForUri');
@@ -58,9 +58,9 @@ export const addLocalListener = (startListening: AppStartListening) => {
   startListening({
     matcher: updateOne.match,
     effect: async (action, listenerApi) => {
-      const { id: uri, changes: value } = action.payload;
-      if (sgnUpdatedVisibilityProperty(uri, value)) {
-        listenerApi.dispatch(shouldUpdateVisibilityForUri({ uri }));
+      const { id: uri, changes } = action.payload;
+      if (changes.value !== undefined && sgnUpdatedVisibilityProperty(uri, changes.value)) {
+        listenerApi.dispatch(updateSgnVisibility({ uri, value: changes.value as boolean | number }));
       }
     }
   });
@@ -98,35 +98,35 @@ export const addLocalListener = (startListening: AppStartListening) => {
     matcher: updateMany.match,
     effect: async (action, listenerApi) => {
       for (const update of action.payload) {
-        const { id: uri, changes: value } = update;
+        const { id: uri, changes } = update;
         // Check if a fade value or an enabled value has been updated
         // for a scene graph node
-        if (sgnUpdatedVisibilityProperty(uri, value)) {
-          listenerApi.dispatch(shouldUpdateVisibilityForUri({ uri }));
+        if (changes.value !== undefined && sgnUpdatedVisibilityProperty(uri, changes.value)) {
+          listenerApi.dispatch(updateSgnVisibility({ uri, value: changes.value as boolean | number }));
         }
       }
     }
   });
 
   startListening({
-    actionCreator: shouldUpdateVisibilityForUri,
+    actionCreator: updateSgnVisibility,
     effect: async (action, listenerApi) => {
       // The uri can be either Fade, Enabled, or the scene graph node itself
-      const { uri } = action.payload;
-
+      const { uri, value } = action.payload;
       const sceneGraphNodeUri = sgnUri(sgnIdentifierFromSubownerUri(uri));
       const renderableUri = sgnRenderableUri(sceneGraphNodeUri);
 
-      const currentEnabled = propertySelectors.selectById(
+      const currentEnabled = isEnabledPropertyUri(uri) ? value as boolean : propertySelectors.selectById(
         listenerApi.getState(),
         enabledPropertyUri(renderableUri)
       )?.value as boolean;
 
-      const currentFade = propertySelectors.selectById(
+      const currentFade = isFadePropertyUri(uri) ? value as number : propertySelectors.selectById(
         listenerApi.getState(),
         fadePropertyUri(renderableUri)
       )?.value as number;
       const visibility = checkVisibility(currentEnabled, currentFade);
+
       const prevVisibility =
         listenerApi.getState().local.sceneTree.visibility[sceneGraphNodeUri];
 
