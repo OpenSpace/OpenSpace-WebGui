@@ -3,6 +3,7 @@ import { ActionIcon, Checkbox } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
 import { usePropertyValue } from '@/hooks/properties';
+import { IconSize } from '@/types/enums';
 import { Uri, Visibility } from '@/types/types';
 import { fadePropertyUri } from '@/util/uris';
 
@@ -56,8 +57,12 @@ export function PropertyOwnerVisibilityCheckbox({
 
   if (visibility === 'Fading' && fade !== undefined) {
     return (
-      <ActionIcon size={20}>
-        <RadialSweepIcon value={fade * 100} background={'transparent'} size={20} />
+      <ActionIcon size={IconSize.sm}>
+        <RadialSweepIcon
+          value={fade * 100}
+          background={'transparent'}
+          size={IconSize.sm}
+        />
       </ActionIcon>
     );
   }

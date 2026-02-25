@@ -42,7 +42,7 @@ export function PropertyOwner({
   );
 
   const isGlobeLayers =
-    typeof parentType === "string" &&
+    typeof parentType === 'string' &&
     isTypeRenderableGlobe(parentType) &&
     isGlobeLayersUri(uri);
 

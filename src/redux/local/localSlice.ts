@@ -44,6 +44,9 @@ export const localSlice = createSlice({
     ) => {
       state.sceneTree.visibility = action.payload;
     },
+    removeSceneGraphNode: (state, action: PayloadAction<Uri>) => {
+      delete state.sceneTree.visibility[action.payload];
+    },
     setVisibility: (
       state,
       action: PayloadAction<{ uri: Uri; visibility: Visibility }>
@@ -96,6 +99,7 @@ export const {
   setMenuItemOpen,
   setMenuItemsConfig,
   setVisibility,
-  setSceneGraphNodesVisibility
+  setSceneGraphNodesVisibility,
+  removeSceneGraphNode
 } = localSlice.actions;
 export const localReducer = localSlice.reducer;

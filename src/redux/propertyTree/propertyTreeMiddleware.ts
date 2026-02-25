@@ -44,7 +44,10 @@ export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(
 
 let topic: Topic;
 
-function calculateVisibility(propertyOwners: PropertyOwner[], properties: Properties) {
+function calculateSgnVisibilityMap(
+  propertyOwners: PropertyOwner[],
+  properties: Properties
+) {
   const sceneGraphNodes = propertyOwners.filter((p) => isSceneGraphNode(p.uri));
   const visibility = sceneGraphNodes.map((sgn) => {
     const fade = properties[`${sgn.uri}.Renderable.Fade`]?.value as number | undefined;
@@ -102,7 +105,7 @@ export const setupSubscription = createAsyncThunk(
       thunkAPI.dispatch(updateManyProperties(updates));
     }
 
-    // Instead of throttling each property update, we batch them together
+    // Instead of throttling each property update, we batch them together.
     // This ensures we don't miss any updates
     const batcher = new Batcher<AnyProperty>(updateFunc);
 
@@ -131,7 +134,8 @@ const getRoot = createAsyncThunk('propertyTreeTest/getRoot', async (_, thunkAPI)
   properties.forEach((p) => {
     propertiesMap[p.uri] = p;
   });
-  const visibilityMap = calculateVisibility(propertyOwners, propertiesMap);
+
+  const visibilityMap = calculateSgnVisibilityMap(propertyOwners, propertiesMap);
 
   thunkAPI.dispatch(upsertManyProperties(properties));
   thunkAPI.dispatch(setInitialState(propertyOwners));
@@ -163,7 +167,7 @@ export const addUriToPropertyTree = createAsyncThunk(
         propertiesMap[p.uri] = p;
       });
 
-      const visibility = calculateVisibility(propertyOwners, propertiesMap);
+      const visibility = calculateSgnVisibilityMap(propertyOwners, propertiesMap);
 
       return {
         properties: propertiesMap,

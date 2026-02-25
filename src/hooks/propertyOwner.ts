@@ -93,9 +93,7 @@ export function useVisibleProperties(propertyOwner: PropertyOwner | undefined): 
  * @returns The visibility status of the scene graph node, or undefined if not found.
  */
 export function useSceneGraphNodeVisibility(uri: Uri): Visibility | undefined {
-  const visibility = useAppSelector((state) => {
-    return state.local.sceneTree.visibility[uri];
-  });
+  const visibility = useAppSelector((state) => state.local.sceneTree.visibility[uri]);
   if (!isSceneGraphNode(uri)) {
     throw Error(`URI '${uri}' is not a valid scene graph node URI`);
   }
@@ -121,9 +119,9 @@ export function useSetPropertyOwnerVisibility(
 
   const luaApi = useOpenSpaceApi();
 
-  const isFadeable = useAppSelector((state) => {
-    return propertySelectors.selectById(state, fadeUri) !== undefined;
-  });
+  const isFadeable = useAppSelector(
+    (state) => propertySelectors.selectById(state, fadeUri) !== undefined
+  );
 
   const dispatch = useAppDispatch();
 
