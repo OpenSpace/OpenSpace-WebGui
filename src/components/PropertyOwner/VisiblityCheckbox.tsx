@@ -7,7 +7,7 @@ import { IconSize } from '@/types/enums';
 import { Uri, Visibility } from '@/types/types';
 import { fadePropertyUri } from '@/util/uris';
 
-import { RadialSweepIcon } from './ProgressIcon';
+import { FadeIcon } from './FadeIcon';
 
 interface Props {
   uri: Uri;
@@ -58,9 +58,8 @@ export function PropertyOwnerVisibilityCheckbox({
   if (visibility === 'Fading' && fade !== undefined) {
     return (
       <ActionIcon size={IconSize.sm}>
-        <RadialSweepIcon
-          value={fade * 100}
-          background={'transparent'}
+        <FadeIcon
+          value={fade}
           size={IconSize.sm}
         />
       </ActionIcon>
