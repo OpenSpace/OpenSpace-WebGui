@@ -5,13 +5,13 @@ import { KeyboardDisplayNames } from './FullKeyboard/data';
 import { keyToOpenSpaceKey } from './FullKeyboard/util';
 
 interface KeybindButtonsProps extends MantineStyleProps {
-  modifiers?: string[];
   selectedKey?: string;
+  modifiers?: string[];
 }
 
 export function KeybindButtons({
-  modifiers = [],
   selectedKey = '',
+  modifiers = [],
   ...styleProps
 }: KeybindButtonsProps) {
   // Get the display version of the simple-keyboard input key

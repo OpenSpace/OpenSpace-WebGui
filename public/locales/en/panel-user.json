@@ -1,13 +1,14 @@
 {
   "local-panels": {
-    "title": "Open Local Panel",
+    "title": "Add Local Panel",
     "select-panel-placeholder": "Select panel",
-    "aria-label": "Open local panel"
+    "aria-label": "Open local panel",
+    "no-panels": "No local web panels found. Add one as a folder in the webpanels directory inside your user folder to see it here."
   },
   "web-panels": {
-    "title": "Open From URL",
+    "title": "Add From URL",
     "input": {
-      "title": "Title (optional)",
+      "title": "Title",
       "placeholder": "Panel title (optional)"
     },
     "url": {
@@ -16,6 +17,18 @@
       "aria-label": "Open web panel"
     }
   },
+  "add-buttons": {
+    "new-window": {
+      "label": "New Window",
+      "tooltip": "Open in new window",
+      "aria-label": "Open panel in new window"
+    },
+    "browser": {
+      "label": "Browser",
+      "tooltip": "Open in browser",
+      "aria-label": "Open panel in browser"
+    }
+  },
   "bookmarks-title": "Bookmarks",
-  "recently-opened-urls-title": "Recently Opened URLs"
+  "recently-opened-title": "Recently Opened"
 }

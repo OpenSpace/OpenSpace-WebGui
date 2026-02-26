@@ -7,11 +7,11 @@ import { About } from '@/components/About/About';
 import { QRCode } from '@/components/QRCode/QRCode';
 import {
   BookIcon,
+  BrowserIcon,
   FeedbackIcon,
   HomeIcon,
   InformationCircleOutlineIcon,
   OpenInBrowserIcon,
-  OpenWindowIcon,
   PhoneIcon,
   RouteIcon
 } from '@/icons/icons';
@@ -56,7 +56,7 @@ export function HelpMenu() {
           }
           target={'_blank'}
           leftSection={<BookIcon />}
-          rightSection={<OpenWindowIcon />}
+          rightSection={<OpenInBrowserIcon />}
           aria-description={t('external-tab-aria-label')}
         >
           {t('tutorials')}
@@ -77,7 +77,7 @@ export function HelpMenu() {
           href={'http://data.openspaceproject.com/feedback'}
           target={'_blank'}
           leftSection={<FeedbackIcon />}
-          rightSection={<OpenWindowIcon />}
+          rightSection={<OpenInBrowserIcon />}
           aria-description={t('external-tab-aria-label')}
         >
           {t('send-feedback')}
@@ -86,8 +86,8 @@ export function HelpMenu() {
 
         <Menu.Item
           onClick={openGuiInBrowser}
-          leftSection={<OpenInBrowserIcon />}
-          rightSection={<OpenWindowIcon />}
+          leftSection={<BrowserIcon />}
+          rightSection={<OpenInBrowserIcon />}
           aria-description={t('external-tab-aria-label')}
         >
           {t('open-gui')}

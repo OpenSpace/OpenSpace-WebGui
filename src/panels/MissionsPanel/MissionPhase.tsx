@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Anchor, Group, Image, Text, Title } from '@mantine/core';
 
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
-import { OpenWindowIcon } from '@/icons/icons';
+import { OpenInBrowserIcon } from '@/icons/icons';
 import { ActionsButton } from '@/panels/ActionsPanel/ActionsButton';
 import styles from '@/theme/global.module.css';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
@@ -66,7 +66,7 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
       {displayedPhase.data.link && (
         <Anchor component={'a'} href={displayedPhase.data.link} target={'_blank'}>
           <Group>
-            <OpenWindowIcon />
+            <OpenInBrowserIcon />
             {t('mission-phase.read-more')}
           </Group>
         </Anchor>
