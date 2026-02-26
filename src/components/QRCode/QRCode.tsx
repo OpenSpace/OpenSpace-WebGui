@@ -33,8 +33,8 @@ export function QRCode({ opened, close }: Props) {
               value={`http://${address}:${port}/gui/#/routes/`}
               title={t('alt-text')}
               size={192}
-              bgColor={'#ffffff'}
-              fgColor={'#000000'}
+              bgColor={'var(--mantine-color-black)'}
+              fgColor={'var(--mantine-color-white)'}
               level={'L'}
               imageSettings={{
                 src: `${import.meta.env.BASE_URL}/images/icon.png`,
@@ -52,7 +52,7 @@ export function QRCode({ opened, close }: Props) {
 
             <Alert variant={'light'} color={'blue'} title={t('ip-warning-title')}>
               <Text pb={'md'}>
-                {t('ip-warning-text')}
+                {t('ip-warning-text-1')}
               </Text>
               <Text pb={'md'} className={styles.selectable}>
                 {t('ip-warning-text-2')}
