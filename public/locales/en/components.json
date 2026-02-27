@@ -190,8 +190,21 @@
       }
     }
   },
+  "qrcode": {
+    "alt-text": "OpenSpace Routes Page",
+    "allow-warning-title": "Setting the allowed devices",
+    "allow-warning-text": "By default, devices other than the local computer are blocked. You must either change the \"Default Access\" setting to \"Allow\" or add your device's address AND your computer's address to the \"Allow Addresses\" list. (This can also be changed permanently in openspace.cfg file)",
+    "current-address-value": "Current Address Value:",
+    "ip-warning-title": "Setting the GUI IP Address",
+    "ip-warning-text-1": "To use this QR code, you must enter the local IP address of your computer into the openspace.cfg.",
+    "ip-warning-text-2": "Look under ModuleConfigurations/WebGui/Address and change \"localhost\" to your computer ip address i.e. \"192.168.1.100\".  (To find it, open a terminal and type \"ipconfig\" on Windows or \"ifconfig\" on Linux.)",
+    "ip-warning-text-3": "NOTE: After entering this value, the GUI within OpenSpace will stop working unless you change the allowed devices (described below).",
+    "modal-title": "Mobile QR Code",
+    "close-button-aria-label": "Close QR Code",
+    "panel-description": "Use this QR code to launch OpenSpace controls on your mobile device."
+  },
   "resizeable-content": {
-    "aria-label": "Resize window (keyboard control not suppored)"
+    "aria-label": "Resize window (keyboard control not supported)"
   },
   "settings-popout": {
     "aria-label": "Open settings"

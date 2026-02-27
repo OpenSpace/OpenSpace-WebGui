@@ -87,6 +87,7 @@ export {
   MdOpenInNew as OpenWindowIcon,
   MdPause as PauseIcon,
   MdOutlineEdit as PenIcon,
+  MdOutlineSendToMobile as PhoneIcon,
   MdPlayArrow as PlayIcon,
   MdFiberManualRecord as RecordIcon,
   MdOutlineRefresh as RefreshIcon,
