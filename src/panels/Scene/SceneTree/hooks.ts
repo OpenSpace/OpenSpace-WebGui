@@ -27,12 +27,6 @@ export function useSceneTreeData(filter: SceneTreeFilterSettings) {
   const propertyOwners = useAppSelector((state) =>
     propertyOwnerSelectors.selectEntities(state)
   );
-  const visibilitySceneGraphNodes = useAppSelector(
-    (state) => state.local.sceneTree.visibility
-  );
-  const visibleUris = Object.entries(visibilitySceneGraphNodes)
-    .filter(([, visibility]) => visibility === 'Visible')
-    .map(([uri]) => uri);
   const groups = useAppSelector((state) => state.groups.groups);
   const customGuiOrdering = useAppSelector((state) => state.groups.customGroupOrdering);
 
@@ -40,22 +34,14 @@ export function useSceneTreeData(filter: SceneTreeFilterSettings) {
   const filteredSceneGraphNodes = useSceneGraphNodes({
     includeGuiHiddenNodes: filter.includeGuiHiddenNodes,
     onlyFocusable: filter.onlyFocusable,
-    tags: filter.tags
+    tags: filter.tags,
+    onlyVisible: filter.showOnlyVisible
   });
-
-  // Filter these property owners based on visbility
-  const visibilityFilteredNodes = useMemo(
-    () =>
-      filter.showOnlyVisible
-        ? filteredSceneGraphNodes.filter((node) => visibleUris.includes(node.uri))
-        : filteredSceneGraphNodes,
-    [filteredSceneGraphNodes, visibleUris, filter.showOnlyVisible]
-  );
 
   // Create the tree data from the groups and the filtered scene graph nodes
   const sceneTreeData = useMemo(
-    () => sceneTreeDataFromGroups(groups, propertyOwners, visibilityFilteredNodes),
-    [groups, propertyOwners, visibilityFilteredNodes]
+    () => sceneTreeDataFromGroups(groups, propertyOwners, filteredSceneGraphNodes),
+    [groups, propertyOwners, filteredSceneGraphNodes]
   );
 
   // Sort the tree data based on the custom GUI ordering
