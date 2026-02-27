@@ -80,6 +80,10 @@
       "title": "Unavailable Map",
       "description": "No map found for '{{name}}'"
     },
+    "time-too-fast": {
+      "title": "Map View Unavailable",
+      "description": "The map is currently unavailable because the camera is moving too fast. Please slow down to view the map."
+    },
     "aria-labels": {
       "map": "Map of {{name}}",
       "view-direction": "Cone showing the view direction of the camera",
