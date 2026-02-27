@@ -14,10 +14,8 @@ import {
 } from './util';
 
 export function useIsSgnFocusable(uri: Uri): boolean {
-  return (
-    useAppSelector((state) =>
-      isSgnFocusable(uri, propertySelectors.selectEntities(state))
-    )
+  return useAppSelector((state) =>
+    isSgnFocusable(uri, propertySelectors.selectEntities(state))
   );
 }
 
