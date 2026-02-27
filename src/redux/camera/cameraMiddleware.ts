@@ -25,7 +25,7 @@ export const setupSubscription = createAsyncThunk(
 
     const throttleUpdates = throttle((data: CameraState) => {
       thunkApi.dispatch(updateCamera(data));
-    }, 500);
+    }, 16); // Throttle to ~60fps
 
     (async () => {
       for await (const data of topic.iterator() as AsyncIterable<CameraState>) {
