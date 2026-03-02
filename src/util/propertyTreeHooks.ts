@@ -1,41 +1,34 @@
-import { useMemo } from 'react';
-
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
+import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
+import { propertyOwnerSelectors } from '@/redux/propertyTree/propertyOwnerSlice';
 import { PropertyOwner } from '@/types/types';
 
 import { NavigationAimKey, NavigationAnchorKey } from './keys';
-import { sgnUri } from './propertyTreeHelpers';
+import { sgnUri } from './uris';
 
 /**
  * Get all the nodes marked in the profile, as a list of property owners.
  */
 export function useFeaturedNodes(): PropertyOwner[] {
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-  const markedNodes = useAppSelector((state) => state.profile.markNodes);
-
-  return useMemo(
-    () =>
-      markedNodes
-        .map((id) => propertyOwners[sgnUri(id)])
-        .filter((po) => po !== undefined),
-    [markedNodes, propertyOwners]
+  const propertyOwners = useAppSelector((state) =>
+    propertyOwnerSelectors.selectEntities(state)
   );
+  const markedNodes = useAppSelector((state) => state.profile.markNodes);
+  return markedNodes
+    .map((uri) => propertyOwners[sgnUri(uri)])
+    .filter((po) => po !== undefined);
 }
 
 export function useAnchorNode() {
-  const [anchor] = useProperty('StringProperty', NavigationAnchorKey);
-  const anchorNode = useAppSelector(
-    (state) => state.propertyOwners.propertyOwners[sgnUri(anchor)]
-  );
+  const anchor = usePropertyValue('StringProperty', NavigationAnchorKey);
+  const anchorNode = usePropertyOwner(sgnUri(anchor));
   return anchorNode;
 }
 
 export function useAimNode() {
-  const [aim] = useProperty('StringProperty', NavigationAimKey);
-  const aimNode = useAppSelector(
-    (state) => state.propertyOwners.propertyOwners[sgnUri(aim)]
-  );
+  const aim = usePropertyValue('StringProperty', NavigationAimKey);
+  const aimNode = usePropertyOwner(sgnUri(aim));
 
   return aimNode;
 }

@@ -14,7 +14,7 @@ import {
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { CancelIcon, FocusIcon } from '@/icons/icons';
 import { EngineMode, IconSize } from '@/types/enums';
@@ -49,7 +49,7 @@ export function FocusView({
   const engineMode = useSubscribeToEngineMode();
 
   const anchorNode = useAnchorNode();
-  const [aim] = useProperty('StringProperty', NavigationAimKey);
+  const aim = usePropertyValue('StringProperty', NavigationAimKey);
 
   const luaApi = useOpenSpaceApi();
 

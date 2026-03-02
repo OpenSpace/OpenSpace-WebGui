@@ -9,9 +9,10 @@ import { ResizeableContent } from '@/components/ResizeableContent/ResizeableCont
 import { useProperty } from '@/hooks/properties';
 import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { propertyOwnerSelectors } from '@/redux/propertyTree/propertyOwnerSlice';
 import { Identifier } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
-import { sgnUri } from '@/util/propertyTreeHelpers';
+import { sgnUri } from '@/util/uris';
 
 import { SceneGraphNodeHeader } from '../Scene/SceneGraphNode/SceneGraphNodeHeader';
 
@@ -21,7 +22,9 @@ import { ExoplanetsSettings } from './ExoplanetsSettings';
 export function ExoplanetsPanel() {
   const { t } = useTranslation('panel-exoplanets');
 
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+  const propertyOwners = useAppSelector((state) =>
+    propertyOwnerSelectors.selectEntities(state)
+  );
   const isDataInitialized = useAppSelector((state) => state.exoplanets.isInitialized);
   const allSystemNames = useAppSelector((state) => state.exoplanets.data);
   const [aim, setAim] = useProperty('StringProperty', NavigationAimKey);

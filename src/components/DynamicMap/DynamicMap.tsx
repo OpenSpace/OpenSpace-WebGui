@@ -1,23 +1,13 @@
 import { PropsWithChildren, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Alert,
-  AspectRatio,
-  BackgroundImage,
-  Box,
-  Image,
-  LoadingOverlay,
-  MantineStyleProps,
-  Text
-} from '@mantine/core';
+import { Box, Image, MantineStyleProps } from '@mantine/core';
 
 import { MapMarker } from '@/components/DynamicMap/MapMarker';
 import { NightShadow } from '@/components/DynamicMap/NightShadow';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { useCameraLatLong } from '@/redux/camera/hooks';
-import { useAnchorNode } from '@/util/propertyTreeHooks';
 
-import { useMapPath } from './hooks';
+import { Map } from './Map';
 import { ViewCone } from './ViewCone';
 
 // The fewer decimals we can get away with, the less the component will rerender due to
@@ -77,9 +67,6 @@ export function DynamicMap({
   const height = refSize?.current?.clientHeight;
 
   useSubscribeToCamera();
-  const anchor = useAnchorNode();
-
-  const [mapPath, mapExists] = useMapPath(anchor);
 
   const hasViewDirection = viewLatitude !== undefined && viewLongitude !== undefined;
   const markerPosition = (() => {
@@ -97,77 +84,40 @@ export function DynamicMap({
   // Remove jumping between 0 and -180 degrees when looking straight at surface
   const cleanedAngle = Math.abs(angleDeg) === 180 ? 0 : angleDeg;
 
-  if (!anchor) {
-    return (
-      <AspectRatio ratio={2} {...styleProps} style={style}>
-        <BackgroundImage src={''} />
-        <LoadingOverlay visible={true} />
-      </AspectRatio>
-    );
-  }
-
-  if (!mapExists || !anchor) {
-    return (
-      <Alert variant={'light'} color={'orange'} title={t('no-map.title')}>
-        <Text>{t('no-map.description', { name: anchor?.name })}</Text>
-      </Alert>
-    );
-  }
-
   return (
-    <AspectRatio
-      ratio={2}
-      mx={'auto'}
-      miw={300}
-      {...styleProps}
-      ref={(el) => {
-        if (ref && el) {
-          ref.current = el;
-        }
-        if (refSize && el) {
-          refSize.current = el;
-        }
-      }}
-      style={style}
-    >
-      <BackgroundImage
-        src={mapPath}
-        style={{ position: 'relative' }}
-        aria-label={t('aria-labels.map', { name: anchor.name })}
-      >
-        {width && height && <NightShadow width={width} height={height} />}
-        {children}
-        <MapMarker left={`${markerPosition.x * 100}%`} top={`${markerPosition.y * 100}%`}>
-          <Box
+    <Map ref={ref} refSize={refSize} style={style} {...styleProps}>
+      {width && height && <NightShadow width={width} height={height} />}
+      {children}
+      <MapMarker left={`${markerPosition.x * 100}%`} top={`${markerPosition.y * 100}%`}>
+        <Box
+          style={{
+            width: 0,
+            height: 0,
+            transform: `rotate(${cleanedAngle}deg)`
+          }}
+        >
+          <Image
+            src={iconPath}
             style={{
-              width: 0,
-              height: 0,
-              transform: `rotate(${cleanedAngle}deg)`
+              width: iconSize,
+              height: iconSize,
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              transform: 'translate(-50%, -50%)'
             }}
-          >
-            <Image
-              src={iconPath}
-              style={{
-                width: iconSize,
-                height: iconSize,
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                transform: 'translate(-50%, -50%)'
-              }}
-              aria-label={t('aria-labels.openspace-icon')}
-            />
-          </Box>
-        </MapMarker>
-        {width && height && showViewDirection && hasViewDirection && (
-          <ViewCone
-            width={width}
-            height={height}
-            coneWidth={coneWidth}
-            coneHeight={coneHeight}
+            aria-label={t('aria-labels.openspace-icon')}
           />
-        )}
-      </BackgroundImage>
-    </AspectRatio>
+        </Box>
+      </MapMarker>
+      {width && height && showViewDirection && hasViewDirection && (
+        <ViewCone
+          width={width}
+          height={height}
+          coneWidth={coneWidth}
+          coneHeight={coneHeight}
+        />
+      )}
+    </Map>
   );
 }

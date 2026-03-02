@@ -8,8 +8,9 @@ import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { DeleteIcon, OpenWindowIcon, VerticalDotsIcon } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
-import { displayName, identifierFromUri } from '@/util/propertyTreeHelpers';
+import { displayName } from '@/util/propertyTreeHelpers';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
+import { identifierFromUri } from '@/util/uris';
 import { useRemoveSceneGraphNodeModal } from '@/util/useRemoveSceneGraphNode';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 

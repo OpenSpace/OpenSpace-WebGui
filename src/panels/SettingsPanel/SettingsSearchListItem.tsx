@@ -3,7 +3,7 @@ import { Stack } from '@mantine/core';
 import { Property } from '@/components/Property/Property';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
-import { removeLastWordFromUri } from '@/util/propertyTreeHelpers';
+import { removeLastWordFromUri } from '@/util/uris';
 
 import { SearchItemType } from './util';
 

@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 
 import { useAppSelector } from '@/redux/hooks';
+import { propertyOwnerSelectors } from '@/redux/propertyTree/propertyOwnerSlice';
+import { propertySelectors } from '@/redux/propertyTree/propertySlice';
 import { PropertyOwner, SceneGraphNodeGuiSettings, Uri } from '@/types/types';
 
 import { SceneGraphNodesFilters } from './types';
@@ -12,8 +14,8 @@ import {
 } from './util';
 
 export function useIsSgnFocusable(uri: Uri): boolean {
-  return (
-    useAppSelector((state) => isSgnFocusable(uri, state.properties.properties)) || false
+  return useAppSelector((state) =>
+    isSgnFocusable(uri, propertySelectors.selectEntities(state))
   );
 }
 
@@ -24,12 +26,24 @@ export function useIsSgnFocusable(uri: Uri): boolean {
 export function useSceneGraphNodes({
   includeGuiHiddenNodes = false,
   onlyFocusable = false,
-  tags = []
+  tags = [],
+  onlyVisible = false
 }: SceneGraphNodesFilters = {}): PropertyOwner[] {
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+  const propertyOwners = useAppSelector((state) =>
+    propertyOwnerSelectors.selectEntities(state)
+  );
   const sgnGuiSettings = useSceneGraphNodeGuiSettings();
 
-  return useMemo(() => {
+  const visibilitySceneGraphNodes = useAppSelector(
+    (state) => state.local.sceneTree.visibility
+  );
+  const visibleUris = useMemo(() => {
+    return Object.entries(visibilitySceneGraphNodes)
+      .filter(([, visibility]) => visibility === 'Visible')
+      .map(([uri]) => uri);
+  }, [visibilitySceneGraphNodes]);
+
+  const filteredSceneGraphNodes = useMemo(() => {
     const sceneUris: Uri[] = propertyOwners.Scene?.subowners ?? [];
     return sceneUris
       .map((uri) => propertyOwners[uri])
@@ -58,6 +72,13 @@ export function useSceneGraphNodes({
         return true;
       });
   }, [propertyOwners, includeGuiHiddenNodes, onlyFocusable, tags, sgnGuiSettings]);
+
+  return useMemo(() => {
+    if (!onlyVisible) {
+      return filteredSceneGraphNodes;
+    }
+    return filteredSceneGraphNodes.filter((node) => visibleUris.includes(node.uri));
+  }, [filteredSceneGraphNodes, visibleUris, onlyVisible]);
 }
 
 /**
@@ -68,8 +89,10 @@ export function useSceneGraphNodes({
  * we could potentially clean this up a bit.
  */
 export function useSceneGraphNodeGuiSettings(): SceneGraphNodeGuiSettings {
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-  const properties = useAppSelector((state) => state.properties.properties);
+  const propertyOwners = useAppSelector((state) =>
+    propertyOwnerSelectors.selectEntities(state)
+  );
+  const properties = useAppSelector((state) => propertySelectors.selectEntities(state));
 
   return useMemo(() => {
     const sceneUris: Uri[] = propertyOwners.Scene?.subowners ?? [];

@@ -25,7 +25,7 @@ export function ConstellationsShowLabelsBox({ title, icon }: Props) {
 
   const uri = 'Scene.Constellations.Renderable.Labels';
   const propertyOwner = usePropertyOwner(uri);
-  const { isVisible } = usePropertyOwnerVisibility(uri);
+  const { visibility } = usePropertyOwnerVisibility(uri);
 
   function checkboxChange(checked: boolean) {
     if (checked) {
@@ -40,7 +40,7 @@ export function ConstellationsShowLabelsBox({ title, icon }: Props) {
       checkbox={
         <Checkbox
           onChange={(event) => checkboxChange(event.currentTarget.checked)}
-          checked={isVisible}
+          checked={visibility === 'Visible'}
           aria-label={t('aria-labels.labels')}
         />
       }

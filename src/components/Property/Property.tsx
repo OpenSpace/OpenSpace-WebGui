@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { Stack } from '@mantine/core';
 
 import { useAppSelector } from '@/redux/hooks';
+import { propertySelectors } from '@/redux/propertyTree/propertySlice';
 import { Uri } from '@/types/types';
 
 import { BoolProperty } from './Types/BoolProperty';
@@ -79,8 +80,9 @@ interface Props {
 }
 
 export const Property = memo(({ uri }: Props) => {
-  const meta = useAppSelector((state) => state.properties.properties[uri]?.metaData);
-
+  const meta = useAppSelector(
+    (state) => propertySelectors.selectById(state, uri)?.metaData
+  );
   if (!meta) {
     return <></>;
   }

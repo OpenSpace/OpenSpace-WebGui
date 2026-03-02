@@ -18,14 +18,17 @@ import { useProperty } from '@/hooks/properties';
 import { CalendarIcon, EyeIcon, EyeOffIcon, MinusIcon, PlusIcon } from '@/icons/icons';
 import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { useAppSelector } from '@/redux/hooks';
+import { propertyOwnerSelectors } from '@/redux/propertyTree/propertyOwnerSlice';
 import { IconSize } from '@/types/enums';
-import { sgnUri } from '@/util/propertyTreeHelpers';
+import { sgnUri } from '@/util/uris';
 
 export function SunTab() {
   const { t } = useTranslation('panel-nightsky', { keyPrefix: 'sun' });
 
   const [trailDate, setTrailDate] = useState<Date | null>(null);
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+  const propertyOwners = useAppSelector((state) =>
+    propertyOwnerSelectors.selectEntities(state)
+  );
 
   const [angularSize, setAngularSize] = useProperty(
     'FloatProperty',

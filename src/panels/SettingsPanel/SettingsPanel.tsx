@@ -4,16 +4,14 @@ import { useTranslation } from 'react-i18next';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
+import { propertyOwnerSelectors } from '@/redux/propertyTree/propertyOwnerSlice';
+import { propertySelectors } from '@/redux/propertyTree/propertySlice';
 import { EnginePropertyVisibilityKey, ScenePrefixKey } from '@/util/keys';
-import {
-  hasVisibleChildren,
-  identifierFromUri,
-  isPropertyVisible,
-  isTopLevelPropertyOwner
-} from '@/util/propertyTreeHelpers';
+import { hasVisibleChildren, isPropertyVisible } from '@/util/propertyTreeHelpers';
 import { checkCaseInsensitiveSubstringList } from '@/util/stringmatcher';
+import { identifierFromUri, isTopLevelPropertyOwner } from '@/util/uris';
 
 import { SettingsSearchListItem } from './SettingsSearchListItem';
 import { collectSearchableItems, SearchItem, SearchItemType } from './util';
@@ -21,9 +19,13 @@ import { collectSearchableItems, SearchItem, SearchItemType } from './util';
 export function SettingsPanel() {
   const { t } = useTranslation('panel-settings');
 
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
-  const propertyOverview = useAppSelector((state) => state.properties.propertyOverview);
-  const [visiblityLevelSetting] = useProperty(
+  const propertyOwners = useAppSelector((state) =>
+    propertyOwnerSelectors.selectEntities(state)
+  );
+
+  const properties = useAppSelector((state) => propertySelectors.selectEntities(state));
+
+  const visiblityLevelSetting = usePropertyValue(
     'OptionProperty',
     EnginePropertyVisibilityKey
   );
@@ -43,10 +45,10 @@ export function SettingsPanel() {
       propertyOwners
     );
     searchableSubOwners = searchableSubOwners.filter((uri) =>
-      hasVisibleChildren(uri, visiblityLevelSetting, propertyOwners, propertyOverview)
+      hasVisibleChildren(propertyOwners, properties, uri, visiblityLevelSetting)
     );
     searchableProperties = searchableProperties.filter((uri) =>
-      isPropertyVisible(propertyOverview[uri], visiblityLevelSetting)
+      isPropertyVisible(properties[uri].metaData.visibility, visiblityLevelSetting)
     );
 
     return searchableSubOwners
@@ -59,10 +61,10 @@ export function SettingsPanel() {
         searchableProperties.map((uri) => ({
           type: SearchItemType.Property,
           uri,
-          searchKeys: [propertyOverview[uri].name, identifierFromUri(uri)]
+          searchKeys: [properties[uri].metaData.guiName, identifierFromUri(uri)]
         }))
       );
-  }, [propertyOverview, propertyOwners, topLevelPropertyOwners, visiblityLevelSetting]);
+  }, [propertyOwners, topLevelPropertyOwners, visiblityLevelSetting, properties]);
 
   const renderfunc = useCallback(
     (item: SearchItem) => (

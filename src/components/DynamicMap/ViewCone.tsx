@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { useCameraLatLong } from '@/redux/camera/hooks';
 import { useAppSelector } from '@/redux/hooks';
@@ -20,7 +20,7 @@ export function ViewCone({ width, height, coneWidth, coneHeight }: Props) {
   const { latitude, longitude, viewLatitude, viewLongitude } = useCameraLatLong(7);
   const viewLength = useAppSelector((state) => state.camera.viewLength);
   const anchor = useAnchorNode();
-  const [interactionSphere] = useProperty(
+  const interactionSphere = usePropertyValue(
     'DoubleProperty',
     `Scene.${anchor?.identifier}.EvaluatedInteractionSphere`
   );

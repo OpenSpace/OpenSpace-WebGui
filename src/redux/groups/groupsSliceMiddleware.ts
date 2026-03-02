@@ -2,17 +2,19 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { computeGroups } from '@/redux/groups/util';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
-import { addUriToPropertyTree } from '@/redux/propertytree/propertyTreeMiddleware';
 import { RootState } from '@/redux/store';
-import { PropertyOwners } from '@/types/types';
+import { PropertyOwner } from '@/types/types';
+
+import { propertyOwnerSelectors } from '../propertyTree/propertyOwnerSlice';
+import { propertySelectors } from '../propertyTree/propertySlice';
 
 import { setGroups, setTags } from './groupsSlice';
 
 export const refreshGroups = createAction<void>('groups/refresh');
 
-function collectExistingTags(propertyOwners: PropertyOwners) {
+function collectExistingTags(propertyOwners: PropertyOwner[]) {
   const tags = new Set<string>();
-  Object.values(propertyOwners).forEach((propertyOwner) => {
+  propertyOwners.forEach((propertyOwner) => {
     propertyOwner?.tags.forEach((tag) => tags.add(tag));
   });
   return Array.from(tags).sort();
@@ -20,23 +22,15 @@ function collectExistingTags(propertyOwners: PropertyOwners) {
 
 export const addGroupsListener = (startListening: AppStartListening) => {
   startListening({
-    actionCreator: addUriToPropertyTree.fulfilled,
-    effect: (_, listenerApi) => {
-      listenerApi.dispatch(refreshGroups());
-    }
-  });
-  startListening({
     actionCreator: refreshGroups,
     effect: (_, listenerApi) => {
       const state = listenerApi.getState() as RootState;
-
-      const newGroups = computeGroups(
-        state.propertyOwners.propertyOwners,
-        state.properties.properties
-      );
+      const propertyOwners = propertyOwnerSelectors.selectAll(state);
+      const properties = propertySelectors.selectEntities(state);
+      const newGroups = computeGroups(propertyOwners, properties);
       listenerApi.dispatch(setGroups(newGroups));
 
-      const newTags = collectExistingTags(state.propertyOwners.propertyOwners);
+      const newTags = collectExistingTags(propertyOwners);
       listenerApi.dispatch(setTags(newTags));
     }
   });

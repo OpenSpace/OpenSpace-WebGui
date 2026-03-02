@@ -3,6 +3,8 @@ import { useMemo } from 'react';
 import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes/hooks';
 import { sgnGuiOrderingNumber } from '@/hooks/sceneGraphNodes/util';
 import { useAppSelector } from '@/redux/hooks';
+import { propertyOwnerSelectors } from '@/redux/propertyTree/propertyOwnerSlice';
+import { propertySelectors } from '@/redux/propertyTree/propertySlice';
 import {
   CustomGroupOrdering,
   Groups,
@@ -10,7 +12,6 @@ import {
   PropertyOwner,
   PropertyOwners
 } from '@/types/types';
-import { isSgnVisible } from '@/util/propertyTreeHelpers';
 
 import {
   isGroupNode,
@@ -22,8 +23,10 @@ import { SceneTreeFilterSettings, SceneTreeNodeData } from './types';
 // Creates a tree data structure from the groups and a list of searchable nodes
 // This is used to create the tree data for the SceneTree component
 export function useSceneTreeData(filter: SceneTreeFilterSettings) {
-  const properties = useAppSelector((state) => state.properties.properties);
-  const propertyOwners = useAppSelector((state) => state.propertyOwners.propertyOwners);
+  const properties = useAppSelector((state) => propertySelectors.selectEntities(state));
+  const propertyOwners = useAppSelector((state) =>
+    propertyOwnerSelectors.selectEntities(state)
+  );
   const groups = useAppSelector((state) => state.groups.groups);
   const customGuiOrdering = useAppSelector((state) => state.groups.customGroupOrdering);
 
@@ -31,22 +34,14 @@ export function useSceneTreeData(filter: SceneTreeFilterSettings) {
   const filteredSceneGraphNodes = useSceneGraphNodes({
     includeGuiHiddenNodes: filter.includeGuiHiddenNodes,
     onlyFocusable: filter.onlyFocusable,
-    tags: filter.tags
+    tags: filter.tags,
+    onlyVisible: filter.showOnlyVisible
   });
-
-  // Filter these property owners based on visbility
-  const visibilityFilteredNodes = useMemo(
-    () =>
-      filter.showOnlyVisible
-        ? filteredSceneGraphNodes.filter((node) => isSgnVisible(node.uri, properties))
-        : filteredSceneGraphNodes,
-    [filteredSceneGraphNodes, properties, filter.showOnlyVisible]
-  );
 
   // Create the tree data from the groups and the filtered scene graph nodes
   const sceneTreeData = useMemo(
-    () => sceneTreeDataFromGroups(groups, propertyOwners, visibilityFilteredNodes),
-    [groups, propertyOwners, visibilityFilteredNodes]
+    () => sceneTreeDataFromGroups(groups, propertyOwners, filteredSceneGraphNodes),
+    [groups, propertyOwners, filteredSceneGraphNodes]
   );
 
   // Sort the tree data based on the custom GUI ordering

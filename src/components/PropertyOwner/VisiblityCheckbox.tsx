@@ -1,22 +1,36 @@
 import { useEffect, useState } from 'react';
-import { Checkbox } from '@mantine/core';
+import { ActionIcon, Checkbox } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
-import { usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
-import { Uri } from '@/types/types';
+import { usePropertyValue } from '@/hooks/properties';
+import { IconSize } from '@/types/enums';
+import { Uri, Visibility } from '@/types/types';
+import { fadePropertyUri } from '@/util/uris';
+
+import { FadeIcon } from './FadeIcon';
 
 interface Props {
   uri: Uri;
   label?: React.ReactNode;
+  visibility: Visibility | undefined;
+  setVisibility: (shouldBeEnabled: boolean, isImmediate: boolean) => void;
 }
 
-export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
-  const { isVisible, setVisibility } = usePropertyOwnerVisibility(uri);
-
+export function PropertyOwnerVisibilityCheckbox({
+  uri,
+  label,
+  visibility,
+  setVisibility
+}: Props) {
   // This is the value that is shown in the checkbox, it is not necessarily the same as
-  // the isVisible value, since the checkbox can be in a transition state
-  const [checked, setChecked] = useState(isVisible);
+  // the visibility value, since the checkbox can be in a transition state
+  const [checked, setChecked] = useState(visibility === 'Visible');
   const [isImmediate, setIsImmediate] = useState(false);
+  const fade = usePropertyValue('FloatProperty', fadePropertyUri(uri));
+
+  useEffect(() => {
+    setChecked(visibility === 'Visible');
+  }, [visibility]);
 
   useWindowEvent('keydown', (event: KeyboardEvent) => {
     if (event.key === 'Shift' && !event.repeat) {
@@ -30,14 +44,8 @@ export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
     }
   });
 
-  // If the visibility is changed elsewhere we need to update the checkbox
-  useEffect(() => {
-    setChecked(isVisible);
-  }, [isVisible]);
-
   function updateValue(shouldBeEnabled: boolean, isImmediate: boolean) {
     setVisibility(shouldBeEnabled, isImmediate);
-    setChecked(shouldBeEnabled);
   }
 
   function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -47,7 +55,15 @@ export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
     }
   }
 
-  if (isVisible === undefined) {
+  if (visibility === 'Fading' && fade !== undefined) {
+    return (
+      <ActionIcon size={IconSize.sm}>
+        <FadeIcon value={fade} size={IconSize.sm} />
+      </ActionIcon>
+    );
+  }
+
+  if (visibility === undefined) {
     // This is the case when there is no enabled or fade property => don't render checkbox
     return <></>;
   }
@@ -55,6 +71,7 @@ export function PropertyOwnerVisibilityCheckbox({ uri, label }: Props) {
   return (
     <Checkbox
       checked={checked}
+      indeterminate={visibility === 'Fading'}
       onKeyDown={onKeyDown}
       onChange={(event) => updateValue(event.currentTarget.checked, isImmediate)}
       label={label}

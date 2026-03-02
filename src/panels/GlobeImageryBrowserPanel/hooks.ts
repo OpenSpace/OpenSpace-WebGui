@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { Identifier } from '@/types/types';
-import { sgnRenderableUri, sgnUri } from '@/util/propertyTreeHelpers';
+import { sgnRenderableUri, sgnUri } from '@/util/uris';
 
 import {
   Capability,
