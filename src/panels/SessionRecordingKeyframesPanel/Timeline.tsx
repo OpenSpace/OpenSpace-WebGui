@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ActionIcon, Stack, Tooltip } from '@mantine/core';
+import { useMemo, useState } from 'react';
+import { ActionIcon, Stack } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 
 import { HomeIcon } from '@/icons/icons';
@@ -73,6 +73,17 @@ export function Timeline({
   const viewportStart = offset;
   const viewportEnd = offset + width / scale;
 
+  // Only show keyframes that are visible in the viewport
+  const visibleKeyframes = useMemo(
+    () =>
+      // @TODO optionally add a small buffer window to the start and end
+      // (allowing some addtional keyframes to be "visible")
+      keyframes.filter(
+        (kf) => viewportStart < kf.Timestamp && kf.Timestamp < viewportEnd
+      ),
+    [viewportStart, viewportEnd, keyframes]
+  );
+
   // Generate ticks based on the visible viewport
   const ticks = computeTicks(viewportStart, viewportEnd, tickInterval);
 
@@ -87,6 +98,27 @@ export function Timeline({
   function toYPos(index: number) {
     const yBase = rowHeight * index;
     return axisHeight + yBase + rowHeight / 2;
+  }
+
+  function clusterKeyframes(keyframes: KeyframeEntry[], scale: number, threshold = 5) {
+    if (scale > 10) return keyframes; // Don't cluster when zoomed in
+
+    const clusters: KeyframeEntry[][] = [];
+    const sorted = [...keyframes].sort((a, b) => a.Timestamp - b.Timestamp);
+
+    for (const kf of sorted) {
+      const lastCluster = clusters[clusters.length - 1];
+      if (
+        lastCluster &&
+        Math.abs(toXPos(kf.Timestamp) - toXPos(lastCluster[0].Timestamp)) < threshold
+      ) {
+        lastCluster.push(kf);
+      } else {
+        clusters.push([kf]);
+      }
+    }
+
+    return clusters;
   }
 
   function onKeyframeMouseDown(event: React.MouseEvent, kf: KeyframeEntry) {
@@ -213,12 +245,14 @@ export function Timeline({
 
   function onAxisMouseDown(event: React.MouseEvent) {
     event.stopPropagation();
-    // We're draggin the timeline
+    // Shift + Left click pans the timeline
     if (event.shiftKey) {
       setPanning(true);
       setPanStartX(event.clientX);
       setPanOffset(offset);
-    } else {
+    }
+    // Otherwise move playhead
+    else {
       const clientX = event.nativeEvent.offsetX;
       const newTime = Math.max(0, Math.min(totalDuration, toTime(clientX)));
       setTooltip({ x: clientX + 25, y: axisHeight - 10, time: newTime });
@@ -282,20 +316,19 @@ export function Timeline({
           })}
         </g>
 
-        {keyframes.map((kf) => {
+        {visibleKeyframes.map((kf) => {
           return (
-            <Tooltip label={kf.Timestamp.toFixed(2)} key={kf.Id}>
-              <Keyframe
-                x={toXPos(kf.Timestamp) - keyframeWidth / 2}
-                y={toYPos(0) - keyframeHeight / 2}
-                width={keyframeWidth}
-                height={keyframeHeight}
-                isSelected={selectedKeyframeIDs.includes(kf.Id)}
-                cursor={isDraggingKeyframe ? 'grabbing' : 'grab'}
-                keyframeInfo={kf}
-                onMouseDown={onKeyframeMouseDown}
-              />
-            </Tooltip>
+            <Keyframe
+              key={kf.Id}
+              x={toXPos(kf.Timestamp) - keyframeWidth / 2}
+              y={toYPos(0) - keyframeHeight / 2}
+              width={keyframeWidth}
+              height={keyframeHeight}
+              isSelected={selectedKeyframeIDs.includes(kf.Id)}
+              cursor={isDraggingKeyframe ? 'grabbing' : 'grab'}
+              keyframeInfo={kf}
+              onMouseDown={onKeyframeMouseDown}
+            />
           );
         })}
 
@@ -351,3 +384,5 @@ export function Timeline({
     </Stack>
   );
 }
+
+// C:/Users/anden88/Desktop/projects/OpenSpace/user/recordings/keyframe.osrectxt
