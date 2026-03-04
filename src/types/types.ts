@@ -3,6 +3,10 @@ import { AnyProperty } from './Property/property';
 export type Uri = string;
 export type Identifier = string;
 
+// The order of these groups determine the order in which they are shown in the `Windows` menu
+export const MenuItemGroups = ['Ungrouped', 'Content', 'Other', 'HelpMenu'] as const;
+export type MenuItemGroup = (typeof MenuItemGroups)[number];
+
 export type LanguageInfo = {
   language: string;
   icon: React.JSX.Element;

@@ -73,8 +73,7 @@
     }
   },
   "windows-menu": {
-    "title": "Windows",
-    "add-new-window": "Add New Window"
+    "title": "Windows"
   },
   "error-load-toolbar-layout": {
     "title": "Error loading JSON file",

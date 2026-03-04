@@ -31,7 +31,7 @@ import { showNotifications, updateLogLevel } from '@/redux/logging/loggingSlice'
 import { IconSize, LogLevel } from '@/types/enums';
 
 import { useMenuItems, useStoredLayout } from '../../hooks';
-import { MenuDrowdownWrapper } from '../MenuDropdownWrapper';
+import { MenuDropdownWrapper } from '../MenuDropdownWrapper';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function ViewMenu() {
@@ -68,7 +68,7 @@ export function ViewMenu() {
           </Menu.Sub.Item>
         </Menu.Sub.Target>
 
-        <MenuDrowdownWrapper isSubMenu shouldLimitHeight>
+        <MenuDropdownWrapper isSubMenu shouldLimitHeight>
           <Menu.Label pr={0}>
             <Group justify={'space-between'}>
               {t('task-bar.toggle-items')}
@@ -115,7 +115,7 @@ export function ViewMenu() {
             }}
             gap={0}
           />
-        </MenuDrowdownWrapper>
+        </MenuDropdownWrapper>
       </Menu.Sub>
 
       <Menu.Item leftSection={<UpArrowIcon />} onClick={loadLayout}>
@@ -196,7 +196,7 @@ export function ViewMenu() {
           </Menu.Sub.Item>
         </Menu.Sub.Target>
 
-        <MenuDrowdownWrapper isSubMenu shouldLimitHeight>
+        <MenuDropdownWrapper isSubMenu shouldLimitHeight>
           <Menu.Label>
             <Group gap={'xs'}>{t('notifications.label')}</Group>
           </Menu.Label>
@@ -237,7 +237,7 @@ export function ViewMenu() {
           >
             {t('notifications.clear-notifications')}
           </Menu.Item>
-        </MenuDrowdownWrapper>
+        </MenuDropdownWrapper>
       </Menu.Sub>
     </TopBarMenuWrapper>
   );
