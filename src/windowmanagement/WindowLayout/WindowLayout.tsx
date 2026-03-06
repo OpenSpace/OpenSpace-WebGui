@@ -13,7 +13,7 @@ import { useWindowLayoutProvider } from './hooks';
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import './WindowLayout.css';
-import { LuaConsoleIsVisibleKey } from '@/util/keys';
+import { LuaConsoleIsVisibleKey, LuaConsoleLengthKey } from '@/util/keys';
 
 function createDefaultLayout(): LayoutData {
   return {
@@ -81,16 +81,18 @@ export function WindowLayout() {
     }
   };
 
+  const consoleOpen = useAppSelector((state) => state.properties.properties[LuaConsoleIsVisibleKey]?.value) as boolean | undefined;
+  const historyLength = useAppSelector((state) => state.properties.properties[LuaConsoleLengthKey]?.value) as number | undefined;
+  const consoleTop = historyLength ? historyLength*16 + 36 : 35;
   const fullWindowStyle = {
     height: '100vh'
   };
   const consoleStyle = {
-    height: '89vh',
+    height: `calc(100vh - ${consoleTop}px)`,
     position: 'relative',
-    top: '11vh'
+    top: `${consoleTop}px`
   };
 
-  const consoleOpen = useAppSelector((state) => state.properties.properties[LuaConsoleIsVisibleKey]?.value) as boolean | undefined;
   return (
     <>
       <ConnectionErrorOverlay />

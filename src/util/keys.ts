@@ -54,3 +54,4 @@ export const SkyBrowserSpaceCraftAnimationTimeKey =
   'Modules.SkyBrowser.SpaceCraftAnimationTime';
 
 export const LuaConsoleIsVisibleKey = 'LuaConsole.IsVisible';
+export const LuaConsoleLengthKey = 'LuaConsole.HistoryLength';
