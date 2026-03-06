@@ -4,7 +4,7 @@ import DockLayout, { DockContext, LayoutData, PanelData, TabGroup } from 'rc-doc
 import { FlightController } from '@/panels/FlightControlPanel/FlightController';
 import { Toolbar } from '@/panels/Menu/Toolbar/Toolbar';
 import { TopMenuBar } from '@/panels/Menu/TopMenuBar/TopMenuBar';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setMenuItemOpen } from '@/redux/local/localSlice';
 
 import { ConnectionErrorOverlay } from '../ConnectionErrorOverlay';
@@ -13,6 +13,7 @@ import { useWindowLayoutProvider } from './hooks';
 
 import 'rc-dock/dist/rc-dock-dark.css';
 import './WindowLayout.css';
+import { LuaConsoleIsVisibleKey } from '@/util/keys';
 
 function createDefaultLayout(): LayoutData {
   return {
@@ -80,14 +81,22 @@ export function WindowLayout() {
     }
   };
 
+  const fullWindowStyle = {
+    height: '100vh'
+  };
+  const consoleStyle = {
+    height: '89vh',
+    position: 'relative',
+    top: '11vh'
+  };
+
+  const consoleOpen = useAppSelector((state) => state.properties.properties[LuaConsoleIsVisibleKey]?.value) as boolean | undefined;
   return (
     <>
       <ConnectionErrorOverlay />
       <Stack
         gap={0}
-        style={{
-          height: '100vh'
-        }}
+        style={consoleOpen ? consoleStyle : fullWindowStyle}
       >
         <TopMenuBar />
         <div
