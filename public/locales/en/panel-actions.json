@@ -1,7 +1,11 @@
 {
   "action-search-placeholder": "Search for an action...",
   "actions-breadcrumbs": {
-    "back-button-aria-label": "Back"
+    "aria-label": {
+      "back-button": "Back",
+      "home-button": "Navigate to home",
+      "breadcrumb": "Navigate to {{path}}"
+    }
   },
   "actions-button": {
     "is-local-tooltip": "Local action"
