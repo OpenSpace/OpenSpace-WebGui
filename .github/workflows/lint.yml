@@ -1,0 +1,36 @@
+name: Lint & Format Check
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+jobs:
+  lint-and-fix:
+    runs-on: ubuntu-latest
+    permissions: write-all
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node @v6
+        with: 
+          node-version: 24
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Run Prettier (fix)
+        run: npx prettier . --write
+
+      - name: Run ESlint (fix)
+        run: npx eslint . --fix
+
+      - name: Commit fixes if both passed
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "ci: auto-fix prettier & eslint issues"      
+          
