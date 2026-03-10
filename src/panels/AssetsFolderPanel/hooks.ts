@@ -14,6 +14,7 @@ export function useAssetFolders() {
 
   /**
    * Recursively fetch all folders and assets in a given directory
+   *
    * @param directoryPath Directory to fetch folders and assets from
    * @returns A nested Folder
    */

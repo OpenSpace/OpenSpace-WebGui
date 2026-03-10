@@ -42,6 +42,5 @@ export const profileSlice = createSlice({
   }
 });
 
-// Action creators are generated for each case reducer function, replaces the `Actions/index.js`
 export const { setProfileData } = profileSlice.actions;
 export const profileReducer = profileSlice.reducer;

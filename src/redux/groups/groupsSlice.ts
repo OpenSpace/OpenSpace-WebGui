@@ -33,6 +33,5 @@ export const groupsSlice = createSlice({
   }
 });
 
-// Action creators are generated for each case reducer function, replaces the `Actions/index.js`
 export const { setGroups, setTags, updateCustomGroupOrdering } = groupsSlice.actions;
 export const groupsReducer = groupsSlice.reducer;

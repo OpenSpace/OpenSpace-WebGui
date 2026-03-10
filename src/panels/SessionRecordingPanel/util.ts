@@ -47,6 +47,7 @@ export function sessionRecordingFilenameWithExtension(
 /**
  * Parses a filename into its base name and extension, and determines whether it is a
  * duplicate
+ *
  * @param file The full filename including extension (e.g., 'foo.osrec')
  * @param fileCounts A map of base filenames (without extension) to the number of times
  * they appear

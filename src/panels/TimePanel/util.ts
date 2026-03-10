@@ -9,6 +9,7 @@ const Year = StepSizes[TimePart.Years];
 
 /**
  * Converts delta time (in seconds) into a unit friendly format (seconds, min, hours, etc)
+ *
  * @param deltaSeconds The delta in seconds, can be positive or negative
  * @returns An object containing:
  * - `increment`: The numerical value in the chosen unit.

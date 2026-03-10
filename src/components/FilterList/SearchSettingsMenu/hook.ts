@@ -7,7 +7,6 @@ import { useCallback, useState } from 'react';
  *
  * @param keys - An object where each key must be a key of T. The value of the key is a boolean
  * indicating whether the key is enabled (true) or disabled (false) by default.
- *
  * @returns An object containing:
  * - `allowedKeys`: The current state of the keys and their enabled/disabled statuses.
  * - `toggleKey`: A function to toggle the enabled/disabled state of a specific key.

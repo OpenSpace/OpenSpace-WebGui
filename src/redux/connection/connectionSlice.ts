@@ -28,7 +28,6 @@ export const connectionSlice = createSlice({
   }
 });
 
-// Action creators are generated for each case reducer function, replaces the `Actions/index.js`
 export const { startConnection, onOpenConnection, onCloseConnection } =
   connectionSlice.actions;
 export const connectionReducer = connectionSlice.reducer;

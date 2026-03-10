@@ -44,6 +44,5 @@ export const userPanelsSlice = createSlice({
   }
 });
 
-// Action creators are generated for each case reducer function, replaces the `Actions/index.js`
 export const { intializeUserPanels, updateRecentWebpanels } = userPanelsSlice.actions;
 export const userPanelsReducer = userPanelsSlice.reducer;
