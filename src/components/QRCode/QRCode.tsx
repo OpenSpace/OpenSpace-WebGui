@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Alert, Divider, Grid, Modal, Stack, Text, Title } from '@mantine/core';
+import { Alert, Divider, Modal, Stack, Text, Title } from '@mantine/core';
 import { QRCodeSVG } from 'qrcode.react';
 
 import { Property } from '@/components/Property/Property';

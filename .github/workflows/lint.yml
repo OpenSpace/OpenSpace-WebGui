@@ -17,7 +17,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-node @v6
-        with: 
+        with:
           node-version: 24
           cache: 'npm'
 
@@ -32,5 +32,4 @@ jobs:
       - name: Commit fixes if both passed
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          commit_message: "ci: auto-fix prettier & eslint issues"      
-          
+          commit_message: 'ci: auto-fix prettier & eslint issues'
