@@ -20,9 +20,9 @@ export {
   FiChevronsUp as ChevronsUpIcon
 } from 'react-icons/fi';
 export {
+  GiPlasticDuck as DummyIcon,
   GiNightSky as NightSkyIcon,
-  GiPencil as PencilIcon,
-  GiPlasticDuck as DummyIcon
+  GiPencil as PencilIcon
 } from 'react-icons/gi';
 export { GoBrowser as BrowserIcon } from 'react-icons/go';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';

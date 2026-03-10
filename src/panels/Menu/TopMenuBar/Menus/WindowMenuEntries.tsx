@@ -1,11 +1,12 @@
-import { MenuItem } from '@/windowmanagement/data/MenuItems';
-import { MenuItemConfig } from '../../types';
 import { Box, CloseButton, Group, Menu } from '@mantine/core';
+
 import { IconSize } from '@/types/enums';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
+import { MenuItemWithConfig } from '../../types';
+
 interface Props {
-  items: (MenuItemConfig & MenuItem)[];
+  items: MenuItemWithConfig[];
 }
 
 export function WindowMenuEntries({ items }: Props) {

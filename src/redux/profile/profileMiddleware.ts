@@ -28,11 +28,10 @@ export const addProfileListener = (startListening: AppStartListening) => {
     actionCreator: getProfile.fulfilled,
     effect: async (action, listenerApi) => {
       // Get the data from the profile topic and set it in the redux store
-
       // Panel visibility settings
       Object.entries(action.payload.uiPanelVisibility).forEach(([key, value]) => {
-        const { menuItemsConfig } = listenerApi.getState().local;
-        const item = menuItemsConfig.find((item) => item.id === key);
+        const { config } = listenerApi.getState().local.menuItems;
+        const item = config.find((item) => item.id === key);
 
         if (item) {
           listenerApi.dispatch(setMenuItemVisible({ id: key, visible: value }));

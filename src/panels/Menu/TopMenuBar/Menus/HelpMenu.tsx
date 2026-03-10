@@ -12,13 +12,13 @@ import {
   HomeIcon,
   InformationCircleOutlineIcon,
   OpenInBrowserIcon,
-  PhoneIcon,
-  RouteIcon
+  PhoneIcon
 } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
 import { useWebGuiUrl } from '@/util/networkingHooks';
-import { GettingStartedPanel } from '@/windowmanagement/data/LazyLoads';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
+import { useMenuItemsByGroup } from '../../hooks';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function HelpMenu() {
@@ -29,18 +29,11 @@ export function HelpMenu() {
   const webGuiUrl = useWebGuiUrl();
   const navigation = useNavigate();
 
+  const { menuItemsByGroup } = useMenuItemsByGroup(['Help']);
   const { addWindow } = useWindowLayoutProvider();
 
   function openGuiInBrowser() {
     window.open(`${webGuiUrl}/gui`, '_blank');
-  }
-
-  function openGettingStartedTour() {
-    addWindow(<GettingStartedPanel />, {
-      id: 'gettingStartedTour',
-      title: 'Getting Started Tour',
-      floatPosition: { offsetY: 150, offsetX: 350, width: 600, height: 500 }
-    });
   }
 
   return (
@@ -61,15 +54,27 @@ export function HelpMenu() {
         >
           {t('tutorials')}
         </Menu.Item>
-        <Menu.Item
-          onClick={openGettingStartedTour}
-          leftSection={<RouteIcon style={{ transform: 'scale(-1)' }} />}
-        >
-          {t('getting-started')}
-        </Menu.Item>
         <Menu.Item onClick={() => navigation('/routes')} leftSection={<HomeIcon />}>
           {t('routes')}
         </Menu.Item>
+
+        <Menu.Divider />
+        {menuItemsByGroup.Help.map((item) => (
+          <Menu.Item
+            key={item.componentID}
+            leftSection={item.renderIcon?.(IconSize.xs)}
+            onClick={() =>
+              addWindow(item.content, {
+                title: item.title,
+                position: item.preferredPosition,
+                id: item.componentID,
+                floatPosition: item.floatPosition
+              })
+            }
+          >
+            {item.title}
+          </Menu.Item>
+        ))}
 
         <Menu.Divider />
         <Menu.Item

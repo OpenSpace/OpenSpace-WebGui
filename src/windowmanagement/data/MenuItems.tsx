@@ -28,6 +28,7 @@ import { NavigationPanelMenuButton } from '@/panels/NavigationPanel/MenuButton/N
 import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
 import { TimePanelMenuButtonContent } from '@/panels/TimePanel/MenuButton/TimePanelMenuButtonContent';
 import { IconSize } from '@/types/enums';
+import { MenuItemGroup, menuItemGroups } from '@/types/types';
 
 import { FloatWindowPosition, WindowLayoutPosition } from '../WindowLayout/types';
 
@@ -52,7 +53,6 @@ import {
   TimePanel,
   UserPanelsPanel
 } from './LazyLoads';
-import { MenuItemGroup, MenuItemGroups } from '@/types/types';
 
 export interface MenuItem {
   title: string; // Title of the rc-dock tab
@@ -213,7 +213,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     preferredPosition: 'float',
     floatPosition: { offsetY: 150, offsetX: 350, width: 1100, height: 680 },
     defaultVisible: false,
-    group: 'HelpMenu'
+    group: 'Help'
   },
   nightSky: {
     title: 'Night Sky',
@@ -232,7 +232,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     preferredPosition: 'float',
     floatPosition: { offsetY: 150, offsetX: 350, width: 600, height: 500 },
     defaultVisible: false,
-    group: 'HelpMenu'
+    group: 'Help'
   },
   scriptLogPanel: {
     title: 'Script Log',
@@ -283,11 +283,11 @@ if (import.meta.env.DEV) {
     }
   });
 
-  const IsGroupInUse = Object.fromEntries(MenuItemGroups.map((group) => [group, false]));
+  const isGroupInUse = Object.fromEntries(menuItemGroups.map((group) => [group, false]));
   Object.values(menuItemsData).forEach(
-    (menuItem) => (IsGroupInUse[menuItem.group] = true)
+    (menuItem) => (isGroupInUse[menuItem.group] = true)
   );
-  Object.entries(IsGroupInUse).forEach(([group, inUse]) => {
+  Object.entries(isGroupInUse).forEach(([group, inUse]) => {
     if (!inUse) {
       throw Error(`Group '${group}' is not used by any menu item`);
     }
