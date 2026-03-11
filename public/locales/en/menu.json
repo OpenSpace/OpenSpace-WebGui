@@ -84,13 +84,13 @@
       "inavlid-ids": "Invalid layout file: All IDs must match panel IDs"
     }
   },
-  "idle-behavior-toggle": {
-    "label": "Idle behavior",
+  "idle-motion-toggle": {
+    "label": "Idle motion",
     "info": {
-      "heading": "Idle behavior",
+      "heading": "Idle motion",
       "description": [
         "When enabled, the camera will auto-rotate around the current focus until the next navigation interaction.",
-        "Idle behavior can be set to trigger automatically after inactivity. See Orbital Navigator settings for this and other options, including speed."
+        "Idle motion can be set to trigger automatically after inactivity. See Orbital Navigator settings for this and other options, including speed."
       ],
       "keybind-label": "Toggle keybind"
     }
