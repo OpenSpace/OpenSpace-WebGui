@@ -26,10 +26,10 @@ export function FilterListSearchSettingsMenu<T extends object>({
   return (
     <Menu position={'right-start'} withArrow closeOnItemClick={false}>
       <Menu.Target>
-        <ActionIcon flex={'none'}>
+        <ActionIcon flex={'none'} aria-label={t('aria-label')}>
           {noKeyIsSelected && (
             <WarningIcon
-              tooltipText={'Nothing is selected. Search will be empty.'}
+              tooltipText={t('no-selection-tooltip')}
               size={12}
               style={{ position: 'absolute', top: 0, right: 0 }}
             />

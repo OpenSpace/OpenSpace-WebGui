@@ -32,7 +32,7 @@ export function ActionsBreadcrumbs() {
     <Group gap={'xs'} mb={'xs'}>
       <ActionIcon
         onClick={() => goToLevel(currentLevel - 1)}
-        aria-label={t('back-button-aria-label')}
+        aria-label={t('aria-labels.back-button')}
         disabled={isTopLevel}
       >
         <UpArrowIcon />
@@ -44,6 +44,11 @@ export function ActionsBreadcrumbs() {
             p={2}
             variant={'subtle'}
             onClick={() => goToLevel(i)}
+            aria-label={
+              path === ''
+                ? t('aria-labels.home-button')
+                : t('aria-labels.breadcrumb', { path })
+            }
           >
             {path === '' ? <HomeIcon /> : path}
           </Button>

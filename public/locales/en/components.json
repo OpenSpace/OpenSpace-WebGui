@@ -42,7 +42,8 @@
     },
     "search-settings-menu": {
       "no-selection-tooltip": "Nothing is selected. Search will be empty.",
-      "dropdown-menu-label": "Search in"
+      "dropdown-menu-label": "Search in",
+      "aria-label": "Open search settings"
     },
     "input-field": {
       "cancel-button-aria-label": "Clear search input",

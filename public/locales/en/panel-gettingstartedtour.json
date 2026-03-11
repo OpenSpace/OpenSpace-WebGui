@@ -131,6 +131,7 @@
       },
       "pause-time": {
         "intro": "You can also pause the time.",
+        "aria-label": "Pause time",
         "task": {
           "tip": "In the Time Panel, click the pause button <pauseButton/> to pause time."
         },
