@@ -64,7 +64,6 @@ export interface MenuItem {
   floatPosition?: FloatWindowPosition; // Preferred position and size of a floating window given in px,
   // the offset is computed from the panels top left corner to the bottom right corner of the main window
   defaultVisible: boolean; // Whether this panel is visible in the toolbar on startup
-  visible?: boolean; // TODO: investigate whether this is needed (as of 2024-10-23 its not being used)
   group: MenuItemGroup;
 }
 

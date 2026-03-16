@@ -32,22 +32,12 @@ export function useMenuItems(): MenuItemWithConfig[] {
  * @returns All menu items in the user-defined display order.
  */
 export function useMenuItemsOrdered(): MenuItemWithConfig[] {
-  const menuOrder = useAppSelector((state) => state.local.menuItems.order);
+  const menuOrder = useAppSelector((state) => state.local.menuItems.toolbarOrder);
   const menuItems = useMenuItems();
 
   return useMemo(() => {
     const itemsById = Object.fromEntries(menuItems.map((item) => [item.id, item]));
-    return menuOrder
-      .map((id) => {
-        const item = itemsById[id];
-
-        if (!item) {
-          return null;
-        }
-
-        return item;
-      })
-      .filter((item) => item !== null);
+    return menuOrder.map((id) => itemsById[id]).filter((item) => item !== undefined);
   }, [menuOrder, menuItems]);
 }
 
@@ -55,32 +45,30 @@ export function useMenuItemsOrdered(): MenuItemWithConfig[] {
  * Returns the available menu items grouped by their `MenuItemGroup` along with the list
  * of groups included in the result.
  *
- * If `includeGroups` is provided, only those groups are included in the result. Items
+ * If `selectedGroups` is provided, only those groups are included in the result. Items
  * within each group are sorted alphabetically by title, except for `Ungrouped` which
  * preserves the order defined in the menu item configuration.
  *
- * @param includeGroups Optional list of menu groups to include in the result, defaults to
- * all groups
+ * @param selectedGroups Optional list of menu groups to include in the result, defaults
+ * to all groups
  * @returns An object with:
  * - `menuItemsByGroup`: the grouped menu items
  * - `groups`: the included menu groups in order
  */
 export function useMenuItemsByGroup<Included extends MenuItemGroup = MenuItemGroup>(
-  includeGroups?: readonly Included[]
+  selectedGroups?: readonly Included[]
 ) {
   const menuItems = useMenuItems();
 
-  type MappedMenuItems = Record<Included, MenuItemWithConfig[]>;
-
   return useMemo(() => {
     // Keep only the groups that are included
-    const groups = (includeGroups ?? menuItemGroups) as readonly Included[];
+    const groups = (selectedGroups ?? menuItemGroups) as readonly Included[];
 
     // Create a record where the keys are the group and value the list of menu items
     // belonging to that group
     const menuItemsByGroup = Object.fromEntries(
       groups.map((group) => [group, [] as MenuItemWithConfig[]])
-    ) as MappedMenuItems;
+    ) as Record<Included, MenuItemWithConfig[]>;
 
     for (const item of menuItems) {
       if (item.group in menuItemsByGroup) {
@@ -101,7 +89,7 @@ export function useMenuItemsByGroup<Included extends MenuItemGroup = MenuItemGro
     // ['HelpMenu'], so spreading it into deps avoids the referential instability of
     // passing a new array each render
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [menuItems, ...(includeGroups ?? [])]);
+  }, [menuItems, ...(selectedGroups ?? [])]);
 }
 
 function useShowWindowOnStart(shouldShow: boolean, menuItem: MenuItem) {
@@ -175,10 +163,10 @@ export function useStoredLayout() {
     dispatch(setMenuItemsConfig(newLayout));
 
     // Open any new window panel from config. @TODO (anden 2026-03-09): Do we want to
-    // close the panels that set `isOpen = fals`?
+    // close the panels that set `isOpen = false`?
     newLayout
       .filter((item) => item.isOpen)
-      .map((layoutItem) => {
+      .forEach((layoutItem) => {
         const item = menuItemsData[layoutItem.id];
         addWindow(item.content, {
           id: item.componentID,

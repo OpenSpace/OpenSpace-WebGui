@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Menu } from '@mantine/core';
 
-import { DummyIcon } from '@/icons/icons';
+import { FolderIcon } from '@/icons/icons';
 
 import { useMenuItemsByGroup } from '../../hooks';
 import { MenuDropdownWrapper } from '../MenuDropdownWrapper';
@@ -25,7 +25,7 @@ export function WindowsMenu() {
           <Menu.Sub position={'right-start'} withinPortal={false} key={group}>
             <Menu.Sub.Target>
               <Menu.Sub.Item
-                leftSection={<DummyIcon color={'transparent'} />}
+                leftSection={<FolderIcon />}
                 style={{ borderLeft: 'var(--openspace-border-active-placeholder)' }}
               >
                 {group}

@@ -16,7 +16,7 @@ export interface LocalState {
   };
   menuItems: {
     config: MenuItemConfig[];
-    order: Identifier[];
+    toolbarOrder: Identifier[];
   };
 }
 
@@ -34,7 +34,7 @@ const initialState: LocalState = {
   },
   menuItems: {
     config: [],
-    order: []
+    toolbarOrder: []
   }
 };
 
@@ -74,11 +74,11 @@ export const localSlice = createSlice({
     setMenuItemsConfig: (state, action: PayloadAction<MenuItemConfig[]>) => {
       state.menuItems.config = action.payload;
       // We need to update the order when a new config has been set
-      state.menuItems.order = action.payload.map((item) => item.id);
+      state.menuItems.toolbarOrder = action.payload.map((item) => item.id);
       return state;
     },
     setMenuItemsOrder: (state, action: PayloadAction<Identifier[]>) => {
-      state.menuItems.order = action.payload;
+      state.menuItems.toolbarOrder = action.payload;
       return state;
     }
   }
