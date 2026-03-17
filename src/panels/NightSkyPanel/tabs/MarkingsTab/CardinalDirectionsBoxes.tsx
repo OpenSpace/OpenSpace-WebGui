@@ -30,7 +30,7 @@ export function CardinalDirectionsBoxes() {
 
   const hasLoaded = isVisible !== undefined && texture !== undefined;
 
-  // @TODO (2025-05-19, emmbr) These checks, expesially against the parts of the texture
+  // @TODO (2025-05-19, emmbr) These checks, especially against the parts of the texture
   // file names, are fragile agains file name changes. Consider more robust solution
   const variantData = {
     small: {
