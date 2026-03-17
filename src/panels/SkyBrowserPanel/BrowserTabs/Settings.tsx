@@ -51,7 +51,7 @@ export function Settings({ id }: Props) {
 
   const [hoverIndicatorEnabled, setHoverIndicatorEnabled] = useProperty(
     'BoolProperty',
-    'Scene.hoverCircle.Renderable.Enabled'
+    'Scene.HoverIndicator.Renderable.Enabled'
   );
 
   const luaApi = useOpenSpaceApi();

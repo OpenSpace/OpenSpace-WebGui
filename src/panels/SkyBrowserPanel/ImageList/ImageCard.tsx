@@ -31,8 +31,8 @@ export function ImageCard({ image }: Props) {
         <IconImage
           url={image.thumbnail}
           onClick={select}
-          onHover={() => luaApi?.skybrowser.moveCircleToHoverImage(image.url)}
-          onLeave={() => luaApi?.skybrowser.disableHoverCircle()}
+          onHover={() => luaApi?.skybrowser.moveIndicatorToHoverImage(image.url)}
+          onLeave={() => luaApi?.skybrowser.disableHoverIndicator()}
           icon={<PlusIcon />}
           h={'100%'}
           w={'100%'}
