@@ -88,7 +88,11 @@
     },
     "general": {
       "tooltip": "General settings for all browsers",
-      "tab-title": "General"
+      "tab-title": "General",
+      "show-hover-indicator": {
+        "label": "Show image position on hover",
+        "info": "Show an indicator on the sky in OpenSpace when hovering or focusing images in the skybrowser lists. The position of the indicator matches the position of the image interacted with."
+      }
     }
   },
   "tab-content": {
