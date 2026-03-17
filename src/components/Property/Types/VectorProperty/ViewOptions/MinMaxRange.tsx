@@ -81,6 +81,7 @@ export function MinMaxRangeView({
           ]}
           marks={scaledMarks}
           scale={scale}
+          minRange={step}
           onChange={onSliderInput}
           onChangeEnd={() => setIsEditingSlider(false)}
           opacity={disabled ? 0.5 : 1}
