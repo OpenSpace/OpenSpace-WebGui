@@ -57,7 +57,7 @@ export function PropertyOwnerVisibilityCheckbox({
 
   if (visibility === 'Fading' && fade !== undefined) {
     return (
-      <ActionIcon size={IconSize.sm}>
+      <ActionIcon size={IconSize.sm} onClick={() => updateValue(!checked, isImmediate)}>
         <FadeIcon value={fade} size={IconSize.sm} />
       </ActionIcon>
     );
