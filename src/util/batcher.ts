@@ -1,5 +1,3 @@
-import { Update } from '@reduxjs/toolkit';
-
 // This is a class that batches updates
 // to avoid flooding the redux store with too many updates.
 // This is better than throttling as we don't miss any values.
@@ -12,32 +10,33 @@ import { Update } from '@reduxjs/toolkit';
  * Buffers multiple updates and executes them together to reduce the frequency
  * of update function calls. Updates with the same ID will overwrite previous updates.
  *
- * @template T - The type of data contained in the updates
+ * @typeParam T - The type of data contained in the updates
  *
  * @example
  * ```typescript
- * const batcher = new Batcher((updates) => {
- *   console.log('Processing', updates.length, 'updates');
+ * const batcher = new Batcher<MyType>((updates) => {
+ *   console.log('Processing', Object.keys(updates).length, 'updates');
  * }, 100);
  *
- * batcher.add({ id: 'item1', data: someData });
- * batcher.add({ id: 'item2', data: otherData });
- * // Updates are flushed after 100ms
+ * batcher.add({'item1': someData});
+ * batcher.add({'item2': otherData});
+ * batcher.add({'item3': thirdData, 'item4': fourthData});
+ * // Updates are flushed after 50ms
  * ```
  */
-export class Batcher<T> {
-  private buffer = new Map<string, Update<T, string>>();
+export class Batcher<T extends object> {
+  private buffer: Partial<T> = {};
   private timer: number | null = null;
   private flushDelay: number;
-  private updateFunc: (updates: Update<T, string>[]) => void;
+  private updateFunc: (updates: Partial<T>) => void;
 
-  constructor(updateFunc: (updates: Update<T, string>[]) => void, flushDelay = 50) {
+  constructor(updateFunc: (updates: Partial<T>) => void, flushDelay = 50) {
     this.flushDelay = flushDelay;
     this.updateFunc = updateFunc;
   }
 
-  add(update: Update<T, string>) {
-    this.buffer.set(update.id, update);
+  add(update: Partial<T>) {
+    Object.assign(this.buffer, update);
 
     if (this.timer !== null) return;
 
@@ -47,12 +46,12 @@ export class Batcher<T> {
   }
 
   flush() {
-    if (this.buffer.size === 0) return;
-
-    const updates = Array.from(this.buffer.values());
-    this.updateFunc(updates);
-
-    this.buffer.clear();
+    if (Object.keys(this.buffer).length === 0) return;
+    // Make a copy of the buffer so we don't risk any async
+    // issues with a cleared reference
+    const snapshot = { ...this.buffer };
+    this.buffer = {};
     this.timer = null;
+    this.updateFunc(snapshot);
   }
 }

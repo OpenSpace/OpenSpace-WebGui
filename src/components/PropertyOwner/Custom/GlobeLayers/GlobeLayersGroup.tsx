@@ -6,7 +6,8 @@ import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { propertySelectors } from '@/redux/propertyTree/propertySlice';
 import { Identifier, Uri } from '@/types/types';
-import { displayName, isPropertyOwnerVisible } from '@/util/propertyTreeHelpers';
+import { checkVisibility, displayName } from '@/util/propertyTreeHelpers';
+import { enabledPropertyUri, fadePropertyUri } from '@/util/uris';
 
 import { LayerList } from './LayersList';
 
@@ -28,9 +29,15 @@ export function GlobeLayerGroup({ uri, globe, icon }: Props) {
 
   const nActiveLayers = useAppSelector(
     (state) =>
-      layers.filter((layer) =>
-        isPropertyOwnerVisible(propertySelectors.selectEntities(state), layer)
-      ).length
+      layers.filter((layer) => {
+        const fade = propertySelectors.selectById(state, fadePropertyUri(layer))
+          ?.value as number | undefined;
+        const enabled = propertySelectors.selectById(state, enabledPropertyUri(layer))
+          ?.value as boolean | undefined;
+        const visibility = checkVisibility(enabled, fade);
+        // Count the layer as active if it is either Visible or Fading
+        return visibility === 'Visible' || visibility === 'Fading';
+      }).length
   );
 
   return (

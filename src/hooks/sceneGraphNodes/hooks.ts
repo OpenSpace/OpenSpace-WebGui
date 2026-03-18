@@ -37,11 +37,6 @@ export function useSceneGraphNodes({
   const visibilitySceneGraphNodes = useAppSelector(
     (state) => state.local.sceneTree.visibility
   );
-  const visibleUris = useMemo(() => {
-    return Object.entries(visibilitySceneGraphNodes)
-      .filter(([, visibility]) => visibility === 'Visible')
-      .map(([uri]) => uri);
-  }, [visibilitySceneGraphNodes]);
 
   const filteredSceneGraphNodes = useMemo(() => {
     const sceneUris: Uri[] = propertyOwners.Scene?.subowners ?? [];
@@ -77,8 +72,11 @@ export function useSceneGraphNodes({
     if (!onlyVisible) {
       return filteredSceneGraphNodes;
     }
-    return filteredSceneGraphNodes.filter((node) => visibleUris.includes(node.uri));
-  }, [filteredSceneGraphNodes, visibleUris, onlyVisible]);
+
+    return filteredSceneGraphNodes.filter(
+      (node) => visibilitySceneGraphNodes[node.uri] === 'Visible'
+    );
+  }, [filteredSceneGraphNodes, visibilitySceneGraphNodes, onlyVisible]);
 }
 
 /**

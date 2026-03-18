@@ -32,10 +32,10 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
 
   const propertyOwner = usePropertyOwner(uri);
   const guiPath = usePropertyValue('StringProperty', `${uri}.GuiPath`);
-  const description = usePropertyValue('StringProperty', `${uri}.GuiDescription`);
+  let description = usePropertyValue('StringProperty', `${uri}.GuiDescription`);
 
   if (description) {
-    description.replace(/\\n/g, '').replace(/<br>/g, '');
+    description = description.replace(/\\n/g, '').replace(/<br>/g, '');
   }
 
   const identifier = identifierFromUri(uri);

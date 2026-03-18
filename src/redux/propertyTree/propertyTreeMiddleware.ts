@@ -35,11 +35,11 @@ import {
 } from './propertySlice';
 
 export const setPropertyValue = createAction<{ uri: Uri; value: AnyProperty['value'] }>(
-  'propertyTreeTest/setProperty'
+  'propertyTree/setProperty'
 );
 
 export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(
-  'propertyTreeTest/removeUri'
+  'propertyTree/removeUri'
 );
 
 let topic: Topic;
@@ -95,34 +95,41 @@ function flattenPropertyTree(propertyOwner: OpenSpacePropertyOwner) {
 }
 
 export const setupSubscription = createAsyncThunk(
-  'propertyTreeTest/setupSubscription',
+  'propertyTree/setupSubscription',
   async (_, thunkAPI) => {
     topic = api.startTopic('propertyTree', {
       event: 'start_subscription'
     });
 
-    function updateFunc(updates: Update<AnyProperty, Uri>[]) {
-      thunkAPI.dispatch(updateManyProperties(updates));
+    type PropertyUpdate = Record<Uri, Partial<AnyProperty>>;
+
+    function updateFunc(updates: Partial<PropertyUpdate>) {
+      // Convert the updates into the format expected by our RTK updateMany reducer
+      const rtkUpdates: Update<AnyProperty, string>[] = Object.entries(updates)
+        .filter(([, value]) => value !== undefined)
+        .map(([id, value]) => ({
+          id,
+          changes: value as Partial<AnyProperty>
+        }));
+      thunkAPI.dispatch(updateManyProperties(rtkUpdates));
     }
 
     // Instead of throttling each property update, we batch them together.
     // This ensures we don't miss any updates
-    const batcher = new Batcher<AnyProperty>(updateFunc);
+    const batcher = new Batcher<PropertyUpdate>(updateFunc);
 
     (async () => {
-      for await (const data of topic.iterator()) {
-        const property = data as { property: Uri; value: AnyProperty['value'] };
-
-        batcher.add({
-          id: property.property,
-          changes: { value: property.value }
-        });
+      for await (const data of topic.iterator() as AsyncIterable<PropertyUpdate>) {
+        batcher.add(data);
       }
     })();
+
+    // Empty out any remaining updates in the batcher
+    batcher.flush();
   }
 );
 
-const getRoot = createAsyncThunk('propertyTreeTest/getRoot', async (_, thunkAPI) => {
+const getRoot = createAsyncThunk('propertyTree/getRoot', async (_, thunkAPI) => {
   const response = (await api.getProperty(rootOwnerKey)) as
     | AnyProperty
     | OpenSpacePropertyOwner;
@@ -144,7 +151,7 @@ const getRoot = createAsyncThunk('propertyTreeTest/getRoot', async (_, thunkAPI)
 });
 
 export const addUriToPropertyTree = createAsyncThunk(
-  'propertyTreeTest/addUri',
+  'propertyTree/addUri',
   async (uri: Uri) => {
     let uriToFetch = uri;
 

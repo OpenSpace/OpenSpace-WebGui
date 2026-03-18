@@ -35,12 +35,12 @@ export function useSceneGraphNode(identifier: Identifier): PropertyOwner | undef
  */
 export function useIsSceneGraphNodeAdded(): (id: Identifier) => boolean {
   const propertyOwners = useAppSelector((state) =>
-    propertyOwnerSelectors.selectAll(state)
+    propertyOwnerSelectors.selectEntities(state)
   );
 
   function isSceneGraphNodeAdded(identifier: Identifier): boolean {
     const uri = sgnUri(identifier);
-    return propertyOwners.findIndex((po) => po.uri === uri) !== -1;
+    return !!propertyOwners[uri];
   }
 
   return isSceneGraphNodeAdded;
@@ -81,7 +81,7 @@ export function useVisibleProperties(propertyOwner: PropertyOwner | undefined): 
   );
   return (
     propertyOwner?.properties.filter((p) =>
-      isPropertyVisible(allProperties[p].metaData.visibility, visibilityLevelSetting)
+      isPropertyVisible(allProperties[p]?.metaData?.visibility, visibilityLevelSetting)
     ) ?? []
   );
 }

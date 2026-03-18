@@ -1,28 +1,36 @@
 import { PropertyVisibilityNumber } from '@/types/enums';
 import { AnyProperty } from '@/types/Property/property';
-import { Properties, PropertyOwner, Uri, Visibility } from '@/types/types';
+import { PropertyOwner, Uri, Visibility } from '@/types/types';
 
-import { enabledPropertyUri, fadePropertyUri } from './uris';
-
-// Visible means that the object is enabled, based on the values of its enabled and fade
-// properties (which both may be undefined)
+// Determines the visibility state of an object based on its enabled and fade properties
 export function checkVisibility(
   enabled: boolean | undefined,
-  fade: number | undefined
+  fade: number | undefined // Between 0 and 1
 ): Visibility | undefined {
   // Enabled is required, but fade can be optional
+  // If enabled is undefined, there is no visibility information,
+  // so we return undefined
   if (enabled === undefined) {
     return undefined;
   }
+  // If there is no fade property, the object is either Visible or
+  // Hidden based on the enabled value
   if (fade === undefined) {
-    return 'Visible';
+    return enabled ? 'Visible' : 'Hidden';
   }
-  if (enabled === true && fade < 1 && fade > 0) {
-    return 'Fading';
+  // This should technically never happen but checking to be sure
+  if (fade < 0 || fade > 1) {
+    throw new Error(`fade must be between 0 and 1, got ${fade}`);
   }
-  if (enabled === false || fade === 0) {
+  // If both enabled and fade are defined, we can determine the visibility
+  // based on their values
+
+  // Both enabled and fade are defined
+  if (!enabled || fade === 0) {
     return 'Hidden';
-  } else return 'Visible';
+  }
+  // Enabled is true so determining visibility based on fade value
+  return fade === 1 ? 'Visible' : 'Fading';
 }
 
 // Returns whether a property matches the current visiblity settings
@@ -41,15 +49,9 @@ export function displayName(propertyOwner: PropertyOwner): string {
   return propertyOwner.name ?? propertyOwner.identifier ?? propertyOwner.uri;
 }
 
-export function isPropertyOwnerVisible(properties: Properties, uri: Uri): boolean {
-  const enabledValue = properties[enabledPropertyUri(uri)]?.value as boolean | undefined;
-  const fadeValue = properties[fadePropertyUri(uri)]?.value as number | undefined;
-  return checkVisibility(enabledValue, fadeValue) === 'Visible';
-}
-
 export function hasVisibleChildren(
-  propertyOwners: Record<Uri, PropertyOwner>,
-  properties: Record<Uri, AnyProperty>,
+  propertyOwners: Record<Uri, PropertyOwner | undefined>,
+  properties: Record<Uri, AnyProperty | undefined>,
   ownerUri: Uri,
   visiblitySetting: number | undefined
 ): boolean {
@@ -63,9 +65,9 @@ export function hasVisibleChildren(
 
     // Check if any of the owner's properties are visible
     if (
-      visiblitySetting &&
+      visiblitySetting !== undefined &&
       propertyOwner.properties.some((uri: Uri) =>
-        isPropertyVisible(properties[uri].metaData.visibility, visiblitySetting)
+        isPropertyVisible(properties[uri]?.metaData?.visibility, visiblitySetting)
       )
     ) {
       return true;

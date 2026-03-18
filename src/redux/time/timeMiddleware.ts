@@ -1,4 +1,4 @@
-import { createAction, createAsyncThunk, Update } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
@@ -24,26 +24,18 @@ export const setupSubscription = createAsyncThunk(
     });
     const batchTime = 100; // milliseconds
 
-    function updateFunc(updates: Update<OpenSpaceTimeState, string>[]) {
-      const time = Object.fromEntries(
-        updates.map((update) => [update.id, update.changes])
-      );
-      thunkAPI.dispatch(updateTime(time));
+    function updateFunc(updates: Partial<OpenSpaceTimeState>) {
+      thunkAPI.dispatch(updateTime(updates));
     }
 
-    // We want to prevent dispatching updates too frequently as it is a performance bottleneck
-    // Instead of throttling each time update, we batch them together
+    // We want to prevent dispatching updates too frequently as it is a performance
+    // bottleneck. Instead of throttling each time update, we batch them together
     // This ensures we don't miss any updates
     const batcher = new Batcher<OpenSpaceTimeState>(updateFunc, batchTime);
 
     (async () => {
       for await (const data of timeTopic.iterator() as AsyncIterable<OpenSpaceTimeState>) {
-        Object.entries(data).forEach(([key, value]) => {
-          batcher.add({
-            id: key,
-            changes: value
-          });
-        });
+        batcher.add(data);
       }
     })();
   }
@@ -54,7 +46,7 @@ function tearDownSubscription() {
     return;
   }
   timeTopic.talk({
-    event: 'stop_supscription'
+    event: 'stop_subscription'
   });
   timeTopic.cancel();
 }

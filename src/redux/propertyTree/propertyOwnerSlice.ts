@@ -67,7 +67,7 @@ const propertyOwners = createSlice({
     },
     removePropertyOwners: (state, action: PayloadAction<{ uris: Uri[] }>) => {
       const urisToRemove = new Set<string>();
-      const parentUpdates = new Map<string, string[]>();
+      const removedChildrenPerParent = new Map<string, Set<string>>();
 
       // Collect all URIs to remove (including nested subowners)
       action.payload.uris.forEach((uri) => {
@@ -78,26 +78,31 @@ const propertyOwners = createSlice({
         const related = allUris.filter((value) => value.startsWith(`${uri}.`));
         related.forEach((subOwnerUri) => urisToRemove.add(subOwnerUri));
 
-        // Prepare parent link removal
+        // Aggregate removed children per parent to avoid overwriting earlier removals
         const periodPos = uri.lastIndexOf('.');
         const parentUri = uri.substring(0, periodPos);
 
         if (state.entities[parentUri]) {
-          const currentSubowners = state.entities[parentUri].subowners;
-          const updatedSubowners = currentSubowners.filter((subUri) => subUri !== uri);
-          parentUpdates.set(parentUri, updatedSubowners);
+          if (!removedChildrenPerParent.has(parentUri)) {
+            removedChildrenPerParent.set(parentUri, new Set());
+          }
+          removedChildrenPerParent.get(parentUri)!.add(uri);
         }
       });
 
       // Remove all property owners at once
       propertyOwnerAdapter.removeMany(state, Array.from(urisToRemove));
 
-      // Update parent links
+      // Update parent links - filter once using the aggregated set of removed children
       const updates: Update<PropertyOwner, string>[] = Array.from(
-        parentUpdates.entries()
-      ).map(([uri, subowners]) => ({
-        id: uri,
-        changes: { subowners }
+        removedChildrenPerParent.entries()
+      ).map(([parentUri, removedChildren]) => ({
+        id: parentUri,
+        changes: {
+          subowners: (state.entities[parentUri]?.subowners ?? []).filter(
+            (subUri) => !removedChildren.has(subUri)
+          )
+        }
       }));
 
       propertyOwnerAdapter.updateMany(state, updates);
