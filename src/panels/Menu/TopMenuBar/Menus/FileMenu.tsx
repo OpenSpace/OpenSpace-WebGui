@@ -5,11 +5,11 @@ import { modals } from '@mantine/modals';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useProperty } from '@/hooks/properties';
-import { ChevronRightIcon, ConsoleIcon, ExitAppIcon } from '@/icons/icons';
+import { ConsoleIcon, DummyIcon, ExitAppIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import styles from '@/theme/global.module.css';
-import { IconSize } from '@/types/enums';
 
+import { MenuDropdownWrapper } from '../MenuDropdownWrapper';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function FileMenu() {
@@ -50,56 +50,54 @@ export function FileMenu() {
           <Menu.Label>
             {t('profile-label')}: {profile.name}
           </Menu.Label>
-          <TopBarMenuWrapper
-            targetTitle={
-              <Menu.Item rightSection={<ChevronRightIcon size={IconSize.sm} />}>
+          <Menu.Sub position={'right-start'} withinPortal={false}>
+            <Menu.Sub.Target>
+              <Menu.Sub.Item leftSection={<DummyIcon color={'transparent'} />}>
                 {t('about.label')}
-              </Menu.Item>
-            }
-            position={'right-start'}
-            withinPortal={false}
-            closeOnItemClick={false}
-          >
-            <Container py={'xs'} px={'xs'} maw={300}>
-              <Text className={styles.selectable}>{profile.name}</Text>
-              <Menu.Divider />
-              {profile.description && (
-                <Text size={'sm'} mb={'xs'} className={styles.selectable}>
-                  {profile.description}
+              </Menu.Sub.Item>
+            </Menu.Sub.Target>
+            <MenuDropdownWrapper isSubMenu>
+              <Container py={'xs'} px={'xs'} maw={300}>
+                <Text className={styles.selectable}>{profile.name}</Text>
+                <Menu.Divider />
+                {profile.description && (
+                  <Text size={'sm'} mb={'xs'} className={styles.selectable}>
+                    {profile.description}
+                  </Text>
+                )}
+                {profile.author && (
+                  <Text size={'sm'} className={styles.selectable}>
+                    {t('about.author')}: {profile.author}
+                  </Text>
+                )}
+                {profile.license && (
+                  <Text size={'sm'} className={styles.selectable}>
+                    {t('about.license')}: {profile.license}
+                  </Text>
+                )}
+                {profile.url && (
+                  <Text size={'sm'} className={styles.selectable}>
+                    {t('about.url')}:{' '}
+                    <Anchor
+                      href={profile.url}
+                      target={'_blank'}
+                      className={styles.selectable}
+                    >
+                      {profile.url}
+                    </Anchor>
+                  </Text>
+                )}
+                <Text
+                  size={'xs'}
+                  mt={'xs'}
+                  style={{ wordBreak: 'break-word' }}
+                  className={styles.selectable}
+                >
+                  {profile.filePath}
                 </Text>
-              )}
-              {profile.author && (
-                <Text size={'sm'} className={styles.selectable}>
-                  {t('about.author')}: {profile.author}
-                </Text>
-              )}
-              {profile.license && (
-                <Text size={'sm'} className={styles.selectable}>
-                  {t('about.license')}: {profile.license}
-                </Text>
-              )}
-              {profile.url && (
-                <Text size={'sm'} className={styles.selectable}>
-                  {t('about.url')}:{' '}
-                  <Anchor
-                    href={profile.url}
-                    target={'_blank'}
-                    className={styles.selectable}
-                  >
-                    {profile.url}
-                  </Anchor>
-                </Text>
-              )}
-              <Text
-                size={'xs'}
-                mt={'xs'}
-                style={{ wordBreak: 'break-word' }}
-                className={styles.selectable}
-              >
-                {profile.filePath}
-              </Text>
-            </Container>
-          </TopBarMenuWrapper>
+              </Container>
+            </MenuDropdownWrapper>
+          </Menu.Sub>
         </>
       )}
       <Menu.Divider />

@@ -16,7 +16,7 @@ export const addLocalListener = (startListening: AppStartListening) => {
     effect: async (_, listenerApi) => {
       // When the connection opens, we need to create a default configuration for the
       // menu items if it has not been set yet
-      if (listenerApi.getState().local.menuItemsConfig.length === 0) {
+      if (listenerApi.getState().local.menuItems.config.length === 0) {
         listenerApi.dispatch(resetMenuItemConfig());
       }
     }

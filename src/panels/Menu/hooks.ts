@@ -1,37 +1,95 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useProperty } from '@/hooks/properties';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setMenuItemsConfig, setMenuItemVisible } from '@/redux/local/localSlice';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
-import { LogLevel, PropertyVisibilityNumber } from '@/types/enums';
+import { LogLevel } from '@/types/enums';
+import { MenuItemGroup, menuItemGroups } from '@/types/types';
 import { useSaveLoadJsonFiles } from '@/util/fileIOhooks';
 import { MenuItem, menuItemsData } from '@/windowmanagement/data/MenuItems';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
-import { MenuItemConfig } from './types';
+import { MenuItemConfig, MenuItemWithConfig } from './types';
 
-export function useMenuItems(): (MenuItemConfig & MenuItem)[] {
-  const menuItems = useAppSelector((state) => state.local.menuItemsConfig);
-  const [userLevel] = useProperty('OptionProperty', 'OpenSpaceEngine.PropertyVisibility');
+/**
+ * @returns All menu items merged with their static configuration from `menuItemsData`.
+ */
+export function useMenuItems(): MenuItemWithConfig[] {
+  const config = useAppSelector((state) => state.local.menuItems.config);
 
-  // Filter the menu items based on the user level
-  const menuItemsAtUserLevel = menuItems.filter((item) => {
-    // Always include the item if it is not advanced
-    if (!menuItemsData[item.id].advanced) {
-      return true;
-    } else {
-      // For advanced items, check the user level
-      return userLevel && userLevel > PropertyVisibilityNumber.User;
+  return useMemo(
+    () =>
+      config.map((item) => ({
+        ...item,
+        ...menuItemsData[item.id]
+      })),
+    [config]
+  );
+}
+
+/**
+ * @returns All menu items in the user-defined display order.
+ */
+export function useMenuItemsOrdered(): MenuItemWithConfig[] {
+  const menuOrder = useAppSelector((state) => state.local.menuItems.toolbarOrder);
+  const menuItems = useMenuItems();
+
+  return useMemo(() => {
+    const itemsById = Object.fromEntries(menuItems.map((item) => [item.id, item]));
+    return menuOrder.map((id) => itemsById[id]).filter((item) => item !== undefined);
+  }, [menuOrder, menuItems]);
+}
+
+/**
+ * Returns the available menu items grouped by their `MenuItemGroup` along with the list
+ * of groups included in the result.
+ *
+ * If `selectedGroups` is provided, only those groups are included in the result. Items
+ * within each group are sorted alphabetically by title, except for `Ungrouped` which
+ * preserves the order defined in the menu item configuration.
+ *
+ * @param selectedGroups Optional list of menu groups to include in the result, defaults
+ * to all groups
+ * @returns An object with:
+ * - `menuItemsByGroup`: the grouped menu items
+ * - `groups`: the included menu groups in order
+ */
+export function useMenuItemsByGroup<Included extends MenuItemGroup = MenuItemGroup>(
+  selectedGroups?: readonly Included[]
+) {
+  const menuItems = useMenuItems();
+
+  return useMemo(() => {
+    // Keep only the groups that are included
+    const groups = (selectedGroups ?? menuItemGroups) as readonly Included[];
+
+    // Create a record where the keys are the group and value the list of menu items
+    // belonging to that group
+    const menuItemsByGroup = Object.fromEntries(
+      groups.map((group) => [group, [] as MenuItemWithConfig[]])
+    ) as Record<Included, MenuItemWithConfig[]>;
+
+    for (const item of menuItems) {
+      if (item.group in menuItemsByGroup) {
+        menuItemsByGroup[item.group as Included].push(item);
+      }
     }
-  });
 
-  const result: (MenuItemConfig & MenuItem)[] = menuItemsAtUserLevel.map((item) => {
-    return { ...item, ...menuItemsData[item.id] };
-  });
+    // Sort the groups in alphabetical order, the `Ungrouped`group keeps the implicit
+    // order defined by the `menuItemsData`
+    for (const group of groups) {
+      if (group !== 'Ungrouped') {
+        menuItemsByGroup[group].sort((a, b) => a.title.localeCompare(b.title));
+      }
+    }
 
-  return result;
+    return { groups, menuItemsByGroup };
+    // includeGroups is typically a static array literal at the call site, e.g.,
+    // ['HelpMenu'], so spreading it into deps avoids the referential instability of
+    // passing a new array each render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [menuItems, ...(selectedGroups ?? [])]);
 }
 
 function useShowWindowOnStart(shouldShow: boolean, menuItem: MenuItem) {
@@ -56,8 +114,9 @@ function useShowWindowOnStart(shouldShow: boolean, menuItem: MenuItem) {
 
 export function useStoredLayout() {
   const { t } = useTranslation('menu', { keyPrefix: 'error-load-toolbar-layout' });
+  const { addWindow } = useWindowLayoutProvider();
 
-  const menuItems = useAppSelector((state) => state.local.menuItemsConfig);
+  const menuItems = useAppSelector((state) => state.local.menuItems.config);
   const hasMission = useAppSelector((state) => state.missions.isInitialized);
   const hasStartedBefore = useAppSelector((state) => state.profile.hasStartedBefore);
   const showGettingsStartedTour =
@@ -90,8 +149,7 @@ export function useStoredLayout() {
       );
       return;
     }
-    // We have to ensure that all ids are valid before we can set
-    // the new layout
+    // We have to ensure that all ids are valid before we can set the new layout
     const isValid = newLayout.every((newItem) =>
       menuItems.find((existingItem) => existingItem.id === newItem.id)
     );
@@ -101,13 +159,27 @@ export function useStoredLayout() {
       );
       return;
     }
-    // If it is valid we set the new layout
+    // If it is valid we set the new layout and order
     dispatch(setMenuItemsConfig(newLayout));
+
+    // Open any new window panel from config. @TODO (anden 2026-03-09): Do we want to
+    // close the panels that set `isOpen = false`?
+    newLayout
+      .filter((item) => item.isOpen)
+      .forEach((layoutItem) => {
+        const item = menuItemsData[layoutItem.id];
+        addWindow(item.content, {
+          id: item.componentID,
+          title: item.title,
+          position: item.preferredPosition,
+          floatPosition: item.floatPosition
+        });
+      });
   }
 
   async function saveLayout() {
-    // Our lua function can't read the object if it is an array so
-    // we need to convert it to an object
+    // Our lua function can't read the object if it is an array so we need to convert it
+    // to an object
     const object = menuItems.reduce<Record<string, MenuItemConfig>>(
       (accumulator, item, index) => {
         accumulator[index.toString()] = item;

@@ -19,7 +19,11 @@ export {
   FiChevronsDown as ChevronsDownIcon,
   FiChevronsUp as ChevronsUpIcon
 } from 'react-icons/fi';
-export { GiNightSky as NightSkyIcon, GiPencil as PencilIcon } from 'react-icons/gi';
+export {
+  GiPlasticDuck as DummyIcon,
+  GiNightSky as NightSkyIcon,
+  GiPencil as PencilIcon
+} from 'react-icons/gi';
 export { GoBrowser as BrowserIcon } from 'react-icons/go';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
 export { ImSphere as GridSphereIcon } from 'react-icons/im';
