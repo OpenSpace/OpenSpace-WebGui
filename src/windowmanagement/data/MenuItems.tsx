@@ -282,11 +282,9 @@ if (import.meta.env.DEV) {
     }
   });
 
-  const isGroupInUse = Object.fromEntries(menuItemGroups.map((group) => [group, false]));
-  Object.values(menuItemsData).forEach(
-    (menuItem) => (isGroupInUse[menuItem.group] = true)
-  );
-  Object.entries(isGroupInUse).forEach(([group, inUse]) => {
+  const groupUsage = Object.fromEntries(menuItemGroups.map((group) => [group, false]));
+  Object.values(menuItemsData).forEach((menuItem) => (groupUsage[menuItem.group] = true));
+  Object.entries(groupUsage).forEach(([group, inUse]) => {
     if (!inUse) {
       throw Error(`Group '${group}' is not used by any menu item`);
     }
