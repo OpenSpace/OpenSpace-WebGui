@@ -21,7 +21,12 @@ import {
   addPropertyOwners,
   removePropertyOwners
 } from '../propertyTree/propertyOwnerSlice';
-import { propertySelectors, updateMany, updateOne } from '../propertyTree/propertySlice';
+import {
+  propertySelectors,
+  updateMany,
+  updateOne,
+  upsertMany
+} from '../propertyTree/propertySlice';
 
 import { removeSceneGraphNode, setMenuItemsConfig, setVisibility } from './localSlice';
 
@@ -127,6 +132,28 @@ export const addLocalListener = (startListening: AppStartListening) => {
         ) {
           listenerApi.dispatch(
             updateSgnVisibility({ uri, value: changes.value as boolean | number })
+          );
+        }
+      }
+    }
+  });
+
+  // Handle the initial property load (upsertMany) in addition to incremental updates
+  // (updateMany). This ensures visibility is set correctly regardless of whether
+  // addPropertyOwners or upsertMany runs first.
+  startListening({
+    matcher: upsertMany.match,
+    effect: async (action, listenerApi) => {
+      const properties = Array.isArray(action.payload)
+        ? action.payload
+        : (Object.values(action.payload) as AnyProperty[]);
+      for (const property of properties) {
+        if (sgnUpdatedVisibilityProperty(property.uri, property.value)) {
+          listenerApi.dispatch(
+            updateSgnVisibility({
+              uri: property.uri,
+              value: property.value as boolean | number
+            })
           );
         }
       }
