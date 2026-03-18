@@ -88,9 +88,11 @@ export const addLocalListener = (startListening: AppStartListening) => {
             listenerApi.getState(),
             enabledPropertyUri(renderable)
           );
+          const enabledValue = enabled?.value;
+          const fadeValue = fade?.value;
           const visibility = checkVisibility(
-            enabled?.value as boolean | undefined,
-            fade?.value as number | undefined
+            typeof enabledValue === 'boolean' ? enabledValue : undefined,
+            typeof fadeValue === 'number' ? fadeValue : undefined
           );
           if (visibility !== undefined) {
             listenerApi.dispatch(setVisibility({ uri: owner.uri, visibility }));
@@ -139,19 +141,23 @@ export const addLocalListener = (startListening: AppStartListening) => {
       const sceneGraphNodeUri = sgnUri(sgnIdentifierFromSubownerUri(uri));
       const renderableUri = sgnRenderableUri(sceneGraphNodeUri);
 
+      const enabledStateValue = propertySelectors.selectById(
+        listenerApi.getState(),
+        enabledPropertyUri(renderableUri)
+      )?.value;
+      const fadeStateValue = propertySelectors.selectById(
+        listenerApi.getState(),
+        fadePropertyUri(renderableUri)
+      )?.value;
+
       const currentEnabled = isEnabledPropertyUri(uri)
-        ? (value as boolean)
-        : (propertySelectors.selectById(
-            listenerApi.getState(),
-            enabledPropertyUri(renderableUri)
-          )?.value as boolean);
+        ? (typeof value === 'boolean' ? value : undefined)
+        : (typeof enabledStateValue === 'boolean' ? enabledStateValue : undefined);
 
       const currentFade = isFadePropertyUri(uri)
-        ? (value as number)
-        : (propertySelectors.selectById(
-            listenerApi.getState(),
-            fadePropertyUri(renderableUri)
-          )?.value as number);
+        ? (typeof value === 'number' ? value : undefined)
+        : (typeof fadeStateValue === 'number' ? fadeStateValue : undefined);
+
       const visibility = checkVisibility(currentEnabled, currentFade);
 
       const prevVisibility =
