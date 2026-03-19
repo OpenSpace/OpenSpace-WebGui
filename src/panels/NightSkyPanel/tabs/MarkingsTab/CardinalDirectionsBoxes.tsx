@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { Group } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
@@ -31,7 +32,7 @@ export function CardinalDirectionsBoxes() {
 
   // @TODO (2025-05-19, emmbr) These checks, especially against the parts of the texture
   // file names, are fragile agains file name changes. Consider more robust solution
-  const data = {
+  const MarkingData = {
     small: {
       showAction: 'os.nightsky.ShowNeswLettersSmall',
       hideAction: 'os.nightsky.HideNesw',
@@ -49,19 +50,23 @@ export function CardinalDirectionsBoxes() {
     }
   };
 
+  type Variant = keyof typeof MarkingData;
+
   function isTextureEnabled(textureCheck: string): boolean {
     return texture ? texture.includes(textureCheck) : false;
   }
 
-  function isChecked(variant: keyof typeof data): boolean {
+  function isChecked(variant: Variant): boolean {
     if (!isVisible) {
       return false;
     }
-    return isTextureEnabled(data[variant].textureCheck);
+    return isTextureEnabled(MarkingData[variant].textureCheck);
   }
 
-  function onChange(checked: boolean, variant: keyof typeof data) {
-    const variantData = data[variant];
+  function onChange(variant: Variant) {
+    const variantData = MarkingData[variant];
+
+    const checked = !isChecked(variant);
     if (checked) {
       luaApi?.action.triggerAction(variantData.showAction);
     } else {
@@ -70,33 +75,35 @@ export function CardinalDirectionsBoxes() {
   }
 
   return (
-    <>
+    <Group gap={'lg'}>
+      <Group gap={'xs'}>
+        <MarkingBoxLayout
+          onClick={() => onChange('small')}
+          checked={isChecked('small')}
+          aria-label={t('aria-labels.small')}
+          title={t('buttons.small')}
+          icon={<CompassSmallIcon size={IconSize.sm} />}
+          isLoading={!hasLoaded}
+          radio
+        />
+        <MarkingBoxLayout
+          onClick={() => onChange('large')}
+          checked={isChecked('large')}
+          aria-label={t('aria-labels.large')}
+          title={t('buttons.large')}
+          icon={<CompassLargeIcon size={IconSize.sm} />}
+          isLoading={!hasLoaded}
+          radio
+        />
+      </Group>
       <MarkingBoxLayout
-        onClick={() => onChange(!isChecked('small'), 'small')}
-        checked={isChecked('small')}
-        aria-label={t('aria-labels.small')}
-        title={t('buttons.small')}
-        icon={<CompassSmallIcon size={IconSize.md} />}
-        isLoading={!hasLoaded}
-        radio
-      />
-      <MarkingBoxLayout
-        onClick={() => onChange(!isChecked('large'), 'large')}
-        checked={isChecked('large')}
-        aria-label={t('aria-labels.large')}
-        title={t('buttons.large')}
-        icon={<CompassLargeIcon size={IconSize.md} />}
-        isLoading={!hasLoaded}
-        radio
-      />
-      <MarkingBoxLayout
-        onClick={() => onChange(!isChecked('marks'), 'marks')}
+        onClick={() => onChange('marks')}
         checked={isChecked('marks')}
         aria-label={t('aria-labels.marks')}
         title={t('buttons.marks')}
-        icon={<CompassMarksIcon size={IconSize.md} />}
+        icon={<CompassMarksIcon size={IconSize.sm} />}
         isLoading={!hasLoaded}
       />
-    </>
+    </Group>
   );
 }

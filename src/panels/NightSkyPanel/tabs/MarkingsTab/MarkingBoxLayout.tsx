@@ -45,16 +45,16 @@ export function MarkingBoxLayout({
   const Indicator = radio ? Radio.Indicator : Checkbox.Indicator;
 
   return (
-    <Box flex={'0 0 1'} miw={120}>
+    <Box flex={'0 0 1'} miw={100}>
       <Skeleton visible={isLoading}>
         <CardComponent
           checked={checked}
           onClick={onClick}
-          p={'sm'}
+          p={'xs'}
           bg={'dark.8'}
           {...other}
         >
-          <Group wrap={'nowrap'} align={'center'}>
+          <Group wrap={'nowrap'} align={'center'} gap={'xs'}>
             <Indicator />
             <Stack gap={2} align={'center'} flex={1}>
               {icon}
