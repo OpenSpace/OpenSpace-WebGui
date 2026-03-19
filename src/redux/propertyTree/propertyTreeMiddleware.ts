@@ -119,11 +119,14 @@ export const setupSubscription = createAsyncThunk(
     const batcher = new Batcher<PropertyUpdate>(updateFunc);
 
     (async () => {
-      for await (const data of topic.iterator() as AsyncIterable<{
+      for await (const { property, ...changes } of topic.iterator() as AsyncIterable<{
         property: Uri;
-        value: AnyProperty['value'];
+        value?: AnyProperty['value'];
+        metaData?: AnyProperty['metaData'];
       }>) {
-        batcher.add({ [data.property]: { value: data.value } });
+        batcher.add({
+          [property]: { ...(changes as Partial<AnyProperty>) }
+        });
       }
     })();
 
