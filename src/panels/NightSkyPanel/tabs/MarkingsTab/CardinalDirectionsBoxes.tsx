@@ -4,7 +4,7 @@ import { Checkbox, Radio } from '@mantine/core';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
-import { CompassLargeIcon, CompassSmallIcon } from '@/icons/icons';
+import { CompassLargeIcon, CompassMarksIcon, CompassSmallIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
 import { MarkingBoxLayout } from './MarkingBoxLayout';
@@ -106,7 +106,7 @@ export function CardinalDirectionsBoxes() {
           />
         }
         title={t('buttons.marks')}
-        icon={<CompassLargeIcon size={IconSize.md} />}
+        icon={<CompassMarksIcon size={IconSize.md} />}
         isLoading={!hasLoaded}
       />
     </>
