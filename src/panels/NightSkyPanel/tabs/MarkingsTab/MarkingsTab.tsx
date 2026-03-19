@@ -16,7 +16,7 @@ import {
 import { IconSize } from '@/types/enums';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
-import { CardinalDirectionsBoxes } from './CardinalDirectionsBoxes';
+import { CardinalDirections } from './CardinalDirections';
 import { ConstellationsShowArtBox } from './ConstellationsShowArtBox';
 import { ConstellationsShowLabelsBox } from './ConstellationsShowLabelsBox';
 import { ConstellationShowLinesBox } from './ConstellationsShowLinesBox';
@@ -143,7 +143,7 @@ export function MarkingsTab() {
       <Title order={2} my={'sm'}>
         {t('cardinal-directions.title')}
       </Title>
-      <CardinalDirectionsBoxes />
+      <CardinalDirections />
     </Box>
   );
 }

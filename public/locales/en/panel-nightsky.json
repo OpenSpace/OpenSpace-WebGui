@@ -51,8 +51,7 @@
         "marks": "Marks"
       },
       "aria-labels": {
-        "small": "Show cardinal directions (small)",
-        "large": "Show cardianl directions (large)",
+        "toggle": "Toggle cardinal directions visibility and size",
         "marks": "Show marks on cardinal directions"
       }
     }
