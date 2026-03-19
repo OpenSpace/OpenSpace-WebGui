@@ -1,13 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { Group } from '@mantine/core';
+import { SegmentedControl, Stack, Switch, Text } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
-import { CompassLargeIcon, CompassMarksIcon, CompassSmallIcon } from '@/icons/icons';
+import { CompassLargeIcon, CompassSmallIcon, EyeOffIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
-
-import { MarkingBoxLayout } from './MarkingBoxLayout';
 
 // @TODO (2025-05-19, emmbr) This component needs logic for checking if the used actions
 // exist. However, for this we need to be able to access the actions state using the
@@ -32,7 +30,7 @@ export function CardinalDirectionsBoxes() {
 
   // @TODO (2025-05-19, emmbr) These checks, especially against the parts of the texture
   // file names, are fragile agains file name changes. Consider more robust solution
-  const MarkingData = {
+  const Data = {
     small: {
       showAction: 'os.nightsky.ShowNeswLettersSmall',
       hideAction: 'os.nightsky.HideNesw',
@@ -50,60 +48,69 @@ export function CardinalDirectionsBoxes() {
     }
   };
 
-  type Variant = keyof typeof MarkingData;
+  type Variant = keyof typeof Data;
 
   function isTextureEnabled(textureCheck: string): boolean {
     return texture ? texture.includes(textureCheck) : false;
   }
 
-  function isChecked(variant: Variant): boolean {
+  function isEnabled(variant: Variant): boolean {
     if (!isVisible) {
       return false;
     }
-    return isTextureEnabled(MarkingData[variant].textureCheck);
+    return isVisible && isTextureEnabled(Data[variant].textureCheck);
   }
 
-  function onChange(variant: Variant) {
-    const variantData = MarkingData[variant];
-
-    const checked = !isChecked(variant);
-    if (checked) {
-      luaApi?.action.triggerAction(variantData.showAction);
-    } else {
-      luaApi?.action.triggerAction(variantData.hideAction);
+  function handleSegmentChange(value: string) {
+    if (value === 'none') {
+      luaApi?.action.triggerAction(Data['small'].hideAction);
+      luaApi?.action.triggerAction(Data['large'].hideAction);
     }
+    luaApi?.action.triggerAction(Data[value as Variant].showAction);
+  }
+
+  function label(text: string, icon: React.JSX.Element) {
+    return (
+      <Stack gap={0} align={'center'}>
+        {icon}
+        <Text>{text}</Text>
+      </Stack>
+    );
   }
 
   return (
-    <Group gap={'lg'}>
-      <Group gap={'xs'}>
-        <MarkingBoxLayout
-          onClick={() => onChange('small')}
-          checked={isChecked('small')}
-          aria-label={t('aria-labels.small')}
-          title={t('buttons.small')}
-          icon={<CompassSmallIcon size={IconSize.sm} />}
-          isLoading={!hasLoaded}
-          radio
-        />
-        <MarkingBoxLayout
-          onClick={() => onChange('large')}
-          checked={isChecked('large')}
-          aria-label={t('aria-labels.large')}
-          title={t('buttons.large')}
-          icon={<CompassLargeIcon size={IconSize.sm} />}
-          isLoading={!hasLoaded}
-          radio
-        />
-      </Group>
-      <MarkingBoxLayout
-        onClick={() => onChange('marks')}
-        checked={isChecked('marks')}
-        aria-label={t('aria-labels.marks')}
-        title={t('buttons.marks')}
-        icon={<CompassMarksIcon size={IconSize.sm} />}
-        isLoading={!hasLoaded}
+    <Stack>
+      <SegmentedControl
+        color={'blue'}
+        onChange={handleSegmentChange}
+        data={[
+          {
+            value: 'none',
+            label: label(t('buttons.none'), <EyeOffIcon size={IconSize.sm} />)
+          },
+          {
+            value: 'small',
+            label: label(t('buttons.small'), <CompassSmallIcon size={IconSize.sm} />)
+          },
+          {
+            value: 'large',
+            label: label(t('buttons.large'), <CompassLargeIcon size={IconSize.sm} />)
+          }
+        ]}
+        size={'sm'}
       />
-    </Group>
+      <Switch
+        checked={isEnabled('marks')}
+        onChange={(event) =>
+          luaApi?.action.triggerAction(
+            event.target.checked ? Data['marks'].showAction : Data['marks'].hideAction
+          )
+        }
+        label={t('buttons.marks')}
+        aria-label={t('aria-labels.marks')}
+        size={'sm'}
+        disabled={!hasLoaded || (!isEnabled('small') && !isEnabled('large'))}
+      />
+    </Stack>
   );
 }

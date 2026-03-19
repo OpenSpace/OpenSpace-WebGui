@@ -45,6 +45,7 @@
     "cardinal-directions": {
       "title": "Cardinal Directions",
       "buttons": {
+        "none": "None",
         "small": "Small",
         "large": "Large",
         "marks": "Marks"
