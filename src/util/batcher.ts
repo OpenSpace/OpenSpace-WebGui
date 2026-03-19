@@ -6,8 +6,8 @@
 /**
  * Collects updates and flushes them in batches after a delay.
  *
- * Buffers multiple updates and executes them together to reduce the frequency
- * of update function calls. Updates with the same ID will overwrite previous updates.
+ * Buffers multiple updates and executes them together to reduce the frequency of update
+ * function calls. Updates with the same ID will overwrite previous updates.
  *
  * @typeParam T - The type of data contained in the updates
  *
