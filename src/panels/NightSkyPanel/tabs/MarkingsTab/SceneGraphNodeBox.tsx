@@ -1,5 +1,4 @@
-import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
-import { usePropertyOwner } from '@/hooks/propertyOwner';
+import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { Identifier } from '@/types/types';
 import { sgnRenderableUri, sgnUri } from '@/util/propertyTreeHelpers';
 
@@ -14,13 +13,17 @@ interface Props {
   identifier: Identifier;
 }
 
-export function NightSkyMarkingBox({ title, icon, identifier }: Props) {
+export function SceneGraphNodeBox({ title, icon, identifier }: Props) {
   const uri = sgnRenderableUri(sgnUri(identifier));
   const propertyOwner = usePropertyOwner(uri);
 
+  const { isVisible, setVisibility } = usePropertyOwnerVisibility(uri);
+
   return (
     <MarkingBoxLayout
-      checkbox={<PropertyOwnerVisibilityCheckbox uri={uri} />}
+      onClick={() => setVisibility(!isVisible)}
+      checked={isVisible || false}
+      aria-label={title} // TODO: Update with correct aria-label
       title={title}
       icon={icon}
       isLoading={!propertyOwner}

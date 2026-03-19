@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Checkbox } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
@@ -37,13 +36,9 @@ export function ConstellationsShowLabelsBox({ title, icon }: Props) {
 
   return (
     <MarkingBoxLayout
-      checkbox={
-        <Checkbox
-          onChange={(event) => checkboxChange(event.currentTarget.checked)}
-          checked={isVisible}
-          aria-label={t('aria-labels.labels')}
-        />
-      }
+      onClick={() => checkboxChange(!isVisible)}
+      checked={isVisible || false}
+      aria-label={t('aria-labels.labels')}
       title={title}
       icon={icon}
       isLoading={!propertyOwner}

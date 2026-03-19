@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Button, SimpleGrid, Title } from '@mantine/core';
+import { Box, Button, Group, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
@@ -19,7 +19,7 @@ import { CardinalDirectionsBoxes } from './CardinalDirectionsBoxes';
 import { ConstellationsShowArtBox } from './ConstellationsShowArtBox';
 import { ConstellationsShowLabelsBox } from './ConstellationsShowLabelsBox';
 import { ConstellationShowLinesBox } from './ConstellationsShowLinesBox';
-import { NightSkyMarkingBox } from './MarkingBox';
+import { SceneGraphNodeBox } from './SceneGraphNodeBox';
 
 export function MarkingsTab() {
   const { t } = useTranslation('panel-nightsky', { keyPrefix: 'markings' });
@@ -41,81 +41,81 @@ export function MarkingsTab() {
       <Title order={2} my={'sm'}>
         {t('altitude-azimuth.title')}
       </Title>
-      <SimpleGrid cols={4} spacing={'sm'}>
-        <NightSkyMarkingBox
+      <Group gap={'xs'}>
+        <SceneGraphNodeBox
           title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.md} />}
           identifier={'AltAzGrid'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeBox
           title={t('altitude-azimuth.buttons.meridian')}
           icon={<LineIcon size={IconSize.md} />}
           identifier={'MeridianPlane'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeBox
           title={t('common-button-labels.labels')}
           icon={<AbcIcon size={IconSize.md} />}
           identifier={'AltAzGridLabels'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeBox
           title={t('altitude-azimuth.buttons.zenith')}
           icon={<SingleDotIcon size={IconSize.md} />}
           identifier={'ZenithDot'}
         />
-      </SimpleGrid>
+      </Group>
 
       <Title order={2} my={'sm'}>
         {t('ecliptic.title')}
       </Title>
-      <SimpleGrid cols={4} spacing={'sm'}>
-        <NightSkyMarkingBox
+      <Group gap={'xs'}>
+        <SceneGraphNodeBox
           title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.md} />}
           identifier={'EclipticSphere'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeBox
           title={t('common-button-labels.line_one')}
           icon={<LineIcon size={IconSize.md} />}
           identifier={'EclipticLine'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeBox
           title={t('common-button-labels.labels')}
           icon={<AbcIcon size={IconSize.md} />}
           identifier={'EclipticSphereLabels'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeBox
           title={t('ecliptic.buttons.band')}
           icon={<BandIcon size={IconSize.md} />}
           identifier={'EclipticBand'}
         />
-      </SimpleGrid>
+      </Group>
 
       <Title order={2} my={'sm'}>
         {t('equatorial.title')}
       </Title>
-      <SimpleGrid cols={4} spacing={'sm'}>
-        <NightSkyMarkingBox
+      <Group gap={'xs'}>
+        <SceneGraphNodeBox
           title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.md} />}
           identifier={'EquatorialSphere'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeBox
           title={t('common-button-labels.line_one')}
           icon={<LineIcon size={IconSize.md} />}
           identifier={'EquatorialLine'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeBox
           title={t('common-button-labels.labels')}
           icon={<AbcIcon size={IconSize.md} />}
           identifier={'EquatorialSphereLabels'}
         />
-      </SimpleGrid>
+      </Group>
 
       <Title order={2} my={'sm'}>
         {t('constellations.title')}
       </Title>
-      <SimpleGrid cols={4} spacing={'sm'}>
-        <NightSkyMarkingBox
+      <Group gap={'xs'}>
+        <SceneGraphNodeBox
           title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.md} />}
           identifier={'ConstellationBounds'}
@@ -132,14 +132,14 @@ export function MarkingsTab() {
           title={t('common-button-labels.labels')}
           icon={<AbcIcon size={IconSize.md} />}
         />
-      </SimpleGrid>
+      </Group>
 
       <Title order={2} my={'sm'}>
         {t('cardinal-directions.title')}
       </Title>
-      <SimpleGrid cols={4} spacing={'sm'}>
+      <Group gap={'xs'}>
         <CardinalDirectionsBoxes />
-      </SimpleGrid>
+      </Group>
     </Box>
   );
 }

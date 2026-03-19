@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Checkbox } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
@@ -42,15 +41,13 @@ export function ConstellationShowLinesBox({ title, icon }: Props) {
     }
   }
 
+  const checked = (isVisible && elementsEnabled) || false;
+
   return (
     <MarkingBoxLayout
-      checkbox={
-        <Checkbox
-          onChange={(event) => checkboxChange(event.currentTarget.checked)}
-          checked={isVisible && elementsEnabled}
-          aria-label={t('aria-labels.lines')}
-        />
-      }
+      onClick={() => checkboxChange(!checked)}
+      checked={checked}
+      aria-label={t('aria-labels.lines')}
       title={title}
       icon={icon}
       isLoading={!propertyOwner}

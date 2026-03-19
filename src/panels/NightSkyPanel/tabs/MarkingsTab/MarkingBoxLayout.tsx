@@ -1,24 +1,68 @@
-import { Group, Paper, Skeleton, Stack, Text } from '@mantine/core';
+import {
+  Box,
+  Checkbox,
+  CheckboxCardProps,
+  Group,
+  Radio,
+  RadioCardProps,
+  Skeleton,
+  Stack,
+  Text
+} from '@mantine/core';
 
-interface Props {
-  checkbox: React.JSX.Element;
+interface BaseProps {
   title: string;
   icon: React.JSX.Element;
   isLoading?: boolean;
+  onClick: () => void;
+  checked: boolean;
 }
 
-export function MarkingBoxLayout({ checkbox, title, icon, isLoading }: Props) {
+interface CheckboxProps
+  extends BaseProps,
+    Omit<CheckboxCardProps, 'checked' | 'onClick' | 'title'> {
+  radio?: false;
+}
+
+interface RadioProps
+  extends BaseProps,
+    Omit<RadioCardProps, 'checked' | 'onClick' | 'title'> {
+  radio: true;
+}
+
+type Props = CheckboxProps | RadioProps;
+
+export function MarkingBoxLayout({
+  title,
+  icon,
+  isLoading,
+  onClick,
+  checked,
+  radio = false,
+  ...other
+}: Props) {
+  const CardComponent = radio ? Radio.Card : Checkbox.Card;
+  const Indicator = radio ? Radio.Indicator : Checkbox.Indicator;
+
   return (
-    <Skeleton visible={isLoading}>
-      <Paper py={'xs'} px={'sm'}>
-        <Group justify={'center'} gap={'xs'}>
-          {checkbox}
-          <Stack align={'center'} flex={1} gap={3}>
-            {icon}
-            <Text>{title}</Text>
-          </Stack>
-        </Group>
-      </Paper>
-    </Skeleton>
+    <Box flex={'0 0 1'} miw={120}>
+      <Skeleton visible={isLoading}>
+        <CardComponent
+          checked={checked}
+          onClick={onClick}
+          p={'sm'}
+          bg={'dark.8'}
+          {...other}
+        >
+          <Group wrap={'nowrap'} align={'center'}>
+            <Indicator />
+            <Stack gap={2} align={'center'} flex={1}>
+              {icon}
+              <Text>{title}</Text>
+            </Stack>
+          </Group>
+        </CardComponent>
+      </Skeleton>
+    </Box>
   );
 }

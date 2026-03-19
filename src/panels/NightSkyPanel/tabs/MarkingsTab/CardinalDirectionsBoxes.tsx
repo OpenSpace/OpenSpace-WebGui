@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { Checkbox, Radio } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
@@ -32,7 +31,7 @@ export function CardinalDirectionsBoxes() {
 
   // @TODO (2025-05-19, emmbr) These checks, especially against the parts of the texture
   // file names, are fragile agains file name changes. Consider more robust solution
-  const variantData = {
+  const data = {
     small: {
       showAction: 'os.nightsky.ShowNeswLettersSmall',
       hideAction: 'os.nightsky.HideNesw',
@@ -50,61 +49,50 @@ export function CardinalDirectionsBoxes() {
     }
   };
 
-  function isTextureForVariantEnabled(variant: keyof typeof variantData): boolean {
-    const data = variantData[variant];
-    return texture ? texture.includes(data.textureCheck) : false;
+  function isTextureEnabled(textureCheck: string): boolean {
+    return texture ? texture.includes(textureCheck) : false;
   }
 
-  function isChecked(variant: keyof typeof variantData): boolean {
+  function isChecked(variant: keyof typeof data): boolean {
     if (!isVisible) {
       return false;
     }
-    return isTextureForVariantEnabled(variant);
+    return isTextureEnabled(data[variant].textureCheck);
   }
 
-  function onChange(checked: boolean, variant: keyof typeof variantData) {
-    const data = variantData[variant];
+  function onChange(checked: boolean, variant: keyof typeof data) {
+    const variantData = data[variant];
     if (checked) {
-      luaApi?.action.triggerAction(data.showAction);
+      luaApi?.action.triggerAction(variantData.showAction);
     } else {
-      luaApi?.action.triggerAction(data.hideAction);
+      luaApi?.action.triggerAction(variantData.hideAction);
     }
   }
 
   return (
     <>
       <MarkingBoxLayout
-        checkbox={
-          <Radio
-            onChange={(event) => onChange(event.currentTarget.checked, 'small')}
-            checked={isChecked('small')}
-            aria-label={t('aria-labels.small')}
-          />
-        }
+        onClick={() => onChange(!isChecked('small'), 'small')}
+        checked={isChecked('small')}
+        aria-label={t('aria-labels.small')}
         title={t('buttons.small')}
         icon={<CompassSmallIcon size={IconSize.md} />}
         isLoading={!hasLoaded}
+        radio
       />
       <MarkingBoxLayout
-        checkbox={
-          <Radio
-            onChange={(event) => onChange(event.currentTarget.checked, 'large')}
-            checked={isChecked('large')}
-            aria-label={t('aria-labels.large')}
-          />
-        }
+        onClick={() => onChange(!isChecked('large'), 'large')}
+        checked={isChecked('large')}
+        aria-label={t('aria-labels.large')}
         title={t('buttons.large')}
         icon={<CompassLargeIcon size={IconSize.md} />}
         isLoading={!hasLoaded}
+        radio
       />
       <MarkingBoxLayout
-        checkbox={
-          <Checkbox
-            onChange={(event) => onChange(event.currentTarget.checked, 'marks')}
-            checked={isChecked('marks')}
-            aria-label={t('aria-labels.marks')}
-          />
-        }
+        onClick={() => onChange(!isChecked('marks'), 'marks')}
+        checked={isChecked('marks')}
+        aria-label={t('aria-labels.marks')}
         title={t('buttons.marks')}
         icon={<CompassMarksIcon size={IconSize.md} />}
         isLoading={!hasLoaded}
