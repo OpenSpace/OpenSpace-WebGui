@@ -1,14 +1,13 @@
-// This is a class that batches updates
-// to avoid flooding the redux store with too many updates.
-// This is better than throttling as we don't miss any values.
-// @TODO: (ylvse, 21-01-2026) - However, a better approach would be to throttle in
-// React instead of Redux, but I haven't been able to figure out a good way to do that.
+// This is a class that batches updates to avoid flooding the redux store with too many
+// updates. This is better than throttling, as we don't miss any values.
+// @TODO: (ylvse, 21-01-2026) However, a better approach would be to throttle in React
+// instead of Redux, but I haven't been able to figure out a good way to do that.
 
 /**
  * Collects updates and flushes them in batches after a delay.
  *
- * Buffers multiple updates and executes them together to reduce the frequency
- * of update function calls. Updates with the same ID will overwrite previous updates.
+ * Buffers multiple updates and executes them together to reduce the frequency of update
+ * function calls. Updates with the same ID will overwrite previous updates.
  *
  * @typeParam T - The type of data contained in the updates
  *
