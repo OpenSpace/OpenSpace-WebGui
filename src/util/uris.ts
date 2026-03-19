@@ -91,11 +91,7 @@ export function isTypeRenderableGlobe(uri: Uri): boolean {
 }
 
 export function isGlobeLayersUri(uri: Uri): boolean {
-  const isLayers = uri.endsWith('.Renderable.Layers');
-  if (!isLayers) {
-    return false;
-  }
-  return true;
+  return uri.endsWith('.Renderable.Layers');
 }
 
 export function isGlobeLayer(uri: Uri): boolean {

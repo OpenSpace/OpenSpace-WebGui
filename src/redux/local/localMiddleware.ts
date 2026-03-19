@@ -30,18 +30,17 @@ import {
 
 import { removeSceneGraphNode, setMenuItemsConfig, setVisibility } from './localSlice';
 
-function sgnUpdatedVisibilityProperty(uri: string, value: AnyProperty['value']) {
+function hasSgnUpdatedVisibility(uri: string, value: AnyProperty['value'] | undefined) {
+  if (value === undefined) {
+    return false;
+  }
   const isSceneGraphNodeProp = isSceneGraphNodeProperty(uri);
   if (!isSceneGraphNodeProp) {
     return false;
   }
   const isFade = isFadePropertyUri(uri) && typeof value === 'number';
   const isEnabled = isEnabledPropertyUri(uri) && typeof value === 'boolean';
-  const isFadeOrEnabled = isFade || isEnabled;
-  if (!isFadeOrEnabled) {
-    return false;
-  }
-  return true;
+  return isFade || isEnabled;
 }
 
 export const resetMenuItemConfig = createAction<void>('local/resetMenu');
@@ -67,10 +66,7 @@ export const addLocalListener = (startListening: AppStartListening) => {
     matcher: updateOne.match,
     effect: async (action, listenerApi) => {
       const { id: uri, changes } = action.payload;
-      if (
-        changes.value !== undefined &&
-        sgnUpdatedVisibilityProperty(uri, changes.value)
-      ) {
+      if (hasSgnUpdatedVisibility(uri, changes.value)) {
         listenerApi.dispatch(
           updateSgnVisibility({ uri, value: changes.value as boolean | number })
         );
@@ -126,10 +122,7 @@ export const addLocalListener = (startListening: AppStartListening) => {
         const { id: uri, changes } = update;
         // Check if a fade value or an enabled value has been updated
         // for a scene graph node
-        if (
-          changes.value !== undefined &&
-          sgnUpdatedVisibilityProperty(uri, changes.value)
-        ) {
+        if (hasSgnUpdatedVisibility(uri, changes.value)) {
           listenerApi.dispatch(
             updateSgnVisibility({ uri, value: changes.value as boolean | number })
           );
@@ -148,7 +141,7 @@ export const addLocalListener = (startListening: AppStartListening) => {
         ? action.payload
         : (Object.values(action.payload) as AnyProperty[]);
       for (const property of properties) {
-        if (sgnUpdatedVisibilityProperty(property.uri, property.value)) {
+        if (hasSgnUpdatedVisibility(property.uri, property.value)) {
           listenerApi.dispatch(
             updateSgnVisibility({
               uri: property.uri,
@@ -178,12 +171,20 @@ export const addLocalListener = (startListening: AppStartListening) => {
       )?.value;
 
       const currentEnabled = isEnabledPropertyUri(uri)
-        ? (typeof value === 'boolean' ? value : undefined)
-        : (typeof enabledStateValue === 'boolean' ? enabledStateValue : undefined);
+        ? typeof value === 'boolean'
+          ? value
+          : undefined
+        : typeof enabledStateValue === 'boolean'
+          ? enabledStateValue
+          : undefined;
 
       const currentFade = isFadePropertyUri(uri)
-        ? (typeof value === 'number' ? value : undefined)
-        : (typeof fadeStateValue === 'number' ? fadeStateValue : undefined);
+        ? typeof value === 'number'
+          ? value
+          : undefined
+        : typeof fadeStateValue === 'number'
+          ? fadeStateValue
+          : undefined;
 
       const visibility = checkVisibility(currentEnabled, currentFade);
 
