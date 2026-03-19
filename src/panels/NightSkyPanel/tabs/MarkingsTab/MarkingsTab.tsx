@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Group, Title } from '@mantine/core';
+import { Box, Button, SimpleGrid, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
@@ -14,6 +14,7 @@ import {
   SingleDotIcon
 } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { CardinalDirectionsBoxes } from './CardinalDirectionsBoxes';
 import { ConstellationsShowArtBox } from './ConstellationsShowArtBox';
@@ -23,8 +24,13 @@ import { SceneGraphNodeBox } from './SceneGraphNodeBox';
 
 export function MarkingsTab() {
   const { t } = useTranslation('panel-nightsky', { keyPrefix: 'markings' });
+  const { width } = useWindowSize();
 
   const luaApi = useOpenSpaceApi();
+
+  const cardWidth = 80;
+  const maxColumns = 4;
+  const columns = Math.max(Math.min(Math.floor(width / cardWidth), maxColumns), 1);
 
   return (
     <Box maw={600}>
@@ -41,7 +47,7 @@ export function MarkingsTab() {
       <Title order={2} my={'sm'}>
         {t('altitude-azimuth.title')}
       </Title>
-      <Group gap={'xs'}>
+      <SimpleGrid cols={columns} spacing={'xs'}>
         <SceneGraphNodeBox
           title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.sm} />}
@@ -62,12 +68,12 @@ export function MarkingsTab() {
           icon={<SingleDotIcon size={IconSize.sm} />}
           identifier={'ZenithDot'}
         />
-      </Group>
+      </SimpleGrid>
 
       <Title order={2} my={'sm'}>
         {t('ecliptic.title')}
       </Title>
-      <Group gap={'xs'}>
+      <SimpleGrid cols={columns} spacing={'xs'}>
         <SceneGraphNodeBox
           title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.sm} />}
@@ -88,12 +94,12 @@ export function MarkingsTab() {
           icon={<BandIcon size={IconSize.sm} />}
           identifier={'EclipticBand'}
         />
-      </Group>
+      </SimpleGrid>
 
       <Title order={2} my={'sm'}>
         {t('equatorial.title')}
       </Title>
-      <Group gap={'xs'}>
+      <SimpleGrid cols={columns} spacing={'xs'}>
         <SceneGraphNodeBox
           title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.sm} />}
@@ -109,12 +115,12 @@ export function MarkingsTab() {
           icon={<AbcIcon size={IconSize.sm} />}
           identifier={'EquatorialSphereLabels'}
         />
-      </Group>
+      </SimpleGrid>
 
       <Title order={2} my={'sm'}>
         {t('constellations.title')}
       </Title>
-      <Group gap={'xs'}>
+      <SimpleGrid cols={columns} spacing={'xs'}>
         <SceneGraphNodeBox
           title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.sm} />}
@@ -132,7 +138,7 @@ export function MarkingsTab() {
           title={t('common-button-labels.labels')}
           icon={<AbcIcon size={IconSize.sm} />}
         />
-      </Group>
+      </SimpleGrid>
 
       <Title order={2} my={'sm'}>
         {t('cardinal-directions.title')}
