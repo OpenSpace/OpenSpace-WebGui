@@ -1,8 +1,7 @@
-// This is a class that batches updates
-// to avoid flooding the redux store with too many updates.
-// This is better than throttling as we don't miss any values.
-// @TODO: (ylvse, 21-01-2026) - However, a better approach would be to throttle in
-// React instead of Redux, but I haven't been able to figure out a good way to do that.
+// This is a class that batches updates to avoid flooding the redux store with too many
+// updates. This is better than throttling, as we don't miss any values.
+// @TODO: (ylvse, 21-01-2026) However, a better approach would be to throttle in React
+// instead of Redux, but I haven't been able to figure out a good way to do that.
 
 /**
  * Collects updates and flushes them in batches after a delay.
