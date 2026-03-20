@@ -12,10 +12,13 @@ import {
 } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { BoolInput } from '@/components/Input/BoolInput';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
+import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
 import { Property } from '@/components/Property/Property';
+import { useProperty } from '@/hooks/properties';
 import { useAppSelector } from '@/redux/hooks';
 import {
   SkyBrowserAllowCameraRotationKey,
@@ -45,6 +48,11 @@ export function Settings({ id }: Props) {
 
   const imageList = useAppSelector((state) => state.skybrowser.imageList);
   const targetId = useAppSelector((state) => state.skybrowser.browsers[id]?.targetId);
+
+  const [hoverIndicatorEnabled, setHoverIndicatorEnabled] = useProperty(
+    'BoolProperty',
+    'Scene.HoverIndicator.Renderable.Enabled'
+  );
 
   const luaApi = useOpenSpaceApi();
 
@@ -196,6 +204,19 @@ export function Settings({ id }: Props) {
             <SettingsDisplayCopies id={id} />
           </Tabs.Panel>
           <Tabs.Panel value={'General'}>
+            <MaybeTooltip
+              showTooltip={hoverIndicatorEnabled === undefined}
+              label={t('general.show-hover-indicator.disabled-tooltip')}
+            >
+              <BoolInput
+                label={t('general.show-hover-indicator.label')}
+                value={hoverIndicatorEnabled ?? false}
+                onChange={setHoverIndicatorEnabled}
+                info={t('general.show-hover-indicator.info')}
+                disabled={hoverIndicatorEnabled === undefined}
+                mb={'md'}
+              />
+            </MaybeTooltip>
             <Property uri={SkyBrowserAllowCameraRotationKey} />
             <Property uri={SkyBrowserCameraRotationSpeedKey} />
             <Property uri={SkyBrowserTargetAnimationSpeedKey} />
