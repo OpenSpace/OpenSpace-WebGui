@@ -52,3 +52,6 @@ export const SkyBrowserInverseZoomDirectionKey =
   'Modules.SkyBrowser.InverseZoomDirection';
 export const SkyBrowserSpaceCraftAnimationTimeKey =
   'Modules.SkyBrowser.SpaceCraftAnimationTime';
+
+export const LuaConsoleIsVisibleKey = 'LuaConsole.IsVisible';
+export const LuaConsoleLengthKey = 'LuaConsole.HistoryLength';
