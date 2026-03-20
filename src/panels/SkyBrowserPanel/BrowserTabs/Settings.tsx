@@ -210,7 +210,7 @@ export function Settings({ id }: Props) {
             >
               <BoolInput
                 label={t('general.show-hover-indicator.label')}
-                value={hoverIndicatorEnabled || false}
+                value={hoverIndicatorEnabled ?? false}
                 onChange={setHoverIndicatorEnabled}
                 info={t('general.show-hover-indicator.info')}
                 disabled={hoverIndicatorEnabled === undefined}
