@@ -19,7 +19,7 @@ export function MarkingsToggleLayout({
 }: Props) {
   return (
     <Skeleton visible={isLoading}>
-      <ToggleCard checked={checked} onClick={onClick} p={'xs'}>
+      <ToggleCard checked={checked} onClick={onClick} py={'xs'}>
         <Stack gap={2} align={'center'} style={{ overflow: 'hidden' }}>
           {icon}
           <span>{title}</span>
