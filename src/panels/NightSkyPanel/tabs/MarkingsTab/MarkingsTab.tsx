@@ -17,10 +17,10 @@ import { IconSize } from '@/types/enums';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { CardinalDirections } from './CardinalDirections';
-import { ConstellationsShowArtBox } from './ConstellationsShowArtBox';
-import { ConstellationsShowLabelsBox } from './ConstellationsShowLabelsBox';
-import { ConstellationShowLinesBox } from './ConstellationsShowLinesBox';
-import { SceneGraphNodeBox } from './SceneGraphNodeBox';
+import { ConstellationsArtToggle } from './ConstellationsArtToggle';
+import { ConstellationsLabelsToggle } from './ConstellationsLabelsToggle';
+import { ConstellationLinesToggle } from './ConstellationsLinesToggle';
+import { SceneGraphNodeToggle } from './SceneGraphNodeToggle';
 
 export function MarkingsTab() {
   const { t } = useTranslation('panel-nightsky', { keyPrefix: 'markings' });
@@ -48,22 +48,22 @@ export function MarkingsTab() {
         {t('altitude-azimuth.title')}
       </Title>
       <SimpleGrid cols={columns} spacing={'xs'}>
-        <SceneGraphNodeBox
+        <SceneGraphNodeToggle
           title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.sm} />}
           identifier={'AltAzGrid'}
         />
-        <SceneGraphNodeBox
+        <SceneGraphNodeToggle
           title={t('altitude-azimuth.buttons.meridian')}
           icon={<LineIcon size={IconSize.sm} />}
           identifier={'MeridianPlane'}
         />
-        <SceneGraphNodeBox
+        <SceneGraphNodeToggle
           title={t('common-button-labels.labels')}
           icon={<AbcIcon size={IconSize.sm} />}
           identifier={'AltAzGridLabels'}
         />
-        <SceneGraphNodeBox
+        <SceneGraphNodeToggle
           title={t('altitude-azimuth.buttons.zenith')}
           icon={<SingleDotIcon size={IconSize.sm} />}
           identifier={'ZenithDot'}
@@ -74,22 +74,22 @@ export function MarkingsTab() {
         {t('ecliptic.title')}
       </Title>
       <SimpleGrid cols={columns} spacing={'xs'}>
-        <SceneGraphNodeBox
+        <SceneGraphNodeToggle
           title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.sm} />}
           identifier={'EclipticSphere'}
         />
-        <SceneGraphNodeBox
+        <SceneGraphNodeToggle
           title={t('common-button-labels.line_one')}
           icon={<LineIcon size={IconSize.sm} />}
           identifier={'EclipticLine'}
         />
-        <SceneGraphNodeBox
+        <SceneGraphNodeToggle
           title={t('common-button-labels.labels')}
           icon={<AbcIcon size={IconSize.sm} />}
           identifier={'EclipticSphereLabels'}
         />
-        <SceneGraphNodeBox
+        <SceneGraphNodeToggle
           title={t('ecliptic.buttons.band')}
           icon={<BandIcon size={IconSize.sm} />}
           identifier={'EclipticBand'}
@@ -100,17 +100,17 @@ export function MarkingsTab() {
         {t('equatorial.title')}
       </Title>
       <SimpleGrid cols={columns} spacing={'xs'}>
-        <SceneGraphNodeBox
+        <SceneGraphNodeToggle
           title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.sm} />}
           identifier={'EquatorialSphere'}
         />
-        <SceneGraphNodeBox
+        <SceneGraphNodeToggle
           title={t('common-button-labels.line_one')}
           icon={<LineIcon size={IconSize.sm} />}
           identifier={'EquatorialLine'}
         />
-        <SceneGraphNodeBox
+        <SceneGraphNodeToggle
           title={t('common-button-labels.labels')}
           icon={<AbcIcon size={IconSize.sm} />}
           identifier={'EquatorialSphereLabels'}
@@ -121,20 +121,20 @@ export function MarkingsTab() {
         {t('constellations.title')}
       </Title>
       <SimpleGrid cols={columns} spacing={'xs'}>
-        <SceneGraphNodeBox
+        <SceneGraphNodeToggle
           title={t('common-button-labels.grid')}
           icon={<GridSphereIcon size={IconSize.sm} />}
           identifier={'ConstellationBounds'}
         />
-        <ConstellationShowLinesBox
+        <ConstellationLinesToggle
           title={t('common-button-labels.line_other')}
           icon={<PencilIcon size={IconSize.sm} />}
         />
-        <ConstellationsShowArtBox
+        <ConstellationsArtToggle
           title={t('constellations.buttons.art')}
           icon={<PaintBrushIcon size={IconSize.sm} />}
         />
-        <ConstellationsShowLabelsBox
+        <ConstellationsLabelsToggle
           title={t('common-button-labels.labels')}
           icon={<AbcIcon size={IconSize.sm} />}
         />

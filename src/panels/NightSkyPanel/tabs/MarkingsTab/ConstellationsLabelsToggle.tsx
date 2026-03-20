@@ -3,9 +3,8 @@ import { useTranslation } from 'react-i18next';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
-import { sgnRenderableUri, sgnUri } from '@/util/propertyTreeHelpers';
 
-import { MarkingBoxLayout } from './MarkingBoxLayout';
+import { MarkingsToggleLayout } from './MarkingsToggleLayout';
 
 interface Props {
   title: string;
@@ -16,30 +15,30 @@ interface Props {
 // exist. However, for this we need to be able to access the actions state using the
 // identifier of the action, so leaving for now
 
-export function ConstellationsShowArtBox({ title, icon }: Props) {
+export function ConstellationsLabelsToggle({ title, icon }: Props) {
   const { t } = useTranslation('panel-nightsky', {
     keyPrefix: 'markings.constellations'
   });
 
   const luaApi = useOpenSpaceApi();
 
-  const uri = sgnRenderableUri(sgnUri('ImageConstellation-Ori'));
+  const uri = 'Scene.Constellations.Renderable.Labels';
   const propertyOwner = usePropertyOwner(uri);
   const { isVisible } = usePropertyOwnerVisibility(uri);
 
   function checkboxChange(checked: boolean) {
     if (checked) {
-      luaApi?.action.triggerAction('os.constellation_art.ShowArt');
+      luaApi?.action.triggerAction('os.nightsky.FadeInConstellationLabels');
     } else {
-      luaApi?.action.triggerAction('os.constellation_art.HideArt');
+      luaApi?.action.triggerAction('os.nightsky.FadeOutConstellationLabels');
     }
   }
 
   return (
-    <MarkingBoxLayout
+    <MarkingsToggleLayout
       onClick={() => checkboxChange(!isVisible)}
       checked={isVisible || false}
-      aria-label={t('aria-labels.art')}
+      aria-label={t('aria-labels.labels')}
       title={title}
       icon={icon}
       isLoading={!propertyOwner}

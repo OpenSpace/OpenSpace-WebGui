@@ -10,7 +10,13 @@ interface Props {
   checked: boolean;
 }
 
-export function MarkingBoxLayout({ title, icon, isLoading, onClick, checked }: Props) {
+export function MarkingsToggleLayout({
+  title,
+  icon,
+  isLoading,
+  onClick,
+  checked
+}: Props) {
   return (
     <Skeleton visible={isLoading}>
       <ToggleCard checked={checked} onClick={onClick} p={'xs'}>

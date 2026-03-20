@@ -6,7 +6,7 @@ import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { sgnRenderableUri, sgnUri } from '@/util/propertyTreeHelpers';
 
-import { MarkingBoxLayout } from './MarkingBoxLayout';
+import { MarkingsToggleLayout } from './MarkingsToggleLayout';
 
 interface Props {
   title: string;
@@ -17,7 +17,7 @@ interface Props {
 // exist. However, for this we need to be able to access the actions state using the
 // identifier of the action, so leaving for now
 
-export function ConstellationShowLinesBox({ title, icon }: Props) {
+export function ConstellationLinesToggle({ title, icon }: Props) {
   const { t } = useTranslation('panel-nightsky', {
     keyPrefix: 'markings.constellations'
   });
@@ -44,7 +44,7 @@ export function ConstellationShowLinesBox({ title, icon }: Props) {
   const checked = (isVisible && elementsEnabled) || false;
 
   return (
-    <MarkingBoxLayout
+    <MarkingsToggleLayout
       onClick={() => checkboxChange(!checked)}
       checked={checked}
       aria-label={t('aria-labels.lines')}
