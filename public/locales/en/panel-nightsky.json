@@ -54,6 +54,9 @@
         "toggle": "Toggle cardinal directions visibility and size",
         "marks": "Show marks on cardinal directions"
       }
+    },
+    "scene-graph-node-toggle": {
+      "aria-label": "Toggle {{name}} visibility"
     }
   },
   "location": {

@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { Identifier } from '@/types/types';
 import { sgnRenderableUri, sgnUri } from '@/util/propertyTreeHelpers';
@@ -14,6 +16,9 @@ interface Props {
 }
 
 export function SceneGraphNodeToggle({ title, icon, identifier }: Props) {
+  const { t } = useTranslation('panel-nightsky', {
+    keyPrefix: 'markings.scene-graph-node-toggle'
+  });
   const uri = sgnRenderableUri(sgnUri(identifier));
   const propertyOwner = usePropertyOwner(uri);
 
@@ -23,7 +28,7 @@ export function SceneGraphNodeToggle({ title, icon, identifier }: Props) {
     <MarkingsToggleLayout
       onClick={() => setVisibility(!isVisible)}
       checked={isVisible || false}
-      aria-label={title} // TODO: Update with correct aria-label
+      aria-label={t('aria-label', { name: title })}
       title={title}
       icon={icon}
       isLoading={!propertyOwner}
