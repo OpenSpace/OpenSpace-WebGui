@@ -1,6 +1,8 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Checkbox, CheckboxCardProps } from '@mantine/core';
 
+import styles from './ToggleCard.module.css';
+
 interface Props extends CheckboxCardProps, PropsWithChildren {
   onClick: () => void;
   checked: boolean;
@@ -20,13 +22,14 @@ export function ToggleCard({ onClick, checked, children, ...other }: Props) {
 
   return (
     <Checkbox.Card
+      classNames={styles}
       checked={checkedState}
       onClick={handleClick}
-      {...other}
       bg={checkedState ? 'blue' : 'dark.8'}
       role={'switch'}
       aria-checked={checkedState}
-      style={checkedState ? { fontWeight: '500' } : undefined}
+      style={{ fontWeight: checkedState ? '500' : undefined }}
+      {...other}
     >
       {children}
     </Checkbox.Card>

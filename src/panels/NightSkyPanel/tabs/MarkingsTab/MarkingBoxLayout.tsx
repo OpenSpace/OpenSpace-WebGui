@@ -1,6 +1,6 @@
 import { Skeleton, Stack } from '@mantine/core';
 
-import { ToggleCard } from './ToggleCard';
+import { ToggleCard } from '@/components/ToggleCard/ToggleCard';
 
 interface Props {
   title: string;
