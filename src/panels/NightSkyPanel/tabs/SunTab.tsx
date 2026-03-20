@@ -69,6 +69,9 @@ export function SunTab() {
       <Title order={2} mt={'md'} mb={'xs'}>
         {t('size.title')}
       </Title>
+      <Text mb={'xs'} c={'dimmed'}>
+        {t('size.description')}
+      </Text>
       {angularSize !== undefined ? (
         <Group gap={'xs'}>
           <Button onClick={() => setAngularSize(0.3)}>
@@ -80,20 +83,22 @@ export function SunTab() {
           <Button onClick={() => setAngularSize(0.8)}>
             {t('size.buttons.extra-large-size')}
           </Button>
-          <ActionIcon
-            onClick={() => setAngularSize(angularSize + 0.1)}
-            size={'lg'}
-            aria-label={t('size.aria-labels.increase-size')}
-          >
-            <PlusIcon />
-          </ActionIcon>
-          <ActionIcon
-            onClick={() => setAngularSize(angularSize - 0.1)}
-            size={'lg'}
-            aria-label={t('size.aria-labels.decrease-size')}
-          >
-            <MinusIcon />
-          </ActionIcon>
+          <ActionIcon.Group>
+            <ActionIcon
+              onClick={() => setAngularSize(angularSize - 0.1)}
+              size={'lg'}
+              aria-label={t('size.aria-labels.decrease-size')}
+            >
+              <MinusIcon />
+            </ActionIcon>
+            <ActionIcon
+              onClick={() => setAngularSize(angularSize + 0.1)}
+              size={'lg'}
+              aria-label={t('size.aria-labels.increase-size')}
+            >
+              <PlusIcon />
+            </ActionIcon>
+          </ActionIcon.Group>
         </Group>
       ) : (
         <>
@@ -134,7 +139,11 @@ export function SunTab() {
 
       <Group mt={'md'} mb={'xs'}>
         <Title order={3}>{t('trails.added-trails.title')}</Title>
-        <Button size={'compact-md'} onClick={() => luaApi.fadeOut(`{${sunTrailTag}}`)}>
+        <Button
+          size={'compact-sm'}
+          leftSection={<EyeOffIcon />}
+          onClick={() => luaApi.fadeOut(`{${sunTrailTag}}`)}
+        >
           {t('trails.buttons.hide-trails')}
         </Button>
       </Group>
