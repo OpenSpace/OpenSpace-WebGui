@@ -9,7 +9,7 @@ import { FileMenu } from './Menus/FileMenu';
 import { HelpMenu } from './Menus/HelpMenu';
 import { ViewMenu } from './Menus/ViewMenu';
 import { WindowsMenu } from './Menus/WindowsMenu';
-import { IdleBehaviorToggle } from './IdleBehaviorToggle';
+import { IdleMotionToggle } from './IdleMotionToggle';
 // import { LocaleSwitcher } from './Menus/LocaleSwitcher';
 
 export function TopMenuBar() {
@@ -37,7 +37,7 @@ export function TopMenuBar() {
         </Box>
         <Group flex={1} wrap={'nowrap'} align={'center'} justify={'end'} mr={'xs'}>
           <Group gap={'lg'} wrap={'nowrap'}>
-            <IdleBehaviorToggle />
+            <IdleMotionToggle />
             <Group wrap={'nowrap'} gap={'xs'}>
               <FrictionControls size={'xs'} />
               <InfoBox>

@@ -7,7 +7,7 @@ import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setOnlyFocusableInNavMenu } from '@/redux/local/localSlice';
 import {
-  ApplyIdleBehaviorOnPathFinishKey,
+  ApplyIdleMotionOnPathFinishKey,
   CameraPathArrivalDistanceFactorKey,
   CameraPathSpeedFactorKey,
   JumpToFadeDurationKey
@@ -39,7 +39,7 @@ export function NavigationSettings() {
       <Container>
         <Property uri={CameraPathSpeedFactorKey} />
         <Property uri={CameraPathArrivalDistanceFactorKey} />
-        <Property uri={ApplyIdleBehaviorOnPathFinishKey} />
+        <Property uri={ApplyIdleMotionOnPathFinishKey} />
       </Container>
     </SettingsPopout>
   );
