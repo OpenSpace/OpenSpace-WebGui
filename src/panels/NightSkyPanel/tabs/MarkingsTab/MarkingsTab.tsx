@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Button, SimpleGrid, Title } from '@mantine/core';
+import { Box, Button, Group, SimpleGrid, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
@@ -37,6 +37,7 @@ export function MarkingsTab() {
       {luaApi ? (
         <Button
           leftSection={<EyeOffIcon />}
+          size={'xs'}
           onClick={() => luaApi.action.triggerAction('os.nightsky.HideAllMarkings')}
         >
           {t('common-button-labels.hide-all')}
@@ -44,9 +45,23 @@ export function MarkingsTab() {
       ) : (
         <LoadingBlocks n={1} />
       )}
-      <Title order={2} my={'sm'}>
-        {t('altitude-azimuth.title')}
-      </Title>
+
+      <Group justify={'space-between'} align={'center'} gap={0}>
+        <Title order={2} my={'sm'}>
+          {t('altitude-azimuth.title')}
+        </Title>
+        <Button
+          leftSection={<EyeOffIcon />}
+          size={'compact-xs'}
+          variant={'subtle'}
+          onClick={() =>
+            /* TODO: Add action to hide all altitude-azimuth markings */ null
+          }
+        >
+          {t('common-button-labels.hide-all')}
+        </Button>
+      </Group>
+
       <SimpleGrid cols={columns} spacing={'xs'}>
         <SceneGraphNodeToggle
           title={t('common-button-labels.grid')}
@@ -70,9 +85,20 @@ export function MarkingsTab() {
         />
       </SimpleGrid>
 
-      <Title order={2} my={'sm'}>
-        {t('ecliptic.title')}
-      </Title>
+      <Group justify={'space-between'} align={'center'} gap={0}>
+        <Title order={2} my={'sm'}>
+          {t('ecliptic.title')}
+        </Title>
+        <Button
+          leftSection={<EyeOffIcon />}
+          size={'compact-xs'}
+          variant={'subtle'}
+          onClick={() => /* TODO: Add action to hide all ecliptic markings */ null}
+        >
+          {t('common-button-labels.hide-all')}
+        </Button>
+      </Group>
+
       <SimpleGrid cols={columns} spacing={'xs'}>
         <SceneGraphNodeToggle
           title={t('common-button-labels.grid')}
@@ -96,9 +122,20 @@ export function MarkingsTab() {
         />
       </SimpleGrid>
 
-      <Title order={2} my={'sm'}>
-        {t('equatorial.title')}
-      </Title>
+      <Group justify={'space-between'} align={'center'} gap={0}>
+        <Title order={2} my={'sm'}>
+          {t('equatorial.title')}
+        </Title>
+        <Button
+          leftSection={<EyeOffIcon />}
+          size={'compact-xs'}
+          variant={'subtle'}
+          onClick={() => /* TODO: Add action to hide all equatorial markings */ null}
+        >
+          {t('common-button-labels.hide-all')}
+        </Button>
+      </Group>
+
       <SimpleGrid cols={columns} spacing={'xs'}>
         <SceneGraphNodeToggle
           title={t('common-button-labels.grid')}
@@ -117,9 +154,20 @@ export function MarkingsTab() {
         />
       </SimpleGrid>
 
-      <Title order={2} my={'sm'}>
-        {t('constellations.title')}
-      </Title>
+      <Group justify={'space-between'} align={'center'} gap={0}>
+        <Title order={2} my={'sm'}>
+          {t('constellations.title')}
+        </Title>
+        <Button
+          leftSection={<EyeOffIcon />}
+          size={'compact-xs'}
+          variant={'subtle'}
+          onClick={() => /* TODO: Add action to hide all constellation markings */ null}
+        >
+          {t('common-button-labels.hide-all')}
+        </Button>
+      </Group>
+
       <SimpleGrid cols={columns} spacing={'xs'}>
         <SceneGraphNodeToggle
           title={t('common-button-labels.grid')}
