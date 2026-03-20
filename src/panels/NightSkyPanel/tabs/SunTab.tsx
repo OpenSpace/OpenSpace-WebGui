@@ -69,7 +69,7 @@ export function SunTab() {
       <Title order={2} mt={'md'} mb={'xs'}>
         {t('size.title')}
       </Title>
-      <Text mb={'xs'} c={'dimmed'}>
+      <Text mb={'xs'} c={'dimmed'} size={'sm'}>
         {t('size.description')}
       </Text>
       {angularSize !== undefined ? (

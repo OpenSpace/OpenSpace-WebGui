@@ -190,8 +190,8 @@
     "trails": {
       "title": "Trails",
       "buttons": {
-        "add-trail": "Add Trail",
-        "add-trail-simulation-date": "Add trail for simulation date",
+        "add-trail": "Add trail",
+        "add-trail-simulation-date": "Add trail for Simulation Date",
         "add-trail-today": "Add trail for Today",
         "hide-trails": "Hide all"
       },
