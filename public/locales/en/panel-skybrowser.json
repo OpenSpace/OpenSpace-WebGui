@@ -91,8 +91,8 @@
       "tab-title": "General",
       "show-hover-indicator": {
         "label": "Show image position on hover",
-        "info": "Show an indicator on the sky in OpenSpace when hovering or focusing images in the skybrowser lists. The position of the indicator matches the position of the image interacted with.",
-        "disabled-tooltip": "No scene graph node for the hover indicator was found. Make sure that the skybrowser is properly configured and that the hover indicator asset is loaded."
+        "info": "Show an indicator on the sky in OpenSpace when hovering or focusing images in the SkyBrowser lists. The position of the indicator matches the position of the image interacted with.",
+        "disabled-tooltip": "No scene graph node for the hover indicator was found. Make sure that the SkyBrowser is properly configured and that the hover indicator asset is loaded."
       }
     }
   },
