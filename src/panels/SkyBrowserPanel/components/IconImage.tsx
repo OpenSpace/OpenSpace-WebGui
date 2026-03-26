@@ -5,15 +5,35 @@ import styles from './IconImage.module.css';
 
 interface Props extends ImageProps {
   onClick: () => void;
+  onHover?: () => void;
+  onLeave?: () => void;
   icon: React.JSX.Element;
   url: string;
   h?: number | string;
   w?: number | string;
 }
 
-export function IconImage({ url, onClick, icon, h, w, ...props }: Props) {
+export function IconImage({
+  url,
+  onClick,
+  onHover,
+  onLeave,
+  icon,
+  h,
+  w,
+  ...props
+}: Props) {
   return (
-    <UnstyledButton onClick={onClick} h={h} w={w} className={styles.iconImage}>
+    <UnstyledButton
+      onClick={onClick}
+      onMouseEnter={onHover}
+      onFocus={onHover}
+      onMouseLeave={onLeave}
+      onBlur={onLeave}
+      h={h}
+      w={w}
+      className={styles.iconImage}
+    >
       <AspectRatio ratio={96 / 45} pos={'relative'}>
         <Image
           src={url}

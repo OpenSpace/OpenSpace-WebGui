@@ -60,6 +60,8 @@ export function AddedImageCard({ image, opacity }: Props) {
             luaApi?.skybrowser.selectImage(image.url);
             setActiveImage(image.url);
           }}
+          onHover={() => luaApi?.skybrowser.moveIndicatorToHoverImage(image.url)}
+          onLeave={() => luaApi?.skybrowser.disableHoverIndicator()}
           bd={'1px solid var(--mantine-color-gray-7)'}
           radius={'sm'}
         />
