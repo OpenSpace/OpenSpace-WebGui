@@ -3,9 +3,9 @@ import { useCallback } from 'react';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { usePropertyValue } from '@/hooks/properties';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { propertyOwnerSelectors } from '@/redux/propertyTree/propertyOwnerSlice';
-import { propertySelectors } from '@/redux/propertyTree/propertySlice';
-import { setPropertyValue } from '@/redux/propertyTree/propertyTreeMiddleware';
+import { propertyOwnerSelectors } from '@/redux/propertytree/propertyOwnerSlice';
+import { propertySelectors } from '@/redux/propertytree/propertySlice';
+import { setPropertyValue } from '@/redux/propertytree/propertyTreeMiddleware';
 import { Identifier, PropertyOwner, Uri, Visibility } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
 import {

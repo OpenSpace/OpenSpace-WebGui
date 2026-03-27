@@ -5,8 +5,8 @@ import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { RootState } from '@/redux/store';
 import { PropertyOwner } from '@/types/types';
 
-import { propertyOwnerSelectors } from '../propertyTree/propertyOwnerSlice';
-import { propertySelectors } from '../propertyTree/propertySlice';
+import { propertyOwnerSelectors } from '../propertytree/propertyOwnerSlice';
+import { propertySelectors } from '../propertytree/propertySlice';
 
 import { setGroups, setTags } from './groupsSlice';
 

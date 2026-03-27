@@ -20,13 +20,13 @@ import { AppStartListening } from '../listenerMiddleware';
 import {
   addPropertyOwners,
   removePropertyOwners
-} from '../propertyTree/propertyOwnerSlice';
+} from '../propertytree/propertyOwnerSlice';
 import {
   propertySelectors,
   updateMany,
   updateOne,
   upsertMany
-} from '../propertyTree/propertySlice';
+} from '../propertytree/propertySlice';
 
 import { removeSceneGraphNode, setMenuItemsConfig, setVisibility } from './localSlice';
 

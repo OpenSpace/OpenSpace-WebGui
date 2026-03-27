@@ -4,7 +4,7 @@ import {
   useVisibleProperties
 } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
-import { propertySelectors } from '@/redux/propertyTree/propertySlice';
+import { propertySelectors } from '@/redux/propertytree/propertySlice';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
 import { isGlobeLayersUri, isTypeRenderableGlobe, parentTypeUri } from '@/util/uris';

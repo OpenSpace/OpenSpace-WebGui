@@ -4,7 +4,7 @@ import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { Property } from '@/components/Property/Property';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
-import { propertySelectors } from '@/redux/propertyTree/propertySlice';
+import { propertySelectors } from '@/redux/propertytree/propertySlice';
 import { Identifier, Uri } from '@/types/types';
 import { checkVisibility, displayName } from '@/util/propertyTreeHelpers';
 import { enabledPropertyUri, fadePropertyUri } from '@/util/uris';
