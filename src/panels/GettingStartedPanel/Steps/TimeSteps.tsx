@@ -101,7 +101,7 @@ export function useTimeSteps(): React.ReactNode[] {
               <ActionIcon
                 size={IconSize.lg}
                 style={{ pointerEvents: 'none' }}
-                aria-label={'Pause time'}
+                aria-label={t('pause-time.aria-label')}
                 aria-disabled
               >
                 <PauseIcon />

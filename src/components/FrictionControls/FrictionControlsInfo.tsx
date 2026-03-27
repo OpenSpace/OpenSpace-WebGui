@@ -25,13 +25,13 @@ export function FrictionControlsInfo() {
         {t('friction-controls.info.heading')}:
       </Text>
       <Text>{t('friction-controls.info.description')}</Text>
-      <Stack gap={'xs'}>
+      <Stack gap={'xs'} mt={'sm'}>
         {rotationKeybind && (
           <Group justify={'space-between'}>
             <Text fw={'bold'}>{t('friction-controls.rotation-label')}:</Text>
             <KeybindButtons
-              modifiers={rotationKeybind.modifiers}
               selectedKey={rotationKeybind.key}
+              modifiers={rotationKeybind.modifiers}
             />
           </Group>
         )}
@@ -39,8 +39,8 @@ export function FrictionControlsInfo() {
           <Group justify={'space-between'}>
             <Text fw={'bold'}>{t('friction-controls.zoom-label')}:</Text>
             <KeybindButtons
-              modifiers={zoomKeybind.modifiers}
               selectedKey={zoomKeybind.key}
+              modifiers={zoomKeybind.modifiers}
             />
           </Group>
         )}
@@ -48,8 +48,8 @@ export function FrictionControlsInfo() {
           <Group justify={'space-between'}>
             <Text fw={'bold'}>{t('friction-controls.roll-label')}:</Text>
             <KeybindButtons
-              modifiers={rollKeybind.modifiers}
               selectedKey={rollKeybind.key}
+              modifiers={rollKeybind.modifiers}
             />
           </Group>
         )}

@@ -24,6 +24,5 @@ export const documentationSlice = createSlice({
   }
 });
 
-// Action creators are generated for each case reducer function, replaces the `Actions/index.js`
 export const { initializeDocumentation } = documentationSlice.actions;
 export const documentationReducer = documentationSlice.reducer;

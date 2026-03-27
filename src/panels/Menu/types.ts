@@ -1,3 +1,5 @@
+import { MenuItem } from '@/windowmanagement/data/MenuItems';
+
 export interface MenuItemConfig {
   id: string;
   // The name of the menu item. This will show up in the OpenSpace launcher.
@@ -7,3 +9,5 @@ export interface MenuItemConfig {
   // Whether a menu item (panel) is open or closed
   isOpen: boolean;
 }
+
+export type MenuItemWithConfig = MenuItemConfig & MenuItem;

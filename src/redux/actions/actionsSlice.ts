@@ -84,7 +84,6 @@ export const actionsSlice = createSlice({
   }
 });
 
-// Action creators are generated for each case reducer function, replaces the `Actions/index.js`
 export const { setActionsPath, toggleKeybindViewer, removeAction } = actionsSlice.actions;
 
 export const actionsReducer = actionsSlice.reducer;

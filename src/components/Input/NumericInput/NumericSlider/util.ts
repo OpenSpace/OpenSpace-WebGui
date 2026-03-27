@@ -8,7 +8,6 @@ const maxAllowedExtentForSlider = 1e12;
  *
  * @param {number} min - The minimum value of the slider.
  * @param {number} max - The maximum value of the slider.
- *
  * @returns {boolean} Returns `true` if the extent (difference between max and min) is
  * finite and less than the allowed maximum extent for the slider; otherwise, returns
  * `false`.

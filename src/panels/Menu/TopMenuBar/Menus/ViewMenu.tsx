@@ -26,12 +26,12 @@ import {
 } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { resetMenuItemConfig } from '@/redux/local/localMiddleware';
-import { setMenuItemsConfig, setMenuItemVisible } from '@/redux/local/localSlice';
+import { setMenuItemsOrder, setMenuItemVisible } from '@/redux/local/localSlice';
 import { showNotifications, updateLogLevel } from '@/redux/logging/loggingSlice';
 import { IconSize, LogLevel } from '@/types/enums';
 
-import { useMenuItems, useStoredLayout } from '../../hooks';
-import { MenuDrowdownWrapper } from '../MenuDropdownWrapper';
+import { useMenuItemsOrdered, useStoredLayout } from '../../hooks';
+import { MenuDropdownWrapper } from '../MenuDropdownWrapper';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function ViewMenu() {
@@ -40,16 +40,14 @@ export function ViewMenu() {
   const logNotifications = useAppSelector((state) => state.logging.showNotifications);
   const notificationLogLevel = useAppSelector((state) => state.logging.logLevel);
 
-  const menuItems = useMenuItems();
+  const menuItemsOrdered = useMenuItemsOrdered();
+  const { loadLayout, saveLayout } = useStoredLayout();
   const [propertyVisibility, setPropertyVisibility, propertyVisibilityMetadata] =
     useProperty('OptionProperty', 'OpenSpaceEngine.PropertyVisibility');
-
   const [guiScale, setGuiScale] = useProperty(
     'FloatProperty',
     'Modules.CefWebGui.GuiScale'
   );
-
-  const { loadLayout, saveLayout } = useStoredLayout();
 
   const dispatch = useAppDispatch();
 
@@ -68,7 +66,7 @@ export function ViewMenu() {
           </Menu.Sub.Item>
         </Menu.Sub.Target>
 
-        <MenuDrowdownWrapper isSubMenu shouldLimitHeight>
+        <MenuDropdownWrapper isSubMenu shouldLimitHeight>
           <Menu.Label pr={0}>
             <Group justify={'space-between'}>
               {t('task-bar.toggle-items')}
@@ -79,10 +77,12 @@ export function ViewMenu() {
           </Menu.Label>
           <DragReorderList
             id={'viewMenu'}
-            data={menuItems}
+            data={menuItemsOrdered}
             dragHandlePosition={'right'}
             keyFunc={(item) => item.id}
-            onDragEnd={({ updatedData }) => dispatch(setMenuItemsConfig(updatedData))}
+            onDragEnd={({ updatedData }) =>
+              dispatch(setMenuItemsOrder(updatedData.map((item) => item.componentID)))
+            }
             renderFunc={(item) => {
               return (
                 <Menu.Item
@@ -115,7 +115,7 @@ export function ViewMenu() {
             }}
             gap={0}
           />
-        </MenuDrowdownWrapper>
+        </MenuDropdownWrapper>
       </Menu.Sub>
 
       <Menu.Item leftSection={<UpArrowIcon />} onClick={loadLayout}>
@@ -196,7 +196,7 @@ export function ViewMenu() {
           </Menu.Sub.Item>
         </Menu.Sub.Target>
 
-        <MenuDrowdownWrapper isSubMenu shouldLimitHeight>
+        <MenuDropdownWrapper isSubMenu shouldLimitHeight>
           <Menu.Label>
             <Group gap={'xs'}>{t('notifications.label')}</Group>
           </Menu.Label>
@@ -237,7 +237,7 @@ export function ViewMenu() {
           >
             {t('notifications.clear-notifications')}
           </Menu.Item>
-        </MenuDrowdownWrapper>
+        </MenuDropdownWrapper>
       </Menu.Sub>
     </TopBarMenuWrapper>
   );

@@ -237,7 +237,6 @@ export interface openspace {
   exoplanets: exoplanetsLibrary;
   gaia: gaiaLibrary;
   globebrowsing: globebrowsingLibrary;
-  iswa: iswaLibrary;
   keyframeRecording: keyframeRecordingLibrary;
   modules: modulesLibrary;
   navigation: navigationLibrary;
@@ -248,13 +247,11 @@ export interface openspace {
   scriptScheduler: scriptSchedulerLibrary;
   sessionRecording: sessionRecordingLibrary;
   skybrowser: skybrowserLibrary;
-  sonification: sonificationLibrary;
   space: spaceLibrary;
   spice: spiceLibrary;
   statemachine: statemachineLibrary;
   sync: syncLibrary;
   systemCapabilities: systemCapabilitiesLibrary;
-  telemetry: telemetryLibrary;
   time: timeLibrary;
 
   /**
@@ -272,11 +269,11 @@ export interface openspace {
    */
   addSceneGraphNode: (node: table) => Promise<void>
   /**
-   * / Will create a ScreenSpaceRenderable from a lua Table and add it in the RenderEngine
+   * Will create a ScreenSpaceRenderable from a lua Table and add it in the RenderEngine.
    */
   addScreenSpaceRenderable: (screenSpace: table) => Promise<void>
   /**
-   * Adds a Tag to a SceneGraphNode identified by the provided uri
+   * Adds a Tag to a SceneGraphNode identified by the provided URI.
    */
   addTag: (uri: string, tag: string) => Promise<void>
   /**
@@ -294,7 +291,7 @@ export interface openspace {
   /**
    * Binds a key to Lua command to both execute locally and broadcast to all clients if this node is hosting a parallel connection.
    */
-  bindKey: (key: string, action: string) => Promise<void>
+  bindKey: (key: string, action: string | table) => Promise<void>
   /**
    * Returns the bounding sphere of the scene graph node with the given string as identifier.
    */
@@ -304,15 +301,15 @@ export interface openspace {
    */
   clearKey: (key: string | string[]) => Promise<void>
   /**
-   * Clear all key bindings
+   * Clear all key bindings.
    */
   clearKeys: () => Promise<void>
   /**
-   * Returns the whole configuration object as a Dictionary
+   * Returns the whole configuration object as a Dictionary.
    */
   configuration: () => Promise<table>
   /**
-   * Creates a directory at the provided path, returns true if directory was newly created and false otherwise. If `recursive` flag is set to true, it will automatically create any missing parent folder as well
+   * Creates a directory at the provided path, returns true if directory was newly created and false otherwise. If `recursive` flag is set to true, it will automatically create any missing parent folder as well.
    */
   createDirectory: (path: path, recursive?: boolean) => Promise<boolean>
   /**
@@ -328,7 +325,7 @@ export interface openspace {
    */
   directoryForPath: (file: path) => Promise<path>
   /**
-   * Downloads a file from Lua interpreter
+   * Downloads a file from Lua interpreter.
    */
   downloadFile: (url: string, savePath: string, waitForCompletion?: boolean, overrideExistingFile?: boolean) => Promise<void>
   /**
@@ -366,13 +363,19 @@ export interface openspace {
   /**
    * Returns whether a property with the given URI exists. The `uri` identifies the property or properties that are checked by this function and can include both wildcards `*` which match anything, as well as tags (`{tag}`) which match scene graph nodes that have this tag. There is also the ability to combine two tags through the `&`, `|`, and `~` operators. `{tag1&tag2}` will match anything that has the tag1 and the tag2. `{tag1|tag2}` will match anything that has the tag1 or the tag 2, and `{tag1~tag2}` will match anything that has tag1 but not tag2. If no wildcards or tags are provided at most one property value will be changed. With wildcards or tags all properties that match the URI are changed instead.
 
-\\param uri The URI that identifies the property or properties whose values should be changed. The URI can contain 0 or 1 wildcard `*` characters or a tag expression (`{tag}`) that identifies a property owner.
+\\param uri The URI that identifies the property or properties whose values should be changed. The URI can contain 0 or 1 wildcard `*` characters or a tag expression (`{tag}`) that identifies a property owner
    */
   hasProperty: (uri: string) => Promise<boolean>
   /**
    * Checks whether the specifies SceneGraphNode is present in the current scene.
    */
   hasSceneGraphNode: (nodeName: string) => Promise<boolean>
+  /**
+   * This function returns the size in pixels of an image file.
+
+\\param path The location of the image file for which the pixel size will be returned \\return The size of the image in pixels
+   */
+  imageSize: (path: path) => Promise<ivec2>
   /**
    * Returns the interaction sphere of the scene graph node with the given string as identifier.
    */
@@ -400,11 +403,11 @@ export interface openspace {
    */
   keyBindings: (key?: string) => Promise<string[]>
   /**
-   * Returns the keybinds to which the provided action is bound. As actions can be bound to multiple keys, this function returns a list of all keys
+   * Returns the keybinds to which the provided action is bound. As actions can be bound to multiple keys, this function returns a list of all keys.
    */
   keyBindingsForAction: (action: string) => Promise<string[]>
   /**
-   * Returns the current layer server from the configuration
+   * Returns the current layer server from the configuration.
    */
   layerServer: () => Promise<string>
   /**
@@ -416,7 +419,7 @@ export interface openspace {
    */
   loadMission: (mission: table) => Promise<void>
   /**
-   * Create a valid identifier from the provided input string. Will replace invalid characters like whitespaces and some punctuation marks with valid alternatives
+   * Create a valid identifier from the provided input string. Will replace invalid characters like whitespaces and some punctuation marks with valid alternatives.
    */
   makeIdentifier: (input: string) => Promise<string>
   /**
@@ -431,7 +434,7 @@ export interface openspace {
    */
   markInterestingTimes: (times: table[]) => Promise<void>
   /**
-   * Returns a list of all scene graph nodes in the scene that have a renderable of the specific type
+   * Returns a list of all scene graph nodes in the scene that have a renderable of the specific type.
    */
   nodeByRenderableType: (type: string) => Promise<string[]>
   /**
@@ -469,13 +472,13 @@ export interface openspace {
   /**
    * Returns a list of property identifiers that match the passed regular expression. The `uri` identifies the property or properties that are returned by this function and can include both wildcards `*` which match anything, as well as tags (`{tag}`) which match scene graph nodes that have this tag. There is also the ability to combine two tags through the `&`, `|`, and `~` operators. `{tag1&tag2}` will match anything that has both tags `tag1` and `tag2`. `{tag1|tag2}` will match anything that has `tag1` or `tag2`, and `{tag1~tag2}` will match anything that has `tag1` but not `tag2`. If no wildcards or tags are provided at most one property identifier will be returned. With wildcards or tags, the identifiers of all properties that match the URI are returned instead.
 
-\\param uri The URI that identifies the property or properties to get. The URI can contain 0 or 1 wildcard `*` characters or a tag expression (`{tag}`) that identifies a property owner. \\ return A list of property URIs
+\\param uri The URI that identifies the property or properties to get. The URI can contain 0 or 1 wildcard `*` characters or a tag expression (`{tag}`) that identifies a property owner \\return A list of property URIs
    */
   property: (uri: string) => Promise<string[]>
   /**
    * Returns a list of property owner identifiers that match the passed regular expression. The `uri` identifies the property owner or owner that are returned by this function and can include both wildcards `*` which match anything, as well as tags (`{tag}`) which match scene graph nodes that have this tag. There is also the ability to combine two tags through the `&`, `|`, and `~` operators. `{tag1&tag2}` will match anything that has both tags `tag1` and `tag2`. `{tag1|tag2}` will match anything that has the tag `tag1` or `tag2`, * and `{tag1~tag2}` will match anything that has `tag1` but not `tag2`. If no wildcards or tags are provided at most one property owner identifier will be returned. With wildcards or tags, the identifiers of all property owners that match the URI are returned instead.
 
-\\param uri The URI that identifies the property owner or owners to get. The URI can contain 0 or 1 wildcard `*` characters or a tag expression (`{tag}`) that identifies a property owner. \\ return A list of property owner URIs
+\\param uri The URI that identifies the property owner or owners to get. The URI can contain 0 or 1 wildcard `*` characters or a tag expression (`{tag}`) that identifies a property owner \\return A list of property owner URIs
    */
   propertyOwner: (uri: string) => Promise<string[]>
   /**
@@ -487,7 +490,7 @@ export interface openspace {
    */
   ramInUse: () => Promise<number>
   /**
-   * Loads the CSV file provided as a parameter and returns it as a vector containing the values of the each row. The inner vector has the same number of values as the CSV has columns. The second parameter controls whether the first entry in the returned outer vector is containing the names of the columns
+   * Loads the CSV file provided as a parameter and returns it as a vector containing the values of the each row. The inner vector has the same number of values as the CSV has columns. The second parameter controls whether the first entry in the returned outer vector is containing the names of the columns.
    */
   readCSVFile: (file: path, includeFirstLine?: boolean) => Promise<string[][]>
   /**
@@ -508,6 +511,12 @@ export interface openspace {
    */
   registerRepeatedScript: (identifier: string, script: string, timeout?: number, preScript?: string, postScript?: string) => Promise<void>
   /**
+   * Registers the pair of light source, shadower, shadowee, and shadowGroup to act together in order to produce a depth image that is used for shadow calculations. The lightSource, the shadower, and the shadowee must be existing scene graph nodes that are used to calculate the positions of the light and to determine which object is rendered to cast a shadow and which object should receive the shadow. Shadowcasters registered using the same shadow group will have their shadows interact with each other, whereas objects with different shadowGroups will not cast shadows on objects other than the shadowee.
+
+\\param lightSource The identifier of the scene graph node that should act as the source of the light for shadowing purposes \\param shadower The identifier of the scene graph node that is the object that casts a shadow on the shadowee and other shadowers in the tsame shadow group \\param shadowee The identifier of the scene graph node that is the object that receives the shadow of the shadower \\param shadowGroup An arbitrary name that identifies a shadow group, meaning multiple shadowcaster registrations that should act in unison. The name must not start with a `_` character. If this parameter is omitted, a suitable unique name will be automatically generated
+   */
+  registerShadowcaster: (lightSource: string, shadower: string, shadowee: string, shadowGroup?: string) => Promise<void>
+  /**
    * 
    */
   removeCustomProperty: (identifier: string) => Promise<void>
@@ -517,7 +526,7 @@ export interface openspace {
    */
   removeInterestingNodes: (sceneGraphNodes: string[]) => Promise<void>
   /**
-   * Removes a previously registered repeated script (see #registerRepeatedScript)
+   * Removes a previously registered repeated script (see #registerRepeatedScript).
    */
   removeRepeatedScript: (identifier: string) => Promise<void>
   /**
@@ -533,11 +542,17 @@ export interface openspace {
    */
   removeScreenSpaceRenderable: (identifier: string | table) => Promise<void>
   /**
-   * Removes a tag (second argument) from a scene graph node (first argument)
+   * Removes an existing pairing of a shadowcaster group, consisting of a light source, a shadower, a shadowee, and a shadow group. If the pairing exists, it will be removed, causing the shadow calculations to cease. If the pairing does not exist, an error message will be raised.
+
+\\param lightSource The identifier of the scene graph node that should act as the source of the light for shadowing purposes \\param shadower The identifier of the scene graph node that is the object that casts a shadow on the shadowee and other shadowers in the same shadow group \\param shadowee The identifier of the scene graph node that is the object that receives the shadow of the shadower \\param shadowGroup An arbitrary name that identifies a shadow group, meaning multiple shadowcaster registrations that should act in unison. The name must not start with a `_` character. If this parameter is omitted, a suitable unique name will be automatically generated. If the same light source, shadower, and shadowee are provided as for a previous register call, the generated name will be identical
+   */
+  removeShadowcaster: (lightSource: string, shadower: string, shadowee: string, shadowGroup?: string) => Promise<void>
+  /**
+   * Removes a tag(second argument) from a scene graph node (first argument).
    */
   removeTag: (uri: string, tag: string) => Promise<void>
   /**
-   * Resets the camera position to the same position where the profile originally started
+   * Resets the camera position to the same position where the profile originally started.
    */
   resetCamera: () => Promise<void>
   /**
@@ -557,9 +572,9 @@ export interface openspace {
   /**
    * Collects all changes that have been made since startup, including all property changes and assets required, requested, or removed. All changes will be added to the profile that OpenSpace was started with, and the new saved file will contain all of this information. If the argument is provided, the settings will be saved into new profile with that name. If the argument is blank, the current profile will be saved to a backup file and the original profile will be overwritten. The second argument determines if a file that already exists should be overwritten, which is 'false' by default.
    */
-  saveSettingsToProfile: (saveFilePath?: string, overwrite?: boolean) => Promise<void>
+  saveSettingsToProfile: (saveFilePath?: string, shouldOverwrite?: boolean) => Promise<void>
   /**
-   * Returns a list of all scene graph nodes in the scene
+   * Returns a list of all scene graph nodes in the scene.
    */
   sceneGraphNodes: () => Promise<string[]>
   /**
@@ -567,11 +582,11 @@ export interface openspace {
    */
   scheduleScript: (script: string, delay: number) => Promise<void>
   /**
-   * Returns a list of all screen-space renderables
+   * Returns a list of all screen - space renderables.
    */
   screenSpaceRenderables: () => Promise<string[]>
   /**
-   * Set the currnet mission.
+   * Set the current mission.
    */
   setCurrentMission: (identifier: string) => Promise<void>
   /**
@@ -583,7 +598,7 @@ export interface openspace {
   /**
    * Set a custom ordering of the items in a specific branch in the Scene GUI tree, i.e. for a specific GUI path.
 
-\\param guiPath The GUI path for which the order should be set. \\param list A list of names of scene graph nodes or subgroups in the GUI, in the order of which they should appear in the tree. The list does not have to include all items in the given GUI path. Any excluded items will be placed after the ones in the list.
+\\param guiPath The GUI path for which the order should be set \\param list A list of names of scene graph nodes or subgroups in the GUI, in the order of which they should appear in the tree. The list does not have to include all items in the given GUI path. Any excluded items will be placed after the ones in the list
    */
   setGuiOrder: (guiPath: string, list: string[]) => Promise<void>
   /**
@@ -627,7 +642,7 @@ that identifies a property owner
 should be changed to. The type of this parameter must agree with the type of the selected
 property
 \\param duration The number of seconds over which the change will occur. If not provided
-or the provided value is 0, the change is instantaneously.
+or the provided value is 0, the change is instantaneously
 \\param easing If a duration larger than 0 is provided, this parameter controls the manner
 in which the parameter is interpolated. Has to be one of "Linear", "QuadraticEaseIn",
 "QuadraticEaseOut", "QuadraticEaseInOut", "CubicEaseIn", "CubicEaseOut", "CubicEaseInOut",
@@ -638,7 +653,7 @@ in which the parameter is interpolated. Has to be one of "Linear", "QuadraticEas
 "BounceEaseIn", "BounceEaseOut", "BounceEaseInOut"
 \\param postscript A Lua script that will be executed once the change of property value
 is completed. If a duration larger than 0 was provided, it is at the end of the
-interpolation. If 0 was provided, the script runs immediately.
+interpolation. If 0 was provided, the script runs immediately
    */
   setPropertyValue: (uri: string, value: null | string | number | boolean | table, duration?: number, easing?: easingfunction, postscript?: string) => Promise<void>
   /**
@@ -656,7 +671,7 @@ efficiently for individual property values.
 \\param value The new value to which the property identified by the `uri` should be
 changed to. The type of this parameter must agree with the type of the selected property
 \\param duration The number of seconds over which the change will occur. If not provided
-or the provided value is 0, the change is instantaneously.
+or the provided value is 0, the change is instantaneously
 \\param easing If a duration larger than 0 is provided, this parameter controls the manner
 in which the parameter is interpolated. Has to be one of "Linear", "QuadraticEaseIn",
 "QuadraticEaseOut", "QuadraticEaseInOut", "CubicEaseIn", "CubicEaseOut", "CubicEaseInOut",
@@ -667,11 +682,11 @@ in which the parameter is interpolated. Has to be one of "Linear", "QuadraticEas
 "BounceEaseIn", "BounceEaseOut", "BounceEaseInOut"
 \\param postscript This parameter specifies a Lua script that will be executed once the
 change of property value is completed. If a duration larger than 0 was provided, it is
-at the end of the interpolation. If 0 was provided, the script runs immediately.
+at the end of the interpolation. If 0 was provided, the script runs immediately
    */
   setPropertyValueSingle: (uri: string, value: null | string | number | boolean | table, duration?: number, easing?: easingfunction, postscript?: string) => Promise<void>
   /**
-   * Sets the folder used for storing screenshots or session recording frames
+   * Sets the folder used for storing screenshots or session recording frames.
    */
   setScreenshotFolder: (newFolder: string) => Promise<void>
   /**
@@ -697,11 +712,11 @@ at the end of the interpolation. If 0 was provided, the script runs immediately.
    */
   toggleFade: (identifier: string, fadeTime?: number, endScript?: string) => Promise<void>
   /**
-   * Toggles the shutdown mode that will close the application after the countdown timer is reached
+   * Toggles the shutdown mode that will close the application after the countdown timer is reached.
    */
   toggleShutdown: () => Promise<void>
   /**
-   * Unloads a previously loaded mission.
+   * Unloads a previously loaded mission
    */
   unloadMission: (identifierOrMission: string | table) => Promise<void>
   /**
@@ -737,7 +752,7 @@ at the end of the interpolation. If 0 was provided, the script runs immediately.
    */
   worldRotation: (identifier: string) => Promise<mat3x3>
   /**
-   * Writes out documentation files
+   * Writes out documentation files.
    */
   writeDocumentation: () => Promise<void>
 } // interface openspace
@@ -783,7 +798,7 @@ interface assetLibrary {
    */
   isLoaded: (assetName: string) => Promise<boolean>
   /**
-   * Returns the path to all parents that are still interested in this Asset e.g., through 'asset.require()'
+   * Returns the path to all parents that are still interested in this Asset e.g., through 'asset.require()'.
    */
   parents: (assetName: string) => Promise<path[]>
   /**
@@ -795,7 +810,7 @@ interface assetLibrary {
    */
   remove: (assetName: string) => Promise<void>
   /**
-   * Removes all assets that are currently loaded
+   * Removes all assets that are currently loaded.
    */
   removeAll: () => Promise<void>
   /**
@@ -846,7 +861,7 @@ interface audioLibrary {
    */
   pauseAudio: (identifier: string) => Promise<void>
   /**
-   * Takes all of the sounds that are currently registers, unpauses them and plays them from their starting points
+   * Takes all of the sounds that are currently registers, unpauses them and plays them from their starting points.
    */
   playAllFromStart: () => Promise<void>
   /**
@@ -874,7 +889,7 @@ interface audioLibrary {
   /**
    * Sets the position and orientation of the listener. This new position is automatically used to adjust the relative position of all 3D tracks. Each parameter to this function call is optional and if a value is omitted, the currently set value continues to be used instead. The coordinate system for the tracks and the listener is a meter-based coordinate system.
 
-\\param position The position of the listener. \\param lookAt The direction vector of the forward direction \\param up The up-vector of the coordinate system
+\\param position The position of the listener \\param lookAt The direction vector of the forward direction \\param up The up-vector of the coordinate system
    */
   set3dListenerPosition: (position: vec3, lookAt?: vec3, up?: vec3) => Promise<void>
   /**
@@ -933,7 +948,7 @@ interface audioLibrary {
 
 interface dashboardLibrary {
   /**
-   * Adds a new dashboard item to the main dashboard.
+   * Adds a new dashboard item to the main dashboard
    */
   addDashboardItem: (dashboard: table) => Promise<void>
   /**
@@ -947,7 +962,7 @@ interface dashboardLibrary {
   /**
    * Returns all loaded dashboard-item identifiers from the main dashboard.
 
-\\return a list of loaded dashboard-item identifiers from the main dashbaord
+\\return A list of loaded dashboard-item identifiers from the main dashboard
    */
   dashboardItems: () => Promise<string[]>
   /**
@@ -1047,7 +1062,7 @@ interface exoplanetsLibrary {
   /**
    * Returns a list with names of the host star of all the exoplanet systems that have sufficient data for generating a visualization, based on the module's loaded data file.
 
-\\return A list of exoplanet host star names.
+\\return A list of exoplanet host star names
    */
   listOfExoplanets: () => Promise<string[]>
   /**
@@ -1079,7 +1094,7 @@ When dowloading the data from the archive we recommend including all columns, si
 
 \\param csvFile A path to the CSV file to load the data from
 
-\\return A list of objects of the type [ExoplanetSystemData](#exoplanets_exoplanet_system_data), that can be used to create the scene graph nodes for the exoplanet systems
+\\return A list of objects of the type [ExoplanetSystemData](#exoplanets_data_exoplanetsystem), that can be used to create the scene graph nodes for the exoplanet systems
    */
   loadSystemDataFromCsv: (csvFile: string) => Promise<table[]>
   /**
@@ -1093,7 +1108,7 @@ When dowloading the data from the archive we recommend including all columns, si
 
 \\param starName The name of the star to get the information for
 
-\\return An object of the type [ExoplanetSystemData](#exoplanets_exoplanet_system_data) that can be used to create the scene graph nodes for the exoplanet system
+\\return An object of the type [ExoplanetSystemData](#exoplanets_data_exoplanetsystem) that can be used to create the scene graph nodes for the exoplanet system
    */
   systemData: (starName: string) => Promise<table>
 } // interface exoplanetsLibrary
@@ -1107,8 +1122,7 @@ interface gaiaLibrary {
  old one will be removed.
 
  \\param identifier The identifier of the scene graph node with a
- [RenderableGaiaStars](#gaiamission_renderablegaiastars) to be
- filtered
+ [RenderableGaiaStars](#gaia_renderable_gaiastars) to be filtered
  \\param size The size of each dimension of the box, in Kiloparsec
  \\param position The position of the center of the box, specified in galactic
  coordinates in Kiloparsec
@@ -1123,8 +1137,7 @@ interface gaiaLibrary {
  the old one will be removed.
 
  \\param identifier The identifier of the scene graph node with a
- [RenderableGaiaStars](#gaiamission_renderablegaiastars) to be
- filtered
+ [RenderableGaiaStars](#gaia_renderable_gaiastars) to be filtered
  \\param radius The desired radius outside of the clipping sphere, in Kiloparsec
    */
   addClippingSphere: (identifier: string, radius: number) => Promise<void>
@@ -1202,7 +1215,7 @@ interface globebrowsingLibrary {
   /**
    * Adds a layer to the specified globe. The second argument is the layer group which can be any of the supported layer groups. The third argument is the dictionary defining the layer.
 
-\\param globeIdentifier The identifier of the scene graph node of which to add the layer. The renderable of the scene graph node must be a [RenderableGlobe](#globebrowsing_renderableglobe) \\param layerGroup The identifier of the layer group in which to add the layer \\param layer A dictionary defining the layer. See [this page](#globebrowsing_layer) for details on what fields and settings the dictionary may contain
+\\param globeIdentifier The identifier of the scene graph node of which to add the layer. The renderable of the scene graph node must be a [RenderableGlobe](#globebrowsing_renderable_globe) \\param layerGroup The identifier of the layer group in which to add the layer \\param layer A dictionary defining the layer. See [this page](#globebrowsing_layer) for details on what fields and settings the dictionary may contain
    */
   addLayer: (globeIdentifier: string, layerGroup: string, layer: table) => Promise<void>
   /**
@@ -1249,7 +1262,7 @@ interface globebrowsingLibrary {
   /**
    * Removes a layer from the specified globe.
 
-\\param globeIdentifier The identifier of the scene graph node of which to remove the layer. The renderable of the scene graph node must be a [RenderableGlobe](#globebrowsing_renderableglobe) \\param layerGroup The identifier of the layer group from which to remove the layer \\param layerOrName Either the identifier for the layer or a dictionary with the `Identifier` key that is used instead
+\\param globeIdentifier The identifier of the scene graph node of which to remove the layer. The renderable of the scene graph node must be a [RenderableGlobe](#globebrowsing_renderable_globe) \\param layerGroup The identifier of the layer group from which to remove the layer \\param layerOrName Either the identifier for the layer or a dictionary with the `Identifier` key that is used instead
    */
   deleteLayer: (globeIdentifier: string, layerGroup: string, layerOrName: string | table) => Promise<void>
   /**
@@ -1259,7 +1272,7 @@ interface globebrowsingLibrary {
    */
   geoPositionForCamera: (useEyePosition?: boolean) => Promise<[number, number, number]>
   /**
-   * Returns an object containing a list of all loaded `RenderableGlobe` sorted with respect to WMS server info followed by alphabetical order. The index `firstIndexWithoutUrl` indicates the first item in the list that does not have WMS server info.
+   * Returns an object containing a list of all loaded `RenderableGlobe`s sorted first by the presence of WMS server info, then alphabetically. The index `firstIndexWithoutUrl` indicates the first item in the list that does not have WMS server info.
 
 \\return Table containing a list of `renderableGlobe` identifiers, and an index indicating the first item in the list that does not have a WMS server
    */
@@ -1318,8 +1331,8 @@ The `source` and `destination` parameters can also be the identifiers of the lay
   removeWMSServer: (name: string) => Promise<void>
   /**
    * Sets the position of a scene graph node that has a
- [GlobeTranslation](#base_translation_globetranslation) and/or
- [GlobeRotation](#base_rotation_globerotation).
+ [GlobeTranslation](#base_translation_globe) and/or
+ [GlobeRotation](#base_rotation_globe).
 
  Usage:
  ```lua
@@ -1329,8 +1342,9 @@ The `source` and `destination` parameters can also be the identifiers of the lay
  ```
 
  \\param nodeIdentifier The identifier of the scene graph node to move
- \\param globeIdentifier The identifier of the [RenderableGlobe](#globebrowsing_renderableglobe)
- that the object should be put on
+ \\param globeIdentifier The identifier of the
+ [RenderableGlobe](#globebrowsing_renderable_globe) that the object should be
+ put on
  \\param latitude The latitude value for the new position, in degrees
  \\param longitude The longitude value for the new position, in degrees
  \\param altitude An optional altitude value for the new position, in meters. If
@@ -1339,10 +1353,10 @@ The `source` and `destination` parameters can also be the identifiers of the lay
   setNodePosition: (nodeIdentifier: string, globeIdentifier: string, latitude: number, longitude: number, altitude?: number) => Promise<void>
   /**
    * Sets the position of a scene graph node that has a
- [GlobeTranslation](#base_translation_globetranslation) and/or
- [GlobeRotation](#base_rotation_globerotation) to match the camera. Only
- uses camera position not rotation. If useAltitude is true, then the position
- will also be updated to the camera's altitude.
+ [GlobeTranslation](#base_translation_globe) and/or
+ [GlobeRotation](#base_rotation_globe) to match the camera. Only uses camera position
+ not rotation. If useAltitude is true, then the position will also be updated to the
+ camera's altitude.
 
  Usage:
  ```lua
@@ -1353,61 +1367,24 @@ The `source` and `destination` parameters can also be the identifiers of the lay
 
  \\param nodeIdentifier The identifier of the scene graph node to move
  \\param useAltitude If true, the camera's altitude will also be used for the new
- positions. Otherwise, it will not.
+ positions. Otherwise, it will not
    */
   setNodePositionFromCamera: (nodeIdentifer: string, useAltitude?: boolean) => Promise<void>
   /**
    * Return a list of all WMS servers associated with the `renderableGlobe` globe.
 
-\\param globe The identifier of the `renderableGlobe` to fetch WMS servers for
-
-\\return A list of WMS server info containing its name and url
+\\param globe The identifier of the `renderableGlobe` to fetch WMS servers for \\return A list of WMS server info containing its name and URL
    */
   urlInfo: (globe: string) => Promise<table[]>
 } // interface globebrowsingLibrary
 
-interface iswaLibrary {
-  /**
-   * Adds a cdf files to choose from.
-   */
-  addCdfFiles: (path: string) => Promise<void>
-  /**
-   * Adds a IswaCygnet.
-   */
-  addCygnet: (id?: integer, type?: string, group?: string) => Promise<void>
-  /**
-   * Adds KameleonPlanes from cdf file.
-   */
-  addKameleonPlanes: (group: string, pos: integer) => Promise<void>
-  /**
-   * Adds a Screen Space Cygnets.
-   */
-  addScreenSpaceCygnet: (d: table) => Promise<void>
-  /**
-   * Remove a Cygnets.
-   */
-  removeCygnet: (name: string) => Promise<void>
-  /**
-   * Remove a group of Cygnets.
-   */
-  removeGroup: (name: string) => Promise<void>
-  /**
-   * Remove a Screen Space Cygnets.
-   */
-  removeScreenSpaceCygnet: (id: integer) => Promise<void>
-  /**
-   * Sets the base url.
-   */
-  setBaseUrl: (url: string) => Promise<void>
-} // interface iswaLibrary
-
 interface keyframeRecordingLibrary {
   /**
-   * Adds a keyframe at the specified sequence-time
+   * Adds a keyframe at the specified sequence - time.
    */
   addCameraKeyframe: (sequenceTime: number) => Promise<void>
   /**
-   * Adds a keyframe at the specified sequence-time
+   * Adds a keyframe at the specified sequence - time.
    */
   addScriptKeyframe: (sequenceTime: number, script: string) => Promise<void>
   /**
@@ -1415,27 +1392,27 @@ interface keyframeRecordingLibrary {
    */
   keyframes: () => Promise<table[]>
   /**
-   * Loads a sequence from the specified file
+   * Loads a sequence from the specified file.
    */
   loadSequence: (filename: path) => Promise<void>
   /**
-   * Move keyframe of `index` to the new specified `sequenceTime`
+   * Move keyframe of `index` to the new specified `sequenceTime`.
    */
   moveKeyframe: (index: integer, sequenceTime: number) => Promise<void>
   /**
-   * Starts a new sequence of keyframes, any previously loaded sequence is discarded
+   * Starts a new sequence of keyframes, any previously loaded sequence is discarded.
    */
   newSequence: () => Promise<void>
   /**
-   * Pauses a playing sequence
+   * Pauses a playing sequence.
    */
   pause: () => Promise<void>
   /**
-   * Playback sequence optionally from the specified `sequenceTime` or if not specified starts playing from the current time set within the sequence
+   * Playback sequence optionally from the specified `sequenceTime` or if not specified starts playing from the current time set within the sequence.
    */
   play: (sequenceTime?: number) => Promise<void>
   /**
-   * Removes a keyframe at the specified 0-based index
+   * Removes a keyframe at the specified 0 - based index.
    */
   removeKeyframe: (index: integer) => Promise<void>
   /**
@@ -1443,7 +1420,7 @@ interface keyframeRecordingLibrary {
    */
   saveSequence: (filename: path) => Promise<void>
   /**
-   * Update the camera position at keyframe specified by the 0-based index
+   * Update the camera position at keyframe specified by the 0 - based index.
    */
   updateKeyframe: (index: integer) => Promise<void>
 } // interface keyframeRecordingLibrary
@@ -1483,21 +1460,19 @@ interface navigationLibrary {
   /**
    * Adds an instantaneous impulse to create a truck movement of the camera. This is the movement along the line from the camera to the focus node and corresponds to using the right mouse button and moving the mous up and down. The unit for the provided parameter is somewhat arbitrary and the magnitude depends on the explicit use-case (continuously executing this function vs an individual impulse), but typically a range of [-1000, 1000] produces reasonable results.
 
-\\param value A positive value moves the camera closer to the focus node, and a negative value moves the camera further away.
+\\param value A positive value moves the camera closer to the focus node, and a negative value moves the camera further away
    */
   addTruckMovement: (value: number) => Promise<void>
   /**
    * Returns the deadzone for the desired axis of the provided joystick.
 
-\\param joystickName the name for the joystick or game controller which information should be returned \\param axis the joystick axis for which to get the deadzone value
-
-\\return the deadzone value
+\\param joystickName The name for the joystick or game controller which information should be returned \\param axis The joystick axis for which to get the deadzone value \\return The deadzone value
    */
   axisDeadzone: (joystickName: string, axis: integer) => Promise<number>
   /**
    * Bind an axis of a joystick to be used as a certain type, and optionally define detailed settings for the axis.
 
-\\param joystickName the name for the joystick or game controller that should be bound \\param axis the axis of the joystick that should be bound \\param axisType the type of movement that the axis should be mapped to \\param shouldInvert decides if the joystick axis movement should be inverted or not \\param joystickType what type of joystick or axis this is. Decides if the joystick behaves more like a joystick or a trigger. Either `\"JoystickLike\"` or `\"TriggerLike\"`, where `\"JoystickLike\"` is default \\param isSticky if true, the value is calculated relative to the previous value. If false, the value is used as is \\param shouldFlip reverses the movement of the camera that the joystick produces \\param sensitivity sensitivity for this axis, in addition to the global sensitivity
+\\param joystickName The name for the joystick or game controller that should be bound \\param axis The axis of the joystick that should be bound \\param axisType The type of movement that the axis should be mapped to \\param shouldInvert Decides if the joystick axis movement should be inverted or not \\param joystickType What type of joystick or axis this is. Decides if the joystick behaves more like a joystick or a trigger. Either `\"JoystickLike\"` or `\"TriggerLike\"`, where `\"JoystickLike\"` is default \\param isSticky If true, the value is calculated relative to the previous value. If false, the value is used as is \\param shouldFlip Reverses the movement of the camera that the joystick produces \\param sensitivity Sensitivity for this axis, in addition to the global sensitivity
    */
   bindJoystickAxis: (joystickName: string, axis: integer, axisType: string, shouldInvert?: boolean, joystickType?: string, isSticky?: boolean, shouldFlip?: boolean, sensitivity?: number) => Promise<void>
   /**
@@ -1505,37 +1480,37 @@ interface navigationLibrary {
 
 The axis value will be rescaled from [-1, 1] to the provided [min, max] range (default is [0, 1]).
 
-\\param joystickName the name for the joystick or game controller that should be bound \\param axis the axis of the joystick that should be bound \\param propertyUri the identifier (URI) of the property that this joystick axis should modify \\param min the minimum value that this axis can set for the property \\param max the maximum value that this axis can set for the property \\param shouldInvert if the joystick movement should be inverted or not \\param isRemote if true, the property change will also be executed on connected nodes. If false, the property change will only affect the master node
+\\param joystickName The name for the joystick or game controller that should be bound \\param axis The axis of the joystick that should be bound \\param propertyUri The identifier (URI) of the property that this joystick axis should modify \\param min The minimum value that this axis can set for the property \\param max The maximum value that this axis can set for the property \\param shouldInvert If the joystick movement should be inverted or not \\param isRemote If true, the property change will also be executed on connected nodes. If false, the property change will only affect the master node
    */
   bindJoystickAxisProperty: (joystickName: string, axis: integer, propertyUri: string, min?: number, max?: number, shouldInvert?: boolean, isRemote?: boolean) => Promise<void>
   /**
    * Bind a Lua script to one of the buttons for a joystick.
 
-\\param joystickName the name for the joystick or game controller \\param button the button to which to bind the script \\param command the script that should be executed on button trigger \\param documentation the documentation for the provided script/command \\param action the action for when the script should be executed. This defaults to `\"Press\"`, which means that the script is run when the user presses the button. Alternatives are `\"Idle\"` (if the button is unpressed and has been unpressed since the last frame), `\"Repeat\"` (if the button has been pressed since longer than the last frame), and `\"Release\"` (if the button was released since the last frame) \\param isRemote a value saying whether the command is going to be executable locally or remotely, where the latter is the default
+\\param joystickName The name for the joystick or game controller \\param button The button to which to bind the script \\param command The script that should be executed on button trigger \\param documentation The documentation for the provided script/command \\param action The action for when the script should be executed. This defaults to `\"Press\"`, which means that the script is run when the user presses the button. Alternatives are `\"Idle\"` (if the button is unpressed and has been unpressed since the last frame), `\"Repeat\"` (if the button has been pressed since longer than the last frame), and `\"Release\"` (if the button was released since the last frame) \\param isRemote A value saying whether the command is going to be executable locally or remotely, where the latter is the default
    */
   bindJoystickButton: (joystickName: string, button: integer, command: string, documentation: string, action?: string, isRemote?: boolean) => Promise<void>
   /**
-   * Remove all commands that are currently bound to a button of a joystick or game controller
+   * Remove all commands that are currently bound to a button of a joystick or game controller.
 
-\\param joystickName the name for the joystick or game controller \\param button the button for which to clear the commands
+\\param joystickName The name for the joystick or game controller \\param button The button for which to clear the commands
    */
   clearJoystickButton: (joystickName: string, button: integer) => Promise<void>
   /**
    * Return the distance to the current focus node.
 
-\\return the distance, in meters
+\\return The distance, in meters
    */
   distanceToFocus: () => Promise<number>
   /**
    * Return the distance to the current focus node's bounding sphere.
 
-\\return the distance, in meters
+\\return The distance, in meters
    */
   distanceToFocusBoundingSphere: () => Promise<number>
   /**
    * Return the distance to the current focus node's interaction sphere.
 
-\\return the distance, in meters
+\\return The distance, in meters
    */
   distanceToFocusInteractionSphere: () => Promise<number>
   /**
@@ -1547,7 +1522,7 @@ The axis value will be rescaled from [-1, 1] to the provided [min, max] range (d
   /**
    * Fly the camera to a geographic coordinate (latitude, longitude and altitude) on a globe, using the path navigation system. If the node is a globe, the longitude and latitude is expressed in the body's native coordinate system. If it is not, the position on the surface of the interaction sphere is used instead.
 
-\\param node The identifier of a scene graph node. If an empty string is provided, the current anchor node is used \\param latitude The latitude of the target coordinate, in degrees \\param longitude The longitude of the target coordinate, in degrees \\param altitude The altitude of the target coordinate, in meters \\param duration An optional duration for the motion to take, in seconds. For example, a value of 5 means \"fly to this position over a duration of 5 seconds\" \\param shouldUseUpVector If true, try to use the up-direction when computing the target position for the camera. For globes, this means that North should be up, in relation to the camera's view direction. Note that for this to take effect, rolling motions must be enabled in the Path Navigator settings.
+\\param node The identifier of a scene graph node. If an empty string is provided, the current anchor node is used \\param latitude The latitude of the target coordinate, in degrees \\param longitude The longitude of the target coordinate, in degrees \\param altitude The altitude of the target coordinate, in meters \\param duration An optional duration for the motion to take, in seconds. For example, a value of 5 means \"fly to this position over a duration of 5 seconds\" \\param shouldUseUpVector If true, try to use the up-direction when computing the target position for the camera. For globes, this means that North should be up, in relation to the camera's view direction. Note that for this to take effect, rolling motions must be enabled in the Path Navigator settings
    */
   flyToGeo: (node: string, latitude: number, longitude: number, altitude: number, duration?: number, shouldUseUpVector?: boolean) => Promise<void>
   /**
@@ -1555,29 +1530,27 @@ The axis value will be rescaled from [-1, 1] to the provided [min, max] range (d
 
 The distance to fly to can either be set to be the current distance of the camera to the target object, or the default distance from the path navigation system.
 
-\\param node The identifier of a scene graph node. If an empty string is provided, the current anchor node is used \\param latitude The latitude of the target coordinate, in degrees \\param longitude The longitude of the target coordinate, in degrees \\param useCurrentDistance If true, use the current distance of the camera to the target globe when going to the specified position. If false, or not specified, set the distance based on the bounding sphere and the distance factor setting in Path Navigator \\param duration An optional duration for the motion to take, in seconds. For example, a value of 5 means \"fly to this position over a duration of 5 seconds\" \\param shouldUseUpVector If true, try to use the up-direction when computing the target position for the camera. For globes, this means that North should be up, in relation to the camera's view direction. Note that for this to take effect, rolling motions must be enabled in the Path Navigator settings.
+\\param node The identifier of a scene graph node. If an empty string is provided, the current anchor node is used \\param latitude The latitude of the target coordinate, in degrees \\param longitude The longitude of the target coordinate, in degrees \\param useCurrentDistance If true, use the current distance of the camera to the target globe when going to the specified position. If false, or not specified, set the distance based on the bounding sphere and the distance factor setting in Path Navigator \\param duration An optional duration for the motion to take, in seconds. For example, a value of 5 means \"fly to this position over a duration of 5 seconds\" \\param shouldUseUpVector If true, try to use the up-direction when computing the target position for the camera. For globes, this means that North should be up, in relation to the camera's view direction. Note that for this to take effect, rolling motions must be enabled in the Path Navigator settings
    */
   flyToGeo2: (node: string, latitude: number, longitude: number, useCurrentDistance?: boolean, duration?: number, shouldUseUpVector?: boolean) => Promise<void>
   /**
    * Move the camera to the node with the specified identifier. The second argument is the desired target height above the target node's bounding sphere, in meters. The optional double specifies the duration of the motion, in seconds. If the optional bool is set to true, the target up vector for camera is set based on the target node. Either of the optional parameters can be left out.
 
-\\param nodeIdentifier The identifier of the node to which we want to fly \\param height The height (in meters) to which we want to fly. The way the height is defined specifically determines on the type of node to which the fly-to command is pointed. \\param useUpFromTargetOrDuration If this value is a boolean value (`true` or `false`), this value determines whether we want to end up with the camera facing along the selected node's up direction. If this value is a numerical value, refer to the documnentation of the `duration` parameter \\param duration The duration (in seconds) how long the flying to the selected node should take. If this value is left out, a sensible default value is uses, which can be configured in the engine
+\\param nodeIdentifier The identifier of the node to which we want to fly \\param height The height (in meters) to which we want to fly. The way the height is defined specifically determines on the type of node to which the fly-to command is pointed \\param useUpFromTargetOrDuration If this value is a boolean value (`true` or `false`), this value determines whether we want to end up with the camera facing along the selected node's up direction. If this value is a numerical value, refer to the documnentation of the `duration` parameter \\param duration The duration (in seconds) how long the flying to the selected node should take. If this value is left out, a sensible default value is uses, which can be configured in the engine
    */
   flyToHeight: (nodeIdentifier: string, height: number, useUpFromTargetOrDuration?: boolean | number, duration?: number) => Promise<void>
   /**
    * Create a path to the navigation state described by the input table. Note that roll must be included for the target up direction in the navigation state to be taken into account.
 
-\\param navigationState A [NavigationState](#core_navigation_state) to fly to \\param duration An optional duration for the motion to take, in seconds. For example, a value of 5 means \"fly to this position over a duration of 5 seconds\"
+\\param navigationState A [NavigationState](#core_navigationstate) to fly to \\param duration An optional duration for the motion to take, in seconds. For example, a value of 5 means \"fly to this position over a duration of 5 seconds\"
    */
   flyToNavigationState: (navigationState: table, duration?: number) => Promise<void>
   /**
-   * Return the current [NavigationState](#core_navigation_state) as a Lua table.
+   * Return the current [NavigationState](#core_navigationstate) as a Lua table.
 
 By default, the reference frame will be picked based on whether the orbital navigator is currently following the anchor node rotation. If it is, the anchor will be chosen as reference frame. If not, the reference frame will be set to the scene graph root.
 
-\\param frame the identifier of an optional scene graph node to use as reference frame for the NavigationState
-
-\\return a Lua table representing the current NavigationState of the camera
+\\param frame The identifier of an optional scene graph node to use as reference frame for the NavigationState \\return A Lua table representing the current NavigationState of the camera
    */
   getNavigationState: (frame?: string) => Promise<table>
   /**
@@ -1589,17 +1562,13 @@ By default, the reference frame will be picked based on whether the orbital navi
   /**
    * Return all the information bound to a certain joystick axis.
 
-\\param joystickName the name for the joystick or game controller with the axis for which to find the information \\param axis the joystick axis for which to find the information
-
-\\return an object with information about the joystick axis
+\\param joystickName The name for the joystick or game controller with the axis for which to find the information \\param axis The joystick axis for which to find the information \\return An object with information about the joystick axis
    */
   joystickAxis: (joystickName: string, axis: integer) => Promise<table>
   /**
    * Get the Lua script that is currently bound to be executed when the provided button is pressed/triggered.
 
-\\param joystickName the name for the joystick or game controller \\param button the button for which to get the command
-
-\\return the currently bound Lua script
+\\param joystickName The name for the joystick or game controller \\param button The button for which to get the command \\return The currently bound Lua script
    */
   joystickButton: (joystickName: string, button: integer) => Promise<string>
   /**
@@ -1619,19 +1588,19 @@ This is done by triggering another script that handles the logic.
   /**
    * Fade rendering to black, jump to the specified node, and then fade in. This is done by triggering another script that handles the logic.
 
-\\param navigationState A [NavigationState](#core_navigation_state) to jump to \\param useTimeStamp if true, and the provided NavigationState includes a timestamp, the time will be set as well \\param fadeDuration An optional duration for the fading. If not included, the property in Navigation Handler will be used
+\\param navigationState A [NavigationState](#core_navigationstate) to jump to \\param useTimeStamp if true, and the provided NavigationState includes a timestamp, the time will be set as well \\param fadeDuration An optional duration for the fading. If not included, the property in Navigation Handler will be used
    */
   jumpToNavigationState: (navigationState: table, useTimeStamp?: boolean, fadeDuration?: number) => Promise<void>
   /**
    * Return the complete list of connected joysticks.
 
-\\return a list of joystick names
+\\return A list of joystick names
    */
   listAllJoysticks: () => Promise<string[]>
   /**
-   * Set the camera position by loading a [NavigationState](#core_navigation_state) from file. The file should be in json format, such as the output files of `saveNavigationState`.
+   * Set the camera position by loading a [NavigationState](#core_navigationstate) from file. The file should be in json format, such as the output files of `saveNavigationState`.
 
-\\param filePath the path to the file, including the file name (and extension, if it is anything other than `.navstate`) \\param useTimeStamp if true, and the provided NavigationState includes a timestamp, the time will be set as well.
+\\param filePath The path to the file, including the file name (and extension, if it is anything other than `.navstate`) \\param useTimeStamp If `true`, and the provided NavigationState includes a timestamp, the time will be set as well
    */
   loadNavigationState: (filePath: string, useTimeStamp?: boolean) => Promise<void>
   /**
@@ -1649,17 +1618,17 @@ This is done by triggering another script that handles the logic.
    */
   retargetAnchor: () => Promise<void>
   /**
-   * Save the current [NavigationState](#core_navigation_state) to a file with the path given by the first argument.
+   * Save the current [NavigationState](#core_navigationstate) to a file with the path given by the first argument.
 
 By default, the reference frame will be picked based on whether the orbital navigator is currently following the anchor node rotation. If it is, the anchor will be chosen as reference frame. If not, the reference frame will be set to the scene graph root.
 
-\\param path the file path for where to save the NavigationState, including the file name. If no extension is added, the file is saved as a `.navstate` file. \\param frame the identifier of the scene graph node which coordinate system should be used as a reference frame for the NavigationState.
+\\param path The file path for where to save the NavigationState, including the file name. If no extension is added, the file is saved as a `.navstate` file \\param frame The identifier of the scene graph node which coordinate system should be used as a reference frame for the NavigationState
    */
   saveNavigationState: (path: string, frame?: string) => Promise<void>
   /**
    * Set the deadzone value for a particular joystick axis, which means that any input less than this value is completely ignored.
 
-\\param joystickName the name for the joystick or game controller \\param axis the joystick axis for which to set the deadzone \\param deadzone the new deadzone value
+\\param joystickName The name for the joystick or game controller \\param axis The joystick axis for which to set the deadzone \\param deadzone The new deadzone value
    */
   setAxisDeadZone: (joystickName: string, axis: integer, deadzone: number) => Promise<void>
   /**
@@ -1671,9 +1640,9 @@ Per default, the camera will retarget to center the focus node in the view. The 
    */
   setFocus: (identifier: string, shouldRetarget?: boolean, shouldResetVelocities?: boolean) => Promise<void>
   /**
-   * Set the camera position from a provided [NavigationState](#core_navigation_state).
+   * Set the camera position from a provided [NavigationState](#core_navigationstate).
 
-\\param navigationState a table describing the NavigationState to set \\param useTimeStamp if true, and the provided NavigationState includes a timestamp, the time will be set as well
+\\param navigationState A table describing the NavigationState to set \\param useTimeStamp If true, and the provided NavigationState includes a timestamp, the time will be set as well
    */
   setNavigationState: (navigationState: table, useTimeStamp?: boolean) => Promise<void>
   /**
@@ -1761,11 +1730,11 @@ interface openglCapabilitiesLibrary {
 
 interface orbitalnavigationLibrary {
   /**
-   * Set maximum allowed distance to a multiplier of the interaction sphere of the focus node
+   * Set maximum allowed distance to a multiplier of the interaction sphere of the focus node.
    */
   setRelativeMaxDistance: (multiplier: number) => Promise<void>
   /**
-   * Set minimum allowed distance to a multiplier of the interaction sphere of the focus node
+   * Set minimum allowed distance to a multiplier of the interaction sphere of the focus node.
    */
   setRelativeMinDistance: (multiplier: number) => Promise<void>
 } // interface orbitalnavigationLibrary
@@ -1832,7 +1801,7 @@ interface scriptSchedulerLibrary {
    */
   loadScheduledScript: (time: string, forwardScript: string, backwardScript?: string, universalScript?: string, group?: integer) => Promise<void>
   /**
-   * Returns the list of all scheduled scripts
+   * Returns the list of all scheduled scripts.
    */
   scheduledScripts: () => Promise<table[]>
 } // interface scriptSchedulerLibrary
@@ -1894,9 +1863,9 @@ interface skybrowserLibrary {
    */
   createTargetBrowserPair: () => Promise<void>
   /**
-   * Disables the hover circle, if there is one added to the sky browser module.
+   * Disables the hover indicator, if one is added to the sky browser module.
    */
-  disableHoverCircle: () => Promise<void>
+  disableHoverIndicator: () => Promise<void>
   /**
    * Finetunes the target depending on a mouse drag. rendered copy to it. First argument is the identifier of the sky browser, second is the start position of the drag and third is the end position of the drag.
    */
@@ -1906,7 +1875,7 @@ interface skybrowserLibrary {
    */
   initializeBrowser: (identifier: string) => Promise<void>
   /**
-   * Returns a list of all the loaded AAS WorldWide Telescope images that have been loaded. Each image has a name, thumbnail url, equatorial spherical coordinates RA and Dec, equatorial Cartesian coordinates, if the image has celestial coordinates, credits text, credits url and the identifier of the image which is a unique number.
+   * Returns a list of all the loaded AAS WorldWide Telescope images that have been loaded. Each image has a name, thumbnail URL, equatorial spherical coordinates RA and Dec, equatorial Cartesian coordinates, if the image has celestial coordinates, credits text, credits URL and the identifier of the image which is a unique number.
    */
   listOfImages: () => Promise<table>
   /**
@@ -1918,11 +1887,15 @@ interface skybrowserLibrary {
    */
   loadingImageCollectionComplete: (identifier: string) => Promise<void>
   /**
-   * Moves the hover circle to the coordinate specified by the image index.
+   * Moves the hover indicator to the coordinate specified by the image index.
+
+\\param imageUrl The url of the image to move the hover indicator to
    */
-  moveCircleToHoverImage: (imageUrl: string) => Promise<void>
+  moveIndicatorToHoverImage: (imageUrl: string) => Promise<void>
   /**
-   * Reloads the sky browser display copy for the node index that is sent in. .If no ID is sent in, it will reload all display copies on that node.
+   * Reloads the sky browser display copy for the node index that is sent in. If no ID is sent in, it will reload all display copies on that node.
+
+\\param nodeIndex The index of the node to reload the display copy on \\param id An optional browser ID to only reload the display copy for a specific browser. If \"all\" or no ID is provided, all display copies will be reloaded
    */
   reloadDisplayCopyOnNode: (nodeIndex: integer, id?: string) => Promise<void>
   /**
@@ -1943,6 +1916,8 @@ interface skybrowserLibrary {
   scrollOverBrowser: (identifier: string, scroll: number) => Promise<void>
   /**
    * Takes an index to an image and selects that image in the currently selected sky browser.
+
+\\param imageUrl The url of the image to select
    */
   selectImage: (imageUrl: string) => Promise<void>
   /**
@@ -1954,7 +1929,7 @@ interface skybrowserLibrary {
    */
   setBorderColor: (identifier: string, red: integer, green: integer, blue: integer) => Promise<void>
   /**
-   * Takes an identifier to a sky browser and a radius value between 0 and 1, where 0 is rectangular and 1 is circular
+   * Takes an identifier to a sky browser and a radius value between 0 and 1, where 0 is rectangular and 1 is circular.
    */
   setBorderRadius: (identifier: string, radius: number) => Promise<void>
   /**
@@ -1967,8 +1942,10 @@ interface skybrowserLibrary {
   setEquatorialAim: (identifier: string, rightAscension: number, declination: number) => Promise<void>
   /**
    * Takes an identifier to a screen space renderable and adds it to the module.
+
+\\param identifier The identifier of the renderable that should be used as hover indicator
    */
-  setHoverCircle: (identifier: string) => Promise<void>
+  setHoverIndicator: (identifier: string) => Promise<void>
   /**
    * Takes an identifier to a sky browser or a sky target, an image index and the order which it should have in the selected image list. The image is then changed to have this order.
    */
@@ -2002,7 +1979,9 @@ interface skybrowserLibrary {
    */
   stopAnimations: (identifier: string) => Promise<void>
   /**
-   * Returns a table of data regarding the current view and the sky browsers and targets. returns a table of data regarding the current targets.
+   * Returns a table of data regarding the current view and the sky browsers and targets.
+
+\\return A table of data regarding the current targets
    */
   targetData: () => Promise<table>
   /**
@@ -2010,17 +1989,10 @@ interface skybrowserLibrary {
    */
   translateScreenSpaceRenderable: (identifier: string, startingPositionX: number, startingPositionY: number, translationX: number, translationY: number) => Promise<void>
   /**
-   * Returns the AAS WorldWide Telescope image collection url.
+   * Returns the AAS WorldWide Telescope image collection URL.
    */
   wwtImageCollectionUrl: () => Promise<table>
 } // interface skybrowserLibrary
-
-interface sonificationLibrary {
-  /**
-   * Adds the given list of planets to the PlanetsSonification internal list of Planets and Moons.
-   */
-  addPlanets: (planets: table) => Promise<void>
-} // interface sonificationLibrary
 
 interface spaceLibrary {
   /**
@@ -2050,11 +2022,11 @@ interface spiceLibrary {
   /**
    * This function converts a TLE file into SPK format and saves it at the provided path. The last parameter is only used if there are multiple craft specified in the provided TLE file and is selecting which (0-based index) of the list to create a kernel from.
 
-This function returns the SPICE ID of the object for which the kernel was created
+This function returns the SPICE ID of the object for which the kernel was created.
    */
   convertTLEtoSPK: (tle: path, spk: path, elementToExtract?: integer) => Promise<integer>
   /**
-   * Returns a list of all loaded kernels
+   * Returns a list of all loaded kernels.
    */
   kernels: () => Promise<path[]>
   /**
@@ -2062,11 +2034,15 @@ This function returns the SPICE ID of the object for which the kernel was create
    */
   loadKernel: (kernel: string | string[]) => Promise<void>
   /**
-   * Returns the position for a given body relative to another body, in a given frame of reference, at a specific time. Example: openspace.spice.position('INSIGHT', 'MARS',' GALACTIC', '2018 NOV 26 19:45:34')
+   * Returns the position for a given body relative to another body, in a given frame of reference, at a specific time.
+
+Example: openspace.spice.position('INSIGHT', 'MARS',' GALACTIC', '2018 NOV 26 19:45:34')
    */
   position: (target: string, observer: string, frame: string, date: string) => Promise<vec3>
   /**
-   * Returns the rotationMatrix for a given body in a frame of reference at a specific time. Example: openspace.spice.rotationMatrix('INSIGHT_LANDER_CRUISE','MARS', '2018 NOV 26 19:45:34')
+   * Returns the rotationMatrix for a given body in a frame of reference at a specific time.
+
+Example: openspace.spice.rotationMatrix('INSIGHT_LANDER_CRUISE','MARS', '2018 NOV 26 19:45:34')
    */
   rotationMatrix: (body: string, frame: string, date: string) => Promise<mat3x3>
   /**
@@ -2143,7 +2119,7 @@ interface systemCapabilitiesLibrary {
    */
   cores: () => Promise<integer>
   /**
-   * Returns all supported exteions as comma-separated string.
+   * Returns all supported exteions as comma - separated string.
    */
   extensions: () => Promise<string>
   /**
@@ -2164,22 +2140,13 @@ interface systemCapabilitiesLibrary {
   os: () => Promise<string>
 } // interface systemCapabilitiesLibrary
 
-interface telemetryLibrary {
-  /**
-   * Adds the given list of nodes to the NodesTelemetry's internal list.
-   */
-  addNodes: (nodes: table) => Promise<void>
-} // interface telemetryLibrary
-
 interface timeLibrary {
   /**
    * Modify a specified timestamp by a given delta time. That is, advance the value either forwards or backwards in time.
 
 The returned value will be of the same type as the first argument. That is, either a number of seconds past the J2000 epoch, or an ISO 8601 date string.
 
-\\param base The timestamp to alter, either given as an ISO 8601 date string or a number of seconds past the J2000 epoch. \\param change The amount of time to add to the specified timestamp. Can be given either in a number of seconds (including negative), or as a string of the form [-]XX(s,m,h,d,M,y] with (s)econds, (m)inutes, (h)ours, (d)ays, (M)onths, and (y)ears as units and an optional - sign to move backwards in time.
-
-\\return The updated timestamp
+\\param base The timestamp to alter, either given as an ISO 8601 date string or a number of seconds past the J2000 epoch \\param change The amount of time to add to the specified timestamp. Can be given either in a number of seconds (including negative), or as a string of the form [-]XX(s,m,h,d,M,y] with (s)econds, (m)inutes, (h)ours, (d)ays, (M)onths, and (y)ears as units and an optional - sign to move backwards in time \\return The updated timestamp
    */
   advancedTime: (base: string | number, change: string | number) => Promise<string | number>
   /**
@@ -2189,9 +2156,7 @@ If the given time is a timestamp, the function returns a double precision value 
 
 If the given time is a J2000 seconds value, the function returns a ISO 8601 timestamp.
 
-\\param time The timestamp to convert, either given as an ISO 8601 date string or a number of seconds past the J2000 epoch.
-
-\\return The converted timestamp
+\\param time The timestamp to convert, either given as an ISO 8601 date string or a number of seconds past the J2000 epoch \\return The converted timestamp
    */
   convertTime: (time: string | number) => Promise<string | number>
   /**
@@ -2223,33 +2188,31 @@ If the given time is a J2000 seconds value, the function returns a ISO 8601 time
 
 If the end time is before the start time, the return value is negative. If the start time is equal to the end time, the return value is 0.
 
-\\param start The start time for the computation, given as an ISO 8601 date string \\param end The end time for the computation, given as an ISO 8601 date string
-
-\\return The time between the start time and end time
+\\param start The start time for the computation, given as an ISO 8601 date string \\param end The end time for the computation, given as an ISO 8601 date string \\return The time between the start time and end time
    */
   duration: (start: string, end: string) => Promise<number>
   /**
    * Set the amount of simulation time that happens in one second of real time, by smoothly interpolating to that value.
 
-\\param deltaTime The value to set the speed to, in seconds per real time second \\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for delta time interpolation specified in the TimeManager.
+\\param deltaTime The value to set the speed to, in seconds per real time second \\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for delta time interpolation specified in the TimeManager
    */
   interpolateDeltaTime: (deltaTime: number, interpolationDuration?: number) => Promise<void>
   /**
    * Interpolate the simulation speed to the first delta time step in the list that is larger than the current simulation speed, if any.
 
-\\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value specified in the TimeManager.
+\\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value specified in the TimeManager
    */
   interpolateNextDeltaTimeStep: (interpolationDuration?: number) => Promise<void>
   /**
-   * Same behaviour as `setPause`, but with interpolation. That is, if it should be paused, the delta time will be interpolated to 0, and if unpausing, the delta time will be interpolated to whatever delta time value is set.
+   * Same behavior as `setPause`, but with interpolation. That is, if it should be paused, the delta time will be interpolated to 0, and if unpausing, the delta time will be interpolated to whatever delta time value is set.
 
-\\param isPaused True if the simulation should be paused, and false otherwise \\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for pause/unpause specified in the TimeManager.
+\\param isPaused `true` if the simulation should be paused, and `false` otherwise \\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for pause/unpause specified in the TimeManager
    */
   interpolatePause: (isPaused: boolean, interpolationDuration?: number) => Promise<void>
   /**
    * Interpolate the simulation speed to the first delta time step in the list that is smaller than the current simulation speed, if any.
 
-\\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value specified in the TimeManager.
+\\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value specified in the TimeManager
    */
   interpolatePreviousDeltaTimeStep: (interpolationDuration?: number) => Promise<void>
   /**
@@ -2257,19 +2220,19 @@ If the end time is before the start time, the return value is negative. If the s
 
 Note that providing time zone using the Z format is not supported. UTC is assumed.
 
-\\param time The time to set. If the parameter is a number, the value is the number of seconds past the J2000 epoch. If it is a string, it has to be a valid ISO 8601-like date string of the format YYYY-MM-DDTHH:MN:SS. \\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for time interpolation specified in the TimeManager.
+\\param time The time to set. If the parameter is a number, the value is the number of seconds past the J2000 epoch. If it is a string, it has to be a valid ISO 8601 like date string of the format YYYY-MM-DDTHH:MN:SS \\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for time interpolation specified in the TimeManager
    */
   interpolateTime: (time: string | number, interpolationDuration?: number) => Promise<void>
   /**
    * Increment the current simulation time by the specified number of seconds, using interpolation.
 
-\\param delta The number of seconds to increase the current simulation time by \\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for time interpolation specified in the TimeManager.
+\\param delta The number of seconds to increase the current simulation time by \\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for time interpolation specified in the TimeManager
    */
   interpolateTimeRelative: (delta: number, interpolationDuration?: number) => Promise<void>
   /**
    * Toggle the pause function, i.e. if the simulation is paused it will resume, and otherwise it will be paused. This is done by smoothly interpolating from the current delta time value to 0 (pause), or from 0 to the current delta time value (unpause).
 
-\\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for pause/unpause specified in the TimeManager.
+\\param interpolationDuration The number of seconds that the interpolation should be done over. If excluded, the time is decided based on the default value for pause/unpause specified in the TimeManager
    */
   interpolateTogglePause: (interpolationDuration?: number) => Promise<void>
   /**
@@ -2303,7 +2266,7 @@ Note that providing time zone using the Z format is not supported. UTC is assume
   /**
    * Set the list of discrete delta time steps for the simulation speed that can be quickly jumped between. The list will be sorted to be in increasing order. A negative verison of each specified time step will be added per default as well.
 
-\\param deltaTime The list of delta times, given in seconds per real time second. Should only include positive values.
+\\param deltaTime The list of delta times, given in seconds per real time second. Should only include positive values
    */
   setDeltaTimeSteps: (deltaTime: number[]) => Promise<void>
   /**
@@ -2313,7 +2276,7 @@ Note that providing time zone using the Z format is not supported. UTC is assume
   /**
    * Set whether the simulation should be paused or not. Note that to pause means temporarily setting the delta time to 0, and unpausing means restoring it to whatever delta time value is set.
 
-\\param isPaused True if the simulation should be paused, and false otherwise
+\\param isPaused `true` if the simulation should be paused, and `false` otherwise
    */
   setPause: (isPaused: boolean) => Promise<void>
   /**
@@ -2325,7 +2288,7 @@ Note that providing time zone using the Z format is not supported. UTC is assume
 
 Note that providing time zone using the Z format is not supported. UTC is assumed.
 
-\\param time The time to set. If the parameter is a number, the value is the number of seconds past the J2000 epoch. If it is a string, it has to be a valid ISO 8601-like date string of the format YYYY-MM-DDTHH:MN:SS.
+\\param time The time to set. If the parameter is a number, the value is the number of seconds past the J2000 epoch. If it is a string, it has to be a valid ISO 8601 like date string of the format YYYY-MM-DDTHH:MN:SS
    */
   setTime: (time: number | string) => Promise<void>
   /**

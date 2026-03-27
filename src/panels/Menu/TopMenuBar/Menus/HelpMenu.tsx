@@ -4,45 +4,42 @@ import { Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import { About } from '@/components/About/About';
+import { QRCode } from '@/components/QRCode/QRCode';
 import {
   BookIcon,
+  BrowserIcon,
   FeedbackIcon,
   HomeIcon,
   InformationCircleOutlineIcon,
   OpenInBrowserIcon,
-  OpenWindowIcon,
-  RouteIcon
+  PhoneIcon
 } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
 import { useWebGuiUrl } from '@/util/networkingHooks';
-import { GettingStartedPanel } from '@/windowmanagement/data/LazyLoads';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
+import { useMenuItemsByGroup } from '../../hooks';
 import { TopBarMenuWrapper } from '../TopBarMenuWrapper';
 
 export function HelpMenu() {
   const { t } = useTranslation('menu', { keyPrefix: 'help-menu' });
 
   const [showAbout, { open, close }] = useDisclosure(false);
+  const [showQRCode, { open: openQRCode, close: closeQRCode }] = useDisclosure(false);
   const webGuiUrl = useWebGuiUrl();
   const navigation = useNavigate();
 
+  const { menuItemsByGroup } = useMenuItemsByGroup(['Help']);
   const { addWindow } = useWindowLayoutProvider();
 
   function openGuiInBrowser() {
     window.open(`${webGuiUrl}/gui`, '_blank');
   }
 
-  function openGettingStartedTour() {
-    addWindow(<GettingStartedPanel />, {
-      id: 'gettingStartedTour',
-      title: 'Getting Started Tour',
-      floatPosition: { offsetY: 150, offsetX: 350, width: 600, height: 500 }
-    });
-  }
-
   return (
     <>
       <About opened={showAbout} close={close} />
+      <QRCode opened={showQRCode} close={closeQRCode} />
 
       <TopBarMenuWrapper targetTitle={'Help'}>
         <Menu.Item
@@ -52,20 +49,32 @@ export function HelpMenu() {
           }
           target={'_blank'}
           leftSection={<BookIcon />}
-          rightSection={<OpenWindowIcon />}
+          rightSection={<OpenInBrowserIcon />}
           aria-description={t('external-tab-aria-label')}
         >
           {t('tutorials')}
         </Menu.Item>
-        <Menu.Item
-          onClick={openGettingStartedTour}
-          leftSection={<RouteIcon style={{ transform: 'scale(-1)' }} />}
-        >
-          {t('getting-started')}
-        </Menu.Item>
         <Menu.Item onClick={() => navigation('/routes')} leftSection={<HomeIcon />}>
           {t('routes')}
         </Menu.Item>
+
+        <Menu.Divider />
+        {menuItemsByGroup.Help.map((item) => (
+          <Menu.Item
+            key={item.componentID}
+            leftSection={item.renderIcon?.(IconSize.xs)}
+            onClick={() =>
+              addWindow(item.content, {
+                title: item.title,
+                position: item.preferredPosition,
+                id: item.componentID,
+                floatPosition: item.floatPosition
+              })
+            }
+          >
+            {item.title}
+          </Menu.Item>
+        ))}
 
         <Menu.Divider />
         <Menu.Item
@@ -73,7 +82,7 @@ export function HelpMenu() {
           href={'http://data.openspaceproject.com/feedback'}
           target={'_blank'}
           leftSection={<FeedbackIcon />}
-          rightSection={<OpenWindowIcon />}
+          rightSection={<OpenInBrowserIcon />}
           aria-description={t('external-tab-aria-label')}
         >
           {t('send-feedback')}
@@ -82,11 +91,14 @@ export function HelpMenu() {
 
         <Menu.Item
           onClick={openGuiInBrowser}
-          leftSection={<OpenInBrowserIcon />}
-          rightSection={<OpenWindowIcon />}
+          leftSection={<BrowserIcon />}
+          rightSection={<OpenInBrowserIcon />}
           aria-description={t('external-tab-aria-label')}
         >
           {t('open-gui')}
+        </Menu.Item>
+        <Menu.Item onClick={openQRCode} leftSection={<PhoneIcon />}>
+          {t('qrcode')}
         </Menu.Item>
 
         <Menu.Divider />

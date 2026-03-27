@@ -38,6 +38,7 @@
       "confirm": "Reload",
       "cancel": "Cancel"
     },
+    "more-menu-aria-label": "Open asset menu",
     "reload-button": {
       "tooltip": {
         "has-parents": "Cannot reload an asset required by other assets. The following assets must first be removed:",

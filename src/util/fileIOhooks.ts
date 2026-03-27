@@ -112,6 +112,7 @@ export function useSaveLoadJsonFiles(handlePickedFile: (content: JSON) => void) 
 
 /**
  * Check if an image exists at a given URL.
+ *
  * @param url The URL of the image to check.
  * @returns A boolean indicating whether the image exists.
  */

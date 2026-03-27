@@ -57,6 +57,7 @@ export function BrowserTabs({ openWorldWideTelescope }: Props) {
               variant={'subtle'}
               color={'gray'}
               onClick={() => luaApi?.skybrowser.createTargetBrowserPair()}
+              aria-label={t('new-browser-tooltip')}
             >
               <PlusIcon size={IconSize.xs} />
             </ActionIcon>

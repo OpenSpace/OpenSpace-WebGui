@@ -9,7 +9,7 @@ export enum TimePart {
 }
 
 export const StepSizes = {
-  [TimePart.Milliseconds]: 1,
+  [TimePart.Milliseconds]: 0.001,
   [TimePart.Seconds]: 1,
   [TimePart.Minutes]: 60,
   [TimePart.Hours]: 3600,
@@ -20,7 +20,7 @@ export const StepSizes = {
 
 export const Decimals = {
   [TimePart.Milliseconds]: 0,
-  [TimePart.Seconds]: 0,
+  [TimePart.Seconds]: 1,
   [TimePart.Minutes]: 3,
   [TimePart.Hours]: 4,
   [TimePart.Days]: 5,

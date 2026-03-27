@@ -1,6 +1,12 @@
 import { AppShell, Group, Image, NavLink, Title } from '@mantine/core';
 
-import { DashboardIcon, HomeIcon, MapIcon, OpenWindowIcon, PenIcon } from '@/icons/icons';
+import {
+  DashboardIcon,
+  HomeIcon,
+  MapIcon,
+  OpenInBrowserIcon,
+  PenIcon
+} from '@/icons/icons';
 
 export function RoutesPage() {
   return (
@@ -39,7 +45,7 @@ export function RoutesPage() {
           description={'Actions panel opened up as a page'}
           target={'_blank'}
           leftSection={<DashboardIcon />}
-          rightSection={<OpenWindowIcon />}
+          rightSection={<OpenInBrowserIcon />}
         />
 
         {/* Note that this link does not work in dev mode, since it's not part of this
@@ -50,7 +56,7 @@ export function RoutesPage() {
           description={'ShowComposer opened up as a page'}
           target={'_blank'}
           leftSection={<PenIcon />}
-          rightSection={<OpenWindowIcon />}
+          rightSection={<OpenInBrowserIcon />}
         />
 
         <NavLink
@@ -61,7 +67,7 @@ export function RoutesPage() {
           }
           target={'_blank'}
           leftSection={<MapIcon />}
-          rightSection={<OpenWindowIcon />}
+          rightSection={<OpenInBrowserIcon />}
         />
       </AppShell.Navbar>
       <AppShell.Main>

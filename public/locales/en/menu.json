@@ -30,11 +30,11 @@
   "help-menu": {
     "title": "Help",
     "tutorials": "Open Web Tutorials",
-    "getting-started": "Open Getting Started Tour",
     "routes": "Open Routes Page",
     "send-feedback": "Send Feedback",
     "open-gui": "Open GUI in Browser",
     "about": "About",
+    "qrcode": "Mobile QR Code",
     "external-tab-aria-label": "(Opens in new tab)"
   },
   "view-menu": {
@@ -72,8 +72,7 @@
     }
   },
   "windows-menu": {
-    "title": "Windows",
-    "add-new-window": "Add New Window"
+    "title": "Windows"
   },
   "error-load-toolbar-layout": {
     "title": "Error loading JSON file",
@@ -81,6 +80,17 @@
       "empty-file": "File is empty",
       "invalid-length": "Invalid layout file: Length does not match",
       "inavlid-ids": "Invalid layout file: All IDs must match panel IDs"
+    }
+  },
+  "idle-behavior-toggle": {
+    "label": "Idle behavior",
+    "info": {
+      "heading": "Idle behavior",
+      "description": [
+        "When enabled, the camera will auto-rotate around the current focus until the next navigation interaction.",
+        "Idle behavior can be set to trigger automatically after inactivity. See Orbital Navigator settings for this and other options, including speed."
+      ],
+      "keybind-label": "Toggle keybind"
     }
   }
 }

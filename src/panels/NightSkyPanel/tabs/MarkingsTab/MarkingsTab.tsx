@@ -6,9 +6,6 @@ import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import {
   AbcIcon,
   BandIcon,
-  CompassLargeIcon,
-  CompassMarksIcon,
-  CompassSmallIcon,
   EyeOffIcon,
   GridSphereIcon,
   LineIcon,
@@ -18,7 +15,7 @@ import {
 } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
-import { CardinalDirectionsBox } from './CardinalDirectionsBox';
+import { CardinalDirectionsBoxes } from './CardinalDirectionsBoxes';
 import { ConstellationsShowArtBox } from './ConstellationsShowArtBox';
 import { ConstellationsShowLabelsBox } from './ConstellationsShowLabelsBox';
 import { ConstellationShowLinesBox } from './ConstellationsShowLinesBox';
@@ -141,21 +138,7 @@ export function MarkingsTab() {
         {t('cardinal-directions.title')}
       </Title>
       <SimpleGrid cols={4} spacing={'sm'}>
-        <CardinalDirectionsBox
-          variant={'small'}
-          title={t('cardinal-directions.buttons.small')}
-          icon={<CompassSmallIcon size={IconSize.md} />}
-        />
-        <CardinalDirectionsBox
-          variant={'large'}
-          title={t('cardinal-directions.buttons.large')}
-          icon={<CompassLargeIcon size={IconSize.md} />}
-        />
-        <CardinalDirectionsBox
-          variant={'marks'}
-          title={t('cardinal-directions.buttons.marks')}
-          icon={<CompassMarksIcon size={IconSize.md} />}
-        />
+        <CardinalDirectionsBoxes />
       </SimpleGrid>
     </Box>
   );

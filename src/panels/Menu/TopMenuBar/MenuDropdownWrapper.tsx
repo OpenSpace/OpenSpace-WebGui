@@ -17,7 +17,7 @@ interface Props extends PropsWithChildren {
   isSubMenu?: boolean;
 }
 
-export function MenuDrowdownWrapper({
+export function MenuDropdownWrapper({
   shouldLimitHeight = false,
   heightLimitOffset = 0,
   isSubMenu = false,

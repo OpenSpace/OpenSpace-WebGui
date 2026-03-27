@@ -19,7 +19,11 @@ export {
   FiChevronsDown as ChevronsDownIcon,
   FiChevronsUp as ChevronsUpIcon
 } from 'react-icons/fi';
-export { GiNightSky as NightSkyIcon, GiPencil as PencilIcon } from 'react-icons/gi';
+export {
+  GiPlasticDuck as DummyIcon,
+  GiNightSky as NightSkyIcon,
+  GiPencil as PencilIcon
+} from 'react-icons/gi';
 export { GoBrowser as BrowserIcon } from 'react-icons/go';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
 export { ImSphere as GridSphereIcon } from 'react-icons/im';
@@ -87,6 +91,7 @@ export {
   MdOpenInNew as OpenWindowIcon,
   MdPause as PauseIcon,
   MdOutlineEdit as PenIcon,
+  MdOutlineSendToMobile as PhoneIcon,
   MdPlayArrow as PlayIcon,
   MdFiberManualRecord as RecordIcon,
   MdOutlineRefresh as RefreshIcon,
@@ -107,6 +112,7 @@ export {
   MdZoomOutMap as ZoomOutMapIcon
 } from 'react-icons/md';
 export {
+  PiWarningCircle as AttentionIcon,
   PiBookOpenText as BookIcon,
   PiCompassBold as CompassLargeIcon,
   PiCompass as CompassSmallIcon,

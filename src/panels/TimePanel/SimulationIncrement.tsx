@@ -25,13 +25,10 @@ export function SimulationIncrement() {
 
   const luaApi = useOpenSpaceApi();
 
-  // Remove Milliseconds as an option to select
-  const selectableData = Object.values(TimePart)
-    .filter((value) => value !== TimePart.Milliseconds)
-    .map((unit) => ({
-      value: unit,
-      label: translateTimePart(unit, 2) // Number arbitrary chosen to get pluralization
-    }));
+  const selectableData = Object.values(TimePart).map((unit) => ({
+    value: unit,
+    label: translateTimePart(unit, 2) // Number arbitrary chosen to get pluralization
+  }));
 
   function updateDeltaTimeNow(value: number) {
     luaApi?.time.interpolateDeltaTime(value);

@@ -3,12 +3,12 @@ import { alpha, Box, Flex } from '@mantine/core';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { IconSize } from '@/types/enums';
 
-import { useMenuItems } from '../hooks';
+import { useMenuItemsOrdered } from '../hooks';
 
 import { ToolbarMenuButton } from './ToolbarMenuButton';
 
 export function Toolbar() {
-  const menuItems = useMenuItems();
+  const menuItems = useMenuItemsOrdered();
   const visibleMenuItems = menuItems.filter((item) => item.visible);
 
   return (
