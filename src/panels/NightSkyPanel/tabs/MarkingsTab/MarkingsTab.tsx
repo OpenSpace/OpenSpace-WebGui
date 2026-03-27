@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Button, SimpleGrid, Title } from '@mantine/core';
+import { Box, Button, Group, SimpleGrid, Title } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
@@ -14,23 +14,30 @@ import {
   SingleDotIcon
 } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
-import { CardinalDirectionsBoxes } from './CardinalDirectionsBoxes';
-import { ConstellationsShowArtBox } from './ConstellationsShowArtBox';
-import { ConstellationsShowLabelsBox } from './ConstellationsShowLabelsBox';
-import { ConstellationShowLinesBox } from './ConstellationsShowLinesBox';
-import { NightSkyMarkingBox } from './MarkingBox';
+import { CardinalDirections } from './CardinalDirections';
+import { ConstellationsArtToggle } from './ConstellationsArtToggle';
+import { ConstellationsLabelsToggle } from './ConstellationsLabelsToggle';
+import { ConstellationLinesToggle } from './ConstellationsLinesToggle';
+import { SceneGraphNodeToggle } from './SceneGraphNodeToggle';
 
 export function MarkingsTab() {
   const { t } = useTranslation('panel-nightsky', { keyPrefix: 'markings' });
+  const { width } = useWindowSize();
 
   const luaApi = useOpenSpaceApi();
+
+  const cardWidth = 80;
+  const maxColumns = 4;
+  const columns = Math.max(Math.min(Math.floor(width / cardWidth), maxColumns), 1);
 
   return (
     <Box maw={600}>
       {luaApi ? (
         <Button
           leftSection={<EyeOffIcon />}
+          size={'xs'}
           onClick={() => luaApi.action.triggerAction('os.nightsky.HideAllMarkings')}
         >
           {t('common-button-labels.hide-all')}
@@ -38,108 +45,153 @@ export function MarkingsTab() {
       ) : (
         <LoadingBlocks n={1} />
       )}
-      <Title order={2} my={'sm'}>
-        {t('altitude-azimuth.title')}
-      </Title>
-      <SimpleGrid cols={4} spacing={'sm'}>
-        <NightSkyMarkingBox
+
+      <Group justify={'space-between'} align={'center'} gap={0}>
+        <Title order={2} my={'sm'}>
+          {t('altitude-azimuth.title')}
+        </Title>
+        <Button
+          leftSection={<EyeOffIcon />}
+          size={'compact-xs'}
+          variant={'subtle'}
+          onClick={() =>
+            /* TODO: Add action to hide all altitude-azimuth markings */ null
+          }
+        >
+          {t('common-button-labels.hide-all')}
+        </Button>
+      </Group>
+
+      <SimpleGrid cols={columns} spacing={'xs'}>
+        <SceneGraphNodeToggle
           title={t('common-button-labels.grid')}
-          icon={<GridSphereIcon size={IconSize.md} />}
+          icon={<GridSphereIcon size={IconSize.sm} />}
           identifier={'AltAzGrid'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeToggle
           title={t('altitude-azimuth.buttons.meridian')}
-          icon={<LineIcon size={IconSize.md} />}
+          icon={<LineIcon size={IconSize.sm} />}
           identifier={'MeridianPlane'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeToggle
           title={t('common-button-labels.labels')}
-          icon={<AbcIcon size={IconSize.md} />}
+          icon={<AbcIcon size={IconSize.sm} />}
           identifier={'AltAzGridLabels'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeToggle
           title={t('altitude-azimuth.buttons.zenith')}
-          icon={<SingleDotIcon size={IconSize.md} />}
+          icon={<SingleDotIcon size={IconSize.sm} />}
           identifier={'ZenithDot'}
         />
       </SimpleGrid>
 
-      <Title order={2} my={'sm'}>
-        {t('ecliptic.title')}
-      </Title>
-      <SimpleGrid cols={4} spacing={'sm'}>
-        <NightSkyMarkingBox
+      <Group justify={'space-between'} align={'center'} gap={0}>
+        <Title order={2} my={'sm'}>
+          {t('ecliptic.title')}
+        </Title>
+        <Button
+          leftSection={<EyeOffIcon />}
+          size={'compact-xs'}
+          variant={'subtle'}
+          onClick={() => /* TODO: Add action to hide all ecliptic markings */ null}
+        >
+          {t('common-button-labels.hide-all')}
+        </Button>
+      </Group>
+
+      <SimpleGrid cols={columns} spacing={'xs'}>
+        <SceneGraphNodeToggle
           title={t('common-button-labels.grid')}
-          icon={<GridSphereIcon size={IconSize.md} />}
+          icon={<GridSphereIcon size={IconSize.sm} />}
           identifier={'EclipticSphere'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeToggle
           title={t('common-button-labels.line_one')}
-          icon={<LineIcon size={IconSize.md} />}
+          icon={<LineIcon size={IconSize.sm} />}
           identifier={'EclipticLine'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeToggle
           title={t('common-button-labels.labels')}
-          icon={<AbcIcon size={IconSize.md} />}
+          icon={<AbcIcon size={IconSize.sm} />}
           identifier={'EclipticSphereLabels'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeToggle
           title={t('ecliptic.buttons.band')}
-          icon={<BandIcon size={IconSize.md} />}
+          icon={<BandIcon size={IconSize.sm} />}
           identifier={'EclipticBand'}
         />
       </SimpleGrid>
 
-      <Title order={2} my={'sm'}>
-        {t('equatorial.title')}
-      </Title>
-      <SimpleGrid cols={4} spacing={'sm'}>
-        <NightSkyMarkingBox
+      <Group justify={'space-between'} align={'center'} gap={0}>
+        <Title order={2} my={'sm'}>
+          {t('equatorial.title')}
+        </Title>
+        <Button
+          leftSection={<EyeOffIcon />}
+          size={'compact-xs'}
+          variant={'subtle'}
+          onClick={() => /* TODO: Add action to hide all equatorial markings */ null}
+        >
+          {t('common-button-labels.hide-all')}
+        </Button>
+      </Group>
+
+      <SimpleGrid cols={columns} spacing={'xs'}>
+        <SceneGraphNodeToggle
           title={t('common-button-labels.grid')}
-          icon={<GridSphereIcon size={IconSize.md} />}
+          icon={<GridSphereIcon size={IconSize.sm} />}
           identifier={'EquatorialSphere'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeToggle
           title={t('common-button-labels.line_one')}
-          icon={<LineIcon size={IconSize.md} />}
+          icon={<LineIcon size={IconSize.sm} />}
           identifier={'EquatorialLine'}
         />
-        <NightSkyMarkingBox
+        <SceneGraphNodeToggle
           title={t('common-button-labels.labels')}
-          icon={<AbcIcon size={IconSize.md} />}
+          icon={<AbcIcon size={IconSize.sm} />}
           identifier={'EquatorialSphereLabels'}
         />
       </SimpleGrid>
 
-      <Title order={2} my={'sm'}>
-        {t('constellations.title')}
-      </Title>
-      <SimpleGrid cols={4} spacing={'sm'}>
-        <NightSkyMarkingBox
+      <Group justify={'space-between'} align={'center'} gap={0}>
+        <Title order={2} my={'sm'}>
+          {t('constellations.title')}
+        </Title>
+        <Button
+          leftSection={<EyeOffIcon />}
+          size={'compact-xs'}
+          variant={'subtle'}
+          onClick={() => /* TODO: Add action to hide all constellation markings */ null}
+        >
+          {t('common-button-labels.hide-all')}
+        </Button>
+      </Group>
+
+      <SimpleGrid cols={columns} spacing={'xs'}>
+        <SceneGraphNodeToggle
           title={t('common-button-labels.grid')}
-          icon={<GridSphereIcon size={IconSize.md} />}
+          icon={<GridSphereIcon size={IconSize.sm} />}
           identifier={'ConstellationBounds'}
         />
-        <ConstellationShowLinesBox
+        <ConstellationLinesToggle
           title={t('common-button-labels.line_other')}
-          icon={<PencilIcon size={IconSize.md} />}
+          icon={<PencilIcon size={IconSize.sm} />}
         />
-        <ConstellationsShowArtBox
+        <ConstellationsArtToggle
           title={t('constellations.buttons.art')}
-          icon={<PaintBrushIcon size={IconSize.md} />}
+          icon={<PaintBrushIcon size={IconSize.sm} />}
         />
-        <ConstellationsShowLabelsBox
+        <ConstellationsLabelsToggle
           title={t('common-button-labels.labels')}
-          icon={<AbcIcon size={IconSize.md} />}
+          icon={<AbcIcon size={IconSize.sm} />}
         />
       </SimpleGrid>
 
       <Title order={2} my={'sm'}>
         {t('cardinal-directions.title')}
       </Title>
-      <SimpleGrid cols={4} spacing={'sm'}>
-        <CardinalDirectionsBoxes />
-      </SimpleGrid>
+      <CardinalDirections />
     </Box>
   );
 }
