@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 import { useSceneGraphNodes } from '@/hooks/sceneGraphNodes/hooks';
 import { sgnGuiOrderingNumber } from '@/hooks/sceneGraphNodes/util';
 import { useAppSelector } from '@/redux/hooks';
-import { propertyOwnerSelectors } from '@/redux/hoot/propertyOwnerSlice';
-import { propertySelectors } from '@/redux/hoot/propertySlice';
+import { propertyOwnerSelectors } from '@/redux/propertytree/propertyOwnerSlice';
+import { propertySelectors } from '@/redux/propertytree/propertySlice';
 import {
   CustomGroupOrdering,
   Groups,

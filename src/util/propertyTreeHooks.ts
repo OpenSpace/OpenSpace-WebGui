@@ -1,7 +1,7 @@
 import { usePropertyValue } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
-import { propertyOwnerSelectors } from '@/redux/hoot/propertyOwnerSlice';
+import { propertyOwnerSelectors } from '@/redux/propertytree/propertyOwnerSlice';
 import { PropertyOwner } from '@/types/types';
 
 import { NavigationAimKey, NavigationAnchorKey } from './keys';
