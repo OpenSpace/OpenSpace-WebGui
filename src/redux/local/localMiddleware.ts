@@ -17,16 +17,13 @@ import { menuItemsData } from '@/windowmanagement/data/MenuItems';
 
 import { onOpenConnection } from '../connection/connectionSlice';
 import { AppStartListening } from '../listenerMiddleware';
-import {
-  addPropertyOwners,
-  removePropertyOwners
-} from '../propertytree/propertyOwnerSlice';
+import { addPropertyOwners, removePropertyOwners } from '../hoot/propertyOwnerSlice';
 import {
   propertySelectors,
   updateMany,
   updateOne,
   upsertMany
-} from '../propertytree/propertySlice';
+} from '../hoot/propertySlice';
 
 import { removeSceneGraphNode, setMenuItemsConfig, setVisibility } from './localSlice';
 

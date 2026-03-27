@@ -9,7 +9,7 @@ import { ResizeableContent } from '@/components/ResizeableContent/ResizeableCont
 import { useProperty } from '@/hooks/properties';
 import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { propertyOwnerSelectors } from '@/redux/propertytree/propertyOwnerSlice';
+import { propertyOwnerSelectors } from '@/redux/hoot/propertyOwnerSlice';
 import { Identifier } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
 import { sgnUri } from '@/util/uris';

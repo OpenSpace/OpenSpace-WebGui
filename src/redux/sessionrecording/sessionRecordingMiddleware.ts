@@ -6,8 +6,8 @@ import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { ConnectionStatus } from '@/types/enums';
 
-import { propertySelectors } from '../propertytree/propertySlice';
-import { setPropertyValue } from '../propertytree/propertyTreeMiddleware';
+import { propertySelectors } from '../hoot/propertySlice';
+import { setPropertyValue } from '../hoot/propertyTreeMiddleware';
 import { RootState } from '../store';
 
 import {

@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 
 import { useAppSelector } from '@/redux/hooks';
-import { propertyOwnerSelectors } from '@/redux/propertytree/propertyOwnerSlice';
-import { propertySelectors } from '@/redux/propertytree/propertySlice';
+import { propertyOwnerSelectors } from '@/redux/hoot/propertyOwnerSlice';
+import { propertySelectors } from '@/redux/hoot/propertySlice';
 import { PropertyOwner, SceneGraphNodeGuiSettings, Uri } from '@/types/types';
 
 import { SceneGraphNodesFilters } from './types';
