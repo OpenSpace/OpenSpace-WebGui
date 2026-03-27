@@ -17,13 +17,13 @@ export function StarsTab() {
 
   const luaApi = useOpenSpaceApi();
 
-  const { visibility: starsVisibility, setVisibility: starsSetVisibility } =
+  const { visibility: starsVisibility, setVisibility: setStarsVisibility } =
     usePropertyOwnerVisibility('Scene.Stars.Renderable');
-  const { visibility: starsLabelsVisibility, setVisibility: starsLabelsSetVisibility } =
+  const { visibility: starsLabelsVisibility, setVisibility: setStarsLabelsVisibility } =
     usePropertyOwnerVisibility('Scene.StarsLabels.Renderable');
   const {
     visibility: starsLabelsAlternateVisibility,
-    setVisibility: starsLabelsAlternateSetVisibility
+    setVisibility: setStarsLabelsAlternateVisibility
   } = usePropertyOwnerVisibility('Scene.StarLabelsAlternate.Renderable');
 
   const [starsDimInAtm, setStarsDimInAtm] = useProperty(
@@ -44,7 +44,7 @@ export function StarsTab() {
             uri={'Scene.Stars.Renderable'}
             label={t('visibility.input.show-stars')}
             visibility={starsVisibility}
-            setVisibility={starsSetVisibility}
+            setVisibility={setStarsVisibility}
           />
           <BoolInput
             label={t('visibility.input.show-during-day.label')}
@@ -61,13 +61,13 @@ export function StarsTab() {
             uri={'Scene.StarsLabels.Renderable'}
             label={t('labels.input.show-labels')}
             visibility={starsLabelsVisibility}
-            setVisibility={starsLabelsSetVisibility}
+            setVisibility={setStarsLabelsVisibility}
           />
           <PropertyOwnerVisibilityCheckbox
             uri={'Scene.StarLabelsAlternate.Renderable'}
             label={t('labels.input.show-alternate-labels')}
             visibility={starsLabelsAlternateVisibility}
-            setVisibility={starsLabelsAlternateSetVisibility}
+            setVisibility={setStarsLabelsAlternateVisibility}
           />
         </Group>
       </Group>

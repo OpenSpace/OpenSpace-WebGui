@@ -72,9 +72,10 @@ export function useProperty<T extends PropertyTypeKey>(
       `Tried to access property with uri "${uri}" as type "${type}", but it is of type "${prop?.metaData.type}"`
     );
   }
-  const dispatch = useAppDispatch();
 
   const shouldShowModal = useShouldShowModal(prop?.metaData);
+
+  const dispatch = useAppDispatch();
   // Subscribe to the property
   const ThrottleMs = 1000 / 60;
 

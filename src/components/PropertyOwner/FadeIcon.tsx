@@ -1,4 +1,4 @@
-type FadeIconProps = {
+type Props = {
   value: number; // 0–1
   size?: number;
   color?: string;
@@ -8,7 +8,7 @@ export function FadeIcon({
   value,
   size = 14,
   color = 'var(--mantine-primary-color-5)'
-}: FadeIconProps) {
+}: Props) {
   const clamped = Math.max(0, Math.min(1, value));
 
   return (

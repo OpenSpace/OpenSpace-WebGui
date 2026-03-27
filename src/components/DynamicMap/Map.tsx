@@ -25,14 +25,11 @@ interface Props extends MantineStyleProps, PropsWithChildren {
 export function Map({ ref, refSize, children, style, ...styleProps }: Props) {
   const { t } = useTranslation('components', { keyPrefix: 'map' });
 
-  const anchor = useAnchorNode();
-
-  const [mapPath, mapExists] = useMapPath(anchor);
-
-  const timeIsTooFast = useAppSelector(
+  const isTimeTooFast = useAppSelector(
     (state) => Math.abs(state.time.targetDeltaTime ?? 0) > 87682
   );
-
+  const anchor = useAnchorNode();
+  const [mapPath, mapExists] = useMapPath(anchor);
   useSubscribeToTime();
 
   if (!anchor) {
@@ -72,8 +69,8 @@ export function Map({ ref, refSize, children, style, ...styleProps }: Props) {
         style={{ position: 'relative' }}
         aria-label={t('aria-labels.map', { name: anchor.name })}
       >
-        {!timeIsTooFast && children}
-        {timeIsTooFast && (
+        {!isTimeTooFast && children}
+        {isTimeTooFast && (
           <Alert
             variant={'filled'}
             color={'orange'}

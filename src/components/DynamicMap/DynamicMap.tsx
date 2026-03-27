@@ -56,17 +56,19 @@ export function DynamicMap({
 }: Props) {
   const { t } = useTranslation('components', { keyPrefix: 'map' });
 
+  const refSize = useRef<HTMLDivElement>(null);
+
   const {
     latitude: currentLat,
     longitude: currentLong,
     viewLatitude,
     viewLongitude
   } = useCameraLatLong(DecimalPrecision);
-  const refSize = useRef<HTMLDivElement>(null);
-  const width = refSize?.current?.clientWidth;
-  const height = refSize?.current?.clientHeight;
 
   useSubscribeToCamera();
+
+  const width = refSize?.current?.clientWidth;
+  const height = refSize?.current?.clientHeight;
 
   const hasViewDirection = viewLatitude !== undefined && viewLongitude !== undefined;
   const markerPosition = (() => {
@@ -116,6 +118,7 @@ export function DynamicMap({
           height={height}
           coneWidth={coneWidth}
           coneHeight={coneHeight}
+          decimalPrecision={DecimalPrecision}
         />
       )}
     </Map>

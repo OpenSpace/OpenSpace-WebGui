@@ -24,11 +24,6 @@
  * ```
  */
 export class Batcher<T extends object> {
-  private buffer: Partial<T> = {};
-  private timer: number | null = null;
-  private flushDelay: number;
-  private updateFunc: (updates: Partial<T>) => void;
-
   constructor(updateFunc: (updates: Partial<T>) => void, flushDelay = 50) {
     this.flushDelay = flushDelay;
     this.updateFunc = updateFunc;
@@ -53,4 +48,9 @@ export class Batcher<T extends object> {
     this.timer = null;
     this.updateFunc(snapshot);
   }
+
+  private buffer: Partial<T> = {};
+  private timer: number | null = null;
+  private flushDelay: number;
+  private updateFunc: (updates: Partial<T>) => void;
 }

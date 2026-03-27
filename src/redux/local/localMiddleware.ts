@@ -49,6 +49,16 @@ const updateSgnVisibility = createAction<{
   value?: boolean | number;
 }>('local/setVisibilityForUri');
 
+function maybeDispatchVisibilityUpdate(
+  uri: string,
+  value: AnyProperty['value'] | undefined,
+  dispatch: (action: unknown) => void
+) {
+  if (hasSgnUpdatedVisibility(uri, value)) {
+    dispatch(updateSgnVisibility({ uri, value: value as boolean | number }));
+  }
+}
+
 export const addLocalListener = (startListening: AppStartListening) => {
   // Create default toolbar items configuration upon startup
   startListening({
@@ -63,21 +73,10 @@ export const addLocalListener = (startListening: AppStartListening) => {
   });
 
   startListening({
-    matcher: updateOne.match,
-    effect: async (action, listenerApi) => {
-      const { id: uri, changes } = action.payload;
-      if (hasSgnUpdatedVisibility(uri, changes.value)) {
-        listenerApi.dispatch(
-          updateSgnVisibility({ uri, value: changes.value as boolean | number })
-        );
-      }
-    }
-  });
-
-  startListening({
     matcher: addPropertyOwners.match,
     effect: async (action, listenerApi) => {
       const propertyOwners = action.payload;
+
       for (const owner of propertyOwners) {
         if (isSceneGraphNode(owner.uri)) {
           const renderable = sgnRenderableUri(owner.uri);
@@ -115,40 +114,27 @@ export const addLocalListener = (startListening: AppStartListening) => {
     }
   });
 
+  // Listens to both updateOne and updateMany actions to catch any updates to
+  // properties that might affect SGN visibility
   startListening({
-    matcher: updateMany.match,
+    predicate: (action) => updateOne.match(action) || updateMany.match(action),
     effect: async (action, listenerApi) => {
-      for (const update of action.payload) {
-        const { id: uri, changes } = update;
-        // Check if a fade value or an enabled value has been updated
-        // for a scene graph node
-        if (hasSgnUpdatedVisibility(uri, changes.value)) {
-          listenerApi.dispatch(
-            updateSgnVisibility({ uri, value: changes.value as boolean | number })
-          );
-        }
+      const updates = updateOne.match(action) ? [action.payload] : action.payload;
+      for (const { id: uri, changes } of updates) {
+        maybeDispatchVisibilityUpdate(uri, changes.value, listenerApi.dispatch);
       }
     }
   });
 
-  // Handle the initial property load (upsertMany) in addition to incremental updates
-  // (updateMany). This ensures visibility is set correctly regardless of whether
-  // addPropertyOwners or upsertMany runs first.
   startListening({
     matcher: upsertMany.match,
     effect: async (action, listenerApi) => {
       const properties = Array.isArray(action.payload)
         ? action.payload
         : (Object.values(action.payload) as AnyProperty[]);
-      for (const property of properties) {
-        if (hasSgnUpdatedVisibility(property.uri, property.value)) {
-          listenerApi.dispatch(
-            updateSgnVisibility({
-              uri: property.uri,
-              value: property.value as boolean | number
-            })
-          );
-        }
+
+      for (const { uri, value } of properties) {
+        maybeDispatchVisibilityUpdate(uri, value, listenerApi.dispatch);
       }
     }
   });
@@ -156,42 +142,38 @@ export const addLocalListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: updateSgnVisibility,
     effect: async (action, listenerApi) => {
-      // The uri can be either Fade, Enabled, or the scene graph node itself
       const { uri, value } = action.payload;
       const sceneGraphNodeUri = sgnUri(sgnIdentifierFromSubownerUri(uri));
       const renderableUri = sgnRenderableUri(sceneGraphNodeUri);
+      const state = listenerApi.getState();
 
-      const enabledStateValue = propertySelectors.selectById(
-        listenerApi.getState(),
-        enabledPropertyUri(renderableUri)
-      )?.value;
-      const fadeStateValue = propertySelectors.selectById(
-        listenerApi.getState(),
-        fadePropertyUri(renderableUri)
-      )?.value;
+      const isBoolean = (v: unknown): v is boolean => typeof v === 'boolean';
+      const isNumber = (v: unknown): v is number => typeof v === 'number';
 
+      const storedValue = <T>(
+        propUri: string,
+        guard: (v: unknown) => v is T
+      ): T | undefined => {
+        const v = propertySelectors.selectById(state, propUri)?.value;
+        return guard(v) ? v : undefined;
+      };
+
+      // Use the incoming value if it matches the URI, otherwise fall back to stored state
       const currentEnabled = isEnabledPropertyUri(uri)
-        ? typeof value === 'boolean'
+        ? isBoolean(value)
           ? value
           : undefined
-        : typeof enabledStateValue === 'boolean'
-          ? enabledStateValue
-          : undefined;
+        : storedValue(enabledPropertyUri(renderableUri), isBoolean);
 
       const currentFade = isFadePropertyUri(uri)
-        ? typeof value === 'number'
+        ? isNumber(value)
           ? value
           : undefined
-        : typeof fadeStateValue === 'number'
-          ? fadeStateValue
-          : undefined;
+        : storedValue(fadePropertyUri(renderableUri), isNumber);
 
       const visibility = checkVisibility(currentEnabled, currentFade);
+      const prevVisibility = state.local.sceneTree.visibility[sceneGraphNodeUri];
 
-      const prevVisibility =
-        listenerApi.getState().local.sceneTree.visibility[sceneGraphNodeUri];
-
-      // Update the scene tree visibility if it has changed
       if (prevVisibility !== visibility && visibility !== undefined) {
         listenerApi.dispatch(setVisibility({ uri: sceneGraphNodeUri, visibility }));
       }
@@ -216,7 +198,6 @@ export const addLocalListener = (startListening: AppStartListening) => {
         visible: defaultVisibleItems[item.id] ?? item.visible
       }));
 
-      // Set the redux store
       listenerApi.dispatch(setMenuItemsConfig(defaultConfig));
     }
   });

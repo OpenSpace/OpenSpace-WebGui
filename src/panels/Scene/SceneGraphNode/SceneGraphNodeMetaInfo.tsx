@@ -35,7 +35,8 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
   let description = usePropertyValue('StringProperty', `${uri}.GuiDescription`);
 
   if (description) {
-    description = description.replace(/\\n/g, '').replace(/<br>/g, '');
+    // Replace newlines and <br> tags with spaces to prevent breaking the layout
+    description = description.replace(/\\n|<br>/g, '');
   }
 
   const identifier = identifierFromUri(uri);
