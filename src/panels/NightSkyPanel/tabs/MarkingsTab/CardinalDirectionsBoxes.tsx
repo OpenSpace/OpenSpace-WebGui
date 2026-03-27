@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Checkbox, Radio } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { CompassLargeIcon, CompassMarksIcon, CompassSmallIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
@@ -20,15 +20,16 @@ export function CardinalDirectionsBoxes() {
 
   const luaApi = useOpenSpaceApi();
 
-  const { isVisible } = usePropertyOwnerVisibility(
+  const { visibility } = usePropertyOwnerVisibility(
     'Scene.CardinalDirectionSphere.Renderable'
   );
-  const [texture] = useProperty(
+
+  const texture = usePropertyValue(
     'StringProperty',
     'Scene.CardinalDirectionSphere.Renderable.Texture'
   );
 
-  const hasLoaded = isVisible !== undefined && texture !== undefined;
+  const hasLoaded = visibility !== undefined && texture !== undefined;
 
   // @TODO (2025-05-19, emmbr) These checks, especially against the parts of the texture
   // file names, are fragile agains file name changes. Consider more robust solution
@@ -56,7 +57,7 @@ export function CardinalDirectionsBoxes() {
   }
 
   function isChecked(variant: keyof typeof variantData): boolean {
-    if (!isVisible) {
+    if (visibility === 'Hidden' || visibility === 'Fading') {
       return false;
     }
     return isTextureForVariantEnabled(variant);

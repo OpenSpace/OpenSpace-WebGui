@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { useCameraLatLong } from '@/redux/camera/hooks';
 import { useAppSelector } from '@/redux/hooks';
@@ -12,20 +12,30 @@ interface Props {
   height: number;
   coneWidth: number;
   coneHeight: number;
+  decimalPrecision: number;
 }
 
 // TODO: ylvse 2025-07-11 Rewrite this as a React component that uses hooks instead of D3 directly.
-export function ViewCone({ width, height, coneWidth, coneHeight }: Props) {
-  const ref = useRef(null);
-  const { latitude, longitude, viewLatitude, viewLongitude } = useCameraLatLong(7);
+export function ViewCone({
+  width,
+  height,
+  coneWidth,
+  coneHeight,
+  decimalPrecision
+}: Props) {
   const viewLength = useAppSelector((state) => state.camera.viewLength);
+  const { altitudeMeters } = useAppSelector((state) => state.camera);
+  const ref = useRef(null);
+
   const anchor = useAnchorNode();
-  const [interactionSphere] = useProperty(
+  const { latitude, longitude, viewLatitude, viewLongitude } =
+    useCameraLatLong(decimalPrecision);
+  const interactionSphere = usePropertyValue(
     'DoubleProperty',
     `Scene.${anchor?.identifier}.EvaluatedInteractionSphere`
   );
-  const { altitudeMeters } = useAppSelector((state) => state.camera);
   useSubscribeToCamera();
+
   const shouldShowCone =
     altitudeMeters && interactionSphere && altitudeMeters < interactionSphere * 3;
 

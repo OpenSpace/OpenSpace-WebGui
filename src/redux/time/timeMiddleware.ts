@@ -5,6 +5,7 @@ import { api } from '@/api/api';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { ConnectionStatus } from '@/types/enums';
+import { Batcher } from '@/util/batcher';
 
 import { resetTime, updateTime } from './timeSlice';
 import { OpenSpaceTimeState } from './types';
@@ -21,10 +22,20 @@ export const setupSubscription = createAsyncThunk(
     timeTopic = api.startTopic('time', {
       event: 'start_subscription'
     });
+    const batchTime = 100; // milliseconds
+
+    function updateFunc(updates: Partial<OpenSpaceTimeState>) {
+      thunkAPI.dispatch(updateTime(updates));
+    }
+
+    // We want to prevent dispatching updates too frequently as it is a performance
+    // bottleneck. Instead of throttling each time update, we batch them together
+    // This ensures we don't miss any updates
+    const batcher = new Batcher<OpenSpaceTimeState>(updateFunc, batchTime);
 
     (async () => {
       for await (const data of timeTopic.iterator() as AsyncIterable<OpenSpaceTimeState>) {
-        thunkAPI.dispatch(updateTime(data));
+        batcher.add(data);
       }
     })();
   }
@@ -35,7 +46,7 @@ function tearDownSubscription() {
     return;
   }
   timeTopic.talk({
-    event: 'stop_supscription'
+    event: 'stop_subscription'
   });
   timeTopic.cancel();
 }

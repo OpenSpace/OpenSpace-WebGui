@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BoxData, PanelData, TabData } from 'rc-dock';
 
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
@@ -66,7 +66,10 @@ export function useOpenCurrentSceneNodeWindow() {
 
 export function useTimeFrame(uri: Uri) {
   const timeFrame = usePropertyOwner(`${uri}.TimeFrame`);
-  const [isInTimeFrame] = useProperty('BoolProperty', `${uri}.TimeFrame.IsInTimeFrame`);
+  const isInTimeFrame = usePropertyValue(
+    'BoolProperty',
+    `${uri}.TimeFrame.IsInTimeFrame`
+  );
 
   return {
     timeFrame,

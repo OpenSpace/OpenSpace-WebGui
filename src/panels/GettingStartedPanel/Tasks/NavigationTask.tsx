@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 import { RequireAtLeastOne } from '@/types/types';
@@ -31,7 +31,7 @@ export function NavigationTask({ anchor, lat, long }: RequiredProps) {
   const { latitude: currentLat, longitude: currentLong } = useAppSelector(
     (state) => state.camera
   );
-  const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
+  const currentAnchor = usePropertyValue('StringProperty', NavigationAnchorKey);
   useSubscribeToCamera();
 
   const hasCorrectNode = currentAnchor === anchor;

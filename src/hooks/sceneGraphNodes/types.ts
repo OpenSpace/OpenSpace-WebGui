@@ -5,4 +5,6 @@ export interface SceneGraphNodesFilters {
   onlyFocusable?: boolean;
   // A list of tags to filter by
   tags?: string[];
+  // If true, only show nodes that are currently visible
+  onlyVisible?: boolean;
 }
