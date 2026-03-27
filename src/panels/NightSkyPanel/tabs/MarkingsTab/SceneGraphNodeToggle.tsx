@@ -10,7 +10,7 @@ interface Props {
   title: string;
   icon: React.JSX.Element;
   /**
-   * The identifier of a scene graph node that this box represents
+   * The identifier of the scene graph node that this toggle represents
    */
   identifier: Identifier;
 }
