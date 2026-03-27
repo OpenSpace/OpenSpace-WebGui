@@ -50,13 +50,8 @@ export type OpenSpacePropertyOwner = {
   uri: Uri;
 };
 
-export interface PropertyOverviewData {
-  name: string;
-  visibility: number;
-}
-
 export interface Properties {
-  [key: Uri]: AnyProperty;
+  [key: Uri]: AnyProperty | undefined;
 }
 
 export interface PropertyOwners {
