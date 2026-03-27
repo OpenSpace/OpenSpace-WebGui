@@ -1,8 +1,8 @@
-type Props = {
+interface Props {
   value: number; // 0–1
   size?: number;
   color?: string;
-};
+}
 
 export function FadeIcon({
   value,
