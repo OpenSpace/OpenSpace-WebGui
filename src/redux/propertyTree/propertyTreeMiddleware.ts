@@ -174,7 +174,7 @@ export const addUriToPropertyTree = createAsyncThunk(
     // Property Owner
     if ('properties' in response) {
       const { properties, propertyOwners } = flattenPropertyTree(response);
-      const propertiesMap: Properties = {};
+      const propertiesMap: Record<Uri, AnyProperty> = {};
 
       properties.forEach((p) => {
         propertiesMap[p.uri] = p;
@@ -191,7 +191,7 @@ export const addUriToPropertyTree = createAsyncThunk(
       };
     } else {
       // Property
-      const propertiesMap: Properties = {};
+      const propertiesMap: Record<Uri, AnyProperty> = {};
       propertiesMap[response.uri] = response;
 
       return {
