@@ -7,8 +7,8 @@ export const RotationalFrictionKey =
 export const ZoomFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.ZoomFriction';
 export const RollFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.RollFriction';
 // Navigation panel settings
-export const ApplyIdleBehaviorOnPathFinishKey =
-  'NavigationHandler.PathNavigator.ApplyIdleBehaviorOnFinish';
+export const ApplyIdleMotionOnPathFinishKey =
+  'NavigationHandler.PathNavigator.ApplyIdleMotionOnFinish';
 export const CameraPathArrivalDistanceFactorKey =
   'NavigationHandler.PathNavigator.ArrivalDistanceFactor';
 export const CameraPathSpeedFactorKey = 'NavigationHandler.PathNavigator.SpeedScale';
