@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react';
 import { ActionIcon, Checkbox } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
-import { usePropertyValue } from '@/hooks/properties';
 import { IconSize } from '@/types/enums';
 import { Uri, Visibility } from '@/types/types';
-import { fadePropertyUri } from '@/util/uris';
 
 import { FadeIcon } from './FadeIcon';
 
@@ -17,7 +15,6 @@ interface Props {
 }
 
 export function PropertyOwnerVisibilityCheckbox({
-  uri,
   label,
   visibility,
   setVisibility
@@ -26,7 +23,6 @@ export function PropertyOwnerVisibilityCheckbox({
   // the visibility value, since the checkbox can be in a transition state
   const [checked, setChecked] = useState(visibility === 'Visible');
   const [isImmediate, setIsImmediate] = useState(false);
-  const fade = usePropertyValue('FloatProperty', fadePropertyUri(uri));
 
   useEffect(() => {
     setChecked(visibility === 'Visible');
@@ -55,10 +51,10 @@ export function PropertyOwnerVisibilityCheckbox({
     }
   }
 
-  if (visibility === 'Fading' && fade !== undefined) {
+  if (visibility === 'Fading') {
     return (
       <ActionIcon size={IconSize.sm} onClick={() => updateValue(!checked, isImmediate)}>
-        <FadeIcon value={fade} size={IconSize.sm} />
+        <FadeIcon size={IconSize.sm} />
       </ActionIcon>
     );
   }
@@ -71,7 +67,6 @@ export function PropertyOwnerVisibilityCheckbox({
   return (
     <Checkbox
       checked={checked}
-      indeterminate={visibility === 'Fading'}
       onKeyDown={onKeyDown}
       onChange={(event) => updateValue(event.currentTarget.checked, isImmediate)}
       label={label}

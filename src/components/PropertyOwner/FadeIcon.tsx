@@ -1,25 +1,28 @@
+import styles from './FadeIcon.module.css';
+
 interface Props {
-  value: number; // 0–1
   size?: number;
   color?: string;
 }
 
-export function FadeIcon({
-  value,
-  size = 14,
-  color = 'var(--mantine-primary-color-5)'
-}: Props) {
-  const clamped = Math.max(0, Math.min(1, value));
-
+export function FadeIcon({ size = 24, color = 'var(--mantine-primary-color-5)' }: Props) {
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-      <rect
-        width={size}
-        height={size}
-        fill={color}
-        opacity={clamped}
-        style={{ transition: 'opacity 150ms ease' }}
-      />
-    </svg>
+    <div
+      style={{
+        width: size,
+        height: size,
+        flexShrink: 0,
+        color,
+        backgroundImage: `repeating-linear-gradient(
+          -45deg,
+          ${color},
+          ${color} 2.5px,
+          transparent 2.5px,
+          transparent 7px
+        )`,
+        animation: `${styles.slide} 1000ms linear infinite`,
+        transition: 'opacity 150ms ease'
+      }}
+    />
   );
 }
