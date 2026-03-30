@@ -5,6 +5,7 @@ import { api } from '@/api/api';
 import { onCloseConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { ConnectionStatus } from '@/types/enums';
+import { Batcher } from '@/util/batcher';
 
 import {
   resetSkyBrowser,
@@ -26,9 +27,15 @@ export const setupSubscription = createAsyncThunk(
       event: 'start_subscription'
     });
 
+    function updateData(data: Partial<SkyBrowserUpdate>) {
+      thunkAPI.dispatch(updateSkyBrowser(data));
+    }
+
+    const batcher = new Batcher<SkyBrowserUpdate>(updateData);
+
     (async () => {
-      for await (const data of skybrowserTopic.iterator()) {
-        thunkAPI.dispatch(updateSkyBrowser(data as SkyBrowserUpdate));
+      for await (const data of skybrowserTopic.iterator() as AsyncGenerator<SkyBrowserUpdate>) {
+        batcher.add(data);
       }
     })();
     thunkAPI.dispatch(subscriptionIsSetup());

@@ -42,9 +42,13 @@ export const skyBrowserSlice = createSlice({
       state.isInitialized = true;
       return state;
     },
-    updateSkyBrowser: (state, action: PayloadAction<SkyBrowserUpdate>) => {
-      state.cameraInSolarSystem = action.payload.cameraInSolarSystem;
-      state.selectedBrowserId = action.payload.selectedBrowserId;
+    updateSkyBrowser: (state, action: PayloadAction<Partial<SkyBrowserUpdate>>) => {
+      if (action.payload.cameraInSolarSystem !== undefined) {
+        state.cameraInSolarSystem = action.payload.cameraInSolarSystem;
+      }
+      if (action.payload.selectedBrowserId !== undefined) {
+        state.selectedBrowserId = action.payload.selectedBrowserId;
+      }
 
       if (action.payload.browsers && state.selectedBrowserId in action.payload.browsers) {
         state.browsers = action.payload.browsers;
@@ -54,15 +58,16 @@ export const skyBrowserSlice = createSlice({
             typeof idx === 'string' ? parseInt(idx) : idx
           );
         }
-
-        // Derived state for easier access
-        state.browserIds = Object.keys(action.payload.browsers) ?? [];
-        state.browserColors = state.browserIds.map(
-          (id) => action.payload.browsers[id].color
-        );
-        state.browserNames = state.browserIds.map(
-          (id) => action.payload.browsers[id].name
-        );
+        if (action.payload.browsers !== undefined) {
+          // Derived state for easier access
+          state.browserIds = Object.keys(action.payload.browsers) ?? [];
+          state.browserColors = state.browserIds.map(
+            (id) => action.payload.browsers?.[id].color ?? [255, 255, 255]
+          );
+          state.browserNames = state.browserIds.map(
+            (id) => action.payload.browsers?.[id].name ?? 'Unnamed Browser'
+          );
+        }
       } else {
         // If the update is invalid, reset the state
         state.selectedBrowserId = '';
