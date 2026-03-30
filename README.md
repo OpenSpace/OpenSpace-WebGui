@@ -93,6 +93,27 @@ We apply a custom theme to the Mantine components. If you are building a separat
    - useEffect
    - useMemo, useCallback
    - functions
+  
+## A note on arrow function returns
+Use the implicit return only when something actually is returned; for example:
+
+```
+// ✅ 
+const double = n => n * 2;
+const getLabel = user => user.name;
+const doubled = nums.map(n => n * 2);
+```
+
+If the function doesn't return anything meaningful, always use a function body with no `return` statement.
+```
+// ❌ Avoid — implicit return on a function that isn't meant to return a value
+users.forEach(user => updateUser(user));
+
+// ✅ Better — intent is clear, no accidental return
+users.forEach(user => {
+  updateUser(user);
+});
+```
 
 ## OpenSpace JavaScript API
 We now support a TypeScript version of our [JavaScript API](https://github.com/OpenSpace/openspace-api-js). Since the API is frequently updated with new OpenSpace Lua functions, we've decided to maintain a manual copy of the TypeScript API in this repository. As such, we need to manually update the API declaration file periodically to ensure correct and proper syntax highlighting when calling Lua functions.
