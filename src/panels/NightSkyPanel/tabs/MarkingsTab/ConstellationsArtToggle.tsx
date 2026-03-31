@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
-import { sgnRenderableUri, sgnUri } from '@/util/propertyTreeHelpers';
+import { sgnRenderableUri, sgnUri } from '@/util/uris';
 
 import { MarkingsToggleLayout } from './MarkingsToggleLayout';
 
@@ -25,7 +25,7 @@ export function ConstellationsArtToggle({ title, icon }: Props) {
 
   const uri = sgnRenderableUri(sgnUri('ImageConstellation-Ori'));
   const propertyOwner = usePropertyOwner(uri);
-  const { isVisible } = usePropertyOwnerVisibility(uri);
+  const { visibility } = usePropertyOwnerVisibility(uri);
 
   function checkboxChange(checked: boolean) {
     if (checked) {
@@ -34,6 +34,8 @@ export function ConstellationsArtToggle({ title, icon }: Props) {
       luaApi?.action.triggerAction('os.constellation_art.HideArt');
     }
   }
+
+  const isVisible = visibility === 'Visible';
 
   return (
     <MarkingsToggleLayout

@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { Identifier } from '@/types/types';
-import { sgnRenderableUri, sgnUri } from '@/util/propertyTreeHelpers';
+import { sgnRenderableUri, sgnUri } from '@/util/uris';
 
 import { MarkingsToggleLayout } from './MarkingsToggleLayout';
 
@@ -22,7 +22,9 @@ export function SceneGraphNodeToggle({ title, icon, identifier }: Props) {
   const uri = sgnRenderableUri(sgnUri(identifier));
   const propertyOwner = usePropertyOwner(uri);
 
-  const { isVisible, setVisibility } = usePropertyOwnerVisibility(uri);
+  const { visibility, setVisibility } = usePropertyOwnerVisibility(uri);
+
+  const isVisible = visibility === 'Visible';
 
   return (
     <MarkingsToggleLayout

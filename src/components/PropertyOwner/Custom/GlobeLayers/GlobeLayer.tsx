@@ -27,18 +27,24 @@ export function GlobeLayer({ uri }: Props) {
     throw Error(`${t('error.no-property-owner-for-uri')}: ${uri}`);
   }
 
-  const { isVisible } = usePropertyOwnerVisibility(uri);
+  const { visibility, setVisibility } = usePropertyOwnerVisibility(uri);
   const visibleProperties = useVisibleProperties(propertyOwner);
   const subowners = propertyOwner.subowners ?? [];
 
   // @TODO (emmbr, 2024-12-06): We want to avoid hardcoded colors, but since changing the
   // color of the text is a feature we wanted to keep I decided to do it this way for now.
-  const textColor = isVisible ? 'green' : undefined;
+  const textColor = visibility === 'Visible' ? 'green' : undefined;
 
   return (
     <Collapsable
       title={<Text c={textColor}>{displayName(propertyOwner)}</Text>}
-      leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
+      leftSection={
+        <PropertyOwnerVisibilityCheckbox
+          uri={uri}
+          visibility={visibility}
+          setVisibility={setVisibility}
+        />
+      }
       rightSection={
         <Group wrap={'nowrap'}>
           <InfoBox>

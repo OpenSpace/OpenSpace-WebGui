@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { useProperty } from '@/hooks/properties';
+import { usePropertyValue } from '@/hooks/properties';
 import { useSceneGraphNode } from '@/hooks/propertyOwner';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
@@ -23,7 +23,7 @@ export function AltitudeTask({ anchor, unit, altitude, compare }: Props) {
 
   const currentAltitude = useAppSelector((state) => state.camera.altitude);
   const currentUnit = useAppSelector((state) => state.camera.altitudeUnit);
-  const [currentAnchor] = useProperty('StringProperty', NavigationAnchorKey);
+  const currentAnchor = usePropertyValue('StringProperty', NavigationAnchorKey);
 
   const anchorNode = useSceneGraphNode(anchor);
   useSubscribeToCamera();

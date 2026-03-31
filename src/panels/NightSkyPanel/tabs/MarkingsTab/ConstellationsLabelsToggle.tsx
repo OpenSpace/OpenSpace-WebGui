@@ -24,7 +24,7 @@ export function ConstellationsLabelsToggle({ title, icon }: Props) {
 
   const uri = 'Scene.Constellations.Renderable.Labels';
   const propertyOwner = usePropertyOwner(uri);
-  const { isVisible } = usePropertyOwnerVisibility(uri);
+  const { visibility } = usePropertyOwnerVisibility(uri);
 
   function checkboxChange(checked: boolean) {
     if (checked) {
@@ -33,6 +33,8 @@ export function ConstellationsLabelsToggle({ title, icon }: Props) {
       luaApi?.action.triggerAction('os.nightsky.FadeOutConstellationLabels');
     }
   }
+
+  const isVisible = visibility === 'Visible';
 
   return (
     <MarkingsToggleLayout

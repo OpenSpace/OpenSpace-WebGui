@@ -4,7 +4,7 @@ import { Box } from '@mantine/core';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { usePropertyOwner } from '@/hooks/propertyOwner';
+import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
 
 import { PropertyOwnerVisibilityCheckbox } from './VisiblityCheckbox';
@@ -22,6 +22,7 @@ export function PropertyOwnerCollapsable({
   children
 }: Props) {
   const propertyOwner = usePropertyOwner(uri);
+  const { visibility, setVisibility } = usePropertyOwnerVisibility(uri);
 
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);
@@ -30,7 +31,13 @@ export function PropertyOwnerCollapsable({
   return (
     <Collapsable
       title={title}
-      leftSection={<PropertyOwnerVisibilityCheckbox uri={uri} />}
+      leftSection={
+        <PropertyOwnerVisibilityCheckbox
+          uri={uri}
+          visibility={visibility}
+          setVisibility={setVisibility}
+        />
+      }
       rightSection={
         propertyOwner.description && (
           <InfoBox>

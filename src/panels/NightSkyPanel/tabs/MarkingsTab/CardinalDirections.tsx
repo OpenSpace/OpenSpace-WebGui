@@ -41,7 +41,7 @@ export function CardinalDirections() {
 
   const luaApi = useOpenSpaceApi();
 
-  const { isVisible } = usePropertyOwnerVisibility(
+  const { visibility } = usePropertyOwnerVisibility(
     'Scene.CardinalDirectionSphere.Renderable'
   );
   const [texture] = useProperty(
@@ -49,16 +49,16 @@ export function CardinalDirections() {
     'Scene.CardinalDirectionSphere.Renderable.Texture'
   );
 
-  const hasLoaded = isVisible !== undefined && texture !== undefined;
+  const hasLoaded = visibility !== undefined && texture !== undefined;
 
   const isEnabled = useCallback(
     (variant: keyof typeof Data): boolean => {
-      if (!isVisible || !texture) {
+      if (!visibility || !texture) {
         return false;
       }
       return texture.includes(Data[variant].textureCheck);
     },
-    [isVisible, texture]
+    [visibility, texture]
   );
 
   const currentToggle = useCallback((): string => {
@@ -75,7 +75,7 @@ export function CardinalDirections() {
     if (hasLoaded) {
       setToggle(currentToggle());
     }
-  }, [isVisible, texture, setToggle, currentToggle, hasLoaded]);
+  }, [visibility, texture, setToggle, currentToggle, hasLoaded]);
 
   function label(text: string, icon: React.JSX.Element) {
     return (

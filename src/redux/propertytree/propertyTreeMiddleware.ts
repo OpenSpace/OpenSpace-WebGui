@@ -1,81 +1,67 @@
-import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, Update } from '@reduxjs/toolkit';
+import { Topic } from 'openspace-api-js';
 
 import { api } from '@/api/api';
-import { onOpenConnection } from '@/redux/connection/connectionSlice';
-import { refreshGroups } from '@/redux/groups/groupsSliceMiddleware';
+import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { AnyProperty } from '@/types/Property/property';
 import {
   OpenSpacePropertyOwner,
   Properties,
   PropertyOwner,
-  PropertyOwners,
-  Uri
+  Uri,
+  Visibility
 } from '@/types/types';
+import { Batcher } from '@/util/batcher';
 import { rootOwnerKey } from '@/util/keys';
-import { isGlobeLayer, removeLastWordFromUri } from '@/util/propertyTreeHelpers';
+import { checkVisibility } from '@/util/propertyTreeHelpers';
+import { isGlobeLayer, isSceneGraphNode, removeLastWordFromUri } from '@/util/uris';
 
-import {
-  addProperties,
-  clearProperties,
-  removeProperties
-} from './properties/propertiesSlice';
+import { refreshGroups } from '../groups/groupsSliceMiddleware';
+import { setSceneGraphNodesVisibility } from '../local/localSlice';
+
 import {
   addPropertyOwners,
-  clearPropertyOwners,
-  removePropertyOwners
-} from './propertyowner/propertyOwnerSlice';
+  removePropertyOwners,
+  reset as resetPropertyOwners,
+  setInitialState
+} from './propertyOwnerSlice';
+import {
+  removeMany,
+  reset as resetProperties,
+  updateMany as updateManyProperties,
+  updateOne as updateProperty,
+  upsertMany as upsertManyProperties
+} from './propertySlice';
 
-// The property tree middleware is designed to populate the react store's
-// copy of the property tree when the frontend is connected to OpenSpace
+export const setPropertyValue = createAction<{ uri: Uri; value: AnyProperty['value'] }>(
+  'propertyTree/setProperty'
+);
 
-export const reloadPropertyTree = createAction<void>('propertyTree/reload');
 export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(
   'propertyTree/removeUri'
 );
 
-export const addUriToPropertyTree = createAsyncThunk(
-  'propertyTree/addUri',
-  async (uri: Uri) => {
-    let uriToFetch = uri;
-    // If the uri is to a layer, we want to get the parent property owner.
-    // This is to preserve the order of the layers.
-    if (isGlobeLayer(uri)) {
-      uriToFetch = removeLastWordFromUri(uri);
-    }
+let topic: Topic;
 
-    const response = (await api.getProperty(uriToFetch)) as
-      | AnyProperty
-      | OpenSpacePropertyOwner;
-
-    // Property Owner
-    if ('properties' in response) {
-      const { properties, propertyOwners } = flattenPropertyTree(response);
-      const propertiesMap: Properties = {};
-
-      properties.forEach((p) => {
-        propertiesMap[p.uri] = p;
-      });
-      const propertyOwnerMap: PropertyOwners = {};
-      propertyOwners.forEach((p) => {
-        propertyOwnerMap[p.uri] = p;
-      });
-      return {
-        properties: propertiesMap,
-        propertyOwners: propertyOwnerMap
-      };
-    } else {
-      // Property
-      const propertiesMap: Properties = {};
-      propertiesMap[response.uri] = response;
-
-      return {
-        properties: propertiesMap,
-        propertyOwners: null
-      };
-    }
-  }
-);
+function calculateSgnVisibilityMap(
+  propertyOwners: PropertyOwner[],
+  properties: Properties
+) {
+  const sceneGraphNodes = propertyOwners.filter((p) => isSceneGraphNode(p.uri));
+  const visibility = sceneGraphNodes.map((sgn) => {
+    const fade = properties[`${sgn.uri}.Renderable.Fade`]?.value as number | undefined;
+    const enabled = properties[`${sgn.uri}.Renderable.Enabled`]?.value as
+      | boolean
+      | undefined;
+    return checkVisibility(enabled, fade);
+  });
+  const visibilityMap: Record<Uri, Visibility | undefined> = {};
+  sceneGraphNodes.forEach((sgn, i) => {
+    visibilityMap[sgn.uri] = visibility[i];
+  });
+  return visibilityMap;
+}
 
 function flattenPropertyTree(propertyOwner: OpenSpacePropertyOwner) {
   let propertyOwners: PropertyOwner[] = [];
@@ -108,13 +94,139 @@ function flattenPropertyTree(propertyOwner: OpenSpacePropertyOwner) {
   return { propertyOwners, properties };
 }
 
+export const setupSubscription = createAsyncThunk(
+  'propertyTree/setupSubscription',
+  async (_, thunkAPI) => {
+    topic = api.startTopic('propertyTree', {
+      event: 'start_subscription'
+    });
+
+    type PropertyUpdate = Record<Uri, Partial<AnyProperty>>;
+
+    function updateFunc(updates: Partial<PropertyUpdate>) {
+      // Convert the updates into the format expected by our RTK updateMany reducer
+      const rtkUpdates: Update<AnyProperty, string>[] = Object.entries(updates)
+        .filter(([, value]) => value !== undefined)
+        .map(([id, value]) => ({
+          id,
+          changes: value as Partial<AnyProperty>
+        }));
+      thunkAPI.dispatch(updateManyProperties(rtkUpdates));
+    }
+
+    // Instead of throttling each property update, we batch them together.
+    // This ensures we don't miss any updates
+    const batcher = new Batcher<PropertyUpdate>(updateFunc);
+
+    (async () => {
+      for await (const { property, ...changes } of topic.iterator() as AsyncIterable<{
+        property: Uri;
+        value?: AnyProperty['value'];
+        metaData?: AnyProperty['metaData'];
+      }>) {
+        batcher.add({
+          [property]: { ...(changes as Partial<AnyProperty>) }
+        });
+      }
+    })();
+
+    // Empty out any remaining updates in the batcher
+    batcher.flush();
+  }
+);
+
+const getRoot = createAsyncThunk('propertyTree/getRoot', async (_, thunkAPI) => {
+  const response = (await api.getProperty(rootOwnerKey)) as
+    | AnyProperty
+    | OpenSpacePropertyOwner;
+  const { propertyOwners, properties } = flattenPropertyTree(
+    response as OpenSpacePropertyOwner
+  );
+  const propertiesMap: Properties = {};
+
+  properties.forEach((p) => {
+    propertiesMap[p.uri] = p;
+  });
+
+  const visibilityMap = calculateSgnVisibilityMap(propertyOwners, propertiesMap);
+
+  thunkAPI.dispatch(upsertManyProperties(properties));
+  thunkAPI.dispatch(setInitialState(propertyOwners));
+  thunkAPI.dispatch(setSceneGraphNodesVisibility(visibilityMap));
+  thunkAPI.dispatch(refreshGroups());
+});
+
+export const addUriToPropertyTree = createAsyncThunk(
+  'propertyTree/addUri',
+  async (uri: Uri) => {
+    let uriToFetch = uri;
+
+    // If the uri is to a layer, we want to get the parent property owner.
+    // This is to preserve the order of the layers.
+    if (isGlobeLayer(uri)) {
+      uriToFetch = removeLastWordFromUri(uri);
+    }
+
+    const response = (await api.getProperty(uriToFetch)) as
+      | AnyProperty
+      | OpenSpacePropertyOwner;
+
+    // Property Owner
+    if ('properties' in response) {
+      const { properties, propertyOwners } = flattenPropertyTree(response);
+      const propertiesMap: Record<Uri, AnyProperty> = {};
+
+      properties.forEach((p) => {
+        propertiesMap[p.uri] = p;
+      });
+
+      // Calculate if visibility for the scene graph node, if the added property owner is one.
+      // This will be an empty object if not.
+      const visibility = calculateSgnVisibilityMap(propertyOwners, propertiesMap);
+
+      return {
+        properties: propertiesMap,
+        propertyOwners,
+        visibility
+      };
+    } else {
+      // Property
+      const propertiesMap: Record<Uri, AnyProperty> = {};
+      propertiesMap[response.uri] = response;
+
+      return {
+        properties: propertiesMap,
+        propertyOwners: null
+      };
+    }
+  }
+);
+
+function unsubscribe() {
+  if (!topic) {
+    return;
+  }
+  topic.talk({
+    event: 'stop_subscription'
+  });
+  topic.cancel();
+}
+
 export const addPropertyTreeListener = (startListening: AppStartListening) => {
   startListening({
     actionCreator: onOpenConnection,
     effect: async (_, listenerApi) => {
-      // TODO anden88 2024-10-18: Right now the reloadPropertyTree is only dispatched here
-      // consder to put the reload logic in here immedieately?
-      listenerApi.dispatch(reloadPropertyTree());
+      listenerApi.dispatch(resetPropertyOwners());
+      listenerApi.dispatch(resetProperties());
+      listenerApi.dispatch(getRoot());
+      listenerApi.dispatch(setupSubscription());
+    }
+  });
+
+  startListening({
+    actionCreator: onCloseConnection,
+    effect: () => {
+      unsubscribe();
     }
   });
 
@@ -125,27 +237,36 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
         listenerApi.dispatch(addPropertyOwners(action.payload.propertyOwners));
       }
       if (action.payload?.properties) {
-        listenerApi.dispatch(addProperties(action.payload.properties));
+        listenerApi.dispatch(upsertManyProperties(action.payload.properties));
       }
+      if (action.payload?.visibility) {
+        listenerApi.dispatch(setSceneGraphNodesVisibility(action.payload.visibility));
+      }
+      listenerApi.dispatch(refreshGroups());
     }
   });
 
   startListening({
     actionCreator: removeUriFromPropertyTree,
     effect: (action, listenerApi) => {
-      const { uri } = action.payload;
-
-      listenerApi.dispatch(removePropertyOwners({ uris: [uri] }));
-      listenerApi.dispatch(removeProperties({ uris: [uri] }));
+      const uriToRemove = action.payload.uri;
+      listenerApi.dispatch(removePropertyOwners({ uris: [uriToRemove] }));
+      listenerApi.dispatch(removeMany([uriToRemove]));
       listenerApi.dispatch(refreshGroups());
     }
   });
+
   startListening({
-    actionCreator: reloadPropertyTree,
-    effect: (_, listenerApi) => {
-      listenerApi.dispatch(clearProperties());
-      listenerApi.dispatch(clearPropertyOwners());
-      listenerApi.dispatch(addUriToPropertyTree(rootOwnerKey));
+    actionCreator: setPropertyValue,
+    effect: (action, listenerApi) => {
+      api.setProperty(action.payload.uri, action.payload.value);
+      // Optimistically update the property value in the store
+      listenerApi.dispatch(
+        updateProperty({
+          id: action.payload.uri,
+          changes: { value: action.payload.value }
+        })
+      );
     }
   });
 };

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
-import { sgnRenderableUri, sgnUri } from '@/util/propertyTreeHelpers';
+import { sgnRenderableUri, sgnUri } from '@/util/uris';
 
 import { MarkingsToggleLayout } from './MarkingsToggleLayout';
 
@@ -26,7 +26,7 @@ export function ConstellationLinesToggle({ title, icon }: Props) {
 
   const uri = sgnRenderableUri(sgnUri('Constellations'));
   const propertyOwner = usePropertyOwner(uri);
-  const { isVisible } = usePropertyOwnerVisibility(uri);
+  const { visibility } = usePropertyOwnerVisibility(uri);
 
   const [elementsEnabled, setElementsEnabled] = useProperty(
     'BoolProperty',
@@ -41,6 +41,7 @@ export function ConstellationLinesToggle({ title, icon }: Props) {
     }
   }
 
+  const isVisible = visibility === 'Visible';
   const checked = (isVisible && elementsEnabled) || false;
 
   return (
