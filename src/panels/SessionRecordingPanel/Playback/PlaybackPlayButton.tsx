@@ -41,7 +41,9 @@ export function PlaybackPlayButton({
     if (shouldOutputFrames) {
       if (shouldOutputUseNewFolder) {
         // Toggling the property will cause a new folder to be created and used
-        let prev = await luaApi?.propertyValue('RenderEngine.ScreenshotUseDate') as boolean;
+        const prev = (await luaApi?.propertyValue(
+          'RenderEngine.ScreenshotUseDate'
+        )) as boolean;
         await luaApi?.setPropertyValueSingle('RenderEngine.ScreenshotUseDate', true);
         await luaApi?.setPropertyValueSingle('RenderEngine.ScreenshotUseDate', prev);
       }
