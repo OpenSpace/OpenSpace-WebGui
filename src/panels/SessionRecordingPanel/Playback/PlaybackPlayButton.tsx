@@ -41,8 +41,9 @@ export function PlaybackPlayButton({
     if (shouldOutputFrames) {
       if (shouldOutputUseNewFolder) {
         // Toggling the property will cause a new folder to be created and used
-        luaApi?.setPropertyValueSingle('RenderEngine.ScreenshotUseDate', false);
-        luaApi?.setPropertyValueSingle('RenderEngine.ScreenshotUseDate', true);
+        let prev = await luaApi?.propertyValue('RenderEngine.ScreenshotUseDate') as boolean;
+        await luaApi?.setPropertyValueSingle('RenderEngine.ScreenshotUseDate', true);
+        await luaApi?.setPropertyValueSingle('RenderEngine.ScreenshotUseDate', prev);
       }
 
       luaApi?.sessionRecording.startPlayback(

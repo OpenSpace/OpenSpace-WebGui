@@ -153,7 +153,7 @@ export function PlaySession() {
               setShouldOutputUseNewFolder(shouldOutputUseNewFolder)
             }
             info={t('output-new-folder.tooltip')}
-            disabled={isPlayingBack}
+            disabled={!isIdle}
           />
         )}
         <BoolInput
