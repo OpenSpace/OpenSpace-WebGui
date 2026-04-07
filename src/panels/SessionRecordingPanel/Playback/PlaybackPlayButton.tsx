@@ -12,6 +12,7 @@ interface Props extends ButtonProps {
   loopPlayback: boolean;
   shouldOutputFrames: boolean;
   outputFramerate: number;
+  shouldOutputUseNewFolder: boolean;
 }
 
 export function PlaybackPlayButton({
@@ -19,6 +20,7 @@ export function PlaybackPlayButton({
   shouldOutputFrames,
   loopPlayback,
   outputFramerate,
+  shouldOutputUseNewFolder,
   ...props
 }: Props) {
   const { t } = useTranslation('panel-sessionrecording', { keyPrefix: 'button-labels' });
@@ -37,6 +39,12 @@ export function PlaybackPlayButton({
     dispatch(showGUI(false));
 
     if (shouldOutputFrames) {
+      if (shouldOutputUseNewFolder) {
+        // Toggling the property will cause a new folder to be created and used
+        luaApi?.setPropertyValueSingle('RenderEngine.ScreenshotUseDate', false);
+        luaApi?.setPropertyValueSingle('RenderEngine.ScreenshotUseDate', true);
+      }
+
       luaApi?.sessionRecording.startPlayback(
         filePath,
         loopPlayback,

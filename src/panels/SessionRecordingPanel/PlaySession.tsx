@@ -32,6 +32,7 @@ export function PlaySession() {
   const [loopPlayback, setLoopPlayback] = useState(false);
   const [shouldOutputFrames, setShouldOutputFrames] = useState(false);
   const [outputFramerate, setOutputFramerate] = useState(60);
+  const [shouldOutputUseNewFolder, setShouldOutputUseNewFolder] = useState(false);
   const { latestFile, hideGuiOnPlayback, hideDashboardsOnPlayback } = useAppSelector(
     (state) => state.sessionRecording.settings
   );
@@ -106,7 +107,7 @@ export function PlaySession() {
     }
   }
 
-  function onShouldUpdateFramesChange(shouldOutputFrames: boolean): void {
+  function onShouldOutputFramesChange(shouldOutputFrames: boolean): void {
     if (shouldOutputFrames) {
       setShouldOutputFrames(true);
       setLoopPlayback(false);
@@ -131,7 +132,7 @@ export function PlaySession() {
           <BoolInput
             label={t('output-frames.label')}
             value={shouldOutputFrames}
-            onChange={onShouldUpdateFramesChange}
+            onChange={onShouldOutputFramesChange}
             disabled={!isIdle}
             info={t('output-frames.tooltip')}
           />
@@ -144,6 +145,17 @@ export function PlaySession() {
             disabled={!shouldOutputFrames || !isIdle}
           />
         </Group>
+        {shouldOutputFrames && (
+          <BoolInput
+            label={t('output-new-folder.label')}
+            value={shouldOutputUseNewFolder}
+            onChange={(shouldOutputUseNewFolder) =>
+              setShouldOutputUseNewFolder(shouldOutputUseNewFolder)
+            }
+            info={t('output-new-folder.tooltip')}
+            disabled={isPlayingBack}
+          />
+        )}
         <BoolInput
           label={t('hide-gui-on-playback.label')}
           value={hideGuiOnPlayback}
@@ -202,6 +214,7 @@ export function PlaySession() {
             loopPlayback={loopPlayback}
             shouldOutputFrames={shouldOutputFrames}
             outputFramerate={outputFramerate}
+            shouldOutputUseNewFolder={shouldOutputUseNewFolder}
           />
         </Group>
         <Group gap={'xs'}>
