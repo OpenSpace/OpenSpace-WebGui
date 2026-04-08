@@ -149,9 +149,7 @@ export function PlaySession() {
           <BoolInput
             label={t('output-new-folder.label')}
             value={shouldOutputUseNewFolder}
-            onChange={(shouldOutputUseNewFolder) =>
-              setShouldOutputUseNewFolder(shouldOutputUseNewFolder)
-            }
+            onChange={setShouldOutputUseNewFolder}
             info={t('output-new-folder.tooltip')}
             disabled={!isIdle}
           />
