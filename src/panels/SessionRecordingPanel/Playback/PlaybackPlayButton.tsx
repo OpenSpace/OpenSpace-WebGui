@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, ButtonProps } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { useProperty } from '@/hooks/properties';
 import { PlayIcon } from '@/icons/icons';
 import { useAppDispatch } from '@/redux/hooks';
 import { showGUI } from '@/redux/sessionrecording/sessionRecordingMiddleware';
@@ -27,6 +28,7 @@ export function PlaybackPlayButton({
 
   const luaApi = useOpenSpaceApi();
   const dispatch = useAppDispatch();
+  const [useDate, setUseDate] = useProperty('BoolProperty', 'RenderEngine.ScreenshotUseDate');
 
   async function startPlayback(): Promise<void> {
     const shouldWaitForTiles = true;
@@ -41,11 +43,8 @@ export function PlaybackPlayButton({
     if (shouldOutputFrames) {
       if (shouldOutputUseNewFolder) {
         // Toggling the property will cause a new folder to be created and used
-        const prev = (await luaApi?.propertyValue(
-          'RenderEngine.ScreenshotUseDate'
-        )) as boolean;
-        await luaApi?.setPropertyValueSingle('RenderEngine.ScreenshotUseDate', true);
-        await luaApi?.setPropertyValueSingle('RenderEngine.ScreenshotUseDate', prev);
+        setUseDate(false);
+        setUseDate(useDate ?? true);
       }
 
       luaApi?.sessionRecording.startPlayback(
