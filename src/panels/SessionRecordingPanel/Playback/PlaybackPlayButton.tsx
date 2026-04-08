@@ -28,7 +28,10 @@ export function PlaybackPlayButton({
 
   const luaApi = useOpenSpaceApi();
   const dispatch = useAppDispatch();
-  const [useDate, setUseDate] = useProperty('BoolProperty', 'RenderEngine.ScreenshotUseDate');
+  const [useDate, setUseDate] = useProperty(
+    'BoolProperty',
+    'RenderEngine.ScreenshotUseDate'
+  );
 
   async function startPlayback(): Promise<void> {
     const shouldWaitForTiles = true;
