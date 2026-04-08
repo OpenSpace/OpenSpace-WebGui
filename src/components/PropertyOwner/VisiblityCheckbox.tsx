@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ActionIcon, Checkbox } from '@mantine/core';
+import { Checkbox } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
 import { IconSize } from '@/types/enums';
@@ -53,9 +53,7 @@ export function PropertyOwnerVisibilityCheckbox({
 
   if (visibility === 'Fading') {
     return (
-      <ActionIcon size={IconSize.sm} onClick={() => updateValue(!checked, isImmediate)}>
-        <FadeIcon size={IconSize.sm} />
-      </ActionIcon>
+      <FadeIcon size={IconSize.xl} onClick={() => updateValue(!checked, isImmediate)} />
     );
   }
 
