@@ -128,32 +128,30 @@ export function PlaySession() {
           onChange={onLoopPlaybackChange}
           disabled={!isIdle}
         />
-        <Group>
-          <BoolInput
-            label={t('output-frames.label')}
-            value={shouldOutputFrames}
-            onChange={onShouldOutputFramesChange}
-            disabled={!isIdle}
-            info={t('output-frames.tooltip')}
-          />
+        <BoolInput
+          label={t('output-frames.label')}
+          value={shouldOutputFrames}
+          onChange={onShouldOutputFramesChange}
+          disabled={!isIdle}
+          info={t('output-frames.tooltip')}
+        />
+        <Stack ml={'xs'} mb={'xs'}>
           <NumericInput
             value={outputFramerate}
             placeholder={t('framerate.placeholder')}
             aria-label={t('framerate.aria-label')}
+            label={t('framerate.title')}
             onEnter={(value) => setOutputFramerate(value)}
-            w={80}
             disabled={!shouldOutputFrames || !isIdle}
           />
-        </Group>
-        {shouldOutputFrames && (
           <BoolInput
             label={t('output-new-folder.label')}
             value={shouldOutputUseNewFolder}
             onChange={setShouldOutputUseNewFolder}
             info={t('output-new-folder.tooltip')}
-            disabled={!isIdle}
+            disabled={!isIdle || !shouldOutputFrames}
           />
-        )}
+        </Stack>
         <BoolInput
           label={t('hide-gui-on-playback.label')}
           value={hideGuiOnPlayback}

@@ -28,9 +28,9 @@ export function PlaybackPlayButton({
 
   const luaApi = useOpenSpaceApi();
   const dispatch = useAppDispatch();
-  const [useDate, setUseDate] = useProperty(
-    'BoolProperty',
-    'RenderEngine.ScreenshotUseDate'
+  const [_, useNewScreenshotFolder] = useProperty(
+    'TriggerProperty',
+    'RenderEngine.UseNewScreenshotFolder'
   );
 
   async function startPlayback(): Promise<void> {
@@ -45,9 +45,7 @@ export function PlaybackPlayButton({
 
     if (shouldOutputFrames) {
       if (shouldOutputUseNewFolder) {
-        // Toggling the property will cause a new folder to be created and used
-        setUseDate(false);
-        setUseDate(useDate ?? true);
+        useNewScreenshotFolder(null);
       }
 
       luaApi?.sessionRecording.startPlayback(
