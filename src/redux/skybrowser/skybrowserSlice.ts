@@ -58,16 +58,10 @@ export const skyBrowserSlice = createSlice({
             typeof idx === 'string' ? parseInt(idx) : idx
           );
         }
-        if (action.payload.browsers !== undefined) {
-          // Derived state for easier access
-          state.browserIds = Object.keys(action.payload.browsers) ?? [];
-          state.browserColors = state.browserIds.map(
-            (id) => action.payload.browsers?.[id].color ?? [255, 255, 255]
-          );
-          state.browserNames = state.browserIds.map(
-            (id) => action.payload.browsers?.[id].name ?? 'Unnamed Browser'
-          );
-        }
+        // Derived state for easier access
+        state.browserIds = Object.keys(state.browsers);
+        state.browserColors = state.browserIds.map((id) => state.browsers[id].color);
+        state.browserNames = state.browserIds.map((id) => state.browsers[id].name);
       } else {
         // If the update is invalid, reset the state
         state.selectedBrowserId = '';

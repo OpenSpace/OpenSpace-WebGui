@@ -34,7 +34,7 @@ export const setupSubscription = createAsyncThunk(
     const batcher = new Batcher<SkyBrowserUpdate>(updateData);
 
     (async () => {
-      for await (const data of skybrowserTopic.iterator() as AsyncGenerator<SkyBrowserUpdate>) {
+      for await (const data of skybrowserTopic.iterator() as AsyncIterable<SkyBrowserUpdate>) {
         batcher.add(data);
       }
     })();
@@ -47,7 +47,7 @@ function tearDownSubscription() {
     return;
   }
   skybrowserTopic.talk({
-    event: 'stop_supscription'
+    event: 'stop_subscription'
   });
   skybrowserTopic.cancel();
 }
