@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, ButtonProps } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { useProperty } from '@/hooks/properties';
 import { PlayIcon } from '@/icons/icons';
 import { useAppDispatch } from '@/redux/hooks';
 import { showGUI } from '@/redux/sessionrecording/sessionRecordingMiddleware';
@@ -12,6 +13,7 @@ interface Props extends ButtonProps {
   loopPlayback: boolean;
   shouldOutputFrames: boolean;
   outputFramerate: number;
+  shouldOutputUseNewFolder: boolean;
 }
 
 export function PlaybackPlayButton({
@@ -19,11 +21,16 @@ export function PlaybackPlayButton({
   shouldOutputFrames,
   loopPlayback,
   outputFramerate,
+  shouldOutputUseNewFolder,
   ...props
 }: Props) {
   const { t } = useTranslation('panel-sessionrecording', { keyPrefix: 'button-labels' });
 
   const luaApi = useOpenSpaceApi();
+  const [, setUseNewScreenshotFolder] = useProperty(
+    'TriggerProperty',
+    'RenderEngine.UseNewScreenshotFolder'
+  );
   const dispatch = useAppDispatch();
 
   async function startPlayback(): Promise<void> {
@@ -37,6 +44,10 @@ export function PlaybackPlayButton({
     dispatch(showGUI(false));
 
     if (shouldOutputFrames) {
+      if (shouldOutputUseNewFolder) {
+        setUseNewScreenshotFolder(null);
+      }
+
       luaApi?.sessionRecording.startPlayback(
         filePath,
         loopPlayback,
