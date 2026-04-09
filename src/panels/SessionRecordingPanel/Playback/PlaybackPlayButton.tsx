@@ -28,7 +28,7 @@ export function PlaybackPlayButton({
 
   const luaApi = useOpenSpaceApi();
   const dispatch = useAppDispatch();
-  const [_, useNewScreenshotFolder] = useProperty(
+  const [, setUseNewScreenshotFolder] = useProperty(
     'TriggerProperty',
     'RenderEngine.UseNewScreenshotFolder'
   );
@@ -45,7 +45,7 @@ export function PlaybackPlayButton({
 
     if (shouldOutputFrames) {
       if (shouldOutputUseNewFolder) {
-        useNewScreenshotFolder(null);
+        setUseNewScreenshotFolder(null);
       }
 
       luaApi?.sessionRecording.startPlayback(
