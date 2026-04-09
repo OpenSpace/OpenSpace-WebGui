@@ -27,11 +27,11 @@ export function PlaybackPlayButton({
   const { t } = useTranslation('panel-sessionrecording', { keyPrefix: 'button-labels' });
 
   const luaApi = useOpenSpaceApi();
-  const dispatch = useAppDispatch();
   const [, setUseNewScreenshotFolder] = useProperty(
     'TriggerProperty',
     'RenderEngine.UseNewScreenshotFolder'
   );
+  const dispatch = useAppDispatch();
 
   async function startPlayback(): Promise<void> {
     const shouldWaitForTiles = true;
