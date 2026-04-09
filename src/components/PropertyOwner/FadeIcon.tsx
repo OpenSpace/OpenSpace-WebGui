@@ -13,8 +13,8 @@ export function FadeIcon({
   color = 'var(--mantine-primary-color-5)',
   onClick
 }: Props) {
-  const stripeWidth = size * 0.25;
-  const repeat = size * 0.5;
+  const stripeWidth = size * 0.15;
+  const repeat = size * 0.3;
 
   return (
     <ActionIcon size={size} onClick={onClick}>
