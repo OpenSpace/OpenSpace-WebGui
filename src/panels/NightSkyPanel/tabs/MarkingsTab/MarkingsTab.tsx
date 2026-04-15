@@ -54,9 +54,7 @@ export function MarkingsTab() {
           leftSection={<EyeOffIcon />}
           size={'compact-xs'}
           variant={'subtle'}
-          onClick={() =>
-            /* TODO: Add action to hide all altitude-azimuth markings */ null
-          }
+          onClick={() => luaApi?.action.triggerAction('os.nightsky.HideAllAltAzElements')}
         >
           {t('common-button-labels.hide-all')}
         </Button>
@@ -93,7 +91,7 @@ export function MarkingsTab() {
           leftSection={<EyeOffIcon />}
           size={'compact-xs'}
           variant={'subtle'}
-          onClick={() => /* TODO: Add action to hide all ecliptic markings */ null}
+          onClick={() => luaApi?.action.triggerAction('os.nightsky.HideAllEclipticElements')}
         >
           {t('common-button-labels.hide-all')}
         </Button>
@@ -130,7 +128,7 @@ export function MarkingsTab() {
           leftSection={<EyeOffIcon />}
           size={'compact-xs'}
           variant={'subtle'}
-          onClick={() => /* TODO: Add action to hide all equatorial markings */ null}
+          onClick={() => luaApi?.action.triggerAction('os.nightsky.HideAllEquatorialElements')}
         >
           {t('common-button-labels.hide-all')}
         </Button>
@@ -162,7 +160,7 @@ export function MarkingsTab() {
           leftSection={<EyeOffIcon />}
           size={'compact-xs'}
           variant={'subtle'}
-          onClick={() => /* TODO: Add action to hide all constellation markings */ null}
+          onClick={() => luaApi?.action.triggerAction('os.nightsky.HideAllConstellationElements')}
         >
           {t('common-button-labels.hide-all')}
         </Button>
