@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TbLetterA, TbLetterASmall } from 'react-icons/tb';
 import {
   Box,
   Group,
@@ -13,7 +12,7 @@ import {
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
-import { CompassSmallIcon } from '@/icons/icons';
+import { CompassSmallIcon, LetterAIcon, LetterASmallIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
 import { SceneGraphNodeToggle } from './SceneGraphNodeToggle';
@@ -84,7 +83,7 @@ export function CardinalDirections() {
     }
   }, [texture, setSizeToggle, currentToggle]);
 
-  function toggleLabel(text: string, icon: React.JSX.Element) {
+  function sizeToggleLabel(text: string, icon: React.JSX.Element) {
     return (
       <Stack gap={0} py={2} align={'center'}>
         {icon}
@@ -134,14 +133,17 @@ export function CardinalDirections() {
           data={[
             {
               value: 'small',
-              label: toggleLabel(
+              label: sizeToggleLabel(
                 t('buttons.small'),
-                <TbLetterASmall size={IconSize.sm} />
+                <LetterASmallIcon size={IconSize.sm} />
               )
             },
             {
               value: 'large',
-              label: toggleLabel(t('buttons.large'), <TbLetterA size={IconSize.sm} />)
+              label: sizeToggleLabel(
+                t('buttons.large'),
+                <LetterAIcon size={IconSize.sm} />
+              )
             }
           ]}
           aria-label={t('aria-labels.toggle')}
