@@ -45,13 +45,13 @@
     "cardinal-directions": {
       "title": "Cardinal Directions",
       "buttons": {
-        "none": "None",
+        "directions": "Directions",
         "small": "Small",
         "large": "Large",
         "marks": "Marks"
       },
       "aria-labels": {
-        "toggle": "Toggle cardinal directions visibility and size",
+        "toggle": "Toggle cardinal directions' size",
         "marks": "Show marks on cardinal directions"
       }
     },

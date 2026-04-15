@@ -47,7 +47,9 @@ export function CardinalDirections() {
     keyPrefix: 'markings.cardinal-directions'
   });
 
-  const [toggleValue, setToggle] = useState<'small' | 'large' | undefined>(undefined);
+  const [sizeToggleValue, setSizeToggle] = useState<'small' | 'large' | undefined>(
+    undefined
+  );
 
   const luaApi = useOpenSpaceApi();
 
@@ -56,7 +58,7 @@ export function CardinalDirections() {
     'Scene.CardinalDirectionSphere.Renderable.Texture'
   );
 
-  const isEnabled = useCallback(
+  const isTextureOn = useCallback(
     (variant: keyof typeof Data): boolean => {
       if (!texture) {
         return false;
@@ -67,20 +69,20 @@ export function CardinalDirections() {
   );
 
   const currentToggle = useCallback((): 'small' | 'large' | undefined => {
-    if (isEnabled('small')) {
+    if (isTextureOn('small')) {
       return 'small';
     }
-    if (isEnabled('large')) {
+    if (isTextureOn('large')) {
       return 'large';
     }
     return undefined;
-  }, [isEnabled]);
+  }, [isTextureOn]);
 
   useEffect(() => {
     if (texture) {
-      setToggle(currentToggle());
+      setSizeToggle(currentToggle());
     }
-  }, [texture, setToggle, currentToggle]);
+  }, [texture, setSizeToggle, currentToggle]);
 
   function toggleLabel(text: string, icon: React.JSX.Element) {
     return (
@@ -96,7 +98,7 @@ export function CardinalDirections() {
       <Group>
         <Box w={100}>
           <SceneGraphNodeToggle
-            title={'Directions'}
+            title={t('buttons.directions')}
             icon={<CompassSmallIcon size={IconSize.sm} />}
             identifier={'CardinalDirectionSphere'}
           />
@@ -107,28 +109,28 @@ export function CardinalDirections() {
             switch (value) {
               case 'small':
                 luaApi?.action.triggerAction(Data['small'].showAction);
-                if (isEnabled('marks')) {
+                if (isTextureOn('marks')) {
                   // The action for showing the small letters also hides the marks, so we
                   // need to show them again if they were enabled before
                   luaApi?.action.triggerAction(Data['marks'].showAction);
                 }
-                setToggle('small');
+                setSizeToggle('small');
                 break;
               case 'large':
                 luaApi?.action.triggerAction(Data['large'].showAction);
-                if (isEnabled('marks')) {
+                if (isTextureOn('marks')) {
                   // The action for showing the large letters also hides the marks, so we
                   // need to show them again if they were enabled before
                   luaApi?.action.triggerAction(Data['marks'].showAction);
                 }
-                setToggle('large');
+                setSizeToggle('large');
                 break;
               default:
-                setToggle(undefined);
+                setSizeToggle(undefined);
                 break;
             }
           }}
-          value={toggleValue}
+          value={sizeToggleValue}
           data={[
             {
               value: 'small',
@@ -142,9 +144,10 @@ export function CardinalDirections() {
               label: toggleLabel(t('buttons.large'), <TbLetterA size={IconSize.sm} />)
             }
           ]}
+          aria-label={t('aria-labels.toggle')}
         />
         <Switch
-          checked={isEnabled('marks')}
+          checked={isTextureOn('marks')}
           onChange={(event) =>
             luaApi?.action.triggerAction(
               event.target.checked ? Data['marks'].showAction : Data['marks'].hideAction
