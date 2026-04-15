@@ -91,7 +91,9 @@ export function MarkingsTab() {
           leftSection={<EyeOffIcon />}
           size={'compact-xs'}
           variant={'subtle'}
-          onClick={() => luaApi?.action.triggerAction('os.nightsky.HideAllEclipticElements')}
+          onClick={() =>
+            luaApi?.action.triggerAction('os.nightsky.HideAllEclipticElements')
+          }
         >
           {t('common-button-labels.hide-all')}
         </Button>
@@ -128,7 +130,9 @@ export function MarkingsTab() {
           leftSection={<EyeOffIcon />}
           size={'compact-xs'}
           variant={'subtle'}
-          onClick={() => luaApi?.action.triggerAction('os.nightsky.HideAllEquatorialElements')}
+          onClick={() =>
+            luaApi?.action.triggerAction('os.nightsky.HideAllEquatorialElements')
+          }
         >
           {t('common-button-labels.hide-all')}
         </Button>
@@ -160,7 +164,9 @@ export function MarkingsTab() {
           leftSection={<EyeOffIcon />}
           size={'compact-xs'}
           variant={'subtle'}
-          onClick={() => luaApi?.action.triggerAction('os.nightsky.HideAllConstellationElements')}
+          onClick={() =>
+            luaApi?.action.triggerAction('os.nightsky.HideAllConstellationElements')
+          }
         >
           {t('common-button-labels.hide-all')}
         </Button>
