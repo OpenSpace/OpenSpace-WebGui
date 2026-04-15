@@ -1,12 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SegmentedControl, Skeleton, Stack, Switch, Text } from '@mantine/core';
+import { TbLetterA, TbLetterASmall } from 'react-icons/tb';
+import {
+  Box,
+  Group,
+  SegmentedControl,
+  Skeleton,
+  Stack,
+  Switch,
+  Text
+} from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useProperty } from '@/hooks/properties';
-import { usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
-import { CompassLargeIcon, CompassSmallIcon, EyeOffIcon } from '@/icons/icons';
+import { CompassSmallIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
+
+import { SceneGraphNodeToggle } from './SceneGraphNodeToggle';
 
 // @TODO (2025-05-19, emmbr) These checks, especially against the parts of the texture
 // file names, are fragile agains file name changes. Consider more robust solution
@@ -37,49 +47,44 @@ export function CardinalDirections() {
     keyPrefix: 'markings.cardinal-directions'
   });
 
-  const [toggleValue, setToggle] = useState('none');
+  const [toggleValue, setToggle] = useState<'small' | 'large' | undefined>(undefined);
 
   const luaApi = useOpenSpaceApi();
 
-  const { visibility } = usePropertyOwnerVisibility(
-    'Scene.CardinalDirectionSphere.Renderable'
-  );
   const [texture] = useProperty(
     'StringProperty',
     'Scene.CardinalDirectionSphere.Renderable.Texture'
   );
 
-  const hasLoaded = visibility !== undefined && texture !== undefined;
-
   const isEnabled = useCallback(
     (variant: keyof typeof Data): boolean => {
-      if (!visibility || !texture) {
+      if (!texture) {
         return false;
       }
       return texture.includes(Data[variant].textureCheck);
     },
-    [visibility, texture]
+    [texture]
   );
 
-  const currentToggle = useCallback((): string => {
+  const currentToggle = useCallback((): 'small' | 'large' | undefined => {
     if (isEnabled('small')) {
       return 'small';
     }
     if (isEnabled('large')) {
       return 'large';
     }
-    return 'none';
+    return undefined;
   }, [isEnabled]);
 
   useEffect(() => {
-    if (hasLoaded) {
+    if (texture) {
       setToggle(currentToggle());
     }
-  }, [visibility, texture, setToggle, currentToggle, hasLoaded]);
+  }, [texture, setToggle, currentToggle]);
 
-  function label(text: string, icon: React.JSX.Element) {
+  function toggleLabel(text: string, icon: React.JSX.Element) {
     return (
-      <Stack gap={0} align={'center'}>
+      <Stack gap={0} py={2} align={'center'}>
         {icon}
         <Text>{text}</Text>
       </Stack>
@@ -87,43 +92,56 @@ export function CardinalDirections() {
   }
 
   return (
-    <Skeleton visible={!hasLoaded}>
-      <Stack>
+    <Skeleton visible={!texture}>
+      <Group>
+        <Box w={100}>
+          <SceneGraphNodeToggle
+            title={'Directions'}
+            icon={<CompassSmallIcon size={IconSize.sm} />}
+            identifier={'CardinalDirectionSphere'}
+          />
+        </Box>
+
         <SegmentedControl
-          color={'blue'}
           onChange={(value: string) => {
             switch (value) {
-              case 'none':
-                luaApi?.action.triggerAction(Data['small'].hideAction);
-                luaApi?.action.triggerAction(Data['large'].hideAction);
-                break;
               case 'small':
                 luaApi?.action.triggerAction(Data['small'].showAction);
+                if (isEnabled('marks')) {
+                  // The action for showing the small letters also hides the marks, so we
+                  // need to show them again if they were enabled before
+                  luaApi?.action.triggerAction(Data['marks'].showAction);
+                }
+                setToggle('small');
                 break;
               case 'large':
                 luaApi?.action.triggerAction(Data['large'].showAction);
+                if (isEnabled('marks')) {
+                  // The action for showing the large letters also hides the marks, so we
+                  // need to show them again if they were enabled before
+                  luaApi?.action.triggerAction(Data['marks'].showAction);
+                }
+                setToggle('large');
                 break;
               default:
+                setToggle(undefined);
                 break;
             }
-            setToggle(value);
           }}
           value={toggleValue}
           data={[
             {
-              value: 'none',
-              label: label(t('buttons.none'), <EyeOffIcon size={IconSize.sm} />)
-            },
-            {
               value: 'small',
-              label: label(t('buttons.small'), <CompassSmallIcon size={IconSize.sm} />)
+              label: toggleLabel(
+                t('buttons.small'),
+                <TbLetterASmall size={IconSize.sm} />
+              )
             },
             {
               value: 'large',
-              label: label(t('buttons.large'), <CompassLargeIcon size={IconSize.sm} />)
+              label: toggleLabel(t('buttons.large'), <TbLetterA size={IconSize.sm} />)
             }
           ]}
-          size={'sm'}
         />
         <Switch
           checked={isEnabled('marks')}
@@ -134,10 +152,8 @@ export function CardinalDirections() {
           }
           label={t('buttons.marks')}
           aria-label={t('aria-labels.marks')}
-          size={'sm'}
-          disabled={!hasLoaded || (!isEnabled('small') && !isEnabled('large'))}
         />
-      </Stack>
+      </Group>
     </Skeleton>
   );
 }
