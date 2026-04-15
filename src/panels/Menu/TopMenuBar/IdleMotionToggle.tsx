@@ -7,25 +7,25 @@ import { KeybindButtons } from '@/panels/KeybindsPanel/KeybindButtons';
 import { useAppSelector } from '@/redux/hooks';
 import styles from '@/theme/global.module.css';
 
-export function IdleBehaviorToggle() {
-  const { t } = useTranslation('menu', { keyPrefix: 'idle-behavior-toggle' });
+export function IdleMotionToggle() {
+  const { t } = useTranslation('menu', { keyPrefix: 'idle-motion-toggle' });
 
-  const [applyIdleBehavior, setApplyIdleBehavior] = useProperty(
+  const [applyIdleMotion, setApplyIdleMotion] = useProperty(
     'BoolProperty',
-    'NavigationHandler.OrbitalNavigator.IdleBehavior.ApplyIdleBehavior'
+    'NavigationHandler.OrbitalNavigator.IdleMotion.Apply'
   );
 
   const keybinds = useAppSelector((state) => state.actions.keybinds);
-  const keybind = keybinds.find((keybind) => keybind.action === 'os.ToggleIdleBehavior');
+  const keybind = keybinds.find((keybind) => keybind.action === 'os.ToggleIdleMotion');
 
   return (
     <Group gap={'xs'} wrap={'nowrap'}>
       <Chip
-        checked={applyIdleBehavior}
-        onChange={setApplyIdleBehavior}
+        checked={applyIdleMotion}
+        onChange={setApplyIdleMotion}
         size={'xs'}
-        variant={applyIdleBehavior ? 'light' : 'transparent'}
-        className={applyIdleBehavior ? styles.blinking : undefined}
+        variant={applyIdleMotion ? 'light' : 'transparent'}
+        className={applyIdleMotion ? styles.blinking : undefined}
       >
         {t('label')}
       </Chip>
