@@ -51,7 +51,7 @@
         "marks": "Marks"
       },
       "aria-labels": {
-        "toggle": "Toggle cardinal directions' size",
+        "toggle": "Toggle cardinal directions' sizes",
         "marks": "Show marks on cardinal directions"
       }
     },
@@ -141,7 +141,7 @@
       "input": {
         "show-stars": "Show stars",
         "show-during-day": {
-          "label": "Show during Day",
+          "label": "Show during day",
           "tooltip": "Check this box to show the stars during daytime"
         }
       }
@@ -191,8 +191,8 @@
       "title": "Trails",
       "buttons": {
         "add-trail": "Add trail",
-        "add-trail-simulation-date": "Add trail for Simulation Date",
-        "add-trail-today": "Add trail for Today",
+        "add-trail-simulation-date": "Add trail for 'Simulation Date'",
+        "add-trail-today": "Add trail for 'Today'",
         "hide-trails": "Hide all"
       },
       "choose-date": "Choose Date",
