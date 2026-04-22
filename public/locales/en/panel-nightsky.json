@@ -9,7 +9,7 @@
   },
   "markings": {
     "common-button-labels": {
-      "hide-all": "Hide All",
+      "hide-all": "Hide all",
       "grid": "Grid",
       "labels": "Labels",
       "line_one": "Line",
@@ -45,15 +45,18 @@
     "cardinal-directions": {
       "title": "Cardinal Directions",
       "buttons": {
+        "directions": "Directions",
         "small": "Small",
         "large": "Large",
         "marks": "Marks"
       },
       "aria-labels": {
-        "small": "Show cardinal directions (small)",
-        "large": "Show cardianl directions (large)",
+        "toggle": "Toggle cardinal directions' sizes",
         "marks": "Show marks on cardinal directions"
       }
+    },
+    "scene-graph-node-toggle": {
+      "aria-label": "Toggle {{name}} visibility"
     }
   },
   "location": {
@@ -93,28 +96,28 @@
     "trails": {
       "title": "Trails",
       "buttons": {
-        "hide-trails": "Hide all Trails",
-        "show-planet-trails": "Show Planet Trails"
+        "hide-trails": "Hide all trails",
+        "show-planet-trails": "Show planet trails"
       }
     },
     "labels": {
       "title": "Labels",
       "buttons": {
-        "show-labels": "Show Labels",
-        "hide-labels": "Hide Labels"
+        "show-labels": "Show labels",
+        "hide-labels": "Hide labels"
       }
     },
     "planets": {
       "title": "Planets",
       "buttons": {
-        "show-planets": "Show Night Sky Planets",
-        "hide-planets": "Hide Night Sky Planets"
+        "show-planets": "Show night sky planets",
+        "hide-planets": "Hide night sky planets"
       }
     },
     "moon": {
       "title": "Moon",
       "buttons": {
-        "default-scale": "Default Moon Scale (1x)",
+        "default-scale": "Default Moon scale (1x)",
         "2x-scale": "Enlarge Moon (2x)",
         "4x-scale": "Enlarge Moon (4x)"
       },
@@ -127,7 +130,7 @@
         "moon-shading-settings": "Could not find Moon Perform Shading settings"
       },
       "show-phase-input": {
-        "title": "Show Phase",
+        "title": "Show phase",
         "tooltip": "Uncheck this to always show the full moon. This is equivalent to 'Perform Shading' property on the Moon."
       }
     }
@@ -136,9 +139,9 @@
     "visibility": {
       "title": "Visibility",
       "input": {
-        "show-stars": "Show Stars",
+        "show-stars": "Show stars",
         "show-during-day": {
-          "label": "Show during Day",
+          "label": "Show during day",
           "tooltip": "Check this box to show the stars during daytime"
         }
       }
@@ -146,8 +149,8 @@
     "labels": {
       "title": "Labels",
       "input": {
-        "show-labels": "Show Labels",
-        "show-alternate-labels": "Show Alternate Labels"
+        "show-labels": "Show labels",
+        "show-alternate-labels": "Show alternate labels"
       }
     },
     "appearance": {
@@ -172,10 +175,11 @@
     },
     "size": {
       "title": "Size",
+      "description": "Adjust the Sun's angular size on the sky.",
       "buttons": {
-        "default-size": "Default Angular Size",
-        "large-size": "Large Angular Size",
-        "extra-large-size": "Extra Large Angular Size"
+        "default-size": "Default",
+        "large-size": "Large",
+        "extra-large-size": "Extra large"
       },
       "aria-labels": {
         "increase-size": "Increase angular size",
@@ -186,10 +190,10 @@
     "trails": {
       "title": "Trails",
       "buttons": {
-        "add-trail": "Add Trail",
-        "add-trail-simulation-date": "Add Trail for Simulation Date",
-        "add-trail-today": "Add Trail for Today",
-        "hide-trails": "Hide All"
+        "add-trail": "Add trail",
+        "add-trail-simulation-date": "Add trail for 'Simulation Date'",
+        "add-trail-today": "Add trail for 'Today'",
+        "hide-trails": "Hide all"
       },
       "choose-date": "Choose Date",
       "added-trails": {

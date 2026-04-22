@@ -1,11 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Checkbox } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 
-import { MarkingBoxLayout } from './MarkingBoxLayout';
+import { MarkingsToggleLayout } from './MarkingsToggleLayout';
 
 interface Props {
   title: string;
@@ -16,7 +15,7 @@ interface Props {
 // exist. However, for this we need to be able to access the actions state using the
 // identifier of the action, so leaving for now
 
-export function ConstellationsShowLabelsBox({ title, icon }: Props) {
+export function ConstellationsLabelsToggle({ title, icon }: Props) {
   const { t } = useTranslation('panel-nightsky', {
     keyPrefix: 'markings.constellations'
   });
@@ -35,15 +34,13 @@ export function ConstellationsShowLabelsBox({ title, icon }: Props) {
     }
   }
 
+  const isVisible = visibility === 'Visible';
+
   return (
-    <MarkingBoxLayout
-      checkbox={
-        <Checkbox
-          onChange={(event) => checkboxChange(event.currentTarget.checked)}
-          checked={visibility === 'Visible'}
-          aria-label={t('aria-labels.labels')}
-        />
-      }
+    <MarkingsToggleLayout
+      onClick={() => checkboxChange(!isVisible)}
+      checked={isVisible || false}
+      aria-label={t('aria-labels.labels')}
       title={title}
       icon={icon}
       isLoading={!propertyOwner}

@@ -132,6 +132,8 @@ export {
   TbClock as ClockIcon,
   TbClockX as ClockOffIcon,
   TbCompass as CompassMarksIcon,
+  TbLetterA as LetterAIcon,
+  TbLetterASmall as LetterASmallIcon,
   TbSphere as LineIcon,
   TbRepeat as RepeatIcon,
   TbRepeatOff as RepeatOffIcon,
