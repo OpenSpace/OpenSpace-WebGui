@@ -48,7 +48,7 @@ export function TimePanelMenuButtonContent() {
   }
 
   return (
-    <Stack gap={0} align={'flex-start'}>
+    <Stack gap={0} align={'flex-start'} miw={270}>
       {isReady ? (
         <>
           <Text size={'lg'}>{isValidDate ? timeLabel : timeString}</Text>
