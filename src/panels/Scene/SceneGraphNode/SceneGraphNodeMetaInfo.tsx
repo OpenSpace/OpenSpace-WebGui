@@ -1,16 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import {
-  Anchor,
-  Card,
-  Code,
-  Flex,
-  Group,
-  Pill,
-  Table,
-  TableData,
-  Text,
-  Title
-} from '@mantine/core';
+import { Anchor, Code, Flex, Group, Pill, Table, Text, Title } from '@mantine/core';
 
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 import { ShowMore } from '@/components/ShowMore/ShowMore';
@@ -50,139 +39,149 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
     return undefined;
   });
 
-  const mainTableData: TableData = {
-    body: [
-      [
-        <Text size={'sm'}>{t('info-table.identifier')}:</Text>,
-        <Group justify={'space-between'}>
-          <Text className={styles.selectable} size={'sm'}>
-            {identifier}
-          </Text>
-          <CopyToClipboardButton value={identifier || ''} />
-        </Group>
-      ],
-      [
-        <Text size={'sm'}>{t('info-table.uri')}:</Text>,
-        <Group justify={'space-between'}>
-          <Code className={styles.selectable}>{uri}</Code>
-          <CopyToClipboardButton value={uri} />
-        </Group>
-      ],
-      [
-        <Text size={'sm'}>{t('info-table.about')}:</Text>,
-        <Text className={styles.selectable}>
-          {description || t('info-table.about-not-found')}
-        </Text>
-      ],
-      [
-        <Text size={'sm'}>{t('info-table.tags')}:</Text>,
-        <Group gap={'xs'}>
-          {propertyOwner?.tags.map((tag) => (
-            <Pill key={tag}>
-              <Flex gap={2}>
-                <span className={styles.selectable}>{tag}</span>
-                <CopyToClipboardButton value={tag} />
-              </Flex>
-            </Pill>
-          ))}
-        </Group>
-      ],
-      [
-        <Text size={'sm'}>{t('info-table.gui')}:</Text>,
-        <Text
-          style={{ overflowWrap: 'anywhere' }}
-          className={styles.selectable}
-          size={'sm'}
-        >
-          {guiPath}
-        </Text>
-      ]
-    ]
-  };
-
-  const assetMetaTableData: TableData = {
-    body: [
-      [
-        <Text size={'sm'}>{t('asset-info-table.name')}:</Text>,
-        <Text className={styles.selectable} size={'sm'}>
-          {documentation?.name}
-        </Text>
-      ],
-      [
-        <Text size={'sm'}>{t('asset-info-table.path')}:</Text>,
-        <Text
-          style={{ overflowWrap: 'anywhere' }}
-          className={styles.selectable}
-          size={'sm'}
-        >
-          {documentation?.path}
-        </Text>,
-        documentation?.path && <CopyToClipboardButton value={documentation?.path || ''} />
-      ],
-      [
-        <Text size={'sm'}>{t('asset-info-table.author')}:</Text>,
-        <Text className={styles.selectable} size={'sm'}>
-          {documentation?.author}
-        </Text>
-      ],
-      [
-        <Text size={'sm'}>{t('asset-info-table.license')}:</Text>,
-        <Text className={styles.selectable} size={'sm'}>
-          {documentation?.license}
-        </Text>
-      ],
-      [
-        <Text size={'sm'}>{t('asset-info-table.about')}:</Text>,
-        <ShowMore>
-          <Text className={styles.selectable} size={'sm'}>
-            {documentation?.description}
-          </Text>
-        </ShowMore>
-      ],
-      [
-        <Text size={'sm'}>{t('asset-info-table.nodes-in-asset')}:</Text>,
-        <ShowMore>
-          <Text className={styles.selectable} size={'sm'}>
-            {documentation?.identifiers?.map((id) => id).join(', ')}
-          </Text>
-        </ShowMore>
-      ],
-      [
-        <Text size={'sm'}>{t('asset-info-table.url')}:</Text>,
-        <Anchor
-          href={documentation?.url}
-          target={'_blank'}
-          style={{ overflowWrap: 'anywhere' }}
-          className={styles.selectable}
-          size={'sm'}
-        >
-          {documentation?.url}
-        </Anchor>
-      ]
-    ]
-  };
-
-  // The version field is not relevant for all assets, and should only be displayed if it
-  // exists
-  if (documentation?.version) {
-    mainTableData.body?.push([
-      `${t('asset-info-table.version')}:`,
-      documentation.version
-    ]);
-  }
+  const textProps = { className: styles.selectable, size: 'sm' } as const;
 
   return (
     <>
       <Table
-        mb={'md'}
+        mb={'xs'}
+        variant={'vertical'}
         withRowBorders={false}
-        data={mainTableData}
-        styles={{ td: { verticalAlign: 'top' } }}
-      />
-      <Card>
-        <Title order={3}>{t('asset-info-title')}</Title>
-        <Table data={assetMetaTableData} />
-      </Card>
+        styles={{ td: { verticalAlign: 'top' }, th: { background: 'transparent' } }}
+      >
+        <Table.Tbody>
+          <Table.Tr>
+            <Table.Th w={90}>{t('info-table.identifier')}:</Table.Th>
+            <Table.Td>
+              <Group justify={'space-between'}>
+                <Text {...textProps}>{identifier}</Text>
+                <CopyToClipboardButton value={identifier || ''} />
+              </Group>
+            </Table.Td>
+          </Table.Tr>
+
+          <Table.Tr>
+            <Table.Th>{t('info-table.uri')}:</Table.Th>
+            <Table.Td>
+              <Group justify={'space-between'}>
+                <Code className={styles.selectable}>{uri}</Code>
+                <CopyToClipboardButton value={uri} />
+              </Group>
+            </Table.Td>
+          </Table.Tr>
+
+          <Table.Tr>
+            <Table.Th>{t('info-table.about')}:</Table.Th>
+            <Table.Td>
+              <Text {...textProps}>{description || t('info-table.about-not-found')}</Text>
+            </Table.Td>
+          </Table.Tr>
+
+          <Table.Tr>
+            <Table.Th>{t('info-table.tags')}:</Table.Th>
+            <Table.Td>
+              <Group gap={'xs'}>
+                {propertyOwner?.tags.map((tag) => (
+                  <Pill key={tag}>
+                    <Flex gap={2}>
+                      <span className={styles.selectable}>{tag}</span>
+                      <CopyToClipboardButton value={tag} />
+                    </Flex>
+                  </Pill>
+                ))}
+              </Group>
+            </Table.Td>
+          </Table.Tr>
+
+          <Table.Tr>
+            <Table.Th>{t('info-table.gui')}:</Table.Th>
+            <Table.Td>
+              <Text style={{ overflowWrap: 'anywhere' }} {...textProps}>
+                {guiPath}
+              </Text>
+            </Table.Td>
+          </Table.Tr>
+        </Table.Tbody>
+      </Table>
+
+      <Title order={3}>{t('asset-info-title')}</Title>
+      <Table mb={'md'} variant={'vertical'} withRowBorders withTableBorder>
+        <Table.Tr>
+          <Table.Th w={90}>{t('asset-info-table.name')}:</Table.Th>
+          <Table.Td>
+            <Text {...textProps}>{documentation?.name}</Text>
+          </Table.Td>
+        </Table.Tr>
+
+        <Table.Tr>
+          <Table.Th>{t('asset-info-table.path')}:</Table.Th>
+          <Table.Td>
+            <Group justify={'space-between'} wrap={'nowrap'}>
+              <Text {...textProps} style={{ overflowWrap: 'anywhere' }}>
+                {documentation?.path}
+              </Text>
+              {documentation?.path && (
+                <CopyToClipboardButton value={documentation?.path || ''} />
+              )}
+            </Group>
+          </Table.Td>
+        </Table.Tr>
+
+        <Table.Tr>
+          <Table.Th>{t('asset-info-table.author')}:</Table.Th>
+          <Table.Td>
+            <Text {...textProps}>{documentation?.author}</Text>
+          </Table.Td>
+        </Table.Tr>
+
+        <Table.Tr>
+          <Table.Th>{t('asset-info-table.license')}:</Table.Th>
+          <Table.Td>
+            <Text {...textProps}>{documentation?.license}</Text>
+          </Table.Td>
+        </Table.Tr>
+
+        <Table.Tr>
+          <Table.Th>{t('asset-info-table.about')}:</Table.Th>
+          <Table.Td>
+            <Text {...textProps}>{documentation?.description}</Text>
+          </Table.Td>
+        </Table.Tr>
+
+        <Table.Tr>
+          <Table.Th>{t('asset-info-table.nodes-in-asset')}:</Table.Th>
+          <Table.Td>
+            <ShowMore>
+              <Text {...textProps}>
+                {documentation?.identifiers?.map((id) => id).join(', ')}
+              </Text>
+            </ShowMore>
+          </Table.Td>
+        </Table.Tr>
+
+        <Table.Tr>
+          <Table.Th>{t('asset-info-table.url')}:</Table.Th>
+          <Table.Td>
+            <Anchor
+              href={documentation?.url}
+              target={'_blank'}
+              style={{ overflowWrap: 'anywhere' }}
+              {...textProps}
+            >
+              {documentation?.url}
+            </Anchor>
+          </Table.Td>
+        </Table.Tr>
+
+        {documentation?.version && (
+          <Table.Tr>
+            <Table.Th>{t('asset-info-table.version')}:</Table.Th>
+            <Table.Td>
+              <Text {...textProps}>{documentation?.version}</Text>
+            </Table.Td>
+          </Table.Tr>
+        )}
+      </Table>
     </>
   );
 }
