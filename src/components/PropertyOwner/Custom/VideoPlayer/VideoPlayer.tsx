@@ -5,6 +5,7 @@ import {
   Grid,
   Group,
   MantineStyleProps,
+  Paper,
   Text,
   ThemeIcon,
   Tooltip
@@ -22,8 +23,11 @@ import {
   RepeatOffIcon,
   ReplayIcon,
   SoundIcon,
-  SoundOffIcon
+  SoundOffIcon,
+  TimeIcon
 } from '@/icons/icons';
+import styles from '@/theme/global.module.css';
+import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
 
 interface Props extends MantineStyleProps {
@@ -55,8 +59,26 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
     playAudioUri
   );
 
+  const [isPlaying] = useProperty('BoolProperty', `${uri}.IsPlaying`);
+  const [startTime] = useProperty('StringProperty', `${uri}.StartTime`);
+  const [endTime] = useProperty('StringProperty', `${uri}.EndTime`);
+
   if (!propertyOwner) {
     throw Error(`No property owner found for uri: ${uri}`);
+  }
+
+  if (startTime || endTime) {
+    // This video player is mapped to time, so don't show the playback controls
+    return (
+      <Paper ml={'xs'} p={'xs'}>
+        <Group wrap={'nowrap'} gap={'xs'}>
+          <ThemeIcon variant={'subtle'} size={'xs'}>
+            <TimeIcon size={IconSize.xs} />
+          </ThemeIcon>
+          <Text size={'sm'}>{t('mapped-to-time-info')}</Text>
+        </Group>
+      </Paper>
+    );
   }
 
   // Data for the different properties that the controls represent, to show in the
@@ -76,24 +98,17 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
   return (
     <Group pl={'xs'} wrap={'nowrap'} {...styleProps}>
       <Group gap={'xs'} py={'xs'}>
-        <ActionIcon.Group>
-          <Tooltip label={t('play-button.tooltip')}>
-            <ActionIcon
-              onClick={() => triggerPlay(null)}
-              aria-label={t('play-button.aria-label')}
-            >
-              <PlayIcon />
-            </ActionIcon>
-          </Tooltip>
-          <Tooltip label={t('pause-button.tooltip')}>
-            <ActionIcon
-              onClick={() => triggerPause(null)}
-              aria-label={t('pause-button.aria-label')}
-            >
-              <PauseIcon />
-            </ActionIcon>
-          </Tooltip>
-        </ActionIcon.Group>
+        <Tooltip label={isPlaying ? t('pause-button.tooltip') : t('play-button.tooltip')}>
+          <ActionIcon
+            variant={isPlaying ? 'filled' : 'default'}
+            onClick={() => (isPlaying ? triggerPause(null) : triggerPlay(null))}
+            aria-label={
+              isPlaying ? t('pause-button.aria-label') : t('play-button.aria-label')
+            }
+          >
+            {isPlaying ? <PauseIcon className={styles.blinking} /> : <PlayIcon />}
+          </ActionIcon>
+        </Tooltip>
         <Tooltip label={t('restart-button.tooltip')}>
           <ActionIcon
             onClick={() => triggerGoToStart(null)}

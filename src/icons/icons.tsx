@@ -27,7 +27,7 @@ export {
 export { GoBrowser as BrowserIcon } from 'react-icons/go';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
 export { ImSphere as GridSphereIcon } from 'react-icons/im';
-export { IoMdGlobe as GlobeIcon } from 'react-icons/io';
+export { IoMdGlobe as GlobeIcon, IoMdTime as TimeIcon } from 'react-icons/io';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoInformation as InformationIcon,
