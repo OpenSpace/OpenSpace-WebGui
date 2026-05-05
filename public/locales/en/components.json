@@ -193,7 +193,7 @@
       "info-box": {
         "description": "Properties for controlling video playback."
       },
-      "mapped-to-time-info": "Video playback is mapped to simulation time."
+      "mapped-to-time-info": "Playback is mapped to simulation time."
     }
   },
   "qrcode": {
