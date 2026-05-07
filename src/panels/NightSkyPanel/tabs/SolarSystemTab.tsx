@@ -91,6 +91,9 @@ export function SolarSystemTab() {
       <Title order={2} mt={'md'} mb={'xs'}>
         {t('moon.title')}
       </Title>
+      <Text mb={'xs'} c={'dimmed'} size={'sm'}>
+        {t('moon.description')}
+      </Text>
       {moonScale !== undefined ? (
         <Group gap={'xs'}>
           <Button onClick={() => setMoonScale(1.0)}>

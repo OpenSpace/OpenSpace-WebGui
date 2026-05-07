@@ -116,10 +116,11 @@
     },
     "moon": {
       "title": "Moon",
+      "description": "Adjust the Moon's size.",
       "buttons": {
-        "default-scale": "Default Moon scale (1x)",
-        "2x-scale": "Enlarge Moon (2x)",
-        "4x-scale": "Enlarge Moon (4x)"
+        "default-scale": "Default (1x)",
+        "2x-scale": "Large (2x)",
+        "4x-scale": "Extra large (4x)"
       },
       "aria-labels": {
         "increase-scale": "Increase Moon scale",
@@ -177,9 +178,9 @@
       "title": "Size",
       "description": "Adjust the Sun's angular size on the sky.",
       "buttons": {
-        "default-size": "Default",
-        "large-size": "Large",
-        "extra-large-size": "Extra large"
+        "default-scale": "Default (1x)",
+        "2x-scale": "Large (2x)",
+        "4x-scale": "Extra large (4x)"
       },
       "aria-labels": {
         "increase-size": "Increase angular size",

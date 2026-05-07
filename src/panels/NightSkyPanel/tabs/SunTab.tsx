@@ -78,13 +78,13 @@ export function SunTab() {
       {angularSize !== undefined ? (
         <Group gap={'xs'}>
           <Button onClick={() => setAngularSize(0.3)}>
-            {t('size.buttons.default-size')}
+            {t('size.buttons.default-scale')}
           </Button>
           <Button onClick={() => setAngularSize(0.6)}>
-            {t('size.buttons.large-size')}
+            {t('size.buttons.2x-scale')}
           </Button>
           <Button onClick={() => setAngularSize(0.8)}>
-            {t('size.buttons.extra-large-size')}
+            {t('size.buttons.4x-scale')}
           </Button>
           <ActionIcon.Group>
             <ActionIcon
