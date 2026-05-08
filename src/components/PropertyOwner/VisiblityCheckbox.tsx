@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Checkbox } from '@mantine/core';
+import { Checkbox, CheckboxProps } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
 import { IconSize } from '@/types/enums';
 import { Uri, Visibility } from '@/types/types';
 
-import { FadeIcon } from './FadeIcon';
+import { FadeAnimationIcon } from './FadeAnimationIcon';
 
 interface Props {
   uri: Uri;
@@ -13,6 +13,8 @@ interface Props {
   visibility: Visibility | undefined;
   setVisibility: (shouldBeEnabled: boolean, isImmediate: boolean) => void;
 }
+
+type CheckboxIconProps = Parameters<NonNullable<CheckboxProps['icon']>>[0];
 
 export function PropertyOwnerVisibilityCheckbox({
   label,
@@ -53,7 +55,24 @@ export function PropertyOwnerVisibilityCheckbox({
 
   if (visibility === 'Fading') {
     return (
-      <FadeIcon size={IconSize.sm} onClick={() => updateValue(!checked, isImmediate)} />
+      <Checkbox
+        onClick={() => updateValue(!checked, isImmediate)}
+        icon={({ className }: CheckboxIconProps) => (
+          <span
+            className={className}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <FadeAnimationIcon size={IconSize.sm} />
+          </span>
+        )}
+        variant={'outline'}
+        label={label}
+        indeterminate
+      />
     );
   }
 
