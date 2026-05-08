@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Center, Group, SegmentedControl, Text, VisuallyHidden } from '@mantine/core';
+import { EngineMode } from 'openspace-api-js/generated';
 
 import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
@@ -12,8 +13,8 @@ import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { propertySelectors } from '@/redux/propertytree/propertySlice';
-import { EngineMode, IconSize } from '@/types/enums';
-import { PropertyOwner } from '@/types/types';
+import { IconSize } from '@/types/enums';
+import { PropertyOwnerRedux } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
 import { useFeaturedNodes } from '@/util/propertyTreeHooks';
 
@@ -46,7 +47,7 @@ export function NavigationPanel() {
   const engineMode = useSubscribeToEngineMode();
 
   const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
-    useSearchKeySettings<PropertyOwner>({
+    useSearchKeySettings<PropertyOwnerRedux>({
       name: true,
       identifier: false,
       tags: false,

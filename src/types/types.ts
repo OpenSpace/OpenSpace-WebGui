@@ -1,4 +1,4 @@
-import { AnyProperty } from './Property/property';
+import { Action, AnyProperty, Keybind } from 'openspace-api-js/generated';
 
 export type Visibility = 'Visible' | 'Hidden' | 'Fading';
 
@@ -14,55 +14,23 @@ export type LanguageInfo = {
   icon: React.JSX.Element;
 };
 
-export interface Action {
-  identifier: string;
-  guiPath: string;
-  name: string;
-  isLocal: boolean;
-  documentation: string;
-  color?: [number, number, number, number]; // rgba color, [0, 1]
-}
+export type KeybindModifiers = Keybind['modifiers'];
 
-export type KeybindModifiers = ('super' | 'alt' | 'shift' | 'control')[];
-
-export interface Keybind {
-  action: string;
-  key: string;
-  modifiers: KeybindModifiers;
-}
-
+// @TODO (anden88 2026-04-07): This is currently not being used in favour of
+// `KeybindInfoType` does this concatenation of the Keybind and Action make sense?
 export type ActionOrKeybind = Action | Keybind;
 
 export type KeybindInfoType = Keybind & Action;
-
-export interface SemanticVersion {
-  major: number;
-  minor: number;
-  patch: number;
-}
-
-// The property owner data we get from OpenSpace is different from what we want to store
-// in the redux state, hence this local owner type to get proper ts highlighting when
-// converting the data
-export type OpenSpacePropertyOwner = {
-  description: string;
-  guiName: string;
-  identifier: Identifier;
-  properties: AnyProperty[];
-  subowners: OpenSpacePropertyOwner[];
-  tag: string[];
-  uri: Uri;
-};
 
 export interface Properties {
   [key: Uri]: AnyProperty | undefined;
 }
 
 export interface PropertyOwners {
-  [key: Uri]: PropertyOwner;
+  [key: Uri]: PropertyOwnerRedux | undefined;
 }
 
-export interface PropertyOwner {
+export interface PropertyOwnerRedux {
   description: string;
   name: string;
   identifier: Identifier;

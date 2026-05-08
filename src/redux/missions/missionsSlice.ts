@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-import { Missions, Phase } from '@/panels/MissionsPanel/types';
+import { MissionEntry, MissionMap, MissionPhase } from 'openspace-api-js/generated';
 
 export interface MissionState {
   isInitialized: boolean;
-  missions: Missions;
+  missions: MissionMap;
   selectedMissionIdentifier: string;
 }
 
@@ -14,26 +13,37 @@ const initialState: MissionState = {
   selectedMissionIdentifier: ''
 };
 
-function makeUTCString(time: string): string {
-  return time.includes('Z') ? time : `${time}Z`;
-}
+function convertMissionToUTC(missionEntry: MissionEntry): MissionEntry {
+  // Convert captureTimes array
+  const captureTimes = missionEntry.captureTimes.map(makeUTCString);
 
-function convertPhaseToUTC(phase: Phase): Phase {
+  // Recursively convert phases to UTC dates
+  const mission = convertPhaseToUTC(missionEntry.mission);
+
+  function makeUTCString(time: string): string {
+    return time.includes('Z') ? time : `${time}Z`;
+  }
+
+  function convertPhaseToUTC(phase: MissionPhase): MissionPhase {
+    return {
+      ...phase,
+      timerange: {
+        start: makeUTCString(phase.timerange.start),
+        end: makeUTCString(phase.timerange.end)
+      },
+      // Recursively convert nested phases
+      phases: phase.phases.map(convertPhaseToUTC),
+      // Convert milestone dates
+      milestones: phase.milestones.map((milestone) => ({
+        ...milestone,
+        date: makeUTCString(milestone.date)
+      }))
+    };
+  }
+
   return {
-    ...phase,
-    timerange: {
-      start: makeUTCString(phase.timerange.start),
-      end: makeUTCString(phase.timerange.end)
-    },
-    // Recursively convert nested phases
-    phases: phase.phases.map(convertPhaseToUTC),
-    // Convert capturetimes array
-    capturetimes: phase.capturetimes?.map(makeUTCString),
-    // Convert milestone dates
-    milestones: phase.milestones.map((milestone) => ({
-      ...milestone,
-      date: makeUTCString(milestone.date)
-    }))
+    captureTimes,
+    mission
   };
 }
 
@@ -41,13 +51,13 @@ export const missionsSlice = createSlice({
   name: 'missions',
   initialState,
   reducers: {
-    initializeMissions: (state, action: PayloadAction<Missions>) => {
+    initializeMissions: (state, action: PayloadAction<MissionMap>) => {
       // Empty the existing map so that we don't keep removed missions in redux state
       state.missions = {};
       state.isInitialized = true;
 
       Object.entries(action.payload).map(([identifier, mission]) => {
-        state.missions[identifier] = convertPhaseToUTC(mission);
+        state.missions[identifier] = convertMissionToUTC(mission);
       });
 
       // If no mission was loaded or if the previously selected mission was removed,

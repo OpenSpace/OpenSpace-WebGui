@@ -1,11 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { Group, Stack, Text } from '@mantine/core';
+import { EngineMode } from 'openspace-api-js/generated';
 
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { FocusIcon } from '@/icons/icons';
 import { ToolbarMenuButton } from '@/panels/Menu/Toolbar/ToolbarMenuButton';
-import { EngineMode, IconSize } from '@/types/enums';
+import { IconSize } from '@/types/enums';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { RemainingFlightTimeIndicator } from '../RemainingFlightTimeIndicator';

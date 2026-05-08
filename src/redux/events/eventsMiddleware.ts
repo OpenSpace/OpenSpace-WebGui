@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Topic } from 'openspace-api-js';
+import { Topic } from 'openspace-api-js/topics';
 
 import { api } from '@/api/api';
 import { getAction } from '@/redux/actions/actionsMiddleware';
@@ -8,7 +8,7 @@ import { onCloseConnection, onOpenConnection } from '@/redux/connection/connecti
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { refreshMissions } from '@/redux/missions/missionsMiddleware';
-import { ConnectionStatus, LogLevel } from '@/types/enums';
+import { ConnectionStatus, NotificationLevel } from '@/types/enums';
 import { eventBus } from '@/util/eventBus';
 
 import {
@@ -17,9 +17,7 @@ import {
 } from '../propertytree/propertyTreeMiddleware';
 import { showGUI } from '../sessionrecording/sessionRecordingMiddleware';
 
-import { EventData } from './types';
-
-let eventTopic: Topic;
+let eventTopic: Topic<'event'>;
 let isSubscribed = false;
 
 export const setupEventsSubscription = createAsyncThunk(
@@ -27,39 +25,39 @@ export const setupEventsSubscription = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       eventTopic = api.startTopic('event', {
-        event: '*',
-        status: 'start_subscription'
+        event: 'start_subscription',
+        eventType: '*'
       });
     } catch (e) {
       thunkAPI.dispatch(
         handleNotificationLogging(
           'Error subscribing to OpenSpace events',
           e,
-          LogLevel.Error
+          NotificationLevel.Error
         )
       );
       thunkAPI.rejectWithValue(e);
     }
-    for await (const data of eventTopic.iterator() as AsyncIterable<EventData>) {
-      switch (data.Event) {
+    for await (const data of eventTopic) {
+      switch (data.event) {
         case 'PropertyTreeUpdated':
-          thunkAPI.dispatch(addUriToPropertyTree(data.Uri));
+          thunkAPI.dispatch(addUriToPropertyTree(data.uri));
           break;
         case 'PropertyTreePruned':
-          thunkAPI.dispatch(removeUriFromPropertyTree({ uri: data.Uri }));
+          thunkAPI.dispatch(removeUriFromPropertyTree({ uri: data.uri }));
           break;
         case 'ActionAdded':
-          thunkAPI.dispatch(getAction(data.Uri));
+          thunkAPI.dispatch(getAction(data.uri));
           break;
         case 'ActionRemoved':
-          thunkAPI.dispatch(removeAction(data.Uri));
+          thunkAPI.dispatch(removeAction(data.uri));
           break;
         case 'MissionAdded':
         case 'MissionRemoved':
           thunkAPI.dispatch(refreshMissions());
           break;
         case 'SessionRecordingPlayback':
-          if (data.State === 'Finished') {
+          if (data.state === 'Finished') {
             thunkAPI.dispatch(showGUI(true));
           }
           break;
@@ -78,7 +76,8 @@ function tearDownSubscription() {
     return;
   }
   eventTopic.talk({
-    event: 'stop_subscription'
+    event: 'stop_subscription',
+    eventType: '*'
   });
   eventTopic.cancel();
   isSubscribed = false;

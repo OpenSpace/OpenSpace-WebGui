@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
+import { AnyProperty } from 'openspace-api-js/generated';
 
-import { AnyProperty } from '@/types/Property/property';
 import { checkVisibility } from '@/util/propertyTreeHelpers';
 import {
   enabledPropertyUri,

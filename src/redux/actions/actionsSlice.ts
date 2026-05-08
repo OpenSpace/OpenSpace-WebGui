@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-import { Action, Keybind } from '@/types/types';
+import { Action, Keybind } from 'openspace-api-js/generated';
 
 import { getAction, getAllActions } from './actionsMiddleware';
 

@@ -9,9 +9,12 @@ export const getAllActions = createAsyncThunk('actions/getAll', async () => {
   const topic = api.startTopic('actionsKeybinds', {
     event: 'get_all'
   });
-  const { value } = await topic.iterator().next();
+  const data = await topic.next();
+  if (data.type !== 'combined') {
+    throw new Error(`Expected keybinds in data, got '${data}'`);
+  }
   topic.cancel();
-  return value;
+  return data;
 });
 
 export const getAction = createAsyncThunk('actions/get', async (uri: Uri) => {
@@ -19,9 +22,12 @@ export const getAction = createAsyncThunk('actions/get', async (uri: Uri) => {
     event: 'get_action',
     identifier: uri
   });
-  const { value } = await topic.iterator().next();
+  const data = await topic.next();
+  if (data.type !== 'action') {
+    throw new Error(`Expected action, got '${data}'`);
+  }
   topic.cancel();
-  return value;
+  return data.action;
 });
 
 export const addActionsListener = (startListening: AppStartListening) => {

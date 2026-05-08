@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { Text, Tooltip } from '@mantine/core';
 import { ScaleTime } from 'd3';
+import { Milestone } from 'openspace-api-js/generated';
 
 import { useJumpToTime } from '../hooks';
-import { DisplayedPhase, DisplayType, Milestone } from '../types';
+import { DisplayedPhase, DisplayType } from '../types';
 
 import { MileStoneConfig } from './config';
 

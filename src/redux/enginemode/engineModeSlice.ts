@@ -1,6 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-
-import { EngineMode } from '@/types/enums';
+import { EngineMode } from 'openspace-api-js/generated';
 
 export interface EngineModeState {
   mode: EngineMode;

@@ -1,10 +1,11 @@
 import { notifications } from '@mantine/notifications';
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { Topic } from 'openspace-api-js';
+import { LogLevel, LogMessage } from 'openspace-api-js/generated';
+import { Topic } from 'openspace-api-js/topics';
 
 import { api } from '@/api/api';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
-import { LogLevel } from '@/types/enums';
+import { NotificationLevel } from '@/types/enums';
 import { isReactNode } from '@/util/reactHelpers';
 
 import { AppStartListening } from '../listenerMiddleware';
@@ -14,7 +15,7 @@ import { updateLogLevel } from './loggingSlice';
 
 export const handleNotificationLogging = createAction(
   'logging/handleNotificationLogging',
-  function prepare(title: string, message: unknown, level: LogLevel) {
+  function prepare(title: string, message: unknown, level: NotificationLevel) {
     return {
       payload: {
         title,
@@ -25,30 +26,7 @@ export const handleNotificationLogging = createAction(
   }
 );
 
-let topic: Topic | null = null;
-
-/**
- * This `LogLevel` must match OpenSpace/Ghoul LogLevel in
- * https://github.com/OpenSpace/Ghoul/blob/f02810ad2f77166711f4503060e20745f0d808c6/include/ghoul/logging/loglevel.h#L41
- */
-enum OpenSpaceLogLevel {
-  AllLogging = 0,
-  Trace = 1,
-  Debug = 2,
-  Info = 3,
-  Warning = 4,
-  Error = 5,
-  Fatal = 6,
-  NoLogging = 7
-}
-
-type LogMessage = {
-  level: OpenSpaceLogLevel;
-  category: string;
-  message: string;
-  timeStamp: string;
-  dateStamp: string;
-};
+let topic: Topic<'errorLog'> | null = null;
 
 export const setupSubscription = createAsyncThunk(
   'logging/setupSubscription',
@@ -56,12 +34,16 @@ export const setupSubscription = createAsyncThunk(
     topic = api.startTopic('errorLog', {
       event: 'start_subscription',
       settings: {
-        logLevel: level
+        logLevel: level,
+        logLevelStamping: true,
+        timeStamping: false,
+        categoryStamping: true,
+        dateStamping: false
       }
     });
 
     (async () => {
-      for await (const message of topic.iterator() as AsyncIterable<LogMessage>) {
+      for await (const message of topic) {
         const { showNotifications } = (thunkApi.getState() as RootState).logging;
 
         logNotificationMessage(message, showNotifications);
@@ -85,46 +67,63 @@ function unsubscribe() {
 function logNotificationMessage(logMessage: LogMessage, showNotification: boolean) {
   const { category, level, message } = logMessage;
 
-  if (level === OpenSpaceLogLevel.NoLogging) {
+  if (!level || !category) {
     return;
   }
 
-  function getLogLevel(): LogLevel {
+  if (level === LogLevel.NoLogging) {
+    return;
+  }
+
+  function logLevelToNotificationLevel(level: LogLevel): NotificationLevel {
     switch (level) {
-      case OpenSpaceLogLevel.Warning:
-        return LogLevel.Warning;
-      case OpenSpaceLogLevel.Error:
-      case OpenSpaceLogLevel.Fatal:
-        return LogLevel.Error;
+      case LogLevel.Warning:
+        return NotificationLevel.Warning;
+      case LogLevel.Error:
+      case LogLevel.Fatal:
+        return NotificationLevel.Error;
       default:
-        return LogLevel.Info;
+        return NotificationLevel.Info;
     }
   }
 
-  const logLevel = getLogLevel();
+  const logLevel = logLevelToNotificationLevel(level);
 
   internalHandleLogging(category, `${category}: ${message}`, logLevel, showNotification);
+}
+
+function notificationLevelToLogLevel(level: NotificationLevel): LogLevel {
+  switch (level) {
+    case NotificationLevel.Info:
+      return LogLevel.Info;
+    case NotificationLevel.Warning:
+      return LogLevel.Warning;
+    case NotificationLevel.Error:
+      return LogLevel.Error;
+    default:
+      throw new Error(`Missing case exception '${level}'`);
+  }
 }
 
 function internalHandleLogging(
   title: string,
   message: unknown,
-  level: LogLevel,
+  level: NotificationLevel,
   showNotification: boolean
 ) {
   const color = {
-    [LogLevel.Info]: 'white',
-    [LogLevel.Warning]: 'yellow',
-    [LogLevel.Error]: 'red'
+    [NotificationLevel.Info]: 'white',
+    [NotificationLevel.Warning]: 'yellow',
+    [NotificationLevel.Error]: 'red'
   };
 
   const log = {
     // eslint-disable-next-line no-console
-    [LogLevel.Info]: console.log,
+    [NotificationLevel.Info]: console.log,
     // eslint-disable-next-line no-console
-    [LogLevel.Warning]: console.warn,
+    [NotificationLevel.Warning]: console.warn,
     // eslint-disable-next-line no-console
-    [LogLevel.Error]: console.error
+    [NotificationLevel.Error]: console.error
   };
 
   if (isReactNode(message) && showNotification) {
@@ -163,8 +162,8 @@ export const addLoggingListener = (startListening: AppStartListening) => {
     effect: async (action) => {
       if (topic) {
         topic.talk({
-          event: 'update_logLevel',
-          logLevel: action.payload
+          event: 'update_log_level',
+          logLevel: notificationLevelToLogLevel(action.payload)
         });
       }
     }

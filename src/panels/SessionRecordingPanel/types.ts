@@ -1,11 +1,4 @@
-import { SessionRecordingPlaybackEvent } from '@/redux/events/types';
-
-export enum RecordingState {
-  Idle = 'idle',
-  Recording = 'recording',
-  Playing = 'playing',
-  Paused = 'playing-paused'
-}
+import { SessionRecordingPlaybackData } from 'openspace-api-js/generated';
 
 export interface SessionRecordingSettings {
   recordingFilename: string;
@@ -19,4 +12,4 @@ export interface SessionRecordingSettings {
 
 export type SessionRecordingFormat = 'Ascii' | 'Binary';
 export type SessionRecordingExtension = '.osrectxt' | '.osrec';
-export type PlaybackEvent = SessionRecordingPlaybackEvent['State'] | 'Uninitialized';
+export type PlaybackEvent = SessionRecordingPlaybackData['state'] | 'Uninitialized';

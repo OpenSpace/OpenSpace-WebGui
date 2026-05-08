@@ -1,7 +1,6 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { api } from '@/api/api';
-import { Missions } from '@/panels/MissionsPanel/types';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 
@@ -9,18 +8,14 @@ import { clearMissions, initializeMissions } from './missionsSlice';
 
 export const refreshMissions = createAction<void>('missions/refreshMissions');
 
-interface MissionData {
-  done: boolean;
-  value: {
-    missions: Missions | null;
-  };
-}
-
 const getMissions = createAsyncThunk('missions/getMissions', async (_, thunkAPI) => {
   const missionTopic = api.startTopic('missions', {});
-  const { value } = (await missionTopic.iterator().next()) as MissionData;
-  if (value.missions) {
-    thunkAPI.dispatch(initializeMissions(value.missions));
+  const data = await missionTopic.next();
+
+  const hasMission = Object.keys(data.missions).length > 0;
+
+  if (hasMission) {
+    thunkAPI.dispatch(initializeMissions(data.missions));
   } else {
     thunkAPI.dispatch(clearMissions());
   }

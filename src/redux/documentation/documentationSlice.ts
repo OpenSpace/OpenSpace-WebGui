@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-import { AssetMetaData } from './types';
+import { LicenseEntry } from 'openspace-api-js/generated';
 
 export interface DocumentationState {
   isInitialized: boolean;
-  assetsMetaData: AssetMetaData[];
+  assetsMetaData: LicenseEntry[];
 }
 
 const initialState: DocumentationState = {
@@ -16,7 +15,7 @@ export const documentationSlice = createSlice({
   name: 'documentation',
   initialState,
   reducers: {
-    initializeDocumentation: (state, action: PayloadAction<AssetMetaData[]>) => {
+    initializeDocumentation: (state, action: PayloadAction<LicenseEntry[]>) => {
       state.isInitialized = true;
       state.assetsMetaData = action.payload;
       return state;

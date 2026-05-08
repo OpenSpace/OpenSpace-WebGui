@@ -1,5 +1,5 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { Topic } from 'openspace-api-js';
+import { Topic } from 'openspace-api-js/topics';
 
 import { api } from '@/api/api';
 import { onCloseConnection } from '@/redux/connection/connectionSlice';
@@ -8,7 +8,6 @@ import { ConnectionStatus } from '@/types/enums';
 
 import {
   resetSkyBrowser,
-  type SkyBrowserUpdate,
   subscriptionIsSetup,
   updateSkyBrowser
 } from './skybrowserSlice';
@@ -16,7 +15,7 @@ import {
 const subscribeToSkyBrowser = createAction<void>('skybrowser/subscribe');
 const unsubscribeToSkyBrowser = createAction<void>('skybrowser/unsubscribe');
 
-let skybrowserTopic: Topic;
+let skybrowserTopic: Topic<'skybrowser'>;
 let nSubscribers = 0;
 
 export const setupSubscription = createAsyncThunk(
@@ -27,8 +26,8 @@ export const setupSubscription = createAsyncThunk(
     });
 
     (async () => {
-      for await (const data of skybrowserTopic.iterator()) {
-        thunkAPI.dispatch(updateSkyBrowser(data as SkyBrowserUpdate));
+      for await (const data of skybrowserTopic) {
+        thunkAPI.dispatch(updateSkyBrowser(data));
       }
     })();
     thunkAPI.dispatch(subscriptionIsSetup());
@@ -40,7 +39,7 @@ function tearDownSubscription() {
     return;
   }
   skybrowserTopic.talk({
-    event: 'stop_supscription'
+    event: 'stop_subscription'
   });
   skybrowserTopic.cancel();
 }

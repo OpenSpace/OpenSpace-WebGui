@@ -4,13 +4,11 @@ import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 
-import { OpenSpaceVersionInfoState } from './versionSlice';
-
 export const getVersion = createAsyncThunk('version/getVersion', async () => {
   const topic = api.startTopic('version', {});
-  const { value } = await topic.iterator().next();
+  const data = await topic.next();
   topic.cancel();
-  return value as OpenSpaceVersionInfoState;
+  return data;
 });
 
 export const addVersionListener = (startListening: AppStartListening) => {

@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Anchor, Group, Image, Text, Title } from '@mantine/core';
+import { MissionEntry } from 'openspace-api-js/generated';
 
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { OpenInBrowserIcon } from '@/icons/icons';
@@ -9,14 +10,14 @@ import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
 import { MissionCaptureButtons } from './MissionCaptureButtons';
 import { MissionTimeButtons } from './MissionTimeButtons';
-import { DisplayedPhase, DisplayType, Phase } from './types';
+import { DisplayedPhase, DisplayType } from './types';
 
 interface Props {
   displayedPhase: DisplayedPhase;
-  missionOverview: Phase;
+  missionEntry: MissionEntry;
 }
 
-export function MissionPhase({ displayedPhase, missionOverview }: Props) {
+export function MissionPhaseContent({ displayedPhase, missionEntry }: Props) {
   const { t } = useTranslation('panel-missions');
 
   const { width: panelWidth } = useWindowSize();
@@ -86,7 +87,7 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
       </Title>
 
       <MissionTimeButtons currentPhase={displayedPhase} />
-      <MissionCaptureButtons mission={missionOverview} />
+      <MissionCaptureButtons mission={missionEntry} />
       <Title order={3} my={'md'}>
         {t('mission-phase.actions.title')}
       </Title>
@@ -101,7 +102,7 @@ export function MissionPhase({ displayedPhase, missionOverview }: Props) {
             <ActionsButton uri={uri} key={uri} height={actionButtonHeight} />
           ))}
         {/* We always want to show the actions for the whole mission */}
-        {missionOverview.actions?.map((uri) => (
+        {missionEntry.mission.actions?.map((uri) => (
           <ActionsButton uri={uri} key={uri} height={actionButtonHeight} />
         ))}
       </DynamicGrid>

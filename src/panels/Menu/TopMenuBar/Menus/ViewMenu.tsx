@@ -28,7 +28,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { resetMenuItemConfig } from '@/redux/local/localMiddleware';
 import { setMenuItemsOrder, setMenuItemVisible } from '@/redux/local/localSlice';
 import { showNotifications, updateLogLevel } from '@/redux/logging/loggingSlice';
-import { IconSize, LogLevel } from '@/types/enums';
+import { IconSize, NotificationLevel } from '@/types/enums';
 
 import { useMenuItemsOrdered, useStoredLayout } from '../../hooks';
 import { MenuDropdownWrapper } from '../MenuDropdownWrapper';
@@ -216,11 +216,11 @@ export function ViewMenu() {
           <Container>
             <Radio.Group
               value={notificationLogLevel}
-              onChange={(value) => dispatch(updateLogLevel(value as LogLevel))}
+              onChange={(value) => dispatch(updateLogLevel(value as NotificationLevel))}
               mb={'xs'}
             >
               <Stack gap={'xs'}>
-                {Object.values(LogLevel).map((logLevel) => (
+                {Object.values(NotificationLevel).map((logLevel) => (
                   <Radio
                     key={logLevel}
                     value={logLevel}

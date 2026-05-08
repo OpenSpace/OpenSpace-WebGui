@@ -1,5 +1,6 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { OpenSpaceLibrary } from 'openspace-api-js/generated';
 
 import { api } from '@/api/api';
 import { useIsConnectionStatus } from '@/hooks/util';
@@ -8,14 +9,14 @@ import { startConnection } from '@/redux/connection/connectionSlice';
 import { updateCustomGroupOrdering } from '@/redux/groups/groupsSlice';
 import { useAppDispatch } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
-import { ConnectionStatus, LogLevel } from '@/types/enums';
+import { ConnectionStatus, NotificationLevel } from '@/types/enums';
 
 import { LuaApiContext } from './LuaApiContext';
 
 export function LuaApiProvider({ children }: PropsWithChildren) {
   const { t } = useTranslation('notifications', { keyPrefix: 'error' });
 
-  const [luaApi, setLuaApi] = useState<OpenSpace.openspace | null>(null);
+  const [luaApi, setLuaApi] = useState<OpenSpaceLibrary | null>(null);
   const isConnected = useIsConnectionStatus(ConnectionStatus.Connected);
   const dispatch = useAppDispatch();
 
@@ -31,10 +32,12 @@ export function LuaApiProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     const fetchApi = async () => {
       try {
-        const res = await api.singleReturnLibrary();
+        const res = await api.library();
         setLuaApi(res);
       } catch (e) {
-        dispatch(handleNotificationLogging(t('fetch-lua-api'), e, LogLevel.Error));
+        dispatch(
+          handleNotificationLogging(t('fetch-lua-api'), e, NotificationLevel.Error)
+        );
       }
     };
     if (isConnected) {

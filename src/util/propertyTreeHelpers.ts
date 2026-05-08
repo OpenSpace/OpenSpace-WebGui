@@ -1,6 +1,7 @@
+import { AnyProperty } from 'openspace-api-js/generated';
+
 import { PropertyVisibilityNumber } from '@/types/enums';
-import { AnyProperty } from '@/types/Property/property';
-import { PropertyOwner, Uri, Visibility } from '@/types/types';
+import { PropertyOwnerRedux, Uri, Visibility } from '@/types/types';
 
 // Determines the visibility state of an object based on its enabled and fade properties
 export function checkVisibility(
@@ -45,12 +46,12 @@ export function isPropertyVisible(
   return visiblitySetting >= PropertyVisibilityNumber[propertyVisibility];
 }
 
-export function displayName(propertyOwner: PropertyOwner): string {
+export function displayName(propertyOwner: PropertyOwnerRedux): string {
   return propertyOwner.name ?? propertyOwner.identifier ?? propertyOwner.uri;
 }
 
 export function hasVisibleChildren(
-  propertyOwners: Record<Uri, PropertyOwner | undefined>,
+  propertyOwners: Record<Uri, PropertyOwnerRedux | undefined>,
   properties: Record<Uri, AnyProperty | undefined>,
   ownerUri: Uri,
   visiblitySetting: number | undefined

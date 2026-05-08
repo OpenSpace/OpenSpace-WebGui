@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RGBA } from '@mantine/core';
 import { isNumber } from 'lodash';
+import { AdditionalDataVectorMatrix } from 'openspace-api-js/generated';
 
 import { ColorPicker } from '@/components/ColorPicker/ColorPicker';
 import { StringInput } from '@/components/Input/StringInput';
 import { WarningIcon } from '@/components/WarningIcon/WarningIcon';
-import { AdditionalDataVectorMatrix } from '@/types/Property/propertyTypes';
 import { openspaceColorToRgba, toOpenspaceColor } from '@/util/colorHelper';
 
 function validateInput(

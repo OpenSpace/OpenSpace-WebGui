@@ -1,9 +1,9 @@
-import { EventData } from '@/redux/events/types';
+import { EventData } from 'openspace-api-js/generated';
 
 // All valid event names, inferred form the union of EventData
-type EventType = EventData['Event'];
+type EventType = EventData['event'];
 
-type EventPayload<E extends EventType> = Extract<EventData, { Event: E }>;
+type EventPayload<E extends EventType> = Extract<EventData, { event: E }>;
 
 /**
  * This class can be used to subscribe to OpenSpace events in components. Corresponding
@@ -55,7 +55,7 @@ class EventBus {
    * @param data The event data to emit
    */
   emit<E extends EventType>(data: EventPayload<E>) {
-    this.listeners[data.Event]?.forEach((handler) => handler(data));
+    this.listeners[data.event]?.forEach((handler) => handler(data));
   }
 }
 

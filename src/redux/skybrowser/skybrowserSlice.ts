@@ -1,20 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SkyBrowser, SkyBrowserTopic } from 'openspace-api-js/generated';
 
 import { SkyBrowserImage } from '@/panels/SkyBrowserPanel/types';
-
-import { SkyBrowserBrowser } from './types';
-
-// This is the structure of the updates we get from the skybrowser subscription
-export interface SkyBrowserUpdate
-  extends Pick<SkyBrowserState, 'selectedBrowserId' | 'cameraInSolarSystem'> {
-  browsers: { [id: string]: SkyBrowserBrowser };
-}
 
 export interface SkyBrowserState {
   isInitialized: boolean;
   cameraInSolarSystem: boolean;
   selectedBrowserId: string;
-  browsers: Record<string, SkyBrowserBrowser>;
+  browsers: Record<string, SkyBrowser>;
   browserIds: string[];
   browserNames: string[];
   browserColors: [number, number, number][];
@@ -42,19 +35,12 @@ export const skyBrowserSlice = createSlice({
       state.isInitialized = true;
       return state;
     },
-    updateSkyBrowser: (state, action: PayloadAction<SkyBrowserUpdate>) => {
+    updateSkyBrowser: (state, action: PayloadAction<SkyBrowserTopic['data']>) => {
       state.cameraInSolarSystem = action.payload.cameraInSolarSystem;
       state.selectedBrowserId = action.payload.selectedBrowserId;
 
       if (action.payload.browsers && state.selectedBrowserId in action.payload.browsers) {
         state.browsers = action.payload.browsers;
-        // For some reason the indices are sent as strings... convert them to numbers
-        for (const browser of Object.values(state.browsers)) {
-          browser.selectedImages = browser.selectedImages.map((idx) =>
-            typeof idx === 'string' ? parseInt(idx) : idx
-          );
-        }
-
         // Derived state for easier access
         state.browserIds = Object.keys(action.payload.browsers) ?? [];
         state.browserColors = state.browserIds.map(

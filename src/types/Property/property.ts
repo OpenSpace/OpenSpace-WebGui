@@ -1,7 +1,13 @@
 import { PropertyVisibilityNumber } from '../enums';
 import { Identifier } from '../types';
 
-import { NormalizeToConcreteTypes, PropertyGroups } from './propertyGroups';
+import {
+  GenericMatrixTypes,
+  GenericNumericTypes,
+  GenericVectorTypes,
+  NormalizeToConcreteTypes,
+  PropertyGroups
+} from './propertyGroups';
 import { PropertyTypes } from './propertyTypes';
 
 export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
@@ -51,6 +57,10 @@ type Property<T extends keyof PropertyTypes> = {
   value: PropertyTypes[T]['value'];
   uri: string;
 };
+
+export type VectorValues = Property<GenericVectorTypes>['value'];
+export type MatrixValues = Property<GenericMatrixTypes>['value'];
+export type NumericValues = Property<GenericNumericTypes>['value'];
 
 /**
  * Represents a union type of all possible `Property<K>` types, where `K` is a key

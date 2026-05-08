@@ -1,11 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { Text, Tooltip } from '@mantine/core';
 import { ScaleLinear, ScaleTime } from 'd3';
+import { MissionPhase } from 'openspace-api-js/generated';
 
 import { useAppSelector } from '@/redux/hooks';
 
 import { useJumpToTime } from '../hooks';
-import { DisplayedPhase, DisplayType, Phase } from '../types';
+import { DisplayedPhase, DisplayType } from '../types';
 
 import { PhaseRectangleConfig } from './config';
 
@@ -16,7 +17,7 @@ interface Props {
   nestedLevel: number;
   nestedLevels: number;
   setDisplayedPhase: (phase: DisplayedPhase) => void;
-  phase: Phase;
+  phase: MissionPhase;
   showBorder?: boolean;
 }
 

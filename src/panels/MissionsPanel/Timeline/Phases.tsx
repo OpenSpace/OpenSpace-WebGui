@@ -1,12 +1,13 @@
 import { scaleLinear, ScaleTime } from 'd3';
+import { MissionPhase } from 'openspace-api-js/generated';
 
-import { DisplayedPhase, DisplayType, Phase } from '../types';
+import { DisplayedPhase, DisplayType } from '../types';
 
 import { TimelineConfig } from './config';
 import { PhaseRectangle } from './PhaseRectangle';
 
 interface Props {
-  allPhasesNested: Phase[][];
+  allPhasesNested: MissionPhase[][];
   displayedPhase: DisplayedPhase;
   setDisplayedPhase: (phase: DisplayedPhase) => void;
   scale: number;

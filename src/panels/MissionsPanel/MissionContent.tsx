@@ -1,25 +1,26 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Group, Title } from '@mantine/core';
+import { MissionEntry, MissionPhase } from 'openspace-api-js/generated';
 
 import { BoolInput } from '@/components/Input/BoolInput';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 
 import { Timeline } from './Timeline/Timeline';
-import { MissionPhase } from './MissionPhase';
-import { DisplayedPhase, DisplayType, Phase } from './types';
+import { MissionPhaseContent } from './MissionPhaseContent';
+import { DisplayedPhase, DisplayType } from './types';
 
 interface Props {
-  missionOverview: Phase;
+  missionEntry: MissionEntry;
 }
 
-export function MissionContent({ missionOverview }: Props) {
+export function MissionContent({ missionEntry }: Props) {
   const { t } = useTranslation('panel-missions', { keyPrefix: 'mission-content' });
 
   const [displayedPhase, setDisplayedPhase] = useState<DisplayedPhase>({
     type: DisplayType.Overview,
-    data: missionOverview
+    data: missionEntry.mission
   });
   const [displayCurrentPhase, setDisplayCurrentPhase] = useState(false);
   const [lastDisplayedPhase, setLastDisplayedPhase] = useState<DisplayedPhase>({
@@ -32,22 +33,22 @@ export function MissionContent({ missionOverview }: Props) {
     // When the mission is changed, display overview again
     setDisplayedPhase({
       type: DisplayType.Overview,
-      data: missionOverview
+      data: missionEntry.mission
     });
     // Avoid potentially showing information from a previous mission
     setLastDisplayedPhase({
       type: DisplayType.Overview,
-      data: missionOverview
+      data: missionEntry.mission
     });
     setDisplayCurrentPhase(false);
-  }, [missionOverview]);
+  }, [missionEntry.mission]);
 
   const now = useSubscribeToTime();
 
   const allPhasesNested = useMemo(() => {
-    const phasesByDepth: Phase[][] = [];
+    const phasesByDepth: MissionPhase[][] = [];
 
-    function collectPhases(phases: Phase[], depth: number = 0) {
+    function collectPhases(phases: MissionPhase[], depth: number = 0) {
       //Ensure the array for the current depth exists
       if (!phasesByDepth[depth]) {
         phasesByDepth[depth] = [];
@@ -64,10 +65,10 @@ export function MissionContent({ missionOverview }: Props) {
       });
     }
 
-    collectPhases(missionOverview.phases);
+    collectPhases(missionEntry.mission.phases);
 
     return phasesByDepth;
-  }, [missionOverview]);
+  }, [missionEntry.mission]);
 
   if (displayCurrentPhase) {
     setPhaseToCurrent();
@@ -127,15 +128,15 @@ export function MissionContent({ missionOverview }: Props) {
       <Timeline
         allPhasesNested={allPhasesNested}
         displayedPhase={displayedPhase}
-        missionOverview={missionOverview}
+        missionEntry={missionEntry}
         setDisplayedPhase={setPhaseManually}
       />
       <ScrollBox h={'100%'}>
         <Group justify={'space-between'} mb={'md'}>
-          <Title order={2}>{missionOverview.name}</Title>
+          <Title order={2}>{missionEntry.mission.name}</Title>
           <Button
             onClick={() =>
-              setPhaseManually({ type: DisplayType.Overview, data: missionOverview })
+              setPhaseManually({ type: DisplayType.Overview, data: missionEntry.mission })
             }
           >
             {t('overview')}
@@ -149,9 +150,9 @@ export function MissionContent({ missionOverview }: Props) {
           mb={'xs'}
         />
         {displayedPhase.data ? (
-          <MissionPhase
+          <MissionPhaseContent
             displayedPhase={displayedPhase}
-            missionOverview={missionOverview}
+            missionEntry={missionEntry}
           />
         ) : (
           t('out-of-range-data')

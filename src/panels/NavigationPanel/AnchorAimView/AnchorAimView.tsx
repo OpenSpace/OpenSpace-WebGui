@@ -1,5 +1,6 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { Button, Divider, Group, Kbd, Space, Text, Title, Tooltip } from '@mantine/core';
+import { EngineMode } from 'openspace-api-js/generated';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
@@ -9,8 +10,8 @@ import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { propertyOwnerSelectors } from '@/redux/propertytree/propertyOwnerSlice';
-import { EngineMode, IconSize } from '@/types/enums';
-import { Identifier, PropertyOwner } from '@/types/types';
+import { IconSize } from '@/types/enums';
+import { Identifier, PropertyOwnerRedux } from '@/types/types';
 import {
   NavigationAimKey,
   NavigationAnchorKey,
@@ -22,11 +23,11 @@ import { sgnUri } from '@/util/uris';
 import { AnchorAimListEntry } from './AnchorAimListEntry';
 
 interface Props {
-  favorites: PropertyOwner[];
-  searchableNodes: PropertyOwner[];
-  matcherFunction: (node: PropertyOwner, query: string) => boolean;
-  toggleKey: (key: keyof PropertyOwner, enabled: boolean) => void;
-  allowedKeys: Partial<Record<keyof PropertyOwner, boolean>>;
+  favorites: PropertyOwnerRedux[];
+  searchableNodes: PropertyOwnerRedux[];
+  matcherFunction: (node: PropertyOwnerRedux, query: string) => boolean;
+  toggleKey: (key: keyof PropertyOwnerRedux, enabled: boolean) => void;
+  allowedKeys: Partial<Record<keyof PropertyOwnerRedux, boolean>>;
 }
 
 export function AnchorAimView({

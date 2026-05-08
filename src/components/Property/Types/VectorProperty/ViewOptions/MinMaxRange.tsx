@@ -1,10 +1,10 @@
 import { Group, NumberFormatter, RangeSlider, Stack } from '@mantine/core';
+import { AdditionalDataVectorMatrix } from 'openspace-api-js/generated';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useSliderScale } from '@/components/Input/NumericInput/NumericSlider/hooks';
 import { MinMaxLabels } from '@/components/Input/NumericInput/NumericSlider/MinMaxLabels';
 import { usePropListeningState } from '@/hooks/util';
-import { AdditionalDataVectorMatrix } from '@/types/Property/propertyTypes';
 
 interface Props {
   disabled: boolean;

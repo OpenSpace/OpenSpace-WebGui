@@ -1,7 +1,7 @@
+import { FlightControllerInputStateCommand } from 'openspace-api-js/generated';
+
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-
-import { FlightControllerInputStateCommand } from './types';
 
 export function FlightController() {
   const dispatch = useAppDispatch();
@@ -16,16 +16,14 @@ export function FlightController() {
   let yStart = 0.0;
 
   const identityState: FlightControllerInputStateCommand = {
-    type: 'inputState',
+    event: 'inputState',
     inputState: {
-      values: {
-        zoomIn: 0.0,
-        orbitX: 0.0,
-        orbitY: 0.0,
-        panX: 0.0,
-        panY: 0.0,
-        localRollX: 0.0
-      }
+      zoomIn: 0.0,
+      orbitX: 0.0,
+      orbitY: 0.0,
+      panX: 0.0,
+      panY: 0.0,
+      localRollX: 0.0
     }
   };
 
@@ -66,21 +64,19 @@ export function FlightController() {
     const deltaY = (yStart - yPos) * scaleFactor;
 
     const input: FlightControllerInputStateCommand = {
-      type: 'inputState',
-      inputState: {
-        values: {}
-      }
+      event: 'inputState',
+      inputState: {}
     };
 
     if (event.shiftKey) {
-      input.inputState.values.zoomIn = deltaY;
-      input.inputState.values.localRollX = deltaX;
+      input.inputState.zoomIn = deltaY;
+      input.inputState.localRollX = deltaX;
     } else if (event.ctrlKey) {
-      input.inputState.values.panX = deltaX;
-      input.inputState.values.panY = deltaY;
+      input.inputState.panX = deltaX;
+      input.inputState.panY = deltaY;
     } else {
-      input.inputState.values.orbitX = deltaX;
-      input.inputState.values.orbitY = deltaY;
+      input.inputState.orbitX = deltaX;
+      input.inputState.orbitY = deltaY;
     }
 
     sendFlightControlInput(input);
@@ -106,21 +102,19 @@ export function FlightController() {
     const deltaY = (yStart - yPos) * scaleFactor;
 
     const input: FlightControllerInputStateCommand = {
-      type: 'inputState',
-      inputState: {
-        values: {}
-      }
+      event: 'inputState',
+      inputState: {}
     };
 
     if (event.touches.length === 1) {
-      input.inputState.values.orbitX = deltaX;
-      input.inputState.values.orbitY = deltaY;
+      input.inputState.orbitX = deltaX;
+      input.inputState.orbitY = deltaY;
     } else if (event.touches.length === 2) {
-      input.inputState.values.panX = deltaX;
-      input.inputState.values.panY = deltaY;
+      input.inputState.panX = deltaX;
+      input.inputState.panY = deltaY;
     } else if (event.touches.length === 3) {
-      input.inputState.values.localRollX = -deltaX;
-      input.inputState.values.zoomIn = deltaY;
+      input.inputState.localRollX = -deltaX;
+      input.inputState.zoomIn = deltaY;
     }
 
     sendFlightControlInput(input);

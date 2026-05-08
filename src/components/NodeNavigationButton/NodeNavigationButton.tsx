@@ -8,6 +8,7 @@ import {
   Kbd,
   Tooltip
 } from '@mantine/core';
+import { EngineMode } from 'openspace-api-js/generated';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
@@ -17,7 +18,7 @@ import {
   FrameFocusIcon,
   LightningFlashIcon
 } from '@/icons/icons';
-import { EngineMode, NavigationType } from '@/types/enums';
+import { NavigationType } from '@/types/enums';
 import { Identifier } from '@/types/types';
 
 interface BaseProps {
