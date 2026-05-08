@@ -67,8 +67,10 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
     throw Error(`No property owner found for uri: ${uri}`);
   }
 
-  if (startTime || endTime) {
-    // This video player is mapped to time, so don't show the playback controls
+  const shouldHidePlaybackControls = Boolean(startTime) || Boolean(endTime);
+
+  if (shouldHidePlaybackControls) {
+    // This video player is mapped to time
     return (
       <Paper ml={'xs'} p={'xs'}>
         <Group wrap={'nowrap'} gap={'xs'}>
