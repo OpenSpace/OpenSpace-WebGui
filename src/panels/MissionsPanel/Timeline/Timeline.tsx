@@ -232,7 +232,8 @@ export function Timeline({
             {missionOverview.milestones.map((milestone) => {
               const isSelected =
                 displayedPhase.type === DisplayType.Milestone &&
-                displayedPhase.data.name === milestone.name;
+                displayedPhase.data.name === milestone.name &&
+                milestone.date === displayedPhase.data.date;
 
               return (
                 <MileStonePolygon
