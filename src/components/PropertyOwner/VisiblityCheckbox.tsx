@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Checkbox, CheckboxProps } from '@mantine/core';
+import { Checkbox } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
 import { IconSize } from '@/types/enums';
@@ -13,8 +13,6 @@ interface Props {
   visibility: Visibility | undefined;
   setVisibility: (shouldBeEnabled: boolean, isImmediate: boolean) => void;
 }
-
-type CheckboxIconProps = Parameters<NonNullable<CheckboxProps['icon']>>[0];
 
 export function PropertyOwnerVisibilityCheckbox({
   label,
@@ -57,7 +55,7 @@ export function PropertyOwnerVisibilityCheckbox({
     return (
       <Checkbox
         onClick={() => updateValue(!checked, isImmediate)}
-        icon={({ className }: CheckboxIconProps) => (
+        icon={({ className }) => (
           <span
             className={className}
             style={{
