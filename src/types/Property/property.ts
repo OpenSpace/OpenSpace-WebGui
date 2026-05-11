@@ -58,10 +58,6 @@ type Property<T extends keyof PropertyTypes> = {
   uri: string;
 };
 
-export type VectorValues = Property<GenericVectorTypes>['value'];
-export type MatrixValues = Property<GenericMatrixTypes>['value'];
-export type NumericValues = Property<GenericNumericTypes>['value'];
-
 /**
  * Represents a union type of all possible `Property<K>` types, where `K` is a key
  * from the `PropertyTypes` interface. This type dynamically maps each key in
