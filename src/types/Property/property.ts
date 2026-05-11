@@ -1,13 +1,7 @@
 import { PropertyVisibilityNumber } from '../enums';
 import { Identifier } from '../types';
 
-import {
-  GenericMatrixTypes,
-  GenericNumericTypes,
-  GenericVectorTypes,
-  NormalizeToConcreteTypes,
-  PropertyGroups
-} from './propertyGroups';
+import { NormalizeToConcreteTypes, PropertyGroups } from './propertyGroups';
 import { PropertyTypes } from './propertyTypes';
 
 export type PropertyVisibility = keyof typeof PropertyVisibilityNumber;
