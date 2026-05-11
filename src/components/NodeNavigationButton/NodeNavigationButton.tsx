@@ -8,7 +8,7 @@ import {
   Kbd,
   Tooltip
 } from '@mantine/core';
-import { EngineMode } from 'openspace-api-js/generated';
+import { EngineMode } from 'openspace-api-js/types';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';

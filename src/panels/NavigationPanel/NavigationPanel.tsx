@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Center, Group, SegmentedControl, Text, VisuallyHidden } from '@mantine/core';
-import { EngineMode } from 'openspace-api-js/generated';
+import { EngineMode } from 'openspace-api-js/types';
 
 import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';

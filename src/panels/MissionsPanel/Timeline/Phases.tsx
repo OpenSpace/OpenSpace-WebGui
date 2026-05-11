@@ -1,5 +1,5 @@
 import { scaleLinear, ScaleTime } from 'd3';
-import { MissionPhase } from 'openspace-api-js/generated';
+import { MissionPhase } from 'openspace-api-js/types';
 
 import { DisplayedPhase, DisplayType } from '../types';
 

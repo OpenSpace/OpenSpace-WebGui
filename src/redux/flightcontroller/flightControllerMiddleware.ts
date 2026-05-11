@@ -1,10 +1,10 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { Topic } from 'openspace-api-js/topics';
 import {
   FlightControllerCommand,
   FlightControllerConnectCommand,
   FlightControllerDisconnectCommand
-} from 'openspace-api-js/generated';
-import { Topic } from 'openspace-api-js/topics';
+} from 'openspace-api-js/types';
 
 import { api } from '@/api/api';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';

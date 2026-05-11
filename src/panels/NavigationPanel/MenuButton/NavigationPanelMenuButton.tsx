@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Group, Stack, Text } from '@mantine/core';
-import { EngineMode } from 'openspace-api-js/generated';
+import { EngineMode } from 'openspace-api-js/types';
 
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';

@@ -1,5 +1,5 @@
 import { Group, Stack } from '@mantine/core';
-import { AdditionalDataVectorMatrix } from 'openspace-api-js/generated';
+import { AdditionalDataVectorMatrix } from 'openspace-api-js/types';
 
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';

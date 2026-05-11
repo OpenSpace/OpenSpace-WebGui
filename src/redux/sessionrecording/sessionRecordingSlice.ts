@@ -2,7 +2,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import {
   SessionRecordingState as SessionState,
   SessionRecordingTopic
-} from 'openspace-api-js/generated';
+} from 'openspace-api-js/types';
 
 import {
   PlaybackEvent,

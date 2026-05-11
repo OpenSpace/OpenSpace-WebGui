@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Anchor, Grid, Image, Modal, Stack, Text, Title } from '@mantine/core';
-import { SemanticVersion } from 'openspace-api-js/generated';
+import { SemanticVersion } from 'openspace-api-js/types';
 
 import { useAppSelector } from '@/redux/hooks';
 

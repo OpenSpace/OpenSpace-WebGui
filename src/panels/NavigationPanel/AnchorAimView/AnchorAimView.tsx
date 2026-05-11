@@ -1,6 +1,6 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { Button, Divider, Group, Kbd, Space, Text, Title, Tooltip } from '@mantine/core';
-import { EngineMode } from 'openspace-api-js/generated';
+import { EngineMode } from 'openspace-api-js/types';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';

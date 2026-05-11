@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Button, Group } from '@mantine/core';
-import { MissionEntry } from 'openspace-api-js/generated';
+import { MissionEntry } from 'openspace-api-js/types';
 
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 

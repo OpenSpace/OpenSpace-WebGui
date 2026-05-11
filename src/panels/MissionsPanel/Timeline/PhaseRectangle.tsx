@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Text, Tooltip } from '@mantine/core';
 import { ScaleLinear, ScaleTime } from 'd3';
-import { MissionPhase } from 'openspace-api-js/generated';
+import { MissionPhase } from 'openspace-api-js/types';
 
 import { useAppSelector } from '@/redux/hooks';
 

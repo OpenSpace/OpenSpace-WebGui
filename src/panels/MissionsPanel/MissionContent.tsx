@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Group, Title } from '@mantine/core';
-import { MissionEntry, MissionPhase } from 'openspace-api-js/generated';
+import { MissionEntry, MissionPhase } from 'openspace-api-js/types';
 
 import { BoolInput } from '@/components/Input/BoolInput';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';

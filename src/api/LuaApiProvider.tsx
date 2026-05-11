@@ -1,6 +1,6 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { OpenSpaceLibrary } from 'openspace-api-js/generated';
+import { OpenSpaceLibrary } from 'openspace-api-js/types';
 
 import { api } from '@/api/api';
 import { useIsConnectionStatus } from '@/hooks/util';

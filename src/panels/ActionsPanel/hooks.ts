@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Action } from 'openspace-api-js/generated';
+import { Action } from 'openspace-api-js/types';
 
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';

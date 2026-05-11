@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ProfileTopic } from 'openspace-api-js/generated';
+import { ProfileTopic } from 'openspace-api-js/types';
 
 type ProfileData = ProfileTopic['data'];
 

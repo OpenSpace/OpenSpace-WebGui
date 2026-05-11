@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Group, TextInput, Title, Tooltip } from '@mantine/core';
-import { SessionRecordingState } from 'openspace-api-js/generated';
+import { SessionRecordingState } from 'openspace-api-js/types';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { BoolInput } from '@/components/Input/BoolInput';

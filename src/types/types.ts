@@ -1,4 +1,4 @@
-import { Action, AnyProperty, Keybind } from 'openspace-api-js/generated';
+import { Action, AnyProperty, Keybind } from 'openspace-api-js/types';
 
 export type Visibility = 'Visible' | 'Hidden' | 'Fading';
 

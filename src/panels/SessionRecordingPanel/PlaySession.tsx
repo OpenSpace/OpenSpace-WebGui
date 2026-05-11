@@ -10,7 +10,7 @@ import {
   Text,
   Title
 } from '@mantine/core';
-import { SessionRecordingState } from 'openspace-api-js/generated';
+import { SessionRecordingState } from 'openspace-api-js/types';
 
 import { BoolInput } from '@/components/Input/BoolInput';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';

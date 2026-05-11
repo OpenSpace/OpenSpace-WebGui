@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SkyBrowser, SkyBrowserTopic } from 'openspace-api-js/generated';
+import { SkyBrowser, SkyBrowserTopic } from 'openspace-api-js/types';
 
 import { SkyBrowserImage } from '@/panels/SkyBrowserPanel/types';
 

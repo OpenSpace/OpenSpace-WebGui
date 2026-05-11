@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RGBA } from '@mantine/core';
 import { isNumber } from 'lodash';
-import { AdditionalDataVectorMatrix } from 'openspace-api-js/generated';
+import { AdditionalDataVectorMatrix } from 'openspace-api-js/types';
 
 import { ColorPicker } from '@/components/ColorPicker/ColorPicker';
 import { StringInput } from '@/components/Input/StringInput';

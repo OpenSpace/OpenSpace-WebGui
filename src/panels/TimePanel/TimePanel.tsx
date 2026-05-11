@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Alert, Button, Divider, Group, Stack, Text, Title } from '@mantine/core';
-import { EngineMode } from 'openspace-api-js/generated';
+import { EngineMode } from 'openspace-api-js/types';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';

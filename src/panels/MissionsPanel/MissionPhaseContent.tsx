@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Anchor, Group, Image, Text, Title } from '@mantine/core';
-import { MissionEntry } from 'openspace-api-js/generated';
+import { MissionEntry } from 'openspace-api-js/types';
 
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { OpenInBrowserIcon } from '@/icons/icons';

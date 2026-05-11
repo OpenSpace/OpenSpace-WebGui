@@ -1,4 +1,4 @@
-import { SessionRecordingPlaybackData } from 'openspace-api-js/generated';
+import { SessionRecordingPlaybackData } from 'openspace-api-js/types';
 
 export interface SessionRecordingSettings {
   recordingFilename: string;

@@ -1,7 +1,7 @@
 import { notifications } from '@mantine/notifications';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { DownloadType } from 'openspace-api-js/generated';
 import { Topic } from 'openspace-api-js/topics';
+import { DownloadType } from 'openspace-api-js/types';
 
 import { api } from '@/api/api';
 import { DownloadEventNotificationBody } from '@/components/Notifications/DownloadEventNotificationBody';

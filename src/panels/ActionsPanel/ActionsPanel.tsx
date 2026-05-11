@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Group } from '@mantine/core';
-import { Action } from 'openspace-api-js/generated';
+import { Action } from 'openspace-api-js/types';
 
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { FilterList } from '@/components/FilterList/FilterList';

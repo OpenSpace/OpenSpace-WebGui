@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import { AnyProperty } from 'openspace-api-js/generated';
+import { AnyProperty } from 'openspace-api-js/types';
 
 import { RootState } from '../store';
 

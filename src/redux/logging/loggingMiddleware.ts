@@ -1,7 +1,7 @@
 import { notifications } from '@mantine/notifications';
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { LogLevel, LogMessage } from 'openspace-api-js/generated';
 import { Topic } from 'openspace-api-js/topics';
+import { LogLevel, LogMessage } from 'openspace-api-js/types';
 
 import { api } from '@/api/api';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';

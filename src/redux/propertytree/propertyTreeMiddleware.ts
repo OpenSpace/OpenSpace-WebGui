@@ -1,10 +1,6 @@
 import { createAction, createAsyncThunk, Update } from '@reduxjs/toolkit';
-import {
-  AnyProperty,
-  AnyPropertyMetaData,
-  PropertyOwner
-} from 'openspace-api-js/generated';
 import { Topic } from 'openspace-api-js/topics';
+import { AnyProperty, AnyPropertyMetaData, PropertyOwner } from 'openspace-api-js/types';
 
 import { api } from '@/api/api';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';

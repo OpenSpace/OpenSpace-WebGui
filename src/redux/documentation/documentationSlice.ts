@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { LicenseEntry } from 'openspace-api-js/generated';
+import { LicenseEntry } from 'openspace-api-js/types';
 
 export interface DocumentationState {
   isInitialized: boolean;

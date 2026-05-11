@@ -1,4 +1,4 @@
-import { FlightControllerInputStateCommand } from 'openspace-api-js/generated';
+import { FlightControllerInputStateCommand } from 'openspace-api-js/types';
 
 import { sendFlightControl } from '@/redux/flightcontroller/flightControllerMiddleware';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Group, Text, Tooltip } from '@mantine/core';
-import { AssetLoadingData } from 'openspace-api-js/generated';
+import { AssetLoadingData } from 'openspace-api-js/types';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FileTextIcon } from '@/icons/icons';

@@ -1,5 +1,5 @@
 import { LoadingOverlay, Stack, Text, ThemeIcon } from '@mantine/core';
-import { EngineMode } from 'openspace-api-js/generated';
+import { EngineMode } from 'openspace-api-js/types';
 
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { VideocamIcon } from '@/icons/icons';

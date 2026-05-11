@@ -1,4 +1,4 @@
-import { EventData } from 'openspace-api-js/generated';
+import { EventData } from 'openspace-api-js/types';
 
 // All valid event names, inferred form the union of EventData
 type EventType = EventData['event'];

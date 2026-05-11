@@ -1,4 +1,4 @@
-import { Milestone, MissionPhase } from 'openspace-api-js/generated';
+import { Milestone, MissionPhase } from 'openspace-api-js/types';
 
 export type DisplayedPhase =
   | { type: DisplayType.Phase; data: MissionPhase }

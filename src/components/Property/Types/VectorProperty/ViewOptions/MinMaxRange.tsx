@@ -1,5 +1,5 @@
 import { Group, NumberFormatter, RangeSlider, Stack } from '@mantine/core';
-import { AdditionalDataVectorMatrix } from 'openspace-api-js/generated';
+import { AdditionalDataVectorMatrix } from 'openspace-api-js/types';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useSliderScale } from '@/components/Input/NumericInput/NumericSlider/hooks';

@@ -10,7 +10,7 @@ import {
   zoomIdentity,
   zoomTransform
 } from 'd3';
-import { MissionEntry, MissionPhase } from 'openspace-api-js/generated';
+import { MissionEntry, MissionPhase } from 'openspace-api-js/types';
 
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { ZoomInIcon, ZoomOutIcon, ZoomOutMapIcon } from '@/icons/icons';

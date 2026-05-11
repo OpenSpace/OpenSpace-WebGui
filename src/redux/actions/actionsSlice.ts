@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Action, Keybind } from 'openspace-api-js/generated';
+import { Action, Keybind } from 'openspace-api-js/types';
 
 import { KeybindModifiers, KeybindRedux } from '@/types/types';
 

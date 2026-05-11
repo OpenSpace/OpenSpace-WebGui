@@ -1,5 +1,5 @@
 import { Group } from '@mantine/core';
-import { SessionRecordingState } from 'openspace-api-js/generated';
+import { SessionRecordingState } from 'openspace-api-js/types';
 
 import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
 import { VideocamIcon } from '@/icons/icons';

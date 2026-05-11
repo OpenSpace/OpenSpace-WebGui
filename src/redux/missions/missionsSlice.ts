@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { MissionEntry, MissionMap, MissionPhase } from 'openspace-api-js/generated';
+import { MissionEntry, MissionMap, MissionPhase } from 'openspace-api-js/types';
 
 export interface MissionState {
   isInitialized: boolean;

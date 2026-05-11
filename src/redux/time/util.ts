@@ -1,4 +1,4 @@
-import { TimeTopic } from 'openspace-api-js/generated';
+import { TimeTopic } from 'openspace-api-js/types';
 
 export type TimeData = TimeTopic['data'];
 

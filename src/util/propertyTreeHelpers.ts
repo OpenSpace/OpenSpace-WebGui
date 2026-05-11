@@ -1,4 +1,4 @@
-import { AnyProperty } from 'openspace-api-js/generated';
+import { AnyProperty } from 'openspace-api-js/types';
 
 import { PropertyVisibilityNumber } from '@/types/enums';
 import { PropertyOwnerRedux, Uri, Visibility } from '@/types/types';
