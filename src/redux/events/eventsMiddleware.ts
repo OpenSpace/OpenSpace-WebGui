@@ -41,23 +41,23 @@ export const setupEventsSubscription = createAsyncThunk(
     for await (const data of eventTopic) {
       switch (data.event) {
         case 'PropertyTreeUpdated':
-          thunkAPI.dispatch(addUriToPropertyTree(data.uri));
+          thunkAPI.dispatch(addUriToPropertyTree(data.Uri));
           break;
         case 'PropertyTreePruned':
-          thunkAPI.dispatch(removeUriFromPropertyTree({ uri: data.uri }));
+          thunkAPI.dispatch(removeUriFromPropertyTree({ uri: data.Uri }));
           break;
         case 'ActionAdded':
-          thunkAPI.dispatch(getAction(data.uri));
+          thunkAPI.dispatch(getAction(data.Uri));
           break;
         case 'ActionRemoved':
-          thunkAPI.dispatch(removeAction(data.uri));
+          thunkAPI.dispatch(removeAction(data.Uri));
           break;
         case 'MissionAdded':
         case 'MissionRemoved':
           thunkAPI.dispatch(refreshMissions());
           break;
         case 'SessionRecordingPlayback':
-          if (data.state === 'Finished') {
+          if (data.State === 'Finished') {
             thunkAPI.dispatch(showGUI(true));
           }
           break;

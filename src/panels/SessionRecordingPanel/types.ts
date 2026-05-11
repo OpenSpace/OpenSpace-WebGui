@@ -1,4 +1,4 @@
-import { SessionRecordingPlaybackData } from 'openspace-api-js/types';
+import { SessionRecordingPlaybackEventData } from 'openspace-api-js/types';
 
 export interface SessionRecordingSettings {
   recordingFilename: string;
@@ -12,4 +12,4 @@ export interface SessionRecordingSettings {
 
 export type SessionRecordingFormat = 'Ascii' | 'Binary';
 export type SessionRecordingExtension = '.osrectxt' | '.osrec';
-export type PlaybackEvent = SessionRecordingPlaybackData['state'] | 'Uninitialized';
+export type PlaybackEvent = SessionRecordingPlaybackEventData['State'] | 'Uninitialized';
