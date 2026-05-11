@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Action, Keybind } from 'openspace-api-js/generated';
 
-import { getAction, getAllActions } from './actionsMiddleware';
 import { KeybindModifiers, KeybindRedux } from '@/types/types';
+
+import { getAction, getAllActions } from './actionsMiddleware';
 
 export interface ActionsState {
   isInitialized: boolean;
