@@ -56,7 +56,7 @@ export const missionsSlice = createSlice({
       state.missions = {};
       state.isInitialized = true;
 
-      Object.entries(action.payload).map(([identifier, mission]) => {
+      Object.entries(action.payload).forEach(([identifier, mission]) => {
         state.missions[identifier] = convertMissionToUTC(mission);
       });
 

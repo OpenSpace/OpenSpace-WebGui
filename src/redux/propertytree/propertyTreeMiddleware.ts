@@ -148,7 +148,7 @@ const getRoot = createAsyncThunk('propertyTree/getRoot', async (_, thunkAPI) => 
   const response = await api.getProperty(rootOwnerKey);
 
   if (response.type !== 'propertyOwner') {
-    throw new Error(`Expected propertyOwner, got '${response.type}': ${response.value}'`);
+    throw new Error(`Expected propertyOwner, got '${JSON.stringify(response)}'`);
   }
 
   const { propertyOwners, properties } = flattenPropertyTree(response.value);

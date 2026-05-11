@@ -14,13 +14,16 @@ export type LanguageInfo = {
   icon: React.JSX.Element;
 };
 
-export type KeybindModifiers = Keybind['modifiers'];
+export type KeybindModifiers = (keyof Keybind['modifiers'])[];
 
+export type KeybindRedux = Pick<Keybind, 'action' | 'key'> & {
+  modifiers: KeybindModifiers;
+};
 // @TODO (anden88 2026-04-07): This is currently not being used in favour of
 // `KeybindInfoType` does this concatenation of the Keybind and Action make sense?
-export type ActionOrKeybind = Action | Keybind;
+export type ActionOrKeybind = Action | KeybindRedux;
 
-export type KeybindInfoType = Keybind & Action;
+export type KeybindInfoType = KeybindRedux & Action;
 
 export interface Properties {
   [key: Uri]: AnyProperty | undefined;

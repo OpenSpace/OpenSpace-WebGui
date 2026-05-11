@@ -2,12 +2,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Action, Keybind } from 'openspace-api-js/generated';
 
 import { getAction, getAllActions } from './actionsMiddleware';
+import { KeybindModifiers, KeybindRedux } from '@/types/types';
 
 export interface ActionsState {
   isInitialized: boolean;
   navigationPath: string;
   actions: Action[];
-  keybinds: Keybind[];
+  keybinds: KeybindRedux[];
   showKeybinds: boolean;
 }
 
@@ -58,10 +59,11 @@ export const actionsSlice = createSlice({
       getAllActions.fulfilled,
       (state, action: PayloadAction<{ actions: Action[]; keybinds: Keybind[] }>) => {
         const { actions, keybinds } = action.payload;
-        const modifiedKeybinds: Keybind[] = keybinds.map((keybind) => {
+
+        const modifiedKeybinds: KeybindRedux[] = keybinds.map((keybind) => {
           const modifiers = Object.values(keybind.modifiers)
             .map((value, i) => (value ? Object.keys(keybind.modifiers)[i] : null))
-            .filter((value) => value !== null) as Keybind['modifiers'];
+            .filter((value) => value !== null) as KeybindModifiers;
 
           return {
             action: keybind.action,

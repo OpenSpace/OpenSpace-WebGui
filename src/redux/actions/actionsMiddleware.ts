@@ -11,7 +11,7 @@ export const getAllActions = createAsyncThunk('actions/getAll', async () => {
   });
   const data = await topic.next();
   if (data.type !== 'combined') {
-    throw new Error(`Expected keybinds in data, got '${data}'`);
+    throw new Error(`Expected keybinds in data, got '${JSON.stringify(data)}'`);
   }
   topic.cancel();
   return data;
@@ -24,7 +24,7 @@ export const getAction = createAsyncThunk('actions/get', async (uri: Uri) => {
   });
   const data = await topic.next();
   if (data.type !== 'action') {
-    throw new Error(`Expected action, got '${data}'`);
+    throw new Error(`Expected action, got '${JSON.stringify(data)}'`);
   }
   topic.cancel();
   return data.action;

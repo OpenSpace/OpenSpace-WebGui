@@ -67,7 +67,7 @@ function unsubscribe() {
 function logNotificationMessage(logMessage: LogMessage, showNotification: boolean) {
   const { category, level, message } = logMessage;
 
-  if (!level || !category) {
+  if (level === undefined || !category) {
     return;
   }
 
