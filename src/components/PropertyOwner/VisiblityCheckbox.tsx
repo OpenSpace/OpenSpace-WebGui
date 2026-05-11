@@ -5,7 +5,7 @@ import { useWindowEvent } from '@mantine/hooks';
 import { IconSize } from '@/types/enums';
 import { Uri, Visibility } from '@/types/types';
 
-import { FadeIcon } from './FadeIcon';
+import { FadeAnimationIcon } from './FadeAnimationIcon';
 
 interface Props {
   uri: Uri;
@@ -53,7 +53,24 @@ export function PropertyOwnerVisibilityCheckbox({
 
   if (visibility === 'Fading') {
     return (
-      <FadeIcon size={IconSize.sm} onClick={() => updateValue(!checked, isImmediate)} />
+      <Checkbox
+        onClick={() => updateValue(!checked, isImmediate)}
+        icon={({ className }) => (
+          <span
+            className={className}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <FadeAnimationIcon size={IconSize.sm} />
+          </span>
+        )}
+        variant={'outline'}
+        label={label}
+        indeterminate
+      />
     );
   }
 
