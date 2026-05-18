@@ -50,7 +50,7 @@ export function TimeTab() {
     }
   }, [currentLat, currentLong, lastLat, lastLong]);
 
-  function localTimeString(): string {
+  function localDateString(): string {
     let str = date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
@@ -58,7 +58,11 @@ export function TimeTab() {
       weekday: 'short',
       timeZone: localArea
     });
-    str += ' ' + date.toLocaleTimeString('en-US', { timeZone: localArea });
+    return str;
+  }
+
+  function localTimeString(): string {
+    let str = date.toLocaleTimeString('en-US', { timeZone: localArea });
     return str;
   }
 
@@ -86,13 +90,19 @@ export function TimeTab() {
           {t('simulation-time.buttons.set-now')}
         </Button>
       </Group>
-      <Text size={'lg'} fw={'bold'}>
-        {t('simulation-time.local')}: {localTimeString()}
+      <Text size={'lg'} fw={'bold'} >
+        {t('simulation-time.local')}:
       </Text>
-      <Text mb={'lg'}>
+      <Text size={'lg'} fw={'bold'} miw={220} >
+        {isValidDate ? localDateString() : t('simulation-time.error')}
+      </Text>
+      <Text size={'lg'} fw={'bold'} miw={220} >
+        {isValidDate ? localTimeString() : t('simulation-time.error')}
+      </Text>
+      <Text mb={'lg'} miw={240} >
         {t('simulation-time.timezone')}: {localArea}
       </Text>
-      <Text my={'md'}>
+      <Text my={'md'} miw={240} >
         {t('simulation-time.utc')}:{' '}
         {isValidDate ? date.toUTCString() : t('simulation-time.error')}
       </Text>
