@@ -51,7 +51,7 @@ export function TimeTab() {
   }, [currentLat, currentLong, lastLat, lastLong]);
 
   function localDateString(): string {
-    let str = date.toLocaleDateString('en-US', {
+    const str = date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -62,7 +62,7 @@ export function TimeTab() {
   }
 
   function localTimeString(): string {
-    let str = date.toLocaleTimeString('en-US', { timeZone: localArea });
+    const str = date.toLocaleTimeString('en-US', { timeZone: localArea });
     return str;
   }
 
@@ -90,19 +90,19 @@ export function TimeTab() {
           {t('simulation-time.buttons.set-now')}
         </Button>
       </Group>
-      <Text size={'lg'} fw={'bold'} >
+      <Text size={'lg'} fw={'bold'}>
         {t('simulation-time.local')}:
       </Text>
-      <Text size={'lg'} fw={'bold'} miw={220} >
+      <Text size={'lg'} fw={'bold'} miw={220}>
         {isValidDate ? localDateString() : t('simulation-time.error')}
       </Text>
-      <Text size={'lg'} fw={'bold'} miw={220} >
+      <Text size={'lg'} fw={'bold'} miw={220}>
         {isValidDate ? localTimeString() : t('simulation-time.error')}
       </Text>
-      <Text mb={'lg'} miw={240} >
+      <Text mb={'lg'} miw={240}>
         {t('simulation-time.timezone')}: {localArea}
       </Text>
-      <Text my={'md'} miw={240} >
+      <Text my={'md'} miw={240}>
         {t('simulation-time.utc')}:{' '}
         {isValidDate ? date.toUTCString() : t('simulation-time.error')}
       </Text>
