@@ -30,7 +30,7 @@
     "i18next": "^25.0.2",
     "i18next-http-backend": "^3.0.2",
     "lodash": "^4.17.21",
-    "openspace-api-js": "^0.9.9",
+    "openspace-api-js": "^0.9.11",
     "qrcode.react": "^4.2.0",
     "rc-dock": "github:OpenSpace/openSpace-WebGui-WindowLayout",
     "react": "^19.0.0",
