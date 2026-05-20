@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Group } from '@mantine/core';
+import { Action } from 'openspace-api-js/types';
 
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -8,7 +9,6 @@ import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useAppSelector } from '@/redux/hooks';
-import { Action } from '@/types/types';
 
 import { ActionsBreadcrumbs } from './ActionsBreadcrumbs';
 import { ActionsButton } from './ActionsButton';

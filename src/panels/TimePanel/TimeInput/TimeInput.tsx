@@ -10,7 +10,7 @@ import { LockIcon, LockOpenIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { isDateValid } from '@/redux/time/util';
-import { LogLevel } from '@/types/enums';
+import { NotificationLevel } from '@/types/enums';
 
 import { TimePart } from '../types';
 import { maxDaysInMonth } from '../util';
@@ -84,7 +84,7 @@ export function TimeInput({ disabled }: Props) {
         handleNotificationLogging(
           t('error.invalid-time.title'),
           t('error.invalid-time.message'),
-          LogLevel.Warning
+          NotificationLevel.Warning
         )
       );
       return;

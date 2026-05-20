@@ -3,7 +3,7 @@ import { createAction } from '@reduxjs/toolkit';
 import { computeGroups } from '@/redux/groups/util';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
 import { RootState } from '@/redux/store';
-import { PropertyOwner } from '@/types/types';
+import { PropertyOwnerRedux } from '@/types/types';
 
 import { propertyOwnerSelectors } from '../propertytree/propertyOwnerSlice';
 import { propertySelectors } from '../propertytree/propertySlice';
@@ -12,7 +12,7 @@ import { setGroups, setTags } from './groupsSlice';
 
 export const refreshGroups = createAction<void>('groups/refresh');
 
-function collectExistingTags(propertyOwners: PropertyOwner[]) {
+function collectExistingTags(propertyOwners: PropertyOwnerRedux[]) {
   const tags = new Set<string>();
   propertyOwners.forEach((propertyOwner) => {
     propertyOwner?.tags.forEach((tag) => tags.add(tag));

@@ -10,6 +10,7 @@ import {
   Text,
   Title
 } from '@mantine/core';
+import { EngineMode } from 'openspace-api-js/types';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FilterList } from '@/components/FilterList/FilterList';
@@ -17,8 +18,8 @@ import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { usePropertyValue } from '@/hooks/properties';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { CancelIcon, FocusIcon } from '@/icons/icons';
-import { EngineMode, IconSize } from '@/types/enums';
-import { Identifier, PropertyOwner } from '@/types/types';
+import { IconSize } from '@/types/enums';
+import { Identifier, PropertyOwnerRedux } from '@/types/types';
 import { NavigationAimKey } from '@/util/keys';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
@@ -27,11 +28,11 @@ import { RemainingFlightTimeIndicator } from '../RemainingFlightTimeIndicator';
 import { FocusEntry } from './FocusEntry';
 
 interface Props {
-  favorites: PropertyOwner[];
-  searchableNodes: PropertyOwner[];
-  matcherFunction: (node: PropertyOwner, query: string) => boolean;
-  toggleKey: (key: keyof PropertyOwner, enabled: boolean) => void;
-  allowedKeys: Partial<Record<keyof PropertyOwner, boolean>>;
+  favorites: PropertyOwnerRedux[];
+  searchableNodes: PropertyOwnerRedux[];
+  matcherFunction: (node: PropertyOwnerRedux, query: string) => boolean;
+  toggleKey: (key: keyof PropertyOwnerRedux, enabled: boolean) => void;
+  allowedKeys: Partial<Record<keyof PropertyOwnerRedux, boolean>>;
 }
 
 export function FocusView({

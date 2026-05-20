@@ -6,7 +6,7 @@ import { StopIcon } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { updateSessionRecordingSettings } from '@/redux/sessionrecording/sessionRecordingSlice';
-import { LogLevel } from '@/types/enums';
+import { NotificationLevel } from '@/types/enums';
 import { RecordingsFolderKey } from '@/util/keys';
 
 import { sessionRecordingFilenameWithExtension } from '../util';
@@ -38,13 +38,17 @@ export function RecordingStopButton({ ...props }: ButtonProps) {
           handleNotificationLogging(
             t('error-messages.title'),
             t('error-messages.invalid-filepath', { filepath: filePath, file: file }),
-            LogLevel.Error
+            NotificationLevel.Error
           )
         );
       }
     } catch (error) {
       dispatch(
-        handleNotificationLogging(t('error-messages.title'), error, LogLevel.Error)
+        handleNotificationLogging(
+          t('error-messages.title'),
+          error,
+          NotificationLevel.Error
+        )
       );
     }
   }

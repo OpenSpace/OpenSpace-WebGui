@@ -1,5 +1,5 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { Topic } from 'openspace-api-js';
+import { Topic } from 'openspace-api-js/topics';
 
 import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
@@ -11,7 +11,6 @@ import { setPropertyValue } from '../propertytree/propertyTreeMiddleware';
 import { RootState } from '../store';
 
 import {
-  SessionRecordingState,
   updateInitialRecordingSettings,
   updateSessionrecording
 } from './sessionRecordingSlice';
@@ -19,7 +18,7 @@ import {
 const subscribeToSessionRecording = createAction<void>('sessionRecording/subscribe');
 const unsubscribeToSessionRecording = createAction<void>('sessionRecording/unsubscribe');
 
-let topic: Topic;
+let topic: Topic<'sessionRecording'>;
 let nSubscribers = 0;
 
 export const setupSubscription = createAsyncThunk(
@@ -30,7 +29,7 @@ export const setupSubscription = createAsyncThunk(
       properties: ['state', 'files']
     });
     (async () => {
-      for await (const data of topic.iterator()) {
+      for await (const data of topic) {
         thunkAPI.dispatch(updateSessionrecording(data));
       }
     })();
@@ -111,33 +110,6 @@ export const showGUI = createAsyncThunk(
           })
         );
       }
-    }
-  }
-);
-
-// TODO (ylvse) 2024-12-02: This action is actually never used. In the previous repo we
-// dispatched this when the session recording popover was closed.
-// Now with the window system what to do?
-export const refreshSessionRecording = createAsyncThunk(
-  'sessionRecording/refresh',
-  async (_, thunkAPI) => {
-    if (topic) {
-      topic.talk({
-        event: 'refresh'
-      });
-    } else {
-      // If we do not have a subscription, we need to create a new topic
-      const tmpTopic = api.startTopic('sessionrecording', {
-        event: 'refresh',
-        properties: ['state', 'files']
-      });
-      (async () => {
-        const data = (await tmpTopic
-          .iterator()
-          .next()) as unknown as SessionRecordingState;
-        thunkAPI.dispatch(updateSessionrecording(data));
-        tmpTopic.cancel();
-      })();
     }
   }
 );

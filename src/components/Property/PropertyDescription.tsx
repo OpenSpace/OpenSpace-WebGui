@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { Badge, Group, Text } from '@mantine/core';
+import { PropertyVisibility } from 'openspace-api-js/types';
 
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import styles from '@/theme/global.module.css';
-import { PropertyVisibility } from '@/types/Property/property';
 import { Uri } from '@/types/types';
 
 interface Props {
