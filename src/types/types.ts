@@ -16,6 +16,10 @@ export type LanguageInfo = {
 
 export type KeybindModifiers = (keyof Keybind['modifiers'])[];
 
+// The `Keybind` interface comming from the OpenSpace API has slightly differnet data
+// structure than what we want to use. @TODO (anden88 2026-05-20): We should either change
+// how the data is sent from OpenSpace or make changs in how we use the data in the
+// frontend to avoid this type of "copying"
 export type KeybindRedux = Pick<Keybind, 'action' | 'key'> & {
   modifiers: KeybindModifiers;
 };
@@ -33,6 +37,11 @@ export interface PropertyOwners {
   [key: Uri]: PropertyOwnerRedux | undefined;
 }
 
+// This interface was previously `PropertyOwner` but was renamed since the TypeScript API
+// exports an interface with te same name. @TODO (anden88 2026-05-20): We should either
+// change how the data is sent from OpenSpace or rename this interface to something else
+// to avoid using "Redux in the name. Currently we store only the URI of the properties
+// and subowners, while OpenSpace send a full recursive tree
 export interface PropertyOwnerRedux {
   description: string;
   name: string;
