@@ -16,7 +16,7 @@ export type LanguageInfo = {
 
 export type KeybindModifiers = (keyof Keybind['modifiers'])[];
 
-// The `Keybind` interface comming from the OpenSpace API has slightly differnet data
+// The `Keybind` interface coming from the OpenSpace API has slightly differnet data
 // structure than what we want to use. @TODO (anden88 2026-05-20): We should either change
 // how the data is sent from OpenSpace or make changs in how we use the data in the
 // frontend to avoid this type of "copying"
