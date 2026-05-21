@@ -5,7 +5,7 @@ import {
   Update
 } from '@reduxjs/toolkit';
 
-import { PropertyOwner, Uri } from '@/types/types';
+import { PropertyOwnerRedux, Uri } from '@/types/types';
 
 import { RootState } from '../store';
 
@@ -23,7 +23,7 @@ import { RootState } from '../store';
  * @see {@link https://redux-toolkit.js.org/api/createEntityAdapter} for more information on entity adapters
  */
 export const propertyOwnerAdapter = createEntityAdapter({
-  selectId: (o: PropertyOwner) => o.uri,
+  selectId: (o: PropertyOwnerRedux) => o.uri,
   // Keep the "all IDs" array sorted based on uri
   sortComparer: (a, b) => a.uri.localeCompare(b.uri)
 });
@@ -35,7 +35,7 @@ const propertyOwners = createSlice({
     reset: propertyOwnerAdapter.removeAll,
     updateOne: propertyOwnerAdapter.updateOne,
     setInitialState: propertyOwnerAdapter.upsertMany,
-    addPropertyOwners: (state, action: PayloadAction<PropertyOwner[]>) => {
+    addPropertyOwners: (state, action: PayloadAction<PropertyOwnerRedux[]>) => {
       // First, upsert all owners at once
       propertyOwnerAdapter.upsertMany(state, action.payload);
 
@@ -55,7 +55,7 @@ const propertyOwners = createSlice({
       }
 
       // Use updateMany with the adapter
-      const updates: Update<PropertyOwner, string>[] = Array.from(
+      const updates: Update<PropertyOwnerRedux, string>[] = Array.from(
         parentUpdates.entries()
       ).map(([uri, subowners]) => ({
         id: uri,
@@ -94,7 +94,7 @@ const propertyOwners = createSlice({
       propertyOwnerAdapter.removeMany(state, Array.from(urisToRemove));
 
       // Update parent links - filter once using the aggregated set of removed children
-      const updates: Update<PropertyOwner, string>[] = Array.from(
+      const updates: Update<PropertyOwnerRedux, string>[] = Array.from(
         removedChildrenPerParent.entries()
       ).map(([parentUri, removedChildren]) => ({
         id: parentUri,

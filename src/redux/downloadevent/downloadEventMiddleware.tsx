@@ -1,6 +1,7 @@
 import { notifications } from '@mantine/notifications';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Topic } from 'openspace-api-js';
+import { Topic } from 'openspace-api-js/topics';
+import { DownloadType } from 'openspace-api-js/types';
 
 import { api } from '@/api/api';
 import { DownloadEventNotificationBody } from '@/components/Notifications/DownloadEventNotificationBody';
@@ -12,9 +13,7 @@ import { AppStartListening } from '@/redux/listenerMiddleware';
 import { RootState } from '@/redux/store';
 import { ConnectionStatus, IconSize } from '@/types/enums';
 
-import { DownloadEvent, DownloadType } from './types';
-
-let topic: Topic | null = null;
+let topic: Topic<'downloadEvent'> | null = null;
 let isSubscribed = false;
 
 // Stores the URL and a corresponding ID mapped to the notification system
@@ -28,7 +27,7 @@ export const setupDownloadEventSubcription = createAsyncThunk(
     });
 
     (async () => {
-      for await (const data of topic.iterator() as AsyncIterable<DownloadEvent>) {
+      for await (const data of topic) {
         const { showNotifications } = (thunkApi.getState() as RootState).logging;
 
         // Ignore download notifications if user has disabled them

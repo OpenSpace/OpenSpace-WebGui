@@ -1,11 +1,11 @@
 import { Group, Stack } from '@mantine/core';
+import { AdditionalDataVectorMatrix } from 'openspace-api-js/types';
 
 import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
 import { validSliderExtent } from '@/components/Input/NumericInput/NumericSlider/util';
 import { usePropListeningState } from '@/hooks/util';
-import { AdditionalDataVectorMatrix } from '@/types/Property/propertyTypes';
 
 interface Props {
   disabled: boolean;

@@ -5,15 +5,15 @@ import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { setMenuItemVisible } from '@/redux/local/localSlice';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
-import { LogLevel } from '@/types/enums';
+import { NotificationLevel } from '@/types/enums';
 
-import { ProfileState, setProfileData } from './profileSlice';
+import { setProfileData } from './profileSlice';
 
 export const getProfile = createAsyncThunk('profile/getProfile', async () => {
   const topic = api.startTopic('profile', {});
-  const { value } = await topic.iterator().next();
+  const data = await topic.next();
   topic.cancel();
-  return value as ProfileState;
+  return data;
 });
 
 export const addProfileListener = (startListening: AppStartListening) => {
@@ -40,7 +40,7 @@ export const addProfileListener = (startListening: AppStartListening) => {
             handleNotificationLogging(
               'Error missing menu item',
               `Tried to set visibility of non-existent menu item: '${key}'`,
-              LogLevel.Error
+              NotificationLevel.Error
             )
           );
         }

@@ -1,4 +1,4 @@
-import { PropertyOwner } from '@/types/types';
+import { PropertyOwnerRedux } from '@/types/types';
 import { useImageExists } from '@/util/fileIOhooks';
 import { useWebGuiUrl } from '@/util/networkingHooks';
 
@@ -11,7 +11,7 @@ import { useWebGuiUrl } from '@/util/networkingHooks';
  * the map exists.
  */
 export function useMapPath(
-  sceneGraphNode: PropertyOwner | undefined
+  sceneGraphNode: PropertyOwnerRedux | undefined
 ): [path: string, mapExists: boolean] {
   const baseUrl = useWebGuiUrl();
   const path = `${baseUrl}/assets/maps/${sceneGraphNode?.identifier.toLowerCase()}.jpg`;

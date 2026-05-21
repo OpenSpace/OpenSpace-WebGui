@@ -3,10 +3,10 @@ import { ActionIcon, Group, MantineStyleProps, Tooltip } from '@mantine/core';
 
 import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { AnchorIcon, TelescopeIcon } from '@/icons/icons';
-import { Identifier, PropertyOwner } from '@/types/types';
+import { Identifier, PropertyOwnerRedux } from '@/types/types';
 
 interface Props extends MantineStyleProps {
-  node: PropertyOwner;
+  node: PropertyOwnerRedux;
   disabled: boolean;
   isCurrentAnchor: boolean;
   isCurrentAim: boolean;

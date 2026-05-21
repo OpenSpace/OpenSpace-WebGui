@@ -10,13 +10,14 @@ import {
   zoomIdentity,
   zoomTransform
 } from 'd3';
+import { MissionEntry, MissionPhase } from 'openspace-api-js/types';
 
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { ZoomInIcon, ZoomOutIcon, ZoomOutMapIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
-import { DisplayedPhase, DisplayType, Phase } from '../types';
+import { DisplayedPhase, DisplayType } from '../types';
 
 import { ActivityCircle } from './ActivityCircle';
 import { TimelineConfig } from './config';
@@ -28,16 +29,16 @@ import { TimeIndicator } from './TimeIndicator';
 import './Timeline.css';
 
 interface Props {
-  allPhasesNested: Phase[][];
+  allPhasesNested: MissionPhase[][];
   displayedPhase: DisplayedPhase;
-  missionOverview: Phase;
+  missionEntry: MissionEntry;
   setDisplayedPhase: (phase: DisplayedPhase) => void;
 }
 
 export function Timeline({
   allPhasesNested,
   displayedPhase,
-  missionOverview,
+  missionEntry,
   setDisplayedPhase
 }: Props) {
   const { t } = useTranslation('panel-missions', { keyPrefix: 'timeline' });
@@ -82,14 +83,14 @@ export function Timeline({
   // Memoize this so we don't get effect triggers every render
   const [yAxis, yScale] = useMemo(() => {
     const timeRange = [
-      new Date(missionOverview.timerange.start),
-      new Date(missionOverview.timerange.end)
+      new Date(missionEntry.mission.timerange.start),
+      new Date(missionEntry.mission.timerange.end)
     ];
     const yScale = scaleUtc([height - margin.bottom, margin.top]).domain(timeRange);
 
     const yAxis = axisLeft(yScale);
     return [yAxis, yScale];
-  }, [missionOverview, margin.bottom, margin.top, height]);
+  }, [missionEntry, margin.bottom, margin.top, height]);
 
   useEffect(() => {
     if (yAxisRef.current) {
@@ -220,7 +221,7 @@ export function Timeline({
               nestedLevels={nestedLevels}
               width={width}
             />
-            {missionOverview.capturetimes.map((capture, index) => (
+            {missionEntry.captureTimes.map((capture, index) => (
               <ActivityCircle
                 key={`${capture}-${index}`}
                 capture={capture}
@@ -229,7 +230,7 @@ export function Timeline({
                 scale={scale}
               />
             ))}
-            {missionOverview.milestones.map((milestone) => {
+            {missionEntry.mission.milestones.map((milestone) => {
               const isSelected =
                 displayedPhase.type === DisplayType.Milestone &&
                 displayedPhase.data.name === milestone.name &&
