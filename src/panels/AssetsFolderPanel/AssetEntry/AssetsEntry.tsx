@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Group, Text, Tooltip } from '@mantine/core';
+import { AssetLoadingEventData } from 'openspace-api-js/types';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { FileTextIcon } from '@/icons/icons';
-import { AssetLoadingEvent } from '@/redux/events/types';
 import { IconSize } from '@/types/enums';
 import { eventBus } from '@/util/eventBus';
 
@@ -18,7 +18,7 @@ interface Props {
   asset: Asset;
 }
 
-const stateMap: Record<AssetLoadingEvent['State'], AssetLoadState> = {
+const stateMap: Record<AssetLoadingEventData['State'], AssetLoadState> = {
   Loaded: AssetLoadState.Loaded,
   Loading: AssetLoadState.Loading,
   Unloaded: AssetLoadState.NotLoaded,
@@ -74,7 +74,7 @@ export function AssetsEntry({ asset }: Props) {
 
   // Subscribe to AssetLoading event, handle callback
   useEffect(() => {
-    async function onAssetLoadingEvent(data: AssetLoadingEvent) {
+    async function onAssetLoadingEvent(data: AssetLoadingEventData) {
       if (data.AssetPath.replaceAll('\\', '/') === asset.path.replaceAll('\\', '/')) {
         const state = stateMap[data.State];
         if (state === undefined) {

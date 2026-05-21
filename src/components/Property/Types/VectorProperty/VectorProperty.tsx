@@ -19,7 +19,7 @@ export function VectorProperty({ uri, isInt = false, readOnly }: Props) {
     return (
       <ColorView
         value={value}
-        setPropertyValue={setPropertyValue}
+        setPropertyValue={(v) => setPropertyValue(v)}
         additionalData={meta.additionalData}
         readOnly={readOnly}
         isInt={isInt}
@@ -31,7 +31,7 @@ export function VectorProperty({ uri, isInt = false, readOnly }: Props) {
     return (
       <MinMaxRangeView
         value={value}
-        setPropertyValue={setPropertyValue}
+        setPropertyValue={(v) => setPropertyValue(v)}
         additionalData={meta.additionalData}
         disabled={readOnly}
       />
@@ -41,7 +41,7 @@ export function VectorProperty({ uri, isInt = false, readOnly }: Props) {
   return (
     <VectorDefaultView
       disabled={readOnly}
-      setPropertyValue={setPropertyValue}
+      setPropertyValue={(v) => setPropertyValue(v)}
       value={value}
       additionalData={meta.additionalData}
       isInt={isInt}

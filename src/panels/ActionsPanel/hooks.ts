@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
+import { Action } from 'openspace-api-js/types';
 
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { Action } from '@/types/types';
 
 import { calculateLevelDepth, createPath, formatPath, getFolders } from './util';
 

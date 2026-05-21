@@ -49,7 +49,7 @@ export function MissionsPanel() {
           label={t('select-mission.label')}
           placeholder={t('select-mission.placeholder')}
           data={Object.entries(missions).map(([identifier, mission]) => {
-            return { value: identifier, label: mission.name };
+            return { value: identifier, label: mission.mission.name };
           })}
           value={selectedMissionIdentifier}
           onChange={onMissionSelected}
@@ -57,7 +57,7 @@ export function MissionsPanel() {
           allowDeselect={false}
         />
       )}
-      <MissionContent missionOverview={mission} />
+      <MissionContent missionEntry={mission} />
     </Box>
   );
 }

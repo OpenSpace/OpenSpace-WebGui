@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setMenuItemsConfig, setMenuItemVisible } from '@/redux/local/localSlice';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
-import { LogLevel } from '@/types/enums';
+import { NotificationLevel } from '@/types/enums';
 import { MenuItemGroup, menuItemGroups } from '@/types/types';
 import { useSaveLoadJsonFiles } from '@/util/fileIOhooks';
 import { MenuItem, menuItemsData } from '@/windowmanagement/data/MenuItems';
@@ -134,7 +134,11 @@ export function useStoredLayout() {
   function handlePickedFile(content: JSON) {
     if (!content || Object.keys(content).length === 0) {
       dispatch(
-        handleNotificationLogging(t('title'), t('messages.empty-file'), LogLevel.Error)
+        handleNotificationLogging(
+          t('title'),
+          t('messages.empty-file'),
+          NotificationLevel.Error
+        )
       );
       return;
     }
@@ -144,7 +148,7 @@ export function useStoredLayout() {
         handleNotificationLogging(
           t('title'),
           t('messages.invalid-length'),
-          LogLevel.Error
+          NotificationLevel.Error
         )
       );
       return;
@@ -155,7 +159,11 @@ export function useStoredLayout() {
     );
     if (!isValid) {
       dispatch(
-        handleNotificationLogging(t('title'), t('messages.inavlid-ids'), LogLevel.Error)
+        handleNotificationLogging(
+          t('title'),
+          t('messages.inavlid-ids'),
+          NotificationLevel.Error
+        )
       );
       return;
     }

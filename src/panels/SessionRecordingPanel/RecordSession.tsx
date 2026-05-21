@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Group, TextInput, Title, Tooltip } from '@mantine/core';
+import { SessionRecordingState } from 'openspace-api-js/types';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { BoolInput } from '@/components/Input/BoolInput';
@@ -10,7 +11,7 @@ import { updateSessionRecordingSettings } from '@/redux/sessionrecording/session
 
 import { RecordingStopButton } from './Record/RecordingStopButton';
 import { RecordStartButton } from './Record/RecordStartButton';
-import { RecordingState, SessionRecordingFormat } from './types';
+import { SessionRecordingFormat } from './types';
 import { sessionRecordingFilenameWithExtension } from './util';
 
 export function RecordSession() {
@@ -31,8 +32,8 @@ export function RecordSession() {
   const luaApi = useOpenSpaceApi();
   const dispatch = useAppDispatch();
 
-  const isIdle = recordingState === RecordingState.Idle;
-  const isRecordingState = recordingState === RecordingState.Recording;
+  const isIdle = recordingState === SessionRecordingState.Idle;
+  const isRecordingState = recordingState === SessionRecordingState.Recording;
   const isValidFilename = !filenameState.invalid;
 
   function startRecording(): void {

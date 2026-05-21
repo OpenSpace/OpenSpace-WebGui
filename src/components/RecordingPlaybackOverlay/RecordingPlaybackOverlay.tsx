@@ -1,9 +1,10 @@
 import { LoadingOverlay, Stack, Text, ThemeIcon } from '@mantine/core';
+import { EngineMode } from 'openspace-api-js/types';
 
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { VideocamIcon } from '@/icons/icons';
 import styles from '@/theme/global.module.css';
-import { EngineMode, IconSize } from '@/types/enums';
+import { IconSize } from '@/types/enums';
 
 interface Props {
   text?: string;
