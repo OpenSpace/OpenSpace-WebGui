@@ -11,6 +11,7 @@ import { refreshMissions } from '@/redux/missions/missionsMiddleware';
 import { ConnectionStatus, NotificationLevel } from '@/types/enums';
 import { eventBus } from '@/util/eventBus';
 
+import { fetchDocumentation } from '../documentation/documentationMiddleware';
 import {
   addUriToPropertyTree,
   removeUriFromPropertyTree
@@ -63,6 +64,13 @@ export const setupEventsSubscription = createAsyncThunk(
           break;
         case 'AssetLoading':
           eventBus.emit(data);
+          // Fetch documentation again when an asset is loaded, to include the new
+          // asset's meta data
+          // @TODO (2026-05-22, emmbr): This should be handled in a better way, e.g.,
+          // through the documentation topic
+          if (data.State === 'Loaded') {
+            thunkAPI.dispatch(fetchDocumentation());
+          }
           break;
         default:
           break;
