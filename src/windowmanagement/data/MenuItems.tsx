@@ -251,9 +251,9 @@ export const menuItemsData: Record<string, MenuItem> = {
     defaultVisible: false,
     group: 'Content'
   },
-  assetsFolderPanel: {
+  assetsPanel: {
     title: 'Assets',
-    componentID: 'assetsFolderPanel',
+    componentID: 'assetsPanel',
     content: <AssetsPanel />,
     renderIcon: (size) => <OpenFolderIcon size={size} />,
     preferredPosition: 'right',
