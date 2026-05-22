@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Badge, Box, Card, Group, Text } from '@mantine/core';
 
 import { Collapsable } from '@/components/Collapsable/Collapsable';
@@ -18,10 +19,12 @@ interface Props {
 }
 
 export function GlobeLayerGroup({ uri, globe, icon }: Props) {
+  const { t } = useTranslation('panel-scene', { keyPrefix: 'globe-layer' });
+
   const propertyOwner = usePropertyOwner(uri);
 
   if (!propertyOwner) {
-    throw Error(`No property owner found for uri: ${uri}`);
+    throw Error(`${t('error.no-property-owner-for-uri')}: ${uri}`);
   }
 
   const { properties, subowners } = propertyOwner;

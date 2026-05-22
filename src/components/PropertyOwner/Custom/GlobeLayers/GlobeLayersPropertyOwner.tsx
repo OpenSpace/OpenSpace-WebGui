@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Box } from '@mantine/core';
 
 import { PropertyOwnerCollapsable } from '@/components/PropertyOwner/PropertyOwnerCollapsable';
@@ -18,10 +19,12 @@ interface Props {
  * A custom component to render a Globe Layers property owner.
  */
 export function GlobeLayersPropertyOwner({ uri, expandedOnDefault = false }: Props) {
+  const { t } = useTranslation('panel-scene', { keyPrefix: 'globe-layer' });
+
   const propertyOwner = usePropertyOwner(uri);
 
   if (!propertyOwner) {
-    throw Error(`No property owner found for uri: ${uri}`);
+    throw Error(`${t('error.no-property-owner-for-uri')}: ${uri}`);
   }
 
   const globeIdentifier = sgnIdentifierFromSubownerUri(uri);
