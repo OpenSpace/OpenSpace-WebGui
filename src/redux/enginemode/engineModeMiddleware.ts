@@ -2,10 +2,9 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { Topic } from 'openspace-api-js/topics';
 
 import { api } from '@/api/api';
+import { onOpenConnection } from '@/redux/connection/connectionSlice';
+import { AppStartListening } from '@/redux/listenerMiddleware';
 import { ConnectionStatus } from '@/types/enums';
-
-import { onOpenConnection } from '../connection/connectionSlice';
-import { AppStartListening } from '../listenerMiddleware';
 
 import { updateEngineMode } from './engineModeSlice';
 

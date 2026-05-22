@@ -15,10 +15,9 @@ import { SessionRecordingState } from 'openspace-api-js/types';
 import { BoolInput } from '@/components/Input/BoolInput';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
+import { KeybindButtons } from '@/panels/KeybindsPanel/KeybindButtons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { updateSessionRecordingSettings } from '@/redux/sessionrecording/sessionRecordingSlice';
-
-import { KeybindButtons } from '../KeybindsPanel/KeybindButtons';
 
 import { PlaybackPauseButton } from './Playback/PlaybackPauseButton';
 import { PlaybackPlayButton } from './Playback/PlaybackPlayButton';

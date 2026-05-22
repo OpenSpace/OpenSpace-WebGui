@@ -1,6 +1,6 @@
 import { Flex, Group } from '@mantine/core';
 
-import { TruncatedText } from '../TruncatedText/TruncatedText';
+import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 
 interface Props {
   title: React.ReactNode;

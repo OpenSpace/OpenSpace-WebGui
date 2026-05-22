@@ -1,6 +1,18 @@
 import { createAction } from '@reduxjs/toolkit';
 import { AnyProperty } from 'openspace-api-js/types';
 
+import { onOpenConnection } from '@/redux/connection/connectionSlice';
+import { AppStartListening } from '@/redux/listenerMiddleware';
+import {
+  addPropertyOwners,
+  removePropertyOwners
+} from '@/redux/propertytree/propertyOwnerSlice';
+import {
+  propertySelectors,
+  updateMany,
+  updateOne,
+  upsertMany
+} from '@/redux/propertytree/propertySlice';
 import { checkVisibility } from '@/util/propertyTreeHelpers';
 import {
   enabledPropertyUri,
@@ -14,19 +26,6 @@ import {
   sgnUri
 } from '@/util/uris';
 import { menuItemsData } from '@/windowmanagement/data/MenuItems';
-
-import { onOpenConnection } from '../connection/connectionSlice';
-import { AppStartListening } from '../listenerMiddleware';
-import {
-  addPropertyOwners,
-  removePropertyOwners
-} from '../propertytree/propertyOwnerSlice';
-import {
-  propertySelectors,
-  updateMany,
-  updateOne,
-  upsertMany
-} from '../propertytree/propertySlice';
 
 import { removeSceneGraphNode, setMenuItemsConfig, setVisibility } from './localSlice';
 

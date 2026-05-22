@@ -4,11 +4,10 @@ import { Topic } from 'openspace-api-js/topics';
 import { api } from '@/api/api';
 import { onOpenConnection } from '@/redux/connection/connectionSlice';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
+import { propertySelectors } from '@/redux/propertytree/propertySlice';
+import { setPropertyValue } from '@/redux/propertytree/propertyTreeMiddleware';
+import { RootState } from '@/redux/store';
 import { ConnectionStatus } from '@/types/enums';
-
-import { propertySelectors } from '../propertytree/propertySlice';
-import { setPropertyValue } from '../propertytree/propertyTreeMiddleware';
-import { RootState } from '../store';
 
 import {
   updateInitialRecordingSettings,

@@ -8,11 +8,10 @@ import {
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Box, BoxComponentProps } from '@mantine/core';
 
+import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { DragHandleIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
-
-import { ScrollBox } from '../ScrollBox/ScrollBox';
 
 interface Props extends PropsWithChildren, BoxComponentProps {
   minHeight?: number;

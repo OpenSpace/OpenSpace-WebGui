@@ -1,8 +1,7 @@
 import { MantineColor, Progress } from '@mantine/core';
 
+import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { roundTo } from '@/util/numeric';
-
-import { TruncatedText } from '../TruncatedText/TruncatedText';
 
 interface Base {
   message: string;

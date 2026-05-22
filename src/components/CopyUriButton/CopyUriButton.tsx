@@ -1,6 +1,6 @@
 import { Code, Group, MantineStyleProps } from '@mantine/core';
 
-import { CopyToClipboardButton } from '../CopyToClipboardButton/CopyToClipboardButton';
+import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 
 interface Props extends MantineStyleProps {
   uri: string;

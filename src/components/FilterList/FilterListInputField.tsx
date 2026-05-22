@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Button, MantineStyleProps, TextInput } from '@mantine/core';
 
-import { ClearButton } from '../ClearButton/ClearButton';
+import { ClearButton } from '@/components/ClearButton/ClearButton';
 
 import { useFilterListProvider } from './hooks';
 

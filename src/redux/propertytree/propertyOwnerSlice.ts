@@ -5,9 +5,8 @@ import {
   Update
 } from '@reduxjs/toolkit';
 
+import { RootState } from '@/redux/store';
 import { PropertyOwnerRedux, Uri } from '@/types/types';
-
-import { RootState } from '../store';
 
 /**
  * Entity adapter for managing PropertyOwner entities in Redux state.

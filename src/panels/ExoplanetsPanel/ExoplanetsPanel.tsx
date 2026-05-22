@@ -7,14 +7,13 @@ import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { useProperty } from '@/hooks/properties';
+import { SceneGraphNodeHeader } from '@/panels/Scene/SceneGraphNode/SceneGraphNodeHeader';
 import { initializeExoplanets } from '@/redux/exoplanets/exoplanetsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { propertyOwnerSelectors } from '@/redux/propertytree/propertyOwnerSlice';
 import { Identifier } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
 import { sgnUri } from '@/util/uris';
-
-import { SceneGraphNodeHeader } from '../Scene/SceneGraphNode/SceneGraphNodeHeader';
 
 import { ExoplanetEntry } from './ExoplanetEntry';
 import { ExoplanetsSettings } from './ExoplanetsSettings';

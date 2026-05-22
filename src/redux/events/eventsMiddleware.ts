@@ -5,18 +5,17 @@ import { api } from '@/api/api';
 import { getAction } from '@/redux/actions/actionsMiddleware';
 import { removeAction } from '@/redux/actions/actionsSlice';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
+import { fetchDocumentation } from '@/redux/documentation/documentationMiddleware';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { refreshMissions } from '@/redux/missions/missionsMiddleware';
-import { ConnectionStatus, NotificationLevel } from '@/types/enums';
-import { eventBus } from '@/util/eventBus';
-
-import { fetchDocumentation } from '../documentation/documentationMiddleware';
 import {
   addUriToPropertyTree,
   removeUriFromPropertyTree
-} from '../propertytree/propertyTreeMiddleware';
-import { showGUI } from '../sessionrecording/sessionRecordingMiddleware';
+} from '@/redux/propertytree/propertyTreeMiddleware';
+import { showGUI } from '@/redux/sessionrecording/sessionRecordingMiddleware';
+import { ConnectionStatus, NotificationLevel } from '@/types/enums';
+import { eventBus } from '@/util/eventBus';
 
 let eventTopic: Topic<'event'>;
 let isSubscribed = false;

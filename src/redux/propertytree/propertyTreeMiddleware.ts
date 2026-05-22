@@ -4,15 +4,14 @@ import { AnyProperty, AnyPropertyMetaData, PropertyOwner } from 'openspace-api-j
 
 import { api } from '@/api/api';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
+import { refreshGroups } from '@/redux/groups/groupsSliceMiddleware';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
+import { setSceneGraphNodesVisibility } from '@/redux/local/localSlice';
 import { Properties, PropertyOwnerRedux, Uri, Visibility } from '@/types/types';
 import { Batcher } from '@/util/batcher';
 import { rootOwnerKey } from '@/util/keys';
 import { checkVisibility } from '@/util/propertyTreeHelpers';
 import { isGlobeLayer, isSceneGraphNode, removeLastWordFromUri } from '@/util/uris';
-
-import { refreshGroups } from '../groups/groupsSliceMiddleware';
-import { setSceneGraphNodesVisibility } from '../local/localSlice';
 
 import {
   addPropertyOwners,
