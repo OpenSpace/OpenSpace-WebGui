@@ -16,7 +16,7 @@ import { useAssetFolders } from './hooks';
 import { Asset, AssetFolderNavigationState } from './types';
 import { collectAssets, findNavigatedFolder } from './util';
 
-export function AssetsFolderPanel() {
+export function AssetsPanel() {
   const { t } = useTranslation('panel-assets');
 
   const [nav, setNav] = useState<AssetFolderNavigationState>();

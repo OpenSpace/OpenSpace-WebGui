@@ -27,7 +27,9 @@ export function useAssetFolders() {
 
       subFolderPaths = subFolderPaths ? Object.values(subFolderPaths) : [];
       assetsPaths = assetsPaths
-        ? Object.values(assetsPaths).filter((path) => path.endsWith('.asset'))
+        ? Object.values(assetsPaths).filter(
+            (path) => path.endsWith('.asset') || path.endsWith('.jasset')
+          )
         : [];
 
       const assets: Asset[] =
