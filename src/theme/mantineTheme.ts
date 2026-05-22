@@ -8,6 +8,7 @@ import {
   defaultVariantColorsResolver,
   Divider,
   RangeSlider,
+  Select,
   Slider,
   Tabs,
   ThemeIcon,
@@ -126,7 +127,12 @@ export const theme = createTheme({
           userSelect: 'text'
         }
       }
-    }
+    },
+    Select: Select.extend({
+      defaultProps: {
+        scrollAreaProps: { type: 'auto', scrollbarSize: 8 }
+      }
+    })
   },
   headings: {
     sizes: {
