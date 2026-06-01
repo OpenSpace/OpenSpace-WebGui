@@ -51,19 +51,17 @@ export function TimeTab() {
   }, [currentLat, currentLong, lastLat, lastLong]);
 
   function localDateString(): string {
-    const str = date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
       weekday: 'short',
       timeZone: localArea
     });
-    return str;
   }
 
   function localTimeString(): string {
-    const str = date.toLocaleTimeString('en-US', { timeZone: localArea });
-    return str;
+    return date.toLocaleTimeString('en-US', { timeZone: localArea });
   }
 
   if (!luaApi) {
