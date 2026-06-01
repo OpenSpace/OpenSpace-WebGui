@@ -74,6 +74,28 @@
   "windows-menu": {
     "title": "Windows"
   },
+  "panels": {
+    "scene": "Scene",
+    "settings": "Settings",
+    "navigation": "Navigation",
+    "timePanel": "Time Panel",
+    "sessionRecording": "Session Recording",
+    "geoLocation": "Geo Location",
+    "screenSpaceRenderables": "Screenspace Renderables",
+    "exoplanets": "Exoplanets",
+    "userPanels": "User Panels",
+    "actions": "Actions",
+    "skyBrowser": "SkyBrowser",
+    "mission": "Mission",
+    "flightControl": "Flight Control",
+    "keybindingsLayout": "Keybinds",
+    "nightSky": "Night Sky",
+    "gettingStartedTour": "Getting Started Tour",
+    "scriptLogPanel": "Script Log",
+    "globeImageryBrowserPanel": "Globe Imagery Browser",
+    "assetsPanel": "Assets",
+    "devPanel": "Dev Panel"
+  },
   "error-load-toolbar-layout": {
     "title": "Error loading JSON file",
     "messages": {

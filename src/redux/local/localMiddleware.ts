@@ -186,7 +186,7 @@ export const addLocalListener = (startListening: AppStartListening) => {
       const menuItemsConfig = Object.values(menuItemsData).map((item) => ({
         id: item.componentID,
         visible: item.defaultVisible,
-        name: item.title,
+        name: item.title(),
         isOpen: false
       }));
 

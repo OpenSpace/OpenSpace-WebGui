@@ -41,7 +41,7 @@ export function HelpMenu() {
       <About opened={showAbout} close={close} />
       <QRCode opened={showQRCode} close={closeQRCode} />
 
-      <TopBarMenuWrapper targetTitle={'Help'}>
+      <TopBarMenuWrapper targetTitle={t('title')}>
         <Menu.Item
           component={'a'}
           href={
@@ -65,14 +65,14 @@ export function HelpMenu() {
             leftSection={item.renderIcon?.(IconSize.xs)}
             onClick={() =>
               addWindow(item.content, {
-                title: item.title,
+                title: item.title(),
                 position: item.preferredPosition,
                 id: item.componentID,
                 floatPosition: item.floatPosition
               })
             }
           >
-            {item.title}
+            {item.title()}
           </Menu.Item>
         ))}
 
