@@ -39,8 +39,8 @@ export function MissionsPanel() {
     );
   }
 
-  // Grab the mission last viewed or if it does not exist anymore, take the first one
-  const mission = missions[selectedMissionIdentifier] ?? Object.values(missions)[0];
+  // Grab the mission last viewed or if it does not exist anymore, take the last one
+  const mission = missions[selectedMissionIdentifier] ?? Object.values(missions).at(-1);
 
   return (
     <Box>
