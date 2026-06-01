@@ -41,7 +41,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
     addWindow(<SceneGraphNodeView uri={uri} />, {
       id: 'sgn-' + uri,
       title: name,
-      position: 'float'
+      position: 'right'
     });
   }
 
