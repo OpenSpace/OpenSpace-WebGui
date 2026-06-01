@@ -68,7 +68,7 @@ export function FocusView({
 
   return (
     <FilterList>
-      <Group justify={'space-between'}>
+      <Group>
         <Title order={2}>{t('title')}</Title>
         <InfoBox w={300}>
           <Text>
