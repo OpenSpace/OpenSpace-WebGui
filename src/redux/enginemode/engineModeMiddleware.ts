@@ -1,29 +1,27 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { Topic } from 'openspace-api-js';
+import { Topic } from 'openspace-api-js/topics';
 
 import { api } from '@/api/api';
+import { onOpenConnection } from '@/redux/connection/connectionSlice';
+import { AppStartListening } from '@/redux/listenerMiddleware';
 import { ConnectionStatus } from '@/types/enums';
 
-import { onOpenConnection } from '../connection/connectionSlice';
-import { AppStartListening } from '../listenerMiddleware';
-
-import { EngineModeState, updateEngineMode } from './engineModeSlice';
+import { updateEngineMode } from './engineModeSlice';
 
 export const subscribeToEngineMode = createAction<void>('engineMode/subscribe');
 export const unsubscribeToEngineMode = createAction<void>('engineMode/unsubscribe');
 
-let topic: Topic | null = null;
+let topic: Topic<'engineMode'> | null = null;
 let nSubscribers = 0;
 
 export const setupSubscription = createAsyncThunk(
   'engineMode/setupSubscription',
   async (_, thunkApi) => {
     topic = api.startTopic('engineMode', {
-      event: 'start_subscription',
-      properties: ['mode']
+      event: 'start_subscription'
     });
     (async () => {
-      for await (const data of topic.iterator() as AsyncIterable<EngineModeState>) {
+      for await (const data of topic) {
         thunkApi.dispatch(updateEngineMode(data));
       }
     })();

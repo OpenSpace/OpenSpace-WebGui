@@ -1,5 +1,5 @@
 import { sgnGuiPath } from '@/hooks/sceneGraphNodes/util';
-import { Group, Groups, Properties, PropertyOwner } from '@/types/types';
+import { Group, Groups, Properties, PropertyOwnerRedux } from '@/types/types';
 import { isSceneGraphNode } from '@/util/uris';
 
 function emptyGroup(): Group {
@@ -11,7 +11,7 @@ function emptyGroup(): Group {
  * graph nodes.
  */
 export function computeGroups(
-  propertyOwners: PropertyOwner[],
+  propertyOwners: PropertyOwnerRedux[],
   properties: Properties
 ): Groups {
   const groups: Groups = {};

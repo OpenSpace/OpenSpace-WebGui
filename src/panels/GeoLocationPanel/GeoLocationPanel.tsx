@@ -87,7 +87,6 @@ export function GeoLocationPanel() {
                 event.currentTarget.blur();
               }
             }}
-            onBlur={() => setSearchString(search)}
             placeholder={t(
               searchExists ? 'search.placeholder' : 'search.placeholder-disabled',
               { anchor: anchor?.name }
@@ -109,7 +108,10 @@ export function GeoLocationPanel() {
           />
           <ActionIcon
             disabled={!searchExists}
-            onClick={openIfNotOpen}
+            onClick={() => {
+              setSearch(searchString);
+              openIfNotOpen();
+            }}
             size={'lg'}
             aria-label={t('search.aria-labels.search-button')}
           >

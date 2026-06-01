@@ -1,24 +1,17 @@
 import { createAction, createAsyncThunk, Update } from '@reduxjs/toolkit';
-import { Topic } from 'openspace-api-js';
+import { Topic } from 'openspace-api-js/topics';
+import { AnyProperty, AnyPropertyMetaData, PropertyOwner } from 'openspace-api-js/types';
 
 import { api } from '@/api/api';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
+import { refreshGroups } from '@/redux/groups/groupsSliceMiddleware';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
-import { AnyProperty } from '@/types/Property/property';
-import {
-  OpenSpacePropertyOwner,
-  Properties,
-  PropertyOwner,
-  Uri,
-  Visibility
-} from '@/types/types';
+import { setSceneGraphNodesVisibility } from '@/redux/local/localSlice';
+import { Properties, PropertyOwnerRedux, Uri, Visibility } from '@/types/types';
 import { Batcher } from '@/util/batcher';
 import { rootOwnerKey } from '@/util/keys';
 import { checkVisibility } from '@/util/propertyTreeHelpers';
 import { isGlobeLayer, isSceneGraphNode, removeLastWordFromUri } from '@/util/uris';
-
-import { refreshGroups } from '../groups/groupsSliceMiddleware';
-import { setSceneGraphNodesVisibility } from '../local/localSlice';
 
 import {
   addPropertyOwners,
@@ -42,10 +35,10 @@ export const removeUriFromPropertyTree = createAction<{ uri: Uri }>(
   'propertyTree/removeUri'
 );
 
-let topic: Topic;
+let topic: Topic<'propertyTree'>;
 
 function calculateSgnVisibilityMap(
-  propertyOwners: PropertyOwner[],
+  propertyOwners: PropertyOwnerRedux[],
   properties: Properties
 ) {
   const sceneGraphNodes = propertyOwners.filter((p) => isSceneGraphNode(p.uri));
@@ -63,8 +56,8 @@ function calculateSgnVisibilityMap(
   return visibilityMap;
 }
 
-function flattenPropertyTree(propertyOwner: OpenSpacePropertyOwner) {
-  let propertyOwners: PropertyOwner[] = [];
+function flattenPropertyTree(propertyOwner: PropertyOwner) {
+  let propertyOwners: PropertyOwnerRedux[] = [];
   let properties: AnyProperty[] = [];
 
   if (propertyOwner.uri) {
@@ -74,7 +67,7 @@ function flattenPropertyTree(propertyOwner: OpenSpacePropertyOwner) {
       name: propertyOwner.guiName ?? propertyOwner.identifier,
       properties: propertyOwner.properties.map((p) => p.uri),
       subowners: propertyOwner.subowners.map((p) => p.uri),
-      tags: propertyOwner.tag,
+      tags: propertyOwner.tags,
       description: propertyOwner.description
     });
   }
@@ -101,7 +94,14 @@ export const setupSubscription = createAsyncThunk(
       event: 'start_subscription'
     });
 
-    type PropertyUpdate = Record<Uri, Partial<AnyProperty>>;
+    type PropertyUpdate = Record<
+      Uri,
+      {
+        value?: AnyProperty['value'];
+        metaData?: AnyPropertyMetaData;
+        uri?: string;
+      }
+    >;
 
     function updateFunc(updates: Partial<PropertyUpdate>) {
       // Convert the updates into the format expected by our RTK updateMany reducer
@@ -119,29 +119,34 @@ export const setupSubscription = createAsyncThunk(
     const batcher = new Batcher<PropertyUpdate>(updateFunc);
 
     (async () => {
-      for await (const { property, ...changes } of topic.iterator() as AsyncIterable<{
-        property: Uri;
-        value?: AnyProperty['value'];
-        metaData?: AnyProperty['metaData'];
-      }>) {
-        batcher.add({
-          [property]: { ...(changes as Partial<AnyProperty>) }
-        });
+      for await (const data of topic) {
+        if (data.type === 'value') {
+          // There is a missmatch between the `data.value` being a `JsonValue` and the
+          // `AnyProperty['value']` where the JsonValue is wider (allows for mixed arrays
+          // and nested objects). However, at runtime the data coming from OpenSpace will
+          // always be a valid propety value for this uri, so it _should_ be ok to cast
+          // here
+          batcher.add({ [data.uri]: { value: data.value as AnyProperty['value'] } });
+        } else {
+          batcher.add({
+            [data.uri]: { metaData: data.metaData }
+          });
+        }
       }
+      // Empty out any remaining updates in the batcher
+      batcher.flush();
     })();
-
-    // Empty out any remaining updates in the batcher
-    batcher.flush();
   }
 );
 
 const getRoot = createAsyncThunk('propertyTree/getRoot', async (_, thunkAPI) => {
-  const response = (await api.getProperty(rootOwnerKey)) as
-    | AnyProperty
-    | OpenSpacePropertyOwner;
-  const { propertyOwners, properties } = flattenPropertyTree(
-    response as OpenSpacePropertyOwner
-  );
+  const response = await api.getProperty(rootOwnerKey);
+
+  if (response.type !== 'propertyOwner') {
+    throw new Error(`Expected propertyOwner, got '${JSON.stringify(response)}'`);
+  }
+
+  const { propertyOwners, properties } = flattenPropertyTree(response.value);
   const propertiesMap: Properties = {};
 
   properties.forEach((p) => {
@@ -167,13 +172,11 @@ export const addUriToPropertyTree = createAsyncThunk(
       uriToFetch = removeLastWordFromUri(uri);
     }
 
-    const response = (await api.getProperty(uriToFetch)) as
-      | AnyProperty
-      | OpenSpacePropertyOwner;
+    const response = await api.getProperty(uriToFetch);
 
     // Property Owner
-    if ('properties' in response) {
-      const { properties, propertyOwners } = flattenPropertyTree(response);
+    if (response.type === 'propertyOwner') {
+      const { properties, propertyOwners } = flattenPropertyTree(response.value);
       const propertiesMap: Record<Uri, AnyProperty> = {};
 
       properties.forEach((p) => {
@@ -192,7 +195,7 @@ export const addUriToPropertyTree = createAsyncThunk(
     } else {
       // Property
       const propertiesMap: Record<Uri, AnyProperty> = {};
-      propertiesMap[response.uri] = response;
+      propertiesMap[response.value.uri] = response.value;
 
       return {
         properties: propertiesMap,

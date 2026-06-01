@@ -3,10 +3,9 @@ import { Alert, Divider, Modal, Stack, Text, Title } from '@mantine/core';
 import { QRCodeSVG } from 'qrcode.react';
 
 import { Property } from '@/components/Property/Property';
+import { StringProperty } from '@/components/Property/Types/StringProperty';
 import { useProperty } from '@/hooks/properties';
 import styles from '@/theme/global.module.css';
-
-import { StringProperty } from '../Property/Types/StringProperty';
 
 interface Props {
   opened: boolean;

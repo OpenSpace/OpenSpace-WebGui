@@ -10,20 +10,19 @@ import {
   Text,
   Title
 } from '@mantine/core';
+import { SessionRecordingState } from 'openspace-api-js/types';
 
 import { BoolInput } from '@/components/Input/BoolInput';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
+import { KeybindButtons } from '@/panels/KeybindsPanel/KeybindButtons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { updateSessionRecordingSettings } from '@/redux/sessionrecording/sessionRecordingSlice';
-
-import { KeybindButtons } from '../KeybindsPanel/KeybindButtons';
 
 import { PlaybackPauseButton } from './Playback/PlaybackPauseButton';
 import { PlaybackPlayButton } from './Playback/PlaybackPlayButton';
 import { PlaybackResumeButton } from './Playback/PlaybackResumeButton';
 import { PlaybackStopButton } from './Playback/PlaybackStopButton';
-import { RecordingState } from './types';
 import { parseFilename } from './util';
 
 export function PlaySession() {
@@ -43,9 +42,10 @@ export function PlaySession() {
   const recordingState = useSubscribeToSessionRecording();
   const dispatch = useAppDispatch();
 
-  const isIdle = recordingState === RecordingState.Idle;
+  const isIdle = recordingState === SessionRecordingState.Idle;
   const isPlayingBack =
-    recordingState === RecordingState.Paused || recordingState === RecordingState.Playing;
+    recordingState === SessionRecordingState.Paused ||
+    recordingState === SessionRecordingState.Playing;
 
   const isSettingsCombinationDangerous = loopPlayback && hideGuiOnPlayback;
   const toggleGuiKeybind = keybinds.find(
@@ -214,8 +214,8 @@ export function PlaySession() {
           />
         </Group>
         <Group gap={'xs'}>
-          {recordingState === RecordingState.Paused && <PlaybackResumeButton />}
-          {recordingState === RecordingState.Playing && <PlaybackPauseButton />}
+          {recordingState === SessionRecordingState.Paused && <PlaybackResumeButton />}
+          {recordingState === SessionRecordingState.Playing && <PlaybackPauseButton />}
           {isPlayingBack && <PlaybackStopButton />}
         </Group>
       </Stack>

@@ -115,7 +115,7 @@
       },
       "show-only-focusable": {
         "label": "Show only focusable",
-        "info": "Hide scene graph nodes that are not markes as focusable, meaning that they should not be directly set as the focus node in the scene."
+        "info": "Hide scene graph nodes that are not marked as focusable, meaning that they should not be directly set as the focus node in the scene."
       },
       "show-gui-hidden": {
         "label": "Show objects with GUI hidden flag",

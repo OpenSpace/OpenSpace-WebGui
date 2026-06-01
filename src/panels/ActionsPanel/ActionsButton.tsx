@@ -1,13 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { Badge, Button, Card, Group, Stack, Text, Tooltip } from '@mantine/core';
+import { Action } from 'openspace-api-js/types';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { KeybindButtons } from '@/panels/KeybindsPanel/KeybindButtons';
 import { useAppSelector } from '@/redux/hooks';
-import { Action } from '@/types/types';
-
-import { KeybindButtons } from '../KeybindsPanel/KeybindButtons';
 
 interface Props {
   height: number;

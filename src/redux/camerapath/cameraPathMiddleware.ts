@@ -1,18 +1,17 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { Topic } from 'openspace-api-js';
+import { Topic } from 'openspace-api-js/topics';
 
 import { api } from '@/api/api';
+import { onOpenConnection } from '@/redux/connection/connectionSlice';
+import { AppStartListening } from '@/redux/listenerMiddleware';
 import { ConnectionStatus } from '@/types/enums';
 
-import { onOpenConnection } from '../connection/connectionSlice';
-import { AppStartListening } from '../listenerMiddleware';
-
-import { CameraPathState, updateCameraPath } from './cameraPathSlice';
+import { updateCameraPath } from './cameraPathSlice';
 
 export const subscribeToCameraPath = createAction<void>('cameraPath/subscribe');
 export const unsubscribeToCameraPath = createAction<void>('cameraPath/unsubscribe');
 
-let topic: Topic | null = null;
+let topic: Topic<'cameraPath'> | null = null;
 let nSubscribers = 0;
 
 export const setupSubscription = createAsyncThunk(
@@ -22,7 +21,7 @@ export const setupSubscription = createAsyncThunk(
       event: 'start_subscription'
     });
     (async () => {
-      for await (const data of topic.iterator() as AsyncIterable<CameraPathState>) {
+      for await (const data of topic) {
         thunkApi.dispatch(updateCameraPath(data));
       }
     })();

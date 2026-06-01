@@ -106,81 +106,83 @@ export function SceneGraphNodeMetaInfo({ uri }: Props) {
 
       <Title order={3}>{t('asset-info-title')}</Title>
       <Table mb={'md'} variant={'vertical'} withRowBorders withTableBorder>
-        <Table.Tr>
-          <Table.Th w={90}>{t('asset-info-table.name')}:</Table.Th>
-          <Table.Td>
-            <Text {...textProps}>{documentation?.name}</Text>
-          </Table.Td>
-        </Table.Tr>
-
-        <Table.Tr>
-          <Table.Th>{t('asset-info-table.path')}:</Table.Th>
-          <Table.Td>
-            <Group justify={'space-between'} wrap={'nowrap'}>
-              <Text {...textProps} style={{ overflowWrap: 'anywhere' }}>
-                {documentation?.path}
-              </Text>
-              {documentation?.path && (
-                <CopyToClipboardButton value={documentation?.path || ''} />
-              )}
-            </Group>
-          </Table.Td>
-        </Table.Tr>
-
-        <Table.Tr>
-          <Table.Th>{t('asset-info-table.author')}:</Table.Th>
-          <Table.Td>
-            <Text {...textProps}>{documentation?.author}</Text>
-          </Table.Td>
-        </Table.Tr>
-
-        <Table.Tr>
-          <Table.Th>{t('asset-info-table.license')}:</Table.Th>
-          <Table.Td>
-            <Text {...textProps}>{documentation?.license}</Text>
-          </Table.Td>
-        </Table.Tr>
-
-        <Table.Tr>
-          <Table.Th>{t('asset-info-table.about')}:</Table.Th>
-          <Table.Td>
-            <Text {...textProps}>{documentation?.description}</Text>
-          </Table.Td>
-        </Table.Tr>
-
-        <Table.Tr>
-          <Table.Th>{t('asset-info-table.nodes-in-asset')}:</Table.Th>
-          <Table.Td>
-            <ShowMore>
-              <Text {...textProps}>
-                {documentation?.identifiers?.map((id) => id).join(', ')}
-              </Text>
-            </ShowMore>
-          </Table.Td>
-        </Table.Tr>
-
-        <Table.Tr>
-          <Table.Th>{t('asset-info-table.url')}:</Table.Th>
-          <Table.Td>
-            <Anchor
-              href={documentation?.url}
-              target={'_blank'}
-              style={{ overflowWrap: 'anywhere' }}
-              {...textProps}
-            >
-              {documentation?.url}
-            </Anchor>
-          </Table.Td>
-        </Table.Tr>
-
-        {documentation?.version && (
+        <Table.Tbody>
           <Table.Tr>
-            <Table.Th>{t('asset-info-table.version')}:</Table.Th>
+            <Table.Th w={90}>{t('asset-info-table.name')}:</Table.Th>
             <Table.Td>
-              <Text {...textProps}>{documentation?.version}</Text>
+              <Text {...textProps}>{documentation?.name}</Text>
             </Table.Td>
           </Table.Tr>
-        )}
+
+          <Table.Tr>
+            <Table.Th>{t('asset-info-table.path')}:</Table.Th>
+            <Table.Td>
+              <Group justify={'space-between'} wrap={'nowrap'}>
+                <Text {...textProps} style={{ overflowWrap: 'anywhere' }}>
+                  {documentation?.path}
+                </Text>
+                {documentation?.path && (
+                  <CopyToClipboardButton value={documentation?.path || ''} />
+                )}
+              </Group>
+            </Table.Td>
+          </Table.Tr>
+
+          <Table.Tr>
+            <Table.Th>{t('asset-info-table.author')}:</Table.Th>
+            <Table.Td>
+              <Text {...textProps}>{documentation?.author}</Text>
+            </Table.Td>
+          </Table.Tr>
+
+          <Table.Tr>
+            <Table.Th>{t('asset-info-table.license')}:</Table.Th>
+            <Table.Td>
+              <Text {...textProps}>{documentation?.license}</Text>
+            </Table.Td>
+          </Table.Tr>
+
+          <Table.Tr>
+            <Table.Th>{t('asset-info-table.about')}:</Table.Th>
+            <Table.Td>
+              <Text {...textProps}>{documentation?.description}</Text>
+            </Table.Td>
+          </Table.Tr>
+
+          <Table.Tr>
+            <Table.Th>{t('asset-info-table.nodes-in-asset')}:</Table.Th>
+            <Table.Td>
+              <ShowMore>
+                <Text {...textProps}>
+                  {documentation?.identifiers?.map((id) => id).join(', ')}
+                </Text>
+              </ShowMore>
+            </Table.Td>
+          </Table.Tr>
+
+          <Table.Tr>
+            <Table.Th>{t('asset-info-table.url')}:</Table.Th>
+            <Table.Td>
+              <Anchor
+                href={documentation?.url}
+                target={'_blank'}
+                style={{ overflowWrap: 'anywhere' }}
+                {...textProps}
+              >
+                {documentation?.url}
+              </Anchor>
+            </Table.Td>
+          </Table.Tr>
+
+          {documentation?.version && (
+            <Table.Tr>
+              <Table.Th>{t('asset-info-table.version')}:</Table.Th>
+              <Table.Td>
+                <Text {...textProps}>{documentation?.version}</Text>
+              </Table.Td>
+            </Table.Tr>
+          )}
+        </Table.Tbody>
       </Table>
     </>
   );

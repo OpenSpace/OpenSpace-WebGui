@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Text, Tooltip } from '@mantine/core';
+import { PropertyVisibility } from 'openspace-api-js/types';
 
 import { Label } from '@/components/Label/Label';
-import { PropertyVisibility } from '@/types/Property/property';
 import { Uri } from '@/types/types';
 
 import { PropertyDescription } from './PropertyDescription';

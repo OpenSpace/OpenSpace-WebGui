@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 
-import { LoadingBlocks } from '../LoadingBlocks/LoadingBlocks';
-import { ScrollBox } from '../ScrollBox/ScrollBox';
+import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
+import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 
 import { useFilterListProvider } from './hooks';
 

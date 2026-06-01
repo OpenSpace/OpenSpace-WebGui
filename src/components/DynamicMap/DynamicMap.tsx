@@ -2,12 +2,12 @@ import { PropsWithChildren, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Image, MantineStyleProps } from '@mantine/core';
 
-import { MapMarker } from '@/components/DynamicMap/MapMarker';
-import { NightShadow } from '@/components/DynamicMap/NightShadow';
 import { useSubscribeToCamera } from '@/hooks/topicSubscriptions';
 import { useCameraLatLong } from '@/redux/camera/hooks';
 
 import { Map } from './Map';
+import { MapMarker } from './MapMarker';
+import { NightShadow } from './NightShadow';
 import { ViewCone } from './ViewCone';
 
 // The fewer decimals we can get away with, the less the component will rerender due to

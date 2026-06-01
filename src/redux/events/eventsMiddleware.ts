@@ -1,25 +1,23 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Topic } from 'openspace-api-js';
+import { Topic } from 'openspace-api-js/topics';
 
 import { api } from '@/api/api';
 import { getAction } from '@/redux/actions/actionsMiddleware';
 import { removeAction } from '@/redux/actions/actionsSlice';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
+import { fetchDocumentation } from '@/redux/documentation/documentationMiddleware';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { refreshMissions } from '@/redux/missions/missionsMiddleware';
-import { ConnectionStatus, LogLevel } from '@/types/enums';
-import { eventBus } from '@/util/eventBus';
-
 import {
   addUriToPropertyTree,
   removeUriFromPropertyTree
-} from '../propertytree/propertyTreeMiddleware';
-import { showGUI } from '../sessionrecording/sessionRecordingMiddleware';
+} from '@/redux/propertytree/propertyTreeMiddleware';
+import { showGUI } from '@/redux/sessionrecording/sessionRecordingMiddleware';
+import { ConnectionStatus, NotificationLevel } from '@/types/enums';
+import { eventBus } from '@/util/eventBus';
 
-import { EventData } from './types';
-
-let eventTopic: Topic;
+let eventTopic: Topic<'event'>;
 let isSubscribed = false;
 
 export const setupEventsSubscription = createAsyncThunk(
@@ -27,21 +25,21 @@ export const setupEventsSubscription = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       eventTopic = api.startTopic('event', {
-        event: '*',
-        status: 'start_subscription'
+        event: 'start_subscription',
+        eventType: '*'
       });
     } catch (e) {
       thunkAPI.dispatch(
         handleNotificationLogging(
           'Error subscribing to OpenSpace events',
           e,
-          LogLevel.Error
+          NotificationLevel.Error
         )
       );
       thunkAPI.rejectWithValue(e);
     }
-    for await (const data of eventTopic.iterator() as AsyncIterable<EventData>) {
-      switch (data.Event) {
+    for await (const data of eventTopic) {
+      switch (data.event) {
         case 'PropertyTreeUpdated':
           thunkAPI.dispatch(addUriToPropertyTree(data.Uri));
           break;
@@ -65,6 +63,13 @@ export const setupEventsSubscription = createAsyncThunk(
           break;
         case 'AssetLoading':
           eventBus.emit(data);
+          // Fetch documentation again when an asset is loaded, to include the new
+          // asset's meta data
+          // @TODO (2026-05-22, emmbr): This should be handled in a better way, e.g.,
+          // through the documentation topic
+          if (data.State === 'Loaded') {
+            thunkAPI.dispatch(fetchDocumentation());
+          }
           break;
         default:
           break;
@@ -78,7 +83,8 @@ function tearDownSubscription() {
     return;
   }
   eventTopic.talk({
-    event: 'stop_subscription'
+    event: 'stop_subscription',
+    eventType: '*'
   });
   eventTopic.cancel();
   isSubscribed = false;

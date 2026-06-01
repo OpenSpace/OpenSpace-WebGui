@@ -1,15 +1,18 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import {
+  SessionRecordingState as SessionState,
+  SessionRecordingTopic
+} from 'openspace-api-js/types';
 
 import {
   PlaybackEvent,
-  RecordingState,
   SessionRecordingExtension,
   SessionRecordingSettings
 } from '@/panels/SessionRecordingPanel/types';
 
 export interface SessionRecordingState {
   files: string[];
-  state: RecordingState;
+  state: SessionState;
   settings: SessionRecordingSettings;
   initialSettings: {
     showGui: boolean;
@@ -21,7 +24,7 @@ export interface SessionRecordingState {
 
 const initialState: SessionRecordingState = {
   files: [],
-  state: RecordingState.Idle,
+  state: SessionState.Idle,
   settings: {
     recordingFilename: '',
     format: 'Ascii',
@@ -43,13 +46,21 @@ export const sessionRecordingSlice = createSlice({
   name: 'sessionRecording',
   initialState,
   reducers: {
-    updateSessionrecording: (state, action: PayloadAction<SessionRecordingState>) => {
+    updateSessionrecording: (
+      state,
+      action: PayloadAction<SessionRecordingTopic['data']>
+    ) => {
       const validExtensions: SessionRecordingExtension[] = ['.osrec', '.osrectxt'];
       // Filter files that only have a valid session recording extension
-      state.files = action.payload.files.filter((file) =>
-        validExtensions.some((ext) => file.endsWith(ext))
-      );
-      state.state = action.payload.state;
+      state.files = action.payload.files
+        ? action.payload.files.filter((file) =>
+            validExtensions.some((ext) => file.endsWith(ext))
+          )
+        : [];
+
+      if (action.payload.state) {
+        state.state = action.payload.state;
+      }
       return state;
     },
     updateSessionRecordingSettings: (

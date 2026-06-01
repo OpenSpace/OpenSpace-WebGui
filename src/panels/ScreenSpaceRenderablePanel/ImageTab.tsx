@@ -6,7 +6,7 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { AddPhotoIcon } from '@/icons/icons';
 import { useAppDispatch } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
-import { IconSize, LogLevel } from '@/types/enums';
+import { IconSize, NotificationLevel } from '@/types/enums';
 import { Identifier } from '@/types/types';
 
 interface ScreenSpaceRenderable {
@@ -50,7 +50,7 @@ export function ImageTab() {
           handleNotificationLogging(
             t('error.title'),
             t('error.description', { format: filetype }),
-            LogLevel.Error
+            NotificationLevel.Error
           )
         );
         return;

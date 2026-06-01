@@ -1,10 +1,12 @@
 import { useTranslation } from 'react-i18next';
+import { Code, Group, Stack } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { propertySelectors } from '@/redux/propertytree/propertySlice';
 import { setPropertyValue } from '@/redux/propertytree/propertyTreeMiddleware';
+import styles from '@/theme/global.module.css';
 import { PropertyOrPropertyGroup, PropertyTypeKey } from '@/types/Property/property';
 import { PropertyGroupsRuntime } from '@/types/Property/propertyGroups';
 import { Uri } from '@/types/types';
@@ -83,9 +85,19 @@ export function useProperty<T extends PropertyTypeKey>(
     if (shouldShowModal) {
       modals.openConfirmModal({
         title: t('confirmation-modal.title'),
-        children: t('confirmation-modal.description', {
-          propertyName: prop?.metaData.guiName
-        }),
+        children: (
+          <Stack>
+            {t('confirmation-modal.description', {
+              propertyName: prop?.metaData.guiName
+            })}
+            <Group gap={'xs'} wrap={'nowrap'}>
+              URI:{' '}
+              <Code className={styles.selectable} style={{ wordBreak: 'break-all' }}>
+                {prop?.uri}
+              </Code>
+            </Group>
+          </Stack>
+        ),
         labels: {
           confirm: t('confirmation-modal.confirm'),
           cancel: t('confirmation-modal.cancel')

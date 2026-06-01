@@ -1,19 +1,18 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { throttle } from 'lodash';
-import { Topic } from 'openspace-api-js';
+import { Topic } from 'openspace-api-js/topics';
 
 import { api } from '@/api/api';
+import { onOpenConnection } from '@/redux/connection/connectionSlice';
+import { AppStartListening } from '@/redux/listenerMiddleware';
 import { ConnectionStatus } from '@/types/enums';
-
-import { onOpenConnection } from '../connection/connectionSlice';
-import { AppStartListening } from '../listenerMiddleware';
 
 import { CameraState, updateCamera } from './cameraSlice';
 
 export const subscribeToCamera = createAction<void>('camera/subscribe');
 export const unsubscribeToCamera = createAction<void>('camera/unsubscribe');
 
-let topic: Topic | null = null;
+let topic: Topic<'camera'> | null = null;
 let nSubscribers = 0;
 
 export const setupSubscription = createAsyncThunk(
@@ -28,7 +27,7 @@ export const setupSubscription = createAsyncThunk(
     }, 16); // Throttle to ~60fps
 
     (async () => {
-      for await (const data of topic.iterator() as AsyncIterable<CameraState>) {
+      for await (const data of topic) {
         throttleUpdates(data);
       }
     })();

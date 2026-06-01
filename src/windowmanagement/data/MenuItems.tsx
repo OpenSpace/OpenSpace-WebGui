@@ -34,7 +34,7 @@ import { FloatWindowPosition, WindowLayoutPosition } from '../WindowLayout/types
 
 import {
   ActionsPanel,
-  AssetsFolderPanel,
+  AssetsPanel,
   ExoplanetsPanel,
   FlightControlPanel,
   GeoLocationPanel,
@@ -251,10 +251,10 @@ export const menuItemsData: Record<string, MenuItem> = {
     defaultVisible: false,
     group: 'Content'
   },
-  assetsFolderPanel: {
+  assetsPanel: {
     title: 'Assets',
-    componentID: 'assetsFolderPanel',
-    content: <AssetsFolderPanel />,
+    componentID: 'assetsPanel',
+    content: <AssetsPanel />,
     renderIcon: (size) => <OpenFolderIcon size={size} />,
     preferredPosition: 'right',
     defaultVisible: false,

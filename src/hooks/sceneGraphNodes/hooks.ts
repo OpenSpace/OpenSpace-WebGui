@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import { propertyOwnerSelectors } from '@/redux/propertytree/propertyOwnerSlice';
 import { propertySelectors } from '@/redux/propertytree/propertySlice';
-import { PropertyOwner, SceneGraphNodeGuiSettings, Uri } from '@/types/types';
+import { PropertyOwnerRedux, SceneGraphNodeGuiSettings, Uri } from '@/types/types';
 
 import { SceneGraphNodesFilters } from './types';
 import {
@@ -28,7 +28,7 @@ export function useSceneGraphNodes({
   onlyFocusable = false,
   tags = [],
   onlyVisible = false
-}: SceneGraphNodesFilters = {}): PropertyOwner[] {
+}: SceneGraphNodesFilters = {}): PropertyOwnerRedux[] {
   const propertyOwners = useAppSelector((state) =>
     propertyOwnerSelectors.selectEntities(state)
   );

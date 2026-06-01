@@ -1,3 +1,7 @@
+import { TimeTopic } from 'openspace-api-js/types';
+
+export type TimeData = TimeTopic['data'];
+
 function monthToNumber(month: string) {
   // Dictionary to map month abbreviations to their corresponding two-digit numbers
   const monthMapping: { [key: string]: string } = {
