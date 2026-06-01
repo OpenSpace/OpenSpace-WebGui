@@ -102,7 +102,7 @@ export function TimeTab() {
       <Text mb={'lg'} miw={240}>
         {t('simulation-time.timezone')}: {localArea}
       </Text>
-      <Text my={'md'} miw={240}>
+      <Text my={'md'} miw={280}>
         {t('simulation-time.utc')}:{' '}
         {isValidDate ? date.toUTCString() : t('simulation-time.error')}
       </Text>
