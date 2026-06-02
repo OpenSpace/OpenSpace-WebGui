@@ -30,7 +30,7 @@ export function GlobeLayer({ uri }: Props) {
   // contain this URI for one render cycle before the property tree is updated. On the
   // next render the URI will be gone and this component won't be mounted at all.
   if (!propertyOwner) {
-    return null;
+    throw Error(`${t('error.no-property-owner-for-uri')}: ${uri}`);
   }
 
   // @TODO (emmbr, 2024-12-06): We want to avoid hardcoded colors, but since changing the

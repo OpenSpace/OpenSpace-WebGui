@@ -15,9 +15,11 @@ import { isGlobeLayer, isSceneGraphNode, removeLastWordFromUri } from '@/util/ur
 
 import {
   addPropertyOwners,
+  propertyOwnerSelectors,
   removePropertyOwners,
   reset as resetPropertyOwners,
-  setInitialState
+  setInitialState,
+  updateOne as updatePropertyOwner
 } from './propertyOwnerSlice';
 import {
   removeMany,
@@ -173,6 +175,7 @@ export const addUriToPropertyTree = createAsyncThunk(
     }
 
     const response = await api.getProperty(uriToFetch);
+    console.log(response);
 
     // Property Owner
     if (response.type === 'propertyOwner') {
@@ -241,6 +244,38 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
       }
       if (action.payload?.properties) {
         listenerApi.dispatch(upsertManyProperties(action.payload.properties));
+
+        // When a standalone property is added (no accompanying property owner),
+        // we need to update the parent property owner's properties array so that
+        // the new property is rendered in the UI.
+        if (!action.payload.propertyOwners) {
+          const state = listenerApi.getState();
+          const parentUpdates = new Map<string, Set<string>>();
+
+          for (const uri of Object.keys(action.payload.properties)) {
+            const lastDotPos = uri.lastIndexOf('.');
+            if (lastDotPos === -1) continue;
+            const parentUri = uri.substring(0, lastDotPos);
+            console.log('Parent URI:', parentUri);
+            const parent = propertyOwnerSelectors.selectById(state, parentUri);
+            console.log('Parent Owner:', parent);
+            if (parent) {
+              if (!parentUpdates.has(parentUri)) {
+                parentUpdates.set(parentUri, new Set(parent.properties));
+              }
+              parentUpdates.get(parentUri)!.add(uri);
+            }
+          }
+
+          for (const [parentUri, properties] of parentUpdates.entries()) {
+            listenerApi.dispatch(
+              updatePropertyOwner({
+                id: parentUri,
+                changes: { properties: Array.from(properties) }
+              })
+            );
+          }
+        }
       }
       if (action.payload?.visibility) {
         listenerApi.dispatch(setSceneGraphNodesVisibility(action.payload.visibility));
@@ -253,8 +288,52 @@ export const addPropertyTreeListener = (startListening: AppStartListening) => {
     actionCreator: removeUriFromPropertyTree,
     effect: (action, listenerApi) => {
       const uriToRemove = action.payload.uri;
+      const state = listenerApi.getState();
+
+      const isPropertyOwner = !!propertyOwnerSelectors.selectById(state, uriToRemove);
+
+      if (isPropertyOwner) {
+        // Collect all property URIs from the entire removed subtree (the property owner
+        // itself plus all its nested subowners at any depth) and remove them from the
+        // properties slice. removePropertyOwners handles removing the owner entities and
+        // updating the parent's subowners array.
+        const allOwnerEntities = propertyOwnerSelectors.selectEntities(state);
+        const propertyUrisToRemove: Uri[] = [];
+
+        for (const [ownerUri, owner] of Object.entries(allOwnerEntities)) {
+          if (ownerUri === uriToRemove || ownerUri.startsWith(`${uriToRemove}.`)) {
+            propertyUrisToRemove.push(...(owner?.properties ?? []));
+          }
+        }
+
+        console.log(propertyUrisToRemove);
+
+        if (propertyUrisToRemove.length > 0) {
+          listenerApi.dispatch(removeMany(propertyUrisToRemove));
+        }
+      } else {
+        // If the URI is a standalone property (not a property owner), remove it from the
+        // parent property owner's properties array before removing it from the slice.
+        // This prevents stale URI references causing "properties[uri] is undefined" errors.
+        const lastDotPos = uriToRemove.lastIndexOf('.');
+        if (lastDotPos !== -1) {
+          const parentUri = uriToRemove.substring(0, lastDotPos);
+          const parent = propertyOwnerSelectors.selectById(state, parentUri);
+          if (parent) {
+            listenerApi.dispatch(
+              updatePropertyOwner({
+                id: parentUri,
+                changes: {
+                  properties: parent.properties.filter((p) => p !== uriToRemove)
+                }
+              })
+            );
+          }
+        }
+        listenerApi.dispatch(removeMany([uriToRemove]));
+      }
+
       listenerApi.dispatch(removePropertyOwners({ uris: [uriToRemove] }));
-      listenerApi.dispatch(removeMany([uriToRemove]));
       listenerApi.dispatch(refreshGroups());
     }
   });

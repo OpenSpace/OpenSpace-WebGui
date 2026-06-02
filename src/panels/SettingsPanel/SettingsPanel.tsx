@@ -81,6 +81,8 @@ export function SettingsPanel() {
     return <LoadingBlocks />;
   }
 
+  console.log(topLevelPropertyOwners);
+
   return (
     <FilterList>
       <FilterList.InputField placeHolderSearchText={t('search-settings-placeholder')} />

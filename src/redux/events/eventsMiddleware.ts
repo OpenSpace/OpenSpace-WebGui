@@ -39,6 +39,7 @@ export const setupEventsSubscription = createAsyncThunk(
       thunkAPI.rejectWithValue(e);
     }
     for await (const data of eventTopic) {
+      console.log('Received event data:', data);
       switch (data.event) {
         case 'PropertyTreeUpdated':
           thunkAPI.dispatch(addUriToPropertyTree(data.Uri));

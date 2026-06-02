@@ -14,6 +14,8 @@ export function MissionsPanel() {
   const { isInitialized, missions, selectedMissionIdentifier } = useAppSelector(
     (state) => state.missions
   );
+
+  console.log(isInitialized, missions, selectedMissionIdentifier);
   const luaApi = useOpenSpaceApi();
   const dispatch = useAppDispatch();
 
