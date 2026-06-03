@@ -70,7 +70,7 @@ export function TimeTab() {
 
   return (
     <>
-      <Group justify={'space-between'} align={'top'} gap={'xs'} mb={'md'}>
+      <Group justify={'space-between'} align={'top'} gap={'xs'} mb={'xs'}>
         <Title order={2} size={'xl'}>
           {t('simulation-time.title')}
         </Title>
