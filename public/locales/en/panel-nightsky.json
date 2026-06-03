@@ -209,7 +209,6 @@
       "buttons": {
         "set-now": "Set to Now"
       },
-      "local": "Local",
       "timezone": "Timezone",
       "utc": "UTC",
       "error": "Date out of range"

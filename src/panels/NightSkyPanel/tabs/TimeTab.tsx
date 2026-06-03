@@ -88,9 +88,6 @@ export function TimeTab() {
           {t('simulation-time.buttons.set-now')}
         </Button>
       </Group>
-      <Text size={'lg'} fw={'bold'}>
-        {t('simulation-time.local')}:
-      </Text>
       <Text size={'lg'} fw={'bold'} miw={220}>
         {isValidDate ? localDateString() : t('simulation-time.error')}
       </Text>
