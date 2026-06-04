@@ -22,7 +22,7 @@ export function GeoLocationPanel() {
   const [coordinates, setCoordinates] = useState<GeoCoordinates>({
     lat: 0,
     long: 0,
-    alt: 0
+    alt: 10
   });
   const [customName, setCustomName] = useState('');
   const [mouseMarker, setMouseMarker] = useState<MouseMarkerPosition>(undefined);
