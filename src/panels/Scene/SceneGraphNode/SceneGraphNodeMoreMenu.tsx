@@ -63,7 +63,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
         >
           {t('pop-out')}
         </Button>
-        <Divider m={'xs'} />
+        {isFocusable && <Divider m={'xs'} />}
         {isFocusable && (
           <Stack gap={'xs'}>
             <Group gap={'xs'}>
