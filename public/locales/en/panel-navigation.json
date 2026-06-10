@@ -7,7 +7,7 @@
   "anchor-aim": {
     "anchor-aim-view": {
       "error": {
-        "no-anchor-aim-property": "Anchor or aim property property does not exist"
+        "no-anchor-aim-property": "Anchor or aim property does not exist"
       },
       "title": "Anchor / Aim",
       "info": {

@@ -155,7 +155,7 @@
       }
     },
     "appearance": {
-      "title": "Apperance",
+      "title": "Appearance",
       "warning": {
         "title": "Only Night Sky Profile",
         "description": "The buttons below only work in the 'nightsky' profile. Use the profile editor to edit the actions and adjust the values for your dome."

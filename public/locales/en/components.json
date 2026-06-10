@@ -114,7 +114,7 @@
     },
     "frame": {
       "title": "Zoom to / Frame",
-      "tooltip": "Frame the object by moving the camera in a straigt line and rotate towards it. Hold <0>Shift</0> when clicking to do it instantaneously"
+      "tooltip": "Frame the object by moving the camera in a straight line and rotate towards it. Hold <0>Shift</0> when clicking to do it instantaneously"
     }
   },
   "property": {
