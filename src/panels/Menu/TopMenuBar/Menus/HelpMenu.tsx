@@ -33,7 +33,7 @@ export function HelpMenu() {
   const { addWindow } = useWindowLayoutProvider();
 
   function openGuiInBrowser() {
-    window.open(`${webGuiUrl}/gui`, '_blank');
+    window.open(`${webGuiUrl}/gui/#/routes`, '_blank');
   }
 
   return (
