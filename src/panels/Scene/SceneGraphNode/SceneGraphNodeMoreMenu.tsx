@@ -5,6 +5,7 @@ import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
+import { useIsSgnFocusable } from '@/hooks/sceneGraphNodes/hooks';
 import { DeleteIcon, OpenWindowIcon, VerticalDotsIcon } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
@@ -28,6 +29,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
   const propertyOwner = usePropertyOwner(uri);
   const anchorNode = useAnchorNode();
   const confirmRemoveSgn = useRemoveSceneGraphNodeModal();
+  const isFocusable = useIsSgnFocusable(uri);
 
   const { addWindow } = useWindowLayoutProvider();
 
@@ -62,27 +64,29 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
           {t('pop-out')}
         </Button>
         <Divider m={'xs'} />
-        <Stack gap={'xs'}>
-          <Group gap={'xs'}>
-            <NodeNavigationButton
-              type={NavigationType.Fly}
-              identifier={propertyOwner.identifier}
-              showLabel
-            />
-            <NodeNavigationButton
-              type={NavigationType.Jump}
-              identifier={propertyOwner.identifier}
-              showLabel
-            />
-          </Group>
-          <Group gap={'xs'}>
-            <NodeNavigationButton
-              type={NavigationType.Frame}
-              identifier={propertyOwner.identifier}
-              showLabel
-            />
-          </Group>
-        </Stack>
+        {isFocusable && (
+          <Stack gap={'xs'}>
+            <Group gap={'xs'}>
+              <NodeNavigationButton
+                type={NavigationType.Fly}
+                identifier={propertyOwner.identifier}
+                showLabel
+              />
+              <NodeNavigationButton
+                type={NavigationType.Jump}
+                identifier={propertyOwner.identifier}
+                showLabel
+              />
+            </Group>
+            <Group gap={'xs'}>
+              <NodeNavigationButton
+                type={NavigationType.Frame}
+                identifier={propertyOwner.identifier}
+                showLabel
+              />
+            </Group>
+          </Stack>
+        )}
         <Divider m={'xs'} />
         <Group gap={'xs'}>
           <Button
