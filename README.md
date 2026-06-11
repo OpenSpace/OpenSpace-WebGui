@@ -17,6 +17,7 @@ open http://localhost:4690
 
 ## Additional Scripts
 The following steps create a build that will be placed in a folder `dist` which can be deployed.
+
 ```sh
 # build frontend
 npm run build
@@ -27,6 +28,7 @@ npm run preview
 ```
 
 Format code using Prettier and ESLint
+
 ```sh
 # Preview changes - Will output a list of changes necessary to adhere to the rules
 npm run lint
@@ -58,6 +60,7 @@ We apply a custom theme to the Mantine components. If you are building a separat
 * [`@hello-pangea/dnd`](https://github.com/hello-pangea/dnd) is used for drag-and-drop lists.
 
 ## Guidelines
+
  - Make sure the code adheres to ESLint and Prettier rules - Run the necessary commands (see Additional Scripts) before pushing code.
  - If you need to disable an ESLint or Prettier rule, there needs to be a comment explaining why
  - Do not use type `any` unless absolutely necessary, add a comment explaining why `any` is used over a specified type
@@ -67,19 +70,21 @@ We apply a custom theme to the Mantine components. If you are building a separat
  - Avoid passing JSX as props, function arguments, or return values unless absolutely necessary, and only if the JSX is small.
  - Avoid storing JSX in variables unless necessary.
  - If a component becomes complex, consider breaking it into smaller components and/or leveraging hooks.
- - As much as possible, adhere to accessibility standards for contrast, keyboard navigation, etc. See additional information [here](https://docs.openspaceproject.com/latest/contribute/development/ui-accessibility.html).
+ - As much as possible, adhere to accessibility standards for contrast, keyboard navigation, etc. See [additional information](https://docs.openspaceproject.com/latest/contribute/development/ui-accessibility.html).
 
  - Follow the **Hooks Order** as much as possible.
 
 ## Guide: how to add a new panel
+
   - Create a panel by making a new component and place it in a folder in the `src/panels` folder. The folder name should be the same as the component name. For example, if you create a new panel called `MyPanel`, create a folder called `MyPanel` and place the component in there. The panel name should end with "Panel": `MyPanel` is okay, but `MyComponent` is not.
-  * Hooks, types, and util functions that are only used in that panel can be placed in the same folder. If you have a lot of files, consider creating subfolders for hooks, types, and utils.
+  - Hooks, types, and util functions that are only used in that panel can be placed in the same folder. If you have a lot of files, consider creating subfolders for hooks, types, and utils.
   - Include the panel in `src/windowmanagement/data/LazyLoads.tsx` and `src/windowmanagement/data/MenuItems.tsx`. This will make it appear in the menus.
   - We also need to add the panel to the OpenSpace Launcher. To do this, save a layout file by clicking `View > Save Toolbar Settings` and overwrite the JSON file at `OpenSpace > data > web > default_ui_panels.json`.
   - This change in the engine needs to be committed to an engine branch.
   - Done!
 
 ### Hooks Order
+
  - For cleaner code, we adhere to the following **hooks order** whenever possible. In some situations, a hook is derived from a "lower order" hook, in which case the order can be swapped.
  - Order:
    - useTranslation
@@ -97,7 +102,7 @@ We apply a custom theme to the Mantine components. If you are building a separat
 ## A note on arrow function returns
 Use the implicit return only when something actually is returned; for example:
 
-```
+```ts
 // ✅
 const double = n => n * 2;
 const getLabel = user => user.name;
@@ -105,7 +110,8 @@ const doubled = nums.map(n => n * 2);
 ```
 
 If the function doesn't return anything meaningful, always use a function body with no `return` statement.
-```
+
+```ts
 // ❌ Avoid — implicit return on a function that isn't meant to return a value
 users.forEach(user => updateUser(user));
 
@@ -117,6 +123,7 @@ users.forEach(user => {
 
 ### Exception: JSX event handlers
 Inline arrow functions in JSX props (e.g. onClick) may use a concise body if they contain a single expression. In this case, it's already clear that the function is not returning a value.
+
 ```jsx
 // ✅ This is ok even though updateValue does not return anything
 <Component onClick={() => updateValue(!checked, isImmediate)} />
