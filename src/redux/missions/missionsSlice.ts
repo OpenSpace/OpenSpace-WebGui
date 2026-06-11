@@ -61,10 +61,10 @@ export const missionsSlice = createSlice({
       });
 
       // If no mission was loaded or if the previously selected mission was removed,
-      // automatically select first available mission from the updated list if one exists
+      // automatically select last available mission from the updated list if one exists
       const isSelectedMissionLoaded = state.selectedMissionIdentifier in state.missions;
       if (!isSelectedMissionLoaded) {
-        state.selectedMissionIdentifier = Object.keys(state.missions)[0] ?? '';
+        state.selectedMissionIdentifier = Object.keys(state.missions).at(-1) ?? '';
       }
 
       return state;
