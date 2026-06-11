@@ -20,7 +20,7 @@ export function WindowMenuEntries({ items }: Props) {
             leftSection={item.renderIcon?.(IconSize.xs)}
             onClick={() =>
               addWindow(item.content, {
-                title: item.title,
+                title: item.title(),
                 position: item.preferredPosition,
                 id: item.componentID,
                 floatPosition: item.floatPosition
@@ -34,7 +34,7 @@ export function WindowMenuEntries({ items }: Props) {
             }}
             flex={1}
           >
-            {item.title}
+            {item.title()}
           </Menu.Item>
           <Box w={IconSize.md}>
             {item.isOpen && (

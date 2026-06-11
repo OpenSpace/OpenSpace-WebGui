@@ -1,4 +1,5 @@
 import React from 'react';
+import i18next from 'i18next';
 
 import {
   BrowserIcon,
@@ -55,7 +56,7 @@ import {
 } from './LazyLoads';
 
 export interface MenuItem {
-  title: string; // Title of the rc-dock tab
+  title: () => string; // Title of the rc-dock tab
   componentID: string; // Unqiue ID to identify this component among the rc-dock tabs
   content: React.ReactNode; // Content to render inside the rc-dock tab
   renderMenuButton?: (id: string) => React.JSX.Element; // Custom menu button to render
@@ -69,7 +70,7 @@ export interface MenuItem {
 
 export const menuItemsData: Record<string, MenuItem> = {
   scene: {
-    title: 'Scene',
+    title: () => i18next.t('menu:panels.scene'),
     componentID: 'scene',
     content: <Scene />,
     renderMenuButton: (id) => (
@@ -83,7 +84,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Ungrouped'
   },
   settings: {
-    title: 'Settings',
+    title: () => i18next.t('menu:panels.settings'),
     componentID: 'settings',
     content: <SettingsPanel />,
     renderMenuButton: (id) => (
@@ -97,7 +98,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Ungrouped'
   },
   navigation: {
-    title: 'Navigation',
+    title: () => i18next.t('menu:panels.navigation'),
     componentID: 'navigation',
     content: <NavigationPanel />,
     renderMenuButton: (id) => <NavigationPanelMenuButton id={id} />,
@@ -108,7 +109,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Ungrouped'
   },
   timePanel: {
-    title: 'Time Panel',
+    title: () => i18next.t('menu:panels.timePanel'),
     componentID: 'timePanel',
     content: <TimePanel />,
     renderMenuButton: (id) => (
@@ -123,7 +124,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Ungrouped'
   },
   sessionRecording: {
-    title: 'Session Recording',
+    title: () => i18next.t('menu:panels.sessionRecording'),
     componentID: 'sessionRecording',
     content: <SessionRecordingPanel />,
     renderMenuButton: (id) => <SessionRecordingMenuButton id={id} />,
@@ -133,7 +134,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Other'
   },
   geoLocation: {
-    title: 'Geo Location',
+    title: () => i18next.t('menu:panels.geoLocation'),
     componentID: 'geoLocation',
     content: <GeoLocationPanel />,
     renderIcon: (size) => <LocationPinIcon size={size} />,
@@ -142,7 +143,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Content'
   },
   screenSpaceRenderables: {
-    title: 'Screenspace Renderables',
+    title: () => i18next.t('menu:panels.screenSpaceRenderables'),
     componentID: 'screenSpaceRenderables',
     content: <ScreenSpaceRenderablePanel />,
     renderIcon: (size) => <InsertPhotoIcon size={size} />,
@@ -151,7 +152,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Ungrouped'
   },
   exoplanets: {
-    title: 'Exoplanets',
+    title: () => i18next.t('menu:panels.exoplanets'),
     componentID: 'exoplanets',
     content: <ExoplanetsPanel />,
     renderIcon: (size) => <ExoplanetIcon size={size} />,
@@ -160,7 +161,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Content'
   },
   userPanels: {
-    title: 'User Panels',
+    title: () => i18next.t('menu:panels.userPanels'),
     componentID: 'userPanels',
     content: <UserPanelsPanel />,
     renderIcon: (size) => <BrowserIcon size={size} />,
@@ -169,7 +170,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Other'
   },
   actions: {
-    title: 'Actions',
+    title: () => i18next.t('menu:panels.actions'),
     componentID: 'actions',
     content: <ActionsPanel />,
     renderIcon: (size) => <DashboardIcon size={size} />,
@@ -178,7 +179,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Ungrouped'
   },
   skyBrowser: {
-    title: 'SkyBrowser',
+    title: () => i18next.t('menu:panels.skyBrowser'),
     componentID: 'skyBrowser',
     content: <SkyBrowserPanel />,
     renderIcon: (size) => <TelescopeIcon size={size} />,
@@ -187,7 +188,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Content'
   },
   mission: {
-    title: 'Mission',
+    title: () => i18next.t('menu:panels.mission'),
     componentID: 'mission',
     content: <MissionsPanel />,
     renderIcon: (size) => <RocketLaunchIcon size={size} />,
@@ -196,7 +197,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Content'
   },
   flightControl: {
-    title: 'Flight Control',
+    title: () => i18next.t('menu:panels.flightControl'),
     componentID: 'flightControl',
     content: <FlightControlPanel />,
     renderIcon: (size) => <ExpandArrowsIcon size={size} />,
@@ -205,7 +206,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Other'
   },
   keybindingsLayout: {
-    title: 'Keybinds',
+    title: () => i18next.t('menu:panels.keybindingsLayout'),
     componentID: 'keybindingsLayout',
     content: <KeybindsPanel />,
     renderIcon: (size) => <KeyboardIcon size={size} />,
@@ -215,7 +216,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Help'
   },
   nightSky: {
-    title: 'Night Sky',
+    title: () => i18next.t('menu:panels.nightSky'),
     componentID: 'nightSky',
     content: <NightSkyPanel />,
     renderIcon: (size) => <NightSkyIcon size={size} />,
@@ -224,7 +225,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Content'
   },
   gettingStartedTour: {
-    title: 'Getting Started Tour',
+    title: () => i18next.t('menu:panels.gettingStartedTour'),
     componentID: 'gettingStartedTour',
     content: <GettingStartedPanel />,
     renderIcon: (size) => <RouteIcon size={size} style={{ transform: 'scale(-1)' }} />,
@@ -234,7 +235,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Help'
   },
   scriptLogPanel: {
-    title: 'Script Log',
+    title: () => i18next.t('menu:panels.scriptLogPanel'),
     componentID: 'scriptLogPanel',
     content: <ScriptLogPanel />,
     renderIcon: (size) => <ScriptLogIcon size={size} />,
@@ -243,7 +244,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Other'
   },
   globeImageryBrowserPanel: {
-    title: 'Globe Imagery Browser',
+    title: () => i18next.t('menu:panels.globeImageryBrowserPanel'),
     componentID: 'globeImageryBrowserPanel',
     content: <GlobeImageryBrowserPanel />,
     renderIcon: (size) => <GlobeIcon size={size} />,
@@ -252,7 +253,7 @@ export const menuItemsData: Record<string, MenuItem> = {
     group: 'Content'
   },
   assetsPanel: {
-    title: 'Assets',
+    title: () => i18next.t('menu:panels.assetsPanel'),
     componentID: 'assetsPanel',
     content: <AssetsPanel />,
     renderIcon: (size) => <OpenFolderIcon size={size} />,
@@ -265,7 +266,7 @@ export const menuItemsData: Record<string, MenuItem> = {
 if (import.meta.env.DEV) {
   // Add an extra panel for dev-specific content
   menuItemsData.devPanel = {
-    title: 'Dev Panel',
+    title: () => i18next.t('menu:panels.devPanel'),
     componentID: 'devPanel',
     content: <DevPanel />,
     renderIcon: (size) => <DevIcon size={size} />,

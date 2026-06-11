@@ -109,7 +109,7 @@ export function ViewMenu() {
                     )
                   }
                 >
-                  {item.title}
+                  {item.title()}
                 </Menu.Item>
               );
             }}

@@ -5,7 +5,7 @@ import { modals } from '@mantine/modals';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useProperty } from '@/hooks/properties';
-import { ConsoleIcon, DummyIcon, ExitAppIcon } from '@/icons/icons';
+import { ConsoleIcon, ExitAppIcon, InformationCircleOutlineIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import styles from '@/theme/global.module.css';
 
@@ -42,7 +42,7 @@ export function FileMenu() {
   }
 
   return (
-    <TopBarMenuWrapper targetTitle={'File'} closeOnItemClick={false}>
+    <TopBarMenuWrapper targetTitle={t('title')} closeOnItemClick={false}>
       {!profile.initalized ? (
         <LoadingBlocks n={1} />
       ) : (
@@ -52,7 +52,7 @@ export function FileMenu() {
           </Menu.Label>
           <Menu.Sub position={'right-start'} withinPortal={false}>
             <Menu.Sub.Target>
-              <Menu.Sub.Item leftSection={<DummyIcon color={'transparent'} />}>
+              <Menu.Sub.Item leftSection={<InformationCircleOutlineIcon />}>
                 {t('about.label')}
               </Menu.Sub.Item>
             </Menu.Sub.Target>

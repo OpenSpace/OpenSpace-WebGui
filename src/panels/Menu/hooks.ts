@@ -80,7 +80,7 @@ export function useMenuItemsByGroup<Included extends MenuItemGroup = MenuItemGro
     // order defined by the `menuItemsData`
     for (const group of groups) {
       if (group !== 'Ungrouped') {
-        menuItemsByGroup[group].sort((a, b) => a.title.localeCompare(b.title));
+        menuItemsByGroup[group].sort((a, b) => a.title().localeCompare(b.title()));
       }
     }
 
@@ -104,7 +104,7 @@ function useShowWindowOnStart(shouldShow: boolean, menuItem: MenuItem) {
       // Open the window if it is visible
       addWindow(menuItem.content, {
         id: menuItem.componentID,
-        title: menuItem.title,
+        title: menuItem.title(),
         position: menuItem.preferredPosition,
         floatPosition: menuItem.floatPosition
       });
@@ -178,7 +178,7 @@ export function useStoredLayout() {
         const item = menuItemsData[layoutItem.id];
         addWindow(item.content, {
           id: item.componentID,
-          title: item.title,
+          title: item.title(),
           position: item.preferredPosition,
           floatPosition: item.floatPosition
         });
