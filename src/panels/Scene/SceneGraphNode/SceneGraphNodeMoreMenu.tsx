@@ -64,29 +64,29 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
           {t('pop-out')}
         </Button>
         {isFocusable && (
-        <>
-          <Divider m={'xs'} />}
-          <Stack gap={'xs'}>
-            <Group gap={'xs'}>
-              <NodeNavigationButton
-                type={NavigationType.Fly}
-                identifier={propertyOwner.identifier}
-                showLabel
-              />
-              <NodeNavigationButton
-                type={NavigationType.Jump}
-                identifier={propertyOwner.identifier}
-                showLabel
-              />
-            </Group>
-            <Group gap={'xs'}>
-              <NodeNavigationButton
-                type={NavigationType.Frame}
-                identifier={propertyOwner.identifier}
-                showLabel
-              />
-            </Group>
-          </Stack>
+          <>
+            <Divider m={'xs'} />
+            <Stack gap={'xs'}>
+              <Group gap={'xs'}>
+                <NodeNavigationButton
+                  type={NavigationType.Fly}
+                  identifier={propertyOwner.identifier}
+                  showLabel
+                />
+                <NodeNavigationButton
+                  type={NavigationType.Jump}
+                  identifier={propertyOwner.identifier}
+                  showLabel
+                />
+              </Group>
+              <Group gap={'xs'}>
+                <NodeNavigationButton
+                  type={NavigationType.Frame}
+                  identifier={propertyOwner.identifier}
+                  showLabel
+                />
+              </Group>
+            </Stack>
           </>
         )}
         <Divider m={'xs'} />
