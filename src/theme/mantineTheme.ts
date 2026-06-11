@@ -7,6 +7,7 @@ import {
   CSSVariablesResolver,
   defaultVariantColorsResolver,
   Divider,
+  Menu,
   MultiSelect,
   RangeSlider,
   Select,
@@ -137,6 +138,11 @@ export const theme = createTheme({
     MultiSelect: MultiSelect.extend({
       defaultProps: {
         scrollAreaProps: { type: 'auto', scrollbarSize: 8 }
+      }
+    }),
+    Menu: Menu.extend({
+      defaultProps: {
+        closeDelay: 200
       }
     })
   },
