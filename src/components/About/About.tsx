@@ -33,7 +33,7 @@ export function About({ opened, close }: Props) {
   const contributorsStatus = useAppSelector((state) => state.contributors.status);
 
   useEffect(() => {
-    if (opened && contributorsStatus === 'idle') {
+    if (opened && (contributorsStatus === 'idle' || contributorsStatus === 'failed')) {
       dispatch(getContributors());
     }
   }, [opened, contributorsStatus, dispatch]);
