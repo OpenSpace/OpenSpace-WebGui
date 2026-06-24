@@ -97,7 +97,7 @@ ${entries}
 `;
 }
 
-function main() {
+async function main() {
   const inputPath = process.argv[2];
   if (!inputPath) {
     console.error('Error: No input file specified.');
