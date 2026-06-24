@@ -18,6 +18,7 @@ import {
   FrameFocusIcon,
   LightningFlashIcon
 } from '@/icons/icons';
+import { useAppSelector } from '@/redux/hooks';
 import { NavigationType } from '@/types/enums';
 import { Identifier } from '@/types/types';
 
@@ -81,6 +82,9 @@ export function NodeNavigationButton({
 
   const engineMode = useSubscribeToEngineMode();
   const luaApi = useOpenSpaceApi();
+  const flyToOverrideDuration = useAppSelector(
+    (state) => state.local.menus.navigation.flyToOverrideDuration
+  );
 
   const isInPlayback = engineMode === EngineMode.SessionRecordingPlayback;
 
@@ -95,6 +99,8 @@ export function NodeNavigationButton({
   function flyTo(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     if (event.shiftKey) {
       luaApi?.navigation.flyTo(identifier, 0.0);
+    } else if (flyToOverrideDuration.enabled) {
+      luaApi?.navigation.flyTo(identifier, flyToOverrideDuration.duration);
     } else {
       luaApi?.navigation.flyTo(identifier);
     }
