@@ -107,5 +107,5 @@ export function computeAltitude(place: MatchedLocation) {
   } else if (place.diameter) {
     return calculateAltitudeExtraTerrestial(place.diameter);
   }
-  return 0; // Default altitude if no diameter or extent is provided
+  return 10.0; // Default altitude if no diameter or extent is provided
 }
