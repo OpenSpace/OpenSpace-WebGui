@@ -46,7 +46,8 @@
     "title": "Navigation Settings",
     "include-non-focusable-label": "Include Non-focusable Nodes in Search",
     "include-non-focusable-description": "Per default, nodes that are marked as non-focusable from the search in the navigation menu. Checking this option will include them and allow setting these nodes as focus.",
-    "camera-path-settings": "Camera Path Settings"
+    "camera-path-settings": "Camera Path Settings",
+    "override-fly-to-duration-label": "Override Fly-to Duration"
   },
   "remaining-flight-time-indicator": {
     "flying-to": "Flying to {{target}}",
