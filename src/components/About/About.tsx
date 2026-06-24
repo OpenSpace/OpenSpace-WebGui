@@ -99,6 +99,7 @@ export function About({ opened, close }: Props) {
                     key={contributor.login}
                     href={contributor.htmlUrl}
                     target={'_blank'}
+                    rel={'noopener noreferrer'}
                     underline={'never'}
                     c={'inherit'}
                   >
