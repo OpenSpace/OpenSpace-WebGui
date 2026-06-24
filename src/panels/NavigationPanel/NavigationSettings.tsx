@@ -83,12 +83,16 @@ export function NavigationSettings() {
               min={0}
               max={60}
               step={1.25}
+              clampBehavior={'strict'}
               suffix={'s'}
               disabled={!flyToOverrideDuration.enabled}
               value={flyToOverrideDuration.duration}
-              onChange={(value) =>
-                dispatch(setFlyToOverrideDuration(typeof value === 'number' ? value : 0))
-              }
+              onChange={(value) => {
+                if (typeof value !== 'number' || Number.isNaN(value)) {
+                  return;
+                }
+                dispatch(setFlyToOverrideDuration(value));
+              }}
             />
           </Group>
         </Stack>
