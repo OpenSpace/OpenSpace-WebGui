@@ -131,7 +131,7 @@ export function About({ opened, close }: Props) {
                   </Text>
                   <Text size={'sm'}>
                     <Text span fw={600}>{t('third-party-url-label')}: </Text>
-                    <Anchor href={dep.url} target={'_blank'} size={'sm'}>
+                    <Anchor href={dep.url} target={'_blank'} rel={'noopener noreferrer'} size={'sm'}>
                       {dep.url}
                     </Anchor>
                   </Text>
