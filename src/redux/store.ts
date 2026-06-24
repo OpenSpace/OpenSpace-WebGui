@@ -4,6 +4,7 @@ import { actionsReducer } from './actions/actionsSlice';
 import { cameraReducer } from './camera/cameraSlice';
 import { cameraPathReducer } from './camerapath/cameraPathSlice';
 import { connectionReducer } from './connection/connectionSlice';
+import { contributorsReducer } from './contributors/contributorsSlice';
 import { documentationReducer } from './documentation/documentationSlice';
 import { engineModeReducer } from './enginemode/engineModeSlice';
 import { exoplanetsReducer } from './exoplanets/exoplanetsSlice';
@@ -28,6 +29,7 @@ export const store = configureStore({
     camera: cameraReducer,
     cameraPath: cameraPathReducer,
     connection: connectionReducer,
+    contributors: contributorsReducer,
     documentation: documentationReducer,
     engineMode: engineModeReducer,
     exoplanets: exoplanetsReducer,
