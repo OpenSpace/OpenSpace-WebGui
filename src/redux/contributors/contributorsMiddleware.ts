@@ -21,7 +21,7 @@ async function fetchAllContributorsForRepo(repo: string): Promise<GitHubContribu
       `https://api.github.com/repos/${repo}/contributors?per_page=100&page=${page}`
     );
     if (!response.ok) {
-      break;
+      return [];
     }
     const data: GitHubApiContributor[] = await response.json();
     if (data.length === 0) {
