@@ -4,7 +4,14 @@
     "logo-alt-text": "OpenSpace logo",
     "about-openspace-description": "OpenSpace is open-source interactive data visualization software designed to visualize the entire known universe and portray our ongoing efforts to investigate the cosmos.",
     "fetching-version-number": "Fetching OpenSpace version...",
-    "custom-version-number": "Custom"
+    "custom-version-number": "Custom",
+    "openspace-institutions": "OpenSpace is stewarded by Linköping University and the American Museum of Natural History with support from NASA, the Swedish e-Science Research Center, and the Knut and Alice Wallenberg Foundation.",
+    "contributors-title": "Contributors",
+    "contributors-loading": "Loading contributors...",
+    "contributors-error": "Failed to load contributors",
+    "third-party-title": "Third Party Licenses",
+    "third-party-license-label": "License",
+    "third-party-url-label": "URL"
   },
   "clear-button": {
     "aria-label": "Clear"
