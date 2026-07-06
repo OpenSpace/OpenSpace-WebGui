@@ -6,7 +6,6 @@ import {
   Box,
   Code,
   Container,
-  Grid,
   Group,
   Image,
   Modal,
