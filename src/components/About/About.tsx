@@ -80,7 +80,11 @@ export function About({ opened, close }: Props) {
             <Text>
               &copy; 2014 - {new Date().getFullYear()} OpenSpace Development Team
             </Text>
-            <Anchor href={'https://www.openspaceproject.com/'} target={'_blank'}>
+            <Anchor
+              href={'https://www.openspaceproject.com/'}
+              target={'_blank'}
+              rel={'noopener noreferrer'}
+            >
               openspaceproject.com
             </Anchor>
             <Text>{t('openspace-institutions')}</Text>
