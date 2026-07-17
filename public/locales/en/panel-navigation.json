@@ -44,8 +44,13 @@
   },
   "navigation-settings": {
     "title": "Navigation Settings",
-    "include-non-focusable-label": "Include Non-focusable Nodes in Search",
+    "include-non-focusable-label": "Include non-focusable nodes in search",
     "include-non-focusable-description": "Per default, nodes that are marked as non-focusable from the search in the navigation menu. Checking this option will include them and allow setting these nodes as focus.",
+    "show-hidden-nodes-label": "Include hidden nodes in search",
+    "show-hidden-nodes-description": [
+      "If checked, scene graph nodes that are marked as hidden will be included in the search results in the navigation menu and allow setting these nodes as focus.",
+      "Note that these nodes are often not marked as focusable, so you may also need to enable the option above to include them."
+    ],
     "camera-path-settings": "Camera Path Settings"
   },
   "remaining-flight-time-indicator": {
