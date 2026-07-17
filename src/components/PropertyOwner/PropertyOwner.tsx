@@ -7,7 +7,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { propertySelectors } from '@/redux/propertytree/propertySlice';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
-import { isGlobeLayersUri, isTypeRenderableGlobe, parentTypeUri } from '@/util/uris';
+import { isGlobeLayersUri, parentTypeUri } from '@/util/uris';
 
 import { GlobeLayersPropertyOwner } from './Custom/GlobeLayers/GlobeLayersPropertyOwner';
 import { VideoPlayerPropertyOwner } from './Custom/VideoPlayer/VideoPlayerPropertyOwner';
@@ -43,7 +43,7 @@ export function PropertyOwner({
 
   const isGlobeLayers =
     typeof parentType === 'string' &&
-    isTypeRenderableGlobe(parentType) &&
+    parentType === 'RenderableGlobe' &&
     isGlobeLayersUri(uri);
 
   const hasVisibleChildren = useHasVisibleChildren(uri);
