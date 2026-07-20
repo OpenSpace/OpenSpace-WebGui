@@ -4,8 +4,12 @@ import { Container, Divider, Menu } from '@mantine/core';
 import { BoolInput } from '@/components/Input/BoolInput';
 import { Property } from '@/components/Property/Property';
 import { SettingsPopout } from '@/components/SettingsPopout/SettingsPopout';
+import { TextParagraphs } from '@/components/TextParagraphs/TextParagraphs';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setOnlyFocusableInNavMenu } from '@/redux/local/localSlice';
+import {
+  setOnlyFocusableInNavMenu,
+  setShowHiddenNodesInNavMenu
+} from '@/redux/local/localSlice';
 import {
   ApplyIdleMotionOnPathFinishKey,
   CameraPathArrivalDistanceFactorKey,
@@ -16,8 +20,8 @@ import {
 export function NavigationSettings() {
   const { t } = useTranslation('panel-navigation', { keyPrefix: 'navigation-settings' });
 
-  const showOnlyFocusableInSearch = useAppSelector(
-    (state) => state.local.menus.navigation.onlyFocusable
+  const { onlyFocusable: showOnlyFocusableInSearch, showHiddenNodes } = useAppSelector(
+    (state) => state.local.menus.navigation
   );
 
   const dispatch = useAppDispatch();
@@ -30,6 +34,17 @@ export function NavigationSettings() {
           value={!showOnlyFocusableInSearch}
           onChange={(value: boolean) => dispatch(setOnlyFocusableInNavMenu(!value))}
           info={t('include-non-focusable-description')}
+          mb={'xs'}
+        />
+        <BoolInput
+          label={t('show-hidden-nodes-label')}
+          value={showHiddenNodes}
+          onChange={(value: boolean) => dispatch(setShowHiddenNodesInNavMenu(value))}
+          info={
+            <TextParagraphs
+              paragraphs={t('show-hidden-nodes-description', { returnObjects: true })}
+            />
+          }
           mb={'xs'}
         />
         <Property uri={JumpToFadeDurationKey} />

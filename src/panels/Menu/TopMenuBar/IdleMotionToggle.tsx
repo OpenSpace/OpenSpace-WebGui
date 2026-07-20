@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Chip, Group, Text } from '@mantine/core';
 
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { TextParagraphs } from '@/components/TextParagraphs/TextParagraphs';
 import { useProperty } from '@/hooks/properties';
 import { KeybindButtons } from '@/panels/KeybindsPanel/KeybindButtons';
 import { useAppSelector } from '@/redux/hooks';
@@ -33,11 +34,7 @@ export function IdleMotionToggle() {
         <Text size={'md'} fw={'bold'}>
           {t('info.heading')}
         </Text>
-        {t('info.description', { returnObjects: true }).map((text, index) => (
-          <Text key={index} mb={'xs'}>
-            {text}
-          </Text>
-        ))}
+        <TextParagraphs paragraphs={t('info.description', { returnObjects: true })} />
         {keybind && (
           <Group>
             <Text fw={'bold'}>{t('info.keybind-label')}</Text>
