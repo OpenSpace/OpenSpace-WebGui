@@ -13,6 +13,9 @@ export const CameraPathArrivalDistanceFactorKey =
   'NavigationHandler.PathNavigator.ArrivalDistanceFactor';
 export const CameraPathSpeedFactorKey = 'NavigationHandler.PathNavigator.SpeedScale';
 export const JumpToFadeDurationKey = 'NavigationHandler.JumpToFadeDuration';
+export const UseCustomFlyToDuration =
+  'NavigationHandler.PathNavigator.UseCustomFlyToDuration';
+export const CustomFlyToDuration = 'NavigationHandler.PathNavigator.CustomFlyToDuration';
 
 // To get any scene graph node you need ScenePrefix+NodeIdentifier
 export const ScenePrefixKey = 'Scene.';

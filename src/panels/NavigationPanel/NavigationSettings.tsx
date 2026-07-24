@@ -10,7 +10,9 @@ import {
   ApplyIdleMotionOnPathFinishKey,
   CameraPathArrivalDistanceFactorKey,
   CameraPathSpeedFactorKey,
-  JumpToFadeDurationKey
+  CustomFlyToDuration,
+  JumpToFadeDurationKey,
+  UseCustomFlyToDuration
 } from '@/util/keys';
 
 export function NavigationSettings() {
@@ -40,6 +42,8 @@ export function NavigationSettings() {
         <Property uri={CameraPathSpeedFactorKey} />
         <Property uri={CameraPathArrivalDistanceFactorKey} />
         <Property uri={ApplyIdleMotionOnPathFinishKey} />
+        <Property uri={UseCustomFlyToDuration} />
+        <Property uri={CustomFlyToDuration} />
       </Container>
     </SettingsPopout>
   );
