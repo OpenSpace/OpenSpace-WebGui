@@ -8,10 +8,6 @@ export interface LocalState {
     navigation: {
       // Whether to show non-focusable nodes in the navigation menu search results
       onlyFocusable: boolean;
-      flyToOverrideDuration: {
-        enabled: boolean;
-        duration: number;
-      };
     };
   };
   sceneTree: {
@@ -28,11 +24,7 @@ export interface LocalState {
 const initialState: LocalState = {
   menus: {
     navigation: {
-      onlyFocusable: true,
-      flyToOverrideDuration: {
-        enabled: false,
-        duration: 5
-      }
+      onlyFocusable: true
     }
   },
   // @TODO: (emmbr 2025-04-09): Consider moving this to the menus object above. did not
@@ -82,14 +74,6 @@ export const localSlice = createSlice({
       state.menus.navigation.onlyFocusable = action.payload;
       return state;
     },
-    setFlyToOverrideDurationEnabled: (state, action: PayloadAction<boolean>) => {
-      state.menus.navigation.flyToOverrideDuration.enabled = action.payload;
-      return state;
-    },
-    setFlyToOverrideDuration: (state, action: PayloadAction<number>) => {
-      state.menus.navigation.flyToOverrideDuration.duration = action.payload;
-      return state;
-    },
     setMenuItemVisible: (
       state,
       action: PayloadAction<{ id: string; visible: boolean }>
@@ -124,8 +108,6 @@ export const {
   setSceneTreeNodeExpanded,
   setSceneTreeSelectedNode,
   setOnlyFocusableInNavMenu,
-  setFlyToOverrideDurationEnabled,
-  setFlyToOverrideDuration,
   setMenuItemVisible,
   setMenuItemOpen,
   setMenuItemsConfig,
