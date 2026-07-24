@@ -9,6 +9,7 @@ import {
   Group,
   Image,
   Modal,
+  ScrollArea,
   SimpleGrid,
   Stack,
   Text,
@@ -61,7 +62,7 @@ export function About({ opened, close }: Props) {
       title={t('modal-title')}
       size={'xxl'}
       closeButtonProps={{ 'aria-label': 'Close about' }}
-      scrollAreaComponent={Modal.NativeScrollArea}
+      scrollAreaComponent={ScrollArea.Autosize}
     >
       <Container px={'xs'}>
         <Group wrap={'nowrap'} align={'top'}>
