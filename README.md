@@ -52,6 +52,7 @@ npm run rule-check
 ```
 
 ## Components
+
 We are using a component library called [Mantine](https://mantine.dev). These components fulfill accessibility requirements and come with correct styling out of the box. Use these as much as possible when writing your own React components.
 We apply a custom theme to the Mantine components. If you are building a separate webpage and want the same styling, copy the theme from `src/app/theme/mantineTheme.ts`.
 
