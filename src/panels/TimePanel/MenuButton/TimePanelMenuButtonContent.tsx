@@ -23,7 +23,8 @@ export function TimePanelMenuButtonContent() {
   const date = new Date(timeCapped ?? '');
   const isValidDate = isDateValid(date);
 
-  const timeLabel = isValidDate ? date.toUTCString() : t('menu-button.error');
+  let timeLabel = isValidDate ? date.toUTCString() : t('menu-button.error');
+  timeLabel = timeLabel.slice(0, 12) + 'XXXX' + timeLabel.slice(16);
   const speedLabel = getFormattedSpeedLabel();
 
   function getFormattedSpeedLabel() {

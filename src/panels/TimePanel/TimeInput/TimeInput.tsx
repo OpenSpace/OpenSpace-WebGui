@@ -281,7 +281,7 @@ export function TimeInput({ disabled }: Props) {
           </Tooltip>
           <Group gap={5} wrap={'nowrap'}>
             <TimeIncrementInput
-              value={time.getUTCFullYear()}
+              value={'XXXX'}
               onInputEnter={(value) => onTimeInput(TimePart.Years, value)}
               onInputChangeStep={(change) => onTimeInputRelative(TimePart.Years, change)}
               onInputChange={onYearChange}
