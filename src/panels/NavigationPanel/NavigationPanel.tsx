@@ -36,8 +36,8 @@ export function NavigationPanel() {
     return aimProp?.value !== anchorProp?.value && aimProp?.value !== '';
   });
 
-  const showOnlyFocusable = useAppSelector(
-    (state) => state.local.menus.navigation.onlyFocusable
+  const { onlyFocusable: showOnlyFocusable, showHiddenNodes } = useAppSelector(
+    (state) => state.local.menus.navigation
   );
 
   const [navigationMode, setNavigationMode] = useState(
@@ -56,10 +56,10 @@ export function NavigationPanel() {
 
   const featuredNodes = useFeaturedNodes();
 
-  // @TODO (2024-04-08, emmbr): Expose these filters to the user? Could also include tags
   const searchableNodes = useSceneGraphNodes({
-    includeGuiHiddenNodes: false,
-    onlyFocusable: showOnlyFocusable
+    includeGuiHiddenNodes: showHiddenNodes,
+    onlyFocusable: showOnlyFocusable,
+    onlyVisible: false
   });
   const isLoading = searchableNodes.length === 0;
 

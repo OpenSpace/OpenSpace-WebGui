@@ -8,6 +8,7 @@ export interface LocalState {
     navigation: {
       // Whether to show non-focusable nodes in the navigation menu search results
       onlyFocusable: boolean;
+      showHiddenNodes: boolean;
     };
   };
   sceneTree: {
@@ -24,7 +25,8 @@ export interface LocalState {
 const initialState: LocalState = {
   menus: {
     navigation: {
-      onlyFocusable: true
+      onlyFocusable: true,
+      showHiddenNodes: false
     }
   },
   // @TODO: (emmbr 2025-04-09): Consider moving this to the menus object above. did not
@@ -74,6 +76,10 @@ export const localSlice = createSlice({
       state.menus.navigation.onlyFocusable = action.payload;
       return state;
     },
+    setShowHiddenNodesInNavMenu: (state, action: PayloadAction<boolean>) => {
+      state.menus.navigation.showHiddenNodes = action.payload;
+      return state;
+    },
     setMenuItemVisible: (
       state,
       action: PayloadAction<{ id: string; visible: boolean }>
@@ -108,6 +114,7 @@ export const {
   setSceneTreeNodeExpanded,
   setSceneTreeSelectedNode,
   setOnlyFocusableInNavMenu,
+  setShowHiddenNodesInNavMenu,
   setMenuItemVisible,
   setMenuItemOpen,
   setMenuItemsConfig,

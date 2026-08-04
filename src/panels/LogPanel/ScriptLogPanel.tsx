@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Button, Group, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Button, Group, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
@@ -8,6 +8,7 @@ import { FilterList } from '@/components/FilterList/FilterList';
 import { wordBeginningSubString } from '@/components/FilterList/util';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { Layout } from '@/components/Layout/Layout';
+import { TextParagraphs } from '@/components/TextParagraphs/TextParagraphs';
 import { CancelIcon, RefreshIcon, RerunScriptIcon } from '@/icons/icons';
 
 import { ScriptLogEntry } from './ScriptLogEntry';
@@ -143,11 +144,9 @@ export function ScriptLogPanel() {
             </Tooltip>
           </Group>
           <InfoBox>
-            {t('script-log-tooltip', { returnObjects: true }).map((paragraph, index) => (
-              <Text key={index} mb={'xs'}>
-                {paragraph}
-              </Text>
-            ))}
+            <TextParagraphs
+              paragraphs={t('script-log-tooltip', { returnObjects: true })}
+            />
           </InfoBox>
         </Group>
       </Layout.FixedSection>
