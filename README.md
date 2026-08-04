@@ -138,9 +138,9 @@ We now support a TypeScript version of our [JavaScript API](https://github.com/O
 To generate new type information:
   1. Check out the https://github.com/OpenSpace/openspace-api-js repository
   1. In the `script` folder
-    1. Run `node .\generatetopictypes.mjs <OpenSpace>/support/types` where `<OpenSpace>` is the path to the local OpenSpace main repo
-    1. Launch OpenSpace
-    1. Run `python .\generatetypescriptfile.py`
+     1. Run `node .\generatetopictypes.mjs <OpenSpace>/support/types` where `<OpenSpace>` is the path to the local OpenSpace main repo
+     1. Launch OpenSpace
+     1. Run `python .\generatetypescriptfile.py`
   1. The new type files are now in the `src/types/generated` folder and can be committed
 
 ## Deploy
