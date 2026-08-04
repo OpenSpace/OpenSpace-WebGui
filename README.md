@@ -135,7 +135,13 @@ Use a block body ({}) if there are multiple statements or any control flow.
 ## OpenSpace JavaScript API
 We now support a TypeScript version of our [JavaScript API](https://github.com/OpenSpace/openspace-api-js). Since the API is frequently updated with new OpenSpace Lua functions, we've decided to maintain a manual copy of the TypeScript API in this repository. As such, we need to manually update the API declaration file periodically to ensure correct and proper syntax highlighting when calling Lua functions.
 
-Follow these [steps](https://github.com/OpenSpace/openspace-api-js/tree/master/script) to generate a new TypeScript file.
+To generate new type information:
+  1. Check out the https://github.com/OpenSpace/openspace-api-js repository
+  1. In the `script` folder
+    1. Run `node .\generatetopictypes.mjs <OpenSpace>/support/types` where `<OpenSpace>` is the path to the local OpenSpace main repo
+    1. Launch OpenSpace
+    1. Run `python .\generatetypescriptfile.py`
+  1. The new type files are now in the `src/types/generated` folder and can be committed
 
 ## Deploy
 TODO Steps:
