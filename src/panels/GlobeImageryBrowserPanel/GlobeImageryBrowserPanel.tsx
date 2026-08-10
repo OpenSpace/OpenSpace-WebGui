@@ -14,7 +14,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { DecoratedIcon } from '@/components/DecoratedIcon/DecoratedIcon';
+import { DecoratedAddIcon } from '@/components/DecoratedIcon/DecoratedAddIcon';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
@@ -229,11 +229,7 @@ export function GlobeImageryBrowserPanel() {
                   <Stack gap={'xs'}>
                     <Button
                       onClick={open}
-                      leftSection={
-                        <DecoratedIcon offset={{ x: 0, y: 1 }}>
-                          <ServerIcon />
-                        </DecoratedIcon>
-                      }
+                      leftSection={<DecoratedAddIcon baseIcon={<ServerIcon />} />}
                       justify={'left'}
                     >
                       {t('button-labels.add-server')}
