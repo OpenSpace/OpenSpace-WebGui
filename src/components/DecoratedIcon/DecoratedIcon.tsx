@@ -1,5 +1,11 @@
 import { PropsWithChildren } from 'react';
-import { Box, MantineSize, ThemeIcon, ThemeIconVariant } from '@mantine/core';
+import {
+  Box,
+  MantineColor,
+  MantineSize,
+  ThemeIcon,
+  ThemeIconVariant
+} from '@mantine/core';
 
 import { PlusIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
@@ -16,6 +22,11 @@ interface Props extends PropsWithChildren {
    * The variant of the decorator icon. Defaults to 'default'
    */
   decoratorVariant?: ThemeIconVariant;
+
+  /**
+   * The color of the decorator icon. Defaults to 'undefined'
+   */
+  decoratorColor?: MantineColor;
 
   /**
    * The position of the decorator icon relative to the base icon. Defaults to 'top-right'
@@ -57,6 +68,7 @@ export function DecoratedIcon({
   children,
   decoratorIcon,
   decoratorVariant = 'default',
+  decoratorColor,
   position = 'top-right',
   size = 'xs',
   offset = { x: 0, y: 0 }
@@ -109,6 +121,7 @@ export function DecoratedIcon({
           size={MappedDecoratorSize[size]}
           radius={'xs'}
           variant={decoratorVariant}
+          color={decoratorColor}
         >
           {decoratorIcon || <PlusIcon />}
         </ThemeIcon>
