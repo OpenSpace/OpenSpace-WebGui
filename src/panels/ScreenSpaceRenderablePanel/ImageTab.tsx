@@ -3,8 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, TextInput } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { DecoratedAddIcon } from '@/components/DecoratedIcon/DecoratedAddIcon';
 import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
-import { AddPhotoIcon } from '@/icons/icons';
+import { InsertPhotoIcon } from '@/icons/icons';
 import { useAppDispatch } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { IconSize, NotificationLevel } from '@/types/enums';
@@ -109,7 +110,10 @@ export function ImageTab() {
           disabled={isButtonDisabled}
           aria-label={t('image-input.add-button-aria-label')}
         >
-          <AddPhotoIcon size={IconSize.sm} />
+          <DecoratedAddIcon
+            size={'sm'}
+            baseIcon={<InsertPhotoIcon size={IconSize.sm} />}
+          />
         </ActionIcon>
       </MaybeTooltip>
     </Group>

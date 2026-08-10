@@ -3,8 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, TextInput } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { DecoratedAddIcon } from '@/components/DecoratedIcon/DecoratedAddIcon';
 import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
-import { AddBrowserIcon } from '@/icons/icons';
+import { WebIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { Identifier } from '@/types/types';
 
@@ -67,7 +68,7 @@ export function WebpageTab() {
           disabled={isAddButtonDisabled}
           aria-label={t('website-input.add-button-aria-label')}
         >
-          <AddBrowserIcon size={IconSize.sm} />
+          <DecoratedAddIcon size={'sm'} baseIcon={<WebIcon size={IconSize.sm} />} />
         </ActionIcon>
       </MaybeTooltip>
     </Group>

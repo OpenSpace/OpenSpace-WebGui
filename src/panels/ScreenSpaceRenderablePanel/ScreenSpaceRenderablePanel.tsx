@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Divider, Tabs, Text } from '@mantine/core';
 
+import { DecoratedAddIcon } from '@/components/DecoratedIcon/DecoratedAddIcon';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { InsertPhotoIcon, WebIcon } from '@/icons/icons';
-import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { ScreenSpaceKey } from '@/util/keys';
 
@@ -28,10 +28,16 @@ export function ScreenSpaceRenderablePanel() {
     <>
       <Tabs defaultValue={'images'}>
         <Tabs.List>
-          <Tabs.Tab value={'images'} leftSection={<InsertPhotoIcon size={IconSize.sm} />}>
+          <Tabs.Tab
+            value={'images'}
+            leftSection={<DecoratedAddIcon baseIcon={<InsertPhotoIcon />} />}
+          >
             {t('image-input.tab-title')}
           </Tabs.Tab>
-          <Tabs.Tab value={'web'} leftSection={<WebIcon size={IconSize.sm} />}>
+          <Tabs.Tab
+            value={'web'}
+            leftSection={<DecoratedAddIcon baseIcon={<WebIcon />} />}
+          >
             {t('website-input.tab-title')}
           </Tabs.Tab>
         </Tabs.List>
