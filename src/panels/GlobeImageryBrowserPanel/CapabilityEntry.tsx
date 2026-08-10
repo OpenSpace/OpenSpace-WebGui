@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Button, Group, Menu, Stack, Tooltip } from '@mantine/core';
 
-import { DecoratedIcon } from '@/components/DecoratedIcon/DecoratedIcon';
+import { DecoratedAddIcon } from '@/components/DecoratedIcon/DecoratedAddIcon';
 import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
 import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { layerGroups } from '@/data/GlobeLayers';
@@ -70,9 +70,7 @@ export const CapabilityEntry = memo(
             disabled={isInLayerGroup('ColorLayers')}
             aria-label={t('aria-labels.add-color-layer', { layerName: capability.Name })}
           >
-            <DecoratedIcon>
-              <ColorPaletteIcon />
-            </DecoratedIcon>
+            <DecoratedAddIcon baseIcon={<ColorPaletteIcon />} />
           </ActionIcon>
         </Tooltip>
         <Menu position={'right-start'}>
@@ -93,9 +91,7 @@ export const CapabilityEntry = memo(
                   <Button
                     key={group.id}
                     onClick={() => onAdd(capability, group.id)}
-                    leftSection={
-                      <DecoratedIcon offset={{ x: 1, y: 2 }}>{group.icon}</DecoratedIcon>
-                    }
+                    leftSection={<DecoratedAddIcon baseIcon={group.icon} />}
                     disabled={isInLayerGroup(group.id)}
                     justify={'left'}
                     aria-label={t('aria-labels.add-layer', { layerType: group.label })}
