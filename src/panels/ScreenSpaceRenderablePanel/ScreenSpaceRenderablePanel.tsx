@@ -35,7 +35,6 @@ export function ScreenSpaceRenderablePanel() {
             {t('website-input.tab-title')}
           </Tabs.Tab>
         </Tabs.List>
-
         <Box>
           <Tabs.Panel value={'images'}>
             <ImageTab />
@@ -52,7 +51,7 @@ export function ScreenSpaceRenderablePanel() {
         <Text>{t('added-slides.empty-slides')}</Text>
       ) : (
         <>
-          <ResizeableContent defaultHeight={450}>
+          <ResizeableContent defaultHeight={200}>
             <ScrollBox h={'100%'}>
               {renderables.map((uri) => (
                 <Box

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Group, TextInput } from '@mantine/core';
+import { ActionIcon, Group, TextInput } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
 import { AddBrowserIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { Identifier } from '@/types/types';
@@ -39,26 +40,36 @@ export function WebpageTab() {
   }
 
   return (
-    <Group gap={'xs'} grow preventGrowOverflow={false} align={'end'}>
+    <Group gap={'xs'} preventGrowOverflow={false} align={'end'}>
       <TextInput
         value={slideName}
         onChange={(event) => setSlideName(event.currentTarget.value)}
         placeholder={t('display-name-input.placeholder')}
         label={t('display-name-input.title')}
+        flex={1}
       />
       <TextInput
         value={slideURL}
         onChange={(event) => setSlideURL(event.currentTarget.value)}
         placeholder={t('website-input.placeholder')}
         label={t('website-input.title')}
+        flex={1}
       />
-      <Button
-        onClick={addSlide}
-        leftSection={<AddBrowserIcon size={IconSize.sm} />}
-        disabled={isAddButtonDisabled}
+      <MaybeTooltip
+        label={
+          isAddButtonDisabled ? t('website-input.add-button-disabled-tooltip') : undefined
+        }
+        showTooltip={isAddButtonDisabled}
       >
-        {t('website-input.button-label')}
-      </Button>
+        <ActionIcon
+          size={'lg'}
+          onClick={addSlide}
+          disabled={isAddButtonDisabled}
+          aria-label={t('website-input.add-button-aria-label')}
+        >
+          <AddBrowserIcon size={IconSize.sm} />
+        </ActionIcon>
+      </MaybeTooltip>
     </Group>
   );
 }

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Group, TextInput } from '@mantine/core';
+import { ActionIcon, Group, TextInput } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
 import { AddPhotoIcon } from '@/icons/icons';
 import { useAppDispatch } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
@@ -81,26 +82,36 @@ export function ImageTab() {
   }
 
   return (
-    <Group gap={'xs'} grow preventGrowOverflow={false} align={'end'}>
+    <Group gap={'xs'} preventGrowOverflow={false} align={'end'}>
       <TextInput
         value={slideName}
         onChange={(event) => setSlideName(event.currentTarget.value)}
         placeholder={t('display-name-input.placeholder')}
         label={t('display-name-input.title')}
+        flex={1}
       />
       <TextInput
         value={slideURL}
         onChange={(event) => setSlideURL(event.currentTarget.value)}
         placeholder={t('image-input.placeholder')}
         label={t('image-input.title')}
+        flex={1}
       />
-      <Button
-        onClick={addSlide}
-        leftSection={<AddPhotoIcon size={IconSize.sm} />}
-        disabled={isButtonDisabled}
+      <MaybeTooltip
+        label={
+          isButtonDisabled ? t('image-input.add-button-disabled-tooltip') : undefined
+        }
+        showTooltip={isButtonDisabled}
       >
-        {t('image-input.button-label')}
-      </Button>
+        <ActionIcon
+          size={'lg'}
+          onClick={addSlide}
+          disabled={isButtonDisabled}
+          aria-label={t('image-input.add-button-aria-label')}
+        >
+          <AddPhotoIcon size={IconSize.sm} />
+        </ActionIcon>
+      </MaybeTooltip>
     </Group>
   );
 }
