@@ -1,0 +1,82 @@
+import { Box, Tabs, Tooltip } from '@mantine/core';
+
+import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
+import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
+import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
+import { Uri } from '@/types/types';
+
+interface Props {
+  uri: Uri;
+}
+
+export function ScreenSpaceRenderableView({ uri }: Props) {
+  // const { t } = useTranslation('panel-scene', {
+  //   keyPrefix: 'scene-graph-node.node-view'
+  // });
+
+  const propertyOwner = usePropertyOwner(uri);
+
+  // Extract some custom propertyowners
+  const placementOwner = usePropertyOwner(`${uri}.Placement`);
+  const styleOwner = usePropertyOwner(`${uri}.Style`);
+
+  const { visibility, setVisibility } = usePropertyOwnerVisibility(uri);
+
+  if (!propertyOwner) {
+    return <Box m={'xs'}>{/* <Text c={'dimmed'}>{t('not-found-info')}</Text> */}</Box>;
+  }
+
+  if (!placementOwner || !styleOwner) {
+    throw Error(`Missing placement or style property owner for uri: ${uri}`);
+  }
+
+  return (
+    <>
+      <Box>
+        <ThreePartHeader
+          title={propertyOwner.name}
+          leftSection={
+            <PropertyOwnerVisibilityCheckbox
+              uri={uri}
+              visibility={visibility}
+              setVisibility={setVisibility}
+            />
+          }
+          rightSection={''}
+        />
+      </Box>
+      <Tabs mt={5} defaultValue={'renderable'}>
+        <Tabs.List>
+          <Tooltip
+            label={
+              'Main properties of the screenspace renderable, including the ones for the specific type.'
+            }
+          >
+            <Tabs.Tab value={'renderable'}>Renderable</Tabs.Tab>
+          </Tooltip>
+
+          <Tooltip label={placementOwner.description}>
+            <Tabs.Tab value={'placement'}>Placement</Tabs.Tab>
+          </Tooltip>
+
+          <Tooltip label={styleOwner.description}>
+            <Tabs.Tab value={'style'}>Style</Tabs.Tab>
+          </Tooltip>
+        </Tabs.List>
+
+        <Tabs.Panel value={'renderable'}>
+          <PropertyOwner uri={uri} showOnlyChildren hideSubowners />
+        </Tabs.Panel>
+
+        <Tabs.Panel value={'placement'} mt={'xs'}>
+          <PropertyOwner uri={placementOwner.uri} showOnlyChildren />
+        </Tabs.Panel>
+
+        <Tabs.Panel value={'style'} mt={'xs'}>
+          <PropertyOwner uri={styleOwner.uri} showOnlyChildren />
+        </Tabs.Panel>
+      </Tabs>
+    </>
+  );
+}
