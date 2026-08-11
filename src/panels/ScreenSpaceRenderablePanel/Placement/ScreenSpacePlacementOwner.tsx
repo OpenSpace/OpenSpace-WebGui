@@ -6,7 +6,8 @@ import {
   NumberInput,
   SegmentedControl,
   Stack,
-  Text
+  Text,
+  Tooltip
 } from '@mantine/core';
 
 import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
@@ -312,15 +313,17 @@ export function ScreenSpacePlacementOwner({ uri }: Props) {
               label={'Yaw'}
             />
 
-            <ActionIcon
-              color={'red'}
-              variant={'outline'}
-              size={'sm'}
-              aria-label={'Reset local rotation'}
-              onClick={() => setLocalRotation([0, 0, 0])}
-            >
-              <DeleteIcon size={IconSize.xs} />
-            </ActionIcon>
+            <Tooltip label={'Reset to all zeros'}>
+              <ActionIcon
+                color={'red'}
+                variant={'outline'}
+                size={'sm'}
+                aria-label={'Reset local rotation'}
+                onClick={() => setLocalRotation([0, 0, 0])}
+              >
+                <DeleteIcon size={IconSize.xs} />
+              </ActionIcon>
+            </Tooltip>
           </Group>
         </Fieldset>
       </Box>

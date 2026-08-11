@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Group } from '@mantine/core';
+import { ActionIcon, Button, Group, Tooltip } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
@@ -62,15 +62,17 @@ export function ScreenSpaceRenderableListItem({ uri, onClick }: Props) {
       rightSection={
         <Group gap={'xs'}>
           <ScreenSpaceRenderableTypeIcon type={type} />
-          <ActionIcon
-            onClick={() => removeSlide(uri)}
-            color={'red'}
-            variant={'outline'}
-            size={'sm'}
-            aria-label={`Remove : ${uri})`} // TODO: i18n
-          >
-            <MinusIcon />
-          </ActionIcon>
+          <Tooltip label={'Remove'}>
+            <ActionIcon
+              onClick={() => removeSlide(uri)}
+              color={'red'}
+              variant={'outline'}
+              size={'sm'}
+              aria-label={`Remove : ${uri})`} // TODO: i18n
+            >
+              <MinusIcon />
+            </ActionIcon>
+          </Tooltip>
         </Group>
       }
     />
