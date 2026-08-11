@@ -1,7 +1,23 @@
+import {
+  Box,
+  Fieldset,
+  Group,
+  NumberInput,
+  SegmentedControl,
+  Select,
+  Slider,
+  Stack,
+  Text
+} from '@mantine/core';
+
+import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
+import { PropertyLabel } from '@/components/Property/PropertyLabel';
 import { PropertyOwnerChildren } from '@/components/PropertyOwner/PropertyOwnerChildren';
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner, useVisibleProperties } from '@/hooks/propertyOwner';
 import { Uri } from '@/types/types';
+
+import { AngleInput } from './AngleInput';
 
 interface Props {
   uri: Uri;
@@ -16,19 +32,236 @@ export function ScreenSpacePlacementOwner({ uri }: Props) {
 
   const visibleProperties = useVisibleProperties(propertyOwner);
 
-  const useRaeUri = `${uri}.UseRadiusAzimuthElevation`;
-  const [useRaeValue, setUseRae, useRaeMeta] = useProperty('BoolProperty', useRaeUri);
+  const uris = {
+    useRae: `${uri}.UseRadiusAzimuthElevation`,
+    posCartesian: `${uri}.CartesianPosition`,
+    posRae: `${uri}.RadiusAzimuthElevation`
+  };
 
-  const hideProperties = [useRaeUri];
+  const [useRaeValue, setUseRae, useRaeMeta] = useProperty('BoolProperty', uris.useRae);
+  const [posCartesianValue, setPosCartesian, posCartesianMeta] = useProperty(
+    'Vec3Property',
+    uris.posCartesian
+  );
+  const [posRaeValue, setPosRae, posRaeMeta] = useProperty('Vec3Property', uris.posRae);
+
+  if (
+    !posRaeValue ||
+    !posCartesianValue ||
+    !posRaeMeta ||
+    !posCartesianMeta ||
+    !useRaeMeta
+  ) {
+    throw Error(`Missing placement properties of uri: ${uri}`);
+  }
+
+  const hideProperties = Object.values(uris);
 
   const filteredProperties = visibleProperties.filter(
     (property) => !hideProperties.includes(property)
   );
 
   return (
-    <PropertyOwnerChildren
-      properties={filteredProperties}
-      subowners={propertyOwner.subowners ?? []}
-    />
+    <>
+      <Box ml={'xs'}>
+        {/* <Select
+          label={
+            <PropertyLabel
+              name={'Placement mode'}
+              description={useRaeMeta!.description} // TODO: make custom description
+              visibility={useRaeMeta!.visibility}
+              uri={uris.useRae}
+            />
+          }
+          allowDeselect={false}
+          value={useRaeValue ? 'RAE' : 'XYZ'}
+          onChange={(value) => setUseRae(value === 'RAE')}
+          data={[
+            { value: 'RAE', label: 'RAE (Spherical)' },
+            { value: 'XYZ', label: 'XYZ (Cartesian)' }
+          ]}
+        /> */}
+        <Group wrap={'nowrap'} gap={'xs'}>
+          <SegmentedControl
+            value={useRaeValue ? 'RAE' : 'XYZ'}
+            data={[
+              { value: 'RAE', label: 'RAE (spherical)' },
+              { value: 'XYZ', label: 'XYZ (Cartesian)' }
+            ]}
+            onChange={(value) => setUseRae(value === 'RAE')}
+            aria-label={'Placement mode'}
+          />
+        </Group>
+        {useRaeValue ? (
+          <Fieldset
+            legend={
+              <PropertyLabel
+                name={'Spherical position'}
+                description={posRaeMeta.description}
+                visibility={posRaeMeta.visibility}
+                uri={uris.posRae}
+              />
+            }
+            p={'xs'}
+            mt={'xs'}
+          >
+            <Group gap={'xs'} align={'flex-start'}>
+              <Stack flex={1} gap={0}>
+                <Text size={'sm'}>Radius (m)</Text>
+                <NumberInput
+                  aria-label={'Radius'}
+                  value={posRaeValue[0]}
+                  onChange={(value) =>
+                    setPosRae([Number(value), posRaeValue[1], posRaeValue[2]])
+                  }
+                  mb={'xs'}
+                />
+                <NumericSlider
+                  value={posRaeValue[0]}
+                  disabled={posRaeMeta.isReadOnly}
+                  min={posRaeMeta.additionalData.min[0]}
+                  max={posRaeMeta.additionalData.max[0]}
+                  step={posRaeMeta.additionalData.step[0]}
+                  onInput={(value) => setPosRae([value, posRaeValue[1], posRaeValue[2]])}
+                />
+              </Stack>
+              <AngleInput
+                value={posRaeValue[1]}
+                onChange={(value) => setPosRae([posRaeValue[0], value, posRaeValue[2]])}
+                disabled={posRaeMeta.isReadOnly}
+                label={'Azimuth'}
+              />
+
+              <AngleInput
+                value={posRaeValue[2]}
+                onChange={(value) => setPosRae([posRaeValue[0], posRaeValue[1], value])}
+                disabled={posRaeMeta.isReadOnly}
+                label={'Elevation'}
+              />
+            </Group>
+          </Fieldset>
+        ) : (
+          <Fieldset
+            legend={
+              <PropertyLabel
+                name={'Cartesian position'}
+                description={posCartesianMeta.description}
+                visibility={posCartesianMeta.visibility}
+                uri={uris.posCartesian}
+              />
+            }
+            p={'xs'}
+            mt={'xs'}
+          >
+            <Group gap={'xs'}>
+              <Text size={'sm'}>x</Text>
+              <NumberInput
+                flex={1}
+                maw={200}
+                value={posCartesianValue[0]}
+                step={posCartesianMeta.additionalData.step[0]}
+                stepHoldDelay={500}
+                stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
+                onChange={(value) =>
+                  setPosCartesian([
+                    Number(value),
+                    posCartesianValue[1],
+                    posCartesianValue[2]
+                  ])
+                }
+              />
+              <NumericSlider
+                value={posCartesianValue[0]}
+                flex={1}
+                disabled={posCartesianMeta.isReadOnly}
+                min={posCartesianMeta.additionalData.min[0]}
+                max={posCartesianMeta.additionalData.max[0]}
+                step={posCartesianMeta.additionalData.step[0]}
+                exponent={posCartesianMeta.additionalData.exponent}
+                onInput={(value) =>
+                  setPosCartesian([
+                    Number(value),
+                    posCartesianValue[1],
+                    posCartesianValue[2]
+                  ])
+                }
+              />
+            </Group>
+            <Group gap={'xs'}>
+              <Text size={'sm'}>y</Text>
+              <NumberInput
+                flex={1}
+                maw={200}
+                value={posCartesianValue[1]}
+                step={posCartesianMeta.additionalData.step[1]}
+                onChange={(value) =>
+                  setPosCartesian([
+                    posCartesianValue[0],
+                    Number(value),
+                    posCartesianValue[2]
+                  ])
+                }
+                stepHoldDelay={500}
+                stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
+              />
+              <NumericSlider
+                value={posCartesianValue[1]}
+                flex={1}
+                disabled={posCartesianMeta.isReadOnly}
+                min={posCartesianMeta.additionalData.min[1]}
+                max={posCartesianMeta.additionalData.max[1]}
+                step={posCartesianMeta.additionalData.step[1]}
+                exponent={posCartesianMeta.additionalData.exponent}
+                onInput={(value) =>
+                  setPosCartesian([
+                    posCartesianValue[0],
+                    Number(value),
+                    posCartesianValue[2]
+                  ])
+                }
+              />
+            </Group>
+            <Group gap={'xs'}>
+              <Text size={'sm'}>z</Text>
+              <NumberInput
+                flex={1}
+                maw={200}
+                value={posCartesianValue[2]}
+                step={posCartesianMeta.additionalData.step[2]}
+                onChange={(value) =>
+                  setPosCartesian([
+                    posCartesianValue[0],
+                    posCartesianValue[1],
+                    Number(value)
+                  ])
+                }
+                stepHoldDelay={500}
+                stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
+              />
+              <NumericSlider
+                value={posCartesianValue[2]}
+                flex={1}
+                disabled={posCartesianMeta.isReadOnly}
+                min={posCartesianMeta.additionalData.min[2]}
+                max={posCartesianMeta.additionalData.max[2]}
+                step={posCartesianMeta.additionalData.step[2]}
+                exponent={posCartesianMeta.additionalData.exponent}
+                onInput={(value) =>
+                  setPosCartesian([
+                    posCartesianValue[0],
+                    posCartesianValue[1],
+                    Number(value)
+                  ])
+                }
+              />
+            </Group>
+          </Fieldset>
+        )}
+      </Box>
+      <PropertyOwnerChildren
+        properties={filteredProperties}
+        subowners={propertyOwner.subowners ?? []}
+      />
+    </>
   );
 }
