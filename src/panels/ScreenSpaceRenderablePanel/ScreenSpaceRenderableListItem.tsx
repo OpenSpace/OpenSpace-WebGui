@@ -1,12 +1,15 @@
-import { ActionIcon, Button } from '@mantine/core';
+import { ActionIcon, Button, Group } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
+import { usePropertyValue } from '@/hooks/properties';
 import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
 import { MinusIcon } from '@/icons/icons';
 import { Uri } from '@/types/types';
+
+import { ScreenSpaceRenderableTypeIcon } from './TypeIcon';
 
 interface Props {
   uri: Uri;
@@ -21,6 +24,7 @@ export function ScreenSpaceRenderableListItem({ uri, onClick }: Props) {
   }
 
   const { visibility, setVisibility } = usePropertyOwnerVisibility(uri);
+  const type = usePropertyValue('StringProperty', `${uri}.Type`);
 
   const luaApi = useOpenSpaceApi();
 
@@ -56,15 +60,18 @@ export function ScreenSpaceRenderableListItem({ uri, onClick }: Props) {
         />
       }
       rightSection={
-        <ActionIcon
-          onClick={() => removeSlide(uri)}
-          color={'red'}
-          variant={'outline'}
-          size={'sm'}
-          aria-label={`Remove : ${uri})`} // TODO: i18n
-        >
-          <MinusIcon />
-        </ActionIcon>
+        <Group gap={'xs'}>
+          <ScreenSpaceRenderableTypeIcon type={type} />
+          <ActionIcon
+            onClick={() => removeSlide(uri)}
+            color={'red'}
+            variant={'outline'}
+            size={'sm'}
+            aria-label={`Remove : ${uri})`} // TODO: i18n
+          >
+            <MinusIcon />
+          </ActionIcon>
+        </Group>
       }
     />
   );

@@ -24,7 +24,7 @@ export {
   GiNightSky as NightSkyIcon,
   GiPencil as PencilIcon
 } from 'react-icons/gi';
-export { GoBrowser as BrowserIcon } from 'react-icons/go';
+export { GoBrowser as BrowserIcon, GoVideo as VideoIcon } from 'react-icons/go';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
 export { ImSphere as GridSphereIcon } from 'react-icons/im';
 export { IoMdGlobe as GlobeIcon, IoMdTime as TimeIcon } from 'react-icons/io';

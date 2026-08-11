@@ -3,8 +3,12 @@ import { Box, Tabs, Tooltip } from '@mantine/core';
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
+import { usePropertyValue } from '@/hooks/properties';
 import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
+import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
+
+import { ScreenSpaceRenderableTypeIcon } from './TypeIcon';
 
 interface Props {
   uri: Uri;
@@ -20,6 +24,8 @@ export function ScreenSpaceRenderableView({ uri }: Props) {
   // Extract some custom propertyowners
   const placementOwner = usePropertyOwner(`${uri}.Placement`);
   const styleOwner = usePropertyOwner(`${uri}.Style`);
+
+  const type = usePropertyValue('StringProperty', `${uri}.Type`);
 
   const { visibility, setVisibility } = usePropertyOwnerVisibility(uri);
 
@@ -43,7 +49,7 @@ export function ScreenSpaceRenderableView({ uri }: Props) {
               setVisibility={setVisibility}
             />
           }
-          rightSection={''}
+          rightSection={<ScreenSpaceRenderableTypeIcon type={type} size={IconSize.sm} />}
         />
       </Box>
       <Tabs mt={5} defaultValue={'renderable'}>
@@ -66,7 +72,11 @@ export function ScreenSpaceRenderableView({ uri }: Props) {
         </Tabs.List>
 
         <Tabs.Panel value={'renderable'}>
-          <PropertyOwner uri={uri} showOnlyChildren hideSubowners />
+          <PropertyOwner
+            uri={uri}
+            showOnlyChildren
+            hideSubowners={['Placement', 'Style']}
+          />
         </Tabs.Panel>
 
         <Tabs.Panel value={'placement'} mt={'xs'}>
