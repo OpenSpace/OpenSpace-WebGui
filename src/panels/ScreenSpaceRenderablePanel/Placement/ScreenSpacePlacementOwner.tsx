@@ -1,11 +1,10 @@
 import {
+  ActionIcon,
   Box,
   Fieldset,
   Group,
   NumberInput,
   SegmentedControl,
-  Select,
-  Slider,
   Stack,
   Text
 } from '@mantine/core';
@@ -15,6 +14,8 @@ import { PropertyLabel } from '@/components/Property/PropertyLabel';
 import { PropertyOwnerChildren } from '@/components/PropertyOwner/PropertyOwnerChildren';
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner, useVisibleProperties } from '@/hooks/propertyOwner';
+import { DeleteIcon } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
 
 import { AngleInput } from './AngleInput';
@@ -35,7 +36,8 @@ export function ScreenSpacePlacementOwner({ uri }: Props) {
   const uris = {
     useRae: `${uri}.UseRadiusAzimuthElevation`,
     posCartesian: `${uri}.CartesianPosition`,
-    posRae: `${uri}.RadiusAzimuthElevation`
+    posRae: `${uri}.RadiusAzimuthElevation`,
+    localRotation: `${uri}.Rotation`
   };
 
   const [useRaeValue, setUseRae, useRaeMeta] = useProperty('BoolProperty', uris.useRae);
@@ -44,13 +46,19 @@ export function ScreenSpacePlacementOwner({ uri }: Props) {
     uris.posCartesian
   );
   const [posRaeValue, setPosRae, posRaeMeta] = useProperty('Vec3Property', uris.posRae);
+  const [localRotationValue, setLocalRotation, localRotationMeta] = useProperty(
+    'Vec3Property',
+    uris.localRotation
+  );
 
   if (
     !posRaeValue ||
-    !posCartesianValue ||
     !posRaeMeta ||
+    !posCartesianValue ||
     !posCartesianMeta ||
-    !useRaeMeta
+    !useRaeMeta ||
+    !localRotationValue ||
+    !localRotationMeta
   ) {
     throw Error(`Missing placement properties of uri: ${uri}`);
   }
@@ -81,7 +89,7 @@ export function ScreenSpacePlacementOwner({ uri }: Props) {
             { value: 'XYZ', label: 'XYZ (Cartesian)' }
           ]}
         /> */}
-        <Group wrap={'nowrap'} gap={'xs'}>
+        <Group wrap={'nowrap'} gap={'xs'} mb={5}>
           <SegmentedControl
             value={useRaeValue ? 'RAE' : 'XYZ'}
             data={[
@@ -103,18 +111,21 @@ export function ScreenSpacePlacementOwner({ uri }: Props) {
               />
             }
             p={'xs'}
-            mt={'xs'}
           >
             <Group gap={'xs'} align={'flex-start'}>
-              <Stack flex={1} gap={0}>
+              <Stack flex={1} gap={2}>
                 <Text size={'sm'}>Radius (m)</Text>
                 <NumberInput
                   aria-label={'Radius'}
                   value={posRaeValue[0]}
+                  size={'xs'}
+                  step={posRaeMeta.additionalData.step[0]}
+                  disabled={posRaeMeta.isReadOnly}
+                  decimalScale={2}
                   onChange={(value) =>
                     setPosRae([Number(value), posRaeValue[1], posRaeValue[2]])
                   }
-                  mb={'xs'}
+                  mb={5}
                 />
                 <NumericSlider
                   value={posRaeValue[0]}
@@ -151,17 +162,17 @@ export function ScreenSpacePlacementOwner({ uri }: Props) {
               />
             }
             p={'xs'}
-            mt={'xs'}
           >
             <Group gap={'xs'}>
               <Text size={'sm'}>x</Text>
               <NumberInput
                 flex={1}
-                maw={200}
+                maw={70}
+                miw={50}
+                size={'xs'}
                 value={posCartesianValue[0]}
                 step={posCartesianMeta.additionalData.step[0]}
-                stepHoldDelay={500}
-                stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
+                decimalScale={3}
                 onChange={(value) =>
                   setPosCartesian([
                     Number(value),
@@ -173,6 +184,7 @@ export function ScreenSpacePlacementOwner({ uri }: Props) {
               <NumericSlider
                 value={posCartesianValue[0]}
                 flex={1}
+                miw={50}
                 disabled={posCartesianMeta.isReadOnly}
                 min={posCartesianMeta.additionalData.min[0]}
                 max={posCartesianMeta.additionalData.max[0]}
@@ -191,9 +203,12 @@ export function ScreenSpacePlacementOwner({ uri }: Props) {
               <Text size={'sm'}>y</Text>
               <NumberInput
                 flex={1}
-                maw={200}
+                maw={70}
+                miw={50}
+                size={'xs'}
                 value={posCartesianValue[1]}
                 step={posCartesianMeta.additionalData.step[1]}
+                decimalScale={3}
                 onChange={(value) =>
                   setPosCartesian([
                     posCartesianValue[0],
@@ -201,12 +216,11 @@ export function ScreenSpacePlacementOwner({ uri }: Props) {
                     posCartesianValue[2]
                   ])
                 }
-                stepHoldDelay={500}
-                stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
               />
               <NumericSlider
                 value={posCartesianValue[1]}
                 flex={1}
+                miw={50}
                 disabled={posCartesianMeta.isReadOnly}
                 min={posCartesianMeta.additionalData.min[1]}
                 max={posCartesianMeta.additionalData.max[1]}
@@ -225,9 +239,12 @@ export function ScreenSpacePlacementOwner({ uri }: Props) {
               <Text size={'sm'}>z</Text>
               <NumberInput
                 flex={1}
-                maw={200}
+                maw={70}
+                miw={50}
+                size={'xs'}
                 value={posCartesianValue[2]}
                 step={posCartesianMeta.additionalData.step[2]}
+                decimalScale={3}
                 onChange={(value) =>
                   setPosCartesian([
                     posCartesianValue[0],
@@ -235,12 +252,11 @@ export function ScreenSpacePlacementOwner({ uri }: Props) {
                     Number(value)
                   ])
                 }
-                stepHoldDelay={500}
-                stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
               />
               <NumericSlider
                 value={posCartesianValue[2]}
                 flex={1}
+                miw={50}
                 disabled={posCartesianMeta.isReadOnly}
                 min={posCartesianMeta.additionalData.min[2]}
                 max={posCartesianMeta.additionalData.max[2]}
@@ -257,6 +273,56 @@ export function ScreenSpacePlacementOwner({ uri }: Props) {
             </Group>
           </Fieldset>
         )}
+        <Fieldset
+          legend={
+            <PropertyLabel
+              name={'Local rotation'}
+              description={localRotationMeta.description}
+              visibility={localRotationMeta.visibility}
+              uri={uris.localRotation}
+            />
+          }
+          p={'xs'}
+          mt={'xs'}
+        >
+          <Group gap={'xs'}>
+            <AngleInput
+              value={localRotationValue[0]}
+              onChange={(value) =>
+                setLocalRotation([value, localRotationValue[1], localRotationValue[2]])
+              }
+              disabled={localRotationMeta.isReadOnly}
+              label={'Roll'}
+            />
+            <AngleInput
+              value={localRotationValue[1]}
+              onChange={(value) =>
+                setLocalRotation([localRotationValue[0], value, localRotationValue[2]])
+              }
+              disabled={localRotationMeta.isReadOnly}
+              label={'Pitch'}
+            />
+
+            <AngleInput
+              value={localRotationValue[2]}
+              onChange={(value) =>
+                setLocalRotation([localRotationValue[0], localRotationValue[1], value])
+              }
+              disabled={localRotationMeta.isReadOnly}
+              label={'Yaw'}
+            />
+
+            <ActionIcon
+              color={'red'}
+              variant={'outline'}
+              size={'sm'}
+              aria-label={'Reset local rotation'}
+              onClick={() => setLocalRotation([0, 0, 0])}
+            >
+              <DeleteIcon size={IconSize.xs} />
+            </ActionIcon>
+          </Group>
+        </Fieldset>
       </Box>
       <PropertyOwnerChildren
         properties={filteredProperties}

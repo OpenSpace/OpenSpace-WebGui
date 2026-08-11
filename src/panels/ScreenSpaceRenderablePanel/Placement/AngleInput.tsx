@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { AngleSlider, Stack, Text } from '@mantine/core';
+import { AngleSlider, Group, NumberInput, Stack, Text } from '@mantine/core';
+import { useThrottledCallback } from '@mantine/hooks';
 
 interface Props {
   value: number; // Radians
@@ -12,6 +13,9 @@ interface Props {
 export function AngleInput({ value, onChange, disabled, label, ariaLabel }: Props) {
   const [currentAngle, setCurrentAngle] = useState(radiansToDegrees(value));
   const [isInteracting, setIsInteracting] = useState(false);
+  const throttledNumberInputChange = useThrottledCallback((numericValue: number) => {
+    onChange?.(degreesToRadians(numericValue));
+  }, 300);
 
   function radiansToDegrees(radians: number) {
     return (radians * 180) / Math.PI;
@@ -28,30 +32,59 @@ export function AngleInput({ value, onChange, disabled, label, ariaLabel }: Prop
   }, [value, isInteracting]);
 
   return (
-    <Stack gap={0}>
+    <Stack gap={2} flex={1} align={'center'}>
       <Text size={'sm'}>{label}</Text>
-      <AngleSlider
-        marks={[
-          { value: 0 },
-          { value: 45 },
-          { value: 90 },
-          { value: 135 },
-          { value: 180 },
-          { value: 225 },
-          { value: 270 },
-          { value: 315 }
-        ]}
-        value={currentAngle}
-        onChange={(newValue) => {
-          setIsInteracting(true);
-          setCurrentAngle(newValue);
-          onChange?.(degreesToRadians(newValue));
-        }}
-        onChangeEnd={() => setIsInteracting(false)}
-        formatLabel={(labelValue) => `${Math.round(labelValue)}°`}
-        disabled={disabled}
-        aria-label={ariaLabel}
-      />
+      <Group align={'center'} justify={'center'} gap={5}>
+        <AngleSlider
+          marks={[
+            { value: 0 },
+            { value: 45 },
+            { value: 90 },
+            { value: 135 },
+            { value: 180 },
+            { value: 225 },
+            { value: 270 },
+            { value: 315 }
+          ]}
+          size={40}
+          value={currentAngle}
+          onChange={(newValue) => {
+            setIsInteracting(true);
+            setCurrentAngle(newValue);
+            onChange?.(degreesToRadians(newValue));
+          }}
+          onChangeEnd={() => setIsInteracting(false)}
+          formatLabel={(labelValue) => `${Math.round(labelValue)}°`}
+          disabled={disabled}
+          aria-label={ariaLabel}
+        />
+        <NumberInput
+          value={currentAngle}
+          flex={1}
+          miw={50}
+          size={'xs'}
+          decimalScale={1}
+          onChange={(newValue) => {
+            const numericValue = Number(newValue);
+            if (numericValue === undefined) {
+              return;
+            }
+            setIsInteracting(true);
+            setCurrentAngle(numericValue);
+            throttledNumberInputChange(numericValue);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              setIsInteracting(false);
+              event.currentTarget.blur();
+            }
+          }}
+          onFocus={() => setIsInteracting(true)}
+          onBlur={() => setIsInteracting(false)}
+          disabled={disabled}
+          aria-label={ariaLabel}
+        />
+      </Group>
     </Stack>
   );
 }
