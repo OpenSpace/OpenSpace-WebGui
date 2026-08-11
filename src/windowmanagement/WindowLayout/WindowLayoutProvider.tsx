@@ -34,7 +34,33 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
       return {
         id,
         title: (
-          <Title order={1} size={'md'} pr={3} fw={500}>
+          <Title
+            order={1}
+            size={'md'}
+            pr={3}
+            fw={500}
+            onMouseDown={(event) => {
+              if (!rcDocRef.current) {
+                return;
+              }
+
+              // Middle button click to close the window
+              if (event.button === 1) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const existingPanel = rcDocRef.current.find(id);
+                if (existingPanel) {
+                  rcDocRef.current.dockMove(
+                    existingPanel as TabData | PanelData,
+                    null,
+                    'remove'
+                  );
+                  dispatch(setMenuItemOpen({ id, open: false }));
+                }
+              }
+            }}
+          >
             {title}
           </Title>
         ),
@@ -46,7 +72,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
         minHeight: 50
       };
     },
-    []
+    [dispatch]
   );
 
   const addWindow = useCallback(
