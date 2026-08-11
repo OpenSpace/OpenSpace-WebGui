@@ -19,7 +19,7 @@ interface ScreenSpaceRenderable {
   URL?: string;
 }
 
-export function ImageTab() {
+export function AddImageTab() {
   const { t } = useTranslation('panel-screenspacerenderable');
 
   const [slideName, setSlideName] = useState('');

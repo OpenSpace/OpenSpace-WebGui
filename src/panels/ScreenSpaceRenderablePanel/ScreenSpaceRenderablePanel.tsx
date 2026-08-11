@@ -10,10 +10,10 @@ import { InsertPhotoIcon, WebIcon } from '@/icons/icons';
 import { Uri } from '@/types/types';
 import { ScreenSpaceKey } from '@/util/keys';
 
-import { ImageTab } from './ImageTab';
+import { AddImageTab } from './AddTabs/AddImageTab';
+import { AddWebpageTab } from './AddTabs/AddWebpageTab';
 import { ScreenSpaceRenderableListItem } from './ScreenSpaceRenderableListItem';
 import { ScreenSpaceRenderableView } from './ScreenSpaceRenderableView';
-import { WebpageTab } from './WebpageTab';
 
 export function ScreenSpaceRenderablePanel() {
   const { t } = useTranslation('panel-screenspacerenderable');
@@ -43,11 +43,11 @@ export function ScreenSpaceRenderablePanel() {
         </Tabs.List>
         <Box>
           <Tabs.Panel value={'images'}>
-            <ImageTab />
+            <AddImageTab />
           </Tabs.Panel>
 
           <Tabs.Panel value={'web'}>
-            <WebpageTab />
+            <AddWebpageTab />
           </Tabs.Panel>
         </Box>
       </Tabs>

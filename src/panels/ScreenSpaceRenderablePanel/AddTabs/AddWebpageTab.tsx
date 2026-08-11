@@ -16,7 +16,7 @@ interface ScreenSpaceBrowser {
   Url: string;
 }
 
-export function WebpageTab() {
+export function AddWebpageTab() {
   const { t } = useTranslation('panel-screenspacerenderable');
 
   const [slideName, setSlideName] = useState('');

@@ -8,6 +8,7 @@ import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOw
 import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
 
+import { ScreenSpacePlacementOwner } from './Placement/ScreenSpacePlacementOwner';
 import { ScreenSpaceRenderableTypeIcon } from './TypeIcon';
 
 interface Props {
@@ -80,7 +81,7 @@ export function ScreenSpaceRenderableView({ uri }: Props) {
         </Tabs.Panel>
 
         <Tabs.Panel value={'placement'} mt={'xs'}>
-          <PropertyOwner uri={placementOwner.uri} showOnlyChildren />
+          <ScreenSpacePlacementOwner uri={placementOwner.uri} />
         </Tabs.Panel>
 
         <Tabs.Panel value={'style'} mt={'xs'}>
