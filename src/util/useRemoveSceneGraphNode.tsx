@@ -1,8 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { Stack, Text } from '@mantine/core';
+import { Group, Stack, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { WarningIcon } from '@/components/WarningIcon/WarningIcon';
+import { IconSize } from '@/types/enums';
 import { Identifier } from '@/types/types';
 
 export function useRemoveSceneGraphNodeModal() {
@@ -24,10 +26,18 @@ export function useRemoveSceneGraphNodeModal() {
       children: (
         <Stack>
           <Text>{t('delete-confirm-modal.are-you-sure')}:</Text>
-          <Text fw={500} size={'lg'} style={{ wordBreak: 'break-word' }}>
-            {sgnName ?? identifier}
-          </Text>
-          <Text mt={'xs'}>{t('delete-confirm-modal.this-is-irreversible')}</Text>
+          <Group gap={'xs'}>
+            <Text fw={500} size={'lg'} style={{ wordBreak: 'break-word' }}>
+              {sgnName ?? identifier}
+            </Text>
+            <Text>?</Text>
+          </Group>{' '}
+          <Group gap={'xs'} align={'center'} wrap={'nowrap'}>
+            <WarningIcon size={'ms'} iconSize={IconSize.sm} />
+            <Text mt={'xs'} size={'xs'}>
+              {t('delete-confirm-modal.this-is-irreversible')}
+            </Text>
+          </Group>
         </Stack>
       ),
       labels: {
