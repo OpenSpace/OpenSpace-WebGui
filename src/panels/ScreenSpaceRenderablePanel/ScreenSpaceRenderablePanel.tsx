@@ -1,17 +1,14 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Divider, Tabs, Text } from '@mantine/core';
+import { Box, Divider, Group, Text, Title } from '@mantine/core';
 
-import { DecoratedAddIcon } from '@/components/DecoratedIcon/DecoratedAddIcon';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
-import { InsertPhotoIcon, WebIcon } from '@/icons/icons';
 import { Uri } from '@/types/types';
 import { ScreenSpaceKey } from '@/util/keys';
 
-import { AddImageTab } from './AddTabs/AddImageTab';
-import { AddWebpageTab } from './AddTabs/AddWebpageTab';
+import { AddModal } from './Add/AddModal';
 import { ScreenSpaceRenderableListItem } from './ScreenSpaceRenderableListItem';
 import { ScreenSpaceRenderableView } from './ScreenSpaceRenderableView';
 
@@ -26,38 +23,17 @@ export function ScreenSpaceRenderablePanel() {
 
   return (
     <>
-      <Tabs defaultValue={'images'}>
-        <Tabs.List>
-          <Tabs.Tab
-            value={'images'}
-            leftSection={<DecoratedAddIcon baseIcon={<InsertPhotoIcon />} />}
-          >
-            {t('image-input.tab-title')}
-          </Tabs.Tab>
-          <Tabs.Tab
-            value={'web'}
-            leftSection={<DecoratedAddIcon baseIcon={<WebIcon />} />}
-          >
-            {t('website-input.tab-title')}
-          </Tabs.Tab>
-        </Tabs.List>
-        <Box>
-          <Tabs.Panel value={'images'}>
-            <AddImageTab />
-          </Tabs.Panel>
-
-          <Tabs.Panel value={'web'}>
-            <AddWebpageTab />
-          </Tabs.Panel>
-        </Box>
-      </Tabs>
+      <Group justify={'space-between'}>
+        <Title order={2}>{t('added-slides.title')}</Title>
+        <AddModal />
+      </Group>
       <Divider my={'xs'} />
 
       {renderables.length === 0 ? (
         <Text>{t('added-slides.empty-slides')}</Text>
       ) : (
         <>
-          <ResizeableContent defaultHeight={200}>
+          <ResizeableContent defaultHeight={150}>
             <ScrollBox h={'100%'}>
               {renderables.map((uri) => (
                 <Box

@@ -1,29 +1,35 @@
 {
-  "display-name-input": {
-    "title": "Name",
-    "placeholder": "Display name"
-  },
-  "image-input": {
-    "tab-title": "Image",
-    "title": "Path / URL",
-    "placeholder": "Path / URL",
-    "add-button-aria-label": "Add image",
-    "add-button-disabled-tooltip": "Enter a valid name and path/URL to add a screenspace image"
-  },
-  "website-input": {
-    "tab-title": "Website",
-    "title": "URL",
-    "placeholder": "URL",
-    "add-button-aria-label": "Add website",
-    "add-button-disabled-tooltip": "Enter a valid name and URL to add a screenspace website"
+
+  "add-modal": {
+    "button-label": "Add new",
+    "title": "Add New ScreenSpace Renderable",
+    "name-input": {
+      "title": "Display name",
+      "placeholder": "Enter a name to show in the GUI"
+    },
+    "image": {
+      "tab-title": "Image",
+      "title": "Path or URL to image",
+      "placeholder": "C:/path/to/image.png or https://example.com/image.png",
+      "error": {
+        "title": "Error: invalid base64 encoding format",
+        "description": "Cannot parse invalid format '{{format}}', supported base64 encoding images are 'png' and 'jpeg'"
+      }
+    },
+    "website": {
+      "tab-title": "Website",
+      "title": "Website URL",
+      "placeholder": "https://example.com"
+    },
+    "add-button": {
+      "label": "Add",
+      "disabled-tooltip": "Please provide a valid name and location"
+    }
   },
   "added-slides": {
+    "title": "Added slides",
     "empty-slides": "No active slides",
     "remove-slide-aria-label": "Remove slide"
-  },
-  "error": {
-    "title": "Error: invalid base64 encoding format",
-    "description": "Cannot parse invalid format '{{format}}', supported base64 encoding images are 'png' and 'jpeg'"
   },
   "more-menu": {
     "aria-label": "Open more menu",
