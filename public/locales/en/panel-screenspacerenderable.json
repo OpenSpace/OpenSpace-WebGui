@@ -24,5 +24,19 @@
   "error": {
     "title": "Error: invalid base64 encoding format",
     "description": "Cannot parse invalid format '{{format}}', supported base64 encoding images are 'png' and 'jpeg'"
+  },
+  "more-menu": {
+    "aria-label": "Open more menu",
+    "delete-button": {
+      "label": "Delete",
+      "info": "Remove this screenspace renderable"
+    },
+    "delete-confirm-modal": {
+      "title": "Delete Screenspace Renderable",
+      "are-you-sure": "Are you sure you want to remove the screenspace renderable",
+      "remove-button": "Remove",
+      "cancel-button": "Cancel"
+    },
+    "pop-out": "Pop out"
   }
 }

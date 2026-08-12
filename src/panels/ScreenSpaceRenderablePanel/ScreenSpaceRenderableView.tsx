@@ -1,16 +1,15 @@
-import { ActionIcon, Box, Group, Tabs, Tooltip } from '@mantine/core';
+import { Box, Group, Tabs, Tooltip } from '@mantine/core';
 
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
 import { PropertyOwnerVisibilityCheckbox } from '@/components/PropertyOwner/VisiblityCheckbox';
 import { ThreePartHeader } from '@/components/ThreePartHeader/ThreePartHeader';
 import { usePropertyValue } from '@/hooks/properties';
 import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
-import { OpenWindowIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
-import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { ScreenSpacePlacementOwner } from './Placement/ScreenSpacePlacementOwner';
+import { ScreenSpaceRenderableMoreMenu } from './ScreenSpaceRenderableMoreMenu';
 import { ScreenSpaceRenderableTypeIcon } from './TypeIcon';
 
 interface Props {
@@ -32,22 +31,12 @@ export function ScreenSpaceRenderableView({ uri }: Props) {
 
   const { visibility, setVisibility } = usePropertyOwnerVisibility(uri);
 
-  const { addWindow } = useWindowLayoutProvider();
-
   if (!propertyOwner) {
-    return <Box m={'xs'}>{/* <Text c={'dimmed'}>{t('not-found-info')}</Text> */}</Box>;
+    return <></>;
   }
 
   if (!placementOwner || !styleOwner) {
     throw Error(`Missing placement or style property owner for uri: ${uri}`);
-  }
-
-  function openInNewWindow() {
-    addWindow(<ScreenSpaceRenderableView uri={uri} />, {
-      id: 'screenspace-' + uri,
-      title: propertyOwner!.name,
-      position: 'right'
-    });
   }
 
   return (
@@ -65,9 +54,7 @@ export function ScreenSpaceRenderableView({ uri }: Props) {
           rightSection={
             <Group gap={'xs'}>
               <ScreenSpaceRenderableTypeIcon type={type} size={IconSize.sm} />
-              <ActionIcon aria-label={'Pop out'} size={'sm'} onClick={openInNewWindow}>
-                <OpenWindowIcon size={IconSize.xs} />
-              </ActionIcon>
+              <ScreenSpaceRenderableMoreMenu uri={uri} />
             </Group>
           }
         />
