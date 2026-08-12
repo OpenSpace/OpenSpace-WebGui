@@ -107,6 +107,7 @@ export {
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
   MdSunny as SunIcon,
+  MdShortText as TextShortIcon,
   MdTimer as TimerIcon,
   MdArrowUpward as UpArrowIcon,
   MdVideocam as VideocamIcon,

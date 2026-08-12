@@ -7,6 +7,7 @@ import {
   ShapeIcon,
   TelescopeIcon,
   TextIcon,
+  TextShortIcon,
   TimeIcon,
   VideoIcon,
   WebIcon
@@ -73,6 +74,12 @@ export function ScreenSpaceRenderableTypeIcon({ type, size }: Props) {
       return (
         <Tooltip label={'Time-varying image'}>
           <TimeIcon size={size} />
+        </Tooltip>
+      );
+    case 'ScreenSpaceDashboard':
+      return (
+        <Tooltip label={'Dashboard'}>
+          <TextShortIcon size={size} />
         </Tooltip>
       );
     default:
