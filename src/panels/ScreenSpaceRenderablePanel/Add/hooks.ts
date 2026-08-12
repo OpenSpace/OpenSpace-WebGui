@@ -29,6 +29,11 @@ interface ScreenSpaceVideo extends ScreenSpaceRenderable {
   PlayAudio?: boolean; // Whether the video should play audio
 }
 
+interface ScreenSpaceText extends ScreenSpaceRenderable {
+  Type: 'ScreenSpaceText';
+  Text: string;
+}
+
 export function useAddScreenSpaceRenderable() {
   const { t } = useTranslation('panel-screenspacerenderable', { keyPrefix: 'add-modal' });
 
@@ -118,5 +123,18 @@ export function useAddScreenSpaceRenderable() {
     luaApi?.addScreenSpaceRenderable(renderable);
   }
 
-  return { addImage, addWebpage, addVideo };
+  async function addText(name: string, textContent: string) {
+    const osIdentifier = (await luaApi?.makeIdentifier(name)) ?? name;
+
+    const renderable: ScreenSpaceText = {
+      Identifier: osIdentifier,
+      Name: name,
+      Type: 'ScreenSpaceText',
+      Text: textContent
+    };
+
+    luaApi?.addScreenSpaceRenderable(renderable);
+  }
+
+  return { addImage, addWebpage, addVideo, addText };
 }

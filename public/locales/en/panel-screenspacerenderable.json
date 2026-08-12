@@ -32,6 +32,11 @@
         "label": "Play audio"
       }
     },
+    "text": {
+      "tab-title": "Text",
+      "title": "Text content",
+      "placeholder": "Enter the text to display"
+    },
     "add-button": {
       "label": "Add",
       "disabled-tooltip": "Please provide a valid name and location"

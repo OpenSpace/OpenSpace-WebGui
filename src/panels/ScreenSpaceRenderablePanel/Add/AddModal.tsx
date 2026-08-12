@@ -9,6 +9,7 @@ import {
   InsertPhotoIcon,
   OpenInBrowserIcon,
   PlusIcon,
+  TextIcon,
   VideoIcon,
   WebIcon
 } from '@/icons/icons';
@@ -20,7 +21,7 @@ export function AddModal() {
   const { t } = useTranslation('panel-screenspacerenderable', { keyPrefix: 'add-modal' });
 
   const [slideName, setSlideName] = useState<string>('');
-  const [slideUrl, setSlideUrl] = useState<string>('');
+  const [slideData, setSlideData] = useState<string>('');
 
   // Some video-specific options
   const [shouldLoop, setShouldLoop] = useState<boolean>(true);
@@ -30,14 +31,14 @@ export function AddModal() {
 
   const [opened, { open, close }] = useDisclosure(false);
 
-  const { addImage, addWebpage, addVideo } = useAddScreenSpaceRenderable();
+  const { addImage, addWebpage, addVideo, addText } = useAddScreenSpaceRenderable();
 
-  const isAddButtonDisabled = !slideName || !slideUrl;
+  const isAddButtonDisabled = !slideName || !slideData;
 
   function onTabChange(value: string | null) {
     if (value) {
       setActiveTab(value);
-      setSlideUrl('');
+      setSlideData('');
     }
   }
 
@@ -46,20 +47,23 @@ export function AddModal() {
       value.replace(/^(['"])(.*)\1$/, '$2');
 
     const sanitizedName = removeSurroundingQuotes(slideName.trim());
-    const sanitizedUrl = removeSurroundingQuotes(slideUrl.trim());
+    const sanitizedData = removeSurroundingQuotes(slideData.trim());
 
     switch (activeTab) {
       case 'images':
-        addImage(sanitizedName, sanitizedUrl);
+        addImage(sanitizedName, sanitizedData);
         break;
       case 'web':
-        addWebpage(sanitizedName, sanitizedUrl);
+        addWebpage(sanitizedName, sanitizedData);
         break;
       case 'video':
-        addVideo(sanitizedName, sanitizedUrl, {
+        addVideo(sanitizedName, sanitizedData, {
           shouldLoop: shouldLoop,
           playAudio: playAudio
         });
+        break;
+      case 'text':
+        addText(sanitizedName, sanitizedData);
         break;
       default:
         throw new Error(`Unknown tab value: ${activeTab}`);
@@ -69,7 +73,7 @@ export function AddModal() {
 
   function onClose() {
     setSlideName('');
-    setSlideUrl('');
+    setSlideData('');
     close();
   }
 
@@ -108,12 +112,15 @@ export function AddModal() {
               <Tabs.Tab value={'video'} leftSection={<VideoIcon />}>
                 {t('video.tab-title')}
               </Tabs.Tab>
+              <Tabs.Tab value={'text'} leftSection={<TextIcon />}>
+                {t('text.tab-title')}
+              </Tabs.Tab>
             </Tabs.List>
             <Box>
               <Tabs.Panel value={'images'}>
                 <TextInput
-                  value={slideUrl}
-                  onChange={(event) => setSlideUrl(event.currentTarget.value)}
+                  value={slideData}
+                  onChange={(event) => setSlideData(event.currentTarget.value)}
                   placeholder={t('image.placeholder')}
                   label={t('image.title')}
                   required
@@ -123,17 +130,19 @@ export function AddModal() {
               <Tabs.Panel value={'web'}>
                 <Group align={'flex-end'} gap={'xs'}>
                   <TextInput
-                    value={slideUrl}
-                    onChange={(event) => setSlideUrl(event.currentTarget.value)}
+                    value={slideData}
+                    onChange={(event) => setSlideData(event.currentTarget.value)}
                     placeholder={t('website.placeholder')}
                     label={t('website.title')}
                     flex={1}
                     required
                   />
                   <Button
-                    disabled={!slideUrl}
+                    disabled={!slideData}
                     leftSection={<OpenInBrowserIcon />}
-                    onClick={() => window.open(slideUrl, '_blank', 'noopener,noreferrer')}
+                    onClick={() =>
+                      window.open(slideData, '_blank', 'noopener,noreferrer')
+                    }
                     mt={'xs'}
                   >
                     Test link
@@ -143,8 +152,8 @@ export function AddModal() {
 
               <Tabs.Panel value={'video'}>
                 <TextInput
-                  value={slideUrl}
-                  onChange={(event) => setSlideUrl(event.currentTarget.value)}
+                  value={slideData}
+                  onChange={(event) => setSlideData(event.currentTarget.value)}
                   placeholder={t('video.placeholder')}
                   label={t('video.title')}
                   required
@@ -163,6 +172,16 @@ export function AddModal() {
                     mt={'xs'}
                   />
                 </Group>
+              </Tabs.Panel>
+
+              <Tabs.Panel value={'text'}>
+                <TextInput
+                  value={slideData}
+                  onChange={(event) => setSlideData(event.currentTarget.value)}
+                  placeholder={t('text.placeholder')}
+                  label={t('text.title')}
+                  required
+                />
               </Tabs.Panel>
             </Box>
           </Tabs>
