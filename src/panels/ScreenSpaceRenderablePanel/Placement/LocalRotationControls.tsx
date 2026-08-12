@@ -2,7 +2,12 @@ import { ActionIcon, Fieldset, Group, Text, Tooltip } from '@mantine/core';
 
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
 import { useProperty } from '@/hooks/properties';
-import { ArrowsLeftRightIcon, ArrowsUpDownIcon, DeleteIcon } from '@/icons/icons';
+import {
+  ArrowsLeftRightIcon,
+  ArrowsUpDownIcon,
+  DeleteIcon,
+  RotateLeftIcon
+} from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
 
@@ -40,7 +45,7 @@ export function LocalRotationControls({ propertyUri }: Props) {
           disabled={meta.isReadOnly}
           label={
             <Group gap={5} wrap={'nowrap'}>
-              <ArrowsLeftRightIcon size={IconSize.xs} />
+              <RotateLeftIcon size={IconSize.xs} />
               <Text size={'sm'}>Roll</Text>
             </Group>
           }
