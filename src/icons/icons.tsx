@@ -36,7 +36,8 @@ export { IoMdGlobe as GlobeIcon, IoMdTime as TimeIcon } from 'react-icons/io';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoInformation as InformationIcon,
-  IoTelescopeOutline as TelescopeIcon
+  IoTelescopeOutline as TelescopeIcon,
+  IoText as TextIcon
 } from 'react-icons/io5';
 export {
   LuFilePlus2 as AddFileIcon,
@@ -145,6 +146,7 @@ export {
   TbCube as SceneIcon,
   TbScript as ScriptLogIcon,
   TbServer as ServerIcon,
+  TbShape as ShapeIcon,
   TbWorldWww as WebIcon
 } from 'react-icons/tb';
 export {

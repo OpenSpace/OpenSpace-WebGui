@@ -1,7 +1,17 @@
-import { MdOutlineNote } from 'react-icons/md';
 import { Tooltip } from '@mantine/core';
 
-import { InsertPhotoIcon, SceneIcon, VideoIcon, WebIcon } from '@/icons/icons';
+import {
+  CalendarIcon,
+  InsertPhotoIcon,
+  SceneIcon,
+  ShapeIcon,
+  TelescopeIcon,
+  TextIcon,
+  TimeIcon,
+  VideoIcon,
+  WebIcon
+} from '@/icons/icons';
+import { IconSize } from '@/types/enums';
 
 interface Props {
   type: string | undefined;
@@ -12,7 +22,7 @@ export function ScreenSpaceRenderableTypeIcon({ type, size }: Props) {
   switch (type) {
     case 'ScreenSpaceBrowser':
       return (
-        <Tooltip label={'Web Browser'}>
+        <Tooltip label={'Web page'}>
           <WebIcon size={size} />
         </Tooltip>
       );
@@ -35,12 +45,37 @@ export function ScreenSpaceRenderableTypeIcon({ type, size }: Props) {
           <SceneIcon size={size} />
         </Tooltip>
       );
-    default:
-      // TODO: deciede on default icon for unknown types
+    case 'ScreenSpaceText':
       return (
-        <Tooltip label={'Other'}>
-          <MdOutlineNote size={size} />
+        <Tooltip label={'Text'}>
+          <TextIcon size={size} />
         </Tooltip>
       );
+    case 'ScreenSpaceDate':
+      return (
+        <Tooltip label={'Date'}>
+          <CalendarIcon size={size} />
+        </Tooltip>
+      );
+    case 'ScreenSpaceSkyBrowser':
+      return (
+        <Tooltip label={'SkyBrowser'}>
+          <TelescopeIcon size={size} />
+        </Tooltip>
+      );
+    case 'ScreenSpaceInsetBlackout':
+      return (
+        <Tooltip label={'Blackout inset'}>
+          <ShapeIcon size={size} />
+        </Tooltip>
+      );
+    case 'ScreenSpaceTimeVaryingImageOnline':
+      return (
+        <Tooltip label={'Time-varying image'}>
+          <TimeIcon size={size} />
+        </Tooltip>
+      );
+    default:
+      return <></>;
   }
 }
