@@ -75,6 +75,9 @@ export function LocalRotationControls({ propertyUri }: Props) {
             variant={'outline'}
             size={'sm'}
             aria-label={'Reset local rotation'}
+            disabled={
+              meta.isReadOnly || (value[0] === 0 && value[1] === 0 && value[2] === 0)
+            }
             onClick={() => setValue([0, 0, 0])}
           >
             <DeleteIcon size={IconSize.xs} />
