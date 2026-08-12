@@ -2,6 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import { Title } from '@mantine/core';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
+import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { useAppDispatch } from '@/redux/hooks';
 import { setMenuItemOpen } from '@/redux/local/localSlice';
 import { Window } from '@/windowmanagement/Window/Window';
@@ -34,35 +35,37 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
       return {
         id,
         title: (
-          <Title
-            order={1}
-            size={'md'}
-            pr={3}
-            fw={500}
-            onMouseDown={(event) => {
-              if (!rcDocRef.current) {
-                return;
-              }
-
-              // Middle button click to close the window
-              if (event.button === 1) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                const existingPanel = rcDocRef.current.find(id);
-                if (existingPanel) {
-                  rcDocRef.current.dockMove(
-                    existingPanel as TabData | PanelData,
-                    null,
-                    'remove'
-                  );
-                  dispatch(setMenuItemOpen({ id, open: false }));
+          <TruncatedText lineClamp={1} ta={'left'}>
+            <Title
+              order={1}
+              size={'md'}
+              pr={5}
+              fw={500}
+              onMouseDown={(event) => {
+                if (!rcDocRef.current) {
+                  return;
                 }
-              }
-            }}
-          >
-            {title}
-          </Title>
+
+                // Middle button click to close the window
+                if (event.button === 1) {
+                  event.preventDefault();
+                  event.stopPropagation();
+
+                  const existingPanel = rcDocRef.current.find(id);
+                  if (existingPanel) {
+                    rcDocRef.current.dockMove(
+                      existingPanel as TabData | PanelData,
+                      null,
+                      'remove'
+                    );
+                    dispatch(setMenuItemOpen({ id, open: false }));
+                  }
+                }
+              }}
+            >
+              {title}
+            </Title>
+          </TruncatedText>
         ),
         content: <Window>{content}</Window>,
         cached: true,
