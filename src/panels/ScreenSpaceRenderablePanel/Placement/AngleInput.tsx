@@ -46,7 +46,7 @@ export function AngleInput({ value, onChange, disabled, label, ariaLabel }: Prop
             { value: 270 },
             { value: 315 }
           ]}
-          size={40}
+          size={50}
           value={currentAngle}
           onChange={(newValue) => {
             setIsInteracting(true);
