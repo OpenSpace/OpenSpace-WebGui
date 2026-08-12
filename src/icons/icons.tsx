@@ -16,6 +16,11 @@ export {
   FaRegSave as SaveIcon
 } from 'react-icons/fa';
 export {
+  FaArrowsLeftRight as ArrowsLeftRightIcon,
+  FaArrowsUpDown as ArrowsUpDownIcon,
+  FaArrowRotateLeft as RotateLeftIcon
+} from 'react-icons/fa6';
+export {
   FiChevronsDown as ChevronsDownIcon,
   FiChevronsUp as ChevronsUpIcon
 } from 'react-icons/fi';

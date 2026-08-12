@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { AngleSlider, Group, NumberInput, Stack, Text } from '@mantine/core';
+import { AngleSlider, Group, NumberInput, Stack } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
 
 interface Props {
   value: number; // Radians
   onChange?: (value: number) => void; // Radians
   disabled?: boolean;
-  label?: string;
+  label?: React.ReactNode;
   ariaLabel?: string;
 }
 
@@ -33,7 +33,7 @@ export function AngleInput({ value, onChange, disabled, label, ariaLabel }: Prop
 
   return (
     <Stack gap={2} flex={1} align={'center'}>
-      <Text size={'sm'}>{label}</Text>
+      {label}
       <Group align={'center'} justify={'center'} gap={5}>
         <AngleSlider
           marks={[
@@ -62,6 +62,7 @@ export function AngleInput({ value, onChange, disabled, label, ariaLabel }: Prop
           value={currentAngle}
           flex={1}
           miw={50}
+          maw={80}
           size={'xs'}
           decimalScale={1}
           onChange={(newValue) => {
