@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Group, Modal, Stack, Tabs, TextInput } from '@mantine/core';
+import { Box, Button, Group, Modal, Stack, Switch, Tabs, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
@@ -19,8 +19,13 @@ import { useAddScreenSpaceRenderable } from './hooks';
 export function AddModal() {
   const { t } = useTranslation('panel-screenspacerenderable', { keyPrefix: 'add-modal' });
 
-  const [slideName, setSlideName] = useState('');
-  const [slideUrl, setSlideUrl] = useState('');
+  const [slideName, setSlideName] = useState<string>('');
+  const [slideUrl, setSlideUrl] = useState<string>('');
+
+  // Some video-specific options
+  const [shouldLoop, setShouldLoop] = useState<boolean>(true);
+  const [playAudio, setPlayAudio] = useState<boolean>(false);
+
   const [activeTab, setActiveTab] = useState<string>('images');
 
   const [opened, { open, close }] = useDisclosure(false);
@@ -37,15 +42,24 @@ export function AddModal() {
   }
 
   function onAdd() {
+    const removeSurroundingQuotes = (value: string) =>
+      value.replace(/^(['"])(.*)\1$/, '$2');
+
+    const sanitizedName = removeSurroundingQuotes(slideName.trim());
+    const sanitizedUrl = removeSurroundingQuotes(slideUrl.trim());
+
     switch (activeTab) {
       case 'images':
-        addImage(slideName, slideUrl);
+        addImage(sanitizedName, sanitizedUrl);
         break;
       case 'web':
-        addWebpage(slideName, slideUrl);
+        addWebpage(sanitizedName, sanitizedUrl);
         break;
       case 'video':
-        addVideo(slideName, slideUrl);
+        addVideo(sanitizedName, sanitizedUrl, {
+          shouldLoop: shouldLoop,
+          playAudio: playAudio
+        });
         break;
       default:
         throw new Error(`Unknown tab value: ${activeTab}`);
@@ -135,6 +149,20 @@ export function AddModal() {
                   label={t('video.title')}
                   required
                 />
+                <Group>
+                  <Switch
+                    label={t('video.loop.label')}
+                    checked={shouldLoop}
+                    onChange={(event) => setShouldLoop(event.currentTarget.checked)}
+                    mt={'xs'}
+                  />
+                  <Switch
+                    label={t('video.play-audio.label')}
+                    checked={playAudio}
+                    onChange={(event) => setPlayAudio(event.currentTarget.checked)}
+                    mt={'xs'}
+                  />
+                </Group>
               </Tabs.Panel>
             </Box>
           </Tabs>

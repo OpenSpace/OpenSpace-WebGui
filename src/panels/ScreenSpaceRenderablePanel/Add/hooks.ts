@@ -25,6 +25,8 @@ interface ScreenSpaceBrowser extends ScreenSpaceRenderable {
 interface ScreenSpaceVideo extends ScreenSpaceRenderable {
   Type: 'ScreenSpaceVideo';
   Video: string; // Path to video file
+  LoopVideo?: boolean; // Whether the video should loop
+  PlayAudio?: boolean; // Whether the video should play audio
 }
 
 export function useAddScreenSpaceRenderable() {
@@ -97,14 +99,20 @@ export function useAddScreenSpaceRenderable() {
     luaApi?.addScreenSpaceRenderable(renderable);
   }
 
-  async function addVideo(name: string, slideURL: string) {
+  async function addVideo(
+    name: string,
+    slideURL: string,
+    { shouldLoop, playAudio }: { shouldLoop?: boolean; playAudio?: boolean } = {}
+  ) {
     const osIdentifier = (await luaApi?.makeIdentifier(name)) ?? name;
 
     const renderable: ScreenSpaceVideo = {
       Identifier: osIdentifier,
       Name: name,
       Type: 'ScreenSpaceVideo',
-      Video: slideURL
+      Video: slideURL,
+      LoopVideo: shouldLoop,
+      PlayAudio: playAudio
     };
 
     luaApi?.addScreenSpaceRenderable(renderable);
