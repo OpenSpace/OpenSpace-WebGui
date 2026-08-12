@@ -9,6 +9,7 @@ import {
   InsertPhotoIcon,
   OpenInBrowserIcon,
   PlusIcon,
+  VideoIcon,
   WebIcon
 } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
@@ -24,7 +25,7 @@ export function AddModal() {
 
   const [opened, { open, close }] = useDisclosure(false);
 
-  const { addImage, addWebpage } = useAddScreenSpaceRenderable();
+  const { addImage, addWebpage, addVideo } = useAddScreenSpaceRenderable();
 
   const isAddButtonDisabled = !slideName || !slideUrl;
 
@@ -42,6 +43,9 @@ export function AddModal() {
         break;
       case 'web':
         addWebpage(slideName, slideUrl);
+        break;
+      case 'video':
+        addVideo(slideName, slideUrl);
         break;
       default:
         throw new Error(`Unknown tab value: ${activeTab}`);
@@ -87,6 +91,9 @@ export function AddModal() {
               <Tabs.Tab value={'web'} leftSection={<WebIcon />}>
                 {t('website.tab-title')}
               </Tabs.Tab>
+              <Tabs.Tab value={'video'} leftSection={<VideoIcon />}>
+                {t('video.tab-title')}
+              </Tabs.Tab>
             </Tabs.List>
             <Box>
               <Tabs.Panel value={'images'}>
@@ -95,7 +102,6 @@ export function AddModal() {
                   onChange={(event) => setSlideUrl(event.currentTarget.value)}
                   placeholder={t('image.placeholder')}
                   label={t('image.title')}
-                  flex={1}
                   required
                 />
               </Tabs.Panel>
@@ -119,6 +125,16 @@ export function AddModal() {
                     Test link
                   </Button>
                 </Group>
+              </Tabs.Panel>
+
+              <Tabs.Panel value={'video'}>
+                <TextInput
+                  value={slideUrl}
+                  onChange={(event) => setSlideUrl(event.currentTarget.value)}
+                  placeholder={t('video.placeholder')}
+                  label={t('video.title')}
+                  required
+                />
               </Tabs.Panel>
             </Box>
           </Tabs>

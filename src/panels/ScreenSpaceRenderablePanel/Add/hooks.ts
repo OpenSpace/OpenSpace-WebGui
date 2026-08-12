@@ -22,6 +22,11 @@ interface ScreenSpaceBrowser extends ScreenSpaceRenderable {
   Url: string;
 }
 
+interface ScreenSpaceVideo extends ScreenSpaceRenderable {
+  Type: 'ScreenSpaceVideo';
+  Video: string; // Path to video file
+}
+
 export function useAddScreenSpaceRenderable() {
   const { t } = useTranslation('panel-screenspacerenderable', { keyPrefix: 'add-modal' });
 
@@ -92,5 +97,18 @@ export function useAddScreenSpaceRenderable() {
     luaApi?.addScreenSpaceRenderable(renderable);
   }
 
-  return { addImage, addWebpage };
+  async function addVideo(name: string, slideURL: string) {
+    const osIdentifier = (await luaApi?.makeIdentifier(name)) ?? name;
+
+    const renderable: ScreenSpaceVideo = {
+      Identifier: osIdentifier,
+      Name: name,
+      Type: 'ScreenSpaceVideo',
+      Video: slideURL
+    };
+
+    luaApi?.addScreenSpaceRenderable(renderable);
+  }
+
+  return { addImage, addWebpage, addVideo };
 }

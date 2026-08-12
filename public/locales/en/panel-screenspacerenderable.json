@@ -2,7 +2,7 @@
 
   "add-modal": {
     "button-label": "Add new",
-    "title": "Add New ScreenSpace Renderable",
+    "title": "Add New Screenspace Renderable",
     "name-input": {
       "title": "Display name",
       "placeholder": "Enter a name to show in the GUI"
@@ -21,13 +21,18 @@
       "title": "Website URL",
       "placeholder": "https://example.com"
     },
+    "video": {
+      "tab-title": "Video",
+      "title": "Path to video file",
+      "placeholder": "C:/path/to/video.mp4"
+    },
     "add-button": {
       "label": "Add",
       "disabled-tooltip": "Please provide a valid name and location"
     }
   },
   "added-slides": {
-    "title": "Added slides",
+    "title": "Slides",
     "empty-slides": "No active slides",
     "remove-slide-aria-label": "Remove slide"
   },
