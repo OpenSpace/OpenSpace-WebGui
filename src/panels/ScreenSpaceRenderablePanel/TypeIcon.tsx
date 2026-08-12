@@ -12,7 +12,6 @@ import {
   VideoIcon,
   WebIcon
 } from '@/icons/icons';
-import { IconSize } from '@/types/enums';
 
 interface Props {
   type: string | undefined;
