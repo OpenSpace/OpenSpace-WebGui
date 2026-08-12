@@ -6,7 +6,7 @@ import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { DeleteIcon, OpenWindowIcon, VerticalDotsIcon } from '@/icons/icons';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
-import { useRemoveScreenSpaceRenderableModal } from '@/util/useRemoveSceneGraphNode';
+import { useRemoveScreenSpaceRenderableModal } from '@/util/removeModals';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { ScreenSpaceRenderableView } from './ScreenSpaceRenderableView';
