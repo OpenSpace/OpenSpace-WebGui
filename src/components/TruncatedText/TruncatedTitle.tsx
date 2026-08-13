@@ -10,7 +10,7 @@ interface Props extends PropsWithChildren, TitleProps {
  * Component that displays title with truncation and a tooltip. The tooltip shows the full
  * text when hovered over, and is only shown if the text is truncated.
  */
-export function TruncatedTitle({ tooltipProps, children, ...rest }: Props) {
+export function TruncatedTitle({ tooltipProps, children, style, ...rest }: Props) {
   // This will case the component to rerender when the text is resized, which is necessary
   // to determine if the text is truncated or not.
   const [ref] = useResizeObserver();
@@ -22,7 +22,17 @@ export function TruncatedTitle({ tooltipProps, children, ...rest }: Props) {
 
   return (
     <Tooltip label={children} {...tooltipProps} disabled={!showTooltip}>
-      <Title lineClamp={1} {...rest} ref={ref}>
+      <Title
+        lineClamp={1}
+        {...rest}
+        ref={ref}
+        style={{
+          wordBreak: 'break-all',
+          overflowWrap: 'anywhere',
+          hyphens: 'none',
+          ...(style ?? {})
+        }}
+      >
         {children}
       </Title>
     </Tooltip>
