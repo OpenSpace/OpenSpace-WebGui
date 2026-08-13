@@ -30,6 +30,21 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
     };
   }
 
+  const closeWindow = useCallback(
+    (id: string) => {
+      if (!rcDocRef.current) {
+        return;
+      }
+
+      const existingPanel = rcDocRef.current.find(id);
+      if (existingPanel) {
+        rcDocRef.current.dockMove(existingPanel as TabData | PanelData, null, 'remove');
+        dispatch(setMenuItemOpen({ id: id, open: false }));
+      }
+    },
+    [dispatch]
+  );
+
   const createWindowTabData = useCallback(
     (id: string, title: string, content: React.ReactNode): TabData => {
       return {
@@ -42,10 +57,6 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
               pr={5}
               fw={500}
               onMouseDown={(event) => {
-                if (!rcDocRef.current) {
-                  return;
-                }
-
                 // Middle button click to close the window
                 if (event.button === 1) {
                   event.preventDefault();
@@ -66,7 +77,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
         minHeight: 50
       };
     },
-    [dispatch]
+    [closeWindow]
   );
 
   const addWindow = useCallback(
@@ -135,21 +146,6 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
     },
 
     [createWindowTabData, dispatch]
-  );
-
-  const closeWindow = useCallback(
-    (id: string) => {
-      if (!rcDocRef.current) {
-        return;
-      }
-
-      const existingPanel = rcDocRef.current.find(id);
-      if (existingPanel) {
-        rcDocRef.current.dockMove(existingPanel as TabData | PanelData, null, 'remove');
-        dispatch(setMenuItemOpen({ id: id, open: false }));
-      }
-    },
-    [dispatch]
   );
 
   return (
