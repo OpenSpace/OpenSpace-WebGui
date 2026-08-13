@@ -44,8 +44,8 @@ export function ScreenSpacePlacementOwner({ uri }: Props) {
           <SegmentedControl
             value={useRae ? 'RAE' : 'XYZ'}
             data={[
-              { value: 'RAE', label: 'RAE (spherical)' },
-              { value: 'XYZ', label: 'XYZ (Cartesian)' }
+              { value: 'RAE', label: 'Spherical (RAE)' },
+              { value: 'XYZ', label: 'Cartesian (XYZ)' }
             ]}
             onChange={(value) => setUseRae(value === 'RAE')}
             aria-label={'Placement mode'}
