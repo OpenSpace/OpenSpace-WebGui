@@ -50,16 +50,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
                 if (event.button === 1) {
                   event.preventDefault();
                   event.stopPropagation();
-
-                  const existingPanel = rcDocRef.current.find(id);
-                  if (existingPanel) {
-                    rcDocRef.current.dockMove(
-                      existingPanel as TabData | PanelData,
-                      null,
-                      'remove'
-                    );
-                    dispatch(setMenuItemOpen({ id, open: false }));
-                  }
+                  closeWindow(id);
                 }
               }}
             >
