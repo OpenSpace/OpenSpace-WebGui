@@ -1,6 +1,5 @@
-import { ActionIcon, Fieldset, Group, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Group, Text, Tooltip } from '@mantine/core';
 
-import { PropertyLabel } from '@/components/Property/PropertyLabel';
 import { useProperty } from '@/hooks/properties';
 import {
   ArrowsLeftRightIcon,
@@ -12,6 +11,7 @@ import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
 
 import { AngleInput } from './AngleInput';
+import { PropertyGroupContainer } from './PropertyGroupContainer';
 
 interface Props {
   propertyUri: Uri;
@@ -25,20 +25,13 @@ export function LocalRotationControls({ propertyUri }: Props) {
   }
 
   return (
-    <Fieldset
-      legend={
-        <PropertyLabel
-          name={'Local rotation'}
-          description={meta.description}
-          visibility={meta.visibility}
-          uri={propertyUri}
-        />
-      }
-      bg={'transparent'}
-      p={'xs'}
+    <PropertyGroupContainer
+      uri={propertyUri}
+      type={'Vec3Property'}
+      name={'Local rotation'}
       mt={'xs'}
     >
-      <Group gap={'xs'}>
+      <Group gap={'xs'} pt={5}>
         <AngleInput
           value={value[0]}
           onChange={(newValue) => setValue([Number(newValue), value[1], value[2]])}
@@ -89,6 +82,6 @@ export function LocalRotationControls({ propertyUri }: Props) {
           </ActionIcon>
         </Tooltip>
       </Group>
-    </Fieldset>
+    </PropertyGroupContainer>
   );
 }

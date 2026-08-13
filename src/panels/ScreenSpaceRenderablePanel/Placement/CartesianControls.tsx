@@ -1,11 +1,12 @@
-import { Fieldset, Group, NumberInput, Text } from '@mantine/core';
+import { Group, NumberInput, Text } from '@mantine/core';
 
 import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
-import { PropertyLabel } from '@/components/Property/PropertyLabel';
 import { useProperty } from '@/hooks/properties';
 import { ArrowsLeftRightIcon, ArrowsUpDownIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
+
+import { PropertyGroupContainer } from './PropertyGroupContainer';
 
 interface Props {
   propertyUri: Uri;
@@ -19,19 +20,13 @@ export function CartesianControls({ propertyUri }: Props) {
   }
 
   return (
-    <Fieldset
-      legend={
-        <PropertyLabel
-          name={'Cartesian position'}
-          description={meta.description}
-          visibility={meta.visibility}
-          uri={propertyUri}
-        />
-      }
-      bg={'transparent'}
-      p={'xs'}
+    <PropertyGroupContainer
+      uri={propertyUri}
+      type={'Vec3Property'}
+      name={'Cartesian position'}
+      mt={'xs'}
     >
-      <Group gap={'xs'}>
+      <Group gap={'xs'} pt={5}>
         <Text size={'sm'}>x</Text>
 
         <NumberInput
@@ -107,6 +102,6 @@ export function CartesianControls({ propertyUri }: Props) {
           onInput={(newValue) => setValue([value[0], value[1], Number(newValue)])}
         />
       </Group>
-    </Fieldset>
+    </PropertyGroupContainer>
   );
 }

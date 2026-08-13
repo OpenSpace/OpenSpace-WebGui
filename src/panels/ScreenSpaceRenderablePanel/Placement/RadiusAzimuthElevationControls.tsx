@@ -1,13 +1,13 @@
-import { Fieldset, Group, NumberInput, Text } from '@mantine/core';
+import { Group, NumberInput, Text } from '@mantine/core';
 
 import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
-import { PropertyLabel } from '@/components/Property/PropertyLabel';
 import { useProperty } from '@/hooks/properties';
 import { ArrowsLeftRightIcon, ArrowsUpDownIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
 
 import { AngleInput } from './AngleInput';
+import { PropertyGroupContainer } from './PropertyGroupContainer';
 
 interface Props {
   propertyUri: Uri;
@@ -21,20 +21,13 @@ export function RadiusAzimuthElevationControls({ propertyUri }: Props) {
   }
 
   return (
-    <Fieldset
-      p={'xs'}
-      pt={5}
-      bg={'transparent'}
-      legend={
-        <PropertyLabel
-          name={'Spherical position'}
-          description={meta.description}
-          visibility={meta.visibility}
-          uri={propertyUri}
-        />
-      }
+    <PropertyGroupContainer
+      uri={propertyUri}
+      type={'Vec3Property'}
+      name={'Spherical position'}
+      mt={'xs'}
     >
-      <Group gap={'xs'} align={'flex-start'}>
+      <Group gap={'xs'} pt={5} align={'flex-start'}>
         <AngleInput
           value={value[1]}
           onChange={(newValue) => setValue([value[0], Number(newValue), value[2]])}
@@ -82,6 +75,6 @@ export function RadiusAzimuthElevationControls({ propertyUri }: Props) {
           onInput={(newValue) => setValue([Number(newValue), value[1], value[2]])}
         />
       </Group>
-    </Fieldset>
+    </PropertyGroupContainer>
   );
 }
