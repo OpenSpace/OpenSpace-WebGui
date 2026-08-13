@@ -2,6 +2,7 @@ import { Group, NumberInput, Text } from '@mantine/core';
 
 import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
 import { useProperty } from '@/hooks/properties';
+import { useIsAdvancedUserLevel } from '@/hooks/userLevel';
 import { ArrowsLeftRightIcon, ArrowsUpDownIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
@@ -15,15 +16,22 @@ interface Props {
 export function CartesianControls({ propertyUri }: Props) {
   const [value, setValue, meta] = useProperty('Vec3Property', propertyUri);
 
+  const isAdvancedUser = useIsAdvancedUserLevel();
+
   if (!value || !meta) {
     throw Error(`Missing property with uri: ${propertyUri}`);
   }
+
+  const description = isAdvancedUser
+    ? 'Screenspace position in Cartesian coordinates (x, y, z). The z-coordinate The impacts the distance to the screenspace plane and can for example be used to layer objects at different depths.'
+    : 'Screenspace position in Cartesian coordinates (x, y).';
 
   return (
     <PropertyGroupContainer
       uri={propertyUri}
       type={'Vec3Property'}
       name={'Cartesian position'}
+      description={description}
       mt={'xs'}
     >
       <Group gap={'xs'} pt={5}>
@@ -54,7 +62,6 @@ export function CartesianControls({ propertyUri }: Props) {
       </Group>
       <Group gap={'xs'}>
         <Text size={'sm'}>y</Text>
-
         <NumberInput
           flex={1}
           maw={70}
@@ -78,30 +85,32 @@ export function CartesianControls({ propertyUri }: Props) {
           onInput={(newValue) => setValue([value[0], Number(newValue), value[2]])}
         />
       </Group>
-      <Group gap={'xs'} mt={'xs'}>
-        <Text size={'sm'}>z</Text>
-        <NumberInput
-          flex={1}
-          maw={70}
-          miw={50}
-          size={'xs'}
-          value={value[2]}
-          step={meta.additionalData.step[2]}
-          decimalScale={3}
-          onChange={(newValue) => setValue([value[0], value[1], Number(newValue)])}
-        />
-        <NumericSlider
-          value={value[2]}
-          flex={1}
-          miw={50}
-          disabled={meta.isReadOnly}
-          min={meta.additionalData.min[2]}
-          max={meta.additionalData.max[2]}
-          step={meta.additionalData.step[2]}
-          exponent={meta.additionalData.exponent}
-          onInput={(newValue) => setValue([value[0], value[1], Number(newValue)])}
-        />
-      </Group>
+      {isAdvancedUser && (
+        <Group gap={'xs'} mt={'xs'}>
+          <Text size={'sm'}>z</Text>
+          <NumberInput
+            flex={1}
+            maw={70}
+            miw={50}
+            size={'xs'}
+            value={value[2]}
+            step={meta.additionalData.step[2]}
+            decimalScale={3}
+            onChange={(newValue) => setValue([value[0], value[1], Number(newValue)])}
+          />
+          <NumericSlider
+            value={value[2]}
+            flex={1}
+            miw={50}
+            disabled={meta.isReadOnly}
+            min={meta.additionalData.min[2]}
+            max={meta.additionalData.max[2]}
+            step={meta.additionalData.step[2]}
+            exponent={meta.additionalData.exponent}
+            onInput={(newValue) => setValue([value[0], value[1], Number(newValue)])}
+          />
+        </Group>
+      )}
     </PropertyGroupContainer>
   );
 }

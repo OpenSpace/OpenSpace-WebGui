@@ -8,12 +8,20 @@ import { Uri } from '@/types/types';
 
 interface Props extends React.PropsWithChildren, PaperProps {
   children: React.ReactNode;
-  name?: string;
   uri: Uri;
   type: PropertyTypeKey;
+  name?: string;
+  description?: string;
 }
 
-export function PropertyGroupContainer({ children, name, uri, type, ...props }: Props) {
+export function PropertyGroupContainer({
+  children,
+  uri,
+  type,
+  name,
+  description,
+  ...props
+}: Props) {
   const [value, , meta] = useProperty(type, uri);
   const accessibleLabelId = React.useId();
 
@@ -34,7 +42,7 @@ export function PropertyGroupContainer({ children, name, uri, type, ...props }: 
       <div id={accessibleLabelId}>
         <PropertyLabel
           name={name ?? meta.guiName}
-          description={meta.description}
+          description={description ?? meta.description}
           visibility={meta.visibility}
           uri={uri}
         />
