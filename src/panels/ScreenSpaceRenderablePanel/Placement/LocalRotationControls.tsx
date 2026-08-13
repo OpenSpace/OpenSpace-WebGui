@@ -4,7 +4,7 @@ import { useProperty } from '@/hooks/properties';
 import {
   ArrowsLeftRightIcon,
   ArrowsUpDownIcon,
-  DeleteIcon,
+  CancelIcon,
   RotateLeftIcon
 } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
@@ -78,7 +78,7 @@ export function LocalRotationControls({ propertyUri }: Props) {
             }
             onClick={() => setValue([0, 0, 0])}
           >
-            <DeleteIcon size={IconSize.xs} />
+            <CancelIcon size={IconSize.xs} />
           </ActionIcon>
         </Tooltip>
       </Group>
