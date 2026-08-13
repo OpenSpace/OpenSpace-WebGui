@@ -1,7 +1,7 @@
 import React, { useCallback, useRef } from 'react';
-import { Title } from '@mantine/core';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
+import { TruncatedTitle } from '@/components/TruncatedText/TruncatedTitle';
 import { useAppDispatch } from '@/redux/hooks';
 import { setMenuItemOpen } from '@/redux/local/localSlice';
 import { Window } from '@/windowmanagement/Window/Window';
@@ -29,14 +29,43 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
     };
   }
 
+  const closeWindow = useCallback(
+    (id: string) => {
+      if (!rcDocRef.current) {
+        return;
+      }
+
+      const existingPanel = rcDocRef.current.find(id);
+      if (existingPanel) {
+        rcDocRef.current.dockMove(existingPanel as TabData | PanelData, null, 'remove');
+        dispatch(setMenuItemOpen({ id: id, open: false }));
+      }
+    },
+    [dispatch]
+  );
+
   const createWindowTabData = useCallback(
     (id: string, title: string, content: React.ReactNode): TabData => {
       return {
         id,
         title: (
-          <Title order={1} size={'md'} pr={3} fw={500}>
+          <TruncatedTitle
+            order={1}
+            size={'md'}
+            ta={'left'}
+            pr={5}
+            fw={500}
+            onMouseDown={(event) => {
+              // Middle button click to close the window
+              if (event.button === 1) {
+                event.preventDefault();
+                event.stopPropagation();
+                closeWindow(id);
+              }
+            }}
+          >
             {title}
-          </Title>
+          </TruncatedTitle>
         ),
         content: <Window>{content}</Window>,
         cached: true,
@@ -46,7 +75,7 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
         minHeight: 50
       };
     },
-    []
+    [closeWindow]
   );
 
   const addWindow = useCallback(
@@ -115,21 +144,6 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
     },
 
     [createWindowTabData, dispatch]
-  );
-
-  const closeWindow = useCallback(
-    (id: string) => {
-      if (!rcDocRef.current) {
-        return;
-      }
-
-      const existingPanel = rcDocRef.current.find(id);
-      if (existingPanel) {
-        rcDocRef.current.dockMove(existingPanel as TabData | PanelData, null, 'remove');
-        dispatch(setMenuItemOpen({ id: id, open: false }));
-      }
-    },
-    [dispatch]
   );
 
   return (
