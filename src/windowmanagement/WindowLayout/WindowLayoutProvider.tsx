@@ -1,8 +1,7 @@
 import React, { useCallback, useRef } from 'react';
-import { Title } from '@mantine/core';
 import DockLayout, { BoxData, PanelData, TabData } from 'rc-dock';
 
-import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
+import { TruncatedTitle } from '@/components/TruncatedText/TruncatedTitle';
 import { useAppDispatch } from '@/redux/hooks';
 import { setMenuItemOpen } from '@/redux/local/localSlice';
 import { Window } from '@/windowmanagement/Window/Window';
@@ -50,24 +49,23 @@ export function WindowLayoutProvider({ children }: { children: React.ReactNode }
       return {
         id,
         title: (
-          <TruncatedText lineClamp={1} ta={'left'}>
-            <Title
-              order={1}
-              size={'md'}
-              pr={5}
-              fw={500}
-              onMouseDown={(event) => {
-                // Middle button click to close the window
-                if (event.button === 1) {
-                  event.preventDefault();
-                  event.stopPropagation();
-                  closeWindow(id);
-                }
-              }}
-            >
-              {title}
-            </Title>
-          </TruncatedText>
+          <TruncatedTitle
+            order={1}
+            size={'md'}
+            ta={'left'}
+            pr={5}
+            fw={500}
+            onMouseDown={(event) => {
+              // Middle button click to close the window
+              if (event.button === 1) {
+                event.preventDefault();
+                event.stopPropagation();
+                closeWindow(id);
+              }
+            }}
+          >
+            {title}
+          </TruncatedTitle>
         ),
         content: <Window>{content}</Window>,
         cached: true,
