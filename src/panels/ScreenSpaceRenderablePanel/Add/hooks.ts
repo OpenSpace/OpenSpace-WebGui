@@ -41,7 +41,7 @@ export function useAddScreenSpaceRenderable() {
   const dispatch = useAppDispatch();
 
   async function addImage(name: string, slideURL: string) {
-    const osIdentifier = (await luaApi?.makeIdentifier(name)) ?? name;
+    const osIdentifier = (await luaApi?.makeIdentifier(name)) ?? slideURL;
 
     const renderable: ScreenSpaceImage = {
       Identifier: osIdentifier,
@@ -92,7 +92,7 @@ export function useAddScreenSpaceRenderable() {
   }
 
   async function addWebpage(name: string, slideURL: string) {
-    const osIdentifier = (await luaApi?.makeIdentifier(name)) ?? name;
+    const osIdentifier = (await luaApi?.makeIdentifier(name)) ?? slideURL;
 
     const renderable: ScreenSpaceBrowser = {
       Identifier: osIdentifier,
@@ -109,7 +109,7 @@ export function useAddScreenSpaceRenderable() {
     slideURL: string,
     { shouldLoop, playAudio }: { shouldLoop?: boolean; playAudio?: boolean } = {}
   ) {
-    const osIdentifier = (await luaApi?.makeIdentifier(name)) ?? name;
+    const osIdentifier = (await luaApi?.makeIdentifier(name)) ?? slideURL;
 
     const renderable: ScreenSpaceVideo = {
       Identifier: osIdentifier,

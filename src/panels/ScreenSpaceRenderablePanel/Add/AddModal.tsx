@@ -17,6 +17,16 @@ import { IconSize } from '@/types/enums';
 
 import { useAddScreenSpaceRenderable } from './hooks';
 
+function removeSurroundingQuotes(value: string) {
+  return value.replace(/^(['"])(.*)\1$/, '$2');
+}
+
+function getFileNameFromUrl(data: string) {
+  const urlParts = data.split('/');
+  const lastPart = urlParts[urlParts.length - 1];
+  return lastPart.split('.')[0]; // Remove file extension if present
+}
+
 export function AddModal() {
   const { t } = useTranslation('panel-screenspacerenderable', { keyPrefix: 'add-modal' });
 
@@ -33,7 +43,7 @@ export function AddModal() {
 
   const { addImage, addWebpage, addVideo, addText } = useAddScreenSpaceRenderable();
 
-  const isAddButtonDisabled = !slideName || !slideData;
+  const isAddButtonDisabled = !slideData;
 
   function onTabChange(value: string | null) {
     if (value) {
@@ -42,28 +52,40 @@ export function AddModal() {
     }
   }
 
-  function onAdd() {
-    const removeSurroundingQuotes = (value: string) =>
-      value.replace(/^(['"])(.*)\1$/, '$2');
+  function generateNameFromData(data: string) {
+    switch (activeTab) {
+      case 'images':
+        return getFileNameFromUrl(data);
+      case 'web':
+        return data.replace(/^https?:\/\//, '');
+      case 'video':
+        return getFileNameFromUrl(data);
+      case 'text':
+        return data;
+      default:
+        return 'Unnamed';
+    }
+  }
 
-    const sanitizedName = removeSurroundingQuotes(slideName.trim());
+  function onAdd() {
+    const name = slideName || generateNameFromData(slideData) || 'Unnamed';
     const sanitizedData = removeSurroundingQuotes(slideData.trim());
 
     switch (activeTab) {
       case 'images':
-        addImage(sanitizedName, sanitizedData);
+        addImage(name, sanitizedData);
         break;
       case 'web':
-        addWebpage(sanitizedName, sanitizedData);
+        addWebpage(name, sanitizedData);
         break;
       case 'video':
-        addVideo(sanitizedName, sanitizedData, {
+        addVideo(name, sanitizedData, {
           shouldLoop: shouldLoop,
           playAudio: playAudio
         });
         break;
       case 'text':
-        addText(sanitizedName, sanitizedData);
+        addText(name, sanitizedData);
         break;
       default:
         throw new Error(`Unknown tab value: ${activeTab}`);
@@ -99,7 +121,6 @@ export function AddModal() {
             onChange={(event) => setSlideName(event.currentTarget.value)}
             placeholder={t('name-input.placeholder')}
             label={t('name-input.title')}
-            required
           />
           <Tabs value={activeTab} onChange={onTabChange} flex={1}>
             <Tabs.List>
