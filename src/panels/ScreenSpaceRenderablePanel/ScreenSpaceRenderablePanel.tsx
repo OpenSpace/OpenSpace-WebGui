@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Group, Stack, Text, ThemeIcon } from '@mantine/core';
 
@@ -8,6 +8,7 @@ import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { InsertPhotoIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { propertyOwnerSelectors } from '@/redux/propertytree/propertyOwnerSlice';
+import { propertySelectors } from '@/redux/propertytree/propertySlice';
 import { Uri } from '@/types/types';
 import { ScreenSpaceKey } from '@/util/keys';
 
@@ -24,7 +25,16 @@ export function ScreenSpaceRenderablePanel() {
     propertyOwnerSelectors.selectEntities(state)
   );
 
-  const renderables = screenSpacePropertyOwner?.subowners ?? [];
+  const properties = useAppSelector((state) => propertySelectors.selectEntities(state));
+
+  const renderables = useMemo(
+    () =>
+      screenSpacePropertyOwner?.subowners.filter((uri) => {
+        const isHidden = properties[`${uri}.GuiHidden`]?.value;
+        return !isHidden;
+      }) ?? [],
+    [screenSpacePropertyOwner, properties]
+  );
 
   function onItemClick(uri: Uri) {
     setSelectedRenderable((prevSelected) => (prevSelected === uri ? null : uri));
@@ -33,7 +43,6 @@ export function ScreenSpaceRenderablePanel() {
   function renderListItem(uri: Uri) {
     return (
       <Box
-        mb={5}
         key={uri}
         pl={'xs'}
         style={{
