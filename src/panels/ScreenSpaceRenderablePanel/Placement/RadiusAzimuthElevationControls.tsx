@@ -23,16 +23,14 @@ export function RadiusAzimuthElevationControls({ propertyUri }: Props) {
     throw Error(`Missing property with uri: ${propertyUri}`);
   }
 
-  const description = isAdvancedUser
-    ? 'Screenspace position in spherical coordinates (radius, azimuth, elevation). The radius impacts the distance to the screenspace plane and can for example be used to layer objects at different depths.'
-    : 'Screenspace position in spherical coordinates (azimuth, elevation).';
-
   return (
     <PropertyGroupContainer
       uri={propertyUri}
       type={'Vec3Property'}
       name={'Spherical position'}
-      description={description}
+      description={
+        'Screenspace position in spherical coordinates (radius, azimuth, elevation). Radius is an advanced property hidden for lower user levels. It controls the distance to the screenspace plane, allowing objects to be layered at different depths.'
+      }
       mt={'xs'}
     >
       <Group gap={'xs'} pt={5} align={'flex-start'}>

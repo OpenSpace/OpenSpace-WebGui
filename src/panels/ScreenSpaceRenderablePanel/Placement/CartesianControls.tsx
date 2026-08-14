@@ -22,21 +22,18 @@ export function CartesianControls({ propertyUri }: Props) {
     throw Error(`Missing property with uri: ${propertyUri}`);
   }
 
-  const description = isAdvancedUser
-    ? 'Screenspace position in Cartesian coordinates (x, y, z). The z-coordinate The impacts the distance to the screenspace plane and can for example be used to layer objects at different depths.'
-    : 'Screenspace position in Cartesian coordinates (x, y).';
-
   return (
     <PropertyGroupContainer
       uri={propertyUri}
       type={'Vec3Property'}
       name={'Cartesian position'}
-      description={description}
+      description={
+        'Screenspace position in Cartesian coordinates (x, y, z). The z-coordinate is an advanced property hidden for lower user levels. It controls the distance to the screenspace plane, allowing objects to be layered at different depths.'
+      }
       mt={'xs'}
     >
       <Group gap={'xs'} pt={5}>
         <Text size={'sm'}>x</Text>
-
         <NumberInput
           flex={1}
           maw={70}
