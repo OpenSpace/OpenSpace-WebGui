@@ -19,7 +19,11 @@
     "website": {
       "tab-title": "Website",
       "title": "Website URL",
-      "placeholder": "https://example.com"
+      "placeholder": "https://example.com",
+      "test-button":  {
+        "label": "Test",
+        "tooltip": "Test website link (open in browser)"
+      }
     },
     "video": {
       "tab-title": "Video",

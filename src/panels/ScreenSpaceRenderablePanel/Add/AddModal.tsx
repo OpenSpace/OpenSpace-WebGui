@@ -1,6 +1,16 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Group, Modal, Stack, Switch, Tabs, TextInput } from '@mantine/core';
+import {
+  Box,
+  Button,
+  Group,
+  Modal,
+  Stack,
+  Switch,
+  Tabs,
+  TextInput,
+  Tooltip
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
@@ -158,16 +168,18 @@ export function AddModal() {
                     flex={1}
                     required
                   />
-                  <Button
-                    disabled={!slideData}
-                    leftSection={<OpenInBrowserIcon />}
-                    onClick={() =>
-                      window.open(slideData, '_blank', 'noopener,noreferrer')
-                    }
-                    mt={'xs'}
-                  >
-                    Test link
-                  </Button>
+                  <Tooltip label={t('website.test-button.tooltip')}>
+                    <Button
+                      disabled={!slideData}
+                      leftSection={<OpenInBrowserIcon />}
+                      onClick={() =>
+                        window.open(slideData, '_blank', 'noopener,noreferrer')
+                      }
+                      mt={'xs'}
+                    >
+                      {t('website.test-button.label')}
+                    </Button>
+                  </Tooltip>
                 </Group>
               </Tabs.Panel>
 
