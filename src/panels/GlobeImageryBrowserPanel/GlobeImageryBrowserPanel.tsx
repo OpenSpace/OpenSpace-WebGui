@@ -226,23 +226,19 @@ export function GlobeImageryBrowserPanel() {
                   </ActionIcon>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Stack gap={'xs'}>
-                    <Button
-                      onClick={open}
-                      leftSection={<DecoratedAddIcon baseIcon={<ServerIcon />} />}
-                      justify={'left'}
-                    >
-                      {t('button-labels.add-server')}
-                    </Button>
-                    <Button
-                      onClick={removeServerModal}
-                      leftSection={<DeleteIcon />}
-                      justify={'left'}
-                      disabled={selectedWMS === null}
-                    >
-                      {t('button-labels.remove-server')}
-                    </Button>
-                  </Stack>
+                  <Menu.Item
+                    onClick={open}
+                    leftSection={<DecoratedAddIcon baseIcon={<ServerIcon />} />}
+                  >
+                    {t('button-labels.add-server')}
+                  </Menu.Item>
+                  <Menu.Item
+                    onClick={removeServerModal}
+                    leftSection={<DeleteIcon />}
+                    disabled={selectedWMS === null}
+                  >
+                    {t('button-labels.remove-server')}
+                  </Menu.Item>
                 </Menu.Dropdown>
               </Menu>
             </Group>
