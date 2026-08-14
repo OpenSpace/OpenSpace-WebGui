@@ -41,6 +41,7 @@ export {
 } from 'react-icons/io5';
 export {
   LuFilePlus2 as AddFileIcon,
+  LuFileClock as FileClockIcon,
   LuFileText as FileTextIcon,
   LuFolderUp as FolderBackIcon,
   LuFolder as FolderIcon,

@@ -2,13 +2,13 @@ import { Tooltip } from '@mantine/core';
 
 import {
   CalendarIcon,
+  FileClockIcon,
   InsertPhotoIcon,
   SceneIcon,
   ShapeIcon,
   TelescopeIcon,
   TextIcon,
   TextShortIcon,
-  TimeIcon,
   VideoIcon,
   WebIcon
 } from '@/icons/icons';
@@ -72,7 +72,7 @@ export function ScreenSpaceRenderableTypeIcon({ type, size }: Props) {
     case 'ScreenSpaceTimeVaryingImageOnline':
       return (
         <Tooltip label={'Time-varying image'}>
-          <TimeIcon size={size} />
+          <FileClockIcon size={size} />
         </Tooltip>
       );
     case 'ScreenSpaceDashboard':
