@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Stack, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Text, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
+import { ConfirmModalContent } from '@/components/ConfirmModalContent/ConfirmModalContent';
 import { DeleteIcon } from '@/icons/icons';
 
 import { Asset } from '../types';
@@ -19,11 +20,11 @@ export function AssetRemoveButton({ asset, parents, onRemoveAsset }: Props) {
     modals.openConfirmModal({
       title: t('remove-asset-modal.title'),
       children: (
-        <Stack>
-          <Text>{t('remove-asset-modal.description')}:</Text>
-          <Text>{asset.name}</Text>
-          <Text style={{ wordBreak: 'break-all' }}>{asset.path}</Text>
-        </Stack>
+        <ConfirmModalContent
+          objectName={asset.name}
+          description={t('remove-asset-modal.description')}
+          extraContent={<Text style={{ wordBreak: 'break-all' }}>{asset.path}</Text>}
+        />
       ),
       labels: {
         confirm: t('remove-asset-modal.confirm'),

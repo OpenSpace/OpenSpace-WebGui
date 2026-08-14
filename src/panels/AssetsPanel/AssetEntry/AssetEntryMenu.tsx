@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { MdOutlineRefresh } from 'react-icons/md';
-import { ActionIcon, Menu, Stack, Text } from '@mantine/core';
+import { ActionIcon, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
+import { ConfirmModalContent } from '@/components/ConfirmModalContent/ConfirmModalContent';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
 import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
 import { VerticalDotsIcon } from '@/icons/icons';
@@ -24,12 +25,10 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
     modals.openConfirmModal({
       title: t('reload-assset-modal.title'),
       children: (
-        <Stack>
-          <Text>{t('reload-assset-modal.description')}</Text>
-          <Text fw={500} size={'lg'}>
-            {asset.name}
-          </Text>
-        </Stack>
+        <ConfirmModalContent
+          description={t('reload-assset-modal.description')}
+          objectName={asset.name}
+        />
       ),
       labels: {
         confirm: t('reload-assset-modal.confirm'),
