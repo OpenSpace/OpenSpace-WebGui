@@ -70,7 +70,10 @@ export const CapabilityEntry = memo(
             disabled={isInLayerGroup('ColorLayers')}
             aria-label={t('aria-labels.add-color-layer', { layerName: capability.Name })}
           >
-            <DecoratedAddIcon baseIcon={<ColorPaletteIcon />} />
+            <DecoratedAddIcon
+              baseIcon={<ColorPaletteIcon />}
+              disabled={isInLayerGroup('ColorLayers')}
+            />
           </ActionIcon>
         </Tooltip>
         <Menu position={'right-start'}>
@@ -91,7 +94,12 @@ export const CapabilityEntry = memo(
                   <Button
                     key={group.id}
                     onClick={() => onAdd(capability, group.id)}
-                    leftSection={<DecoratedAddIcon baseIcon={group.icon} />}
+                    leftSection={
+                      <DecoratedAddIcon
+                        baseIcon={group.icon}
+                        disabled={isInLayerGroup(group.id)}
+                      />
+                    }
                     disabled={isInLayerGroup(group.id)}
                     justify={'left'}
                     aria-label={t('aria-labels.add-layer', { layerType: group.label })}
