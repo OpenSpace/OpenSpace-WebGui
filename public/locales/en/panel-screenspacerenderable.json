@@ -43,10 +43,11 @@
     }
   },
   "added-slides": {
-    "title": "Slides",
-    "empty-slides": "No active slides",
-    "remove-slide-aria-label": "Remove slide"
+    "search-placeholder": "Search for added renderable...",
+    "empty": "Add screenspace renderables to view them here.",
+    "tips": "Tip: Try adding by drag-and-dropping an image or video file directly into OpenSpace."
   },
+  "no-selection-hint": "Select an item to view its details",
   "more-menu": {
     "aria-label": "Open more menu",
     "delete-button": {
