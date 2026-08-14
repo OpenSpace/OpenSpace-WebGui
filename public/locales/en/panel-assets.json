@@ -41,8 +41,7 @@
     "more-menu-aria-label": "Open asset menu",
     "reload-button": {
       "tooltip": {
-        "has-parents": "Cannot reload an asset required by other assets. The following assets must first be removed:",
-        "no-parents": "Reload asset"
+        "has-parents": "Cannot reload an asset required by other assets. The following assets must first be removed:"
       },
       "label": "Reload",
       "aria-label": "Reload asset '{{assetName}}'"
