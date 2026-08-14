@@ -4,7 +4,7 @@ import { DecoratedIcon } from '@/components/DecoratedIcon/DecoratedIcon';
 import { PlusIcon } from '@/icons/icons';
 
 interface Props {
-  baseIcon: React.ReactNode;
+  baseIcon: React.JSX.Element;
   size?: MantineSize;
 }
 

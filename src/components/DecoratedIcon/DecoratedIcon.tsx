@@ -16,7 +16,7 @@ interface Props extends PropsWithChildren {
   /**
    * The icon to be used as the decorator. If not provided, a default plus icon will be used
    */
-  decoratorIcon?: React.ReactNode;
+  decoratorIcon?: React.JSX.Element;
 
   /**
    * The variant of the decorator icon. Defaults to 'default'
