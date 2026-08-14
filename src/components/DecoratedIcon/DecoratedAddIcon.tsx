@@ -1,10 +1,13 @@
 import { MantineSize } from '@mantine/core';
 
-import { DecoratedIcon } from '@/components/DecoratedIcon/DecoratedIcon';
+import {
+  DecoratedIcon,
+  DecoratedIconProps
+} from '@/components/DecoratedIcon/DecoratedIcon';
 import { PlusIcon } from '@/icons/icons';
 
-interface Props {
-  baseIcon: React.ReactNode;
+export interface Props extends DecoratedIconProps {
+  baseIcon: React.JSX.Element;
   size?: MantineSize;
 }
 
@@ -12,9 +15,14 @@ interface Props {
  * Component used to create a consistent look for icons that represents the action of
  * adding something
  */
-export function DecoratedAddIcon({ baseIcon, size }: Props) {
+export function DecoratedAddIcon({ baseIcon, size, ...rest }: Props) {
   return (
-    <DecoratedIcon position={'top-right'} size={size} decoratorIcon={<PlusIcon />}>
+    <DecoratedIcon
+      position={'top-right'}
+      size={size}
+      decoratorIcon={<PlusIcon />}
+      {...rest}
+    >
       {baseIcon}
     </DecoratedIcon>
   );

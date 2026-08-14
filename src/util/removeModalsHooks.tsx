@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { Group, Stack, Text } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { ConfirmModalContent } from '@/components/ConfirmModalContent/ConfirmModalContent';
 import { WarningIcon } from '@/components/WarningIcon/WarningIcon';
 import { IconSize } from '@/types/enums';
 import { Identifier } from '@/types/types';
@@ -24,21 +25,18 @@ export function useRemoveSceneGraphNodeModal() {
     modals.openConfirmModal({
       title: t('delete-confirm-modal.title'),
       children: (
-        <Stack>
-          <Text>{t('delete-confirm-modal.are-you-sure')}:</Text>
-          <Group gap={'xs'}>
-            <Text fw={500} size={'lg'} style={{ wordBreak: 'break-word' }}>
-              {sgnName ?? identifier}
-            </Text>
-            <Text>?</Text>
-          </Group>{' '}
-          <Group gap={'xs'} align={'center'} wrap={'nowrap'}>
-            <WarningIcon size={'ms'} iconSize={IconSize.sm} />
-            <Text mt={'xs'} size={'xs'}>
-              {t('delete-confirm-modal.this-is-irreversible')}
-            </Text>
-          </Group>
-        </Stack>
+        <ConfirmModalContent
+          description={t('delete-confirm-modal.are-you-sure')}
+          objectName={sgnName ?? identifier}
+          extraContent={
+            <Group gap={'xs'} align={'center'} wrap={'nowrap'}>
+              <WarningIcon size={'ms'} iconSize={IconSize.sm} />
+              <Text mt={'xs'} size={'xs'}>
+                {t('delete-confirm-modal.this-is-irreversible')}
+              </Text>
+            </Group>
+          }
+        />
       ),
       labels: {
         confirm: t('delete-confirm-modal.remove-button'),
@@ -72,15 +70,10 @@ export function useRemoveScreenSpaceRenderableModal() {
     modals.openConfirmModal({
       title: t('delete-confirm-modal.title'),
       children: (
-        <Stack>
-          <Text>{t('delete-confirm-modal.are-you-sure')}:</Text>
-          <Group gap={'xs'}>
-            <Text fw={500} size={'lg'} style={{ wordBreak: 'break-word' }}>
-              {name ?? identifier}
-            </Text>
-            ?
-          </Group>
-        </Stack>
+        <ConfirmModalContent
+          description={t('delete-confirm-modal.are-you-sure')}
+          objectName={name ?? identifier}
+        />
       ),
       labels: {
         confirm: t('delete-confirm-modal.remove-button'),

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Button, Group, Menu, Stack, Tooltip } from '@mantine/core';
+import { ActionIcon, Group, Menu, Tooltip } from '@mantine/core';
 
 import { DecoratedAddIcon } from '@/components/DecoratedIcon/DecoratedAddIcon';
 import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
@@ -70,7 +70,10 @@ export const CapabilityEntry = memo(
             disabled={isInLayerGroup('ColorLayers')}
             aria-label={t('aria-labels.add-color-layer', { layerName: capability.Name })}
           >
-            <DecoratedAddIcon baseIcon={<ColorPaletteIcon />} />
+            <DecoratedAddIcon
+              baseIcon={<ColorPaletteIcon />}
+              disabled={isInLayerGroup('ColorLayers')}
+            />
           </ActionIcon>
         </Tooltip>
         <Menu position={'right-start'}>
@@ -81,26 +84,28 @@ export const CapabilityEntry = memo(
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Label>{t('menu-add-label')}:</Menu.Label>
-            <Stack gap={'xs'}>
-              {layerGroups.map((group) => (
-                <MaybeTooltip
-                  showTooltip={isInLayerGroup(group.id)}
-                  label={t('tooltips.layer-exists')}
+            {layerGroups.map((group) => (
+              <MaybeTooltip
+                showTooltip={isInLayerGroup(group.id)}
+                label={t('tooltips.layer-exists')}
+                key={group.id}
+              >
+                <Menu.Item
                   key={group.id}
+                  onClick={() => onAdd(capability, group.id)}
+                  leftSection={
+                    <DecoratedAddIcon
+                      baseIcon={group.icon}
+                      disabled={isInLayerGroup(group.id)}
+                    />
+                  }
+                  disabled={isInLayerGroup(group.id)}
+                  aria-label={t('aria-labels.add-layer', { layerType: group.label })}
                 >
-                  <Button
-                    key={group.id}
-                    onClick={() => onAdd(capability, group.id)}
-                    leftSection={<DecoratedAddIcon baseIcon={group.icon} />}
-                    disabled={isInLayerGroup(group.id)}
-                    justify={'left'}
-                    aria-label={t('aria-labels.add-layer', { layerType: group.label })}
-                  >
-                    {group.label}
-                  </Button>
-                </MaybeTooltip>
-              ))}
-            </Stack>
+                  {group.label}
+                </Menu.Item>
+              </MaybeTooltip>
+            ))}
           </Menu.Dropdown>
         </Menu>
       </Group>
