@@ -1,5 +1,6 @@
-import { Group, NumberInput, Text } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 
+import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
 import { useProperty } from '@/hooks/properties';
 import { useIsAdvancedUserLevel } from '@/hooks/userLevel';
@@ -34,7 +35,7 @@ export function CartesianControls({ propertyUri }: Props) {
     >
       <Group gap={'xs'} pt={5}>
         <Text size={'sm'}>x</Text>
-        <NumberInput
+        <NumericInput
           flex={1}
           maw={70}
           miw={50}
@@ -42,7 +43,7 @@ export function CartesianControls({ propertyUri }: Props) {
           value={value[0]}
           step={meta.additionalData.step[0]}
           decimalScale={3}
-          onChange={(newValue) => setValue([Number(newValue), value[1], value[2]])}
+          onEnter={(newValue) => setValue([Number(newValue), value[1], value[2]])}
         />
         <ArrowsLeftRightIcon size={IconSize.xs} />
         <NumericSlider
@@ -59,7 +60,7 @@ export function CartesianControls({ propertyUri }: Props) {
       </Group>
       <Group gap={'xs'}>
         <Text size={'sm'}>y</Text>
-        <NumberInput
+        <NumericInput
           flex={1}
           maw={70}
           miw={50}
@@ -67,7 +68,7 @@ export function CartesianControls({ propertyUri }: Props) {
           value={value[1]}
           step={meta.additionalData.step[1]}
           decimalScale={3}
-          onChange={(newValue) => setValue([value[0], Number(newValue), value[2]])}
+          onEnter={(newValue) => setValue([value[0], Number(newValue), value[2]])}
         />
         <ArrowsUpDownIcon size={IconSize.xs} />
         <NumericSlider
@@ -85,7 +86,7 @@ export function CartesianControls({ propertyUri }: Props) {
       {isAdvancedUser && (
         <Group gap={'xs'} mt={'xs'}>
           <Text size={'sm'}>z</Text>
-          <NumberInput
+          <NumericInput
             flex={1}
             maw={70}
             miw={50}
@@ -93,7 +94,7 @@ export function CartesianControls({ propertyUri }: Props) {
             value={value[2]}
             step={meta.additionalData.step[2]}
             decimalScale={3}
-            onChange={(newValue) => setValue([value[0], value[1], Number(newValue)])}
+            onEnter={(newValue) => setValue([value[0], value[1], Number(newValue)])}
           />
           <NumericSlider
             value={value[2]}

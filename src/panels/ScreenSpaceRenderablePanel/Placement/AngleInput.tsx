@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { AngleSlider, Group, NumberInput, Stack } from '@mantine/core';
+import { AngleSlider, Group, Stack } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
+
+import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 
 interface Props {
   value: number; // Radians
@@ -58,27 +60,24 @@ export function AngleInput({ value, onChange, disabled, label, ariaLabel }: Prop
           disabled={disabled}
           aria-label={ariaLabel}
         />
-        <NumberInput
+        <NumericInput
           value={currentAngle}
           flex={1}
           miw={50}
           maw={80}
           size={'xs'}
+          min={-360}
+          max={360}
+          step={1}
           decimalScale={1}
-          onChange={(newValue) => {
+          onChange={() => setIsInteracting(true)}
+          onEnter={(newValue) => {
             const numericValue = Number(newValue);
             if (numericValue === undefined) {
               return;
             }
-            setIsInteracting(true);
             setCurrentAngle(numericValue);
             throttledNumberInputChange(numericValue);
-          }}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              setIsInteracting(false);
-              event.currentTarget.blur();
-            }
           }}
           onFocus={() => setIsInteracting(true)}
           onBlur={() => setIsInteracting(false)}

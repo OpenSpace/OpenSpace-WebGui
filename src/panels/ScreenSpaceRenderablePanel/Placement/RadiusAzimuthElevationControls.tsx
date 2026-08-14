@@ -1,5 +1,6 @@
-import { Group, NumberInput, Text } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 
+import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
 import { useProperty } from '@/hooks/properties';
 import { useIsAdvancedUserLevel } from '@/hooks/userLevel';
@@ -61,16 +62,18 @@ export function RadiusAzimuthElevationControls({ propertyUri }: Props) {
       {isAdvancedUser && (
         <Group gap={'xs'} mt={'xs'} align={'flex-start'}>
           <Text size={'sm'}>Radius</Text>
-          <NumberInput
+          <NumericInput
             aria-label={'Radius'}
             value={value[0]}
             size={'xs'}
             maw={80}
             flex={1}
+            min={meta.additionalData.min[0]}
+            max={meta.additionalData.max[0]}
             step={meta.additionalData.step[0]}
             disabled={meta.isReadOnly}
             decimalScale={2}
-            onChange={(newValue) => setValue([Number(newValue), value[1], value[2]])}
+            onEnter={(newValue) => setValue([Number(newValue), value[1], value[2]])}
           />
           <NumericSlider
             flex={1}
