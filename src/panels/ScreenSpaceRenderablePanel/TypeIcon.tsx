@@ -18,70 +18,38 @@ interface Props {
   size?: number;
 }
 
+const TypeConfig = {
+  ScreenSpaceBrowser: { label: 'Web page', Icon: WebIcon },
+  ScreenSpaceImageLocal: { label: 'Image', Icon: InsertPhotoIcon },
+  ScreenSpaceImageOnline: { label: 'Image', Icon: InsertPhotoIcon },
+  ScreenSpaceVideo: { label: 'Video', Icon: VideoIcon },
+  ScreenSpaceRenderableRenderable: { label: 'Renderable', Icon: SceneIcon },
+  ScreenSpaceText: { label: 'Text', Icon: TextIcon },
+  ScreenSpaceDate: { label: 'Date', Icon: CalendarIcon },
+  ScreenSpaceSkyBrowser: { label: 'SkyBrowser', Icon: TelescopeIcon },
+  ScreenSpaceInsetBlackout: { label: 'Blackout inset', Icon: ShapeIcon },
+  ScreenSpaceTimeVaryingImageOnline: {
+    label: 'Time-varying image',
+    Icon: FileClockIcon
+  },
+  ScreenSpaceDashboard: { label: 'Dashboard', Icon: TextShortIcon }
+} as const;
+
 export function ScreenSpaceRenderableTypeIcon({ type, size }: Props) {
-  switch (type) {
-    case 'ScreenSpaceBrowser':
-      return (
-        <Tooltip label={'Web page'}>
-          <WebIcon size={size} />
-        </Tooltip>
-      );
-    case 'ScreenSpaceImageLocal':
-    case 'ScreenSpaceImageOnline':
-      return (
-        <Tooltip label={'Image'}>
-          <InsertPhotoIcon size={size} />
-        </Tooltip>
-      );
-    case 'ScreenSpaceVideo':
-      return (
-        <Tooltip label={'Video'}>
-          <VideoIcon size={size} />
-        </Tooltip>
-      );
-    case 'ScreenSpaceRenderableRenderable':
-      return (
-        <Tooltip label={'Renderable'}>
-          <SceneIcon size={size} />
-        </Tooltip>
-      );
-    case 'ScreenSpaceText':
-      return (
-        <Tooltip label={'Text'}>
-          <TextIcon size={size} />
-        </Tooltip>
-      );
-    case 'ScreenSpaceDate':
-      return (
-        <Tooltip label={'Date'}>
-          <CalendarIcon size={size} />
-        </Tooltip>
-      );
-    case 'ScreenSpaceSkyBrowser':
-      return (
-        <Tooltip label={'SkyBrowser'}>
-          <TelescopeIcon size={size} />
-        </Tooltip>
-      );
-    case 'ScreenSpaceInsetBlackout':
-      return (
-        <Tooltip label={'Blackout inset'}>
-          <ShapeIcon size={size} />
-        </Tooltip>
-      );
-    case 'ScreenSpaceTimeVaryingImageOnline':
-      return (
-        <Tooltip label={'Time-varying image'}>
-          <FileClockIcon size={size} />
-        </Tooltip>
-      );
-    case 'ScreenSpaceDashboard':
-      return (
-        <Tooltip label={'Dashboard'}>
-          <TextShortIcon size={size} />
-        </Tooltip>
-      );
-    default:
-      return <></>;
+  if (!type) {
+    return <></>;
   }
+
+  const config = TypeConfig[type as keyof typeof TypeConfig];
+  if (!config) {
+    return <></>;
+  }
+
+  const { label, Icon } = config;
+
+  return (
+    <Tooltip label={label}>
+      <Icon size={size} />
+    </Tooltip>
+  );
 }
