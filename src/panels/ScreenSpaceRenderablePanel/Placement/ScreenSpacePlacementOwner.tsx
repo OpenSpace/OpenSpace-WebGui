@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Box, Group, SegmentedControl } from '@mantine/core';
 
 import { PropertyOwnerChildren } from '@/components/PropertyOwner/PropertyOwnerChildren';
@@ -14,6 +15,10 @@ interface Props {
 }
 
 export function ScreenSpacePlacementOwner({ uri }: Props) {
+  const { t } = useTranslation('panel-screenspacerenderable', {
+    keyPrefix: 'placement'
+  });
+
   const propertyOwner = usePropertyOwner(uri);
 
   if (!propertyOwner) {
@@ -44,11 +49,11 @@ export function ScreenSpacePlacementOwner({ uri }: Props) {
           <SegmentedControl
             value={useRae ? 'RAE' : 'XYZ'}
             data={[
-              { value: 'RAE', label: 'Spherical (RAE)' },
-              { value: 'XYZ', label: 'Cartesian (XYZ)' }
+              { value: 'RAE', label: t('mode-switch.label-rae') },
+              { value: 'XYZ', label: t('mode-switch.label-xyz') }
             ]}
             onChange={(value) => setUseRae(value === 'RAE')}
-            aria-label={'Placement mode'}
+            aria-label={t('mode-switch.aria-label')}
           />
         </Group>
         {useRae ? (

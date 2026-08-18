@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Group, Text } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
@@ -16,6 +17,10 @@ interface Props {
 }
 
 export function RadiusAzimuthElevationControls({ propertyUri }: Props) {
+  const { t } = useTranslation('panel-screenspacerenderable', {
+    keyPrefix: 'placement.spherical-controls'
+  });
+
   const [value, setValue, meta] = useProperty('Vec3Property', propertyUri);
 
   const isAdvancedUser = useIsAdvancedUserLevel();
@@ -28,10 +33,8 @@ export function RadiusAzimuthElevationControls({ propertyUri }: Props) {
     <PropertyGroupContainer
       uri={propertyUri}
       type={'Vec3Property'}
-      name={'Spherical position'}
-      description={
-        'Screenspace position in spherical coordinates (radius, azimuth, elevation). Radius is an advanced property hidden for lower user levels. It controls the distance to the screenspace plane, allowing objects to be layered at different depths.'
-      }
+      name={t('label')}
+      description={t('description')}
       mt={'xs'}
     >
       <Group gap={'xs'} pt={5} align={'flex-start'}>
@@ -39,10 +42,11 @@ export function RadiusAzimuthElevationControls({ propertyUri }: Props) {
           value={value[1]}
           onChange={(newValue) => setValue([value[0], Number(newValue), value[2]])}
           disabled={meta.isReadOnly}
+          ariaLabel={t('azimuth.aria-label')}
           label={
             <Group gap={5} wrap={'nowrap'}>
               <ArrowsLeftRightIcon size={IconSize.xs} />
-              <Text size={'sm'}>Azimuth</Text>
+              <Text size={'sm'}>{t('azimuth.label')}</Text>
             </Group>
           }
         />
@@ -51,19 +55,20 @@ export function RadiusAzimuthElevationControls({ propertyUri }: Props) {
           value={value[2]}
           onChange={(newValue) => setValue([value[0], value[1], Number(newValue)])}
           disabled={meta.isReadOnly}
+          ariaLabel={t('elevation.aria-label')}
           label={
             <Group gap={5} wrap={'nowrap'}>
               <ArrowsUpDownIcon size={IconSize.xs} />
-              <Text size={'sm'}>Elevation</Text>
+              <Text size={'sm'}>{t('elevation.label')}</Text>
             </Group>
           }
         />
       </Group>
       {isAdvancedUser && (
         <Group gap={'xs'} mt={'xs'} align={'flex-start'}>
-          <Text size={'sm'}>Radius</Text>
+          <Text size={'sm'}>{t('radius.label')}</Text>
           <NumericInput
-            aria-label={'Radius'}
+            aria-label={t('radius.aria-label')}
             value={value[0]}
             size={'xs'}
             maw={80}

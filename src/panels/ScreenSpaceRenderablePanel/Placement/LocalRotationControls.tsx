@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, Text, Tooltip } from '@mantine/core';
 
 import { useProperty } from '@/hooks/properties';
@@ -18,6 +19,10 @@ interface Props {
 }
 
 export function LocalRotationControls({ propertyUri }: Props) {
+  const { t } = useTranslation('panel-screenspacerenderable', {
+    keyPrefix: 'placement.local-rotation'
+  });
+
   const [value, setValue, meta] = useProperty('Vec3Property', propertyUri);
 
   if (!value || !meta) {
@@ -28,7 +33,7 @@ export function LocalRotationControls({ propertyUri }: Props) {
     <PropertyGroupContainer
       uri={propertyUri}
       type={'Vec3Property'}
-      name={'Local rotation'}
+      name={t('label')}
       mt={'xs'}
     >
       <Group gap={'xs'} pt={5}>
@@ -36,10 +41,11 @@ export function LocalRotationControls({ propertyUri }: Props) {
           value={value[0]}
           onChange={(newValue) => setValue([Number(newValue), value[1], value[2]])}
           disabled={meta.isReadOnly}
+          ariaLabel={t('roll.aria-label')}
           label={
             <Group gap={5} wrap={'nowrap'}>
               <RotateLeftIcon size={IconSize.xs} />
-              <Text size={'sm'}>Roll</Text>
+              <Text size={'sm'}>{t('roll.label')}</Text>
             </Group>
           }
         />
@@ -47,10 +53,11 @@ export function LocalRotationControls({ propertyUri }: Props) {
           value={value[1]}
           onChange={(newValue) => setValue([value[0], Number(newValue), value[2]])}
           disabled={meta.isReadOnly}
+          ariaLabel={t('pitch.aria-label')}
           label={
             <Group gap={5} wrap={'nowrap'}>
               <ArrowsUpDownIcon size={IconSize.xs} />
-              <Text size={'sm'}>Pitch</Text>
+              <Text size={'sm'}>{t('pitch.label')}</Text>
             </Group>
           }
         />
@@ -59,20 +66,21 @@ export function LocalRotationControls({ propertyUri }: Props) {
           value={value[2]}
           onChange={(newValue) => setValue([value[0], value[1], Number(newValue)])}
           disabled={meta.isReadOnly}
+          ariaLabel={t('yaw.aria-label')}
           label={
             <Group gap={5} wrap={'nowrap'}>
               <ArrowsLeftRightIcon size={IconSize.xs} />
-              <Text size={'sm'}>Yaw</Text>
+              <Text size={'sm'}>{t('yaw.label')}</Text>
             </Group>
           }
         />
 
-        <Tooltip label={'Reset to all zeros'}>
+        <Tooltip label={t('reset-button.label')}>
           <ActionIcon
             color={'red'}
             variant={'outline'}
             size={'sm'}
-            aria-label={'Reset local rotation'}
+            aria-label={t('reset-button.aria-label')}
             disabled={
               meta.isReadOnly || (value[0] === 0 && value[1] === 0 && value[2] === 0)
             }

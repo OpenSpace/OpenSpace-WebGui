@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Group, Text } from '@mantine/core';
 
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
@@ -15,6 +16,9 @@ interface Props {
 }
 
 export function CartesianControls({ propertyUri }: Props) {
+  const { t } = useTranslation('panel-screenspacerenderable', {
+    keyPrefix: 'placement.cartesian-controls'
+  });
   const [value, setValue, meta] = useProperty('Vec3Property', propertyUri);
 
   const isAdvancedUser = useIsAdvancedUserLevel();
@@ -27,10 +31,8 @@ export function CartesianControls({ propertyUri }: Props) {
     <PropertyGroupContainer
       uri={propertyUri}
       type={'Vec3Property'}
-      name={'Cartesian position'}
-      description={
-        'Screenspace position in Cartesian coordinates (x, y, z). The z-coordinate is an advanced property hidden for lower user levels. It controls the distance to the screenspace plane, allowing objects to be layered at different depths.'
-      }
+      name={t('label')}
+      description={t('description')}
       mt={'xs'}
     >
       <Group gap={'xs'} pt={5}>

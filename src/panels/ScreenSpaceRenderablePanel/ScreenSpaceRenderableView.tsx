@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Box, Group, Tabs, Tooltip } from '@mantine/core';
 
 import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
@@ -17,15 +18,16 @@ interface Props {
 }
 
 export function ScreenSpaceRenderableView({ uri }: Props) {
-  // const { t } = useTranslation('panel-scene', {
-  //   keyPrefix: 'scene-graph-node.node-view'
-  // });
+  const { t } = useTranslation('panel-screenspacerenderable', {
+    keyPrefix: 'renderable-view'
+  });
 
   const propertyOwner = usePropertyOwner(uri);
 
   // Extract some custom propertyowners
   const placementOwner = usePropertyOwner(`${uri}.Placement`);
   const styleOwner = usePropertyOwner(`${uri}.Style`);
+  const hideSubowners = ['Placement', 'Style'];
 
   const type = usePropertyValue('StringProperty', `${uri}.Type`);
 
@@ -61,29 +63,21 @@ export function ScreenSpaceRenderableView({ uri }: Props) {
       </Box>
       <Tabs mt={5} defaultValue={'renderable'}>
         <Tabs.List>
-          <Tooltip
-            label={
-              'Main properties of the screenspace renderable, including the ones for the specific type.'
-            }
-          >
-            <Tabs.Tab value={'renderable'}>Renderable</Tabs.Tab>
+          <Tooltip label={t('renderable-tab.tooltip')}>
+            <Tabs.Tab value={'renderable'}>{t('renderable-tab.title')}</Tabs.Tab>
           </Tooltip>
 
           <Tooltip label={placementOwner.description}>
-            <Tabs.Tab value={'placement'}>Placement</Tabs.Tab>
+            <Tabs.Tab value={'placement'}>{t('placement-tab.title')}</Tabs.Tab>
           </Tooltip>
 
           <Tooltip label={styleOwner.description}>
-            <Tabs.Tab value={'style'}>Style</Tabs.Tab>
+            <Tabs.Tab value={'style'}>{t('style-tab.title')}</Tabs.Tab>
           </Tooltip>
         </Tabs.List>
 
         <Tabs.Panel value={'renderable'}>
-          <PropertyOwner
-            uri={uri}
-            showOnlyChildren
-            hideSubowners={['Placement', 'Style']}
-          />
+          <PropertyOwner uri={uri} showOnlyChildren hideSubowners={hideSubowners} />
         </Tabs.Panel>
 
         <Tabs.Panel value={'placement'} mt={'xs'}>
