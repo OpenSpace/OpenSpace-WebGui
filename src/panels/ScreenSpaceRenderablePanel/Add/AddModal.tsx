@@ -111,7 +111,7 @@ export function AddModal() {
 
   return (
     <>
-      <Button leftSection={<AddPhotoIcon />} onClick={open} size={'xs'}>
+      <Button leftSection={<AddPhotoIcon />} onClick={open}>
         {t('button-label')}
       </Button>
 

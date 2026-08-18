@@ -1,8 +1,8 @@
 {
 
   "add-modal": {
-    "button-label": "Add new",
-    "title": "Add New Screenspace Renderable",
+    "button-label": "Add",
+    "title": "Add Screenspace Renderable",
     "name-input": {
       "title": "Display name",
       "placeholder": "Enter a name to show in the GUI"
