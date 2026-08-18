@@ -16,7 +16,7 @@ interface Props {
 
 export function ScreenSpacePlacementOwner({ uri }: Props) {
   const { t } = useTranslation('panel-screenspacerenderable', {
-    keyPrefix: 'placement'
+    keyPrefix: 'renderable-view.placement-tab'
   });
 
   const propertyOwner = usePropertyOwner(uri);

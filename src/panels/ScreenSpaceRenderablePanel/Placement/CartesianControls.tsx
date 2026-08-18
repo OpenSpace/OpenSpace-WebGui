@@ -17,7 +17,7 @@ interface Props {
 
 export function CartesianControls({ propertyUri }: Props) {
   const { t } = useTranslation('panel-screenspacerenderable', {
-    keyPrefix: 'placement.cartesian-controls'
+    keyPrefix: 'renderable-view.placement-tab.cartesian-controls'
   });
   const [value, setValue, meta] = useProperty('Vec3Property', propertyUri);
 

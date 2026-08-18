@@ -20,7 +20,7 @@ interface Props {
 
 export function LocalRotationControls({ propertyUri }: Props) {
   const { t } = useTranslation('panel-screenspacerenderable', {
-    keyPrefix: 'placement.local-rotation'
+    keyPrefix: 'renderable-view.placement-tab.local-rotation'
   });
 
   const [value, setValue, meta] = useProperty('Vec3Property', propertyUri);
