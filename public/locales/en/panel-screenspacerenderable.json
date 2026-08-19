@@ -108,7 +108,7 @@
           "aria-label": "Yaw"
         },
         "reset-button": {
-          "label": "Reset",
+          "tooltip": "Reset",
           "aria-label": "Reset local rotation"
         }
       }

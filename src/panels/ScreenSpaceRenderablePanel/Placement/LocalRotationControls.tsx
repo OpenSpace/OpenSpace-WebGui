@@ -75,7 +75,7 @@ export function LocalRotationControls({ propertyUri }: Props) {
           }
         />
 
-        <Tooltip label={t('reset-button.label')}>
+        <Tooltip label={t('reset-button.tooltip')}>
           <ActionIcon
             color={'red'}
             variant={'outline'}
