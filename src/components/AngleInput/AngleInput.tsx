@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { AngleSlider, Group, Stack } from '@mantine/core';
 import { useThrottledCallback } from '@mantine/hooks';
 
@@ -6,18 +6,19 @@ import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 
 interface Props {
   value: number; // Radians
+  label: React.ReactNode;
   onChange?: (value: number) => void; // Radians
   disabled?: boolean;
-  label?: React.ReactNode;
-  ariaLabel?: string;
 }
 
-export function AngleInput({ value, onChange, disabled, label, ariaLabel }: Props) {
+export function AngleInput({ value, label, onChange, disabled }: Props) {
   const [currentAngle, setCurrentAngle] = useState(radiansToDegrees(value));
   const [isInteracting, setIsInteracting] = useState(false);
   const throttledNumberInputChange = useThrottledCallback((numericValue: number) => {
     onChange?.(degreesToRadians(numericValue));
   }, 300);
+
+  const labelId = useId();
 
   function radiansToDegrees(radians: number) {
     return (radians * 180) / Math.PI;
@@ -35,7 +36,7 @@ export function AngleInput({ value, onChange, disabled, label, ariaLabel }: Prop
 
   return (
     <Stack gap={2} flex={1} align={'center'}>
-      {label}
+      <div id={labelId}>{label}</div>
       <Group align={'center'} justify={'center'} gap={5}>
         <AngleSlider
           marks={[
@@ -58,7 +59,7 @@ export function AngleInput({ value, onChange, disabled, label, ariaLabel }: Prop
           onChangeEnd={() => setIsInteracting(false)}
           formatLabel={(labelValue) => `${Math.round(labelValue)}°`}
           disabled={disabled}
-          aria-label={ariaLabel}
+          aria-labelledby={labelId}
         />
         <NumericInput
           value={currentAngle}
@@ -82,7 +83,7 @@ export function AngleInput({ value, onChange, disabled, label, ariaLabel }: Prop
           onFocus={() => setIsInteracting(true)}
           onBlur={() => setIsInteracting(false)}
           disabled={disabled}
-          aria-label={ariaLabel}
+          aria-labelledby={labelId}
         />
       </Group>
     </Stack>

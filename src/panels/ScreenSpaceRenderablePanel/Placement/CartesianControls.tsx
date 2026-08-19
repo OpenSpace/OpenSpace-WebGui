@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Group, Text } from '@mantine/core';
 
@@ -23,6 +24,10 @@ export function CartesianControls({ propertyUri }: Props) {
 
   const isAdvancedUser = useIsAdvancedUserLevel();
 
+  const xLabelId = useId();
+  const yLabelId = useId();
+  const zLabelId = useId();
+
   if (!value || !meta) {
     throw Error(`Missing property with uri: ${propertyUri}`);
   }
@@ -36,12 +41,15 @@ export function CartesianControls({ propertyUri }: Props) {
       mt={'xs'}
     >
       <Group gap={'xs'} pt={5}>
-        <Text size={'sm'}>x</Text>
+        <Text size={'sm'} id={xLabelId}>
+          x
+        </Text>
         <NumericInput
           flex={1}
           maw={70}
           miw={50}
           size={'xs'}
+          aria-labelledby={xLabelId}
           value={value[0]}
           step={meta.additionalData.step[0]}
           decimalScale={3}
@@ -52,6 +60,7 @@ export function CartesianControls({ propertyUri }: Props) {
           value={value[0]}
           flex={1}
           miw={50}
+          aria-labelledby={xLabelId}
           disabled={meta.isReadOnly}
           min={meta.additionalData.min[0]}
           max={meta.additionalData.max[0]}
@@ -61,12 +70,15 @@ export function CartesianControls({ propertyUri }: Props) {
         />
       </Group>
       <Group gap={'xs'}>
-        <Text size={'sm'}>y</Text>
+        <Text size={'sm'} id={yLabelId}>
+          y
+        </Text>
         <NumericInput
           flex={1}
           maw={70}
           miw={50}
           size={'xs'}
+          aria-labelledby={yLabelId}
           value={value[1]}
           step={meta.additionalData.step[1]}
           decimalScale={3}
@@ -77,6 +89,7 @@ export function CartesianControls({ propertyUri }: Props) {
           value={value[1]}
           flex={1}
           miw={50}
+          aria-labelledby={yLabelId}
           disabled={meta.isReadOnly}
           min={meta.additionalData.min[1]}
           max={meta.additionalData.max[1]}
@@ -87,12 +100,15 @@ export function CartesianControls({ propertyUri }: Props) {
       </Group>
       {isAdvancedUser && (
         <Group gap={'xs'} mt={'xs'}>
-          <Text size={'sm'}>z</Text>
+          <Text size={'sm'} id={zLabelId}>
+            z
+          </Text>
           <NumericInput
             flex={1}
             maw={70}
             miw={50}
             size={'xs'}
+            aria-labelledby={zLabelId}
             value={value[2]}
             step={meta.additionalData.step[2]}
             decimalScale={3}
@@ -102,6 +118,7 @@ export function CartesianControls({ propertyUri }: Props) {
             value={value[2]}
             flex={1}
             miw={50}
+            aria-labelledby={zLabelId}
             disabled={meta.isReadOnly}
             min={meta.additionalData.min[2]}
             max={meta.additionalData.max[2]}

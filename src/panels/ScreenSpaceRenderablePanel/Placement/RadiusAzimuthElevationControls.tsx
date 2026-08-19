@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Group, Text } from '@mantine/core';
 
@@ -9,7 +10,8 @@ import { ArrowsLeftRightIcon, ArrowsUpDownIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
 
-import { AngleInput } from './AngleInput';
+import { AngleInput } from '../../../components/AngleInput/AngleInput';
+
 import { PropertyGroupContainer } from './PropertyGroupContainer';
 
 interface Props {
@@ -24,6 +26,7 @@ export function RadiusAzimuthElevationControls({ propertyUri }: Props) {
   const [value, setValue, meta] = useProperty('Vec3Property', propertyUri);
 
   const isAdvancedUser = useIsAdvancedUserLevel();
+  const radiusLabelId = useId();
 
   if (!value || !meta) {
     throw Error(`Missing property with uri: ${propertyUri}`);
@@ -42,7 +45,6 @@ export function RadiusAzimuthElevationControls({ propertyUri }: Props) {
           value={value[1]}
           onChange={(newValue) => setValue([value[0], Number(newValue), value[2]])}
           disabled={meta.isReadOnly}
-          ariaLabel={t('azimuth.aria-label')}
           label={
             <Group gap={5} wrap={'nowrap'}>
               <ArrowsLeftRightIcon size={IconSize.xs} />
@@ -55,7 +57,6 @@ export function RadiusAzimuthElevationControls({ propertyUri }: Props) {
           value={value[2]}
           onChange={(newValue) => setValue([value[0], value[1], Number(newValue)])}
           disabled={meta.isReadOnly}
-          ariaLabel={t('elevation.aria-label')}
           label={
             <Group gap={5} wrap={'nowrap'}>
               <ArrowsUpDownIcon size={IconSize.xs} />
@@ -66,9 +67,10 @@ export function RadiusAzimuthElevationControls({ propertyUri }: Props) {
       </Group>
       {isAdvancedUser && (
         <Group gap={'xs'} mt={'xs'} align={'flex-start'}>
-          <Text size={'sm'}>{t('radius.label')}</Text>
+          <Text id={radiusLabelId} size={'sm'}>
+            {t('radius.label')}
+          </Text>
           <NumericInput
-            aria-label={t('radius.aria-label')}
             value={value[0]}
             size={'xs'}
             maw={80}
@@ -79,6 +81,7 @@ export function RadiusAzimuthElevationControls({ propertyUri }: Props) {
             disabled={meta.isReadOnly}
             decimalScale={2}
             onEnter={(newValue) => setValue([Number(newValue), value[1], value[2]])}
+            aria-labelledby={radiusLabelId}
           />
           <NumericSlider
             flex={1}
@@ -88,6 +91,7 @@ export function RadiusAzimuthElevationControls({ propertyUri }: Props) {
             max={meta.additionalData.max[0]}
             step={meta.additionalData.step[0]}
             onInput={(newValue) => setValue([Number(newValue), value[1], value[2]])}
+            aria-labelledby={radiusLabelId}
           />
         </Group>
       )}

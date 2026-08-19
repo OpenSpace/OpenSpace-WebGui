@@ -77,16 +77,13 @@
         "label": "Spherical position",
         "description": "Screenspace position in spherical coordinates (radius, azimuth, elevation). Radius is an advanced property hidden for other user levels. It controls the distance to the screenspace plane, allowing objects to be layered at different depths.",
         "radius": {
-          "label": "Radius",
-          "aria-label": "Radius"
+          "label": "Radius"
         },
         "azimuth": {
-          "label": "Azimuth",
-          "aria-label": "Azimuth"
+          "label": "Azimuth"
         },
         "elevation": {
-          "label": "Elevation",
-          "aria-label": "Elevation"
+          "label": "Elevation"
         }
       },
       "cartesian-controls": {
@@ -96,16 +93,13 @@
       "local-rotation": {
         "label": "Local rotation",
         "roll": {
-          "label": "Roll",
-          "aria-label": "Roll"
+          "label": "Roll"
         },
         "pitch": {
-          "label": "Pitch",
-          "aria-label": "Pitch"
+          "label": "Pitch"
         },
         "yaw": {
-          "label": "Yaw",
-          "aria-label": "Yaw"
+          "label": "Yaw"
         },
         "reset-button": {
           "tooltip": "Reset",

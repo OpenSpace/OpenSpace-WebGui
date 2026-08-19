@@ -11,7 +11,8 @@ import {
 import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
 
-import { AngleInput } from './AngleInput';
+import { AngleInput } from '../../../components/AngleInput/AngleInput';
+
 import { PropertyGroupContainer } from './PropertyGroupContainer';
 
 interface Props {
@@ -41,7 +42,6 @@ export function LocalRotationControls({ propertyUri }: Props) {
           value={value[0]}
           onChange={(newValue) => setValue([Number(newValue), value[1], value[2]])}
           disabled={meta.isReadOnly}
-          ariaLabel={t('roll.aria-label')}
           label={
             <Group gap={5} wrap={'nowrap'}>
               <RotateLeftIcon size={IconSize.xs} />
@@ -53,7 +53,6 @@ export function LocalRotationControls({ propertyUri }: Props) {
           value={value[1]}
           onChange={(newValue) => setValue([value[0], Number(newValue), value[2]])}
           disabled={meta.isReadOnly}
-          ariaLabel={t('pitch.aria-label')}
           label={
             <Group gap={5} wrap={'nowrap'}>
               <ArrowsUpDownIcon size={IconSize.xs} />
@@ -66,7 +65,6 @@ export function LocalRotationControls({ propertyUri }: Props) {
           value={value[2]}
           onChange={(newValue) => setValue([value[0], value[1], Number(newValue)])}
           disabled={meta.isReadOnly}
-          ariaLabel={t('yaw.aria-label')}
           label={
             <Group gap={5} wrap={'nowrap'}>
               <ArrowsLeftRightIcon size={IconSize.xs} />
