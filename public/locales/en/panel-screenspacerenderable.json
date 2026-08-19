@@ -42,24 +42,24 @@
     },
     "add-button": {
       "label": "Add",
-      "disabled-tooltip": "Please provide some valid content for the screenspace renderable."
+      "disabled-tooltip": "Please provide some valid content for the Screenspace renderable."
     }
   },
   "added-slides": {
-    "search-placeholder": "Search for added renderable...",
-    "empty": "Add screenspace renderables to view them here.",
-    "tips": "Tip: Try adding by drag-and-dropping an image or video file directly into OpenSpace."
+    "search-placeholder": "Search...",
+    "empty": "Add Screenspace renderables to view them here.",
+    "tips": "Tip: Try adding an image or video file by dragging and dropping it."
   },
   "no-selection-hint": "Select an item to view its details",
   "more-menu": {
     "aria-label": "Open more menu",
     "delete-button": {
       "label": "Delete",
-      "info": "Remove this screenspace renderable"
+      "info": "Remove this Screenspace renderable"
     },
     "delete-confirm-modal": {
       "title": "Delete Screenspace Renderable",
-      "are-you-sure": "Are you sure you want to remove the screenspace renderable",
+      "are-you-sure": "Are you sure you want to remove the Screenspace renderable",
       "remove-button": "Remove",
       "cancel-button": "Cancel"
     },
@@ -75,7 +75,7 @@
       },
       "spherical-controls": {
         "label": "Spherical position",
-        "description": "Screenspace position in spherical coordinates (radius, azimuth, elevation). Radius is an advanced property hidden for lower user levels. It controls the distance to the screenspace plane, allowing objects to be layered at different depths.",
+        "description": "Screenspace position in spherical coordinates (radius, azimuth, elevation). Radius is an advanced property hidden for other user levels. It controls the distance to the screenspace plane, allowing objects to be layered at different depths.",
         "radius": {
           "label": "Radius",
           "aria-label": "Radius"
@@ -91,7 +91,7 @@
       },
       "cartesian-controls": {
         "label": "Cartesian position",
-        "description": "Screenspace position in Cartesian coordinates (x, y, z). The z-coordinate is an advanced property hidden for lower user levels. It controls the distance to the screenspace plane, allowing objects to be layered at different depths."
+        "description": "Screenspace position in Cartesian coordinates (x, y, z). The z-coordinate is an advanced property hidden for other user levels. It controls the distance to the screenspace plane, allowing objects to be layered at different depths."
       },
       "local-rotation": {
         "label": "Local rotation",
@@ -108,8 +108,8 @@
           "aria-label": "Yaw"
         },
         "reset-button": {
-          "label": "Reset to all zeros",
-          "aria-label": "Reset local rotation to all zeros"
+          "label": "Reset",
+          "aria-label": "Reset local rotation"
         }
       }
     },
@@ -118,7 +118,7 @@
     },
     "renderable-tab": {
       "title": "Renderable",
-      "tooltip": "Main properties of the screenspace renderable, including the ones for the specific type."
+      "tooltip": "Main properties of the Screenspace renderable, including the ones for the specific type."
     }
   }
 }
