@@ -1,26 +1,118 @@
 {
-  "display-name-input": {
-    "title": "Display name",
-    "placeholder": "Slide name"
-  },
-  "image-input": {
-    "tab-title": "Image",
-    "title": "Path or URL to image",
-    "placeholder": "Path / URL",
-    "button-label": "Add"
-  },
-  "website-input": {
-    "tab-title": "Website",
-    "title": "URL to website",
-    "placeholder": "URL",
-    "button-label": "Add"
+  "add-modal": {
+    "button-label": "Add",
+    "title": "Add Screenspace Renderable",
+    "name-input": {
+      "title": "Display name",
+      "placeholder": "Enter a name to show in the GUI"
+    },
+    "image": {
+      "tab-title": "Image",
+      "title": "Path or URL to image",
+      "placeholder": "C:/path/to/image.png or https://example.com/image.png",
+      "error": {
+        "title": "Error: invalid base64 encoding format",
+        "description": "Cannot parse invalid format '{{format}}', supported base64 encoding images are 'png' and 'jpeg'"
+      }
+    },
+    "website": {
+      "tab-title": "Website",
+      "title": "Website URL",
+      "placeholder": "https://example.com",
+      "test-button":  {
+        "label": "Test",
+        "tooltip": "Test website link (open in browser)"
+      }
+    },
+    "video": {
+      "tab-title": "Video",
+      "title": "Path to video file",
+      "placeholder": "C:/path/to/video.mp4",
+      "loop": {
+        "label": "Loop video"
+      },
+      "play-audio": {
+        "label": "Play audio"
+      }
+    },
+    "text": {
+      "tab-title": "Text",
+      "title": "Text content",
+      "placeholder": "Enter the text to display"
+    },
+    "add-button": {
+      "label": "Add",
+      "disabled-tooltip": "Please provide some valid content for the Screenspace renderable."
+    }
   },
   "added-slides": {
-    "empty-slides": "No active slides",
-    "remove-slide-aria-label": "Remove slide"
+    "search-placeholder": "Search...",
+    "empty": "Add Screenspace renderables to view them here.",
+    "tips": "Tip: Try adding an image or video file by dragging and dropping it."
   },
-  "error": {
-    "title": "Error: invalid base64 encoding format",
-    "description": "Cannot parse invalid format '{{format}}', supported base64 encoding images are 'png' and 'jpeg'"
+  "no-selection-hint": "Select an item to view its details",
+  "more-menu": {
+    "aria-label": "Open more menu",
+    "delete-button": {
+      "label": "Delete",
+      "info": "Remove this Screenspace renderable"
+    },
+    "delete-confirm-modal": {
+      "title": "Delete Screenspace Renderable",
+      "are-you-sure": "Are you sure you want to remove the Screenspace renderable",
+      "remove-button": "Remove",
+      "cancel-button": "Cancel"
+    },
+    "pop-out": "Pop out"
+  },
+  "renderable-view": {
+    "placement-tab": {
+      "title": "Placement",
+      "mode-switch": {
+        "aria-label": "Placement mode",
+        "label-rae": "Spherical (RAE)",
+        "label-xyz": "Cartesian (XYZ)"
+      },
+      "spherical-controls": {
+        "label": "Spherical position",
+        "description": "Screenspace position in spherical coordinates (radius, azimuth, elevation). Radius is an advanced property hidden for other user levels. It controls the distance to the screenspace plane, allowing objects to be layered at different depths.",
+        "radius": {
+          "label": "Radius"
+        },
+        "azimuth": {
+          "label": "Azimuth"
+        },
+        "elevation": {
+          "label": "Elevation"
+        }
+      },
+      "cartesian-controls": {
+        "label": "Cartesian position",
+        "description": "Screenspace position in Cartesian coordinates (x, y, z). The z-coordinate is an advanced property hidden for other user levels. It controls the distance to the screenspace plane, allowing objects to be layered at different depths."
+      },
+      "local-rotation": {
+        "label": "Local rotation",
+        "roll": {
+          "label": "Roll"
+        },
+        "pitch": {
+          "label": "Pitch"
+        },
+        "yaw": {
+          "label": "Yaw"
+        },
+        "reset-button": {
+          "tooltip": "Reset",
+          "aria-label": "Reset local rotation"
+        }
+      }
+    },
+    "style-tab": {
+      "title": "Style"
+    },
+    "renderable-tab": {
+      "title": "Renderable",
+      "tooltip": "Main properties of the Screenspace renderable, including the ones for the specific type."
+    }
   }
 }

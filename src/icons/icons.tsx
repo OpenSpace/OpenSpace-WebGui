@@ -16,6 +16,11 @@ export {
   FaRegSave as SaveIcon
 } from 'react-icons/fa';
 export {
+  FaArrowsLeftRight as ArrowsLeftRightIcon,
+  FaArrowsUpDown as ArrowsUpDownIcon,
+  FaArrowRotateLeft as RotateLeftIcon
+} from 'react-icons/fa6';
+export {
   FiChevronsDown as ChevronsDownIcon,
   FiChevronsUp as ChevronsUpIcon
 } from 'react-icons/fi';
@@ -24,17 +29,19 @@ export {
   GiNightSky as NightSkyIcon,
   GiPencil as PencilIcon
 } from 'react-icons/gi';
-export { GoBrowser as BrowserIcon } from 'react-icons/go';
+export { GoBrowser as BrowserIcon, GoVideo as VideoIcon } from 'react-icons/go';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
 export { ImSphere as GridSphereIcon } from 'react-icons/im';
 export { IoMdGlobe as GlobeIcon, IoMdTime as TimeIcon } from 'react-icons/io';
 export {
   IoInformationCircleOutline as InformationCircleOutlineIcon,
   IoInformation as InformationIcon,
-  IoTelescopeOutline as TelescopeIcon
+  IoTelescopeOutline as TelescopeIcon,
+  IoText as TextIcon
 } from 'react-icons/io5';
 export {
   LuFilePlus2 as AddFileIcon,
+  LuFileClock as FileClockIcon,
   LuFileText as FileTextIcon,
   LuFolderUp as FolderBackIcon,
   LuFolder as FolderIcon,
@@ -101,6 +108,7 @@ export {
   MdSettings as SettingsIcon,
   MdStop as StopIcon,
   MdSunny as SunIcon,
+  MdShortText as TextShortIcon,
   MdTimer as TimerIcon,
   MdArrowUpward as UpArrowIcon,
   MdVideocam as VideocamIcon,
@@ -140,6 +148,7 @@ export {
   TbCube as SceneIcon,
   TbScript as ScriptLogIcon,
   TbServer as ServerIcon,
+  TbShape as ShapeIcon,
   TbWorldWww as WebIcon
 } from 'react-icons/tb';
 export {
