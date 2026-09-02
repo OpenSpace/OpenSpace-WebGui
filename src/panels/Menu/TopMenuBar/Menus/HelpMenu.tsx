@@ -12,7 +12,8 @@ import {
   HomeIcon,
   InformationCircleOutlineIcon,
   OpenInBrowserIcon,
-  PhoneIcon
+  PhoneIcon,
+  YoutubeIcon
 } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { useWebGuiUrl } from '@/util/networkingHooks';
@@ -44,11 +45,21 @@ export function HelpMenu() {
       <TopBarMenuWrapper targetTitle={t('title')}>
         <Menu.Item
           component={'a'}
+          href={'http://docs.openspaceproject.com'}
+          target={'_blank'}
+          leftSection={<BookIcon />}
+          rightSection={<OpenInBrowserIcon />}
+          aria-description={t('external-tab-aria-label')}
+        >
+          {t('documentation')}
+        </Menu.Item>
+        <Menu.Item
+          component={'a'}
           href={
             'https://www.youtube.com/playlist?list=PLzXWit_1TXsu23I8Nh2WZhN9msWG_ZbnV'
           }
           target={'_blank'}
-          leftSection={<BookIcon />}
+          leftSection={<YoutubeIcon />}
           rightSection={<OpenInBrowserIcon />}
           aria-description={t('external-tab-aria-label')}
         >
