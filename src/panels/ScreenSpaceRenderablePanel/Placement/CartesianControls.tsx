@@ -1,0 +1,133 @@
+import { useId } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Group, Text } from '@mantine/core';
+
+import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
+import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
+import { useProperty } from '@/hooks/properties';
+import { useIsAdvancedUserLevel } from '@/hooks/userLevel';
+import { ArrowsLeftRightIcon, ArrowsUpDownIcon } from '@/icons/icons';
+import { IconSize } from '@/types/enums';
+import { Uri } from '@/types/types';
+
+import { PropertyGroupContainer } from './PropertyGroupContainer';
+
+interface Props {
+  propertyUri: Uri;
+}
+
+export function CartesianControls({ propertyUri }: Props) {
+  const { t } = useTranslation('panel-screenspacerenderable', {
+    keyPrefix: 'renderable-view.placement-tab.cartesian-controls'
+  });
+  const [value, setValue, meta] = useProperty('Vec3Property', propertyUri);
+
+  const isAdvancedUser = useIsAdvancedUserLevel();
+
+  const xLabelId = useId();
+  const yLabelId = useId();
+  const zLabelId = useId();
+
+  if (!value || !meta) {
+    throw Error(`Missing property with uri: ${propertyUri}`);
+  }
+
+  return (
+    <PropertyGroupContainer
+      uri={propertyUri}
+      type={'Vec3Property'}
+      name={t('label')}
+      description={t('description')}
+      mt={'xs'}
+    >
+      <Group gap={'xs'} pt={5}>
+        <Text size={'sm'} id={xLabelId}>
+          x
+        </Text>
+        <NumericInput
+          flex={1}
+          maw={70}
+          miw={50}
+          size={'xs'}
+          aria-labelledby={xLabelId}
+          value={value[0]}
+          step={meta.additionalData.step[0]}
+          decimalScale={3}
+          onEnter={(newValue) => setValue([Number(newValue), value[1], value[2]])}
+        />
+        <ArrowsLeftRightIcon size={IconSize.xs} />
+        <NumericSlider
+          value={value[0]}
+          flex={1}
+          miw={50}
+          aria-labelledby={xLabelId}
+          disabled={meta.isReadOnly}
+          min={meta.additionalData.min[0]}
+          max={meta.additionalData.max[0]}
+          step={meta.additionalData.step[0]}
+          exponent={meta.additionalData.exponent}
+          onInput={(newValue) => setValue([Number(newValue), value[1], value[2]])}
+        />
+      </Group>
+      <Group gap={'xs'}>
+        <Text size={'sm'} id={yLabelId}>
+          y
+        </Text>
+        <NumericInput
+          flex={1}
+          maw={70}
+          miw={50}
+          size={'xs'}
+          aria-labelledby={yLabelId}
+          value={value[1]}
+          step={meta.additionalData.step[1]}
+          decimalScale={3}
+          onEnter={(newValue) => setValue([value[0], Number(newValue), value[2]])}
+        />
+        <ArrowsUpDownIcon size={IconSize.xs} />
+        <NumericSlider
+          value={value[1]}
+          flex={1}
+          miw={50}
+          aria-labelledby={yLabelId}
+          disabled={meta.isReadOnly}
+          min={meta.additionalData.min[1]}
+          max={meta.additionalData.max[1]}
+          step={meta.additionalData.step[1]}
+          exponent={meta.additionalData.exponent}
+          onInput={(newValue) => setValue([value[0], Number(newValue), value[2]])}
+        />
+      </Group>
+      {isAdvancedUser && (
+        <Group gap={'xs'} mt={'xs'}>
+          <Text size={'sm'} id={zLabelId}>
+            z
+          </Text>
+          <NumericInput
+            flex={1}
+            maw={70}
+            miw={50}
+            size={'xs'}
+            aria-labelledby={zLabelId}
+            value={value[2]}
+            step={meta.additionalData.step[2]}
+            decimalScale={3}
+            onEnter={(newValue) => setValue([value[0], value[1], Number(newValue)])}
+          />
+          <NumericSlider
+            value={value[2]}
+            flex={1}
+            miw={50}
+            aria-labelledby={zLabelId}
+            disabled={meta.isReadOnly}
+            min={meta.additionalData.min[2]}
+            max={meta.additionalData.max[2]}
+            step={meta.additionalData.step[2]}
+            exponent={meta.additionalData.exponent}
+            onInput={(newValue) => setValue([value[0], value[1], Number(newValue)])}
+          />
+        </Group>
+      )}
+    </PropertyGroupContainer>
+  );
+}
