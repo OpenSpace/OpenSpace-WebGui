@@ -45,7 +45,7 @@ export function HelpMenu() {
       <TopBarMenuWrapper targetTitle={t('title')}>
         <Menu.Item
           component={'a'}
-          href={'http://docs.openspaceproject.com'}
+          href={'https://docs.openspaceproject.com'}
           target={'_blank'}
           leftSection={<BookIcon />}
           rightSection={<OpenInBrowserIcon />}
