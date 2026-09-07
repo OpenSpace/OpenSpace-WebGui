@@ -56,24 +56,24 @@ npm run rule-check
 We are using a component library called [Mantine](https://mantine.dev). These components fulfill accessibility requirements and come with correct styling out of the box. Use these as much as possible when writing your own React components.
 We apply a custom theme to the Mantine components. If you are building a separate webpage and want the same styling, copy the theme from `src/app/theme/mantineTheme.ts`.
 
-* A fork of [`rc-dock`](https://github.com/OpenSpace/OpenSpace-WebGui-WindowLayout) is used for window management. It is slightly customized to fit our needs.
-* [`tanstack/virtual`](https://tanstack.com/virtual/latest/docs/introduction) is used for virtualized lists.
-* [`@hello-pangea/dnd`](https://github.com/hello-pangea/dnd) is used for drag-and-drop lists.
+  - A fork of [`rc-dock`](https://github.com/OpenSpace/OpenSpace-WebGui-WindowLayout) is used for window management. It is slightly customized to fit our needs.
+  - [`tanstack/virtual`](https://tanstack.com/virtual/latest/docs/introduction) is used for virtualized lists.
+  - [`@hello-pangea/dnd`](https://github.com/hello-pangea/dnd) is used for drag-and-drop lists.
 
 ## Guidelines
 
- - Make sure the code adheres to ESLint and Prettier rules - Run the necessary commands (see Additional Scripts) before pushing code.
- - If you need to disable an ESLint or Prettier rule, there needs to be a comment explaining why
- - Do not use type `any` unless absolutely necessary, add a comment explaining why `any` is used over a specified type
- - Prefer default styling as much as possible when using Mantine components.
- - Use `Props` over `Style` objects when adding custom styling to components.
- - Import using the `@` notation e.g., `import { InfoBox } from '@/components/InfoBox/InfoBox'` as much as possible. Relative paths can be used for child or sibling components e.g., `import { PlayBackButton } from './PlayBack/PlayBackButton'`
- - Avoid passing JSX as props, function arguments, or return values unless absolutely necessary, and only if the JSX is small.
- - Avoid storing JSX in variables unless necessary.
- - If a component becomes complex, consider breaking it into smaller components and/or leveraging hooks.
- - As much as possible, adhere to accessibility standards for contrast, keyboard navigation, etc. See [additional information](https://docs.openspaceproject.com/latest/contribute/development/ui-accessibility.html).
+  - Make sure the code adheres to ESLint and Prettier rules - Run the necessary commands (see Additional Scripts) before pushing code.
+  - If you need to disable an ESLint or Prettier rule, there needs to be a comment explaining why
+  - Do not use type `any` unless absolutely necessary, add a comment explaining why `any` is used over a specified type
+  - Prefer default styling as much as possible when using Mantine components.
+  - Use `Props` over `Style` objects when adding custom styling to components.
+  - Import using the `@` notation e.g., `import { InfoBox } from '@/components/InfoBox/InfoBox'` as much as possible. Relative paths can be used for child or sibling components e.g., `import { PlayBackButton } from './PlayBack/PlayBackButton'`
+  - Avoid passing JSX as props, function arguments, or return values unless absolutely necessary, and only if the JSX is small.
+  - Avoid storing JSX in variables unless necessary.
+  - If a component becomes complex, consider breaking it into smaller components and/or leveraging hooks.
+  - As much as possible, adhere to accessibility standards for contrast, keyboard navigation, etc. See [additional information](https://docs.openspaceproject.com/latest/contribute/development/ui-accessibility.html).
 
- - Follow the **Hooks Order** as much as possible.
+  - Follow the **Hooks Order** as much as possible.
 
 ## Guide: how to add a new panel
 
@@ -86,19 +86,19 @@ We apply a custom theme to the Mantine components. If you are building a separat
 
 ### Hooks Order
 
- - For cleaner code, we adhere to the following **hooks order** whenever possible. In some situations, a hook is derived from a "lower order" hook, in which case the order can be swapped.
- - Order:
-   - useTranslation
-   - useAppSelector
-   - useState
-   - useContext
-   - useRef
-   - customHooks (useOpenSpaceApi, etc)
-   - derived state
-   - useAppDispatch
-   - useEffect
-   - useMemo, useCallback
-   - functions
+  - For cleaner code, we adhere to the following **hooks order** whenever possible. In some situations, a hook is derived from a "lower order" hook, in which case the order can be swapped.
+  - Order:
+    - useTranslation
+    - useAppSelector
+    - useState
+    - useContext
+    - useRef
+    - customHooks (useOpenSpaceApi, etc)
+    - derived state
+    - useAppDispatch
+    - useEffect
+    - useMemo, useCallback
+    - functions
 
 ## A note on arrow function returns
 Use the implicit return only when something actually is returned; for example:
@@ -133,15 +133,14 @@ Inline arrow functions in JSX props (e.g. onClick) may use a concise body if the
 Use a block body ({}) if there are multiple statements or any control flow.
 
 ## OpenSpace JavaScript API
-We now support a TypeScript version of our [JavaScript API](https://github.com/OpenSpace/openspace-api-js). Since the API is frequently updated with new OpenSpace Lua functions, we've decided to maintain a manual copy of the TypeScript API in this repository. As such, we need to manually update the API declaration file periodically to ensure correct and proper syntax highlighting when calling Lua functions.
+We use the TypeScript version of our [JavaScript API](https://github.com/OpenSpace/openspace-api-js) as a regular npm dependency (`openspace-api-js`). Since the API is frequently updated with new OpenSpace Lua functions and Topics, the types published to npm can lag behind a given OpenSpace build - in that case, you can build and test a local version of `openspace-api-js` before a new release is published.
 
-To generate new type information:
-  1. Check out the https://github.com/OpenSpace/openspace-api-js repository
-  1. In the `script` folder
-     1. Run `node .\generatetopictypes.mjs <OpenSpace>/support/types` where `<OpenSpace>` is the path to the local OpenSpace main repo
-     1. Launch OpenSpace
-     1. Run `python .\generatetypescriptfile.py`
-  1. The new type files are now in the `src/types/generated` folder and can be committed
+To try out new or updated types:
+1. Check out the [openspace-api-js](https://github.com/OpenSpace/openspace-api-js) repository and generate the types you need. See its [Generating types from your OpenSpace build](https://github.com/OpenSpace/openspace-api-js#generating-types-from-your-openspace-build) section, (`npm run generate-topic-types` for Topics, `npm run generate-lua-library` for Lua library functions).
+1. In the `openspace-api-js` repository, run `npm pack` to create a local tarball (`openspace-api-js-x.x.x.tgz`).
+1. In this repository, run `npm install <path-to-openspace-api-js-x.x.x.tgz>` to install it as a local dependency and verify the new types work as expected.
+1. Once verified, publish a new version of `openspace-api-js` to npm. See [Publish a new npm version](https://docs.openspaceproject.com/releases-v0.22/contribute/development/index.html) for the full publishing steps, then update the `package.json` here to point at `openspace-api-js@dev` (or a specific `-dev.x` version) and commit the change.
+1. When the `openspace-api-js` change is promoted to a stable release, we can bump the dependency in `package.json` to that version and commmit.
 
 ## Deploy
 TODO Steps:
