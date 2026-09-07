@@ -30,7 +30,7 @@ export const assetTreeSlice = createSlice({
       );
     },
     updateStatesSnapshot: (state, action: PayloadAction<StateSnapshot>) => {
-      state.states = action.payload.status;
+      state.states = action.payload.states;
     },
     updateAssetState: (state, action: PayloadAction<State>) => {
       state.states[action.payload.path] = action.payload.state;
