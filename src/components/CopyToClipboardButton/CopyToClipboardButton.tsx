@@ -43,7 +43,7 @@ interface MenuItemBaseProps
 
 type Props = ActionIconBaseProps | ButtonBaseProps | MenuItemBaseProps;
 
-// Unfortunatley destructuring the props loses the relationship between mode and the
+// Unfortunately destructuring the props loses the relationship between mode and the
 // Mantine specific base props. So we have to keep the props object to satisfy TypeScript
 // in the switch-case
 export function CopyToClipboardButton({

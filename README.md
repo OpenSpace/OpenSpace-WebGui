@@ -140,7 +140,7 @@ To try out new or updated types:
 1. In the `openspace-api-js` repository, run `npm pack` to create a local tarball (`openspace-api-js-x.x.x.tgz`).
 1. In this repository, run `npm install <path-to-openspace-api-js-x.x.x.tgz>` to install it as a local dependency and verify the new types work as expected.
 1. Once verified, publish a new version of `openspace-api-js` to npm. See [Publish a new npm version](https://docs.openspaceproject.com/releases-v0.22/contribute/development/index.html) for the full publishing steps, then update the `package.json` here to point at `openspace-api-js@dev` (or a specific `-dev.x` version) and commit the change.
-1. When the `openspace-api-js` change is promoted to a stable release, we can bump the dependency in `package.json` to that version and commmit.
+1. When the `openspace-api-js` change is promoted to a stable release, we can bump the dependency in `package.json` to that version and commit.
 
 ## Deploy
 TODO Steps:
