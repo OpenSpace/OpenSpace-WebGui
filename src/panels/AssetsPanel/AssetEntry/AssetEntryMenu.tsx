@@ -1,13 +1,16 @@
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Menu, Stack, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { ConfirmModalContent } from '@/components/ConfirmModalContent/ConfirmModalContent';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
+import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
 import { OpenFolderIcon, RefreshIcon, VerticalDotsIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
 import { Asset } from '../types';
+import { normalizePath } from '../util';
 
 interface Props {
   asset: Asset;
@@ -24,12 +27,10 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
     modals.openConfirmModal({
       title: t('reload-assset-modal.title'),
       children: (
-        <Stack>
-          <Text>{t('reload-assset-modal.description')}</Text>
-          <Text fw={500} size={'lg'}>
-            {asset.name}
-          </Text>
-        </Stack>
+        <ConfirmModalContent
+          description={t('reload-assset-modal.description')}
+          objectName={asset.name}
+        />
       ),
       labels: {
         confirm: t('reload-assset-modal.confirm'),
@@ -48,22 +49,21 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>
-        <Stack gap={'xs'}>
+        <>
           {showReloadButton && (
-            <Tooltip
+            <MaybeTooltip
+              showTooltip={parents.length > 0}
               label={
-                parents.length > 0 ? (
-                  <>
-                    <Text>{t('reload-button.tooltip.has-parents')}</Text>
-                    {parents.map((parent) => (
-                      <Text key={parent} size={'xs'} style={{ wordBreak: 'break-all' }}>
-                        {parent}
-                      </Text>
-                    ))}
-                  </>
-                ) : (
-                  <Text>{t('reload-button.tooltip.no-parents')}</Text>
-                )
+                <>
+                  <Text size={'sm'} pb={'xs'}>
+                    {t('reload-button.tooltip')}
+                  </Text>
+                  {parents.map((parent) => (
+                    <Text key={parent} size={'xs'} style={{ wordBreak: 'break-all' }}>
+                      {parent}
+                    </Text>
+                  ))}
+                </>
               }
             >
               <Menu.Item
@@ -74,11 +74,11 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
               >
                 {t('reload-button.label')}
               </Menu.Item>
-            </Tooltip>
+            </MaybeTooltip>
           )}
           <CopyToClipboardButton
             mode={'menuItem'}
-            value={asset.path.replaceAll('\\', '/')}
+            value={normalizePath(asset.path)}
             copyTooltipLabel={t('copy-tooltip-label')}
             copyLabel={t('copy-tooltip-label')}
             iconPosition={'left'}
@@ -92,7 +92,7 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
           >
             {t('open-file-explorer-label')}
           </Menu.Item>
-        </Stack>
+        </>
       </Menu.Dropdown>
     </Menu>
   );

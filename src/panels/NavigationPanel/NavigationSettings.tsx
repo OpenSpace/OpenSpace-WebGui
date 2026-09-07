@@ -16,6 +16,7 @@ import {
   CameraPathSpeedFactorKey,
   CustomFlyToDuration,
   JumpToFadeDurationKey,
+  RetargetAnchorInterpolationTimeKey,
   UseCustomFlyToDuration
 } from '@/util/keys';
 
@@ -50,6 +51,7 @@ export function NavigationSettings() {
           mb={'xs'}
         />
         <Property uri={JumpToFadeDurationKey} />
+        <Property uri={RetargetAnchorInterpolationTimeKey} />
       </Container>
       <Divider my={'xs'} />
       <Menu.Label>{t('camera-path-settings')}</Menu.Label>

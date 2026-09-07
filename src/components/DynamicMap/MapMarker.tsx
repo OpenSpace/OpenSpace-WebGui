@@ -15,7 +15,7 @@ export function MapMarker({ left, top, children, styleProps }: Props) {
         left,
         top,
         transform: 'translate(-50%, -50%)',
-        zIndex: 1000,
+        zIndex: 'auto',
         ...styleProps
       }}
     >

@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Button, Divider, Group, Menu, Stack, Text } from '@mantine/core';
+import { ActionIcon, Box, Group, Menu, Stack } from '@mantine/core';
 
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useIsSgnFocusable } from '@/hooks/sceneGraphNodes/hooks';
@@ -48,7 +49,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
   }
 
   return (
-    <Menu position={'right-start'}>
+    <Menu position={'right-start'} withArrow>
       <Menu.Target>
         <ActionIcon size={'sm'} aria-label={t('aria-label')}>
           <VerticalDotsIcon />
@@ -56,60 +57,57 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Label>{name}</Menu.Label>
-        <Button
+        <Menu.Item
           onClick={openInNewWindow}
-          variant={'filled'}
           leftSection={<OpenWindowIcon size={IconSize.sm} />}
         >
           {t('pop-out')}
-        </Button>
+        </Menu.Item>
+
         {isFocusable && (
           <>
-            <Divider m={'xs'} />
+            <Menu.Divider />
             <Stack gap={'xs'}>
-              <Group gap={'xs'}>
-                <NodeNavigationButton
-                  type={NavigationType.Fly}
-                  identifier={propertyOwner.identifier}
-                  showLabel
-                />
-                <NodeNavigationButton
-                  type={NavigationType.Jump}
-                  identifier={propertyOwner.identifier}
-                  showLabel
-                />
-              </Group>
-              <Group gap={'xs'}>
-                <NodeNavigationButton
-                  type={NavigationType.Frame}
-                  identifier={propertyOwner.identifier}
-                  showLabel
-                />
-              </Group>
+              <NodeNavigationButton
+                type={NavigationType.Fly}
+                identifier={propertyOwner.identifier}
+                showLabel
+              />
+              <NodeNavigationButton
+                type={NavigationType.Jump}
+                identifier={propertyOwner.identifier}
+                showLabel
+              />
+              <NodeNavigationButton
+                type={NavigationType.Frame}
+                identifier={propertyOwner.identifier}
+                showLabel
+              />
             </Stack>
           </>
         )}
-        <Divider m={'xs'} />
+        <Menu.Divider />
         <Group gap={'xs'}>
-          <Button
-            size={'sm'}
-            disabled={anchorNode?.identifier === propertyOwner.identifier}
-            onClick={() => confirmRemoveSgn(identifierFromUri(uri), propertyOwner.name)}
-            color={'red'}
-            variant={'outline'}
-            leftSection={<DeleteIcon />}
+          <MaybeTooltip
+            label={t('delete-button.cannot-delete-current-focus')}
+            showTooltip={anchorNode?.identifier === propertyOwner.identifier}
           >
-            {t('delete-button.label')}
-          </Button>
-          <InfoBox>
-            {t('delete-button.info')}
-            <CopyUriButton uri={uri} />
-          </InfoBox>
-          {anchorNode?.identifier === propertyOwner.identifier && (
-            <Text size={'sm'} c={'dimmed'} m={'xs'} w={'100px'}>
-              {t('delete-button.cannot-delete-current-focus')}
-            </Text>
-          )}
+            <Menu.Item
+              disabled={anchorNode?.identifier === propertyOwner.identifier}
+              onClick={() => confirmRemoveSgn(identifierFromUri(uri), propertyOwner.name)}
+              color={'red'}
+              leftSection={<DeleteIcon />}
+              flex={1}
+            >
+              {t('delete-button.label')}
+            </Menu.Item>
+          </MaybeTooltip>
+          <Box pr={'xs'}>
+            <InfoBox>
+              {t('delete-button.info')}
+              <CopyUriButton uri={uri} />
+            </InfoBox>
+          </Box>
         </Group>
       </Menu.Dropdown>
     </Menu>

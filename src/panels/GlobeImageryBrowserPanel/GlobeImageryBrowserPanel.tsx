@@ -14,7 +14,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { DecoratedIcon } from '@/components/DecoratedIcon/DecoratedIcon';
+import { DecoratedAddIcon } from '@/components/DecoratedIcon/DecoratedAddIcon';
 import { FilterList } from '@/components/FilterList/FilterList';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
@@ -226,27 +226,19 @@ export function GlobeImageryBrowserPanel() {
                   </ActionIcon>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Stack gap={'xs'}>
-                    <Button
-                      onClick={open}
-                      leftSection={
-                        <DecoratedIcon offset={{ x: 0, y: 1 }}>
-                          <ServerIcon />
-                        </DecoratedIcon>
-                      }
-                      justify={'left'}
-                    >
-                      {t('button-labels.add-server')}
-                    </Button>
-                    <Button
-                      onClick={removeServerModal}
-                      leftSection={<DeleteIcon />}
-                      justify={'left'}
-                      disabled={selectedWMS === null}
-                    >
-                      {t('button-labels.remove-server')}
-                    </Button>
-                  </Stack>
+                  <Menu.Item
+                    onClick={open}
+                    leftSection={<DecoratedAddIcon baseIcon={<ServerIcon />} />}
+                  >
+                    {t('button-labels.add-server')}
+                  </Menu.Item>
+                  <Menu.Item
+                    onClick={removeServerModal}
+                    leftSection={<DeleteIcon />}
+                    disabled={selectedWMS === null}
+                  >
+                    {t('button-labels.remove-server')}
+                  </Menu.Item>
                 </Menu.Dropdown>
               </Menu>
             </Group>
