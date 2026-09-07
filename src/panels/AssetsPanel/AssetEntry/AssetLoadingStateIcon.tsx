@@ -4,10 +4,10 @@ import { CheckIcon, Loader, ThemeIcon, Tooltip } from '@mantine/core';
 import { WarningIcon } from '@/components/WarningIcon/WarningIcon';
 import { IconSize } from '@/types/enums';
 
-import { Asset, AssetLoadState } from '../types';
+import { Asset, AssetLoadingState } from '../types';
 
 interface Props {
-  loadState: AssetLoadState;
+  loadState: AssetLoadingState;
   asset: Asset;
 }
 
@@ -15,9 +15,9 @@ export function AssetLoadingStateIcon({ loadState, asset }: Props) {
   const { t } = useTranslation('panel-assets', { keyPrefix: 'asset-entry' });
 
   switch (loadState) {
-    case AssetLoadState.Loading:
+    case 'Loading':
       return <Loader size={'xs'} mr={5} />;
-    case AssetLoadState.Loaded:
+    case 'Loaded':
       return (
         <Tooltip label={t('tooltips.added')}>
           <ThemeIcon
@@ -29,7 +29,7 @@ export function AssetLoadingStateIcon({ loadState, asset }: Props) {
           </ThemeIcon>
         </Tooltip>
       );
-    case AssetLoadState.Error:
+    case 'Error':
       return <WarningIcon tooltipText={t('tooltips.error')} />;
     default:
       return <></>;

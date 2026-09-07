@@ -1,107 +1,77 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { useAppSelector } from '@/redux/hooks';
 
-import { Asset, Folder } from './types';
-import { baseName, pruneEmptyFolders } from './util';
+import { Folder } from './types';
+import { buildFolder, normalizePath } from './util';
 
-export function useAssetFolders() {
-  const { t } = useTranslation('panel-assets', { keyPrefix: 'folder-names' });
-
-  const [folderStructure, setFolderStructure] = useState<Folder | null>(null);
+/**
+ * This hook fetches the absolute paths to the root asset folders `Data` and `User`.
+ *
+ * @returns The absolute paths to the root asset folder.
+ */
+function useRootPaths(): { data: string; user: string } | null {
+  const [roots, setRoots] = useState<{ data: string; user: string } | null>(null);
   const luaApi = useOpenSpaceApi();
 
-  /**
-   * Recursively fetch all folders and assets in a given directory
-   *
-   * @param directoryPath Directory to fetch folders and assets from
-   * @returns A nested Folder
-   */
-  const fetchFolderData = useCallback(
-    async (directoryPath: string): Promise<Folder> => {
-      const name = baseName(directoryPath);
-
-      let subFolderPaths = await luaApi?.walkDirectoryFolders(directoryPath);
-      let assetsPaths = await luaApi?.walkDirectoryFiles(directoryPath);
-
-      subFolderPaths = subFolderPaths ? Object.values(subFolderPaths) : [];
-      assetsPaths = assetsPaths
-        ? Object.values(assetsPaths).filter(
-            (path) => path.endsWith('.asset') || path.endsWith('.jasset')
-          )
-        : [];
-
-      const assets: Asset[] =
-        assetsPaths.map((path) => ({
-          path,
-          name: baseName(path)
-        })) ?? [];
-
-      const subFolders: Folder[] = subFolderPaths
-        ? await Promise.all(subFolderPaths.map((path) => fetchFolderData(path)))
-        : [];
-
-      return {
-        path: directoryPath,
-        name,
-        subFolders,
-        assets
-      };
-    },
-    [luaApi]
-  );
-
-  const buildFolderStructure = useCallback(async () => {
-    if (!luaApi) {
-      return;
-    }
-
-    const rootFolder: Folder = {
-      path: '',
-      name: 'Home',
-      subFolders: [],
-      assets: []
-    };
-
-    // eslint-disable-next-line no-template-curly-in-string
-    const dataDir = await luaApi.absPath('${ASSETS}');
-    // eslint-disable-next-line no-template-curly-in-string
-    const userDir = await luaApi.absPath('${USER_ASSETS}');
-    if (dataDir) {
-      let dataFolder: Folder | null = await fetchFolderData(dataDir);
-      dataFolder = pruneEmptyFolders(dataFolder);
-
-      if (dataFolder) {
-        dataFolder.name = t('built-in');
-        rootFolder.subFolders.push(dataFolder);
-      }
-    }
-
-    if (userDir) {
-      let userFolder: Folder | null = await fetchFolderData(userDir);
-      userFolder = pruneEmptyFolders(userFolder);
-
-      // Ensure user folder is present even if empty
-      if (!userFolder) {
-        userFolder = {
-          path: userDir,
-          name: '',
-          subFolders: [],
-          assets: []
-        };
-      }
-
-      userFolder.name = t('user');
-      rootFolder.subFolders.push(userFolder);
-    }
-
-    setFolderStructure(rootFolder);
-  }, [luaApi, fetchFolderData, t]);
-
   useEffect(() => {
-    buildFolderStructure();
-  }, [buildFolderStructure]);
+    let cancelled = false;
 
-  return folderStructure;
+    async function fetchRoots() {
+      if (!luaApi) {
+        return;
+      }
+
+      // eslint-disable-next-line no-template-curly-in-string
+      const dataDir = normalizePath(await luaApi.absPath('${ASSETS}'));
+      // eslint-disable-next-line no-template-curly-in-string
+      const userDir = normalizePath(await luaApi.absPath('${USER_ASSETS}'));
+
+      if (!cancelled) {
+        setRoots({ data: dataDir, user: userDir });
+      }
+    }
+
+    fetchRoots();
+    return () => {
+      cancelled = true;
+    };
+  }, [luaApi]);
+
+  return roots;
+}
+
+/**
+ * Builds a complete folder structure tree with subfolders and assets for all available
+ * assets in the user `Data` and `User` directories.
+ *
+ * @returns Folder data tree with subfolders and assets, or null if not yet ready.
+ */
+export function useFolderAssets(): Folder | null {
+  const { t } = useTranslation('panel-assets', { keyPrefix: 'folder-names' });
+  const shipped = useAppSelector((state) => state.assetTree.shipped);
+  const user = useAppSelector((state) => state.assetTree.user);
+  const other = useAppSelector((state) => state.assetTree.other);
+  const roots = useRootPaths();
+
+  return useMemo(() => {
+    if (!roots) {
+      return null;
+    }
+
+    const subFolders = [
+      buildFolder(shipped, roots.data, t('built-in')),
+      buildFolder(user, roots.user, t('user'))
+    ];
+
+    if (other.length > 0) {
+      subFolders.push(buildFolder(other, undefined, t('other')));
+    }
+
+    const rootFolder: Folder = { path: '', name: 'Home', subFolders, assets: [] };
+
+    return rootFolder;
+  }, [roots, shipped, user, other, t]);
 }

@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import { actionsReducer } from './actions/actionsSlice';
+import { assetTreeReducer } from './assettree/assetTreeSlice';
 import { cameraReducer } from './camera/cameraSlice';
 import { cameraPathReducer } from './camerapath/cameraPathSlice';
 import { connectionReducer } from './connection/connectionSlice';
@@ -26,6 +27,7 @@ import { listenerMiddleware } from './listenerMiddleware';
 export const store = configureStore({
   reducer: {
     actions: actionsReducer,
+    assetTree: assetTreeReducer,
     camera: cameraReducer,
     cameraPath: cameraPathReducer,
     connection: connectionReducer,

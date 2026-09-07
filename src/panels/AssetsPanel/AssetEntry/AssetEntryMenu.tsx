@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { MdOutlineRefresh } from 'react-icons/md';
-import { ActionIcon, Button, Menu, Stack, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Menu, Stack, Text, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
+import { useOpenSpaceApi } from '@/api/hooks';
 import { CopyToClipboardButton } from '@/components/CopyToClipboardButton/CopyToClipboardButton';
-import { VerticalDotsIcon } from '@/icons/icons';
+import { OpenFolderIcon, RefreshIcon, VerticalDotsIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
 import { Asset } from '../types';
@@ -18,6 +18,7 @@ interface Props {
 
 export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }: Props) {
   const { t } = useTranslation('panel-assets', { keyPrefix: 'asset-entry-menu' });
+  const luaApi = useOpenSpaceApi();
 
   function onReloadAssetModal() {
     modals.openConfirmModal({
@@ -40,7 +41,7 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
   }
 
   return (
-    <Menu position={'right-start'}>
+    <Menu position={'right-start'} closeOnItemClick={false}>
       <Menu.Target>
         <ActionIcon aria-label={t('more-menu-aria-label')}>
           <VerticalDotsIcon />
@@ -65,22 +66,32 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
                 )
               }
             >
-              <Button
+              <Menu.Item
                 onClick={onReloadAssetModal}
                 aria-label={t('reload-button.aria-label', { assetName: asset.name })}
                 disabled={parents.length > 0}
-                leftSection={<MdOutlineRefresh size={IconSize.sm} />}
+                leftSection={<RefreshIcon size={IconSize.xs} />}
               >
                 {t('reload-button.label')}
-              </Button>
+              </Menu.Item>
             </Tooltip>
           )}
           <CopyToClipboardButton
+            mode={'menuItem'}
             value={asset.path.replaceAll('\\', '/')}
             copyTooltipLabel={t('copy-tooltip-label')}
-            showLabel
             copyLabel={t('copy-tooltip-label')}
+            iconPosition={'left'}
+            iconSize={IconSize.xs}
           />
+          <Menu.Item
+            onClick={() => {
+              luaApi?.openFileExplorer(asset.path);
+            }}
+            leftSection={<OpenFolderIcon size={IconSize.xs} />}
+          >
+            {t('open-file-explorer-label')}
+          </Menu.Item>
         </Stack>
       </Menu.Dropdown>
     </Menu>

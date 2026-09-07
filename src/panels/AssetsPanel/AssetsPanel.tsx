@@ -1,66 +1,89 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box } from '@mantine/core';
+import { ActionIcon, Box, Group, Text, Tooltip } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { Layout } from '@/components/Layout/Layout';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
-import { FolderBackIcon } from '@/icons/icons';
+import { useSubscribeToAssetTree } from '@/hooks/topicSubscriptions';
+import { FolderBackIcon, RefreshIcon } from '@/icons/icons';
+import { rescanAssetTree } from '@/redux/assettree/assetTreeMiddleware';
+import { useAppDispatch } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';
 import { caseInsensitiveSubstring } from '@/util/stringmatcher';
 
-import { AssetsEntry } from './AssetEntry/AssetsEntry';
+import { AssetEntry } from './AssetEntry/AssetEntry';
 import { AssetsBreadcrumbs } from './AssetsBreadcrumbs';
 import { FolderEntry } from './FolderEntry';
-import { useAssetFolders } from './hooks';
-import { Asset, AssetFolderNavigationState } from './types';
+import { useFolderAssets } from './hooks';
+import { Asset } from './types';
 import { collectAssets, findNavigatedFolder } from './util';
 
 export function AssetsPanel() {
   const { t } = useTranslation('panel-assets');
+  const [currentPath, setCurrentPath] = useState<string[]>([]);
 
-  const [nav, setNav] = useState<AssetFolderNavigationState>();
-  const rootFolder = useAssetFolders();
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (rootFolder) {
-      setNav({
-        root: rootFolder,
-        currentPath: []
-      });
-    }
-  }, [rootFolder]);
+  const rootFolder = useFolderAssets();
+  useSubscribeToAssetTree();
 
-  if (!nav) {
+  const navigatedFolder = useMemo(
+    () => (rootFolder ? findNavigatedFolder(rootFolder, currentPath) : null),
+    [rootFolder, currentPath]
+  );
+
+  const nestedAssetsInCurrentFolder = useMemo(
+    () => (navigatedFolder ? collectAssets(navigatedFolder) : []),
+    [navigatedFolder]
+  );
+
+  if (!rootFolder || !navigatedFolder) {
     return <LoadingBlocks />;
   }
 
-  const navigatedFolder = findNavigatedFolder(nav.root, nav.currentPath);
-  const nestedAssetsInCurrentFolder = collectAssets(navigatedFolder);
-
   function navigateTo(depth: number) {
-    if (!nav) {
+    if (!currentPath) {
       return;
     }
-    setNav({ ...nav, currentPath: nav.currentPath.slice(0, depth) });
+    setCurrentPath((path) => path.slice(0, depth));
   }
 
   function goBack() {
-    if (!nav) {
+    if (!currentPath) {
       return;
     }
-    navigateTo(nav.currentPath.length - 1);
+    navigateTo(currentPath.length - 1);
   }
 
   return (
     <Layout>
       <Layout.FixedSection>
-        <AssetsBreadcrumbs navigationPath={nav.currentPath} navigateTo={navigateTo} />
+        <AssetsBreadcrumbs navigationPath={currentPath} navigateTo={navigateTo} />
       </Layout.FixedSection>
       <Layout.GrowingSection>
         <FilterList>
-          <FilterList.InputField placeHolderSearchText={t('asset-search-placeholder')} />
+          <Group gap={'xs'}>
+            <FilterList.InputField
+              placeHolderSearchText={t('asset-search-placeholder')}
+              flex={1}
+            />
+            <Tooltip label={<Text>{t('reload-button.tooltip')}</Text>}>
+              <ActionIcon
+                onClick={() => {
+                  dispatch(rescanAssetTree());
+                }}
+                aria-label={t('reload-button.aria-label')}
+                size={'input-sm'}
+              >
+                <RefreshIcon />
+              </ActionIcon>
+            </Tooltip>
+          </Group>
           <FilterList.Favorites>
+            {/* @TODO (anden88 2026-09-04): Add right-click context menu to show folder in
+             * explorer as it got a bit too cluttered with having a '...' menu on each
+             * folder entry */}
             {navigatedFolder !== rootFolder && (
               <FolderEntry
                 text={'..'}
@@ -72,14 +95,12 @@ export function AssetsPanel() {
               <FolderEntry
                 key={folder.path}
                 text={folder.name}
-                onClick={() =>
-                  setNav({ ...nav, currentPath: [...nav.currentPath, folder.name] })
-                }
+                onClick={() => setCurrentPath([...currentPath, folder.name])}
               />
             ))}
             <Box mb={'xs'}>
               {navigatedFolder.assets.map((asset) => (
-                <AssetsEntry key={asset.path} asset={asset} />
+                <AssetEntry key={asset.path} asset={asset} />
               ))}
             </Box>
           </FilterList.Favorites>
@@ -87,7 +108,7 @@ export function AssetsPanel() {
           <FilterList.SearchResults
             data={nestedAssetsInCurrentFolder}
             renderElement={(asset: Asset) => (
-              <AssetsEntry key={asset.name} asset={asset} />
+              <AssetEntry key={asset.name} asset={asset} />
             )}
             matcherFunc={(asset, search) =>
               search
