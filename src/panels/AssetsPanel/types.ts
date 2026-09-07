@@ -1,4 +1,4 @@
-import { State } from 'openspace-api-js/types';
+import { AssetState } from 'openspace-api-js/types';
 
 export interface Asset {
   path: string;
@@ -17,4 +17,4 @@ export interface AssetFolderNavigationState {
   currentPath: string[];
 }
 
-export type AssetLoadingState = State['state'];
+export type AssetLoadingState = AssetState['state'];
