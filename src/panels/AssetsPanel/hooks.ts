@@ -51,6 +51,7 @@ function useRootPaths(): { data: string; user: string } | null {
  */
 export function useFolderAssets(): Folder | null {
   const { t } = useTranslation('panel-assets', { keyPrefix: 'folder-names' });
+
   const shipped = useAppSelector((state) => state.assetTree.shipped);
   const user = useAppSelector((state) => state.assetTree.user);
   const other = useAppSelector((state) => state.assetTree.other);

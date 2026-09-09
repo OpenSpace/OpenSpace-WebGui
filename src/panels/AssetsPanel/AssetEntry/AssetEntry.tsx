@@ -21,13 +21,13 @@ export function AssetEntry({ asset }: Props) {
   const { t } = useTranslation('panel-assets', { keyPrefix: 'asset-entry' });
 
   const states = useAppSelector((state) => state.assetTree.states);
-  const assetLoadingState = states[asset.path] ?? 'Unloaded';
   const rootAssets = useAppSelector((state) => state.assetTree.rootAssets);
-  const isRootAsset = rootAssets.includes(asset.path);
-
   const [parents, setParents] = useState<string[]>([]);
 
   const luaApi = useOpenSpaceApi();
+
+  const isRootAsset = rootAssets.includes(asset.path);
+  const assetLoadingState = states[asset.path] ?? 'Unloaded';
 
   const fetchParents = useCallback(async () => {
     const requiredBy = await luaApi?.asset.parents(asset.path);

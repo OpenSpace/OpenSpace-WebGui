@@ -21,6 +21,7 @@ interface Props {
 
 export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }: Props) {
   const { t } = useTranslation('panel-assets', { keyPrefix: 'asset-entry-menu' });
+
   const luaApi = useOpenSpaceApi();
 
   function onReloadAssetModal() {

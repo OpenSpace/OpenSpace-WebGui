@@ -21,12 +21,12 @@ import { collectAssets, findNavigatedFolder } from './util';
 
 export function AssetsPanel() {
   const { t } = useTranslation('panel-assets');
+
   const [currentPath, setCurrentPath] = useState<string[]>([]);
-
-  const dispatch = useAppDispatch();
-
   const rootFolder = useFolderAssets();
   useSubscribeToAssetTree();
+
+  const dispatch = useAppDispatch();
 
   const navigatedFolder = useMemo(
     () => (rootFolder ? findNavigatedFolder(rootFolder, currentPath) : null),
