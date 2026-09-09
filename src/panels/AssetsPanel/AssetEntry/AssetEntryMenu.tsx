@@ -44,7 +44,7 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
   return (
     <Menu position={'right-start'} closeOnItemClick={false}>
       <Menu.Target>
-        <ActionIcon aria-label={t('more-menu-aria-label')}>
+        <ActionIcon size={'sm'} aria-label={t('more-menu-aria-label')}>
           <VerticalDotsIcon />
         </ActionIcon>
       </Menu.Target>

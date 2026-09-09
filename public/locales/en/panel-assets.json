@@ -7,7 +7,7 @@
   "folder-names": {
     "built-in": "Built-in assets",
     "user": "User assets",
-    "other": "Other assets"
+    "other": "Other loaded assets"
   },
   "breadcrumbs": {
     "aria-labels": {

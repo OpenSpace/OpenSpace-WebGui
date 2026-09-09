@@ -16,6 +16,7 @@ import { AssetRemoveButton } from './AssetRemoveButton';
 interface Props {
   asset: Asset;
 }
+
 export function AssetEntry({ asset }: Props) {
   const { t } = useTranslation('panel-assets', { keyPrefix: 'asset-entry' });
 

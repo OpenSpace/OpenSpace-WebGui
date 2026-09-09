@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Box, Group, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Box, Divider, Group, Text, Tooltip } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { Layout } from '@/components/Layout/Layout';
@@ -68,15 +68,14 @@ export function AssetsPanel() {
               placeHolderSearchText={t('asset-search-placeholder')}
               flex={1}
             />
+            <Divider orientation={'vertical'} />
             <Tooltip label={<Text>{t('reload-button.tooltip')}</Text>}>
               <ActionIcon
-                onClick={() => {
-                  dispatch(rescanAssetTree());
-                }}
+                onClick={() => dispatch(rescanAssetTree())}
                 aria-label={t('reload-button.aria-label')}
-                size={'input-sm'}
+                size={'md'}
               >
-                <RefreshIcon />
+                <RefreshIcon size={IconSize.sm} />
               </ActionIcon>
             </Tooltip>
           </Group>

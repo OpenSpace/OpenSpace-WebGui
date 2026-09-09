@@ -122,13 +122,11 @@ export function CopyToClipboardButton({
 
   return (
     <CopyButton value={value} timeout={2000}>
-      {({ copied, copy }) => {
-        return (
-          <Tooltip label={tooltipLabel(copied)} position={'right'}>
-            {renderButtonType(copied, copy)}
-          </Tooltip>
-        );
-      }}
+      {({ copied, copy }) => (
+        <Tooltip label={tooltipLabel(copied)} position={'right'}>
+          {renderButtonType(copied, copy)}
+        </Tooltip>
+      )}
     </CopyButton>
   );
 }
