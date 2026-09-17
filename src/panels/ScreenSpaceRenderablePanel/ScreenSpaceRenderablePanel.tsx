@@ -47,11 +47,11 @@ export function ScreenSpaceRenderablePanel() {
         pl={'xs'}
         style={{
           borderLeft:
-            selectedRenderable == uri
+            selectedRenderable === uri
               ? 'var(--openspace-border-active)'
               : 'var(--openspace-border-active-placeholder)',
           backgroundColor:
-            selectedRenderable == uri ? 'var(--mantine-color-dark-7)' : undefined
+            selectedRenderable === uri ? 'var(--mantine-color-dark-7)' : undefined
         }}
       >
         <ScreenSpaceRenderableListItem uri={uri} onClick={() => onItemClick(uri)} />

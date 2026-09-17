@@ -19,7 +19,7 @@
       "tab-title": "Website",
       "title": "Website URL",
       "placeholder": "https://example.com",
-      "test-button":  {
+      "test-button": {
         "label": "Test",
         "tooltip": "Test website link (open in browser)"
       }
