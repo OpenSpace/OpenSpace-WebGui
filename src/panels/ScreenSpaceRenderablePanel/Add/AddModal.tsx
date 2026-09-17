@@ -32,9 +32,11 @@ function removeSurroundingQuotes(value: string) {
 }
 
 function getFileNameFromUrl(data: string) {
-  const urlParts = data.split('/');
-  const lastPart = urlParts[urlParts.length - 1];
-  return lastPart.split('.')[0]; // Remove file extension if present
+  data = removeSurroundingQuotes(data);
+  // Handle both forward and backward slashes in the path
+  const lastPart = data.split(/[/\\]/).pop() ?? '';
+  // Remove file extension if present
+  return lastPart.split('.')[0];
 }
 
 export function AddModal() {
