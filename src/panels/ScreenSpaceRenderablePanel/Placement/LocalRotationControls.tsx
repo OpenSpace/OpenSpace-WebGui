@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, Text, Tooltip } from '@mantine/core';
 
+import { AngleInput } from '@/components/AngleInput/AngleInput';
 import { useProperty } from '@/hooks/properties';
 import {
   ArrowsLeftRightIcon,
@@ -10,8 +11,6 @@ import {
 } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
-
-import { AngleInput } from '../../../components/AngleInput/AngleInput';
 
 import { PropertyGroupContainer } from './PropertyGroupContainer';
 
@@ -27,14 +26,15 @@ export function LocalRotationControls({ propertyUri }: Props) {
   const [value, setValue, meta] = useProperty('Vec3Property', propertyUri);
 
   if (!value || !meta) {
-    throw Error(`Missing property with uri: ${propertyUri}`);
+    return <></>;
   }
 
   return (
     <PropertyGroupContainer
       uri={propertyUri}
-      type={'Vec3Property'}
+      visibility={meta.visibility}
       name={t('label')}
+      description={meta.description}
       mt={'xs'}
     >
       <Group gap={'xs'} pt={5}>

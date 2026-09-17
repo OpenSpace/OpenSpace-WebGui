@@ -29,13 +29,13 @@ export function CartesianControls({ propertyUri }: Props) {
   const zLabelId = useId();
 
   if (!value || !meta) {
-    throw Error(`Missing property with uri: ${propertyUri}`);
+    return <></>;
   }
 
   return (
     <PropertyGroupContainer
       uri={propertyUri}
-      type={'Vec3Property'}
+      visibility={meta.visibility}
       name={t('label')}
       description={t('description')}
       mt={'xs'}

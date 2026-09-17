@@ -1,33 +1,27 @@
-import React from 'react';
+import { useId } from 'react';
 import { Paper, PaperProps } from '@mantine/core';
 
 import { PropertyLabel } from '@/components/Property/PropertyLabel';
-import { useProperty } from '@/hooks/properties';
-import { PropertyTypeKey } from '@/types/Property/property';
+import { PropertyVisibility } from '@/types/Property/property';
 import { Uri } from '@/types/types';
 
 interface Props extends React.PropsWithChildren, PaperProps {
   children: React.ReactNode;
   uri: Uri;
-  type: PropertyTypeKey;
-  name?: string;
-  description?: string;
+  name: string;
+  description: string;
+  visibility: PropertyVisibility;
 }
 
 export function PropertyGroupContainer({
   children,
   uri,
-  type,
   name,
   description,
+  visibility,
   ...props
 }: Props) {
-  const [value, , meta] = useProperty(type, uri);
-  const accessibleLabelId = React.useId();
-
-  if (!value || !meta) {
-    throw Error(`Missing property with uri: ${uri}`);
-  }
+  const accessibleLabelId = useId();
 
   return (
     <Paper
@@ -41,9 +35,9 @@ export function PropertyGroupContainer({
     >
       <div id={accessibleLabelId}>
         <PropertyLabel
-          name={name ?? meta.guiName}
-          description={description ?? meta.description}
-          visibility={meta.visibility}
+          name={name}
+          description={description}
+          visibility={visibility}
           uri={uri}
         />
       </div>
