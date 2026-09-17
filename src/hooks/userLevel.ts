@@ -8,7 +8,7 @@ export function useIsAdvancedUserLevel(): boolean {
   );
 
   if (userLevel === undefined) {
-    throw new Error('User level property is undefined');
+    return false;
   }
 
   return userLevel >= PropertyVisibilityNumber.AdvancedUser;
