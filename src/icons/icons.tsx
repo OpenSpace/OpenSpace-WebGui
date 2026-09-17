@@ -149,7 +149,8 @@ export {
   TbScript as ScriptLogIcon,
   TbServer as ServerIcon,
   TbShape as ShapeIcon,
-  TbWorldWww as WebIcon
+  TbWorldWww as WebIcon,
+  TbBrandYoutube as YoutubeIcon
 } from 'react-icons/tb';
 export {
   VscFeedback as FeedbackIcon,

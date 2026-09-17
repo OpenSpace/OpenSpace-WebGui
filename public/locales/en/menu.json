@@ -29,13 +29,14 @@
   },
   "help-menu": {
     "title": "Help",
+    "documentation": "Documentation",
     "tutorials": "Open Web Tutorials",
     "routes": "Open Routes Page",
     "send-feedback": "Send Feedback",
     "open-gui": "Open GUI in Browser",
     "about": "About",
     "qrcode": "Mobile QR Code",
-    "external-tab-aria-label": "(Opens in new tab)"
+    "external-tab-aria-label": "(Opens in your browser in a new tab)"
   },
   "view-menu": {
     "title": "View",
