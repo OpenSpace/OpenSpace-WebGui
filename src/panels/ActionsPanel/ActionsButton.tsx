@@ -60,12 +60,12 @@ export function ActionsButton({ uri, action: _action, height }: Props) {
           {action.documentation && (
             <InfoBox>
               <Stack gap={'xs'}>
-                <Text>{action.documentation}</Text>
+                <Text size={'sm'}>{action.documentation}</Text>
                 {keybind && (
                   <KeybindButtons modifiers={keybind.modifiers} key={keybind.key} />
                 )}
+                {action!.identifier && <CopyUriButton uri={action!.identifier} />}
               </Stack>
-              {action!.identifier && <CopyUriButton uri={action!.identifier} />}
             </InfoBox>
           )}
           {isLocal && (
