@@ -7,7 +7,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { GeoLocationGroupKey } from '@/util/keys';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { identifierFromUri, sgnUri } from '@/util/uris';
-import { useRemoveSceneGraphNodeModal } from '@/util/useRemoveSceneGraphNode';
+import { useRemoveSceneGraphNodeModal } from '@/util/removeModalsHooks';
 
 export function AddedCustomNodes() {
   const { t } = useTranslation('panel-geolocation', { keyPrefix: 'added-custom-nodes' });

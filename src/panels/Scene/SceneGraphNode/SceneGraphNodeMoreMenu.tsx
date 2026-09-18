@@ -13,7 +13,7 @@ import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { identifierFromUri } from '@/util/uris';
-import { useRemoveSceneGraphNodeModal } from '@/util/useRemoveSceneGraphNode';
+import { useRemoveSceneGraphNodeModal } from '@/util/removeModalsHooks';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { SceneGraphNodeView } from './SceneGraphNodeView';

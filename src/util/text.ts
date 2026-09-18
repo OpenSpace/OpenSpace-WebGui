@@ -29,3 +29,7 @@ export function makeIdentifier(input: string): Identifier {
   str = str.replace(/ /g, '_');
   return str;
 }
+
+export function removeSurroundingQuotes(value: string) {
+  return value.replace(/^(['"])(.*)\1$/, '$2');
+}

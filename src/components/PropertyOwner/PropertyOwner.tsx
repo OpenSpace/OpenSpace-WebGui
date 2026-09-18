@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import {
   useHasVisibleChildren,
   usePropertyOwner,
@@ -7,7 +9,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { propertySelectors } from '@/redux/propertytree/propertySlice';
 import { Uri } from '@/types/types';
 import { displayName } from '@/util/propertyTreeHelpers';
-import { isGlobeLayersUri, parentTypeUri } from '@/util/uris';
+import { identifierFromUri, isGlobeLayersUri, parentTypeUri } from '@/util/uris';
 
 import { GlobeLayersPropertyOwner } from './Custom/GlobeLayers/GlobeLayersPropertyOwner';
 import { VideoPlayerPropertyOwner } from './Custom/VideoPlayer/VideoPlayerPropertyOwner';
@@ -18,7 +20,11 @@ interface Props {
   uri: Uri;
   expandedOnDefault?: boolean;
   showOnlyChildren?: boolean;
-  hideSubowners?: boolean;
+  /**
+   * If true, hide all subowners. If array, hide only the subowners with identifiers in
+   * the array
+   */
+  hideSubowners?: boolean | string[];
 }
 
 export function PropertyOwner({
@@ -48,7 +54,19 @@ export function PropertyOwner({
 
   const hasVisibleChildren = useHasVisibleChildren(uri);
   const visibleProperties = useVisibleProperties(propertyOwner);
-  const subowners = hideSubowners ? [] : (propertyOwner.subowners ?? []);
+
+  const subowners = useMemo(() => {
+    if (hideSubowners === true) {
+      return [];
+    }
+
+    if (Array.isArray(hideSubowners)) {
+      return (propertyOwner.subowners ?? []).filter(
+        (subowner) => !hideSubowners.includes(identifierFromUri(subowner))
+      );
+    }
+    return propertyOwner.subowners ?? [];
+  }, [propertyOwner.subowners, hideSubowners]);
 
   // If there is no content to show for the current visibility settings, we don't want to
   // render this property owner

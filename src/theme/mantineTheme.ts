@@ -9,6 +9,7 @@ import {
   Divider,
   Menu,
   MultiSelect,
+  NumberInput,
   RangeSlider,
   Select,
   Slider,
@@ -130,6 +131,13 @@ export const theme = createTheme({
         }
       }
     },
+    NumberInput: NumberInput.extend({
+      defaultProps: {
+        stepHoldDelay: 500,
+        // Increase speed as the user holds down the stepper button
+        stepHoldInterval: (t) => Math.max(1000 / t ** 2, 25)
+      }
+    }),
     Select: Select.extend({
       defaultProps: {
         scrollAreaProps: { type: 'auto', scrollbarSize: 8 }
