@@ -126,11 +126,24 @@ export function useAddScreenSpaceRenderable() {
   async function addText(name: string, textContent: string) {
     const osIdentifier = (await luaApi?.makeIdentifier(name)) ?? name;
 
+    // @TODO (2026-09-18, emmbr) Our font rendering can only handle ASCII characters.
+    // When that limitation is addressed, this sanitization can be removed
+    // eslint-disable-next-line no-control-regex
+    const sanitizedTextContent = textContent.replace(/[^\x00-\x7F]/g, '-');
+
+    if (sanitizedTextContent !== textContent) {
+      // Can't use non-ASCII characters in the log message either since it uses the font
+      // rendering. Thus, just show the resulting text
+      luaApi?.printWarning(
+        `Text content was sanitized to ASCII: ${sanitizedTextContent}`
+      );
+    }
+
     const renderable: ScreenSpaceText = {
       Identifier: osIdentifier,
       Name: name,
       Type: 'ScreenSpaceText',
-      Text: textContent
+      Text: sanitizedTextContent
     };
 
     luaApi?.addScreenSpaceRenderable(renderable);

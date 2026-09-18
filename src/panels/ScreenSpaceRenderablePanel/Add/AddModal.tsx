@@ -24,12 +24,9 @@ import {
   WebIcon
 } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
+import { removeSurroundingQuotes } from '@/util/text';
 
 import { useAddScreenSpaceRenderable } from './hooks';
-
-function removeSurroundingQuotes(value: string) {
-  return value.replace(/^(['"])(.*)\1$/, '$2');
-}
 
 function getFileNameFromUrl(data: string) {
   data = removeSurroundingQuotes(data);
