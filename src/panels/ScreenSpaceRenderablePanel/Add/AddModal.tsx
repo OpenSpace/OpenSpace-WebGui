@@ -77,7 +77,7 @@ export function AddModal() {
   }
 
   function onAdd() {
-    const name = slideName || generateNameFromData(slideData) || 'Unnamed';
+    const name = slideName.trim() || generateNameFromData(slideData) || 'Unnamed';
     const sanitizedData = removeSurroundingQuotes(slideData.trim());
 
     switch (activeTab) {
