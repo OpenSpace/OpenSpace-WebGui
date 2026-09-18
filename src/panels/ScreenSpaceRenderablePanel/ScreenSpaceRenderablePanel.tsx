@@ -4,6 +4,7 @@ import { Box, Group, Stack, Text, ThemeIcon } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
+import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { InsertPhotoIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
@@ -20,12 +21,12 @@ export function ScreenSpaceRenderablePanel() {
   const { t } = useTranslation('panel-screenspacerenderable');
   const [selectedRenderable, setSelectedRenderable] = useState<Uri | null>(null);
 
-  const screenSpacePropertyOwner = usePropertyOwner(ScreenSpaceKey);
   const propertyOwners = useAppSelector((state) =>
     propertyOwnerSelectors.selectEntities(state)
   );
-
   const properties = useAppSelector((state) => propertySelectors.selectEntities(state));
+
+  const screenSpacePropertyOwner = usePropertyOwner(ScreenSpaceKey);
 
   const renderables = useMemo(
     () =>
@@ -59,8 +60,8 @@ export function ScreenSpaceRenderablePanel() {
     );
   }
 
-  return (
-    <>
+  function renderFilterList() {
+    return (
       <FilterList>
         <Group preventGrowOverflow={false} justify={'space-between'}>
           <Box flex={1}>
@@ -86,34 +87,49 @@ export function ScreenSpaceRenderablePanel() {
           </Stack>
         ) : (
           <>
-            <ResizeableContent defaultHeight={150}>
-              <FilterList.Favorites>
-                {renderables.map((uri) => renderListItem(uri))}
-              </FilterList.Favorites>
+            <FilterList.Favorites>
+              {renderables.map((uri) => renderListItem(uri))}
+            </FilterList.Favorites>
 
-              <FilterList.SearchResults
-                data={renderables}
-                renderElement={renderListItem}
-                matcherFunc={(uri: Uri, searchString: string) =>
-                  propertyOwners[uri]?.name
-                    .toLowerCase()
-                    .includes(searchString.toLowerCase())
-                }
-              >
-                <FilterList.SearchResults.VirtualList gap={'xs'} />
-              </FilterList.SearchResults>
-            </ResizeableContent>
-
-            <Box>
-              {selectedRenderable ? (
-                <ScreenSpaceRenderableView uri={selectedRenderable} />
-              ) : (
-                <Text c={'dimmed'}>{t('no-selection-hint')}</Text>
-              )}
-            </Box>
+            <FilterList.SearchResults
+              data={renderables}
+              renderElement={renderListItem}
+              matcherFunc={(uri: Uri, searchString: string) =>
+                propertyOwners[uri]?.name
+                  .toLowerCase()
+                  .includes(searchString.toLowerCase())
+              }
+            >
+              <FilterList.SearchResults.VirtualList gap={'xs'} />
+            </FilterList.SearchResults>
           </>
         )}
       </FilterList>
+    );
+  }
+
+  return (
+    <>
+      {selectedRenderable ? (
+        <>
+          <ResizeableContent
+            onHandleBarMouseDown={(event) => {
+              if (event.button === 1) {
+                // Middle mouse button
+                setSelectedRenderable(null);
+              }
+            }}
+            defaultHeight={window.innerHeight * 0.35}
+          >
+            {renderFilterList()}
+          </ResizeableContent>
+          <ScrollBox>
+            <ScreenSpaceRenderableView uri={selectedRenderable} />
+          </ScrollBox>
+        </>
+      ) : (
+        <>{renderFilterList()}</>
+      )}
     </>
   );
 }

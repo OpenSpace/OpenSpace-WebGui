@@ -50,7 +50,6 @@
     "empty": "Add Screenspace renderables to view them here.",
     "tips": "Tip: Try adding an image or video file by dragging and dropping it."
   },
-  "no-selection-hint": "Select an item to view its details",
   "more-menu": {
     "aria-label": "Open more menu",
     "delete-button": {
