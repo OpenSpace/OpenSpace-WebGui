@@ -113,5 +113,17 @@
       "title": "Renderable",
       "tooltip": "Main properties of the Screenspace renderable, including the ones for the specific type."
     }
+  },
+  "type-icon-tooltips": {
+    "browser": "Web page",
+    "image": "Image",
+    "video": "Video",
+    "renderable": "Renderable",
+    "text": "Text",
+    "date": "Date",
+    "sky-browser": "SkyBrowser",
+    "blackout-inset": "Blackout inset",
+    "time-varying-image": "Time-varying image",
+    "dashboard": "Dashboard"
   }
 }

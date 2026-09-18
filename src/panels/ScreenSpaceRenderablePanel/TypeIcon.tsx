@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Tooltip } from '@mantine/core';
 
 import {
@@ -18,24 +19,28 @@ interface Props {
   size?: number;
 }
 
-const TypeConfig = {
-  ScreenSpaceBrowser: { label: 'Web page', Icon: WebIcon },
-  ScreenSpaceImageLocal: { label: 'Image', Icon: InsertPhotoIcon },
-  ScreenSpaceImageOnline: { label: 'Image', Icon: InsertPhotoIcon },
-  ScreenSpaceVideo: { label: 'Video', Icon: VideoIcon },
-  ScreenSpaceRenderableRenderable: { label: 'Renderable', Icon: SceneIcon },
-  ScreenSpaceText: { label: 'Text', Icon: TextIcon },
-  ScreenSpaceDate: { label: 'Date', Icon: CalendarIcon },
-  ScreenSpaceSkyBrowser: { label: 'SkyBrowser', Icon: TelescopeIcon },
-  ScreenSpaceInsetBlackout: { label: 'Blackout inset', Icon: ShapeIcon },
-  ScreenSpaceTimeVaryingImageOnline: {
-    label: 'Time-varying image',
-    Icon: FileClockIcon
-  },
-  ScreenSpaceDashboard: { label: 'Dashboard', Icon: TextShortIcon }
-} as const;
-
 export function ScreenSpaceRenderableTypeIcon({ type, size }: Props) {
+  const { t } = useTranslation('panel-screenspacerenderable', {
+    keyPrefix: 'type-icon-tooltips'
+  });
+
+  const TypeConfig = {
+    ScreenSpaceBrowser: { label: t('browser'), Icon: WebIcon },
+    ScreenSpaceImageLocal: { label: t('image'), Icon: InsertPhotoIcon },
+    ScreenSpaceImageOnline: { label: t('image'), Icon: InsertPhotoIcon },
+    ScreenSpaceVideo: { label: t('video'), Icon: VideoIcon },
+    ScreenSpaceRenderableRenderable: { label: t('renderable'), Icon: SceneIcon },
+    ScreenSpaceText: { label: t('text'), Icon: TextIcon },
+    ScreenSpaceDate: { label: t('date'), Icon: CalendarIcon },
+    ScreenSpaceSkyBrowser: { label: t('sky-browser'), Icon: TelescopeIcon },
+    ScreenSpaceInsetBlackout: { label: t('blackout-inset'), Icon: ShapeIcon },
+    ScreenSpaceTimeVaryingImageOnline: {
+      label: t('time-varying-image'),
+      Icon: FileClockIcon
+    },
+    ScreenSpaceDashboard: { label: t('dashboard'), Icon: TextShortIcon }
+  } as const;
+
   if (!type) {
     return <></>;
   }
