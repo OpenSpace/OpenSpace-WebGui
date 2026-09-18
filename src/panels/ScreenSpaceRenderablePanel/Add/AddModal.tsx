@@ -55,7 +55,7 @@ export function AddModal() {
 
   const { addImage, addWebpage, addVideo, addText } = useAddScreenSpaceRenderable();
 
-  const isAddButtonDisabled = !slideData;
+  const isAddButtonDisabled = !slideData || slideData.trim() === '';
 
   function onTabChange(value: string | null) {
     if (value) {
