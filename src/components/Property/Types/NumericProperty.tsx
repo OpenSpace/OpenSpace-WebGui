@@ -59,7 +59,9 @@ export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
           <NumericInput
             value={currentValue}
             valueLabel={(numberValue) =>
-              (numberValue === undefined) || numberValue === null || Number.isNaN(numberValue)
+              numberValue === undefined ||
+              numberValue === null ||
+              Number.isNaN(numberValue)
                 ? ''
                 : roundTo(numberValue, decimalPlaces).toString()
             }

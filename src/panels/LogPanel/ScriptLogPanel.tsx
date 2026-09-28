@@ -128,7 +128,7 @@ export function ScriptLogPanel() {
                       .join('\n')
                   : t('copy-to-clipboard-error')
               }
-              showLabel
+              mode={'button'}
               disabled={selectedScripts.size === 0}
             />
             <Tooltip label={t('clear-selected-scripts.tooltip')}>
