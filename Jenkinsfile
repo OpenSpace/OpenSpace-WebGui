@@ -64,10 +64,8 @@ node('server-liu-misc') {
   }
 
   stage("${name}/package") {
-    // The contents of `dist` have to be at the root of the archive as OpenSpace unzips it
-    // directly into the folder that it then serves
     sh(
-      script: "cd dist && zip -qr ../${name}.zip .",
+      script: "cd dist && zip -qr -9 -X ../${name}.zip .",
       label: "Package ${name}.zip"
     );
     sh(
