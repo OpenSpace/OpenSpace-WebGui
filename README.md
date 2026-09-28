@@ -62,43 +62,42 @@ We apply a custom theme to the Mantine components. If you are building a separat
 
 ## Guidelines
 
- - Make sure the code adheres to ESLint and Prettier rules - Run the necessary commands (see Additional Scripts) before pushing code.
- - If you need to disable an ESLint or Prettier rule, there needs to be a comment explaining why
- - Do not use type `any` unless absolutely necessary, add a comment explaining why `any` is used over a specified type
- - Prefer default styling as much as possible when using Mantine components.
- - Use `Props` over `Style` objects when adding custom styling to components.
- - Import using the `@` notation e.g., `import { InfoBox } from '@/components/InfoBox/InfoBox'` as much as possible. Relative paths can be used for child or sibling components e.g., `import { PlayBackButton } from './PlayBack/PlayBackButton'`
- - Avoid passing JSX as props, function arguments, or return values unless absolutely necessary, and only if the JSX is small.
- - Avoid storing JSX in variables unless necessary.
- - If a component becomes complex, consider breaking it into smaller components and/or leveraging hooks.
- - As much as possible, adhere to accessibility standards for contrast, keyboard navigation, etc. See [additional information](https://docs.openspaceproject.com/latest/contribute/development/ui-accessibility.html).
-
- - Follow the **Hooks Order** as much as possible.
+- Make sure the code adheres to ESLint and Prettier rules - Run the necessary commands (see Additional Scripts) before pushing code.
+- If you need to disable an ESLint or Prettier rule, there needs to be a comment explaining why
+- Do not use type `any` unless absolutely necessary, add a comment explaining why `any` is used over a specified type
+- Prefer default styling as much as possible when using Mantine components.
+- Use `Props` over `Style` objects when adding custom styling to components.
+- Import using the `@` notation e.g., `import { InfoBox } from '@/components/InfoBox/InfoBox'` as much as possible. Relative paths can be used for child or sibling components e.g., `import { PlayBackButton } from './PlayBack/PlayBackButton'`
+- Avoid passing JSX as props, function arguments, or return values unless absolutely necessary, and only if the JSX is small.
+- Avoid storing JSX in variables unless necessary.
+- If a component becomes complex, consider breaking it into smaller components and/or leveraging hooks.
+- As much as possible, adhere to accessibility standards for contrast, keyboard navigation, etc. See [additional information](https://docs.openspaceproject.com/latest/contribute/development/ui-accessibility.html).
+- Follow the **Hooks Order** as much as possible.
 
 ## Guide: how to add a new panel
 
-  - Create a panel by making a new component and place it in a folder in the `src/panels` folder. The folder name should be the same as the component name. For example, if you create a new panel called `MyPanel`, create a folder called `MyPanel` and place the component in there. The panel name should end with "Panel": `MyPanel` is okay, but `MyComponent` is not.
-  - Hooks, types, and util functions that are only used in that panel can be placed in the same folder. If you have a lot of files, consider creating subfolders for hooks, types, and utils.
-  - Include the panel in `src/windowmanagement/data/LazyLoads.tsx` and `src/windowmanagement/data/MenuItems.tsx`. This will make it appear in the menus.
-  - We also need to add the panel to the OpenSpace Launcher. To do this, save a layout file by clicking `View > Save Toolbar Settings` and overwrite the JSON file at `OpenSpace > data > web > default_ui_panels.json`.
-  - This change in the engine needs to be committed to an engine branch.
-  - Done!
+- Create a panel by making a new component and place it in a folder in the `src/panels` folder. The folder name should be the same as the component name. For example, if you create a new panel called `MyPanel`, create a folder called `MyPanel` and place the component in there. The panel name should end with "Panel": `MyPanel` is okay, but `MyComponent` is not.
+- Hooks, types, and util functions that are only used in that panel can be placed in the same folder. If you have a lot of files, consider creating subfolders for hooks, types, and utils.
+- Include the panel in `src/windowmanagement/data/LazyLoads.tsx` and `src/windowmanagement/data/MenuItems.tsx`. This will make it appear in the menus.
+- We also need to add the panel to the OpenSpace Launcher. To do this, save a layout file by clicking `View > Save Toolbar Settings` and overwrite the JSON file at `OpenSpace > data > web > default_ui_panels.json`.
+- This change in the engine needs to be committed to an engine branch.
+- Done!
 
 ### Hooks Order
 
- - For cleaner code, we adhere to the following **hooks order** whenever possible. In some situations, a hook is derived from a "lower order" hook, in which case the order can be swapped.
- - Order:
-   - useTranslation
-   - useAppSelector
-   - useState
-   - useContext
-   - useRef
-   - customHooks (useOpenSpaceApi, etc)
-   - derived state
-   - useAppDispatch
-   - useEffect
-   - useMemo, useCallback
-   - functions
+- For cleaner code, we adhere to the following **hooks order** whenever possible. In some situations, a hook is derived from a "lower order" hook, in which case the order can be swapped.
+- Order:
+  - useTranslation
+  - useAppSelector
+  - useState
+  - useContext
+  - useRef
+  - customHooks (useOpenSpaceApi, etc)
+  - derived state
+  - useAppDispatch
+  - useEffect
+  - useMemo, useCallback
+  - functions
 
 ## A note on arrow function returns
 Use the implicit return only when something actually is returned; for example:
@@ -136,12 +135,13 @@ Use a block body ({}) if there are multiple statements or any control flow.
 We now support a TypeScript version of our [JavaScript API](https://github.com/OpenSpace/openspace-api-js). Since the API is frequently updated with new OpenSpace Lua functions, we've decided to maintain a manual copy of the TypeScript API in this repository. As such, we need to manually update the API declaration file periodically to ensure correct and proper syntax highlighting when calling Lua functions.
 
 To generate new type information:
-  1. Check out the https://github.com/OpenSpace/openspace-api-js repository
-  1. In the `script` folder
-     1. Run `node .\generatetopictypes.mjs <OpenSpace>/support/types` where `<OpenSpace>` is the path to the local OpenSpace main repo
-     1. Launch OpenSpace
-     1. Run `python .\generatetypescriptfile.py`
-  1. The new type files are now in the `src/types/generated` folder and can be committed
+
+1. Check out the https://github.com/OpenSpace/openspace-api-js repository
+1. In the `script` folder
+  1. Run `node .\generatetopictypes.mjs <OpenSpace>/support/types` where `<OpenSpace>` is the path to the local OpenSpace main repo
+  1. Launch OpenSpace
+  1. Run `python .\generatetypescriptfile.py`
+1. The new type files are now in the `src/types/generated` folder and can be committed
 
 ## Deploy
 TODO Steps:
