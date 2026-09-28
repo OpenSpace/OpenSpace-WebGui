@@ -8,7 +8,7 @@ properties([
   disableConcurrentBuilds()
 ])
 
-def name = 'gui'
+def name = 'frontend'
 def deployDirectory = "/data/deploy/${name}"
 
 // Pull requests are built to report a status back to GitHub, but they are not published.
