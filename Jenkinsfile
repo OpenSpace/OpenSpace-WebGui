@@ -1,9 +1,3 @@
-// OpenSpace-WebGui CI/CD pipeline
-//
-// Builds the Web GUI for every branch and every pull request. Branch builds are published
-// to  /data/deploy/gui/<commit sha>/gui.zip
-// on the CDN host
-
 properties([
   disableConcurrentBuilds()
 ])
@@ -11,9 +5,6 @@ properties([
 def name = 'frontend'
 def deployDirectory = "/data/deploy/${name}"
 
-// Pull requests are built to report a status back to GitHub, but they are not published.
-// The branch behind the pull request is indexed as a branch of its own and that build is
-// the one that publishes the archive
 def isPullRequest = env.CHANGE_ID != null
 
 node('server-liu-misc') {
