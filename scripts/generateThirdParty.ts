@@ -98,7 +98,7 @@ ${entries}
 }
 
 async function main() {
-  const inputPath = process.argv[2];
+  const [, , inputPath] = process.argv;
   if (!inputPath) {
     console.error('Error: No input file specified.');
     console.error('Usage: npx tsx scripts/generateThirdParty.ts <path-to-license.md>');

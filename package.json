@@ -8,8 +8,8 @@
     "dev": "vite",
     "prebuild": "npm install",
     "build": "tsc -b && vite build",
-    "lint": "npx prettier . --check & eslint .",
-    "lint-fix": "npx prettier . --write & eslint . --fix",
+    "lint": "npx prettier . --check && eslint .",
+    "lint-fix": "npx prettier . --write && eslint . --fix",
     "preview": "vite preview",
     "rule-check": "npx eslint-config-prettier src/main.tsx"
   },
