@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Stack } from '@mantine/core';
+import { Group, Stack } from '@mantine/core';
 
 import { useAppSelector } from '@/redux/hooks';
 import { propertySelectors } from '@/redux/propertytree/propertySlice';
@@ -16,6 +16,7 @@ import { SelectionProperty } from './Types/SelectionProperty';
 import { StringProperty } from './Types/StringProperty';
 import { TriggerProperty } from './Types/TriggerProperty';
 import { VectorProperty } from './Types/VectorProperty/VectorProperty';
+import { PropertyEnablableCheckbox } from './PropertyEnablableCheckbox';
 import { PropertyLabel } from './PropertyLabel';
 
 // The readOnly prop sent to each component are meant to enforce each
@@ -83,22 +84,32 @@ export const Property = memo(({ uri }: Props) => {
   const meta = useAppSelector(
     (state) => propertySelectors.selectById(state, uri)?.metaData
   );
+
   if (!meta) {
     return <></>;
   }
-
   const showLabel = !(meta.type === 'BoolProperty' || meta.type === 'TriggerProperty');
+  // BoolProperty and TriggerProperty can't be enablable so we don't have to consider the case
+  // of showLabel == false and meta.isEnablable == true.
+  const label = showLabel ? (
+    <PropertyLabel
+      name={meta.guiName}
+      description={meta.description}
+      visibility={meta.visibility}
+      readOnly={meta.isReadOnly}
+      uri={uri}
+    />
+  ) : null;
 
   return (
     <Stack mb={'md'} gap={5}>
-      {showLabel && (
-        <PropertyLabel
-          name={meta.guiName}
-          description={meta.description}
-          visibility={meta.visibility}
-          readOnly={meta.isReadOnly}
-          uri={uri}
-        />
+      {meta.isEnablable ? (
+        <Group gap={'xs'}>
+          <PropertyEnablableCheckbox uri={uri} />
+          {label}
+        </Group>
+      ) : (
+        label
       )}
       {renderProperty(meta.type, uri, meta.isReadOnly)}
     </Stack>
