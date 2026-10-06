@@ -29,9 +29,9 @@ export function TopBarMenuWrapper({
       trigger={'click-hover'}
       {...props}
     >
-      <Menu.Target ref={ref}>
+      <Menu.Target>
         {typeof targetTitle === 'string' ? (
-          <Button size={'xs'} variant={'menubar'} color={'white'}>
+          <Button ref={ref} size={'xs'} variant={'menubar'} color={'white'}>
             <Text>{targetTitle}</Text>
           </Button>
         ) : (

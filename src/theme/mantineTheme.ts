@@ -16,6 +16,7 @@ import {
   Tabs,
   ThemeIcon,
   Tooltip,
+  v8CssVariablesResolver,
   VariantColorsResolver
 } from '@mantine/core';
 
@@ -168,11 +169,19 @@ export const theme = createTheme({
   variantColorResolver
 });
 
-export const cssVariablesResolver: CSSVariablesResolver = () => ({
-  variables: {
-    '--openspace-border-active': '4px solid var(--mantine-primary-color-filled)',
-    '--openspace-border-active-placeholder': '4px solid transparent'
-  },
-  dark: {},
-  light: {}
-});
+/**
+ * Mantine 9 changed the `light` variant colors from translucent to solid. Using Mantine's
+ * v8 resolver as a base restores the Mantine 8 look, with our own variables added on top.
+ */
+export const cssVariablesResolver: CSSVariablesResolver = (mantineTheme) => {
+  const v8Variables = v8CssVariablesResolver(mantineTheme);
+  return {
+    variables: {
+      ...v8Variables.variables,
+      '--openspace-border-active': '4px solid var(--mantine-primary-color-filled)',
+      '--openspace-border-active-placeholder': '4px solid transparent'
+    },
+    dark: v8Variables.dark,
+    light: v8Variables.light
+  };
+};

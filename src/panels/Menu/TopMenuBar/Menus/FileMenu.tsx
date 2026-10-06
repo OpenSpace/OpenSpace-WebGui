@@ -50,7 +50,7 @@ export function FileMenu() {
           <Menu.Label>
             {t('profile-label')}: {profile.name}
           </Menu.Label>
-          <Menu.Sub position={'right-start'} withinPortal={false}>
+          <Menu.Sub position={'right-start'}>
             <Menu.Sub.Target>
               <Menu.Sub.Item leftSection={<InformationCircleOutlineIcon />}>
                 {t('about.label')}
