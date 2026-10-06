@@ -8,6 +8,7 @@ import {
   defaultVariantColorsResolver,
   Divider,
   Menu,
+  Menubar,
   MultiSelect,
   NumberInput,
   RangeSlider,
@@ -152,6 +153,13 @@ export const theme = createTheme({
     Menu: Menu.extend({
       defaultProps: {
         closeDelay: 200
+      }
+    }),
+    Menubar: Menubar.extend({
+      styles: {
+        target: {
+          color: 'var(--mantine-color-white)',
+        }
       }
     })
   },
