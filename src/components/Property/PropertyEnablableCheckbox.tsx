@@ -17,7 +17,7 @@ export function PropertyEnablableCheckbox({ uri }: Props) {
   return (
     <Checkbox
       checked={isEnabled}
-      onChange={() => luaApi?.propertySetEnabled(uri, !isEnabled)}
+      onChange={() => luaApi?.setPropertyEnabledSingle(uri, !isEnabled)}
     />
   );
 }
