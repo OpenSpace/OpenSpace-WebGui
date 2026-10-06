@@ -158,7 +158,7 @@ export const theme = createTheme({
     Menubar: Menubar.extend({
       styles: {
         target: {
-          color: 'var(--mantine-color-white)',
+          color: 'var(--mantine-color-white)'
         }
       }
     })
