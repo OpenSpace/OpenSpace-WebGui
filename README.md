@@ -72,7 +72,6 @@ We apply a custom theme to the Mantine components. If you are building a separat
   - Avoid storing JSX in variables unless necessary.
   - If a component becomes complex, consider breaking it into smaller components and/or leveraging hooks.
   - As much as possible, adhere to accessibility standards for contrast, keyboard navigation, etc. See [additional information](https://docs.openspaceproject.com/latest/contribute/development/ui-accessibility.html).
-
   - Follow the **Hooks Order** as much as possible.
 
 ## Guide: how to add a new panel

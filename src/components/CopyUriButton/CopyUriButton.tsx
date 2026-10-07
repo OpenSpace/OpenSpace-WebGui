@@ -12,7 +12,7 @@ function CopyUriButton({ uri, ...styleProps }: Props) {
   }
 
   return (
-    <Group gap={'xs'} wrap={'nowrap'} {...styleProps}>
+    <Group gap={'xs'} wrap={'nowrap'} {...styleProps} pb={1}>
       <Code>{uri}</Code>
       <CopyToClipboardButton value={uri} />
     </Group>
