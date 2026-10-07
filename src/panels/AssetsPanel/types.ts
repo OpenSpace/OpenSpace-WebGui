@@ -1,3 +1,5 @@
+import { AssetState } from 'openspace-api-js/types';
+
 export interface Asset {
   path: string;
   name: string;
@@ -15,9 +17,4 @@ export interface AssetFolderNavigationState {
   currentPath: string[];
 }
 
-export enum AssetLoadState {
-  NotLoaded,
-  Loading,
-  Loaded,
-  Error
-}
+export type AssetLoadingState = AssetState['state'];
