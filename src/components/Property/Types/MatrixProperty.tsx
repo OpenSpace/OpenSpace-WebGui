@@ -25,7 +25,7 @@ export function MatrixProperty({ uri, readOnly }: PropertyProps) {
   }
 
   return (
-    <Grid gutter={'xs'}>
+    <Grid gap={'xs'}>
       {value.map((item, i) => (
         <Grid.Col key={i} span={12 / matrixSize}>
           <NumericInput

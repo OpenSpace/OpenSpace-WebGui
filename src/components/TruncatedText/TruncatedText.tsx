@@ -1,6 +1,7 @@
 import { PropsWithChildren } from 'react';
 import { Text, TextProps, Tooltip, TooltipProps } from '@mantine/core';
-import { useResizeObserver } from '@mantine/hooks';
+
+import { useIsTruncated } from './hooks';
 
 interface Props extends PropsWithChildren, TextProps {
   tooltipProps?: Partial<TooltipProps>;
@@ -11,17 +12,10 @@ interface Props extends PropsWithChildren, TextProps {
  * text when hovered over, and is only shown if the text is truncated.
  */
 export function TruncatedText({ tooltipProps, children, style, ...rest }: Props) {
-  // This will case the component to rerender when the text is resized, which is necessary
-  // to determine if the text is truncated or not.
-  const [ref] = useResizeObserver();
-
-  const showTooltip: boolean =
-    ref.current &&
-    (ref.current.scrollWidth > ref.current.clientWidth ||
-      ref.current.scrollHeight > ref.current.clientHeight);
+  const { ref, isTruncated } = useIsTruncated();
 
   return (
-    <Tooltip label={children} {...tooltipProps} display={showTooltip ? 'block' : 'none'}>
+    <Tooltip label={children} {...tooltipProps} display={isTruncated ? 'block' : 'none'}>
       <Text
         truncate
         style={{
