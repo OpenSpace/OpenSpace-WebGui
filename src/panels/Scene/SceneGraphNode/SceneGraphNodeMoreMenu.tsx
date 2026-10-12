@@ -5,11 +5,13 @@ import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
+import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useIsSgnFocusable } from '@/hooks/sceneGraphNodes/hooks';
 import { DeleteIcon, OpenWindowIcon, VerticalDotsIcon } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
+import { NavigationAimKey, RetargetAimKey } from '@/util/keys';
 import { displayName } from '@/util/propertyTreeHelpers';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 import { useRemoveSceneGraphNodeModal } from '@/util/removeModalsHooks';
@@ -31,6 +33,8 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
   const anchorNode = useAnchorNode();
   const confirmRemoveSgn = useRemoveSceneGraphNodeModal();
   const isFocusable = useIsSgnFocusable(uri);
+  const [, setAim] = useProperty('StringProperty', NavigationAimKey);
+  const [, triggerRetargetAim] = useProperty('TriggerProperty', RetargetAimKey);
 
   const { addWindow } = useWindowLayoutProvider();
 
@@ -84,6 +88,18 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
                 showLabel
               />
             </Stack>
+            <Menu.Divider />
+            <Menu.Item
+              onClick={(event) => {
+                setAim(propertyOwner.identifier);
+
+                if (!event.shiftKey) {
+                  triggerRetargetAim(null);
+                }
+              }}
+            >
+              {t('target-aim')}
+            </Menu.Item>
           </>
         )}
         <Menu.Divider />

@@ -47,7 +47,8 @@
         "remove-button": "Remove",
         "cancel-button": "Cancel"
       },
-      "pop-out": "Pop out"
+      "pop-out": "Pop out",
+      "target-aim": "Set and target aim"
     },
     "node-view": {
       "not-found-info": "This scene graph node does not exist. It might have been removed since this view was opened.",
