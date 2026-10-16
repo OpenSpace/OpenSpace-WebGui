@@ -8,6 +8,7 @@ import {
   MantineStyleProps,
   Text
 } from '@mantine/core';
+import { mergeRefs } from '@mantine/hooks';
 
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
@@ -17,7 +18,7 @@ import { useMapPath } from './hooks';
 
 // Settings for the OpenSpace marker and view cone
 interface Props extends MantineStyleProps, PropsWithChildren {
-  ref?: React.RefObject<HTMLDivElement>;
+  ref?: React.Ref<HTMLDivElement>;
   refSize?: React.RefObject<HTMLDivElement | null>;
   style?: React.CSSProperties;
 }
@@ -55,14 +56,7 @@ export function Map({ ref, refSize, children, style, ...styleProps }: Props) {
       mx={'auto'}
       miw={300}
       {...styleProps}
-      ref={(el) => {
-        if (ref && el) {
-          ref.current = el;
-        }
-        if (refSize && el) {
-          refSize.current = el;
-        }
-      }}
+      ref={mergeRefs(ref, refSize)}
       style={style}
     >
       <BackgroundImage

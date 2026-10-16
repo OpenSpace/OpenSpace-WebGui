@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import { Menu } from '@mantine/core';
+import { Menu, Menubar } from '@mantine/core';
 
 interface Props extends PropsWithChildren {
   /**
@@ -37,11 +37,11 @@ export function MenuDropdownWrapper({
       {children}
     </Menu.Sub.Dropdown>
   ) : (
-    <Menu.Dropdown
+    <Menubar.Dropdown
       mah={limitHeight}
       style={shouldLimitHeight ? { overflowY: 'auto' } : undefined}
     >
       {children}
-    </Menu.Dropdown>
+    </Menubar.Dropdown>
   );
 }
