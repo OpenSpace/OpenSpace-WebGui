@@ -27,7 +27,7 @@ export function QRCode({ opened, close }: Props) {
       <Stack gap={'xs'} align={'center'}>
         <Title order={1}>{t('modal-title')}</Title>
         <QRCodeSVG
-          value={`http://${address}:${port}/gui/#/routes/`}
+          value={`http://${address}:${port}/gui/#/portal/`}
           title={t('alt-text')}
           size={192}
           bgColor={'var(--mantine-color-black)'}

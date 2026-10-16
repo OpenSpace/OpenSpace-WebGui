@@ -21,6 +21,7 @@ import settingsPanel from '@/public/locales/en/panel-settings.json';
 import skyBrowserPanel from '@/public/locales/en/panel-skybrowser.json';
 import timePanel from '@/public/locales/en/panel-time.json';
 import userPanel from '@/public/locales/en/panel-user.json';
+import portalPage from '@/public/locales/en/portal-page.json';
 
 /**
  * This object in combination with `i18next.d.ts` enables intellisense and syntax
@@ -50,7 +51,8 @@ export const resources = {
     'panel-settings': settingsPanel,
     'panel-skybrowser': skyBrowserPanel,
     'panel-time': timePanel,
-    'panel-user': userPanel
+    'panel-user': userPanel,
+    'portal-page': portalPage
   }
 } as const;
 

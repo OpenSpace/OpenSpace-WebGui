@@ -1,0 +1,37 @@
+{
+  "title": "OpenSpace Portal",
+  "introduction": "Explore the tools, features, and services available in OpenSpace.",
+  "logo-alt": "OpenSpace logo",
+  "gui": {
+    "title": "GUI",
+    "description": "The regular OpenSpace GUI."
+  },
+  "actions": {
+    "title": "Actions",
+    "description": "Actions panel opened up as a page."
+  },
+  "showcomposer": {
+    "title": "ShowComposer",
+    "description": "ShowComposer opened up as a page."
+  },
+  "map": {
+    "title": "Map",
+    "description": "Page showing a map of the current focus with a camera position marker. Works for some solar system bodies."
+  },
+  "astrocast": {
+    "title": "Astrocast",
+    "description": "Connect multiple OpenSpace instances through shared sessions for collaborative streaming and visualization."
+  },
+  "hub": {
+    "title": "OpenSpace Hub",
+    "description": "Access community-shared assets, profiles, and content."
+  },
+  "html-log": {
+    "title": "Log",
+    "description": "Access the HTML log for this OpenSpace session."
+  },
+  "script-log": {
+    "title": "Script Log",
+    "description": "Access the script log for this OpenSpace session"
+  }
+}
