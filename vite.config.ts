@@ -24,7 +24,11 @@ export default defineConfig(() => {
     },
     server: {
       host: true, // Allows access from both localhost and 127.0.0.1
-      port: 4690
+      port: 4690,
+      // Log files are served by OpenSpace's own web server
+      proxy: {
+        '/logs': 'http://localhost:4680'
+      }
     },
     base: '/gui',
     build: {

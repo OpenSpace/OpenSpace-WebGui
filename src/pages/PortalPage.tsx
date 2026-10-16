@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppShell, Divider, Group, Image, NavLink, Title } from '@mantine/core';
 
-import { useOpenSpaceApi } from '@/api/hooks';
 import {
   CastIcon,
   DashboardIcon,
@@ -16,31 +14,6 @@ import {
 
 export function PortalPage() {
   const { t } = useTranslation('portal-page');
-  const luaApi = useOpenSpaceApi();
-  const [logPaths, setLogPaths] = useState<{ log: string; script: string } | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function resolveLogPaths() {
-      if (!luaApi) {
-        return;
-      }
-
-      // eslint-disable-next-line no-template-curly-in-string
-      const base = await luaApi.absPath('${BASE}');
-
-      if (!cancelled) {
-        setLogPaths({ log: `${base}/logs/log.html`, script: `${base}/logs/script.txt` });
-      }
-    }
-
-    void resolveLogPaths();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [luaApi]);
 
   return (
     <AppShell
@@ -117,23 +90,22 @@ export function PortalPage() {
           leftSection={<SceneIcon />}
           rightSection={<OpenInBrowserIcon />}
         />
+        {/** If these links don't work, check the proxy port in `vite.config.ts` */}
         <NavLink
-          href={logPaths?.log}
+          href={'/logs/log.html'}
           label={t('html-log.title')}
           description={t('html-log.description')}
           target={'_blank'}
           leftSection={<ScriptLogIcon />}
           rightSection={<OpenInBrowserIcon />}
-          disabled={logPaths === null}
         />
         <NavLink
-          href={logPaths?.script}
+          href={'/logs/ScriptLog.txt'}
           label={t('script-log.title')}
           description={t('script-log.description')}
           target={'_blank'}
           leftSection={<ScriptLogIcon />}
           rightSection={<OpenInBrowserIcon />}
-          disabled={logPaths === null}
         />
       </AppShell.Navbar>
       <AppShell.Main>{t('introduction')}</AppShell.Main>
