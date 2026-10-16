@@ -68,7 +68,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
         <Menu.Label>{name}</Menu.Label>
         <Menu.Item
           onClick={openInNewWindow}
-          leftSection={<OpenWindowIcon size={IconSize.sm} />}
+          leftSection={<OpenWindowIcon size={IconSize.xs} />}
         >
           {t('pop-out')}
         </Menu.Item>
@@ -102,7 +102,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
                   triggerRetargetAim(null);
                 }
               }}
-              leftSection={<TelescopeIcon size={IconSize.sm} />}
+              leftSection={<TelescopeIcon size={IconSize.xs} />}
             >
               {t('target-aim')}
             </Menu.Item>
@@ -118,7 +118,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
               disabled={anchorNode?.identifier === propertyOwner.identifier}
               onClick={() => confirmRemoveSgn(identifierFromUri(uri), propertyOwner.name)}
               color={'red'}
-              leftSection={<DeleteIcon />}
+              leftSection={<DeleteIcon size={IconSize.xs} />}
               flex={1}
             >
               {t('delete-button.label')}
