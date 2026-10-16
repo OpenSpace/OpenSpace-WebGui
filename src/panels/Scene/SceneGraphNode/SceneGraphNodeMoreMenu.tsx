@@ -8,7 +8,12 @@ import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavi
 import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useIsSgnFocusable } from '@/hooks/sceneGraphNodes/hooks';
-import { DeleteIcon, OpenWindowIcon, VerticalDotsIcon } from '@/icons/icons';
+import {
+  DeleteIcon,
+  OpenWindowIcon,
+  TelescopeIcon,
+  VerticalDotsIcon
+} from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
 import { NavigationAimKey, RetargetAimKey } from '@/util/keys';
@@ -97,6 +102,7 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
                   triggerRetargetAim(null);
                 }
               }}
+              leftSection={<TelescopeIcon size={IconSize.sm} />}
             >
               {t('target-aim')}
             </Menu.Item>
