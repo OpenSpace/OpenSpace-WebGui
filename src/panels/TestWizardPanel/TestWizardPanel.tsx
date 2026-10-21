@@ -47,8 +47,6 @@ export function TestWizardPanel() {
   const [name, setName] = useState('');
   const [commands, setCommands] = useState<CommandEntry[]>([]);
 
-  const dispatch = useAppDispatch();
-
   const saveFile = useSaveFile();
   const fileDialog = useFileDialog({
     multiple: false,
@@ -56,6 +54,8 @@ export function TestWizardPanel() {
     resetOnOpen: true,
     onChange: loadFile
   });
+
+  const dispatch = useAppDispatch();
 
   function commandLabel(cmd: TestCommand): string {
     switch (cmd.type) {
