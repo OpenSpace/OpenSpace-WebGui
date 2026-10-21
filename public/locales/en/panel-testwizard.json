@@ -9,6 +9,10 @@
     "label": "Test Name",
     "placeholder": "my_test"
   },
+  "profile": {
+    "label": "OpenSpace Profile",
+    "placeholder": "default"
+  },
   "no-commands": "No commands added yet.",
   "remove-command-aria-label": "Remove command",
   "load": "Load .ostest",

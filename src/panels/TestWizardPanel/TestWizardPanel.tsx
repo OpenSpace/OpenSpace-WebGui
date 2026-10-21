@@ -42,9 +42,10 @@ export function TestWizardPanel() {
     keyPrefix: 'command-labels'
   });
 
-  const profile = useAppSelector((state) => state.profile.name) ?? '';
+  const storeProfile = useAppSelector((state) => state.profile.name) ?? '';
 
   const [name, setName] = useState('');
+  const [editedProfile, setEditedProfile] = useState<string | null>(null);
   const [commands, setCommands] = useState<CommandEntry[]>([]);
 
   const saveFile = useSaveFile();
@@ -54,6 +55,9 @@ export function TestWizardPanel() {
     resetOnOpen: true,
     onChange: loadFile
   });
+
+  // Follows the profile in the store until the user edits it or loads a file
+  const profile = editedProfile ?? storeProfile;
 
   const dispatch = useAppDispatch();
 
@@ -99,6 +103,7 @@ export function TestWizardPanel() {
       if (!isOsTest(test)) {
         throw new Error(t('load-error.invalid-file'));
       }
+      setEditedProfile(test.profile ?? null);
       setCommands(
         test.commands
           .filter((command) => command.type !== 'screenshot')
@@ -181,6 +186,12 @@ export function TestWizardPanel() {
             placeholder={t('test-name.placeholder')}
             value={name}
             onChange={(event) => setName(event.currentTarget.value)}
+          />
+          <TextInput
+            label={t('profile.label')}
+            placeholder={t('profile.placeholder')}
+            value={profile}
+            onChange={(event) => setEditedProfile(event.currentTarget.value)}
           />
         </Stack>
 
