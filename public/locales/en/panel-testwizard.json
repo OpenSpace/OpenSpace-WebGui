@@ -9,11 +9,6 @@
     "label": "Test Name",
     "placeholder": "my_test"
   },
-  "profile": {
-    "label": "OpenSpace Profile",
-    "placeholder": "default",
-    "fetch": "Fetch"
-  },
   "no-commands": "No commands added yet.",
   "remove-command-aria-label": "Remove command",
   "load": "Load .ostest",
@@ -94,8 +89,7 @@
     "asset": {
       "select-label": "Asset",
       "path-label": "Asset path",
-      "path-placeholder": "scene/solarsystem/planets/earth/earth",
-      "load": "Load assets from OpenSpace"
+      "path-placeholder": "scene/solarsystem/planets/earth/earth"
     },
     "script": {
       "label": "Lua script",
@@ -108,8 +102,7 @@
     "action": {
       "select-label": "Action",
       "identifier-label": "Action identifier",
-      "identifier-placeholder": "profile.action.identifier",
-      "load": "Load actions from OpenSpace"
+      "identifier-placeholder": "profile.action.identifier"
     },
     "pause": "Pause simulation",
     "property": {

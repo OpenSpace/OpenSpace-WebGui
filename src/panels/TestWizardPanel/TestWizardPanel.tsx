@@ -13,20 +13,20 @@ import {
 import { useFileDialog } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 
-import { useOpenSpaceApi } from '@/api/hooks';
 import {
   DragReorderList,
   OnDragEndProps
 } from '@/components/DragReorderList/DragReorderList';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { MinusIcon } from '@/icons/icons';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { NotificationLevel } from '@/types/enums';
 import { useSaveFile } from '@/util/fileIOhooks';
 
 import { AddCommandForm } from './AddCommandForm';
-import { isOsTest, OsTest, TestCommand } from './types';
+import { OsTest, TestCommand } from './types';
+import { isOsTest } from './util';
 
 interface CommandEntry {
   id: string;
@@ -41,14 +41,15 @@ export function TestWizardPanel() {
   const { t: tLabel } = useTranslation('panel-testwizard', {
     keyPrefix: 'command-labels'
   });
-  const luaApi = useOpenSpaceApi();
-  const dispatch = useAppDispatch();
-  const saveFile = useSaveFile();
 
-  const [profile, setProfile] = useState('');
+  const profile = useAppSelector((state) => state.profile.name) ?? '';
+
   const [name, setName] = useState('');
   const [commands, setCommands] = useState<CommandEntry[]>([]);
 
+  const dispatch = useAppDispatch();
+
+  const saveFile = useSaveFile();
   const fileDialog = useFileDialog({
     multiple: false,
     accept: '.ostest',
@@ -88,16 +89,6 @@ export function TestWizardPanel() {
     }
   }
 
-  async function fetchProfile() {
-    if (!luaApi) {
-      return;
-    }
-    const profilePath = await luaApi.profileName();
-    const slashIdx = profilePath.lastIndexOf('/');
-    const dotIdx = profilePath.indexOf('.');
-    setProfile(profilePath.slice(slashIdx + 1, dotIdx !== -1 ? dotIdx : undefined));
-  }
-
   async function loadFile(files: FileList | null) {
     const file = files?.[0];
     if (!file) {
@@ -108,7 +99,6 @@ export function TestWizardPanel() {
       if (!isOsTest(test)) {
         throw new Error(t('load-error.invalid-file'));
       }
-      setProfile(test.profile ?? '');
       setCommands(
         test.commands
           .filter((c) => c.type !== 'screenshot')
@@ -187,18 +177,6 @@ export function TestWizardPanel() {
             value={name}
             onChange={(e) => setName(e.currentTarget.value)}
           />
-          <Group align={'flex-end'} gap={'xs'} wrap={'nowrap'}>
-            <TextInput
-              style={{ flex: 1 }}
-              label={t('profile.label')}
-              placeholder={t('profile.placeholder')}
-              value={profile}
-              onChange={(e) => setProfile(e.currentTarget.value)}
-            />
-            <Button variant={'light'} disabled={!luaApi} onClick={fetchProfile}>
-              {t('profile.fetch')}
-            </Button>
-          </Group>
         </Stack>
 
         <Stack gap={'xs'}>

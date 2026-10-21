@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Alert,
@@ -14,56 +14,21 @@ import {
   TextInput
 } from '@mantine/core';
 
-import { api } from '@/api/api';
 import { useOpenSpaceApi } from '@/api/hooks';
+import { useSubscribeToAssetTree, useSubscribeToTime } from '@/hooks/topicSubscriptions';
+import { useRootPaths } from '@/panels/AssetsPanel/hooks';
+import { useAppSelector } from '@/redux/hooks';
+import { propertySelectors } from '@/redux/propertytree/propertySlice';
+import { dateToOpenSpaceTimeString } from '@/util/time';
 
-import { NavigationStateValue, TestCommand, Vec3 } from './types';
-
-const COMMAND_TYPES = [
-  'navigationstate',
-  'asset',
-  'property',
-  'wait',
-  'script',
-  'time',
-  'pause',
-  'deltatime',
-  'action'
-] as const;
-
-type CommandType = (typeof COMMAND_TYPES)[number];
-
-function isCommandType(value: string): value is CommandType {
-  return (COMMAND_TYPES as readonly string[]).includes(value);
-}
-
-function parseVec3(s: string): Vec3 | null {
-  const parts = s.split(',').map((p) => Number(p.trim()));
-  if (parts.length !== 3 || parts.some(Number.isNaN)) {
-    return null;
-  }
-  const [x, y, z] = parts;
-  if (x === undefined || y === undefined || z === undefined) {
-    return null;
-  }
-  return [x, y, z];
-}
-
-interface NavState {
-  Anchor: string;
-  Position: Vec3;
-  Aim?: string;
-  Pitch?: number;
-  ReferenceFrame?: string;
-  Timestamp?: string;
-  Up?: Vec3;
-  Yaw?: number;
-}
-
-interface Action {
-  Identifier: string;
-  Name: string;
-}
+import {
+  COMMAND_TYPES,
+  CommandType,
+  NavigationStateValue,
+  NavState,
+  TestCommand
+} from './types';
+import { assetNameFromPath, isCommandType, parseVec3 } from './util';
 
 interface Props {
   onAdd: (command: TestCommand) => void;
@@ -71,7 +36,10 @@ interface Props {
 
 export function AddCommandForm({ onAdd }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-  const luaApi = useOpenSpaceApi();
+
+  const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime);
+  const rootAssets = useAppSelector((state) => state.assetTree.rootAssets);
+  const actions = useAppSelector((state) => state.actions.actions);
 
   const [type, setType] = useState<CommandType | null>(null);
   const [numValue, setNumValue] = useState<number | string>(0);
@@ -91,9 +59,28 @@ export function AddCommandForm({ onAdd }: Props) {
 
   const [fetching, setFetching] = useState(false);
   const [fetchError, setFetchError] = useState<string | null>(null);
-  const [assetOptions, setAssetOptions] = useState<string[]>([]);
-  const [actionOptions, setActionOptions] = useState<{ value: string; label: string }[]>(
-    []
+
+  // Derived from `propUri`, so it comes after the state
+  const currentPropertyValue = useAppSelector(
+    (state) => propertySelectors.selectById(state, propUri)?.value
+  );
+
+  const luaApi = useOpenSpaceApi();
+  const assetRoots = useRootPaths();
+  const currentTime = useSubscribeToTime();
+  useSubscribeToAssetTree();
+
+  const assetOptions = useMemo(
+    () =>
+      assetRoots
+        ? rootAssets.map((a) => assetNameFromPath(a, assetRoots.data)).sort()
+        : [],
+    [rootAssets, assetRoots]
+  );
+  const actionOptions = useMemo(
+    () =>
+      actions.map((a) => ({ value: a.identifier, label: `${a.name} (${a.identifier})` })),
+    [actions]
   );
 
   async function runFetch(fetchFunction: () => Promise<void>) {
@@ -126,69 +113,21 @@ export function AddCommandForm({ onAdd }: Props) {
     }
   }
 
-  async function fetchTime() {
-    if (!luaApi) {
-      return;
-    }
-    setStrValue(await luaApi.time.UTC());
-  }
-
-  async function fetchDeltaTime() {
-    if (!luaApi) {
-      return;
-    }
-    setNumValue(await luaApi.time.deltaTime());
-  }
-
-  async function fetchPropertyValue() {
-    if (!propUri) {
-      return;
-    }
-    const result = (await api.getProperty(propUri)) as {
-      type: string;
-      value: { value: unknown };
-    };
-    if (result.type === 'property') {
-      setPropRawValue(String(result.value.value));
+  function applyCurrentTime() {
+    if (currentTime !== undefined) {
+      setStrValue(dateToOpenSpaceTimeString(new Date(currentTime)));
     }
   }
 
-  async function fetchAssets() {
-    if (!luaApi) {
-      return;
-    }
-    // eslint-disable-next-line no-template-curly-in-string
-    const folder = await luaApi.absPath('${ASSETS}');
-    const rawAssets = await luaApi.asset.rootAssets();
-    const all = Object.values(rawAssets as Record<number, string>);
-    const names = all
-      .map((a) => {
-        const relative = a.startsWith(folder) ? a.slice(folder.length + 1) : a;
-        const dotIdx = relative.indexOf('.');
-        return (dotIdx !== -1 ? relative.slice(0, dotIdx) : relative).replace(/\\/g, '/');
-      })
-      .sort();
-    setAssetOptions(names);
-    const [first] = names;
-    if (first) {
-      setStrValue(first);
+  function applyCurrentDeltaTime() {
+    if (targetDeltaTime !== undefined) {
+      setNumValue(targetDeltaTime);
     }
   }
 
-  async function fetchActions() {
-    if (!luaApi) {
-      return;
-    }
-    const rawActions = await luaApi.action.actions();
-    const actions = Object.values(rawActions as Record<number, Action>);
-    const opts = actions.map((a) => ({
-      value: a.Identifier,
-      label: `${a.Name} (${a.Identifier})`
-    }));
-    setActionOptions(opts);
-    const [first] = opts;
-    if (first) {
-      setStrValue(first.value);
+  function applyCurrentPropertyValue() {
+    if (currentPropertyValue !== undefined) {
+      setPropRawValue(String(currentPropertyValue));
     }
   }
 
@@ -289,8 +228,6 @@ export function AddCommandForm({ onAdd }: Props) {
           setType(v !== null && isCommandType(v) ? v : null);
           setStrValue('');
           setNumValue(0);
-          setAssetOptions([]);
-          setActionOptions([]);
         }}
         allowDeselect={false}
       />
@@ -313,9 +250,8 @@ export function AddCommandForm({ onAdd }: Props) {
             <Button
               size={'xs'}
               variant={'light'}
-              onClick={() => runFetch(fetchDeltaTime)}
-              disabled={!luaApi}
-              loading={fetching}
+              onClick={applyCurrentDeltaTime}
+              disabled={targetDeltaTime === undefined}
             >
               {t('fetch-from-openspace')}
             </Button>
@@ -345,15 +281,6 @@ export function AddCommandForm({ onAdd }: Props) {
               onChange={(e) => setStrValue(e.currentTarget.value)}
             />
           )}
-          <Button
-            size={'xs'}
-            variant={'light'}
-            onClick={() => runFetch(fetchAssets)}
-            disabled={!luaApi}
-            loading={fetching}
-          >
-            {t('asset.load')}
-          </Button>
         </Stack>
       )}
 
@@ -379,9 +306,8 @@ export function AddCommandForm({ onAdd }: Props) {
           <Button
             size={'xs'}
             variant={'light'}
-            onClick={() => runFetch(fetchTime)}
-            disabled={!luaApi}
-            loading={fetching}
+            onClick={applyCurrentTime}
+            disabled={currentTime === undefined}
           >
             {t('fetch-from-openspace')}
           </Button>
@@ -410,15 +336,6 @@ export function AddCommandForm({ onAdd }: Props) {
               onChange={(e) => setStrValue(e.currentTarget.value)}
             />
           )}
-          <Button
-            size={'xs'}
-            variant={'light'}
-            onClick={() => runFetch(fetchActions)}
-            disabled={!luaApi}
-            loading={fetching}
-          >
-            {t('action.load')}
-          </Button>
         </Stack>
       )}
 
@@ -450,9 +367,8 @@ export function AddCommandForm({ onAdd }: Props) {
             <Button
               size={'sm'}
               variant={'light'}
-              onClick={() => runFetch(fetchPropertyValue)}
-              disabled={!propUri}
-              loading={fetching}
+              onClick={applyCurrentPropertyValue}
+              disabled={currentPropertyValue === undefined}
               mb={'xs'}
             >
               {t('property.fetch-value')}

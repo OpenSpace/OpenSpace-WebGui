@@ -33,50 +33,28 @@ export interface OsTest {
   commands: TestCommand[];
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null;
-}
+export const COMMAND_TYPES = [
+  'navigationstate',
+  'asset',
+  'property',
+  'wait',
+  'script',
+  'time',
+  'pause',
+  'deltatime',
+  'action'
+] as const;
 
-function isTestCommand(command: unknown): command is TestCommand {
-  if (!isRecord(command)) {
-    return false;
-  }
-  const { type, value } = command;
-  switch (type) {
-    case 'screenshot':
-      return true;
-    case 'wait':
-    case 'deltatime':
-      return typeof value === 'number';
-    case 'pause':
-      return typeof value === 'boolean';
-    case 'script':
-    case 'time':
-    case 'asset':
-    case 'action':
-      return typeof value === 'string';
-    case 'property':
-      return (
-        isRecord(value) &&
-        typeof value.property === 'string' &&
-        ['string', 'number', 'boolean'].includes(typeof value.value)
-      );
-    case 'navigationstate':
-      return (
-        isRecord(value) &&
-        typeof value.anchor === 'string' &&
-        Array.isArray(value.position)
-      );
-    default:
-      return false;
-  }
-}
+export type CommandType = (typeof COMMAND_TYPES)[number];
 
-export function isOsTest(test: unknown): test is OsTest {
-  return (
-    isRecord(test) &&
-    (test.profile === undefined || typeof test.profile === 'string') &&
-    Array.isArray(test.commands) &&
-    test.commands.every(isTestCommand)
-  );
+// The navigation state as returned by OpenSpace
+export interface NavState {
+  Anchor: string;
+  Position: Vec3;
+  Aim?: string;
+  Pitch?: number;
+  ReferenceFrame?: string;
+  Timestamp?: string;
+  Up?: Vec3;
+  Yaw?: number;
 }
