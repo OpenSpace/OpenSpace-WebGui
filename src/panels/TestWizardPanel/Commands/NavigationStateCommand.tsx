@@ -100,20 +100,20 @@ export function NavigationStateCommand({ onAdd }: Props) {
           label={t('navigation-state.anchor.label')}
           placeholder={t('navigation-state.anchor.placeholder')}
           value={anchor}
-          onChange={(e) => setAnchor(e.currentTarget.value)}
+          onChange={(event) => setAnchor(event.currentTarget.value)}
         />
         <TextInput
           label={t('navigation-state.position.label')}
           description={t('comma-separated')}
           placeholder={t('navigation-state.position.placeholder')}
           value={position}
-          onChange={(e) => setPosition(e.currentTarget.value)}
+          onChange={(event) => setPosition(event.currentTarget.value)}
         />
         <TextInput
           label={t('navigation-state.aim.label')}
           placeholder={t('navigation-state.aim.placeholder')}
           value={aim}
-          onChange={(e) => setAim(e.currentTarget.value)}
+          onChange={(event) => setAim(event.currentTarget.value)}
         />
         <NumberInput
           label={t('navigation-state.pitch')}
@@ -123,27 +123,27 @@ export function NavigationStateCommand({ onAdd }: Props) {
         <TextInput
           label={t('navigation-state.reference-frame')}
           value={refFrame}
-          onChange={(e) => setRefFrame(e.currentTarget.value)}
+          onChange={(event) => setRefFrame(event.currentTarget.value)}
         />
         <TextInput
           label={t('navigation-state.up.label')}
           description={t('comma-separated')}
           placeholder={t('navigation-state.up.placeholder')}
           value={up}
-          onChange={(e) => setUp(e.currentTarget.value)}
+          onChange={(event) => setUp(event.currentTarget.value)}
         />
         <NumberInput label={t('navigation-state.yaw')} value={yaw} onChange={setYaw} />
         <Checkbox
           label={t('navigation-state.include-timestamp')}
           checked={includeTimestamp}
-          onChange={(e) => setIncludeTimestamp(e.currentTarget.checked)}
+          onChange={(event) => setIncludeTimestamp(event.currentTarget.checked)}
         />
         {includeTimestamp && (
           <TextInput
             label={t('navigation-state.timestamp.label')}
             placeholder={t('navigation-state.timestamp.placeholder')}
             value={timestamp}
-            onChange={(e) => setTimestamp(e.currentTarget.value)}
+            onChange={(event) => setTimestamp(event.currentTarget.value)}
           />
         )}
       </Stack>

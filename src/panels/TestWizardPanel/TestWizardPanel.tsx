@@ -101,8 +101,8 @@ export function TestWizardPanel() {
       }
       setCommands(
         test.commands
-          .filter((c) => c.type !== 'screenshot')
-          .map((cmd) => ({ id: crypto.randomUUID(), cmd }))
+          .filter((command) => command.type !== 'screenshot')
+          .map((command) => ({ id: crypto.randomUUID(), cmd: command }))
       );
       setName(file.name.replace(/\.ostest$/i, ''));
     } catch (e) {
@@ -117,11 +117,16 @@ export function TestWizardPanel() {
   }
 
   function handleAdd(cmd: TestCommand) {
-    setCommands((prev) => [...prev, { id: crypto.randomUUID(), cmd }]);
+    setCommands((previousCommands) => [
+      ...previousCommands,
+      { id: crypto.randomUUID(), cmd }
+    ]);
   }
 
   function handleRemove(index: number) {
-    setCommands((prev) => prev.filter((_, i) => i !== index));
+    setCommands((previousCommands) =>
+      previousCommands.filter((_, commandIndex) => commandIndex !== index)
+    );
   }
 
   function handleReorder({ updatedData }: OnDragEndProps<CommandEntry>) {
@@ -131,7 +136,7 @@ export function TestWizardPanel() {
   async function handleSave() {
     const test: OsTest = {
       profile,
-      commands: [...commands.map((e) => e.cmd), { type: 'screenshot' }]
+      commands: [...commands.map((entry) => entry.cmd), { type: 'screenshot' }]
     };
     const result = await saveFile(
       `${JSON.stringify(test, null, 2)}\n`,
@@ -175,7 +180,7 @@ export function TestWizardPanel() {
             label={t('test-name.label')}
             placeholder={t('test-name.placeholder')}
             value={name}
-            onChange={(e) => setName(e.currentTarget.value)}
+            onChange={(event) => setName(event.currentTarget.value)}
           />
         </Stack>
 
@@ -200,7 +205,7 @@ export function TestWizardPanel() {
             keyFunc={(entry) => entry.id}
             onDragEnd={handleReorder}
             gap={'xs'}
-            renderFunc={(entry, i) => (
+            renderFunc={(entry, index) => (
               <Group justify={'space-between'} wrap={'nowrap'}>
                 <Text size={'sm'} style={{ overflowWrap: 'anywhere' }}>
                   {commandLabel(entry.cmd)}
@@ -209,7 +214,7 @@ export function TestWizardPanel() {
                   variant={'light'}
                   size={'sm'}
                   color={'red'}
-                  onClick={() => handleRemove(i)}
+                  onClick={() => handleRemove(index)}
                   aria-label={`${t('remove-command-aria-label')}: ${commandLabel(entry.cmd)}`}
                 >
                   <MinusIcon />

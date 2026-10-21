@@ -20,7 +20,7 @@ export function PauseCommand({ onAdd }: Props) {
       <Switch
         label={t('pause')}
         checked={isPaused}
-        onChange={(e) => setIsPaused(e.currentTarget.checked)}
+        onChange={(event) => setIsPaused(event.currentTarget.checked)}
       />
       <AddCommandButton onClick={() => onAdd({ type: 'pause', value: isPaused })} />
     </Stack>

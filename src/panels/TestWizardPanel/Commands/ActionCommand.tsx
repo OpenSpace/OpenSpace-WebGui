@@ -21,7 +21,10 @@ export function ActionCommand({ onAdd }: Props) {
 
   const actionOptions = useMemo(
     () =>
-      actions.map((a) => ({ value: a.identifier, label: `${a.name} (${a.identifier})` })),
+      actions.map((availableAction) => ({
+        value: availableAction.identifier,
+        label: `${availableAction.name} (${availableAction.identifier})`
+      })),
     [actions]
   );
 
@@ -32,9 +35,9 @@ export function ActionCommand({ onAdd }: Props) {
           label={t('action.select-label')}
           data={actionOptions}
           value={action}
-          onChange={(v) => {
-            if (v) {
-              setAction(v);
+          onChange={(value) => {
+            if (value) {
+              setAction(value);
             }
           }}
           searchable
@@ -44,7 +47,7 @@ export function ActionCommand({ onAdd }: Props) {
           label={t('action.identifier-label')}
           placeholder={t('action.identifier-placeholder')}
           value={action}
-          onChange={(e) => setAction(e.currentTarget.value)}
+          onChange={(event) => setAction(event.currentTarget.value)}
         />
       )}
       <AddCommandButton

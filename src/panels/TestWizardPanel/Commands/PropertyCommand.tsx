@@ -49,7 +49,7 @@ export function PropertyCommand({ onAdd }: Props) {
           label={t('property.uri-label')}
           placeholder={t('property.uri-placeholder')}
           value={uri}
-          onChange={(e) => setUri(e.currentTarget.value)}
+          onChange={(event) => setUri(event.currentTarget.value)}
         />
         <Group align={'flex-end'} gap={'xs'}>
           <TextInput
@@ -58,7 +58,7 @@ export function PropertyCommand({ onAdd }: Props) {
             description={t('property.value-description')}
             placeholder={t('property.value-placeholder')}
             value={rawValue}
-            onChange={(e) => setRawValue(e.currentTarget.value)}
+            onChange={(event) => setRawValue(event.currentTarget.value)}
           />
           <Button
             size={'sm'}

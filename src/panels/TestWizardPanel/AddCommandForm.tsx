@@ -60,7 +60,9 @@ export function AddCommandForm({ onAdd }: Props) {
         placeholder={t('type-placeholder')}
         data={COMMAND_TYPES.map((id) => ({ value: id, label: t(`types.${id}.label`) }))}
         value={type}
-        onChange={(v) => setType(v !== null && isCommandType(v) ? v : null)}
+        onChange={(value) =>
+          setType(value !== null && isCommandType(value) ? value : null)
+        }
         allowDeselect={false}
       />
       {type !== null && (

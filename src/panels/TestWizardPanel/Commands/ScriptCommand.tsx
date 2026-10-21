@@ -21,7 +21,7 @@ export function ScriptCommand({ onAdd }: Props) {
         label={t('script.label')}
         placeholder={t('script.placeholder')}
         value={script}
-        onChange={(e) => setScript(e.currentTarget.value)}
+        onChange={(event) => setScript(event.currentTarget.value)}
         autosize
         minRows={2}
       />

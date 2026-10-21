@@ -28,7 +28,9 @@ export function AssetCommand({ onAdd }: Props) {
   const assetOptions = useMemo(
     () =>
       assetRoots
-        ? rootAssets.map((a) => assetNameFromPath(a, assetRoots.data)).sort()
+        ? rootAssets
+            .map((assetPath) => assetNameFromPath(assetPath, assetRoots.data))
+            .sort()
         : [],
     [rootAssets, assetRoots]
   );
@@ -40,9 +42,9 @@ export function AssetCommand({ onAdd }: Props) {
           label={t('asset.select-label')}
           data={assetOptions}
           value={asset}
-          onChange={(v) => {
-            if (v) {
-              setAsset(v);
+          onChange={(value) => {
+            if (value) {
+              setAsset(value);
             }
           }}
           searchable
@@ -52,7 +54,7 @@ export function AssetCommand({ onAdd }: Props) {
           label={t('asset.path-label')}
           placeholder={t('asset.path-placeholder')}
           value={asset}
-          onChange={(e) => setAsset(e.currentTarget.value)}
+          onChange={(event) => setAsset(event.currentTarget.value)}
         />
       )}
       <AddCommandButton

@@ -69,7 +69,7 @@ export function isCommandType(value: string): value is CommandType {
  * @returns The parsed vector, or `null` if the string is not a valid vector
  */
 export function parseVec3(s: string): Vec3 | null {
-  const parts = s.split(',').map((p) => Number(p.trim()));
+  const parts = s.split(',').map((part) => Number(part.trim()));
   if (parts.length !== 3 || parts.some(Number.isNaN)) {
     return null;
   }

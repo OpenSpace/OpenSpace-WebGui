@@ -33,7 +33,7 @@ export function TimeCommand({ onAdd }: Props) {
           label={t('time.label')}
           placeholder={t('time.placeholder')}
           value={time}
-          onChange={(e) => setTime(e.currentTarget.value)}
+          onChange={(event) => setTime(event.currentTarget.value)}
         />
         <Button
           size={'xs'}
