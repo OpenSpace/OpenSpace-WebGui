@@ -19,6 +19,7 @@ import scriptLogPanel from '@/public/locales/en/panel-scriptlog.json';
 import sessionRecordingPanel from '@/public/locales/en/panel-sessionrecording.json';
 import settingsPanel from '@/public/locales/en/panel-settings.json';
 import skyBrowserPanel from '@/public/locales/en/panel-skybrowser.json';
+import testWizardPanel from '@/public/locales/en/panel-testwizard.json';
 import timePanel from '@/public/locales/en/panel-time.json';
 import userPanel from '@/public/locales/en/panel-user.json';
 
@@ -49,6 +50,7 @@ export const resources = {
     'panel-scriptlog': scriptLogPanel,
     'panel-settings': settingsPanel,
     'panel-skybrowser': skyBrowserPanel,
+    'panel-testwizard': testWizardPanel,
     'panel-time': timePanel,
     'panel-user': userPanel
   }
