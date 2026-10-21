@@ -1,3 +1,5 @@
+import { AnyProperty } from 'openspace-api-js/types';
+
 import { stripRoot } from '@/panels/AssetsPanel/util';
 
 import { COMMAND_TYPES, CommandType, OsTest, TestCommand, Vec3 } from './types';
@@ -14,6 +16,17 @@ export function assetNameFromPath(path: string, root: string): string {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
+}
+
+function isPropertyValue(value: unknown): value is AnyProperty['value'] {
+  return (
+    value === null ||
+    typeof value === 'string' ||
+    typeof value === 'number' ||
+    typeof value === 'boolean' ||
+    (Array.isArray(value) &&
+      value.every((item) => typeof item === 'string' || typeof item === 'number'))
+  );
 }
 
 function isTestCommand(command: unknown): command is TestCommand {
@@ -38,7 +51,7 @@ function isTestCommand(command: unknown): command is TestCommand {
       return (
         isRecord(value) &&
         typeof value.property === 'string' &&
-        ['string', 'number', 'boolean'].includes(typeof value.value)
+        isPropertyValue(value.value)
       );
     case 'navigationstate':
       return (

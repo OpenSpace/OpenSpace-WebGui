@@ -112,10 +112,10 @@
     "property": {
       "uri-label": "Property URI",
       "uri-placeholder": "Scene.Earth.Renderable.Enabled",
-      "value-label": "Value",
-      "value-description": "Enter true/false for booleans, a number, or a string value.",
-      "value-placeholder": "true",
-      "fetch-value": "Fetch value"
+      "uri-nothing-found": "No matching property",
+      "preview": "Property preview",
+      "select-value": "Select value",
+      "selected-value": "Selected value: {{value}}"
     },
     "navigation-state": {
       "fetch": "Fetch current camera state from OpenSpace",

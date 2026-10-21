@@ -1,3 +1,5 @@
+import { AnyProperty } from 'openspace-api-js/types';
+
 export type Vec3 = [number, number, number];
 
 export interface NavigationStateValue {
@@ -13,7 +15,7 @@ export interface NavigationStateValue {
 
 export interface PropertyCommandValue {
   property: string;
-  value: string | number | boolean;
+  value: AnyProperty['value'];
 }
 
 export type TestCommand =

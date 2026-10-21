@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Group, Stack, TextInput } from '@mantine/core';
+import { Button, Card, Stack, Text } from '@mantine/core';
 
+import { Property } from '@/components/Property/Property';
+import { VirtualSelect } from '@/components/VirtualSelect/VirtualSelect';
 import { useAppSelector } from '@/redux/hooks';
 import { propertySelectors } from '@/redux/propertytree/propertySlice';
 
-import { TestCommand } from '../types';
+import { PropertyCommandValue, TestCommand } from '../types';
 
 import { AddCommandButton } from './AddCommandButton';
 
@@ -16,62 +18,62 @@ interface Props {
 export function PropertyCommand({ onAdd }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
 
-  const [uri, setUri] = useState('');
-  const [rawValue, setRawValue] = useState('');
+  const propertyUris = useAppSelector(propertySelectors.selectIds);
 
-  // Derived from `uri`, so it comes after the state
-  const currentValue = useAppSelector(
-    (state) => propertySelectors.selectById(state, uri)?.value
+  const [uri, setUri] = useState('');
+  const [value, setValue] = useState<PropertyCommandValue['value'] | undefined>(
+    undefined
   );
 
-  function applyCurrentValue() {
-    if (currentValue !== undefined) {
-      setRawValue(String(currentValue));
-    }
+  // Derived from `uri`, so it comes after the state
+  const property = useAppSelector((state) => propertySelectors.selectById(state, uri));
+
+  function handleUriChange(newUri: string) {
+    setUri(newUri);
+    setValue(undefined);
+  }
+
+  function handleSelectValue() {
+    setValue(property?.value);
   }
 
   function handleAdd() {
-    let value: string | number | boolean = rawValue;
-    if (rawValue.toLowerCase() === 'true') {
-      value = true;
-    } else if (rawValue.toLowerCase() === 'false') {
-      value = false;
-    } else if (rawValue !== '' && !Number.isNaN(Number(rawValue))) {
-      value = Number(rawValue);
+    if (value !== undefined) {
+      onAdd({ type: 'property', value: { property: uri, value } });
     }
-    onAdd({ type: 'property', value: { property: uri, value } });
   }
 
   return (
     <Stack gap={'sm'}>
       <Stack gap={'xs'}>
-        <TextInput
+        <VirtualSelect
           label={t('property.uri-label')}
           placeholder={t('property.uri-placeholder')}
+          nothingFoundMessage={t('property.uri-nothing-found')}
+          data={propertyUris}
           value={uri}
-          onChange={(event) => setUri(event.currentTarget.value)}
+          onChange={handleUriChange}
         />
-        <Group align={'flex-end'} gap={'xs'}>
-          <TextInput
-            style={{ flex: 1 }}
-            label={t('property.value-label')}
-            description={t('property.value-description')}
-            placeholder={t('property.value-placeholder')}
-            value={rawValue}
-            onChange={(event) => setRawValue(event.currentTarget.value)}
-          />
-          <Button
-            size={'sm'}
-            variant={'light'}
-            onClick={applyCurrentValue}
-            disabled={currentValue === undefined}
-            mb={'xs'}
-          >
-            {t('property.fetch-value')}
-          </Button>
-        </Group>
+        {property && (
+          <>
+            <Card withBorder>
+              <Text size={'sm'} fw={500} mb={'xs'}>
+                {t('property.preview')}
+              </Text>
+              <Property uri={uri} />
+            </Card>
+            <Button size={'xs'} variant={'light'} onClick={handleSelectValue}>
+              {t('property.select-value')}
+            </Button>
+          </>
+        )}
+        {value !== undefined && (
+          <Text size={'sm'} c={'dimmed'}>
+            {t('property.selected-value', { value: JSON.stringify(value) })}
+          </Text>
+        )}
       </Stack>
-      <AddCommandButton onClick={handleAdd} disabled={!uri} />
+      <AddCommandButton onClick={handleAdd} disabled={value === undefined} />
     </Stack>
   );
 }
