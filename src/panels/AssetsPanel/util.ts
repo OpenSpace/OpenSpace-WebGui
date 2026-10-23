@@ -23,6 +23,26 @@ export function stripRoot(path: string, root: string): string {
 }
 
 /**
+ * Replaces the root part of `path` with `token` e.g.,
+ * path = 'C:/user/data/assets/foo.asset', root = 'C:/user/data/assets' and
+ * token = '${ASSETS}' gives '${ASSETS}/foo.asset'. If the path is not located under the
+ * root, the path is returned unmodified.
+ *
+ * @param path The absolute path to convert
+ * @param root The absolute path that `token` resolves to
+ * @param token The token to replace the root with
+ * @returns The path starting with the token
+ */
+export function tokenizePath(path: string, root: string, token: string): string {
+  const normalizedPath = normalizePath(path);
+  const normalizedRoot = normalizePath(root).replace(/\/+$/, '');
+  if (normalizedRoot.length > 0 && normalizedPath.startsWith(`${normalizedRoot}/`)) {
+    return `${token}${normalizedPath.substring(normalizedRoot.length)}`;
+  }
+  return path;
+}
+
+/**
  * Builds a nested Folder structure from a flat list of absolute asset paths.
  *
  * @param paths Absolute paths to '.asset' and '.jasset' files. Paths are assumed to be
@@ -30,20 +50,31 @@ export function stripRoot(path: string, root: string): string {
  * @param root Directory to strip from each path before building the hierarchy. If
  * omitted, the full path (including drive/leading segments) is used as-is. The root path
  * is assumed to be normalized. If omitted (undefined), the asset paths are added as a
- * flat list to the first folder.
+ * flat list to the first folder
  * @param name Name to give the resulting root Folder node
+ * @param token Token that resolves to `root`, used to make the asset paths portable
+ * between machines. If omitted, the absolute path is used unmodified
  * @returns A nested Folder structure from the given path list
  */
 export function buildFolder(
   paths: string[],
   root: string | undefined,
-  name: string
+  name: string,
+  token?: string
 ): Folder {
   const folder: Folder = { path: root ?? '', name, subFolders: [], assets: [] };
 
+  function toAsset(path: string): Asset {
+    return {
+      path,
+      portablePath: root && token ? tokenizePath(path, root, token) : path,
+      name: baseName(path)
+    };
+  }
+
   // If there is no root we'll put everything as a flat list in the first folder
   if (!root) {
-    folder.assets = paths.map((path) => ({ path, name: baseName(path) }));
+    folder.assets = paths.map(toAsset);
     return folder;
   }
 
@@ -65,7 +96,7 @@ export function buildFolder(
       }
       currentFolder = next;
     }
-    currentFolder.assets.push({ path, name: baseName(path) });
+    currentFolder.assets.push(toAsset(path));
   }
 
   return folder;

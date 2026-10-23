@@ -63,8 +63,10 @@ export function useFolderAssets(): Folder | null {
     }
 
     const subFolders = [
-      buildFolder(shipped, roots.data, t('built-in')),
-      buildFolder(user, roots.user, t('user'))
+      // eslint-disable-next-line no-template-curly-in-string
+      buildFolder(shipped, roots.data, t('built-in'), '${ASSETS}'),
+      // eslint-disable-next-line no-template-curly-in-string
+      buildFolder(user, roots.user, t('user'), '${USER_ASSETS}')
     ];
 
     if (other.length > 0) {

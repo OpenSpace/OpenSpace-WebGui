@@ -63,7 +63,7 @@ export function AssetEntry({ asset }: Props) {
       return;
     }
 
-    await luaApi?.asset.add(asset.path);
+    await luaApi?.asset.add(asset.portablePath);
     fetchParents();
   }
 
@@ -71,14 +71,14 @@ export function AssetEntry({ asset }: Props) {
     if (assetLoadingState === 'Loading') {
       return;
     }
-    luaApi?.asset.reload(asset.path);
+    luaApi?.asset.reload(asset.portablePath);
   }
 
   async function removeAsset() {
     if (assetLoadingState === 'Unloaded') {
       return;
     }
-    await luaApi?.asset.remove(asset.path);
+    await luaApi?.asset.remove(asset.portablePath);
   }
 
   return (
