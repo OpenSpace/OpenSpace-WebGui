@@ -34,7 +34,7 @@ export function HelpMenu() {
   const { addWindow } = useWindowLayoutProvider();
 
   function openGuiInBrowser() {
-    window.open(`${webGuiUrl}/gui/#/routes`, '_blank');
+    window.open(`${webGuiUrl}/gui/#/portal`, '_blank');
   }
 
   return (
@@ -65,8 +65,8 @@ export function HelpMenu() {
         >
           {t('tutorials')}
         </Menu.Item>
-        <Menu.Item onClick={() => navigation('/routes')} leftSection={<HomeIcon />}>
-          {t('routes')}
+        <Menu.Item onClick={() => navigation('/portal')} leftSection={<HomeIcon />}>
+          {t('portal')}
         </Menu.Item>
 
         <Menu.Divider />

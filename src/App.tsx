@@ -9,7 +9,7 @@ import { LuaApiProvider } from './api/LuaApiProvider';
 import { ActionsPage } from './pages/ActionsPage';
 import { GuiPage } from './pages/GuiPage';
 import { MapPage } from './pages/MapPage';
-import { RoutesPage } from './pages/RoutesPage';
+import { PortalPage } from './pages/PortalPage';
 import { store } from './redux/store';
 import { cssVariablesResolver, theme } from './theme/mantineTheme';
 
@@ -35,7 +35,7 @@ function App() {
             <HashRouter>
               <Routes>
                 <Route index element={<GuiPage />} />
-                <Route path={'routes'} element={<RoutesPage />} />
+                <Route path={'portal'} element={<PortalPage />} />
                 <Route path={'actions'} element={<ActionsPage />} />
                 <Route path={'map'} element={<MapPage />} />
                 {/* Fallback route for any undefined paths */}

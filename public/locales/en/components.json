@@ -204,7 +204,7 @@
     }
   },
   "qrcode": {
-    "alt-text": "OpenSpace Routes Page",
+    "alt-text": "OpenSpace Portal",
     "allow-warning-title": "Setting the allowed devices",
     "allow-warning-text": "By default, devices other than the local computer are blocked. You must either change the \"Default Access\" setting to \"Allow\" or add your device's address AND your computer's address to the \"Allow Addresses\" list. (This can also be changed permanently in openspace.cfg file)",
     "current-address-value": "Current Address Value:",
