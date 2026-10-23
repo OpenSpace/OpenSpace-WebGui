@@ -8,15 +8,15 @@
   },
   "actions": {
     "title": "Actions",
-    "description": "Actions panel opened up as a page."
+    "description": "Actions panel opened up as a separate page."
   },
   "showcomposer": {
     "title": "ShowComposer",
-    "description": "ShowComposer opened up as a page."
+    "description": "ShowComposer opened up as a separate page."
   },
   "map": {
     "title": "Map",
-    "description": "Page showing a map of the current focus with a camera position marker. Works for some solar system bodies."
+    "description": "Page showing a map of the current focus with a camera position marker. Works for all solar system bodies with a map."
   },
   "astrocast": {
     "title": "Astrocast",
