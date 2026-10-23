@@ -42,21 +42,31 @@ function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void 
 
 // For documentation about these features please read this article:
 // https://developer.chrome.com/docs/capabilities/browser-fs-access#opening_files_2
+export type SaveResult =
+  // Saved through the file picker, `name` is the name chosen by the user
+  | { status: 'saved'; name: string }
+  // Handed to the browser as a download, `name` is the requested name
+  | { status: 'downloaded'; name: string }
+  // The user cancelled or saving failed (failures are reported as notifications)
+  | { status: 'cancelled' };
+
 async function openSaveFileDialogInternal(
-  contents: JSON,
+  contentsString: string,
+  fileName: string,
+  extension: `.${string}`,
+  mimeType: `${string}/${string}`,
   dispatch: Dispatch<UnknownAction>,
   t: TFunction<'notifications', 'error'>
-) {
-  const contentsString = JSON.stringify(contents, null, 2);
-
+): Promise<SaveResult> {
   const supportsSaveDialog = 'showSaveFilePicker' in self;
   if (supportsSaveDialog) {
     const options: SaveFilePickerOptions = {
+      suggestedName: fileName,
       types: [
         {
           description: 'Text Files',
           accept: {
-            'text/plain': ['.json']
+            [mimeType]: [extension]
           }
         }
       ]
@@ -74,8 +84,14 @@ async function openSaveFileDialogInternal(
 
       // Close the file and write the contents to disk
       await writable.close();
+      return { status: 'saved', name: fileHandle.name };
     } catch (e) {
+      // The user closing the dialog is not an error
+      if (e instanceof DOMException && e.name === 'AbortError') {
+        return { status: 'cancelled' };
+      }
       dispatch(handleNotificationLogging(t('parsing-file'), e, NotificationLevel.Error));
+      return { status: 'cancelled' };
     }
   } else {
     // This is the fallback code if showSaveFilePicker is not available
@@ -83,16 +99,33 @@ async function openSaveFileDialogInternal(
     // Will download the file to Downloads. Looks hacky but it seems endorsed by chromium ¯\_(ツ)_/¯
     // https://developer.chrome.com/docs/capabilities/browser-fs-access#saving_rather_downloading_files
     const blob = new Blob([contentsString], {
-      type: 'application/json'
+      type: mimeType
     });
     const a = document.createElement('a');
-    a.download = 'layout.json';
+    a.download = fileName;
     a.href = URL.createObjectURL(blob);
     a.addEventListener('click', () => {
       setTimeout(() => URL.revokeObjectURL(a.href), 30 * 1000);
     });
     a.click();
+    return { status: 'downloaded', name: fileName };
   }
+}
+
+/**
+ * @returns A function that saves text contents to a file, using a save dialog when the
+ * browser supports it and a download otherwise. It resolves to a `SaveResult`.
+ */
+export function useSaveFile() {
+  const { t } = useTranslation('notifications', { keyPrefix: 'error' });
+  const dispatch = useAppDispatch();
+
+  return (
+    contents: string,
+    fileName: string,
+    extension: `.${string}`,
+    mimeType: `${string}/${string}`
+  ) => openSaveFileDialogInternal(contents, fileName, extension, mimeType, dispatch, t);
 }
 
 // Exporting these as a hook as they seem to belong in the same file,
@@ -104,7 +137,14 @@ export function useSaveLoadJsonFiles(handlePickedFile: (content: JSON) => void) 
   const dispatch = useAppDispatch();
 
   async function openSaveFileDialog(contents: JSON) {
-    openSaveFileDialogInternal(contents, dispatch, t);
+    openSaveFileDialogInternal(
+      JSON.stringify(contents, null, 2),
+      'layout.json',
+      '.json',
+      'application/json',
+      dispatch,
+      t
+    );
   }
 
   return { openSaveFileDialog, openLoadFileDialog };
