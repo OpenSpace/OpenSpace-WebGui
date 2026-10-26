@@ -7,6 +7,7 @@ import { TFunction } from 'i18next';
 import { useAppDispatch } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { NotificationLevel } from '@/types/enums';
+import { FileExtension, MediaType } from '@/types/types';
 
 function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void {
   const { t } = useTranslation('notifications', { keyPrefix: 'error' });
@@ -55,8 +56,8 @@ export type SaveResult =
 async function openSaveFileDialogInternal(
   contentsString: string,
   fileName: string,
-  extension: `.${string}`,
-  mimeType: `${string}/${string}`,
+  extension: FileExtension,
+  mediaType: MediaType,
   dispatch: Dispatch<UnknownAction>,
   t: TFunction<'notifications', 'error'>
 ): Promise<SaveResult> {
@@ -68,7 +69,7 @@ async function openSaveFileDialogInternal(
         {
           description: 'Text Files',
           accept: {
-            [mimeType]: [extension]
+            [mediaType]: [extension]
           }
         }
       ]
@@ -101,7 +102,7 @@ async function openSaveFileDialogInternal(
     // Will download the file to Downloads. Looks hacky but it seems endorsed by chromium ¯\_(ツ)_/¯
     // https://developer.chrome.com/docs/capabilities/browser-fs-access#saving_rather_downloading_files
     const blob = new Blob([contentsString], {
-      type: mimeType
+      type: mediaType
     });
     const a = document.createElement('a');
     a.download = fileName;
@@ -125,9 +126,9 @@ export function useSaveFile() {
   return (
     contents: string,
     fileName: string,
-    extension: `.${string}`,
-    mimeType: `${string}/${string}`
-  ) => openSaveFileDialogInternal(contents, fileName, extension, mimeType, dispatch, t);
+    extension: FileExtension,
+    mediaType: MediaType
+  ) => openSaveFileDialogInternal(contents, fileName, extension, mediaType, dispatch, t);
 }
 
 // Exporting these as a hook as they seem to belong in the same file,
