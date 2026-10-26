@@ -20,7 +20,7 @@ import { MinusIcon, PlusIcon } from '@/icons/icons';
 import { ResettableField } from '../ResettableField';
 import { SaveCancelButtons } from '../SaveCancelButtons';
 import { COMMAND_TYPES, CommandEntry, CommandType, TestCommand } from '../types';
-import { isCommandType } from '../util';
+import { isCommandType, isValidFileName } from '../util';
 
 interface Props {
   name: string;
@@ -61,6 +61,7 @@ export function OverviewView({
   });
 
   const profileLabel = t('profile.label');
+  const isNameInvalid = !isValidFileName(name);
 
   function commandLabel(cmd: TestCommand): string {
     switch (cmd.type) {
@@ -103,6 +104,7 @@ export function OverviewView({
             placeholder={t('test-name.placeholder')}
             value={name}
             onChange={(event) => onNameChange(event.currentTarget.value)}
+            error={isNameInvalid && t('test-name.invalid')}
             required
           />
           <ResettableField
@@ -187,7 +189,7 @@ export function OverviewView({
           <SaveCancelButtons
             onSave={onSave}
             onCancel={onCancel}
-            saveDisabled={!profile || !name}
+            saveDisabled={!profile || !name || isNameInvalid}
           />
         </Stack>
       </Layout.FixedSection>

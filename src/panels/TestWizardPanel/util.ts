@@ -78,6 +78,16 @@ export function isCommandType(value: string): value is CommandType {
 }
 
 /**
+ * @returns True if `name` can be used as a file name, i.e. it has no path separators or
+ * other characters that are reserved in file names
+ */
+export function isValidFileName(name: string): boolean {
+  return !Array.from(name).some(
+    (character) => '\\/:*?"<>|'.includes(character) || character.charCodeAt(0) < 32
+  );
+}
+
+/**
  * @param s A string of three comma-separated numbers, e.g. `'0, 1, 2'`
  * @returns The parsed vector, or `null` if the string is not a valid vector
  */

@@ -6,7 +6,8 @@
   },
   "test-name": {
     "label": "Test Name",
-    "placeholder": "my_test"
+    "placeholder": "my_test",
+    "invalid": "The name cannot contain any of these characters: \\ / : * ? \" < > |"
   },
   "profile": {
     "label": "OpenSpace Profile",
