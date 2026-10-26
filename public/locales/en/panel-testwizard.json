@@ -150,21 +150,24 @@
         "placeholder": "0, 0, 10000000"
       },
       "aim": {
-        "label": "Aim (optional)",
+        "label": "Aim",
         "placeholder": "Mars"
       },
+      "optional": {
+        "title": "Optional values"
+      },
       "pitch": {
-        "label": "Pitch (optional)"
+        "label": "Pitch"
       },
       "reference-frame": {
-        "label": "Reference frame (optional)"
+        "label": "Reference frame"
       },
       "up": {
-        "label": "Up (x, y, z) (optional)",
+        "label": "Up (x, y, z)",
         "placeholder": "0, 1, 0"
       },
       "yaw": {
-        "label": "Yaw (optional)"
+        "label": "Yaw"
       },
       "include-timestamp": {
         "label": "Include timestamp"

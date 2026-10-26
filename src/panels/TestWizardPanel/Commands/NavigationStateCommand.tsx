@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Alert, Button, Checkbox, NumberInput, Stack, TextInput } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { RefreshIcon } from '@/icons/icons';
 
 import { ResettableField } from '../ResettableField';
@@ -128,6 +129,27 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
         >
           {t('navigationstate.reset-all')}
         </Button>
+        <Checkbox
+          label={t('navigationstate.include-timestamp.label')}
+          checked={includeTimestamp}
+          onChange={(event) => setIncludeTimestamp(event.currentTarget.checked)}
+        />
+        {includeTimestamp && (
+          <ResettableField
+            label={labels.timestamp}
+            onReset={() =>
+              resetFromCurrent((navState) => setTimestamp(navState.Timestamp ?? ''))
+            }
+            disabled={disabled}
+          >
+            <TextInput
+              label={labels.timestamp}
+              placeholder={t('navigationstate.timestamp.placeholder')}
+              value={timestamp}
+              onChange={(event) => setTimestamp(event.currentTarget.value)}
+            />
+          </ResettableField>
+        )}
         <ResettableField
           label={labels.anchor}
           onReset={() => resetFromCurrent((navState) => setAnchor(navState.Anchor))}
@@ -155,81 +177,66 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
             onChange={(event) => setPosition(event.currentTarget.value)}
           />
         </ResettableField>
-        <ResettableField
-          label={labels.aim}
-          onReset={() => resetFromCurrent((navState) => setAim(navState.Aim ?? ''))}
-          disabled={disabled}
-        >
-          <TextInput
-            label={labels.aim}
-            placeholder={t('navigationstate.aim.placeholder')}
-            value={aim}
-            onChange={(event) => setAim(event.currentTarget.value)}
-          />
-        </ResettableField>
-        <ResettableField
-          label={labels.pitch}
-          onReset={() => resetFromCurrent((navState) => setPitch(navState.Pitch ?? ''))}
-          disabled={disabled}
-        >
-          <NumberInput label={labels.pitch} value={pitch} onChange={setPitch} />
-        </ResettableField>
-        <ResettableField
-          label={labels.refFrame}
-          onReset={() =>
-            resetFromCurrent((navState) => setRefFrame(navState.ReferenceFrame ?? ''))
-          }
-          disabled={disabled}
-        >
-          <TextInput
-            label={labels.refFrame}
-            value={refFrame}
-            onChange={(event) => setRefFrame(event.currentTarget.value)}
-          />
-        </ResettableField>
-        <ResettableField
-          label={labels.up}
-          onReset={() =>
-            resetFromCurrent((navState) => setUp(navState.Up?.join(', ') ?? ''))
-          }
-          disabled={disabled}
-        >
-          <TextInput
-            label={labels.up}
-            description={t('comma-separated')}
-            placeholder={t('navigationstate.up.placeholder')}
-            value={up}
-            onChange={(event) => setUp(event.currentTarget.value)}
-          />
-        </ResettableField>
-        <ResettableField
-          label={labels.yaw}
-          onReset={() => resetFromCurrent((navState) => setYaw(navState.Yaw ?? ''))}
-          disabled={disabled}
-        >
-          <NumberInput label={labels.yaw} value={yaw} onChange={setYaw} />
-        </ResettableField>
-        <Checkbox
-          label={t('navigationstate.include-timestamp.label')}
-          checked={includeTimestamp}
-          onChange={(event) => setIncludeTimestamp(event.currentTarget.checked)}
-        />
-        {includeTimestamp && (
-          <ResettableField
-            label={labels.timestamp}
-            onReset={() =>
-              resetFromCurrent((navState) => setTimestamp(navState.Timestamp ?? ''))
-            }
-            disabled={disabled}
-          >
-            <TextInput
-              label={labels.timestamp}
-              placeholder={t('navigationstate.timestamp.placeholder')}
-              value={timestamp}
-              onChange={(event) => setTimestamp(event.currentTarget.value)}
-            />
-          </ResettableField>
-        )}
+        <Collapsable title={t('navigationstate.optional.title')}>
+          <Stack gap={'xs'}>
+            <ResettableField
+              label={labels.aim}
+              onReset={() => resetFromCurrent((navState) => setAim(navState.Aim ?? ''))}
+              disabled={disabled}
+            >
+              <TextInput
+                label={labels.aim}
+                placeholder={t('navigationstate.aim.placeholder')}
+                value={aim}
+                onChange={(event) => setAim(event.currentTarget.value)}
+              />
+            </ResettableField>
+            <ResettableField
+              label={labels.refFrame}
+              onReset={() =>
+                resetFromCurrent((navState) => setRefFrame(navState.ReferenceFrame ?? ''))
+              }
+              disabled={disabled}
+            >
+              <TextInput
+                label={labels.refFrame}
+                value={refFrame}
+                onChange={(event) => setRefFrame(event.currentTarget.value)}
+              />
+            </ResettableField>
+            <ResettableField
+              label={labels.up}
+              onReset={() =>
+                resetFromCurrent((navState) => setUp(navState.Up?.join(', ') ?? ''))
+              }
+              disabled={disabled}
+            >
+              <TextInput
+                label={labels.up}
+                description={t('comma-separated')}
+                placeholder={t('navigationstate.up.placeholder')}
+                value={up}
+                onChange={(event) => setUp(event.currentTarget.value)}
+              />
+            </ResettableField>
+            <ResettableField
+              label={labels.pitch}
+              onReset={() =>
+                resetFromCurrent((navState) => setPitch(navState.Pitch ?? ''))
+              }
+              disabled={disabled}
+            >
+              <NumberInput label={labels.pitch} value={pitch} onChange={setPitch} />
+            </ResettableField>
+            <ResettableField
+              label={labels.yaw}
+              onReset={() => resetFromCurrent((navState) => setYaw(navState.Yaw ?? ''))}
+              disabled={disabled}
+            >
+              <NumberInput label={labels.yaw} value={yaw} onChange={setYaw} />
+            </ResettableField>
+          </Stack>
+        </Collapsable>
       </Stack>
       <SaveCancelButtons
         onSave={() => command && onAdd(command)}
