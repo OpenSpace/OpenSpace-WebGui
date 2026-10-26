@@ -34,14 +34,14 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
   const disabled = !luaApi;
   const command = buildCommand();
   const labels = {
-    anchor: t('navigation-state.anchor.label'),
-    position: t('navigation-state.position.label'),
-    aim: t('navigation-state.aim.label'),
-    pitch: t('navigation-state.pitch'),
-    refFrame: t('navigation-state.reference-frame'),
-    up: t('navigation-state.up.label'),
-    yaw: t('navigation-state.yaw'),
-    timestamp: t('navigation-state.timestamp.label')
+    anchor: t('navigationstate.anchor.label'),
+    position: t('navigationstate.position.label'),
+    aim: t('navigationstate.aim.label'),
+    pitch: t('navigationstate.pitch.label'),
+    refFrame: t('navigationstate.reference-frame.label'),
+    up: t('navigationstate.up.label'),
+    yaw: t('navigationstate.yaw.label'),
+    timestamp: t('navigationstate.timestamp.label')
   };
 
   const resetFromCurrent = useCallback(
@@ -126,7 +126,7 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
           onClick={resetAll}
           disabled={disabled}
         >
-          {t('navigation-state.reset-all')}
+          {t('navigationstate.reset-all')}
         </Button>
         <ResettableField
           label={labels.anchor}
@@ -135,7 +135,7 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
         >
           <TextInput
             label={labels.anchor}
-            placeholder={t('navigation-state.anchor.placeholder')}
+            placeholder={t('navigationstate.anchor.placeholder')}
             value={anchor}
             onChange={(event) => setAnchor(event.currentTarget.value)}
           />
@@ -150,7 +150,7 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
           <TextInput
             label={labels.position}
             description={t('comma-separated')}
-            placeholder={t('navigation-state.position.placeholder')}
+            placeholder={t('navigationstate.position.placeholder')}
             value={position}
             onChange={(event) => setPosition(event.currentTarget.value)}
           />
@@ -162,7 +162,7 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
         >
           <TextInput
             label={labels.aim}
-            placeholder={t('navigation-state.aim.placeholder')}
+            placeholder={t('navigationstate.aim.placeholder')}
             value={aim}
             onChange={(event) => setAim(event.currentTarget.value)}
           />
@@ -197,7 +197,7 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
           <TextInput
             label={labels.up}
             description={t('comma-separated')}
-            placeholder={t('navigation-state.up.placeholder')}
+            placeholder={t('navigationstate.up.placeholder')}
             value={up}
             onChange={(event) => setUp(event.currentTarget.value)}
           />
@@ -210,7 +210,7 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
           <NumberInput label={labels.yaw} value={yaw} onChange={setYaw} />
         </ResettableField>
         <Checkbox
-          label={t('navigation-state.include-timestamp')}
+          label={t('navigationstate.include-timestamp.label')}
           checked={includeTimestamp}
           onChange={(event) => setIncludeTimestamp(event.currentTarget.checked)}
         />
@@ -224,7 +224,7 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
           >
             <TextInput
               label={labels.timestamp}
-              placeholder={t('navigation-state.timestamp.placeholder')}
+              placeholder={t('navigationstate.timestamp.placeholder')}
               value={timestamp}
               onChange={(event) => setTimestamp(event.currentTarget.value)}
             />

@@ -26,7 +26,7 @@ export function DeltaTimeCommand({ onAdd, onCancel }: Props) {
     reset
   } = useResettableValue<number | string>(currentDeltaTime);
 
-  const label = t('delta-time');
+  const label = t('deltatime.label');
 
   return (
     <Stack gap={'sm'}>

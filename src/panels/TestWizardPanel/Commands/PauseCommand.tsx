@@ -26,7 +26,7 @@ export function PauseCommand({ onAdd, onCancel }: Props) {
     reset
   } = useResettableValue(currentIsPaused);
 
-  const label = t('pause');
+  const label = t('pause.label');
 
   function handleAdd() {
     if (isPaused !== undefined) {

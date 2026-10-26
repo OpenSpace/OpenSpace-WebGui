@@ -18,7 +18,7 @@ export function WaitCommand({ onAdd, onCancel }: Props) {
   return (
     <Stack gap={'sm'}>
       <NumberInput
-        label={t('wait-seconds')}
+        label={t('wait.label')}
         value={seconds}
         onChange={setSeconds}
         min={0}

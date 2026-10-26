@@ -104,8 +104,12 @@
         "description": "Triggers a registered action."
       }
     },
-    "wait-seconds": "Seconds",
-    "delta-time": "Delta time",
+    "wait": {
+      "label": "Seconds"
+    },
+    "deltatime": {
+      "label": "Delta time"
+    },
     "asset": {
       "select-label": "Asset",
       "path-label": "Asset path",
@@ -124,7 +128,9 @@
       "identifier-label": "Action identifier",
       "identifier-placeholder": "profile.action.identifier"
     },
-    "pause": "Pause simulation",
+    "pause": {
+      "label": "Pause simulation"
+    },
     "property": {
       "uri-label": "Property URI",
       "uri-placeholder": "Scene.Earth.Renderable.Enabled",
@@ -133,7 +139,7 @@
       "value-label": "Value",
       "selected-value": "Selected value: {{value}}"
     },
-    "navigation-state": {
+    "navigationstate": {
       "reset-all": "Set to current navigation state",
       "anchor": {
         "label": "Anchor",
@@ -147,14 +153,22 @@
         "label": "Aim (optional)",
         "placeholder": "Mars"
       },
-      "pitch": "Pitch (optional)",
-      "reference-frame": "Reference frame (optional)",
+      "pitch": {
+        "label": "Pitch (optional)"
+      },
+      "reference-frame": {
+        "label": "Reference frame (optional)"
+      },
       "up": {
         "label": "Up (x, y, z) (optional)",
         "placeholder": "0, 1, 0"
       },
-      "yaw": "Yaw (optional)",
-      "include-timestamp": "Include timestamp",
+      "yaw": {
+        "label": "Yaw (optional)"
+      },
+      "include-timestamp": {
+        "label": "Include timestamp"
+      },
       "timestamp": {
         "label": "Timestamp",
         "placeholder": "2021-01-01T00:00:00"
