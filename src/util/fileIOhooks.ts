@@ -47,7 +47,9 @@ export type SaveResult =
   | { status: 'saved'; name: string }
   // Handed to the browser as a download, `name` is the requested name
   | { status: 'downloaded'; name: string }
-  // The user cancelled or saving failed (failures are reported as notifications)
+  // Saving failed, reported as a notification
+  | { status: 'failed' }
+  // The user closed the save dialog
   | { status: 'cancelled' };
 
 async function openSaveFileDialogInternal(
@@ -91,7 +93,7 @@ async function openSaveFileDialogInternal(
         return { status: 'cancelled' };
       }
       dispatch(handleNotificationLogging(t('parsing-file'), e, NotificationLevel.Error));
-      return { status: 'cancelled' };
+      return { status: 'failed' };
     }
   } else {
     // This is the fallback code if showSaveFilePicker is not available
