@@ -50,6 +50,7 @@ const variantColorResolver: VariantColorsResolver = (input) => {
  */
 export const theme = createTheme({
   cursorType: 'pointer',
+  defaultRadius: 'sm',
   components: {
     ActionIcon: ActionIcon.extend({
       defaultProps: {
