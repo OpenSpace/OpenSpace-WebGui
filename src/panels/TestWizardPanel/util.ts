@@ -91,6 +91,8 @@ export function isCommandType(value: string): value is CommandType {
  * other characters that are reserved in file names
  */
 export function isValidFileName(name: string): boolean {
+  // Character codes below 32 are control characters (tab, newline, ...), which are not
+  // allowed in file names on Windows.
   return !Array.from(name).some(
     (character) => '\\/:*?"<>|'.includes(character) || character.charCodeAt(0) < 32
   );
