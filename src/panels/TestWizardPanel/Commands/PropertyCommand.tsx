@@ -52,14 +52,12 @@ export function PropertyCommand({ onAdd, onCancel }: Props) {
           onChange={handleUriChange}
         />
         {property && (
-          <>
-            <Card withBorder>
-              <Text size={'sm'} fw={500} mb={'xs'}>
-                {t('property.preview')}
-              </Text>
-              <Property uri={uri} />
-            </Card>
-          </>
+          <Card withBorder>
+            <Text size={'sm'} fw={500} mb={'xs'}>
+              {t('property.preview')}
+            </Text>
+            <Property uri={uri} />
+          </Card>
         )}
         {value !== undefined && (
           <ResettableField
