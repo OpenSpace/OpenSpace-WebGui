@@ -9,15 +9,15 @@ import { propertySelectors } from '@/redux/propertytree/propertySlice';
 
 import { useResettableValue } from '../hooks';
 import { ResettableField } from '../ResettableField';
+import { SaveCancelButtons } from '../SaveCancelButtons';
 import { TestCommand } from '../types';
-
-import { AddCommandButton } from './AddCommandButton';
 
 interface Props {
   onAdd: (command: TestCommand) => void;
+  onCancel: () => void;
 }
 
-export function PropertyCommand({ onAdd }: Props) {
+export function PropertyCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
 
   const propertyUris = useAppSelector(propertySelectors.selectIds);
@@ -74,7 +74,12 @@ export function PropertyCommand({ onAdd }: Props) {
           </ResettableField>
         )}
       </Stack>
-      <AddCommandButton onClick={handleAdd} disabled={value === undefined} />
+      <SaveCancelButtons
+        onSave={handleAdd}
+        onCancel={onCancel}
+        saveLabel={'add'}
+        saveDisabled={value === undefined}
+      />
     </Stack>
   );
 }

@@ -6,16 +6,16 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { RefreshIcon } from '@/icons/icons';
 
 import { ResettableField } from '../ResettableField';
+import { SaveCancelButtons } from '../SaveCancelButtons';
 import { NavigationStateValue, NavState, TestCommand } from '../types';
 import { parseVec3 } from '../util';
 
-import { AddCommandButton } from './AddCommandButton';
-
 interface Props {
   onAdd: (command: TestCommand) => void;
+  onCancel: () => void;
 }
 
-export function NavigationStateCommand({ onAdd }: Props) {
+export function NavigationStateCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
 
   const [anchor, setAnchor] = useState('');
@@ -231,9 +231,11 @@ export function NavigationStateCommand({ onAdd }: Props) {
           </ResettableField>
         )}
       </Stack>
-      <AddCommandButton
-        onClick={() => command && onAdd(command)}
-        disabled={command === null}
+      <SaveCancelButtons
+        onSave={() => command && onAdd(command)}
+        onCancel={onCancel}
+        saveLabel={'add'}
+        saveDisabled={command === null}
       />
     </Stack>
   );

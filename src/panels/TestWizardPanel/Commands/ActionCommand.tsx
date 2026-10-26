@@ -4,15 +4,15 @@ import { Select, Stack, TextInput } from '@mantine/core';
 
 import { useAppSelector } from '@/redux/hooks';
 
+import { SaveCancelButtons } from '../SaveCancelButtons';
 import { TestCommand } from '../types';
-
-import { AddCommandButton } from './AddCommandButton';
 
 interface Props {
   onAdd: (command: TestCommand) => void;
+  onCancel: () => void;
 }
 
-export function ActionCommand({ onAdd }: Props) {
+export function ActionCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
 
   const actions = useAppSelector((state) => state.actions.actions);
@@ -50,9 +50,11 @@ export function ActionCommand({ onAdd }: Props) {
           onChange={(event) => setAction(event.currentTarget.value)}
         />
       )}
-      <AddCommandButton
-        onClick={() => onAdd({ type: 'action', value: action })}
-        disabled={!action}
+      <SaveCancelButtons
+        onSave={() => onAdd({ type: 'action', value: action })}
+        onCancel={onCancel}
+        saveLabel={'add'}
+        saveDisabled={!action}
       />
     </Stack>
   );

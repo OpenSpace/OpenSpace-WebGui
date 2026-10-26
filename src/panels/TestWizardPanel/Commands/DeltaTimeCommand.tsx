@@ -6,15 +6,15 @@ import { useAppSelector } from '@/redux/hooks';
 
 import { useResettableValue } from '../hooks';
 import { ResettableField } from '../ResettableField';
+import { SaveCancelButtons } from '../SaveCancelButtons';
 import { TestCommand } from '../types';
-
-import { AddCommandButton } from './AddCommandButton';
 
 interface Props {
   onAdd: (command: TestCommand) => void;
+  onCancel: () => void;
 }
 
-export function DeltaTimeCommand({ onAdd }: Props) {
+export function DeltaTimeCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
 
   const currentDeltaTime = useAppSelector((state) => state.time.targetDeltaTime);
@@ -43,9 +43,11 @@ export function DeltaTimeCommand({ onAdd }: Props) {
           step={0.1}
         />
       </ResettableField>
-      <AddCommandButton
-        onClick={() => onAdd({ type: 'deltatime', value: Number(deltaTime) })}
-        disabled={deltaTime === undefined || deltaTime === ''}
+      <SaveCancelButtons
+        onSave={() => onAdd({ type: 'deltatime', value: Number(deltaTime) })}
+        onCancel={onCancel}
+        saveLabel={'add'}
+        saveDisabled={deltaTime === undefined || deltaTime === ''}
       />
     </Stack>
   );

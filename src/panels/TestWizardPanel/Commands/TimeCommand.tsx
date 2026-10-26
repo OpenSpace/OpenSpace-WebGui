@@ -6,15 +6,15 @@ import { dateToOpenSpaceTimeString } from '@/util/time';
 
 import { useResettableValue } from '../hooks';
 import { ResettableField } from '../ResettableField';
+import { SaveCancelButtons } from '../SaveCancelButtons';
 import { TestCommand } from '../types';
-
-import { AddCommandButton } from './AddCommandButton';
 
 interface Props {
   onAdd: (command: TestCommand) => void;
+  onCancel: () => void;
 }
 
-export function TimeCommand({ onAdd }: Props) {
+export function TimeCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
 
   const currentTime = useSubscribeToTime();
@@ -45,9 +45,11 @@ export function TimeCommand({ onAdd }: Props) {
           onChange={(event) => setTime(event.currentTarget.value)}
         />
       </ResettableField>
-      <AddCommandButton
-        onClick={() => onAdd({ type: 'time', value: time })}
-        disabled={!time}
+      <SaveCancelButtons
+        onSave={() => onAdd({ type: 'time', value: time })}
+        onCancel={onCancel}
+        saveLabel={'add'}
+        saveDisabled={!time}
       />
     </Stack>
   );

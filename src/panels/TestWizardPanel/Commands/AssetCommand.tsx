@@ -6,16 +6,16 @@ import { useSubscribeToAssetTree } from '@/hooks/topicSubscriptions';
 import { useRootPaths } from '@/panels/AssetsPanel/hooks';
 import { useAppSelector } from '@/redux/hooks';
 
+import { SaveCancelButtons } from '../SaveCancelButtons';
 import { TestCommand } from '../types';
 import { assetNameFromPath } from '../util';
 
-import { AddCommandButton } from './AddCommandButton';
-
 interface Props {
   onAdd: (command: TestCommand) => void;
+  onCancel: () => void;
 }
 
-export function AssetCommand({ onAdd }: Props) {
+export function AssetCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
 
   const rootAssets = useAppSelector((state) => state.assetTree.rootAssets);
@@ -57,9 +57,11 @@ export function AssetCommand({ onAdd }: Props) {
           onChange={(event) => setAsset(event.currentTarget.value)}
         />
       )}
-      <AddCommandButton
-        onClick={() => onAdd({ type: 'asset', value: asset })}
-        disabled={!asset}
+      <SaveCancelButtons
+        onSave={() => onAdd({ type: 'asset', value: asset })}
+        onCancel={onCancel}
+        saveLabel={'add'}
+        saveDisabled={!asset}
       />
     </Stack>
   );

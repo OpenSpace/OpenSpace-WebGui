@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Select, Stack, Text } from '@mantine/core';
+import { Stack, Text } from '@mantine/core';
 
 import { ActionCommand } from './Commands/ActionCommand';
 import { AssetCommand } from './Commands/AssetCommand';
@@ -11,68 +10,48 @@ import { PropertyCommand } from './Commands/PropertyCommand';
 import { ScriptCommand } from './Commands/ScriptCommand';
 import { TimeCommand } from './Commands/TimeCommand';
 import { WaitCommand } from './Commands/WaitCommand';
-import { COMMAND_TYPES, CommandType, TestCommand } from './types';
-import { isCommandType } from './util';
+import { CommandType, TestCommand } from './types';
 
 interface Props {
+  type: CommandType;
   onAdd: (command: TestCommand) => void;
+  onCancel: () => void;
 }
 
-export function AddCommandForm({ onAdd }: Props) {
+export function AddCommandForm({ type, onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
 
-  const [type, setType] = useState<CommandType | null>(null);
-
-  function handleAdd(command: TestCommand) {
-    onAdd(command);
-    setType(null);
-  }
-
-  function commandFields(commandType: CommandType) {
-    switch (commandType) {
+  function commandFields() {
+    switch (type) {
       case 'navigationstate':
-        return <NavigationStateCommand onAdd={handleAdd} />;
+        return <NavigationStateCommand onAdd={onAdd} onCancel={onCancel} />;
       case 'asset':
-        return <AssetCommand onAdd={handleAdd} />;
+        return <AssetCommand onAdd={onAdd} onCancel={onCancel} />;
       case 'property':
-        return <PropertyCommand onAdd={handleAdd} />;
+        return <PropertyCommand onAdd={onAdd} onCancel={onCancel} />;
       case 'wait':
-        return <WaitCommand onAdd={handleAdd} />;
+        return <WaitCommand onAdd={onAdd} onCancel={onCancel} />;
       case 'script':
-        return <ScriptCommand onAdd={handleAdd} />;
+        return <ScriptCommand onAdd={onAdd} onCancel={onCancel} />;
       case 'time':
-        return <TimeCommand onAdd={handleAdd} />;
+        return <TimeCommand onAdd={onAdd} onCancel={onCancel} />;
       case 'pause':
-        return <PauseCommand onAdd={handleAdd} />;
+        return <PauseCommand onAdd={onAdd} onCancel={onCancel} />;
       case 'deltatime':
-        return <DeltaTimeCommand onAdd={handleAdd} />;
+        return <DeltaTimeCommand onAdd={onAdd} onCancel={onCancel} />;
       case 'action':
-        return <ActionCommand onAdd={handleAdd} />;
+        return <ActionCommand onAdd={onAdd} onCancel={onCancel} />;
       default:
-        throw new Error(`Unhandled command type: ${commandType}`);
+        throw new Error(`Unhandled command type: ${type}`);
     }
   }
 
   return (
     <Stack gap={'sm'}>
-      <Select
-        label={t('type-label')}
-        placeholder={t('type-placeholder')}
-        data={COMMAND_TYPES.map((id) => ({ value: id, label: t(`types.${id}.label`) }))}
-        value={type}
-        onChange={(value) =>
-          setType(value !== null && isCommandType(value) ? value : null)
-        }
-        allowDeselect={false}
-      />
-      {type !== null && (
-        <>
-          <Text size={'sm'} c={'dimmed'}>
-            {t(`types.${type}.description`)}
-          </Text>
-          {commandFields(type)}
-        </>
-      )}
+      <Text size={'sm'} c={'dimmed'}>
+        {t(`types.${type}.description`)}
+      </Text>
+      {commandFields()}
     </Stack>
   );
 }

@@ -6,15 +6,15 @@ import { useAppSelector } from '@/redux/hooks';
 
 import { useResettableValue } from '../hooks';
 import { ResettableField } from '../ResettableField';
+import { SaveCancelButtons } from '../SaveCancelButtons';
 import { TestCommand } from '../types';
-
-import { AddCommandButton } from './AddCommandButton';
 
 interface Props {
   onAdd: (command: TestCommand) => void;
+  onCancel: () => void;
 }
 
-export function PauseCommand({ onAdd }: Props) {
+export function PauseCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
 
   const currentIsPaused = useAppSelector((state) => state.time.isPaused);
@@ -48,7 +48,12 @@ export function PauseCommand({ onAdd }: Props) {
           onChange={(event) => setIsPaused(event.currentTarget.checked)}
         />
       </ResettableField>
-      <AddCommandButton onClick={handleAdd} disabled={isPaused === undefined} />
+      <SaveCancelButtons
+        onSave={handleAdd}
+        onCancel={onCancel}
+        saveLabel={'add'}
+        saveDisabled={isPaused === undefined}
+      />
     </Stack>
   );
 }

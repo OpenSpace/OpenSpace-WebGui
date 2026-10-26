@@ -30,6 +30,11 @@ export type TestCommand =
   | { type: 'action'; value: string }
   | { type: 'screenshot' };
 
+export interface CommandEntry {
+  id: string;
+  cmd: TestCommand;
+}
+
 export interface OsTest {
   profile: string;
   commands: TestCommand[];

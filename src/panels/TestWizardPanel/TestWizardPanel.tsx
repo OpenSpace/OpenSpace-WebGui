@@ -1,53 +1,37 @@
 import { useState } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
-import {
-  ActionIcon,
-  Button,
-  Container,
-  Divider,
-  Group,
-  Stack,
-  Text,
-  TextInput
-} from '@mantine/core';
+import { useTranslation } from 'react-i18next';
+import { Container, Text } from '@mantine/core';
 import { useFileDialog } from '@mantine/hooks';
+import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 
-import {
-  DragReorderList,
-  OnDragEndProps
-} from '@/components/DragReorderList/DragReorderList';
-import { InfoBox } from '@/components/InfoBox/InfoBox';
-import { MinusIcon } from '@/icons/icons';
+import { OnDragEndProps } from '@/components/DragReorderList/DragReorderList';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { NotificationLevel } from '@/types/enums';
 import { useSaveFile } from '@/util/fileIOhooks';
 
-import { AddCommandForm } from './AddCommandForm';
+import { AddCommandView } from './Views/AddCommandView';
+import { OverviewView } from './Views/OverviewView';
+import { StartView } from './Views/StartView';
 import { useResettableValue } from './hooks';
-import { ResettableField } from './ResettableField';
-import { OsTest, TestCommand } from './types';
+import { CommandEntry, CommandType, OsTest, TestCommand } from './types';
 import { isOsTest } from './util';
 
-interface CommandEntry {
-  id: string;
-  cmd: TestCommand;
-}
+type View = 'start' | 'overview' | 'add-command';
 
 /**
  * A panel for creating OpenSpace visual regression test files (`.ostest`).
  */
 export function TestWizardPanel() {
   const { t } = useTranslation('panel-testwizard');
-  const { t: tLabel } = useTranslation('panel-testwizard', {
-    keyPrefix: 'command-labels'
-  });
 
   const storeProfile = useAppSelector((state) => state.profile.name);
 
+  const [view, setView] = useState<View>('start');
   const [name, setName] = useState('');
   const [commands, setCommands] = useState<CommandEntry[]>([]);
+  const [commandType, setCommandType] = useState<CommandType | null>(null);
 
   const saveFile = useSaveFile();
   const fileDialog = useFileDialog({
@@ -62,41 +46,7 @@ export function TestWizardPanel() {
     reset: resetProfile
   } = useResettableValue(storeProfile);
 
-  const profileLabel = t('profile.label');
-
   const dispatch = useAppDispatch();
-
-  function commandLabel(cmd: TestCommand): string {
-    switch (cmd.type) {
-      case 'screenshot':
-        return tLabel('screenshot');
-      case 'wait':
-        return tLabel('wait', { value: cmd.value });
-      case 'deltatime':
-        return tLabel('deltatime', { value: cmd.value });
-      case 'pause':
-        return tLabel('pause', {
-          value: cmd.value ? tLabel('pause-on') : tLabel('pause-off')
-        });
-      case 'script':
-        return tLabel('script', { value: cmd.value });
-      case 'time':
-        return tLabel('time', { value: cmd.value });
-      case 'asset':
-        return tLabel('asset', { value: cmd.value });
-      case 'action':
-        return tLabel('action', { value: cmd.value });
-      case 'property':
-        return tLabel('property', {
-          property: cmd.value.property,
-          value: String(cmd.value.value)
-        });
-      case 'navigationstate':
-        return tLabel('navigationstate', { anchor: cmd.value.anchor });
-      default:
-        throw new Error(`Unhandled command type: ${cmd}`);
-    }
-  }
 
   async function loadFile(files: FileList | null) {
     const file = files?.[0];
@@ -115,6 +65,7 @@ export function TestWizardPanel() {
           .map((command) => ({ id: crypto.randomUUID(), cmd: command }))
       );
       setName(file.name.replace(/\.ostest$/i, ''));
+      setView('overview');
     } catch (e) {
       dispatch(
         handleNotificationLogging(
@@ -126,11 +77,36 @@ export function TestWizardPanel() {
     }
   }
 
+  function startNewTest() {
+    setName('');
+    setCommands([]);
+    resetProfile();
+    setView('overview');
+  }
+
   function handleAdd(cmd: TestCommand) {
     setCommands((previousCommands) => [
       ...previousCommands,
       { id: crypto.randomUUID(), cmd }
     ]);
+    setView('overview');
+  }
+
+  function handleCancel() {
+    if (name === '' && commands.length === 0) {
+      setView('start');
+      return;
+    }
+    modals.openConfirmModal({
+      title: t('discard-modal.title'),
+      children: <Text>{t('discard-modal.description')}</Text>,
+      labels: {
+        confirm: t('discard-modal.confirm'),
+        cancel: t('discard-modal.cancel')
+      },
+      confirmProps: { color: 'red', variant: 'filled' },
+      onConfirm: () => setView('start')
+    });
   }
 
   function handleRemove(index: number) {
@@ -170,91 +146,35 @@ export function TestWizardPanel() {
   }
 
   return (
-    <Container>
-      <Stack gap={'md'}>
-        <Stack gap={'xs'}>
-          <Divider
-            label={
-              <Group gap={'xs'}>
-                {t('sections.test')}
-                <InfoBox w={300}>
-                  <Text>
-                    <Trans t={t} i18nKey={'info'} components={{ code: <code /> }} />
-                  </Text>
-                </InfoBox>
-              </Group>
-            }
-            labelPosition={'left'}
-          />
-          <TextInput
-            label={t('test-name.label')}
-            placeholder={t('test-name.placeholder')}
-            value={name}
-            onChange={(event) => setName(event.currentTarget.value)}
-          />
-          <ResettableField
-            label={profileLabel}
-            onReset={resetProfile}
-            disabled={storeProfile === undefined}
-          >
-            <TextInput
-              label={profileLabel}
-              placeholder={t('profile.placeholder')}
-              value={profile}
-              onChange={(event) => setProfile(event.currentTarget.value)}
-            />
-          </ResettableField>
-        </Stack>
-
-        <Stack gap={'xs'}>
-          <Divider label={t('sections.add-command')} labelPosition={'left'} />
-          <AddCommandForm onAdd={handleAdd} />
-        </Stack>
-
-        <Stack gap={'xs'}>
-          <Divider
-            label={t('sections.commands', { number: commands.length })}
-            labelPosition={'left'}
-          />
-          {commands.length === 0 && (
-            <Text c={'dimmed'} size={'sm'}>
-              {t('no-commands')}
-            </Text>
-          )}
-          <DragReorderList<CommandEntry>
-            id={'testCommands'}
-            data={commands}
-            keyFunc={(entry) => entry.id}
-            onDragEnd={handleReorder}
-            gap={'xs'}
-            renderFunc={(entry, index) => (
-              <Group justify={'space-between'} wrap={'nowrap'}>
-                <Text size={'sm'} style={{ overflowWrap: 'anywhere' }}>
-                  {commandLabel(entry.cmd)}
-                </Text>
-                <ActionIcon
-                  variant={'light'}
-                  size={'sm'}
-                  color={'red'}
-                  onClick={() => handleRemove(index)}
-                  aria-label={`${t('remove-command-aria-label')}: ${commandLabel(entry.cmd)}`}
-                >
-                  <MinusIcon />
-                </ActionIcon>
-              </Group>
-            )}
-          />
-        </Stack>
-
-        <Group grow>
-          <Button variant={'light'} onClick={fileDialog.open}>
-            {t('load')}
-          </Button>
-          <Button variant={'filled'} onClick={handleSave} disabled={!profile || !name}>
-            {t('save')}
-          </Button>
-        </Group>
-      </Stack>
+    <Container h={'100%'}>
+      {view === 'start' && (
+        <StartView onLoadTest={fileDialog.open} onNewTest={startNewTest} />
+      )}
+      {view === 'overview' && (
+        <OverviewView
+          name={name}
+          onNameChange={setName}
+          profile={profile}
+          onProfileChange={setProfile}
+          onProfileReset={resetProfile}
+          isProfileResetDisabled={storeProfile === undefined}
+          commands={commands}
+          onReorder={handleReorder}
+          onRemove={handleRemove}
+          commandType={commandType}
+          onCommandTypeChange={setCommandType}
+          onAddCommand={() => setView('add-command')}
+          onSave={handleSave}
+          onCancel={handleCancel}
+        />
+      )}
+      {view === 'add-command' && commandType !== null && (
+        <AddCommandView
+          type={commandType}
+          onAdd={handleAdd}
+          onCancel={() => setView('overview')}
+        />
+      )}
     </Container>
   );
 }
