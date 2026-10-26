@@ -71,29 +71,27 @@ export function VirtualSelect({
   placeholder,
   nothingFoundMessage
 }: Props) {
-  const [search, setSearch] = useState(value);
+  // `null` when the user is not typing, in which case the selected value is shown
+  const [search, setSearch] = useState<string | null>(null);
 
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption()
   });
 
-  // Show all options when the search text is the current selection
-  const isFiltering = search !== value;
-
   const filteredData = useMemo(() => {
-    if (!isFiltering) {
+    if (search === null) {
       return data;
     }
     const lowerCaseSearch = search.toLowerCase().trim();
     return data.filter((option) => option.toLowerCase().includes(lowerCaseSearch));
-  }, [data, search, isFiltering]);
+  }, [data, search]);
 
   return (
     <Combobox
       store={combobox}
       onOptionSubmit={(option) => {
         onChange(option);
-        setSearch(option);
+        setSearch(null);
         combobox.closeDropdown();
       }}
     >
@@ -101,7 +99,7 @@ export function VirtualSelect({
         <InputBase
           label={label}
           placeholder={placeholder}
-          value={search}
+          value={search ?? value}
           onChange={(event) => {
             setSearch(event.currentTarget.value);
             combobox.openDropdown();
@@ -110,7 +108,7 @@ export function VirtualSelect({
           onFocus={() => combobox.openDropdown()}
           onBlur={() => {
             combobox.closeDropdown();
-            setSearch(value);
+            setSearch(null);
           }}
           rightSection={<Combobox.Chevron />}
           rightSectionPointerEvents={'none'}
