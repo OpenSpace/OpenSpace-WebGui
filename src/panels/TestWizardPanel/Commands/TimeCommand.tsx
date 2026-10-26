@@ -1,10 +1,11 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Stack, TextInput } from '@mantine/core';
+import { Stack, TextInput } from '@mantine/core';
 
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { dateToOpenSpaceTimeString } from '@/util/time';
 
+import { useResettableValue } from '../hooks';
+import { ResettableField } from '../ResettableField';
 import { TestCommand } from '../types';
 
 import { AddCommandButton } from './AddCommandButton';
@@ -16,34 +17,34 @@ interface Props {
 export function TimeCommand({ onAdd }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
 
-  const [time, setTime] = useState('');
-
   const currentTime = useSubscribeToTime();
 
-  function applyCurrentTime() {
-    if (currentTime !== undefined) {
-      setTime(dateToOpenSpaceTimeString(new Date(currentTime)));
-    }
-  }
+  const currentTimeString =
+    currentTime !== undefined
+      ? dateToOpenSpaceTimeString(new Date(currentTime))
+      : undefined;
+  const {
+    value: time = '',
+    setValue: setTime,
+    reset
+  } = useResettableValue(currentTimeString);
+
+  const label = t('time.label');
 
   return (
     <Stack gap={'sm'}>
-      <Stack gap={'xs'}>
+      <ResettableField
+        label={label}
+        onReset={reset}
+        disabled={currentTimeString === undefined}
+      >
         <TextInput
-          label={t('time.label')}
+          label={label}
           placeholder={t('time.placeholder')}
           value={time}
           onChange={(event) => setTime(event.currentTarget.value)}
         />
-        <Button
-          size={'xs'}
-          variant={'light'}
-          onClick={applyCurrentTime}
-          disabled={currentTime === undefined}
-        >
-          {t('fetch-from-openspace')}
-        </Button>
-      </Stack>
+      </ResettableField>
       <AddCommandButton
         onClick={() => onAdd({ type: 'time', value: time })}
         disabled={!time}

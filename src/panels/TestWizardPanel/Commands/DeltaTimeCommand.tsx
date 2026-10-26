@@ -1,9 +1,11 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, NumberInput, Stack } from '@mantine/core';
+import { NumberInput, Stack } from '@mantine/core';
 
+import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 
+import { useResettableValue } from '../hooks';
+import { ResettableField } from '../ResettableField';
 import { TestCommand } from '../types';
 
 import { AddCommandButton } from './AddCommandButton';
@@ -15,37 +17,35 @@ interface Props {
 export function DeltaTimeCommand({ onAdd }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
 
-  const targetDeltaTime = useAppSelector((state) => state.time.targetDeltaTime);
+  const currentDeltaTime = useAppSelector((state) => state.time.targetDeltaTime);
 
-  const [deltaTime, setDeltaTime] = useState<number | string>(0);
+  useSubscribeToTime();
+  const {
+    value: deltaTime,
+    setValue: setDeltaTime,
+    reset
+  } = useResettableValue<number | string>(currentDeltaTime);
 
-  function applyCurrentDeltaTime() {
-    if (targetDeltaTime !== undefined) {
-      setDeltaTime(targetDeltaTime);
-    }
-  }
+  const label = t('delta-time');
 
   return (
     <Stack gap={'sm'}>
-      <Stack gap={'xs'}>
+      <ResettableField
+        label={label}
+        onReset={reset}
+        disabled={currentDeltaTime === undefined}
+      >
         <NumberInput
-          label={t('delta-time')}
-          value={deltaTime}
+          label={label}
+          value={deltaTime ?? ''}
           onChange={setDeltaTime}
           min={0}
           step={0.1}
         />
-        <Button
-          size={'xs'}
-          variant={'light'}
-          onClick={applyCurrentDeltaTime}
-          disabled={targetDeltaTime === undefined}
-        >
-          {t('fetch-from-openspace')}
-        </Button>
-      </Stack>
+      </ResettableField>
       <AddCommandButton
         onClick={() => onAdd({ type: 'deltatime', value: Number(deltaTime) })}
+        disabled={deltaTime === undefined || deltaTime === ''}
       />
     </Stack>
   );

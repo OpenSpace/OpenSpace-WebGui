@@ -25,6 +25,8 @@ import { NotificationLevel } from '@/types/enums';
 import { useSaveFile } from '@/util/fileIOhooks';
 
 import { AddCommandForm } from './AddCommandForm';
+import { useResettableValue } from './hooks';
+import { ResettableField } from './ResettableField';
 import { OsTest, TestCommand } from './types';
 import { isOsTest } from './util';
 
@@ -42,10 +44,9 @@ export function TestWizardPanel() {
     keyPrefix: 'command-labels'
   });
 
-  const storeProfile = useAppSelector((state) => state.profile.name) ?? '';
+  const storeProfile = useAppSelector((state) => state.profile.name);
 
   const [name, setName] = useState('');
-  const [editedProfile, setEditedProfile] = useState<string | null>(null);
   const [commands, setCommands] = useState<CommandEntry[]>([]);
 
   const saveFile = useSaveFile();
@@ -55,9 +56,13 @@ export function TestWizardPanel() {
     resetOnOpen: true,
     onChange: loadFile
   });
+  const {
+    value: profile = '',
+    setValue: setProfile,
+    reset: resetProfile
+  } = useResettableValue(storeProfile);
 
-  // Follows the profile in the store until the user edits it or loads a file
-  const profile = editedProfile ?? storeProfile;
+  const profileLabel = t('profile.label');
 
   const dispatch = useAppDispatch();
 
@@ -103,7 +108,7 @@ export function TestWizardPanel() {
       if (!isOsTest(test)) {
         throw new Error(t('load-error.invalid-file'));
       }
-      setEditedProfile(test.profile ?? null);
+      setProfile(test.profile ?? storeProfile);
       setCommands(
         test.commands
           .filter((command) => command.type !== 'screenshot')
@@ -187,12 +192,18 @@ export function TestWizardPanel() {
             value={name}
             onChange={(event) => setName(event.currentTarget.value)}
           />
-          <TextInput
-            label={t('profile.label')}
-            placeholder={t('profile.placeholder')}
-            value={profile}
-            onChange={(event) => setEditedProfile(event.currentTarget.value)}
-          />
+          <ResettableField
+            label={profileLabel}
+            onReset={resetProfile}
+            disabled={storeProfile === undefined}
+          >
+            <TextInput
+              label={profileLabel}
+              placeholder={t('profile.placeholder')}
+              value={profile}
+              onChange={(event) => setProfile(event.currentTarget.value)}
+            />
+          </ResettableField>
         </Stack>
 
         <Stack gap={'xs'}>

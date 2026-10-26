@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Button, Checkbox, NumberInput, Stack, TextInput } from '@mantine/core';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { RefreshIcon } from '@/icons/icons';
 
+import { ResettableField } from '../ResettableField';
 import { NavigationStateValue, NavState, TestCommand } from '../types';
 import { parseVec3 } from '../util';
 
@@ -25,38 +27,56 @@ export function NavigationStateCommand({ onAdd }: Props) {
   const [yaw, setYaw] = useState<number | string>('');
   const [timestamp, setTimestamp] = useState('');
   const [includeTimestamp, setIncludeTimestamp] = useState(false);
-  const [fetching, setFetching] = useState(false);
   const [fetchError, setFetchError] = useState<string | null>(null);
 
   const luaApi = useOpenSpaceApi();
 
+  const disabled = !luaApi;
   const command = buildCommand();
+  const labels = {
+    anchor: t('navigation-state.anchor.label'),
+    position: t('navigation-state.position.label'),
+    aim: t('navigation-state.aim.label'),
+    pitch: t('navigation-state.pitch'),
+    refFrame: t('navigation-state.reference-frame'),
+    up: t('navigation-state.up.label'),
+    yaw: t('navigation-state.yaw'),
+    timestamp: t('navigation-state.timestamp.label')
+  };
 
-  async function fetchNavState() {
-    if (!luaApi) {
-      return;
-    }
-    setFetching(true);
-    setFetchError(null);
-    try {
-      const navstate = (await luaApi.navigation.getNavigationState()) as NavState;
-      setAnchor(navstate.Anchor);
-      setPosition(navstate.Position.join(', '));
-      if (navstate.Aim !== undefined) setAim(navstate.Aim);
-      if (navstate.Pitch !== undefined) setPitch(navstate.Pitch);
-      if (navstate.ReferenceFrame !== undefined) setRefFrame(navstate.ReferenceFrame);
-      if (navstate.Up !== undefined) setUp(navstate.Up.join(', '));
-      if (navstate.Yaw !== undefined) setYaw(navstate.Yaw);
-      if (navstate.Timestamp !== undefined) {
-        setTimestamp(navstate.Timestamp);
-        setIncludeTimestamp(true);
+  const resetFromCurrent = useCallback(
+    async (apply: (navState: NavState) => void) => {
+      if (!luaApi) {
+        return;
       }
-    } catch (e) {
-      setFetchError(e instanceof Error ? e.message : t('fetch-failed'));
-    } finally {
-      setFetching(false);
-    }
-  }
+      setFetchError(null);
+      try {
+        apply((await luaApi.navigation.getNavigationState()) as NavState);
+      } catch (e) {
+        setFetchError(e instanceof Error ? e.message : t('fetch-failed'));
+      }
+    },
+    [luaApi, t]
+  );
+
+  const resetAll = useCallback(() => {
+    resetFromCurrent((navState) => {
+      setAnchor(navState.Anchor);
+      setPosition(navState.Position.join(', '));
+      setAim(navState.Aim ?? '');
+      setPitch(navState.Pitch ?? '');
+      setRefFrame(navState.ReferenceFrame ?? '');
+      setUp(navState.Up?.join(', ') ?? '');
+      setYaw(navState.Yaw ?? '');
+      setTimestamp(navState.Timestamp ?? '');
+      setIncludeTimestamp(navState.Timestamp !== undefined);
+    });
+  }, [resetFromCurrent]);
+
+  // Start from the current navigation state
+  useEffect(() => {
+    resetAll();
+  }, [resetAll]);
 
   function buildCommand(): TestCommand | null {
     const parsedPosition = parseVec3(position);
@@ -64,13 +84,25 @@ export function NavigationStateCommand({ onAdd }: Props) {
       return null;
     }
     const value: NavigationStateValue = { anchor, position: parsedPosition };
-    if (aim) value.aim = aim;
-    if (typeof pitch === 'number') value.pitch = pitch;
-    if (refFrame) value.referenceFrame = refFrame;
+    if (aim) {
+      value.aim = aim;
+    }
+    if (typeof pitch === 'number') {
+      value.pitch = pitch;
+    }
+    if (refFrame) {
+      value.referenceFrame = refFrame;
+    }
     const parsedUp = up ? parseVec3(up) : null;
-    if (parsedUp) value.up = parsedUp;
-    if (typeof yaw === 'number') value.yaw = yaw;
-    if (includeTimestamp && timestamp) value.timestamp = timestamp;
+    if (parsedUp) {
+      value.up = parsedUp;
+    }
+    if (typeof yaw === 'number') {
+      value.yaw = yaw;
+    }
+    if (includeTimestamp && timestamp) {
+      value.timestamp = timestamp;
+    }
     return { type: 'navigationstate', value };
   }
 
@@ -90,61 +122,113 @@ export function NavigationStateCommand({ onAdd }: Props) {
         <Button
           size={'xs'}
           variant={'light'}
-          onClick={fetchNavState}
-          disabled={!luaApi}
-          loading={fetching}
+          leftSection={<RefreshIcon />}
+          onClick={resetAll}
+          disabled={disabled}
         >
-          {t('navigation-state.fetch')}
+          {t('navigation-state.reset-all')}
         </Button>
-        <TextInput
-          label={t('navigation-state.anchor.label')}
-          placeholder={t('navigation-state.anchor.placeholder')}
-          value={anchor}
-          onChange={(event) => setAnchor(event.currentTarget.value)}
-        />
-        <TextInput
-          label={t('navigation-state.position.label')}
-          description={t('comma-separated')}
-          placeholder={t('navigation-state.position.placeholder')}
-          value={position}
-          onChange={(event) => setPosition(event.currentTarget.value)}
-        />
-        <TextInput
-          label={t('navigation-state.aim.label')}
-          placeholder={t('navigation-state.aim.placeholder')}
-          value={aim}
-          onChange={(event) => setAim(event.currentTarget.value)}
-        />
-        <NumberInput
-          label={t('navigation-state.pitch')}
-          value={pitch}
-          onChange={setPitch}
-        />
-        <TextInput
-          label={t('navigation-state.reference-frame')}
-          value={refFrame}
-          onChange={(event) => setRefFrame(event.currentTarget.value)}
-        />
-        <TextInput
-          label={t('navigation-state.up.label')}
-          description={t('comma-separated')}
-          placeholder={t('navigation-state.up.placeholder')}
-          value={up}
-          onChange={(event) => setUp(event.currentTarget.value)}
-        />
-        <NumberInput label={t('navigation-state.yaw')} value={yaw} onChange={setYaw} />
+        <ResettableField
+          label={labels.anchor}
+          onReset={() => resetFromCurrent((navState) => setAnchor(navState.Anchor))}
+          disabled={disabled}
+        >
+          <TextInput
+            label={labels.anchor}
+            placeholder={t('navigation-state.anchor.placeholder')}
+            value={anchor}
+            onChange={(event) => setAnchor(event.currentTarget.value)}
+          />
+        </ResettableField>
+        <ResettableField
+          label={labels.position}
+          onReset={() =>
+            resetFromCurrent((navState) => setPosition(navState.Position.join(', ')))
+          }
+          disabled={disabled}
+        >
+          <TextInput
+            label={labels.position}
+            description={t('comma-separated')}
+            placeholder={t('navigation-state.position.placeholder')}
+            value={position}
+            onChange={(event) => setPosition(event.currentTarget.value)}
+          />
+        </ResettableField>
+        <ResettableField
+          label={labels.aim}
+          onReset={() => resetFromCurrent((navState) => setAim(navState.Aim ?? ''))}
+          disabled={disabled}
+        >
+          <TextInput
+            label={labels.aim}
+            placeholder={t('navigation-state.aim.placeholder')}
+            value={aim}
+            onChange={(event) => setAim(event.currentTarget.value)}
+          />
+        </ResettableField>
+        <ResettableField
+          label={labels.pitch}
+          onReset={() => resetFromCurrent((navState) => setPitch(navState.Pitch ?? ''))}
+          disabled={disabled}
+        >
+          <NumberInput label={labels.pitch} value={pitch} onChange={setPitch} />
+        </ResettableField>
+        <ResettableField
+          label={labels.refFrame}
+          onReset={() =>
+            resetFromCurrent((navState) => setRefFrame(navState.ReferenceFrame ?? ''))
+          }
+          disabled={disabled}
+        >
+          <TextInput
+            label={labels.refFrame}
+            value={refFrame}
+            onChange={(event) => setRefFrame(event.currentTarget.value)}
+          />
+        </ResettableField>
+        <ResettableField
+          label={labels.up}
+          onReset={() =>
+            resetFromCurrent((navState) => setUp(navState.Up?.join(', ') ?? ''))
+          }
+          disabled={disabled}
+        >
+          <TextInput
+            label={labels.up}
+            description={t('comma-separated')}
+            placeholder={t('navigation-state.up.placeholder')}
+            value={up}
+            onChange={(event) => setUp(event.currentTarget.value)}
+          />
+        </ResettableField>
+        <ResettableField
+          label={labels.yaw}
+          onReset={() => resetFromCurrent((navState) => setYaw(navState.Yaw ?? ''))}
+          disabled={disabled}
+        >
+          <NumberInput label={labels.yaw} value={yaw} onChange={setYaw} />
+        </ResettableField>
         <Checkbox
           label={t('navigation-state.include-timestamp')}
           checked={includeTimestamp}
           onChange={(event) => setIncludeTimestamp(event.currentTarget.checked)}
         />
         {includeTimestamp && (
-          <TextInput
-            label={t('navigation-state.timestamp.label')}
-            placeholder={t('navigation-state.timestamp.placeholder')}
-            value={timestamp}
-            onChange={(event) => setTimestamp(event.currentTarget.value)}
-          />
+          <ResettableField
+            label={labels.timestamp}
+            onReset={() =>
+              resetFromCurrent((navState) => setTimestamp(navState.Timestamp ?? ''))
+            }
+            disabled={disabled}
+          >
+            <TextInput
+              label={labels.timestamp}
+              placeholder={t('navigation-state.timestamp.placeholder')}
+              value={timestamp}
+              onChange={(event) => setTimestamp(event.currentTarget.value)}
+            />
+          </ResettableField>
         )}
       </Stack>
       <AddCommandButton

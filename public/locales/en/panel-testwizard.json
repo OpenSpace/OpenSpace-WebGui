@@ -14,6 +14,7 @@
     "placeholder": "default"
   },
   "no-commands": "No commands added yet.",
+  "set-current-value": "Set {{field}} to current value",
   "remove-command-aria-label": "Remove command",
   "load": "Load .ostest",
   "save": "Save .ostest",
@@ -48,7 +49,6 @@
     "type-placeholder": "Select a command type...",
     "submit": "Add command",
     "fetch-failed": "Failed to fetch from OpenSpace",
-    "fetch-from-openspace": "Fetch from OpenSpace",
     "comma-separated": "Comma-separated values",
     "types": {
       "navigationstate": {
@@ -114,11 +114,11 @@
       "uri-placeholder": "Scene.Earth.Renderable.Enabled",
       "uri-nothing-found": "No matching property",
       "preview": "Property preview",
-      "select-value": "Select value",
+      "value-label": "Value",
       "selected-value": "Selected value: {{value}}"
     },
     "navigation-state": {
-      "fetch": "Fetch current camera state from OpenSpace",
+      "reset-all": "Set to current navigation state",
       "anchor": {
         "label": "Anchor",
         "placeholder": "Earth"

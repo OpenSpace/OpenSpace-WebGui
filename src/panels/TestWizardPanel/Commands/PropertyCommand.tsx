@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Card, Stack, Text } from '@mantine/core';
+import { Card, Stack, Text } from '@mantine/core';
 
 import { Property } from '@/components/Property/Property';
 import { VirtualSelect } from '@/components/VirtualSelect/VirtualSelect';
 import { useAppSelector } from '@/redux/hooks';
 import { propertySelectors } from '@/redux/propertytree/propertySlice';
 
-import { PropertyCommandValue, TestCommand } from '../types';
+import { useResettableValue } from '../hooks';
+import { ResettableField } from '../ResettableField';
+import { TestCommand } from '../types';
 
 import { AddCommandButton } from './AddCommandButton';
 
@@ -21,20 +23,15 @@ export function PropertyCommand({ onAdd }: Props) {
   const propertyUris = useAppSelector(propertySelectors.selectIds);
 
   const [uri, setUri] = useState('');
-  const [value, setValue] = useState<PropertyCommandValue['value'] | undefined>(
-    undefined
-  );
 
   // Derived from `uri`, so it comes after the state
   const property = useAppSelector((state) => propertySelectors.selectById(state, uri));
 
+  const { value, setValue, reset } = useResettableValue(property?.value);
+
   function handleUriChange(newUri: string) {
     setUri(newUri);
     setValue(undefined);
-  }
-
-  function handleSelectValue() {
-    setValue(property?.value);
   }
 
   function handleAdd() {
@@ -62,15 +59,19 @@ export function PropertyCommand({ onAdd }: Props) {
               </Text>
               <Property uri={uri} />
             </Card>
-            <Button size={'xs'} variant={'light'} onClick={handleSelectValue}>
-              {t('property.select-value')}
-            </Button>
           </>
         )}
         {value !== undefined && (
-          <Text size={'sm'} c={'dimmed'}>
-            {t('property.selected-value', { value: JSON.stringify(value) })}
-          </Text>
+          <ResettableField
+            label={t('property.value-label')}
+            align={'center'}
+            onReset={reset}
+            disabled={property === undefined}
+          >
+            <Text size={'sm'} c={'dimmed'}>
+              {t('property.selected-value', { value: JSON.stringify(value) })}
+            </Text>
+          </ResettableField>
         )}
       </Stack>
       <AddCommandButton onClick={handleAdd} disabled={value === undefined} />
