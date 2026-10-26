@@ -59,7 +59,7 @@ export function ViewMenu() {
 
   return (
     <TopBarMenuWrapper targetTitle={t('title')} closeOnItemClick={false}>
-      <Menu.Sub position={'right-start'} withinPortal={false}>
+      <Menu.Sub position={'right-start'}>
         <Menu.Sub.Target>
           <Menu.Sub.Item leftSection={<ToolbarIcon />}>
             {t('task-bar.label')}

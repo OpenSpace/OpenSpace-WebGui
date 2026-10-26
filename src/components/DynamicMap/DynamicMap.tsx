@@ -34,7 +34,7 @@ interface Props extends MantineStyleProps, PropsWithChildren {
   // This value signals whether the cone showing the camera direction should be shown
   showViewDirection?: boolean;
 
-  ref?: React.RefObject<HTMLDivElement>;
+  ref?: React.Ref<HTMLDivElement>;
   style?: React.CSSProperties;
 }
 
