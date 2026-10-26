@@ -29,6 +29,14 @@ function isPropertyValue(value: unknown): value is AnyProperty['value'] {
   );
 }
 
+function isVec3(value: unknown): value is Vec3 {
+  return (
+    Array.isArray(value) &&
+    value.length === 3 &&
+    value.every((item) => typeof item === 'number')
+  );
+}
+
 function isTestCommand(command: unknown): command is TestCommand {
   if (!isRecord(command)) {
     return false;
@@ -57,7 +65,8 @@ function isTestCommand(command: unknown): command is TestCommand {
       return (
         isRecord(value) &&
         typeof value.anchor === 'string' &&
-        Array.isArray(value.position)
+        isVec3(value.position) &&
+        (value.up === undefined || isVec3(value.up))
       );
     default:
       return false;
