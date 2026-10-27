@@ -39,6 +39,15 @@ node('server-liu-misc') {
     }
   }
 
+  stage("${name}/lint") {
+    timeout(time: 10, unit: 'MINUTES') {
+      sh(
+        script: "npm install && npm run lint",
+        label: "Lint"
+      );
+    }
+  }
+
   stage("${name}/build") {
     timeout(time: 30, unit: 'MINUTES') {
       sh(

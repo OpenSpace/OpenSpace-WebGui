@@ -62,7 +62,10 @@ export function ActionsButton({ uri, action: _action, height }: Props) {
               <Stack gap={'xs'}>
                 <Text size={'sm'}>{action.documentation}</Text>
                 {keybind && (
-                  <KeybindButtons modifiers={keybind.modifiers} key={keybind.key} />
+                  <KeybindButtons
+                    modifiers={keybind.modifiers}
+                    selectedKey={keybind.key}
+                  />
                 )}
                 {action!.identifier && <CopyUriButton uri={action!.identifier} />}
               </Stack>

@@ -57,6 +57,7 @@ export {
   MdOutlinePanoramaPhotosphere as BandIcon,
   MdCalendarMonth as CalendarIcon,
   MdCancel as CancelIcon,
+  MdCast as CastIcon,
   MdCheckBox as CheckBoxCheckedIcon,
   MdCheckBoxOutlineBlank as CheckBoxUncheckedIcon,
   MdCheck as CheckIcon,

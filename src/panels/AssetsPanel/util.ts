@@ -1,5 +1,76 @@
 import { Asset, Folder } from './types';
 
+export function normalizePath(path: string): string {
+  return path.replaceAll('\\', '/');
+}
+
+/**
+ * Strip the root part of the path from `path` e.g.,
+ * path = 'C:/user/openspace/data/assets/foo.asset' and root = 'C:/user/openspace/data'
+ * the resulting path is 'assets/foo.asset'
+ *
+ * @param path The path to strip root path from
+ * @param root The root path to strip
+ * @returns The relative path from root
+ */
+export function stripRoot(path: string, root: string): string {
+  const normalizedPath = normalizePath(path);
+  const normalizedRoot = normalizePath(root);
+  if (normalizedRoot.length > 0 && normalizedPath.startsWith(normalizedRoot)) {
+    return normalizedPath.substring(normalizedRoot.length).replace(/^\/+/, '');
+  }
+  return normalizedPath;
+}
+
+/**
+ * Builds a nested Folder structure from a flat list of absolute asset paths.
+ *
+ * @param paths Absolute paths to '.asset' and '.jasset' files. Paths are assumed to be
+ * normalized
+ * @param root Directory to strip from each path before building the hierarchy. If
+ * omitted, the full path (including drive/leading segments) is used as-is. The root path
+ * is assumed to be normalized. If omitted (undefined), the asset paths are added as a
+ * flat list to the first folder.
+ * @param name Name to give the resulting root Folder node
+ * @returns A nested Folder structure from the given path list
+ */
+export function buildFolder(
+  paths: string[],
+  root: string | undefined,
+  name: string
+): Folder {
+  const folder: Folder = { path: root ?? '', name, subFolders: [], assets: [] };
+
+  // If there is no root we'll put everything as a flat list in the first folder
+  if (!root) {
+    folder.assets = paths.map((path) => ({ path, name: baseName(path) }));
+    return folder;
+  }
+
+  for (const path of paths) {
+    // We do not want to include the root path in the panel to show up as folders
+    // i.e., 'C:/Foo/../OpenSpace/data/assets' and 'C:/Foo/../OpenSpace/user/data/assets'
+    const relativePath = root ? stripRoot(path, root) : path;
+    const parts = relativePath.split('/').filter((p) => p.length > 0);
+
+    let currentFolder: Folder = folder;
+    let currentPath: string = root ?? '';
+    // Navigate to the correct folder and add the asset paths
+    for (let i = 0; i < parts.length - 1; i++) {
+      currentPath = `${currentPath}/${parts[i]}`;
+      let next = currentFolder.subFolders.find((folder) => folder.name === parts[i]);
+      if (!next) {
+        next = { path: currentPath, name: parts[i], subFolders: [], assets: [] };
+        currentFolder.subFolders.push(next);
+      }
+      currentFolder = next;
+    }
+    currentFolder.assets.push({ path, name: baseName(path) });
+  }
+
+  return folder;
+}
+
 /**
  * Traverse the folder hierarchy from the given root according to the specified path,
  * returning the folder at that location.
@@ -21,17 +92,6 @@ export function findNavigatedFolder(root: Folder, navPath: string[]): Folder {
   return current;
 }
 
-function internalCollectAssets(folder: Folder): Asset[] {
-  // Collect this folders assets
-  let assets: Asset[] = [...folder.assets];
-
-  // Recursively collect assets from subfolders
-  for (const subFolder of folder.subFolders) {
-    assets = assets.concat(collectAssets(subFolder));
-  }
-  return assets;
-}
-
 /**
  * Recursively collect all assets from the given folder and its subfolders.
  *
@@ -40,6 +100,17 @@ function internalCollectAssets(folder: Folder): Asset[] {
  * by name
  */
 export function collectAssets(folder: Folder): Asset[] {
+  function internalCollectAssets(folder: Folder): Asset[] {
+    // Collect this folders assets
+    let assets: Asset[] = [...folder.assets];
+
+    // Recursively collect assets from subfolders
+    for (const subFolder of folder.subFolders) {
+      assets = assets.concat(internalCollectAssets(subFolder));
+    }
+    return assets;
+  }
+
   const assets = internalCollectAssets(folder);
   return assets.sort((a, b) => a.name.localeCompare(b.name));
 }
@@ -51,34 +122,8 @@ export function collectAssets(folder: Folder): Asset[] {
  * @returns The final name segment of the path (e.g., "bar" or "bar.asset")
  */
 export function baseName(path: string): string {
-  const sanitizedPath = path.replaceAll('\\', '/');
+  const sanitizedPath = normalizePath(path);
   const nameStartPos = sanitizedPath.lastIndexOf('/');
 
   return sanitizedPath.substring(nameStartPos + 1);
-}
-
-/**
- * Recursively prune empty folders from data structure. Empty folders are those
- * without subfolders or assets.
- *
- * @param folder to potentially prune
- * @returns a pruned Folder version without empty subfolders
- */
-export function pruneEmptyFolders(folder: Folder): Folder | null {
-  // Recursively prune subfolders
-  const prunedSubFolders = folder.subFolders
-    .map(pruneEmptyFolders)
-    .filter((folder) => folder !== null);
-
-  const prunedFolder: Folder = {
-    ...folder,
-    subFolders: prunedSubFolders
-  };
-
-  // Folder is empty if it has no subfolders or any assets
-  if (prunedFolder.subFolders.length === 0 && prunedFolder.assets.length === 0) {
-    return null;
-  }
-
-  return prunedFolder;
 }

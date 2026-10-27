@@ -147,7 +147,7 @@ export function VideoPlayer({ uri, ...styleProps }: Props) {
         <Text size={'sm'} mb={'xs'}>
           {t('info-box.description')}
         </Text>
-        <Grid align={'center'} gutter={2}>
+        <Grid align={'center'} gap={2}>
           {propertyData.map(({ uri: propUri, icon, meta }) => (
             <Fragment key={propUri}>
               <Grid.Col span={1.5}>

@@ -28,6 +28,11 @@ export function useActionsForLevel(): ActionFolderContent {
       // We want to make sure all paths are in the same format. Prune it.
       const guiPath = formatPath(action.guiPath);
 
+      // Skip hidden actions
+      if (action.isHidden) {
+        return;
+      }
+
       // Is it the current path? Add it to actions
       if (guiPath === navigationPath) {
         mappedActions.actions.push(action);
@@ -68,7 +73,9 @@ export function useActionsInPath(): Action[] {
   }
   // We want to include the subfolders of the current path
   // Hence we check if the GUI path starts with the navigation path
-  return allActions.filter((action) => action.guiPath.startsWith(navigationPath));
+  return allActions.filter(
+    (action) => action.guiPath.startsWith(navigationPath) && !action.isHidden
+  );
 }
 
 export function useGoToFolder() {

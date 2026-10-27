@@ -1,5 +1,9 @@
 import { useEffect } from 'react';
 
+import {
+  subscribeToAssetTree,
+  unsubscribeToAssetTree
+} from '@/redux/assettree/assetTreeMiddleware';
 import { subscribeToCamera, unsubscribeToCamera } from '@/redux/camera/cameraMiddleware';
 import {
   subscribeToCameraPath,
@@ -22,6 +26,16 @@ export function useSubscribeToCamera() {
     dispatch(subscribeToCamera());
     return () => {
       dispatch(unsubscribeToCamera());
+    };
+  }, [dispatch]);
+}
+
+export function useSubscribeToAssetTree() {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(subscribeToAssetTree());
+    return () => {
+      dispatch(unsubscribeToAssetTree());
     };
   }, [dispatch]);
 }
