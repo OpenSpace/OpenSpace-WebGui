@@ -106,7 +106,7 @@ export function TestWizardPanel() {
   }
 
   function handleCancel() {
-    if (name === '' && commands.length === 0) {
+    if (name.trim() === '' && commands.length === 0) {
       setView('start');
       return;
     }
