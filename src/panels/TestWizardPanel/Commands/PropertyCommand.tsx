@@ -44,37 +44,35 @@ export function PropertyCommand({ onAdd, onCancel }: Props) {
   return (
     <>
       <Layout.GrowingSection>
-        <Stack gap={'sm'}>
-          <Stack gap={'xs'}>
-            <VirtualSelect
-              label={t('property.uri-label')}
-              placeholder={t('property.uri-placeholder')}
-              nothingFoundMessage={t('property.uri-nothing-found')}
-              data={propertyUris}
-              value={uri}
-              onChange={handleUriChange}
-            />
-            {property && (
-              <Card withBorder>
-                <Text size={'sm'} fw={500} mb={'xs'}>
-                  {t('property.preview')}
-                </Text>
-                <Property uri={uri} />
-              </Card>
-            )}
-            {value !== undefined && (
-              <ResettableField
-                label={t('property.value-label')}
-                align={'center'}
-                onReset={reset}
-                disabled={property === undefined}
-              >
-                <Text size={'sm'} c={'dimmed'}>
-                  {t('property.selected-value', { value: JSON.stringify(value) })}
-                </Text>
-              </ResettableField>
-            )}
-          </Stack>
+        <Stack gap={'xs'}>
+          <VirtualSelect
+            label={t('property.uri-label')}
+            placeholder={t('property.uri-placeholder')}
+            nothingFoundMessage={t('property.uri-nothing-found')}
+            data={propertyUris}
+            value={uri}
+            onChange={handleUriChange}
+          />
+          {property && (
+            <Card withBorder>
+              <Text size={'sm'} fw={500} mb={'xs'}>
+                {t('property.preview')}
+              </Text>
+              <Property uri={uri} />
+            </Card>
+          )}
+          {value !== undefined && (
+            <ResettableField
+              label={t('property.value-label')}
+              align={'center'}
+              onReset={reset}
+              disabled={property === undefined}
+            >
+              <Text size={'sm'} c={'dimmed'}>
+                {t('property.selected-value', { value: JSON.stringify(value) })}
+              </Text>
+            </ResettableField>
+          )}
         </Stack>
       </Layout.GrowingSection>
       <Layout.FixedSection>
