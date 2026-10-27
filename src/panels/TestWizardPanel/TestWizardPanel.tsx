@@ -92,11 +92,7 @@ export function TestWizardPanel() {
     setView('overview');
   }
 
-  function handleCancel() {
-    if (name === '' && commands.length === 0) {
-      setView('start');
-      return;
-    }
+  function confirmDiscard(onConfirm: () => void) {
     modals.openConfirmModal({
       title: t('discard-modal.title'),
       children: <Text>{t('discard-modal.description')}</Text>,
@@ -105,8 +101,16 @@ export function TestWizardPanel() {
         cancel: t('discard-modal.cancel')
       },
       confirmProps: { color: 'red', variant: 'filled' },
-      onConfirm: () => setView('start')
+      onConfirm
     });
+  }
+
+  function handleCancel() {
+    if (name === '' && commands.length === 0) {
+      setView('start');
+      return;
+    }
+    confirmDiscard(() => setView('start'));
   }
 
   function handleRemove(index: number) {
@@ -126,7 +130,7 @@ export function TestWizardPanel() {
     };
     const result = await saveFile(
       `${JSON.stringify(test, null, 2)}\n`,
-      `${name}.ostest`,
+      `${name.trim()}.ostest`,
       '.ostest',
       'text/plain'
     );
@@ -172,7 +176,7 @@ export function TestWizardPanel() {
         <AddCommandView
           type={commandType}
           onAdd={handleAdd}
-          onCancel={() => setView('overview')}
+          onCancel={() => confirmDiscard(() => setView('overview'))}
         />
       )}
     </Container>
