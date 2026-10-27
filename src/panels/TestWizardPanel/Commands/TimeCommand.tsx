@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Stack, TextInput } from '@mantine/core';
 
+import { Layout } from '@/components/Layout/Layout';
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { dateToOpenSpaceTimeString } from '@/util/time';
 
@@ -32,25 +33,31 @@ export function TimeCommand({ onAdd, onCancel }: Props) {
   const label = t('time.label');
 
   return (
-    <Stack gap={'sm'}>
-      <ResettableField
-        label={label}
-        onReset={reset}
-        disabled={currentTimeString === undefined}
-      >
-        <TextInput
-          label={label}
-          placeholder={t('time.placeholder')}
-          value={time}
-          onChange={(event) => setTime(event.currentTarget.value)}
+    <>
+      <Layout.GrowingSection>
+        <Stack gap={'sm'}>
+          <ResettableField
+            label={label}
+            onReset={reset}
+            disabled={currentTimeString === undefined}
+          >
+            <TextInput
+              label={label}
+              placeholder={t('time.placeholder')}
+              value={time}
+              onChange={(event) => setTime(event.currentTarget.value)}
+            />
+          </ResettableField>
+        </Stack>
+      </Layout.GrowingSection>
+      <Layout.FixedSection>
+        <SaveCancelButtons
+          onSave={() => onAdd({ type: 'time', value: time })}
+          onCancel={onCancel}
+          saveLabel={'add'}
+          saveDisabled={!time}
         />
-      </ResettableField>
-      <SaveCancelButtons
-        onSave={() => onAdd({ type: 'time', value: time })}
-        onCancel={onCancel}
-        saveLabel={'add'}
-        saveDisabled={!time}
-      />
-    </Stack>
+      </Layout.FixedSection>
+    </>
   );
 }

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NumberInput, Stack } from '@mantine/core';
 
+import { Layout } from '@/components/Layout/Layout';
+
 import { SaveCancelButtons } from '../SaveCancelButtons';
 import { TestCommand } from '../types';
 
@@ -16,19 +18,25 @@ export function WaitCommand({ onAdd, onCancel }: Props) {
   const [seconds, setSeconds] = useState<number | string>(0);
 
   return (
-    <Stack gap={'sm'}>
-      <NumberInput
-        label={t('wait.label')}
-        value={seconds}
-        onChange={setSeconds}
-        min={0}
-        step={1}
-      />
-      <SaveCancelButtons
-        onSave={() => onAdd({ type: 'wait', value: Number(seconds) })}
-        onCancel={onCancel}
-        saveLabel={'add'}
-      />
-    </Stack>
+    <>
+      <Layout.GrowingSection>
+        <Stack gap={'sm'}>
+          <NumberInput
+            label={t('wait.label')}
+            value={seconds}
+            onChange={setSeconds}
+            min={0}
+            step={1}
+          />
+        </Stack>
+      </Layout.GrowingSection>
+      <Layout.FixedSection>
+        <SaveCancelButtons
+          onSave={() => onAdd({ type: 'wait', value: Number(seconds) })}
+          onCancel={onCancel}
+          saveLabel={'add'}
+        />
+      </Layout.FixedSection>
+    </>
   );
 }

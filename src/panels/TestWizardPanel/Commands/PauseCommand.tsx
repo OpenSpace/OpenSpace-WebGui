@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Stack, Switch } from '@mantine/core';
 
+import { Layout } from '@/components/Layout/Layout';
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 
@@ -35,25 +36,31 @@ export function PauseCommand({ onAdd, onCancel }: Props) {
   }
 
   return (
-    <Stack gap={'sm'}>
-      <ResettableField
-        label={label}
-        align={'center'}
-        onReset={reset}
-        disabled={currentIsPaused === undefined}
-      >
-        <Switch
-          label={label}
-          checked={isPaused ?? false}
-          onChange={(event) => setIsPaused(event.currentTarget.checked)}
+    <>
+      <Layout.GrowingSection>
+        <Stack gap={'sm'}>
+          <ResettableField
+            label={label}
+            align={'center'}
+            onReset={reset}
+            disabled={currentIsPaused === undefined}
+          >
+            <Switch
+              label={label}
+              checked={isPaused ?? false}
+              onChange={(event) => setIsPaused(event.currentTarget.checked)}
+            />
+          </ResettableField>
+        </Stack>
+      </Layout.GrowingSection>
+      <Layout.FixedSection>
+        <SaveCancelButtons
+          onSave={handleAdd}
+          onCancel={onCancel}
+          saveLabel={'add'}
+          saveDisabled={isPaused === undefined}
         />
-      </ResettableField>
-      <SaveCancelButtons
-        onSave={handleAdd}
-        onCancel={onCancel}
-        saveLabel={'add'}
-        saveDisabled={isPaused === undefined}
-      />
-    </Stack>
+      </Layout.FixedSection>
+    </>
   );
 }

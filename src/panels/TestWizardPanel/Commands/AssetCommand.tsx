@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Select, Stack, TextInput } from '@mantine/core';
 
+import { Layout } from '@/components/Layout/Layout';
 import { useSubscribeToAssetTree } from '@/hooks/topicSubscriptions';
 import { useRootPaths } from '@/panels/AssetsPanel/hooks';
 import { useAppSelector } from '@/redux/hooks';
@@ -36,33 +37,39 @@ export function AssetCommand({ onAdd, onCancel }: Props) {
   );
 
   return (
-    <Stack gap={'sm'}>
-      {assetOptions.length > 0 ? (
-        <Select
-          label={t('asset.select-label')}
-          data={assetOptions}
-          value={asset}
-          onChange={(value) => {
-            if (value) {
-              setAsset(value);
-            }
-          }}
-          searchable
+    <>
+      <Layout.GrowingSection>
+        <Stack gap={'sm'}>
+          {assetOptions.length > 0 ? (
+            <Select
+              label={t('asset.select-label')}
+              data={assetOptions}
+              value={asset}
+              onChange={(value) => {
+                if (value) {
+                  setAsset(value);
+                }
+              }}
+              searchable
+            />
+          ) : (
+            <TextInput
+              label={t('asset.path-label')}
+              placeholder={t('asset.path-placeholder')}
+              value={asset}
+              onChange={(event) => setAsset(event.currentTarget.value)}
+            />
+          )}
+        </Stack>
+      </Layout.GrowingSection>
+      <Layout.FixedSection>
+        <SaveCancelButtons
+          onSave={() => onAdd({ type: 'asset', value: asset })}
+          onCancel={onCancel}
+          saveLabel={'add'}
+          saveDisabled={!asset}
         />
-      ) : (
-        <TextInput
-          label={t('asset.path-label')}
-          placeholder={t('asset.path-placeholder')}
-          value={asset}
-          onChange={(event) => setAsset(event.currentTarget.value)}
-        />
-      )}
-      <SaveCancelButtons
-        onSave={() => onAdd({ type: 'asset', value: asset })}
-        onCancel={onCancel}
-        saveLabel={'add'}
-        saveDisabled={!asset}
-      />
-    </Stack>
+      </Layout.FixedSection>
+    </>
   );
 }

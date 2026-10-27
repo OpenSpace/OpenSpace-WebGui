@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, Stack, Text } from '@mantine/core';
 
+import { Layout } from '@/components/Layout/Layout';
 import { Property } from '@/components/Property/Property';
 import { VirtualSelect } from '@/components/VirtualSelect/VirtualSelect';
 import { useAppSelector } from '@/redux/hooks';
@@ -41,43 +42,49 @@ export function PropertyCommand({ onAdd, onCancel }: Props) {
   }
 
   return (
-    <Stack gap={'sm'}>
-      <Stack gap={'xs'}>
-        <VirtualSelect
-          label={t('property.uri-label')}
-          placeholder={t('property.uri-placeholder')}
-          nothingFoundMessage={t('property.uri-nothing-found')}
-          data={propertyUris}
-          value={uri}
-          onChange={handleUriChange}
+    <>
+      <Layout.GrowingSection>
+        <Stack gap={'sm'}>
+          <Stack gap={'xs'}>
+            <VirtualSelect
+              label={t('property.uri-label')}
+              placeholder={t('property.uri-placeholder')}
+              nothingFoundMessage={t('property.uri-nothing-found')}
+              data={propertyUris}
+              value={uri}
+              onChange={handleUriChange}
+            />
+            {property && (
+              <Card withBorder>
+                <Text size={'sm'} fw={500} mb={'xs'}>
+                  {t('property.preview')}
+                </Text>
+                <Property uri={uri} />
+              </Card>
+            )}
+            {value !== undefined && (
+              <ResettableField
+                label={t('property.value-label')}
+                align={'center'}
+                onReset={reset}
+                disabled={property === undefined}
+              >
+                <Text size={'sm'} c={'dimmed'}>
+                  {t('property.selected-value', { value: JSON.stringify(value) })}
+                </Text>
+              </ResettableField>
+            )}
+          </Stack>
+        </Stack>
+      </Layout.GrowingSection>
+      <Layout.FixedSection>
+        <SaveCancelButtons
+          onSave={handleAdd}
+          onCancel={onCancel}
+          saveLabel={'add'}
+          saveDisabled={value === undefined}
         />
-        {property && (
-          <Card withBorder>
-            <Text size={'sm'} fw={500} mb={'xs'}>
-              {t('property.preview')}
-            </Text>
-            <Property uri={uri} />
-          </Card>
-        )}
-        {value !== undefined && (
-          <ResettableField
-            label={t('property.value-label')}
-            align={'center'}
-            onReset={reset}
-            disabled={property === undefined}
-          >
-            <Text size={'sm'} c={'dimmed'}>
-              {t('property.selected-value', { value: JSON.stringify(value) })}
-            </Text>
-          </ResettableField>
-        )}
-      </Stack>
-      <SaveCancelButtons
-        onSave={handleAdd}
-        onCancel={onCancel}
-        saveLabel={'add'}
-        saveDisabled={value === undefined}
-      />
-    </Stack>
+      </Layout.FixedSection>
+    </>
   );
 }

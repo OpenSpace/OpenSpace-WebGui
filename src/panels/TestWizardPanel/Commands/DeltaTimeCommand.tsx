@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { NumberInput, Stack } from '@mantine/core';
 
+import { Layout } from '@/components/Layout/Layout';
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { useAppSelector } from '@/redux/hooks';
 
@@ -29,26 +30,32 @@ export function DeltaTimeCommand({ onAdd, onCancel }: Props) {
   const label = t('deltatime.label');
 
   return (
-    <Stack gap={'sm'}>
-      <ResettableField
-        label={label}
-        onReset={reset}
-        disabled={currentDeltaTime === undefined}
-      >
-        <NumberInput
-          label={label}
-          value={deltaTime ?? ''}
-          onChange={setDeltaTime}
-          min={0}
-          step={0.1}
+    <>
+      <Layout.GrowingSection>
+        <Stack gap={'sm'}>
+          <ResettableField
+            label={label}
+            onReset={reset}
+            disabled={currentDeltaTime === undefined}
+          >
+            <NumberInput
+              label={label}
+              value={deltaTime ?? ''}
+              onChange={setDeltaTime}
+              min={0}
+              step={0.1}
+            />
+          </ResettableField>
+        </Stack>
+      </Layout.GrowingSection>
+      <Layout.FixedSection>
+        <SaveCancelButtons
+          onSave={() => onAdd({ type: 'deltatime', value: Number(deltaTime) })}
+          onCancel={onCancel}
+          saveLabel={'add'}
+          saveDisabled={deltaTime === undefined || deltaTime === ''}
         />
-      </ResettableField>
-      <SaveCancelButtons
-        onSave={() => onAdd({ type: 'deltatime', value: Number(deltaTime) })}
-        onCancel={onCancel}
-        saveLabel={'add'}
-        saveDisabled={deltaTime === undefined || deltaTime === ''}
-      />
-    </Stack>
+      </Layout.FixedSection>
+    </>
   );
 }

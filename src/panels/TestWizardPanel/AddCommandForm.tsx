@@ -1,6 +1,3 @@
-import { useTranslation } from 'react-i18next';
-import { Stack, Text } from '@mantine/core';
-
 import { ActionCommand } from './Commands/ActionCommand';
 import { AssetCommand } from './Commands/AssetCommand';
 import { DeltaTimeCommand } from './Commands/DeltaTimeCommand';
@@ -19,39 +16,26 @@ interface Props {
 }
 
 export function AddCommandForm({ type, onAdd, onCancel }: Props) {
-  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-
-  function commandFields() {
-    switch (type) {
-      case 'navigationstate':
-        return <NavigationStateCommand onAdd={onAdd} onCancel={onCancel} />;
-      case 'asset':
-        return <AssetCommand onAdd={onAdd} onCancel={onCancel} />;
-      case 'property':
-        return <PropertyCommand onAdd={onAdd} onCancel={onCancel} />;
-      case 'wait':
-        return <WaitCommand onAdd={onAdd} onCancel={onCancel} />;
-      case 'script':
-        return <ScriptCommand onAdd={onAdd} onCancel={onCancel} />;
-      case 'time':
-        return <TimeCommand onAdd={onAdd} onCancel={onCancel} />;
-      case 'pause':
-        return <PauseCommand onAdd={onAdd} onCancel={onCancel} />;
-      case 'deltatime':
-        return <DeltaTimeCommand onAdd={onAdd} onCancel={onCancel} />;
-      case 'action':
-        return <ActionCommand onAdd={onAdd} onCancel={onCancel} />;
-      default:
-        throw new Error(`Unhandled command type: ${type}`);
-    }
+  switch (type) {
+    case 'navigationstate':
+      return <NavigationStateCommand onAdd={onAdd} onCancel={onCancel} />;
+    case 'asset':
+      return <AssetCommand onAdd={onAdd} onCancel={onCancel} />;
+    case 'property':
+      return <PropertyCommand onAdd={onAdd} onCancel={onCancel} />;
+    case 'wait':
+      return <WaitCommand onAdd={onAdd} onCancel={onCancel} />;
+    case 'script':
+      return <ScriptCommand onAdd={onAdd} onCancel={onCancel} />;
+    case 'time':
+      return <TimeCommand onAdd={onAdd} onCancel={onCancel} />;
+    case 'pause':
+      return <PauseCommand onAdd={onAdd} onCancel={onCancel} />;
+    case 'deltatime':
+      return <DeltaTimeCommand onAdd={onAdd} onCancel={onCancel} />;
+    case 'action':
+      return <ActionCommand onAdd={onAdd} onCancel={onCancel} />;
+    default:
+      throw new Error(`Unhandled command type: ${type}`);
   }
-
-  return (
-    <Stack gap={'sm'}>
-      <Text size={'sm'} c={'dimmed'}>
-        {t(`types.${type}.description`)}
-      </Text>
-      {commandFields()}
-    </Stack>
-  );
 }
