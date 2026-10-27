@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Group, Title } from '@mantine/core';
+import { ActionIcon, Group, Text, Title } from '@mantine/core';
 
+import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { Layout } from '@/components/Layout/Layout';
 import { BackArrowIcon } from '@/icons/icons';
 
@@ -22,17 +23,20 @@ export function AddCommandView({ type, onAdd, onCancel }: Props) {
         <Group gap={'xs'}>
           <ActionIcon
             variant={'subtle'}
-            size={'lg'}
+            size={'sm'}
             onClick={onCancel}
             aria-label={t('buttons.back')}
           >
             <BackArrowIcon />
           </ActionIcon>
-          <Title order={4}>
+          <Title order={5}>
             {t('sections.add-command', {
               type: t(`add-command-form.types.${type}.label`)
             })}
           </Title>
+          <InfoBox>
+            <Text>{t(`add-command-form.types.${type}.description`)}</Text>
+          </InfoBox>
         </Group>
       </Layout.FixedSection>
       <AddCommandForm type={type} onAdd={onAdd} onCancel={onCancel} />
