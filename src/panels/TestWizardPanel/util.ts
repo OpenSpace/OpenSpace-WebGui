@@ -86,14 +86,30 @@ export function isCommandType(value: string): value is CommandType {
   return (COMMAND_TYPES as readonly string[]).includes(value);
 }
 
+// Names Windows reserves for devices, with or without a file extension
+const ReservedFileNames = /^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i;
+// The longest file name most file systems allow
+const MaxFileNameLength = 255;
+
 /**
- * @returns True if `name` can be used as a file name, i.e. it has no path separators or
- * other characters that are reserved in file names
+ * @returns True if `name`, ignoring leading and trailing whitespace, can be used as the
+ * name of an `.ostest` file, i.e. it is not too long, has no path separators or other
+ * reserved characters, does not end with a dot and is not a reserved device name
  */
 export function isValidFileName(name: string): boolean {
+  const trimmedName = name.trim();
+  if (trimmedName.endsWith('.')) {
+    return false;
+  }
+  if (trimmedName.length + '.ostest'.length > MaxFileNameLength) {
+    return false;
+  }
+  if (ReservedFileNames.test(trimmedName.split('.')[0])) {
+    return false;
+  }
   // Character codes below 32 are control characters (tab, newline, ...), which are not
   // allowed in file names on Windows.
-  return !Array.from(name).some(
+  return !Array.from(trimmedName).some(
     (character) => '\\/:*?"<>|'.includes(character) || character.charCodeAt(0) < 32
   );
 }

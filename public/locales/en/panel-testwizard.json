@@ -7,7 +7,7 @@
   "test-name": {
     "label": "Test Name",
     "placeholder": "my_test",
-    "invalid": "The name cannot contain any of these characters: \\ / : * ? \" < > |"
+    "invalid": "Not a valid file name. Avoid \\ / : * ? \" < > |, a trailing dot and reserved names like CON."
   },
   "profile": {
     "label": "OpenSpace Profile",
@@ -30,7 +30,7 @@
     "back": "Back"
   },
   "discard-modal": {
-    "title": "Discard test?",
+    "title": "Discard changes?",
     "description": "Your unsaved changes will be lost.",
     "confirm": "Discard",
     "cancel": "Keep editing"

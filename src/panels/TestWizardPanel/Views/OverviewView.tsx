@@ -189,7 +189,7 @@ export function OverviewView({
           <SaveCancelButtons
             onSave={onSave}
             onCancel={onCancel}
-            saveDisabled={!profile || !name || isNameInvalid}
+            saveDisabled={!profile || !name.trim() || isNameInvalid}
           />
         </Stack>
       </Layout.FixedSection>
