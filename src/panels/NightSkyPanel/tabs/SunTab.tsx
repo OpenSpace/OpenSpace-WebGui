@@ -25,7 +25,7 @@ import { sgnUri } from '@/util/uris';
 export function SunTab() {
   const { t } = useTranslation('panel-nightsky', { keyPrefix: 'sun' });
 
-  const [trailDate, setTrailDate] = useState<Date | null>(null);
+  const [trailDate, setTrailDate] = useState<string | null>(null);
   const propertyOwners = useAppSelector((state) =>
     propertyOwnerSelectors.selectEntities(state)
   );
@@ -128,13 +128,16 @@ export function SunTab() {
         label={t('trails.choose-date')}
         placeholder={'01/01/2001'}
         value={trailDate}
-        onChange={(val) => setTrailDate(new Date(val))}
+        clearable
+        onChange={setTrailDate}
         mt={'sm'}
       />
       <Button
         disabled={trailDate === null}
         leftSection={<PlusIcon />}
-        onClick={() => trailDate && addTrail(trailDate.toISOString())}
+        onClick={() =>
+          trailDate && addTrail(new Date(`${trailDate}T00:00:00`).toISOString())
+        }
         mt={'xs'}
       >
         {t('trails.buttons.add-trail')}

@@ -1,4 +1,4 @@
-import { alpha, Box, Flex, Group } from '@mantine/core';
+import { alpha, Box, Flex, Group, Menubar } from '@mantine/core';
 
 import { FrictionControls } from '@/components/FrictionControls/FrictionControls';
 import { FrictionControlsInfo } from '@/components/FrictionControls/FrictionControlsInfo';
@@ -25,13 +25,13 @@ export function TopMenuBar() {
           whiteSpace: 'nowrap'
         }}
       >
-        <Group flex={1} wrap={'nowrap'}>
+        <Menubar flex={1} trigger={'hover'} style={{ gap: 'var(--mantine-spacing-xs)' }}>
           <FileMenu />
           <WindowsMenu />
           <ViewMenu />
           <HelpMenu />
-          {/* <LocaleSwitcher /> */}
-        </Group>
+        </Menubar>
+        {/* <LocaleSwitcher /> */}
         <Box flex={1} style={{ overflow: 'hidden' }}>
           {/* There's space to put something in the center here if we want */}
         </Box>
