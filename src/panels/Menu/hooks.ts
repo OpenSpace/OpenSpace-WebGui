@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { isVisibilityLevelMet, usePropertyVisibilityLevel } from '@/hooks/userLevel';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setMenuItemsConfig, setMenuItemVisible } from '@/redux/local/localSlice';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
@@ -13,18 +14,27 @@ import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 import { MenuItemConfig, MenuItemWithConfig } from './types';
 
 /**
- * @returns All menu items merged with their static configuration from `menuItemsData`.
+ * @returns All available menu items merged with their static configuration from
+ * `menuItemsData`. Items that require a higher property visibility level than the
+ * current one are excluded.
  */
 export function useMenuItems(): MenuItemWithConfig[] {
   const config = useAppSelector((state) => state.local.menuItems.config);
+  const visibilityLevel = usePropertyVisibilityLevel();
 
   return useMemo(
     () =>
-      config.map((item) => ({
-        ...item,
-        ...menuItemsData[item.id]
-      })),
-    [config]
+      config
+        .map((item) => ({
+          ...item,
+          ...menuItemsData[item.id]
+        }))
+        .filter(
+          (item) =>
+            item.minVisibility === undefined ||
+            isVisibilityLevelMet(visibilityLevel, item.minVisibility)
+        ),
+    [config, visibilityLevel]
   );
 }
 

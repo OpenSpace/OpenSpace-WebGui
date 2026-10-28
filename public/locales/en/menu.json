@@ -95,6 +95,7 @@
     "scriptLogPanel": "Script Log",
     "globeImageryBrowserPanel": "Globe Imagery Browser",
     "assetsPanel": "Assets",
+    "testWizard": "Test Wizard",
     "devPanel": "Dev Panel"
   },
   "error-load-toolbar-layout": {

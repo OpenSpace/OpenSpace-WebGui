@@ -1,0 +1,181 @@
+{
+  "info": "Create OpenSpace visual regression test files by selecting a sequence of commands. The resulting <code>.ostest</code> file can be run by the OpenSpace test framework to verify that the application renders correctly.",
+  "sections": {
+    "add-command": "Add {{type}} command",
+    "commands": "Commands ({{number}})"
+  },
+  "test-name": {
+    "label": "Test Name",
+    "placeholder": "my_test",
+    "invalid": "Not a valid file name. Avoid \\ / : * ? \" < > |, a trailing dot and reserved names like CON."
+  },
+  "profile": {
+    "label": "OpenSpace Profile",
+    "placeholder": "default"
+  },
+  "no-commands": "No commands added yet.",
+  "set-current-value": "Set {{field}} to current value",
+  "remove-command-aria-label": "Remove command",
+  "start": {
+    "load-test": "Load test",
+    "new-test": "New test"
+  },
+  "overview": {
+    "add": "Add"
+  },
+  "buttons": {
+    "save": "Save",
+    "add": "Add",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "discard-modal": {
+    "title": "Discard changes?",
+    "description": "Your unsaved changes will be lost.",
+    "confirm": "Discard",
+    "cancel": "Keep editing"
+  },
+  "saved": {
+    "title": "Test saved",
+    "message": "Saved {{name}}"
+  },
+  "downloaded": {
+    "title": "Test downloaded",
+    "message": "Your browser does not support choosing a save location, so {{name}} was sent to your downloads instead."
+  },
+  "load-error": {
+    "title": "Failed to load test file \"{{name}}\"",
+    "invalid-file": "The file is not a valid test file"
+  },
+  "command-labels": {
+    "screenshot": "Screenshot",
+    "wait": "Wait {{value}}s",
+    "deltatime": "Delta time: {{value}}",
+    "pause": "Pause: {{value}}",
+    "pause-on": "on",
+    "pause-off": "off",
+    "script": "Script: {{value}}",
+    "time": "Time: {{value}}",
+    "asset": "Asset: {{value}}",
+    "action": "Action: {{value}}",
+    "property": "Property: {{property}} = {{value}}",
+    "navigationstate": "Navigation state (anchor: {{anchor}})"
+  },
+  "add-command-form": {
+    "type-label": "Add command type",
+    "type-placeholder": "Select a command type...",
+    "fetch-failed": "Failed to fetch from OpenSpace",
+    "comma-separated": "Comma-separated values",
+    "types": {
+      "navigationstate": {
+        "label": "Navigation State",
+        "description": "Stores the current camera position (and optionally the time). Restores it when the test is run."
+      },
+      "asset": {
+        "label": "Asset",
+        "description": "Causes the test to load a specific asset file."
+      },
+      "property": {
+        "label": "Property",
+        "description": "Stores a property value. When run, the property will be set to the stored value."
+      },
+      "wait": {
+        "label": "Wait",
+        "description": "Causes the test to wait for a specified number of seconds before proceeding."
+      },
+      "script": {
+        "label": "Script",
+        "description": "A Lua script that will be executed during the regression test."
+      },
+      "time": {
+        "label": "Time",
+        "description": "Stores the in-game time and restores it when the test is run."
+      },
+      "pause": {
+        "label": "Pause",
+        "description": "Pauses or resumes simulation time."
+      },
+      "deltatime": {
+        "label": "Delta Time",
+        "description": "Sets the simulation delta time when the test is run."
+      },
+      "action": {
+        "label": "Action",
+        "description": "Triggers a registered action."
+      }
+    },
+    "wait": {
+      "label": "Seconds"
+    },
+    "deltatime": {
+      "label": "Delta time"
+    },
+    "asset": {
+      "select-label": "Asset",
+      "path-label": "Asset path",
+      "path-placeholder": "scene/solarsystem/planets/earth/earth"
+    },
+    "script": {
+      "label": "Lua script",
+      "placeholder": "openspace.printInfo(\"Hello\")"
+    },
+    "time": {
+      "label": "UTC time",
+      "placeholder": "2021-01-01T00:00:00"
+    },
+    "action": {
+      "select-label": "Action",
+      "identifier-label": "Action identifier",
+      "identifier-placeholder": "profile.action.identifier"
+    },
+    "pause": {
+      "label": "Pause simulation"
+    },
+    "property": {
+      "uri-label": "Property URI",
+      "uri-placeholder": "Scene.Earth.Renderable.Enabled",
+      "uri-nothing-found": "No matching property",
+      "preview": "Property preview",
+      "value-label": "Value",
+      "selected-value": "Selected value: {{value}}"
+    },
+    "navigationstate": {
+      "reset-all": "Set to current navigation state",
+      "anchor": {
+        "label": "Anchor",
+        "placeholder": "Earth"
+      },
+      "position": {
+        "label": "Position (x, y, z)",
+        "placeholder": "0, 0, 10000000"
+      },
+      "aim": {
+        "label": "Aim",
+        "placeholder": "Mars"
+      },
+      "optional": {
+        "title": "Optional values"
+      },
+      "pitch": {
+        "label": "Pitch"
+      },
+      "reference-frame": {
+        "label": "Reference frame"
+      },
+      "up": {
+        "label": "Up (x, y, z)",
+        "placeholder": "0, 1, 0"
+      },
+      "yaw": {
+        "label": "Yaw"
+      },
+      "include-timestamp": {
+        "label": "Include timestamp"
+      },
+      "timestamp": {
+        "label": "Timestamp",
+        "placeholder": "2021-01-01T00:00:00"
+      }
+    }
+  }
+}
