@@ -98,6 +98,7 @@ export const setupSubscription = createAsyncThunk(
       Uri,
       {
         value?: AnyProperty['value'];
+        isEnabled?: boolean;
         metaData?: AnyPropertyMetaData;
         uri?: string;
       }
@@ -126,12 +127,13 @@ export const setupSubscription = createAsyncThunk(
           // and nested objects). However, at runtime the data coming from OpenSpace will
           // always be a valid propety value for this uri, so it _should_ be ok to cast
           // here
-          let newData = { value: data.value as AnyProperty['value'] };
-          if (data?.isEnabled !== undefined) {
-            newData = { ...newData, isEnabled: data.isEnabled as boolean };
-          }
+          const { value, isEnabled } = data as {
+            value: AnyProperty['value'];
+            isEnabled?: boolean;
+          };
+          // Only include isEnabled when it exists
           batcher.add({
-            [data.uri]: newData
+            [data.uri]: { value, ...(isEnabled !== undefined && { isEnabled }) }
           });
         } else {
           batcher.add({
