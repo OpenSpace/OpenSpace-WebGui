@@ -27,7 +27,8 @@ export function Map({ ref, refSize, children, style, ...styleProps }: Props) {
   const oneDayPerSecond = 86400;
 
   const isTimeTooFast = useAppSelector(
-    (state) => Math.abs(state.time.targetDeltaTime ?? 0) > oneDayPerSecond
+    (state) =>
+      !state.time.isPaused && Math.abs(state.time.targetDeltaTime ?? 0) > oneDayPerSecond
   );
   const anchor = useAnchorNode();
   const [mapPath, mapExists] = useMapPath(anchor);
