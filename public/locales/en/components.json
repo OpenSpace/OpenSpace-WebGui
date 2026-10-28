@@ -90,7 +90,7 @@
     },
     "time-too-fast": {
       "title": "Map View Unavailable",
-      "description": "The map is currently unavailable because the camera is moving too fast. Please slow down to view the map."
+      "description": "The map is currently unavailable because the simulation time is moving too fast. Please slow down the time or pause it to view the map."
     },
     "aria-labels": {
       "map": "Map of {{name}}",
