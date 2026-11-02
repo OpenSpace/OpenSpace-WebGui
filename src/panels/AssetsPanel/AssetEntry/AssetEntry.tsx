@@ -33,9 +33,7 @@ export function AssetEntry({ asset }: Props) {
     if (!luaApi) {
       return;
     }
-    // The parents API matches against absolute paths, so resolve the tokenized path first
-    const absolutePath = await luaApi.absPath(asset.path);
-    const requiredBy = await luaApi.asset.parents(absolutePath);
+    const requiredBy = await luaApi.asset.parents(asset.path);
     setParents(Object.values(requiredBy ?? []));
   }, [luaApi, asset.path]);
 
