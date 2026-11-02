@@ -79,17 +79,27 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
           )}
           <CopyToClipboardButton
             mode={'menuItem'}
-            value={normalizePath(asset.path)}
+            value={async () => {
+              // Resolve the tokenized path to an absolute path before copying
+              const absolutePath = (await luaApi?.absPath(asset.path)) ?? asset.path;
+              return normalizePath(absolutePath);
+            }}
             copyTooltipLabel={t('copy-tooltip-label')}
             copyLabel={t('copy-tooltip-label')}
             iconPosition={'left'}
             iconSize={IconSize.xs}
           />
           <Menu.Item
-            onClick={() => {
-              luaApi?.openFileExplorer(asset.path);
+            onClick={async () => {
+              if (!luaApi) {
+                return;
+              }
+              // Resolve the tokenized path to an absolute path before opening the explorer
+              const absolutePath = await luaApi.absPath(asset.path);
+              luaApi.openFileExplorer(absolutePath);
             }}
             leftSection={<OpenFolderIcon size={IconSize.xs} />}
+            disabled={!luaApi}
           >
             {t('open-file-explorer-label')}
           </Menu.Item>

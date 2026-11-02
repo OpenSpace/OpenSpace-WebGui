@@ -1,80 +1,40 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useOpenSpaceApi } from '@/api/hooks';
 import { useAppSelector } from '@/redux/hooks';
 
 import { Folder } from './types';
-import { buildFolder, normalizePath } from './util';
-
-/**
- * This hook fetches the absolute paths to the root asset folders `Data` and `User`.
- *
- * @returns The absolute paths to the root asset folder.
- */
-function useRootPaths(): { data: string; user: string } | null {
-  const [roots, setRoots] = useState<{ data: string; user: string } | null>(null);
-  const luaApi = useOpenSpaceApi();
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function fetchRoots() {
-      if (!luaApi) {
-        return;
-      }
-
-      // eslint-disable-next-line no-template-curly-in-string
-      const dataDir = normalizePath(await luaApi.absPath('${ASSETS}'));
-      // eslint-disable-next-line no-template-curly-in-string
-      const userDir = normalizePath(await luaApi.absPath('${USER_ASSETS}'));
-
-      if (!cancelled) {
-        setRoots({ data: dataDir, user: userDir });
-      }
-    }
-
-    fetchRoots();
-    return () => {
-      cancelled = true;
-    };
-  }, [luaApi]);
-
-  return roots;
-}
+import { buildFolder } from './util';
 
 /**
  * Builds a complete folder structure tree with subfolders and assets for all available
- * assets in the user `Data` and `User` directories.
+ * assets in the user `Data` and `User` directories. The asset paths are already tokenized
+ * (e.g., '${ASSETS}/examples/spheres.asset') by OpenSpace, so the token is used directly to
+ * build the folder hierarchy.
  *
- * @returns Folder data tree with subfolders and assets, or null if not yet ready.
+ * @returns Folder data tree with subfolders and assets.
  */
-export function useFolderAssets(): Folder | null {
+export function useFolderAssets(): Folder {
   const { t } = useTranslation('panel-assets', { keyPrefix: 'folder-names' });
 
   const shipped = useAppSelector((state) => state.assetTree.shipped);
   const user = useAppSelector((state) => state.assetTree.user);
   const other = useAppSelector((state) => state.assetTree.other);
-  const roots = useRootPaths();
 
   return useMemo(() => {
-    if (!roots) {
-      return null;
-    }
-
     const subFolders = [
       // eslint-disable-next-line no-template-curly-in-string
-      buildFolder(shipped, roots.data, t('built-in'), '${ASSETS}'),
+      buildFolder(shipped, t('built-in'), '${ASSETS}'),
       // eslint-disable-next-line no-template-curly-in-string
-      buildFolder(user, roots.user, t('user'), '${USER_ASSETS}')
+      buildFolder(user, t('user'), '${USER_ASSETS}')
     ];
 
     if (other.length > 0) {
-      subFolders.push(buildFolder(other, undefined, t('other')));
+      subFolders.push(buildFolder(other, t('other')));
     }
 
     const rootFolder: Folder = { path: '', name: 'Home', subFolders, assets: [] };
 
     return rootFolder;
-  }, [roots, shipped, user, other, t]);
+  }, [shipped, user, other, t]);
 }

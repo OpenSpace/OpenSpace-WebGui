@@ -4,17 +4,21 @@ import {
   ActionIconProps,
   Button,
   ButtonProps,
-  CopyButton,
   Menu,
   MenuItemProps,
   Tooltip
 } from '@mantine/core';
+import { useClipboard } from '@mantine/hooks';
 
 import { CopyIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 
 interface BaseProps {
-  value: string;
+  /**
+   * The value to copy to the clipboard. Can be a string or an async function that
+   * resolves to the string to copy.
+   */
+  value: string | (() => Promise<string>);
   copyTooltipLabel?: string;
   iconSize?: IconSize;
 }
@@ -53,6 +57,12 @@ export function CopyToClipboardButton({
   ...props
 }: Props) {
   const { t } = useTranslation('components', { keyPrefix: 'copy-to-clipboard-button' });
+  const { copy, copied } = useClipboard({ timeout: 2000 });
+
+  async function handleCopy() {
+    const resolvedValue = typeof value === 'function' ? await value() : value;
+    copy(resolvedValue);
+  }
 
   function tooltipLabel(copied: boolean) {
     if (copied) {
@@ -61,7 +71,7 @@ export function CopyToClipboardButton({
     return copyTooltipLabel ?? t('tooltip.copy');
   }
 
-  function renderButtonType(copied: boolean, copy: () => void) {
+  function renderButtonType(copied: boolean) {
     switch (props.mode) {
       case 'button': {
         const { copyLabel, iconPosition = 'right', ...buttonProps } = props;
@@ -71,7 +81,7 @@ export function CopyToClipboardButton({
             {...buttonProps}
             color={copied ? 'teal' : 'gray'}
             variant={'light'}
-            onClick={copy}
+            onClick={handleCopy}
             leftSection={
               iconPosition === 'left' ? <CopyIcon size={iconSize} /> : undefined
             }
@@ -90,7 +100,7 @@ export function CopyToClipboardButton({
           <Menu.Item
             {...menuItemProps}
             color={copied ? 'teal' : undefined}
-            onClick={copy}
+            onClick={handleCopy}
             leftSection={
               iconPosition === 'left' ? <CopyIcon size={iconSize} /> : undefined
             }
@@ -110,7 +120,7 @@ export function CopyToClipboardButton({
             color={copied ? 'teal' : 'gray'}
             size={props.size ?? 'sm'}
             variant={props.variant ?? 'subtle'}
-            onClick={copy}
+            onClick={handleCopy}
             aria-label={tooltipLabel(copied)}
           >
             <CopyIcon size={iconSize} />
@@ -121,12 +131,8 @@ export function CopyToClipboardButton({
   }
 
   return (
-    <CopyButton value={value} timeout={2000}>
-      {({ copied, copy }) => (
-        <Tooltip label={tooltipLabel(copied)} position={'right'}>
-          {renderButtonType(copied, copy)}
-        </Tooltip>
-      )}
-    </CopyButton>
+    <Tooltip label={tooltipLabel(copied)} position={'right'}>
+      {renderButtonType(copied)}
+    </Tooltip>
   );
 }

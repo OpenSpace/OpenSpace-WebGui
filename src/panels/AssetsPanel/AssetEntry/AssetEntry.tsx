@@ -30,7 +30,12 @@ export function AssetEntry({ asset }: Props) {
   const assetLoadingState = states[asset.path] ?? 'Unloaded';
 
   const fetchParents = useCallback(async () => {
-    const requiredBy = await luaApi?.asset.parents(asset.path);
+    if (!luaApi) {
+      return;
+    }
+    // The parents API matches against absolute paths, so resolve the tokenized path first
+    const absolutePath = await luaApi.absPath(asset.path);
+    const requiredBy = await luaApi.asset.parents(absolutePath);
     setParents(Object.values(requiredBy ?? []));
   }, [luaApi, asset.path]);
 
@@ -63,7 +68,7 @@ export function AssetEntry({ asset }: Props) {
       return;
     }
 
-    await luaApi?.asset.add(asset.portablePath);
+    await luaApi?.asset.add(asset.path);
     fetchParents();
   }
 
@@ -71,14 +76,14 @@ export function AssetEntry({ asset }: Props) {
     if (assetLoadingState === 'Loading') {
       return;
     }
-    luaApi?.asset.reload(asset.portablePath);
+    luaApi?.asset.reload(asset.path);
   }
 
   async function removeAsset() {
     if (assetLoadingState === 'Unloaded') {
       return;
     }
-    await luaApi?.asset.remove(asset.portablePath);
+    await luaApi?.asset.remove(asset.path);
   }
 
   return (
