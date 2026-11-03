@@ -32,7 +32,7 @@
     "lodash": "^4.17.21",
     "openspace-api-js": "^1.0.3-dev.0",
     "qrcode.react": "^4.2.0",
-    "rc-dock": "github:OpenSpace/openSpace-WebGui-WindowLayout",
+    "rc-dock": "https://codeload.github.com/OpenSpace/OpenSpace-WebGui-WindowLayout/tar.gz/518156841b128b9b2fd433fffa7485d194d34daa",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-error-boundary": "^5.0.0",
