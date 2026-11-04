@@ -6,7 +6,7 @@ import { AngleInput } from '@/components/AngleInput/AngleInput';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { NumericSlider } from '@/components/Input/NumericInput/NumericSlider/NumericSlider';
 import { useProperty } from '@/hooks/properties';
-import { useIsAdvancedUserLevel } from '@/hooks/userLevel';
+import { useIsVisibilityLevel } from '@/hooks/userLevel';
 import { ArrowsLeftRightIcon, ArrowsUpDownIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { Uri } from '@/types/types';
@@ -24,7 +24,7 @@ export function RadiusAzimuthElevationControls({ propertyUri }: Props) {
 
   const [value, setValue, meta] = useProperty('Vec3Property', propertyUri);
 
-  const isAdvancedUser = useIsAdvancedUserLevel();
+  const isAdvancedUser = useIsVisibilityLevel('AdvancedUser');
   const radiusLabelId = useId();
 
   if (!value || !meta) {
