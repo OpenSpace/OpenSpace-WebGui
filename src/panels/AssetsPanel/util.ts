@@ -5,67 +5,55 @@ export function normalizePath(path: string): string {
 }
 
 /**
- * Strip the root part of the path from `path` e.g.,
- * path = 'C:/user/openspace/data/assets/foo.asset' and root = 'C:/user/openspace/data'
- * the resulting path is 'assets/foo.asset'
+ * Builds a nested Folder structure from a flat list of asset paths.
  *
- * @param path The path to strip root path from
- * @param root The root path to strip
- * @returns The relative path from root
- */
-export function stripRoot(path: string, root: string): string {
-  const normalizedPath = normalizePath(path);
-  const normalizedRoot = normalizePath(root);
-  if (normalizedRoot.length > 0 && normalizedPath.startsWith(normalizedRoot)) {
-    return normalizedPath.substring(normalizedRoot.length).replace(/^\/+/, '');
-  }
-  return normalizedPath;
-}
-
-/**
- * Builds a nested Folder structure from a flat list of absolute asset paths.
- *
- * @param paths Absolute paths to '.asset' and '.jasset' files. Paths are assumed to be
- * normalized
- * @param root Directory to strip from each path before building the hierarchy. If
- * omitted, the full path (including drive/leading segments) is used as-is. The root path
- * is assumed to be normalized. If omitted (undefined), the asset paths are added as a
- * flat list to the first folder.
+ * @param paths Paths to '.asset' and '.jasset' files. Paths are assumed to be normalized
+ * and, if a `token` is provided, to start with that token (e.g., '${ASSETS}/examples/spheres.asset')
  * @param name Name to give the resulting root Folder node
+ * @param token Token prefix (e.g., '${ASSETS}') that is stripped from each path before
+ * building the hierarchy. If omitted, the full path is used as-is and the assets are
+ * added as a flat list to the first folder
  * @returns A nested Folder structure from the given path list
  */
-export function buildFolder(
-  paths: string[],
-  root: string | undefined,
-  name: string
-): Folder {
-  const folder: Folder = { path: root ?? '', name, subFolders: [], assets: [] };
+export function buildFolder(paths: string[], name: string, token?: string): Folder {
+  const folder: Folder = { path: token ?? '', name, subFolders: [], assets: [] };
 
-  // If there is no root we'll put everything as a flat list in the first folder
-  if (!root) {
-    folder.assets = paths.map((path) => ({ path, name: baseName(path) }));
+  function toAsset(path: string): Asset {
+    return {
+      path,
+      name: baseName(path)
+    };
+  }
+
+  // If there is no token we'll put everything as a flat list in the first folder
+  if (!token) {
+    folder.assets = paths.map(toAsset);
     return folder;
   }
 
   for (const path of paths) {
-    // We do not want to include the root path in the panel to show up as folders
-    // i.e., 'C:/Foo/../OpenSpace/data/assets' and 'C:/Foo/../OpenSpace/user/data/assets'
-    const relativePath = root ? stripRoot(path, root) : path;
+    // Strip the leading token (e.g., '${ASSETS}/') so that only the path relative to the
+    // token root shows up as folders in the panel
+    const relativePath = path.startsWith(`${token}/`)
+      ? path.substring(token.length + 1)
+      : path;
     const parts = relativePath.split('/').filter((p) => p.length > 0);
 
     let currentFolder: Folder = folder;
-    let currentPath: string = root ?? '';
+    let currentPath: string = token;
     // Navigate to the correct folder and add the asset paths
     for (let i = 0; i < parts.length - 1; i++) {
       currentPath = `${currentPath}/${parts[i]}`;
-      let next = currentFolder.subFolders.find((folder) => folder.name === parts[i]);
+      let next = currentFolder.subFolders.find(
+        (subFolder) => subFolder.name === parts[i]
+      );
       if (!next) {
         next = { path: currentPath, name: parts[i], subFolders: [], assets: [] };
         currentFolder.subFolders.push(next);
       }
       currentFolder = next;
     }
-    currentFolder.assets.push({ path, name: baseName(path) });
+    currentFolder.assets.push(toAsset(path));
   }
 
   return folder;

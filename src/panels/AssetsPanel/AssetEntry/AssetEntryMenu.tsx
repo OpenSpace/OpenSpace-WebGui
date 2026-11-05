@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
@@ -23,6 +24,15 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
   const { t } = useTranslation('panel-assets', { keyPrefix: 'asset-entry-menu' });
 
   const luaApi = useOpenSpaceApi();
+  const [absolutePath, setAbsolutePath] = useState<string | undefined>(undefined);
+
+  // Resolve the tokenized path ahead of the copy click, as clipboard writes must happen
+  // synchronously within the user gesture in some browsers (e.g. Safari)
+  async function resolveAbsolutePath() {
+    setAbsolutePath(undefined);
+    const resolved = (await luaApi?.absPath(asset.path)) ?? asset.path;
+    setAbsolutePath(normalizePath(resolved));
+  }
 
   function onReloadAssetModal() {
     modals.openConfirmModal({
@@ -43,7 +53,7 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
   }
 
   return (
-    <Menu position={'right-start'} closeOnItemClick={false}>
+    <Menu position={'right-start'} closeOnItemClick={false} onOpen={resolveAbsolutePath}>
       <Menu.Target>
         <ActionIcon size={'sm'} aria-label={t('more-menu-aria-label')}>
           <VerticalDotsIcon />
@@ -79,17 +89,24 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
           )}
           <CopyToClipboardButton
             mode={'menuItem'}
-            value={normalizePath(asset.path)}
+            value={absolutePath ?? ''}
+            disabled={absolutePath === undefined}
             copyTooltipLabel={t('copy-tooltip-label')}
             copyLabel={t('copy-tooltip-label')}
             iconPosition={'left'}
             iconSize={IconSize.xs}
           />
           <Menu.Item
-            onClick={() => {
-              luaApi?.openFileExplorer(asset.path);
+            onClick={async () => {
+              if (!luaApi) {
+                return;
+              }
+              // Resolve the tokenized path to an absolute path before opening the explorer
+              const absolutePath = await luaApi.absPath(asset.path);
+              luaApi.openFileExplorer(absolutePath);
             }}
             leftSection={<OpenFolderIcon size={IconSize.xs} />}
+            disabled={!luaApi}
           >
             {t('open-file-explorer-label')}
           </Menu.Item>

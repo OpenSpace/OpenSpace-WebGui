@@ -4,7 +4,6 @@ import { ActionIcon, Box, Divider, Group, Text, Tooltip } from '@mantine/core';
 
 import { FilterList } from '@/components/FilterList/FilterList';
 import { Layout } from '@/components/Layout/Layout';
-import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { useSubscribeToAssetTree } from '@/hooks/topicSubscriptions';
 import { FolderBackIcon, RefreshIcon } from '@/icons/icons';
 import { rescanAssetTree } from '@/redux/assettree/assetTreeMiddleware';
@@ -29,18 +28,14 @@ export function AssetsPanel() {
   const dispatch = useAppDispatch();
 
   const navigatedFolder = useMemo(
-    () => (rootFolder ? findNavigatedFolder(rootFolder, currentPath) : null),
+    () => findNavigatedFolder(rootFolder, currentPath),
     [rootFolder, currentPath]
   );
 
   const nestedAssetsInCurrentFolder = useMemo(
-    () => (navigatedFolder ? collectAssets(navigatedFolder) : []),
+    () => collectAssets(navigatedFolder),
     [navigatedFolder]
   );
-
-  if (!rootFolder || !navigatedFolder) {
-    return <LoadingBlocks />;
-  }
 
   function navigateTo(depth: number) {
     if (!currentPath) {

@@ -30,7 +30,10 @@ export function AssetEntry({ asset }: Props) {
   const assetLoadingState = states[asset.path] ?? 'Unloaded';
 
   const fetchParents = useCallback(async () => {
-    const requiredBy = await luaApi?.asset.parents(asset.path);
+    if (!luaApi) {
+      return;
+    }
+    const requiredBy = await luaApi.asset.parents(asset.path);
     setParents(Object.values(requiredBy ?? []));
   }, [luaApi, asset.path]);
 
