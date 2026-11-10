@@ -12,7 +12,7 @@ import { buildFolder, normalizePath } from './util';
  *
  * @returns The absolute paths to the root asset folder.
  */
-function useRootPaths(): { data: string; user: string } | null {
+export function useRootPaths(): { data: string; user: string } | null {
   const [roots, setRoots] = useState<{ data: string; user: string } | null>(null);
   const luaApi = useOpenSpaceApi();
 

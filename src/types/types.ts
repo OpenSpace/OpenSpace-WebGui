@@ -5,6 +5,11 @@ export type Visibility = 'Visible' | 'Hidden' | 'Fading';
 export type Uri = string;
 export type Identifier = string;
 
+// A file extension including the dot, e.g. `.json`
+export type FileExtension = `.${string}`;
+// A media type (also known as MIME type), e.g. `application/json`
+export type MediaType = `${string}/${string}`;
+
 // The order of these groups determine the order in which they are shown in the `Windows` menu
 export const menuItemGroups = ['Ungrouped', 'Content', 'Other', 'Help'] as const;
 export type MenuItemGroup = (typeof menuItemGroups)[number];
