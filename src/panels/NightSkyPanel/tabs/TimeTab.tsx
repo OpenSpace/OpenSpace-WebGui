@@ -6,7 +6,7 @@ import * as GeoTZ from 'browser-geo-tz';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { LoadingBlocks } from '@/components/LoadingBlocks/LoadingBlocks';
 import { PlusMinusActionGroup } from '@/components/PlusMinusActionGroup/PlusMinusActionGroup';
-import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
+import { useSubscribeToCamera, useSubscribeToTime } from '@/hooks/topicSubscriptions';
 import { CalendarIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { isDateValid } from '@/redux/time/util';
@@ -28,6 +28,7 @@ export function TimeTab() {
 
   const luaApi = useOpenSpaceApi();
   const timeCapped = useSubscribeToTime();
+  useSubscribeToCamera();
 
   const date = new Date(timeCapped ?? '');
   const isValidDate = isDateValid(date);
