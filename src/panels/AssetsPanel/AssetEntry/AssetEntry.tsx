@@ -6,6 +6,7 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { FileTextIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { IconSize } from '@/types/enums';
+import { AssetsPathToken, UserAssetsPathToken } from '@/util/pathTokens';
 
 import { Asset } from '../types';
 
@@ -86,7 +87,12 @@ export function AssetEntry({ asset }: Props) {
 
   return (
     <Group gap={0}>
-      <Tooltip label={asset.path} position={'top-start'}>
+      <Tooltip
+        label={asset.path
+          .replace(AssetsPathToken, 'data/assets')
+          .replace(UserAssetsPathToken, 'user/data/assets')}
+        position={'top-start'}
+      >
         <Button
           leftSection={<FileTextIcon size={IconSize.sm} />}
           onClick={loadAsset}
