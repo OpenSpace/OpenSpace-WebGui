@@ -31,12 +31,6 @@ export const GeoLocationGroupKey = '/GeoLocation';
 // OpenSpace engine
 export const EnginePropertyVisibilityKey = 'OpenSpaceEngine.PropertyVisibility';
 
-// OpenSpace folders
-// eslint-disable-next-line no-template-curly-in-string
-export const UserPanelsFolderKey = '${USER}/webpanels';
-// eslint-disable-next-line no-template-curly-in-string
-export const RecordingsFolderKey = '${RECORDINGS}';
-
 export const WindowsKey = 'Windows';
 export const ScreenSpaceKey = 'ScreenSpace';
 export const RenderableKey = 'Renderable';
