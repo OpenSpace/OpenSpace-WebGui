@@ -21,8 +21,9 @@ import {
   updateRecentWebpanels
 } from '@/redux/userpanels/userPanelsSlice';
 import { IconSize } from '@/types/enums';
-import { UserPanelsFolderKey, WindowsKey } from '@/util/keys';
+import { WindowsKey } from '@/util/keys';
 import { useWebGuiUrl } from '@/util/networkingHooks';
+import { UserPanelsFolderKey } from '@/util/pathTokens';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { UserPanel } from './UserPanel';

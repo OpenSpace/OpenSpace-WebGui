@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAppSelector } from '@/redux/hooks';
+import { AssetsPathToken, UserAssetsPathToken } from '@/util/pathTokens';
 
 import { Folder } from './types';
 import { buildFolder } from './util';
@@ -23,10 +24,8 @@ export function useFolderAssets(): Folder {
 
   return useMemo(() => {
     const subFolders = [
-      // eslint-disable-next-line no-template-curly-in-string
-      buildFolder(shipped, t('built-in'), '${ASSETS}'),
-      // eslint-disable-next-line no-template-curly-in-string
-      buildFolder(user, t('user'), '${USER_ASSETS}')
+      buildFolder(shipped, t('built-in'), AssetsPathToken),
+      buildFolder(user, t('user'), UserAssetsPathToken)
     ];
 
     if (other.length > 0) {

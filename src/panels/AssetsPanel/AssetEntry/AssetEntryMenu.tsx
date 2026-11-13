@@ -102,8 +102,8 @@ export function AssetEntryMenu({ asset, parents, showReloadButton, reloadAsset }
                 return;
               }
               // Resolve the tokenized path to an absolute path before opening the explorer
-              const absolutePath = await luaApi.absPath(asset.path);
-              luaApi.openFileExplorer(absolutePath);
+              const absPath = await luaApi.absPath(asset.path);
+              luaApi.openFileExplorer(absPath);
             }}
             leftSection={<OpenFolderIcon size={IconSize.xs} />}
             disabled={!luaApi}
