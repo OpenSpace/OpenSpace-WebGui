@@ -20,14 +20,11 @@ interface Props {
 
 export function PropertyCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-
   const propertyUris = useAppSelector(propertySelectors.selectIds);
-
   const [uri, setUri] = useState('');
 
   // Derived from `uri`, so it comes after the state
   const property = useAppSelector((state) => propertySelectors.selectById(state, uri));
-
   const { value, setValue, reset } = useResettableValue(property?.value);
 
   function handleUriChange(newUri: string) {

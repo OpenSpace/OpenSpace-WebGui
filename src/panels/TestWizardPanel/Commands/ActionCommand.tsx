@@ -15,9 +15,7 @@ interface Props {
 
 export function ActionCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-
   const actions = useAppSelector((state) => state.actions.actions);
-
   const [action, setAction] = useState('');
 
   const actionOptions = useMemo(

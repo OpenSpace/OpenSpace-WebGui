@@ -17,7 +17,6 @@ interface Props {
 
 export function TimeCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-
   const currentTime = useSubscribeToTime();
 
   const currentTimeString =

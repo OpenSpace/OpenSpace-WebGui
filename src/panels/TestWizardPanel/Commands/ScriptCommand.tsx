@@ -14,7 +14,6 @@ interface Props {
 
 export function ScriptCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-
   const [script, setScript] = useState('');
 
   return (

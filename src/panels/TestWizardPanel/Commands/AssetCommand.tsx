@@ -18,11 +18,8 @@ interface Props {
 
 export function AssetCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-
   const rootAssets = useAppSelector((state) => state.assetTree.rootAssets);
-
   const [asset, setAsset] = useState('');
-
   const assetRoots = useRootPaths();
   useSubscribeToAssetTree();
 

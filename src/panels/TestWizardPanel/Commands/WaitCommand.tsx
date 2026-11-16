@@ -14,7 +14,6 @@ interface Props {
 
 export function WaitCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-
   const [seconds, setSeconds] = useState<number | string>(0);
 
   return (

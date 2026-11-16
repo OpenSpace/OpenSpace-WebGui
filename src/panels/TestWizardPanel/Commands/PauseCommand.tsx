@@ -17,9 +17,7 @@ interface Props {
 
 export function PauseCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-
   const currentIsPaused = useAppSelector((state) => state.time.isPaused);
-
   useSubscribeToTime();
   const {
     value: isPaused,

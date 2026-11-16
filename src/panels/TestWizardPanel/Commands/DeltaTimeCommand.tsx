@@ -17,9 +17,7 @@ interface Props {
 
 export function DeltaTimeCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-
   const currentDeltaTime = useAppSelector((state) => state.time.targetDeltaTime);
-
   useSubscribeToTime();
   const {
     value: deltaTime,
