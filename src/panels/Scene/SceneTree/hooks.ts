@@ -9,7 +9,7 @@ import {
   CustomGroupOrdering,
   Groups,
   Properties,
-  PropertyOwner,
+  PropertyOwnerRedux,
   PropertyOwners
 } from '@/types/types';
 
@@ -72,7 +72,7 @@ export function useSceneTreeData(filter: SceneTreeFilterSettings) {
 function sceneTreeDataFromGroups(
   groups: Groups,
   propertyOwners: PropertyOwners,
-  filteredPropertyOwners: PropertyOwner[]
+  filteredPropertyOwners: PropertyOwnerRedux[]
 ): SceneTreeNodeData[] {
   const treeData: SceneTreeNodeData[] = [];
 

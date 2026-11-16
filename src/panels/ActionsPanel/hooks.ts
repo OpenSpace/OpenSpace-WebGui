@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
+import { Action } from 'openspace-api-js/types';
 
 import { setActionsPath } from '@/redux/actions/actionsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { Action } from '@/types/types';
 
 import { calculateLevelDepth, createPath, formatPath, getFolders } from './util';
 
@@ -27,6 +27,11 @@ export function useActionsForLevel(): ActionFolderContent {
     actions.forEach((action) => {
       // We want to make sure all paths are in the same format. Prune it.
       const guiPath = formatPath(action.guiPath);
+
+      // Skip hidden actions
+      if (action.isHidden) {
+        return;
+      }
 
       // Is it the current path? Add it to actions
       if (guiPath === navigationPath) {
@@ -68,7 +73,9 @@ export function useActionsInPath(): Action[] {
   }
   // We want to include the subfolders of the current path
   // Hence we check if the GUI path starts with the navigation path
-  return allActions.filter((action) => action.guiPath.startsWith(navigationPath));
+  return allActions.filter(
+    (action) => action.guiPath.startsWith(navigationPath) && !action.isHidden
+  );
 }
 
 export function useGoToFolder() {

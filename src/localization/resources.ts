@@ -3,7 +3,7 @@ import components from '@/public/locales/en/components.json';
 import menu from '@/public/locales/en/menu.json';
 import notifications from '@/public/locales/en/notifications.json';
 import actionPanel from '@/public/locales/en/panel-actions.json';
-import assetsFolderPanel from '@/public/locales/en/panel-assets.json';
+import assetsPanel from '@/public/locales/en/panel-assets.json';
 import exoplanetsPanel from '@/public/locales/en/panel-exoplanets.json';
 import flightControlPanel from '@/public/locales/en/panel-flightcontrol.json';
 import geolocationPanel from '@/public/locales/en/panel-geolocation.json';
@@ -21,6 +21,7 @@ import settingsPanel from '@/public/locales/en/panel-settings.json';
 import skyBrowserPanel from '@/public/locales/en/panel-skybrowser.json';
 import timePanel from '@/public/locales/en/panel-time.json';
 import userPanel from '@/public/locales/en/panel-user.json';
+import portalPage from '@/public/locales/en/portal-page.json';
 
 /**
  * This object in combination with `i18next.d.ts` enables intellisense and syntax
@@ -33,7 +34,7 @@ export const resources = {
     menu: menu,
     notifications: notifications,
     'panel-actions': actionPanel,
-    'panel-assets': assetsFolderPanel,
+    'panel-assets': assetsPanel,
     'panel-exoplanets': exoplanetsPanel,
     'panel-flightcontrol': flightControlPanel,
     'panel-geolocation': geolocationPanel,
@@ -50,7 +51,8 @@ export const resources = {
     'panel-settings': settingsPanel,
     'panel-skybrowser': skyBrowserPanel,
     'panel-time': timePanel,
-    'panel-user': userPanel
+    'panel-user': userPanel,
+    'portal-page': portalPage
   }
 } as const;
 

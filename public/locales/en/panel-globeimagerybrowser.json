@@ -2,7 +2,7 @@
   "select-globe": {
     "no-server-group": "Globes without server",
     "tooltips": {
-      "valid-focus": "Select from current foucs",
+      "valid-focus": "Select from current focus",
       "invalid-focus": "Only works if the focus is a globe"
     }
   },

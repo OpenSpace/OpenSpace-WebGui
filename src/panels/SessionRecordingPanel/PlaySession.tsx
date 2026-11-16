@@ -10,20 +10,19 @@ import {
   Text,
   Title
 } from '@mantine/core';
+import { SessionRecordingState } from 'openspace-api-js/types';
 
 import { BoolInput } from '@/components/Input/BoolInput';
 import { NumericInput } from '@/components/Input/NumericInput/NumericInput';
 import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
+import { KeybindButtons } from '@/panels/KeybindsPanel/KeybindButtons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { updateSessionRecordingSettings } from '@/redux/sessionrecording/sessionRecordingSlice';
-
-import { KeybindButtons } from '../KeybindsPanel/KeybindButtons';
 
 import { PlaybackPauseButton } from './Playback/PlaybackPauseButton';
 import { PlaybackPlayButton } from './Playback/PlaybackPlayButton';
 import { PlaybackResumeButton } from './Playback/PlaybackResumeButton';
 import { PlaybackStopButton } from './Playback/PlaybackStopButton';
-import { RecordingState } from './types';
 import { parseFilename } from './util';
 
 export function PlaySession() {
@@ -32,6 +31,7 @@ export function PlaySession() {
   const [loopPlayback, setLoopPlayback] = useState(false);
   const [shouldOutputFrames, setShouldOutputFrames] = useState(false);
   const [outputFramerate, setOutputFramerate] = useState(60);
+  const [shouldOutputUseNewFolder, setShouldOutputUseNewFolder] = useState(false);
   const { latestFile, hideGuiOnPlayback, hideDashboardsOnPlayback } = useAppSelector(
     (state) => state.sessionRecording.settings
   );
@@ -42,9 +42,10 @@ export function PlaySession() {
   const recordingState = useSubscribeToSessionRecording();
   const dispatch = useAppDispatch();
 
-  const isIdle = recordingState === RecordingState.Idle;
+  const isIdle = recordingState === SessionRecordingState.Idle;
   const isPlayingBack =
-    recordingState === RecordingState.Paused || recordingState === RecordingState.Playing;
+    recordingState === SessionRecordingState.Paused ||
+    recordingState === SessionRecordingState.Playing;
 
   const isSettingsCombinationDangerous = loopPlayback && hideGuiOnPlayback;
   const toggleGuiKeybind = keybinds.find(
@@ -106,7 +107,7 @@ export function PlaySession() {
     }
   }
 
-  function onShouldUpdateFramesChange(shouldOutputFrames: boolean): void {
+  function onShouldOutputFramesChange(shouldOutputFrames: boolean): void {
     if (shouldOutputFrames) {
       setShouldOutputFrames(true);
       setLoopPlayback(false);
@@ -127,23 +128,30 @@ export function PlaySession() {
           onChange={onLoopPlaybackChange}
           disabled={!isIdle}
         />
-        <Group>
-          <BoolInput
-            label={t('output-frames.label')}
-            value={shouldOutputFrames}
-            onChange={onShouldUpdateFramesChange}
-            disabled={!isIdle}
-            info={t('output-frames.tooltip')}
-          />
+        <BoolInput
+          label={t('output-frames.label')}
+          value={shouldOutputFrames}
+          onChange={onShouldOutputFramesChange}
+          disabled={!isIdle}
+          info={t('output-frames.tooltip')}
+        />
+        <Stack ml={'xs'} mb={'xs'}>
           <NumericInput
             value={outputFramerate}
             placeholder={t('framerate.placeholder')}
             aria-label={t('framerate.aria-label')}
+            label={t('framerate.title')}
             onEnter={(value) => setOutputFramerate(value)}
-            w={80}
             disabled={!shouldOutputFrames || !isIdle}
           />
-        </Group>
+          <BoolInput
+            label={t('output-new-folder.label')}
+            value={shouldOutputUseNewFolder}
+            onChange={setShouldOutputUseNewFolder}
+            info={t('output-new-folder.tooltip')}
+            disabled={!isIdle || !shouldOutputFrames}
+          />
+        </Stack>
         <BoolInput
           label={t('hide-gui-on-playback.label')}
           value={hideGuiOnPlayback}
@@ -202,11 +210,12 @@ export function PlaySession() {
             loopPlayback={loopPlayback}
             shouldOutputFrames={shouldOutputFrames}
             outputFramerate={outputFramerate}
+            shouldOutputUseNewFolder={shouldOutputUseNewFolder}
           />
         </Group>
         <Group gap={'xs'}>
-          {recordingState === RecordingState.Paused && <PlaybackResumeButton />}
-          {recordingState === RecordingState.Playing && <PlaybackPauseButton />}
+          {recordingState === SessionRecordingState.Paused && <PlaybackResumeButton />}
+          {recordingState === SessionRecordingState.Playing && <PlaybackPauseButton />}
           {isPlayingBack && <PlaybackStopButton />}
         </Group>
       </Stack>

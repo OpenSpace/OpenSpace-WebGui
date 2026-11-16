@@ -6,9 +6,9 @@ export const ActionsPanel = lazy(() =>
     default: module.ActionsPanel
   }))
 );
-export const AssetsFolderPanel = lazy(() =>
-  import('@/panels/AssetsFolderPanel/AssetsFolderPanel').then((module) => ({
-    default: module.AssetsFolderPanel
+export const AssetsPanel = lazy(() =>
+  import('@/panels/AssetsPanel/AssetsPanel').then((module) => ({
+    default: module.AssetsPanel
   }))
 );
 export const ExoplanetsPanel = lazy(() =>

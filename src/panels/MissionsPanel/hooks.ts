@@ -21,16 +21,16 @@ export function useJumpToTime(fadeTime: number = 1): ReturnType {
 
     if (diffBiggerThanADay) {
       luaApi?.setPropertyValueSingle(
-        'RenderEngine.BlackoutFactor',
-        0,
+        'RenderEngine.GlobalBlackout.Factor',
+        1,
         fadeTime,
         'QuadraticEaseOut'
       );
       setTimeout(() => {
         luaApi?.time.setTime(utcDate.toISOString());
         luaApi?.setPropertyValueSingle(
-          'RenderEngine.BlackoutFactor',
-          1,
+          'RenderEngine.GlobalBlackout.Factor',
+          0,
           fadeTime,
           'QuadraticEaseIn'
         );

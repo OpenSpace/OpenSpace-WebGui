@@ -2,7 +2,7 @@ import { usePropertyValue } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
 import { useAppSelector } from '@/redux/hooks';
 import { propertyOwnerSelectors } from '@/redux/propertytree/propertyOwnerSlice';
-import { PropertyOwner } from '@/types/types';
+import { PropertyOwnerRedux } from '@/types/types';
 
 import { NavigationAimKey, NavigationAnchorKey } from './keys';
 import { sgnUri } from './uris';
@@ -10,7 +10,7 @@ import { sgnUri } from './uris';
 /**
  * Get all the nodes marked in the profile, as a list of property owners.
  */
-export function useFeaturedNodes(): PropertyOwner[] {
+export function useFeaturedNodes(): PropertyOwnerRedux[] {
   const propertyOwners = useAppSelector((state) =>
     propertyOwnerSelectors.selectEntities(state)
   );

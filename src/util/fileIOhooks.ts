@@ -6,7 +6,7 @@ import { TFunction } from 'i18next';
 
 import { useAppDispatch } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
-import { LogLevel } from '@/types/enums';
+import { NotificationLevel } from '@/types/enums';
 
 function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void {
   const { t } = useTranslation('notifications', { keyPrefix: 'error' });
@@ -29,7 +29,7 @@ function useLoadJsonFile(handlePickedFile: (content: JSON) => void): () => void 
       const json = JSON.parse(content);
       handlePickedFile(json);
     } catch (e) {
-      dispatch(handleNotificationLogging(t('parsing-file'), e, LogLevel.Error));
+      dispatch(handleNotificationLogging(t('parsing-file'), e, NotificationLevel.Error));
     }
   }
 
@@ -75,7 +75,7 @@ async function openSaveFileDialogInternal(
       // Close the file and write the contents to disk
       await writable.close();
     } catch (e) {
-      dispatch(handleNotificationLogging(t('parsing-file'), e, LogLevel.Error));
+      dispatch(handleNotificationLogging(t('parsing-file'), e, NotificationLevel.Error));
     }
   } else {
     // This is the fallback code if showSaveFilePicker is not available

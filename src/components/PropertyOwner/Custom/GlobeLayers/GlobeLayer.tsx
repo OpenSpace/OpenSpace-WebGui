@@ -22,14 +22,16 @@ export function GlobeLayer({ uri }: Props) {
   const { t } = useTranslation('panel-scene', { keyPrefix: 'globe-layer' });
 
   const propertyOwner = usePropertyOwner(uri);
-
-  if (!propertyOwner) {
-    throw Error(`${t('error.no-property-owner-for-uri')}: ${uri}`);
-  }
-
   const { visibility, setVisibility } = usePropertyOwnerVisibility(uri);
   const visibleProperties = useVisibleProperties(propertyOwner);
-  const subowners = propertyOwner.subowners ?? [];
+  const subowners = propertyOwner?.subowners ?? [];
+
+  // Return null instead of throwing: when a layer is removed, the layers list may still
+  // contain this URI for one render cycle before the property tree is updated. On the
+  // next render the URI will be gone and this component won't be mounted at all.
+  if (!propertyOwner) {
+    return null;
+  }
 
   // @TODO (emmbr, 2024-12-06): We want to avoid hardcoded colors, but since changing the
   // color of the text is a feature we wanted to keep I decided to do it this way for now.

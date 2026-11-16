@@ -2,8 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { TimeStatus } from '@/types/enums';
 
-import { OpenSpaceTimeState } from './types';
-import { dateStringUTC as parseTimeStringToUTCString, isDateValid } from './util';
+import {
+  dateStringUTC as parseTimeStringToUTCString,
+  isDateValid,
+  TimeData
+} from './util';
 
 export interface TimeState {
   status: TimeStatus; // Uninitialized, OutsideRange, Ok
@@ -40,7 +43,7 @@ export const time = createSlice({
   name: 'time',
   initialState,
   reducers: {
-    updateTime: (state, action: PayloadAction<OpenSpaceTimeState>) => {
+    updateTime: (state, action: PayloadAction<TimeData>) => {
       const {
         time: newTime,
         deltaTime,

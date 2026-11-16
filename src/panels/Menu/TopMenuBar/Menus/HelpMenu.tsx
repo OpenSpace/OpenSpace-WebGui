@@ -12,7 +12,8 @@ import {
   HomeIcon,
   InformationCircleOutlineIcon,
   OpenInBrowserIcon,
-  PhoneIcon
+  PhoneIcon,
+  YoutubeIcon
 } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { useWebGuiUrl } from '@/util/networkingHooks';
@@ -33,7 +34,7 @@ export function HelpMenu() {
   const { addWindow } = useWindowLayoutProvider();
 
   function openGuiInBrowser() {
-    window.open(`${webGuiUrl}/gui`, '_blank');
+    window.open(`${webGuiUrl}/gui/#/portal`, '_blank');
   }
 
   return (
@@ -41,21 +42,31 @@ export function HelpMenu() {
       <About opened={showAbout} close={close} />
       <QRCode opened={showQRCode} close={closeQRCode} />
 
-      <TopBarMenuWrapper targetTitle={'Help'}>
+      <TopBarMenuWrapper targetTitle={t('title')}>
+        <Menu.Item
+          component={'a'}
+          href={'https://docs.openspaceproject.com'}
+          target={'_blank'}
+          leftSection={<BookIcon />}
+          rightSection={<OpenInBrowserIcon />}
+          aria-description={t('external-tab-aria-label')}
+        >
+          {t('documentation')}
+        </Menu.Item>
         <Menu.Item
           component={'a'}
           href={
             'https://www.youtube.com/playlist?list=PLzXWit_1TXsu23I8Nh2WZhN9msWG_ZbnV'
           }
           target={'_blank'}
-          leftSection={<BookIcon />}
+          leftSection={<YoutubeIcon />}
           rightSection={<OpenInBrowserIcon />}
           aria-description={t('external-tab-aria-label')}
         >
           {t('tutorials')}
         </Menu.Item>
-        <Menu.Item onClick={() => navigation('/routes')} leftSection={<HomeIcon />}>
-          {t('routes')}
+        <Menu.Item onClick={() => navigation('/portal')} leftSection={<HomeIcon />}>
+          {t('portal')}
         </Menu.Item>
 
         <Menu.Divider />
@@ -65,14 +76,14 @@ export function HelpMenu() {
             leftSection={item.renderIcon?.(IconSize.xs)}
             onClick={() =>
               addWindow(item.content, {
-                title: item.title,
+                title: item.title(),
                 position: item.preferredPosition,
                 id: item.componentID,
                 floatPosition: item.floatPosition
               })
             }
           >
-            {item.title}
+            {item.title()}
           </Menu.Item>
         ))}
 

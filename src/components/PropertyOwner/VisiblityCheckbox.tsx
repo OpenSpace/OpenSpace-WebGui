@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
-import { ActionIcon, Checkbox } from '@mantine/core';
+import { Checkbox } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
 
-import { usePropertyValue } from '@/hooks/properties';
 import { IconSize } from '@/types/enums';
 import { Uri, Visibility } from '@/types/types';
-import { fadePropertyUri } from '@/util/uris';
 
-import { FadeIcon } from './FadeIcon';
+import { FadeAnimationIcon } from './FadeAnimationIcon';
 
 interface Props {
   uri: Uri;
@@ -17,7 +15,6 @@ interface Props {
 }
 
 export function PropertyOwnerVisibilityCheckbox({
-  uri,
   label,
   visibility,
   setVisibility
@@ -26,7 +23,6 @@ export function PropertyOwnerVisibilityCheckbox({
   // the visibility value, since the checkbox can be in a transition state
   const [checked, setChecked] = useState(visibility === 'Visible');
   const [isImmediate, setIsImmediate] = useState(false);
-  const fade = usePropertyValue('FloatProperty', fadePropertyUri(uri));
 
   useEffect(() => {
     setChecked(visibility === 'Visible');
@@ -55,11 +51,26 @@ export function PropertyOwnerVisibilityCheckbox({
     }
   }
 
-  if (visibility === 'Fading' && fade !== undefined) {
+  if (visibility === 'Fading') {
     return (
-      <ActionIcon size={IconSize.sm} onClick={() => updateValue(!checked, isImmediate)}>
-        <FadeIcon value={fade} size={IconSize.sm} />
-      </ActionIcon>
+      <Checkbox
+        onClick={() => updateValue(!checked, isImmediate)}
+        icon={({ className }) => (
+          <span
+            className={className}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <FadeAnimationIcon size={IconSize.sm} />
+          </span>
+        )}
+        variant={'outline'}
+        label={label}
+        indeterminate
+      />
     );
   }
 
@@ -71,7 +82,6 @@ export function PropertyOwnerVisibilityCheckbox({
   return (
     <Checkbox
       checked={checked}
-      indeterminate={visibility === 'Fading'}
       onKeyDown={onKeyDown}
       onChange={(event) => updateValue(event.currentTarget.checked, isImmediate)}
       label={label}

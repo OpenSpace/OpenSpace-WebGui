@@ -7,11 +7,17 @@ import {
   CSSVariablesResolver,
   defaultVariantColorsResolver,
   Divider,
+  Menu,
+  Menubar,
+  MultiSelect,
+  NumberInput,
   RangeSlider,
+  Select,
   Slider,
   Tabs,
   ThemeIcon,
   Tooltip,
+  v8CssVariablesResolver,
   VariantColorsResolver
 } from '@mantine/core';
 
@@ -44,6 +50,7 @@ const variantColorResolver: VariantColorsResolver = (input) => {
  */
 export const theme = createTheme({
   cursorType: 'pointer',
+  defaultRadius: 'sm',
   components: {
     ActionIcon: ActionIcon.extend({
       defaultProps: {
@@ -126,7 +133,36 @@ export const theme = createTheme({
           userSelect: 'text'
         }
       }
-    }
+    },
+    NumberInput: NumberInput.extend({
+      defaultProps: {
+        stepHoldDelay: 500,
+        // Increase speed as the user holds down the stepper button
+        stepHoldInterval: (t) => Math.max(1000 / t ** 2, 25)
+      }
+    }),
+    Select: Select.extend({
+      defaultProps: {
+        scrollAreaProps: { type: 'auto', scrollbarSize: 8 }
+      }
+    }),
+    MultiSelect: MultiSelect.extend({
+      defaultProps: {
+        scrollAreaProps: { type: 'auto', scrollbarSize: 8 }
+      }
+    }),
+    Menu: Menu.extend({
+      defaultProps: {
+        closeDelay: 200
+      }
+    }),
+    Menubar: Menubar.extend({
+      styles: {
+        target: {
+          color: 'var(--mantine-color-white)'
+        }
+      }
+    })
   },
   headings: {
     sizes: {
@@ -142,11 +178,19 @@ export const theme = createTheme({
   variantColorResolver
 });
 
-export const cssVariablesResolver: CSSVariablesResolver = () => ({
-  variables: {
-    '--openspace-border-active': '4px solid var(--mantine-primary-color-filled)',
-    '--openspace-border-active-placeholder': '4px solid transparent'
-  },
-  dark: {},
-  light: {}
-});
+/**
+ * Mantine 9 changed the `light` variant colors from translucent to solid. Using Mantine's
+ * v8 resolver as a base restores the Mantine 8 look, with our own variables added on top.
+ */
+export const cssVariablesResolver: CSSVariablesResolver = (mantineTheme) => {
+  const v8Variables = v8CssVariablesResolver(mantineTheme);
+  return {
+    variables: {
+      ...v8Variables.variables,
+      '--openspace-border-active': '4px solid var(--mantine-primary-color-filled)',
+      '--openspace-border-active-placeholder': '4px solid transparent'
+    },
+    dark: v8Variables.dark,
+    light: v8Variables.light
+  };
+};

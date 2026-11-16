@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ActionIcon,
@@ -51,6 +51,10 @@ export function SceneTree() {
 
   const { closeCurrentNodeWindow } = useOpenCurrentSceneNodeWindow();
 
+  const hasAnyGroup = useMemo(() => {
+    return sceneTreeData.some((node) => node.children && node.children.length > 0);
+  }, [sceneTreeData]);
+
   const initialExpandedNodes = useAppSelector(
     (state) => state.local.sceneTree.expandedGroups
   );
@@ -100,26 +104,28 @@ export function SceneTree() {
         {/* This box exists to ensure the absolute positioned chevrons end up in the
         right place */}
         <Box pos={'relative'}>
-          <Group gap={0} pos={'absolute'} top={0} right={0}>
-            <Tooltip label={t('collapse-all-tooltip')} position={'top'}>
-              <ActionIcon
-                variant={'subtle'}
-                onClick={tree.collapseAllNodes}
-                aria-label={t('collapse-all-aria-label')}
-              >
-                <ChevronsUpIcon />
-              </ActionIcon>
-            </Tooltip>
-            <Tooltip label={t('expand-all-tooltip')} position={'top'}>
-              <ActionIcon
-                variant={'subtle'}
-                onClick={tree.expandAllNodes}
-                aria-label={t('expand-all-aria-label')}
-              >
-                <ChevronsDownIcon />
-              </ActionIcon>
-            </Tooltip>
-          </Group>
+          {hasAnyGroup && (
+            <Group gap={0} pos={'absolute'} top={0} right={0}>
+              <Tooltip label={t('collapse-all-tooltip')} position={'top'}>
+                <ActionIcon
+                  variant={'subtle'}
+                  onClick={tree.collapseAllNodes}
+                  aria-label={t('collapse-all-aria-label')}
+                >
+                  <ChevronsUpIcon />
+                </ActionIcon>
+              </Tooltip>
+              <Tooltip label={t('expand-all-tooltip')} position={'top'}>
+                <ActionIcon
+                  variant={'subtle'}
+                  onClick={tree.expandAllNodes}
+                  aria-label={t('expand-all-aria-label')}
+                >
+                  <ChevronsDownIcon />
+                </ActionIcon>
+              </Tooltip>
+            </Group>
+          )}
         </Box>
         <Tree
           data={sceneTreeData}

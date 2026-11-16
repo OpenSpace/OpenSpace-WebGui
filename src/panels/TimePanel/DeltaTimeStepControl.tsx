@@ -1,11 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Group, NumberFormatter, Stack, Text } from '@mantine/core';
+import { EngineMode } from 'openspace-api-js/types';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { FastForwardIcon, FastRewindIcon, PauseIcon, PlayIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
-import { EngineMode, IconSize } from '@/types/enums';
+import { IconSize } from '@/types/enums';
 
 import { useTimePartTranslation } from './hooks';
 import { formatDeltaTime } from './util';

@@ -14,8 +14,13 @@
       "tooltip": "If checked, the specified number of frames will be recorded as screenshots and saved to disk. Per default, they are saved in the user/screenshots folder. This feature can not be used together with '$t(play-session.loop-playback-label)'."
     },
     "framerate": {
+      "title": "Framerate",
       "placeholder": "Framerate",
       "aria-label": "Set framerate"
+    },
+    "output-new-folder": {
+      "label": "Use new folder for output",
+      "tooltip": "If checked, starting a playback while outputting frames will cause a new folder to be created. This also causes the frame numbering to start at 0 for each recording. If this is not checked, all frames will be saved into the same folder for the current session with sequential frame numbering."
     },
     "hide-gui-on-playback": {
       "label": "Hide GUI on playback",

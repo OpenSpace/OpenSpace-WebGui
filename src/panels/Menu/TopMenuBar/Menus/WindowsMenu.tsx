@@ -22,7 +22,7 @@ export function WindowsMenu() {
           return <WindowMenuEntries items={items} key={group} />;
         }
         return (
-          <Menu.Sub position={'right-start'} withinPortal={false} key={group}>
+          <Menu.Sub position={'right-start'} key={group}>
             <Menu.Sub.Target>
               <Menu.Sub.Item
                 leftSection={<FolderIcon />}

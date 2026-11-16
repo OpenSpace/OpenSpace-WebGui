@@ -1,18 +1,23 @@
 export const NavigationAnchorKey = 'NavigationHandler.OrbitalNavigator.Anchor';
 export const NavigationAimKey = 'NavigationHandler.OrbitalNavigator.Aim';
 export const RetargetAnchorKey = 'NavigationHandler.OrbitalNavigator.RetargetAnchor';
+export const RetargetAnchorInterpolationTimeKey =
+  'NavigationHandler.OrbitalNavigator.RetargetAnchorInterpolationTime';
 export const RetargetAimKey = 'NavigationHandler.OrbitalNavigator.RetargetAim';
 export const RotationalFrictionKey =
   'NavigationHandler.OrbitalNavigator.Friction.RotationalFriction';
 export const ZoomFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.ZoomFriction';
 export const RollFrictionKey = 'NavigationHandler.OrbitalNavigator.Friction.RollFriction';
 // Navigation panel settings
-export const ApplyIdleBehaviorOnPathFinishKey =
-  'NavigationHandler.PathNavigator.ApplyIdleBehaviorOnFinish';
+export const ApplyIdleMotionOnPathFinishKey =
+  'NavigationHandler.PathNavigator.ApplyIdleMotionOnFinish';
 export const CameraPathArrivalDistanceFactorKey =
   'NavigationHandler.PathNavigator.ArrivalDistanceFactor';
 export const CameraPathSpeedFactorKey = 'NavigationHandler.PathNavigator.SpeedScale';
 export const JumpToFadeDurationKey = 'NavigationHandler.JumpToFadeDuration';
+export const UseCustomFlyToDuration =
+  'NavigationHandler.PathNavigator.UseCustomFlyToDuration';
+export const CustomFlyToDuration = 'NavigationHandler.PathNavigator.CustomFlyToDuration';
 
 // To get any scene graph node you need ScenePrefix+NodeIdentifier
 export const ScenePrefixKey = 'Scene.';
@@ -25,12 +30,6 @@ export const GeoLocationGroupKey = '/GeoLocation';
 
 // OpenSpace engine
 export const EnginePropertyVisibilityKey = 'OpenSpaceEngine.PropertyVisibility';
-
-// OpenSpace folders
-// eslint-disable-next-line no-template-curly-in-string
-export const UserPanelsFolderKey = '${USER}/webpanels';
-// eslint-disable-next-line no-template-curly-in-string
-export const RecordingsFolderKey = '${RECORDINGS}';
 
 export const WindowsKey = 'Windows';
 export const ScreenSpaceKey = 'ScreenSpace';

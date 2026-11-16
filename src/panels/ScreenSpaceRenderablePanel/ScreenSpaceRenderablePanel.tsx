@@ -1,83 +1,134 @@
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Box, Divider, Group, Tabs, Text } from '@mantine/core';
+import { Box, Group, Stack, Text, ThemeIcon } from '@mantine/core';
 
-import { useOpenSpaceApi } from '@/api/hooks';
-import { PropertyOwner } from '@/components/PropertyOwner/PropertyOwner';
+import { FilterList } from '@/components/FilterList/FilterList';
+import { ResizeableContent } from '@/components/ResizeableContent/ResizeableContent';
+import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
-import { InsertPhotoIcon, MinusIcon, WebIcon } from '@/icons/icons';
-import { IconSize } from '@/types/enums';
+import { InsertPhotoIcon } from '@/icons/icons';
+import { useAppSelector } from '@/redux/hooks';
+import { propertyOwnerSelectors } from '@/redux/propertytree/propertyOwnerSlice';
+import { propertySelectors } from '@/redux/propertytree/propertySlice';
 import { Uri } from '@/types/types';
 import { ScreenSpaceKey } from '@/util/keys';
 
-import { ImageTab } from './ImageTab';
-import { WebpageTab } from './WebpageTab';
+import { AddModal } from './Add/AddModal';
+import { ScreenSpaceRenderableListItem } from './ScreenSpaceRenderableListItem';
+import { ScreenSpaceRenderableView } from './ScreenSpaceRenderableView';
 
 export function ScreenSpaceRenderablePanel() {
   const { t } = useTranslation('panel-screenspacerenderable');
+  const [selectedRenderable, setSelectedRenderable] = useState<Uri | null>(null);
 
-  const luaApi = useOpenSpaceApi();
+  const propertyOwners = useAppSelector((state) =>
+    propertyOwnerSelectors.selectEntities(state)
+  );
+  const properties = useAppSelector((state) => propertySelectors.selectEntities(state));
+
   const screenSpacePropertyOwner = usePropertyOwner(ScreenSpaceKey);
 
-  const renderables = screenSpacePropertyOwner?.subowners ?? [];
+  const renderables = useMemo(
+    () =>
+      screenSpacePropertyOwner?.subowners.filter((uri) => {
+        const isHidden = properties[`${uri}.GuiHidden`]?.value;
+        return !isHidden;
+      }) ?? [],
+    [screenSpacePropertyOwner, properties]
+  );
 
-  function removeSlide(uri: Uri) {
-    const identifier = uri.split('.').pop();
+  function onItemClick(uri: Uri) {
+    setSelectedRenderable((prevSelected) => (prevSelected === uri ? null : uri));
+  }
 
-    if (!identifier) {
-      return;
-    }
+  function renderListItem(uri: Uri) {
+    return (
+      <Box
+        key={uri}
+        pl={'xs'}
+        style={{
+          borderLeft:
+            selectedRenderable === uri
+              ? 'var(--openspace-border-active)'
+              : 'var(--openspace-border-active-placeholder)',
+          backgroundColor:
+            selectedRenderable === uri ? 'var(--mantine-color-dark-7)' : undefined
+        }}
+      >
+        <ScreenSpaceRenderableListItem uri={uri} onClick={() => onItemClick(uri)} />
+      </Box>
+    );
+  }
 
-    luaApi?.removeScreenSpaceRenderable(identifier);
+  function renderFilterList() {
+    return (
+      <FilterList>
+        <Group preventGrowOverflow={false} justify={'space-between'}>
+          <Box flex={1}>
+            <FilterList.InputField
+              placeHolderSearchText={t('added-slides.search-placeholder')}
+            />
+          </Box>
+          <AddModal />
+        </Group>
+
+        {renderables.length === 0 ? (
+          // @TODO: Replace with Mantine's EmptyState component when library is updated
+          <Stack h={'100%'} w={'100%'} align={'center'} p={'lg'}>
+            <ThemeIcon size={70} variant={'transparent'} c={'dimmed'}>
+              <InsertPhotoIcon size={'100%'} />
+            </ThemeIcon>
+            <Text ta={'center'} c={'dimmed'}>
+              {t('added-slides.empty')}
+            </Text>
+            <Text ta={'center'} c={'dimmed'}>
+              {t('added-slides.tips')}
+            </Text>
+          </Stack>
+        ) : (
+          <>
+            <FilterList.Favorites>
+              {renderables.map((uri) => renderListItem(uri))}
+            </FilterList.Favorites>
+
+            <FilterList.SearchResults
+              data={renderables}
+              renderElement={renderListItem}
+              matcherFunc={(uri: Uri, searchString: string) =>
+                propertyOwners[uri]?.name
+                  .toLowerCase()
+                  .includes(searchString.toLowerCase())
+              }
+            >
+              <FilterList.SearchResults.VirtualList gap={'xs'} />
+            </FilterList.SearchResults>
+          </>
+        )}
+      </FilterList>
+    );
   }
 
   return (
     <>
-      <Tabs defaultValue={'images'}>
-        <Tabs.List>
-          <Tabs.Tab value={'images'} leftSection={<InsertPhotoIcon size={IconSize.sm} />}>
-            {t('image-input.tab-title')}
-          </Tabs.Tab>
-          <Tabs.Tab value={'web'} leftSection={<WebIcon size={IconSize.sm} />}>
-            {t('website-input.tab-title')}
-          </Tabs.Tab>
-        </Tabs.List>
-
-        <Box pt={'xs'}>
-          <Tabs.Panel value={'images'}>
-            <ImageTab />
-          </Tabs.Panel>
-
-          <Tabs.Panel value={'web'}>
-            <WebpageTab />
-          </Tabs.Panel>
-        </Box>
-      </Tabs>
-      <Divider my={'xs'} />
-      {renderables.length === 0 ? (
-        <Text>{t('added-slides.empty-slides')}</Text>
-      ) : (
-        renderables.map((uri) => (
-          <Group
-            key={uri}
-            gap={'xs'}
-            my={'xs'}
-            justify={'space-between'}
-            wrap={'nowrap'}
-            align={'top'}
+      {selectedRenderable ? (
+        <>
+          <ResizeableContent
+            onHandleBarMouseDown={(event) => {
+              if (event.button === 1) {
+                // Middle mouse button
+                setSelectedRenderable(null);
+              }
+            }}
+            defaultHeight={window.innerHeight * 0.35}
           >
-            <Box flex={1}>
-              <PropertyOwner uri={uri} />
-            </Box>
-            <ActionIcon
-              onClick={() => removeSlide(uri)}
-              color={'red'}
-              variant={'outline'}
-              aria-label={`${t('added-slides.remove-slide-aria-label')}: ${uri})`}
-            >
-              <MinusIcon />
-            </ActionIcon>
-          </Group>
-        ))
+            {renderFilterList()}
+          </ResizeableContent>
+          <ScrollBox>
+            <ScreenSpaceRenderableView uri={selectedRenderable} />
+          </ScrollBox>
+        </>
+      ) : (
+        <>{renderFilterList()}</>
       )}
     </>
   );

@@ -2,17 +2,16 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { computeGroups } from '@/redux/groups/util';
 import type { AppStartListening } from '@/redux/listenerMiddleware';
+import { propertyOwnerSelectors } from '@/redux/propertytree/propertyOwnerSlice';
+import { propertySelectors } from '@/redux/propertytree/propertySlice';
 import { RootState } from '@/redux/store';
-import { PropertyOwner } from '@/types/types';
-
-import { propertyOwnerSelectors } from '../propertytree/propertyOwnerSlice';
-import { propertySelectors } from '../propertytree/propertySlice';
+import { PropertyOwnerRedux } from '@/types/types';
 
 import { setGroups, setTags } from './groupsSlice';
 
 export const refreshGroups = createAction<void>('groups/refresh');
 
-function collectExistingTags(propertyOwners: PropertyOwner[]) {
+function collectExistingTags(propertyOwners: PropertyOwnerRedux[]) {
   const tags = new Set<string>();
   propertyOwners.forEach((propertyOwner) => {
     propertyOwner?.tags.forEach((tag) => tags.add(tag));

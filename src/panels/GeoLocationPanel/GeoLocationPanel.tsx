@@ -22,7 +22,7 @@ export function GeoLocationPanel() {
   const [coordinates, setCoordinates] = useState<GeoCoordinates>({
     lat: 0,
     long: 0,
-    alt: 0
+    alt: 10
   });
   const [customName, setCustomName] = useState('');
   const [mouseMarker, setMouseMarker] = useState<MouseMarkerPosition>(undefined);
@@ -87,7 +87,6 @@ export function GeoLocationPanel() {
                 event.currentTarget.blur();
               }
             }}
-            onBlur={() => setSearchString(search)}
             placeholder={t(
               searchExists ? 'search.placeholder' : 'search.placeholder-disabled',
               { anchor: anchor?.name }
@@ -109,7 +108,10 @@ export function GeoLocationPanel() {
           />
           <ActionIcon
             disabled={!searchExists}
-            onClick={openIfNotOpen}
+            onClick={() => {
+              setSearch(searchString);
+              openIfNotOpen();
+            }}
             size={'lg'}
             aria-label={t('search.aria-labels.search-button')}
           >

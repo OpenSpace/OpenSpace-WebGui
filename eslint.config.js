@@ -35,7 +35,7 @@ export default tseslint.config(
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       '@typescript-eslint/no-explicit-any': 'error', // Disallow usage of any
       'no-duplicate-imports': 'error', // Imports should be on one line
-      'no-console': 'warn',
+      'no-console': 'error',
       'prefer-destructuring': ['error', { object: true, array: true }],
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
@@ -72,6 +72,13 @@ export default tseslint.config(
       'no-template-curly-in-string': 'error', // Catches "${}" template strings
       'default-case': ['error', { commentPattern: '^skip\\sdefault' }], // require default switch case
       'default-case-last': 'error' // enforce default switch case last
+    }
+  },
+  {
+    // Console output is only allowed in the third-party license generator script.
+    files: ['scripts/generateThirdParty.ts'],
+    rules: {
+      'no-console': 'off'
     }
   }
 );

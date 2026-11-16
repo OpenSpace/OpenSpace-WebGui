@@ -14,11 +14,11 @@ export type PropertyGroups = {
 
 // Define a type `GenericVectorTypes` that represents the union of all elements
 // in the `GenericVectorTypesArray`.
-type GenericVectorTypes = (typeof GenericVectorTypesArray)[number];
+export type GenericVectorTypes = (typeof GenericVectorTypesArray)[number];
 
 // Define a type `GenericMatrixTypes` that represents the union of all elements
 // in the `GenericMatrixTypesArray`.
-type GenericMatrixTypes = (typeof GenericMatrixTypesArray)[number];
+export type GenericMatrixTypes = (typeof GenericMatrixTypesArray)[number];
 
 // Define a type `GenericNumericTypes` that represents the union of all elements
 // in the `GenericNumericTypesArray`. This is achieved by using the `typeof` operator

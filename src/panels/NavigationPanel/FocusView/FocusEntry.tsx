@@ -4,10 +4,10 @@ import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavi
 import { TruncatedText } from '@/components/TruncatedText/TruncatedText';
 import { FocusIcon } from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
-import { Identifier, PropertyOwner } from '@/types/types';
+import { Identifier, PropertyOwnerRedux } from '@/types/types';
 
 interface Props extends MantineStyleProps {
-  entry: PropertyOwner;
+  entry: PropertyOwnerRedux;
   onSelect: (
     identifier: Identifier,
     modifiers: { shiftKey: boolean; ctrlKey: boolean }

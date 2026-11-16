@@ -1,16 +1,17 @@
+import { PropertyTypes, PropertyValue } from 'openspace-api-js/types';
+
 import { usePropertyValue } from '@/hooks/properties';
-import { PropertyTypes } from '@/types/Property/propertyTypes';
 
 import { TaskCheckbox } from './Components/TaskCheckbox';
 
-interface Props<T extends keyof PropertyTypes> {
+interface Props<T extends PropertyTypes> {
   label: string;
   uri: string;
   propertyType: T;
-  finalValue: PropertyTypes[T]['value'];
+  finalValue: PropertyValue<T>;
 }
 
-export function SetPropertyTask<T extends keyof PropertyTypes>({
+export function SetPropertyTask<T extends PropertyTypes>({
   label,
   uri,
   propertyType,

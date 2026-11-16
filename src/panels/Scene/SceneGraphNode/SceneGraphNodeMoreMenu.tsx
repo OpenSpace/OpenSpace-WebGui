@@ -1,17 +1,26 @@
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Button, Divider, Group, Menu, Stack, Text } from '@mantine/core';
+import { ActionIcon, Box, Group, Menu, Stack } from '@mantine/core';
 
 import CopyUriButton from '@/components/CopyUriButton/CopyUriButton';
 import { InfoBox } from '@/components/InfoBox/InfoBox';
+import { MaybeTooltip } from '@/components/MaybeTooltip/MaybeTooltip';
 import { NodeNavigationButton } from '@/components/NodeNavigationButton/NodeNavigationButton';
+import { useProperty } from '@/hooks/properties';
 import { usePropertyOwner } from '@/hooks/propertyOwner';
-import { DeleteIcon, OpenWindowIcon, VerticalDotsIcon } from '@/icons/icons';
+import { useIsSgnFocusable } from '@/hooks/sceneGraphNodes/hooks';
+import {
+  DeleteIcon,
+  OpenWindowIcon,
+  TelescopeIcon,
+  VerticalDotsIcon
+} from '@/icons/icons';
 import { IconSize, NavigationType } from '@/types/enums';
 import { Uri } from '@/types/types';
+import { NavigationAimKey, RetargetAimKey } from '@/util/keys';
 import { displayName } from '@/util/propertyTreeHelpers';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
+import { useRemoveSceneGraphNodeModal } from '@/util/removeModalsHooks';
 import { identifierFromUri } from '@/util/uris';
-import { useRemoveSceneGraphNodeModal } from '@/util/useRemoveSceneGraphNode';
 import { useWindowLayoutProvider } from '@/windowmanagement/WindowLayout/hooks';
 
 import { SceneGraphNodeView } from './SceneGraphNodeView';
@@ -28,6 +37,9 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
   const propertyOwner = usePropertyOwner(uri);
   const anchorNode = useAnchorNode();
   const confirmRemoveSgn = useRemoveSceneGraphNodeModal();
+  const isFocusable = useIsSgnFocusable(uri);
+  const [, setAim] = useProperty('StringProperty', NavigationAimKey);
+  const [, triggerRetargetAim] = useProperty('TriggerProperty', RetargetAimKey);
 
   const { addWindow } = useWindowLayoutProvider();
 
@@ -41,12 +53,12 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
     addWindow(<SceneGraphNodeView uri={uri} />, {
       id: 'sgn-' + uri,
       title: name,
-      position: 'float'
+      position: 'right'
     });
   }
 
   return (
-    <Menu position={'right-start'}>
+    <Menu position={'right-start'} withArrow>
       <Menu.Target>
         <ActionIcon size={'sm'} aria-label={t('aria-label')}>
           <VerticalDotsIcon />
@@ -54,56 +66,70 @@ export function SceneGraphNodeMoreMenu({ uri }: Props) {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Label>{name}</Menu.Label>
-        <Button
+        <Menu.Item
           onClick={openInNewWindow}
-          variant={'filled'}
-          leftSection={<OpenWindowIcon size={IconSize.sm} />}
+          leftSection={<OpenWindowIcon size={IconSize.xs} />}
         >
           {t('pop-out')}
-        </Button>
-        <Divider m={'xs'} />
-        <Stack gap={'xs'}>
-          <Group gap={'xs'}>
-            <NodeNavigationButton
-              type={NavigationType.Fly}
-              identifier={propertyOwner.identifier}
-              showLabel
-            />
-            <NodeNavigationButton
-              type={NavigationType.Jump}
-              identifier={propertyOwner.identifier}
-              showLabel
-            />
-          </Group>
-          <Group gap={'xs'}>
-            <NodeNavigationButton
-              type={NavigationType.Frame}
-              identifier={propertyOwner.identifier}
-              showLabel
-            />
-          </Group>
-        </Stack>
-        <Divider m={'xs'} />
+        </Menu.Item>
+
+        {isFocusable && (
+          <>
+            <Menu.Divider />
+            <Stack gap={'xs'}>
+              <NodeNavigationButton
+                type={NavigationType.Fly}
+                identifier={propertyOwner.identifier}
+                showLabel
+              />
+              <NodeNavigationButton
+                type={NavigationType.Jump}
+                identifier={propertyOwner.identifier}
+                showLabel
+              />
+              <NodeNavigationButton
+                type={NavigationType.Frame}
+                identifier={propertyOwner.identifier}
+                showLabel
+              />
+            </Stack>
+            <Menu.Divider />
+            <Menu.Item
+              onClick={(event) => {
+                setAim(propertyOwner.identifier);
+
+                if (!event.shiftKey) {
+                  triggerRetargetAim(null);
+                }
+              }}
+              leftSection={<TelescopeIcon size={IconSize.xs} />}
+            >
+              {t('target-aim')}
+            </Menu.Item>
+          </>
+        )}
+        <Menu.Divider />
         <Group gap={'xs'}>
-          <Button
-            size={'sm'}
-            disabled={anchorNode?.identifier === propertyOwner.identifier}
-            onClick={() => confirmRemoveSgn(identifierFromUri(uri), propertyOwner.name)}
-            color={'red'}
-            variant={'outline'}
-            leftSection={<DeleteIcon />}
+          <MaybeTooltip
+            label={t('delete-button.cannot-delete-current-focus')}
+            showTooltip={anchorNode?.identifier === propertyOwner.identifier}
           >
-            {t('delete-button.label')}
-          </Button>
-          <InfoBox>
-            {t('delete-button.info')}
-            <CopyUriButton uri={uri} />
-          </InfoBox>
-          {anchorNode?.identifier === propertyOwner.identifier && (
-            <Text size={'sm'} c={'dimmed'} m={'xs'} w={'100px'}>
-              {t('delete-button.cannot-delete-current-focus')}
-            </Text>
-          )}
+            <Menu.Item
+              disabled={anchorNode?.identifier === propertyOwner.identifier}
+              onClick={() => confirmRemoveSgn(identifierFromUri(uri), propertyOwner.name)}
+              color={'red'}
+              leftSection={<DeleteIcon size={IconSize.xs} />}
+              flex={1}
+            >
+              {t('delete-button.label')}
+            </Menu.Item>
+          </MaybeTooltip>
+          <Box pr={'xs'}>
+            <InfoBox>
+              {t('delete-button.info')}
+              <CopyUriButton uri={uri} />
+            </InfoBox>
+          </Box>
         </Group>
       </Menu.Dropdown>
     </Menu>

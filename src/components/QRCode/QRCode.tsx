@@ -3,10 +3,9 @@ import { Alert, Divider, Modal, Stack, Text, Title } from '@mantine/core';
 import { QRCodeSVG } from 'qrcode.react';
 
 import { Property } from '@/components/Property/Property';
+import { StringProperty } from '@/components/Property/Types/StringProperty';
 import { useProperty } from '@/hooks/properties';
 import styles from '@/theme/global.module.css';
-
-import { StringProperty } from '../Property/Types/StringProperty';
 
 interface Props {
   opened: boolean;
@@ -28,7 +27,7 @@ export function QRCode({ opened, close }: Props) {
       <Stack gap={'xs'} align={'center'}>
         <Title order={1}>{t('modal-title')}</Title>
         <QRCodeSVG
-          value={`http://${address}:${port}/gui/#/routes/`}
+          value={`http://${address}:${port}/gui/#/portal/`}
           title={t('alt-text')}
           size={192}
           bgColor={'var(--mantine-color-black)'}

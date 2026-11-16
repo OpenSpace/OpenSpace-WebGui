@@ -1,4 +1,4 @@
-import { AnyProperty } from './Property/property';
+import { Action, AnyProperty, Keybind } from 'openspace-api-js/types';
 
 export type Visibility = 'Visible' | 'Hidden' | 'Fading';
 
@@ -14,55 +14,35 @@ export type LanguageInfo = {
   icon: React.JSX.Element;
 };
 
-export interface Action {
-  identifier: string;
-  guiPath: string;
-  name: string;
-  isLocal: boolean;
-  documentation: string;
-  color?: [number, number, number, number]; // rgba color, [0, 1]
-}
+export type KeybindModifiers = (keyof Keybind['modifiers'])[];
 
-export type KeybindModifiers = ('super' | 'alt' | 'shift' | 'control')[];
-
-export interface Keybind {
-  action: string;
-  key: string;
+// The `Keybind` interface coming from the OpenSpace API has slightly differnet data
+// structure than what we want to use. @TODO (anden88 2026-05-20): We should either change
+// how the data is sent from OpenSpace or make changs in how we use the data in the
+// frontend to avoid this type of "copying"
+export type KeybindRedux = Pick<Keybind, 'action' | 'key'> & {
   modifiers: KeybindModifiers;
-}
-
-export type ActionOrKeybind = Action | Keybind;
-
-export type KeybindInfoType = Keybind & Action;
-
-export interface SemanticVersion {
-  major: number;
-  minor: number;
-  patch: number;
-}
-
-// The property owner data we get from OpenSpace is different from what we want to store
-// in the redux state, hence this local owner type to get proper ts highlighting when
-// converting the data
-export type OpenSpacePropertyOwner = {
-  description: string;
-  guiName: string;
-  identifier: Identifier;
-  properties: AnyProperty[];
-  subowners: OpenSpacePropertyOwner[];
-  tag: string[];
-  uri: Uri;
 };
+// @TODO (anden88 2026-04-07): This is currently not being used in favour of
+// `KeybindInfoType` does this concatenation of the Keybind and Action make sense?
+export type ActionOrKeybind = Action | KeybindRedux;
+
+export type KeybindInfoType = KeybindRedux & Action;
 
 export interface Properties {
   [key: Uri]: AnyProperty | undefined;
 }
 
 export interface PropertyOwners {
-  [key: Uri]: PropertyOwner;
+  [key: Uri]: PropertyOwnerRedux | undefined;
 }
 
-export interface PropertyOwner {
+// This interface was previously `PropertyOwner` but was renamed since the TypeScript API
+// exports an interface with te same name. @TODO (anden88 2026-05-20): We should either
+// change how the data is sent from OpenSpace or rename this interface to something else
+// to avoid using "Redux in the name. Currently we store only the URI of the properties
+// and subowners, while OpenSpace send a full recursive tree
+export interface PropertyOwnerRedux {
   description: string;
   name: string;
   identifier: Identifier;

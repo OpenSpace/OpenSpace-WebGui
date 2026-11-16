@@ -40,7 +40,7 @@ export function Collapsable({
         toggle={toggle}
         {...styleProps}
       />
-      <Collapse in={open} transitionDuration={noTransition ? 0 : 300}>
+      <Collapse expanded={open} transitionDuration={noTransition ? 0 : 300}>
         {/* Note that the margin here is set to somewhat align with the header's icon size */}
         <Box ml={IconSize.md}>{children}</Box>
       </Collapse>

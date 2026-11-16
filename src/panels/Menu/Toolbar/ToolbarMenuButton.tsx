@@ -26,7 +26,7 @@ export function ToolbarMenuButton({ id, children, ...props }: Props) {
       closeWindow(item.componentID);
     } else {
       addWindow(item.content, {
-        title: item.title,
+        title: item.title(),
         position: item.preferredPosition,
         id: item.componentID,
         floatPosition: item.floatPosition
@@ -49,7 +49,7 @@ export function ToolbarMenuButton({ id, children, ...props }: Props) {
       onContextMenu={onRightClick}
       size={'xl'}
       variant={'menubar'}
-      aria-label={item.title}
+      aria-label={item.title()}
       style={{
         borderBottom: item?.isOpen
           ? 'var(--openspace-border-active)'

@@ -36,7 +36,7 @@ export function Toolbar() {
                 item.renderMenuButton(item.componentID)
               ) : (
                 <ToolbarMenuButton id={item.componentID}>
-                  {item.renderIcon ? item.renderIcon(IconSize.lg) : item.title}
+                  {item.renderIcon ? item.renderIcon(IconSize.lg) : item.title()}
                 </ToolbarMenuButton>
               )}
             </Box>

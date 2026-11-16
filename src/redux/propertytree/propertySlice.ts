@@ -1,8 +1,7 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { AnyProperty } from 'openspace-api-js/types';
 
-import { AnyProperty } from '@/types/Property/property';
-
-import { RootState } from '../store';
+import { RootState } from '@/redux/store';
 
 /**
  * Entity adapter for managing Property entities in Redux state.

@@ -28,7 +28,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { resetMenuItemConfig } from '@/redux/local/localMiddleware';
 import { setMenuItemsOrder, setMenuItemVisible } from '@/redux/local/localSlice';
 import { showNotifications, updateLogLevel } from '@/redux/logging/loggingSlice';
-import { IconSize, LogLevel } from '@/types/enums';
+import { IconSize, NotificationLevel } from '@/types/enums';
 
 import { useMenuItemsOrdered, useStoredLayout } from '../../hooks';
 import { MenuDropdownWrapper } from '../MenuDropdownWrapper';
@@ -59,7 +59,7 @@ export function ViewMenu() {
 
   return (
     <TopBarMenuWrapper targetTitle={t('title')} closeOnItemClick={false}>
-      <Menu.Sub position={'right-start'} withinPortal={false}>
+      <Menu.Sub position={'right-start'}>
         <Menu.Sub.Target>
           <Menu.Sub.Item leftSection={<ToolbarIcon />}>
             {t('task-bar.label')}
@@ -109,7 +109,7 @@ export function ViewMenu() {
                     )
                   }
                 >
-                  {item.title}
+                  {item.title()}
                 </Menu.Item>
               );
             }}
@@ -216,11 +216,11 @@ export function ViewMenu() {
           <Container>
             <Radio.Group
               value={notificationLogLevel}
-              onChange={(value) => dispatch(updateLogLevel(value as LogLevel))}
+              onChange={(value) => dispatch(updateLogLevel(value as NotificationLevel))}
               mb={'xs'}
             >
               <Stack gap={'xs'}>
-                {Object.values(LogLevel).map((logLevel) => (
+                {Object.values(NotificationLevel).map((logLevel) => (
                   <Radio
                     key={logLevel}
                     value={logLevel}

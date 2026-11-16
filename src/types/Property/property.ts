@@ -42,6 +42,7 @@ type Property<T extends keyof PropertyTypes> = {
     identifier: Identifier;
     description: string;
     isReadOnly: boolean;
+    isEnablable: boolean;
     guiName: string;
     group: string;
     needsConfirmation: boolean;

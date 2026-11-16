@@ -22,7 +22,7 @@ export function useIntroductionSteps(): React.ReactNode[] {
   const isDefaultProfile = profileName === 'Default';
 
   function setupGettingStartedTour(): void {
-    luaApi?.setPropertyValueSingle('RenderEngine.BlackoutFactor', 0.0, 1.0);
+    luaApi?.setPropertyValueSingle('RenderEngine.GlobalBlackout.Factor', 1.0, 1.0);
     setTimeout(() => {
       luaApi?.action.triggerAction('os.earth_standard_illumination');
       luaApi?.setPropertyValue(

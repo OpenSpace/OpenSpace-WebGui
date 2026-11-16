@@ -1,4 +1,4 @@
-import { alpha, Box, Flex, Group } from '@mantine/core';
+import { alpha, Box, Flex, Group, Menubar } from '@mantine/core';
 
 import { FrictionControls } from '@/components/FrictionControls/FrictionControls';
 import { FrictionControlsInfo } from '@/components/FrictionControls/FrictionControlsInfo';
@@ -9,7 +9,7 @@ import { FileMenu } from './Menus/FileMenu';
 import { HelpMenu } from './Menus/HelpMenu';
 import { ViewMenu } from './Menus/ViewMenu';
 import { WindowsMenu } from './Menus/WindowsMenu';
-import { IdleBehaviorToggle } from './IdleBehaviorToggle';
+import { IdleMotionToggle } from './IdleMotionToggle';
 // import { LocaleSwitcher } from './Menus/LocaleSwitcher';
 
 export function TopMenuBar() {
@@ -25,19 +25,19 @@ export function TopMenuBar() {
           whiteSpace: 'nowrap'
         }}
       >
-        <Group flex={1} wrap={'nowrap'}>
+        <Menubar flex={1} trigger={'hover'} style={{ gap: 'var(--mantine-spacing-xs)' }}>
           <FileMenu />
           <WindowsMenu />
           <ViewMenu />
           <HelpMenu />
-          {/* <LocaleSwitcher /> */}
-        </Group>
+        </Menubar>
+        {/* <LocaleSwitcher /> */}
         <Box flex={1} style={{ overflow: 'hidden' }}>
           {/* There's space to put something in the center here if we want */}
         </Box>
         <Group flex={1} wrap={'nowrap'} align={'center'} justify={'end'} mr={'xs'}>
           <Group gap={'lg'} wrap={'nowrap'}>
-            <IdleBehaviorToggle />
+            <IdleMotionToggle />
             <Group wrap={'nowrap'} gap={'xs'}>
               <FrictionControls size={'xs'} />
               <InfoBox>

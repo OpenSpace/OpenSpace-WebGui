@@ -1,23 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ProfileTopic } from 'openspace-api-js/types';
 
-import { Identifier } from '@/types/types';
+type ProfileData = ProfileTopic['data'];
 
-export interface ProfileState {
+export interface ProfileState extends ProfileData {
   initalized: boolean;
-  uiPanelVisibility: Record<string, boolean>;
-  hasStartedBefore: boolean | undefined;
-  markNodes: Identifier[];
-  name: string | undefined;
-  author: string | undefined;
-  description: string | undefined;
-  license: string | undefined;
-  url: string | undefined;
-  version: string | undefined;
-  filePath: string;
 }
 
 const initialState: ProfileState = {
   initalized: false,
+  addons: [],
   uiPanelVisibility: {},
   hasStartedBefore: undefined,
   markNodes: [],
@@ -34,10 +26,12 @@ export const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    setProfileData: (state, action: PayloadAction<ProfileState>) => {
-      state = action.payload;
-      state.initalized = true;
-      return state;
+    setProfileData: (state, action: PayloadAction<ProfileData>) => {
+      return {
+        ...state,
+        ...action.payload,
+        initalized: true
+      };
     }
   }
 });

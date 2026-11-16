@@ -1,20 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SkyBrowser, SkyBrowserTopic } from 'openspace-api-js/types';
 
 import { SkyBrowserImage } from '@/panels/SkyBrowserPanel/types';
-
-import { SkyBrowserBrowser } from './types';
-
-// This is the structure of the updates we get from the skybrowser subscription
-export interface SkyBrowserUpdate
-  extends Pick<SkyBrowserState, 'selectedBrowserId' | 'cameraInSolarSystem'> {
-  browsers: { [id: string]: SkyBrowserBrowser };
-}
 
 export interface SkyBrowserState {
   isInitialized: boolean;
   cameraInSolarSystem: boolean;
   selectedBrowserId: string;
-  browsers: Record<string, SkyBrowserBrowser>;
+  browsers: Record<string, SkyBrowser>;
   browserIds: string[];
   browserNames: string[];
   browserColors: [number, number, number][];
@@ -42,7 +35,10 @@ export const skyBrowserSlice = createSlice({
       state.isInitialized = true;
       return state;
     },
-    updateSkyBrowser: (state, action: PayloadAction<Partial<SkyBrowserUpdate>>) => {
+    updateSkyBrowser: (
+      state,
+      action: PayloadAction<Partial<SkyBrowserTopic['data']>>
+    ) => {
       if (action.payload.cameraInSolarSystem !== undefined) {
         state.cameraInSolarSystem = action.payload.cameraInSolarSystem;
       }

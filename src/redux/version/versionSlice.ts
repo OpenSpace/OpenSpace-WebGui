@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-import { SemanticVersion } from '@/types/types';
+import { SemanticVersion } from 'openspace-api-js/types';
 
 import { getVersion } from './versionMiddleware';
 

@@ -1,0 +1,49 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { useOpenSpaceApi } from '@/api/hooks';
+import { usePropertyOwner, usePropertyOwnerVisibility } from '@/hooks/propertyOwner';
+
+import { MarkingsToggleLayout } from './MarkingsToggleLayout';
+
+interface Props {
+  title: string;
+  icon: React.JSX.Element;
+}
+
+// @TODO (2025-05-19, emmbr) This component needs logic for checking if the used actions
+// exist. However, for this we need to be able to access the actions state using the
+// identifier of the action, so leaving for now
+
+export function ConstellationsLabelsToggle({ title, icon }: Props) {
+  const { t } = useTranslation('panel-nightsky', {
+    keyPrefix: 'markings.constellations'
+  });
+
+  const luaApi = useOpenSpaceApi();
+
+  const uri = 'Scene.Constellations.Renderable.Labels';
+  const propertyOwner = usePropertyOwner(uri);
+  const { visibility } = usePropertyOwnerVisibility(uri);
+
+  function checkboxChange(checked: boolean) {
+    if (checked) {
+      luaApi?.action.triggerAction('os.nightsky.FadeInConstellationLabels');
+    } else {
+      luaApi?.action.triggerAction('os.nightsky.FadeOutConstellationLabels');
+    }
+  }
+
+  const isVisible = visibility === 'Visible';
+
+  return (
+    <MarkingsToggleLayout
+      onClick={() => checkboxChange(!isVisible)}
+      checked={isVisible || false}
+      aria-label={t('aria-labels.labels')}
+      title={title}
+      icon={icon}
+      isLoading={!propertyOwner}
+    />
+  );
+}

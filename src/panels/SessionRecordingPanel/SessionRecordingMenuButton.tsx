@@ -1,4 +1,5 @@
 import { Group } from '@mantine/core';
+import { SessionRecordingState } from 'openspace-api-js/types';
 
 import { useSubscribeToSessionRecording } from '@/hooks/topicSubscriptions';
 import { VideocamIcon } from '@/icons/icons';
@@ -9,7 +10,6 @@ import { PlaybackPauseButton } from './Playback/PlaybackPauseButton';
 import { PlaybackResumeButton } from './Playback/PlaybackResumeButton';
 import { PlaybackStopButton } from './Playback/PlaybackStopButton';
 import { RecordingStopButton } from './Record/RecordingStopButton';
-import { RecordingState } from './types';
 
 interface Props {
   id: string;
@@ -18,11 +18,11 @@ interface Props {
 export function SessionRecordingMenuButton({ id }: Props) {
   const recordingState = useSubscribeToSessionRecording();
 
-  if (recordingState === RecordingState.Recording) {
+  if (recordingState === SessionRecordingState.Recording) {
     return <RecordingStopButton size={'xl'} />;
   }
 
-  if (recordingState === RecordingState.Paused) {
+  if (recordingState === SessionRecordingState.Paused) {
     return (
       <Group gap={2}>
         <PlaybackResumeButton size={'xl'} />
@@ -31,7 +31,7 @@ export function SessionRecordingMenuButton({ id }: Props) {
     );
   }
 
-  if (recordingState === RecordingState.Playing) {
+  if (recordingState === SessionRecordingState.Playing) {
     return (
       <Group gap={2}>
         <PlaybackPauseButton size={'xl'} />

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Center, Group, SegmentedControl, Text, VisuallyHidden } from '@mantine/core';
+import { EngineMode } from 'openspace-api-js/types';
 
 import { useSearchKeySettings } from '@/components/FilterList/SearchSettingsMenu/hook';
 import { generateMatcherFunctionByKeys } from '@/components/FilterList/util';
@@ -12,8 +13,8 @@ import { useSubscribeToEngineMode } from '@/hooks/topicSubscriptions';
 import { AnchorIcon, FocusIcon, TelescopeIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 import { propertySelectors } from '@/redux/propertytree/propertySlice';
-import { EngineMode, IconSize } from '@/types/enums';
-import { PropertyOwner } from '@/types/types';
+import { IconSize } from '@/types/enums';
+import { PropertyOwnerRedux } from '@/types/types';
 import { NavigationAimKey, NavigationAnchorKey } from '@/util/keys';
 import { useFeaturedNodes } from '@/util/propertyTreeHooks';
 
@@ -35,8 +36,8 @@ export function NavigationPanel() {
     return aimProp?.value !== anchorProp?.value && aimProp?.value !== '';
   });
 
-  const showOnlyFocusable = useAppSelector(
-    (state) => state.local.menus.navigation.onlyFocusable
+  const { onlyFocusable: showOnlyFocusable, showHiddenNodes } = useAppSelector(
+    (state) => state.local.menus.navigation
   );
 
   const [navigationMode, setNavigationMode] = useState(
@@ -46,7 +47,7 @@ export function NavigationPanel() {
   const engineMode = useSubscribeToEngineMode();
 
   const { allowedSearchKeys, toggleSearchKey, selectedSearchKeys } =
-    useSearchKeySettings<PropertyOwner>({
+    useSearchKeySettings<PropertyOwnerRedux>({
       name: true,
       identifier: false,
       tags: false,
@@ -55,10 +56,10 @@ export function NavigationPanel() {
 
   const featuredNodes = useFeaturedNodes();
 
-  // @TODO (2024-04-08, emmbr): Expose these filters to the user? Could also include tags
   const searchableNodes = useSceneGraphNodes({
-    includeGuiHiddenNodes: false,
-    onlyFocusable: showOnlyFocusable
+    includeGuiHiddenNodes: showHiddenNodes,
+    onlyFocusable: showOnlyFocusable,
+    onlyVisible: false
   });
   const isLoading = searchableNodes.length === 0;
 

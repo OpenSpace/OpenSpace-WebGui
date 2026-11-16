@@ -1,5 +1,6 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { Topic } from 'openspace-api-js';
+import { Topic } from 'openspace-api-js/topics';
+import { SkyBrowserTopic } from 'openspace-api-js/types';
 
 import { api } from '@/api/api';
 import { onCloseConnection } from '@/redux/connection/connectionSlice';
@@ -9,7 +10,6 @@ import { Batcher } from '@/util/batcher';
 
 import {
   resetSkyBrowser,
-  type SkyBrowserUpdate,
   subscriptionIsSetup,
   updateSkyBrowser
 } from './skybrowserSlice';
@@ -17,7 +17,7 @@ import {
 const subscribeToSkyBrowser = createAction<void>('skybrowser/subscribe');
 const unsubscribeToSkyBrowser = createAction<void>('skybrowser/unsubscribe');
 
-let skybrowserTopic: Topic;
+let skybrowserTopic: Topic<'skybrowser'>;
 let nSubscribers = 0;
 
 export const setupSubscription = createAsyncThunk(
@@ -27,14 +27,14 @@ export const setupSubscription = createAsyncThunk(
       event: 'start_subscription'
     });
 
-    function updateData(data: Partial<SkyBrowserUpdate>) {
+    function updateData(data: Partial<SkyBrowserTopic['data']>) {
       thunkAPI.dispatch(updateSkyBrowser(data));
     }
 
-    const batcher = new Batcher<SkyBrowserUpdate>(updateData);
+    const batcher = new Batcher<SkyBrowserTopic['data']>(updateData);
 
     (async () => {
-      for await (const data of skybrowserTopic.iterator() as AsyncIterable<SkyBrowserUpdate>) {
+      for await (const data of skybrowserTopic) {
         batcher.add(data);
       }
     })();

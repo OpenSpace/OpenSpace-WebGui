@@ -8,20 +8,21 @@ import {
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Box, BoxComponentProps } from '@mantine/core';
 
+import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 import { DragHandleIcon } from '@/icons/icons';
 import { IconSize } from '@/types/enums';
 import { useWindowSize } from '@/windowmanagement/Window/hooks';
 
-import { ScrollBox } from '../ScrollBox/ScrollBox';
-
 interface Props extends PropsWithChildren, BoxComponentProps {
   minHeight?: number;
   defaultHeight: number;
+  onHandleBarMouseDown?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export function ResizeableContent({
   minHeight = 40,
   defaultHeight,
+  onHandleBarMouseDown,
   children,
   ...props
 }: Props) {
@@ -123,7 +124,10 @@ export function ResizeableContent({
       <Box ref={resizerRef}>
         <ActionIcon
           w={'100%'}
-          onMouseDown={(e) => handleMouseDown(e.clientX, e.clientY)}
+          onMouseDown={(e) => {
+            handleMouseDown(e.clientX, e.clientY);
+            onHandleBarMouseDown?.(e);
+          }}
           onTouchStart={handleTouchStart}
           style={{
             cursor: 'row-resize'

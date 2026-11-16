@@ -1,6 +1,7 @@
 import { createListenerMiddleware, type TypedStartListening } from '@reduxjs/toolkit';
 
 import { addActionsListener } from './actions/actionsMiddleware';
+import { addAssetTreeListener } from './assettree/assetTreeMiddleware';
 import { addCameraListener } from './camera/cameraMiddleware';
 import { addCameraPathListener } from './camerapath/cameraPathMiddleware';
 import { addConnectionListener } from './connection/connectionMiddleware';
@@ -27,6 +28,7 @@ export type AppStartListening = TypedStartListening<RootState, AppDispatch>;
 const startAppListening = listenerMiddleware.startListening as AppStartListening;
 
 addActionsListener(startAppListening);
+addAssetTreeListener(startAppListening);
 addCameraListener(startAppListening);
 addCameraPathListener(startAppListening);
 addConnectionListener(startAppListening);

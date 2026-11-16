@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 import { BoxProps } from '@mantine/core';
 
-import { ScrollBox } from '../ScrollBox/ScrollBox';
+import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 
 export function GrowingContent({ children, ...props }: PropsWithChildren & BoxProps) {
   return (

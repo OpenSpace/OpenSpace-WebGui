@@ -1,0 +1,111 @@
+import { useTranslation } from 'react-i18next';
+import { Anchor, Group, Image, Text, Title } from '@mantine/core';
+import { MissionEntry } from 'openspace-api-js/types';
+
+import { DynamicGrid } from '@/components/DynamicGrid/DynamicGrid';
+import { OpenInBrowserIcon } from '@/icons/icons';
+import { ActionsButton } from '@/panels/ActionsPanel/ActionsButton';
+import styles from '@/theme/global.module.css';
+import { useWindowSize } from '@/windowmanagement/Window/hooks';
+
+import { MissionCaptureButtons } from './MissionCaptureButtons';
+import { MissionTimeButtons } from './MissionTimeButtons';
+import { DisplayedPhase, DisplayType } from './types';
+
+interface Props {
+  displayedPhase: DisplayedPhase;
+  missionEntry: MissionEntry;
+}
+
+export function MissionPhaseContent({ displayedPhase, missionEntry }: Props) {
+  const { t } = useTranslation('panel-missions');
+
+  const { width: panelWidth } = useWindowSize();
+
+  const isMissionOverview = displayedPhase.type === DisplayType.Overview;
+  const timeLineWidth = 120;
+  const actionButtonHeight = 80;
+  if (!displayedPhase.data) {
+    return <></>;
+  }
+
+  function title() {
+    if (displayedPhase.type === DisplayType.Overview || !displayedPhase.type) {
+      return '';
+    }
+    // Only show title if it is a Phase or a Milestone
+    // If it is overview we don't want to show it twice
+    return `${displayedPhase.type}: ${displayedPhase.data.name}`;
+  }
+
+  function timeString() {
+    switch (displayedPhase.type) {
+      case DisplayType.Overview:
+      case DisplayType.Phase: {
+        const start = new Date(displayedPhase.data.timerange.start).toDateString();
+        const end = new Date(displayedPhase.data.timerange.end).toDateString();
+        return `${start} - ${end}`;
+      }
+      case DisplayType.Milestone:
+        return new Date(displayedPhase.data.date).toDateString();
+      default:
+        return '';
+    }
+  }
+
+  return (
+    <>
+      <Title order={3} className={styles.selectable}>
+        {title()}
+      </Title>
+      <Text c={'dimmed'} className={styles.selectable}>
+        {timeString()}
+      </Text>
+      <Text my={'xs'} className={styles.selectable}>
+        {displayedPhase.data.description}
+      </Text>
+      {displayedPhase.data.link && (
+        <Anchor component={'a'} href={displayedPhase.data.link} target={'_blank'}>
+          <Group>
+            <OpenInBrowserIcon />
+            {t('mission-phase.read-more')}
+          </Group>
+        </Anchor>
+      )}
+      {displayedPhase.data.image && (
+        <Image
+          my={'xs'}
+          mah={'300px'}
+          src={displayedPhase.data.image}
+          alt={'Image text not available'}
+          fallbackSrc={`${import.meta.env.BASE_URL}/images/placeholder.svg`}
+          fit={'contain'}
+        />
+      )}
+      <Title order={3} my={'md'}>
+        {t('set-time')}
+      </Title>
+
+      <MissionTimeButtons currentPhase={displayedPhase} />
+      <MissionCaptureButtons mission={missionEntry} />
+      <Title order={3} my={'md'}>
+        {t('mission-phase.actions.title')}
+      </Title>
+      {displayedPhase.data?.actions?.length === 0 &&
+        displayedPhase.data.actions.length === 0 && (
+          <Text c={'dimmed'}>{t('mission-phase.actions.no-actions')}</Text>
+        )}
+      <DynamicGrid minChildSize={170} gridWidth={panelWidth - timeLineWidth}>
+        {/* Show phase specific actions */}
+        {!isMissionOverview &&
+          displayedPhase.data?.actions?.map((uri) => (
+            <ActionsButton uri={uri} key={uri} height={actionButtonHeight} />
+          ))}
+        {/* We always want to show the actions for the whole mission */}
+        {missionEntry.mission.actions?.map((uri) => (
+          <ActionsButton uri={uri} key={uri} height={actionButtonHeight} />
+        ))}
+      </DynamicGrid>
+    </>
+  );
+}

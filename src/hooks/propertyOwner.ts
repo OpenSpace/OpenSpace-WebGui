@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { propertyOwnerSelectors } from '@/redux/propertytree/propertyOwnerSlice';
 import { propertySelectors } from '@/redux/propertytree/propertySlice';
 import { setPropertyValue } from '@/redux/propertytree/propertyTreeMiddleware';
-import { Identifier, PropertyOwner, Uri, Visibility } from '@/types/types';
+import { Identifier, PropertyOwnerRedux, Uri, Visibility } from '@/types/types';
 import { EnginePropertyVisibilityKey } from '@/util/keys';
 import {
   checkVisibility,
@@ -20,11 +20,13 @@ import {
   sgnUri
 } from '@/util/uris';
 
-export function usePropertyOwner(uri: Uri): PropertyOwner | undefined {
+export function usePropertyOwner(uri: Uri): PropertyOwnerRedux | undefined {
   return useAppSelector((state) => propertyOwnerSelectors.selectById(state, uri));
 }
 
-export function useSceneGraphNode(identifier: Identifier): PropertyOwner | undefined {
+export function useSceneGraphNode(
+  identifier: Identifier
+): PropertyOwnerRedux | undefined {
   const uri = sgnUri(identifier);
   return usePropertyOwner(uri);
 }
@@ -70,7 +72,9 @@ export function useHasVisibleChildren(propertyOwnerUri: Uri): boolean {
  * Find all the properties of a certain property owner that are visible, according to the
  * current visiblitity level setting. Also subscribe to changes for the visiblity level.
  */
-export function useVisibleProperties(propertyOwner: PropertyOwner | undefined): Uri[] {
+export function useVisibleProperties(
+  propertyOwner: PropertyOwnerRedux | undefined
+): Uri[] {
   const visibilityLevelSetting = usePropertyValue(
     'OptionProperty',
     EnginePropertyVisibilityKey

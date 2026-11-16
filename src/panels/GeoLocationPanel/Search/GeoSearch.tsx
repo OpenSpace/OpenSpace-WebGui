@@ -4,7 +4,7 @@ import { Button, Text } from '@mantine/core';
 
 import { useAppDispatch } from '@/redux/hooks';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
-import { LogLevel } from '@/types/enums';
+import { NotificationLevel } from '@/types/enums';
 import { useAnchorNode } from '@/util/propertyTreeHooks';
 
 import { MatchedLocation } from './types';
@@ -51,7 +51,7 @@ export function GeoSearch({ onClick, onHover, search }: Props) {
         handleNotificationLogging(
           t('notifications.error-geolocation-data.title'),
           error,
-          LogLevel.Error
+          NotificationLevel.Error
         )
       );
     }

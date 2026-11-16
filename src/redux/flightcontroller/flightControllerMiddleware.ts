@@ -1,21 +1,26 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { Topic } from 'openspace-api-js';
+import { Topic } from 'openspace-api-js/topics';
+import {
+  FlightControllerCommand,
+  FlightControllerConnectCommand,
+  FlightControllerDisconnectCommand
+} from 'openspace-api-js/types';
 
 import { api } from '@/api/api';
-import { FlightControllerData } from '@/panels/FlightControlPanel/types';
 import { onCloseConnection, onOpenConnection } from '@/redux/connection/connectionSlice';
 import { AppStartListening } from '@/redux/listenerMiddleware';
 
-export const sendFlightControl = createAction<FlightControllerData>('sendFlightControl');
+export const sendFlightControl =
+  createAction<FlightControllerCommand>('sendFlightControl');
 
-let flightControllerTopic: Topic | undefined = undefined;
+let flightControllerTopic: Topic<'flightcontroller'> | undefined = undefined;
 
 export const setupTopic = createAsyncThunk('flightcontroller/setupTopic', async () => {
   if (flightControllerTopic) {
     return;
   }
-  const payload: FlightControllerData = {
-    type: 'connect'
+  const payload: FlightControllerConnectCommand = {
+    event: 'connect'
   };
   flightControllerTopic = api.startTopic('flightcontroller', payload);
 });
@@ -24,8 +29,8 @@ function tearDownTopic() {
   if (!flightControllerTopic) {
     return;
   }
-  const payload: FlightControllerData = {
-    type: 'disconnect'
+  const payload: FlightControllerDisconnectCommand = {
+    event: 'disconnect'
   };
   flightControllerTopic.talk(payload);
   flightControllerTopic.cancel();

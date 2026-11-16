@@ -1,28 +1,30 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useRef } from 'react';
 import { BoxProps } from '@mantine/core';
-import { useElementSize } from '@mantine/hooks';
+import { useElementSize, useMergedRef } from '@mantine/hooks';
 
 import { ScrollBox } from '@/components/ScrollBox/ScrollBox';
 
 import { WindowSizeContext } from './WindowSizeContext';
 
 export function WindowSizeProvider({ children, ...props }: PropsWithChildren & BoxProps) {
-  const { ref, width, height } = useElementSize();
+  const { ref: sizeRef, width, height } = useElementSize();
+  const elementRef = useRef<HTMLDivElement | null>(null);
+  const ref = useMergedRef(sizeRef, elementRef);
 
   function disablePointerEvents(): void {
-    if (!ref.current) {
+    if (!elementRef.current) {
       return;
     }
-    ref.current.style.pointerEvents = 'none';
-    ref.current.style.userSelect = 'none';
+    elementRef.current.style.pointerEvents = 'none';
+    elementRef.current.style.userSelect = 'none';
   }
 
   function enablePointerEvents(): void {
-    if (!ref.current) {
+    if (!elementRef.current) {
       return;
     }
-    ref.current.style.removeProperty('user-select');
-    ref.current.style.removeProperty('pointer-events');
+    elementRef.current.style.removeProperty('user-select');
+    elementRef.current.style.removeProperty('pointer-events');
   }
 
   return (

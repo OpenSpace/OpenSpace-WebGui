@@ -1,13 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { Button, Group } from '@mantine/core';
+import { MissionEntry } from 'openspace-api-js/types';
 
 import { useSubscribeToTime } from '@/hooks/topicSubscriptions';
 
 import { useJumpToTime } from './hooks';
-import { Phase } from './types';
 
 interface Props {
-  mission: Phase;
+  mission: MissionEntry;
 }
 
 export function MissionCaptureButtons({ mission }: Props) {
@@ -25,7 +25,7 @@ export function MissionCaptureButtons({ mission }: Props) {
     }
     // Assume the captures are stored with regards to time. Find the first time that is
     // after the current time
-    const capture = mission.capturetimes.find((capture) => {
+    const capture = mission.captureTimes.find((capture) => {
       const utcDate = Date.parse(capture);
       return now < utcDate;
     });
@@ -40,7 +40,7 @@ export function MissionCaptureButtons({ mission }: Props) {
     }
     // Assume the captures are sorted with regards to time. Find the last time that is
     // before the current time
-    const capture = mission.capturetimes.findLast((capture) => {
+    const capture = mission.captureTimes.findLast((capture) => {
       const utcDate = Date.parse(capture);
       return now > utcDate;
     });

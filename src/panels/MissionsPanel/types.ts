@@ -1,31 +1,8 @@
-import { Identifier } from '@/types/types';
-
-export interface Milestone {
-  date: string; // Date as an UTC ISO8601 string
-  name: string;
-  description?: string;
-  image?: string;
-  link?: string;
-  actions?: string[];
-}
-
-export interface Phase {
-  name: string;
-  description: string;
-  actions: string[];
-  timerange: { start: string; end: string }; // Dates as an UTC ISO8601 string
-  phases: Phase[];
-  image: string;
-  link: string;
-  milestones: Milestone[];
-  capturetimes: string[];
-}
-
-export type Missions = Record<Identifier, Phase>;
+import { Milestone, MissionPhase } from 'openspace-api-js/types';
 
 export type DisplayedPhase =
-  | { type: DisplayType.Phase; data: Phase }
-  | { type: DisplayType.Overview; data: Phase }
+  | { type: DisplayType.Phase; data: MissionPhase }
+  | { type: DisplayType.Overview; data: MissionPhase }
   | { type: DisplayType.Milestone; data: Milestone }
   | { type: undefined; data: undefined };
 

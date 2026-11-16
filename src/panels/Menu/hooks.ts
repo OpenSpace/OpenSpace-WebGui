@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setMenuItemsConfig, setMenuItemVisible } from '@/redux/local/localSlice';
 import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
-import { LogLevel } from '@/types/enums';
+import { NotificationLevel } from '@/types/enums';
 import { MenuItemGroup, menuItemGroups } from '@/types/types';
 import { useSaveLoadJsonFiles } from '@/util/fileIOhooks';
 import { MenuItem, menuItemsData } from '@/windowmanagement/data/MenuItems';
@@ -80,7 +80,7 @@ export function useMenuItemsByGroup<Included extends MenuItemGroup = MenuItemGro
     // order defined by the `menuItemsData`
     for (const group of groups) {
       if (group !== 'Ungrouped') {
-        menuItemsByGroup[group].sort((a, b) => a.title.localeCompare(b.title));
+        menuItemsByGroup[group].sort((a, b) => a.title().localeCompare(b.title()));
       }
     }
 
@@ -104,7 +104,7 @@ function useShowWindowOnStart(shouldShow: boolean, menuItem: MenuItem) {
       // Open the window if it is visible
       addWindow(menuItem.content, {
         id: menuItem.componentID,
-        title: menuItem.title,
+        title: menuItem.title(),
         position: menuItem.preferredPosition,
         floatPosition: menuItem.floatPosition
       });
@@ -134,7 +134,11 @@ export function useStoredLayout() {
   function handlePickedFile(content: JSON) {
     if (!content || Object.keys(content).length === 0) {
       dispatch(
-        handleNotificationLogging(t('title'), t('messages.empty-file'), LogLevel.Error)
+        handleNotificationLogging(
+          t('title'),
+          t('messages.empty-file'),
+          NotificationLevel.Error
+        )
       );
       return;
     }
@@ -144,7 +148,7 @@ export function useStoredLayout() {
         handleNotificationLogging(
           t('title'),
           t('messages.invalid-length'),
-          LogLevel.Error
+          NotificationLevel.Error
         )
       );
       return;
@@ -155,7 +159,11 @@ export function useStoredLayout() {
     );
     if (!isValid) {
       dispatch(
-        handleNotificationLogging(t('title'), t('messages.inavlid-ids'), LogLevel.Error)
+        handleNotificationLogging(
+          t('title'),
+          t('messages.inavlid-ids'),
+          NotificationLevel.Error
+        )
       );
       return;
     }
@@ -170,7 +178,7 @@ export function useStoredLayout() {
         const item = menuItemsData[layoutItem.id];
         addWindow(item.content, {
           id: item.componentID,
-          title: item.title,
+          title: item.title(),
           position: item.preferredPosition,
           floatPosition: item.floatPosition
         });

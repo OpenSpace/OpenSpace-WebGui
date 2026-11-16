@@ -25,7 +25,7 @@ import { sgnUri } from '@/util/uris';
 export function SunTab() {
   const { t } = useTranslation('panel-nightsky', { keyPrefix: 'sun' });
 
-  const [trailDate, setTrailDate] = useState<Date | null>(null);
+  const [trailDate, setTrailDate] = useState<string | null>(null);
   const propertyOwners = useAppSelector((state) =>
     propertyOwnerSelectors.selectEntities(state)
   );
@@ -72,31 +72,36 @@ export function SunTab() {
       <Title order={2} mt={'md'} mb={'xs'}>
         {t('size.title')}
       </Title>
+      <Text mb={'xs'} c={'dimmed'} size={'sm'}>
+        {t('size.description')}
+      </Text>
       {angularSize !== undefined ? (
         <Group gap={'xs'}>
           <Button onClick={() => setAngularSize(0.3)}>
-            {t('size.buttons.default-size')}
+            {t('size.buttons.default-scale')}
           </Button>
           <Button onClick={() => setAngularSize(0.6)}>
-            {t('size.buttons.large-size')}
+            {t('size.buttons.2x-scale')}
           </Button>
           <Button onClick={() => setAngularSize(0.8)}>
-            {t('size.buttons.extra-large-size')}
+            {t('size.buttons.4x-scale')}
           </Button>
-          <ActionIcon
-            onClick={() => setAngularSize(angularSize + 0.1)}
-            size={'lg'}
-            aria-label={t('size.aria-labels.increase-size')}
-          >
-            <PlusIcon />
-          </ActionIcon>
-          <ActionIcon
-            onClick={() => setAngularSize(angularSize - 0.1)}
-            size={'lg'}
-            aria-label={t('size.aria-labels.decrease-size')}
-          >
-            <MinusIcon />
-          </ActionIcon>
+          <ActionIcon.Group>
+            <ActionIcon
+              onClick={() => setAngularSize(angularSize - 0.1)}
+              size={'lg'}
+              aria-label={t('size.aria-labels.decrease-size')}
+            >
+              <MinusIcon />
+            </ActionIcon>
+            <ActionIcon
+              onClick={() => setAngularSize(angularSize + 0.1)}
+              size={'lg'}
+              aria-label={t('size.aria-labels.increase-size')}
+            >
+              <PlusIcon />
+            </ActionIcon>
+          </ActionIcon.Group>
         </Group>
       ) : (
         <>
@@ -123,13 +128,16 @@ export function SunTab() {
         label={t('trails.choose-date')}
         placeholder={'01/01/2001'}
         value={trailDate}
-        onChange={(val) => setTrailDate(new Date(val))}
+        clearable
+        onChange={setTrailDate}
         mt={'sm'}
       />
       <Button
         disabled={trailDate === null}
         leftSection={<PlusIcon />}
-        onClick={() => trailDate && addTrail(trailDate.toISOString())}
+        onClick={() =>
+          trailDate && addTrail(new Date(`${trailDate}T00:00:00`).toISOString())
+        }
         mt={'xs'}
       >
         {t('trails.buttons.add-trail')}
@@ -137,7 +145,11 @@ export function SunTab() {
 
       <Group mt={'md'} mb={'xs'}>
         <Title order={3}>{t('trails.added-trails.title')}</Title>
-        <Button size={'compact-md'} onClick={() => luaApi.fadeOut(`{${sunTrailTag}}`)}>
+        <Button
+          size={'compact-sm'}
+          leftSection={<EyeOffIcon />}
+          onClick={() => luaApi.fadeOut(`{${sunTrailTag}}`)}
+        >
           {t('trails.buttons.hide-trails')}
         </Button>
       </Group>

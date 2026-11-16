@@ -4,7 +4,14 @@
     "logo-alt-text": "OpenSpace logo",
     "about-openspace-description": "OpenSpace is open-source interactive data visualization software designed to visualize the entire known universe and portray our ongoing efforts to investigate the cosmos.",
     "fetching-version-number": "Fetching OpenSpace version...",
-    "custom-version-number": "Custom"
+    "custom-version-number": "Custom",
+    "openspace-institutions": "OpenSpace is stewarded by Linköping University and the American Museum of Natural History with support from NASA, the Swedish e-Science Research Center, and the Knut and Alice Wallenberg Foundation.",
+    "contributors-title": "Contributors",
+    "contributors-loading": "Loading contributors...",
+    "contributors-error": "Failed to load contributors",
+    "third-party-title": "Third Party Licenses",
+    "third-party-license-label": "License",
+    "third-party-url-label": "URL"
   },
   "clear-button": {
     "aria-label": "Clear"
@@ -83,7 +90,7 @@
     },
     "time-too-fast": {
       "title": "Map View Unavailable",
-      "description": "The map is currently unavailable because the camera is moving too fast. Please slow down to view the map."
+      "description": "The map is currently unavailable because the simulation time is moving too fast. Please slow down the time or pause it to view the map."
     },
     "aria-labels": {
       "map": "Map of {{name}}",
@@ -114,7 +121,7 @@
     },
     "frame": {
       "title": "Zoom to / Frame",
-      "tooltip": "Frame the object by moving the camera in a straigt line and rotate towards it. Hold <0>Shift</0> when clicking to do it instantaneously"
+      "tooltip": "Frame the object by moving the camera in a straight line and rotate towards it. Hold <0>Shift</0> when clicking to do it instantaneously"
     }
   },
   "property": {
@@ -150,7 +157,7 @@
       "read-only-label": "Read-only"
     },
     "confirmation-modal": {
-      "title": "Confirm Change",
+      "title": "Confirm Property Change",
       "description": "You are about to change the value of '{{propertyName}}'. Do you want to proceed?",
       "confirm": "Confirm",
       "cancel": "Cancel"
@@ -192,11 +199,12 @@
       },
       "info-box": {
         "description": "Properties for controlling video playback."
-      }
+      },
+      "mapped-to-time-info": "Playback is mapped to simulation time."
     }
   },
   "qrcode": {
-    "alt-text": "OpenSpace Routes Page",
+    "alt-text": "OpenSpace Portal",
     "allow-warning-title": "Setting the allowed devices",
     "allow-warning-text": "By default, devices other than the local computer are blocked. You must either change the \"Default Access\" setting to \"Allow\" or add your device's address AND your computer's address to the \"Allow Addresses\" list. (This can also be changed permanently in openspace.cfg file)",
     "current-address-value": "Current Address Value:",

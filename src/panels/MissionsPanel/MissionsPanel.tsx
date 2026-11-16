@@ -39,8 +39,8 @@ export function MissionsPanel() {
     );
   }
 
-  // Grab the mission last viewed or if it does not exist anymore, take the first one
-  const mission = missions[selectedMissionIdentifier] ?? Object.values(missions)[0];
+  // Grab the mission last viewed or if it does not exist anymore, take the last one
+  const mission = missions[selectedMissionIdentifier] ?? Object.values(missions).at(-1);
 
   return (
     <Box>
@@ -49,7 +49,7 @@ export function MissionsPanel() {
           label={t('select-mission.label')}
           placeholder={t('select-mission.placeholder')}
           data={Object.entries(missions).map(([identifier, mission]) => {
-            return { value: identifier, label: mission.name };
+            return { value: identifier, label: mission.mission.name };
           })}
           value={selectedMissionIdentifier}
           onChange={onMissionSelected}
@@ -57,7 +57,7 @@ export function MissionsPanel() {
           allowDeselect={false}
         />
       )}
-      <MissionContent missionOverview={mission} />
+      <MissionContent missionEntry={mission} />
     </Box>
   );
 }

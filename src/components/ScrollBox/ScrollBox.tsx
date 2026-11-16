@@ -4,7 +4,7 @@ import { Box, BoxProps } from '@mantine/core';
 import styles from './ScrollBox.module.css';
 
 interface Props extends BoxProps, PropsWithChildren {
-  ref?: React.RefObject<HTMLDivElement | null>;
+  ref?: React.Ref<HTMLDivElement>;
   direction?: 'vertical' | 'horizontal' | 'both';
 }
 

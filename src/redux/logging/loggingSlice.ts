@@ -1,22 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { LogLevel } from '@/types/enums';
+import { NotificationLevel } from '@/types/enums';
 
 export interface LoggingState {
-  logLevel: LogLevel;
+  logLevel: NotificationLevel;
   showNotifications: boolean;
 }
 
 const initialState: LoggingState = {
   showNotifications: true,
-  logLevel: LogLevel.Warning
+  logLevel: NotificationLevel.Warning
 };
 
 export const loggingSlice = createSlice({
   name: 'logging',
   initialState,
   reducers: {
-    updateLogLevel: (state, action: PayloadAction<LogLevel>) => {
+    updateLogLevel: (state, action: PayloadAction<NotificationLevel>) => {
       state.logLevel = action.payload;
       return state;
     },
