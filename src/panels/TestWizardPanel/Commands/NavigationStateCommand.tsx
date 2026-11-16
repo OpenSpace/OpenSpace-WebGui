@@ -17,19 +17,38 @@ interface Props {
   onCancel: () => void;
 }
 
+interface Fields {
+  anchor: string;
+  position: string;
+  aim: string;
+  pitch: number | string;
+  refFrame: string;
+  up: string;
+  yaw: number | string;
+  timestamp: string;
+  includeTimestamp: boolean;
+}
+
 export function NavigationStateCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-
-  const [anchor, setAnchor] = useState('');
-  const [position, setPosition] = useState('');
-  const [aim, setAim] = useState('');
-  const [pitch, setPitch] = useState<number | string>('');
-  const [refFrame, setRefFrame] = useState('');
-  const [up, setUp] = useState('');
-  const [yaw, setYaw] = useState<number | string>('');
-  const [timestamp, setTimestamp] = useState('');
-  const [includeTimestamp, setIncludeTimestamp] = useState(false);
+  const [fields, setFields] = useState<Fields>({
+    anchor: '',
+    position: '',
+    aim: '',
+    pitch: '',
+    refFrame: '',
+    up: '',
+    yaw: '',
+    timestamp: '',
+    includeTimestamp: false
+  });
   const [fetchError, setFetchError] = useState<string | null>(null);
+  const { anchor, position, aim, pitch, refFrame, up, yaw, timestamp, includeTimestamp } =
+    fields;
+
+  function setField<K extends keyof Fields>(key: K, value: Fields[K]) {
+    setFields((prev) => ({ ...prev, [key]: value }));
+  }
 
   const luaApi = useOpenSpaceApi();
 
@@ -62,17 +81,19 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
   );
 
   const resetAll = useCallback(() => {
-    resetFromCurrent((navState) => {
-      setAnchor(navState.Anchor);
-      setPosition(navState.Position.join(', '));
-      setAim(navState.Aim ?? '');
-      setPitch(navState.Pitch ?? '');
-      setRefFrame(navState.ReferenceFrame ?? '');
-      setUp(navState.Up?.join(', ') ?? '');
-      setYaw(navState.Yaw ?? '');
-      setTimestamp(navState.Timestamp ?? '');
-      setIncludeTimestamp(navState.Timestamp !== undefined);
-    });
+    resetFromCurrent((navState) =>
+      setFields({
+        anchor: navState.Anchor,
+        position: navState.Position.join(', '),
+        aim: navState.Aim ?? '',
+        pitch: navState.Pitch ?? '',
+        refFrame: navState.ReferenceFrame ?? '',
+        up: navState.Up?.join(', ') ?? '',
+        yaw: navState.Yaw ?? '',
+        timestamp: navState.Timestamp ?? '',
+        includeTimestamp: navState.Timestamp !== undefined
+      })
+    );
   }, [resetFromCurrent]);
 
   // Start from the current navigation state
@@ -135,13 +156,17 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
             <Checkbox
               label={t('navigationstate.include-timestamp.label')}
               checked={includeTimestamp}
-              onChange={(event) => setIncludeTimestamp(event.currentTarget.checked)}
+              onChange={(event) =>
+                setField('includeTimestamp', event.currentTarget.checked)
+              }
             />
             {includeTimestamp && (
               <ResettableField
                 label={labels.timestamp}
                 onReset={() =>
-                  resetFromCurrent((navState) => setTimestamp(navState.Timestamp ?? ''))
+                  resetFromCurrent((navState) =>
+                    setField('timestamp', navState.Timestamp ?? '')
+                  )
                 }
                 disabled={disabled}
               >
@@ -149,26 +174,30 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
                   label={labels.timestamp}
                   placeholder={t('navigationstate.timestamp.placeholder')}
                   value={timestamp}
-                  onChange={(event) => setTimestamp(event.currentTarget.value)}
+                  onChange={(event) => setField('timestamp', event.currentTarget.value)}
                 />
               </ResettableField>
             )}
             <ResettableField
               label={labels.anchor}
-              onReset={() => resetFromCurrent((navState) => setAnchor(navState.Anchor))}
+              onReset={() =>
+                resetFromCurrent((navState) => setField('anchor', navState.Anchor))
+              }
               disabled={disabled}
             >
               <TextInput
                 label={labels.anchor}
                 placeholder={t('navigationstate.anchor.placeholder')}
                 value={anchor}
-                onChange={(event) => setAnchor(event.currentTarget.value)}
+                onChange={(event) => setField('anchor', event.currentTarget.value)}
               />
             </ResettableField>
             <ResettableField
               label={labels.position}
               onReset={() =>
-                resetFromCurrent((navState) => setPosition(navState.Position.join(', ')))
+                resetFromCurrent((navState) =>
+                  setField('position', navState.Position.join(', '))
+                )
               }
               disabled={disabled}
             >
@@ -177,7 +206,7 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
                 description={t('comma-separated')}
                 placeholder={t('navigationstate.position.placeholder')}
                 value={position}
-                onChange={(event) => setPosition(event.currentTarget.value)}
+                onChange={(event) => setField('position', event.currentTarget.value)}
               />
             </ResettableField>
             <Collapsable title={t('navigationstate.optional.title')}>
@@ -185,7 +214,7 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
                 <ResettableField
                   label={labels.aim}
                   onReset={() =>
-                    resetFromCurrent((navState) => setAim(navState.Aim ?? ''))
+                    resetFromCurrent((navState) => setField('aim', navState.Aim ?? ''))
                   }
                   disabled={disabled}
                 >
@@ -193,14 +222,14 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
                     label={labels.aim}
                     placeholder={t('navigationstate.aim.placeholder')}
                     value={aim}
-                    onChange={(event) => setAim(event.currentTarget.value)}
+                    onChange={(event) => setField('aim', event.currentTarget.value)}
                   />
                 </ResettableField>
                 <ResettableField
                   label={labels.refFrame}
                   onReset={() =>
                     resetFromCurrent((navState) =>
-                      setRefFrame(navState.ReferenceFrame ?? '')
+                      setField('refFrame', navState.ReferenceFrame ?? '')
                     )
                   }
                   disabled={disabled}
@@ -208,13 +237,15 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
                   <TextInput
                     label={labels.refFrame}
                     value={refFrame}
-                    onChange={(event) => setRefFrame(event.currentTarget.value)}
+                    onChange={(event) => setField('refFrame', event.currentTarget.value)}
                   />
                 </ResettableField>
                 <ResettableField
                   label={labels.up}
                   onReset={() =>
-                    resetFromCurrent((navState) => setUp(navState.Up?.join(', ') ?? ''))
+                    resetFromCurrent((navState) =>
+                      setField('up', navState.Up?.join(', ') ?? '')
+                    )
                   }
                   disabled={disabled}
                 >
@@ -223,26 +254,36 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
                     description={t('comma-separated')}
                     placeholder={t('navigationstate.up.placeholder')}
                     value={up}
-                    onChange={(event) => setUp(event.currentTarget.value)}
+                    onChange={(event) => setField('up', event.currentTarget.value)}
                   />
                 </ResettableField>
                 <ResettableField
                   label={labels.pitch}
                   onReset={() =>
-                    resetFromCurrent((navState) => setPitch(navState.Pitch ?? ''))
+                    resetFromCurrent((navState) =>
+                      setField('pitch', navState.Pitch ?? '')
+                    )
                   }
                   disabled={disabled}
                 >
-                  <NumberInput label={labels.pitch} value={pitch} onChange={setPitch} />
+                  <NumberInput
+                    label={labels.pitch}
+                    value={pitch}
+                    onChange={(value) => setField('pitch', value)}
+                  />
                 </ResettableField>
                 <ResettableField
                   label={labels.yaw}
                   onReset={() =>
-                    resetFromCurrent((navState) => setYaw(navState.Yaw ?? ''))
+                    resetFromCurrent((navState) => setField('yaw', navState.Yaw ?? ''))
                   }
                   disabled={disabled}
                 >
-                  <NumberInput label={labels.yaw} value={yaw} onChange={setYaw} />
+                  <NumberInput
+                    label={labels.yaw}
+                    value={yaw}
+                    onChange={(value) => setField('yaw', value)}
+                  />
                 </ResettableField>
               </Stack>
             </Collapsable>
