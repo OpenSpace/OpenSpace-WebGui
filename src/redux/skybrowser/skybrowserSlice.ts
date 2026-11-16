@@ -42,12 +42,31 @@ export const skyBrowserSlice = createSlice({
       if (action.payload.cameraInSolarSystem !== undefined) {
         state.cameraInSolarSystem = action.payload.cameraInSolarSystem;
       }
-      if (action.payload.selectedBrowserId !== undefined) {
-        state.selectedBrowserId = action.payload.selectedBrowserId;
+
+      const { browsers, selectedBrowserId } = action.payload;
+
+      // Nothing to validate or update for partial updates without browser info
+      if (browsers === undefined && selectedBrowserId === undefined) {
+        return state;
       }
 
-      if (action.payload.browsers && state.selectedBrowserId in action.payload.browsers) {
-        state.browsers = action.payload.browsers;
+      const nextBrowsers = browsers ?? state.browsers;
+      const nextSelectedId = selectedBrowserId ?? state.selectedBrowserId;
+
+      if (!(nextSelectedId in nextBrowsers)) {
+        // If the update is invalid, reset the state
+        state.selectedBrowserId = '';
+        state.browsers = {};
+        state.browserIds = [];
+        state.browserNames = [];
+        state.browserColors = [];
+        return state;
+      }
+
+      state.selectedBrowserId = nextSelectedId;
+
+      if (browsers !== undefined) {
+        state.browsers = browsers;
         // For some reason the indices are sent as strings... convert them to numbers
         for (const browser of Object.values(state.browsers)) {
           browser.selectedImages = browser.selectedImages.map((idx) =>
@@ -58,13 +77,6 @@ export const skyBrowserSlice = createSlice({
         state.browserIds = Object.keys(state.browsers);
         state.browserColors = state.browserIds.map((id) => state.browsers[id].color);
         state.browserNames = state.browserIds.map((id) => state.browsers[id].name);
-      } else {
-        // If the update is invalid, reset the state
-        state.selectedBrowserId = '';
-        state.browsers = {};
-        state.browserIds = [];
-        state.browserNames = [];
-        state.browserColors = [];
       }
 
       return state;
