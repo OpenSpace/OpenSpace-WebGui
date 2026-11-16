@@ -40,7 +40,7 @@ export interface OsTest {
   commands: TestCommand[];
 }
 
-export const COMMAND_TYPES = [
+export const CommandTypes = [
   'navigationstate',
   'asset',
   'property',
@@ -52,7 +52,7 @@ export const COMMAND_TYPES = [
   'action'
 ] as const;
 
-export type CommandType = (typeof COMMAND_TYPES)[number];
+export type CommandType = (typeof CommandTypes)[number];
 
 // The navigation state as returned by OpenSpace
 export interface NavState {

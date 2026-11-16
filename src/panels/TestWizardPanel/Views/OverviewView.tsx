@@ -19,7 +19,7 @@ import { MinusIcon, PlusIcon } from '@/icons/icons';
 
 import { ResettableField } from '../ResettableField';
 import { SaveCancelButtons } from '../SaveCancelButtons';
-import { COMMAND_TYPES, CommandEntry, CommandType, TestCommand } from '../types';
+import { CommandEntry, CommandType, CommandTypes, TestCommand } from '../types';
 import { isCommandType, isValidFileName } from '../util';
 
 interface Props {
@@ -168,7 +168,7 @@ export function OverviewView({
               flex={1}
               aria-label={t('add-command-form.type-label')}
               placeholder={t('add-command-form.type-placeholder')}
-              data={COMMAND_TYPES.map((id) => ({
+              data={CommandTypes.map((id) => ({
                 value: id,
                 label: t(`add-command-form.types.${id}.label`)
               }))}

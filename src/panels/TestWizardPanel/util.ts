@@ -2,7 +2,7 @@ import { AnyProperty } from 'openspace-api-js/types';
 
 import { stripRoot } from '@/panels/AssetsPanel/util';
 
-import { COMMAND_TYPES, CommandType, OsTest, TestCommand, Vec3 } from './types';
+import { CommandType, CommandTypes, OsTest, TestCommand, Vec3 } from './types';
 
 /**
  * @param path The absolute path to an asset file
@@ -83,7 +83,7 @@ export function isOsTest(test: unknown): test is OsTest {
 }
 
 export function isCommandType(value: string): value is CommandType {
-  return (COMMAND_TYPES as readonly string[]).includes(value);
+  return (CommandTypes as readonly string[]).includes(value);
 }
 
 // Names Windows reserves for devices, with or without a file extension
