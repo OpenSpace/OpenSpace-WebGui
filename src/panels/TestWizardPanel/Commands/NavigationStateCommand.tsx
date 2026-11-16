@@ -65,14 +65,17 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
     timestamp: t('navigationstate.timestamp.label')
   };
 
+  // Fetches the current navigation state and passes it to `applyNavState`
   const resetFromCurrent = useCallback(
-    async (apply: (navState: NavState) => void) => {
+    async (applyNavState: (navState: NavState) => void) => {
       if (!luaApi) {
         return;
       }
       setFetchError(null);
       try {
-        apply((await luaApi.navigation.getNavigationState()) as NavState);
+        const currentNavState =
+          (await luaApi.navigation.getNavigationState()) as NavState;
+        applyNavState(currentNavState);
       } catch (e) {
         setFetchError(e instanceof Error ? e.message : t('fetch-failed'));
       }
