@@ -8,6 +8,8 @@ import { useProperty } from '@/hooks/properties';
 import { usePropListeningState } from '@/hooks/util';
 import { roundTo, stepToDecimalPlaces } from '@/util/numeric';
 
+import { TimeView } from './NumericProperty/TimeView';
+
 interface Props extends PropertyProps {
   isInt?: boolean;
 }
@@ -21,6 +23,16 @@ export function NumericProperty({ uri, isInt = false, readOnly }: Props) {
 
   if (!meta || currentValue === undefined || value === undefined) {
     return <></>;
+  }
+
+  if (meta.viewOptions?.Time) {
+    return (
+      <TimeView
+        value={value}
+        setPropertyValue={(newValue) => setPropertyValue(newValue)}
+        readOnly={readOnly}
+      />
+    );
   }
 
   const { min, max, step, exponent } = meta.additionalData;

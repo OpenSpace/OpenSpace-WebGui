@@ -44,6 +44,12 @@ export type ViewOptionsVector =
     }
   | undefined;
 
+export type ViewOptionsNumber =
+  | {
+      Time?: boolean;
+    }
+  | undefined;
+
 // In OpenSpace the options are represented like so:
 // { 1: "Option 1", 2: "Option 2", ...}
 // The key is an integer but in a string format.
@@ -72,6 +78,7 @@ export interface AdditionalDataNumber {
 interface NumberProperty {
   value: number;
   additionalData: AdditionalDataNumber;
+  viewOptions: ViewOptionsNumber;
 }
 interface VectorProperty {
   value: number[];
