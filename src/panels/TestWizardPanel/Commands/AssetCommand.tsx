@@ -4,12 +4,10 @@ import { Select, Stack, TextInput } from '@mantine/core';
 
 import { Layout } from '@/components/Layout/Layout';
 import { useSubscribeToAssetTree } from '@/hooks/topicSubscriptions';
-import { useRootPaths } from '@/panels/AssetsPanel/hooks';
 import { useAppSelector } from '@/redux/hooks';
 
 import { SaveCancelButtons } from '../SaveCancelButtons';
 import { TestCommand } from '../types';
-import { assetNameFromPath } from '../util';
 
 interface Props {
   onAdd: (command: TestCommand) => void;
@@ -18,19 +16,17 @@ interface Props {
 
 export function AssetCommand({ onAdd, onCancel }: Props) {
   const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-  const rootAssets = useAppSelector((state) => state.assetTree.rootAssets);
   const [asset, setAsset] = useState('');
-  const assetRoots = useRootPaths();
+  const states = useAppSelector((state) => state.assetTree.states);
   useSubscribeToAssetTree();
 
   const assetOptions = useMemo(
     () =>
-      assetRoots
-        ? rootAssets
-            .map((assetPath) => assetNameFromPath(assetPath, assetRoots.data))
-            .sort()
-        : [],
-    [rootAssets, assetRoots]
+      Object.entries(states)
+        .filter(([, state]) => state === 'Loaded')
+        .map(([path]) => path)
+        .sort(),
+    [states]
   );
 
   return (

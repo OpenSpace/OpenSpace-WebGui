@@ -1,18 +1,6 @@
 import { AnyProperty } from 'openspace-api-js/types';
 
-import { stripRoot } from '@/panels/AssetsPanel/util';
-
 import { CommandType, CommandTypes, OsTest, TestCommand, Vec3 } from './types';
-
-/**
- * @param path The absolute path to an asset file
- * @param root The absolute path to the folder the asset name should be relative to
- * @returns The asset name used in test commands: the path relative to `root`, without
- * the asset file extension
- */
-export function assetNameFromPath(path: string, root: string): string {
-  return stripRoot(path, root).replace(/\.j?asset$/, '');
-}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
