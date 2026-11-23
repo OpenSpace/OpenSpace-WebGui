@@ -57,20 +57,15 @@ export function ActionsButton({ uri, action: _action, height }: Props) {
           </Text>
         </Button>
         <Stack justify={'center'} align={'center'} px={5}>
-          {action.documentation && (
-            <InfoBox>
-              <Stack gap={'xs'}>
-                <Text size={'sm'}>{action.documentation}</Text>
-                {keybind && (
-                  <KeybindButtons
-                    modifiers={keybind.modifiers}
-                    selectedKey={keybind.key}
-                  />
-                )}
-                {action!.identifier && <CopyUriButton uri={action!.identifier} />}
-              </Stack>
-            </InfoBox>
-          )}
+          <InfoBox>
+            <Stack gap={'xs'}>
+              {action.documentation && <Text size={'sm'}>{action.documentation}</Text>}
+              {keybind && (
+                <KeybindButtons modifiers={keybind.modifiers} selectedKey={keybind.key} />
+              )}
+              {action!.identifier && <CopyUriButton uri={action!.identifier} />}
+            </Stack>
+          </InfoBox>
           {isLocal && (
             <Tooltip label={t('is-local-tooltip')} position={'top'}>
               <Badge variant={'light'} circle>

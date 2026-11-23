@@ -35,27 +35,48 @@ export const skyBrowserSlice = createSlice({
       state.isInitialized = true;
       return state;
     },
-    updateSkyBrowser: (state, action: PayloadAction<SkyBrowserTopic['data']>) => {
-      state.cameraInSolarSystem = action.payload.cameraInSolarSystem;
-      state.selectedBrowserId = action.payload.selectedBrowserId;
+    updateSkyBrowser: (
+      state,
+      action: PayloadAction<Partial<SkyBrowserTopic['data']>>
+    ) => {
+      if (action.payload.cameraInSolarSystem !== undefined) {
+        state.cameraInSolarSystem = action.payload.cameraInSolarSystem;
+      }
 
-      if (action.payload.browsers && state.selectedBrowserId in action.payload.browsers) {
-        state.browsers = action.payload.browsers;
-        // Derived state for easier access
-        state.browserIds = Object.keys(action.payload.browsers) ?? [];
-        state.browserColors = state.browserIds.map(
-          (id) => action.payload.browsers[id].color
-        );
-        state.browserNames = state.browserIds.map(
-          (id) => action.payload.browsers[id].name
-        );
-      } else {
+      const { browsers, selectedBrowserId } = action.payload;
+
+      // Nothing to validate or update for partial updates without browser info
+      if (browsers === undefined && selectedBrowserId === undefined) {
+        return state;
+      }
+
+      const nextBrowsers = browsers ?? state.browsers;
+      const nextSelectedId = selectedBrowserId ?? state.selectedBrowserId;
+
+      if (!(nextSelectedId in nextBrowsers)) {
         // If the update is invalid, reset the state
         state.selectedBrowserId = '';
         state.browsers = {};
         state.browserIds = [];
         state.browserNames = [];
         state.browserColors = [];
+        return state;
+      }
+
+      state.selectedBrowserId = nextSelectedId;
+
+      if (browsers !== undefined) {
+        state.browsers = browsers;
+        // For some reason the indices are sent as strings... convert them to numbers
+        for (const browser of Object.values(state.browsers)) {
+          browser.selectedImages = browser.selectedImages.map((idx) =>
+            typeof idx === 'string' ? parseInt(idx) : idx
+          );
+        }
+        // Derived state for easier access
+        state.browserIds = Object.keys(state.browsers);
+        state.browserColors = state.browserIds.map((id) => state.browsers[id].color);
+        state.browserNames = state.browserIds.map((id) => state.browsers[id].name);
       }
 
       return state;
