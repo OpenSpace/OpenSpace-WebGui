@@ -8,13 +8,14 @@ import { SaveCancelButtons } from '../SaveCancelButtons';
 import { TestCommand } from '../types';
 
 interface Props {
-  onAdd: (command: TestCommand) => void;
+  onSubmit: (command: TestCommand) => void;
   onCancel: () => void;
+  initialValue?: string;
 }
 
-export function ScriptCommand({ onAdd, onCancel }: Props) {
-  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-  const [script, setScript] = useState('');
+export function ScriptCommand({ onSubmit, onCancel, initialValue }: Props) {
+  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'command-form' });
+  const [script, setScript] = useState(initialValue ?? '');
 
   return (
     <>
@@ -32,9 +33,9 @@ export function ScriptCommand({ onAdd, onCancel }: Props) {
       </Layout.GrowingSection>
       <Layout.FixedSection>
         <SaveCancelButtons
-          onSave={() => onAdd({ type: 'script', value: script })}
+          onSave={() => onSubmit({ type: 'script', value: script })}
           onCancel={onCancel}
-          saveLabel={'add'}
+          saveLabel={initialValue === undefined ? 'add' : 'save'}
           saveDisabled={!script}
         />
       </Layout.FixedSection>

@@ -11,19 +11,20 @@ import { SaveCancelButtons } from '../SaveCancelButtons';
 import { TestCommand } from '../types';
 
 interface Props {
-  onAdd: (command: TestCommand) => void;
+  onSubmit: (command: TestCommand) => void;
   onCancel: () => void;
+  initialValue?: number;
 }
 
-export function DeltaTimeCommand({ onAdd, onCancel }: Props) {
-  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
+export function DeltaTimeCommand({ onSubmit, onCancel, initialValue }: Props) {
+  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'command-form' });
   const currentDeltaTime = useAppSelector((state) => state.time.targetDeltaTime);
   useSubscribeToTime();
   const {
     value: deltaTime,
     setValue: setDeltaTime,
     reset
-  } = useResettableValue<number | string>(currentDeltaTime);
+  } = useResettableValue<number | string>(currentDeltaTime, initialValue);
 
   const label = t('deltatime.label');
 
@@ -48,9 +49,9 @@ export function DeltaTimeCommand({ onAdd, onCancel }: Props) {
       </Layout.GrowingSection>
       <Layout.FixedSection>
         <SaveCancelButtons
-          onSave={() => onAdd({ type: 'deltatime', value: Number(deltaTime) })}
+          onSave={() => onSubmit({ type: 'deltatime', value: Number(deltaTime) })}
           onCancel={onCancel}
-          saveLabel={'add'}
+          saveLabel={initialValue === undefined ? 'add' : 'save'}
           saveDisabled={deltaTime === undefined || deltaTime === ''}
         />
       </Layout.FixedSection>

@@ -11,25 +11,26 @@ import { SaveCancelButtons } from '../SaveCancelButtons';
 import { TestCommand } from '../types';
 
 interface Props {
-  onAdd: (command: TestCommand) => void;
+  onSubmit: (command: TestCommand) => void;
   onCancel: () => void;
+  initialValue?: boolean;
 }
 
-export function PauseCommand({ onAdd, onCancel }: Props) {
-  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
+export function PauseCommand({ onSubmit, onCancel, initialValue }: Props) {
+  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'command-form' });
   const currentIsPaused = useAppSelector((state) => state.time.isPaused);
   useSubscribeToTime();
   const {
     value: isPaused,
     setValue: setIsPaused,
     reset
-  } = useResettableValue(currentIsPaused);
+  } = useResettableValue(currentIsPaused, initialValue);
 
   const label = t('pause.label');
 
-  function handleAdd() {
+  function handleSubmitCommand() {
     if (isPaused !== undefined) {
-      onAdd({ type: 'pause', value: isPaused });
+      onSubmit({ type: 'pause', value: isPaused });
     }
   }
 
@@ -53,9 +54,9 @@ export function PauseCommand({ onAdd, onCancel }: Props) {
       </Layout.GrowingSection>
       <Layout.FixedSection>
         <SaveCancelButtons
-          onSave={handleAdd}
+          onSave={handleSubmitCommand}
           onCancel={onCancel}
-          saveLabel={'add'}
+          saveLabel={initialValue === undefined ? 'add' : 'save'}
           saveDisabled={isPaused === undefined}
         />
       </Layout.FixedSection>

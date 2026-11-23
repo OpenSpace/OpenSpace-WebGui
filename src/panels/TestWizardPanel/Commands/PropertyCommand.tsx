@@ -11,30 +11,31 @@ import { propertySelectors } from '@/redux/propertytree/propertySlice';
 import { useResettableValue } from '../hooks';
 import { ResettableField } from '../ResettableField';
 import { SaveCancelButtons } from '../SaveCancelButtons';
-import { TestCommand } from '../types';
+import { PropertyCommandValue, TestCommand } from '../types';
 
 interface Props {
-  onAdd: (command: TestCommand) => void;
+  onSubmit: (command: TestCommand) => void;
   onCancel: () => void;
+  initialValue?: PropertyCommandValue;
 }
 
-export function PropertyCommand({ onAdd, onCancel }: Props) {
-  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
+export function PropertyCommand({ onSubmit, onCancel, initialValue }: Props) {
+  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'command-form' });
   const propertyUris = useAppSelector(propertySelectors.selectIds);
-  const [uri, setUri] = useState('');
+  const [uri, setUri] = useState(initialValue?.property ?? '');
 
   // Derived from `uri`, so it comes after the state
   const property = useAppSelector((state) => propertySelectors.selectById(state, uri));
-  const { value, setValue, reset } = useResettableValue(property?.value);
+  const { value, setValue, reset } = useResettableValue(property?.value, initialValue?.value);
 
   function handleUriChange(newUri: string) {
     setUri(newUri);
     setValue(undefined);
   }
 
-  function handleAdd() {
+  function handleSubmitCommand() {
     if (value !== undefined) {
-      onAdd({ type: 'property', value: { property: uri, value } });
+      onSubmit({ type: 'property', value: { property: uri, value } });
     }
   }
 
@@ -74,9 +75,9 @@ export function PropertyCommand({ onAdd, onCancel }: Props) {
       </Layout.GrowingSection>
       <Layout.FixedSection>
         <SaveCancelButtons
-          onSave={handleAdd}
+          onSave={handleSubmitCommand}
           onCancel={onCancel}
-          saveLabel={'add'}
+          saveLabel={initialValue === undefined ? 'add' : 'save'}
           saveDisabled={value === undefined}
         />
       </Layout.FixedSection>

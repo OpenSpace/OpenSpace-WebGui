@@ -5,16 +5,17 @@ import { InfoBox } from '@/components/InfoBox/InfoBox';
 import { Layout } from '@/components/Layout/Layout';
 import { BackArrowIcon } from '@/icons/icons';
 
-import { AddCommandForm } from '../AddCommandForm';
+import { CommandForm } from '../CommandForm';
 import { CommandType, TestCommand } from '../types';
 
 interface Props {
   type: CommandType;
-  onAdd: (command: TestCommand) => void;
+  onSubmit: (command: TestCommand) => void;
   onCancel: () => void;
+  initialCommand?: TestCommand;
 }
 
-export function AddCommandView({ type, onAdd, onCancel }: Props) {
+export function CommandFormView({ type, onSubmit, onCancel, initialCommand }: Props) {
   const { t } = useTranslation('panel-testwizard');
 
   return (
@@ -30,16 +31,21 @@ export function AddCommandView({ type, onAdd, onCancel }: Props) {
             <BackArrowIcon />
           </ActionIcon>
           <Title order={5}>
-            {t('sections.add-command', {
-              type: t(`add-command-form.types.${type}.label`)
+            {t(initialCommand ? 'sections.edit-command' : 'sections.add-command', {
+              type: t(`command-form.types.${type}.label`)
             })}
           </Title>
           <InfoBox>
-            <Text>{t(`add-command-form.types.${type}.description`)}</Text>
+            <Text>{t(`command-form.types.${type}.description`)}</Text>
           </InfoBox>
         </Group>
       </Layout.FixedSection>
-      <AddCommandForm type={type} onAdd={onAdd} onCancel={onCancel} />
+      <CommandForm
+        type={type}
+        onSubmit={onSubmit}
+        onCancel={onCancel}
+        initialCommand={initialCommand}
+      />
     </Layout>
   );
 }

@@ -11,14 +11,14 @@ import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
 import { NotificationLevel } from '@/types/enums';
 import { useSaveFile } from '@/util/fileIOhooks';
 
-import { AddCommandView } from './Views/AddCommandView';
+import { CommandFormView } from './Views/CommandFormView';
 import { OverviewView } from './Views/OverviewView';
 import { StartView } from './Views/StartView';
 import { useResettableValue } from './hooks';
 import { CommandEntry, CommandType, OsTest, TestCommand } from './types';
 import { isOsTest } from './util';
 
-type View = 'start' | 'overview' | 'add-command';
+type View = 'start' | 'overview' | 'command-form';
 
 /**
  * A panel for creating OpenSpace visual regression test files (`.ostest`).
@@ -32,6 +32,8 @@ export function TestWizardPanel() {
   const [name, setName] = useState('');
   const [commands, setCommands] = useState<CommandEntry[]>([]);
   const [commandType, setCommandType] = useState<CommandType | null>(null);
+  // The command currently being edited, if any
+  const [editing, setEditing] = useState<CommandEntry | null>(null);
 
   const saveFile = useSaveFile();
   const fileDialog = useFileDialog({
@@ -84,12 +86,31 @@ export function TestWizardPanel() {
     setView('overview');
   }
 
-  function handleAdd(cmd: TestCommand) {
-    setCommands((previousCommands) => [
-      ...previousCommands,
-      { id: crypto.randomUUID(), cmd }
-    ]);
+  function handleSubmitCommand(cmd: TestCommand) {
+    if (editing) {
+      setCommands((previousCommands) =>
+        previousCommands.map((entry) => (entry.id === editing.id ? { ...entry, cmd } : entry))
+      );
+      setEditing(null);
+    } else {
+      setCommands((previousCommands) => [
+        ...previousCommands,
+        { id: crypto.randomUUID(), cmd }
+      ]);
+    }
     setView('overview');
+  }
+
+  function handleEdit(index: number) {
+    setEditing(commands[index]);
+    setView('command-form');
+  }
+
+  function handleCancelCommandForm() {
+    confirmDiscard(() => {
+      setEditing(null);
+      setView('overview');
+    });
   }
 
   function confirmDiscard(onConfirm: () => void) {
@@ -159,6 +180,8 @@ export function TestWizardPanel() {
     }
   }
 
+  const formCommandType = editing ? editing.cmd.type : commandType;
+
   return (
     <Container h={'100%'}>
       {view === 'start' && (
@@ -174,19 +197,21 @@ export function TestWizardPanel() {
           isProfileResetDisabled={storeProfile === undefined}
           commands={commands}
           onReorder={handleReorder}
+          onEdit={handleEdit}
           onRemove={handleRemove}
           commandType={commandType}
           onCommandTypeChange={setCommandType}
-          onAddCommand={() => setView('add-command')}
+          onAddCommand={() => setView('command-form')}
           onSave={handleSave}
           onCancel={handleCancel}
         />
       )}
-      {view === 'add-command' && commandType !== null && (
-        <AddCommandView
-          type={commandType}
-          onAdd={handleAdd}
-          onCancel={() => confirmDiscard(() => setView('overview'))}
+      {view === 'command-form' && formCommandType !== null && (
+        <CommandFormView
+          type={formCommandType}
+          onSubmit={handleSubmitCommand}
+          onCancel={handleCancelCommandForm}
+          initialCommand={editing?.cmd}
         />
       )}
     </Container>

@@ -11,12 +11,13 @@ import { SaveCancelButtons } from '../SaveCancelButtons';
 import { TestCommand } from '../types';
 
 interface Props {
-  onAdd: (command: TestCommand) => void;
+  onSubmit: (command: TestCommand) => void;
   onCancel: () => void;
+  initialValue?: string;
 }
 
-export function TimeCommand({ onAdd, onCancel }: Props) {
-  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
+export function TimeCommand({ onSubmit, onCancel, initialValue }: Props) {
+  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'command-form' });
   const currentTime = useSubscribeToTime();
 
   const currentTimeString =
@@ -27,7 +28,7 @@ export function TimeCommand({ onAdd, onCancel }: Props) {
     value: time = '',
     setValue: setTime,
     reset
-  } = useResettableValue(currentTimeString);
+  } = useResettableValue(currentTimeString, initialValue);
 
   const label = t('time.label');
 
@@ -51,9 +52,9 @@ export function TimeCommand({ onAdd, onCancel }: Props) {
       </Layout.GrowingSection>
       <Layout.FixedSection>
         <SaveCancelButtons
-          onSave={() => onAdd({ type: 'time', value: time })}
+          onSave={() => onSubmit({ type: 'time', value: time })}
           onCancel={onCancel}
-          saveLabel={'add'}
+          saveLabel={initialValue === undefined ? 'add' : 'save'}
           saveDisabled={!time}
         />
       </Layout.FixedSection>

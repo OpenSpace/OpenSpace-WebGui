@@ -15,7 +15,7 @@ import {
   OnDragEndProps
 } from '@/components/DragReorderList/DragReorderList';
 import { Layout } from '@/components/Layout/Layout';
-import { MinusIcon, PlusIcon } from '@/icons/icons';
+import { MinusIcon, PenIcon, PlusIcon } from '@/icons/icons';
 
 import { ResettableField } from '../ResettableField';
 import { SaveCancelButtons } from '../SaveCancelButtons';
@@ -31,6 +31,7 @@ interface Props {
   isProfileResetDisabled: boolean;
   commands: CommandEntry[];
   onReorder: (props: OnDragEndProps<CommandEntry>) => void;
+  onEdit: (index: number) => void;
   onRemove: (index: number) => void;
   commandType: CommandType | null;
   onCommandTypeChange: (commandType: CommandType | null) => void;
@@ -48,6 +49,7 @@ export function OverviewView({
   isProfileResetDisabled,
   commands,
   onReorder,
+  onEdit,
   onRemove,
   commandType,
   onCommandTypeChange,
@@ -147,15 +149,25 @@ export function OverviewView({
               <Text size={'sm'} style={{ overflowWrap: 'anywhere' }}>
                 {commandLabel(entry.cmd)}
               </Text>
-              <ActionIcon
-                variant={'light'}
-                size={'sm'}
-                color={'red'}
-                onClick={() => onRemove(index)}
-                aria-label={`${t('remove-command-aria-label')}: ${commandLabel(entry.cmd)}`}
-              >
-                <MinusIcon />
-              </ActionIcon>
+              <Group gap={'xs'} wrap={'nowrap'}>
+                <ActionIcon
+                  variant={'light'}
+                  size={'sm'}
+                  onClick={() => onEdit(index)}
+                  aria-label={`${t('edit-command-aria-label')}: ${commandLabel(entry.cmd)}`}
+                >
+                  <PenIcon />
+                </ActionIcon>
+                <ActionIcon
+                  variant={'light'}
+                  size={'sm'}
+                  color={'red'}
+                  onClick={() => onRemove(index)}
+                  aria-label={`${t('remove-command-aria-label')}: ${commandLabel(entry.cmd)}`}
+                >
+                  <MinusIcon />
+                </ActionIcon>
+              </Group>
             </Group>
           )}
         />
@@ -166,11 +178,11 @@ export function OverviewView({
           <Group gap={'xs'} wrap={'nowrap'}>
             <Select
               flex={1}
-              aria-label={t('add-command-form.type-label')}
-              placeholder={t('add-command-form.type-placeholder')}
+              aria-label={t('command-form.type-label')}
+              placeholder={t('command-form.type-placeholder')}
               data={CommandTypes.map((id) => ({
                 value: id,
-                label: t(`add-command-form.types.${id}.label`)
+                label: t(`command-form.types.${id}.label`)
               }))}
               value={commandType}
               onChange={(value) =>

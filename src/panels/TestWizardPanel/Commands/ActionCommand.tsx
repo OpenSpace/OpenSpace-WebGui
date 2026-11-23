@@ -9,14 +9,15 @@ import { SaveCancelButtons } from '../SaveCancelButtons';
 import { TestCommand } from '../types';
 
 interface Props {
-  onAdd: (command: TestCommand) => void;
+  onSubmit: (command: TestCommand) => void;
   onCancel: () => void;
+  initialValue?: string;
 }
 
-export function ActionCommand({ onAdd, onCancel }: Props) {
-  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
+export function ActionCommand({ onSubmit, onCancel, initialValue }: Props) {
+  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'command-form' });
   const actions = useAppSelector((state) => state.actions.actions);
-  const [action, setAction] = useState('');
+  const [action, setAction] = useState(initialValue ?? '');
 
   const actionOptions = useMemo(
     () =>
@@ -55,9 +56,9 @@ export function ActionCommand({ onAdd, onCancel }: Props) {
       </Layout.GrowingSection>
       <Layout.FixedSection>
         <SaveCancelButtons
-          onSave={() => onAdd({ type: 'action', value: action })}
+          onSave={() => onSubmit({ type: 'action', value: action })}
           onCancel={onCancel}
-          saveLabel={'add'}
+          saveLabel={initialValue === undefined ? 'add' : 'save'}
           saveDisabled={!action}
         />
       </Layout.FixedSection>

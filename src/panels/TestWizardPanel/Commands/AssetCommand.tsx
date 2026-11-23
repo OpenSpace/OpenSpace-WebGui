@@ -10,13 +10,14 @@ import { SaveCancelButtons } from '../SaveCancelButtons';
 import { TestCommand } from '../types';
 
 interface Props {
-  onAdd: (command: TestCommand) => void;
+  onSubmit: (command: TestCommand) => void;
   onCancel: () => void;
+  initialValue?: string;
 }
 
-export function AssetCommand({ onAdd, onCancel }: Props) {
-  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-  const [asset, setAsset] = useState('');
+export function AssetCommand({ onSubmit, onCancel, initialValue }: Props) {
+  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'command-form' });
+  const [asset, setAsset] = useState(initialValue ?? '');
   const states = useAppSelector((state) => state.assetTree.states);
   useSubscribeToAssetTree();
 
@@ -57,9 +58,9 @@ export function AssetCommand({ onAdd, onCancel }: Props) {
       </Layout.GrowingSection>
       <Layout.FixedSection>
         <SaveCancelButtons
-          onSave={() => onAdd({ type: 'asset', value: asset })}
+          onSave={() => onSubmit({ type: 'asset', value: asset })}
           onCancel={onCancel}
-          saveLabel={'add'}
+          saveLabel={initialValue === undefined ? 'add' : 'save'}
           saveDisabled={!asset}
         />
       </Layout.FixedSection>

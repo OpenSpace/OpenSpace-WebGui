@@ -13,8 +13,9 @@ import { NavigationStateValue, NavState, TestCommand } from '../types';
 import { parseVec3 } from '../util';
 
 interface Props {
-  onAdd: (command: TestCommand) => void;
+  onSubmit: (command: TestCommand) => void;
   onCancel: () => void;
+  initialValue?: NavigationStateValue;
 }
 
 interface Fields {
@@ -29,19 +30,19 @@ interface Fields {
   includeTimestamp: boolean;
 }
 
-export function NavigationStateCommand({ onAdd, onCancel }: Props) {
-  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-  const [fields, setFields] = useState<Fields>({
-    anchor: '',
-    position: '',
-    aim: '',
-    pitch: '',
-    refFrame: '',
-    up: '',
-    yaw: '',
-    timestamp: '',
-    includeTimestamp: false
-  });
+export function NavigationStateCommand({ onSubmit, onCancel, initialValue }: Props) {
+  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'command-form' });
+  const [fields, setFields] = useState<Fields>(() => ({
+    anchor: initialValue?.anchor ?? '',
+    position: initialValue?.position.join(', ') ?? '',
+    aim: initialValue?.aim ?? '',
+    pitch: initialValue?.pitch ?? '',
+    refFrame: initialValue?.referenceFrame ?? '',
+    up: initialValue?.up?.join(', ') ?? '',
+    yaw: initialValue?.yaw ?? '',
+    timestamp: initialValue?.timestamp ?? '',
+    includeTimestamp: initialValue?.timestamp !== undefined
+  }));
   const [fetchError, setFetchError] = useState<string | null>(null);
   const { anchor, position, aim, pitch, refFrame, up, yaw, timestamp, includeTimestamp } =
     fields;
@@ -99,10 +100,12 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
     );
   }, [resetFromCurrent]);
 
-  // Start from the current navigation state
+  // Start from the current navigation state, unless editing an existing command
   useEffect(() => {
-    resetAll();
-  }, [resetAll]);
+    if (initialValue === undefined) {
+      resetAll();
+    }
+  }, [resetAll, initialValue]);
 
   function buildCommand(): TestCommand | null {
     const parsedPosition = parseVec3(position);
@@ -295,9 +298,9 @@ export function NavigationStateCommand({ onAdd, onCancel }: Props) {
       </Layout.GrowingSection>
       <Layout.FixedSection>
         <SaveCancelButtons
-          onSave={() => command && onAdd(command)}
+          onSave={() => command && onSubmit(command)}
           onCancel={onCancel}
-          saveLabel={'add'}
+          saveLabel={initialValue === undefined ? 'add' : 'save'}
           saveDisabled={command === null}
         />
       </Layout.FixedSection>

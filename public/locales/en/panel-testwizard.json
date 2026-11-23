@@ -2,6 +2,7 @@
   "info": "Create OpenSpace visual regression test files by selecting a sequence of commands. The resulting <code>.ostest</code> file can be run by the OpenSpace test framework to verify that the application renders correctly.",
   "sections": {
     "add-command": "Add {{type}} command",
+    "edit-command": "Edit {{type}} command",
     "commands": "Commands ({{number}})"
   },
   "test-name": {
@@ -16,6 +17,7 @@
   "no-commands": "No commands added yet.",
   "set-current-value": "Set {{field}} to current value",
   "remove-command-aria-label": "Remove command",
+  "edit-command-aria-label": "Edit command",
   "start": {
     "load-test": "Load test",
     "new-test": "New test"
@@ -67,7 +69,7 @@
     "property": "Property: {{property}} = {{value}}",
     "navigationstate": "Navigation state (anchor: {{anchor}})"
   },
-  "add-command-form": {
+  "command-form": {
     "type-label": "Add command type",
     "type-placeholder": "Select a command type...",
     "fetch-failed": "Failed to fetch from OpenSpace",

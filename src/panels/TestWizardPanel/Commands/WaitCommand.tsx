@@ -8,13 +8,14 @@ import { SaveCancelButtons } from '../SaveCancelButtons';
 import { TestCommand } from '../types';
 
 interface Props {
-  onAdd: (command: TestCommand) => void;
+  onSubmit: (command: TestCommand) => void;
   onCancel: () => void;
+  initialValue?: number;
 }
 
-export function WaitCommand({ onAdd, onCancel }: Props) {
-  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'add-command-form' });
-  const [seconds, setSeconds] = useState<number | string>(0);
+export function WaitCommand({ onSubmit, onCancel, initialValue }: Props) {
+  const { t } = useTranslation('panel-testwizard', { keyPrefix: 'command-form' });
+  const [seconds, setSeconds] = useState<number | string>(initialValue ?? 0);
 
   return (
     <>
@@ -31,9 +32,9 @@ export function WaitCommand({ onAdd, onCancel }: Props) {
       </Layout.GrowingSection>
       <Layout.FixedSection>
         <SaveCancelButtons
-          onSave={() => onAdd({ type: 'wait', value: Number(seconds) })}
+          onSave={() => onSubmit({ type: 'wait', value: Number(seconds) })}
           onCancel={onCancel}
-          saveLabel={'add'}
+          saveLabel={initialValue === undefined ? 'add' : 'save'}
         />
       </Layout.FixedSection>
     </>
