@@ -1,0 +1,227 @@
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Container, Text } from '@mantine/core';
+import { useFileDialog } from '@mantine/hooks';
+import { modals } from '@mantine/modals';
+import { notifications } from '@mantine/notifications';
+
+import { OnDragEndProps } from '@/components/DragReorderList/DragReorderList';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { handleNotificationLogging } from '@/redux/logging/loggingMiddleware';
+import { NotificationLevel } from '@/types/enums';
+import { useSaveFile } from '@/util/fileIOhooks';
+
+import { CommandFormView } from './Views/CommandFormView';
+import { OverviewView } from './Views/OverviewView';
+import { StartView } from './Views/StartView';
+import { useResettableValue } from './hooks';
+import { CommandEntry, CommandType, OsTest, TestCommand } from './types';
+import { isOsTest } from './util';
+
+type View = 'start' | 'overview' | 'command-form';
+
+/**
+ * A panel for creating OpenSpace visual regression test files (`.ostest`).
+ */
+export function TestWizardPanel() {
+  const { t } = useTranslation('panel-testwizard');
+
+  const storeProfile = useAppSelector((state) => state.profile.name);
+
+  const [view, setView] = useState<View>('start');
+  const [name, setName] = useState('');
+  const [commands, setCommands] = useState<CommandEntry[]>([]);
+  const [commandType, setCommandType] = useState<CommandType | null>(null);
+  // The command currently being edited, if any
+  const [editing, setEditing] = useState<CommandEntry | null>(null);
+
+  const saveFile = useSaveFile();
+  const fileDialog = useFileDialog({
+    multiple: false,
+    accept: '.ostest',
+    resetOnOpen: true,
+    onChange: loadFile
+  });
+  const {
+    value: profile = '',
+    setValue: setProfile,
+    reset: resetProfile
+  } = useResettableValue(storeProfile);
+
+  const dispatch = useAppDispatch();
+
+  async function loadFile(files: FileList | null) {
+    const file = files?.[0];
+    if (!file) {
+      return;
+    }
+    try {
+      const test: unknown = JSON.parse(await file.text());
+      if (!isOsTest(test)) {
+        throw new Error(t('load-error.invalid-file'));
+      }
+      setProfile(test.profile ?? storeProfile);
+      setCommands(
+        test.commands
+          .filter((command) => command.type !== 'screenshot')
+          .map((command) => ({ id: crypto.randomUUID(), cmd: command }))
+      );
+      setName(file.name.replace(/\.ostest$/i, ''));
+      setEditing(null);
+      setCommandType(null);
+      setView('overview');
+    } catch (e) {
+      dispatch(
+        handleNotificationLogging(
+          t('load-error.title', { name: file.name }),
+          e,
+          NotificationLevel.Error
+        )
+      );
+    }
+  }
+
+  function startNewTest() {
+    setName('');
+    setCommands([]);
+    resetProfile();
+    setEditing(null);
+    setCommandType(null);
+    setView('overview');
+  }
+
+  function handleSubmitCommand(cmd: TestCommand) {
+    if (editing) {
+      setCommands((previousCommands) =>
+        previousCommands.map((entry) =>
+          entry.id === editing.id ? { ...entry, cmd } : entry
+        )
+      );
+      setEditing(null);
+    } else {
+      setCommands((previousCommands) => [
+        ...previousCommands,
+        { id: crypto.randomUUID(), cmd }
+      ]);
+    }
+    setView('overview');
+  }
+
+  function handleEdit(index: number) {
+    setEditing(commands[index]);
+    setView('command-form');
+  }
+
+  function handleCancelCommandForm() {
+    confirmDiscard(() => {
+      setEditing(null);
+      setView('overview');
+    });
+  }
+
+  function confirmDiscard(onConfirm: () => void) {
+    modals.openConfirmModal({
+      title: t('discard-modal.title'),
+      children: <Text>{t('discard-modal.description')}</Text>,
+      labels: {
+        confirm: t('discard-modal.confirm'),
+        cancel: t('discard-modal.cancel')
+      },
+      confirmProps: { color: 'red', variant: 'filled' },
+      onConfirm
+    });
+  }
+
+  function handleCancel() {
+    if (name.trim() === '' && commands.length === 0) {
+      setView('start');
+      return;
+    }
+    confirmDiscard(() => setView('start'));
+  }
+
+  function handleRemove(index: number) {
+    modals.openConfirmModal({
+      title: t('remove-modal.title'),
+      children: <Text>{t('remove-modal.description')}</Text>,
+      labels: {
+        confirm: t('remove-modal.confirm'),
+        cancel: t('remove-modal.cancel')
+      },
+      confirmProps: { color: 'red', variant: 'filled' },
+      onConfirm: () =>
+        setCommands((previousCommands) =>
+          previousCommands.filter((_, commandIndex) => commandIndex !== index)
+        )
+    });
+  }
+
+  function handleReorder({ updatedData }: OnDragEndProps<CommandEntry>) {
+    setCommands(updatedData);
+  }
+
+  async function handleSave() {
+    const test: OsTest = {
+      profile,
+      commands: [...commands.map((entry) => entry.cmd), { type: 'screenshot' }]
+    };
+    const result = await saveFile(
+      `${JSON.stringify(test, null, 2)}\n`,
+      `${name.trim().replace(/\.ostest$/i, '')}.ostest`,
+      '.ostest',
+      'text/plain'
+    );
+    if (result.status === 'saved') {
+      notifications.show({
+        title: t('saved.title'),
+        message: t('saved.message', { name: result.name }),
+        color: 'green'
+      });
+    } else if (result.status === 'downloaded') {
+      notifications.show({
+        title: t('downloaded.title'),
+        message: t('downloaded.message', { name: result.name }),
+        color: 'blue'
+      });
+    }
+  }
+
+  const formCommandType = editing ? editing.cmd.type : commandType;
+
+  return (
+    <Container h={'100%'}>
+      {view === 'start' && (
+        <StartView onLoadTest={fileDialog.open} onNewTest={startNewTest} />
+      )}
+      {view === 'overview' && (
+        <OverviewView
+          name={name}
+          onNameChange={setName}
+          profile={profile}
+          onProfileChange={setProfile}
+          onProfileReset={resetProfile}
+          isProfileResetDisabled={storeProfile === undefined}
+          commands={commands}
+          onReorder={handleReorder}
+          onEdit={handleEdit}
+          onRemove={handleRemove}
+          commandType={commandType}
+          onCommandTypeChange={setCommandType}
+          onAddCommand={() => setView('command-form')}
+          onSave={handleSave}
+          onCancel={handleCancel}
+        />
+      )}
+      {view === 'command-form' &&
+        formCommandType !== null &&
+        formCommandType !== 'screenshot' && (
+          <CommandFormView
+            type={formCommandType}
+            onSubmit={handleSubmitCommand}
+            onCancel={handleCancelCommandForm}
+            initialCommand={editing?.cmd}
+          />
+        )}
+    </Container>
+  );
+}

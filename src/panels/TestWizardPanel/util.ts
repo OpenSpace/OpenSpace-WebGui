@@ -1,0 +1,128 @@
+import { AnyProperty } from 'openspace-api-js/types';
+
+import { CommandType, CommandTypes, OsTest, TestCommand, Vec3 } from './types';
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function isPropertyValue(value: unknown): value is AnyProperty['value'] {
+  return (
+    value === null ||
+    typeof value === 'string' ||
+    typeof value === 'number' ||
+    typeof value === 'boolean' ||
+    (Array.isArray(value) &&
+      value.every((item) => typeof item === 'string' || typeof item === 'number'))
+  );
+}
+
+function isOptional(value: unknown, type: 'string' | 'number'): boolean {
+  return value === undefined || typeof value === type;
+}
+
+function isVec3(value: unknown): value is Vec3 {
+  return (
+    Array.isArray(value) &&
+    value.length === 3 &&
+    value.every((item) => typeof item === 'number')
+  );
+}
+
+function isTestCommand(command: unknown): command is TestCommand {
+  if (!isRecord(command)) {
+    return false;
+  }
+  const { type, value } = command;
+  switch (type) {
+    case 'screenshot':
+      return true;
+    case 'wait':
+    case 'deltatime':
+      return typeof value === 'number';
+    case 'pause':
+      return typeof value === 'boolean';
+    case 'script':
+    case 'time':
+    case 'asset':
+    case 'action':
+      return typeof value === 'string';
+    case 'property':
+      return (
+        isRecord(value) &&
+        typeof value.property === 'string' &&
+        isPropertyValue(value.value)
+      );
+    case 'navigationstate':
+      return (
+        isRecord(value) &&
+        typeof value.anchor === 'string' &&
+        isVec3(value.position) &&
+        (value.up === undefined || isVec3(value.up)) &&
+        isOptional(value.aim, 'string') &&
+        isOptional(value.referenceFrame, 'string') &&
+        isOptional(value.timestamp, 'string') &&
+        isOptional(value.pitch, 'number') &&
+        isOptional(value.yaw, 'number')
+      );
+    default:
+      return false;
+  }
+}
+
+export function isOsTest(test: unknown): test is OsTest {
+  return (
+    isRecord(test) &&
+    (test.profile === undefined || typeof test.profile === 'string') &&
+    Array.isArray(test.commands) &&
+    test.commands.every(isTestCommand)
+  );
+}
+
+export function isCommandType(value: string): value is CommandType {
+  return (CommandTypes as readonly string[]).includes(value);
+}
+
+// Names Windows reserves for devices, with or without a file extension
+const ReservedFileNames = /^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i;
+// The longest file name most file systems allow
+const MaxFileNameLength = 255;
+
+/**
+ * @returns True if `name`, ignoring leading and trailing whitespace, can be used as the
+ * name of an `.ostest` file, i.e. it is not too long, has no path separators or other
+ * reserved characters, does not end with a dot and is not a reserved device name
+ */
+export function isValidFileName(name: string): boolean {
+  const trimmedName = name.trim();
+  if (trimmedName.endsWith('.')) {
+    return false;
+  }
+  if (trimmedName.length + '.ostest'.length > MaxFileNameLength) {
+    return false;
+  }
+  if (ReservedFileNames.test(trimmedName.split('.')[0])) {
+    return false;
+  }
+  // Character codes below 32 are control characters (tab, newline, ...), which are not
+  // allowed in file names on Windows.
+  return !Array.from(trimmedName).some(
+    (character) => '\\/:*?"<>|'.includes(character) || character.charCodeAt(0) < 32
+  );
+}
+
+/**
+ * @param s A string of three comma-separated numbers, e.g. `'0, 1, 2'`
+ * @returns The parsed vector, or `null` if the string is not a valid vector
+ */
+export function parseVec3(s: string): Vec3 | null {
+  const parts = s.split(',').map((part) => Number(part.trim()));
+  if (parts.length !== 3 || parts.some(Number.isNaN)) {
+    return null;
+  }
+  const [x, y, z] = parts;
+  if (x === undefined || y === undefined || z === undefined) {
+    return null;
+  }
+  return [x, y, z];
+}

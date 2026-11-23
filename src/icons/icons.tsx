@@ -27,7 +27,8 @@ export {
 export {
   GiPlasticDuck as DummyIcon,
   GiNightSky as NightSkyIcon,
-  GiPencil as PencilIcon
+  GiPencil as PencilIcon,
+  GiSevenPointedStar as SevenPointedStarIcon
 } from 'react-icons/gi';
 export { GoBrowser as BrowserIcon, GoVideo as VideoIcon } from 'react-icons/go';
 export { GoMoveToEnd as GoToEnd, GoMoveToStart as GoToStart } from 'react-icons/go';
@@ -56,6 +57,7 @@ export {
   MdArrowBack as BackArrowIcon,
   MdOutlinePanoramaPhotosphere as BandIcon,
   MdCalendarMonth as CalendarIcon,
+  MdOutlinePhotoCamera as CameraIcon,
   MdCancel as CancelIcon,
   MdCast as CastIcon,
   MdCheckBox as CheckBoxCheckedIcon,

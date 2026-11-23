@@ -4,6 +4,7 @@ import i18next from 'i18next';
 import {
   BrowserIcon,
   CalendarIcon,
+  CheckCircleIcon,
   DashboardIcon,
   DevIcon,
   ExoplanetIcon,
@@ -28,7 +29,7 @@ import { ToolbarMenuButton } from '@/panels/Menu/Toolbar/ToolbarMenuButton';
 import { NavigationPanelMenuButton } from '@/panels/NavigationPanel/MenuButton/NavigationPanelMenuButton';
 import { SessionRecordingMenuButton } from '@/panels/SessionRecordingPanel/SessionRecordingMenuButton';
 import { TimePanelMenuButtonContent } from '@/panels/TimePanel/MenuButton/TimePanelMenuButtonContent';
-import { IconSize } from '@/types/enums';
+import { IconSize, PropertyVisibilityNumber } from '@/types/enums';
 import { MenuItemGroup, menuItemGroups } from '@/types/types';
 
 import { FloatWindowPosition, WindowLayoutPosition } from '../WindowLayout/types';
@@ -51,6 +52,7 @@ import {
   SessionRecordingPanel,
   SettingsPanel,
   SkyBrowserPanel,
+  TestWizardPanel,
   TimePanel,
   UserPanelsPanel
 } from './LazyLoads';
@@ -66,6 +68,9 @@ export interface MenuItem {
   // the offset is computed from the panels top left corner to the bottom right corner of the main window
   defaultVisible: boolean; // Whether this panel is visible in the toolbar on startup
   group: MenuItemGroup;
+  // If set, the panel is only available in the menus when the property visibility
+  // setting is at least this level
+  minVisibility?: keyof typeof PropertyVisibilityNumber;
 }
 
 export const menuItemsData: Record<string, MenuItem> = {
@@ -260,6 +265,16 @@ export const menuItemsData: Record<string, MenuItem> = {
     preferredPosition: 'right',
     defaultVisible: false,
     group: 'Content'
+  },
+  testWizard: {
+    title: () => i18next.t('menu:panels.testWizard'),
+    componentID: 'testWizard',
+    content: <TestWizardPanel />,
+    renderIcon: (size) => <CheckCircleIcon size={size} />,
+    preferredPosition: 'right',
+    defaultVisible: false,
+    group: 'Other',
+    minVisibility: 'Developer'
   }
 };
 
