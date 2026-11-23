@@ -17,6 +17,10 @@ function isPropertyValue(value: unknown): value is AnyProperty['value'] {
   );
 }
 
+function isOptional(value: unknown, type: 'string' | 'number'): boolean {
+  return value === undefined || typeof value === type;
+}
+
 function isVec3(value: unknown): value is Vec3 {
   return (
     Array.isArray(value) &&
@@ -54,7 +58,12 @@ function isTestCommand(command: unknown): command is TestCommand {
         isRecord(value) &&
         typeof value.anchor === 'string' &&
         isVec3(value.position) &&
-        (value.up === undefined || isVec3(value.up))
+        (value.up === undefined || isVec3(value.up)) &&
+        isOptional(value.aim, 'string') &&
+        isOptional(value.referenceFrame, 'string') &&
+        isOptional(value.timestamp, 'string') &&
+        isOptional(value.pitch, 'number') &&
+        isOptional(value.yaw, 'number')
       );
     default:
       return false;
