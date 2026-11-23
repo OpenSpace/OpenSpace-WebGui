@@ -165,7 +165,7 @@ export function TestWizardPanel() {
     };
     const result = await saveFile(
       `${JSON.stringify(test, null, 2)}\n`,
-      `${name.trim()}.ostest`,
+      `${name.trim().replace(/\.ostest$/i, '')}.ostest`,
       '.ostest',
       'text/plain'
     );
