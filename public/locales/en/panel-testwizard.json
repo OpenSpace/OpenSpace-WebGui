@@ -35,6 +35,12 @@
     "confirm": "Discard",
     "cancel": "Keep editing"
   },
+  "remove-modal": {
+    "title": "Remove command?",
+    "description": "The command will be removed from the test.",
+    "confirm": "Remove",
+    "cancel": "Keep"
+  },
   "saved": {
     "title": "Test saved",
     "message": "Saved {{name}}"

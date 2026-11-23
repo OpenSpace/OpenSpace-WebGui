@@ -114,9 +114,19 @@ export function TestWizardPanel() {
   }
 
   function handleRemove(index: number) {
-    setCommands((previousCommands) =>
-      previousCommands.filter((_, commandIndex) => commandIndex !== index)
-    );
+    modals.openConfirmModal({
+      title: t('remove-modal.title'),
+      children: <Text>{t('remove-modal.description')}</Text>,
+      labels: {
+        confirm: t('remove-modal.confirm'),
+        cancel: t('remove-modal.cancel')
+      },
+      confirmProps: { color: 'red', variant: 'filled' },
+      onConfirm: () =>
+        setCommands((previousCommands) =>
+          previousCommands.filter((_, commandIndex) => commandIndex !== index)
+        )
+    });
   }
 
   function handleReorder({ updatedData }: OnDragEndProps<CommandEntry>) {
