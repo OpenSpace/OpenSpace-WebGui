@@ -100,6 +100,8 @@ export function VirtualSelect({
           label={label}
           placeholder={placeholder}
           value={search ?? value}
+          // Show the full value on hover, as long values are cut off by the input width
+          title={value}
           onChange={(event) => {
             setSearch(event.currentTarget.value);
             combobox.openDropdown();
