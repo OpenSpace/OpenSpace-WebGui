@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Select, Stack, TextInput } from '@mantine/core';
+import { Alert, Select, Stack, TextInput } from '@mantine/core';
 
 import { Layout } from '@/components/Layout/Layout';
+import { WarningIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
 import { SaveCancelButtons } from '../SaveCancelButtons';
@@ -19,14 +20,20 @@ export function ActionCommand({ onSubmit, onCancel, initialValue }: Props) {
   const actions = useAppSelector((state) => state.actions.actions);
   const [action, setAction] = useState(initialValue ?? '');
 
-  const actionOptions = useMemo(
-    () =>
-      actions.map((availableAction) => ({
-        value: availableAction.identifier,
-        label: `${availableAction.name} (${availableAction.identifier})`
-      })),
-    [actions]
-  );
+  // An action from a loaded test file might not exist in OpenSpace. Keep it in the list
+  // so that it can still be seen and kept, but warn about it
+  const isMissing =
+    action !== '' &&
+    actions.length > 0 &&
+    !actions.some((availableAction) => availableAction.identifier === action);
+
+  const actionOptions = useMemo(() => {
+    const options = actions.map((availableAction) => ({
+      value: availableAction.identifier,
+      label: `${availableAction.name} (${availableAction.identifier})`
+    }));
+    return isMissing ? [...options, { value: action, label: action }] : options;
+  }, [actions, isMissing, action]);
 
   return (
     <>
@@ -51,6 +58,11 @@ export function ActionCommand({ onSubmit, onCancel, initialValue }: Props) {
               value={action}
               onChange={(event) => setAction(event.currentTarget.value)}
             />
+          )}
+          {isMissing && (
+            <Alert color={'yellow'} variant={'light'} icon={<WarningIcon />}>
+              {t('action.not-found')}
+            </Alert>
           )}
         </Stack>
       </Layout.GrowingSection>

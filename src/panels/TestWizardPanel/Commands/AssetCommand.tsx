@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Select, Stack, TextInput } from '@mantine/core';
+import { Alert, Select, Stack, TextInput } from '@mantine/core';
 
 import { Layout } from '@/components/Layout/Layout';
 import { useSubscribeToAssetTree } from '@/hooks/topicSubscriptions';
+import { WarningIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
 import { SaveCancelButtons } from '../SaveCancelButtons';
@@ -21,13 +22,20 @@ export function AssetCommand({ onSubmit, onCancel, initialValue }: Props) {
   const states = useAppSelector((state) => state.assetTree.states);
   useSubscribeToAssetTree();
 
-  const assetOptions = useMemo(
+  const loadedAssets = useMemo(
     () =>
       Object.entries(states)
         .filter(([, state]) => state === 'Loaded')
-        .map(([path]) => path)
-        .sort(),
+        .map(([path]) => path),
     [states]
+  );
+
+  // An asset from a loaded test file might not be loaded in OpenSpace. Keep it in the
+  // list so that it can still be seen and kept, but warn about it
+  const isMissing = asset !== '' && loadedAssets.length > 0 && !loadedAssets.includes(asset);
+  const assetOptions = useMemo(
+    () => [...loadedAssets, ...(isMissing ? [asset] : [])].sort(),
+    [loadedAssets, isMissing, asset]
   );
 
   return (
@@ -53,6 +61,11 @@ export function AssetCommand({ onSubmit, onCancel, initialValue }: Props) {
               value={asset}
               onChange={(event) => setAsset(event.currentTarget.value)}
             />
+          )}
+          {isMissing && (
+            <Alert color={'yellow'} variant={'light'} icon={<WarningIcon />}>
+              {t('asset.not-loaded')}
+            </Alert>
           )}
         </Stack>
       </Layout.GrowingSection>

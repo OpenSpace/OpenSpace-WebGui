@@ -122,6 +122,7 @@
     },
     "asset": {
       "select-label": "Asset",
+      "not-loaded": "This asset is not currently loaded in OpenSpace, so its path can't be verified.",
       "path-label": "Asset path",
       "path-placeholder": "scene/solarsystem/planets/earth/earth"
     },
@@ -135,6 +136,7 @@
     },
     "action": {
       "select-label": "Action",
+      "not-found": "This action does not exist in the running OpenSpace instance.",
       "identifier-label": "Action identifier",
       "identifier-placeholder": "profile.action.identifier"
     },
