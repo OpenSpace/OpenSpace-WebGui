@@ -5,7 +5,6 @@ import { Alert, Button, Checkbox, NumberInput, Stack, TextInput } from '@mantine
 import { useOpenSpaceApi } from '@/api/hooks';
 import { Collapsable } from '@/components/Collapsable/Collapsable';
 import { Layout } from '@/components/Layout/Layout';
-import { UseCurrentValueIcon } from '@/icons/icons';
 
 import { ResettableField } from '../ResettableField';
 import { SaveCancelButtons } from '../SaveCancelButtons';
@@ -151,9 +150,8 @@ export function NavigationStateCommand({ onSubmit, onCancel, initialValue }: Pro
           )}
           <Stack gap={'xs'}>
             <Button
-              size={'xs'}
               variant={'light'}
-              leftSection={<UseCurrentValueIcon />}
+              mb={'xs'}
               onClick={resetAll}
               disabled={disabled}
             >

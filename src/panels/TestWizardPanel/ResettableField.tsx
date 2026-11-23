@@ -1,8 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Box, Group, Tooltip } from '@mantine/core';
-
-import { UseCurrentValueIcon } from '@/icons/icons';
+import { Box, Button, Group, Tooltip } from '@mantine/core';
 
 interface Props extends PropsWithChildren {
   // The name of the field, used to describe the button
@@ -34,15 +32,14 @@ export function ResettableField({
         {children}
       </Box>
       <Tooltip label={buttonLabel}>
-        <ActionIcon
-          size={'input-sm'}
+        <Button
           variant={'light'}
           onClick={onReset}
           disabled={disabled}
           aria-label={buttonLabel}
         >
-          <UseCurrentValueIcon />
-        </ActionIcon>
+          {t('fetch')}
+        </Button>
       </Tooltip>
     </Group>
   );

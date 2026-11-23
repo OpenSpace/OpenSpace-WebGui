@@ -114,7 +114,6 @@ export {
   MdShortText as TextShortIcon,
   MdTimer as TimerIcon,
   MdArrowUpward as UpArrowIcon,
-  MdOutlineSystemUpdateAlt as UseCurrentValueIcon,
   MdVideocam as VideocamIcon,
   MdOutlineVisibility as VisibilityIcon,
   MdWarning as WarningIcon,

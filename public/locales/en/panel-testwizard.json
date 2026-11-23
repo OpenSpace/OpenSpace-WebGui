@@ -16,6 +16,7 @@
   },
   "no-commands": "No commands added yet.",
   "implicit-screenshot": "A screenshot is always taken as the last step of a test",
+  "fetch": "Fetch",
   "set-current-value": "Set {{field}} to current value",
   "remove-command-aria-label": "Remove command",
   "edit-command-aria-label": "Edit command",
@@ -149,7 +150,7 @@
       "selected-value": "Selected value: {{value}}"
     },
     "navigationstate": {
-      "reset-all": "Set to current navigation state",
+      "reset-all": "Fetch current navigation state",
       "anchor": {
         "label": "Anchor",
         "placeholder": "Earth"
