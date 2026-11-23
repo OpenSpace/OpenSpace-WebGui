@@ -67,6 +67,8 @@ export function TestWizardPanel() {
           .map((command) => ({ id: crypto.randomUUID(), cmd: command }))
       );
       setName(file.name.replace(/\.ostest$/i, ''));
+      setEditing(null);
+      setCommandType(null);
       setView('overview');
     } catch (e) {
       dispatch(
@@ -83,6 +85,8 @@ export function TestWizardPanel() {
     setName('');
     setCommands([]);
     resetProfile();
+    setEditing(null);
+    setCommandType(null);
     setView('overview');
   }
 
