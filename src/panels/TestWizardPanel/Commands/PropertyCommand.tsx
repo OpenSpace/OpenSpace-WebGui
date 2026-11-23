@@ -26,7 +26,10 @@ export function PropertyCommand({ onSubmit, onCancel, initialValue }: Props) {
 
   // Derived from `uri`, so it comes after the state
   const property = useAppSelector((state) => propertySelectors.selectById(state, uri));
-  const { value, setValue, reset } = useResettableValue(property?.value, initialValue?.value);
+  const { value, setValue, reset } = useResettableValue(
+    property?.value,
+    initialValue?.value
+  );
 
   function handleUriChange(newUri: string) {
     setUri(newUri);

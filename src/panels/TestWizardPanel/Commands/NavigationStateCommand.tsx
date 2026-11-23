@@ -149,12 +149,7 @@ export function NavigationStateCommand({ onSubmit, onCancel, initialValue }: Pro
             </Alert>
           )}
           <Stack gap={'xs'}>
-            <Button
-              variant={'light'}
-              mb={'xs'}
-              onClick={resetAll}
-              disabled={disabled}
-            >
+            <Button variant={'light'} mb={'xs'} onClick={resetAll} disabled={disabled}>
               {t('navigationstate.reset-all')}
             </Button>
             <Checkbox

@@ -23,7 +23,9 @@ export function CommandForm({ type, onSubmit, onCancel, initialCommand }: Props)
         <NavigationStateCommand
           onSubmit={onSubmit}
           onCancel={onCancel}
-          initialValue={initialCommand?.type === 'navigationstate' ? initialCommand.value : undefined}
+          initialValue={
+            initialCommand?.type === 'navigationstate' ? initialCommand.value : undefined
+          }
         />
       );
     case 'asset':
@@ -31,7 +33,9 @@ export function CommandForm({ type, onSubmit, onCancel, initialCommand }: Props)
         <AssetCommand
           onSubmit={onSubmit}
           onCancel={onCancel}
-          initialValue={initialCommand?.type === 'asset' ? initialCommand.value : undefined}
+          initialValue={
+            initialCommand?.type === 'asset' ? initialCommand.value : undefined
+          }
         />
       );
     case 'property':
@@ -39,7 +43,9 @@ export function CommandForm({ type, onSubmit, onCancel, initialCommand }: Props)
         <PropertyCommand
           onSubmit={onSubmit}
           onCancel={onCancel}
-          initialValue={initialCommand?.type === 'property' ? initialCommand.value : undefined}
+          initialValue={
+            initialCommand?.type === 'property' ? initialCommand.value : undefined
+          }
         />
       );
     case 'wait':
@@ -47,7 +53,9 @@ export function CommandForm({ type, onSubmit, onCancel, initialCommand }: Props)
         <WaitCommand
           onSubmit={onSubmit}
           onCancel={onCancel}
-          initialValue={initialCommand?.type === 'wait' ? initialCommand.value : undefined}
+          initialValue={
+            initialCommand?.type === 'wait' ? initialCommand.value : undefined
+          }
         />
       );
     case 'script':
@@ -55,7 +63,9 @@ export function CommandForm({ type, onSubmit, onCancel, initialCommand }: Props)
         <ScriptCommand
           onSubmit={onSubmit}
           onCancel={onCancel}
-          initialValue={initialCommand?.type === 'script' ? initialCommand.value : undefined}
+          initialValue={
+            initialCommand?.type === 'script' ? initialCommand.value : undefined
+          }
         />
       );
     case 'time':
@@ -63,7 +73,9 @@ export function CommandForm({ type, onSubmit, onCancel, initialCommand }: Props)
         <TimeCommand
           onSubmit={onSubmit}
           onCancel={onCancel}
-          initialValue={initialCommand?.type === 'time' ? initialCommand.value : undefined}
+          initialValue={
+            initialCommand?.type === 'time' ? initialCommand.value : undefined
+          }
         />
       );
     case 'pause':
@@ -71,7 +83,9 @@ export function CommandForm({ type, onSubmit, onCancel, initialCommand }: Props)
         <PauseCommand
           onSubmit={onSubmit}
           onCancel={onCancel}
-          initialValue={initialCommand?.type === 'pause' ? initialCommand.value : undefined}
+          initialValue={
+            initialCommand?.type === 'pause' ? initialCommand.value : undefined
+          }
         />
       );
     case 'deltatime':
@@ -79,7 +93,9 @@ export function CommandForm({ type, onSubmit, onCancel, initialCommand }: Props)
         <DeltaTimeCommand
           onSubmit={onSubmit}
           onCancel={onCancel}
-          initialValue={initialCommand?.type === 'deltatime' ? initialCommand.value : undefined}
+          initialValue={
+            initialCommand?.type === 'deltatime' ? initialCommand.value : undefined
+          }
         />
       );
     case 'action':
@@ -87,7 +103,9 @@ export function CommandForm({ type, onSubmit, onCancel, initialCommand }: Props)
         <ActionCommand
           onSubmit={onSubmit}
           onCancel={onCancel}
-          initialValue={initialCommand?.type === 'action' ? initialCommand.value : undefined}
+          initialValue={
+            initialCommand?.type === 'action' ? initialCommand.value : undefined
+          }
         />
       );
     default:

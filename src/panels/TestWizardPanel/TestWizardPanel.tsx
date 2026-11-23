@@ -93,7 +93,9 @@ export function TestWizardPanel() {
   function handleSubmitCommand(cmd: TestCommand) {
     if (editing) {
       setCommands((previousCommands) =>
-        previousCommands.map((entry) => (entry.id === editing.id ? { ...entry, cmd } : entry))
+        previousCommands.map((entry) =>
+          entry.id === editing.id ? { ...entry, cmd } : entry
+        )
       );
       setEditing(null);
     } else {
@@ -213,13 +215,13 @@ export function TestWizardPanel() {
       {view === 'command-form' &&
         formCommandType !== null &&
         formCommandType !== 'screenshot' && (
-        <CommandFormView
-          type={formCommandType}
-          onSubmit={handleSubmitCommand}
-          onCancel={handleCancelCommandForm}
-          initialCommand={editing?.cmd}
-        />
-      )}
+          <CommandFormView
+            type={formCommandType}
+            onSubmit={handleSubmitCommand}
+            onCancel={handleCancelCommandForm}
+            initialCommand={editing?.cmd}
+          />
+        )}
     </Container>
   );
 }

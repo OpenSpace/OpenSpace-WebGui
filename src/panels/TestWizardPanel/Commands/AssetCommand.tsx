@@ -32,7 +32,8 @@ export function AssetCommand({ onSubmit, onCancel, initialValue }: Props) {
 
   // An asset from a loaded test file might not be loaded in OpenSpace. Keep it in the
   // list so that it can still be seen and kept, but warn about it
-  const isMissing = asset !== '' && loadedAssets.length > 0 && !loadedAssets.includes(asset);
+  const isMissing =
+    asset !== '' && loadedAssets.length > 0 && !loadedAssets.includes(asset);
   const assetOptions = useMemo(
     () => [...loadedAssets, ...(isMissing ? [asset] : [])].sort(),
     [loadedAssets, isMissing, asset]

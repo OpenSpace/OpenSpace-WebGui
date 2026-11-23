@@ -192,7 +192,9 @@ export function OverviewView({
               <DecoratedIcon
                 size={'sm'}
                 position={'top-right'}
-                decoratorIcon={<SevenPointedStarIcon color={'var(--mantine-color-dimmed)'} />}
+                decoratorIcon={
+                  <SevenPointedStarIcon color={'var(--mantine-color-dimmed)'} />
+                }
                 decoratorVariant={'transparent'}
               >
                 <CameraIcon size={IconSize.sm} />
@@ -200,7 +202,12 @@ export function OverviewView({
               <Text size={'sm'}>{tLabel('screenshot')}</Text>
             </Group>
             <Group gap={'xs'} wrap={'nowrap'}>
-              <ActionIcon variant={'light'} size={'sm'} disabled aria-label={t('edit-command-aria-label')}>
+              <ActionIcon
+                variant={'light'}
+                size={'sm'}
+                disabled
+                aria-label={t('edit-command-aria-label')}
+              >
                 <PenIcon />
               </ActionIcon>
               <ActionIcon
