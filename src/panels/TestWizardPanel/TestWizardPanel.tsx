@@ -206,7 +206,9 @@ export function TestWizardPanel() {
           onCancel={handleCancel}
         />
       )}
-      {view === 'command-form' && formCommandType !== null && (
+      {view === 'command-form' &&
+        formCommandType !== null &&
+        formCommandType !== 'screenshot' && (
         <CommandFormView
           type={formCommandType}
           onSubmit={handleSubmitCommand}

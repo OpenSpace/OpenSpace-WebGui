@@ -15,6 +15,7 @@
     "placeholder": "default"
   },
   "no-commands": "No commands added yet.",
+  "implicit-screenshot": "A screenshot is always taken as the last step of a test",
   "set-current-value": "Set {{field}} to current value",
   "remove-command-aria-label": "Remove command",
   "edit-command-aria-label": "Edit command",

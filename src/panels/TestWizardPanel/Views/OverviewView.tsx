@@ -10,12 +10,21 @@ import {
   TextInput
 } from '@mantine/core';
 
+import { DecoratedIcon } from '@/components/DecoratedIcon/DecoratedIcon';
 import {
   DragReorderList,
   OnDragEndProps
 } from '@/components/DragReorderList/DragReorderList';
 import { Layout } from '@/components/Layout/Layout';
-import { MinusIcon, PenIcon, PlusIcon } from '@/icons/icons';
+import {
+  CameraIcon,
+  DragHandleIcon,
+  MinusIcon,
+  PenIcon,
+  PlusIcon,
+  SevenPointedStarIcon
+} from '@/icons/icons';
+import { IconSize } from '@/types/enums';
 
 import { ResettableField } from '../ResettableField';
 import { SaveCancelButtons } from '../SaveCancelButtons';
@@ -61,6 +70,7 @@ export function OverviewView({
   const { t: tLabel } = useTranslation('panel-testwizard', {
     keyPrefix: 'command-labels'
   });
+  const { t: tDrag } = useTranslation('components', { keyPrefix: 'drag-reorder-list' });
 
   const profileLabel = t('profile.label');
   const isNameInvalid = !isValidFileName(name);
@@ -134,7 +144,7 @@ export function OverviewView({
 
       <Layout.GrowingSection mih={100}>
         {commands.length === 0 && (
-          <Text c={'dimmed'} size={'sm'}>
+          <Text c={'dimmed'} size={'sm'} mb={'xs'}>
             {t('no-commands')}
           </Text>
         )}
@@ -171,6 +181,40 @@ export function OverviewView({
             </Group>
           )}
         />
+        {/* Every test ends with a screenshot, added when saving. Shown like the other
+            commands, but it can't be reordered, edited or removed */}
+        <Group wrap={'nowrap'} title={t('implicit-screenshot')}>
+          <ActionIcon disabled aria-label={tDrag('drag-handle-aria-label')}>
+            <DragHandleIcon />
+          </ActionIcon>
+          <Group flex={1} justify={'space-between'} wrap={'nowrap'}>
+            <Group gap={'xs'} wrap={'nowrap'} c={'dimmed'}>
+              <DecoratedIcon
+                size={'sm'}
+                position={'top-right'}
+                decoratorIcon={<SevenPointedStarIcon color={'var(--mantine-color-dimmed)'} />}
+                decoratorVariant={'transparent'}
+              >
+                <CameraIcon size={IconSize.sm} />
+              </DecoratedIcon>
+              <Text size={'sm'}>{tLabel('screenshot')}</Text>
+            </Group>
+            <Group gap={'xs'} wrap={'nowrap'}>
+              <ActionIcon variant={'light'} size={'sm'} disabled aria-label={t('edit-command-aria-label')}>
+                <PenIcon />
+              </ActionIcon>
+              <ActionIcon
+                variant={'light'}
+                size={'sm'}
+                color={'red'}
+                disabled
+                aria-label={t('remove-command-aria-label')}
+              >
+                <MinusIcon />
+              </ActionIcon>
+            </Group>
+          </Group>
+        </Group>
       </Layout.GrowingSection>
 
       <Layout.FixedSection>
