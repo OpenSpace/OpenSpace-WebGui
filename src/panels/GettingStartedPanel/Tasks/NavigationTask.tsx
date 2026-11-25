@@ -42,7 +42,7 @@ export function NavigationTask({ anchor, lat, long }: RequiredProps) {
 
   const taskCompleted = hasCorrectLongitude && hasCorrectLatitude && hasCorrectNode;
 
-  let label = '';
+  let label: string;
   if (lat && long) {
     label = t('label-lat-long', { latitude: lat.value, longitude: long.value });
   } else if (long && !lat) {

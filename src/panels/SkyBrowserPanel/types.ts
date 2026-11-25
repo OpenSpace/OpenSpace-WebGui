@@ -76,7 +76,4 @@ export interface SkyBrowserImage {
 }
 
 export type WwtStatus =
-  | 'LoadingWwt'
-  | 'LoadingImageCollection'
-  | 'CameraNotInSolarSystem'
-  | 'Ok';
+  'LoadingWwt' | 'LoadingImageCollection' | 'CameraNotInSolarSystem' | 'Ok';

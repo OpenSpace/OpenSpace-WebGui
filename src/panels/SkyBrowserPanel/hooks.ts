@@ -56,7 +56,7 @@ export function useWwtImageCollection(): [boolean, SkyBrowserImage[] | undefined
         });
       }
     } catch (error) {
-      throw Error(t('unable-to-load-images', { error }));
+      throw Error(t('unable-to-load-images', { error }), { cause: error });
     }
   }, [luaApi, dispatch, imageList, t]);
 

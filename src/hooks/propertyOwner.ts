@@ -163,11 +163,9 @@ export function usePropertyOwnerVisibility(uri: Uri) {
   // Not using the useProperty hooks here to minimize re-renders
   const visibility = useAppSelector((state) => {
     const enabled = propertySelectors.selectById(state, enabledUri)?.value as
-      | boolean
-      | undefined;
+      boolean | undefined;
     const fade = propertySelectors.selectById(state, fadeUri)?.value as
-      | number
-      | undefined;
+      number | undefined;
     return checkVisibility(enabled, fade);
   });
 

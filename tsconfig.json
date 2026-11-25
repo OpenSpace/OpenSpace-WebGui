@@ -1,42 +1,4 @@
 {
   "files": [],
-  "compilerOptions": {
-    "module": "ESNext",
-    "skipLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/api/*": ["./src/api/*"],
-      "@/components/*": ["./src/components/*"],
-      "@/data/*": ["./src/data/*"],
-      "@/hooks/*": ["./src/hooks/*"],
-      "@/icons/*": ["./src/icons/*"],
-      "@/localization/*": ["./src/localization/*"],
-      "@/panels/*": ["./src/panels/*"],
-      "@/public/*": ["./public/*"],
-      "@/redux/*": ["./src/redux/*"],
-      "@/types/*": ["./src/types/*"],
-      "@/theme/*": ["./src/theme*"],
-      "@/util/*": ["./src/util/*"],
-      "@/windowmanagement/*": ["./src/windowmanagement/*"]
-    },
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    /* Linting */
-    "allowUnreachableCode": false,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strict": true,
-    "typeRoots": ["./src/types/*.d.ts", "./node_modules/@types"]
-  },
   "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }

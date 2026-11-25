@@ -1,13 +1,29 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "composite": true,
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+  "extends": "@openspace/shared-configs/tsconfig.vite.json",
 
-    /* Bundler mode */
-    "jsx": "react-jsx"
+  "compilerOptions": {
+    "types": ["vite/client", "wicg-file-system-access"],
+    "paths": {
+      "@/api/*": ["./src/api/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/data/*": ["./src/data/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/icons/*": ["./src/icons/*"],
+      "@/localization/*": ["./src/localization/*"],
+      "@/panels/*": ["./src/panels/*"],
+      "@/public/*": ["./public/*"],
+      "@/redux/*": ["./src/redux/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/theme/*": ["./src/theme*"],
+      "@/util/*": ["./src/util/*"],
+      "@/windowmanagement/*": ["./src/windowmanagement/*"]
+    },
+
+    /* Stricter checks of the shared configuration that the code does not pass yet */
+    "verbatimModuleSyntax": false,
+    "exactOptionalPropertyTypes": false,
+    "noUncheckedIndexedAccess": false,
+    "noPropertyAccessFromIndexSignature": false
   },
   "include": ["src"]
 }
