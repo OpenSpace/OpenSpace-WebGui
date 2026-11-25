@@ -11,10 +11,15 @@ import {
   Select,
   Stack
 } from '@mantine/core';
-import { ColorFormat } from 'node_modules/@mantine/core/lib/components/ColorPicker/ColorPicker.types';
 
 import { IconSize } from '@/types/enums';
-import { rgbaToColor, rgbaToFormat, rgbStringToRgba, toFormat } from '@/util/colorHelper';
+import {
+  ColorFormat,
+  rgbaToColor,
+  rgbaToFormat,
+  rgbStringToRgba,
+  toFormat
+} from '@/util/colorHelper';
 
 import styles from './ColorPicker.module.css';
 

@@ -20,8 +20,7 @@ interface BaseProps {
 }
 
 interface ActionIconBaseProps
-  extends BaseProps,
-    Omit<ActionIconProps, 'onClick' | 'children'> {
+  extends BaseProps, Omit<ActionIconProps, 'onClick' | 'children'> {
   mode?: 'actionIcon';
   copyLabel?: never;
   iconPosition?: never;
@@ -34,8 +33,7 @@ interface ButtonBaseProps extends BaseProps, Omit<ButtonProps, 'onClick' | 'chil
 }
 
 interface MenuItemBaseProps
-  extends BaseProps,
-    Omit<MenuItemProps, 'onClick' | 'children'> {
+  extends BaseProps, Omit<MenuItemProps, 'onClick' | 'children'> {
   mode: 'menuItem';
   copyLabel?: string;
   iconPosition?: 'left' | 'right';

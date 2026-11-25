@@ -53,8 +53,7 @@ interface GeoNavigationProps extends BaseProps {
 }
 
 type NodeNavigationButtonProps =
-  | (PathNavigationProps & BaseButtonProps)
-  | (GeoNavigationProps & BaseButtonProps);
+  (PathNavigationProps & BaseButtonProps) | (GeoNavigationProps & BaseButtonProps);
 
 interface ButtonContent {
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;

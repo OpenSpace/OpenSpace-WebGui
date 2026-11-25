@@ -42,9 +42,7 @@ export function PropertyOwner({
   const parentType = useAppSelector(
     (state) =>
       propertySelectors.selectById(state, parentTypeUri(uri))?.value as
-        | string
-        | number
-        | undefined
+        string | number | undefined
   );
 
   const isGlobeLayers =

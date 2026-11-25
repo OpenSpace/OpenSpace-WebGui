@@ -1,5 +1,7 @@
-import { convertHsvaTo, parseColor, RGBA } from '@mantine/core';
-import { ColorFormat } from 'node_modules/@mantine/core/lib/components/ColorPicker/ColorPicker.types';
+import { ColorPickerProps, convertHsvaTo, parseColor, RGBA } from '@mantine/core';
+
+// Mantine does not export the type of the color formats of its color picker
+export type ColorFormat = NonNullable<ColorPickerProps['format']>;
 
 // OpenSpace colors are defined as an object with r, g, b, and a (optional) properties,
 // with values in the range [0, 1]

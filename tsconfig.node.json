@@ -1,9 +1,10 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "@openspace/shared-configs/tsconfig.vite.json",
+
   "compilerOptions": {
-    "composite": true,
-    "target": "ES2022",
-    "lib": ["ES2023"]
+    "lib": ["ES2023"],
+    "types": [],
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo"
   },
   "include": ["vite.config.ts"]
 }

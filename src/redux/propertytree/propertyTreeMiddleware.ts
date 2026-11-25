@@ -45,8 +45,7 @@ function calculateSgnVisibilityMap(
   const visibility = sceneGraphNodes.map((sgn) => {
     const fade = properties[`${sgn.uri}.Renderable.Fade`]?.value as number | undefined;
     const enabled = properties[`${sgn.uri}.Renderable.Enabled`]?.value as
-      | boolean
-      | undefined;
+      boolean | undefined;
     return checkVisibility(enabled, fade);
   });
   const visibilityMap: Record<Uri, Visibility | undefined> = {};

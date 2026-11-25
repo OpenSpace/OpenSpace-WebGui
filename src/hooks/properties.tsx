@@ -42,8 +42,7 @@ export function usePropertyValue<T extends PropertyTypeKey>(
 ): PropertyOrPropertyGroup<T>['value'] | undefined {
   // Get the value from Redux
   const prop = useAppSelector((state) => propertySelectors.selectById(state, uri)) as
-    | PropertyOrPropertyGroup<T>
-    | undefined;
+    PropertyOrPropertyGroup<T> | undefined;
 
   if (!validatePropertyType(type, prop)) {
     throw new Error(
@@ -66,8 +65,7 @@ export function useProperty<T extends PropertyTypeKey>(
   });
   // Get the value from Redux
   const prop = useAppSelector((state) => propertySelectors.selectById(state, uri)) as
-    | PropertyOrPropertyGroup<T>
-    | undefined;
+    PropertyOrPropertyGroup<T> | undefined;
 
   if (!validatePropertyType(type, prop)) {
     throw new Error(
